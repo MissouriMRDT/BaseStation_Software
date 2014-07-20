@@ -1,0 +1,78 @@
+﻿<UserControl x:Class="RED.Views.Settings.CommunicationsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:viewModels="clr-namespace:RED.ViewModels.Settings"
+             xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+             mc:Ignorable="d" >
+    <UserControl.DataContext>
+        <viewModels:ConfigurationVM />
+    </UserControl.DataContext>
+    <Grid>
+        <ScrollViewer>
+            <StackPanel HorizontalAlignment="Left">
+                <TextBlock Text="System Configuration" Style="{StaticResource Heading1}"/>
+                <mui:BBCodeBlock BBCode="If you are not knowledgeable about this system, it would wise of you to not play around in here." Style="{StaticResource Emphasis}" Margin="0 0 0 10"/>
+
+                <StackPanel Orientation="Vertical">
+                    <StackPanel.Resources>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Orientation" Value="Horizontal" />
+                            <Setter Property="Margin" Value="0,0,0,4" />
+                        </Style>
+                        <Style TargetType="Label" BasedOn="{StaticResource {x:Type Label}}">
+                            <Setter Property="Width" Value="200" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                        <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
+                            <Setter Property="Padding" Value="0,3" />
+                        </Style>
+                        <Style TargetType="RadioButton" BasedOn="{StaticResource {x:Type RadioButton}}">
+                            <Setter Property="Padding" Value="0,3" />
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <!-- Control settings -->
+                    <TextBlock Text="Controls" Style="{StaticResource Title}" Margin="0 25 0 0"/>
+                    <StackPanel>
+                        <Label Content="Default Control Mode" />
+                        <ComboBox SelectedItem="{Binding SelectedDefaultControlMode}" ItemsSource="{Binding AvailableControlModes}" Width="150" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                    <mui:BBCodeBlock BBCode="Changing any sample speed requires an application restart." Style="{StaticResource Emphasis}" Margin="0 5 0 10" />
+                    <StackPanel>
+                        <Label Content="Controller Sampling Speed (ms)" />
+                        <TextBox Text="{Binding SerialReadSpeed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="150" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <Label Content="Drive Sampling Speed (ms)" />
+                        <TextBox Text="{Binding DriveCommandSpeedMs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="150" HorizontalAlignment="Left"/>
+                    </StackPanel>
+
+                    <!-- Network settings -->
+                    <TextBlock Text="Network" Style="{StaticResource Title}" Margin="0 25 0 0"/>
+                    <mui:BBCodeBlock BBCode="If a connection currently exists, any changes here will not be utilized without first disconnecting and then re-listening.  Note: a blank [i]Default IP Address[/i] will default to the localhost." Style="{StaticResource Emphasis}" Margin="0 0 0 10" />
+                    <StackPanel>
+                        <Label Content="Default IP Address" />
+                        <TextBox Text="{Binding DefaultIp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="150" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <Label Content="Default Port" />
+                        <TextBox Text="{Binding DefaultPort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="150" HorizontalAlignment="Left"/>
+                    </StackPanel>
+
+                    <!-- Voice settings -->
+                    <TextBlock Text="Voice" Style="{StaticResource Title}" Margin="0 25 0 0"/>
+                    <StackPanel>
+                        <Label Content="Turn Off System Voice"/>
+                        <CheckBox IsChecked="{Binding VoiceMute}" />
+                    </StackPanel>
+                    <StackPanel>
+                        <Label Content="Turn Off Voice Commands" />
+                        <CheckBox IsChecked="{Binding VoiceCommandsMute}" />
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

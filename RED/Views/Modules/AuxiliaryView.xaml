@@ -1,0 +1,171 @@
+﻿<UserControl x:Class="RED.Views.Modules.AuxiliaryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:RED.ViewModels.Modules"
+             mc:Ignorable="d" d:DesignHeight="700" d:DesignWidth="500" d:DataContext="{d:DesignInstance Type=viewModels:AuxiliaryVM, IsDesignTimeCreatable=True}">
+    <ScrollViewer>
+        <StackPanel Margin="0 0 2 0">
+            <!-- 
+            - GPS 
+            -->
+            <TextBlock Text="GPS" Style="{StaticResource Title}" Margin="0 0 0 5" Height="30" VerticalAlignment="Center" />
+            <DockPanel LastChildFill="False" VerticalAlignment="Top" Margin="0 0 0 5">
+                <TextBlock Text="Gps Telemetry:" Width="115" DockPanel.Dock="Left" Margin="0 0 5 0" />
+                <Button Command="{Binding ToggleGpsTelemetryOnCommand}" Content="On" Margin="0 0 5 0" />
+                <Button Command="{Binding ToggleGpsTelemetryOffCommand}" Content="Off" Margin="0 0 5 0" />
+            </DockPanel>
+            <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5">
+                <TextBlock Text="Signal:" Width="115" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding GpsFixedDisplay.Value}" 
+                           FontWeight="Bold" VerticalAlignment="Center">
+                    <TextBlock.ToolTip>
+                        <ToolTip Content="{Binding GpsFixedDisplay.ReceivedOn}" ContentStringFormat="Received at: {0:HH:mm:ss:ff}"></ToolTip>
+                    </TextBlock.ToolTip>
+                </TextBlock>
+            </DockPanel>
+            <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5">
+                <TextBlock Text="Latitude:" Width="115" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
+                <TextBox Text="{Binding GpsLatitude.Value}" 
+                         IsReadOnly="True" FontWeight="Bold" VerticalAlignment="Center">
+                    <TextBox.ToolTip>
+                        <ToolTip Content="{Binding GpsLatitude.ReceivedOn}" ContentStringFormat="Received at: {0:HH:mm:ss:ff}"></ToolTip>
+                    </TextBox.ToolTip>
+                </TextBox>
+            </DockPanel>
+            <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5">
+                <TextBlock Text="Longitude:" Width="115" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
+                <TextBox Text="{Binding GpsLongitude.Value}" 
+                         IsReadOnly="True" FontWeight="Bold" VerticalAlignment="Center">
+                    <TextBox.ToolTip>
+                        <ToolTip Content="{Binding GpsLongitude.ReceivedOn}" ContentStringFormat="Received at: {0:HH:mm:ss:ff}"></ToolTip>
+                    </TextBox.ToolTip>
+                </TextBox>
+            </DockPanel>
+            <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5">
+                <TextBlock Text="Altitude:" Width="115" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
+                <TextBox Text="{Binding GpsAltitude.Value}"
+                         IsReadOnly="True" FontWeight="Bold" VerticalAlignment="Center">
+                    <TextBox.ToolTip>
+                        <ToolTip Content="{Binding GpsAltitude.ReceivedOn}" ContentStringFormat="Received at: {0:HH:mm:ss:ff}'"></ToolTip>
+                    </TextBox.ToolTip>
+                </TextBox>
+            </DockPanel>
+            <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5">
+                <TextBlock Text="Satellite Count:" Width="115" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
+                <TextBox Text="{Binding GpsSatelliteCount.Value}" 
+                         IsReadOnly="True" FontWeight="Bold" VerticalAlignment="Center">
+                    <TextBox.ToolTip>
+                        <ToolTip Content="{Binding GpsSatelliteCount.ReceivedOn}" ContentStringFormat="Received at: {0:HH:mm:ss:ff}"></ToolTip>
+                    </TextBox.ToolTip>
+                </TextBox>
+            </DockPanel>
+            
+            <!-- 
+            - Drill 
+            -->
+            <TextBlock Text="Drill" Style="{StaticResource Title}" Margin="0 0 0 5" Height="30" VerticalAlignment="Center" />
+            <DockPanel LastChildFill="False" VerticalAlignment="Top" Margin="0 0 0 5">
+                <TextBlock Text="Drill Telemetry:" Width="115" DockPanel.Dock="Left" Margin="0 0 5 0" />
+                <Button Command="{Binding ToggleDrillSensorTelemetryOnCommand}" Content="On" Margin="0 0 5 0" />
+                <Button Command="{Binding ToggleDrillSensorTelemetryOffCommand}" Content="Off" Margin="0 0 5 0"  />
+            </DockPanel>
+            <DockPanel LastChildFill="False" VerticalAlignment="Top" Margin="0 0 0 5">
+                <TextBlock Text="Drill Direction:" Width="115" DockPanel.Dock="Left" Margin="0 0 5 0" />
+                <Button Command="{Binding ToggleDrillDirectionBackCommand}" Content="Back" Margin="0 0 5 0"  />
+                <Button Command="{Binding ToggleDrillDirectionForwardCommand}" Content="Forward" Margin="0 0 5 0" />
+            </DockPanel>
+            <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5">
+                <TextBlock Text="Drill Speed:" Width="115" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding CurrentDrillSpeed, StringFormat=' {0:000}'}" FontWeight="Bold" VerticalAlignment="Center" DockPanel.Dock="Left" Margin="0 0 5 0" />
+                <Slider Minimum="0" Maximum="255" Value="{Binding CurrentDrillSpeed}" TickFrequency="51" IsSnapToTickEnabled="True" />
+            </DockPanel>
+            <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5">
+                <TextBlock Text="Hydrogen Reading:" Width="115" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
+                <TextBox Text="{Binding DrillHydrogenReading.Value}" 
+                         IsReadOnly="True" FontWeight="Bold" VerticalAlignment="Center">
+                    <TextBox.ToolTip>
+                        <ToolTip Content="{Binding DrillHydrogenReading.ReceivedOn}" ContentStringFormat="Received at: {0:HH:mm:ss:ff}"></ToolTip>
+                    </TextBox.ToolTip>
+                </TextBox>
+            </DockPanel>
+            <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5">
+                <TextBlock Text="Methane Reading:" Width="115" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
+                <TextBox Text="{Binding DrillMethaneReading.Value}" 
+                         IsReadOnly="True" FontWeight="Bold" VerticalAlignment="Center">
+                    <TextBox.ToolTip>
+                        <ToolTip Content="{Binding DrillMethaneReading.ReceivedOn}" ContentStringFormat="Received at: {0:HH:mm:ss:ff}"></ToolTip>
+                    </TextBox.ToolTip>
+                </TextBox>
+            </DockPanel>
+            <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5">
+                <TextBlock Text="Ammonia Reading:" Width="115" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
+                <TextBox Text="{Binding DrillAmmoniaReading.Value}" 
+                         IsReadOnly="True" FontWeight="Bold" VerticalAlignment="Center">
+                    <TextBox.ToolTip>
+                        <ToolTip Content="{Binding DrillAmmoniaReading.ReceivedOn}" ContentStringFormat="Received at: {0:HH:mm:ss:ff}"></ToolTip>
+                    </TextBox.ToolTip>
+                </TextBox>
+            </DockPanel>
+            <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5">
+                <TextBlock Text="Temperature:" Width="115" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
+                <TextBox Text="{Binding DrillTemperature.Value}" 
+                         IsReadOnly="True" FontWeight="Bold" VerticalAlignment="Center">
+                    <TextBox.ToolTip>
+                        <ToolTip Content="{Binding DrillTemperature.ReceivedOn}" ContentStringFormat="Received at: {0:HH:mm:ss:ff}"></ToolTip>
+                    </TextBox.ToolTip>
+                </TextBox>
+            </DockPanel>
+            <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5">
+                <TextBlock Text="Actual Speed:" Width="115" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
+                <TextBox Text="{Binding DrillActualSpeed.Value}" 
+                         IsReadOnly="True" FontWeight="Bold" VerticalAlignment="Center">
+                    <TextBox.ToolTip>
+                        <ToolTip Content="{Binding DrillActualSpeed.ReceivedOn}" ContentStringFormat="Received at: {0:HH:mm:ss:ff}"></ToolTip>
+                    </TextBox.ToolTip>
+                </TextBox>
+            </DockPanel>
+            <DockPanel LastChildFill="False" VerticalAlignment="Top" Margin="0 0 0 5">
+                <TextBlock Text="Thermal Power:" Width="115" DockPanel.Dock="Left" Margin="0 0 5 0" />
+                <Button Command="{Binding ToggleHeaterPowerOnCommand}" Content="On" Margin="0 0 5 0" />
+                <Button Command="{Binding ToggleHeaterPowerOffCommand}" Content="Off" Margin="0 0 5 0"  />
+            </DockPanel>
+            <DockPanel LastChildFill="False" VerticalAlignment="Top" Margin="0 0 0 5">
+                <TextBlock Text="Thermal Readings:" Width="115" DockPanel.Dock="Left" Margin="0 0 5 0" />
+                <Button Command="{Binding ToggleThermalReadingsOnCommand}" Content="On" Margin="0 0 5 0" />
+                <Button Command="{Binding ToggleThermalReadingsOffCommand}" Content="Off" Margin="0 0 5 0"  />
+            </DockPanel>
+            <DockPanel LastChildFill="False" VerticalAlignment="Top" Margin="0 0 0 5">
+                <TextBlock Text="Gas Power:" Width="115" DockPanel.Dock="Left" Margin="0 0 5 0" />
+                <Button Command="{Binding ToggleSensorPowerOnCommand}" Content="On" Margin="0 0 5 0" />
+                <Button Command="{Binding ToggleSensorPowerOffCommand}" Content="Off" Margin="0 0 5 0"  />
+            </DockPanel>
+            <DockPanel LastChildFill="False" VerticalAlignment="Top" Margin="0 0 0 5">
+                <TextBlock Text="Gas Readings:" Width="115" DockPanel.Dock="Left" Margin="0 0 5 0" />
+                <Button Command="{Binding ToggleGasReadingsOnCommand}" Content="On" Margin="0 0 5 0" />
+                <Button Command="{Binding ToggleGasReadingsOffCommand}" Content="Off" Margin="0 0 5 0"  />
+            </DockPanel>
+            
+            <!-- 
+            - Science
+            -->
+            <TextBlock Text="Science Bay" Style="{StaticResource Title}" Margin="0 0 0 5" Height="30" VerticalAlignment="Center" />
+            <DockPanel LastChildFill="False" VerticalAlignment="Top" Margin="0 0 0 5">
+                <TextBlock Text="Bay Door:" Width="115" DockPanel.Dock="Left" Margin="0 0 5 0" /> 
+                <Button Command="{Binding ToggleSampleBayDoorOpenCommand}" Content="Open" Margin="0 0 5 0" />
+                <Button Command="{Binding ToggleSampleBayDoorCloseCommand}" Content="Close" Margin="0 0 5 0"  />
+            </DockPanel>
+            <DockPanel LastChildFill="False" VerticalAlignment="Top" Margin="0 0 0 5">
+                <TextBlock Text="395nm Light:" Width="115" DockPanel.Dock="Left" Margin="0 0 5 0" />
+                <Button Command="{Binding ToggleLight395OnCommand}" Content="On" Margin="0 0 5 0" />
+                <Button Command="{Binding ToggleLight395OffCommand}" Content="Off" Margin="0 0 5 0"  />
+            </DockPanel>
+            <DockPanel LastChildFill="False" VerticalAlignment="Top" Margin="0 0 0 5">
+                <TextBlock Text="440nm Light:" Width="115" DockPanel.Dock="Left" Margin="0 0 5 0" />
+                <Button Command="{Binding ToggleLight440OnCommand}" Content="On" Margin="0 0 5 0" />
+                <Button Command="{Binding ToggleLight440OffCommand}" Content="Off" Margin="0 0 5 0"  />
+            </DockPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

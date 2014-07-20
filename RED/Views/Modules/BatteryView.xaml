@@ -1,0 +1,557 @@
+﻿<UserControl x:Class="RED.Views.Modules.BatteryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:RED.ViewModels.Modules"
+             xmlns:contexts="clr-namespace:RED.Contexts" 
+             mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance Type=viewModels:BatteryVM, IsDesignTimeCreatable=True}">
+    <ScrollViewer>
+        <StackPanel Margin="0 0 2 0">
+            <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5" Height="30">
+                <TextBlock Text="Battery Current" Width="100" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding MainBatteryCurrent, StringFormat=' {0: 00.00;-00.00} A'}" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" FontWeight="Bold" HorizontalAlignment="Right" />
+                <ItemsControl ItemsSource="{Binding MainBatteryCurrentContexts, Mode=OneWay}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="1"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type contexts:BarContext}">
+                            <ProgressBar Minimum="{Binding DataContext.MainBatteryMinimumCurrent, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                         Maximum="{Binding DataContext.MainBatteryMaximumCurrent, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                         Orientation="Vertical" Background="{StaticResource InputBackground}"
+                                         Value="{Binding Value, Mode=OneWay}">
+                                <ProgressBar.ToolTip>
+                                    <ToolTip>
+                                        <ToolTip.Content>
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="Value: {0:00.00} A, Received at: {1:HH:mm:ss:ff}">
+                                                        <Binding Path="Value"></Binding>
+                                                        <Binding Path="ReceivedOn"></Binding>
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </ToolTip.Content>
+                                    </ToolTip>
+                                </ProgressBar.ToolTip>
+                            </ProgressBar>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </DockPanel>
+            <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5" Height="30">
+                <TextBlock Text="Pack Voltage" Width="100" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding MainBatteryVoltage, StringFormat=' {0: 00.00} V'}" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" FontWeight="Bold" HorizontalAlignment="Right" />
+                <ItemsControl ItemsSource="{Binding MainBatteryVoltageContexts, Mode=OneWay}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="1"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type contexts:BarContext}">
+                            <ProgressBar Minimum="{Binding DataContext.MinimumMainBatteryVoltage, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                         Maximum="{Binding DataContext.MaximumMainBatteryVoltage, RelativeSource={RelativeSource AncestorType=UserControl}}"  
+                                         Orientation="Vertical" Background="{StaticResource InputBackground}"
+                                         Value="{Binding Value, Mode=OneWay}">
+                                <ProgressBar.ToolTip>
+                                    <ToolTip>
+                                        <ToolTip.Content>
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="Value: {0: 00.00} V, Received at: {1:HH:mm:ss:ff}">
+                                                        <Binding Path="Value"></Binding>
+                                                        <Binding Path="ReceivedOn"></Binding>
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </ToolTip.Content>
+                                    </ToolTip>
+                                </ProgressBar.ToolTip>
+                            </ProgressBar>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </DockPanel>
+            <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5" Height="30">
+                <TextBlock Text="Voltage 1" Width="100" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding Voltage1, StringFormat=' {0: 00.00} V'}" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" FontWeight="Bold" HorizontalAlignment="Right" />
+                <ItemsControl ItemsSource="{Binding Voltage1Contexts, Mode=OneWay}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="1"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type contexts:BarContext}">
+                            <ProgressBar Minimum="{Binding DataContext.MinimumVoltage, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                         Maximum="{Binding DataContext.MaximumVoltage, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                         Orientation="Vertical" Background="{StaticResource InputBackground}"
+                                         Value="{Binding Value, Mode=OneWay}">
+                                <ProgressBar.ToolTip>
+                                    <ToolTip>
+                                        <ToolTip.Content>
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="Value: {0: 00.00} V, Received at: {1:HH:mm:ss:ff}">
+                                                        <Binding Path="Value"></Binding>
+                                                        <Binding Path="ReceivedOn"></Binding>
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </ToolTip.Content>
+                                    </ToolTip>
+                                </ProgressBar.ToolTip>
+                            </ProgressBar>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </DockPanel>
+            <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5" Height="30">
+                <TextBlock Text="Voltage 2" Width="100" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding Voltage2, StringFormat=' {0: 00.00} V'}" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" FontWeight="Bold" HorizontalAlignment="Right" />
+                <ItemsControl ItemsSource="{Binding Voltage2Contexts, Mode=OneWay}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="1"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type contexts:BarContext}">
+                            <ProgressBar Minimum="{Binding DataContext.MinimumVoltage, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                         Maximum="{Binding DataContext.MaximumVoltage, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                         Orientation="Vertical" Background="{StaticResource InputBackground}"
+                                         Value="{Binding Value, Mode=OneWay}">
+                                <ProgressBar.ToolTip>
+                                    <ToolTip>
+                                        <ToolTip.Content>
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="Value: {0: 00.00} V, Received at: {1:HH:mm:ss:ff}">
+                                                        <Binding Path="Value"></Binding>
+                                                        <Binding Path="ReceivedOn"></Binding>
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </ToolTip.Content>
+                                    </ToolTip>
+                                </ProgressBar.ToolTip>
+                            </ProgressBar>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </DockPanel>
+            <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5" Height="30">
+                <TextBlock Text="Voltage 3" Width="100" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding Voltage3, StringFormat=' {0: 00.00} V'}" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" FontWeight="Bold" HorizontalAlignment="Right" />
+                <ItemsControl ItemsSource="{Binding Voltage3Contexts, Mode=OneWay}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="1"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type contexts:BarContext}">
+                            <ProgressBar Minimum="{Binding DataContext.MinimumVoltage, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                         Maximum="{Binding DataContext.MaximumVoltage, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                         Orientation="Vertical" Background="{StaticResource InputBackground}"
+                                         Value="{Binding Value, Mode=OneWay}">
+                                <ProgressBar.ToolTip>
+                                    <ToolTip>
+                                        <ToolTip.Content>
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="Value: {0: 00.00} V, Received at: {1:HH:mm:ss:ff}">
+                                                        <Binding Path="Value"></Binding>
+                                                        <Binding Path="ReceivedOn"></Binding>
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </ToolTip.Content>
+                                    </ToolTip>
+                                </ProgressBar.ToolTip>
+                            </ProgressBar>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </DockPanel>
+            <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5" Height="30">
+                <TextBlock Text="Voltage 4" Width="100" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding Voltage4, StringFormat=' {0: 00.00} V'}" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" FontWeight="Bold" HorizontalAlignment="Right" />
+                <ItemsControl ItemsSource="{Binding Voltage4Contexts, Mode=OneWay}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="1"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type contexts:BarContext}">
+                            <ProgressBar Minimum="{Binding DataContext.MinimumVoltage, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                         Maximum="{Binding DataContext.MaximumVoltage, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                         Orientation="Vertical" Background="{StaticResource InputBackground}"
+                                         Value="{Binding Value, Mode=OneWay}">
+                                <ProgressBar.ToolTip>
+                                    <ToolTip>
+                                        <ToolTip.Content>
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="Value: {0: 00.00} V, Received at: {1:HH:mm:ss:ff}">
+                                                        <Binding Path="Value"></Binding>
+                                                        <Binding Path="ReceivedOn"></Binding>
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </ToolTip.Content>
+                                    </ToolTip>
+                                </ProgressBar.ToolTip>
+                            </ProgressBar>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </DockPanel>
+            <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5" Height="30">
+                <TextBlock Text="Voltage 5" Width="100" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding Voltage5, StringFormat=' {0: 00.00} V'}" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" FontWeight="Bold" HorizontalAlignment="Right" />
+                <ItemsControl ItemsSource="{Binding Voltage5Contexts, Mode=OneWay}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="1"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type contexts:BarContext}">
+                            <ProgressBar Minimum="{Binding DataContext.MinimumVoltage, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                         Maximum="{Binding DataContext.MaximumVoltage, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                         Orientation="Vertical" Background="{StaticResource InputBackground}"
+                                         Value="{Binding Value, Mode=OneWay}">
+                                <ProgressBar.ToolTip>
+                                    <ToolTip>
+                                        <ToolTip.Content>
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="Value: {0: 00.00} V, Received at: {1:HH:mm:ss:ff}">
+                                                        <Binding Path="Value"></Binding>
+                                                        <Binding Path="ReceivedOn"></Binding>
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </ToolTip.Content>
+                                    </ToolTip>
+                                </ProgressBar.ToolTip>
+                            </ProgressBar>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </DockPanel>
+            <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5" Height="30">
+                <TextBlock Text="Voltage 6" Width="100" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding Voltage6, StringFormat=' {0: 00.00} V'}" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" FontWeight="Bold" HorizontalAlignment="Right" />
+                <ItemsControl ItemsSource="{Binding Voltage6Contexts, Mode=OneWay}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="1"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type contexts:BarContext}">
+                            <ProgressBar Minimum="{Binding DataContext.MinimumVoltage, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                         Maximum="{Binding DataContext.MaximumVoltage, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                         Orientation="Vertical" Background="{StaticResource InputBackground}"
+                                         Value="{Binding Value, Mode=OneWay}">
+                                <ProgressBar.ToolTip>
+                                    <ToolTip>
+                                        <ToolTip.Content>
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="Value: {0: 00.00} V, Received at: {1:HH:mm:ss:ff}">
+                                                        <Binding Path="Value"></Binding>
+                                                        <Binding Path="ReceivedOn"></Binding>
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </ToolTip.Content>
+                                    </ToolTip>
+                                </ProgressBar.ToolTip>
+                            </ProgressBar>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </DockPanel>
+            <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5" Height="30">
+                <TextBlock Text="Voltage 7" Width="100" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding Voltage7, StringFormat=' {0: 00.00} V'}" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" FontWeight="Bold" HorizontalAlignment="Right" />
+                <ItemsControl ItemsSource="{Binding Voltage7Contexts, Mode=OneWay}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="1"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type contexts:BarContext}">
+                            <ProgressBar Minimum="{Binding DataContext.MinimumVoltage, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                         Maximum="{Binding DataContext.MaximumVoltage, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                         Orientation="Vertical" Background="{StaticResource InputBackground}"
+                                         Value="{Binding Value, Mode=OneWay}">
+                                <ProgressBar.ToolTip>
+                                    <ToolTip>
+                                        <ToolTip.Content>
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="Value: {0: 00.00} V, Received at: {1:HH:mm:ss:ff}">
+                                                        <Binding Path="Value"></Binding>
+                                                        <Binding Path="ReceivedOn"></Binding>
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </ToolTip.Content>
+                                    </ToolTip>
+                                </ProgressBar.ToolTip>
+                            </ProgressBar>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </DockPanel>
+            <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5" Height="30">
+                <TextBlock Text="Temperature 1" Width="100" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding Temperature1, StringFormat=' {0: 00.00}°C'}" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" FontWeight="Bold" HorizontalAlignment="Right" />
+                <ItemsControl ItemsSource="{Binding Temperature1Contexts, Mode=OneWay}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="1"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type contexts:BarContext}">
+                            <ProgressBar Minimum="{Binding DataContext.MinimumTemperature, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                         Maximum="{Binding DataContext.MaximumTemperature, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                         Orientation="Vertical" Background="{StaticResource InputBackground}"
+                                         Value="{Binding Value, Mode=OneWay}">
+                                <ProgressBar.ToolTip>
+                                    <ToolTip>
+                                        <ToolTip.Content>
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="Value: {0: 00.00}°C, Received at: {1:HH:mm:ss:ff}">
+                                                        <Binding Path="Value"></Binding>
+                                                        <Binding Path="ReceivedOn"></Binding>
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </ToolTip.Content>
+                                    </ToolTip>
+                                </ProgressBar.ToolTip>
+                            </ProgressBar>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </DockPanel>
+            <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5" Height="30">
+                <TextBlock Text="Temperature 2" Width="100" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding Temperature2, StringFormat=' {0: 00.00}°C'}" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" FontWeight="Bold" HorizontalAlignment="Right" />
+                <ItemsControl ItemsSource="{Binding Temperature2Contexts, Mode=OneWay}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="1"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type contexts:BarContext}">
+                            <ProgressBar Minimum="{Binding DataContext.MinimumTemperature, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                         Maximum="{Binding DataContext.MaximumTemperature, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                         Orientation="Vertical" Background="{StaticResource InputBackground}"
+                                         Value="{Binding Value, Mode=OneWay}">
+                                <ProgressBar.ToolTip>
+                                    <ToolTip>
+                                        <ToolTip.Content>
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="Value: {0: 00.00}°C, Received at: {1:HH:mm:ss:ff}">
+                                                        <Binding Path="Value"></Binding>
+                                                        <Binding Path="ReceivedOn"></Binding>
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </ToolTip.Content>
+                                    </ToolTip>
+                                </ProgressBar.ToolTip>
+                            </ProgressBar>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </DockPanel>
+            <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5" Height="30">
+                <TextBlock Text="Temperature 3" Width="100" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding Temperature3, StringFormat=' {0: 00.00}°C'}" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" FontWeight="Bold" HorizontalAlignment="Right" />
+                <ItemsControl ItemsSource="{Binding Temperature3Contexts, Mode=OneWay}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="1"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type contexts:BarContext}">
+                            <ProgressBar Minimum="{Binding DataContext.MinimumTemperature, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                         Maximum="{Binding DataContext.MaximumTemperature, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                         Orientation="Vertical" Background="{StaticResource InputBackground}"
+                                         Value="{Binding Value, Mode=OneWay}">
+                                <ProgressBar.ToolTip>
+                                    <ToolTip>
+                                        <ToolTip.Content>
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="Value: {0: 00.00}°C, Received at: {1:HH:mm:ss:ff}">
+                                                        <Binding Path="Value"></Binding>
+                                                        <Binding Path="ReceivedOn"></Binding>
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </ToolTip.Content>
+                                    </ToolTip>
+                                </ProgressBar.ToolTip>
+                            </ProgressBar>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </DockPanel>
+            <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5" Height="30">
+                <TextBlock Text="Temperature 4" Width="100" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding Temperature4, StringFormat=' {0: 00.00}°C'}" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" FontWeight="Bold" HorizontalAlignment="Right" />
+                <ItemsControl ItemsSource="{Binding Temperature4Contexts, Mode=OneWay}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="1"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type contexts:BarContext}">
+                            <ProgressBar Minimum="{Binding DataContext.MinimumTemperature, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                         Maximum="{Binding DataContext.MaximumTemperature, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                         Orientation="Vertical" Background="{StaticResource InputBackground}"
+                                         Value="{Binding Value, Mode=OneWay}">
+                                <ProgressBar.ToolTip>
+                                    <ToolTip>
+                                        <ToolTip.Content>
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="Value: {0: 00.00}°C, Received at: {1:HH:mm:ss:ff}">
+                                                        <Binding Path="Value"></Binding>
+                                                        <Binding Path="ReceivedOn"></Binding>
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </ToolTip.Content>
+                                    </ToolTip>
+                                </ProgressBar.ToolTip>
+                            </ProgressBar>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </DockPanel>
+            <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5" Height="30">
+                <TextBlock Text="Temperature 5" Width="100" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding Temperature5, StringFormat=' {0: 00.00}°C'}" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" FontWeight="Bold" HorizontalAlignment="Right" />
+                <ItemsControl ItemsSource="{Binding Temperature5Contexts, Mode=OneWay}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="1"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type contexts:BarContext}">
+                            <ProgressBar Minimum="{Binding DataContext.MinimumTemperature, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                         Maximum="{Binding DataContext.MaximumTemperature, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                         Orientation="Vertical" Background="{StaticResource InputBackground}"
+                                         Value="{Binding Value, Mode=OneWay}">
+                                <ProgressBar.ToolTip>
+                                    <ToolTip>
+                                        <ToolTip.Content>
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="Value: {0: 00.00}°C, Received at: {1:HH:mm:ss:ff}">
+                                                        <Binding Path="Value"></Binding>
+                                                        <Binding Path="ReceivedOn"></Binding>
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </ToolTip.Content>
+                                    </ToolTip>
+                                </ProgressBar.ToolTip>
+                            </ProgressBar>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </DockPanel>
+            <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5" Height="30">
+                <TextBlock Text="Temperature 6" Width="100" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding Temperature6, StringFormat=' {0: 00.00}°C'}" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" FontWeight="Bold" HorizontalAlignment="Right" />
+                <ItemsControl ItemsSource="{Binding Temperature6Contexts, Mode=OneWay}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="1"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type contexts:BarContext}">
+                            <ProgressBar Minimum="{Binding DataContext.MinimumTemperature, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                         Maximum="{Binding DataContext.MaximumTemperature, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                         Orientation="Vertical" Background="{StaticResource InputBackground}"
+                                         Value="{Binding Value, Mode=OneWay}">
+                                <ProgressBar.ToolTip>
+                                    <ToolTip>
+                                        <ToolTip.Content>
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="Value: {0: 00.00}°C, Received at: {1:HH:mm:ss:ff}">
+                                                        <Binding Path="Value"></Binding>
+                                                        <Binding Path="ReceivedOn"></Binding>
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </ToolTip.Content>
+                                    </ToolTip>
+                                </ProgressBar.ToolTip>
+                            </ProgressBar>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </DockPanel>
+            <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5" Height="30">
+                <TextBlock Text="Temperature 7" Width="100" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding Temperature7, StringFormat=' {0: 00.00}°C'}" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" FontWeight="Bold" HorizontalAlignment="Left" />
+                <ItemsControl ItemsSource="{Binding Temperature7Contexts, Mode=OneWay}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="1"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type contexts:BarContext}">
+                            <ProgressBar Minimum="{Binding DataContext.MinimumTemperature, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                         Maximum="{Binding DataContext.MaximumTemperature, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                         Orientation="Vertical" Background="{StaticResource InputBackground}"
+                                         Value="{Binding Value, Mode=OneWay}">
+                                <ProgressBar.ToolTip>
+                                    <ToolTip>
+                                        <ToolTip.Content>
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="Value: {0: 00.00}°C, Received at: {1:HH:mm:ss:ff}">
+                                                        <Binding Path="Value"></Binding>
+                                                        <Binding Path="ReceivedOn"></Binding>
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </ToolTip.Content>
+                                    </ToolTip>
+                                </ProgressBar.ToolTip>
+                            </ProgressBar>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </DockPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
