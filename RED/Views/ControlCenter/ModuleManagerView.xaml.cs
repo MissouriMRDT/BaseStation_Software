@@ -1,6 +1,5 @@
 ﻿namespace RED.Views.ControlCenter
 {
-    using Settings;
     using System.Windows;
 
     public partial class ModuleManagerView

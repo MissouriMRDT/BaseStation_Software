@@ -4,10 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controlCenter="clr-namespace:RED.ViewModels.ControlCenter"
-             mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance Type=controlCenter:StateVM, IsDesignTimeCreatable=True}">
+             mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance Type=controlCenter:StateManager, IsDesignTimeCreatable=True}">
     <ScrollViewer>
         <StackPanel Margin="0 0 2 0">
-            <TextBlock Text="System Status" Style="{StaticResource Title}" Margin="0 0 0 5" Height="30" VerticalAlignment="Center" />
+            <TextBlock Text="System Status" Margin="0 0 0 5" Height="30" VerticalAlignment="Center" />
 
             <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5">
                 <TextBlock Text="Control Mode:" Width="100" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
@@ -28,22 +28,6 @@
             <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5">
                 <TextBlock Text="RED Version:" Width="100" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
                 <TextBlock Text="{Binding Version}" FontWeight="Bold" VerticalAlignment="Center" />
-            </DockPanel>
-            <TextBlock Text="Underglow" Style="{StaticResource Title}" Margin="0 0 0 5" Height="30" VerticalAlignment="Center" />
-            <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5">
-                <TextBlock Text="Red Lights:" Width="100" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
-                <TextBlock Text="{Binding CurrentRedLightValue, StringFormat=' {0:000}'}" FontWeight="Bold" VerticalAlignment="Center" DockPanel.Dock="Left" Margin="0 0 5 0" />
-                <Slider Minimum="0" Maximum="255" Value="{Binding CurrentRedLightValue}" TickFrequency="51" IsSnapToTickEnabled="True" />
-            </DockPanel>
-            <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5">
-                <TextBlock Text="Green Lights:" Width="100" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
-                <TextBlock Text="{Binding CurrentGreenLightValue, StringFormat=' {0:000}'}" FontWeight="Bold" VerticalAlignment="Center" DockPanel.Dock="Left" Margin="0 0 5 0" />
-                <Slider Minimum="0" Maximum="255" Value="{Binding CurrentGreenLightValue}" TickFrequency="51" IsSnapToTickEnabled="True" />
-            </DockPanel>
-            <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5">
-                <TextBlock Text="Blue Lights:" Width="100" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
-                <TextBlock Text="{Binding CurrentBlueLightValue, StringFormat=' {0:000}'}" FontWeight="Bold" VerticalAlignment="Center" DockPanel.Dock="Left" Margin="0 0 5 0" />
-                <Slider Minimum="0" Maximum="255" Value="{Binding CurrentBlueLightValue}" TickFrequency="51" IsSnapToTickEnabled="True" />
             </DockPanel>
         </StackPanel>
     </ScrollViewer>

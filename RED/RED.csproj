@@ -58,8 +58,11 @@
     <StartupObject>RED.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FirstFloor.ModernUI">
-      <HintPath>..\packages\ModernUI.WPF.1.0.5\lib\net45\FirstFloor.ModernUI.dll</HintPath>
+    <Reference Include="Caliburn.Micro">
+      <HintPath>..\packages\Caliburn.Micro.Core.2.0.0\lib\net45\Caliburn.Micro.dll</HintPath>
+    </Reference>
+    <Reference Include="Caliburn.Micro.Platform">
+      <HintPath>..\packages\Caliburn.Micro.2.0.0\lib\net45\Caliburn.Micro.Platform.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX">
       <HintPath>$(SharpDXPackageBinDir)\SharpDX.dll</HintPath>
@@ -71,6 +74,9 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Speech" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.2.0.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xaml">
@@ -79,16 +85,13 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="Xceed.Wpf.Toolkit">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.2.0.0\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Addons\AsyncTcpServer.cs" />
+    <Compile Include="Addons\RelayCommand.cs" />
     <Compile Include="Contexts\BarContext.cs" />
     <Compile Include="Addons\LexiconEngine.cs" />
     <Compile Include="Addons\SpeechCompositionEngine.cs" />
@@ -96,6 +99,19 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="RedBootstrapper.cs" />
+    <Compile Include="ViewModels\ControlCenter\ControlCenterViewModel.cs" />
+    <Compile Include="ViewModels\StartupStatusViewModel.cs" />
+    <Compile Include="Views\ControlCenter\ControlCenterView.xaml.cs">
+      <DependentUpon>ControlCenterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StartupStatusView.xaml.cs">
+      <DependentUpon>StartupStatusView.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Views\ControlCenter\ControlCenterView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ControlCenter\RemoveModuleStateView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -104,104 +120,48 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TelemetryWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="Contexts\TelemetryContext.cs" />
     <Compile Include="Contexts\ButtonContext.cs" />
     <Compile Include="Addons\ModuleStateSave.cs" />
-    <Compile Include="ViewModels\ControlCenter\RemoveModuleStateVM.cs" />
-    <Compile Include="ViewModels\ControlCenter\SaveModuleStateVM.cs" />
+    <Compile Include="ViewModels\ControlCenter\RemoveModuleStateVm.cs" />
+    <Compile Include="ViewModels\ControlCenter\SaveModuleStateVm.cs" />
     <Compile Include="Views\ControlCenter\RemoveModuleStateView.xaml.cs">
       <DependentUpon>RemoveModuleStateView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ControlCenter\SaveModuleStateView.xaml.cs">
       <DependentUpon>SaveModuleStateView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TelemetryWindow.xaml.cs">
-      <DependentUpon>TelemetryWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
     <Page Include="Views\ControlCenter\ModuleManagerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Modules\AuxiliaryView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\Modules\BatteryView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ControlCenter\ConsoleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Modules\PowerboardView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\Settings\ConfigurationView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="Models\ControlCenter\ControlCenterModel.cs" />
     <Compile Include="Models\ControlCenter\ModuleManagerModel.cs" />
-    <Compile Include="Models\Modules\AuxiliaryModel.cs" />
-    <Compile Include="Models\Modules\BatteryModel.cs" />
     <Compile Include="Models\ControlCenter\ConsoleModel.cs" />
-    <Compile Include="Models\Modules\InputModel.cs" />
-    <Compile Include="Models\Modules\NetworkingModel.cs" />
-    <Compile Include="Models\Modules\PowerboardModel.cs" />
     <Compile Include="Models\ControlCenter\StateModel.cs" />
-    <Compile Include="Models\Settings\SettingsAppearanceModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\BaseVM.cs" />
-    <Compile Include="ViewModels\ControlCenter\ControlCenterVM.cs" />
+    <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Interfaces\IModule.cs" />
-    <Compile Include="ViewModels\ControlCenter\ModuleManagerVM.cs" />
-    <Compile Include="ViewModels\Modules\AuxiliaryVM.cs" />
-    <Compile Include="ViewModels\Modules\BatteryVM.cs" />
-    <Compile Include="ViewModels\ControlCenter\ConsoleVM.cs" />
+    <Compile Include="ViewModels\ControlCenter\ModuleManagerVm.cs" />
+    <Compile Include="ViewModels\ControlCenter\ConsoleVm.cs" />
     <Compile Include="Views\ControlCenter\ModuleManagerView.xaml.cs">
       <DependentUpon>ModuleManagerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\Modules\PowerboardVM.cs" />
-    <Compile Include="ViewModels\ControlCenter\StateVM.cs" />
-    <Compile Include="ViewModels\Modules\InputVM.cs" />
-    <Compile Include="ViewModels\Modules\NetworkingVM.cs" />
-    <Compile Include="ViewModels\Settings\ConfigurationVM.cs" />
-    <Compile Include="Views\Modules\AuxiliaryView.xaml.cs">
-      <DependentUpon>AuxiliaryView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Modules\BatteryView.xaml.cs">
-      <DependentUpon>BatteryView.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="ViewModels\ControlCenter\StateVm.cs" />
     <Compile Include="Views\ControlCenter\ConsoleView.xaml.cs">
       <DependentUpon>ConsoleView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\PowerboardView.xaml.cs">
-      <DependentUpon>PowerboardView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Settings\ConfigurationView.xaml.cs">
-      <DependentUpon>ConfigurationView.xaml</DependentUpon>
-    </Compile>
-    <Page Include="Views\Settings\SettingsAppearanceView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Compile Include="Views\Settings\SettingsAppearanceView.xaml.cs">
-      <DependentUpon>SettingsAppearanceView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModels\Settings\SettingsAppearanceVM.cs" />
-    <Page Include="Views\ControlCenter\ControlCenterView.xaml">
+    <Page Include="Views\ShellView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -213,34 +173,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Modules\InputView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\Modules\NetworkingView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Settings\SettingsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Compile Include="Views\ControlCenter\ControlCenterView.xaml.cs">
-      <DependentUpon>ControlCenterView.xaml</DependentUpon>
+    <Compile Include="Views\ShellView.xaml.cs">
+      <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ControlCenter\StateView.xaml.cs">
       <DependentUpon>StateView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\InputView.xaml.cs">
-      <DependentUpon>InputView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Modules\NetworkingView.xaml.cs">
-      <DependentUpon>NetworkingView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Settings\SettingsView.xaml.cs">
-      <DependentUpon>SettingsView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Page Include="Views\StartupStatusView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -271,10 +214,9 @@
     <Content Include="Images\favicon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RED.RoverComs\RED.RoverComs.csproj">
-      <Project>{7fbfaeb3-4a49-468e-a4c7-c945ffb7ddfa}</Project>
-      <Name>RED.RoverComs</Name>
-    </ProjectReference>
+    <Folder Include="Models\Modules\" />
+    <Folder Include="ViewModels\Modules\" />
+    <Folder Include="Views\Modules\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\SharpDX.2.6.2\build\SharpDX.targets" Condition="Exists('..\packages\SharpDX.2.6.2\build\SharpDX.targets')" />

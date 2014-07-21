@@ -1,108 +1,115 @@
 ﻿namespace RED.ViewModels.ControlCenter
 {
-    using Addons;
-    using FirstFloor.ModernUI.Presentation;
-    using RoverComs;
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Windows.Input;
-    using System.Xml.Serialization;
+	using System.Configuration;
+	using Addons;
+	using System;
+	using System.Collections.Generic;
+	using System.IO;
+	using System.Linq;
+	using System.Windows.Input;
+	using System.Xml.Serialization;
+	using Properties;
+	using SharpDX;
 
-    public class SaveModuleStateVM : BaseVM
-    {
-        private readonly ControlCenterVM controlCenterVM;
+	public class SaveModuleStateVm : BaseViewModel
+	{
+		private readonly ControlCenterViewModel _controlCenter;
 
-        private string name = string.Empty;
-        public string Name
-        {
-            get
-            {
-                return name;
-            }
-            set
-            {
-                SetField(ref name, value);
-            }
-        }
+		private string _name = string.Empty;
+		public string Name
+		{
+			get
+			{
+				return _name;
+			}
+			set
+			{
+				_name = value;
+				NotifyOfPropertyChange();
+			}
+		}
 
-        public ICommand SaveStateCommand { get; set; }
+		public ICommand SaveStateCommand { get; set; }
 
-        public SaveModuleStateVM()
-        {
-            
-        }
-        public SaveModuleStateVM(ControlCenterVM controlCenterVM)
-        {
-            this.controlCenterVM = controlCenterVM;
-            SaveStateCommand = new RelayCommand(c => Save(), b => Name.Length > 0);
-        }
-        
-        public void Save()
-        {
-            var serializer = new XmlSerializer(typeof(List<ModuleStateSave>));
+		public SaveModuleStateVm()
+		{
+			
+		}
+		public SaveModuleStateVm(ControlCenterViewModel controlCenter)
+		{
+			_controlCenter = controlCenter;
+			SaveStateCommand = new RelayCommand(c => Save(), b => Name.Length > 0);
+		}
+		
+		public void Save()
+		{
+			var serializer = new XmlSerializer(typeof(List<ModuleStateSave>));
 
-            // Get existing saves if there are any.
-            var existingSaves = new List<ModuleStateSave>();
-            try
-            {
-                var fileReader = new StreamReader(AppDomain.CurrentDomain.BaseDirectory + SavesFileName);
-                existingSaves = (List<ModuleStateSave>)serializer.Deserialize(fileReader);
-                fileReader.Close();
-            }
-            catch (Exception) { }
+			// Get existing saves if there are any.
+			var existingSaves = new List<ModuleStateSave>();
+			try
+			{
+				var fileReader = new StreamReader(AppDomain.CurrentDomain.BaseDirectory + 
+					Settings.Default.ModuleStateSaveFileName);
+				existingSaves = (List<ModuleStateSave>) serializer.Deserialize(fileReader);
+				fileReader.Close();
+			}
+			catch (Exception ex)
+			{
+				_controlCenter.Console.WriteToConsole(ex.Message);
+			}
 
-            // Save already exists, update values state.
-            if (existingSaves.Exists(s => s.Name == name))
-            {
-                var existingSave = existingSaves.Single(s => s.Name == name);
-                existingSave.LeftSelection = ControlCenterVM.Model.LeftSelection;
-                existingSave.RightSelection = ControlCenterVM.Model.RightSelection;
-                existingSave.TopSelection = ControlCenterVM.Model.TopSelection;
-                existingSave.MiddleSelection = ControlCenterVM.Model.MiddleSelection;
-                existingSave.BottomSelection = ControlCenterVM.Model.BottomSelection;
-                existingSave.Column1Width = ControlCenterVM.Model.Column1Width;
-                existingSave.Column3Width = ControlCenterVM.Model.Column3Width;
-                existingSave.Column5Width = ControlCenterVM.Model.Column5Width;
-                existingSave.Row1Height = ControlCenterVM.Model.Row1Height;
-                existingSave.Row3Height = ControlCenterVM.Model.Row3Height;
-                existingSave.Row5Height = ControlCenterVM.Model.Row5Height;
-            }
-            // Doesn't exist, create new save.
-            else
-            {
-                existingSaves.Add(new ModuleStateSave
-                {
-                    Name = name,
-                    LeftSelection = ControlCenterVM.Model.LeftSelection,
-                    RightSelection = ControlCenterVM.Model.RightSelection,
-                    TopSelection = ControlCenterVM.Model.TopSelection,
-                    MiddleSelection = ControlCenterVM.Model.MiddleSelection,
-                    BottomSelection = ControlCenterVM.Model.BottomSelection,
-                    Column1Width = ControlCenterVM.Model.Column1Width,
-                    Column3Width = ControlCenterVM.Model.Column3Width,
-                    Column5Width = ControlCenterVM.Model.Column5Width,
-                    Row1Height = ControlCenterVM.Model.Row1Height,
-                    Row3Height = ControlCenterVM.Model.Row3Height,
-                    Row5Height = ControlCenterVM.Model.Row5Height
-                });
-            }
+			// Save already exists, update values state.
+			if (existingSaves.Exists(s => s.Name == _name))
+			{
+				var existingSave = existingSaves.Single(s => s.Name == _name);
+				existingSave.LeftSelection = _controlCenter.LeftSelection;
+				existingSave.RightSelection = _controlCenter.RightSelection;
+				existingSave.TopSelection = _controlCenter.TopSelection;
+				existingSave.MiddleSelection = _controlCenter.MiddleSelection;
+				existingSave.BottomSelection = _controlCenter.BottomSelection;
+				existingSave.Column1Width = _controlCenter.Column1Width;
+				existingSave.Column3Width = _controlCenter.Column3Width;
+				existingSave.Column5Width = _controlCenter.Column5Width;
+				existingSave.Row1Height = _controlCenter.Row1Height;
+				existingSave.Row3Height = _controlCenter.Row3Height;
+				existingSave.Row5Height = _controlCenter.Row5Height;
+			}
+			// Doesn't exist, create new save.
+			else
+			{
+				existingSaves.Add(new ModuleStateSave
+				{
+					Name = _name,
+					LeftSelection = _controlCenter.LeftSelection,
+					RightSelection = _controlCenter.RightSelection,
+					TopSelection = _controlCenter.TopSelection,
+					MiddleSelection = _controlCenter.MiddleSelection,
+					BottomSelection = _controlCenter.BottomSelection,
+					Column1Width = _controlCenter.Column1Width,
+					Column3Width = _controlCenter.Column3Width,
+					Column5Width = _controlCenter.Column5Width,
+					Row1Height = _controlCenter.Row1Height,
+					Row3Height = _controlCenter.Row3Height,
+					Row5Height = _controlCenter.Row5Height
+				});
+			}
 
-            // Overwrite file.
-            try
-            {
-                var fileWriter = new StreamWriter(AppDomain.CurrentDomain.BaseDirectory + SavesFileName);
-                serializer.Serialize(fileWriter, existingSaves.OrderBy(o => o.Name).ToList());
-                fileWriter.Close();
+			// Overwrite file.
+			try
+			{
+				var fileWriter = new StreamWriter(AppDomain.CurrentDomain.BaseDirectory +
+					Settings.Default.ModuleStateSaveFileName);
+				serializer.Serialize(fileWriter, existingSaves.OrderBy(o => o.Name).ToList());
+				fileWriter.Close();
 
-                controlCenterVM.ReloadModuleButtonContexts();
-                ControlCenterVM.ConsoleVM.TelemetryReceiver(new Protocol<string>(name + " has been saved."));
-            }
-            catch (Exception)
-            {
-                ControlCenterVM.ConsoleVM.TelemetryReceiver(new Protocol<string>(name + " failed to be saved. Please try again."));
-            }
-        }
-    }
+				_controlCenter.ReloadModuleButtonContexts();
+				//Write to console name + " has been saved."
+			}
+			catch (Exception ex)
+			{
+				_controlCenter.Console.WriteToConsole(ex.Message);
+			}
+		}
+	}
 }

@@ -1,87 +1,90 @@
 ﻿namespace RED.ViewModels.ControlCenter
 {
-    using Addons;
-    using FirstFloor.ModernUI.Presentation;
-    using RoverComs;
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Xml.Serialization;
+	using Addons;
+	using System;
+	using System.Collections.Generic;
+	using System.IO;
+	using System.Linq;
+	using System.Xml.Serialization;
+	using Properties;
 
-    public class RemoveModuleStateVM : BaseVM
-    {
-        private readonly ControlCenterVM controlCenterVM;
+	public class RemoveModuleStateVm : BaseViewModel
+	{
+		private readonly ControlCenterViewModel controlCenterVM;
 
-        private string selectedItem = string.Empty;
-        public string SelectedItem
-        {
-            get
-            {
-                return selectedItem;
-            }
-            set
-            {
-                SetField(ref selectedItem, value);
-            }
-        }
-        public List<string> SavedModuleStates
-        {
-            get
-            {
-                var serializer = new XmlSerializer(typeof(List<ModuleStateSave>));
-                var existingSaves = new List<string>();
-                try
-                {
-                    var fileReader = new StreamReader(AppDomain.CurrentDomain.BaseDirectory + SavesFileName);
-                    existingSaves = ((List<ModuleStateSave>)serializer.Deserialize(fileReader)).Select(s => s.Name).ToList();
-                    fileReader.Close();
-                }
-                catch (Exception)
-                {
-                }
-                return existingSaves;
-            }
-        }
+		private string selectedItem = string.Empty;
+		public string SelectedItem
+		{
+			get
+			{
+				return selectedItem;
+			}
+			set
+			{
+				selectedItem = value;
+				NotifyOfPropertyChange();
+			}
+		}
+		public List<string> SavedModuleStates
+		{
+			get
+			{
+				var serializer = new XmlSerializer(typeof(List<ModuleStateSave>));
+				var existingSaves = new List<string>();
+				try
+				{
+					var fileReader = new StreamReader(AppDomain.CurrentDomain.BaseDirectory +
+						Settings.Default.ModuleStateSaveFileName);
+					existingSaves = ((List<ModuleStateSave>)serializer.Deserialize(fileReader)).Select(s => s.Name).ToList();
+					fileReader.Close();
+				}
+				catch (Exception)
+				{
+				}
+				return existingSaves;
+			}
+		}
 
-        public RelayCommand RemoveStateCommand { get; set; }
+		public RelayCommand RemoveStateCommand { get; set; }
 
-        public RemoveModuleStateVM()
-        {
-            
-        }
-        public RemoveModuleStateVM(ControlCenterVM controlCenterVM)
-        {
-            this.controlCenterVM = controlCenterVM;
-            RemoveStateCommand = new RelayCommand(c => Remove());
-        }
-        
-        private void Remove()
-        {
-            var serializer = new XmlSerializer(typeof(List<ModuleStateSave>));
+		public RemoveModuleStateVm()
+		{
+			
+		}
+		public RemoveModuleStateVm(ControlCenterViewModel controlCenterVM)
+		{
+			this.controlCenterVM = controlCenterVM;
+			RemoveStateCommand = new RelayCommand(c => Remove());
+		}
+		
+		private void Remove()
+		{
+			var serializer = new XmlSerializer(typeof(List<ModuleStateSave>));
 
-            // Get existing saves if there are any.
-            var existingSaves = new List<ModuleStateSave>();
-            try
-            {
-                var fileReader = new StreamReader(AppDomain.CurrentDomain.BaseDirectory + SavesFileName);
-                existingSaves = (List<ModuleStateSave>)serializer.Deserialize(fileReader);
-                fileReader.Close();
-            }
-            catch (Exception) { }
+			// Get existing saves if there are any.
+			var existingSaves = new List<ModuleStateSave>();
+			try
+			{
+				var fileReader = new StreamReader(AppDomain.CurrentDomain.BaseDirectory +
+					Settings.Default.ModuleStateSaveFileName);
+				existingSaves = (List<ModuleStateSave>)serializer.Deserialize(fileReader);
+				fileReader.Close();
+			}
+			catch (Exception) { }
 
-            // Remove existing save.
-            existingSaves.Remove(existingSaves.Single(s => s.Name == selectedItem));
+			// Remove existing save.
+			existingSaves.Remove(existingSaves.Single(s => s.Name == selectedItem));
 
-            // Overwrite file.
-            var fileWriter = new StreamWriter(AppDomain.CurrentDomain.BaseDirectory + SavesFileName);
-            serializer.Serialize(fileWriter, existingSaves);
+			// Overwrite file.
+			var fileWriter = new StreamWriter(AppDomain.CurrentDomain.BaseDirectory +
+				Settings.Default.ModuleStateSaveFileName);
+			serializer.Serialize(fileWriter, existingSaves);
 
-            fileWriter.Close();
+			fileWriter.Close();
 
-            controlCenterVM.ReloadModuleButtonContexts();
+			controlCenterVM.ReloadModuleButtonContexts();
 
-            ControlCenterVM.ConsoleVM.TelemetryReceiver(new Protocol<string>("'" + selectedItem + "' removed."));
-        }
-    }
+			//Write to console "'" + selectedItem + "' removed."
+		}
+	}
 }
