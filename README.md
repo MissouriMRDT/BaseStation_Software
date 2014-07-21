@@ -1,8 +1,7 @@
-Rover-Engagement-Display
-========================
+# Rover Engagement Display (RED)
+*A telemetry and command interface for operating a remote, embedded system.*
 
-A telemetry and command interface for operating a remote, embedded system.
+## Important Notes
 
-Notes
-=====
-After installing packages, remove all folders in '/Packages/SharpDX.2.6.2/Bin/' EXCEPT 'DirectX11-Signed-net40' which is the folder that's actually needed. All of the rest are unnecessary and removing them saves a lot of disk space.
+### First clone?
+The first time you clone the repo, Nuget will attempt to download any required packages.  One of these packages, SharpDX, is very large for some reason - 250+ mb.  After Nuget is finished installing these packages, remove all folders in '/Packages/SharpDX.2.6.2/Bin/' EXCEPT 'DirectX11-Signed-net40' which is the only folder that's actually needed
