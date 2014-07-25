@@ -12,10 +12,6 @@
         internal static IEnumerable<IModule> AllModules = new List<IModule>
         {
             new SettingsAppearanceVM(),
-            new AuxiliaryVM(),
-            new BatteryVM(),
-            new InputVM(),
-            new PowerboardVM(),
             new NetworkingVM()
         };
 

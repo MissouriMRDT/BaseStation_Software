@@ -127,21 +127,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Modules\AuxiliaryView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\Modules\BatteryView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Views\ControlCenter\ConsoleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Modules\PowerboardView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Settings\ConfigurationView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -149,12 +137,8 @@
     </Page>
     <Compile Include="Models\ControlCenter\ControlCenterModel.cs" />
     <Compile Include="Models\ControlCenter\ModuleManagerModel.cs" />
-    <Compile Include="Models\Modules\AuxiliaryModel.cs" />
-    <Compile Include="Models\Modules\BatteryModel.cs" />
     <Compile Include="Models\ControlCenter\ConsoleModel.cs" />
-    <Compile Include="Models\Modules\InputModel.cs" />
     <Compile Include="Models\Modules\NetworkingModel.cs" />
-    <Compile Include="Models\Modules\PowerboardModel.cs" />
     <Compile Include="Models\ControlCenter\StateModel.cs" />
     <Compile Include="Models\Settings\SettingsAppearanceModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
@@ -167,28 +151,15 @@
     <Compile Include="ViewModels\ControlCenter\ControlCenterVM.cs" />
     <Compile Include="Interfaces\IModule.cs" />
     <Compile Include="ViewModels\ControlCenter\ModuleManagerVM.cs" />
-    <Compile Include="ViewModels\Modules\AuxiliaryVM.cs" />
-    <Compile Include="ViewModels\Modules\BatteryVM.cs" />
     <Compile Include="ViewModels\ControlCenter\ConsoleVM.cs" />
     <Compile Include="Views\ControlCenter\ModuleManagerView.xaml.cs">
       <DependentUpon>ModuleManagerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\Modules\PowerboardVM.cs" />
     <Compile Include="ViewModels\ControlCenter\StateVM.cs" />
-    <Compile Include="ViewModels\Modules\InputVM.cs" />
     <Compile Include="ViewModels\Modules\NetworkingVM.cs" />
     <Compile Include="ViewModels\Settings\ConfigurationVM.cs" />
-    <Compile Include="Views\Modules\AuxiliaryView.xaml.cs">
-      <DependentUpon>AuxiliaryView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Modules\BatteryView.xaml.cs">
-      <DependentUpon>BatteryView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\ControlCenter\ConsoleView.xaml.cs">
       <DependentUpon>ConsoleView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Modules\PowerboardView.xaml.cs">
-      <DependentUpon>PowerboardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Settings\ConfigurationView.xaml.cs">
       <DependentUpon>ConfigurationView.xaml</DependentUpon>
@@ -213,10 +184,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Modules\InputView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Views\Modules\NetworkingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -230,9 +197,6 @@
     </Compile>
     <Compile Include="Views\ControlCenter\StateView.xaml.cs">
       <DependentUpon>StateView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Modules\InputView.xaml.cs">
-      <DependentUpon>InputView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\NetworkingView.xaml.cs">
       <DependentUpon>NetworkingView.xaml</DependentUpon>

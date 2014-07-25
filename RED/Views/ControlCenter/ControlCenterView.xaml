@@ -24,18 +24,6 @@
         <DataTemplate DataType="{x:Type controlCenterViewModels:ConsoleVM}">
             <controlCenterViews:ConsoleView/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type moduleViewModels:AuxiliaryVM}">
-            <moduleViews:AuxiliaryView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type moduleViewModels:BatteryVM}">
-            <moduleViews:BatteryView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type moduleViewModels:PowerboardVM}">
-            <moduleViews:PowerboardView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type moduleViewModels:InputVM}">
-            <moduleViews:InputView/>
-        </DataTemplate>
         <DataTemplate DataType="{x:Type moduleViewModels:NetworkingVM}">
             <moduleViews:NetworkingView />
         </DataTemplate>
