@@ -191,22 +191,18 @@
                     else if (Enum.IsDefined(typeof(Bms.TelemetryId), protocolId))
                     {
                         var protocol = Serializer.GetProtocol<string>(message);
-                        GetModuleViewModel<BatteryVM>().TelemetryReceiver(protocol);
                     }
                     else if (Enum.IsDefined(typeof(Powerboard.TelemetryId), protocolId))
                     {
                         var protocol = Serializer.GetProtocol<string>(message);
-                        GetModuleViewModel<PowerboardVM>().TelemetryReceiver(protocol);
                     }
                     else if (Enum.IsDefined(typeof(Motherboard.TelemetryId), protocolId))
                     {
                         var protocol = Serializer.GetProtocol<string>(message);
-                        GetModuleViewModel<AuxiliaryVM>().TelemetryReceiver(protocol);
                     }
                     else if (Enum.IsDefined(typeof(Auxiliary.TelemetryId), protocolId))
                     {
                         var protocol = Serializer.GetProtocol<string>(message);
-                        GetModuleViewModel<AuxiliaryVM>().TelemetryReceiver(protocol);
                     }
                 }
                 catch (InvalidDataException e)
