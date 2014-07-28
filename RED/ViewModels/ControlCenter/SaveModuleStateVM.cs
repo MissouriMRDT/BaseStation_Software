@@ -2,7 +2,6 @@
 {
     using Addons;
     using FirstFloor.ModernUI.Presentation;
-    using RoverComs;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -31,14 +30,14 @@
 
         public SaveModuleStateVM()
         {
-            
+
         }
         public SaveModuleStateVM(ControlCenterVM controlCenterVM)
         {
             this.controlCenterVM = controlCenterVM;
             SaveStateCommand = new RelayCommand(c => Save(), b => Name.Length > 0);
         }
-        
+
         public void Save()
         {
             var serializer = new XmlSerializer(typeof(List<ModuleStateSave>));
@@ -97,11 +96,11 @@
                 fileWriter.Close();
 
                 controlCenterVM.ReloadModuleButtonContexts();
-                ControlCenterVM.ConsoleVM.TelemetryReceiver(new Protocol<string>(name + " has been saved."));
+                ControlCenterVM.ConsoleVM.TelemetryReceiver<object>(name + " has been saved.");
             }
             catch (Exception)
             {
-                ControlCenterVM.ConsoleVM.TelemetryReceiver(new Protocol<string>(name + " failed to be saved. Please try again."));
+                ControlCenterVM.ConsoleVM.TelemetryReceiver<object>(name + " failed to be saved. Please try again.");
             }
         }
     }
