@@ -2,7 +2,6 @@
 {
     using Addons;
     using FirstFloor.ModernUI.Presentation;
-    using RoverComs;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -48,14 +47,14 @@
 
         public RemoveModuleStateVM()
         {
-            
+
         }
         public RemoveModuleStateVM(ControlCenterVM controlCenterVM)
         {
             this.controlCenterVM = controlCenterVM;
             RemoveStateCommand = new RelayCommand(c => Remove());
         }
-        
+
         private void Remove()
         {
             var serializer = new XmlSerializer(typeof(List<ModuleStateSave>));
@@ -81,7 +80,7 @@
 
             controlCenterVM.ReloadModuleButtonContexts();
 
-            ControlCenterVM.ConsoleVM.TelemetryReceiver(new Protocol<string>("'" + selectedItem + "' removed."));
+            ControlCenterVM.ConsoleVM.TelemetryReceiver<object>("'" + selectedItem + "' removed.");
         }
     }
 }

@@ -234,12 +234,6 @@
   <ItemGroup>
     <Content Include="Images\favicon.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\RED.RoverComs\RED.RoverComs.csproj">
-      <Project>{7fbfaeb3-4a49-468e-a4c7-c945ffb7ddfa}</Project>
-      <Name>RED.RoverComs</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\SharpDX.2.6.2\build\SharpDX.targets" Condition="Exists('..\packages\SharpDX.2.6.2\build\SharpDX.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

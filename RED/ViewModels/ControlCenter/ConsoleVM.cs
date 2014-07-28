@@ -2,7 +2,6 @@
 {
     using Interfaces;
     using Models.ControlCenter;
-    using RoverComs;
     using System;
     using System.Globalization;
 
@@ -54,9 +53,10 @@
             ConsoleText += newText;
         }
 
-        public void TelemetryReceiver<T>(IProtocol<T> message)
+        public void TelemetryReceiver<T>(object message)
         {
-            WriteToConsole(message.Value.ToString());
+            throw new NotImplementedException("JSON removed. Writing messages to console not supported.");
+            //WriteToConsole(message.Value.ToString());
         }
     }
 }

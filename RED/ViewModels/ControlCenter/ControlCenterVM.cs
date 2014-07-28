@@ -5,7 +5,6 @@
     using FirstFloor.ModernUI.Presentation;
     using Interfaces;
     using Models.ControlCenter;
-    using RoverComs;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -363,7 +362,7 @@
 
         public static void UpdateConsole(string msg)
         {
-            ConsoleVM.TelemetryReceiver(new Protocol<string>(msg));
+            ConsoleVM.TelemetryReceiver<object>(msg);
         }
     }
 }

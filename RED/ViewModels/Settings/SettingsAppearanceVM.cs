@@ -110,7 +110,7 @@
             }
         }
 
-        public void TelemetryReceiver<T>(RoverComs.IProtocol<T> message)
+        public void TelemetryReceiver<T>(object message)
         {
             throw new System.NotImplementedException("Appearance Module does not currently receive telemetry data.");
         }
