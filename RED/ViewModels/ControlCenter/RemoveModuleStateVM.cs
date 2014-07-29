@@ -2,7 +2,6 @@
 {
     using Addons;
     using FirstFloor.ModernUI.Presentation;
-    using RoverComs;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -81,7 +80,7 @@
 
             controlCenterVM.ReloadModuleButtonContexts();
 
-            ControlCenterVM.ConsoleVM.TelemetryReceiver(new Protocol<string>("'" + selectedItem + "' removed."));
+            //Write to console "'" + selectedItem + "' removed."
         }
     }
 }

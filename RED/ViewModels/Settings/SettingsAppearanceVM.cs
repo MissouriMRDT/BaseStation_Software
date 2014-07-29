@@ -109,10 +109,5 @@
                 SyncThemeAndColor();
             }
         }
-
-        public void TelemetryReceiver<T>(RoverComs.IProtocol<T> message)
-        {
-            throw new System.NotImplementedException("Appearance Module does not currently receive telemetry data.");
-        }
     }
 }

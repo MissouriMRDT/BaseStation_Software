@@ -3,9 +3,7 @@
     using Interfaces;
     using Models.ControlCenter;
     using Properties;
-    using RED.RoverComs.Rover;
     using RED.ViewModels.Modules;
-    using RoverComs;
     using System;
     using System.Linq;
 
@@ -45,7 +43,7 @@
             Green,
             Blue
         }
-        
+
         public int CurrentRedLightValue
         {
             get
@@ -168,20 +166,20 @@
 
         private void SetUnderglowLight(UnderglowLight light, int value)
         {
-            switch(light)
+            switch (light)
             {
                 case UnderglowLight.Red:
-                    GetModuleViewModel<NetworkingVM>().SendProtocol(new Protocol<int>((int)Auxiliary.CommandId.RedLight, value));
+                    GetModuleViewModel<NetworkingVM>().SendProtocol();
                     break;
                 case UnderglowLight.Green:
-                    GetModuleViewModel<NetworkingVM>().SendProtocol(new Protocol<int>((int)Auxiliary.CommandId.GreenLight, value));
+                    GetModuleViewModel<NetworkingVM>().SendProtocol();
                     break;
                 case UnderglowLight.Blue:
-                    GetModuleViewModel<NetworkingVM>().SendProtocol(new Protocol<int>((int)Auxiliary.CommandId.BlueLight, value));
+                    GetModuleViewModel<NetworkingVM>().SendProtocol();
                     break;
             }
         }
-        
+
         public void NextControlMode()
         {
             var controlModes = Enum.GetNames(typeof(ControlMode)).ToList();
@@ -198,18 +196,13 @@
         {
             var controlModes = Enum.GetNames(typeof(ControlMode)).ToList();
             var currentIndex = controlModes.IndexOf(CurrentControlModeDisplay);
-            if(CurrentControlMode == ControlMode.Drive)
+            if (CurrentControlMode == ControlMode.Drive)
             {
                 // Send zero out command.
             }
             CurrentControlMode = currentIndex == 0
                 ? ParseEnum<ControlMode>(controlModes[controlModes.Count - 1])
                 : ParseEnum<ControlMode>(controlModes[currentIndex - 1]);
-        }
-        
-        public void TelemetryReceiver<T>(IProtocol<T> message)
-        {
-            throw new NotImplementedException("State Module does not currently receive telemetry.");
         }
     }
 }

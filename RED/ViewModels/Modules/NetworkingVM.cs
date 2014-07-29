@@ -5,8 +5,6 @@
     using Interfaces;
     using Models.Modules;
     using RED.Addons;
-    using RoverComs;
-    using RoverComs.Rover;
     using System;
     using System.Globalization;
     using System.IO;
@@ -36,10 +34,10 @@
         public bool IsConnected
         {
             get { return Model.isConnected; }
-            set 
-            { 
+            set
+            {
                 SetField(ref Model.isConnected, value);
-                if(value)
+                if (value)
                 {
                     CanListen = false;
                     CanDisconnect = true;
@@ -51,7 +49,7 @@
                     CanDisconnect = false;
                     CanSend = false;
                 }
-                ControlCenterVM.StateVM.NetworkHasConnection = value; 
+                ControlCenterVM.StateVM.NetworkHasConnection = value;
             }
         }
         public bool CanListen
@@ -115,7 +113,7 @@
             NetworkDisconnectCommand = new RelayCommand(c => Server.Stop(), b => CanDisconnect);
             NetworkSendCommand = new RelayCommand(c =>
                 {
-                    SendProtocol(new Protocol<string>(IdToSend, ValueToSend));
+                    SendProtocol();
                     WriteToConsole("Sending: Id -> " + IdToSend + ", Value -> " + ValueToSend);
                 },
                 b => CanSend);
@@ -133,22 +131,15 @@
         {
             Server.Stop();
         }
-        public bool SendProtocol<T>(IProtocol<T> obj)
+        public bool SendProtocol()
         {
             // Public method to send a message adhering to the IProtocol interface
             if (!IsConnected || !CanSend) return false;
 
             string serializedMessage = string.Empty;
-            try
-            {
-                var convertedObj = new Protocol<int>(obj.Id, int.Parse(obj.Value.ToString()));
-                // Remove any delimiters that would interfere with the transmission
-                serializedMessage = Serializer.Serialize(convertedObj);
-            }
-            catch (Exception e)
-            {
 
-            }
+            throw new NotImplementedException("JSON serialization removed. Sending messages is not currently implemented.");
+            // Remove any delimiters that would interfere with the transmission
 
             try
             {
@@ -172,53 +163,7 @@
 
         internal void ParseAndDeliverTelemetry(string message)
         {
-            try
-            {
-                if (message.Contains("}{"))
-                {
-                    var messages = message.Split('}');
-                    message = messages[0] + "}";
-                    ParseAndDeliverTelemetry(messages[1] + "}");
-                }
-                var protocolId = Serializer.GetDataTypeId(message);
-                try
-                {
-                    if (Enum.IsDefined(typeof(Messaging.TelemetryId), protocolId))
-                    {
-                        var protocol = Serializer.GetProtocol<string>(message);
-                        ControlCenterVM.ConsoleVM.TelemetryReceiver(protocol);
-                    }
-                    else if (Enum.IsDefined(typeof(Bms.TelemetryId), protocolId))
-                    {
-                        var protocol = Serializer.GetProtocol<string>(message);
-                    }
-                    else if (Enum.IsDefined(typeof(Powerboard.TelemetryId), protocolId))
-                    {
-                        var protocol = Serializer.GetProtocol<string>(message);
-                    }
-                    else if (Enum.IsDefined(typeof(Motherboard.TelemetryId), protocolId))
-                    {
-                        var protocol = Serializer.GetProtocol<string>(message);
-                    }
-                    else if (Enum.IsDefined(typeof(Auxiliary.TelemetryId), protocolId))
-                    {
-                        var protocol = Serializer.GetProtocol<string>(message);
-                    }
-                }
-                catch (InvalidDataException e)
-                {
-                    WriteToConsole(e.Message);
-                }
-            }
-            catch (Exception e)
-            {
-                WriteToConsole(String.Format("Invalid JSON: {0}", message));
-            }
-        }
-
-        public void TelemetryReceiver<T>(IProtocol<T> message)
-        {
-            throw new NotImplementedException("Networking Module does not currently display telemetry data.");
+            throw new NotImplementedException("JSON support removed. Parsing is currently not implemented.");
         }
     }
 }

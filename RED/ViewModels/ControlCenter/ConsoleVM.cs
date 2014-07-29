@@ -2,7 +2,6 @@
 {
     using Interfaces;
     using Models.ControlCenter;
-    using RoverComs;
     using System;
     using System.Globalization;
 
@@ -52,11 +51,6 @@
             var timeStamp = DateTime.Now.ToString("HH:mm:ss.ff", CultureInfo.InvariantCulture);
             var newText = String.Format("{0}: {1} {2}", timeStamp, text, Environment.NewLine);
             ConsoleText += newText;
-        }
-
-        public void TelemetryReceiver<T>(IProtocol<T> message)
-        {
-            WriteToConsole(message.Value.ToString());
         }
     }
 }

@@ -163,10 +163,5 @@
             Middle,
             Bottom
         }
-        
-        public void TelemetryReceiver<T>(RoverComs.IProtocol<T> message)
-        {
-            throw new NotImplementedException("Module Manager Module does not currently receive telemetry.");
-        }
     }
 }
