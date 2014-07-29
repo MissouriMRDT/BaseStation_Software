@@ -5,8 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controlCenterViewModels="clr-namespace:RED.ViewModels.ControlCenter"
              xmlns:controlCenterViews="clr-namespace:RED.Views.ControlCenter"
-             xmlns:moduleViewModels="clr-namespace:RED.ViewModels.Modules"
-             xmlns:moduleViews="clr-namespace:RED.Views.Modules"
              xmlns:mui="http://firstfloorsoftware.com/ModernUI"
              xmlns:contexts="clr-namespace:RED.Contexts"
              mc:Ignorable="d" d:DesignHeight="1080" d:DesignWidth="1920">
@@ -23,9 +21,6 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type controlCenterViewModels:ConsoleVM}">
             <controlCenterViews:ConsoleView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type moduleViewModels:NetworkingVM}">
-            <moduleViews:NetworkingView />
         </DataTemplate>
     </UserControl.Resources>
 

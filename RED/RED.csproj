@@ -88,7 +88,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Addons\AsyncTcpServer.cs" />
     <Compile Include="Contexts\BarContext.cs" />
     <Compile Include="Addons\LexiconEngine.cs" />
     <Compile Include="Addons\SpeechCompositionEngine.cs" />
@@ -138,7 +137,6 @@
     <Compile Include="Models\ControlCenter\ControlCenterModel.cs" />
     <Compile Include="Models\ControlCenter\ModuleManagerModel.cs" />
     <Compile Include="Models\ControlCenter\ConsoleModel.cs" />
-    <Compile Include="Models\Modules\NetworkingModel.cs" />
     <Compile Include="Models\ControlCenter\StateModel.cs" />
     <Compile Include="Models\Settings\SettingsAppearanceModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
@@ -156,7 +154,6 @@
       <DependentUpon>ModuleManagerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\ControlCenter\StateVM.cs" />
-    <Compile Include="ViewModels\Modules\NetworkingVM.cs" />
     <Compile Include="ViewModels\Settings\ConfigurationVM.cs" />
     <Compile Include="Views\ControlCenter\ConsoleView.xaml.cs">
       <DependentUpon>ConsoleView.xaml</DependentUpon>
@@ -184,10 +181,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Modules\NetworkingView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Settings\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -197,9 +190,6 @@
     </Compile>
     <Compile Include="Views\ControlCenter\StateView.xaml.cs">
       <DependentUpon>StateView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Modules\NetworkingView.xaml.cs">
-      <DependentUpon>NetworkingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Settings\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
@@ -233,6 +223,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\favicon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\Modules\" />
+    <Folder Include="ViewModels\Modules\" />
+    <Folder Include="Views\Modules\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\SharpDX.2.6.2\build\SharpDX.targets" Condition="Exists('..\packages\SharpDX.2.6.2\build\SharpDX.targets')" />

@@ -8,7 +8,6 @@
     using Properties;
     using ViewModels;
     using ViewModels.ControlCenter;
-    using ViewModels.Modules;
 
     public class LexiconEngine
     {
@@ -215,22 +214,14 @@
                 case LexiconToken.OpenNetwork:
                     {
                         if (!HazelIsReady) return;
-                        var networking = ControlCenter.GetModuleViewModel<NetworkingVM>();
-                        if (networking.NetworkListenCommand.CanExecute(null))
-                        {
-                            networking.NetworkListenCommand.Execute(null);
-                        }
+                        throw new System.NotImplementedException("Network communication not currently implemented. NetworkVM removed.");
                         HazelIsReady = false;
                     }
                     break;
                 case LexiconToken.CloseNetwork:
                     {
                         if (!HazelIsReady) return;
-                        var networking = ControlCenter.GetModuleViewModel<NetworkingVM>();
-                        if (networking.NetworkDisconnectCommand.CanExecute(null))
-                        {
-                            networking.NetworkDisconnectCommand.Execute(null);
-                        }
+                        throw new System.NotImplementedException("Network communication not currently implemented. NetworkVM removed.");
                         HazelIsReady = false;
                     }
                     break;

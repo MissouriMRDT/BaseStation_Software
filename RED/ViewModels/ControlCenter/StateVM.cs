@@ -3,7 +3,6 @@
     using Interfaces;
     using Models.ControlCenter;
     using Properties;
-    using RED.ViewModels.Modules;
     using System;
     using System.Linq;
 
@@ -169,13 +168,16 @@
             switch (light)
             {
                 case UnderglowLight.Red:
-                    GetModuleViewModel<NetworkingVM>().SendProtocol();
+                    throw new NotImplementedException("Network communication not currently implemented.");
+                    //Send value over network
                     break;
                 case UnderglowLight.Green:
-                    GetModuleViewModel<NetworkingVM>().SendProtocol();
+                    throw new NotImplementedException("Network communication not currently implemented.");
+                    //Send value over network
                     break;
                 case UnderglowLight.Blue:
-                    GetModuleViewModel<NetworkingVM>().SendProtocol();
+                    throw new NotImplementedException("Network communication not currently implemented.");
+                    //Send value over network
                     break;
             }
         }
