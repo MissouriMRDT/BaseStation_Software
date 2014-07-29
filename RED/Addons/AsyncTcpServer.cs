@@ -1,6 +1,5 @@
 ﻿namespace RED.Addons
 {
-    using RED.RoverComs;
     using RED.ViewModels.Modules;
     using System;
     using System.Collections.Generic;

@@ -2,7 +2,6 @@
 {
     using Addons;
     using FirstFloor.ModernUI.Presentation;
-    using RoverComs;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -97,11 +96,11 @@
                 fileWriter.Close();
 
                 controlCenterVM.ReloadModuleButtonContexts();
-                ControlCenterVM.ConsoleVM.TelemetryReceiver(new Protocol<string>(name + " has been saved."));
+                //Write to console name + " has been saved."
             }
             catch (Exception)
             {
-                ControlCenterVM.ConsoleVM.TelemetryReceiver(new Protocol<string>(name + " failed to be saved. Please try again."));
+                //Write to console name + " failed to be saved. Please try again."
             }
         }
     }
