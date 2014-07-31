@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-<Window x:Class="RED.Views.ControlCenter.ControlCenterView"
-=======
-﻿<UserControl x:Class="RED.Views.ControlCenter.ControlCenterView"
->>>>>>> 5256f73... Implemented Bootstrapper.
+<UserControl x:Class="RED.Views.ControlCenter.ControlCenterView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
