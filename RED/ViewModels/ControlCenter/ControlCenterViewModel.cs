@@ -270,7 +270,7 @@
 			get { return _model.Column5Width; }
 			set
 			{
-				Column5Width = value;
+				_model.Column5Width = value;
 				NotifyOfPropertyChange();
 			}
 		}
