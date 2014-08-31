@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controlCenter="clr-namespace:RED.ViewModels.ControlCenter"
              mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300" 
-             d:DataContext="{d:DesignInstance Type=controlCenter:ModuleManager, IsDesignTimeCreatable=True}">
+             d:DataContext="{d:DesignInstance Type=controlCenter:ModuleGridManager, IsDesignTimeCreatable=True}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -39,7 +39,7 @@
             <TextBlock Text="Module Manager" DockPanel.Dock="Top" />
         </DockPanel>
         <Border Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="5" BorderThickness="1">
-            <ListBox SelectedItem="{Binding SelectedModule}" ItemsSource="{Binding ManagedModulesTitles}" ScrollViewer.VerticalScrollBarVisibility="Visible" />
+            <ListBox SelectedItem="{Binding SelectedModule}" ItemsSource="{Binding ModuleTitles}" ScrollViewer.VerticalScrollBarVisibility="Visible" />
         </Border>
         <Grid Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3">
             <Grid.RowDefinitions>

@@ -6,9 +6,10 @@
 	using System.IO;
 	using System.Linq;
 	using System.Xml.Serialization;
+	using Caliburn.Micro;
 	using Properties;
 
-	public class RemoveModuleStateVm : BaseViewModel
+	public class RemoveModuleStateVm : PropertyChangedBase
 	{
 		private readonly ControlCenterViewModel controlCenterVM;
 

@@ -4,16 +4,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:controlCenterViewModels="clr-namespace:RED.ViewModels.ControlCenter"
-        xmlns:viewModels="clr-namespace:RED.ViewModels"
         xmlns:controlCenterViews="clr-namespace:RED.Views.ControlCenter"
         xmlns:contexts="clr-namespace:RED.Contexts"
         mc:Ignorable="d" d:DesignHeight="1080" d:DesignWidth="1920">
     <UserControl.DataContext>
-        <viewModels:ShellViewModel />
+        <controlCenterViewModels:ControlCenterViewModel />
     </UserControl.DataContext>
 
     <UserControl.Resources>
-        <DataTemplate DataType="{x:Type controlCenterViewModels:ModuleManager}">
+        <DataTemplate DataType="{x:Type controlCenterViewModels:ModuleGridManager}">
             <controlCenterViews:ModuleManagerView/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type controlCenterViewModels:StateManager}">
@@ -37,18 +36,18 @@
         <!-- Customizable Module Grid -->
         <Grid Grid.Column="0" Grid.Row="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="{Binding Row1Height, Mode=TwoWay}" />
+                <RowDefinition Height="{Binding GridManager.ModuleGrid.Row1Height, Mode=TwoWay}" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="{Binding Row3Height, Mode=TwoWay}" />
+                <RowDefinition Height="{Binding GridManager.ModuleGrid.Row3Height, Mode=TwoWay}" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="{Binding Row5Height, Mode=TwoWay}" />
+                <RowDefinition Height="{Binding GridManager.ModuleGrid.Row5Height, Mode=TwoWay}" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="{Binding Column1Width, Mode=TwoWay}" />
+                <ColumnDefinition Width="{Binding GridManager.ModuleGrid.Column1Width, Mode=TwoWay}" />
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="{Binding Column3Width, Mode=TwoWay}" />
+                <ColumnDefinition Width="{Binding GridManager.ModuleGrid.Column3Width, Mode=TwoWay}" />
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="{Binding Column5Width, Mode=TwoWay}" />
+                <ColumnDefinition Width="{Binding GridManager.ModuleGrid.Column5Width, Mode=TwoWay}" />
             </Grid.ColumnDefinitions>
 
             <GridSplitter Grid.Row="1" Grid.Column="2" Height="4" ResizeBehavior="PreviousAndNext" 
@@ -63,40 +62,40 @@
             <DockPanel Grid.Column="0" Grid.Row="0" Grid.RowSpan="5" Margin="0 0 1 0">
                 <Border BorderBrush="Black" BorderThickness="1" Padding="3">
                     <DockPanel>
-                        <TextBlock Text="{Binding LeftModule.Title}" DockPanel.Dock="Top"/>
-                        <ContentControl Content="{Binding LeftModule}" />
+                        <TextBlock Text="{Binding GridManager.ModuleGrid.LeftModule.Title}" DockPanel.Dock="Top"/>
+                        <ContentControl Content="{Binding GridManager.ModuleGrid.LeftModule}" />
                     </DockPanel>
                 </Border>
             </DockPanel>
             <DockPanel Grid.Column="4" Grid.Row="0" Grid.RowSpan="5" Margin="1 0 0 0">
                 <Border BorderBrush="Black" BorderThickness="1" Padding="3">
                     <DockPanel>
-                        <TextBlock Text="{Binding RightModule.Title}" DockPanel.Dock="Top"/>
-                        <ContentControl Content="{Binding RightModule}" />
+                        <TextBlock Text="{Binding GridManager.ModuleGrid.RightModule.Title}" DockPanel.Dock="Top"/>
+                        <ContentControl Content="{Binding GridManager.ModuleGrid.RightModule}" />
                     </DockPanel>
                 </Border>
             </DockPanel>
             <DockPanel Grid.Column="2" Grid.Row="0" Margin="1 0 1 1">
                 <Border BorderBrush="Black" BorderThickness="1" Padding="3">
                     <DockPanel>
-                        <TextBlock Text="{Binding TopModule.Title}" DockPanel.Dock="Top"/>
-                        <ContentControl Content="{Binding TopModule}" />
+                        <TextBlock Text="{Binding GridManager.ModuleGrid.TopModule.Title}" DockPanel.Dock="Top"/>
+                        <ContentControl Content="{Binding GridManager.ModuleGrid.TopModule}" />
                     </DockPanel>
                 </Border>
             </DockPanel>
             <DockPanel Grid.Column="2" Grid.Row="2" Margin="1">
                 <Border BorderBrush="Black" BorderThickness="1" Padding="3">
                     <DockPanel>
-                        <TextBlock Text="{Binding MiddleModule.Title}" DockPanel.Dock="Top"/>
-                        <ContentControl Content="{Binding MiddleModule}" />
+                        <TextBlock Text="{Binding GridManager.ModuleGrid.MiddleModule.Title}" DockPanel.Dock="Top"/>
+                        <ContentControl Content="{Binding GridManager.ModuleGrid.MiddleModule}" />
                     </DockPanel>
                 </Border>
             </DockPanel>
             <DockPanel Grid.Column="2" Grid.Row="4" Margin="1 1 1 0">
                 <Border BorderBrush="Black" BorderThickness="1" Padding="3">
                     <DockPanel>
-                        <TextBlock Text="{Binding BottomModule.Title}" DockPanel.Dock="Top"/>
-                        <ContentControl Content="{Binding BottomModule}" />
+                        <TextBlock Text="{Binding GridManager.ModuleGrid.BottomModule.Title}" DockPanel.Dock="Top"/>
+                        <ContentControl Content="{Binding GridManager.ModuleGrid.BottomModule}" />
                     </DockPanel>
                 </Border>
             </DockPanel>
@@ -118,13 +117,13 @@
                 <ContentControl Content="{Binding Console}"/>
             </DockPanel>
             <DockPanel Grid.Column="0" Grid.Row="2" Margin="10 10 10 0">
-                <ContentControl Content="{Binding ModuleManager}"/>
+                <ContentControl Content="{Binding GridManager}"/>
             </DockPanel>
         </Grid>
         <!-- Quick-Load Bar -->
 
         <DockPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Margin="0 5 0 0">
-            <Button Command="{Binding ResetGridProportionsCommand}" ToolTip="Click this to reset the grid proportions.">
+            <Button Command="{Binding GridManager.ResetGridProportionsCommand}" ToolTip="Click this to reset the grid proportions.">
                 <Button.Content>
                     <Canvas Width="10" Height="10" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
                         <Path Width="10" Height="10" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" Fill="DarkGray"

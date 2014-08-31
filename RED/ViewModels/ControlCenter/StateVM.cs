@@ -1,11 +1,12 @@
 ﻿namespace RED.ViewModels.ControlCenter
 {
-	using Models.ControlCenter;
+    using Caliburn.Micro;
+    using Models.ControlCenter;
 	using Properties;
 	using System;
 	using System.Linq;
 
-	public class StateManager : BaseViewModel
+	public class StateManager : PropertyChangedBase
 	{
 		private readonly StateModel _model = new StateModel();
 
@@ -119,5 +120,11 @@
 				? ParseEnum<ControlMode>(controlModes[controlModes.Count - 1])
 				: ParseEnum<ControlMode>(controlModes[currentIndex - 1]);
 		}
+
+        protected T ParseEnum<T>(string name)
+        {
+            return (T)Enum.Parse(typeof(T), name, true);
+        }
+
 	}
 }

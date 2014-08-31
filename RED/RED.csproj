@@ -97,14 +97,13 @@
     </ApplicationDefinition>
     <Compile Include="Addons\RelayCommand.cs" />
     <Compile Include="Contexts\BarContext.cs" />
-    <Compile Include="Addons\LexiconEngine.cs" />
-    <Compile Include="Addons\SpeechCompositionEngine.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="RedBootstrapper.cs" />
     <Compile Include="ViewModels\ControlCenter\ControlCenterViewModel.cs" />
+    <Compile Include="ViewModels\ControlCenter\ModuleGrid.cs" />
     <Compile Include="ViewModels\StartupStatusViewModel.cs" />
     <Compile Include="Views\ControlCenter\ControlCenterView.xaml.cs">
       <DependentUpon>ControlCenterView.xaml</DependentUpon>
@@ -143,8 +142,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Compile Include="Models\ControlCenter\ControlCenterModel.cs" />
-    <Compile Include="Models\ControlCenter\ModuleManagerModel.cs" />
     <Compile Include="Models\ControlCenter\ConsoleModel.cs" />
     <Compile Include="Models\ControlCenter\StateModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
@@ -153,10 +150,9 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Interfaces\IModule.cs" />
-    <Compile Include="ViewModels\ControlCenter\ModuleManagerVm.cs" />
+    <Compile Include="ViewModels\ControlCenter\ModuleGridManager.cs" />
     <Compile Include="ViewModels\ControlCenter\ConsoleVm.cs" />
     <Compile Include="Views\ControlCenter\ModuleManagerView.xaml.cs">
       <DependentUpon>ModuleManagerView.xaml</DependentUpon>
@@ -217,11 +213,7 @@
   <ItemGroup>
     <Content Include="Images\favicon.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\Modules\" />
-    <Folder Include="ViewModels\Modules\" />
-    <Folder Include="Views\Modules\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\SharpDX.2.6.2\build\SharpDX.targets" Condition="Exists('..\packages\SharpDX.2.6.2\build\SharpDX.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

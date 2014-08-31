@@ -1,10 +1,11 @@
 ﻿namespace RED.ViewModels.ControlCenter
 {
-	using Models.ControlCenter;
+    using Caliburn.Micro;
+    using Models.ControlCenter;
 	using System;
 	using System.Globalization;
 
-	public class ConsoleVm : BaseViewModel
+	public class ConsoleVm : PropertyChangedBase
 	{
 		private readonly ConsoleModel _model = new ConsoleModel();
 
