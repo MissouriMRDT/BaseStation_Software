@@ -101,7 +101,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DataRouter.cs" />
+    <Compile Include="Interfaces\ISubscribe.cs" />
     <Compile Include="RedBootstrapper.cs" />
+    <Compile Include="TCPAsyncServer.cs" />
     <Compile Include="ViewModels\ControlCenter\ControlCenterViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\ModuleGrid.cs" />
     <Compile Include="ViewModels\StartupStatusViewModel.cs" />
