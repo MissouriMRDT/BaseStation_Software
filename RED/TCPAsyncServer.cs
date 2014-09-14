@@ -11,7 +11,12 @@ namespace RED
         public short ListeningPort { get; private set; }
 
         private TcpListener server;
-        private List<TcpClient> Connections = new List<TcpClient>();
+        private List<TCPConnection> Connections = new List<TCPConnection>();
+
+        public TCPAsyncServer(short portNum)
+        {
+            ListeningPort = portNum;
+        }
 
         public void Start()
         {
@@ -24,7 +29,7 @@ namespace RED
         {
             server.Stop();
             IsListening = false;
-            foreach (TcpClient client in Connections)
+            foreach (TCPConnection client in Connections)
                 client.Close();
         }
 
@@ -34,9 +39,7 @@ namespace RED
             while (true)
             {
                 TcpClient client = await server.AcceptTcpClientAsync();
-                throw new System.NotImplementedException();
-                //TODO: Create the iSubscribe-implementing-TCPClient here
-                Connections.Add(client);
+                Connections.Add(new TCPConnection(client));
             }
         }
     }

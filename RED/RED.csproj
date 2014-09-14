@@ -105,6 +105,7 @@
     <Compile Include="Interfaces\ISubscribe.cs" />
     <Compile Include="RedBootstrapper.cs" />
     <Compile Include="TCPAsyncServer.cs" />
+    <Compile Include="TCPConnection.cs" />
     <Compile Include="ViewModels\ControlCenter\ControlCenterViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\ModuleGrid.cs" />
     <Compile Include="ViewModels\StartupStatusViewModel.cs" />
