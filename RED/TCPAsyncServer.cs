@@ -34,6 +34,7 @@ namespace RED
             while (true)
             {
                 TcpClient client = await server.AcceptTcpClientAsync();
+                throw new System.NotImplementedException();
                 //TODO: Create the iSubscribe-implementing-TCPClient here
                 Connections.Add(client);
             }

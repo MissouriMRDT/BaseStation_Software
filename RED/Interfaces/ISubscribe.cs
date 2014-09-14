@@ -1,6 +1,6 @@
 ﻿namespace RED.Interfaces
 {
-    public interface iSubscribe
+    public interface ISubscribe
     {
         void Receive(int dataCode, byte[] data);
     }
