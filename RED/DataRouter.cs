@@ -15,7 +15,7 @@ namespace RED
                     subscription.Receive(dataCode, data);
         }
 
-        public void Register(ISubscribe subscriber, int dataCode)
+        public void Subscribe(ISubscribe subscriber, int dataCode)
         {
             List<ISubscribe> existingRegistrations;
             if (Registrations.TryGetValue(dataCode, out existingRegistrations))
@@ -27,12 +27,12 @@ namespace RED
                 Registrations.Add(dataCode, new List<ISubscribe>() { subscriber });
         }
 
-        public void UnRegister(ISubscribe subscriber)
+        public void UnSubscribe(ISubscribe subscriber)
         {
             foreach (KeyValuePair<int, List<ISubscribe>> kvp in Registrations)
-                UnRegister(subscriber, kvp.Key);
+                UnSubscribe(subscriber, kvp.Key);
         }
-        public void UnRegister(ISubscribe subscriber, int dataCode)
+        public void UnSubscribe(ISubscribe subscriber, int dataCode)
         {
             List<ISubscribe> existingRegistrations;
             if (Registrations.TryGetValue(dataCode, out existingRegistrations))

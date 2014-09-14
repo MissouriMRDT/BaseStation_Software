@@ -2,6 +2,6 @@
 {
     public interface ISubscribe
     {
-        void Receive(int dataCode, byte[] data);
+        void Receive(int dataId, byte[] data);
     }
 }
