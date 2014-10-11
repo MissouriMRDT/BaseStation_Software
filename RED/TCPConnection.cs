@@ -30,13 +30,13 @@ namespace RED
             this.Client = client;
             Stream = Client.GetStream();
 
-            getRemoteInfo();
+            InitializeConnection();
 
             //Start Listening
             Listen();
         }
 
-        private async void getRemoteInfo()
+        private async void InitializeConnection()
         {
             //Send Local Name
             Encoding ascii = Encoding.ASCII;
