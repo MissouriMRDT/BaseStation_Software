@@ -12,6 +12,8 @@ namespace RED
 {
     public class TCPConnection : ISubscribe
     {
+        public const string LocalSoftwareName = "Red";
+
         public TcpClient Client { get; set; }
         private NetworkStream Stream { get; set; }
         public IPAddress Ip
@@ -38,24 +40,26 @@ namespace RED
 
         private async void InitializeConnection()
         {
-            //Send Local Name
             Encoding ascii = Encoding.ASCII;
-            byte[] localName = ascii.GetBytes("RED Master");
-            await Stream.WriteAsync(localName, 0, localName.Length);
+            byte[] buffer;
+
+            //Send Local Name
+            buffer = ascii.GetBytes("RED Master");
+            await Stream.WriteAsync(buffer, 0, buffer.Length);
 
             //Get and Save Remote Name
-            byte[] remoteNameData = new byte[256];
-            int remoteNameLength = await Stream.ReadAsync(remoteNameData, 0, remoteNameData.Length);
-            RemoteName = ascii.GetString(remoteNameData, 0, remoteNameLength);
+            buffer = new byte[256];
+            int remoteNameLength = await Stream.ReadAsync(buffer, 0, buffer.Length);
+            RemoteName = ascii.GetString(buffer, 0, remoteNameLength);
 
             //Send Local Software
-            byte[] localSoftware = ascii.GetBytes("RED ? Version");
-            await Stream.WriteAsync(localSoftware, 0, localSoftware.Length);
+            buffer = ascii.GetBytes(LocalSoftwareName);
+            await Stream.WriteAsync(buffer, 0, buffer.Length);
 
             //Get and Save Remote Software
-            byte[] remoteSoftwareData = new byte[256];
-            int remoteSoftwareLength = await Stream.ReadAsync(remoteSoftwareData, 0, remoteSoftwareData.Length);
-            RemoteSoftware = ascii.GetString(remoteSoftwareData, 0, remoteSoftwareLength);
+            buffer = new byte[256];
+            int remoteSoftwareLength = await Stream.ReadAsync(buffer, 0, buffer.Length);
+            RemoteSoftware = ascii.GetString(buffer, 0, remoteSoftwareLength);
         }
 
         private async void Listen()
