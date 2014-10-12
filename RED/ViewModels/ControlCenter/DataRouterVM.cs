@@ -1,12 +1,20 @@
-﻿using RED.Interfaces;
+﻿using Caliburn.Micro;
+using RED.Interfaces;
+using RED.Models.ControlCenter;
 using System.Collections.Generic;
-using Caliburn.Micro;
 
 namespace RED
 {
     public class DataRouterVM : PropertyChangedBase
     {
+        private DataRouterModel Model;
+
         private Dictionary<int, List<ISubscribe>> Registrations = new Dictionary<int, List<ISubscribe>>();
+
+        public DataRouterVM()
+        {
+            Model = new DataRouterModel();
+        }
 
         public void Send(int dataCode, byte[] data)
         {
