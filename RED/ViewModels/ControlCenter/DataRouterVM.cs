@@ -1,9 +1,10 @@
 ﻿using RED.Interfaces;
 using System.Collections.Generic;
+using Caliburn.Micro;
 
 namespace RED
 {
-    public class DataRouterVM
+    public class DataRouterVM : PropertyChangedBase
     {
         private Dictionary<int, List<ISubscribe>> Registrations = new Dictionary<int, List<ISubscribe>>();
 

@@ -7,10 +7,11 @@ using System.Net;
 using System.Net.Sockets;
 using RED.Interfaces;
 using System.IO;
+using Caliburn.Micro;
 
 namespace RED
 {
-    public class TCPConnectionVM : ISubscribe
+    public class TCPConnectionVM : PropertyChangedBase, ISubscribe
     {
         public const string LocalMachineName = "RED Master";
         public const string LocalSoftwareName = "RED";

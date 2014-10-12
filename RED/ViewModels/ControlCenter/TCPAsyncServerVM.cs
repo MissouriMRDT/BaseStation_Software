@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using Caliburn.Micro;
 
 namespace RED
 {
-    public class TCPAsyncServerVM
+    public class TCPAsyncServerVM : PropertyChangedBase
     {
         public bool IsListening { get; private set; }
         public bool IsConnected { get { return Connections.Count > 0; } }
