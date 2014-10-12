@@ -16,7 +16,7 @@ namespace RED.ViewModels.ControlCenter
             {
                 return Model.IsListening;
             }
-            set
+            private set
             {
                 Model.IsListening = value;
                 NotifyOfPropertyChange(() => IsListening);
@@ -35,7 +35,7 @@ namespace RED.ViewModels.ControlCenter
             {
                 return Model.ListeningPort;
             }
-            set
+            private set
             {
                 Model.ListeningPort = value;
                 NotifyOfPropertyChange(() => ListeningPort);
