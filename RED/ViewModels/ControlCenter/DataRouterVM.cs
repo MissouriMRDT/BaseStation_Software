@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace RED
 {
-    public class DataRouter
+    public class DataRouterVM
     {
         private Dictionary<int, List<ISubscribe>> Registrations = new Dictionary<int, List<ISubscribe>>();
 

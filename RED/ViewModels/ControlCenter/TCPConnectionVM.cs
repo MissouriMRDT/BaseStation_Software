@@ -10,7 +10,7 @@ using System.IO;
 
 namespace RED
 {
-    public class TCPConnection : ISubscribe
+    public class TCPConnectionVM : ISubscribe
     {
         public const string LocalMachineName = "RED Master";
         public const string LocalSoftwareName = "RED";
@@ -26,9 +26,9 @@ namespace RED
         }
         public string RemoteName { get; set; }
         public string RemoteSoftware { get; set; }
-        private DataRouter router { get; set; }
+        private DataRouterVM router { get; set; }
 
-        public TCPConnection(TcpClient client)
+        public TCPConnectionVM(TcpClient client)
         {
             this.Client = client;
             Stream = Client.GetStream();
