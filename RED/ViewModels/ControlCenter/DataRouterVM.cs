@@ -9,7 +9,18 @@ namespace RED
     {
         private DataRouterModel Model;
 
-        private Dictionary<int, List<ISubscribe>> Registrations = new Dictionary<int, List<ISubscribe>>();
+        private Dictionary<int, List<ISubscribe>> Registrations
+        {
+            get
+            {
+                return Model.Registrations;
+            }
+            set
+            {
+                Model.Registrations = value;
+                NotifyOfPropertyChange(() => Registrations);
+            }
+        }
 
         public DataRouterVM()
         {

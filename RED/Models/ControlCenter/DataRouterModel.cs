@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RED.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,6 @@ namespace RED.Models.ControlCenter
 {
     internal class DataRouterModel
     {
+        internal Dictionary<int, List<ISubscribe>> Registrations = new Dictionary<int, List<ISubscribe>>();
     }
 }
