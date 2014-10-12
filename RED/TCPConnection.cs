@@ -16,7 +16,7 @@ namespace RED
 
         public TcpClient Client { get; set; }
         private NetworkStream Stream { get; set; }
-        public IPAddress Ip
+        public IPAddress RemoteIP
         {
             get
             {
@@ -25,7 +25,7 @@ namespace RED
         }
         public string RemoteName { get; set; }
         public string RemoteSoftware { get; set; }
-        public DataRouter router { get; set; }
+        private DataRouter router { get; set; }
 
         public TCPConnection(TcpClient client)
         {
@@ -35,7 +35,7 @@ namespace RED
             InitializeConnection();
 
             //Start Listening
-            Listen();
+            ReceiveNetworkData();
         }
 
         private async void InitializeConnection()
@@ -62,7 +62,7 @@ namespace RED
             RemoteSoftware = ascii.GetString(buffer, 0, remoteSoftwareLength);
         }
 
-        private async void Listen()
+        private async void ReceiveNetworkData()
         {
             byte[] buffer = new byte[1024];
             while (true)//TODO: have this stop if we close
