@@ -12,7 +12,7 @@ namespace RED
 {
     public class TCPConnection : ISubscribe
     {
-        public const string LocalSoftwareName = "Red";
+        public const string LocalSoftwareName = "RED";
 
         public TcpClient Client { get; set; }
         private NetworkStream Stream { get; set; }
