@@ -10,9 +10,37 @@ namespace RED
     {
         private TCPAsyncServerModel Model;
 
-        public bool IsListening { get; private set; }
-        public bool IsConnected { get { return Connections.Count > 0; } }
-        public short ListeningPort { get; private set; }
+        public bool IsListening
+        {
+            get
+            {
+                return Model.IsListening;
+            }
+            set
+            {
+                Model.IsListening = value;
+                NotifyOfPropertyChange(() => IsListening);
+            }
+        }
+        public bool IsConnected
+        {
+            get
+            {
+                return Connections.Count > 0;
+            }
+        }
+        public short ListeningPort
+        {
+            get
+            {
+                return Model.ListeningPort;
+            }
+            set
+            {
+                Model.ListeningPort = value;
+                NotifyOfPropertyChange(() => ListeningPort);
+            }
+        }
 
         private TcpListener server;
         private List<TCPConnectionVM> Connections = new List<TCPConnectionVM>();
