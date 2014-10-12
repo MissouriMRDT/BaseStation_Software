@@ -4,7 +4,7 @@ using System.Net.Sockets;
 using Caliburn.Micro;
 using RED.Models.ControlCenter;
 
-namespace RED
+namespace RED.ViewModels.ControlCenter
 {
     public class TCPAsyncServerVM : PropertyChangedBase
     {

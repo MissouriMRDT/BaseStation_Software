@@ -3,7 +3,7 @@ using RED.Interfaces;
 using RED.Models.ControlCenter;
 using System.Collections.Generic;
 
-namespace RED
+namespace RED.ViewModels.ControlCenter
 {
     public class DataRouterVM : PropertyChangedBase
     {
