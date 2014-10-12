@@ -2,11 +2,14 @@
 using System.Net;
 using System.Net.Sockets;
 using Caliburn.Micro;
+using RED.Models.ControlCenter;
 
 namespace RED
 {
     public class TCPAsyncServerVM : PropertyChangedBase
     {
+        private TCPAsyncServerModel Model;
+
         public bool IsListening { get; private set; }
         public bool IsConnected { get { return Connections.Count > 0; } }
         public short ListeningPort { get; private set; }
@@ -16,6 +19,7 @@ namespace RED
 
         public TCPAsyncServerVM(short portNum)
         {
+            Model = new TCPAsyncServerModel();
             ListeningPort = portNum;
         }
 
