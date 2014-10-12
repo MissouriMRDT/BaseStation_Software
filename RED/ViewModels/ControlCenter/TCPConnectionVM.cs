@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Caliburn.Micro;
+using RED.Interfaces;
+using RED.Models.ControlCenter;
+using System;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using RED.Interfaces;
-using System.IO;
-using Caliburn.Micro;
+using System.Text;
 
 namespace RED
 {
     public class TCPConnectionVM : PropertyChangedBase, ISubscribe
     {
+        private TCPConnectionModel Model;
+
         public const string LocalMachineName = "RED Master";
         public const string LocalSoftwareName = "RED";
 
@@ -31,6 +31,8 @@ namespace RED
 
         public TCPConnectionVM(TcpClient client)
         {
+            Model = new TCPConnectionModel();
+
             this.Client = client;
             Stream = Client.GetStream();
 

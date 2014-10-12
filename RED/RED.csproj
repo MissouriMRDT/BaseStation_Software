@@ -103,6 +103,7 @@
     </Compile>
     <Compile Include="Models\ControlCenter\DataRouterModel.cs" />
     <Compile Include="Models\ControlCenter\TCPAsyncServerModel.cs" />
+    <Compile Include="Models\ControlCenter\TCPConnectionModel.cs" />
     <Compile Include="ViewModels\ControlCenter\DataRouterVM.cs" />
     <Compile Include="Interfaces\ISubscribe.cs" />
     <Compile Include="RedBootstrapper.cs" />
