@@ -12,6 +12,7 @@ namespace RED
 {
     public class TCPConnection : ISubscribe
     {
+        public const string LocalMachineName = "RED Master";
         public const string LocalSoftwareName = "RED";
 
         public TcpClient Client { get; set; }
@@ -44,7 +45,7 @@ namespace RED
             byte[] buffer;
 
             //Send Local Name
-            buffer = ascii.GetBytes("RED Master");
+            buffer = ascii.GetBytes(LocalMachineName);
             await Stream.WriteAsync(buffer, 0, buffer.Length);
 
             //Get and Save Remote Name
