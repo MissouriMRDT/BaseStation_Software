@@ -11,61 +11,65 @@
     using System.Linq;
     using System.Xml.Serialization;
 
-	public class ControlCenterViewModel : Screen
-	{
-		private SaveModuleStateVm _saveModuleStateVm;
+    public class ControlCenterViewModel : Screen
+    {
+        private SaveModuleStateVm _saveModuleStateVm;
         private RemoveModuleStateVm _removeModuleStateVm;
 
         private readonly ObservableCollection<ButtonContext> _buttonContexts = new ObservableCollection<ButtonContext>();
 
         private StateManager _stateManager;
         private ConsoleVm _console;
+        private DataRouterVM _dataRouter;
+        private TCPAsyncServerVM _tcpAsyncServer;
 
-		public StateManager StateManager
-		{
-			get
-			{
-				return _stateManager;
-			}
-			set
-			{
-				_stateManager = value;
-				NotifyOfPropertyChange();
-			}
-		}
-		public ConsoleVm Console
-		{
-			get
-			{
-				return _console;
-			}
-			set
-			{
-				_console = value;
-				NotifyOfPropertyChange();
-			}
-		}
-		public ModuleGridManager GridManager { get; set; }
+        public StateManager StateManager
+        {
+            get
+            {
+                return _stateManager;
+            }
+            set
+            {
+                _stateManager = value;
+                NotifyOfPropertyChange();
+            }
+        }
+        public ConsoleVm Console
+        {
+            get
+            {
+                return _console;
+            }
+            set
+            {
+                _console = value;
+                NotifyOfPropertyChange();
+            }
+        }
+        public ModuleGridManager GridManager { get; set; }
 
-		public ControlCenterViewModel()
-		{
-			_stateManager = new StateManager();
-			_console = new ConsoleVm();
+        public ControlCenterViewModel()
+        {
+            _stateManager = new StateManager();
+            _console = new ConsoleVm();
+            _dataRouter = new DataRouterVM();
+            _tcpAsyncServer = new TCPAsyncServerVM(11000);
             GridManager = new ModuleGridManager(this);
-            
+
             _removeModuleStateVm = new RemoveModuleStateVm(this);
             _saveModuleStateVm = new SaveModuleStateVm(GridManager.ModuleGrid, this);
 
-			ReloadModuleButtonContexts();
-		}
+            ReloadModuleButtonContexts();
+        }
 
-		public ObservableCollection<ButtonContext> ButtonContexts
-		{
-			get
-			{
-				return _buttonContexts;
-			}
-		}
+        public ObservableCollection<ButtonContext> ButtonContexts
+        {
+            get
+            {
+                return _buttonContexts;
+            }
+        }
 
         public void ReloadModuleButtonContexts()
         {
@@ -90,5 +94,5 @@
                 _console.WriteToConsole(ex.Message);
             }
         }
-	}
+    }
 }
