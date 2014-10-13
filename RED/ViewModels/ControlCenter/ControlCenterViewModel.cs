@@ -47,6 +47,30 @@
                 NotifyOfPropertyChange();
             }
         }
+        public DataRouterVM DataRouter
+        {
+            get
+            {
+                return _dataRouter;
+            }
+            set
+            {
+                _dataRouter = value;
+                NotifyOfPropertyChange(() => DataRouter);
+            }
+        }
+        public TCPAsyncServerVM TCPAsyncServer
+        {
+            get
+            {
+                return _tcpAsyncServer;
+            }
+            set
+            {
+                _tcpAsyncServer = value;
+                NotifyOfPropertyChange(() => TCPAsyncServer);
+            }
+        }
         public ModuleGridManager GridManager { get; set; }
 
         public ControlCenterViewModel()
