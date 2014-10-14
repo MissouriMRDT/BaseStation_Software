@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RED.Models.ControlCenter
 {
-    internal class TCPAsyncServerModel
+    public class TCPAsyncServerModel
     {
         internal bool IsListening;
         internal short ListeningPort;

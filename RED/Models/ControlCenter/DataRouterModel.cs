@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RED.Models.ControlCenter
 {
-    internal class DataRouterModel
+    public class DataRouterModel
     {
         internal Dictionary<int, List<ISubscribe>> Registrations = new Dictionary<int, List<ISubscribe>>();
     }

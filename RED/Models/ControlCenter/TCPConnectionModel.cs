@@ -7,7 +7,7 @@ using System.Net.Sockets;
 
 namespace RED.Models.ControlCenter
 {
-    internal class TCPConnectionModel
+    public class TCPConnectionModel
     {
         internal TcpClient Client;
         internal string RemoteName;
