@@ -101,6 +101,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\ControlCenter\ControlCenterModel.cs" />
     <Compile Include="RedBootstrapper.cs" />
     <Compile Include="ViewModels\ControlCenter\ControlCenterViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\ModuleGrid.cs" />
