@@ -73,7 +73,18 @@
                 NotifyOfPropertyChange();
             }
         }
-        public ModuleGridManager GridManager { get; set; }
+        public ModuleGridManager GridManager
+        {
+            get
+            {
+                return Model.GridManager;
+            }
+            set
+            {
+                Model.GridManager = value;
+                NotifyOfPropertyChange(() => GridManager);
+            }
+        }
 
         public ControlCenterViewModel()
         {

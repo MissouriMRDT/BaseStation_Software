@@ -13,5 +13,6 @@
 
         public StateManager StateManager;
         public ConsoleVm Console;
+        public ModuleGridManager GridManager;
     }
 }
