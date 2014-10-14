@@ -10,62 +10,83 @@
     using System.IO;
     using System.Linq;
     using System.Xml.Serialization;
+    using RED.Models.ControlCenter;
 
-	public class ControlCenterViewModel : Screen
-	{
-		private SaveModuleStateVm _saveModuleStateVm;
-        private RemoveModuleStateVm _removeModuleStateVm;
+    public class ControlCenterViewModel : Screen
+    {
+        private ControlCenterModel Model;
 
-        private readonly ObservableCollection<ButtonContext> _buttonContexts = new ObservableCollection<ButtonContext>();
+        public RemoveModuleStateVm RemoveModuleState
+        {
+            get
+            {
+                return Model.RemoveModuleState;
+            }
+            set
+            {
+                Model.RemoveModuleState = value;
+                NotifyOfPropertyChange(() => RemoveModuleState);
+            }
+        }
+        public SaveModuleStateVm SaveModuleState
+        {
+            get
+            {
+                return Model.SaveModuleState;
+            }
+            set
+            {
+                Model.SaveModuleState = value;
+                NotifyOfPropertyChange(() => SaveModuleState);
+            }
+        }
 
-        private StateManager _stateManager;
-        private ConsoleVm _console;
+        public StateManager StateManager
+        {
+            get
+            {
+                return Model.StateManager;
+            }
+            set
+            {
+                Model.StateManager = value;
+                NotifyOfPropertyChange();
+            }
+        }
+        public ConsoleVm Console
+        {
+            get
+            {
+                return Model.Console;
+            }
+            set
+            {
+                Model.Console = value;
+                NotifyOfPropertyChange();
+            }
+        }
+        public ModuleGridManager GridManager { get; set; }
 
-		public StateManager StateManager
-		{
-			get
-			{
-				return _stateManager;
-			}
-			set
-			{
-				_stateManager = value;
-				NotifyOfPropertyChange();
-			}
-		}
-		public ConsoleVm Console
-		{
-			get
-			{
-				return _console;
-			}
-			set
-			{
-				_console = value;
-				NotifyOfPropertyChange();
-			}
-		}
-		public ModuleGridManager GridManager { get; set; }
-
-		public ControlCenterViewModel()
-		{
-			_stateManager = new StateManager();
-			_console = new ConsoleVm();
+        public ControlCenterViewModel()
+        {
+            Model = new ControlCenterModel();
+            StateManager = new StateManager();
+            Console = new ConsoleVm();
             GridManager = new ModuleGridManager(this);
-            
-            _removeModuleStateVm = new RemoveModuleStateVm(this);
-            _saveModuleStateVm = new SaveModuleStateVm(GridManager.ModuleGrid, this);
 
-			ReloadModuleButtonContexts();
-		}
+            RemoveModuleState = new RemoveModuleStateVm(this);
+            SaveModuleState = new SaveModuleStateVm(GridManager.ModuleGrid, this);
 
-		public ObservableCollection<ButtonContext> ButtonContexts
-		{
-			get
-			{
-				return _buttonContexts;
-			}
-		}
+            ReloadModuleButtonContexts();
+        }
+
+        public ObservableCollection<ButtonContext> ButtonContexts
+        {
+            get
+            {
+                return Model.ButtonContexts;
+            }
+        }
 
         public void ReloadModuleButtonContexts()
         {
@@ -74,7 +95,7 @@
             // Get existing saves if there are any.
             try
             {
-                _buttonContexts.Clear();
+                ButtonContexts.Clear();
                 var fileReader = new StreamReader(AppDomain.CurrentDomain.BaseDirectory +
                     Settings.Default.ModuleStateSaveFileName);
                 var existingSaves = (List<ModuleStateSave>)serializer.Deserialize(fileReader);
@@ -82,13 +103,13 @@
                 foreach (var name in existingSaves.Select(save => save.Name))
                 {
                     var name1 = name;
-                    _buttonContexts.Add(new ButtonContext(new RelayCommand(o => GridManager.LoadModuleSave(name1)), name));
+                    ButtonContexts.Add(new ButtonContext(new RelayCommand(o => GridManager.LoadModuleSave(name1)), name));
                 }
             }
             catch (Exception ex)
             {
-                _console.WriteToConsole(ex.Message);
+                Console.WriteToConsole(ex.Message);
             }
         }
-	}
+    }
 }
