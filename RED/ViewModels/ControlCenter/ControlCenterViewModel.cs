@@ -41,6 +41,14 @@
             }
         }
 
+        public ObservableCollection<ButtonContext> ButtonContexts
+        {
+            get
+            {
+                return Model.ButtonContexts;
+            }
+        }
+
         public StateManager StateManager
         {
             get
@@ -78,14 +86,6 @@
             SaveModuleState = new SaveModuleStateVm(GridManager.ModuleGrid, this);
 
             ReloadModuleButtonContexts();
-        }
-
-        public ObservableCollection<ButtonContext> ButtonContexts
-        {
-            get
-            {
-                return Model.ButtonContexts;
-            }
         }
 
         public void ReloadModuleButtonContexts()
