@@ -41,9 +41,6 @@
             }
         }
 
-        private DataRouterVM _dataRouter;
-        private TCPAsyncServerVM _tcpAsyncServer;
-
         public ObservableCollection<ButtonContext> ButtonContexts
         {
             get
@@ -80,24 +77,24 @@
         {
             get
             {
-                return _dataRouter;
+                return Model.DataRouter;
             }
             set
             {
-                _dataRouter = value;
+                Model.DataRouter = value;
                 NotifyOfPropertyChange(() => DataRouter);
             }
         }
-        public TCPAsyncServerVM TCPAsyncServer
+        public TCPAsyncServerVM TcpAsyncServer
         {
             get
             {
-                return _tcpAsyncServer;
+                return Model.TcpAsyncServer;
             }
             set
             {
-                _tcpAsyncServer = value;
-                NotifyOfPropertyChange(() => TCPAsyncServer);
+                Model.TcpAsyncServer = value;
+                NotifyOfPropertyChange(() => TcpAsyncServer);
             }
         }
         public ModuleGridManager GridManager
@@ -118,8 +115,8 @@
             Model = new ControlCenterModel();
             StateManager = new StateManager();
             Console = new ConsoleVm();
-            _dataRouter = new DataRouterVM();
-            _tcpAsyncServer = new TCPAsyncServerVM(11000);
+            DataRouter = new DataRouterVM();
+            TcpAsyncServer = new TCPAsyncServerVM(11000);
             GridManager = new ModuleGridManager(this);
 
             RemoveModuleState = new RemoveModuleStateVm(this);
