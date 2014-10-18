@@ -14,9 +14,6 @@ namespace RED.ViewModels.ControlCenter
         private TCPConnectionModel Model;
         private ControlCenterViewModel ControlCenterVM;
 
-        public const string LocalMachineName = "RED Master";
-        public const string LocalSoftwareName = "RED";
-
         private NetworkStream Stream { get; set; }
         public TcpClient Client
         {
@@ -82,7 +79,7 @@ namespace RED.ViewModels.ControlCenter
             byte[] buffer;
 
             //Send Local Name
-            buffer = ascii.GetBytes(LocalMachineName);
+            buffer = ascii.GetBytes(ControlCenterVM.TcpAsyncServer.LocalMachineName);
             await Stream.WriteAsync(buffer, 0, buffer.Length);
 
             //Get and Save Remote Name
@@ -91,7 +88,7 @@ namespace RED.ViewModels.ControlCenter
             RemoteName = ascii.GetString(buffer, 0, remoteNameLength);
 
             //Send Local Software
-            buffer = ascii.GetBytes(LocalSoftwareName);
+            buffer = ascii.GetBytes(ControlCenterVM.TcpAsyncServer.LocalSoftwareName);
             await Stream.WriteAsync(buffer, 0, buffer.Length);
 
             //Get and Save Remote Software

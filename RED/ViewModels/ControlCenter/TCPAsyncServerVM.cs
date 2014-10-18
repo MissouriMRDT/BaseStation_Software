@@ -11,6 +11,31 @@ namespace RED.ViewModels.ControlCenter
         private TCPAsyncServerModel Model;
         private ControlCenterViewModel ControlCenterVM;
 
+        public string LocalMachineName
+        {
+            get
+            {
+                return Model.LocalMachineName;
+            }
+            private set
+            {
+                Model.LocalMachineName = value;
+                NotifyOfPropertyChange(() => LocalMachineName);
+            }
+        }
+        public string LocalSoftwareName
+        {
+            get
+            {
+                return Model.LocalSoftwareName;
+            }
+            private set
+            {
+                Model.LocalSoftwareName = value;
+                NotifyOfPropertyChange(() => LocalSoftwareName);
+            }
+        }
+
         public bool IsListening
         {
             get
@@ -50,6 +75,9 @@ namespace RED.ViewModels.ControlCenter
         {
             Model = new TCPAsyncServerModel();
             ControlCenterVM = CCVM;
+
+            LocalMachineName = "Red Master";
+            LocalSoftwareName = "RED";
 
             ListeningPort = portNum;
         }
