@@ -12,11 +12,11 @@ namespace RED.ViewModels.ControlCenter
     public class TCPConnectionVM : PropertyChangedBase, ISubscribe
     {
         private TCPConnectionModel Model;
+        private ControlCenterViewModel ControlCenterVM;
 
         public const string LocalMachineName = "RED Master";
         public const string LocalSoftwareName = "RED";
 
-        private DataRouterVM router { get; set; }
         private NetworkStream Stream { get; set; }
         public TcpClient Client
         {
@@ -62,9 +62,10 @@ namespace RED.ViewModels.ControlCenter
             }
         }
 
-        public TCPConnectionVM(TcpClient client)
+        public TCPConnectionVM(TcpClient client, ControlCenterViewModel CCVM)
         {
             Model = new TCPConnectionModel();
+            ControlCenterVM = CCVM;
 
             this.Client = client;
             Stream = Client.GetStream();
@@ -113,9 +114,9 @@ namespace RED.ViewModels.ControlCenter
 
                     switch (dataId)
                     {
-                        case 1: router.Subscribe(this, dataId); break;//Subscribe Request
-                        case 2: router.UnSubscribe(this, dataId); break;//Unsubscribe Request
-                        default: router.Send(dataId, data); break;//Normal Packet
+                        case 1: ControlCenterVM.DataRouter.Subscribe(this, dataId); break;//Subscribe Request
+                        case 2: ControlCenterVM.DataRouter.UnSubscribe(this, dataId); break;//Unsubscribe Request
+                        default: ControlCenterVM.DataRouter.Send(dataId, data); break;//Normal Packet
                     }
                 }
             }

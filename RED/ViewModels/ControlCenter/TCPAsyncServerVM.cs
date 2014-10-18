@@ -9,6 +9,7 @@ namespace RED.ViewModels.ControlCenter
     public class TCPAsyncServerVM : PropertyChangedBase
     {
         private TCPAsyncServerModel Model;
+        private ControlCenterViewModel ControlCenterVM;
 
         public bool IsListening
         {
@@ -45,9 +46,11 @@ namespace RED.ViewModels.ControlCenter
         private TcpListener server;
         private List<TCPConnectionVM> Connections = new List<TCPConnectionVM>();
 
-        public TCPAsyncServerVM(short portNum)
+        public TCPAsyncServerVM(short portNum, ControlCenterViewModel CCVM)
         {
             Model = new TCPAsyncServerModel();
+            ControlCenterVM = CCVM;
+
             ListeningPort = portNum;
         }
 
@@ -72,7 +75,7 @@ namespace RED.ViewModels.ControlCenter
             while (true)
             {
                 TcpClient client = await server.AcceptTcpClientAsync();
-                Connections.Add(new TCPConnectionVM(client));
+                Connections.Add(new TCPConnectionVM(client, ControlCenterVM));
             }
         }
     }

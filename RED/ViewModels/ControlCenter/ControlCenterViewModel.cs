@@ -116,7 +116,7 @@
             StateManager = new StateManager();
             Console = new ConsoleVm();
             DataRouter = new DataRouterVM();
-            TcpAsyncServer = new TCPAsyncServerVM(11000);
+            TcpAsyncServer = new TCPAsyncServerVM(11000, this);
             GridManager = new ModuleGridManager(this);
 
             RemoveModuleState = new RemoveModuleStateVm(this);
