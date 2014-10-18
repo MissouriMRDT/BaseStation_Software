@@ -1,22 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Caliburn.Micro;
+using RED.Interfaces;
+using RED.Models.ControlCenter;
+using System;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using RED.Interfaces;
-using System.IO;
+using System.Text;
 
-namespace RED
+namespace RED.ViewModels.ControlCenter
 {
-    public class TCPConnection : ISubscribe
+    public class TCPConnectionVM : PropertyChangedBase, ISubscribe
     {
+        private TCPConnectionModel Model;
+
         public const string LocalMachineName = "RED Master";
         public const string LocalSoftwareName = "RED";
 
-        public TcpClient Client { get; set; }
+        private DataRouterVM router { get; set; }
         private NetworkStream Stream { get; set; }
+        public TcpClient Client
+        {
+            get
+            {
+                return Model.Client;
+            }
+            set
+            {
+                Model.Client = value;
+                NotifyOfPropertyChange(() => Client);
+            }
+        }
         public IPAddress RemoteIP
         {
             get
@@ -24,12 +37,35 @@ namespace RED
                 return ((IPEndPoint)(Client.Client.RemoteEndPoint)).Address;
             }
         }
-        public string RemoteName { get; set; }
-        public string RemoteSoftware { get; set; }
-        private DataRouter router { get; set; }
-
-        public TCPConnection(TcpClient client)
+        public string RemoteName
         {
+            get
+            {
+                return Model.RemoteName;
+            }
+            set
+            {
+                Model.RemoteName = value;
+                NotifyOfPropertyChange(() => RemoteName);
+            }
+        }
+        public string RemoteSoftware
+        {
+            get
+            {
+                return Model.RemoteSoftware;
+            }
+            set
+            {
+                Model.RemoteSoftware = value;
+                NotifyOfPropertyChange(() => RemoteSoftware);
+            }
+        }
+
+        public TCPConnectionVM(TcpClient client)
+        {
+            Model = new TCPConnectionModel();
+
             this.Client = client;
             Stream = Client.GetStream();
 

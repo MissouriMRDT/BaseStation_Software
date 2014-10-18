@@ -1,11 +1,31 @@
-﻿using RED.Interfaces;
+﻿using Caliburn.Micro;
+using RED.Interfaces;
+using RED.Models.ControlCenter;
 using System.Collections.Generic;
 
-namespace RED
+namespace RED.ViewModels.ControlCenter
 {
-    public class DataRouter
+    public class DataRouterVM : PropertyChangedBase
     {
-        private Dictionary<int, List<ISubscribe>> Registrations = new Dictionary<int, List<ISubscribe>>();
+        private DataRouterModel Model;
+
+        private Dictionary<int, List<ISubscribe>> Registrations
+        {
+            get
+            {
+                return Model.Registrations;
+            }
+            set
+            {
+                Model.Registrations = value;
+                NotifyOfPropertyChange(() => Registrations);
+            }
+        }
+
+        public DataRouterVM()
+        {
+            Model = new DataRouterModel();
+        }
 
         public void Send(int dataCode, byte[] data)
         {
