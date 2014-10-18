@@ -10,28 +10,57 @@
     using System.IO;
     using System.Linq;
     using System.Xml.Serialization;
+    using RED.Models.ControlCenter;
 
     public class ControlCenterViewModel : Screen
     {
-        private SaveModuleStateVm _saveModuleStateVm;
-        private RemoveModuleStateVm _removeModuleStateVm;
+        private ControlCenterModel Model;
 
-        private readonly ObservableCollection<ButtonContext> _buttonContexts = new ObservableCollection<ButtonContext>();
+        public RemoveModuleStateVm RemoveModuleState
+        {
+            get
+            {
+                return Model.RemoveModuleState;
+            }
+            set
+            {
+                Model.RemoveModuleState = value;
+                NotifyOfPropertyChange(() => RemoveModuleState);
+            }
+        }
+        public SaveModuleStateVm SaveModuleState
+        {
+            get
+            {
+                return Model.SaveModuleState;
+            }
+            set
+            {
+                Model.SaveModuleState = value;
+                NotifyOfPropertyChange(() => SaveModuleState);
+            }
+        }
 
-        private StateManager _stateManager;
-        private ConsoleVm _console;
         private DataRouterVM _dataRouter;
         private TCPAsyncServerVM _tcpAsyncServer;
+
+        public ObservableCollection<ButtonContext> ButtonContexts
+        {
+            get
+            {
+                return Model.ButtonContexts;
+            }
+        }
 
         public StateManager StateManager
         {
             get
             {
-                return _stateManager;
+                return Model.StateManager;
             }
             set
             {
-                _stateManager = value;
+                Model.StateManager = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -39,11 +68,11 @@
         {
             get
             {
-                return _console;
+                return Model.Console;
             }
             set
             {
-                _console = value;
+                Model.Console = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -71,28 +100,32 @@
                 NotifyOfPropertyChange(() => TCPAsyncServer);
             }
         }
-        public ModuleGridManager GridManager { get; set; }
+        public ModuleGridManager GridManager
+        {
+            get
+            {
+                return Model.GridManager;
+            }
+            set
+            {
+                Model.GridManager = value;
+                NotifyOfPropertyChange(() => GridManager);
+            }
+        }
 
         public ControlCenterViewModel()
         {
-            _stateManager = new StateManager();
-            _console = new ConsoleVm();
+            Model = new ControlCenterModel();
+            StateManager = new StateManager();
+            Console = new ConsoleVm();
             _dataRouter = new DataRouterVM();
             _tcpAsyncServer = new TCPAsyncServerVM(11000);
             GridManager = new ModuleGridManager(this);
 
-            _removeModuleStateVm = new RemoveModuleStateVm(this);
-            _saveModuleStateVm = new SaveModuleStateVm(GridManager.ModuleGrid, this);
+            RemoveModuleState = new RemoveModuleStateVm(this);
+            SaveModuleState = new SaveModuleStateVm(GridManager.ModuleGrid, this);
 
             ReloadModuleButtonContexts();
-        }
-
-        public ObservableCollection<ButtonContext> ButtonContexts
-        {
-            get
-            {
-                return _buttonContexts;
-            }
         }
 
         public void ReloadModuleButtonContexts()
@@ -102,7 +135,7 @@
             // Get existing saves if there are any.
             try
             {
-                _buttonContexts.Clear();
+                ButtonContexts.Clear();
                 var fileReader = new StreamReader(AppDomain.CurrentDomain.BaseDirectory +
                     Settings.Default.ModuleStateSaveFileName);
                 var existingSaves = (List<ModuleStateSave>)serializer.Deserialize(fileReader);
@@ -110,12 +143,12 @@
                 foreach (var name in existingSaves.Select(save => save.Name))
                 {
                     var name1 = name;
-                    _buttonContexts.Add(new ButtonContext(new RelayCommand(o => GridManager.LoadModuleSave(name1)), name));
+                    ButtonContexts.Add(new ButtonContext(new RelayCommand(o => GridManager.LoadModuleSave(name1)), name));
                 }
             }
             catch (Exception ex)
             {
-                _console.WriteToConsole(ex.Message);
+                Console.WriteToConsole(ex.Message);
             }
         }
     }

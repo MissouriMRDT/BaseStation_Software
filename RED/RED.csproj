@@ -106,6 +106,7 @@
     <Compile Include="Models\ControlCenter\TCPConnectionModel.cs" />
     <Compile Include="ViewModels\ControlCenter\DataRouterVM.cs" />
     <Compile Include="Interfaces\ISubscribe.cs" />
+    <Compile Include="Models\ControlCenter\ControlCenterModel.cs" />
     <Compile Include="RedBootstrapper.cs" />
     <Compile Include="ViewModels\ControlCenter\TCPAsyncServerVM.cs" />
     <Compile Include="ViewModels\ControlCenter\TCPConnectionVM.cs" />
