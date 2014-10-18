@@ -40,7 +40,7 @@ namespace RED.ViewModels.ControlCenter
             List<ISubscribe> existingRegistrations;
             if (Registrations.TryGetValue(dataCode, out existingRegistrations))
             {
-                if (existingRegistrations.Contains(subscriber))
+                if (!existingRegistrations.Contains(subscriber))
                     existingRegistrations.Add(subscriber);
             }
             else
