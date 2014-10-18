@@ -103,17 +103,20 @@ namespace RED.ViewModels.ControlCenter
             while (true)//TODO: have this stop if we close
             {
                 await Stream.ReadAsync(buffer, 0, buffer.Length);
-                using (BinaryReader br = new BinaryReader(new MemoryStream(buffer)))
+                using (MemoryStream ms = new MemoryStream(buffer))
                 {
-                    int dataId = br.ReadInt32();
-                    Int16 dataLength = br.ReadInt16();
-                    byte[] data = br.ReadBytes(dataLength);
-
-                    switch (dataId)
+                    using (BinaryReader br = new BinaryReader(ms))
                     {
-                        case 1: ControlCenterVM.DataRouter.Subscribe(this, dataId); break;//Subscribe Request
-                        case 2: ControlCenterVM.DataRouter.UnSubscribe(this, dataId); break;//Unsubscribe Request
-                        default: ControlCenterVM.DataRouter.Send(dataId, data); break;//Normal Packet
+                        int dataId = br.ReadInt32();
+                        Int16 dataLength = br.ReadInt16();
+                        byte[] data = br.ReadBytes(dataLength);
+
+                        switch (dataId)
+                        {
+                            case 1: ControlCenterVM.DataRouter.Subscribe(this, dataId); break;//Subscribe Request
+                            case 2: ControlCenterVM.DataRouter.UnSubscribe(this, dataId); break;//Unsubscribe Request
+                            default: ControlCenterVM.DataRouter.Send(dataId, data); break;//Normal Packet
+                        }
                     }
                 }
             }
@@ -124,6 +127,7 @@ namespace RED.ViewModels.ControlCenter
             Client.Close();
         }
 
+        //ISubscribe.Receive
         public void Receive(int dataId, byte[] data)
         {
             using (BinaryWriter bw = new BinaryWriter(Stream))
