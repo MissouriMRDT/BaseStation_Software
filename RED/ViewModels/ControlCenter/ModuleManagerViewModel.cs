@@ -11,9 +11,9 @@
     using System.Windows.Input;
     using System.Xml.Serialization;
 
-    public class ModuleGridManager : PropertyChangedBase
+    public class ModuleManagerViewModel : PropertyChangedBase
 	{
-	    public ModuleGrid ModuleGrid { get; set; }
+	    public ModuleGridViewModel ModuleGrid { get; set; }
 	    public ControlCenterViewModel ControlCenter { get; set; }
         private string _selectedModule;
 		public string SelectedModule
@@ -62,9 +62,9 @@
 			private set;
 		}
 
-		public ModuleGridManager(ControlCenterViewModel controlCenter)
+		public ModuleManagerViewModel(ControlCenterViewModel controlCenter)
 		{
-		    ModuleGrid = new ModuleGrid(this);
+		    ModuleGrid = new ModuleGridViewModel(this);
 			ControlCenter = controlCenter;
 
 			LoadLeftCommand = new RelayCommand(c => LoadModule(ModulePosition.Left), b => _selectedModule != null);
@@ -76,9 +76,9 @@
             ResetGridProportionsCommand = new RelayCommand(c => ResetGridProportions());
 		}
 
-        public ModuleGridManager()
+        public ModuleManagerViewModel()
         {
-            ModuleGrid = new ModuleGrid(this);
+            ModuleGrid = new ModuleGridViewModel(this);
         }
 
 		public void LoadModule(ModulePosition position)

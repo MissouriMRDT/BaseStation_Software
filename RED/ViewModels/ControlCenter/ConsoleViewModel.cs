@@ -5,7 +5,7 @@
 	using System;
 	using System.Globalization;
 
-	public class ConsoleVm : PropertyChangedBase
+	public class ConsoleViewModel : PropertyChangedBase
 	{
 		private readonly ConsoleModel _model = new ConsoleModel();
 
@@ -31,7 +31,7 @@
 			}
 		}
 
-		public ConsoleVm()
+		public ConsoleViewModel()
 		{
 
 		}

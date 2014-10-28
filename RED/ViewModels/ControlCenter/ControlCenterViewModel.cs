@@ -16,7 +16,7 @@
     {
         private ControlCenterModel Model;
 
-        public RemoveModuleStateVm RemoveModuleState
+        public RemoveModuleStateViewModel RemoveModuleState
         {
             get
             {
@@ -28,7 +28,7 @@
                 NotifyOfPropertyChange(() => RemoveModuleState);
             }
         }
-        public SaveModuleStateVm SaveModuleState
+        public SaveModuleStateViewModel SaveModuleState
         {
             get
             {
@@ -49,7 +49,7 @@
             }
         }
 
-        public StateManager StateManager
+        public StateViewModel StateManager
         {
             get
             {
@@ -61,7 +61,7 @@
                 NotifyOfPropertyChange();
             }
         }
-        public ConsoleVm Console
+        public ConsoleViewModel Console
         {
             get
             {
@@ -97,7 +97,7 @@
                 NotifyOfPropertyChange(() => TcpAsyncServer);
             }
         }
-        public ModuleGridManager GridManager
+        public ModuleManagerViewModel GridManager
         {
             get
             {
@@ -113,14 +113,14 @@
         public ControlCenterViewModel()
         {
             Model = new ControlCenterModel();
-            StateManager = new StateManager();
-            Console = new ConsoleVm();
+            StateManager = new StateViewModel();
+            Console = new ConsoleViewModel();
             DataRouter = new DataRouterVM();
             TcpAsyncServer = new TCPAsyncServerVM(11000, this);
-            GridManager = new ModuleGridManager(this);
+            GridManager = new ModuleManagerViewModel(this);
 
-            RemoveModuleState = new RemoveModuleStateVm(this);
-            SaveModuleState = new SaveModuleStateVm(GridManager.ModuleGrid, this);
+            RemoveModuleState = new RemoveModuleStateViewModel(this);
+            SaveModuleState = new SaveModuleStateViewModel(GridManager.ModuleGrid, this);
 
             ReloadModuleButtonContexts();
         }

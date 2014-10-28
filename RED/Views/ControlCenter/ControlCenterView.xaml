@@ -7,21 +7,6 @@
         xmlns:controlCenterViews="clr-namespace:RED.Views.ControlCenter"
         xmlns:contexts="clr-namespace:RED.Contexts"
         mc:Ignorable="d" d:DesignHeight="1080" d:DesignWidth="1920">
-    <UserControl.DataContext>
-        <controlCenterViewModels:ControlCenterViewModel />
-    </UserControl.DataContext>
-
-    <UserControl.Resources>
-        <DataTemplate DataType="{x:Type controlCenterViewModels:ModuleGridManager}">
-            <controlCenterViews:ModuleManagerView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type controlCenterViewModels:StateManager}">
-            <controlCenterViews:StateView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type controlCenterViewModels:ConsoleVm}">
-            <controlCenterViews:ConsoleView/>
-        </DataTemplate>
-    </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -111,13 +96,13 @@
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
             <DockPanel Grid.Column="0" Grid.Row="0" Margin="10 0 10 10">
-                <ContentControl Content="{Binding StateManager}"/>
+                <ContentControl x:Name="StateManager"/>
             </DockPanel>
             <DockPanel Grid.Column="0" Grid.Row="1" Margin="10 0">
-                <ContentControl Content="{Binding Console}"/>
+                <ContentControl x:Name="Console"/>
             </DockPanel>
             <DockPanel Grid.Column="0" Grid.Row="2" Margin="10 10 10 0">
-                <ContentControl Content="{Binding GridManager}"/>
+                <ContentControl x:Name="GridManager"/>
             </DockPanel>
         </Grid>
         <!-- Quick-Load Bar -->

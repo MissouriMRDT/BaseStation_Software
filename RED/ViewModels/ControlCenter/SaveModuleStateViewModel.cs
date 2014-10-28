@@ -10,9 +10,9 @@
     using System.Windows.Input;
     using System.Xml.Serialization;
 
-    public class SaveModuleStateVm : PropertyChangedBase
+    public class SaveModuleStateViewModel : PropertyChangedBase
 	{
-		private readonly ModuleGrid _grid;
+		private readonly ModuleGridViewModel _grid;
         private readonly ControlCenterViewModel _controlCenter;
 
 		private string _name = string.Empty;
@@ -31,11 +31,11 @@
 
 		public ICommand SaveStateCommand { get; set; }
 
-		public SaveModuleStateVm()
+		public SaveModuleStateViewModel()
 		{
 			
 		}
-		public SaveModuleStateVm(ModuleGrid grid, ControlCenterViewModel cc)
+		public SaveModuleStateViewModel(ModuleGridViewModel grid, ControlCenterViewModel cc)
 		{
 			_grid = grid;
 		    _controlCenter = cc;

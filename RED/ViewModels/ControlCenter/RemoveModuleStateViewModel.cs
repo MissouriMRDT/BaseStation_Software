@@ -9,7 +9,7 @@
 	using Caliburn.Micro;
 	using Properties;
 
-	public class RemoveModuleStateVm : PropertyChangedBase
+	public class RemoveModuleStateViewModel : PropertyChangedBase
 	{
 		private readonly ControlCenterViewModel controlCenterVM;
 
@@ -48,11 +48,11 @@
 
 		public RelayCommand RemoveStateCommand { get; set; }
 
-		public RemoveModuleStateVm()
+		public RemoveModuleStateViewModel()
 		{
 			
 		}
-		public RemoveModuleStateVm(ControlCenterViewModel controlCenterVM)
+		public RemoveModuleStateViewModel(ControlCenterViewModel controlCenterVM)
 		{
 			this.controlCenterVM = controlCenterVM;
 			RemoveStateCommand = new RelayCommand(c => Remove());

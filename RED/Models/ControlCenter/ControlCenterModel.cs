@@ -6,14 +6,14 @@
 
     public class ControlCenterModel
     {
-        public SaveModuleStateVm SaveModuleState;
-        public RemoveModuleStateVm RemoveModuleState;
+        public SaveModuleStateViewModel SaveModuleState;
+        public RemoveModuleStateViewModel RemoveModuleState;
 
         public readonly ObservableCollection<ButtonContext> ButtonContexts = new ObservableCollection<ButtonContext>();
 
-        public StateManager StateManager;
-        public ConsoleVm Console;
-        public ModuleGridManager GridManager;
+        public StateViewModel StateManager;
+        public ConsoleViewModel Console;
+        public ModuleManagerViewModel GridManager;
         public DataRouterVM DataRouter;
         public TCPAsyncServerVM TcpAsyncServer;
     }
