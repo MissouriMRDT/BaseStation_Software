@@ -15,7 +15,7 @@
         <DataTemplate DataType="{x:Type controlCenterViewModels:ModuleGridManager}">
             <controlCenterViews:ModuleManagerView/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type controlCenterViewModels:StateManager}">
+        <DataTemplate DataType="{x:Type controlCenterViewModels:StateViewModel}">
             <controlCenterViews:StateView/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type controlCenterViewModels:ConsoleVm}">

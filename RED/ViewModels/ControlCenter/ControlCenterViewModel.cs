@@ -49,7 +49,7 @@
             }
         }
 
-        public StateManager StateManager
+        public StateViewModel StateManager
         {
             get
             {
@@ -89,7 +89,7 @@
         public ControlCenterViewModel()
         {
             Model = new ControlCenterModel();
-            StateManager = new StateManager();
+            StateManager = new StateViewModel();
             Console = new ConsoleVm();
             GridManager = new ModuleGridManager(this);
 

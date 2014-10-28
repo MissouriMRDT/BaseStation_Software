@@ -158,7 +158,7 @@
     <Compile Include="Views\ControlCenter\ModuleManagerView.xaml.cs">
       <DependentUpon>ModuleManagerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\ControlCenter\StateVm.cs" />
+    <Compile Include="ViewModels\ControlCenter\StateViewModel.cs" />
     <Compile Include="Views\ControlCenter\ConsoleView.xaml.cs">
       <DependentUpon>ConsoleView.xaml</DependentUpon>
     </Compile>
