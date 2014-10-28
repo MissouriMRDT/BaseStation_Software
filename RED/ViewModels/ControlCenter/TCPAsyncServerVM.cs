@@ -86,6 +86,7 @@ namespace RED.ViewModels.ControlCenter
         {
             server = new TcpListener(IPAddress.Any, ListeningPort);
             IsListening = true;
+            ControlCenterVM.Console.WriteToConsole("Server Started");
             Listen();
         }
 
@@ -95,6 +96,7 @@ namespace RED.ViewModels.ControlCenter
             IsListening = false;
             foreach (TCPConnectionVM client in Connections)
                 client.Close();
+            ControlCenterVM.Console.WriteToConsole("Server Stopped");
         }
 
         private async void Listen()
