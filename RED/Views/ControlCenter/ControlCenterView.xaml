@@ -18,7 +18,7 @@
         <DataTemplate DataType="{x:Type controlCenterViewModels:StateViewModel}">
             <controlCenterViews:StateView/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type controlCenterViewModels:ConsoleVm}">
+        <DataTemplate DataType="{x:Type controlCenterViewModels:ConsoleViewModel}">
             <controlCenterViews:ConsoleView/>
         </DataTemplate>
     </UserControl.Resources>

@@ -61,7 +61,7 @@
                 NotifyOfPropertyChange();
             }
         }
-        public ConsoleVm Console
+        public ConsoleViewModel Console
         {
             get
             {
@@ -90,7 +90,7 @@
         {
             Model = new ControlCenterModel();
             StateManager = new StateViewModel();
-            Console = new ConsoleVm();
+            Console = new ConsoleViewModel();
             GridManager = new ModuleGridManager(this);
 
             RemoveModuleState = new RemoveModuleStateVm(this);

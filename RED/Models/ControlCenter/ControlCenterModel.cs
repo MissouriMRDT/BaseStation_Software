@@ -12,7 +12,7 @@
         public readonly ObservableCollection<ButtonContext> ButtonContexts = new ObservableCollection<ButtonContext>();
 
         public StateViewModel StateManager;
-        public ConsoleVm Console;
+        public ConsoleViewModel Console;
         public ModuleGridManager GridManager;
     }
 }
