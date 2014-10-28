@@ -28,7 +28,7 @@
                 NotifyOfPropertyChange(() => RemoveModuleState);
             }
         }
-        public SaveModuleStateVm SaveModuleState
+        public SaveModuleStateViewModel SaveModuleState
         {
             get
             {
@@ -94,7 +94,7 @@
             GridManager = new ModuleManagerViewModel(this);
 
             RemoveModuleState = new RemoveModuleStateViewModel(this);
-            SaveModuleState = new SaveModuleStateVm(GridManager.ModuleGrid, this);
+            SaveModuleState = new SaveModuleStateViewModel(GridManager.ModuleGrid, this);
 
             ReloadModuleButtonContexts();
         }

@@ -6,7 +6,7 @@
 
     public class ControlCenterModel
     {
-        public SaveModuleStateVm SaveModuleState;
+        public SaveModuleStateViewModel SaveModuleState;
         public RemoveModuleStateViewModel RemoveModuleState;
 
         public readonly ObservableCollection<ButtonContext> ButtonContexts = new ObservableCollection<ButtonContext>();

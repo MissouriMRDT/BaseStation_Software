@@ -128,7 +128,7 @@
     <Compile Include="Contexts\ButtonContext.cs" />
     <Compile Include="Addons\ModuleStateSave.cs" />
     <Compile Include="ViewModels\ControlCenter\RemoveModuleStateViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\SaveModuleStateVm.cs" />
+    <Compile Include="ViewModels\ControlCenter\SaveModuleStateViewModel.cs" />
     <Compile Include="Views\ControlCenter\RemoveModuleStateView.xaml.cs">
       <DependentUpon>RemoveModuleStateView.xaml</DependentUpon>
     </Compile>
