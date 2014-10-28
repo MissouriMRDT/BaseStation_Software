@@ -16,7 +16,7 @@
     {
         private ControlCenterModel Model;
 
-        public RemoveModuleStateVm RemoveModuleState
+        public RemoveModuleStateViewModel RemoveModuleState
         {
             get
             {
@@ -93,7 +93,7 @@
             Console = new ConsoleViewModel();
             GridManager = new ModuleManagerViewModel(this);
 
-            RemoveModuleState = new RemoveModuleStateVm(this);
+            RemoveModuleState = new RemoveModuleStateViewModel(this);
             SaveModuleState = new SaveModuleStateVm(GridManager.ModuleGrid, this);
 
             ReloadModuleButtonContexts();
