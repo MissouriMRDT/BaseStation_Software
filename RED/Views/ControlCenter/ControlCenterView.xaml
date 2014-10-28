@@ -12,7 +12,7 @@
     </UserControl.DataContext>
 
     <UserControl.Resources>
-        <DataTemplate DataType="{x:Type controlCenterViewModels:ModuleGridManager}">
+        <DataTemplate DataType="{x:Type controlCenterViewModels:ModuleManagerViewModel}">
             <controlCenterViews:ModuleManagerView/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type controlCenterViewModels:StateViewModel}">

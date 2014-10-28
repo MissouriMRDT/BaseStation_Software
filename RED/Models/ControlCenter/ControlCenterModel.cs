@@ -13,6 +13,6 @@
 
         public StateViewModel StateManager;
         public ConsoleViewModel Console;
-        public ModuleGridManager GridManager;
+        public ModuleManagerViewModel GridManager;
     }
 }

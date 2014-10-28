@@ -11,7 +11,7 @@
     using System.Windows.Input;
     using System.Xml.Serialization;
 
-    public class ModuleGridManager : PropertyChangedBase
+    public class ModuleManagerViewModel : PropertyChangedBase
 	{
 	    public ModuleGrid ModuleGrid { get; set; }
 	    public ControlCenterViewModel ControlCenter { get; set; }
@@ -62,7 +62,7 @@
 			private set;
 		}
 
-		public ModuleGridManager(ControlCenterViewModel controlCenter)
+		public ModuleManagerViewModel(ControlCenterViewModel controlCenter)
 		{
 		    ModuleGrid = new ModuleGrid(this);
 			ControlCenter = controlCenter;
@@ -76,7 +76,7 @@
             ResetGridProportionsCommand = new RelayCommand(c => ResetGridProportions());
 		}
 
-        public ModuleGridManager()
+        public ModuleManagerViewModel()
         {
             ModuleGrid = new ModuleGrid(this);
         }

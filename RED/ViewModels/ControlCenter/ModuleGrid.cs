@@ -257,10 +257,10 @@
             }
         }
 
-        public ModuleGridManager Manager { get; set; }
+        public ModuleManagerViewModel Manager { get; set; }
         public IEnumerable<IModule> Modules { get; set; } 
 
-        public ModuleGrid(ModuleGridManager manager)
+        public ModuleGrid(ModuleManagerViewModel manager)
         {
             Manager = manager;
             Modules = new List<IModule>();

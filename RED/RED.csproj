@@ -153,7 +153,7 @@
     </Compile>
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Interfaces\IModule.cs" />
-    <Compile Include="ViewModels\ControlCenter\ModuleGridManager.cs" />
+    <Compile Include="ViewModels\ControlCenter\ModuleManagerViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\ConsoleViewModel.cs" />
     <Compile Include="Views\ControlCenter\ModuleManagerView.xaml.cs">
       <DependentUpon>ModuleManagerView.xaml</DependentUpon>

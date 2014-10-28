@@ -73,7 +73,7 @@
                 NotifyOfPropertyChange();
             }
         }
-        public ModuleGridManager GridManager
+        public ModuleManagerViewModel GridManager
         {
             get
             {
@@ -91,7 +91,7 @@
             Model = new ControlCenterModel();
             StateManager = new StateViewModel();
             Console = new ConsoleViewModel();
-            GridManager = new ModuleGridManager(this);
+            GridManager = new ModuleManagerViewModel(this);
 
             RemoveModuleState = new RemoveModuleStateVm(this);
             SaveModuleState = new SaveModuleStateVm(GridManager.ModuleGrid, this);
