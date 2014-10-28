@@ -9,6 +9,7 @@
     public class StateViewModel : PropertyChangedBase
     {
         private readonly StateModel _model = new StateModel();
+        private ControlCenterViewModel ControlCenterVM;
 
         public string Version
         {
@@ -91,8 +92,22 @@
             }
         }
 
-        public StateViewModel()
+        public bool ServerIsRunning
         {
+            get
+            {
+                return _model.ServerIsRunning;
+            }
+            set
+            {
+                _model.ServerIsRunning = value;
+                NotifyOfPropertyChange(() => ServerIsRunning);
+            }
+        }
+
+        public StateViewModel(ControlCenterViewModel CCVM)
+        {
+            ControlCenterVM = CCVM;
             CurrentControlMode = ParseEnum<ControlMode>(Settings.Default.DefaultControlMode);
         }
 
@@ -119,6 +134,15 @@
             CurrentControlMode = currentIndex == 0
                 ? ParseEnum<ControlMode>(controlModes[controlModes.Count - 1])
                 : ParseEnum<ControlMode>(controlModes[currentIndex - 1]);
+        }
+
+        public void ToggleServer()
+        {
+            ServerIsRunning = !ServerIsRunning;
+            if (ServerIsRunning)
+                ControlCenterVM.TcpAsyncServer.Start();
+            else
+                ControlCenterVM.TcpAsyncServer.Stop();
         }
 
         protected T ParseEnum<T>(string name)
