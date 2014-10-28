@@ -12,7 +12,7 @@
 
     public class SaveModuleStateVm : PropertyChangedBase
 	{
-		private readonly ModuleGrid _grid;
+		private readonly ModuleGridViewModel _grid;
         private readonly ControlCenterViewModel _controlCenter;
 
 		private string _name = string.Empty;
@@ -35,7 +35,7 @@
 		{
 			
 		}
-		public SaveModuleStateVm(ModuleGrid grid, ControlCenterViewModel cc)
+		public SaveModuleStateVm(ModuleGridViewModel grid, ControlCenterViewModel cc)
 		{
 			_grid = grid;
 		    _controlCenter = cc;

@@ -104,7 +104,7 @@
     <Compile Include="Models\ControlCenter\ControlCenterModel.cs" />
     <Compile Include="RedBootstrapper.cs" />
     <Compile Include="ViewModels\ControlCenter\ControlCenterViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\ModuleGrid.cs" />
+    <Compile Include="ViewModels\ControlCenter\ModuleGridViewModel.cs" />
     <Compile Include="ViewModels\StartupStatusViewModel.cs" />
     <Compile Include="Views\ControlCenter\ControlCenterView.xaml.cs">
       <DependentUpon>ControlCenterView.xaml</DependentUpon>
