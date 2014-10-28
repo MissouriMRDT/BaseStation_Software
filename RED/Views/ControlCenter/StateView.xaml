@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controlCenter="clr-namespace:RED.ViewModels.ControlCenter"
-             mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance Type=controlCenter:StateManager, IsDesignTimeCreatable=True}">
+             mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance Type=controlCenter:StateViewModel, IsDesignTimeCreatable=True}">
     <ScrollViewer>
         <StackPanel Margin="0 0 2 0">
             <TextBlock Text="System Status" Margin="0 0 0 5" Height="30" VerticalAlignment="Center" />

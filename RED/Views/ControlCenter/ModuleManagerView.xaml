@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controlCenter="clr-namespace:RED.ViewModels.ControlCenter"
              mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300" 
-             d:DataContext="{d:DesignInstance Type=controlCenter:ModuleGridManager, IsDesignTimeCreatable=True}">
+             d:DataContext="{d:DesignInstance Type=controlCenter:ModuleManagerViewModel, IsDesignTimeCreatable=True}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

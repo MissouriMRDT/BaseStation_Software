@@ -12,13 +12,13 @@
     </UserControl.DataContext>
 
     <UserControl.Resources>
-        <DataTemplate DataType="{x:Type controlCenterViewModels:ModuleGridManager}">
+        <DataTemplate DataType="{x:Type controlCenterViewModels:ModuleManagerViewModel}">
             <controlCenterViews:ModuleManagerView/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type controlCenterViewModels:StateManager}">
+        <DataTemplate DataType="{x:Type controlCenterViewModels:StateViewModel}">
             <controlCenterViews:StateView/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type controlCenterViewModels:ConsoleVm}">
+        <DataTemplate DataType="{x:Type controlCenterViewModels:ConsoleViewModel}">
             <controlCenterViews:ConsoleView/>
         </DataTemplate>
     </UserControl.Resources>

@@ -6,7 +6,7 @@
 	using System;
 	using System.Linq;
 
-	public class StateManager : PropertyChangedBase
+	public class StateViewModel : PropertyChangedBase
 	{
 		private readonly StateModel _model = new StateModel();
 
@@ -91,7 +91,7 @@
 			}
 		}
 
-		public StateManager()
+		public StateViewModel()
 		{
 			CurrentControlMode = ParseEnum<ControlMode>(Settings.Default.DefaultControlMode);
 		}
