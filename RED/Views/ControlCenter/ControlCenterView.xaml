@@ -7,9 +7,6 @@
         xmlns:controlCenterViews="clr-namespace:RED.Views.ControlCenter"
         xmlns:contexts="clr-namespace:RED.Contexts"
         mc:Ignorable="d" d:DesignHeight="1080" d:DesignWidth="1920">
-    <UserControl.DataContext>
-        <controlCenterViewModels:ControlCenterViewModel />
-    </UserControl.DataContext>
 
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type controlCenterViewModels:ModuleManagerViewModel}">
