@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using Caliburn.Micro;
@@ -102,10 +103,17 @@ namespace RED.ViewModels.ControlCenter
         private async void Listen()
         {
             server.Start();
-            while (true)
+            try
             {
-                TcpClient client = await server.AcceptTcpClientAsync();
-                Connections.Add(new TCPConnectionVM(client, ControlCenterVM));
+                while (IsListening)
+                {
+                    TcpClient client = await server.AcceptTcpClientAsync();
+                    Connections.Add(new TCPConnectionVM(client, ControlCenterVM));
+                }
+            }
+            catch (ObjectDisposedException)
+            {
+                //disregard - server stopped listening
             }
         }
     }
