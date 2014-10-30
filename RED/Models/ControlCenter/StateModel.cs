@@ -6,6 +6,8 @@
         internal bool NetworkHasConnection = false;
         internal bool ControllerIsConnected = false;
         internal bool HazelIsReady = false;
+
+        internal bool ServerIsRunning = false;
     }
 
     public enum ControlMode

@@ -113,7 +113,7 @@
         public ControlCenterViewModel()
         {
             Model = new ControlCenterModel();
-            StateManager = new StateViewModel();
+            StateManager = new StateViewModel(this);
             Console = new ConsoleViewModel();
             DataRouter = new DataRouterVM();
             TcpAsyncServer = new TCPAsyncServerVM(11000, this);
