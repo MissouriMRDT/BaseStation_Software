@@ -6,7 +6,7 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    public class ModuleGridViewModel : PropertyChangedBase
+    public class ModuleGrid : PropertyChangedBase
     {
         private string _leftSelection;
         private string _rightSelection;
@@ -260,7 +260,7 @@
         public ModuleManagerViewModel Manager { get; set; }
         public IEnumerable<IModule> Modules { get; set; } 
 
-        public ModuleGridViewModel(ModuleManagerViewModel manager)
+        public ModuleGrid(ModuleManagerViewModel manager)
         {
             Manager = manager;
             Modules = new List<IModule>();
