@@ -5,9 +5,12 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Models.ControlCenter;
 
     public class ModuleGridViewModel : PropertyChangedBase
     {
+        private ModuleGridModel Model;
+
         private string _leftSelection;
         private string _rightSelection;
         private string _topSelection;
@@ -262,6 +265,7 @@
 
         public ModuleGridViewModel(ModuleManagerViewModel manager)
         {
+            Model = new ModuleGridModel();
             Manager = manager;
             Modules = new List<IModule>();
         }
