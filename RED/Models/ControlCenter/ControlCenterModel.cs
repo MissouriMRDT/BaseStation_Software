@@ -9,8 +9,6 @@
         public SaveModuleStateViewModel SaveModuleState;
         public RemoveModuleStateViewModel RemoveModuleState;
 
-        public readonly ObservableCollection<ButtonContext> ButtonContexts = new ObservableCollection<ButtonContext>();
-
         public StateViewModel StateManager;
         public ConsoleViewModel Console;
         public ModuleManagerViewModel GridManager;

@@ -117,7 +117,7 @@
                 </Button.Content>
             </Button>
             <TextBlock Margin="5 0 5 0" VerticalAlignment="Center">Load Saved Layouts:</TextBlock>
-            <ItemsControl ItemsSource="{Binding ButtonContexts}">
+            <ItemsControl ItemsSource="{Binding GridManager.ButtonContexts}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal"/>

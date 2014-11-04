@@ -41,14 +41,6 @@
             }
         }
 
-        public ObservableCollection<ButtonContext> ButtonContexts
-        {
-            get
-            {
-                return Model.ButtonContexts;
-            }
-        }
-
         public StateViewModel StateManager
         {
             get
@@ -96,31 +88,7 @@
             RemoveModuleState = new RemoveModuleStateViewModel(this);
             SaveModuleState = new SaveModuleStateViewModel(GridManager.ModuleGrid, this);
 
-            ReloadModuleButtonContexts();
-        }
-
-        public void ReloadModuleButtonContexts()
-        {
-            var serializer = new XmlSerializer(typeof(List<ModuleStateSave>));
-
-            // Get existing saves if there are any.
-            try
-            {
-                ButtonContexts.Clear();
-                var fileReader = new StreamReader(AppDomain.CurrentDomain.BaseDirectory +
-                    Settings.Default.ModuleStateSaveFileName);
-                var existingSaves = (List<ModuleStateSave>)serializer.Deserialize(fileReader);
-                fileReader.Close();
-                foreach (var name in existingSaves.Select(save => save.Name))
-                {
-                    var name1 = name;
-                    ButtonContexts.Add(new ButtonContext(new RelayCommand(o => GridManager.LoadModuleSave(name1)), name));
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteToConsole(ex.Message);
-            }
+            GridManager.ReloadModuleButtonContexts();
         }
     }
 }

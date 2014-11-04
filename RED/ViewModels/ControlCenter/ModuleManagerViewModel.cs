@@ -2,10 +2,12 @@
 {
     using Addons;
     using Caliburn.Micro;
+    using Contexts;
     using Interfaces;
     using Properties;
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.IO;
     using System.Linq;
     using System.Windows.Input;
@@ -62,6 +64,15 @@
         {
             get;
             private set;
+        }
+
+        public readonly ObservableCollection<ButtonContext> _ButtonContexts = new ObservableCollection<ButtonContext>();
+        public ObservableCollection<ButtonContext> ButtonContexts
+        {
+            get
+            {
+                return _ButtonContexts;
+            }
         }
 
         public ModuleManagerViewModel(ControlCenterViewModel controlCenter)
@@ -176,6 +187,30 @@
             ModuleGrid.Row1Height = "1*";
             ModuleGrid.Row3Height = "1*";
             ModuleGrid.Row5Height = "1*";
+        }
+
+        public void ReloadModuleButtonContexts()
+        {
+            var serializer = new XmlSerializer(typeof(List<ModuleStateSave>));
+
+            // Get existing saves if there are any.
+            try
+            {
+                ButtonContexts.Clear();
+                var fileReader = new StreamReader(AppDomain.CurrentDomain.BaseDirectory +
+                    Settings.Default.ModuleStateSaveFileName);
+                var existingSaves = (List<ModuleStateSave>)serializer.Deserialize(fileReader);
+                fileReader.Close();
+                foreach (var name in existingSaves.Select(save => save.Name))
+                {
+                    var name1 = name;
+                    ButtonContexts.Add(new ButtonContext(new RelayCommand(o => LoadModuleSave(name1)), name));
+                }
+            }
+            catch (Exception ex)
+            {
+                ControlCenter.Console.WriteToConsole(ex.Message);
+            }
         }
 
         public enum ModulePosition
