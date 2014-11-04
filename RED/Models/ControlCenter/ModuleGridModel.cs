@@ -9,21 +9,21 @@ namespace RED.Models.ControlCenter
 {
     public class ModuleGridModel
     {
-        internal string leftSelection;
-        internal string rightSelection;
-        internal string topSelection;
-        internal string middleSelection;
-        internal string bottomSelection;
-        internal IModule leftModule;
-        internal IModule rightModule;
-        internal IModule topModule;
-        internal IModule middleModule;
-        internal IModule bottomModule;
-        internal string column1Width = "1*";
-        internal string column3Width = "2*";
-        internal string column5Width = "1*";
-        internal string row1Height = "1*";
-        internal string row3Height = "1*";
-        internal string row5Height = "1*";
+        internal string LeftSelection;
+        internal string RightSelection;
+        internal string TopSelection;
+        internal string MiddleSelection;
+        internal string BottomSelection;
+        internal IModule LeftModule;
+        internal IModule RightModule;
+        internal IModule TopModule;
+        internal IModule MiddleModule;
+        internal IModule BottomModule;
+        internal string Column1Width = "1*";
+        internal string Column3Width = "2*";
+        internal string Column5Width = "1*";
+        internal string Row1Height = "1*";
+        internal string Row3Height = "1*";
+        internal string Row5Height = "1*";
     }
 }

@@ -15,19 +15,19 @@
         {
             get
             {
-                return Model.leftSelection;
+                return Model.LeftSelection;
             }
             set
             {
                 if (value == String.Empty)
-                    Model.leftSelection = null;
+                    Model.LeftSelection = null;
                 else
                 {
                     var module = Modules.Single(t => t.Title == value);
                     if (module.InUse)
                         Manager.RemoveModule(module);
-                    Model.leftSelection = value;
-                    Model.leftModule = module;
+                    Model.LeftSelection = value;
+                    Model.LeftModule = module;
                 }
                 NotifyOfPropertyChange();
             }
@@ -36,19 +36,19 @@
         {
             get
             {
-                return Model.rightSelection;
+                return Model.RightSelection;
             }
             set
             {
                 if (value == String.Empty)
-                    Model.rightSelection = null;
+                    Model.RightSelection = null;
                 else
                 {
                     var module = Modules.Single(t => t.Title == value);
                     if (module.InUse)
                         Manager.RemoveModule(module);
-                    Model.rightSelection = value;
-                    Model.rightModule = module;
+                    Model.RightSelection = value;
+                    Model.RightModule = module;
                 }
                 NotifyOfPropertyChange();
             }
@@ -57,19 +57,19 @@
         {
             get
             {
-                return Model.topSelection;
+                return Model.TopSelection;
             }
             set
             {
                 if (value == String.Empty)
-                    Model.topSelection = null;
+                    Model.TopSelection = null;
                 else
                 {
                     var module = Modules.Single(t => t.Title == value);
                     if (module.InUse)
                         Manager.RemoveModule(module);
-                    Model.topSelection = value;
-                    Model.topModule = module;
+                    Model.TopSelection = value;
+                    Model.TopModule = module;
                 }
                 NotifyOfPropertyChange();
             }
@@ -78,19 +78,19 @@
         {
             get
             {
-                return Model.middleSelection;
+                return Model.MiddleSelection;
             }
             set
             {
                 if (value == String.Empty)
-                    Model.middleSelection = null;
+                    Model.MiddleSelection = null;
                 else
                 {
                     var module = Modules.Single(t => t.Title == value);
                     if (module.InUse)
                         Manager.RemoveModule(module);
-                    Model.middleSelection = value;
-                    Model.middleModule = module;
+                    Model.MiddleSelection = value;
+                    Model.MiddleModule = module;
                 }
                 NotifyOfPropertyChange();
             }
@@ -99,19 +99,19 @@
         {
             get
             {
-                return Model.bottomSelection;
+                return Model.BottomSelection;
             }
             set
             {
                 if (value == String.Empty)
-                    Model.bottomSelection = null;
+                    Model.BottomSelection = null;
                 else
                 {
                     var module = Modules.Single(t => t.Title == value);
                     if (module.InUse)
                         Manager.RemoveModule(module);
-                    Model.bottomSelection = value;
-                    Model.bottomModule = module;
+                    Model.BottomSelection = value;
+                    Model.BottomModule = module;
                 }
                 NotifyOfPropertyChange();
             }
@@ -121,13 +121,13 @@
         {
             get
             {
-                return Model.leftModule;
+                return Model.LeftModule;
             }
             set
             {
                 if (value != null)
                     value.InUse = true;
-                Model.leftModule = value;
+                Model.LeftModule = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -135,13 +135,13 @@
         {
             get
             {
-                return Model.rightModule;
+                return Model.RightModule;
             }
             set
             {
                 if (value != null)
                     value.InUse = true;
-                Model.rightModule = value;
+                Model.RightModule = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -149,13 +149,13 @@
         {
             get
             {
-                return Model.topModule;
+                return Model.TopModule;
             }
             set
             {
                 if (value != null)
                     value.InUse = true;
-                Model.topModule = value;
+                Model.TopModule = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -163,13 +163,13 @@
         {
             get
             {
-                return Model.middleModule;
+                return Model.MiddleModule;
             }
             set
             {
                 if (value != null)
                     value.InUse = true;
-                Model.middleModule = value;
+                Model.MiddleModule = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -177,68 +177,68 @@
         {
             get
             {
-                return Model.bottomModule;
+                return Model.BottomModule;
             }
             set
             {
                 if (value != null)
                     value.InUse = true;
-                Model.bottomModule = value;
+                Model.BottomModule = value;
                 NotifyOfPropertyChange();
             }
         }
 
         public string Column1Width
         {
-            get { return Model.column1Width; }
+            get { return Model.Column1Width; }
             set
             {
-                Model.column1Width = value;
+                Model.Column1Width = value;
                 NotifyOfPropertyChange();
             }
         }
         public string Column3Width
         {
-            get { return Model.column3Width; }
+            get { return Model.Column3Width; }
             set
             {
-                Model.column3Width = value;
+                Model.Column3Width = value;
                 NotifyOfPropertyChange();
             }
         }
         public string Column5Width
         {
-            get { return Model.column5Width; }
+            get { return Model.Column5Width; }
             set
             {
-                Model.column5Width = value;
+                Model.Column5Width = value;
                 NotifyOfPropertyChange();
             }
         }
         public string Row1Height
         {
-            get { return Model.row1Height; }
+            get { return Model.Row1Height; }
             set
             {
-                Model.row1Height = value;
+                Model.Row1Height = value;
                 NotifyOfPropertyChange();
             }
         }
         public string Row3Height
         {
-            get { return Model.row3Height; }
+            get { return Model.Row3Height; }
             set
             {
-                Model.row3Height = value;
+                Model.Row3Height = value;
                 NotifyOfPropertyChange();
             }
         }
         public string Row5Height
         {
-            get { return Model.row5Height; }
+            get { return Model.Row5Height; }
             set
             {
-                Model.row5Height = value;
+                Model.Row5Height = value;
                 NotifyOfPropertyChange();
             }
         }
