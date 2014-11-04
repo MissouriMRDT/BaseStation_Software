@@ -127,8 +127,8 @@
     <Compile Include="Contexts\TelemetryContext.cs" />
     <Compile Include="Contexts\ButtonContext.cs" />
     <Compile Include="Addons\ModuleStateSave.cs" />
-    <Compile Include="ViewModels\ControlCenter\RemoveModuleStateVm.cs" />
-    <Compile Include="ViewModels\ControlCenter\SaveModuleStateVm.cs" />
+    <Compile Include="ViewModels\ControlCenter\RemoveModuleStateViewModel.cs" />
+    <Compile Include="ViewModels\ControlCenter\SaveModuleStateViewModel.cs" />
     <Compile Include="Views\ControlCenter\RemoveModuleStateView.xaml.cs">
       <DependentUpon>RemoveModuleStateView.xaml</DependentUpon>
     </Compile>
@@ -153,12 +153,12 @@
     </Compile>
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Interfaces\IModule.cs" />
-    <Compile Include="ViewModels\ControlCenter\ModuleGridManager.cs" />
-    <Compile Include="ViewModels\ControlCenter\ConsoleVm.cs" />
+    <Compile Include="ViewModels\ControlCenter\ModuleManagerViewModel.cs" />
+    <Compile Include="ViewModels\ControlCenter\ConsoleViewModel.cs" />
     <Compile Include="Views\ControlCenter\ModuleManagerView.xaml.cs">
       <DependentUpon>ModuleManagerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\ControlCenter\StateVm.cs" />
+    <Compile Include="ViewModels\ControlCenter\StateViewModel.cs" />
     <Compile Include="Views\ControlCenter\ConsoleView.xaml.cs">
       <DependentUpon>ConsoleView.xaml</DependentUpon>
     </Compile>
