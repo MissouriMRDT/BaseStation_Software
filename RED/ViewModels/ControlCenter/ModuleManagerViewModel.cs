@@ -13,8 +13,10 @@
 
     public class ModuleManagerViewModel : PropertyChangedBase
 	{
-	    public ModuleGridViewModel ModuleGrid { get; set; }
-	    public ControlCenterViewModel ControlCenter { get; set; }
+        private ControlCenterViewModel ControlCenter;
+
+        public ModuleGridViewModel ModuleGrid;
+
         private string _selectedModule;
 		public string SelectedModule
 		{
@@ -75,7 +77,6 @@
 
             ResetGridProportionsCommand = new RelayCommand(c => ResetGridProportions());
 		}
-
         public ModuleManagerViewModel()
         {
             ModuleGrid = new ModuleGridViewModel(this);
@@ -165,6 +166,7 @@
             ModuleGrid.Row3Height = save.Row3Height;
             ModuleGrid.Row5Height = save.Row5Height;
         }
+
         public ICommand ResetGridProportionsCommand { get; set; }
         private void ResetGridProportions()
         {
