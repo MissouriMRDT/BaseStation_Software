@@ -105,12 +105,8 @@
     <Compile Include="RedBootstrapper.cs" />
     <Compile Include="ViewModels\ControlCenter\ControlCenterViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\ModuleGrid.cs" />
-    <Compile Include="ViewModels\StartupStatusViewModel.cs" />
     <Compile Include="Views\ControlCenter\ControlCenterView.xaml.cs">
       <DependentUpon>ControlCenterView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\StartupStatusView.xaml.cs">
-      <DependentUpon>StartupStatusView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\ControlCenter\ControlCenterView.xaml">
       <SubType>Designer</SubType>
@@ -181,10 +177,6 @@
       <DependentUpon>StateView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Page Include="Views\StartupStatusView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
