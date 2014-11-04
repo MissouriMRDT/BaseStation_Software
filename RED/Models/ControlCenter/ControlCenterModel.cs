@@ -1,8 +1,8 @@
 ﻿namespace RED.Models.ControlCenter
 {
-    using RED.Contexts;
-    using RED.ViewModels.ControlCenter;
-    using System.Collections.ObjectModel;
+	using Contexts;
+	using System.Collections.ObjectModel;
+	using ViewModels.ControlCenter;
 
     public class ControlCenterModel
     {

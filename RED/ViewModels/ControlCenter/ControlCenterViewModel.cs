@@ -3,6 +3,7 @@
     using Addons;
     using Caliburn.Micro;
     using Contexts;
+    using Models.ControlCenter;
     using Properties;
     using System;
     using System.Collections.Generic;
@@ -10,7 +11,6 @@
     using System.IO;
     using System.Linq;
     using System.Xml.Serialization;
-    using RED.Models.ControlCenter;
 
     public class ControlCenterViewModel : Screen
     {

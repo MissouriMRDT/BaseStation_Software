@@ -1,13 +1,13 @@
 ﻿namespace RED.ViewModels.ControlCenter
 {
 	using Addons;
+	using Caliburn.Micro;
+	using Properties;
 	using System;
 	using System.Collections.Generic;
 	using System.IO;
 	using System.Linq;
 	using System.Xml.Serialization;
-	using Caliburn.Micro;
-	using Properties;
 
 	public class RemoveModuleStateViewModel : PropertyChangedBase
 	{
