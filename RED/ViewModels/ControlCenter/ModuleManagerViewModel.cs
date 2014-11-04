@@ -13,7 +13,7 @@
 
     public class ModuleManagerViewModel : PropertyChangedBase
 	{
-	    public ModuleGrid ModuleGrid { get; set; }
+	    public ModuleGridViewModel ModuleGrid { get; set; }
 	    public ControlCenterViewModel ControlCenter { get; set; }
         private string _selectedModule;
 		public string SelectedModule
@@ -64,7 +64,7 @@
 
 		public ModuleManagerViewModel(ControlCenterViewModel controlCenter)
 		{
-		    ModuleGrid = new ModuleGrid(this);
+		    ModuleGrid = new ModuleGridViewModel(this);
 			ControlCenter = controlCenter;
 
 			LoadLeftCommand = new RelayCommand(c => LoadModule(ModulePosition.Left), b => _selectedModule != null);
@@ -78,7 +78,7 @@
 
         public ModuleManagerViewModel()
         {
-            ModuleGrid = new ModuleGrid(this);
+            ModuleGrid = new ModuleGridViewModel(this);
         }
 
 		public void LoadModule(ModulePosition position)
