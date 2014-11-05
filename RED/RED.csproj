@@ -113,6 +113,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\ControlCenter\ModuleGridView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ControlCenter\RemoveModuleStateView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -126,6 +130,9 @@
     <Compile Include="Addons\ModuleStateSave.cs" />
     <Compile Include="ViewModels\ControlCenter\RemoveModuleStateViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\SaveModuleStateViewModel.cs" />
+    <Compile Include="Views\ControlCenter\ModuleGridView.xaml.cs">
+      <DependentUpon>ModuleGridView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ControlCenter\RemoveModuleStateView.xaml.cs">
       <DependentUpon>RemoveModuleStateView.xaml</DependentUpon>
     </Compile>

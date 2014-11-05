@@ -17,7 +17,7 @@
     {
         private ControlCenterViewModel ControlCenter;
 
-        public ModuleGridViewModel ModuleGrid;
+        public ModuleGridViewModel ModuleGrid { get; set; }
 
         private string _selectedModule;
         public string SelectedModule
