@@ -2,7 +2,9 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        WindowStartupLocation="CenterScreen"
+        MinHeight="640" MinWidth="1024" Height="640" Width="1024"
+        EnableDWMDropShadow="True" ResizeMode="CanResizeWithGrip" WindowTitleBrush="white" TitleCaps="False"
+        WindowTransitionsEnabled="False" WindowStartupLocation="CenterScreen"
         Title="Rover Engagement Display">
     <ContentControl x:Name="ActiveItem"/>
 </controls:MetroWindow>
