@@ -107,15 +107,20 @@
     <Compile Include="ViewModels\ControlCenter\DataRouterVM.cs" />
     <Compile Include="Interfaces\ISubscribe.cs" />
     <Compile Include="Models\ControlCenter\ControlCenterModel.cs" />
+    <Compile Include="Models\ControlCenter\ModuleGridModel.cs" />
     <Compile Include="RedBootstrapper.cs" />
     <Compile Include="ViewModels\ControlCenter\TCPAsyncServerVM.cs" />
     <Compile Include="ViewModels\ControlCenter\TCPConnectionVM.cs" />
     <Compile Include="ViewModels\ControlCenter\ControlCenterViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\ModuleGrid.cs" />
+    <Compile Include="ViewModels\ControlCenter\ModuleGridViewModel.cs" />
     <Compile Include="Views\ControlCenter\ControlCenterView.xaml.cs">
       <DependentUpon>ControlCenterView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\ControlCenter\ControlCenterView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ControlCenter\ModuleGridView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -132,6 +137,9 @@
     <Compile Include="Addons\ModuleStateSave.cs" />
     <Compile Include="ViewModels\ControlCenter\RemoveModuleStateViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\SaveModuleStateViewModel.cs" />
+    <Compile Include="Views\ControlCenter\ModuleGridView.xaml.cs">
+      <DependentUpon>ModuleGridView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ControlCenter\RemoveModuleStateView.xaml.cs">
       <DependentUpon>RemoveModuleStateView.xaml</DependentUpon>
     </Compile>
