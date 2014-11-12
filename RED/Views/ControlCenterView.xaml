@@ -44,12 +44,36 @@
                              TitleVisibility ="Collapsed" 
                              IsPinned="False"
                              Height="75">
-                <TextBlock VerticalAlignment="Center" Text="This is an AppBar" />
+                <DockPanel>
+                    <Button Command="{Binding ModuleManager.ResetGridProportionsCommand}" ToolTip="Click this to reset the grid proportions."
+                    Height="35" Width="35"
+                    Style="{DynamicResource MetroCircleButtonStyle}">
+                        <Rectangle Width="15" Height="15" 
+                           Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_reset}" />
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                    </Button>
+                    <TextBlock Margin="5 0 5 0" VerticalAlignment="Center">Load Saved Layouts:</TextBlock>
+                    <ItemsControl ItemsSource="{Binding ModuleManager.ButtonContexts}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type contexts:ButtonContext}">
+                                <Button Command="{Binding Command}" Content="{Binding Text}" Margin="0 0 2 0" Width="125"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </DockPanel>
             </controls:Flyout>
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
 
-    <Grid>
+    <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="Auto"/>
@@ -81,32 +105,5 @@
                 <ContentControl x:Name="ModuleManager"/>
             </DockPanel>
         </Grid>
-        <!-- Quick-Load Bar -->
-
-        <DockPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Margin="0 5 0 0">
-            <Button Command="{Binding ModuleManager.ResetGridProportionsCommand}" ToolTip="Click this to reset the grid proportions."
-                    Height="35" Width="35"
-                    Style="{DynamicResource MetroCircleButtonStyle}">
-                <Rectangle Width="15" Height="15" 
-                           Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
-                    <Rectangle.OpacityMask>
-                        <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_reset}" />
-                    </Rectangle.OpacityMask>
-                </Rectangle>
-            </Button>
-            <TextBlock Margin="5 0 5 0" VerticalAlignment="Center">Load Saved Layouts:</TextBlock>
-            <ItemsControl ItemsSource="{Binding ModuleManager.ButtonContexts}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="{x:Type contexts:ButtonContext}">
-                        <Button Command="{Binding Command}" Content="{Binding Text}" Margin="0 0 2 0" Width="125"/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </DockPanel>
     </Grid>
 </controls:MetroWindow>

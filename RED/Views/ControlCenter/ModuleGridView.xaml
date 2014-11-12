@@ -32,7 +32,7 @@
                           ResizeBehavior="PreviousAndNext" Background="Transparent"/>
 
         <DockPanel Grid.Column="0" Grid.Row="0" Grid.RowSpan="5" Margin="0 0 1 0">
-            <Border BorderBrush="Black" BorderThickness="1" Padding="3">
+            <Border BorderBrush="LightGray" BorderThickness="1" Padding="3">
                 <DockPanel>
                     <TextBlock Text="{Binding LeftModule.Title}" DockPanel.Dock="Top"/>
                     <ContentControl Content="{Binding LeftModule}" />
@@ -40,7 +40,7 @@
             </Border>
         </DockPanel>
         <DockPanel Grid.Column="4" Grid.Row="0" Grid.RowSpan="5" Margin="1 0 0 0">
-            <Border BorderBrush="Black" BorderThickness="1" Padding="3">
+            <Border BorderBrush="LightGray" BorderThickness="1" Padding="3">
                 <DockPanel>
                     <TextBlock Text="{Binding RightModule.Title}" DockPanel.Dock="Top"/>
                     <ContentControl Content="{Binding RightModule}" />
@@ -48,7 +48,7 @@
             </Border>
         </DockPanel>
         <DockPanel Grid.Column="2" Grid.Row="0" Margin="1 0 1 1">
-            <Border BorderBrush="Black" BorderThickness="1" Padding="3">
+            <Border BorderBrush="LightGray" BorderThickness="1" Padding="3">
                 <DockPanel>
                     <TextBlock Text="{Binding TopModule.Title}" DockPanel.Dock="Top"/>
                     <ContentControl Content="{Binding TopModule}" />
@@ -56,7 +56,7 @@
             </Border>
         </DockPanel>
         <DockPanel Grid.Column="2" Grid.Row="2" Margin="1">
-            <Border BorderBrush="Black" BorderThickness="1" Padding="3">
+            <Border BorderBrush="LightGray" BorderThickness="1" Padding="3">
                 <DockPanel>
                     <TextBlock Text="{Binding MiddleModule.Title}" DockPanel.Dock="Top"/>
                     <ContentControl Content="{Binding MiddleModule}" />
@@ -64,7 +64,7 @@
             </Border>
         </DockPanel>
         <DockPanel Grid.Column="2" Grid.Row="4" Margin="1 1 1 0">
-            <Border BorderBrush="Black" BorderThickness="1" Padding="3">
+            <Border BorderBrush="LightGray" BorderThickness="1" Padding="3">
                 <DockPanel>
                     <TextBlock Text="{Binding BottomModule.Title}" DockPanel.Dock="Top"/>
                     <ContentControl Content="{Binding BottomModule}" />
