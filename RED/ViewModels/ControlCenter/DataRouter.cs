@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace RED.ViewModels.ControlCenter
 {
-    public class DataRouterVM : PropertyChangedBase
+    public class DataRouter : PropertyChangedBase
     {
         private DataRouterModel Model;
 
@@ -22,7 +22,7 @@ namespace RED.ViewModels.ControlCenter
             }
         }
 
-        public DataRouterVM()
+        public DataRouter()
         {
             Model = new DataRouterModel();
         }

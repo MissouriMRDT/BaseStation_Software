@@ -2,6 +2,6 @@
 {
     public class ConsoleModel
     {
-        internal string ConsoleText = "";
+        internal string ConsoleText = string.Empty;
     }
 }

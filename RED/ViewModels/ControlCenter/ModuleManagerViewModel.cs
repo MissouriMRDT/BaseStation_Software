@@ -15,11 +15,11 @@
 
     public class ModuleManagerViewModel : PropertyChangedBase
     {
-        private ControlCenterViewModel ControlCenter;
+        private readonly ControlCenterViewModel _controlCenter;
+        private readonly ObservableCollection<ButtonContext> _buttonContexts;
+        private string _selectedModule;
 
         public ModuleGridViewModel ModuleGrid { get; set; }
-
-        private string _selectedModule;
         public string SelectedModule
         {
             get
@@ -39,7 +39,6 @@
                 return ModuleGrid.Modules.Select(t => t.Title).ToList().OrderBy(t => t);
             }
         }
-
         public ICommand LoadLeftCommand
         {
             get;
@@ -65,20 +64,19 @@
             get;
             private set;
         }
-
-        public readonly ObservableCollection<ButtonContext> _ButtonContexts = new ObservableCollection<ButtonContext>();
         public ObservableCollection<ButtonContext> ButtonContexts
         {
             get
             {
-                return _ButtonContexts;
+                return _buttonContexts;
             }
         }
 
         public ModuleManagerViewModel(ControlCenterViewModel controlCenter)
         {
+            _buttonContexts = new ObservableCollection<ButtonContext>();
             ModuleGrid = new ModuleGridViewModel(this);
-            ControlCenter = controlCenter;
+            _controlCenter = controlCenter;
 
             LoadLeftCommand = new RelayCommand(c => LoadModule(ModulePosition.Left), b => _selectedModule != null);
             LoadRightCommand = new RelayCommand(c => LoadModule(ModulePosition.Right), b => _selectedModule != null);
@@ -209,7 +207,7 @@
             }
             catch (Exception ex)
             {
-                ControlCenter.Console.WriteToConsole(ex.Message);
+                _controlCenter.Console.WriteToConsole(ex.Message);
             }
         }
 

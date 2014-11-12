@@ -9,25 +9,25 @@
 
     public class ModuleGridViewModel : PropertyChangedBase
     {
-        private ModuleGridModel Model;
+        private readonly ModuleGridModel _model;
 
         public string LeftSelection
         {
             get
             {
-                return Model.LeftSelection;
+                return _model.LeftSelection;
             }
             set
             {
                 if (value == String.Empty)
-                    Model.LeftSelection = null;
+                    _model.LeftSelection = null;
                 else
                 {
                     var module = Modules.Single(t => t.Title == value);
                     if (module.InUse)
                         Manager.RemoveModule(module);
-                    Model.LeftSelection = value;
-                    Model.LeftModule = module;
+                    _model.LeftSelection = value;
+                    _model.LeftModule = module;
                 }
                 NotifyOfPropertyChange();
             }
@@ -36,19 +36,19 @@
         {
             get
             {
-                return Model.RightSelection;
+                return _model.RightSelection;
             }
             set
             {
                 if (value == String.Empty)
-                    Model.RightSelection = null;
+                    _model.RightSelection = null;
                 else
                 {
                     var module = Modules.Single(t => t.Title == value);
                     if (module.InUse)
                         Manager.RemoveModule(module);
-                    Model.RightSelection = value;
-                    Model.RightModule = module;
+                    _model.RightSelection = value;
+                    _model.RightModule = module;
                 }
                 NotifyOfPropertyChange();
             }
@@ -57,19 +57,19 @@
         {
             get
             {
-                return Model.TopSelection;
+                return _model.TopSelection;
             }
             set
             {
                 if (value == String.Empty)
-                    Model.TopSelection = null;
+                    _model.TopSelection = null;
                 else
                 {
                     var module = Modules.Single(t => t.Title == value);
                     if (module.InUse)
                         Manager.RemoveModule(module);
-                    Model.TopSelection = value;
-                    Model.TopModule = module;
+                    _model.TopSelection = value;
+                    _model.TopModule = module;
                 }
                 NotifyOfPropertyChange();
             }
@@ -78,19 +78,19 @@
         {
             get
             {
-                return Model.MiddleSelection;
+                return _model.MiddleSelection;
             }
             set
             {
                 if (value == String.Empty)
-                    Model.MiddleSelection = null;
+                    _model.MiddleSelection = null;
                 else
                 {
                     var module = Modules.Single(t => t.Title == value);
                     if (module.InUse)
                         Manager.RemoveModule(module);
-                    Model.MiddleSelection = value;
-                    Model.MiddleModule = module;
+                    _model.MiddleSelection = value;
+                    _model.MiddleModule = module;
                 }
                 NotifyOfPropertyChange();
             }
@@ -99,19 +99,19 @@
         {
             get
             {
-                return Model.BottomSelection;
+                return _model.BottomSelection;
             }
             set
             {
                 if (value == String.Empty)
-                    Model.BottomSelection = null;
+                    _model.BottomSelection = null;
                 else
                 {
                     var module = Modules.Single(t => t.Title == value);
                     if (module.InUse)
                         Manager.RemoveModule(module);
-                    Model.BottomSelection = value;
-                    Model.BottomModule = module;
+                    _model.BottomSelection = value;
+                    _model.BottomModule = module;
                 }
                 NotifyOfPropertyChange();
             }
@@ -121,13 +121,13 @@
         {
             get
             {
-                return Model.LeftModule;
+                return _model.LeftModule;
             }
             set
             {
                 if (value != null)
                     value.InUse = true;
-                Model.LeftModule = value;
+                _model.LeftModule = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -135,13 +135,13 @@
         {
             get
             {
-                return Model.RightModule;
+                return _model.RightModule;
             }
             set
             {
                 if (value != null)
                     value.InUse = true;
-                Model.RightModule = value;
+                _model.RightModule = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -149,13 +149,13 @@
         {
             get
             {
-                return Model.TopModule;
+                return _model.TopModule;
             }
             set
             {
                 if (value != null)
                     value.InUse = true;
-                Model.TopModule = value;
+                _model.TopModule = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -163,13 +163,13 @@
         {
             get
             {
-                return Model.MiddleModule;
+                return _model.MiddleModule;
             }
             set
             {
                 if (value != null)
                     value.InUse = true;
-                Model.MiddleModule = value;
+                _model.MiddleModule = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -177,68 +177,68 @@
         {
             get
             {
-                return Model.BottomModule;
+                return _model.BottomModule;
             }
             set
             {
                 if (value != null)
                     value.InUse = true;
-                Model.BottomModule = value;
+                _model.BottomModule = value;
                 NotifyOfPropertyChange();
             }
         }
 
         public string Column1Width
         {
-            get { return Model.Column1Width; }
+            get { return _model.Column1Width; }
             set
             {
-                Model.Column1Width = value;
+                _model.Column1Width = value;
                 NotifyOfPropertyChange();
             }
         }
         public string Column3Width
         {
-            get { return Model.Column3Width; }
+            get { return _model.Column3Width; }
             set
             {
-                Model.Column3Width = value;
+                _model.Column3Width = value;
                 NotifyOfPropertyChange();
             }
         }
         public string Column5Width
         {
-            get { return Model.Column5Width; }
+            get { return _model.Column5Width; }
             set
             {
-                Model.Column5Width = value;
+                _model.Column5Width = value;
                 NotifyOfPropertyChange();
             }
         }
         public string Row1Height
         {
-            get { return Model.Row1Height; }
+            get { return _model.Row1Height; }
             set
             {
-                Model.Row1Height = value;
+                _model.Row1Height = value;
                 NotifyOfPropertyChange();
             }
         }
         public string Row3Height
         {
-            get { return Model.Row3Height; }
+            get { return _model.Row3Height; }
             set
             {
-                Model.Row3Height = value;
+                _model.Row3Height = value;
                 NotifyOfPropertyChange();
             }
         }
         public string Row5Height
         {
-            get { return Model.Row5Height; }
+            get { return _model.Row5Height; }
             set
             {
-                Model.Row5Height = value;
+                _model.Row5Height = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -248,7 +248,7 @@
 
         public ModuleGridViewModel(ModuleManagerViewModel manager)
         {
-            Model = new ModuleGridModel();
+            _model = new ModuleGridModel();
             Manager = manager;
             Modules = new List<IModule>();
         }

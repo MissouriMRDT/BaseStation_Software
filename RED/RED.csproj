@@ -102,15 +102,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\ControlCenter\DataRouterModel.cs" />
-    <Compile Include="Models\ControlCenter\TCPAsyncServerModel.cs" />
-    <Compile Include="Models\ControlCenter\TCPConnectionModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\DataRouterVM.cs" />
+    <Compile Include="Models\ControlCenter\AsyncTcpServerModel.cs" />
+    <Compile Include="Models\ControlCenter\TcpConnectionModel.cs" />
+    <Compile Include="ViewModels\ControlCenter\DataRouter.cs" />
     <Compile Include="Interfaces\ISubscribe.cs" />
     <Compile Include="Models\ControlCenter\ControlCenterModel.cs" />
     <Compile Include="Models\ControlCenter\ModuleGridModel.cs" />
     <Compile Include="RedBootstrapper.cs" />
-    <Compile Include="ViewModels\ControlCenter\TCPAsyncServerVM.cs" />
-    <Compile Include="ViewModels\ControlCenter\TCPConnectionVM.cs" />
+    <Compile Include="ViewModels\ControlCenter\AsyncTcpServer.cs" />
+    <Compile Include="ViewModels\ControlCenter\TcpConnection.cs" />
     <Compile Include="ViewModels\ControlCenter\ControlCenterViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\ModuleGridViewModel.cs" />
     <Compile Include="Views\ControlCenter\ControlCenterView.xaml.cs">

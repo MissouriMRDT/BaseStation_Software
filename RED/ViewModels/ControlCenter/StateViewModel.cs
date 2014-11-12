@@ -9,7 +9,7 @@
     public class StateViewModel : PropertyChangedBase
     {
         private readonly StateModel _model = new StateModel();
-        private ControlCenterViewModel ControlCenterVM;
+        private readonly ControlCenterViewModel _controlCenter;
 
         public string Version
         {
@@ -79,18 +79,6 @@
                 return !ControllerIsConnected ? "Disconnected" : "Connected";
             }
         }
-        public bool HazelIsReady
-        {
-            get
-            {
-                return _model.HazelIsReady;
-            }
-            set
-            {
-                _model.HazelIsReady = value;
-                NotifyOfPropertyChange();
-            }
-        }
 
         public bool ServerIsRunning
         {
@@ -105,9 +93,9 @@
             }
         }
 
-        public StateViewModel(ControlCenterViewModel CCVM)
+        public StateViewModel(ControlCenterViewModel controlCenter)
         {
-            ControlCenterVM = CCVM;
+            _controlCenter = controlCenter;
             CurrentControlMode = ParseEnum<ControlMode>(Settings.Default.DefaultControlMode);
         }
 
@@ -140,9 +128,9 @@
         {
             ServerIsRunning = !ServerIsRunning;
             if (ServerIsRunning)
-                ControlCenterVM.TcpAsyncServer.Start();
+                _controlCenter.TcpAsyncServer.Start();
             else
-                ControlCenterVM.TcpAsyncServer.Stop();
+                _controlCenter.TcpAsyncServer.Stop();
         }
 
         protected T ParseEnum<T>(string name)

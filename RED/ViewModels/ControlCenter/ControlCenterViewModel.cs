@@ -65,7 +65,7 @@
                 NotifyOfPropertyChange();
             }
         }
-        public DataRouterVM DataRouter
+        public DataRouter DataRouter
         {
             get
             {
@@ -77,7 +77,7 @@
                 NotifyOfPropertyChange(() => DataRouter);
             }
         }
-        public TCPAsyncServerVM TcpAsyncServer
+        public AsyncTcpServer TcpAsyncServer
         {
             get
             {
@@ -107,8 +107,8 @@
             Model = new ControlCenterModel();
             StateManager = new StateViewModel(this);
             Console = new ConsoleViewModel();
-            DataRouter = new DataRouterVM();
-            TcpAsyncServer = new TCPAsyncServerVM(11000, this);
+            DataRouter = new DataRouter();
+            TcpAsyncServer = new AsyncTcpServer(11000, this);
             GridManager = new ModuleManagerViewModel(this);
 
             RemoveModuleState = new RemoveModuleStateViewModel(this);

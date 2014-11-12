@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RED.Interfaces;
-
-namespace RED.Models.ControlCenter
+﻿namespace RED.Models.ControlCenter
 {
+    using Interfaces;
+
     public class ModuleGridModel
     {
         internal string LeftSelection;

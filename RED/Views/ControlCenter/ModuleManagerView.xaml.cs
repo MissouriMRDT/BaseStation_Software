@@ -4,8 +4,8 @@
 
     public partial class ModuleManagerView
     {
-        private SaveModuleStateView saveDialog;
-        private RemoveModuleStateView removeDialog;
+        private SaveModuleStateView _saveDialog;
+        private RemoveModuleStateView _removeDialog;
 
         public ModuleManagerView()
         {
@@ -14,37 +14,37 @@
         
         private void SaveButton_OnClick(object sender, RoutedEventArgs e)
         {
-            if (removeDialog != null)
+            if (_removeDialog != null)
             {
-                removeDialog.Close();
+                _removeDialog.Close();
             }
-            if (saveDialog == null)
+            if (_saveDialog == null)
             {
-                saveDialog = new SaveModuleStateView();
+                _saveDialog = new SaveModuleStateView();
             }
             else
             {
-                saveDialog.Close();
-                saveDialog = new SaveModuleStateView();
+                _saveDialog.Close();
+                _saveDialog = new SaveModuleStateView();
             }
-            saveDialog.Show();
+            _saveDialog.Show();
         }
         private void LoadButton_OnClick(object sender, RoutedEventArgs e)
         {
-            if (saveDialog != null)
+            if (_saveDialog != null)
             {
-                saveDialog.Close();
+                _saveDialog.Close();
             }
-            if (removeDialog == null)
+            if (_removeDialog == null)
             {
-                removeDialog = new RemoveModuleStateView();
+                _removeDialog = new RemoveModuleStateView();
             }
             else
             {
-                removeDialog.Close();
-                removeDialog = new RemoveModuleStateView();
+                _removeDialog.Close();
+                _removeDialog = new RemoveModuleStateView();
             }
-            removeDialog.Show();
+            _removeDialog.Show();
         }
     }
 }

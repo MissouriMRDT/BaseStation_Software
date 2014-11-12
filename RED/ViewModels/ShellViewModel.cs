@@ -10,10 +10,5 @@
 			DisplayName = "Rover Engagement Display";
 			ActivateItem(new ControlCenterViewModel());
 		}
-
-		public override sealed void ActivateItem(IScreen item)
-		{
-			base.ActivateItem(item);
-		}
 	}
 }

@@ -1,8 +1,6 @@
 ﻿namespace RED.Models.ControlCenter
 {
-	using Contexts;
-	using System.Collections.ObjectModel;
-	using ViewModels.ControlCenter;
+    using ViewModels.ControlCenter;
 
     public class ControlCenterModel
     {
@@ -12,7 +10,7 @@
         public StateViewModel StateManager;
         public ConsoleViewModel Console;
         public ModuleManagerViewModel GridManager;
-        public DataRouterVM DataRouter;
-        public TCPAsyncServerVM TcpAsyncServer;
+        public DataRouter DataRouter;
+        public AsyncTcpServer TcpAsyncServer;
     }
 }
