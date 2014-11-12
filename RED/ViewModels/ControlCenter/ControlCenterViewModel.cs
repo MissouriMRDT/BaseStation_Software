@@ -73,6 +73,30 @@
                 NotifyOfPropertyChange();
             }
         }
+        public DataRouterVM DataRouter
+        {
+            get
+            {
+                return Model.DataRouter;
+            }
+            set
+            {
+                Model.DataRouter = value;
+                NotifyOfPropertyChange(() => DataRouter);
+            }
+        }
+        public TCPAsyncServerVM TcpAsyncServer
+        {
+            get
+            {
+                return Model.TcpAsyncServer;
+            }
+            set
+            {
+                Model.TcpAsyncServer = value;
+                NotifyOfPropertyChange(() => TcpAsyncServer);
+            }
+        }
         public ModuleManagerViewModel GridManager
         {
             get
@@ -89,8 +113,10 @@
         public ControlCenterViewModel()
         {
             Model = new ControlCenterModel();
-            StateManager = new StateViewModel();
+            StateManager = new StateViewModel(this);
             Console = new ConsoleViewModel();
+            DataRouter = new DataRouterVM();
+            TcpAsyncServer = new TCPAsyncServerVM(11000, this);
             GridManager = new ModuleManagerViewModel(this);
 
             RemoveModuleState = new RemoveModuleStateViewModel(this);

@@ -14,5 +14,7 @@
         public StateViewModel StateManager;
         public ConsoleViewModel Console;
         public ModuleManagerViewModel GridManager;
+        public DataRouterVM DataRouter;
+        public TCPAsyncServerVM TcpAsyncServer;
     }
 }
