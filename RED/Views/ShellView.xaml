@@ -1,8 +1,0 @@
-﻿<controls:MetroWindow x:Class="RED.Views.ShellView" 
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        WindowStartupLocation="CenterScreen"
-        Title="Rover Engagement Display">
-    <ContentControl x:Name="ActiveItem"/>
-</controls:MetroWindow>

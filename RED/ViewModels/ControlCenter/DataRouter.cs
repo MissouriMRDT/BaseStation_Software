@@ -1,30 +1,30 @@
-﻿using Caliburn.Micro;
-using RED.Interfaces;
-using RED.Models.ControlCenter;
-using System.Collections.Generic;
-
-namespace RED.ViewModels.ControlCenter
+﻿namespace RED.ViewModels.ControlCenter
 {
+    using Caliburn.Micro;
+    using Interfaces;
+    using Models;
+    using System.Collections.Generic;
+
     public class DataRouter : PropertyChangedBase
     {
-        private DataRouterModel Model;
+        private readonly DataRouterModel _model;
 
         private Dictionary<int, List<ISubscribe>> Registrations
         {
             get
             {
-                return Model.Registrations;
+                return _model._registrations;
             }
             set
             {
-                Model.Registrations = value;
+                _model._registrations = value;
                 NotifyOfPropertyChange(() => Registrations);
             }
         }
 
         public DataRouter()
         {
-            Model = new DataRouterModel();
+            _model = new DataRouterModel();
         }
 
         public void Send(int dataCode, byte[] data)
@@ -44,7 +44,7 @@ namespace RED.ViewModels.ControlCenter
                     existingRegistrations.Add(subscriber);
             }
             else
-                Registrations.Add(dataCode, new List<ISubscribe>() { subscriber });
+                Registrations.Add(dataCode, new List<ISubscribe> { subscriber });
         }
 
         public void UnSubscribe(ISubscribe subscriber)

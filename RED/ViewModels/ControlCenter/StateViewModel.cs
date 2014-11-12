@@ -1,7 +1,7 @@
 ﻿namespace RED.ViewModels.ControlCenter
 {
     using Caliburn.Micro;
-    using Models.ControlCenter;
+    using Models;
     using Properties;
     using System;
     using System.Linq;
@@ -22,11 +22,11 @@
         {
             get
             {
-                return _model.CurrentControlMode;
+                return _model._currentControlMode;
             }
             set
             {
-                _model.CurrentControlMode = value;
+                _model._currentControlMode = value;
                 NotifyOfPropertyChange();
                 NotifyOfPropertyChange(() => CurrentControlModeDisplay);
             }
@@ -35,7 +35,7 @@
         {
             get
             {
-                var mode = _model.CurrentControlMode;
+                var mode = _model._currentControlMode;
                 return Enum.GetName(typeof(ControlMode), mode);
             }
         }
@@ -43,11 +43,11 @@
         {
             get
             {
-                return _model.NetworkHasConnection;
+                return _model._networkHasConnection;
             }
             set
             {
-                _model.NetworkHasConnection = value;
+                _model._networkHasConnection = value;
                 NotifyOfPropertyChange();
                 NotifyOfPropertyChange(() => NetworkConnectionStatus);
             }
@@ -63,11 +63,11 @@
         {
             get
             {
-                return _model.ControllerIsConnected;
+                return _model._controllerIsConnected;
             }
             set
             {
-                _model.ControllerIsConnected = value;
+                _model._controllerIsConnected = value;
                 NotifyOfPropertyChange();
                 NotifyOfPropertyChange(() => ControllerConnectionStatus);
             }
@@ -84,11 +84,11 @@
         {
             get
             {
-                return _model.ServerIsRunning;
+                return _model._serverIsRunning;
             }
             set
             {
-                _model.ServerIsRunning = value;
+                _model._serverIsRunning = value;
                 NotifyOfPropertyChange(() => ServerIsRunning);
             }
         }

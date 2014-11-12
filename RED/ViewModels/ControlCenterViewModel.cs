@@ -1,30 +1,22 @@
-﻿namespace RED.ViewModels.ControlCenter
+﻿namespace RED.ViewModels
 {
-    using Addons;
     using Caliburn.Micro;
-    using Contexts;
-    using Models.ControlCenter;
-    using Properties;
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.IO;
-    using System.Linq;
-    using System.Xml.Serialization;
+    using ControlCenter;
+    using Models;
 
     public class ControlCenterViewModel : Screen
     {
-        private ControlCenterModel Model;
+        private readonly ControlCenterModel _model;
 
         public RemoveModuleStateViewModel RemoveModuleState
         {
             get
             {
-                return Model.RemoveModuleState;
+                return _model._removeModuleState;
             }
             set
             {
-                Model.RemoveModuleState = value;
+                _model._removeModuleState = value;
                 NotifyOfPropertyChange(() => RemoveModuleState);
             }
         }
@@ -32,11 +24,11 @@
         {
             get
             {
-                return Model.SaveModuleState;
+                return _model._saveModuleState;
             }
             set
             {
-                Model.SaveModuleState = value;
+                _model._saveModuleState = value;
                 NotifyOfPropertyChange(() => SaveModuleState);
             }
         }
@@ -45,11 +37,11 @@
         {
             get
             {
-                return Model.StateManager;
+                return _model._stateManager;
             }
             set
             {
-                Model.StateManager = value;
+                _model._stateManager = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -57,11 +49,11 @@
         {
             get
             {
-                return Model.Console;
+                return _model._console;
             }
             set
             {
-                Model.Console = value;
+                _model._console = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -69,52 +61,53 @@
         {
             get
             {
-                return Model.DataRouter;
+                return _model._dataRouter;
             }
             set
             {
-                Model.DataRouter = value;
+                _model._dataRouter = value;
                 NotifyOfPropertyChange(() => DataRouter);
             }
         }
-        public AsyncTcpServer TcpAsyncServer
+        public AsyncTcpServerViewModel TcpAsyncServer
         {
             get
             {
-                return Model.TcpAsyncServer;
+                return _model._tcpAsyncServer;
             }
             set
             {
-                Model.TcpAsyncServer = value;
+                _model._tcpAsyncServer = value;
                 NotifyOfPropertyChange(() => TcpAsyncServer);
             }
         }
-        public ModuleManagerViewModel GridManager
+        public ModuleManagerViewModel ModuleManager
         {
             get
             {
-                return Model.GridManager;
+                return _model._gridManager;
             }
             set
             {
-                Model.GridManager = value;
-                NotifyOfPropertyChange(() => GridManager);
+                _model._gridManager = value;
+                NotifyOfPropertyChange(() => ModuleManager);
             }
         }
 
         public ControlCenterViewModel()
         {
-            Model = new ControlCenterModel();
+            base.DisplayName = "Rover Engagement Display";
+            _model = new ControlCenterModel();
             StateManager = new StateViewModel(this);
             Console = new ConsoleViewModel();
             DataRouter = new DataRouter();
-            TcpAsyncServer = new AsyncTcpServer(11000, this);
-            GridManager = new ModuleManagerViewModel(this);
+            TcpAsyncServer = new AsyncTcpServerViewModel(11000, this);
+            ModuleManager = new ModuleManagerViewModel(this);
 
             RemoveModuleState = new RemoveModuleStateViewModel(this);
-            SaveModuleState = new SaveModuleStateViewModel(GridManager.ModuleGrid, this);
+            SaveModuleState = new SaveModuleStateViewModel(ModuleManager.ModuleGrid, this);
 
-            GridManager.ReloadModuleButtonContexts();
+            ModuleManager.ReloadModuleButtonContexts();
         }
     }
 }

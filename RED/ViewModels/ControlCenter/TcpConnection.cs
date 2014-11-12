@@ -2,7 +2,7 @@
 {
     using Caliburn.Micro;
     using Interfaces;
-    using Models.ControlCenter;
+    using Models;
     using System;
     using System.IO;
     using System.Net;
@@ -19,11 +19,11 @@
         {
             get
             {
-                return _model.Client;
+                return _model._client;
             }
             set
             {
-                _model.Client = value;
+                _model._client = value;
                 NotifyOfPropertyChange(() => Client);
             }
         }
@@ -38,11 +38,11 @@
         {
             get
             {
-                return _model.RemoteName;
+                return _model._remoteName;
             }
             set
             {
-                _model.RemoteName = value;
+                _model._remoteName = value;
                 NotifyOfPropertyChange(() => RemoteName);
             }
         }
@@ -50,11 +50,11 @@
         {
             get
             {
-                return _model.RemoteSoftware;
+                return _model._remoteSoftware;
             }
             set
             {
-                _model.RemoteSoftware = value;
+                _model._remoteSoftware = value;
                 NotifyOfPropertyChange(() => RemoteSoftware);
             }
         }
