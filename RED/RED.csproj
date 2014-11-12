@@ -120,7 +120,7 @@
     <Compile Include="Views\ControlCenter\ControlCenterView.xaml.cs">
       <DependentUpon>ControlCenterView.xaml</DependentUpon>
     </Compile>
-    <Page Include="Resources\Icons.xaml">
+    <Page Include="Resources\Icons\Icons.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -208,7 +208,7 @@
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Resources\Entypo.ttf" />
+    <None Include="Resources\Icons\Entypo.ttf" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
@@ -229,8 +229,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\favicon.ico" />
-    <Content Include="Resources\Entypo-license.txt" />
-    <Content Include="Resources\WindowsIcons-license.txt" />
+    <Content Include="Resources\Icons\Entypo-license.txt" />
+    <Content Include="Resources\Icons\WindowsIcons-license.txt" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
