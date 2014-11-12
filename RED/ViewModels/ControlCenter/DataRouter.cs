@@ -1,8 +1,8 @@
 ﻿namespace RED.ViewModels.ControlCenter
 {
     using Caliburn.Micro;
-    using RED.Interfaces;
-    using RED.Models.ControlCenter;
+    using Interfaces;
+    using Models;
     using System.Collections.Generic;
 
     public class DataRouter : PropertyChangedBase
@@ -13,11 +13,11 @@
         {
             get
             {
-                return _model.Registrations;
+                return _model._registrations;
             }
             set
             {
-                _model.Registrations = value;
+                _model._registrations = value;
                 NotifyOfPropertyChange(() => Registrations);
             }
         }
@@ -44,7 +44,7 @@
                     existingRegistrations.Add(subscriber);
             }
             else
-                Registrations.Add(dataCode, new List<ISubscribe>() { subscriber });
+                Registrations.Add(dataCode, new List<ISubscribe> { subscriber });
         }
 
         public void UnSubscribe(ISubscribe subscriber)

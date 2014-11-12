@@ -104,7 +104,7 @@
                 serializer.Serialize(fileWriter, existingSaves.OrderBy(o => o.Name).ToList());
                 fileWriter.Close();
 
-                _controlCenter.GridManager.ReloadModuleButtonContexts();
+                _controlCenter.ModuleManager.ReloadModuleButtonContexts();
                 //Write to console name + " has been saved."
             }
             catch (Exception ex)

@@ -1,16 +1,16 @@
 ﻿namespace RED.ViewModels.ControlCenter
 {
     using Caliburn.Micro;
-    using Models.ControlCenter;
+    using Models;
     using System;
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Sockets;
 
-    public class AsyncTcpServer : PropertyChangedBase
+    public class AsyncTcpServerViewModel : PropertyChangedBase
     {
         private readonly AsyncTcpServerModel _model;
-        private readonly ControlCenterViewModel _controlCenterVm;
+        private readonly ControlCenterViewModel _controlCenter;
         private readonly List<TcpConnection> _connections;
         private TcpListener _server;
 
@@ -18,11 +18,11 @@
         {
             get
             {
-                return _model.LocalMachineName;
+                return _model._localMachineName;
             }
             private set
             {
-                _model.LocalMachineName = value;
+                _model._localMachineName = value;
                 NotifyOfPropertyChange(() => LocalMachineName);
             }
         }
@@ -30,11 +30,11 @@
         {
             get
             {
-                return _model.LocalSoftwareName;
+                return _model._localSoftwareName;
             }
             private set
             {
-                _model.LocalSoftwareName = value;
+                _model._localSoftwareName = value;
                 NotifyOfPropertyChange(() => LocalSoftwareName);
             }
         }
@@ -43,11 +43,11 @@
         {
             get
             {
-                return _model.IsListening;
+                return _model._isListening;
             }
             private set
             {
-                _model.IsListening = value;
+                _model._isListening = value;
                 NotifyOfPropertyChange(() => IsListening);
             }
         }
@@ -62,20 +62,20 @@
         {
             get
             {
-                return _model.ListeningPort;
+                return _model._listeningPort;
             }
             private set
             {
-                _model.ListeningPort = value;
+                _model._listeningPort = value;
                 NotifyOfPropertyChange(() => ListeningPort);
             }
         }
 
-        public AsyncTcpServer(short port, ControlCenterViewModel controlCenter)
+        public AsyncTcpServerViewModel(short port, ControlCenterViewModel controlCenter)
         {
             _connections = new List<TcpConnection>();
             _model = new AsyncTcpServerModel();
-            _controlCenterVm = controlCenter;
+            _controlCenter = controlCenter;
 
             LocalMachineName = "Red Master";
             LocalSoftwareName = "RED";
@@ -87,7 +87,7 @@
         {
             _server = new TcpListener(IPAddress.Any, ListeningPort);
             IsListening = true;
-            _controlCenterVm.Console.WriteToConsole("Server Started");
+            _controlCenter.Console.WriteToConsole("Server Started");
             Listen();
         }
 
@@ -97,7 +97,7 @@
             IsListening = false;
             foreach (TcpConnection client in _connections)
                 client.Close();
-            _controlCenterVm.Console.WriteToConsole("Server Stopped");
+            _controlCenter.Console.WriteToConsole("Server Stopped");
         }
 
         private async void Listen()
@@ -107,8 +107,8 @@
             {
                 while (IsListening)
                 {
-                    TcpClient client = await _server.AcceptTcpClientAsync();
-                    _connections.Add(new TcpConnection(client, _controlCenterVm));
+                    var client = await _server.AcceptTcpClientAsync();
+                    _connections.Add(new TcpConnection(client, _controlCenter));
                 }
             }
             catch (ObjectDisposedException)

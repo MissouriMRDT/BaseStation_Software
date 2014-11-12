@@ -1,9 +1,9 @@
 ﻿namespace RED.ViewModels.ControlCenter
 {
     using Caliburn.Micro;
-    using Models.ControlCenter;
     using System;
     using System.Globalization;
+    using Models;
 
     public class ConsoleViewModel : PropertyChangedBase
     {
@@ -13,11 +13,11 @@
         {
             get
             {
-                return _model.ConsoleText;
+                return _model._consoleText;
             }
             set
             {
-                _model.ConsoleText = value;
+                _model._consoleText = value;
                 NotifyOfPropertyChange();
             }
         }

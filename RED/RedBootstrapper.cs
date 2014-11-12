@@ -1,19 +1,19 @@
 ﻿namespace RED
 {
-	using Caliburn.Micro;
-	using System.Windows;
-	using ViewModels;
+    using Caliburn.Micro;
+    using System.Windows;
+    using ViewModels;
 
-	public class RedBootstrapper : BootstrapperBase
-	{
-		public RedBootstrapper()
-		{
-			Initialize();
-		}
+    public class RedBootstrapper : BootstrapperBase
+    {
+        public RedBootstrapper()
+        {
+            Initialize();
+        }
 
-		protected override void OnStartup(object sender, StartupEventArgs e)
-		{
-			DisplayRootViewFor<ShellViewModel>();
-		}
-	}
+        protected override void OnStartup(object sender, StartupEventArgs e)
+        {
+            DisplayRootViewFor<ControlCenterViewModel>();
+        }
+    }
 }

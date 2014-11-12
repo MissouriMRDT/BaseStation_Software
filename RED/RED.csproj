@@ -105,26 +105,26 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Models\ControlCenter\DataRouterModel.cs" />
-    <Compile Include="Models\ControlCenter\AsyncTcpServerModel.cs" />
-    <Compile Include="Models\ControlCenter\TcpConnectionModel.cs" />
+    <Compile Include="Models\DataRouterModel.cs" />
+    <Compile Include="Models\AsyncTcpServerModel.cs" />
+    <Compile Include="Models\TcpConnectionModel.cs" />
     <Compile Include="ViewModels\ControlCenter\DataRouter.cs" />
     <Compile Include="Interfaces\ISubscribe.cs" />
-    <Compile Include="Models\ControlCenter\ControlCenterModel.cs" />
-    <Compile Include="Models\ControlCenter\ModuleGridModel.cs" />
+    <Compile Include="Models\ControlCenterModel.cs" />
+    <Compile Include="Models\ModuleGridModel.cs" />
     <Compile Include="RedBootstrapper.cs" />
     <Compile Include="ViewModels\ControlCenter\AsyncTcpServer.cs" />
     <Compile Include="ViewModels\ControlCenter\TcpConnection.cs" />
-    <Compile Include="ViewModels\ControlCenter\ControlCenterViewModel.cs" />
+    <Compile Include="ViewModels\ControlCenterViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\ModuleGridViewModel.cs" />
-    <Compile Include="Views\ControlCenter\ControlCenterView.xaml.cs">
+    <Compile Include="Views\ControlCenterView.xaml.cs">
       <DependentUpon>ControlCenterView.xaml</DependentUpon>
     </Compile>
     <Page Include="Resources\Icons\Icons.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\ControlCenter\ControlCenterView.xaml">
+    <Page Include="Views\ControlCenterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -162,15 +162,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Compile Include="Models\ControlCenter\ConsoleModel.cs" />
-    <Compile Include="Models\ControlCenter\StateModel.cs" />
+    <Compile Include="Models\ConsoleModel.cs" />
+    <Compile Include="Models\StateModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Interfaces\IModule.cs" />
     <Compile Include="ViewModels\ControlCenter\ModuleManagerViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\ConsoleViewModel.cs" />
@@ -181,10 +180,6 @@
     <Compile Include="Views\ControlCenter\ConsoleView.xaml.cs">
       <DependentUpon>ConsoleView.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\ShellView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <!--<Page Include="Views\Modules\ConsoleModuleView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -193,9 +188,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Views\ShellView.xaml.cs">
-      <DependentUpon>ShellView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\ControlCenter\StateView.xaml.cs">
       <DependentUpon>StateView.xaml</DependentUpon>
     </Compile>
