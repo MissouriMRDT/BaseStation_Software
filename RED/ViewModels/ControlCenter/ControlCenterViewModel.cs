@@ -1,30 +1,21 @@
 ﻿namespace RED.ViewModels.ControlCenter
 {
-    using Addons;
     using Caliburn.Micro;
-    using Contexts;
     using Models.ControlCenter;
-    using Properties;
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.IO;
-    using System.Linq;
-    using System.Xml.Serialization;
 
     public class ControlCenterViewModel : Screen
     {
-        private ControlCenterModel Model;
+        private readonly ControlCenterModel _model;
 
         public RemoveModuleStateViewModel RemoveModuleState
         {
             get
             {
-                return Model.RemoveModuleState;
+                return _model.RemoveModuleState;
             }
             set
             {
-                Model.RemoveModuleState = value;
+                _model.RemoveModuleState = value;
                 NotifyOfPropertyChange(() => RemoveModuleState);
             }
         }
@@ -32,11 +23,11 @@
         {
             get
             {
-                return Model.SaveModuleState;
+                return _model.SaveModuleState;
             }
             set
             {
-                Model.SaveModuleState = value;
+                _model.SaveModuleState = value;
                 NotifyOfPropertyChange(() => SaveModuleState);
             }
         }
@@ -45,11 +36,11 @@
         {
             get
             {
-                return Model.StateManager;
+                return _model.StateManager;
             }
             set
             {
-                Model.StateManager = value;
+                _model.StateManager = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -57,11 +48,11 @@
         {
             get
             {
-                return Model.Console;
+                return _model.Console;
             }
             set
             {
-                Model.Console = value;
+                _model.Console = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -69,11 +60,11 @@
         {
             get
             {
-                return Model.DataRouter;
+                return _model.DataRouter;
             }
             set
             {
-                Model.DataRouter = value;
+                _model.DataRouter = value;
                 NotifyOfPropertyChange(() => DataRouter);
             }
         }
@@ -81,11 +72,11 @@
         {
             get
             {
-                return Model.TcpAsyncServer;
+                return _model.TcpAsyncServer;
             }
             set
             {
-                Model.TcpAsyncServer = value;
+                _model.TcpAsyncServer = value;
                 NotifyOfPropertyChange(() => TcpAsyncServer);
             }
         }
@@ -93,18 +84,18 @@
         {
             get
             {
-                return Model.GridManager;
+                return _model.GridManager;
             }
             set
             {
-                Model.GridManager = value;
+                _model.GridManager = value;
                 NotifyOfPropertyChange(() => GridManager);
             }
         }
 
         public ControlCenterViewModel()
         {
-            Model = new ControlCenterModel();
+            _model = new ControlCenterModel();
             StateManager = new StateViewModel(this);
             Console = new ConsoleViewModel();
             DataRouter = new DataRouter();
