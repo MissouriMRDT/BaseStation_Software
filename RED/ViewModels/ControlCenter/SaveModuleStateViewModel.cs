@@ -12,7 +12,7 @@
 
     public class SaveModuleStateViewModel : PropertyChangedBase
 	{
-		private readonly ModuleGrid _grid;
+		private readonly ModuleGridViewModel _grid;
         private readonly ControlCenterViewModel _controlCenter;
 
 		private string _name = string.Empty;
@@ -35,7 +35,7 @@
 		{
 			
 		}
-		public SaveModuleStateViewModel(ModuleGrid grid, ControlCenterViewModel cc)
+		public SaveModuleStateViewModel(ModuleGridViewModel grid, ControlCenterViewModel cc)
 		{
 			_grid = grid;
 		    _controlCenter = cc;
@@ -104,7 +104,7 @@
 				serializer.Serialize(fileWriter, existingSaves.OrderBy(o => o.Name).ToList());
 				fileWriter.Close();
 
-				_controlCenter.ReloadModuleButtonContexts();
+				_controlCenter.GridManager.ReloadModuleButtonContexts();
 				//Write to console name + " has been saved."
 			}
 			catch (Exception ex)

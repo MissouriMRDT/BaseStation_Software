@@ -83,7 +83,7 @@
 
 			fileWriter.Close();
 
-			controlCenterVM.ReloadModuleButtonContexts();
+			controlCenterVM.GridManager.ReloadModuleButtonContexts();
 
 			//Write to console "'" + selectedItem + "' removed."
 		}

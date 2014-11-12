@@ -8,6 +8,12 @@
         xmlns:contexts="clr-namespace:RED.Contexts"
         mc:Ignorable="d" d:DesignHeight="1080" d:DesignWidth="1920">
 
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type controlCenterViewModels:ModuleGridViewModel}">
+            <controlCenterViews:ModuleGridView />
+        </DataTemplate>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
@@ -19,72 +25,7 @@
         </Grid.ColumnDefinitions>
 
         <!-- Customizable Module Grid -->
-        <Grid Grid.Column="0" Grid.Row="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="{Binding GridManager.ModuleGrid.Row1Height, Mode=TwoWay}" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="{Binding GridManager.ModuleGrid.Row3Height, Mode=TwoWay}" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="{Binding GridManager.ModuleGrid.Row5Height, Mode=TwoWay}" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="{Binding GridManager.ModuleGrid.Column1Width, Mode=TwoWay}" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="{Binding GridManager.ModuleGrid.Column3Width, Mode=TwoWay}" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="{Binding GridManager.ModuleGrid.Column5Width, Mode=TwoWay}" />
-            </Grid.ColumnDefinitions>
-
-            <GridSplitter Grid.Row="1" Grid.Column="2" Height="4" ResizeBehavior="PreviousAndNext" 
-                          HorizontalAlignment="Stretch" Background="Transparent" />
-            <GridSplitter Grid.Row="3" Grid.Column="2" Height="4" ResizeBehavior="PreviousAndNext" 
-                          HorizontalAlignment="Stretch" Background="Transparent"/>
-            <GridSplitter Grid.Row="0" Grid.Column="1" Grid.RowSpan="5" Width="4" 
-                          ResizeBehavior="PreviousAndNext" Background="Transparent"/>
-            <GridSplitter Grid.Row="0" Grid.Column="3" Grid.RowSpan="5" Width="4" 
-                          ResizeBehavior="PreviousAndNext" Background="Transparent"/>
-
-            <DockPanel Grid.Column="0" Grid.Row="0" Grid.RowSpan="5" Margin="0 0 1 0">
-                <Border BorderBrush="Black" BorderThickness="1" Padding="3">
-                    <DockPanel>
-                        <TextBlock Text="{Binding GridManager.ModuleGrid.LeftModule.Title}" DockPanel.Dock="Top"/>
-                        <ContentControl Content="{Binding GridManager.ModuleGrid.LeftModule}" />
-                    </DockPanel>
-                </Border>
-            </DockPanel>
-            <DockPanel Grid.Column="4" Grid.Row="0" Grid.RowSpan="5" Margin="1 0 0 0">
-                <Border BorderBrush="Black" BorderThickness="1" Padding="3">
-                    <DockPanel>
-                        <TextBlock Text="{Binding GridManager.ModuleGrid.RightModule.Title}" DockPanel.Dock="Top"/>
-                        <ContentControl Content="{Binding GridManager.ModuleGrid.RightModule}" />
-                    </DockPanel>
-                </Border>
-            </DockPanel>
-            <DockPanel Grid.Column="2" Grid.Row="0" Margin="1 0 1 1">
-                <Border BorderBrush="Black" BorderThickness="1" Padding="3">
-                    <DockPanel>
-                        <TextBlock Text="{Binding GridManager.ModuleGrid.TopModule.Title}" DockPanel.Dock="Top"/>
-                        <ContentControl Content="{Binding GridManager.ModuleGrid.TopModule}" />
-                    </DockPanel>
-                </Border>
-            </DockPanel>
-            <DockPanel Grid.Column="2" Grid.Row="2" Margin="1">
-                <Border BorderBrush="Black" BorderThickness="1" Padding="3">
-                    <DockPanel>
-                        <TextBlock Text="{Binding GridManager.ModuleGrid.MiddleModule.Title}" DockPanel.Dock="Top"/>
-                        <ContentControl Content="{Binding GridManager.ModuleGrid.MiddleModule}" />
-                    </DockPanel>
-                </Border>
-            </DockPanel>
-            <DockPanel Grid.Column="2" Grid.Row="4" Margin="1 1 1 0">
-                <Border BorderBrush="Black" BorderThickness="1" Padding="3">
-                    <DockPanel>
-                        <TextBlock Text="{Binding GridManager.ModuleGrid.BottomModule.Title}" DockPanel.Dock="Top"/>
-                        <ContentControl Content="{Binding GridManager.ModuleGrid.BottomModule}" />
-                    </DockPanel>
-                </Border>
-            </DockPanel>
-        </Grid>
+        <ContentControl Grid.Column="0" Grid.Row="0" Content="{Binding GridManager.ModuleGrid}" />
         <!-- Static Side Panel Grid -->
         <Grid Grid.Column="1" Grid.Row="0">
             <Grid.ColumnDefinitions>
@@ -117,7 +58,7 @@
                 </Button.Content>
             </Button>
             <TextBlock Margin="5 0 5 0" VerticalAlignment="Center">Load Saved Layouts:</TextBlock>
-            <ItemsControl ItemsSource="{Binding ButtonContexts}">
+            <ItemsControl ItemsSource="{Binding GridManager.ButtonContexts}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal"/>
