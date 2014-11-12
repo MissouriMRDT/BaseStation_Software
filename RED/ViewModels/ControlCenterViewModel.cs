@@ -96,6 +96,7 @@
 
         public ControlCenterViewModel()
         {
+            base.DisplayName = "Rover Engagement Display";
             _model = new ControlCenterModel();
             StateManager = new StateViewModel(this);
             Console = new ConsoleViewModel();

@@ -9,18 +9,16 @@
         xmlns:contexts="clr-namespace:RED.Contexts"
         Name="Shell" MinHeight="640" MinWidth="1024" Height="640" Width="1024" 
         EnableDWMDropShadow="True" ResizeMode="CanResizeWithGrip" TitleCaps="False"
-        WindowTransitionsEnabled="False" WindowStartupLocation="CenterScreen" 
-        Title="Rover Engagement Display">
-
+        WindowTransitionsEnabled="False" WindowStartupLocation="CenterScreen">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/Icons/Icons.xaml" />
                 <ResourceDictionary>
                     <DataTemplate DataType="{x:Type controlCenterViewModels:ModuleGridViewModel}">
                         <controlCenter:ModuleGridView />
                     </DataTemplate>
                 </ResourceDictionary>
-                <ResourceDictionary Source="../../Resources/Icons/Icons.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
@@ -36,7 +34,7 @@
     </controls:MetroWindow.RightWindowCommands>
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl>
-            <controls:Flyout Name="SettingsFlyout" Header="Flyout" Position="Right" Width="500" Theme="Dark">
+            <controls:Flyout Name="SettingsFlyout" Header="Flyout" Position="Right" Width="800" Theme="Dark">
 
             </controls:Flyout>
             <controls:Flyout Name="LayoutsFlyout" Position="Bottom" 
@@ -46,16 +44,33 @@
                              Height="75">
                 <DockPanel>
                     <Button Command="{Binding ModuleManager.ResetGridProportionsCommand}" ToolTip="Click this to reset the grid proportions."
-                    Height="35" Width="35"
-                    Style="{DynamicResource MetroCircleButtonStyle}">
+                            Height="35" Width="35"
+                            Style="{DynamicResource MetroCircleButtonStyle}">
                         <Rectangle Width="15" Height="15" 
-                           Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                                    Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
                             <Rectangle.OpacityMask>
                                 <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_reset}" />
                             </Rectangle.OpacityMask>
                         </Rectangle>
                     </Button>
-                    <TextBlock Margin="5 0 5 0" VerticalAlignment="Center">Load Saved Layouts:</TextBlock>
+                    <Button Name="SaveButton" Height="35" Width="35" Click="ShowSavePresetDialog"
+                            Style="{DynamicResource MetroCircleButtonStyle}">
+                        <Rectangle Width="15" Height="15" 
+                                    Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_save}" />
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                    </Button>
+                    <Button Margin="0 0 5 0" Name="LoadButton" Height="35" Width="35" Click="ShowDeletePresetDialog"
+                            Style="{DynamicResource MetroCircleButtonStyle}">
+                        <Rectangle Width="15" Height="15" 
+                                    Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_delete}" />
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                    </Button>
                     <ItemsControl ItemsSource="{Binding ModuleManager.ButtonContexts}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>

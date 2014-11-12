@@ -26,24 +26,6 @@
             <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
         <DockPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="5" Margin="0 0 0 3">
-            <Button DockPanel.Dock="Right" Name="SaveButton" Click="SaveButton_OnClick" Height="35" Width="35"
-                    Style="{DynamicResource MetroCircleButtonStyle}">
-                <Rectangle Width="15" Height="15" 
-                           Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
-                    <Rectangle.OpacityMask>
-                        <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_save}" />
-                    </Rectangle.OpacityMask>
-                </Rectangle>
-            </Button>
-            <Button DockPanel.Dock="Right" Margin="2 0" Name="LoadButton" Click="RemoveButton_OnClick" Height="35" Width="35"
-                    Style="{DynamicResource MetroCircleButtonStyle}">
-                <Rectangle Width="15" Height="15" 
-                           Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
-                    <Rectangle.OpacityMask>
-                        <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_delete}" />
-                    </Rectangle.OpacityMask>
-                </Rectangle>
-            </Button>
             <TextBlock Text="Module Manager" DockPanel.Dock="Top" />
         </DockPanel>
         <Border Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="5" BorderThickness="1">
