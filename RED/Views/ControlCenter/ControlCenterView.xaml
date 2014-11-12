@@ -49,13 +49,15 @@
         <!-- Quick-Load Bar -->
 
         <DockPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Margin="0 5 0 0">
-            <Button Command="{Binding GridManager.ResetGridProportionsCommand}" ToolTip="Click this to reset the grid proportions.">
-                <Button.Content>
-                    <Canvas Width="10" Height="10" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
-                        <Path Width="10" Height="10" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" Fill="DarkGray"
-                                  Data="F1 M 20.8105,7.09424L 24.2607,33.1177L 15.9209,29.6714C 14.2021,33.7583 13.251,38.2466 13.251,42.9595C 13.251,61.9429 28.6406,77.3267 47.6201,77.3267C 53.2109,77.3267 58.4854,75.9829 63.1504,73.6147L 69.4775,79.9419C 63.0732,83.7349 55.6025,85.9204 47.6201,85.9204C 23.8936,85.9204 4.6582,66.688 4.6582,42.9595C 4.6582,37.0845 5.84277,31.4888 7.98047,26.3901L 0,23.0913L 20.8105,7.09424 Z M 47.6191,0.000488281C 71.3457,0.000488281 90.5791,19.2368 90.5791,42.9604C 90.5791,47.8813 89.748,52.6089 88.2227,57.0112L 96.0176,60.3472L 75.0029,76.0845L 71.8828,50.0181L 80.2969,53.6187C 81.3936,50.2642 81.9883,46.6821 81.9883,42.9604C 81.9883,23.9771 66.5986,8.59326 47.6191,8.59326C 43.3438,8.59326 39.2559,9.38037 35.4814,10.8052L 28.9404,4.26318C 34.5898,1.53076 40.9238,0.000488281 47.6191,0.000488281 Z "/>
-                    </Canvas>
-                </Button.Content>
+            <Button Command="{Binding GridManager.ResetGridProportionsCommand}" ToolTip="Click this to reset the grid proportions."
+                    Height="35" Width="35"
+                    Style="{DynamicResource MetroCircleButtonStyle}">
+                <Rectangle Width="15" Height="15" 
+                           Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_reset}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
             </Button>
             <TextBlock Margin="5 0 5 0" VerticalAlignment="Center">Load Saved Layouts:</TextBlock>
             <ItemsControl ItemsSource="{Binding GridManager.ButtonContexts}">

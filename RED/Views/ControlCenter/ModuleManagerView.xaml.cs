@@ -29,7 +29,7 @@
             }
             _saveDialog.Show();
         }
-        private void LoadButton_OnClick(object sender, RoutedEventArgs e)
+        private void RemoveButton_OnClick(object sender, RoutedEventArgs e)
         {
             if (_saveDialog != null)
             {
