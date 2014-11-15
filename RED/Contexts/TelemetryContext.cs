@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RED.Contexts
+﻿namespace RED.Contexts
 {
+    using System;
+
     public class TelemetryContext<T>
     {
         public DateTime ReceivedOn { get; set; }

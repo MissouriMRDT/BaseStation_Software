@@ -2,136 +2,146 @@
 {
     using Addons;
     using Caliburn.Micro;
+    using Contexts;
     using Interfaces;
     using Properties;
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.IO;
     using System.Linq;
     using System.Windows.Input;
     using System.Xml.Serialization;
 
     public class ModuleManagerViewModel : PropertyChangedBase
-	{
-	    public ModuleGridViewModel ModuleGrid { get; set; }
-	    public ControlCenterViewModel ControlCenter { get; set; }
+    {
+        private readonly ControlCenterViewModel _controlCenter;
+        private readonly ObservableCollection<ButtonContext> _buttonContexts;
         private string _selectedModule;
-		public string SelectedModule
-		{
-			get
-			{
-				return _selectedModule;
-			}
-			set
-			{
-				_selectedModule = value;
-				NotifyOfPropertyChange();
-			}
-		}
-		public IEnumerable<string> ModuleTitles
-		{
-			get
-			{
-				return ModuleGrid.Modules.Select(t => t.Title).ToList().OrderBy(t => t);
-			}
-		}
 
-		public ICommand LoadLeftCommand
-		{
-			get;
-			private set;
-		}
-		public ICommand LoadRightCommand
-		{
-			get;
-			private set;
-		}
-		public ICommand LoadTopCommand
-		{
-			get;
-			private set;
-		}
-		public ICommand LoadMiddleCommand
-		{
-			get;
-			private set;
-		}
-		public ICommand LoadBottomCommand
-		{
-			get;
-			private set;
-		}
+        public ModuleGridViewModel ModuleGrid { get; set; }
+        public string SelectedModule
+        {
+            get
+            {
+                return _selectedModule;
+            }
+            set
+            {
+                _selectedModule = value;
+                NotifyOfPropertyChange();
+            }
+        }
+        public IEnumerable<string> ModuleTitles
+        {
+            get
+            {
+                return ModuleGrid.Modules.Select(t => t.Title).ToList().OrderBy(t => t);
+            }
+        }
+        public ICommand LoadLeftCommand
+        {
+            get;
+            private set;
+        }
+        public ICommand LoadRightCommand
+        {
+            get;
+            private set;
+        }
+        public ICommand LoadTopCommand
+        {
+            get;
+            private set;
+        }
+        public ICommand LoadMiddleCommand
+        {
+            get;
+            private set;
+        }
+        public ICommand LoadBottomCommand
+        {
+            get;
+            private set;
+        }
+        public ObservableCollection<ButtonContext> ButtonContexts
+        {
+            get
+            {
+                return _buttonContexts;
+            }
+        }
 
-		public ModuleManagerViewModel(ControlCenterViewModel controlCenter)
-		{
-		    ModuleGrid = new ModuleGridViewModel(this);
-			ControlCenter = controlCenter;
+        public ModuleManagerViewModel(ControlCenterViewModel controlCenter)
+        {
+            _buttonContexts = new ObservableCollection<ButtonContext>();
+            ModuleGrid = new ModuleGridViewModel(this);
+            _controlCenter = controlCenter;
 
-			LoadLeftCommand = new RelayCommand(c => LoadModule(ModulePosition.Left), b => _selectedModule != null);
-			LoadRightCommand = new RelayCommand(c => LoadModule(ModulePosition.Right), b => _selectedModule != null);
-			LoadTopCommand = new RelayCommand(c => LoadModule(ModulePosition.Top), b => _selectedModule != null);
-			LoadMiddleCommand = new RelayCommand(c => LoadModule(ModulePosition.Middle), b => _selectedModule != null);
-			LoadBottomCommand = new RelayCommand(c => LoadModule(ModulePosition.Bottom), b => _selectedModule != null);
+            LoadLeftCommand = new RelayCommand(c => LoadModule(ModulePosition.Left), b => _selectedModule != null);
+            LoadRightCommand = new RelayCommand(c => LoadModule(ModulePosition.Right), b => _selectedModule != null);
+            LoadTopCommand = new RelayCommand(c => LoadModule(ModulePosition.Top), b => _selectedModule != null);
+            LoadMiddleCommand = new RelayCommand(c => LoadModule(ModulePosition.Middle), b => _selectedModule != null);
+            LoadBottomCommand = new RelayCommand(c => LoadModule(ModulePosition.Bottom), b => _selectedModule != null);
 
             ResetGridProportionsCommand = new RelayCommand(c => ResetGridProportions());
-		}
-
+        }
         public ModuleManagerViewModel()
         {
             ModuleGrid = new ModuleGridViewModel(this);
         }
 
-		public void LoadModule(ModulePosition position)
-		{
-			switch (position)
-			{
-				case ModulePosition.Left:
-					ModuleGrid.LeftSelection = _selectedModule;
-					break;
-				case ModulePosition.Right:
+        public void LoadModule(ModulePosition position)
+        {
+            switch (position)
+            {
+                case ModulePosition.Left:
+                    ModuleGrid.LeftSelection = _selectedModule;
+                    break;
+                case ModulePosition.Right:
                     ModuleGrid.RightSelection = _selectedModule;
-					break;
-				case ModulePosition.Top:
+                    break;
+                case ModulePosition.Top:
                     ModuleGrid.TopSelection = _selectedModule;
-					break;
-				case ModulePosition.Middle:
+                    break;
+                case ModulePosition.Middle:
                     ModuleGrid.MiddleSelection = _selectedModule;
-					break;
-				case ModulePosition.Bottom:
+                    break;
+                case ModulePosition.Bottom:
                     ModuleGrid.BottomSelection = _selectedModule;
-					break;
-			}
-		}
-		public void RemoveModule(IModule module)
-		{
+                    break;
+            }
+        }
+        public void RemoveModule(IModule module)
+        {
             if (ModuleGrid.LeftSelection == module.Title)
-			{
+            {
                 ModuleGrid.LeftModule = null;
                 ModuleGrid.LeftSelection = String.Empty;
-			}
+            }
             else if (ModuleGrid.RightSelection == module.Title)
-			{
+            {
                 ModuleGrid.RightModule = null;
                 ModuleGrid.RightSelection = String.Empty;
-			}
+            }
             else if (ModuleGrid.TopSelection == module.Title)
-			{
+            {
                 ModuleGrid.TopModule = null;
                 ModuleGrid.TopSelection = String.Empty;
-			}
+            }
             else if (ModuleGrid.MiddleSelection == module.Title)
-			{
+            {
                 ModuleGrid.MiddleModule = null;
                 ModuleGrid.MiddleSelection = String.Empty;
-			}
+            }
             else if (ModuleGrid.BottomSelection == module.Title)
-			{
+            {
                 ModuleGrid.BottomModule = null;
                 ModuleGrid.BottomSelection = String.Empty;
-			}
-		}
-		public void ClearModules()
-		{
+            }
+        }
+        public void ClearModules()
+        {
             ModuleGrid.LeftModule = null;
             ModuleGrid.LeftSelection = String.Empty;
             ModuleGrid.RightModule = null;
@@ -142,7 +152,7 @@
             ModuleGrid.MiddleSelection = String.Empty;
             ModuleGrid.BottomModule = null;
             ModuleGrid.BottomSelection = String.Empty;
-		}
+        }
 
         public void LoadModuleSave(string name)
         {
@@ -165,6 +175,7 @@
             ModuleGrid.Row3Height = save.Row3Height;
             ModuleGrid.Row5Height = save.Row5Height;
         }
+
         public ICommand ResetGridProportionsCommand { get; set; }
         private void ResetGridProportions()
         {
@@ -176,13 +187,37 @@
             ModuleGrid.Row5Height = "1*";
         }
 
-		public enum ModulePosition
-		{
-			Left,
-			Right,
-			Top,
-			Middle,
-			Bottom
-		}
-	}
+        public void ReloadModuleButtonContexts()
+        {
+            var serializer = new XmlSerializer(typeof(List<ModuleStateSave>));
+
+            // Get existing saves if there are any.
+            try
+            {
+                ButtonContexts.Clear();
+                var fileReader = new StreamReader(AppDomain.CurrentDomain.BaseDirectory +
+                    Settings.Default.ModuleStateSaveFileName);
+                var existingSaves = (List<ModuleStateSave>)serializer.Deserialize(fileReader);
+                fileReader.Close();
+                foreach (var name in existingSaves.Select(save => save.Name))
+                {
+                    var name1 = name;
+                    ButtonContexts.Add(new ButtonContext(new RelayCommand(o => LoadModuleSave(name1)), name));
+                }
+            }
+            catch (Exception ex)
+            {
+                _controlCenter.Console.WriteToConsole(ex.Message);
+            }
+        }
+
+        public enum ModulePosition
+        {
+            Left,
+            Right,
+            Top,
+            Middle,
+            Bottom
+        }
+    }
 }

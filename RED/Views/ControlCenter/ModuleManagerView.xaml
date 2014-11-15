@@ -3,8 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:controlCenter="clr-namespace:RED.ViewModels.ControlCenter"
              mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../Resources/Icons/Icons.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -19,22 +26,6 @@
             <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
         <DockPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="5" Margin="0 0 0 3">
-            <Button DockPanel.Dock="Right" Name="SaveButton" Click="SaveButton_OnClick">
-                <Button.Content>
-                    <Canvas Width="10" Height="10" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
-                        <Path Width="10" Height="10" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" 
-                              Data="F1 M 20,20L 50.25,20L 56,25.75L 56,56L 20,56L 20,20 Z M 52,27.25L 48.75,24L 48,24L 48,37L 28,37L 28,24L 24,24L 24,52L 52,52L 52,27.25 Z M 39,24L 39,34L 44,34L 44,24L 39,24 Z "/>
-                    </Canvas>
-                </Button.Content>
-            </Button>
-            <Button DockPanel.Dock="Right" Margin="2 0" Name="LoadButton" Click="LoadButton_OnClick">
-                <Button.Content>
-                    <Canvas Width="10" Height="10" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
-                        <Path Width="10" Height="10" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" 
-                              Data="F1 M 29.5218,-3.05176e-005L 1.72809,-3.05176e-005C 1.23608,0.0114136 0.828033,0.171814 0.504028,0.48114C 0.179993,0.790497 0.0119934,1.18008 0,1.6499C 0.0119934,2.11969 0.179993,2.50928 0.504028,2.81866C 0.828033,3.12805 1.23608,3.28848 1.72809,3.29996L 2.16016,3.29996L 7.29645,29.7L 24.0975,29.7L 29.2818,3.29996L 29.5218,3.29996C 29.9928,3.28848 30.3948,3.12805 30.7278,2.81866C 31.0609,2.50928 31.2349,2.11969 31.2499,1.6499C 31.2349,1.18008 31.0609,0.790497 30.7279,0.48114C 30.3948,0.171814 29.9928,0.0114136 29.5218,-3.05176e-005 Z M 14.3049,3.97894L 11.3287,6.98645L 8.35254,3.97894L 9.07254,3.29996L 13.5848,3.29996L 14.3049,3.97894 Z M 6.86441,13.9716L 7.15247,13.6806L 10.1286,16.6396L 7.82449,18.968L 6.86441,13.9716 Z M 8.35254,12.4194L 11.3287,9.46039L 14.3049,12.4194L 11.3287,15.4269L 8.35254,12.4194 Z M 15.5049,13.6806L 18.4811,16.6396L 15.5049,19.6471L 12.5768,16.6396L 15.5049,13.6806 Z M 16.7531,12.4194L 19.6812,9.46039L 22.6574,12.4194L 19.6812,15.4269L 16.7531,12.4194 Z M 15.5049,11.2067L 12.5768,8.19916L 15.5049,5.24017L 18.4811,8.19916L 15.5049,11.2067 Z M 7.15247,5.24017L 10.1286,8.19916L 7.15247,11.2067L 6.14435,10.188L 5.47232,6.88947L 7.15247,5.24017 Z M 11.3287,17.9008L 14.3049,20.9083L 11.3287,23.8674L 8.35254,20.9083L 11.3287,17.9008 Z M 15.5049,22.1211L 18.4811,25.1286L 16.225,27.36L 14.7849,27.36L 12.5768,25.1286L 15.5049,22.1211 Z M 19.6812,23.8674L 16.7531,20.9083L 19.6812,17.9008L 22.6574,20.9083L 19.6812,23.8674 Z M 23.5214,19.3076L 20.9293,16.6396L 23.8575,13.6806L 24.4815,14.3112L 23.5214,19.3076 Z M 25.3936,9.70294L 23.8575,11.2067L 20.9293,8.19916L 23.8575,5.24017L 25.8736,7.229L 25.3936,9.70294 Z M 22.6574,3.97894L 19.6812,6.98645L 16.7531,3.97894L 17.4251,3.29996L 21.9373,3.29996L 22.6574,3.97894 Z M 5.08832,4.85211L 4.80029,3.29996L 6.62442,3.29996L 5.08832,4.85211 Z M 8.78455,23.7703L 12.3367,27.36L 9.45657,27.36L 8.78455,23.7703 Z M 22.7534,23.2852L 21.9373,27.36L 18.6731,27.36L 22.7534,23.2852 Z M 26.2576,5.14316L 24.3855,3.29996L 26.6416,3.29996L 26.2576,5.14316 Z "/>                    
-                        </Canvas>
-                </Button.Content>
-            </Button>
             <TextBlock Text="Module Manager" DockPanel.Dock="Top" />
         </DockPanel>
         <Border Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="5" BorderThickness="1">

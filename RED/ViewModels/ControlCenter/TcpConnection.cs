@@ -1,33 +1,33 @@
-﻿using Caliburn.Micro;
-using RED.Interfaces;
-using RED.Models.ControlCenter;
-using System;
-using System.IO;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
-
-namespace RED.ViewModels.ControlCenter
+﻿namespace RED.ViewModels.ControlCenter
 {
-    public class TCPConnectionVM : PropertyChangedBase, ISubscribe
+    using Caliburn.Micro;
+    using Interfaces;
+    using Models;
+    using System;
+    using System.IO;
+    using System.Net;
+    using System.Net.Sockets;
+    using System.Text;
+
+    public class TcpConnection : PropertyChangedBase, ISubscribe
     {
-        private TCPConnectionModel Model;
-        private ControlCenterViewModel ControlCenterVM;
+        private readonly TcpConnectionModel _model;
+        private readonly ControlCenterViewModel _controlCenter;
 
         private NetworkStream Stream { get; set; }
         public TcpClient Client
         {
             get
             {
-                return Model.Client;
+                return _model._client;
             }
             set
             {
-                Model.Client = value;
+                _model._client = value;
                 NotifyOfPropertyChange(() => Client);
             }
         }
-        public IPAddress RemoteIP
+        public IPAddress RemoteIp
         {
             get
             {
@@ -38,11 +38,11 @@ namespace RED.ViewModels.ControlCenter
         {
             get
             {
-                return Model.RemoteName;
+                return _model._remoteName;
             }
             set
             {
-                Model.RemoteName = value;
+                _model._remoteName = value;
                 NotifyOfPropertyChange(() => RemoteName);
             }
         }
@@ -50,21 +50,21 @@ namespace RED.ViewModels.ControlCenter
         {
             get
             {
-                return Model.RemoteSoftware;
+                return _model._remoteSoftware;
             }
             set
             {
-                Model.RemoteSoftware = value;
+                _model._remoteSoftware = value;
                 NotifyOfPropertyChange(() => RemoteSoftware);
             }
         }
 
-        public TCPConnectionVM(TcpClient client, ControlCenterViewModel CCVM)
+        public TcpConnection(TcpClient client, ControlCenterViewModel controlCenter)
         {
-            Model = new TCPConnectionModel();
-            ControlCenterVM = CCVM;
+            _model = new TcpConnectionModel();
+            _controlCenter = controlCenter;
 
-            this.Client = client;
+            Client = client;
             Stream = Client.GetStream();
 
             InitializeConnection();
@@ -75,20 +75,19 @@ namespace RED.ViewModels.ControlCenter
 
         private async void InitializeConnection()
         {
-            Encoding ascii = Encoding.ASCII;
-            byte[] buffer;
+            var ascii = Encoding.ASCII;
 
             //Send Local Name
-            buffer = ascii.GetBytes(ControlCenterVM.TcpAsyncServer.LocalMachineName);
+            var buffer = ascii.GetBytes(_controlCenter.TcpAsyncServer.LocalMachineName);
             await Stream.WriteAsync(buffer, 0, buffer.Length);
 
             //Get and Save Remote Name
             buffer = new byte[256];
-            int remoteNameLength = await Stream.ReadAsync(buffer, 0, buffer.Length);
+            var remoteNameLength = await Stream.ReadAsync(buffer, 0, buffer.Length);
             RemoteName = ascii.GetString(buffer, 0, remoteNameLength);
 
             //Send Local Software
-            buffer = ascii.GetBytes(ControlCenterVM.TcpAsyncServer.LocalSoftwareName);
+            buffer = ascii.GetBytes(_controlCenter.TcpAsyncServer.LocalSoftwareName);
             await Stream.WriteAsync(buffer, 0, buffer.Length);
 
             //Get and Save Remote Software
@@ -99,23 +98,23 @@ namespace RED.ViewModels.ControlCenter
 
         private async void ReceiveNetworkData()
         {
-            byte[] buffer = new byte[1024];
+            var buffer = new byte[1024];
             while (true)//TODO: have this stop if we close
             {
                 await Stream.ReadAsync(buffer, 0, buffer.Length);
-                using (MemoryStream ms = new MemoryStream(buffer))
+                using (var ms = new MemoryStream(buffer))
                 {
-                    using (BinaryReader br = new BinaryReader(ms))
+                    using (var br = new BinaryReader(ms))
                     {
-                        int dataId = br.ReadInt32();
-                        Int16 dataLength = br.ReadInt16();
-                        byte[] data = br.ReadBytes(dataLength);
+                        var dataId = br.ReadInt32();
+                        var dataLength = br.ReadInt16();
+                        var data = br.ReadBytes(dataLength);
 
                         switch (dataId)
                         {
-                            case 1: ControlCenterVM.DataRouter.Subscribe(this, dataId); break;//Subscribe Request
-                            case 2: ControlCenterVM.DataRouter.UnSubscribe(this, dataId); break;//Unsubscribe Request
-                            default: ControlCenterVM.DataRouter.Send(dataId, data); break;//Normal Packet
+                            case 1: _controlCenter.DataRouter.Subscribe(this, dataId); break;//Subscribe Request
+                            case 2: _controlCenter.DataRouter.UnSubscribe(this, dataId); break;//Unsubscribe Request
+                            default: _controlCenter.DataRouter.Send(dataId, data); break;//Normal Packet
                         }
                     }
                 }
@@ -130,7 +129,7 @@ namespace RED.ViewModels.ControlCenter
         //ISubscribe.Receive
         public void Receive(int dataId, byte[] data)
         {
-            using (BinaryWriter bw = new BinaryWriter(Stream))
+            using (var bw = new BinaryWriter(Stream))
             {
                 bw.Write(dataId);
                 bw.Write((Int16)(data.Length));

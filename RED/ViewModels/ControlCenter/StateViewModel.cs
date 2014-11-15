@@ -1,7 +1,7 @@
 ﻿namespace RED.ViewModels.ControlCenter
 {
     using Caliburn.Micro;
-    using Models.ControlCenter;
+    using Models;
     using Properties;
     using System;
     using System.Linq;
@@ -9,7 +9,7 @@
     public class StateViewModel : PropertyChangedBase
     {
         private readonly StateModel _model = new StateModel();
-        private ControlCenterViewModel ControlCenterVM;
+        private readonly ControlCenterViewModel _controlCenter;
 
         public string Version
         {
@@ -22,11 +22,11 @@
         {
             get
             {
-                return _model.CurrentControlMode;
+                return _model._currentControlMode;
             }
             set
             {
-                _model.CurrentControlMode = value;
+                _model._currentControlMode = value;
                 NotifyOfPropertyChange();
                 NotifyOfPropertyChange(() => CurrentControlModeDisplay);
             }
@@ -35,7 +35,7 @@
         {
             get
             {
-                var mode = _model.CurrentControlMode;
+                var mode = _model._currentControlMode;
                 return Enum.GetName(typeof(ControlMode), mode);
             }
         }
@@ -43,11 +43,11 @@
         {
             get
             {
-                return _model.NetworkHasConnection;
+                return _model._networkHasConnection;
             }
             set
             {
-                _model.NetworkHasConnection = value;
+                _model._networkHasConnection = value;
                 NotifyOfPropertyChange();
                 NotifyOfPropertyChange(() => NetworkConnectionStatus);
             }
@@ -63,11 +63,11 @@
         {
             get
             {
-                return _model.ControllerIsConnected;
+                return _model._controllerIsConnected;
             }
             set
             {
-                _model.ControllerIsConnected = value;
+                _model._controllerIsConnected = value;
                 NotifyOfPropertyChange();
                 NotifyOfPropertyChange(() => ControllerConnectionStatus);
             }
@@ -79,35 +79,23 @@
                 return !ControllerIsConnected ? "Disconnected" : "Connected";
             }
         }
-        public bool HazelIsReady
-        {
-            get
-            {
-                return _model.HazelIsReady;
-            }
-            set
-            {
-                _model.HazelIsReady = value;
-                NotifyOfPropertyChange();
-            }
-        }
 
         public bool ServerIsRunning
         {
             get
             {
-                return _model.ServerIsRunning;
+                return _model._serverIsRunning;
             }
             set
             {
-                _model.ServerIsRunning = value;
+                _model._serverIsRunning = value;
                 NotifyOfPropertyChange(() => ServerIsRunning);
             }
         }
 
-        public StateViewModel(ControlCenterViewModel CCVM)
+        public StateViewModel(ControlCenterViewModel controlCenter)
         {
-            ControlCenterVM = CCVM;
+            _controlCenter = controlCenter;
             CurrentControlMode = ParseEnum<ControlMode>(Settings.Default.DefaultControlMode);
         }
 
@@ -140,9 +128,9 @@
         {
             ServerIsRunning = !ServerIsRunning;
             if (ServerIsRunning)
-                ControlCenterVM.TcpAsyncServer.Start();
+                _controlCenter.TcpAsyncServer.Start();
             else
-                ControlCenterVM.TcpAsyncServer.Stop();
+                _controlCenter.TcpAsyncServer.Stop();
         }
 
         protected T ParseEnum<T>(string name)
