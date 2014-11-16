@@ -59,13 +59,13 @@
 
         private async void ReceiveNetworkData()
         {
-            while (true) //TODO: have this stop if we close
+            using (var bs = new BufferedStream(netStream))
             {
-                //await netStream.ReadAsync(buffer, 0, buffer.Length);
-                using (var bs = new BufferedStream(netStream))
+                using (var br = new BinaryReader(bs))
                 {
-                    using (var br = new BinaryReader(bs))
+                    while (true) //TODO: have this stop if we close
                     {
+                        //await netStream.ReadAsync(buffer, 0, buffer.Length);
                         messageTypes messageType = (messageTypes)(br.ReadByte());
 
                         switch (messageType)
