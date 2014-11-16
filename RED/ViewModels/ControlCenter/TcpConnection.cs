@@ -46,15 +46,8 @@
             Client = client;
             netStream = Client.GetStream();
 
-            InitializeConnection();
-
             //Start Listening
             ReceiveNetworkData();
-        }
-
-        private async void InitializeConnection()
-        {
-
         }
 
         private async void ReceiveNetworkData()
@@ -65,7 +58,6 @@
                 {
                     while (true) //TODO: have this stop if we close
                     {
-                        //await netStream.ReadAsync(buffer, 0, buffer.Length);
                         messageTypes messageType = (messageTypes)(br.ReadByte());
 
                         switch (messageType)
@@ -92,7 +84,7 @@
                             case messageTypes.error:
                                 break;
                             default:
-                                throw new ArgumentException("Illegal Message Type Byte Recieved");
+                                throw new ArgumentException("Illegal MessageType Byte Recieved");
                         }
                     }
                 }
