@@ -145,10 +145,13 @@
                                 recieveConsoleMessage(bs);
                                 break;
                             case messageTypes.command:
+                                recieveCommandData(bs);
                                 break;
                             case messageTypes.telemetry:
+                                recieveTelemetryData(bs);
                                 break;
                             case messageTypes.error:
+                                recieveErrorData(bs);
                                 break;
                             default:
                                 throw new ArgumentException("Illegal MessageType Byte Recieved");
@@ -189,7 +192,19 @@
             _controlCenter.MetadataManager.Add(context);
         }
 
-        private void recieveData<T>(Stream s)
+        private async Task recieveCommandData(Stream s)
+        {
+            //look up the length to recieve
+            //download data
+            //forward to router
+        }
+        private async Task recieveTelemetryData(Stream s)
+        {
+            //look up the length to recieve
+            //download data
+            //forward to router
+        }
+        private async Task recieveErrorData(Stream s)
         {
             //look up the length to recieve
             //download data
