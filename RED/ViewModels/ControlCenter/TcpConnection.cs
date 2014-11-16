@@ -109,14 +109,12 @@
             CommandMetadataContext context = await JSONDeserializer.Deserialize<CommandMetadataContext>(json);
             _controlCenter.MetadataManager.Add(context);
         }
-
         private async Task recieveTelemetryMetadata(Stream s)
         {
             string json = readNullTerminated(s);
             TelemetryMetadataContext context = await JSONDeserializer.Deserialize<TelemetryMetadataContext>(json);
             _controlCenter.MetadataManager.Add(context);
         }
-
         private async Task recieveErrorMetadata(Stream s)
         {
             string json = readNullTerminated(s);
@@ -136,6 +134,18 @@
             Client.Close();
         }
 
+        //ISubscribe.Receive
+        public void Receive(int dataId, byte[] data)
+        {
+            throw new NotImplementedException();
+            using (var bw = new BinaryWriter(netStream))
+            {
+                bw.Write(dataId);
+                bw.Write((Int16)(data.Length));
+                bw.Write(data);
+            }
+        }
+
         private string readNullTerminated(Stream s)
         {
             StringBuilder sb = new StringBuilder();
@@ -150,17 +160,6 @@
             return sb.ToString();
         }
 
-        //ISubscribe.Receive
-        public void Receive(int dataId, byte[] data)
-        {
-            throw new NotImplementedException();
-            using (var bw = new BinaryWriter(netStream))
-            {
-                bw.Write(dataId);
-                bw.Write((Int16)(data.Length));
-                bw.Write(data);
-            }
-        }
         private enum messageTypes : byte
         {
             console = 0x00,
@@ -172,7 +171,6 @@
             telemetry = 0x06,
             error = 0x07
         }
-
         private enum synchronizeStatuses : byte
         {
             init = 0x00,
