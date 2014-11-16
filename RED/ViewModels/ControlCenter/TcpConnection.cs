@@ -119,7 +119,7 @@
 
         private void recieveConsoleMessage(Stream s)
         {
-            //read NTCA
+            string message = readNullTerminated(s);
             //forward to console
         }
 
@@ -131,6 +131,7 @@
 
         private void recieveMetadata<T>(Stream s)
         {
+            string data = readNullTerminated(s);
             //deserialize to type T
             //add to MetadataManager
         }
@@ -145,6 +146,20 @@
         public void Close()
         {
             Client.Close();
+        }
+
+        private string readNullTerminated(Stream s)
+        {
+            StringBuilder sb = new StringBuilder();
+            char lastchar;
+            do
+            {
+                lastchar = (char)(s.ReadByte());
+                sb.Append(lastchar);
+            }
+            while (lastchar != '\0');
+
+            return sb.ToString();
         }
 
         //ISubscribe.Receive
