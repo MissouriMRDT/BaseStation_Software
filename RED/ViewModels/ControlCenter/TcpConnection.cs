@@ -101,13 +101,13 @@
                                 recieveSynchronizeStatus(bs);
                                 break;
                             case messageTypes.commandMetadata:
-                                recieveCommandMetadata(bs);
+                                await recieveCommandMetadata(bs);
                                 break;
                             case messageTypes.telemetryMetadata:
-                                recieveTelemetryMetadata(bs);
+                                await recieveTelemetryMetadata(bs);
                                 break;
                             case messageTypes.errorMetadata:
-                                recieveErrorMetadata(bs);
+                                await recieveErrorMetadata(bs);
                                 break;
                             case messageTypes.command:
                                 break;
