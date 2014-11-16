@@ -120,7 +120,7 @@
         private void recieveConsoleMessage(Stream s)
         {
             string message = readNullTerminated(s);
-            //forward to console
+            _controlCenter.Console.WriteToConsole(message);
         }
 
         private void recieveSynchronizeStatus(Stream s)
