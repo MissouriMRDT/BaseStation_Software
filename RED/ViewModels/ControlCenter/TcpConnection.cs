@@ -209,11 +209,11 @@
         //ISubscribe.Receive
         public void Receive(int dataId, byte[] data)
         {
-            throw new NotImplementedException();
+            //This forwards the data across the connection
             using (var bw = new BinaryWriter(netStream))
             {
+                bw.Write((byte)(messageTypes.command));
                 bw.Write(dataId);
-                bw.Write((Int16)(data.Length));
                 bw.Write(data);
             }
         }
