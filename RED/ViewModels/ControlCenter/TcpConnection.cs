@@ -144,9 +144,6 @@
                             case messageTypes.console:
                                 receiveConsoleMessage(bs);
                                 break;
-                            case messageTypes.command:
-                                receiveCommandData(bs);
-                                break;
                             case messageTypes.telemetry:
                                 receiveTelemetryData(bs);
                                 break;
@@ -192,14 +189,6 @@
             _controlCenter.MetadataManager.Add(context);
         }
 
-        private async Task receiveCommandData(Stream s)
-        {
-            byte dataId = (byte)(s.ReadByte()); //TODO: handle disconnection here
-            int dataLength = 0; //read this from the MetadataManager
-            byte[] buffer = new byte[dataLength];
-            await s.ReadAsync(buffer, 0, dataLength);
-            _controlCenter.DataRouter.Send(dataId, buffer);
-        }
         private async Task receiveTelemetryData(Stream s)
         {
             byte dataId = (byte)(s.ReadByte()); //TODO: handle disconnection here
