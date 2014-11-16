@@ -11,6 +11,7 @@
         internal ConsoleViewModel _console;
         internal ModuleManagerViewModel _gridManager;
         internal DataRouter _dataRouter;
+        internal MetadataManager _metadataManager;
         internal AsyncTcpServerViewModel _tcpAsyncServer;
     }
 }
