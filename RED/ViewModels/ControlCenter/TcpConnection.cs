@@ -194,21 +194,27 @@
 
         private async Task receiveCommandData(Stream s)
         {
-            //look up the length to receive
-            //download data
-            //forward to router
+            byte dataId = (byte)(s.ReadByte()); //TODO: handle disconnection here
+            int dataLength = 0; //read this from the MetadataManager
+            byte[] buffer = new byte[dataLength];
+            await s.ReadAsync(buffer, 0, dataLength);
+            _controlCenter.DataRouter.Send(dataId, buffer);
         }
         private async Task receiveTelemetryData(Stream s)
         {
-            //look up the length to receive
-            //download data
-            //forward to router
+            byte dataId = (byte)(s.ReadByte()); //TODO: handle disconnection here
+            int dataLength = 0; //read this from the MetadataManager
+            byte[] buffer = new byte[dataLength];
+            await s.ReadAsync(buffer, 0, dataLength);
+            _controlCenter.DataRouter.Send(dataId, buffer);
         }
         private async Task receiveErrorData(Stream s)
         {
-            //look up the length to receive
-            //download data
-            //forward to router
+            byte dataId = (byte)(s.ReadByte()); //TODO: handle disconnection here
+            int dataLength = 0; //read this from the MetadataManager
+            byte[] buffer = new byte[dataLength];
+            await s.ReadAsync(buffer, 0, dataLength);
+            _controlCenter.Console.WriteToConsole(ASCIIEncoding.ASCII.GetString(buffer));
         }
 
         //ISubscribe.Receive
