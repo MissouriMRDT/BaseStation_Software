@@ -46,8 +46,87 @@
             Client = client;
             netStream = Client.GetStream();
 
-            //Start Listening
-            ReceiveNetworkData();
+            Connect();
+        }
+
+        private async void Connect()
+        {
+            if (await InitializeConnection())
+            {
+                //Start Listening
+                ReceiveNetworkData();
+            }
+            else
+            {
+                Close();
+            }
+        }
+        private async Task<bool> InitializeConnection()
+        {
+            using (var bs = new BufferedStream(netStream))
+            {
+                using (var br = new BinaryReader(bs))
+                {
+                    try
+                    {
+                        if ((synchronizeStatuses)(br.ReadByte()) == synchronizeStatuses.init)
+                        {
+                            //Synchronization Process
+                            messageTypes messageType;
+                            do
+                            {
+                                messageType = (messageTypes)(br.ReadByte());
+
+                                switch (messageType)
+                                {
+                                    case messageTypes.console:
+                                        recieveConsoleMessage(bs);
+                                        break;
+                                    case messageTypes.commandMetadata:
+                                        await recieveCommandMetadata(bs);
+                                        break;
+                                    case messageTypes.telemetryMetadata:
+                                        await recieveTelemetryMetadata(bs);
+                                        break;
+                                    case messageTypes.errorMetadata:
+                                        await recieveErrorMetadata(bs);
+                                        break;
+                                    case messageTypes.synchronizeStatus:
+                                        break;
+                                    default:
+                                        throw new ArgumentException("Illegal MessageType Byte Recieved");
+                                }
+                            }
+                            while (messageType != messageTypes.synchronizeStatus);
+
+                            var status = (synchronizeStatuses)(br.ReadByte());
+
+                            if (status == synchronizeStatuses.wait)
+                                bs.Write(new byte[] { (byte)(synchronizeStatuses.ack) }, 0, 1);
+                            else if (status == synchronizeStatuses.fail)
+                                return false;
+
+                            return true;
+                        }
+                        else
+                        {
+                            _controlCenter.Console.WriteToConsole("Init Synchronization byte not recieved.");
+                            return false;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        _controlCenter.Console.WriteToConsole("Exception caught during synchronization. Will request a repeat. '" + e.ToString() + "'");
+                    }
+                    //Still haven't succeeded so, requesting a repeat
+                    bs.Write(new byte[] { (byte)(synchronizeStatuses.repeat) }, 0, 1);
+                    return await InitializeConnection();
+                }
+            }
+        }
+        public void Close()
+        {
+            Client.Close();
         }
 
         private async void ReceiveNetworkData()
@@ -127,11 +206,6 @@
             //look up the length to recieve
             //download data
             //forward to router
-        }
-
-        public void Close()
-        {
-            Client.Close();
         }
 
         //ISubscribe.Receive
