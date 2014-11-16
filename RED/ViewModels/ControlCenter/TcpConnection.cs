@@ -3,12 +3,14 @@
     using Caliburn.Micro;
     using Interfaces;
     using Models;
+    using RED.Contexts;
     using RED.JSON;
     using System;
     using System.IO;
     using System.Net;
     using System.Net.Sockets;
     using System.Text;
+    using System.Threading.Tasks;
 
     public class TcpConnection : PropertyChangedBase, ISubscribe
     {
@@ -99,6 +101,7 @@
                                 recieveSynchronizeStatus(bs);
                                 break;
                             case messageTypes.commandMetadata:
+                                recieveCommandMetadata(bs);
                                 break;
                             case messageTypes.telemetryMetadata:
                                 break;
@@ -130,11 +133,11 @@
             //change state
         }
 
-        private void recieveMetadata<T>(Stream s)
+        private async Task recieveCommandMetadata(Stream s)
         {
-            string data = readNullTerminated(s);
-            //deserialize to type T
-            //add to MetadataManager
+            string json = readNullTerminated(s);
+            CommandMetadataContext context = await JSONDeserializer.Deserialize<CommandMetadataContext>(json);
+            _controlCenter.MetadataManager.Add(context);
         }
 
         private void recieveData<T>(Stream s)
