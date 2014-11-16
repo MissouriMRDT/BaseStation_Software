@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace RED.Contexts
 {
-    class CommandMetadataContext
+    public class CommandMetadataContext
     {
+        public byte Cmd_ID { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string Datatype { get; set; }
     }
 }
