@@ -3,6 +3,7 @@
     using Caliburn.Micro;
     using Interfaces;
     using Models;
+    using RED.JSON;
     using System;
     using System.IO;
     using System.Net;
