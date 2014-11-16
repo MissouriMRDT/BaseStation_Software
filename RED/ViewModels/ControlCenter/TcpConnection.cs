@@ -144,18 +144,6 @@
                             case messageTypes.console:
                                 recieveConsoleMessage(bs);
                                 break;
-                            case messageTypes.synchronizeStatus:
-                                recieveSynchronizeStatus(bs);
-                                break;
-                            case messageTypes.commandMetadata:
-                                await recieveCommandMetadata(bs);
-                                break;
-                            case messageTypes.telemetryMetadata:
-                                await recieveTelemetryMetadata(bs);
-                                break;
-                            case messageTypes.errorMetadata:
-                                await recieveErrorMetadata(bs);
-                                break;
                             case messageTypes.command:
                                 break;
                             case messageTypes.telemetry:
