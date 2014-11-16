@@ -80,21 +80,21 @@
                                 switch (messageType)
                                 {
                                     case messageTypes.console:
-                                        recieveConsoleMessage(bs);
+                                        receiveConsoleMessage(bs);
                                         break;
                                     case messageTypes.commandMetadata:
-                                        await recieveCommandMetadata(bs);
+                                        await receiveCommandMetadata(bs);
                                         break;
                                     case messageTypes.telemetryMetadata:
-                                        await recieveTelemetryMetadata(bs);
+                                        await receiveTelemetryMetadata(bs);
                                         break;
                                     case messageTypes.errorMetadata:
-                                        await recieveErrorMetadata(bs);
+                                        await receiveErrorMetadata(bs);
                                         break;
                                     case messageTypes.synchronizeStatus:
                                         break;
                                     default:
-                                        throw new ArgumentException("Illegal MessageType Byte Recieved");
+                                        throw new ArgumentException("Illegal MessageType Byte received");
                                 }
                             }
                             while (messageType != messageTypes.synchronizeStatus);
@@ -110,7 +110,7 @@
                         }
                         else
                         {
-                            _controlCenter.Console.WriteToConsole("Init Synchronization byte not recieved.");
+                            _controlCenter.Console.WriteToConsole("Init Synchronization byte not received.");
                             return false;
                         }
                     }
@@ -142,71 +142,71 @@
                         switch (messageType)
                         {
                             case messageTypes.console:
-                                recieveConsoleMessage(bs);
+                                receiveConsoleMessage(bs);
                                 break;
                             case messageTypes.command:
-                                recieveCommandData(bs);
+                                receiveCommandData(bs);
                                 break;
                             case messageTypes.telemetry:
-                                recieveTelemetryData(bs);
+                                receiveTelemetryData(bs);
                                 break;
                             case messageTypes.error:
-                                recieveErrorData(bs);
+                                receiveErrorData(bs);
                                 break;
                             default:
-                                throw new ArgumentException("Illegal MessageType Byte Recieved");
+                                throw new ArgumentException("Illegal MessageType Byte received");
                         }
                     }
                 }
             }
         }
 
-        private void recieveConsoleMessage(Stream s)
+        private void receiveConsoleMessage(Stream s)
         {
             string message = readNullTerminated(s);
             _controlCenter.Console.WriteToConsole(message);
         }
 
-        private void recieveSynchronizeStatus(Stream s)
+        private void receiveSynchronizeStatus(Stream s)
         {
             //read status code
             //change state
         }
 
-        private async Task recieveCommandMetadata(Stream s)
+        private async Task receiveCommandMetadata(Stream s)
         {
             string json = readNullTerminated(s);
             CommandMetadataContext context = await JSONDeserializer.Deserialize<CommandMetadataContext>(json);
             _controlCenter.MetadataManager.Add(context);
         }
-        private async Task recieveTelemetryMetadata(Stream s)
+        private async Task receiveTelemetryMetadata(Stream s)
         {
             string json = readNullTerminated(s);
             TelemetryMetadataContext context = await JSONDeserializer.Deserialize<TelemetryMetadataContext>(json);
             _controlCenter.MetadataManager.Add(context);
         }
-        private async Task recieveErrorMetadata(Stream s)
+        private async Task receiveErrorMetadata(Stream s)
         {
             string json = readNullTerminated(s);
             ErrorMetadataContext context = await JSONDeserializer.Deserialize<ErrorMetadataContext>(json);
             _controlCenter.MetadataManager.Add(context);
         }
 
-        private async Task recieveCommandData(Stream s)
+        private async Task receiveCommandData(Stream s)
         {
-            //look up the length to recieve
+            //look up the length to receive
             //download data
             //forward to router
         }
-        private async Task recieveTelemetryData(Stream s)
+        private async Task receiveTelemetryData(Stream s)
         {
-            //look up the length to recieve
+            //look up the length to receive
             //download data
             //forward to router
         }
-        private async Task recieveErrorData(Stream s)
+        private async Task receiveErrorData(Stream s)
         {
-            //look up the length to recieve
+            //look up the length to receive
             //download data
             //forward to router
         }
