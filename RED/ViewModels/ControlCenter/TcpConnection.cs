@@ -37,30 +37,6 @@
                 return ((IPEndPoint)(Client.Client.RemoteEndPoint)).Address;
             }
         }
-        public string RemoteName
-        {
-            get
-            {
-                return _model._remoteName;
-            }
-            set
-            {
-                _model._remoteName = value;
-                NotifyOfPropertyChange(() => RemoteName);
-            }
-        }
-        public string RemoteSoftware
-        {
-            get
-            {
-                return _model._remoteSoftware;
-            }
-            set
-            {
-                _model._remoteSoftware = value;
-                NotifyOfPropertyChange(() => RemoteSoftware);
-            }
-        }
 
         public TcpConnection(TcpClient client, ControlCenterViewModel controlCenter)
         {
