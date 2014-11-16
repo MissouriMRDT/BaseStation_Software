@@ -145,10 +145,10 @@
                                 receiveConsoleMessage(bs);
                                 break;
                             case messageTypes.telemetry:
-                                receiveTelemetryData(bs);
+                                await receiveTelemetryData(bs);
                                 break;
                             case messageTypes.error:
-                                receiveErrorData(bs);
+                                await receiveErrorData(bs);
                                 break;
                             default:
                                 throw new ArgumentException("Illegal MessageType Byte received");
