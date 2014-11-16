@@ -14,7 +14,7 @@
         private readonly TcpConnectionModel _model;
         private readonly ControlCenterViewModel _controlCenter;
 
-        private NetworkStream Stream { get; set; }
+        private NetworkStream netStream { get; set; }
         public TcpClient Client
         {
             get
@@ -65,7 +65,7 @@
             _controlCenter = controlCenter;
 
             Client = client;
-            Stream = Client.GetStream();
+            netStream = Client.GetStream();
 
             InitializeConnection();
 
@@ -75,50 +75,71 @@
 
         private async void InitializeConnection()
         {
-            var ascii = Encoding.ASCII;
 
-            //Send Local Name
-            var buffer = ascii.GetBytes(_controlCenter.TcpAsyncServer.LocalMachineName);
-            await Stream.WriteAsync(buffer, 0, buffer.Length);
-
-            //Get and Save Remote Name
-            buffer = new byte[256];
-            var remoteNameLength = await Stream.ReadAsync(buffer, 0, buffer.Length);
-            RemoteName = ascii.GetString(buffer, 0, remoteNameLength);
-
-            //Send Local Software
-            buffer = ascii.GetBytes(_controlCenter.TcpAsyncServer.LocalSoftwareName);
-            await Stream.WriteAsync(buffer, 0, buffer.Length);
-
-            //Get and Save Remote Software
-            buffer = new byte[256];
-            int remoteSoftwareLength = await Stream.ReadAsync(buffer, 0, buffer.Length);
-            RemoteSoftware = ascii.GetString(buffer, 0, remoteSoftwareLength);
         }
 
         private async void ReceiveNetworkData()
         {
-            var buffer = new byte[1024];
-            while (true)//TODO: have this stop if we close
+            while (true) //TODO: have this stop if we close
             {
-                await Stream.ReadAsync(buffer, 0, buffer.Length);
-                using (var ms = new MemoryStream(buffer))
+                //await netStream.ReadAsync(buffer, 0, buffer.Length);
+                using (var bs = new BufferedStream(netStream))
                 {
-                    using (var br = new BinaryReader(ms))
+                    using (var br = new BinaryReader(bs))
                     {
-                        var dataId = br.ReadInt32();
-                        var dataLength = br.ReadInt16();
-                        var data = br.ReadBytes(dataLength);
+                        messageTypes messageType = (messageTypes)(br.ReadByte());
 
-                        switch (dataId)
+                        switch (messageType)
                         {
-                            case 1: _controlCenter.DataRouter.Subscribe(this, dataId); break;//Subscribe Request
-                            case 2: _controlCenter.DataRouter.UnSubscribe(this, dataId); break;//Unsubscribe Request
-                            default: _controlCenter.DataRouter.Send(dataId, data); break;//Normal Packet
+                            case messageTypes.console:
+                                recieveConsoleMessage(bs);
+                                break;
+                            case messageTypes.synchronizeStatus:
+                                recieveSynchronizeStatus(bs);
+                                break;
+                            case messageTypes.commandMetadata:
+                                break;
+                            case messageTypes.telemetryMetadata:
+                                break;
+                            case messageTypes.errorMetadata:
+                                break;
+                            case messageTypes.command:
+                                break;
+                            case messageTypes.telemetry:
+                                break;
+                            case messageTypes.error:
+                                break;
+                            default:
+                                throw new ArgumentException("Illegal Message Type Byte Recieved");
                         }
                     }
                 }
             }
+        }
+
+        private void recieveConsoleMessage(Stream s)
+        {
+            //read NTCA
+            //forward to console
+        }
+
+        private void recieveSynchronizeStatus(Stream s)
+        {
+            //read status code
+            //change state
+        }
+
+        private void recieveMetadata<T>(Stream s)
+        {
+            //deserialize to type T
+            //add to MetadataManager
+        }
+
+        private void recieveData<T>(Stream s)
+        {
+            //look up the length to recieve
+            //download data
+            //forward to router
         }
 
         public void Close()
@@ -129,12 +150,33 @@
         //ISubscribe.Receive
         public void Receive(int dataId, byte[] data)
         {
-            using (var bw = new BinaryWriter(Stream))
+            throw new NotImplementedException();
+            using (var bw = new BinaryWriter(netStream))
             {
                 bw.Write(dataId);
                 bw.Write((Int16)(data.Length));
                 bw.Write(data);
             }
+        }
+        private enum messageTypes : byte
+        {
+            console = 0x00,
+            synchronizeStatus = 0x01,
+            commandMetadata = 0x02,
+            telemetryMetadata = 0x03,
+            errorMetadata = 0x04,
+            command = 0x05,
+            telemetry = 0x06,
+            error = 0x07
+        }
+
+        private enum synchronizeStatuses : byte
+        {
+            init = 0x00,
+            wait = 0x01,
+            ack = 0x02,
+            repeat = 0x03,
+            fail = 0x04
         }
     }
 }
