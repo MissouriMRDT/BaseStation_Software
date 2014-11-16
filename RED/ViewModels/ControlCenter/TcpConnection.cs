@@ -107,6 +107,7 @@
                                 recieveTelemetryMetadata(bs);
                                 break;
                             case messageTypes.errorMetadata:
+                                recieveErrorMetadata(bs);
                                 break;
                             case messageTypes.command:
                                 break;
@@ -145,6 +146,13 @@
         {
             string json = readNullTerminated(s);
             TelemetryMetadataContext context = await JSONDeserializer.Deserialize<TelemetryMetadataContext>(json);
+            _controlCenter.MetadataManager.Add(context);
+        }
+
+        private async Task recieveErrorMetadata(Stream s)
+        {
+            string json = readNullTerminated(s);
+            ErrorMetadataContext context = await JSONDeserializer.Deserialize<ErrorMetadataContext>(json);
             _controlCenter.MetadataManager.Add(context);
         }
 
