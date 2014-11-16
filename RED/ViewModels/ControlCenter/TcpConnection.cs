@@ -207,7 +207,7 @@
         }
 
         //ISubscribe.Receive
-        public void Receive(int dataId, byte[] data)
+        public void Receive(byte dataId, byte[] data)
         {
             //This forwards the data across the connection
             using (var bw = new BinaryWriter(netStream))
