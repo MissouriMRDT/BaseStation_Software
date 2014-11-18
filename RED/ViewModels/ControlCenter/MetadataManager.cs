@@ -9,13 +9,13 @@ namespace RED.ViewModels.ControlCenter
     {
         public List<CommandMetadataContext> Commands { get; private set; }
         public List<TelemetryMetadataContext> Telemetry { get; private set; }
-        public List<ErrorMetadataContext> Error { get; private set; }
+        public List<ErrorMetadataContext> Errors { get; private set; }
 
         public MetadataManager()
         {
             Commands = new List<CommandMetadataContext>();
             Telemetry = new List<TelemetryMetadataContext>();
-            Error = new List<ErrorMetadataContext>();
+            Errors = new List<ErrorMetadataContext>();
         }
 
         public void Add(CommandMetadataContext metadata)
@@ -28,7 +28,7 @@ namespace RED.ViewModels.ControlCenter
         }
         public void Add(ErrorMetadataContext metadata)
         {
-            Error.Add(metadata);
+            Errors.Add(metadata);
         }
 
         public CommandMetadataContext GetCommand(byte DataId)
@@ -41,7 +41,7 @@ namespace RED.ViewModels.ControlCenter
         }
         public ErrorMetadataContext GetError(byte DataId)
         {
-            return Error.Find(x => x.Error_ID == DataId);
+            return Errors.Find(x => x.Error_ID == DataId);
         }
 
         public int GetDataTypeByteLength(string DataType)
