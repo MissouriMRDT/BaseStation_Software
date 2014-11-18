@@ -1,4 +1,5 @@
 ﻿using RED.Contexts;
+using System;
 using System.Collections.Generic;
 
 namespace RED.ViewModels.ControlCenter
@@ -27,6 +28,18 @@ namespace RED.ViewModels.ControlCenter
         public void Add(ErrorMetadataContext metadata)
         {
             Error.Add(metadata);
+        }
+
+        public int GetDataTypeByteLength(string DataType)
+        {
+            switch (DataType)
+            {
+                case "int8": return 1;
+                case "int16": return 2;
+                case "int32": return 4;
+                case "int64": return 8;
+                default: throw new ArgumentException("Unsupported Data Type");
+            }
         }
     }
 }
