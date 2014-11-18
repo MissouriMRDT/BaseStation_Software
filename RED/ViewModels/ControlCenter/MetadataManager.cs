@@ -1,6 +1,7 @@
 ﻿using RED.Contexts;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RED.ViewModels.ControlCenter
 {
@@ -28,6 +29,11 @@ namespace RED.ViewModels.ControlCenter
         public void Add(ErrorMetadataContext metadata)
         {
             Error.Add(metadata);
+        }
+
+        public CommandMetadataContext GetCommand(byte DataId)
+        {
+            return Commands.Find(x => x.Cmd_ID == DataId);
         }
 
         public int GetDataTypeByteLength(string DataType)
