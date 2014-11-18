@@ -35,6 +35,14 @@ namespace RED.ViewModels.ControlCenter
         {
             return Commands.Find(x => x.Cmd_ID == DataId);
         }
+        public TelemetryMetadataContext GetTelemetry(byte DataId)
+        {
+            return Telemetry.Find(x => x.Telem_ID == DataId);
+        }
+        public ErrorMetadataContext GetError(byte DataId)
+        {
+            return Error.Find(x => x.Error_ID == DataId);
+        }
 
         public int GetDataTypeByteLength(string DataType)
         {
