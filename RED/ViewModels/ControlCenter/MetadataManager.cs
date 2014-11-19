@@ -30,7 +30,7 @@ namespace RED.ViewModels.ControlCenter
         {
             Errors.Add(metadata);
         }
-
+        
         public CommandMetadataContext GetCommand(byte DataId)
         {
             return Commands.Find(x => x.Cmd_ID == DataId);
@@ -54,6 +54,18 @@ namespace RED.ViewModels.ControlCenter
                 case "int64": return 8;
                 default: throw new ArgumentException("Unsupported Data Type");
             }
+        }
+        public int GetDataTypeByteLength(CommandMetadataContext item)
+        {
+            return GetDataTypeByteLength(GetCommand(item.Cmd_ID).Datatype);
+        }
+        public int GetDataTypeByteLength(TelemetryMetadataContext item)
+        {
+            return GetDataTypeByteLength(GetTelemetry(item.Telem_ID).Datatype);
+        }
+        public int GetDataTypeByteLength(ErrorMetadataContext item)
+        {
+            return GetDataTypeByteLength(GetError(item.Error_ID).Param_Type);
         }
     }
 }
