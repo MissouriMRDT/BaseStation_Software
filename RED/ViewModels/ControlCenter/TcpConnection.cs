@@ -24,7 +24,7 @@
             {
                 return _model._client;
             }
-            set
+            private set
             {
                 _model._client = value;
                 NotifyOfPropertyChange(() => Client);
