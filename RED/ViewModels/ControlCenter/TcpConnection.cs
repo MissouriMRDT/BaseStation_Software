@@ -164,12 +164,6 @@
             _controlCenter.Console.WriteToConsole(message);
         }
 
-        private void receiveSynchronizeStatus(Stream s)
-        {
-            //read status code
-            //change state
-        }
-
         private async Task receiveCommandMetadata(Stream s)
         {
             string json = readNullTerminated(s);
