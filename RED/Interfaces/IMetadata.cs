@@ -1,6 +1,6 @@
 ﻿namespace RED.Interfaces
 {
-    interface IMetadata
+    public interface IMetadata
     {
         byte Id { get; set; }
         string Name { get; set; }
