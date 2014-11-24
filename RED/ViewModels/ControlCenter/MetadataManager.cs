@@ -33,15 +33,15 @@ namespace RED.ViewModels.ControlCenter
         
         public CommandMetadataContext GetCommand(byte DataId)
         {
-            return Commands.Find(x => x.Cmd_ID == DataId);
+            return Commands.Find(x => x.Id == DataId);
         }
         public TelemetryMetadataContext GetTelemetry(byte DataId)
         {
-            return Telemetry.Find(x => x.Telem_ID == DataId);
+            return Telemetry.Find(x => x.Id == DataId);
         }
         public ErrorMetadataContext GetError(byte DataId)
         {
-            return Errors.Find(x => x.Error_ID == DataId);
+            return Errors.Find(x => x.Id == DataId);
         }
 
         public int GetDataTypeByteLength(string DataType)
@@ -57,15 +57,15 @@ namespace RED.ViewModels.ControlCenter
         }
         public int GetDataTypeByteLength(CommandMetadataContext item)
         {
-            return GetDataTypeByteLength(GetCommand(item.Cmd_ID).Datatype);
+            return GetDataTypeByteLength(GetCommand(item.Id).Datatype);
         }
         public int GetDataTypeByteLength(TelemetryMetadataContext item)
         {
-            return GetDataTypeByteLength(GetTelemetry(item.Telem_ID).Datatype);
+            return GetDataTypeByteLength(GetTelemetry(item.Id).Datatype);
         }
         public int GetDataTypeByteLength(ErrorMetadataContext item)
         {
-            return GetDataTypeByteLength(GetError(item.Error_ID).Param_Type);
+            return GetDataTypeByteLength(GetError(item.Id).Datatype);
         }
     }
 }
