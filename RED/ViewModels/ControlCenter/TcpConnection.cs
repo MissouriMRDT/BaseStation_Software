@@ -210,6 +210,14 @@
         public void Receive(byte dataId, byte[] data)
         {
             //This forwards the data across the connection
+
+            //Validate Length
+            if (data.Length != _controlCenter.MetadataManager.GetDataTypeByteLength(dataId))
+            {
+                _controlCenter.Console.WriteToConsole("Command with data id " + dataId.ToString() + " and invalid data length was attempted to be sent.");
+                return;
+            }
+
             using (var bw = new BinaryWriter(netStream))
             {
                 bw.Write((byte)(messageTypes.command));
