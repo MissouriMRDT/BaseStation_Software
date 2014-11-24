@@ -1,4 +1,5 @@
 ﻿using RED.Contexts;
+using RED.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,7 @@ namespace RED.ViewModels.ControlCenter
         {
             Errors.Add(metadata);
         }
-        
+
         public CommandMetadataContext GetCommand(byte DataId)
         {
             return Commands.Find(x => x.Id == DataId);
@@ -42,6 +43,10 @@ namespace RED.ViewModels.ControlCenter
         public ErrorMetadataContext GetError(byte DataId)
         {
             return Errors.Find(x => x.Id == DataId);
+        }
+        public IMetadata GetMetadata(byte DataId)
+        {
+            return GetCommand(DataId) ?? GetTelemetry(DataId) ?? (IMetadata)GetError(DataId) ?? null;
         }
 
         public int GetDataTypeByteLength(string DataType)
@@ -55,6 +60,10 @@ namespace RED.ViewModels.ControlCenter
                 default: throw new ArgumentException("Unsupported Data Type");
             }
         }
+        public int GetDataTypeByteLength(byte DataId)
+        {
+            return GetDataTypeByteLength(GetMetadata(DataId).Datatype);
+        }
         public int GetDataTypeByteLength(CommandMetadataContext item)
         {
             return GetDataTypeByteLength(GetCommand(item.Id).Datatype);
@@ -66,6 +75,10 @@ namespace RED.ViewModels.ControlCenter
         public int GetDataTypeByteLength(ErrorMetadataContext item)
         {
             return GetDataTypeByteLength(GetError(item.Id).Datatype);
+        }
+        public int GetDataTypeByteLength(IMetadata item)
+        {
+            return GetDataTypeByteLength(GetMetadata(item.Id).Datatype);
         }
     }
 }
