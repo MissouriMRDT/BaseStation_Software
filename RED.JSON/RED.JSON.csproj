@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contexts\JsonCommandMetadataContext.cs" />
+    <Compile Include="Contexts\JsonTelemetryMetadataContext.cs" />
     <Compile Include="JSONDeserializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
