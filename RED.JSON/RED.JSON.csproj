@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contexts\JsonCommandMetadataContext.cs" />
     <Compile Include="JSONDeserializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
