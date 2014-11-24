@@ -192,7 +192,7 @@
         private async Task receiveTelemetryData(Stream s)
         {
             byte dataId = (byte)(s.ReadByte()); //TODO: handle disconnection here
-            int dataLength = 0; //read this from the MetadataManager
+            int dataLength = _controlCenter.MetadataManager.GetDataTypeByteLength(dataId);
             byte[] buffer = new byte[dataLength];
             await s.ReadAsync(buffer, 0, dataLength);
             _controlCenter.DataRouter.Send(dataId, buffer);
@@ -200,7 +200,7 @@
         private async Task receiveErrorData(Stream s)
         {
             byte dataId = (byte)(s.ReadByte()); //TODO: handle disconnection here
-            int dataLength = 0; //read this from the MetadataManager
+            int dataLength = _controlCenter.MetadataManager.GetDataTypeByteLength(dataId);
             byte[] buffer = new byte[dataLength];
             await s.ReadAsync(buffer, 0, dataLength);
             _controlCenter.Console.WriteToConsole(ASCIIEncoding.ASCII.GetString(buffer));
