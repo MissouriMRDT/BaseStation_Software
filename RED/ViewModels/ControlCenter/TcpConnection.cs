@@ -203,7 +203,7 @@
             int dataLength = _controlCenter.MetadataManager.GetDataTypeByteLength(dataId);
             byte[] buffer = new byte[dataLength];
             await s.ReadAsync(buffer, 0, dataLength);
-            _controlCenter.Console.WriteToConsole(ASCIIEncoding.ASCII.GetString(buffer));
+            _controlCenter.Console.WriteToConsole(_controlCenter.MetadataManager.GetError(dataId).Description + ": " + buffer.ToString()); //TODO: print this based on datatype
         }
 
         //ISubscribe.Receive
