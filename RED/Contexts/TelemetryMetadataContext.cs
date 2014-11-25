@@ -1,4 +1,5 @@
 ﻿using RED.Interfaces;
+using RED.JSON.Contexts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +17,19 @@ namespace RED.Contexts
         public string Units { get; set; }
         public string Minimum { get; set; }
         public string Maximum { get; set; }
+
+        public JsonTelemetryMetadataContext ToJsonContext()
+        {
+            return new JsonTelemetryMetadataContext()
+            {
+                Telem_ID = Id,
+                Name = Name,
+                Description = Description,
+                Datatype = Datatype,
+                Units = Units,
+                Maximum = Maximum,
+                Minimum = Minimum
+            };
+        }
     }
 }
