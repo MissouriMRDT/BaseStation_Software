@@ -5,6 +5,7 @@
     using Models;
     using RED.Contexts;
     using RED.JSON;
+    using RED.JSON.Contexts;
     using System;
     using System.IO;
     using System.Net;
@@ -167,19 +168,19 @@
         private async Task receiveCommandMetadata(Stream s)
         {
             string json = readNullTerminated(s);
-            CommandMetadataContext context = await JSONDeserializer.Deserialize<CommandMetadataContext>(json);
+            var context = new CommandMetadataContext(await JSONDeserializer.Deserialize<JsonCommandMetadataContext>(json));
             _controlCenter.MetadataManager.Add(context);
         }
         private async Task receiveTelemetryMetadata(Stream s)
         {
             string json = readNullTerminated(s);
-            TelemetryMetadataContext context = await JSONDeserializer.Deserialize<TelemetryMetadataContext>(json);
+            var context = new TelemetryMetadataContext(await JSONDeserializer.Deserialize<JsonTelemetryMetadataContext>(json));
             _controlCenter.MetadataManager.Add(context);
         }
         private async Task receiveErrorMetadata(Stream s)
         {
             string json = readNullTerminated(s);
-            ErrorMetadataContext context = await JSONDeserializer.Deserialize<ErrorMetadataContext>(json);
+            var context = new ErrorMetadataContext(await JSONDeserializer.Deserialize<JsonErrorMetadataContext>(json));
             _controlCenter.MetadataManager.Add(context);
         }
 
