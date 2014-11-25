@@ -15,6 +15,18 @@ namespace RED.Contexts
         public string Description { get; set; }
         public string Datatype { get; set; }
 
+        public CommandMetadataContext()
+        {
+
+        }
+        public CommandMetadataContext(JsonCommandMetadataContext json)
+        {
+            Id = json.Cmd_ID;
+            Name = json.Name;
+            Description = json.Description;
+            Datatype = json.Datatype;
+        }
+
         public JsonCommandMetadataContext ToJsonContext()
         {
             return new JsonCommandMetadataContext()
