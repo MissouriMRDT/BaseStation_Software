@@ -17,6 +17,20 @@ namespace RED.Contexts
         public string Datatype { get; set; }
         public string Units { get; set; }
 
+        public ErrorMetadataContext()
+        {
+
+        }
+        public ErrorMetadataContext(JsonErrorMetadataContext json)
+        {
+            Id = json.Error_ID;
+            Name = json.Name;
+            Subsystem = json.Subsystem;
+            Description = json.Error_String;
+            Datatype = json.Param_Type;
+            Units = json.Param_Units;
+        }
+
         public JsonErrorMetadataContext ToJsonContext()
         {
             return new JsonErrorMetadataContext()
