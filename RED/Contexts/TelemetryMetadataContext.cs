@@ -18,6 +18,21 @@ namespace RED.Contexts
         public string Minimum { get; set; }
         public string Maximum { get; set; }
 
+        public TelemetryMetadataContext()
+        {
+
+        }
+        public TelemetryMetadataContext(JsonTelemetryMetadataContext json)
+        {
+            Id = json.Telem_ID;
+            Name = json.Name;
+            Description = json.Description;
+            Datatype = json.Datatype;
+            Units = json.Units;
+            Minimum = json.Minimum;
+            Maximum = json.Maximum;
+        }
+
         public JsonTelemetryMetadataContext ToJsonContext()
         {
             return new JsonTelemetryMetadataContext()
