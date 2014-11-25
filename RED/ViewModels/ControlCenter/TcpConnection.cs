@@ -208,7 +208,7 @@
             //Validate Length
             if (data.Length != _controlCenter.MetadataManager.GetDataTypeByteLength(dataId))
             {
-                _controlCenter.Console.WriteToConsole("Command with data id " + dataId.ToString() + " and invalid data length was attempted to be sent.");
+                _controlCenter.Console.WriteToConsole("Sending of a command with data id " + dataId.ToString() + " and invalid data length " + data.Length.ToString() + " was attempted.");
                 return;
             }
 
