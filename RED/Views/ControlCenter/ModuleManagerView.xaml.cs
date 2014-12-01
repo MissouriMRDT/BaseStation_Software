@@ -2,7 +2,6 @@
 {
     public partial class ModuleManagerView
     {
-
         public ModuleManagerView()
         {
             InitializeComponent();
