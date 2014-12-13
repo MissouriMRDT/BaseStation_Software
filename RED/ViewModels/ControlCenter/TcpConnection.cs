@@ -3,25 +3,29 @@
     using Caliburn.Micro;
     using Interfaces;
     using Models;
+    using RED.Contexts;
+    using RED.JSON;
+    using RED.JSON.Contexts;
     using System;
     using System.IO;
     using System.Net;
     using System.Net.Sockets;
     using System.Text;
+    using System.Threading.Tasks;
 
     public class TcpConnection : PropertyChangedBase, ISubscribe
     {
         private readonly TcpConnectionModel _model;
         private readonly ControlCenterViewModel _controlCenter;
 
-        private NetworkStream Stream { get; set; }
+        private NetworkStream netStream { get; set; }
         public TcpClient Client
         {
             get
             {
                 return _model._client;
             }
-            set
+            private set
             {
                 _model._client = value;
                 NotifyOfPropertyChange(() => Client);
@@ -34,30 +38,6 @@
                 return ((IPEndPoint)(Client.Client.RemoteEndPoint)).Address;
             }
         }
-        public string RemoteName
-        {
-            get
-            {
-                return _model._remoteName;
-            }
-            set
-            {
-                _model._remoteName = value;
-                NotifyOfPropertyChange(() => RemoteName);
-            }
-        }
-        public string RemoteSoftware
-        {
-            get
-            {
-                return _model._remoteSoftware;
-            }
-            set
-            {
-                _model._remoteSoftware = value;
-                NotifyOfPropertyChange(() => RemoteSoftware);
-            }
-        }
 
         public TcpConnection(TcpClient client, ControlCenterViewModel controlCenter)
         {
@@ -65,76 +45,214 @@
             _controlCenter = controlCenter;
 
             Client = client;
-            Stream = Client.GetStream();
+            netStream = Client.GetStream();
 
-            InitializeConnection();
-
-            //Start Listening
-            ReceiveNetworkData();
+            Connect();
         }
 
-        private async void InitializeConnection()
+        private async void Connect()
         {
-            var ascii = Encoding.ASCII;
+            if (await InitializeConnection())
+            {
+                //Start Listening
+                ReceiveNetworkData();
+            }
+            else
+            {
+                Close();
+            }
+        }
+        private async Task<bool> InitializeConnection()
+        {
+            using (var bs = new BufferedStream(netStream))
+            {
+                using (var br = new BinaryReader(bs))
+                {
+                    try
+                    {
+                        if ((synchronizeStatuses)(br.ReadByte()) == synchronizeStatuses.init)
+                        {
+                            //Synchronization Process
+                            messageTypes messageType;
+                            do
+                            {
+                                messageType = (messageTypes)(br.ReadByte());
 
-            //Send Local Name
-            var buffer = ascii.GetBytes(_controlCenter.TcpAsyncServer.LocalMachineName);
-            await Stream.WriteAsync(buffer, 0, buffer.Length);
+                                switch (messageType)
+                                {
+                                    case messageTypes.console:
+                                        receiveConsoleMessage(bs);
+                                        break;
+                                    case messageTypes.commandMetadata:
+                                        await receiveCommandMetadata(bs);
+                                        break;
+                                    case messageTypes.telemetryMetadata:
+                                        await receiveTelemetryMetadata(bs);
+                                        break;
+                                    case messageTypes.errorMetadata:
+                                        await receiveErrorMetadata(bs);
+                                        break;
+                                    case messageTypes.synchronizeStatus:
+                                        break;
+                                    default:
+                                        throw new ArgumentException("Illegal MessageType Byte received");
+                                }
+                            }
+                            while (messageType != messageTypes.synchronizeStatus);
 
-            //Get and Save Remote Name
-            buffer = new byte[256];
-            var remoteNameLength = await Stream.ReadAsync(buffer, 0, buffer.Length);
-            RemoteName = ascii.GetString(buffer, 0, remoteNameLength);
+                            var status = (synchronizeStatuses)(br.ReadByte());
 
-            //Send Local Software
-            buffer = ascii.GetBytes(_controlCenter.TcpAsyncServer.LocalSoftwareName);
-            await Stream.WriteAsync(buffer, 0, buffer.Length);
+                            if (status == synchronizeStatuses.wait)
+                                bs.Write(new byte[] { (byte)(messageTypes.synchronizeStatus), (byte)(synchronizeStatuses.ack) }, 0, 2);
+                            else if (status == synchronizeStatuses.fail)
+                                return false;
 
-            //Get and Save Remote Software
-            buffer = new byte[256];
-            int remoteSoftwareLength = await Stream.ReadAsync(buffer, 0, buffer.Length);
-            RemoteSoftware = ascii.GetString(buffer, 0, remoteSoftwareLength);
+                            return true;
+                        }
+                        else
+                        {
+                            _controlCenter.Console.WriteToConsole("Init Synchronization byte not received.");
+                            return false;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        _controlCenter.Console.WriteToConsole("Exception caught during synchronization. Will request a repeat. '" + e.ToString() + "'");
+                    }
+                    //Still haven't succeeded so, requesting a repeat
+                    bs.Write(new byte[] { (byte)(messageTypes.synchronizeStatus), (byte)(synchronizeStatuses.repeat) }, 0, 2);
+                    return await InitializeConnection();
+                }
+            }
+        }
+        public void Close()
+        {
+            Client.Close();
         }
 
         private async void ReceiveNetworkData()
         {
-            var buffer = new byte[1024];
-            while (true)//TODO: have this stop if we close
+            using (var bs = new BufferedStream(netStream))
             {
-                await Stream.ReadAsync(buffer, 0, buffer.Length);
-                using (var ms = new MemoryStream(buffer))
+                using (var br = new BinaryReader(bs))
                 {
-                    using (var br = new BinaryReader(ms))
+                    while (true) //TODO: have this stop if we close
                     {
-                        var dataId = br.ReadInt32();
-                        var dataLength = br.ReadInt16();
-                        var data = br.ReadBytes(dataLength);
+                        messageTypes messageType = (messageTypes)(br.ReadByte());
 
-                        switch (dataId)
+                        switch (messageType)
                         {
-                            case 1: _controlCenter.DataRouter.Subscribe(this, dataId); break;//Subscribe Request
-                            case 2: _controlCenter.DataRouter.UnSubscribe(this, dataId); break;//Unsubscribe Request
-                            default: _controlCenter.DataRouter.Send(dataId, data); break;//Normal Packet
+                            case messageTypes.console:
+                                receiveConsoleMessage(bs);
+                                break;
+                            case messageTypes.telemetry:
+                                await receiveTelemetryData(bs);
+                                break;
+                            case messageTypes.error:
+                                await receiveErrorData(bs);
+                                break;
+                            default:
+                                throw new ArgumentException("Illegal MessageType Byte received");
                         }
                     }
                 }
             }
         }
 
-        public void Close()
+        private void receiveConsoleMessage(Stream s)
         {
-            Client.Close();
+            string message = readNullTerminated(s);
+            _controlCenter.Console.WriteToConsole(message);
+        }
+
+        private async Task receiveCommandMetadata(Stream s)
+        {
+            string json = readNullTerminated(s);
+            var context = new CommandMetadataContext(await JSONDeserializer.Deserialize<JsonCommandMetadataContext>(json));
+            _controlCenter.MetadataManager.Add(context);
+        }
+        private async Task receiveTelemetryMetadata(Stream s)
+        {
+            string json = readNullTerminated(s);
+            var context = new TelemetryMetadataContext(await JSONDeserializer.Deserialize<JsonTelemetryMetadataContext>(json));
+            _controlCenter.MetadataManager.Add(context);
+        }
+        private async Task receiveErrorMetadata(Stream s)
+        {
+            string json = readNullTerminated(s);
+            var context = new ErrorMetadataContext(await JSONDeserializer.Deserialize<JsonErrorMetadataContext>(json));
+            _controlCenter.MetadataManager.Add(context);
+        }
+
+        private async Task receiveTelemetryData(Stream s)
+        {
+            byte dataId = (byte)(s.ReadByte()); //TODO: handle disconnection here
+            int dataLength = _controlCenter.MetadataManager.GetDataTypeByteLength(dataId);
+            byte[] buffer = new byte[dataLength];
+            await s.ReadAsync(buffer, 0, dataLength);
+            _controlCenter.DataRouter.Send(dataId, buffer);
+        }
+        private async Task receiveErrorData(Stream s)
+        {
+            byte dataId = (byte)(s.ReadByte()); //TODO: handle disconnection here
+            int dataLength = _controlCenter.MetadataManager.GetDataTypeByteLength(dataId);
+            byte[] buffer = new byte[dataLength];
+            await s.ReadAsync(buffer, 0, dataLength);
+            _controlCenter.Console.WriteToConsole(_controlCenter.MetadataManager.GetError(dataId).Description + ": " + buffer.ToString()); //TODO: print this based on datatype
         }
 
         //ISubscribe.Receive
-        public void Receive(int dataId, byte[] data)
+        public void Receive(byte dataId, byte[] data)
         {
-            using (var bw = new BinaryWriter(Stream))
+            //This forwards the data across the connection
+
+            //Validate Length
+            if (data.Length != _controlCenter.MetadataManager.GetDataTypeByteLength(dataId))
             {
+                _controlCenter.Console.WriteToConsole("Sending of a command with data id " + dataId.ToString() + " and invalid data length " + data.Length.ToString() + " was attempted.");
+                return;
+            }
+
+            using (var bw = new BinaryWriter(netStream))
+            {
+                bw.Write((byte)(messageTypes.command));
                 bw.Write(dataId);
-                bw.Write((Int16)(data.Length));
                 bw.Write(data);
             }
+        }
+
+        private string readNullTerminated(Stream s)
+        {
+            StringBuilder sb = new StringBuilder();
+            char lastchar;
+            do
+            {
+                lastchar = (char)(s.ReadByte());
+                sb.Append(lastchar);
+            }
+            while (lastchar != '\0');
+
+            return sb.ToString();
+        }
+
+        private enum messageTypes : byte
+        {
+            console = 0x00,
+            synchronizeStatus = 0x01,
+            commandMetadata = 0x02,
+            telemetryMetadata = 0x03,
+            errorMetadata = 0x04,
+            command = 0x05,
+            telemetry = 0x06,
+            error = 0x07
+        }
+        private enum synchronizeStatuses : byte
+        {
+            init = 0x00,
+            wait = 0x01,
+            ack = 0x02,
+            repeat = 0x03,
+            fail = 0x04
         }
     }
 }

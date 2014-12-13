@@ -69,6 +69,18 @@
                 NotifyOfPropertyChange(() => DataRouter);
             }
         }
+        public MetadataManager MetadataManager
+        {
+            get
+            {
+                return _model._metadataManager;
+            }
+            set
+            {
+                _model._metadataManager = value;
+                NotifyOfPropertyChange(() => MetadataManager);
+            }
+        }
         public AsyncTcpServerViewModel TcpAsyncServer
         {
             get
@@ -101,6 +113,7 @@
             StateManager = new StateViewModel(this);
             Console = new ConsoleViewModel();
             DataRouter = new DataRouter();
+            MetadataManager = new MetadataManager();
             TcpAsyncServer = new AsyncTcpServerViewModel(11000, this);
             ModuleManager = new ModuleManagerViewModel(this);
 
