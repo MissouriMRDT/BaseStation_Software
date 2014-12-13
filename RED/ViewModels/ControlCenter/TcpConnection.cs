@@ -103,7 +103,7 @@
                             var status = (synchronizeStatuses)(br.ReadByte());
 
                             if (status == synchronizeStatuses.wait)
-                                bs.Write(new byte[] { (byte)(synchronizeStatuses.ack) }, 0, 1);
+                                bs.Write(new byte[] { (byte)(messageTypes.synchronizeStatus), (byte)(synchronizeStatuses.ack) }, 0, 2);
                             else if (status == synchronizeStatuses.fail)
                                 return false;
 
@@ -120,7 +120,7 @@
                         _controlCenter.Console.WriteToConsole("Exception caught during synchronization. Will request a repeat. '" + e.ToString() + "'");
                     }
                     //Still haven't succeeded so, requesting a repeat
-                    bs.Write(new byte[] { (byte)(synchronizeStatuses.repeat) }, 0, 1);
+                    bs.Write(new byte[] { (byte)(messageTypes.synchronizeStatus), (byte)(synchronizeStatuses.repeat) }, 0, 2);
                     return await InitializeConnection();
                 }
             }
