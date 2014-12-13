@@ -9,16 +9,11 @@
     {
         private readonly DataRouterModel _model;
 
-        private Dictionary<byte, List<ISubscribe>> Registrations
+        public Dictionary<byte, List<ISubscribe>> Registrations
         {
             get
             {
                 return _model._registrations;
-            }
-            set
-            {
-                _model._registrations = value;
-                NotifyOfPropertyChange(() => Registrations);
             }
         }
 
