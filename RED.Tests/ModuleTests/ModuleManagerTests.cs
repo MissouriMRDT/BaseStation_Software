@@ -1,0 +1,172 @@
+﻿namespace RED.Tests.ModuleTests
+{
+    using Contexts;
+    using NUnit.Framework;
+    using ViewModels.ControlCenter;
+
+    [TestFixture]
+    public class ModuleManagerTests
+    {
+        [SetUp]
+        public void SetUp()
+        {
+
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+
+        }
+
+        [Test]
+        public void MetadataManagerConstructor()
+        {
+            // Arrange
+            // Act
+            var manager = new MetadataManager();
+            // Assert
+            Assert.IsNotNull(manager.Commands);
+            Assert.IsNotNull(manager.Telemetry);
+            Assert.IsNotNull(manager.Errors);
+        }
+
+        [Test]
+        public void MetadataManagerAddCommand()
+        {
+            // Arrange
+            var manager = new MetadataManager();
+            CommandMetadataContext context = new CommandMetadataContext();
+            // Act
+            manager.Add(context);
+            // Assert
+            Assert.Contains(context, manager.Commands);
+        }
+
+        [Test]
+        public void MetadataManagerAddTelemetry()
+        {
+            // Arrange
+            var manager = new MetadataManager();
+            TelemetryMetadataContext context = new TelemetryMetadataContext();
+            // Act
+            manager.Add(context);
+            // Assert
+            Assert.Contains(context, manager.Telemetry);
+        }
+
+        [Test]
+        public void MetadataManagerAddError()
+        {
+            // Arrange
+            var manager = new MetadataManager();
+            ErrorMetadataContext context = new ErrorMetadataContext();
+            // Act
+            manager.Add(context);
+            // Assert
+            Assert.Contains(context, manager.Errors);
+        }
+
+        [Test]
+        public void MetadataManagerGetCommand()
+        {
+            // Arrange
+            var manager = new MetadataManager();
+            CommandMetadataContext context1 = new CommandMetadataContext();
+            context1.Id = 5;
+            manager.Add(context1);
+            CommandMetadataContext context2 = new CommandMetadataContext();
+            context2.Id = 10;
+            manager.Add(context2);
+            // Act
+            var x = manager.GetCommand(5);
+            // Assert
+            Assert.AreEqual(x.Id, 5);
+        }
+
+        [Test]
+        public void MetadataManagerGetTelemetry()
+        {
+            // Arrange
+            var manager = new MetadataManager();
+            TelemetryMetadataContext context1 = new TelemetryMetadataContext();
+            context1.Id = 5;
+            manager.Add(context1);
+            TelemetryMetadataContext context2 = new TelemetryMetadataContext();
+            context2.Id = 10;
+            manager.Add(context2);
+            // Act
+            var x = manager.GetTelemetry(5);
+            // Assert
+            Assert.AreEqual(x.Id, 5);
+        }
+
+        [Test]
+        public void MetadataManagerGetError()
+        {
+            // Arrange
+            var manager = new MetadataManager();
+            ErrorMetadataContext context1 = new ErrorMetadataContext();
+            context1.Id = 5;
+            manager.Add(context1);
+            ErrorMetadataContext context2 = new ErrorMetadataContext();
+            context2.Id = 10;
+            manager.Add(context2);
+            // Act
+            var x = manager.GetError(5);
+            // Assert
+            Assert.AreEqual(x.Id, 5);
+        }
+
+        [Test]
+        public void MetadataManagerGetMetadataCommand()
+        {
+            // Arrange
+            var manager = new MetadataManager();
+            manager.Add(new CommandMetadataContext() { Id = 1 });
+            manager.Add(new CommandMetadataContext() { Id = 2 });
+            manager.Add(new TelemetryMetadataContext() { Id = 3 });
+            manager.Add(new TelemetryMetadataContext() { Id = 4 });
+            manager.Add(new ErrorMetadataContext() { Id = 5 });
+            manager.Add(new ErrorMetadataContext() { Id = 6 });
+            // Act
+            var x = manager.GetMetadata(1);
+            // Assert
+            Assert.AreEqual(x.Id, 1);
+        }
+
+        [Test]
+        public void MetadataManagerGetMetadataTelemetry()
+        {
+            // Arrange
+            var manager = new MetadataManager();
+            manager.Add(new CommandMetadataContext() { Id = 1 });
+            manager.Add(new CommandMetadataContext() { Id = 2 });
+            manager.Add(new TelemetryMetadataContext() { Id = 3 });
+            manager.Add(new TelemetryMetadataContext() { Id = 4 });
+            manager.Add(new ErrorMetadataContext() { Id = 5 });
+            manager.Add(new ErrorMetadataContext() { Id = 6 });
+            // Act
+            var x = manager.GetMetadata(3);
+            // Assert
+            Assert.AreEqual(x.Id, 3);
+        }
+
+        [Test]
+        public void MetadataManagerGetMetadataError()
+        {
+            // Arrange
+            var manager = new MetadataManager();
+            manager.Add(new CommandMetadataContext() { Id = 1 });
+            manager.Add(new CommandMetadataContext() { Id = 2 });
+            manager.Add(new TelemetryMetadataContext() { Id = 3 });
+            manager.Add(new TelemetryMetadataContext() { Id = 4 });
+            manager.Add(new ErrorMetadataContext() { Id = 5 });
+            manager.Add(new ErrorMetadataContext() { Id = 6 });
+            // Act
+            var x = manager.GetMetadata(5);
+            // Assert
+            Assert.AreEqual(x.Id, 5);
+        }
+    }
+}
