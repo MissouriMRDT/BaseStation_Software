@@ -63,7 +63,7 @@
   <ItemGroup>
     <Compile Include="ModuleTests\AsyncTcpServerTests.cs" />
     <Compile Include="ModuleTests\DataRouterTests.cs" />
-    <Compile Include="ModuleTests\ModuleManagerTests.cs" />
+    <Compile Include="ModuleTests\MetadataManagerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

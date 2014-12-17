@@ -5,7 +5,7 @@
     using ViewModels.ControlCenter;
 
     [TestFixture]
-    public class ModuleManagerTests
+    public class MetadataManagerTests
     {
         [SetUp]
         public void SetUp()
