@@ -61,6 +61,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModuleTests\AsyncTcpServerTests.cs" />
     <Compile Include="ModuleTests\DataRouterTests.cs" />
     <Compile Include="ModuleTests\ModuleManagerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
