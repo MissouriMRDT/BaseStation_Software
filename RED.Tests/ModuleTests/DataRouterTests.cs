@@ -11,18 +11,18 @@
     [TestFixture]
     public class DataRouterTests
     {
-        
+
 
         [SetUp]
         public void SetUp()
         {
-            
+
         }
 
         [TearDown]
         public void TearDown()
         {
-            
+
         }
 
         [Test]
@@ -115,12 +115,12 @@
                 new Mock<ISubscribe>()
             };
             // Act
-            for (var i = 0; i < mockSubscribers.Count; i++)
+            for (byte i = 0; i < mockSubscribers.Count; i++)
             {
                 dataRouter.Subscribe(mockSubscribers[i].Object, i);
             }
             // Assert
-            for (var i = 0; i < mockSubscribers.Count; i++)
+            for (byte i = 0; i < mockSubscribers.Count; i++)
             {
                 Assert.Contains(i, dataRouter.Registrations.Keys);
                 Assert.Contains(mockSubscribers[i].Object, dataRouter.Registrations[i]);
@@ -140,11 +140,11 @@
                 new Mock<ISubscribe>()
             };
             // Act
-            for (var i = 0; i < mockSubscribers.Count; i++)
+            for (byte i = 0; i < mockSubscribers.Count; i++)
             {
                 dataRouter.Subscribe(mockSubscribers[i].Object, i);
             }
-            for (var i = 0; i < mockSubscribers.Count; i++)
+            for (byte i = 0; i < mockSubscribers.Count; i++)
             {
                 dataRouter.UnSubscribe(mockSubscribers[i].Object, i);
             }
@@ -163,15 +163,15 @@
                 mockSubscribers.Add(new Mock<ISubscribe>());
             }
             // Act
-            for (var i = 0; i < mockSubscribers.Count; i++)
+            for (byte i = 0; i < mockSubscribers.Count; i++)
             {
-                dataRouter.Subscribe(mockSubscribers[i].Object, i % 5);
+                dataRouter.Subscribe(mockSubscribers[i].Object, (byte)(i % 5));
             }
             // Assert
-            for (var i = 0; i < mockSubscribers.Count; i++)
+            for (byte i = 0; i < mockSubscribers.Count; i++)
             {
                 Assert.Contains(i % 5, dataRouter.Registrations.Keys);
-                Assert.Contains(mockSubscribers[i].Object, dataRouter.Registrations[i % 5]);
+                Assert.Contains(mockSubscribers[i].Object, dataRouter.Registrations[(byte)(i % 5)]);
             }
         }
         [Test]
@@ -185,13 +185,13 @@
                 mockSubscribers.Add(new Mock<ISubscribe>());
             }
             // Act
-            for (var i = 0; i < mockSubscribers.Count; i++)
+            for (byte i = 0; i < mockSubscribers.Count; i++)
             {
-                dataRouter.Subscribe(mockSubscribers[i].Object, i % 5);
+                dataRouter.Subscribe(mockSubscribers[i].Object,(byte)( i % 5));
             }
-            for (var i = 0; i < mockSubscribers.Count; i++)
+            for (byte i = 0; i < mockSubscribers.Count; i++)
             {
-                dataRouter.UnSubscribe(mockSubscribers[i].Object, i % 5);
+                dataRouter.UnSubscribe(mockSubscribers[i].Object,(byte)( i % 5));
             }
             // Assert
             Assert.That(dataRouter.Registrations.Count == 0);
