@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace RED.ViewModels.ControlCenter
 {
-    class RoverConnection : IProtocol, ISubscribe
+    public class RoverConnection : IProtocol, ISubscribe
     {
         private readonly ControlCenterViewModel _controlCenter;
 

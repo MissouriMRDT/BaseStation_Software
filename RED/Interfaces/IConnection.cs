@@ -2,7 +2,7 @@
 
 namespace RED.Interfaces
 {
-    interface IConnection
+    public interface IConnection
     {
         Stream DataStream { get; }
         void Close();
