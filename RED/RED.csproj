@@ -108,6 +108,7 @@
     <Compile Include="Contexts\CommandMetadataContext.cs" />
     <Compile Include="Contexts\ErrorMetadataContext.cs" />
     <Compile Include="Contexts\TelemetryMetadataContext.cs" />
+    <Compile Include="Interfaces\IConnection.cs" />
     <Compile Include="Interfaces\IMetadata.cs" />
     <Compile Include="Models\DataRouterModel.cs" />
     <Compile Include="Models\AsyncTcpServerModel.cs" />
