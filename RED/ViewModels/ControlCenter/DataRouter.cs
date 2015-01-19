@@ -9,7 +9,7 @@
     {
         private readonly DataRouterModel _model;
 
-        public Dictionary<int, List<ISubscribe>> Registrations
+        public Dictionary<byte, List<ISubscribe>> Registrations
         {
             get
             {
@@ -22,7 +22,7 @@
             _model = new DataRouterModel();
         }
 
-        public void Send(int dataCode, byte[] data)
+        public void Send(byte dataCode, byte[] data)
         {
             List<ISubscribe> registered;
             if (Registrations.TryGetValue(dataCode, out registered))
@@ -30,7 +30,7 @@
                     subscription.Receive(dataCode, data);
         }
 
-        public void Subscribe(ISubscribe subscriber, int dataCode)
+        public void Subscribe(ISubscribe subscriber, byte dataCode)
         {
             List<ISubscribe> existingRegistrations;
             if (Registrations.TryGetValue(dataCode, out existingRegistrations))
@@ -44,10 +44,10 @@
 
         public void UnSubscribe(ISubscribe subscriber)
         {
-            foreach (KeyValuePair<int, List<ISubscribe>> kvp in Registrations)
+            foreach (KeyValuePair<byte, List<ISubscribe>> kvp in Registrations)
                 UnSubscribe(subscriber, kvp.Key);
         }
-        public void UnSubscribe(ISubscribe subscriber, int dataCode)
+        public void UnSubscribe(ISubscribe subscriber, byte dataCode)
         {
             List<ISubscribe> existingRegistrations;
             if (Registrations.TryGetValue(dataCode, out existingRegistrations))
