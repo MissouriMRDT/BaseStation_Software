@@ -17,9 +17,12 @@ namespace RED.ViewModels.ControlCenter
 
         private IConnection _sourceConnection;
 
+        public bool ExpectSync { get; set; }
+
         public RoverConnection(ControlCenterViewModel controlCenter)
         {
             _controlCenter = controlCenter;
+            ExpectSync = false;
         }
 
         public async void Connect(IConnection source)
@@ -37,6 +40,7 @@ namespace RED.ViewModels.ControlCenter
         }
         private async Task<bool> InitializeConnection()
         {
+            if (!ExpectSync) return true;
             using (var bs = new BufferedStream(_sourceConnection.DataStream))
             {
                 using (var br = new BinaryReader(bs))
