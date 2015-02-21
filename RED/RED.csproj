@@ -114,6 +114,7 @@
     <Compile Include="Interfaces\IProtocol.cs" />
     <Compile Include="Models\DataRouterModel.cs" />
     <Compile Include="Models\AsyncTcpServerModel.cs" />
+    <Compile Include="Models\InputModel.cs" />
     <Compile Include="Models\TcpConnectionModel.cs" />
     <Compile Include="ViewModels\ControlCenter\DataRouter.cs" />
     <Compile Include="Interfaces\ISubscribe.cs" />
@@ -121,6 +122,7 @@
     <Compile Include="Models\ModuleGridModel.cs" />
     <Compile Include="RedBootstrapper.cs" />
     <Compile Include="ViewModels\ControlCenter\AsyncTcpServer.cs" />
+    <Compile Include="ViewModels\ControlCenter\InputViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\MetadataManager.cs" />
     <Compile Include="ViewModels\ControlCenter\RoverConnection.cs" />
     <Compile Include="ViewModels\ControlCenter\TcpConnection.cs" />
