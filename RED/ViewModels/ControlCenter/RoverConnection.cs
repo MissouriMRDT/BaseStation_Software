@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace RED.ViewModels.ControlCenter
 {
-    class RoverConnection : IProtocol, ISubscribe
+    public class RoverConnection : IProtocol, ISubscribe
     {
         private readonly ControlCenterViewModel _controlCenter;
 
@@ -176,7 +176,7 @@ namespace RED.ViewModels.ControlCenter
         }
 
         //ISubscribe.Receive
-        public void Receive(byte dataId, byte[] data)
+        public void ReceiveFromRouter(byte dataId, byte[] data)
         {
             //This forwards the data across the connection
 

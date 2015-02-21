@@ -1,6 +1,6 @@
 ﻿namespace RED.Interfaces
 {
-    interface IProtocol
+    public interface IProtocol
     {
         void Connect(IConnection source);
     }
