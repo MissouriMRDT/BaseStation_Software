@@ -181,10 +181,13 @@ namespace RED.ViewModels.ControlCenter
             //This forwards the data across the connection
 
             //Validate Length
-            if (data.Length != _controlCenter.MetadataManager.GetDataTypeByteLength(dataId))
+            if (ExpectSync)
             {
-                _controlCenter.Console.WriteToConsole("Sending of a command with data id " + dataId.ToString() + " and invalid data length " + data.Length.ToString() + " was attempted.");
-                return;
+                if (data.Length != _controlCenter.MetadataManager.GetDataTypeByteLength(dataId))
+                {
+                    _controlCenter.Console.WriteToConsole("Sending of a command with data id " + dataId.ToString() + " and invalid data length " + data.Length.ToString() + " was attempted.");
+                    return;
+                }
             }
 
             using (var bw = new BinaryWriter(_sourceConnection.DataStream))
