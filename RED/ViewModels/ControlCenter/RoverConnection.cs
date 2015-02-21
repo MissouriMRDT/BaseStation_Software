@@ -17,9 +17,12 @@ namespace RED.ViewModels.ControlCenter
 
         private IConnection _sourceConnection;
 
+        public bool ExpectSync { get; set; }
+
         public RoverConnection(ControlCenterViewModel controlCenter)
         {
             _controlCenter = controlCenter;
+            ExpectSync = false;
         }
 
         public async void Connect(IConnection source)
@@ -37,6 +40,7 @@ namespace RED.ViewModels.ControlCenter
         }
         private async Task<bool> InitializeConnection()
         {
+            if (!ExpectSync) return true;
             using (var bs = new BufferedStream(_sourceConnection.DataStream))
             {
                 using (var br = new BinaryReader(bs))
@@ -139,6 +143,7 @@ namespace RED.ViewModels.ControlCenter
             string json = readNullTerminated(s);
             var context = new CommandMetadataContext(await JSONDeserializer.Deserialize<JsonCommandMetadataContext>(json));
             _controlCenter.MetadataManager.Add(context);
+            _controlCenter.DataRouter.Subscribe(this, context.Id);
         }
         private async Task receiveTelemetryMetadata(Stream s)
         {
@@ -171,7 +176,7 @@ namespace RED.ViewModels.ControlCenter
         }
 
         //ISubscribe.Receive
-        public void Receive(byte dataId, byte[] data)
+        public void ReceiveFromRouter(byte dataId, byte[] data)
         {
             //This forwards the data across the connection
 

@@ -27,7 +27,11 @@
             List<ISubscribe> registered;
             if (Registrations.TryGetValue(dataCode, out registered))
                 foreach (ISubscribe subscription in registered)
-                    subscription.Receive(dataCode, data);
+                    subscription.ReceiveFromRouter(dataCode, data);
+        }
+        public void Send(byte dataCode, dynamic obj)
+        {
+            Send(dataCode, System.BitConverter.GetBytes(obj));
         }
 
         public void Subscribe(ISubscribe subscriber, byte dataCode)
