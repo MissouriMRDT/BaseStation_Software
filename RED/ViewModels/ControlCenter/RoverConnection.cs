@@ -143,6 +143,7 @@ namespace RED.ViewModels.ControlCenter
             string json = readNullTerminated(s);
             var context = new CommandMetadataContext(await JSONDeserializer.Deserialize<JsonCommandMetadataContext>(json));
             _controlCenter.MetadataManager.Add(context);
+            _controlCenter.DataRouter.Subscribe(this, context.Id);
         }
         private async Task receiveTelemetryMetadata(Stream s)
         {
