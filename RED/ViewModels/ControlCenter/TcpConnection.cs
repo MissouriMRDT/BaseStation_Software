@@ -50,6 +50,7 @@
 
             Client = client;
             DataStream = Client.GetStream();
+            _controlCenter.Console.WriteToConsole("Connected to " + RemoteIp.ToString());
 
             protocol.Connect(this);
         }
@@ -57,6 +58,7 @@
         public void Close()
         {
             Client.Close();
+            _controlCenter.Console.WriteToConsole("Disconnected from " + RemoteIp.ToString());
         }
     }
 }
