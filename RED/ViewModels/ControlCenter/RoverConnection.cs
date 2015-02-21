@@ -31,7 +31,7 @@ namespace RED.ViewModels.ControlCenter
             if (await InitializeConnection())
             {
                 //Start Listening
-                ReceiveNetworkData();
+                //ReceiveNetworkData(); //This is disabled because it doesn't work asyncronously yet
             }
             else
             {
@@ -111,7 +111,7 @@ namespace RED.ViewModels.ControlCenter
                 {
                     while (true) //TODO: have this stop if we close
                     {
-                        messageTypes messageType = (messageTypes)(br.ReadByte());
+                        messageTypes messageType = (messageTypes)(br.ReadByte());//Here: is the reason this doesn't run asyncronously
 
                         switch (messageType)
                         {
