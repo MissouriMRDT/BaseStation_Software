@@ -65,7 +65,7 @@ namespace RED.ViewModels.ControlCenter
             return GetCommand(name) ?? GetTelemetry(name) ?? (IMetadata)GetError(name) ?? null;
         }
 
-        public int GetDataTypeByteLength(string DataType)
+        public int GetByteLength(string DataType)
         {
             switch (DataType)
             {
@@ -78,23 +78,21 @@ namespace RED.ViewModels.ControlCenter
         }
         public int GetDataTypeByteLength(byte DataId)
         {
-            return GetDataTypeByteLength(GetMetadata(DataId).Datatype);
-        }
-        public int GetDataTypeByteLength(CommandMetadataContext item)
-        {
-            return GetDataTypeByteLength(GetCommand(item.Id).Datatype);
-        }
-        public int GetDataTypeByteLength(TelemetryMetadataContext item)
-        {
-            return GetDataTypeByteLength(GetTelemetry(item.Id).Datatype);
-        }
-        public int GetDataTypeByteLength(ErrorMetadataContext item)
-        {
-            return GetDataTypeByteLength(GetError(item.Id).Datatype);
+            return GetByteLength(GetMetadata(DataId).Datatype);
         }
         public int GetDataTypeByteLength(IMetadata item)
         {
-            return GetDataTypeByteLength(GetMetadata(item.Id).Datatype);
+            return GetByteLength(GetMetadata(item.Id).Datatype);
+        }
+        public int GetDataTypeByteLength(string name)
+        {
+            return GetByteLength(GetMetadata(name).Datatype);
+        }
+
+        public int GetId(string name)
+        {
+            var data = GetMetadata(name);
+            return data == null ? data.Id : 0;
         }
     }
 }
