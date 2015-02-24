@@ -13,6 +13,7 @@ namespace RED.ViewModels.ControlCenter
 {
     public class RoverConnection : IProtocol, ISubscribe
     {
+        private const string noSyncMetadataFileURL = "NoSyncMetadata.xml";
         private readonly ControlCenterViewModel _controlCenter;
 
         private IConnection _sourceConnection;
@@ -40,7 +41,16 @@ namespace RED.ViewModels.ControlCenter
         }
         private async Task<bool> InitializeConnection()
         {
-            if (!ExpectSync) return true;
+            if (!ExpectSync)
+            {
+                if (File.Exists(noSyncMetadataFileURL))
+                {
+                    _controlCenter.MetadataManager.AddFromFile(noSyncMetadataFileURL);
+                    foreach (var command in _controlCenter.MetadataManager.Commands)
+                        _controlCenter.DataRouter.Subscribe(this, command.Id);
+                }
+                return true;
+            }
             using (var bs = new BufferedStream(_sourceConnection.DataStream))
             {
                 using (var br = new BinaryReader(bs))
@@ -181,13 +191,10 @@ namespace RED.ViewModels.ControlCenter
             //This forwards the data across the connection
 
             //Validate Length
-            if (ExpectSync)
+            if (data.Length != _controlCenter.MetadataManager.GetDataTypeByteLength(dataId))
             {
-                if (data.Length != _controlCenter.MetadataManager.GetDataTypeByteLength(dataId))
-                {
-                    _controlCenter.Console.WriteToConsole("Sending of a command with data id " + dataId.ToString() + " and invalid data length " + data.Length.ToString() + " was attempted.");
-                    return;
-                }
+                _controlCenter.Console.WriteToConsole("Sending of a command with data id " + dataId.ToString() + " and invalid data length " + data.Length.ToString() + " was attempted.");
+                return;
             }
 
             using (var bw = new BinaryWriter(_sourceConnection.DataStream))
