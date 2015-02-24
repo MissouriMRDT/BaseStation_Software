@@ -2,7 +2,9 @@
 using RED.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Xml.Serialization;
 
 namespace RED.ViewModels.ControlCenter
 {
@@ -30,6 +32,27 @@ namespace RED.ViewModels.ControlCenter
         public void Add(ErrorMetadataContext metadata)
         {
             Errors.Add(metadata);
+        }
+
+        public void AddFromFile(string url)
+        {
+            using (var stream = File.OpenRead(url))
+            {
+                var serializer = new XmlSerializer(typeof(MetadataSaveContext));
+                MetadataSaveContext save = (MetadataSaveContext)serializer.Deserialize(stream);
+
+                Commands.AddRange(save.Commands);
+                Telemetry.AddRange(save.Telemetry);
+                Errors.AddRange(save.Errors);
+            }
+        }
+        public void SaveToFile(string url)
+        {
+            using(var stream=new FileStream(url,FileMode.Create))
+            {
+                var serializer = new XmlSerializer(typeof(MetadataSaveContext));
+                serializer.Serialize(stream, new MetadataSaveContext(Commands.ToArray(), Telemetry.ToArray(), Errors.ToArray()));
+            }
         }
 
         public CommandMetadataContext GetCommand(byte DataId)
