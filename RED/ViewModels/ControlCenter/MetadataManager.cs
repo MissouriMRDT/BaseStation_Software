@@ -82,7 +82,7 @@ namespace RED.ViewModels.ControlCenter
         }
         public int GetDataTypeByteLength(IMetadata item)
         {
-            return GetByteLength(GetMetadata(item.Id).Datatype);
+            return GetByteLength(item.Datatype);
         }
         public int GetDataTypeByteLength(string name)
         {
