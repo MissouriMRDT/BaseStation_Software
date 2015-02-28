@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using REDUpdater.Models;
 
 namespace REDUpdater.ViewModels
 {
     class ConsoleViewModel
     {
+        ConsoleModel Model = new ConsoleModel();
     }
 }
