@@ -197,7 +197,7 @@ namespace RED.ViewModels.ControlCenter
                 return;
             }
 
-            using (var bw = new BinaryWriter(_sourceConnection.DataStream))
+            using (var bw = new BinaryWriter(_sourceConnection.DataStream, Encoding.ASCII, true))
             {
                 bw.Write((byte)(messageTypes.command));
                 bw.Write(dataId);
