@@ -57,8 +57,8 @@
 
         public void Close()
         {
-            Client.Close();
             _controlCenter.Console.WriteToConsole("Disconnected from " + RemoteIp.ToString());
+            Client.Close();
         }
     }
 }
