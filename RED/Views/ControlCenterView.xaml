@@ -7,6 +7,7 @@
         xmlns:controlCenterViewModels="clr-namespace:RED.ViewModels.ControlCenter"
         xmlns:controlCenter="clr-namespace:RED.Views.ControlCenter"
         xmlns:contexts="clr-namespace:RED.Contexts"
+        xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
         Name="Shell" MinHeight="640" MinWidth="1024" Height="640" Width="1024" 
         EnableDWMDropShadow="True" ResizeMode="CanResizeWithGrip" TitleCaps="False"
         WindowTransitionsEnabled="False" WindowStartupLocation="CenterScreen">
@@ -35,16 +36,7 @@
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl>
             <controls:Flyout Name="SettingsFlyout" Header="Settings" Position="Right" Width="800" Theme="Dark">
-                <controls:MetroAnimatedTabControl TabStripPlacement="Left">
-                    <TabItem Content="General Settings are not implemented yet" Header="General" />
-                    <TabItem Content="Server Settings are not implemented yet" Header="Server" />
-                    <TabItem Content="Data Router Settings are not implemented yet" Header="Data Router" />
-                    <TabItem Content="Metadata Settings are not implemented yet" Header="Metadata" />
-                    <TabItem Content="Controller Settings are not implemented yet" Header="Controller" />
-                    <TabItem Content="Modules Settings are not implemented yet" Header="Modules" />
-                    <TabItem Content="GPS Settings are not implemented yet" Header="GPS" />
-                    <TabItem Content="Arm Settings are not implemented yet" Header="Arm" />
-                </controls:MetroAnimatedTabControl>
+                <ContentControl x:Name="SettingsManager" />
             </controls:Flyout>
             <controls:Flyout Name="LayoutsFlyout" Position="Bottom" 
                              CloseButtonVisibility="Collapsed" 
@@ -123,7 +115,7 @@
                 <ContentControl x:Name="StateManager"/>
             </DockPanel>
             <DockPanel Grid.Column="0" Grid.Row="1" Margin="10 0">
-                <ContentControl x:Name="Console"/>
+                <!--<ContentControl x:Name="Console"/>-->
             </DockPanel>
             <DockPanel Grid.Column="0" Grid.Row="2" Margin="10 10 10 0">
                 <ContentControl x:Name="ModuleManager"/>

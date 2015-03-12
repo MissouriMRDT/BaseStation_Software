@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="RED.Views.SettingsManagerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+        <controls:MetroAnimatedTabControl TabStripPlacement="Left">
+            <TabItem Content="General Settings are not implemented yet" Header="General" />
+            <TabItem Content="Server Settings are not implemented yet" Header="Server" />
+            <TabItem Content="Data Router Settings are not implemented yet" Header="Data Router" />
+            <TabItem Content="Metadata Settings are not implemented yet" Header="Metadata" />
+            <TabItem Content="Controller Settings are not implemented yet" Header="Controller" />
+            <TabItem Content="Modules Settings are not implemented yet" Header="Modules" />
+            <TabItem Content="GPS Settings are not implemented yet" Header="GPS" />
+            <TabItem Content="Arm Settings are not implemented yet" Header="Arm" />
+        </controls:MetroAnimatedTabControl>
+</UserControl>

@@ -1,9 +1,12 @@
 ﻿namespace RED.Models
 {
+    using ViewModels;
     using ViewModels.ControlCenter;
 
     public class ControlCenterModel
     {
+        internal SettingsManagerViewModel _settingsManager;
+
         internal SaveModuleStateViewModel _saveModuleState;
         internal RemoveModuleStateViewModel _removeModuleState;
 

@@ -8,6 +8,19 @@
     {
         private readonly ControlCenterModel _model;
 
+        public SettingsManagerViewModel SettingsManager
+        {
+            get
+            {
+                return _model._settingsManager;
+            }
+            set
+            {
+                _model._settingsManager = value;
+                NotifyOfPropertyChange(() => SettingsManager);
+            }
+        }
+
         public RemoveModuleStateViewModel RemoveModuleState
         {
             get
@@ -110,6 +123,9 @@
         {
             base.DisplayName = "Rover Engagement Display";
             _model = new ControlCenterModel();
+
+            SettingsManager = new SettingsManagerViewModel(this);
+
             StateManager = new StateViewModel(this);
             Console = new ConsoleViewModel();
             DataRouter = new DataRouter();
