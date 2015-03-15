@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace REDUpdater.Models
 {
     class ConsoleModel
     {
+        internal string text = string.Empty;
     }
 }
