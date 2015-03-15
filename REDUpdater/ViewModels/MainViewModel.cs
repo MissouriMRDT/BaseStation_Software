@@ -1,4 +1,5 @@
 ﻿using REDUpdater.Models;
+using Caliburn.Micro;
 
 namespace REDUpdater.ViewModels
 {
