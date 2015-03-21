@@ -387,11 +387,6 @@
             }
         }
 
-        private float joystick1XRaw = 0;
-        private float joystick1YRaw = 0;
-        private float joystick2XRaw = 0;
-        private float joystick2YRaw = 0;
-
         #endregion
 
         public InputViewModel(ControlCenterViewModel cc)
@@ -608,25 +603,25 @@
                 return;
             }
 
-            if (joystick2XRaw < 0)
+            if (JoyStick2X < 0)
             {
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("ArmWrist").Id, COUNTERCLOCKWISE);
                 CurrentAction = ArmAction.WristCounterClockwise;
                 return;
             }
-            else if (joystick2XRaw > 0)
+            else if (JoyStick2X > 0)
             {
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("ArmWrist").Id, CLOCKWISE);
                 CurrentAction = ArmAction.WristClockwise;
                 return;
             }
-            else if (joystick2YRaw < 0)
+            else if (JoyStick2Y < 0)
             {
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("ArmWrist").Id, DOWN);
                 CurrentAction = ArmAction.WristDown;
                 return;
             }
-            else if (joystick2YRaw > 0)
+            else if (JoyStick2Y > 0)
             {
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("ArmWrist").Id, UP);
                 CurrentAction = ArmAction.WristUp;
@@ -637,25 +632,25 @@
                 CurrentAction = ArmAction.Idle;
             }
 
-            if (joystick1XRaw < 0)
+            if (JoyStick1X < 0)
             {
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("ArmElbow").Id, COUNTERCLOCKWISE);
                 CurrentAction = ArmAction.ElbowCounterClockwise;
                 return;
             }
-            else if (joystick1XRaw > 0)
+            else if (JoyStick1X > 0)
             {
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("ArmElbow").Id, CLOCKWISE);
                 CurrentAction = ArmAction.ElbowClockwise;
                 return;
             }
-            else if (joystick1YRaw < 0)
+            else if (JoyStick1Y < 0)
             {
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("ArmElbow").Id, DOWN);
                 CurrentAction = ArmAction.ElbowDown;
                 return;
             }
-            else if (joystick1YRaw > 0)
+            else if (JoyStick1Y > 0)
             {
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("ArmElbow").Id, UP);
                 CurrentAction = ArmAction.ElbowUp;
@@ -749,14 +744,10 @@
                 {
                     CurrentRawControllerSpeedRight = (int)rightMagnitude;
                 }
-                JoyStick2X = RX / 32767 * 47.5f + 47.5f;
-                JoyStick2Y = RY / 32767 * 47.5f + 47.5f;
-                JoyStick1X = LX / 32767 * 47.5f + 47.5f;
-                JoyStick1Y = LY / 32767 * 47.5f + 47.5f;
-                joystick2XRaw = Math.Abs(RX) < Gamepad.RightThumbDeadZone ? 0 : RX;
-                joystick2YRaw = Math.Abs(RY) < Gamepad.RightThumbDeadZone ? 0 : RY;
-                joystick1XRaw = Math.Abs(LX) < Gamepad.LeftThumbDeadZone ? 0 : LX;
-                joystick1YRaw = Math.Abs(LY) < Gamepad.LeftThumbDeadZone ? 0 : LY;
+                JoyStick2X = currentState.Gamepad.RightThumbX < Gamepad.RightThumbDeadZone ? 0 : (float)RX / 32767;
+                JoyStick2Y = currentState.Gamepad.RightThumbY < Gamepad.RightThumbDeadZone ? 0 : (float)RY / 32767;
+                JoyStick1X = currentState.Gamepad.LeftThumbX < Gamepad.LeftThumbDeadZone ? 0 : (float)LX / 32767;
+                JoyStick1Y = currentState.Gamepad.LeftThumbY < Gamepad.LeftThumbDeadZone ? 0 : (float)LY / 32767;
                 #endregion
 
                 LeftTrigger = (float)currentState.Gamepad.LeftTrigger / 255;
