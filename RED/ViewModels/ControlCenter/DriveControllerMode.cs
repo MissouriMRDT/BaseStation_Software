@@ -11,6 +11,8 @@ namespace RED.ViewModels.ControlCenter
 {
     public class DriveControllerMode : IControllerMode
     {
+        private const int motorRangeFactor = 1000;
+
         private readonly ControlCenterViewModel _controlCenter;
 
         private int speedLeft = 128;
@@ -51,54 +53,48 @@ namespace RED.ViewModels.ControlCenter
                 var CurrentRawControllerSpeedLeft = (LY < 0) ? -leftMagnitude : leftMagnitude;
                 var CurrentRawControllerSpeedRight = (RY < 0) ? -rightMagnitude : rightMagnitude;
 
-                newSpeedLeft = (int)(CurrentRawControllerSpeedLeft * 128) + 128;
-                newSpeedRight = (int)(CurrentRawControllerSpeedRight * 128) + 128;
+                newSpeedLeft = (int)(CurrentRawControllerSpeedLeft * motorRangeFactor);
+                newSpeedRight = (int)(CurrentRawControllerSpeedRight * motorRangeFactor);
             }
             #endregion
 
-            if (newSpeedLeft == 128)
+            if (newSpeedLeft == 0)
             {
                 speedLeft = newSpeedLeft;
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("MotorLeftSpeed").Id, speedLeft);
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("MotorLeftSpeed").Id, "!G " + speedLeft.ToString());
             }
             else if (newSpeedLeft != speedLeft)
             {
-                if (!isFullSpeed)
-                {
-                    if (newSpeedLeft > 150)
-                        speedLeft = 150;
-                    else if (newSpeedLeft < 106)
-                        speedLeft = 106;
+                if (isFullSpeed)
+                    speedLeft = newSpeedLeft;
+                else
+                    if (newSpeedLeft > 0.2 * motorRangeFactor)
+                        speedLeft = (int)(0.2 * motorRangeFactor);
+                    else if (newSpeedLeft < -0.2 * motorRangeFactor)
+                        speedLeft = (int)(-0.2 * motorRangeFactor);
                     else
                         speedLeft = newSpeedLeft;
-                }
-                else
-                {
-                    speedLeft = newSpeedLeft;
-                }
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("MotorLeftSpeed").Id, speedLeft);
+
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("MotorLeftSpeed").Id, "!G " + speedLeft.ToString());
             }
-            if (newSpeedRight == 128)
+            if (newSpeedRight == 0)
             {
                 speedRight = newSpeedRight;
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("MotorCommandedSpeedRight").Id, speedRight);
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("MotorCommandedSpeedRight").Id, "!G " + speedRight.ToString());
             }
             else if (newSpeedRight != speedRight)
             {
-                if (!isFullSpeed)
-                {
-                    if (newSpeedRight > 150)
-                        speedRight = 150;
-                    else if (newSpeedRight < 106)
-                        speedRight = 106;
+                if (isFullSpeed)
+                    speedRight = newSpeedRight;
+                else
+                    if (newSpeedRight > 0.2 * motorRangeFactor)
+                        speedRight = (int)(0.2 * motorRangeFactor);
+                    else if (newSpeedRight < -0.2 * motorRangeFactor)
+                        speedRight = (int)(-0.2 * motorRangeFactor);
                     else
                         speedRight = newSpeedRight;
-                }
-                else
-                {
-                    speedRight = newSpeedRight;
-                }
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("MotorCommandedSpeedRight").Id, speedRight);
+
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("MotorCommandedSpeedRight").Id, "!G " + speedRight.ToString());
             }
         }
 
