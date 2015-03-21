@@ -42,52 +42,22 @@ namespace RED.ViewModels.ControlCenter
             var LX = InputVM.JoyStick1X;
             var LY = InputVM.JoyStick1Y;
             var leftMagnitude = (float)Math.Sqrt(LX * LX + LY * LY);
-            if (leftMagnitude > Gamepad.LeftThumbDeadZone)
-            {
-                //clip the magnitude at its expected maximum value
-                if (leftMagnitude > 32767) leftMagnitude = 32767;
 
-                //adjust magnitude relative to the end of the dead zone
-                leftMagnitude -= Gamepad.LeftThumbDeadZone;
-            }
-            else //if the controller is in the deadzone zero out the magnitude
-            {
-                leftMagnitude = 0;
-            }
+            if (leftMagnitude > 32767) leftMagnitude = 32767; //clip the magnitude at its expected maximum value
+            if (leftMagnitude < Gamepad.LeftThumbDeadZone) leftMagnitude = 0; //if the controller is in the deadzone zero out the magnitude
+            else leftMagnitude -= Gamepad.LeftThumbDeadZone; //adjust magnitude relative to the end of the dead zone
 
             var RX = InputVM.JoyStick2X;
             var RY = InputVM.JoyStick2Y;
             var rightMagnitude = (float)Math.Sqrt(RX * RX + RY * RY);
-            if (rightMagnitude > Gamepad.RightThumbDeadZone)
-            {
-                //clip the magnitude at its expected maximum value
-                if (rightMagnitude > 32767) rightMagnitude = 32767;
 
-                //adjust magnitude relative aoeuaoeuaoeuto the end of the dead zone
-                rightMagnitude -= Gamepad.RightThumbDeadZone;
-            }
-            else //if the controller is in the deadzone zero out the magnitude
-            {
-                rightMagnitude = 0;
-            }
+            if (rightMagnitude > 32767) rightMagnitude = 32767; //clip the magnitude at its expected maximum value
+            if (rightMagnitude < Gamepad.RightThumbDeadZone)rightMagnitude = 0; //if the controller is in the deadzone zero out the magnitude
+            else rightMagnitude -= Gamepad.RightThumbDeadZone; //adjust magnitude relative to the end of the dead zone
 
             // Update Working Values
-            if (LY < 0)
-            {
-                CurrentRawControllerSpeedLeft = (int)-leftMagnitude;
-            }
-            else
-            {
-                CurrentRawControllerSpeedLeft = (int)leftMagnitude;
-            }
-            if (RY < 0)
-            {
-                CurrentRawControllerSpeedRight = (int)-rightMagnitude;
-            }
-            else
-            {
-                CurrentRawControllerSpeedRight = (int)rightMagnitude;
-            }
+            CurrentRawControllerSpeedLeft = (int)((LY < 0) ? -leftMagnitude : leftMagnitude);
+            CurrentRawControllerSpeedRight = (int)((RY < 0) ? -rightMagnitude : rightMagnitude);
             #endregion
 
             var newSpeedLeft = CurrentRawControllerSpeedLeft / 255 + 128;
