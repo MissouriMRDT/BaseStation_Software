@@ -16,6 +16,25 @@ namespace RED.ViewModels.ControlCenter
         public string Name { get; set; }
         public InputViewModel InputVM { get; set; }
 
+        private ArmAction currentAction;
+        public ArmAction CurrentAction
+        {
+            get { return currentAction; }
+            set
+            {
+                currentAction = value;
+                //NotifyOfPropertyChange(() => CurrentAction);
+                //NotifyOfPropertyChange(() => CurrentActionDisplay);
+            }
+        }
+        public string CurrentActionDisplay
+        {
+            get
+            {
+                var mode = CurrentAction;
+                return Enum.GetName(typeof(ArmAction), mode);
+            }
+        }
 
         public enum ArmAction
         {
@@ -41,26 +60,6 @@ namespace RED.ViewModels.ControlCenter
             Clockwise = 1,
             Down = 2,
             Up = 3
-        }
-
-        private ArmAction currentAction;
-        public ArmAction CurrentAction
-        {
-            get { return currentAction; }
-            set
-            {
-                currentAction = value;
-                //NotifyOfPropertyChange(() => CurrentAction);
-                //NotifyOfPropertyChange(() => CurrentActionDisplay);
-            }
-        }
-        public string CurrentActionDisplay
-        {
-            get
-            {
-                var mode = CurrentAction;
-                return Enum.GetName(typeof(ArmAction), mode);
-            }
         }
 
         public ArmControllerMode(InputViewModel inputVM, ControlCenterViewModel cc)
