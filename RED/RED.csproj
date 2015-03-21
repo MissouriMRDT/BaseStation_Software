@@ -117,6 +117,7 @@
     <Compile Include="Models\AsyncTcpServerModel.cs" />
     <Compile Include="Models\InputModel.cs" />
     <Compile Include="Models\TcpConnectionModel.cs" />
+    <Compile Include="ViewModels\ControlCenter\ArmControllerMode.cs" />
     <Compile Include="ViewModels\ControlCenter\DataRouter.cs" />
     <Compile Include="Interfaces\ISubscribe.cs" />
     <Compile Include="Models\ControlCenterModel.cs" />
