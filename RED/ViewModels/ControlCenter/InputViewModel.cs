@@ -2,9 +2,12 @@
 {
     using Annotations;
     using Caliburn.Micro;
+    using Interfaces;
     using Models;
     using SharpDX.XInput;
     using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Timers;
 
@@ -15,31 +18,6 @@
         [CanBeNull]
         public readonly Controller ControllerOne = new Controller(UserIndex.One);
 
-        public string Title
-        {
-            get
-            {
-                return Model.Title;
-            }
-        }
-        public bool InUse
-        {
-            get
-            {
-                return Model.InUse;
-            }
-            set
-            {
-                Model.InUse = value;
-            }
-        }
-        public bool IsManageable
-        {
-            get
-            {
-                return Model.IsManageable;
-            }
-        }
         public int SerialReadSpeed
         {
             get
@@ -52,16 +30,24 @@
                 NotifyOfPropertyChange(() => SerialReadSpeed);
             }
         }
-        public int DriveCommandSpeedMs
+
+        public ObservableCollection<IControllerMode> ControllerModes
         {
             get
             {
-                return Model.DriveCommandSpeed;
+                return Model.ControllerModes;
             }
-            set
+        }
+        public int CurrentModeIndex
+        {
+            get
             {
-                Model.DriveCommandSpeed = value;
-                NotifyOfPropertyChange(() => DriveCommandSpeedMs);
+                return Model.CurrentModeIndex;
+            }
+            private set
+            {
+                Model.CurrentModeIndex = value;
+                NotifyOfPropertyChange(() => CurrentModeIndex);
             }
         }
 
@@ -215,8 +201,6 @@
             }
             set
             {
-                if (Model.ButtonRb != value && value)
-                    NextRoboticArmFunction();
                 Model.ButtonRb = value;
                 NotifyOfPropertyChangeThreadSafe(() => ButtonRb);
             }
@@ -229,8 +213,6 @@
             }
             set
             {
-                if (Model.ButtonLb != value && value)
-                    PreviousRoboticArmFunction();
                 Model.ButtonLb = value;
                 NotifyOfPropertyChangeThreadSafe(() => ButtonLb);
             }
@@ -268,7 +250,7 @@
             set
             {
                 if (Model.ButtonStart != value && value)
-                    _controlCenter.StateManager.NextControlMode();
+                    NextControlMode();
                 Model.ButtonStart = value;
                 NotifyOfPropertyChangeThreadSafe(() => ButtonStart);
             }
@@ -282,7 +264,7 @@
             set
             {
                 if (Model.ButtonBack != value && value)
-                    _controlCenter.StateManager.PreviousControlMode();
+                    PreviousControlMode();
                 Model.ButtonBack = value;
                 NotifyOfPropertyChangeThreadSafe(() => ButtonBack);
             }
@@ -337,85 +319,34 @@
         }
         #endregion
 
-        public InputViewModel(ControlCenterViewModel cc)
+        public InputViewModel(ControlCenterViewModel cc, IEnumerable<IControllerMode> modes)
         {
             _controlCenter = cc;
+
+            foreach (IControllerMode cm in modes)
+                ControllerModes.Add(cm);
+            if (ControllerModes.Count == 0) throw new ArgumentException("IEnumerable 'modes' must have at least one item");
+            CurrentModeIndex = 0;
 
             // Initializes thread for reading controller input
             var updater = new Timer(SerialReadSpeed);
             updater.Elapsed += Update;
+            updater.Elapsed += EvaluateCurrentMode;
             updater.Start();
-
-            // Initializes thread for sending drive commands
-            var driver = new Timer(DriveCommandSpeedMs);
-            driver.Elapsed += Drive;
-            driver.Start();
-
-            // Initializes thread for sending robotic arm commands
-            var armOperator = new Timer(150);
-            armOperator.Elapsed += OperateArm;
-            armOperator.Start();
-
-            // Initializes thread for sending robotic arm commands
-            var gripperOperator = new Timer(50);
-            gripperOperator.Elapsed += OperateGripper;
-            gripperOperator.Start();
         }
 
-        private void Drive(object sender, ElapsedEventArgs e)
-        { }
-
-        public enum ArmFunction
+        public void NextControlMode()
         {
-            Wrist,
-            Elbow
+            ControllerModes[CurrentModeIndex].ExitMode();
+            CurrentModeIndex = (CurrentModeIndex + 1) % ControllerModes.Count;
+            ControllerModes[CurrentModeIndex].EnterMode();
         }
-
-        private ArmFunction currentFunction;
-        public ArmFunction CurrentFunction
+        public void PreviousControlMode()
         {
-            get { return currentFunction; }
-            set
-            {
-                currentFunction = value;
-                NotifyOfPropertyChangeThreadSafe(() => CurrentFunction);
-                NotifyOfPropertyChangeThreadSafe(() => CurrentFunctionDisplay);
-
-            }
+            ControllerModes[CurrentModeIndex].ExitMode();
+            CurrentModeIndex = (CurrentModeIndex - 1) % ControllerModes.Count;
+            ControllerModes[CurrentModeIndex].EnterMode();
         }
-        public string CurrentFunctionDisplay
-        {
-            get
-            {
-                var mode = CurrentFunction;
-                return Enum.GetName(typeof(ArmFunction), mode);
-            }
-        }
-
-        public void NextRoboticArmFunction()
-        {
-            if (_controlCenter.StateManager.CurrentControlMode != ControlMode.RoboticArm) return;
-            var functions = Enum.GetNames(typeof(ArmFunction)).ToList();
-            var currentIndex = functions.IndexOf(CurrentFunctionDisplay);
-            CurrentFunction = currentIndex == functions.Count - 1
-                ? ParseEnum<ArmFunction>(functions[0])
-                : ParseEnum<ArmFunction>(functions[currentIndex + 1]);
-        }
-        public void PreviousRoboticArmFunction()
-        {
-            if (_controlCenter.StateManager.CurrentControlMode != ControlMode.RoboticArm) return;
-            var functions = Enum.GetNames(typeof(ArmFunction)).ToList();
-            var currentIndex = functions.IndexOf(CurrentFunctionDisplay);
-            CurrentFunction = currentIndex == 0
-                ? ParseEnum<ArmFunction>(functions[functions.Count - 1])
-                : ParseEnum<ArmFunction>(functions[currentIndex - 1]);
-        }
-
-        private void OperateGripper(object sender, ElapsedEventArgs e)
-        { }
-
-        private void OperateArm(object sender, ElapsedEventArgs e)
-        { }
 
         private void Update(object sender, ElapsedEventArgs e)
         {
@@ -450,9 +381,9 @@
             DPadD = (currentGamepad.Buttons & GamepadButtonFlags.DPadDown) != 0;
         }
 
-        private T ParseEnum<T>(string name)
+        private void EvaluateCurrentMode(object sender, ElapsedEventArgs e)
         {
-            return (T)Enum.Parse(typeof(T), name, true);
+            ControllerModes[CurrentModeIndex].EvaluateMode();
         }
 
         /// <summary>

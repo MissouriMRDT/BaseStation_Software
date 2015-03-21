@@ -1,13 +1,14 @@
-﻿namespace RED.Models
+﻿using RED.Interfaces;
+using System.Collections.ObjectModel;
+
+namespace RED.Models
 {
     internal class InputModel
     {
-        internal string Title = "Input and Command Systems";
-        internal bool InUse = false;
-        internal bool IsManageable = true;
-
         internal int SerialReadSpeed = 30;
-        internal int DriveCommandSpeed = 100;
+
+        internal ObservableCollection<IControllerMode> ControllerModes = new ObservableCollection<IControllerMode>();
+        internal int CurrentModeIndex;
 
         internal bool Connected;
         internal string ConnectionStatus = "Disconnected";
@@ -31,12 +32,5 @@
         internal bool DPadU;
         internal bool DPadR;
         internal bool DPadD;
-
-        internal int CurrentRawControllerSpeedLeft;
-        internal int CurrentRawControllerSpeedRight;
-        internal int SpeedLeft;
-        internal int SpeedRight;
-
-        internal bool isFullSpeed;
     }
 }
