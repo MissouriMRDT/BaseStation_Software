@@ -32,7 +32,56 @@ namespace RED.ViewModels.ControlCenter
 
         public void EvaluateMode()
         {
+            Controller c = InputVM.ControllerOne;
+            if (c != null && !c.IsConnected) return;
 
+            var newSpeedLeft = InputVM.CurrentRawControllerSpeedLeft / 255 + 128;
+            var newSpeedRight = InputVM.CurrentRawControllerSpeedRight / 255 + 128;
+
+            if (newSpeedLeft == 128)
+            {
+                speedLeft = newSpeedLeft;
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("MotorLeftSpeed").Id, speedLeft);
+            }
+            else if (newSpeedLeft != speedLeft)
+            {
+                if (!InputVM.IsFullSpeed)
+                {
+                    if (newSpeedLeft > 150)
+                        speedLeft = 150;
+                    else if (newSpeedLeft < 106)
+                        speedLeft = 106;
+                    else
+                        speedLeft = newSpeedLeft;
+                }
+                else
+                {
+                    speedLeft = newSpeedLeft;
+                }
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("MotorLeftSpeed").Id, speedLeft);
+            }
+            if (newSpeedRight == 128)
+            {
+                speedRight = newSpeedRight;
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("MotorCommandedSpeedRight").Id, speedRight);
+            }
+            else if (newSpeedRight != speedRight)
+            {
+                if (!InputVM.IsFullSpeed)
+                {
+                    if (newSpeedRight > 150)
+                        speedRight = 150;
+                    else if (newSpeedRight < 106)
+                        speedRight = 106;
+                    else
+                        speedRight = newSpeedRight;
+                }
+                else
+                {
+                    speedRight = newSpeedRight;
+                }
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("MotorCommandedSpeedRight").Id, speedRight);
+            }
         }
 
         public void ExitMode()
