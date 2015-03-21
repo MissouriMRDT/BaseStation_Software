@@ -262,7 +262,7 @@
             set
             {
                 if (Model.ButtonStart != value && value)
-                    _controlCenter.StateManager.NextControlMode();
+                    NextControlMode();
                 Model.ButtonStart = value;
                 NotifyOfPropertyChangeThreadSafe(() => ButtonStart);
             }
@@ -276,7 +276,7 @@
             set
             {
                 if (Model.ButtonBack != value && value)
-                    _controlCenter.StateManager.PreviousControlMode();
+                    PreviousControlMode();
                 Model.ButtonBack = value;
                 NotifyOfPropertyChangeThreadSafe(() => ButtonBack);
             }
@@ -345,6 +345,19 @@
             updater.Elapsed += Update;
             updater.Elapsed += EvaluateCurrentMode;
             updater.Start();
+        }
+
+        public void NextControlMode()
+        {
+            ControllerModes[CurrentModeIndex].ExitMode();
+            CurrentModeIndex = (CurrentModeIndex + 1) % ControllerModes.Count;
+            ControllerModes[CurrentModeIndex].EnterMode();
+        }
+        public void PreviousControlMode()
+        {
+            ControllerModes[CurrentModeIndex].ExitMode();
+            CurrentModeIndex = (CurrentModeIndex - 1) % ControllerModes.Count;
+            ControllerModes[CurrentModeIndex].EnterMode();
         }
 
         private void Update(object sender, ElapsedEventArgs e)
