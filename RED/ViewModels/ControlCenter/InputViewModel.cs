@@ -336,65 +336,11 @@
             }
         }
         #endregion
-        #region Controller Working Values
-
-        public int CurrentRawControllerSpeedLeft
-        {
-            get
-            {
-                return Model.CurrentRawControllerSpeedLeft;
-            }
-            set
-            {
-                Model.CurrentRawControllerSpeedLeft = value;
-                NotifyOfPropertyChangeThreadSafe(() => CurrentRawControllerSpeedLeft);
-            }
-        }
-        public int CurrentRawControllerSpeedRight
-        {
-            get
-            {
-                return Model.CurrentRawControllerSpeedRight;
-            }
-            set
-            {
-                Model.CurrentRawControllerSpeedRight = value;
-                NotifyOfPropertyChangeThreadSafe(() => CurrentRawControllerSpeedRight);
-            }
-        }
-        public int SpeedLeft
-        {
-            get
-            {
-                return Model.SpeedLeft;
-            }
-            set
-            {
-                Model.SpeedLeft = value;
-                NotifyOfPropertyChangeThreadSafe(() => SpeedLeft);
-            }
-        }
-        public int SpeedRight
-        {
-            get
-            {
-                return Model.SpeedRight;
-            }
-            set
-            {
-                Model.SpeedRight = value;
-                NotifyOfPropertyChangeThreadSafe(() => SpeedRight);
-            }
-        }
-
-        #endregion
 
         public InputViewModel(ControlCenterViewModel cc)
         {
             _controlCenter = cc;
 
-            SpeedLeft = 128;
-            SpeedRight = 128;
             IsFullSpeed = false;
 
             // Initializes thread for reading controller input
@@ -419,58 +365,7 @@
         }
 
         private void Drive(object sender, ElapsedEventArgs e)
-        {
-            if (ControllerOne != null && !ControllerOne.IsConnected) return;
-            if (_controlCenter.StateManager.CurrentControlMode != ControlMode.Drive) return;
-
-            var newSpeedLeft = CurrentRawControllerSpeedLeft / 255 + 128;
-            var newSpeedRight = CurrentRawControllerSpeedRight / 255 + 128;
-
-            if (newSpeedLeft == 128)
-            {
-                SpeedLeft = newSpeedLeft;
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("MotorLeftSpeed").Id, SpeedLeft);
-            }
-            else if (newSpeedLeft != SpeedLeft)
-            {
-                if (!IsFullSpeed)
-                {
-                    if (newSpeedLeft > 150)
-                        SpeedLeft = 150;
-                    else if (newSpeedLeft < 106)
-                        SpeedLeft = 106;
-                    else
-                        SpeedLeft = newSpeedLeft;
-                }
-                else
-                {
-                    SpeedLeft = newSpeedLeft;
-                }
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("MotorLeftSpeed").Id, SpeedLeft);
-            }
-            if (newSpeedRight == 128)
-            {
-                SpeedRight = newSpeedRight;
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("MotorCommandedSpeedRight").Id, SpeedRight);
-            }
-            else if (newSpeedRight != SpeedRight)
-            {
-                if (!IsFullSpeed)
-                {
-                    if (newSpeedRight > 150)
-                        SpeedRight = 150;
-                    else if (newSpeedRight < 106)
-                        SpeedRight = 106;
-                    else
-                        SpeedRight = newSpeedRight;
-                }
-                else
-                {
-                    SpeedRight = newSpeedRight;
-                }
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("MotorCommandedSpeedRight").Id, SpeedRight);
-            }
-        }
+        { }
 
         public bool IsFullSpeed
         {
@@ -694,61 +589,10 @@
                 var currentState = ControllerOne.GetState();
                 Connected = true;
 
-                #region Normalization of joystick input
-                var LX = (float)currentState.Gamepad.LeftThumbX;
-                var LY = (float)currentState.Gamepad.LeftThumbY;
-                var leftMagnitude = (float)Math.Sqrt(LX * LX + LY * LY);
-                if (leftMagnitude > Gamepad.LeftThumbDeadZone)
-                {
-                    //clip the magnitude at its expected maximum value
-                    if (leftMagnitude > 32767) leftMagnitude = 32767;
-
-                    //adjust magnitude relative to the end of the dead zone
-                    leftMagnitude -= Gamepad.LeftThumbDeadZone;
-                }
-                else //if the controller is in the deadzone zero out the magnitude
-                {
-                    leftMagnitude = 0;
-                }
-
-                var RX = (float)currentState.Gamepad.RightThumbX;
-                var RY = (float)currentState.Gamepad.RightThumbY;
-                var rightMagnitude = (float)Math.Sqrt(RX * RX + RY * RY);
-                if (rightMagnitude > Gamepad.RightThumbDeadZone)
-                {
-                    //clip the magnitude at its expected maximum value
-                    if (rightMagnitude > 32767) rightMagnitude = 32767;
-
-                    //adjust magnitude relative aoeuaoeuaoeuto the end of the dead zone
-                    rightMagnitude -= Gamepad.RightThumbDeadZone;
-                }
-                else //if the controller is in the deadzone zero out the magnitude
-                {
-                    rightMagnitude = 0;
-                }
-
-                // Update Working Values
-                if (LY < 0)
-                {
-                    CurrentRawControllerSpeedLeft = (int)-leftMagnitude;
-                }
-                else
-                {
-                    CurrentRawControllerSpeedLeft = (int)leftMagnitude;
-                }
-                if (RY < 0)
-                {
-                    CurrentRawControllerSpeedRight = (int)-rightMagnitude;
-                }
-                else
-                {
-                    CurrentRawControllerSpeedRight = (int)rightMagnitude;
-                }
-                JoyStick2X = currentState.Gamepad.RightThumbX < Gamepad.RightThumbDeadZone ? 0 : (float)RX / 32767;
-                JoyStick2Y = currentState.Gamepad.RightThumbY < Gamepad.RightThumbDeadZone ? 0 : (float)RY / 32767;
-                JoyStick1X = currentState.Gamepad.LeftThumbX < Gamepad.LeftThumbDeadZone ? 0 : (float)LX / 32767;
-                JoyStick1Y = currentState.Gamepad.LeftThumbY < Gamepad.LeftThumbDeadZone ? 0 : (float)LY / 32767;
-                #endregion
+                JoyStick2X = currentState.Gamepad.RightThumbX < Gamepad.RightThumbDeadZone ? 0 : (float)currentState.Gamepad.RightThumbX / 32767;
+                JoyStick2Y = currentState.Gamepad.RightThumbY < Gamepad.RightThumbDeadZone ? 0 : (float)currentState.Gamepad.RightThumbY / 32767;
+                JoyStick1X = currentState.Gamepad.LeftThumbX < Gamepad.LeftThumbDeadZone ? 0 : (float)currentState.Gamepad.LeftThumbX / 32767;
+                JoyStick1Y = currentState.Gamepad.LeftThumbY < Gamepad.LeftThumbDeadZone ? 0 : (float)currentState.Gamepad.LeftThumbY / 32767;
 
                 LeftTrigger = (float)currentState.Gamepad.LeftTrigger / 255;
                 RightTrigger = (float)currentState.Gamepad.RightTrigger / 255;

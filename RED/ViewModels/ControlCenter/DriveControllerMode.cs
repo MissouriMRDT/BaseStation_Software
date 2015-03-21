@@ -15,8 +15,8 @@ namespace RED.ViewModels.ControlCenter
 
         private int CurrentRawControllerSpeedLeft;
         private int CurrentRawControllerSpeedRight;
-        private int speedLeft;
-        private int speedRight;
+        private int speedLeft = 128;
+        private int speedRight = 128;
 
         public string Name { get; set; }
         public InputViewModel InputVM { get; set; }
@@ -89,8 +89,8 @@ namespace RED.ViewModels.ControlCenter
             }
             #endregion
 
-            var newSpeedLeft = InputVM.CurrentRawControllerSpeedLeft / 255 + 128;
-            var newSpeedRight = InputVM.CurrentRawControllerSpeedRight / 255 + 128;
+            var newSpeedLeft = CurrentRawControllerSpeedLeft / 255 + 128;
+            var newSpeedRight = CurrentRawControllerSpeedRight / 255 + 128;
 
             if (newSpeedLeft == 128)
             {
