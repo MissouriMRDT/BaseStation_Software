@@ -33,12 +33,5 @@ namespace RED.Models
         internal bool DPadU;
         internal bool DPadR;
         internal bool DPadD;
-
-        internal int CurrentRawControllerSpeedLeft;
-        internal int CurrentRawControllerSpeedRight;
-        internal int SpeedLeft;
-        internal int SpeedRight;
-
-        internal bool isFullSpeed;
     }
 }
