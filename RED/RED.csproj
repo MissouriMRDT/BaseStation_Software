@@ -110,6 +110,7 @@
     <Compile Include="Contexts\ErrorMetadataContext.cs" />
     <Compile Include="Contexts\TelemetryMetadataContext.cs" />
     <Compile Include="Interfaces\IConnection.cs" />
+    <Compile Include="Interfaces\IControllerMode.cs" />
     <Compile Include="Interfaces\IMetadata.cs" />
     <Compile Include="Interfaces\IProtocol.cs" />
     <Compile Include="Models\DataRouterModel.cs" />
