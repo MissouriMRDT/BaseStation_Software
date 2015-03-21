@@ -584,37 +584,35 @@
 
         private void Update(object sender, ElapsedEventArgs e)
         {
-            if (ControllerOne != null && ControllerOne.IsConnected)
-            {
-                var currentState = ControllerOne.GetState();
-                Connected = true;
-
-                JoyStick2X = currentState.Gamepad.RightThumbX < Gamepad.RightThumbDeadZone ? 0 : (float)currentState.Gamepad.RightThumbX / 32767;
-                JoyStick2Y = currentState.Gamepad.RightThumbY < Gamepad.RightThumbDeadZone ? 0 : (float)currentState.Gamepad.RightThumbY / 32767;
-                JoyStick1X = currentState.Gamepad.LeftThumbX < Gamepad.LeftThumbDeadZone ? 0 : (float)currentState.Gamepad.LeftThumbX / 32767;
-                JoyStick1Y = currentState.Gamepad.LeftThumbY < Gamepad.LeftThumbDeadZone ? 0 : (float)currentState.Gamepad.LeftThumbY / 32767;
-
-                LeftTrigger = (float)currentState.Gamepad.LeftTrigger / 255;
-                RightTrigger = (float)currentState.Gamepad.RightTrigger / 255;
-                ButtonA = (currentState.Gamepad.Buttons & GamepadButtonFlags.A) != 0;
-                ButtonB = (currentState.Gamepad.Buttons & GamepadButtonFlags.B) != 0;
-                ButtonX = (currentState.Gamepad.Buttons & GamepadButtonFlags.X) != 0;
-                ButtonY = (currentState.Gamepad.Buttons & GamepadButtonFlags.Y) != 0;
-                ButtonLb = (currentState.Gamepad.Buttons & GamepadButtonFlags.LeftShoulder) != 0;
-                ButtonRb = (currentState.Gamepad.Buttons & GamepadButtonFlags.RightShoulder) != 0;
-                ButtonLs = (currentState.Gamepad.Buttons & GamepadButtonFlags.LeftThumb) != 0;
-                ButtonRs = (currentState.Gamepad.Buttons & GamepadButtonFlags.RightThumb) != 0;
-                ButtonStart = (currentState.Gamepad.Buttons & GamepadButtonFlags.Start) != 0;
-                ButtonBack = (currentState.Gamepad.Buttons & GamepadButtonFlags.Back) != 0;
-                DPadL = (currentState.Gamepad.Buttons & GamepadButtonFlags.DPadLeft) != 0;
-                DPadU = (currentState.Gamepad.Buttons & GamepadButtonFlags.DPadUp) != 0;
-                DPadR = (currentState.Gamepad.Buttons & GamepadButtonFlags.DPadRight) != 0;
-                DPadD = (currentState.Gamepad.Buttons & GamepadButtonFlags.DPadDown) != 0;
-            }
-            else
+            if (ControllerOne == null || !ControllerOne.IsConnected)
             {
                 Connected = false;
+                return;
             }
+            var currentGamepad = ControllerOne.GetState().Gamepad;
+            Connected = true;
+
+            JoyStick2X = currentGamepad.RightThumbX < Gamepad.RightThumbDeadZone ? 0 : (float)currentGamepad.RightThumbX / 32767;
+            JoyStick2Y = currentGamepad.RightThumbY < Gamepad.RightThumbDeadZone ? 0 : (float)currentGamepad.RightThumbY / 32767;
+            JoyStick1X = currentGamepad.LeftThumbX < Gamepad.LeftThumbDeadZone ? 0 : (float)currentGamepad.LeftThumbX / 32767;
+            JoyStick1Y = currentGamepad.LeftThumbY < Gamepad.LeftThumbDeadZone ? 0 : (float)currentGamepad.LeftThumbY / 32767;
+
+            LeftTrigger = (float)currentGamepad.LeftTrigger / 255;
+            RightTrigger = (float)currentGamepad.RightTrigger / 255;
+            ButtonA = (currentGamepad.Buttons & GamepadButtonFlags.A) != 0;
+            ButtonB = (currentGamepad.Buttons & GamepadButtonFlags.B) != 0;
+            ButtonX = (currentGamepad.Buttons & GamepadButtonFlags.X) != 0;
+            ButtonY = (currentGamepad.Buttons & GamepadButtonFlags.Y) != 0;
+            ButtonLb = (currentGamepad.Buttons & GamepadButtonFlags.LeftShoulder) != 0;
+            ButtonRb = (currentGamepad.Buttons & GamepadButtonFlags.RightShoulder) != 0;
+            ButtonLs = (currentGamepad.Buttons & GamepadButtonFlags.LeftThumb) != 0;
+            ButtonRs = (currentGamepad.Buttons & GamepadButtonFlags.RightThumb) != 0;
+            ButtonStart = (currentGamepad.Buttons & GamepadButtonFlags.Start) != 0;
+            ButtonBack = (currentGamepad.Buttons & GamepadButtonFlags.Back) != 0;
+            DPadL = (currentGamepad.Buttons & GamepadButtonFlags.DPadLeft) != 0;
+            DPadU = (currentGamepad.Buttons & GamepadButtonFlags.DPadUp) != 0;
+            DPadR = (currentGamepad.Buttons & GamepadButtonFlags.DPadRight) != 0;
+            DPadD = (currentGamepad.Buttons & GamepadButtonFlags.DPadDown) != 0;
         }
 
         private T ParseEnum<T>(string name)
