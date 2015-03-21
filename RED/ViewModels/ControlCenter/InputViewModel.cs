@@ -30,18 +30,6 @@
                 NotifyOfPropertyChange(() => SerialReadSpeed);
             }
         }
-        public int DriveCommandSpeedMs
-        {
-            get
-            {
-                return Model.DriveCommandSpeed;
-            }
-            set
-            {
-                Model.DriveCommandSpeed = value;
-                NotifyOfPropertyChange(() => DriveCommandSpeedMs);
-            }
-        }
 
         public ObservableCollection<IControllerMode> ControllerModes
         {
@@ -396,11 +384,6 @@
         private void EvaluateCurrentMode(object sender, ElapsedEventArgs e)
         {
             ControllerModes[CurrentModeIndex].EvaluateMode();
-        }
-
-        private T ParseEnum<T>(string name)
-        {
-            return (T)Enum.Parse(typeof(T), name, true);
         }
 
         /// <summary>
