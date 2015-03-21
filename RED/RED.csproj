@@ -123,6 +123,7 @@
     <Compile Include="Models\ModuleGridModel.cs" />
     <Compile Include="RedBootstrapper.cs" />
     <Compile Include="ViewModels\ControlCenter\AsyncTcpServer.cs" />
+    <Compile Include="ViewModels\ControlCenter\DriveControllerMode.cs" />
     <Compile Include="ViewModels\ControlCenter\InputViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\MetadataManager.cs" />
     <Compile Include="ViewModels\ControlCenter\RoverConnection.cs" />
