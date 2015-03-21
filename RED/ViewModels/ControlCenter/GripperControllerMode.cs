@@ -16,8 +16,11 @@ namespace RED.ViewModels.ControlCenter
         public string Name { get; set; }
         public InputViewModel InputVM { get; set; }
 
-        private const int OPEN = 0;
-        private const int CLOSE = 1;
+        public enum GripperAction
+        {
+            Open = 0,
+            Close = 1
+        }
 
         public GripperControllerMode(InputViewModel inputVM, ControlCenterViewModel cc)
         {
@@ -37,12 +40,12 @@ namespace RED.ViewModels.ControlCenter
 
             if (InputVM.ButtonB)
             {
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("AuxGripper").Id, CLOSE);
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("AuxGripper").Id, GripperAction.Close);
                 return;
             }
             if (InputVM.ButtonX)
             {
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("AuxGripper").Id, OPEN);
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("AuxGripper").Id, GripperAction.Open);
                 return;
             }
         }
