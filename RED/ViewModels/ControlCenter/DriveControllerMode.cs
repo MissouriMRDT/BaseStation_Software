@@ -15,8 +15,8 @@ namespace RED.ViewModels.ControlCenter
 
         private readonly ControlCenterViewModel _controlCenter;
 
-        private int speedLeft = 128;
-        private int speedRight = 128;
+        private int speedLeft;
+        private int speedRight;
         private bool isFullSpeed = false;
 
         public string Name { get; set; }
@@ -30,7 +30,8 @@ namespace RED.ViewModels.ControlCenter
 
         public void EnterMode()
         {
-
+            speedLeft = 0;
+            speedRight = 0;
         }
 
         public void EvaluateMode()
