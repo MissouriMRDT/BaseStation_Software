@@ -319,12 +319,13 @@
         }
         #endregion
 
-        public InputViewModel(ControlCenterViewModel cc, IEnumerable<IControllerMode> modes)
+        public InputViewModel(ControlCenterViewModel cc)
         {
             _controlCenter = cc;
 
-            foreach (IControllerMode cm in modes)
-                ControllerModes.Add(cm);
+            ControllerModes.Add(new DriveControllerMode(this, _controlCenter));
+            ControllerModes.Add(new ArmControllerMode(this, _controlCenter));
+            ControllerModes.Add(new GripperControllerMode(this, _controlCenter));
             if (ControllerModes.Count == 0) throw new ArgumentException("IEnumerable 'modes' must have at least one item");
             CurrentModeIndex = 0;
 
