@@ -370,8 +370,6 @@
             Wrist,
             Elbow
         }
-        private const int OPEN = 0;
-        private const int CLOSE = 1;
 
         private ArmFunction currentFunction;
         public ArmFunction CurrentFunction
@@ -414,21 +412,7 @@
         }
 
         private void OperateGripper(object sender, ElapsedEventArgs e)
-        {
-            if (ControllerOne != null && !ControllerOne.IsConnected) return;
-            if (_controlCenter.StateManager.CurrentControlMode != ControlMode.RoboticArm) return;
-
-            if (ButtonB)
-            {
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("AuxGripper").Id, CLOSE);
-                return;
-            }
-            if (ButtonX)
-            {
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("AuxGripper").Id, OPEN);
-                return;
-            }
-        }
+        { }
 
         private void OperateArm(object sender, ElapsedEventArgs e)
         { }
