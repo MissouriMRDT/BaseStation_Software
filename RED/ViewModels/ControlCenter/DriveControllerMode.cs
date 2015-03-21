@@ -13,6 +13,8 @@ namespace RED.ViewModels.ControlCenter
     {
         private readonly ControlCenterViewModel _controlCenter;
 
+        private int CurrentRawControllerSpeedLeft;
+        private int CurrentRawControllerSpeedRight;
         private int speedLeft;
         private int speedRight;
 
@@ -34,6 +36,58 @@ namespace RED.ViewModels.ControlCenter
         {
             Controller c = InputVM.ControllerOne;
             if (c != null && !c.IsConnected) return;
+
+            #region Normalization of joystick input
+            var LX = InputVM.JoyStick1X;
+            var LY = InputVM.JoyStick1Y;
+            var leftMagnitude = (float)Math.Sqrt(LX * LX + LY * LY);
+            if (leftMagnitude > Gamepad.LeftThumbDeadZone)
+            {
+                //clip the magnitude at its expected maximum value
+                if (leftMagnitude > 32767) leftMagnitude = 32767;
+
+                //adjust magnitude relative to the end of the dead zone
+                leftMagnitude -= Gamepad.LeftThumbDeadZone;
+            }
+            else //if the controller is in the deadzone zero out the magnitude
+            {
+                leftMagnitude = 0;
+            }
+
+            var RX = InputVM.JoyStick2X;
+            var RY = InputVM.JoyStick2Y;
+            var rightMagnitude = (float)Math.Sqrt(RX * RX + RY * RY);
+            if (rightMagnitude > Gamepad.RightThumbDeadZone)
+            {
+                //clip the magnitude at its expected maximum value
+                if (rightMagnitude > 32767) rightMagnitude = 32767;
+
+                //adjust magnitude relative aoeuaoeuaoeuto the end of the dead zone
+                rightMagnitude -= Gamepad.RightThumbDeadZone;
+            }
+            else //if the controller is in the deadzone zero out the magnitude
+            {
+                rightMagnitude = 0;
+            }
+
+            // Update Working Values
+            if (LY < 0)
+            {
+                CurrentRawControllerSpeedLeft = (int)-leftMagnitude;
+            }
+            else
+            {
+                CurrentRawControllerSpeedLeft = (int)leftMagnitude;
+            }
+            if (RY < 0)
+            {
+                CurrentRawControllerSpeedRight = (int)-rightMagnitude;
+            }
+            else
+            {
+                CurrentRawControllerSpeedRight = (int)rightMagnitude;
+            }
+            #endregion
 
             var newSpeedLeft = InputVM.CurrentRawControllerSpeedLeft / 255 + 128;
             var newSpeedRight = InputVM.CurrentRawControllerSpeedRight / 255 + 128;
