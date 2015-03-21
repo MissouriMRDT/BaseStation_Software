@@ -83,65 +83,48 @@ namespace RED.ViewModels.ControlCenter
             {
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("ArmReset").Id, 0);
                 _controlCenter.Console.WriteToConsole("Robotic Arm Resetting...");
-                return;
             }
 
-            if (InputVM.JoyStick2X < 0)
+            else if (InputVM.JoyStick2X < 0)
             {
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("ArmWrist").Id, ArmDirections.Counterclockwise);
                 CurrentAction = ArmAction.WristCounterClockwise;
-                return;
             }
             else if (InputVM.JoyStick2X > 0)
             {
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("ArmWrist").Id, ArmDirections.Clockwise);
                 CurrentAction = ArmAction.WristClockwise;
-                return;
             }
             else if (InputVM.JoyStick2Y < 0)
             {
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("ArmWrist").Id, ArmDirections.Down);
                 CurrentAction = ArmAction.WristDown;
-                return;
             }
             else if (InputVM.JoyStick2Y > 0)
             {
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("ArmWrist").Id, ArmDirections.Up);
                 CurrentAction = ArmAction.WristUp;
-                return;
-            }
-            else
-            {
-                CurrentAction = ArmAction.Idle;
             }
 
             if (InputVM.JoyStick1X < 0)
             {
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("ArmElbow").Id, ArmDirections.Counterclockwise);
                 CurrentAction = ArmAction.ElbowCounterClockwise;
-                return;
             }
             else if (InputVM.JoyStick1X > 0)
             {
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("ArmElbow").Id, ArmDirections.Clockwise);
                 CurrentAction = ArmAction.ElbowClockwise;
-                return;
             }
             else if (InputVM.JoyStick1Y < 0)
             {
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("ArmElbow").Id, ArmDirections.Down);
                 CurrentAction = ArmAction.ElbowDown;
-                return;
             }
             else if (InputVM.JoyStick1Y > 0)
             {
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("ArmElbow").Id, ArmDirections.Up);
                 CurrentAction = ArmAction.ElbowUp;
-                return;
-            }
-            else
-            {
-                CurrentAction = ArmAction.Idle;
             }
 
             if (InputVM.DPadL)
