@@ -18,31 +18,6 @@
         [CanBeNull]
         public readonly Controller ControllerOne = new Controller(UserIndex.One);
 
-        public string Title
-        {
-            get
-            {
-                return Model.Title;
-            }
-        }
-        public bool InUse
-        {
-            get
-            {
-                return Model.InUse;
-            }
-            set
-            {
-                Model.InUse = value;
-            }
-        }
-        public bool IsManageable
-        {
-            get
-            {
-                return Model.IsManageable;
-            }
-        }
         public int SerialReadSpeed
         {
             get

@@ -5,10 +5,6 @@ namespace RED.Models
 {
     internal class InputModel
     {
-        internal string Title = "Input and Command Systems";
-        internal bool InUse = false;
-        internal bool IsManageable = true;
-
         internal int SerialReadSpeed = 30;
         internal int DriveCommandSpeed = 100;
 
