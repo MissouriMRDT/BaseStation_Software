@@ -13,7 +13,7 @@
         private readonly InputModel Model = new InputModel();
         private readonly ControlCenterViewModel _controlCenter;
         [CanBeNull]
-        private readonly Controller controllerOne = new Controller(UserIndex.One);
+        public readonly Controller ControllerOne = new Controller(UserIndex.One);
 
         public string Title
         {
@@ -425,7 +425,7 @@
 
         private void Drive(object sender, ElapsedEventArgs e)
         {
-            if (controllerOne != null && !controllerOne.IsConnected) return;
+            if (ControllerOne != null && !ControllerOne.IsConnected) return;
             if (_controlCenter.StateManager.CurrentControlMode != ControlMode.Drive) return;
 
             var newSpeedLeft = CurrentRawControllerSpeedLeft / 255 + 128;
@@ -581,7 +581,7 @@
 
         private void OperateGripper(object sender, ElapsedEventArgs e)
         {
-            if (controllerOne != null && !controllerOne.IsConnected) return;
+            if (ControllerOne != null && !ControllerOne.IsConnected) return;
             if (_controlCenter.StateManager.CurrentControlMode != ControlMode.RoboticArm) return;
 
             if (ButtonB)
@@ -598,7 +598,7 @@
 
         private void OperateArm(object sender, ElapsedEventArgs e)
         {
-            if (controllerOne != null && !controllerOne.IsConnected) return;
+            if (ControllerOne != null && !ControllerOne.IsConnected) return;
             if (_controlCenter.StateManager.CurrentControlMode != ControlMode.RoboticArm) return;
 
             if (ButtonY)
@@ -694,9 +694,9 @@
 
         private void Update(object sender, ElapsedEventArgs e)
         {
-            if (controllerOne != null && controllerOne.IsConnected)
+            if (ControllerOne != null && ControllerOne.IsConnected)
             {
-                var currentState = controllerOne.GetState();
+                var currentState = ControllerOne.GetState();
                 Connected = true;
 
                 #region Normalization of joystick input
