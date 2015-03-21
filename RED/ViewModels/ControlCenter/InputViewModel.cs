@@ -238,8 +238,6 @@
             }
             set
             {
-                if (Model.ButtonRb != value && value)
-                    NextRoboticArmFunction();
                 Model.ButtonRb = value;
                 NotifyOfPropertyChangeThreadSafe(() => ButtonRb);
             }
@@ -252,8 +250,6 @@
             }
             set
             {
-                if (Model.ButtonLb != value && value)
-                    PreviousRoboticArmFunction();
                 Model.ButtonLb = value;
                 NotifyOfPropertyChangeThreadSafe(() => ButtonLb);
             }
@@ -374,52 +370,6 @@
             updater.Elapsed += Update;
             updater.Elapsed += EvaluateCurrentMode;
             updater.Start();
-        }
-
-        public enum ArmFunction
-        {
-            Wrist,
-            Elbow
-        }
-
-        private ArmFunction currentFunction;
-        public ArmFunction CurrentFunction
-        {
-            get { return currentFunction; }
-            set
-            {
-                currentFunction = value;
-                NotifyOfPropertyChangeThreadSafe(() => CurrentFunction);
-                NotifyOfPropertyChangeThreadSafe(() => CurrentFunctionDisplay);
-
-            }
-        }
-        public string CurrentFunctionDisplay
-        {
-            get
-            {
-                var mode = CurrentFunction;
-                return Enum.GetName(typeof(ArmFunction), mode);
-            }
-        }
-
-        public void NextRoboticArmFunction()
-        {
-            if (_controlCenter.StateManager.CurrentControlMode != ControlMode.RoboticArm) return;
-            var functions = Enum.GetNames(typeof(ArmFunction)).ToList();
-            var currentIndex = functions.IndexOf(CurrentFunctionDisplay);
-            CurrentFunction = currentIndex == functions.Count - 1
-                ? ParseEnum<ArmFunction>(functions[0])
-                : ParseEnum<ArmFunction>(functions[currentIndex + 1]);
-        }
-        public void PreviousRoboticArmFunction()
-        {
-            if (_controlCenter.StateManager.CurrentControlMode != ControlMode.RoboticArm) return;
-            var functions = Enum.GetNames(typeof(ArmFunction)).ToList();
-            var currentIndex = functions.IndexOf(CurrentFunctionDisplay);
-            CurrentFunction = currentIndex == 0
-                ? ParseEnum<ArmFunction>(functions[functions.Count - 1])
-                : ParseEnum<ArmFunction>(functions[currentIndex - 1]);
         }
 
         private void Update(object sender, ElapsedEventArgs e)
