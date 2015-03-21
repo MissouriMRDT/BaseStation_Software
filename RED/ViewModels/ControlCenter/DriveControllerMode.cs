@@ -26,6 +26,7 @@ namespace RED.ViewModels.ControlCenter
         {
             InputVM = inputVM;
             _controlCenter = cc;
+            Name = "Drive";
         }
 
         public void EnterMode()

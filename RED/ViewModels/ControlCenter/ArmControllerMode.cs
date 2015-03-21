@@ -66,6 +66,7 @@ namespace RED.ViewModels.ControlCenter
         {
             InputVM = inputVM;
             _controlCenter = cc;
+            Name = "Arm";
         }
 
         public void EnterMode()
