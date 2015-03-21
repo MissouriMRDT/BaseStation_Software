@@ -372,26 +372,9 @@
             // Initializes thread for reading controller input
             var updater = new Timer(SerialReadSpeed);
             updater.Elapsed += Update;
+            updater.Elapsed += EvaluateCurrentMode;
             updater.Start();
-
-            // Initializes thread for sending drive commands
-            var driver = new Timer(DriveCommandSpeedMs);
-            driver.Elapsed += Drive;
-            driver.Start();
-
-            // Initializes thread for sending robotic arm commands
-            var armOperator = new Timer(150);
-            armOperator.Elapsed += OperateArm;
-            armOperator.Start();
-
-            // Initializes thread for sending robotic arm commands
-            var gripperOperator = new Timer(50);
-            gripperOperator.Elapsed += OperateGripper;
-            gripperOperator.Start();
         }
-
-        private void Drive(object sender, ElapsedEventArgs e)
-        { }
 
         public enum ArmFunction
         {
@@ -439,12 +422,6 @@
                 : ParseEnum<ArmFunction>(functions[currentIndex - 1]);
         }
 
-        private void OperateGripper(object sender, ElapsedEventArgs e)
-        { }
-
-        private void OperateArm(object sender, ElapsedEventArgs e)
-        { }
-
         private void Update(object sender, ElapsedEventArgs e)
         {
             if (ControllerOne == null || !ControllerOne.IsConnected)
@@ -476,6 +453,11 @@
             DPadU = (currentGamepad.Buttons & GamepadButtonFlags.DPadUp) != 0;
             DPadR = (currentGamepad.Buttons & GamepadButtonFlags.DPadRight) != 0;
             DPadD = (currentGamepad.Buttons & GamepadButtonFlags.DPadDown) != 0;
+        }
+
+        private void EvaluateCurrentMode(object sender, ElapsedEventArgs e)
+        {
+            ControllerModes[CurrentModeIndex].EvaluateMode();
         }
 
         private T ParseEnum<T>(string name)
