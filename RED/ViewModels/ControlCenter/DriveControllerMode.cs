@@ -17,6 +17,7 @@ namespace RED.ViewModels.ControlCenter
         private int CurrentRawControllerSpeedRight;
         private int speedLeft = 128;
         private int speedRight = 128;
+        private bool isFullSpeed = false;
 
         public string Name { get; set; }
         public InputViewModel InputVM { get; set; }
@@ -99,7 +100,7 @@ namespace RED.ViewModels.ControlCenter
             }
             else if (newSpeedLeft != speedLeft)
             {
-                if (!InputVM.IsFullSpeed)
+                if (!isFullSpeed)
                 {
                     if (newSpeedLeft > 150)
                         speedLeft = 150;
@@ -121,7 +122,7 @@ namespace RED.ViewModels.ControlCenter
             }
             else if (newSpeedRight != speedRight)
             {
-                if (!InputVM.IsFullSpeed)
+                if (!isFullSpeed)
                 {
                     if (newSpeedRight > 150)
                         speedRight = 150;

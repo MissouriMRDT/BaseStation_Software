@@ -341,8 +341,6 @@
         {
             _controlCenter = cc;
 
-            IsFullSpeed = false;
-
             // Initializes thread for reading controller input
             var updater = new Timer(SerialReadSpeed);
             updater.Elapsed += Update;
@@ -366,18 +364,6 @@
 
         private void Drive(object sender, ElapsedEventArgs e)
         { }
-
-        public bool IsFullSpeed
-        {
-            get
-            {
-                return Model.isFullSpeed;
-            }
-            set
-            {
-                Model.isFullSpeed = value;
-            }
-        }
 
         public enum ArmFunction
         {
