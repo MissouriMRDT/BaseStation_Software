@@ -2,9 +2,12 @@
 {
     using Annotations;
     using Caliburn.Micro;
+    using Interfaces;
     using Models;
     using SharpDX.XInput;
     using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Timers;
 
@@ -62,6 +65,26 @@
             {
                 Model.DriveCommandSpeed = value;
                 NotifyOfPropertyChange(() => DriveCommandSpeedMs);
+            }
+        }
+
+        public ObservableCollection<IControllerMode> ControllerModes
+        {
+            get
+            {
+                return Model.ControllerModes;
+            }
+        }
+        public int CurrentModeIndex
+        {
+            get
+            {
+                return Model.CurrentModeIndex;
+            }
+            private set
+            {
+                Model.CurrentModeIndex = value;
+                NotifyOfPropertyChange(() => CurrentModeIndex);
             }
         }
 
@@ -337,9 +360,14 @@
         }
         #endregion
 
-        public InputViewModel(ControlCenterViewModel cc)
+        public InputViewModel(ControlCenterViewModel cc, IEnumerable<IControllerMode> modes)
         {
             _controlCenter = cc;
+
+            foreach (IControllerMode cm in modes)
+                ControllerModes.Add(cm);
+            if (ControllerModes.Count == 0) throw new ArgumentException("IEnumerable 'modes' must have at least one item");
+            CurrentModeIndex = 0;
 
             // Initializes thread for reading controller input
             var updater = new Timer(SerialReadSpeed);
