@@ -11,11 +11,13 @@
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
+            <RowDefinition Height="250*" />
+            <RowDefinition Height="50" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <ContentControl x:Name="Console" Grid.Column="0" Width="Auto" Height="Auto" />
+        <ProgressBar IsIndeterminate="False" Grid.Row="1" Maximum="100" Value="30" Height="40" Width="475"/>
+        <ContentControl x:Name="Console" Grid.Row="0" Width="Auto" Height="Auto" />
     </Grid>
 </Window>
