@@ -81,6 +81,8 @@
                         Process updater = new Process();
                         updater.StartInfo.FileName = tarDir + "REDUpdater.exe";
                         updater.Start();
+
+                        System.Environment.Exit(0);
                     }
                 });
             }
