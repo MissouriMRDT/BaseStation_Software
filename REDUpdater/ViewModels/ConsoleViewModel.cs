@@ -6,6 +6,7 @@ namespace REDUpdater.ViewModels
     class ConsoleViewModel : PropertyChangedBase
     {
         ConsoleModel Model = new ConsoleModel();
+        MainWindowViewModel MainVM;
 
         public string Text
         {
@@ -18,6 +19,13 @@ namespace REDUpdater.ViewModels
                 Model.text = value;
                 NotifyOfPropertyChange(() => Model.text);
             }
+        }
+
+        public ConsoleViewModel(MainWindowViewModel MainWinViewModel)
+        {
+            MainVM = MainWinViewModel;
+            Model = new ConsoleModel();
+            Print("Updater Output Console");
         }
 
         public void Print(string str)
