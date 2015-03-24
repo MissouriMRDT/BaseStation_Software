@@ -17,7 +17,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <ProgressBar IsIndeterminate="False" Grid.Row="1" Maximum="100" Value="30" Height="40" Width="475"/>
+        <ProgressBar Name="percent" IsIndeterminate="False" Grid.Row="1" Maximum="100" Height="40" Width="475"/>
         <ContentControl x:Name="Console" Grid.Row="0" Width="Auto" Height="Auto" />
     </Grid>
 </Window>

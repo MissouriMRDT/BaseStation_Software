@@ -37,6 +37,7 @@ namespace REDUpdater.ViewModels
         {
             Model = new MainWindowModel();
             Model.console = new ConsoleViewModel(this);
+            Model.percent = 0;
         }
     }
 }
