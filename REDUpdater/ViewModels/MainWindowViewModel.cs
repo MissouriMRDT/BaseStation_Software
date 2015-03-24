@@ -61,9 +61,11 @@ namespace REDUpdater.ViewModels
             {
                 var github = new GitHubClient(new ProductHeaderValue("name"));//Creates link to github
 
-                var releases = await github.Release.GetAll("JakePickle", "GitHubUpdateTest");//gets all releases of RED   
+                var releases = await github.Release.GetAll("MST-MRDT", "Rover-Engagement-Display");//gets all releases of RED   
 
                 delDir = dir.Substring(0, dir.Length - 1);
+
+                Console.Print("Updating to Version " + releases[0].TagName);
 
                 while (delDir[delDir.Length - 1] != '/')
                 {
@@ -77,16 +79,16 @@ namespace REDUpdater.ViewModels
                 foreach (string f in delList)
                 {
                     File.Delete(f);
+                    Console.Print("Deleted: " + f);
                 }
 
                 percent = 20;
 
                 WebClient webClient = new WebClient();
-                webClient.DownloadFile("https://github.com/MST-MRDT/Rover-Engagement-Display/releases/download/" + releases[0].TagName + "/1.1.0.zip",
+                webClient.DownloadFile("https://github.com/MST-MRDT/Rover-Engagement-Display/releases/download/"+ releases[0].TagName + "RED-" + releases[0].TagName + ".zip",
                     dir + releases[0].TagName + ".zip");
 
-                percent = 50
-                    ;
+                percent = 50;
                 zipPath = dir + releases[0].TagName + ".zip";
 
                 ZipFile.ExtractToDirectory(zipPath, delDir);
