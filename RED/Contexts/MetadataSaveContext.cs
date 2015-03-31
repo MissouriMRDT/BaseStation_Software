@@ -1,7 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace RED.Contexts
 {
+    [XmlType(TypeName = "REDMetadataSaveFile")]
+    [Serializable]
     public class MetadataSaveContext
     {
         public CommandMetadataContext[] Commands;
