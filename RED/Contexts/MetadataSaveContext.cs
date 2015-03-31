@@ -8,6 +8,8 @@ namespace RED.Contexts
         public TelemetryMetadataContext[] Telemetry;
         public ErrorMetadataContext[] Errors;
 
+        private MetadataSaveContext() { } //Required for XML Deserialization
+
         public MetadataSaveContext(CommandMetadataContext[] commands, TelemetryMetadataContext[] telemetry, ErrorMetadataContext[] errors)
         {
             Commands = commands;
