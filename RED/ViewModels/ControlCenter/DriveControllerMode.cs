@@ -63,7 +63,7 @@ namespace RED.ViewModels.ControlCenter
             if (newSpeedLeft == 0)
             {
                 speedLeft = newSpeedLeft;
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorLeftSpeed"), "!G " + ("!G " + speedLeft.ToString()).PadRight(16, '\r'));
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorLeftSpeed"), speedLeft);
             }
             else if (newSpeedLeft != speedLeft)
             {
@@ -77,12 +77,12 @@ namespace RED.ViewModels.ControlCenter
                     else
                         speedLeft = newSpeedLeft;
 
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorLeftSpeed"), ("!G " + speedLeft.ToString()).PadRight(16, '\r'));
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorLeftSpeed"), speedLeft);
             }
             if (newSpeedRight == 0)
             {
                 speedRight = newSpeedRight;
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorCommandedSpeedRight"), ("!G " + speedRight.ToString()).PadRight(16, '\r'));
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorRightSpeed"), speedRight);
             }
             else if (newSpeedRight != speedRight)
             {
@@ -96,7 +96,7 @@ namespace RED.ViewModels.ControlCenter
                     else
                         speedRight = newSpeedRight;
 
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorCommandedSpeedRight"), ("!G " + speedRight.ToString()).PadRight(16, '\r'));
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorRightSpeed"), speedRight);
             }
         }
 
