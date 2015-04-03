@@ -48,7 +48,7 @@ namespace RED.ViewModels.ControlCenter
         }
         public void SaveToFile(string url)
         {
-            using(var stream=new FileStream(url,FileMode.Create))
+            using (var stream = new FileStream(url, FileMode.Create))
             {
                 var serializer = new XmlSerializer(typeof(MetadataSaveContext));
                 serializer.Serialize(stream, new MetadataSaveContext(Commands.ToArray(), Telemetry.ToArray(), Errors.ToArray()));
@@ -112,10 +112,15 @@ namespace RED.ViewModels.ControlCenter
             return GetByteLength(GetMetadata(name).Datatype);
         }
 
-        public int GetId(string name)
+        public byte GetId(string name)
         {
             var data = GetMetadata(name);
-            return data == null ? data.Id : 0;
+            return data == null ? data.Id : (byte)0;
+        }
+        public string GetName(byte DataId)
+        {
+            var data = GetMetadata(DataId);
+            return data == null ? data.Name : String.Empty;
         }
     }
 }
