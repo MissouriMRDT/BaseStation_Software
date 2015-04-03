@@ -13,6 +13,7 @@ namespace RED.ViewModels.ControlCenter
 {
     public class RoverConnection : IProtocol, ISubscribe
     {
+        private const string noSyncMetadataFileURL = "NoSyncMetadata.xml";
         private readonly ControlCenterViewModel _controlCenter;
 
         private IConnection _sourceConnection;
@@ -31,7 +32,7 @@ namespace RED.ViewModels.ControlCenter
             if (await InitializeConnection())
             {
                 //Start Listening
-                ReceiveNetworkData();
+                //ReceiveNetworkData(); //This is disabled because it doesn't work asyncronously yet
             }
             else
             {
@@ -40,7 +41,16 @@ namespace RED.ViewModels.ControlCenter
         }
         private async Task<bool> InitializeConnection()
         {
-            if (!ExpectSync) return true;
+            if (!ExpectSync)
+            {
+                if (File.Exists(noSyncMetadataFileURL))
+                {
+                    _controlCenter.MetadataManager.AddFromFile(noSyncMetadataFileURL);
+                    foreach (var command in _controlCenter.MetadataManager.Commands)
+                        _controlCenter.DataRouter.Subscribe(this, command.Id);
+                }
+                return true;
+            }
             using (var bs = new BufferedStream(_sourceConnection.DataStream))
             {
                 using (var br = new BinaryReader(bs))
@@ -111,7 +121,7 @@ namespace RED.ViewModels.ControlCenter
                 {
                     while (true) //TODO: have this stop if we close
                     {
-                        messageTypes messageType = (messageTypes)(br.ReadByte());
+                        messageTypes messageType = (messageTypes)(br.ReadByte());//Here: is the reason this doesn't run asyncronously
 
                         switch (messageType)
                         {
@@ -187,7 +197,7 @@ namespace RED.ViewModels.ControlCenter
                 return;
             }
 
-            using (var bw = new BinaryWriter(_sourceConnection.DataStream))
+            using (var bw = new BinaryWriter(_sourceConnection.DataStream, Encoding.ASCII, true))
             {
                 bw.Write((byte)(messageTypes.command));
                 bw.Write(dataId);
