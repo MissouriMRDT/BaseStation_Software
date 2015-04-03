@@ -2,7 +2,9 @@
 using RED.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Xml.Serialization;
 
 namespace RED.ViewModels.ControlCenter
 {
@@ -30,6 +32,27 @@ namespace RED.ViewModels.ControlCenter
         public void Add(ErrorMetadataContext metadata)
         {
             Errors.Add(metadata);
+        }
+
+        public void AddFromFile(string url)
+        {
+            using (var stream = File.OpenRead(url))
+            {
+                var serializer = new XmlSerializer(typeof(MetadataSaveContext));
+                MetadataSaveContext save = (MetadataSaveContext)serializer.Deserialize(stream);
+
+                Commands.AddRange(save.Commands);
+                Telemetry.AddRange(save.Telemetry);
+                Errors.AddRange(save.Errors);
+            }
+        }
+        public void SaveToFile(string url)
+        {
+            using(var stream=new FileStream(url,FileMode.Create))
+            {
+                var serializer = new XmlSerializer(typeof(MetadataSaveContext));
+                serializer.Serialize(stream, new MetadataSaveContext(Commands.ToArray(), Telemetry.ToArray(), Errors.ToArray()));
+            }
         }
 
         public CommandMetadataContext GetCommand(byte DataId)
@@ -65,7 +88,7 @@ namespace RED.ViewModels.ControlCenter
             return GetCommand(name) ?? GetTelemetry(name) ?? (IMetadata)GetError(name) ?? null;
         }
 
-        public int GetDataTypeByteLength(string DataType)
+        public int GetByteLength(string DataType)
         {
             switch (DataType)
             {
@@ -78,23 +101,21 @@ namespace RED.ViewModels.ControlCenter
         }
         public int GetDataTypeByteLength(byte DataId)
         {
-            return GetDataTypeByteLength(GetMetadata(DataId).Datatype);
-        }
-        public int GetDataTypeByteLength(CommandMetadataContext item)
-        {
-            return GetDataTypeByteLength(GetCommand(item.Id).Datatype);
-        }
-        public int GetDataTypeByteLength(TelemetryMetadataContext item)
-        {
-            return GetDataTypeByteLength(GetTelemetry(item.Id).Datatype);
-        }
-        public int GetDataTypeByteLength(ErrorMetadataContext item)
-        {
-            return GetDataTypeByteLength(GetError(item.Id).Datatype);
+            return GetByteLength(GetMetadata(DataId).Datatype);
         }
         public int GetDataTypeByteLength(IMetadata item)
         {
-            return GetDataTypeByteLength(GetMetadata(item.Id).Datatype);
+            return GetByteLength(item.Datatype);
+        }
+        public int GetDataTypeByteLength(string name)
+        {
+            return GetByteLength(GetMetadata(name).Datatype);
+        }
+
+        public int GetId(string name)
+        {
+            var data = GetMetadata(name);
+            return data == null ? data.Id : 0;
         }
     }
 }
