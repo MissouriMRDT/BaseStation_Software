@@ -17,7 +17,7 @@ namespace RED.ViewModels.ControlCenter
 
         private int speedLeft;
         private int speedRight;
-        private bool isFullSpeed = false;
+        private bool isFullSpeed = true;
 
         public string Name { get; set; }
         public InputViewModel InputVM { get; set; }
