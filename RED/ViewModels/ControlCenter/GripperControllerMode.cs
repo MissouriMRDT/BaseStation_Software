@@ -40,9 +40,9 @@ namespace RED.ViewModels.ControlCenter
             if (c != null && !c.IsConnected) return;
 
             if (InputVM.ButtonB)
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("AuxGripper").Id, GripperAction.Close);
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("AuxGripper"), GripperAction.Close);
             else if (InputVM.ButtonX)
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("AuxGripper").Id, GripperAction.Open);
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("AuxGripper"), GripperAction.Open);
         }
 
         public void ExitMode()

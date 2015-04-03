@@ -81,70 +81,70 @@ namespace RED.ViewModels.ControlCenter
 
             if (InputVM.ButtonY)
             {
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("ArmReset").Id, 0);
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmReset"), 0);
                 _controlCenter.Console.WriteToConsole("Robotic Arm Resetting...");
             }
 
             else if (InputVM.JoyStick2X < 0)
             {
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("ArmWrist").Id, ArmDirections.Counterclockwise);
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWrist"), ArmDirections.Counterclockwise);
                 CurrentAction = ArmAction.WristCounterClockwise;
             }
             else if (InputVM.JoyStick2X > 0)
             {
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("ArmWrist").Id, ArmDirections.Clockwise);
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWrist"), ArmDirections.Clockwise);
                 CurrentAction = ArmAction.WristClockwise;
             }
             else if (InputVM.JoyStick2Y < 0)
             {
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("ArmWrist").Id, ArmDirections.Down);
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWrist"), ArmDirections.Down);
                 CurrentAction = ArmAction.WristDown;
             }
             else if (InputVM.JoyStick2Y > 0)
             {
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("ArmWrist").Id, ArmDirections.Up);
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWrist"), ArmDirections.Up);
                 CurrentAction = ArmAction.WristUp;
             }
 
             if (InputVM.JoyStick1X < 0)
             {
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("ArmElbow").Id, ArmDirections.Counterclockwise);
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbow"), ArmDirections.Counterclockwise);
                 CurrentAction = ArmAction.ElbowCounterClockwise;
             }
             else if (InputVM.JoyStick1X > 0)
             {
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("ArmElbow").Id, ArmDirections.Clockwise);
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbow"), ArmDirections.Clockwise);
                 CurrentAction = ArmAction.ElbowClockwise;
             }
             else if (InputVM.JoyStick1Y < 0)
             {
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("ArmElbow").Id, ArmDirections.Down);
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbow"), ArmDirections.Down);
                 CurrentAction = ArmAction.ElbowDown;
             }
             else if (InputVM.JoyStick1Y > 0)
             {
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("ArmElbow").Id, ArmDirections.Up);
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbow"), ArmDirections.Up);
                 CurrentAction = ArmAction.ElbowUp;
             }
 
             if (InputVM.DPadL)
             {
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("ArmBase").Id, ArmDirections.Counterclockwise);
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBase"), ArmDirections.Counterclockwise);
                 CurrentAction = ArmAction.BaseCounterclockwise;
             }
             else if (InputVM.DPadR)
             {
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("ArmBase").Id, ArmDirections.Clockwise);
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBase"), ArmDirections.Clockwise);
                 CurrentAction = ArmAction.BaseClockwise;
             }
             else if (InputVM.DPadU)
             {
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("ArmBase").Id, ArmDirections.Forward);
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBase"), ArmDirections.Forward);
                 CurrentAction = ArmAction.ActuatorForward;
             }
             else if (InputVM.DPadD)
             {
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("ArmBase").Id, ArmDirections.Back);
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBase"), ArmDirections.Back);
                 CurrentAction = ArmAction.ActuatorBack;
             }
             else

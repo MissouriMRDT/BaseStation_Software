@@ -63,7 +63,7 @@ namespace RED.ViewModels.ControlCenter
             if (newSpeedLeft == 0)
             {
                 speedLeft = newSpeedLeft;
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("MotorLeftSpeed").Id, "!G " + ("!G " + speedLeft.ToString()).PadRight(16, '\r'));
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorLeftSpeed"), "!G " + ("!G " + speedLeft.ToString()).PadRight(16, '\r'));
             }
             else if (newSpeedLeft != speedLeft)
             {
@@ -77,12 +77,12 @@ namespace RED.ViewModels.ControlCenter
                     else
                         speedLeft = newSpeedLeft;
 
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("MotorLeftSpeed").Id, ("!G " + speedLeft.ToString()).PadRight(16, '\r'));
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorLeftSpeed"), ("!G " + speedLeft.ToString()).PadRight(16, '\r'));
             }
             if (newSpeedRight == 0)
             {
                 speedRight = newSpeedRight;
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("MotorCommandedSpeedRight").Id, ("!G " + speedRight.ToString()).PadRight(16, '\r'));
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorCommandedSpeedRight"), ("!G " + speedRight.ToString()).PadRight(16, '\r'));
             }
             else if (newSpeedRight != speedRight)
             {
@@ -96,7 +96,7 @@ namespace RED.ViewModels.ControlCenter
                     else
                         speedRight = newSpeedRight;
 
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetCommand("MotorCommandedSpeedRight").Id, ("!G " + speedRight.ToString()).PadRight(16, '\r'));
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorCommandedSpeedRight"), ("!G " + speedRight.ToString()).PadRight(16, '\r'));
             }
         }
 
