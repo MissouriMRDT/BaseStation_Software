@@ -115,12 +115,12 @@ namespace RED.ViewModels.ControlCenter
         public byte GetId(string name)
         {
             var data = GetMetadata(name);
-            return data == null ? data.Id : (byte)0;
+            return data == null ? (byte)0 : data.Id;
         }
         public string GetName(byte DataId)
         {
             var data = GetMetadata(DataId);
-            return data == null ? data.Name : String.Empty;
+            return data == null ? String.Empty : data.Name;
         }
     }
 }
