@@ -66,16 +66,13 @@ namespace REDUpdater.ViewModels
                 delDir = dir.Substring(0, dir.Length - 1);
 
                 Console.Print("Updating to Version " + releases[0].TagName);
-
                 while (delDir[delDir.Length - 1] != '/')
                 {
                     delDir = delDir.Substring(0, delDir.Length - 1);
                 }
 
                 delDir = delDir + originalFolder + "/";
-
-                delList = Directory.GetFiles(delDir);
-
+                delList = Directory.GetFiles(delDir);                
                 foreach (string f in delList)
                 {
                     File.Delete(f);
@@ -85,11 +82,15 @@ namespace REDUpdater.ViewModels
                 percent = 20;
 
                 WebClient webClient = new WebClient();
-                webClient.DownloadFile("https://github.com/MST-MRDT/Rover-Engagement-Display/releases/download/"+ releases[0].TagName + "RED-" + releases[0].TagName + ".zip",
+                Console.Print(releases[0].TagName);
+                webClient.DownloadFile("https://github.com/MST-MRDT/Rover-Engagement-Display/releases/download/"+ releases[0].TagName + "/RED-" + releases[0].TagName + ".zip",
                     dir + releases[0].TagName + ".zip");
+                Console.Print(delDir);
 
                 percent = 50;
                 zipPath = dir + releases[0].TagName + ".zip";
+
+                
 
                 ZipFile.ExtractToDirectory(zipPath, delDir);
 
