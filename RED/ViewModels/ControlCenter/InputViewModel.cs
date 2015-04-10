@@ -345,7 +345,7 @@
         public void PreviousControlMode()
         {
             ControllerModes[CurrentModeIndex].ExitMode();
-            CurrentModeIndex = (CurrentModeIndex - 1) % ControllerModes.Count;
+            CurrentModeIndex = (CurrentModeIndex - 1 + ControllerModes.Count) % ControllerModes.Count;
             ControllerModes[CurrentModeIndex].EnterMode();
         }
 
