@@ -359,10 +359,10 @@
             var currentGamepad = ControllerOne.GetState().Gamepad;
             Connected = true;
 
-            JoyStick2X = currentGamepad.RightThumbX < Gamepad.RightThumbDeadZone ? 0 : (float)currentGamepad.RightThumbX / 32767;
-            JoyStick2Y = currentGamepad.RightThumbY < Gamepad.RightThumbDeadZone ? 0 : (float)currentGamepad.RightThumbY / 32767;
-            JoyStick1X = currentGamepad.LeftThumbX < Gamepad.LeftThumbDeadZone ? 0 : (float)currentGamepad.LeftThumbX / 32767;
-            JoyStick1Y = currentGamepad.LeftThumbY < Gamepad.LeftThumbDeadZone ? 0 : (float)currentGamepad.LeftThumbY / 32767;
+            JoyStick2X = currentGamepad.RightThumbX < Gamepad.RightThumbDeadZone && currentGamepad.RightThumbX > -Gamepad.RightThumbDeadZone ? 0 : (float)currentGamepad.RightThumbX / 32768;
+            JoyStick2Y = currentGamepad.RightThumbY < Gamepad.RightThumbDeadZone && currentGamepad.RightThumbY > -Gamepad.RightThumbDeadZone ? 0 : (float)currentGamepad.RightThumbY / 32768;
+            JoyStick1X = currentGamepad.LeftThumbX < Gamepad.LeftThumbDeadZone && currentGamepad.LeftThumbX > -Gamepad.LeftThumbDeadZone ? 0 : (float)currentGamepad.LeftThumbX / 32768;
+            JoyStick1Y = currentGamepad.LeftThumbY < Gamepad.LeftThumbDeadZone && currentGamepad.LeftThumbY > -Gamepad.LeftThumbDeadZone ? 0 : (float)currentGamepad.LeftThumbY / 32768;
 
             LeftTrigger = (float)currentGamepad.LeftTrigger / 255;
             RightTrigger = (float)currentGamepad.RightTrigger / 255;
