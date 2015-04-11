@@ -99,31 +99,6 @@
             CurrentControlMode = ParseEnum<ControlMode>(Settings.Default.DefaultControlMode);
         }
 
-        public void NextControlMode()
-        {
-            var controlModes = Enum.GetNames(typeof(ControlMode)).ToList();
-            var currentIndex = controlModes.IndexOf(CurrentControlModeDisplay);
-            if (CurrentControlMode == ControlMode.Drive)
-            {
-                // Send zero out command.
-            }
-            CurrentControlMode = currentIndex == controlModes.Count - 1
-                ? ParseEnum<ControlMode>(controlModes[0])
-                : ParseEnum<ControlMode>(controlModes[currentIndex + 1]);
-        }
-        public void PreviousControlMode()
-        {
-            var controlModes = Enum.GetNames(typeof(ControlMode)).ToList();
-            var currentIndex = controlModes.IndexOf(CurrentControlModeDisplay);
-            if (CurrentControlMode == ControlMode.Drive)
-            {
-                // Send zero out command.
-            }
-            CurrentControlMode = currentIndex == 0
-                ? ParseEnum<ControlMode>(controlModes[controlModes.Count - 1])
-                : ParseEnum<ControlMode>(controlModes[currentIndex - 1]);
-        }
-
         public void ToggleServer()
         {
             ServerIsRunning = !ServerIsRunning;
