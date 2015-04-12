@@ -45,10 +45,9 @@
 
                     Console.WriteLine(releases[0].TagName);//Prints the tag of the latest release
 
-                    string[] nums = releases[0].TagName.Split('.'); 
+                    string[] nums = releases[0].TagName.Split('.');
 
-                    //Code to check if update is needed, needs to be commented for testing.
-                    if (true)//(!(int.Parse(nums[0]) < major || int.Parse(nums[1]) < minor || int.Parse(nums[2]) < build))
+                    if ((!(int.Parse(nums[0]) < build || int.Parse(nums[1]) < minor || int.Parse(nums[2]) < major)))
                     {               
                         string fileName;
 
