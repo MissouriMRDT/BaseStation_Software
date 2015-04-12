@@ -47,7 +47,7 @@
 
                     string[] nums = releases[0].TagName.Split('.');
 
-                    if ((!(int.Parse(nums[0]) < build || int.Parse(nums[1]) < minor || int.Parse(nums[2]) < major)))
+                    if ((int.Parse(nums[0]) < build || int.Parse(nums[1]) < minor || int.Parse(nums[2]) < major))
                     {               
                         string fileName;
 
