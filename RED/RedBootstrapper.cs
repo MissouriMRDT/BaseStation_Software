@@ -64,7 +64,7 @@
 
                     string[] nums = releases[0].TagName.Split('.');
 
-                    if (!(Convert.ToInt32(nums[0]) < build || Convert.ToInt32(nums[1]) < minor || Convert.ToInt32(nums[2]) < major))
+                    if (!(Convert.ToInt32(nums[2]) < build || Convert.ToInt32(nums[1]) < minor || Convert.ToInt32(nums[0]) < major))
                     {               
                         string fileName;                   
                         string destFile;
