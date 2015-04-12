@@ -22,6 +22,7 @@
             string dir = System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase.Substring(8);
             string running = System.AppDomain.CurrentDomain.FriendlyName;
             string binDir = dir.Substring(0, dir.Length - running.Length);
+            string[] delList;
             int major = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Major;
             int minor = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Minor;
             int build = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Build;
@@ -32,6 +33,22 @@
             while (dir[dir.Length - 1] != '/')
             {
                 dir = dir.Substring(0, dir.Length - 1);
+            }
+
+            string tarDir = dir.Substring(0, dir.Length - 1);
+            while (tarDir[tarDir.Length - 1] != '/')
+            {
+                tarDir = tarDir.Substring(0, tarDir.Length - 1);
+            }
+
+            tarDir += "temp/";
+            if (System.IO.Directory.Exists(tarDir))
+            {
+                delList = Directory.GetFiles(tarDir);
+                foreach (string f in delList)
+                {
+                    File.Delete(f);
+                }
             }
 
             reply = pingClass.Send("github.com");
@@ -49,15 +66,7 @@
 
                     if (!(Convert.ToInt32(nums[0]) < build || Convert.ToInt32(nums[1]) < minor || Convert.ToInt32(nums[2]) < major))
                     {               
-                        string fileName;
-
-                        string tarDir = dir.Substring(0, dir.Length - 1);
-                        while (tarDir[tarDir.Length - 1] != '/')
-                        {
-                            tarDir = tarDir.Substring(0, tarDir.Length - 1);
-                        }
-
-                        tarDir += "temp/";
+                        string fileName;                   
                         string destFile;
 
                         if (!System.IO.Directory.Exists(tarDir))
