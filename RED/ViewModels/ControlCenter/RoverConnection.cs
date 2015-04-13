@@ -115,30 +115,38 @@ namespace RED.ViewModels.ControlCenter
 
         private async void ReceiveNetworkData()
         {
-            using (var bs = new BufferedStream(_sourceConnection.DataStream))
+            try
             {
-                using (var br = new BinaryReader(bs))
+                using (var bs = new BufferedStream(_sourceConnection.DataStream))
                 {
-                    while (true) //TODO: have this stop if we close
+                    using (var br = new BinaryReader(bs))
                     {
-                        messageTypes messageType = (messageTypes)(br.ReadByte());//Here: is the reason this doesn't run asyncronously
-
-                        switch (messageType)
+                        while (true) //TODO: have this stop if we close
                         {
-                            case messageTypes.console:
-                                receiveConsoleMessage(bs);
-                                break;
-                            case messageTypes.telemetry:
-                                await receiveTelemetryData(bs);
-                                break;
-                            case messageTypes.error:
-                                await receiveErrorData(bs);
-                                break;
-                            default:
-                                throw new ArgumentException("Illegal MessageType Byte received");
+                            messageTypes messageType = (messageTypes)(br.ReadByte());//Here: is the reason this doesn't run asyncronously
+
+                            switch (messageType)
+                            {
+                                case messageTypes.console:
+                                    receiveConsoleMessage(bs);
+                                    break;
+                                case messageTypes.telemetry:
+                                    await receiveTelemetryData(bs);
+                                    break;
+                                case messageTypes.error:
+                                    await receiveErrorData(bs);
+                                    break;
+                                default:
+                                    throw new ArgumentException("Illegal MessageType Byte received");
+                            }
                         }
                     }
                 }
+            }
+            catch (EndOfStreamException)
+            {
+                _controlCenter.Console.WriteToConsole("EndOfStreamException in RoverConnection.Receive.");
+                _sourceConnection.Close();
             }
         }
 
