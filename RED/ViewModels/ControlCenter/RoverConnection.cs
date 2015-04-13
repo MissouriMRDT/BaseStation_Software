@@ -32,7 +32,7 @@ namespace RED.ViewModels.ControlCenter
             if (await InitializeConnection())
             {
                 //Start Listening
-                new Task(() => ReceiveNetworkData()).Start();
+                await Task.Run(() => ReceiveNetworkData());
             }
             else
             {
