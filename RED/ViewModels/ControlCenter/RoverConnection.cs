@@ -146,8 +146,12 @@ namespace RED.ViewModels.ControlCenter
             catch (EndOfStreamException)
             {
                 _controlCenter.Console.WriteToConsole("EndOfStreamException in RoverConnection.Receive.");
-                _sourceConnection.Close();
             }
+            catch (IOException)
+            {
+                _controlCenter.Console.WriteToConsole("IOException in RoverConnection.Receive.");
+            }
+            _sourceConnection.Close();
         }
 
         private void receiveConsoleMessage(Stream s)
