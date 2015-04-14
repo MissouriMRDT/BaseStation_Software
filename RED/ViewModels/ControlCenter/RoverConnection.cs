@@ -28,15 +28,22 @@ namespace RED.ViewModels.ControlCenter
 
         public async void Connect(IConnection source)
         {
-            _sourceConnection = source;
-            if (await InitializeConnection())
+            try
             {
-                //Start Listening
-                await Task.Run(() => ReceiveNetworkData());
+                _sourceConnection = source;
+                if (await InitializeConnection())
+                {
+                    //Start Listening
+                    await Task.Run(() => ReceiveNetworkData());
+                }
+                else
+                {
+                    _sourceConnection.Close();
+                }
             }
-            else
+            catch (Exception e)
             {
-                _sourceConnection.Close();
+                _controlCenter.Console.WriteToConsole("Unexpected error in RoverConnection:" + Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace);
             }
         }
         private async Task<bool> InitializeConnection()
