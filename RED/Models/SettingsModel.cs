@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RED.ViewModels.Settings;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,6 @@ namespace RED.Models
 {
     public class SettingsManagerModel
     {
+        internal NetworkSettingsViewModel network;
     }
 }
