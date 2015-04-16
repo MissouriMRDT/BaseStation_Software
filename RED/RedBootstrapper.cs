@@ -63,8 +63,9 @@
                     Console.WriteLine(releases[0].TagName);//Prints the tag of the latest release
 
                     string[] nums = releases[0].TagName.Split('.');
+                    nums[2] = nums[2].Substring(0, nums.Length - 2);
 
-                    if (!(Convert.ToInt32(nums[2]) < build || Convert.ToInt32(nums[1]) < minor || Convert.ToInt32(nums[0]) < major))
+                    if (Convert.ToInt32(nums[2]) < build || Convert.ToInt32(nums[1]) < minor || Convert.ToInt32(nums[0]) < major)
                     {               
                         string fileName;                   
                         string destFile;
