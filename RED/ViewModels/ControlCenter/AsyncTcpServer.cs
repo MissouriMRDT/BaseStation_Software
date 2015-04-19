@@ -64,7 +64,7 @@
             {
                 return _model._listeningPort;
             }
-            private set
+            set
             {
                 _model._listeningPort = value;
                 NotifyOfPropertyChange(() => ListeningPort);
