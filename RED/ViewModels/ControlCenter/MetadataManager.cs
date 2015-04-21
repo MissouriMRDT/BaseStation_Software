@@ -95,7 +95,7 @@ namespace RED.ViewModels.ControlCenter
 
         public int GetByteLength(string DataType)
         {
-            switch (DataType)
+            switch (DataType.ToLowerInvariant())
             {
                 case "int8": return 1;
                 case "int16": return 2;
