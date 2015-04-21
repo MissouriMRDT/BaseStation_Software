@@ -107,7 +107,9 @@ namespace RED.ViewModels.ControlCenter
         }
         public int GetDataTypeByteLength(byte DataId)
         {
-            return GetByteLength(GetMetadata(DataId).Datatype);
+            var m = GetMetadata(DataId);
+            if (m == null) throw new ArgumentException("Invalid DataId");
+            return GetByteLength(m.Datatype);
         }
         public int GetDataTypeByteLength(IMetadata item)
         {
