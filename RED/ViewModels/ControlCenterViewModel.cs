@@ -125,7 +125,7 @@
             StateManager = new StateViewModel(this);
             Console = new ConsoleViewModel();
             DataRouter = new DataRouter();
-            MetadataManager = new MetadataManager();
+            MetadataManager = new MetadataManager(this);
             TcpAsyncServer = new AsyncTcpServerViewModel(11000, this);
             ModuleManager = new ModuleManagerViewModel(this);
             Input = new InputViewModel(this);

@@ -10,12 +10,15 @@ namespace RED.ViewModels.ControlCenter
 {
     public class MetadataManager
     {
+        private readonly ControlCenterViewModel _controlCenter;
+
         public List<CommandMetadataContext> Commands { get; private set; }
         public List<TelemetryMetadataContext> Telemetry { get; private set; }
         public List<ErrorMetadataContext> Errors { get; private set; }
 
-        public MetadataManager()
+        public MetadataManager(ControlCenterViewModel cc)
         {
+            _controlCenter = cc;
             Commands = new List<CommandMetadataContext>();
             Telemetry = new List<TelemetryMetadataContext>();
             Errors = new List<ErrorMetadataContext>();
