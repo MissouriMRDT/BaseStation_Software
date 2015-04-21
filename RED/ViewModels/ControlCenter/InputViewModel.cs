@@ -253,6 +253,7 @@
                     NextControlMode();
                 Model.ButtonStart = value;
                 NotifyOfPropertyChangeThreadSafe(() => ButtonStart);
+                _controlCenter.StateManager.CurrentControlMode = ControllerModes[CurrentModeIndex].Name;
             }
         }
         public bool ButtonBack
@@ -267,6 +268,7 @@
                     PreviousControlMode();
                 Model.ButtonBack = value;
                 NotifyOfPropertyChangeThreadSafe(() => ButtonBack);
+                _controlCenter.StateManager.CurrentControlMode = ControllerModes[CurrentModeIndex].Name;
             }
         }
         public bool DPadL
