@@ -47,6 +47,8 @@ namespace RED.ViewModels.ControlCenter
                 Commands.AddRange(save.Commands);
                 Telemetry.AddRange(save.Telemetry);
                 Errors.AddRange(save.Errors);
+
+                _controlCenter.Console.WriteToConsole("Metadata loaded from file \"" + url + "\"");
             }
         }
         public void SaveToFile(string url)
