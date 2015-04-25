@@ -39,10 +39,7 @@ namespace RED.ViewModels.ControlCenter
             Controller c = InputVM.ControllerOne;
             if (c != null && !c.IsConnected) return;
 
-            if (InputVM.ButtonB)
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (byte)GripperAction.Close);
-            else if (InputVM.ButtonX)
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (byte)GripperAction.Open);
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int32)InputVM.JoyStick2Y * 1024);
         }
 
         public void ExitMode()
