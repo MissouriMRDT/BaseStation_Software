@@ -24,6 +24,7 @@ namespace RED.ViewModels.Settings
             set
             {
                 _server.ListeningPort = value;
+                _settings.CurrentSettings.ServerListeningPort = value;
                 NotifyOfPropertyChange(() => ListeningPort);
             }
         }

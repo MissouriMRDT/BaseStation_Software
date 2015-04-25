@@ -14,6 +14,14 @@ namespace RED.ViewModels
         private SettingsManagerModel _model;
         private ControlCenterViewModel _controlCenter;
 
+        public Properties.Settings CurrentSettings
+        {
+            get
+            {
+                return Properties.Settings.Default;
+            }
+        }
+
         public NetworkSettingsViewModel Network
         {
             get
