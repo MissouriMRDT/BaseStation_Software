@@ -20,5 +20,8 @@
     <Setting Name="ModuleStateSaveFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">ModuleStateSaves.xml</Value>
     </Setting>
+    <Setting Name="ServerListeningPort" Type="System.Int16" Scope="User">
+      <Value Profile="(Default)">11000</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
