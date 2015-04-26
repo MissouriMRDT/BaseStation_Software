@@ -39,17 +39,17 @@ namespace RED.ViewModels.ControlCenter
 
             if (InputVM.ButtonY)
             {
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmStop"), (Int32)(0));
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmStop"), (Int16)(0));
                 _controlCenter.Console.WriteToConsole("Robotic Arm Resetting...");
             }
-            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristClockwise"), (Int32)(InputVM.JoyStick2X * 1024));
-            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristUp"), (Int32)(InputVM.JoyStick2Y * 1024));
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristClockwise"), (Int16)(InputVM.JoyStick2X * 1024));
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristUp"), (Int16)(InputVM.JoyStick2Y * 1024));
 
-            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowClockwise"), (Int32)(InputVM.JoyStick1X * 1024));
-            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowUp"), (Int32)(InputVM.JoyStick1Y * 1024));
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowClockwise"), (Int16)(InputVM.JoyStick1X * 1024));
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowUp"), (Int16)(InputVM.JoyStick1Y * 1024));
 
-            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseServoClockwise"), (Int32)(BaseServoSpeed * 1024));
-            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseActuatorBackward"), (Int32)(BaseActuatorSpeed * 1024));
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseActuatorForward"), (Int16)(BaseActuatorSpeed * 1024));
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseServoClockwise"), (Int16)(BaseServoSpeed * 1024));
         }
 
         public void ExitMode()
