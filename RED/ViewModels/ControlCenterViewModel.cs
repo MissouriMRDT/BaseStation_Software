@@ -133,6 +133,8 @@
             RemoveModuleState = new RemoveModuleStateViewModel(this);
             SaveModuleState = new SaveModuleStateViewModel(ModuleManager.ModuleGrid, this);
 
+            Input.Start();
+
             ModuleManager.ReloadModuleButtonContexts();
         }
     }
