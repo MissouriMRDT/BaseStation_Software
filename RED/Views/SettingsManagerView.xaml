@@ -8,7 +8,9 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <controls:MetroAnimatedTabControl TabStripPlacement="Left">
         <TabItem Content="General Settings are not implemented yet" Header="General" />
-        <TabItem Content="Server Settings are not implemented yet" Header="Server" />
+        <TabItem Header="Networking">
+            <ContentControl x:Name="Network" />
+        </TabItem>
         <TabItem Content="Data Router Settings are not implemented yet" Header="Data Router" />
         <TabItem Content="Metadata Settings are not implemented yet" Header="Metadata" />
         <TabItem Content="Controller Settings are not implemented yet" Header="Controller" />
