@@ -89,7 +89,7 @@
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
 
-    <controls:MetroTabControl>
+    <controls:MetroTabControl Name="MainTabs">
         <TabItem Header="Control Center">
             <Grid Margin="5">
                 <Grid.RowDefinitions>
@@ -125,7 +125,7 @@
                 </Grid>
             </Grid>
         </TabItem>
-        <TabItem Header="Settings">
+        <TabItem Header="Settings" Name="SettingsTab">
             <ContentControl x:Name="SettingsManager" />
         </TabItem>
     </controls:MetroTabControl>

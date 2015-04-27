@@ -42,5 +42,10 @@ namespace RED.ViewModels
 
             Network = new NetworkSettingsViewModel(this, cc.TcpAsyncServer);
         }
+
+        public void SaveSettings()
+        {
+            CurrentSettings.Save();
+        }
     }
 }
