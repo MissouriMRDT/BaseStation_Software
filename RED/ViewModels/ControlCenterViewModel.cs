@@ -124,8 +124,6 @@
             base.DisplayName = "Rover Engagement Display";
             _model = new ControlCenterModel();
 
-            SettingsManager = new SettingsManagerViewModel(this);
-
             StateManager = new StateViewModel(this);
             Console = new ConsoleViewModel();
             DataRouter = new DataRouter();
@@ -135,6 +133,8 @@
 
             RemoveModuleState = new RemoveModuleStateViewModel(this);
             SaveModuleState = new SaveModuleStateViewModel(ModuleManager.ModuleGrid, this);
+
+            SettingsManager = new SettingsManagerViewModel(this);
 
             ModuleManager.ReloadModuleButtonContexts();
         }
