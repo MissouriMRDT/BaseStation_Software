@@ -117,7 +117,7 @@
                         <ContentControl x:Name="StateManager"/>
                     </DockPanel>
                     <DockPanel Grid.Column="0" Grid.Row="1" Margin="10 0">
-                        <!--<ContentControl x:Name="Console"/>-->
+                        <ContentControl x:Name="Console"/>
                     </DockPanel>
                     <DockPanel Grid.Column="0" Grid.Row="2" Margin="10 10 10 0">
                         <ContentControl x:Name="ModuleManager"/>
