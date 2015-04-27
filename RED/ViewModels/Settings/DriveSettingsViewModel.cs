@@ -49,7 +49,6 @@ namespace RED.ViewModels.Settings
 
             _vm.SpeedLimit = _settings.CurrentSettings.DriveSpeedLimit;
             _vm.ScalingMode = (DriveScalingMode)_settings.CurrentSettings.DriveScalingMode;
-
         }
     }
 }
