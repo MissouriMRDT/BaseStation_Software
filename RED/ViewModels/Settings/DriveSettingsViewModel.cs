@@ -12,7 +12,7 @@ namespace RED.ViewModels.Settings
     public class DriveSettingsViewModel : PropertyChangedBase
     {
         private SettingsManagerViewModel _settings;
-        private DriveControllerMode _vm;
+        private DriveControllerModeViewModel _vm;
 
         public int SpeedLimit
         {
@@ -42,7 +42,7 @@ namespace RED.ViewModels.Settings
             }
         }
 
-        public DriveSettingsViewModel(SettingsManagerViewModel settings, DriveControllerMode vm)
+        public DriveSettingsViewModel(SettingsManagerViewModel settings, DriveControllerModeViewModel vm)
         {
             _settings = settings;
             _vm = vm;

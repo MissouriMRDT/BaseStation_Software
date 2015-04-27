@@ -1,4 +1,5 @@
-﻿using RED.Interfaces;
+﻿using Caliburn.Micro;
+using RED.Interfaces;
 using RED.Models;
 using RED.ViewModels.ControlCenter;
 using SharpDX.XInput;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace RED.ViewModels.ControlCenter
 {
-    public class DriveControllerMode : IControllerMode
+    public class DriveControllerModeViewModel : PropertyChangedBase, IControllerMode
     {
         private const int motorRangeFactor = 1000;
 
@@ -26,6 +27,7 @@ namespace RED.ViewModels.ControlCenter
             set
             {
                 _model.speedLeft = value;
+                NotifyOfPropertyChange(() => SpeedLeft);
             }
         }
         public int SpeedRight
@@ -37,6 +39,7 @@ namespace RED.ViewModels.ControlCenter
             set
             {
                 _model.speedRight = value;
+                NotifyOfPropertyChange(() => SpeedRight);
             }
         }
 
@@ -67,7 +70,7 @@ namespace RED.ViewModels.ControlCenter
             }
         }
 
-        public DriveControllerMode(InputViewModel inputVM, ControlCenterViewModel cc)
+        public DriveControllerModeViewModel(InputViewModel inputVM, ControlCenterViewModel cc)
         {
             _model = new DriveControllerModeModel();
             _controlCenter = cc;

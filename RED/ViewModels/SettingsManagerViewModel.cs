@@ -53,7 +53,7 @@ namespace RED.ViewModels
             _controlCenter = cc;
 
             Network = new NetworkSettingsViewModel(this, cc.TcpAsyncServer);
-            Drive = new DriveSettingsViewModel(this, (ViewModels.ControlCenter.DriveControllerMode)cc.Input.ControllerModes[0]);
+            Drive = new DriveSettingsViewModel(this, (ViewModels.ControlCenter.DriveControllerModeViewModel)cc.Input.ControllerModes[0]);
         }
 
         public void SaveSettings()
