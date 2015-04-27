@@ -1,4 +1,5 @@
 ﻿using RED.Interfaces;
+using RED.Models;
 using RED.ViewModels.ControlCenter;
 using SharpDX.XInput;
 using System;
@@ -13,6 +14,7 @@ namespace RED.ViewModels.ControlCenter
     {
         private const int motorRangeFactor = 1000;
 
+        private readonly DriveControllerModeModel _model;
         private readonly ControlCenterViewModel _controlCenter;
 
         private int speedLeft;
@@ -22,9 +24,33 @@ namespace RED.ViewModels.ControlCenter
         public string Name { get; set; }
         public InputViewModel InputVM { get; set; }
 
+        public int SpeedLimit
+        {
+            get
+            {
+                return _model.speedLimit;
+            }
+            set
+            {
+                _model.speedLimit = value;
+            }
+        }
+
+        public DriveScalingMode ScalingMode
+        {
+            get
+            {
+                return _model.ScalingMode;
+            }
+            set
+            {
+                _model.ScalingMode = value;
+            }
+        }
+
         public DriveControllerMode(InputViewModel inputVM, ControlCenterViewModel cc)
         {
-            InputVM = inputVM;
+            _model = new DriveControllerModeModel();
             _controlCenter = cc;
             Name = "Drive";
         }
