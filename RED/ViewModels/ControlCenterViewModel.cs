@@ -118,6 +118,18 @@
                 NotifyOfPropertyChange(() => ModuleManager);
             }
         }
+        public InputViewModel Input
+        {
+            get
+            {
+                return _model._input;
+            }
+            set
+            {
+                _model._input = value;
+                NotifyOfPropertyChange(() => Input);
+            }
+        }
 
         public ControlCenterViewModel()
         {
@@ -130,6 +142,7 @@
             MetadataManager = new MetadataManager();
             TcpAsyncServer = new AsyncTcpServerViewModel(11000, this);
             ModuleManager = new ModuleManagerViewModel(this);
+            Input = new InputViewModel(this);
 
             RemoveModuleState = new RemoveModuleStateViewModel(this);
             SaveModuleState = new SaveModuleStateViewModel(ModuleManager.ModuleGrid, this);

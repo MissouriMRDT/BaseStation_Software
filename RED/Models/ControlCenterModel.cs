@@ -16,5 +16,6 @@
         internal DataRouter _dataRouter;
         internal MetadataManager _metadataManager;
         internal AsyncTcpServerViewModel _tcpAsyncServer;
+        internal InputViewModel _input;
     }
 }
