@@ -26,7 +26,7 @@
     <Setting Name="DriveSpeedLimit" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1000</Value>
     </Setting>
-    <Setting Name="DriveScalingMode" Type="System.Boolean" Scope="User">
+    <Setting Name="DriveParabolicScaling" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>

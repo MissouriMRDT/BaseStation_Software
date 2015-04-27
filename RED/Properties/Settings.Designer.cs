@@ -122,12 +122,12 @@ namespace RED.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool DriveScalingMode {
+        public bool DriveParabolicScaling {
             get {
-                return ((bool)(this["DriveScalingMode"]));
+                return ((bool)(this["DriveParabolicScaling"]));
             }
             set {
-                this["DriveScalingMode"] = value;
+                this["DriveParabolicScaling"] = value;
             }
         }
     }

@@ -28,7 +28,7 @@ namespace RED.ViewModels.Settings
             }
         }
 
-        public bool ScalingMode
+        public bool ParabolicScaling
         {
             get
             {
@@ -37,8 +37,8 @@ namespace RED.ViewModels.Settings
             set
             {
                 _vm.ParabolicScaling = value;
-                _settings.CurrentSettings.DriveScalingMode = value;
-                NotifyOfPropertyChange(() => ScalingMode);
+                _settings.CurrentSettings.DriveParabolicScaling = value;
+                NotifyOfPropertyChange(() => ParabolicScaling);
             }
         }
 
@@ -48,7 +48,7 @@ namespace RED.ViewModels.Settings
             _vm = vm;
 
             _vm.SpeedLimit = _settings.CurrentSettings.DriveSpeedLimit;
-            _vm.ParabolicScaling = _settings.CurrentSettings.DriveScalingMode;
+            _vm.ParabolicScaling = _settings.CurrentSettings.DriveParabolicScaling;
         }
     }
 }
