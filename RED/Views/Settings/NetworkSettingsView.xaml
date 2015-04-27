@@ -6,6 +6,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-            
+        <Label>Listening Port</Label>
+        <TextBox x:Name="ListeningPort" />
     </Grid>
 </UserControl>
