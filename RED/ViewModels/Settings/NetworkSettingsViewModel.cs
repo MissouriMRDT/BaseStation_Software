@@ -33,6 +33,8 @@ namespace RED.ViewModels.Settings
         {
             _settings = settings;
             _server = server;
+
+            _server.ListeningPort = _settings.CurrentSettings.ServerListeningPort;
         }
     }
 }
