@@ -121,10 +121,10 @@ namespace RED.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
-        public byte DriveScalingMode {
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool DriveScalingMode {
             get {
-                return ((byte)(this["DriveScalingMode"]));
+                return ((bool)(this["DriveScalingMode"]));
             }
             set {
                 this["DriveScalingMode"] = value;

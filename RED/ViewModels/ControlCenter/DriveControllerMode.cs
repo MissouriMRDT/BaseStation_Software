@@ -36,15 +36,15 @@ namespace RED.ViewModels.ControlCenter
             }
         }
 
-        public DriveScalingMode ScalingMode
+        public bool ParabolicScaling
         {
             get
             {
-                return _model.ScalingMode;
+                return _model.parabolicScaling;
             }
             set
             {
-                _model.ScalingMode = value;
+                _model.parabolicScaling = value;
             }
         }
 

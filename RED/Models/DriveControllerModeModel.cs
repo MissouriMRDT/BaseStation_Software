@@ -9,12 +9,6 @@ namespace RED.Models
     internal class DriveControllerModeModel
     {
         internal int speedLimit;
-        internal DriveScalingMode ScalingMode;
-    }
-
-    public enum DriveScalingMode : byte
-    {
-        Linear = 0,
-        Parabolic = 1
+        internal bool parabolicScaling;
     }
 }

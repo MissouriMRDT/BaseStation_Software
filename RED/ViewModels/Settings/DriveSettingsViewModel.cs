@@ -28,16 +28,16 @@ namespace RED.ViewModels.Settings
             }
         }
 
-        public DriveScalingMode ScalingMode
+        public bool ScalingMode
         {
             get
             {
-                return _vm.ScalingMode;
+                return _vm.ParabolicScaling;
             }
             set
             {
-                _vm.ScalingMode = value;
-                _settings.CurrentSettings.DriveScalingMode = (byte)value;
+                _vm.ParabolicScaling = value;
+                _settings.CurrentSettings.DriveScalingMode = value;
                 NotifyOfPropertyChange(() => ScalingMode);
             }
         }
@@ -48,7 +48,7 @@ namespace RED.ViewModels.Settings
             _vm = vm;
 
             _vm.SpeedLimit = _settings.CurrentSettings.DriveSpeedLimit;
-            _vm.ScalingMode = (DriveScalingMode)_settings.CurrentSettings.DriveScalingMode;
+            _vm.ParabolicScaling = _settings.CurrentSettings.DriveScalingMode;
         }
     }
 }
