@@ -117,6 +117,7 @@
     <Compile Include="Interfaces\IProtocol.cs" />
     <Compile Include="Models\DataRouterModel.cs" />
     <Compile Include="Models\AsyncTcpServerModel.cs" />
+    <Compile Include="Models\DriveControllerModeModel.cs" />
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Models\TcpConnectionModel.cs" />
     <Compile Include="Settings.cs" />

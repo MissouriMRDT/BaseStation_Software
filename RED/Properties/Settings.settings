@@ -23,5 +23,11 @@
     <Setting Name="ServerListeningPort" Type="System.Int16" Scope="User">
       <Value Profile="(Default)">11000</Value>
     </Setting>
+    <Setting Name="DriveSpeedLimit" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1000</Value>
+    </Setting>
+    <Setting Name="DriveScalingMode" Type="System.Byte" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

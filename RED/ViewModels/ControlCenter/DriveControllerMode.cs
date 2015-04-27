@@ -52,6 +52,7 @@ namespace RED.ViewModels.ControlCenter
         {
             _model = new DriveControllerModeModel();
             _controlCenter = cc;
+            InputVM = inputVM;
             Name = "Drive";
         }
 
