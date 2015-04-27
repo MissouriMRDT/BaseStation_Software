@@ -34,6 +34,18 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => Network);
             }
         }
+        public DriveSettingsViewModel Drive
+        {
+            get
+            {
+                return _model.drive;
+            }
+            set
+            {
+                _model.drive = value;
+                NotifyOfPropertyChange(() => Drive);
+            }
+        }
 
         public SettingsManagerViewModel(ControlCenterViewModel cc)
         {
