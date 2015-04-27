@@ -17,8 +17,28 @@ namespace RED.ViewModels.ControlCenter
         private readonly DriveControllerModeModel _model;
         private readonly ControlCenterViewModel _controlCenter;
 
-        private int speedLeft;
-        private int speedRight;
+        public int SpeedLeft
+        {
+            get
+            {
+                return _model.speedLeft;
+            }
+            set
+            {
+                _model.speedLeft = value;
+            }
+        }
+        public int SpeedRight
+        {
+            get
+            {
+                return _model.speedRight;
+            }
+            set
+            {
+                _model.speedRight = value;
+            }
+        }
 
         public string Name { get; set; }
         public InputViewModel InputVM { get; set; }
@@ -57,8 +77,8 @@ namespace RED.ViewModels.ControlCenter
 
         public void EnterMode()
         {
-            speedLeft = 0;
-            speedRight = 0;
+            SpeedLeft = 0;
+            SpeedRight = 0;
         }
 
         public void EvaluateMode()
@@ -101,23 +121,23 @@ namespace RED.ViewModels.ControlCenter
 
             if (newSpeedLeft == 0)
             {
-                speedLeft = newSpeedLeft;
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorLeftSpeed"), speedLeft);
+                SpeedLeft = newSpeedLeft;
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorLeftSpeed"), SpeedLeft);
             }
-            else if (newSpeedLeft != speedLeft)
+            else if (newSpeedLeft != SpeedLeft)
             {
-                speedLeft = newSpeedLeft;
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorLeftSpeed"), speedLeft);
+                SpeedLeft = newSpeedLeft;
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorLeftSpeed"), SpeedLeft);
             }
             if (newSpeedRight == 0)
             {
-                speedRight = newSpeedRight;
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorRightSpeed"), speedRight);
+                SpeedRight = newSpeedRight;
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorRightSpeed"), SpeedRight);
             }
-            else if (newSpeedRight != speedRight)
+            else if (newSpeedRight != SpeedRight)
             {
-                speedRight = newSpeedRight;
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorRightSpeed"), speedRight);
+                SpeedRight = newSpeedRight;
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorRightSpeed"), SpeedRight);
             }
         }
 
