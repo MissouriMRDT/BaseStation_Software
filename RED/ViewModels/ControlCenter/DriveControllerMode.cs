@@ -19,7 +19,6 @@ namespace RED.ViewModels.ControlCenter
 
         private int speedLeft;
         private int speedRight;
-        private bool isFullSpeed = true;
 
         public string Name { get; set; }
         public InputViewModel InputVM { get; set; }
@@ -82,6 +81,19 @@ namespace RED.ViewModels.ControlCenter
                 var CurrentRawControllerSpeedLeft = (LY < 0) ? -leftMagnitude : leftMagnitude;
                 var CurrentRawControllerSpeedRight = (RY < 0) ? -rightMagnitude : rightMagnitude;
 
+                //Scaling
+                if (ParabolicScaling) //Squares the value (0..1)
+                {
+                    CurrentRawControllerSpeedLeft *= CurrentRawControllerSpeedLeft;
+                    CurrentRawControllerSpeedRight *= CurrentRawControllerSpeedRight;
+                }
+
+                double speedLimitFactor = SpeedLimit / motorRangeFactor;
+                if (speedLimitFactor > 1) speedLimitFactor = 1;
+                if (speedLimitFactor < 0) speedLimitFactor = 0;
+                CurrentRawControllerSpeedLeft *= speedLimitFactor;
+                CurrentRawControllerSpeedRight *= speedLimitFactor;
+
                 newSpeedLeft = (int)(CurrentRawControllerSpeedLeft * motorRangeFactor);
                 newSpeedRight = (int)(CurrentRawControllerSpeedRight * motorRangeFactor);
             }
@@ -94,16 +106,7 @@ namespace RED.ViewModels.ControlCenter
             }
             else if (newSpeedLeft != speedLeft)
             {
-                if (isFullSpeed)
-                    speedLeft = newSpeedLeft;
-                else
-                    if (newSpeedLeft > 0.2 * motorRangeFactor)
-                        speedLeft = (int)(0.2 * motorRangeFactor);
-                    else if (newSpeedLeft < -0.2 * motorRangeFactor)
-                        speedLeft = (int)(-0.2 * motorRangeFactor);
-                    else
-                        speedLeft = newSpeedLeft;
-
+                speedLeft = newSpeedLeft;
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorLeftSpeed"), speedLeft);
             }
             if (newSpeedRight == 0)
@@ -113,16 +116,7 @@ namespace RED.ViewModels.ControlCenter
             }
             else if (newSpeedRight != speedRight)
             {
-                if (isFullSpeed)
-                    speedRight = newSpeedRight;
-                else
-                    if (newSpeedRight > 0.2 * motorRangeFactor)
-                        speedRight = (int)(0.2 * motorRangeFactor);
-                    else if (newSpeedRight < -0.2 * motorRangeFactor)
-                        speedRight = (int)(-0.2 * motorRangeFactor);
-                    else
-                        speedRight = newSpeedRight;
-
+                speedRight = newSpeedRight;
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorRightSpeed"), speedRight);
             }
         }
