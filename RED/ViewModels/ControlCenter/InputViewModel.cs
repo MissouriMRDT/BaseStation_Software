@@ -10,6 +10,7 @@
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Timers;
+    using System.Threading.Tasks;
 
     public class InputViewModel : PropertyChangedBase
     {
@@ -253,6 +254,7 @@
                     NextControlMode();
                 Model.ButtonStart = value;
                 NotifyOfPropertyChangeThreadSafe(() => ButtonStart);
+                _controlCenter.StateManager.CurrentControlMode = ControllerModes[CurrentModeIndex].Name;
             }
         }
         public bool ButtonBack
@@ -267,6 +269,7 @@
                     PreviousControlMode();
                 Model.ButtonBack = value;
                 NotifyOfPropertyChangeThreadSafe(() => ButtonBack);
+                _controlCenter.StateManager.CurrentControlMode = ControllerModes[CurrentModeIndex].Name;
             }
         }
         public bool DPadL
@@ -328,12 +331,16 @@
             ControllerModes.Add(new GripperControllerMode(this, _controlCenter));
             if (ControllerModes.Count == 0) throw new ArgumentException("IEnumerable 'modes' must have at least one item");
             CurrentModeIndex = 0;
+        }
 
-            // Initializes thread for reading controller input
-            var updater = new Timer(SerialReadSpeed);
-            updater.Elapsed += Update;
-            updater.Elapsed += EvaluateCurrentMode;
-            updater.Start();
+        public async void Start()
+        {
+            while (true)
+            {
+                Update();
+                EvaluateCurrentMode();
+                await Task.Delay(SerialReadSpeed);
+            }
         }
 
         public void NextControlMode()
@@ -349,7 +356,7 @@
             ControllerModes[CurrentModeIndex].EnterMode();
         }
 
-        private void Update(object sender, ElapsedEventArgs e)
+        private void Update()
         {
             if (ControllerOne == null || !ControllerOne.IsConnected)
             {
@@ -382,7 +389,7 @@
             DPadD = (currentGamepad.Buttons & GamepadButtonFlags.DPadDown) != 0;
         }
 
-        private void EvaluateCurrentMode(object sender, ElapsedEventArgs e)
+        private void EvaluateCurrentMode()
         {
             ControllerModes[CurrentModeIndex].EvaluateMode();
         }

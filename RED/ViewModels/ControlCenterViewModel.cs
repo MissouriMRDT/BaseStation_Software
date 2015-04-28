@@ -157,6 +157,8 @@
 
             SettingsManager = new SettingsManagerViewModel(this);
 
+            Input.Start();
+
             ModuleManager.ReloadModuleButtonContexts();
         }
     }

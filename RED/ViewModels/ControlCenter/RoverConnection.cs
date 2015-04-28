@@ -28,15 +28,22 @@ namespace RED.ViewModels.ControlCenter
 
         public async void Connect(IConnection source)
         {
-            _sourceConnection = source;
-            if (await InitializeConnection())
+            try
             {
-                //Start Listening
-                //ReceiveNetworkData(); //This is disabled because it doesn't work asyncronously yet
+                _sourceConnection = source;
+                if (await InitializeConnection())
+                {
+                    //Start Listening
+                    await Task.Run(() => ReceiveNetworkData());
+                }
+                else
+                {
+                    _sourceConnection.Close();
+                }
             }
-            else
+            catch (Exception e)
             {
-                _sourceConnection.Close();
+                _controlCenter.Console.WriteToConsole("Unexpected error in RoverConnection:" + Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace);
             }
         }
         private async Task<bool> InitializeConnection()
@@ -115,31 +122,43 @@ namespace RED.ViewModels.ControlCenter
 
         private async void ReceiveNetworkData()
         {
-            using (var bs = new BufferedStream(_sourceConnection.DataStream))
+            try
             {
-                using (var br = new BinaryReader(bs))
+                using (var bs = new BufferedStream(_sourceConnection.DataStream))
                 {
-                    while (true) //TODO: have this stop if we close
+                    using (var br = new BinaryReader(bs))
                     {
-                        messageTypes messageType = (messageTypes)(br.ReadByte());//Here: is the reason this doesn't run asyncronously
-
-                        switch (messageType)
+                        while (true) //TODO: have this stop if we close
                         {
-                            case messageTypes.console:
-                                receiveConsoleMessage(bs);
-                                break;
-                            case messageTypes.telemetry:
-                                await receiveTelemetryData(bs);
-                                break;
-                            case messageTypes.error:
-                                await receiveErrorData(bs);
-                                break;
-                            default:
-                                throw new ArgumentException("Illegal MessageType Byte received");
+                            messageTypes messageType = (messageTypes)(br.ReadByte());//Here: is the reason this doesn't run asyncronously
+
+                            switch (messageType)
+                            {
+                                case messageTypes.console:
+                                    receiveConsoleMessage(bs);
+                                    break;
+                                case messageTypes.telemetry:
+                                    await receiveTelemetryData(bs);
+                                    break;
+                                case messageTypes.error:
+                                    await receiveErrorData(bs);
+                                    break;
+                                default:
+                                    throw new ArgumentException("Illegal MessageType Byte received");
+                            }
                         }
                     }
                 }
             }
+            catch (EndOfStreamException)
+            {
+                _controlCenter.Console.WriteToConsole("EndOfStreamException in RoverConnection.Receive.");
+            }
+            catch (IOException)
+            {
+                _controlCenter.Console.WriteToConsole("IOException in RoverConnection.Receive.");
+            }
+            _sourceConnection.Close();
         }
 
         private void receiveConsoleMessage(Stream s)

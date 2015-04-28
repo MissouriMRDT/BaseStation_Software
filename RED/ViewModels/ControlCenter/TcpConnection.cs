@@ -37,7 +37,7 @@
         {
             get
             {
-                return ((IPEndPoint)(Client.Client.RemoteEndPoint)).Address;
+                return _model._ipAddress;
             }
         }
 
@@ -50,6 +50,7 @@
 
             Client = client;
             DataStream = Client.GetStream();
+            _model._ipAddress = ((IPEndPoint)(Client.Client.RemoteEndPoint)).Address;
             _controlCenter.Console.WriteToConsole("Connected to " + RemoteIp.ToString());
 
             protocol.Connect(this);

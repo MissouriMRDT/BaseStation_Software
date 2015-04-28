@@ -29,6 +29,10 @@
                 foreach (ISubscribe subscription in registered)
                     subscription.ReceiveFromRouter(dataCode, data);
         }
+        public void Send(byte dataCode, byte obj)
+        {
+            Send(dataCode, new byte[] { obj });
+        }
         public void Send(byte dataCode, dynamic obj)
         {
             Send(dataCode, System.BitConverter.GetBytes(obj));

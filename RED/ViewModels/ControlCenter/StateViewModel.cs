@@ -18,7 +18,7 @@
                 return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             }
         }
-        public ControlMode CurrentControlMode
+        public string CurrentControlMode
         {
             get
             {
@@ -27,16 +27,7 @@
             set
             {
                 _model._currentControlMode = value;
-                NotifyOfPropertyChange();
-                NotifyOfPropertyChange(() => CurrentControlModeDisplay);
-            }
-        }
-        public string CurrentControlModeDisplay
-        {
-            get
-            {
-                var mode = _model._currentControlMode;
-                return Enum.GetName(typeof(ControlMode), mode);
+                NotifyOfPropertyChange(()=> CurrentControlMode);
             }
         }
         public bool NetworkHasConnection
@@ -96,7 +87,7 @@
         public StateViewModel(ControlCenterViewModel controlCenter)
         {
             _controlCenter = controlCenter;
-            CurrentControlMode = ParseEnum<ControlMode>(Settings.Default.DefaultControlMode);
+            CurrentControlMode = "";
         }
 
         public void ToggleServer()

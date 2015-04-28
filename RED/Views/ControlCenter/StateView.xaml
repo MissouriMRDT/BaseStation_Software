@@ -11,7 +11,7 @@
 
             <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5">
                 <TextBlock Text="Control Mode:" Width="100" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
-                <TextBlock Text="{Binding CurrentControlModeDisplay}" FontWeight="Bold" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding CurrentControlMode}" FontWeight="Bold" VerticalAlignment="Center" />
             </DockPanel>
             <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5">
                 <TextBlock Text="Rover:" Width="100" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
