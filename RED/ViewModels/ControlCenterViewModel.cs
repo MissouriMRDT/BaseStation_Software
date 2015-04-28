@@ -131,6 +131,14 @@
             }
         }
 
+        public DriveControllerModeViewModel DriveControllerMode
+        {
+            get
+            {
+                return (DriveControllerModeViewModel)Input.ControllerModes[0];
+            }
+        }
+
         public ControlCenterViewModel()
         {
             base.DisplayName = "Rover Engagement Display";

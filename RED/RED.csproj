@@ -143,6 +143,9 @@
     <Compile Include="Views\ControlCenterView.xaml.cs">
       <DependentUpon>ControlCenterView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ControlCenter\DriveControllerModeView.xaml.cs">
+      <DependentUpon>DriveControllerModeView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SettingsManagerView.xaml.cs">
       <DependentUpon>SettingsManagerView.xaml</DependentUpon>
     </Compile>
@@ -157,6 +160,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ControlCenterView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ControlCenter\DriveControllerModeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
