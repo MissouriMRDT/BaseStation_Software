@@ -10,12 +10,15 @@ namespace RED.ViewModels.ControlCenter
 {
     public class MetadataManager
     {
+        private readonly ControlCenterViewModel _controlCenter;
+
         public List<CommandMetadataContext> Commands { get; private set; }
         public List<TelemetryMetadataContext> Telemetry { get; private set; }
         public List<ErrorMetadataContext> Errors { get; private set; }
 
-        public MetadataManager()
+        public MetadataManager(ControlCenterViewModel cc)
         {
+            _controlCenter = cc;
             Commands = new List<CommandMetadataContext>();
             Telemetry = new List<TelemetryMetadataContext>();
             Errors = new List<ErrorMetadataContext>();
@@ -44,6 +47,8 @@ namespace RED.ViewModels.ControlCenter
                 Commands.AddRange(save.Commands);
                 Telemetry.AddRange(save.Telemetry);
                 Errors.AddRange(save.Errors);
+
+                _controlCenter.Console.WriteToConsole("Metadata loaded from file \"" + url + "\"");
             }
         }
         public void SaveToFile(string url)
@@ -90,7 +95,7 @@ namespace RED.ViewModels.ControlCenter
 
         public int GetByteLength(string DataType)
         {
-            switch (DataType)
+            switch (DataType.ToLowerInvariant())
             {
                 case "int8": return 1;
                 case "int16": return 2;

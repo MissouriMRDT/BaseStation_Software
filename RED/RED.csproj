@@ -12,6 +12,11 @@
     <AssemblyName>RED</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>0acb4c41</NuGetPackageImportStamp>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -24,11 +29,8 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>0acb4c41</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -70,6 +72,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\MahApps.Metro.0.15.0-ALPHA99\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
+    <Reference Include="Octokit">
+      <HintPath>..\packages\Octokit.0.8.0\lib\net45\Octokit.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="SharpDX, Version=2.6.3.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -80,7 +85,9 @@
       <HintPath>$(SharpDXPackageBinDir)\SharpDX.XInput.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Speech" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -116,8 +123,11 @@
     <Compile Include="Interfaces\IProtocol.cs" />
     <Compile Include="Models\DataRouterModel.cs" />
     <Compile Include="Models\AsyncTcpServerModel.cs" />
-    <Compile Include="Models\InputModel.cs" />
+    <Compile Include="Models\DriveControllerModeModel.cs" />
+    <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Models\TcpConnectionModel.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="Models\InputModel.cs" />
     <Compile Include="ViewModels\ControlCenter\ArmControllerMode.cs" />
     <Compile Include="ViewModels\ControlCenter\DataRouter.cs" />
     <Compile Include="Interfaces\ISubscribe.cs" />
@@ -125,7 +135,7 @@
     <Compile Include="Models\ModuleGridModel.cs" />
     <Compile Include="RedBootstrapper.cs" />
     <Compile Include="ViewModels\ControlCenter\AsyncTcpServer.cs" />
-    <Compile Include="ViewModels\ControlCenter\DriveControllerMode.cs" />
+    <Compile Include="ViewModels\ControlCenter\DriveControllerModeViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\GripperControllerMode.cs" />
     <Compile Include="ViewModels\ControlCenter\InputViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\MetadataManager.cs" />
@@ -133,14 +143,33 @@
     <Compile Include="ViewModels\ControlCenter\TcpConnection.cs" />
     <Compile Include="ViewModels\ControlCenterViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\ModuleGridViewModel.cs" />
+    <Compile Include="ViewModels\SettingsManagerViewModel.cs" />
+    <Compile Include="ViewModels\Settings\DriveSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Settings\NetworkSettingsViewModel.cs" />
     <Compile Include="Views\ControlCenterView.xaml.cs">
       <DependentUpon>ControlCenterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ControlCenter\DriveControllerModeView.xaml.cs">
+      <DependentUpon>DriveControllerModeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsManagerView.xaml.cs">
+      <DependentUpon>SettingsManagerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Settings\DriveSettingsView.xaml.cs">
+      <DependentUpon>DriveSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Settings\NetworkSettingsView.xaml.cs">
+      <DependentUpon>NetworkSettingsView.xaml</DependentUpon>
     </Compile>
     <Page Include="Resources\Icons\Icons.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ControlCenterView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ControlCenter\DriveControllerModeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -208,6 +237,18 @@
       <DependentUpon>StateView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Page Include="Views\SettingsManagerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Settings\DriveSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Settings\NetworkSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -254,6 +295,7 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\SharpDX.2.6.3\build\SharpDX.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SharpDX.2.6.3\build\SharpDX.targets'))" />
   </Target>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

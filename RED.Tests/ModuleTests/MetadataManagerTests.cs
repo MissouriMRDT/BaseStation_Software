@@ -2,6 +2,7 @@
 {
     using Contexts;
     using NUnit.Framework;
+    using ViewModels;
     using ViewModels.ControlCenter;
 
     [TestFixture]
@@ -23,8 +24,9 @@
         public void MetadataManagerConstructor()
         {
             // Arrange
+            var cc = new ControlCenterViewModel();
             // Act
-            var manager = new MetadataManager();
+            var manager = new MetadataManager(cc);
             // Assert
             Assert.IsNotNull(manager.Commands);
             Assert.IsNotNull(manager.Telemetry);
@@ -35,7 +37,8 @@
         public void MetadataManagerAddCommand()
         {
             // Arrange
-            var manager = new MetadataManager();
+            var cc = new ControlCenterViewModel();
+            var manager = new MetadataManager(cc);
             CommandMetadataContext context = new CommandMetadataContext();
             // Act
             manager.Add(context);
@@ -47,7 +50,8 @@
         public void MetadataManagerAddTelemetry()
         {
             // Arrange
-            var manager = new MetadataManager();
+            var cc = new ControlCenterViewModel();
+            var manager = new MetadataManager(cc);
             TelemetryMetadataContext context = new TelemetryMetadataContext();
             // Act
             manager.Add(context);
@@ -59,7 +63,8 @@
         public void MetadataManagerAddError()
         {
             // Arrange
-            var manager = new MetadataManager();
+            var cc = new ControlCenterViewModel();
+            var manager = new MetadataManager(cc);
             ErrorMetadataContext context = new ErrorMetadataContext();
             // Act
             manager.Add(context);
@@ -71,7 +76,8 @@
         public void MetadataManagerGetCommand()
         {
             // Arrange
-            var manager = new MetadataManager();
+            var cc = new ControlCenterViewModel();
+            var manager = new MetadataManager(cc);
             CommandMetadataContext context1 = new CommandMetadataContext();
             context1.Id = 5;
             manager.Add(context1);
@@ -88,7 +94,8 @@
         public void MetadataManagerGetTelemetry()
         {
             // Arrange
-            var manager = new MetadataManager();
+            var cc = new ControlCenterViewModel();
+            var manager = new MetadataManager(cc);
             TelemetryMetadataContext context1 = new TelemetryMetadataContext();
             context1.Id = 5;
             manager.Add(context1);
@@ -105,7 +112,8 @@
         public void MetadataManagerGetError()
         {
             // Arrange
-            var manager = new MetadataManager();
+            var cc = new ControlCenterViewModel();
+            var manager = new MetadataManager(cc);
             ErrorMetadataContext context1 = new ErrorMetadataContext();
             context1.Id = 5;
             manager.Add(context1);
@@ -122,7 +130,8 @@
         public void MetadataManagerGetMetadataCommand()
         {
             // Arrange
-            var manager = new MetadataManager();
+            var cc = new ControlCenterViewModel();
+            var manager = new MetadataManager(cc);
             manager.Add(new CommandMetadataContext() { Id = 1 });
             manager.Add(new CommandMetadataContext() { Id = 2 });
             manager.Add(new TelemetryMetadataContext() { Id = 3 });
@@ -139,7 +148,8 @@
         public void MetadataManagerGetMetadataTelemetry()
         {
             // Arrange
-            var manager = new MetadataManager();
+            var cc = new ControlCenterViewModel();
+            var manager = new MetadataManager(cc);
             manager.Add(new CommandMetadataContext() { Id = 1 });
             manager.Add(new CommandMetadataContext() { Id = 2 });
             manager.Add(new TelemetryMetadataContext() { Id = 3 });
@@ -156,7 +166,8 @@
         public void MetadataManagerGetMetadataError()
         {
             // Arrange
-            var manager = new MetadataManager();
+            var cc = new ControlCenterViewModel();
+            var manager = new MetadataManager(cc);
             manager.Add(new CommandMetadataContext() { Id = 1 });
             manager.Add(new CommandMetadataContext() { Id = 2 });
             manager.Add(new TelemetryMetadataContext() { Id = 3 });

@@ -43,7 +43,7 @@ namespace RED.ViewModels.ControlCenter
             }
             catch (Exception e)
             {
-                _controlCenter.Console.WriteToConsole("Unexpected error in RoverConnection:" + Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace);
+                _controlCenter.Console.WriteToConsole("Unexpected error in RoverConnection Receive:" + Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace);
             }
         }
         private async Task<bool> InitializeConnection()
@@ -120,7 +120,7 @@ namespace RED.ViewModels.ControlCenter
             }
         }
 
-        private async void ReceiveNetworkData()
+        private async Task ReceiveNetworkData()
         {
             try
             {
@@ -208,19 +208,30 @@ namespace RED.ViewModels.ControlCenter
         public void ReceiveFromRouter(byte dataId, byte[] data)
         {
             //This forwards the data across the connection
-
-            //Validate Length
-            if (data.Length != _controlCenter.MetadataManager.GetDataTypeByteLength(dataId))
+            try
             {
-                _controlCenter.Console.WriteToConsole("Sending of a command with data id " + dataId.ToString() + " and invalid data length " + data.Length.ToString() + " was attempted.");
-                return;
+
+                //Validate Length
+                if (data.Length != _controlCenter.MetadataManager.GetDataTypeByteLength(dataId))
+                {
+                    _controlCenter.Console.WriteToConsole("Sending of a command with data id " + dataId.ToString() + " and invalid data length " + data.Length.ToString() + " was attempted.");
+                    return;
+                }
+
+                using (var bw = new BinaryWriter(_sourceConnection.DataStream, Encoding.ASCII, true))
+                {
+                    bw.Write((byte)(messageTypes.command));
+                    bw.Write(dataId);
+                    bw.Write(data);
+                }
             }
-
-            using (var bw = new BinaryWriter(_sourceConnection.DataStream, Encoding.ASCII, true))
+            catch (ArgumentException e)
             {
-                bw.Write((byte)(messageTypes.command));
-                bw.Write(dataId);
-                bw.Write(data);
+                _controlCenter.Console.WriteToConsole("ArgumentException (Stream not Writable) in RoverConnection.Receive.");
+            }
+            catch (Exception e)
+            {
+                _controlCenter.Console.WriteToConsole("Unexpected error in RoverConnection Send:" + Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace);
             }
         }
 
