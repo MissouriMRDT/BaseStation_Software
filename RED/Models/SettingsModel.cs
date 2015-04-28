@@ -10,5 +10,6 @@ namespace RED.Models
     public class SettingsManagerModel
     {
         internal NetworkSettingsViewModel network;
+        internal DriveSettingsViewModel drive;
     }
 }

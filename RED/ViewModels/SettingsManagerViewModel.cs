@@ -34,6 +34,18 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => Network);
             }
         }
+        public DriveSettingsViewModel Drive
+        {
+            get
+            {
+                return _model.drive;
+            }
+            set
+            {
+                _model.drive = value;
+                NotifyOfPropertyChange(() => Drive);
+            }
+        }
 
         public SettingsManagerViewModel(ControlCenterViewModel cc)
         {
@@ -41,6 +53,7 @@ namespace RED.ViewModels
             _controlCenter = cc;
 
             Network = new NetworkSettingsViewModel(this, cc.TcpAsyncServer);
+            Drive = new DriveSettingsViewModel(this, (ViewModels.ControlCenter.DriveControllerModeViewModel)cc.Input.ControllerModes[0]);
         }
 
         public void SaveSettings()

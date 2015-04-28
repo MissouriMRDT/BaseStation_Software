@@ -1,8 +1,12 @@
 ﻿using RED.Interfaces;
 using RED.JSON.Contexts;
+using System;
+using System.Xml.Serialization;
 
 namespace RED.Contexts
 {
+    [XmlType(TypeName = "ErrorMetadata")]
+    [Serializable]
     public class ErrorMetadataContext : IMetadata
     {
         public byte Id { get; set; }
