@@ -367,10 +367,10 @@
             Connected = true;
 
             var deadzone = Math.Max(Gamepad.LeftThumbDeadZone, Gamepad.RightThumbDeadZone);
-            JoyStick1X = (currentGamepad.LeftThumbX + currentGamepad.LeftThumbX < 0 ? deadzone : -deadzone) / (float)(32768 - deadzone);
-            JoyStick1Y = (currentGamepad.LeftThumbY + currentGamepad.LeftThumbY < 0 ? deadzone : -deadzone) / (float)(32768 - deadzone);
-            JoyStick2X = (currentGamepad.RightThumbX + currentGamepad.RightThumbX < 0 ? deadzone : -deadzone) / (float)(32768 - deadzone);
-            JoyStick2Y = (currentGamepad.RightThumbY + currentGamepad.RightThumbY < 0 ? deadzone : -deadzone) / (float)(32768 - deadzone);
+            JoyStick1X = currentGamepad.LeftThumbX < deadzone && currentGamepad.LeftThumbX > -deadzone ? 0 : ((currentGamepad.LeftThumbX + (currentGamepad.LeftThumbX < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
+            JoyStick1Y = currentGamepad.LeftThumbY < deadzone && currentGamepad.LeftThumbY > -deadzone ? 0 : ((currentGamepad.LeftThumbY + (currentGamepad.LeftThumbY < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
+            JoyStick2X = currentGamepad.RightThumbX < deadzone && currentGamepad.RightThumbX > -deadzone ? 0 : ((currentGamepad.RightThumbX + (currentGamepad.RightThumbX < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
+            JoyStick2Y = currentGamepad.RightThumbY < deadzone && currentGamepad.RightThumbY > -deadzone ? 0 : ((currentGamepad.RightThumbY + (currentGamepad.RightThumbY < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
 
             LeftTrigger = (float)currentGamepad.LeftTrigger / 255;
             RightTrigger = (float)currentGamepad.RightTrigger / 255;
