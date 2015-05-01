@@ -107,11 +107,11 @@ namespace RED.ViewModels.ControlCenter
                 //Scaling
                 if (ParabolicScaling) //Squares the value (0..1)
                 {
-                    CurrentRawControllerSpeedLeft *= CurrentRawControllerSpeedLeft * CurrentRawControllerSpeedLeft >= 0 ? 1 : -1;
-                    CurrentRawControllerSpeedRight *= CurrentRawControllerSpeedRight * CurrentRawControllerSpeedRight >= 0 ? 1 : -1;
+                    CurrentRawControllerSpeedLeft *= CurrentRawControllerSpeedLeft * (CurrentRawControllerSpeedLeft >= 0 ? 1 : -1);
+                    CurrentRawControllerSpeedRight *= CurrentRawControllerSpeedRight * (CurrentRawControllerSpeedRight >= 0 ? 1 : -1);
                 }
 
-                double speedLimitFactor = SpeedLimit / motorRangeFactor;
+                double speedLimitFactor = (double)SpeedLimit / motorRangeFactor;
                 if (speedLimitFactor > 1) speedLimitFactor = 1;
                 if (speedLimitFactor < 0) speedLimitFactor = 0;
                 CurrentRawControllerSpeedLeft *= speedLimitFactor;
