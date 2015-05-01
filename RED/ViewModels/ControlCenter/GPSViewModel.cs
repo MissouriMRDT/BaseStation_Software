@@ -1,4 +1,5 @@
-﻿using RED.Models;
+﻿using Caliburn.Micro;
+using RED.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RED.ViewModels.ControlCenter
 {
-    public class GPSViewModel
+    public class GPSViewModel : PropertyChangedBase
     {
         GPSModel _model;
         ControlCenterViewModel _cc;
