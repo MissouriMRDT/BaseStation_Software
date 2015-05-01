@@ -124,6 +124,7 @@
     <Compile Include="Models\DataRouterModel.cs" />
     <Compile Include="Models\AsyncTcpServerModel.cs" />
     <Compile Include="Models\DriveControllerModeModel.cs" />
+    <Compile Include="Models\GPSModel.cs" />
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Models\TcpConnectionModel.cs" />
     <Compile Include="Settings.cs" />
@@ -136,6 +137,7 @@
     <Compile Include="RedBootstrapper.cs" />
     <Compile Include="ViewModels\ControlCenter\AsyncTcpServer.cs" />
     <Compile Include="ViewModels\ControlCenter\DriveControllerModeViewModel.cs" />
+    <Compile Include="ViewModels\ControlCenter\GPSViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\GripperControllerMode.cs" />
     <Compile Include="ViewModels\ControlCenter\InputViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\MetadataManager.cs" />
@@ -151,6 +153,9 @@
     </Compile>
     <Compile Include="Views\ControlCenter\DriveControllerModeView.xaml.cs">
       <DependentUpon>DriveControllerModeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ControlCenter\GPSView.xaml.cs">
+      <DependentUpon>GPSView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsManagerView.xaml.cs">
       <DependentUpon>SettingsManagerView.xaml</DependentUpon>
@@ -170,6 +175,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ControlCenter\DriveControllerModeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ControlCenter\GPSView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
