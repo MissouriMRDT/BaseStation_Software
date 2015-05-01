@@ -9,15 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RED.Tests", "RED.Tests\RED.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RED.JSON", "RED.JSON\RED.JSON.csproj", "{278BF0B9-0C40-4B9B-87D2-EE89E677F2F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "REDUpdater", "REDUpdater\REDUpdater.csproj", "{1D9EB7DC-A6CC-4F01-8E81-E624D39361AA}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{9D7B6140-CAF1-4EA7-A5D6-625FCBB6377A}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,10 +27,6 @@ Global
 		{278BF0B9-0C40-4B9B-87D2-EE89E677F2F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{278BF0B9-0C40-4B9B-87D2-EE89E677F2F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{278BF0B9-0C40-4B9B-87D2-EE89E677F2F5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1D9EB7DC-A6CC-4F01-8E81-E624D39361AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1D9EB7DC-A6CC-4F01-8E81-E624D39361AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1D9EB7DC-A6CC-4F01-8E81-E624D39361AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1D9EB7DC-A6CC-4F01-8E81-E624D39361AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
