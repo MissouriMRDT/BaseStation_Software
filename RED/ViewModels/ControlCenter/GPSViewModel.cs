@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using RED.Addons;
 using RED.Models;
 using System;
 using System.Collections.Generic;
@@ -17,18 +18,6 @@ namespace RED.ViewModels.ControlCenter
         {
             _model = new GPSModel();
             _cc = cc;
-        }
-    }
-
-    struct GPSCoordinate
-    {
-        float Longitude;
-        float Latitude;
-
-        public GPSCoordinate(float longitude, float latitude)
-        {
-            Longitude = longitude;
-            Latitude = latitude;
         }
     }
 }
