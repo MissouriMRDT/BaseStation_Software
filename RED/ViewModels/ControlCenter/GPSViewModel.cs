@@ -19,4 +19,16 @@ namespace RED.ViewModels.ControlCenter
             _cc = cc;
         }
     }
+
+    struct GPSCoordinate
+    {
+        float Longitude;
+        float Latitude;
+
+        public GPSCoordinate(float longitude, float latitude)
+        {
+            Longitude = longitude;
+            Latitude = latitude;
+        }
+    }
 }
