@@ -124,6 +124,7 @@
     <Compile Include="Contexts\ErrorMetadataContext.cs" />
     <Compile Include="Contexts\MetadataSaveContext.cs" />
     <Compile Include="Contexts\TelemetryMetadataContext.cs" />
+    <Compile Include="Images\ModernUIIcons.cs" />
     <Compile Include="Interfaces\IConnection.cs" />
     <Compile Include="Interfaces\IControllerMode.cs" />
     <Compile Include="Interfaces\IMetadata.cs" />
