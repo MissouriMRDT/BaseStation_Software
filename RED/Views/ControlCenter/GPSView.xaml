@@ -7,6 +7,29 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        
+        <GroupBox Name="Mapgroup"  Header="Map" Margin="12,7,180,12" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
+            <gmap:GMapControl x:Name="MainMap" Zoom="13" MaxZoom="20" MinZoom="5" />
+        </GroupBox>
+
+        <GroupBox HorizontalAlignment="Right" Margin="0,7,9.6,237.8" VerticalAlignment="Stretch" Header="Cache Options" Width="165">
+            <Grid>
+                <Button x:Name="ImportBtn" Margin="5,10,10,0" Height="55" VerticalAlignment="Top" Click="ImportBtn_Click" Content="Import"/>
+                <Button x:Name="ExportBtn" Margin="5,70,10,0" Height="55" VerticalAlignment="Top" Click="ExportBtn_Click" Content="Export"/>
+                <Button x:Name="PrefetchBtn" Margin="5,130,10,0" Height="55" VerticalAlignment="Top" Click="PrefetchBtn_Click" Content="Prefetch"/>
+                <Button x:Name="ClearBtn" Margin="5,190,10,0" Height="55" VerticalAlignment="Top" Click="ClearBtn_Click" Content="Clear Cache"/>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox HorizontalAlignment="Right" Margin="0,288,9.6,11.8" VerticalAlignment="Stretch" Header="Manage Waypoints" Width="165">
+            <Grid Margin="-6,0,-13,0.4">
+                <Label Content="Latitude:" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                <Label Content="Longitude:"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,26,0,0"/>
+
+                <TextBox x:Name="LatitudeTextBox" HorizontalAlignment="Right" VerticalAlignment="Top" Width="65" Margin="0,6,9,0" Height="20"/>
+                <TextBox x:Name="LongitudeTextBox" HorizontalAlignment="Right" VerticalAlignment="Top" Width="65" Margin="0,32,9,0" Height="20"/>
+
+                <Button x:Name="AddWaypointBtn" Margin="6,58,10,0" Height="40" VerticalAlignment="Top" Click="AddWaypointBtn_Click" Content="Add Waypoint"/>
+            </Grid>
+        </GroupBox>
     </Grid>
 </UserControl>
