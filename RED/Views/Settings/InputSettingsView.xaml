@@ -19,7 +19,7 @@
             <Label Grid.Row="0" Grid.Column="0">Polling Rate (ms)</Label>
             <TextBox Grid.Row="0" Grid.Column="1" x:Name="SerialReadSpeed" />
             <CheckBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="AutoDeadzone">AutoDeadzone</CheckBox>
-            <Label Grid.Row="2" Grid.Column="0">Manual Deadzone (1-65535)</Label>
+            <Label Grid.Row="2" Grid.Column="0">Manual Deadzone (0-32768)</Label>
             <TextBox Grid.Row="2" Grid.Column="1" x:Name="ManualDeadzone" />
         </Grid>
     </StackPanel>
