@@ -31,6 +31,30 @@
                 NotifyOfPropertyChange(() => SerialReadSpeed);
             }
         }
+        public bool AutoDeadzone
+        {
+            get
+            {
+                return Model.AutoDeadzone;
+            }
+            set
+            {
+                Model.AutoDeadzone = value;
+                NotifyOfPropertyChange(() => AutoDeadzone);
+            }
+        }
+        public int ManualDeadzone 
+        {
+            get
+            {
+                return Model.ManualDeadzone;
+            }
+            set
+            {
+                Model.ManualDeadzone = value;
+                NotifyOfPropertyChange(() => ManualDeadzone);
+            }
+        }
 
         public ObservableCollection<IControllerMode> ControllerModes
         {
