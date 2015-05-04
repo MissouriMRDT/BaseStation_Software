@@ -157,7 +157,7 @@ namespace RED.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        [global::System.Configuration.DefaultSettingValueAttribute("4000")]
         public int InputManualDeadzone {
             get {
                 return ((int)(this["InputManualDeadzone"]));
