@@ -94,5 +94,41 @@ namespace RED.Properties {
                 this["ModuleStateSaveFileName"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("11000")]
+        public short ServerListeningPort {
+            get {
+                return ((short)(this["ServerListeningPort"]));
+            }
+            set {
+                this["ServerListeningPort"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
+        public int DriveSpeedLimit {
+            get {
+                return ((int)(this["DriveSpeedLimit"]));
+            }
+            set {
+                this["DriveSpeedLimit"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool DriveParabolicScaling {
+            get {
+                return ((bool)(this["DriveParabolicScaling"]));
+            }
+            set {
+                this["DriveParabolicScaling"] = value;
+            }
+        }
     }
 }

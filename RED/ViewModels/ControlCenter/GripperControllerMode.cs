@@ -16,7 +16,7 @@ namespace RED.ViewModels.ControlCenter
         public string Name { get; set; }
         public InputViewModel InputVM { get; set; }
 
-        public enum GripperAction
+        public enum GripperAction : byte
         {
             Open = 0,
             Close = 1
@@ -40,9 +40,9 @@ namespace RED.ViewModels.ControlCenter
             if (c != null && !c.IsConnected) return;
 
             if (InputVM.ButtonB)
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("AuxGripper"), GripperAction.Close);
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (byte)GripperAction.Close);
             else if (InputVM.ButtonX)
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("AuxGripper"), GripperAction.Open);
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (byte)GripperAction.Open);
         }
 
         public void ExitMode()

@@ -10,6 +10,7 @@
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Timers;
+    using System.Threading.Tasks;
 
     public class InputViewModel : PropertyChangedBase
     {
@@ -253,6 +254,7 @@
                     NextControlMode();
                 Model.ButtonStart = value;
                 NotifyOfPropertyChangeThreadSafe(() => ButtonStart);
+                _controlCenter.StateManager.CurrentControlMode = ControllerModes[CurrentModeIndex].Name;
             }
         }
         public bool ButtonBack
@@ -267,6 +269,7 @@
                     PreviousControlMode();
                 Model.ButtonBack = value;
                 NotifyOfPropertyChangeThreadSafe(() => ButtonBack);
+                _controlCenter.StateManager.CurrentControlMode = ControllerModes[CurrentModeIndex].Name;
             }
         }
         public bool DPadL
@@ -323,17 +326,21 @@
         {
             _controlCenter = cc;
 
-            ControllerModes.Add(new DriveControllerMode(this, _controlCenter));
+            ControllerModes.Add(new DriveControllerModeViewModel(this, _controlCenter));
             ControllerModes.Add(new ArmControllerMode(this, _controlCenter));
             ControllerModes.Add(new GripperControllerMode(this, _controlCenter));
             if (ControllerModes.Count == 0) throw new ArgumentException("IEnumerable 'modes' must have at least one item");
             CurrentModeIndex = 0;
+        }
 
-            // Initializes thread for reading controller input
-            var updater = new Timer(SerialReadSpeed);
-            updater.Elapsed += Update;
-            updater.Elapsed += EvaluateCurrentMode;
-            updater.Start();
+        public async void Start()
+        {
+            while (true)
+            {
+                Update();
+                EvaluateCurrentMode();
+                await Task.Delay(SerialReadSpeed);
+            }
         }
 
         public void NextControlMode()
@@ -349,7 +356,7 @@
             ControllerModes[CurrentModeIndex].EnterMode();
         }
 
-        private void Update(object sender, ElapsedEventArgs e)
+        private void Update()
         {
             if (ControllerOne == null || !ControllerOne.IsConnected)
             {
@@ -359,10 +366,11 @@
             var currentGamepad = ControllerOne.GetState().Gamepad;
             Connected = true;
 
-            JoyStick2X = currentGamepad.RightThumbX < Gamepad.RightThumbDeadZone && currentGamepad.RightThumbX > -Gamepad.RightThumbDeadZone ? 0 : (float)currentGamepad.RightThumbX / 32768;
-            JoyStick2Y = currentGamepad.RightThumbY < Gamepad.RightThumbDeadZone && currentGamepad.RightThumbY > -Gamepad.RightThumbDeadZone ? 0 : (float)currentGamepad.RightThumbY / 32768;
-            JoyStick1X = currentGamepad.LeftThumbX < Gamepad.LeftThumbDeadZone && currentGamepad.LeftThumbX > -Gamepad.LeftThumbDeadZone ? 0 : (float)currentGamepad.LeftThumbX / 32768;
-            JoyStick1Y = currentGamepad.LeftThumbY < Gamepad.LeftThumbDeadZone && currentGamepad.LeftThumbY > -Gamepad.LeftThumbDeadZone ? 0 : (float)currentGamepad.LeftThumbY / 32768;
+            var deadzone = Math.Max(Gamepad.LeftThumbDeadZone, Gamepad.RightThumbDeadZone);
+            JoyStick1X = currentGamepad.LeftThumbX < deadzone && currentGamepad.LeftThumbX > -deadzone ? 0 : ((currentGamepad.LeftThumbX + (currentGamepad.LeftThumbX < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
+            JoyStick1Y = currentGamepad.LeftThumbY < deadzone && currentGamepad.LeftThumbY > -deadzone ? 0 : ((currentGamepad.LeftThumbY + (currentGamepad.LeftThumbY < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
+            JoyStick2X = currentGamepad.RightThumbX < deadzone && currentGamepad.RightThumbX > -deadzone ? 0 : ((currentGamepad.RightThumbX + (currentGamepad.RightThumbX < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
+            JoyStick2Y = currentGamepad.RightThumbY < deadzone && currentGamepad.RightThumbY > -deadzone ? 0 : ((currentGamepad.RightThumbY + (currentGamepad.RightThumbY < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
 
             LeftTrigger = (float)currentGamepad.LeftTrigger / 255;
             RightTrigger = (float)currentGamepad.RightTrigger / 255;
@@ -382,7 +390,7 @@
             DPadD = (currentGamepad.Buttons & GamepadButtonFlags.DPadDown) != 0;
         }
 
-        private void EvaluateCurrentMode(object sender, ElapsedEventArgs e)
+        private void EvaluateCurrentMode()
         {
             ControllerModes[CurrentModeIndex].EvaluateMode();
         }

@@ -8,6 +8,19 @@
     {
         private readonly ControlCenterModel _model;
 
+        public SettingsManagerViewModel SettingsManager
+        {
+            get
+            {
+                return _model._settingsManager;
+            }
+            set
+            {
+                _model._settingsManager = value;
+                NotifyOfPropertyChange(() => SettingsManager);
+            }
+        }
+
         public RemoveModuleStateViewModel RemoveModuleState
         {
             get
@@ -118,20 +131,33 @@
             }
         }
 
+        public DriveControllerModeViewModel DriveControllerMode
+        {
+            get
+            {
+                return (DriveControllerModeViewModel)Input.ControllerModes[0];
+            }
+        }
+
         public ControlCenterViewModel()
         {
             base.DisplayName = "Rover Engagement Display";
             _model = new ControlCenterModel();
+
             StateManager = new StateViewModel(this);
             Console = new ConsoleViewModel();
             DataRouter = new DataRouter();
-            MetadataManager = new MetadataManager();
+            MetadataManager = new MetadataManager(this);
             TcpAsyncServer = new AsyncTcpServerViewModel(11000, this);
             ModuleManager = new ModuleManagerViewModel(this);
             Input = new InputViewModel(this);
 
             RemoveModuleState = new RemoveModuleStateViewModel(this);
             SaveModuleState = new SaveModuleStateViewModel(ModuleManager.ModuleGrid, this);
+
+            SettingsManager = new SettingsManagerViewModel(this);
+
+            Input.Start();
 
             ModuleManager.ReloadModuleButtonContexts();
         }

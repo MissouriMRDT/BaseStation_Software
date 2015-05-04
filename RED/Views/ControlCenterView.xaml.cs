@@ -2,6 +2,7 @@
 {
     using System.Windows;
     using ControlCenter;
+    using ViewModels;
     using MahApps.Metro.Controls;
     using MahApps.Metro.Controls.Dialogs;
 
@@ -15,6 +16,16 @@
             _removeDialog = new RemoveModuleStateView(this);
             _saveDialog = new SaveModuleStateView(this);
             InitializeComponent();
+            MainTabs.SelectionChanged += MainTabs_SelectionChanged;
+        }
+
+        private void MainTabs_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (e.RemovedItems.Count > 0 && (System.Windows.Controls.TabItem)(e.RemovedItems[0]) == SettingsTab)
+            {
+                var vm = DataContext as ControlCenterViewModel;
+                vm.SettingsManager.SaveSettings();
+            }
         }
 
         private void ToggleSettingsFlyout(object sender, RoutedEventArgs e)

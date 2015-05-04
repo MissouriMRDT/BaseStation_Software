@@ -12,16 +12,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using REDUpdater.ViewModels;
 
-namespace REDUpdater.Views
+namespace RED.Views.Settings
 {
     /// <summary>
-    /// Interaction logic for MainWindowView.xaml
+    /// Interaction logic for DriveSettingsView.xaml
     /// </summary>
-    public partial class MainWindowView : Window
+    public partial class DriveSettingsView : UserControl
     {
-        public MainWindowView()
+        public DriveSettingsView()
         {
             InitializeComponent();
         }
