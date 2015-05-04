@@ -153,6 +153,9 @@
     <Compile Include="Views\Settings\DriveSettingsView.xaml.cs">
       <DependentUpon>DriveSettingsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Settings\InputSettingsView.xaml.cs">
+      <DependentUpon>InputSettingsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Settings\NetworkSettingsView.xaml.cs">
       <DependentUpon>NetworkSettingsView.xaml</DependentUpon>
     </Compile>
@@ -237,6 +240,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Settings\DriveSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Settings\InputSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
