@@ -25,6 +25,34 @@
                     <Button x:Name="AddWaypointBtn" Click="AddWaypointBtn_Click" Content="Add Waypoint"/>
                 </StackPanel>
             </GroupBox>
+            <GroupBox Header="Data">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0">Fix Obtained</Label>
+                    <Label Grid.Row="0" Grid.Column="1" x:Name="FixObtained" />
+                    <Label Grid.Row="1" Grid.Column="0">Fix Quality</Label>
+                    <Label Grid.Row="1" Grid.Column="1" x:Name="FixQuality" />
+                    <Label Grid.Row="2" Grid.Column="0">Satellite Count</Label>
+                    <Label Grid.Row="2" Grid.Column="1" x:Name="NumberOfSatellites" />
+                    <Label Grid.Row="3" Grid.Column="0">Altitude</Label>
+                    <Label Grid.Row="3" Grid.Column="1" x:Name="CurrentAltitude" />
+                    <Label Grid.Row="4" Grid.Column="0">Speed</Label>
+                    <Label Grid.Row="4" Grid.Column="1" x:Name="Speed" />
+                    <Label Grid.Row="5" Grid.Column="0">Speed Angle</Label>
+                    <Label Grid.Row="5" Grid.Column="1" x:Name="SpeedAngle" />
+                </Grid>
+            </GroupBox>
         </StackPanel>
         <GroupBox Header="Map">
                 <gmap:GMapControl x:Name="MainMap" Zoom="13" MaxZoom="20" MinZoom="5" />
