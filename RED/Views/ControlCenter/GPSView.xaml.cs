@@ -35,7 +35,7 @@ namespace RED.Views.ControlCenter
             // MessageBox.Show("No internet connection available, going to CacheOnly mode.", "GMap.NET - Demo.WindowsPresentation", MessageBoxButton.OK, MessageBoxImage.Warning);
 
             // Basic Map Config
-            MainMap.MapProvider = GMapProviders.OpenStreetMap;
+            MainMap.MapProvider = GMapProviders.OpenStreetMapQuestHybrid;
             MainMap.Position = new PointLatLng(37.848544, -91.7715303);
             MainMap.Zoom = 10.0;
 
