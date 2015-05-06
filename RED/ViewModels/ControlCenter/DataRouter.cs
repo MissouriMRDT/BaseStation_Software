@@ -52,7 +52,8 @@
 
         public void UnSubscribe(ISubscribe subscriber)
         {
-            foreach (KeyValuePair<byte, List<ISubscribe>> kvp in Registrations)
+            var registrationCopy = new Dictionary<byte, List<ISubscribe>>(Registrations); //Use a copy because we may modify it while removing stuff and that breaks the foreach
+            foreach (KeyValuePair<byte, List<ISubscribe>> kvp in registrationCopy)
                 UnSubscribe(subscriber, kvp.Key);
         }
         public void UnSubscribe(ISubscribe subscriber, byte dataCode)
