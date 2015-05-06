@@ -9,9 +9,14 @@ namespace RED.Models
 {
     internal class GPSModel
     {
+        internal bool fixObtained;
+        internal byte fixQuality;
+        internal byte numberOfSatellites;
         internal GPSCoordinate currentLocation;
         internal float currentAltitude;
-        internal bool fixObtained;
+        internal float speed;
+        internal float speedAngle;
+
         internal ObservableCollection<GPSCoordinate> waypoints;
     }
 }

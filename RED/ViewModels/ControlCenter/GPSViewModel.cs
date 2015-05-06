@@ -13,6 +13,43 @@ namespace RED.ViewModels.ControlCenter
     {
         GPSModel _model;
         ControlCenterViewModel _cc;
+
+        public bool FixObtained
+        {
+            get
+            {
+                return _model.fixObtained;
+            }
+            set
+            {
+                _model.fixObtained = value;
+                NotifyOfPropertyChange(() => FixObtained);
+            }
+        }
+        public byte FixQuality
+        {
+            get
+            {
+                return _model.fixQuality;
+            }
+            set
+            {
+                _model.fixQuality = value;
+                NotifyOfPropertyChange(() => FixQuality);
+            }
+        }
+        public byte NumberOfSatellites
+        {
+            get
+            {
+                return _model.numberOfSatellites;
+            }
+            set
+            {
+                _model.numberOfSatellites = value;
+                NotifyOfPropertyChange(() => NumberOfSatellites);
+            }
+        }
         public GPSCoordinate CurrentLocation
         {
             get
@@ -25,7 +62,6 @@ namespace RED.ViewModels.ControlCenter
                 NotifyOfPropertyChange(() => CurrentLocation);
             }
         }
-
         public float CurrentAltitude
         {
             get
@@ -38,17 +74,28 @@ namespace RED.ViewModels.ControlCenter
                 NotifyOfPropertyChange(() => CurrentAltitude);
             }
         }
-
-        public bool FixObtained
+        public float Speed
         {
             get
             {
-                return _model.fixObtained;
+                return _model.speed;
             }
             set
             {
-                _model.fixObtained = value;
-                NotifyOfPropertyChange(() => FixObtained);
+                _model.speed = value;
+                NotifyOfPropertyChange(() => Speed);
+            }
+        }
+        public float SpeedAngle
+        {
+            get
+            {
+                return _model.speedAngle;
+            }
+            set
+            {
+                _model.speedAngle = value;
+                NotifyOfPropertyChange(() => SpeedAngle);
             }
         }
 
