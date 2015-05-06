@@ -8,10 +8,10 @@ namespace RED.Addons
 {
     public struct GPSCoordinate
     {
-        float Longitude;
-        float Latitude;
+        public double Longitude;
+        public double Latitude;
 
-        public GPSCoordinate(float longitude, float latitude)
+        public GPSCoordinate(double longitude, double latitude)
         {
             Longitude = longitude;
             Latitude = latitude;
