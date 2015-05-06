@@ -26,7 +26,7 @@ namespace RED.ViewModels.ControlCenter
             ExpectSync = false;
         }
 
-        public async void Connect(IConnection source)
+        public async Task Connect(IConnection source)
         {
             try
             {
