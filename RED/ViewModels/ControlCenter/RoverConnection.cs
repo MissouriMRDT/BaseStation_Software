@@ -38,13 +38,18 @@ namespace RED.ViewModels.ControlCenter
                 }
                 else
                 {
-                    _sourceConnection.Close();
+                    Disconnect();
                 }
             }
             catch (Exception e)
             {
                 _controlCenter.Console.WriteToConsole("Unexpected error in RoverConnection Receive:" + Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace);
             }
+        }
+        public void Disconnect()
+        {
+            _controlCenter.DataRouter.UnSubscribe(this);
+            _sourceConnection.Close();
         }
         private async Task<bool> InitializeConnection()
         {
@@ -158,7 +163,7 @@ namespace RED.ViewModels.ControlCenter
             {
                 _controlCenter.Console.WriteToConsole("IOException in RoverConnection.Receive.");
             }
-            _sourceConnection.Close();
+            Disconnect();
         }
 
         private void receiveConsoleMessage(Stream s)
