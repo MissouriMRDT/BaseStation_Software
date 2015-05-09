@@ -38,21 +38,6 @@ namespace RED.Views.ControlCenter
             MainMap.MapProvider = GMapProviders.OpenStreetMapQuestHybrid;
             MainMap.Position = new PointLatLng(37.848544, -91.7715303);
             MainMap.Zoom = 10.0;
-
-            // Set Marker
-            MainMap.Markers.Add(new GMapMarker(MainMap.Position)
-            {
-                Shape = new Path()
-                {
-                    Width = 32,
-                    Height = 32,
-                    Stretch = Stretch.Fill,
-                    Fill = Brushes.Red,
-                    Data = Geometry.Parse(RED.Images.ModernUIIcons.AppbarLocationCircle32)
-                },
-                Offset = new System.Windows.Point(-16, -16),
-                ZIndex = int.MaxValue
-            });
         }
 
         // TODO: CREATE FORMAT CONVERTER FOR NORMAL COORDINATES
@@ -64,23 +49,7 @@ namespace RED.Views.ControlCenter
             else
                 MessageBox.Show("Invalid Longitude or Latitude. Must be a floating point number.");
         }
-        private void PlaceMarker(double latitude, double longitude)
-        {
-            MainMap.Markers.Add(new GMapMarker(new PointLatLng(latitude, longitude))
-            {
-                Shape = new Path()
-                {
-                    Width = 32,
-                    Height = 32,
-                    Stretch = Stretch.Fill,
-                    Fill = Brushes.Red,
-                    Data = Geometry.Parse(RED.Images.ModernUIIcons.AppbarLocationRound32)
-                },
-                Offset = new System.Windows.Point(-16, -16),
-                ZIndex = int.MaxValue
-            });
-        }
-
+       
         private void ImportBtn_Click(object sender, RoutedEventArgs e)
         {
             MainMap.ShowImportDialog();
