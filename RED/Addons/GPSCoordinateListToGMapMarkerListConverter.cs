@@ -24,7 +24,7 @@ namespace RED.Addons
                     {
                         Width = 32,
                         Height = 32,
-                        Stretch = Stretch.Fill,
+                        Stretch = Stretch.Uniform,
                         Fill = Brushes.Red,
                         Data = Geometry.Parse(RED.Images.ModernUIIcons.AppbarLocationRound32)
                     },
