@@ -130,7 +130,9 @@ namespace RED.ViewModels.ControlCenter
             var ms = new MemoryStream(data);
             using (var br = new BinaryReader(ms))
             {
-                FixObtained = br.ReadBoolean();
+                FixObtained = br.ReadByte() != 0;
+                FixQuality = br.ReadByte();
+                NumberOfSatellites = br.ReadByte();
                 CurrentLocation = new GPSCoordinate()
                 {
                     Longitude = br.ReadInt32(),
@@ -139,8 +141,6 @@ namespace RED.ViewModels.ControlCenter
                 CurrentAltitude = br.ReadSingle();
                 Speed = br.ReadSingle();
                 SpeedAngle = br.ReadSingle();
-                FixQuality = br.ReadByte();
-                NumberOfSatellites = br.ReadByte();
             }
         }
     }
