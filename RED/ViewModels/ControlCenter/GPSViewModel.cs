@@ -1,15 +1,17 @@
 ﻿using Caliburn.Micro;
 using RED.Addons;
+using RED.Interfaces;
 using RED.Models;
 using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace RED.ViewModels.ControlCenter
 {
-    public class GPSViewModel : PropertyChangedBase
+    public class GPSViewModel : PropertyChangedBase, ISubscribe
     {
         GPSModel _model;
         ControlCenterViewModel _cc;
@@ -111,7 +113,7 @@ namespace RED.ViewModels.ControlCenter
                 NotifyOfPropertyChange(() => Waypoints);
             }
         }
-       
+
         public GPSViewModel(ControlCenterViewModel cc)
         {
             _model = new GPSModel();
@@ -119,6 +121,25 @@ namespace RED.ViewModels.ControlCenter
 
             Waypoints.Add(new GPSCoordinate(37.951631, -91.777713));//Rolla
             Waypoints.Add(new GPSCoordinate(37.850025, -91.701845));//Fugitive Beach
+        }
+
+        public void ReceiveFromRouter(byte dataId, byte[] data)
+        {
+            var ms = new MemoryStream(data);
+            using (var br = new BinaryReader(ms))
+            {
+                FixObtained = br.ReadBoolean();
+                CurrentLocation = new GPSCoordinate()
+                {
+                    Longitude = br.ReadInt32(),
+                    Latitude = br.ReadInt32()
+                };
+                CurrentAltitude = br.ReadSingle();
+                Speed = br.ReadSingle();
+                SpeedAngle = br.ReadSingle();
+                FixQuality = br.ReadByte();
+                NumberOfSatellites = br.ReadByte();
+            }
         }
     }
 }
