@@ -16,43 +16,8 @@ namespace RED.ViewModels.ControlCenter
         public string Name { get; set; }
         public InputViewModel InputVM { get; set; }
 
-        private ArmAction currentAction;
-        public ArmAction CurrentAction
-        {
-            get { return currentAction; }
-            set
-            {
-                currentAction = value;
-                //NotifyOfPropertyChange(() => CurrentAction);
-                //NotifyOfPropertyChange(() => CurrentActionDisplay);
-            }
-        }
-        public string CurrentActionDisplay
-        {
-            get
-            {
-                var mode = CurrentAction;
-                return Enum.GetName(typeof(ArmAction), mode);
-            }
-        }
-
-        public enum ArmAction : byte
-        {
-            WristCounterclockwise = 0,
-            WristClockwise = 1,
-            WristDown = 2,
-            WristUp = 3,
-            ElbowCounterclockwise = 4,
-            ElbowClockwise = 5,
-            ElbowDown = 6,
-            ElbowUp = 7,
-            BaseActuatorBackward = 8,
-            BaseActuatorForward = 9,
-            BaseServoCounterclockwise = 10,
-            BaseServoClockwise = 11,
-            Reset = 12,
-            Idle = Byte.MaxValue
-        }
+        public const float BaseServoSpeed = .5f;
+        public const int BaseActuatorSpeed = 127;
 
         public ArmControllerMode(InputViewModel inputVM, ControlCenterViewModel cc)
         {
@@ -71,77 +36,48 @@ namespace RED.ViewModels.ControlCenter
             Controller c = InputVM.ControllerOne;
             if (c != null && !c.IsConnected) return;
 
-            CurrentAction = ArmAction.Idle;
 
             if (InputVM.ButtonY)
             {
-                CurrentAction = ArmAction.Reset;
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Arm"), (byte)CurrentAction);
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmStop"), (Int16)(0));
                 _controlCenter.Console.WriteToConsole("Robotic Arm Resetting...");
             }
-            if (InputVM.JoyStick2X < 0)
-            {
-                CurrentAction = ArmAction.WristCounterclockwise;
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Arm"), (byte)CurrentAction);
-            }
-            else if (InputVM.JoyStick2X > 0)
-            {
-                CurrentAction = ArmAction.WristClockwise;
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Arm"), (byte)CurrentAction);
-            }
-            else if (InputVM.JoyStick2Y < 0)
-            {
-                CurrentAction = ArmAction.WristDown;
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Arm"), (byte)CurrentAction);
-            }
-            else if (InputVM.JoyStick2Y > 0)
-            {
-                CurrentAction = ArmAction.WristUp;
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Arm"), (byte)CurrentAction);
-            }
+            var angle = Math.Atan2(InputVM.JoyStick2Y, InputVM.JoyStick2X);
+            if (angle > -Math.PI / 6 && angle < Math.PI / 6) //Joystick Right
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristClockwise"), (Int16)(InputVM.JoyStick2X * 1024));
+            else if (angle > Math.PI / 3 && angle < 2 * Math.PI / 3) //Joystick Up
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristUp"), (Int16)(InputVM.JoyStick2Y * 1024));
+            else if (angle > 5 * Math.PI / 6 || angle < -5 * Math.PI / 6) //Joystick Left
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristClockwise"), (Int16)(InputVM.JoyStick2X * 1024));
+            else if (angle > -2 * Math.PI / 3 && angle < Math.PI / 3) //Joystick Down
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristUp"), (Int16)(InputVM.JoyStick2Y * 1024));
+            else
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristUp"), (Int16)(0));
 
-            if (InputVM.JoyStick1X < 0)
-            {
-                CurrentAction = ArmAction.ElbowCounterclockwise;
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Arm"), (byte)CurrentAction);
-            }
-            else if (InputVM.JoyStick1X > 0)
-            {
-                CurrentAction = ArmAction.ElbowClockwise;
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Arm"), (byte)CurrentAction);
-            }
-            else if (InputVM.JoyStick1Y < 0)
-            {
-                CurrentAction = ArmAction.ElbowDown;
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Arm"), (byte)CurrentAction);
-            }
-            else if (InputVM.JoyStick1Y > 0)
-            {
-                CurrentAction = ArmAction.ElbowUp;
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Arm"), (byte)CurrentAction);
-            }
-
-            if (InputVM.DPadL)
-            {
-                CurrentAction = ArmAction.BaseServoCounterclockwise;
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Arm"), (byte)CurrentAction);
-            }
-            else if (InputVM.DPadR)
-            {
-                CurrentAction = ArmAction.BaseServoClockwise;
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Arm"), (byte)CurrentAction);
-            }
+            angle = Math.Atan2(InputVM.JoyStick1Y, InputVM.JoyStick1X);
+            if (angle > -Math.PI / 6 && angle < Math.PI / 6) //Joystick Right
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowClockwise"), (Int16)(InputVM.JoyStick1X * 1024));
+            else if (angle > Math.PI / 3 && angle < 2 * Math.PI / 3) //Joystick Up
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowUp"), (Int16)(InputVM.JoyStick1Y * 1024));
+            else if (angle > 5 * Math.PI / 6 || angle < -5 * Math.PI / 6) //Joystick Left
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowClockwise"), (Int16)(InputVM.JoyStick1X * 1024));
+            else if (angle > -2 * Math.PI / 3 && angle < Math.PI / 3) //Joystick Down
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowUp"), (Int16)(InputVM.JoyStick1Y * 1024));
+            else
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristUp"), (Int16)(0));
 
             if (InputVM.DPadU)
-            {
-                CurrentAction = ArmAction.BaseActuatorForward;
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Arm"), (byte)CurrentAction);
-            }
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseActuatorForward"), (Int16)(BaseActuatorSpeed));
             else if (InputVM.DPadD)
-            {
-                CurrentAction = ArmAction.BaseActuatorBackward;
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Arm"), (byte)CurrentAction);
-            }
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseActuatorForward"), (Int16)(-BaseActuatorSpeed));
+            else
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseActuatorForward"), (Int16)(0));
+            if (InputVM.DPadR)
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseServoClockwise"), (Int16)(BaseServoSpeed * 1024));
+            else if (InputVM.DPadL)
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseServoClockwise"), (Int16)(-BaseServoSpeed * 1024));
+            else
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseServoClockwise"), (Int16)(0));
         }
 
         public void ExitMode()
