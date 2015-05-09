@@ -24,7 +24,6 @@ namespace RED.Views.ControlCenter
     public partial class GPSView : UserControl
     {
         // Marker
-        GMapMarker currentMarker;
         public GPSView()
         {
             InitializeComponent();
@@ -40,7 +39,7 @@ namespace RED.Views.ControlCenter
             MainMap.Zoom = 10.0;
 
             // Set Marker
-            currentMarker = new GMapMarker(MainMap.Position)
+            MainMap.Markers.Add(new GMapMarker(MainMap.Position)
             {
                 Shape = new Path()
                 {
@@ -52,8 +51,7 @@ namespace RED.Views.ControlCenter
                 },
                 Offset = new System.Windows.Point(-16, -16),
                 ZIndex = int.MaxValue
-            };
-            MainMap.Markers.Add(currentMarker);
+            });
         }
 
         // TODO: CREATE FORMAT CONVERTER FOR NORMAL COORDINATES
