@@ -29,18 +29,12 @@ namespace RED.Views.ControlCenter
         {
             InitializeComponent();
 
-            // Switch to Cache mode if internet is not avaible
-            //TODO: Check if we have internet access
             MainMap.Manager.Mode = AccessMode.CacheOnly;
-            // MessageBox.Show("No internet connection available, going to CacheOnly mode.", "GMap.NET - Demo.WindowsPresentation", MessageBoxButton.OK, MessageBoxImage.Warning);
-
-            // Basic Map Config
             MainMap.MapProvider = GMapProviders.OpenStreetMapQuestHybrid;
             MainMap.Position = new PointLatLng(37.848544, -91.7715303);
             MainMap.Zoom = 10.0;
         }
 
-        // TODO: CREATE FORMAT CONVERTER FOR NORMAL COORDINATES
         private void AddWaypointBtn_Click(object sender, RoutedEventArgs e)
         {
             double xCoord, yCoord;
