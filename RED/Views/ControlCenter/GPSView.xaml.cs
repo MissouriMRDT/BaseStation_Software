@@ -1,6 +1,7 @@
 ﻿using GMap.NET;
 using GMap.NET.WindowsPresentation;
 using GMap.NET.MapProviders;
+using RED.ViewModels.ControlCenter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,7 +58,11 @@ namespace RED.Views.ControlCenter
         // TODO: CREATE FORMAT CONVERTER FOR NORMAL COORDINATES
         private void AddWaypointBtn_Click(object sender, RoutedEventArgs e)
         {
-            PlaceMarker(Double.Parse(LatitudeTextBox.Text), Double.Parse(LongitudeTextBox.Text));
+            double xCoord, yCoord;
+            if (Double.TryParse(LatitudeTextBox.Text, out xCoord) && Double.TryParse(LongitudeTextBox.Text, out yCoord))
+                ((GPSViewModel)DataContext).Waypoints.Add(new Addons.GPSCoordinate(xCoord, yCoord));
+            else
+                MessageBox.Show("Invalid Longitude or Latitude. Must be a floating point number.");
         }
         private void PlaceMarker(double latitude, double longitude)
         {
