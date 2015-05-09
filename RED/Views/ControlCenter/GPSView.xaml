@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
-        <addons:GPSCoordinateListToGMapMarkerListConverter x:Key="GPSMarkerConverter" />
+        <addons:GMapMarkerCollectionMultiConverter x:Key="GPSMarkerConverter" />
     </UserControl.Resources>
     <DockPanel>
         <StackPanel DockPanel.Dock="Right" Width="165">
@@ -59,7 +59,14 @@
             </GroupBox>
         </StackPanel>
         <GroupBox Header="Map">
-            <gmap:GMapControl x:Name="MainMap" Zoom="13" MaxZoom="20" MinZoom="5" ItemsSource="{Binding Waypoints, Converter={StaticResource GPSMarkerConverter}}" />
+            <gmap:GMapControl x:Name="MainMap" Zoom="13" MaxZoom="20" MinZoom="5">
+                <gmap:GMapControl.ItemsSource>
+                    <MultiBinding Converter="{StaticResource GPSMarkerConverter}">
+                        <Binding Path="CurrentLocation" />
+                        <Binding Path="Waypoints" />
+                    </MultiBinding>
+                </gmap:GMapControl.ItemsSource>
+            </gmap:GMapControl>
         </GroupBox>
     </DockPanel>
 </UserControl>

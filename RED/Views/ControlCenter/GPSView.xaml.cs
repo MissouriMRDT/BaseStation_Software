@@ -31,7 +31,7 @@ namespace RED.Views.ControlCenter
 
             MainMap.Manager.Mode = AccessMode.CacheOnly;
             MainMap.MapProvider = GMapProviders.OpenStreetMapQuestHybrid;
-            MainMap.Position = new PointLatLng(37.848544, -91.7715303);
+            MainMap.Position = new PointLatLng(0,0);//new PointLatLng(37.848544, -91.7715303);
             MainMap.Zoom = 10.0;
         }
 
