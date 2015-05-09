@@ -95,8 +95,8 @@
         {
             _server.Stop();
             IsListening = false;
-            foreach (TcpConnection client in _connections)
-                client.Close();
+            for (int i = 0; i < _connections.Count; i++)
+                _connections[i].Close();
             _controlCenter.Console.WriteToConsole("Server Stopped");
         }
 
