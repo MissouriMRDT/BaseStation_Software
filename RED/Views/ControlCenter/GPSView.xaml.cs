@@ -63,7 +63,7 @@ namespace RED.Views.ControlCenter
         }
         private void PlaceMarker(double latitude, double longitude)
         {
-            GMapMarker tempMarker = new GMapMarker(new PointLatLng(latitude, longitude))
+            MainMap.Markers.Add(new GMapMarker(new PointLatLng(latitude, longitude))
             {
                 Shape = new Path()
                 {
@@ -75,9 +75,7 @@ namespace RED.Views.ControlCenter
                 },
                 Offset = new System.Windows.Point(-16, -16),
                 ZIndex = int.MaxValue
-            };
-
-            MainMap.Markers.Add(tempMarker);
+            });
         }
 
         private void ImportBtn_Click(object sender, RoutedEventArgs e)
