@@ -17,7 +17,7 @@ namespace RED.ViewModels.ControlCenter
         public InputViewModel InputVM { get; set; }
 
         public const float BaseServoSpeed = .5f;
-        public const float BaseActuatorSpeed = .5f;
+        public const int BaseActuatorSpeed = 127;
 
         public ArmControllerMode(InputViewModel inputVM, ControlCenterViewModel cc)
         {
@@ -67,9 +67,9 @@ namespace RED.ViewModels.ControlCenter
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristUp"), (Int16)(0));
 
             if (InputVM.DPadU)
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseActuatorForward"), (Int16)(BaseActuatorSpeed * 1024));
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseActuatorForward"), (Int16)(BaseActuatorSpeed));
             else if (InputVM.DPadD)
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseActuatorForward"), (Int16)(-BaseActuatorSpeed * 1024));
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseActuatorForward"), (Int16)(-BaseActuatorSpeed));
             else
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseActuatorForward"), (Int16)(0));
             if (InputVM.DPadR)
