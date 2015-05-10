@@ -135,8 +135,8 @@ namespace RED.ViewModels.ControlCenter
                 NumberOfSatellites = br.ReadByte();
                 CurrentLocation = new GPSCoordinate()
                 {
-                    Longitude = br.ReadInt32(),
-                    Latitude = br.ReadInt32()
+                    Latitude = br.ReadInt32(),
+                    Longitude = br.ReadInt32()
                 };
                 CurrentAltitude = br.ReadSingle();
                 Speed = br.ReadSingle();
