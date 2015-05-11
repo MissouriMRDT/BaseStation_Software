@@ -82,7 +82,7 @@ namespace RED.ViewModels.ControlCenter
 
         public void ExitMode()
         {
-
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmStop"), (Int16)(0));
         }
     }
 }
