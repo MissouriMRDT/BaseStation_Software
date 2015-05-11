@@ -139,7 +139,8 @@ namespace RED.ViewModels.ControlCenter
 
         public void ExitMode()
         {
-
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorLeftSpeed"), 0);
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorRightSpeed"), 0);
         }
     }
 }
