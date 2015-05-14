@@ -24,6 +24,7 @@
 
         public void Send(byte dataCode, byte[] data)
         {
+            if (dataCode == 0) return;
             List<ISubscribe> registered;
             if (Registrations.TryGetValue(dataCode, out registered))
                 foreach (ISubscribe subscription in registered)
@@ -40,6 +41,7 @@
 
         public void Subscribe(ISubscribe subscriber, byte dataCode)
         {
+            if (dataCode == 0) return;
             List<ISubscribe> existingRegistrations;
             if (Registrations.TryGetValue(dataCode, out existingRegistrations))
             {
