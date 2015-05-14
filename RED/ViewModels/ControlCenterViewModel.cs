@@ -126,6 +126,8 @@
             Console = new ConsoleViewModel();
             DataRouter = new DataRouter();
             MetadataManager = new MetadataManager(this);
+            MetadataManager.AddFromFile("NoSyncMetadata.xml");
+
             TcpAsyncServer = new AsyncTcpServerViewModel(11000, this);
             ModuleManager = new ModuleManagerViewModel(this);
             Input = new InputViewModel(this);
