@@ -35,7 +35,7 @@ namespace RED.Addons
             });
 
             foreach (var coord in (IEnumerable<GPSCoordinate>)(value[1]))
-                markers.Add(new GMapMarker(new PointLatLng(coord.Longitude, coord.Latitude))
+                markers.Add(new GMapMarker(new PointLatLng(coord.Latitude, coord.Longitude))
                 {
                     Shape = new Path()
                     {

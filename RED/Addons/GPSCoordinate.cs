@@ -8,13 +8,13 @@ namespace RED.Addons
 {
     public struct GPSCoordinate
     {
-        public double Longitude;
         public double Latitude;
+        public double Longitude;
 
-        public GPSCoordinate(double longitude, double latitude)
+        public GPSCoordinate(double latitude, double longitude)
         {
-            Longitude = longitude;
             Latitude = latitude;
+            Longitude = longitude;
         }
     }
 }

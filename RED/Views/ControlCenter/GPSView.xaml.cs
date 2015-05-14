@@ -31,15 +31,15 @@ namespace RED.Views.ControlCenter
 
             MainMap.Manager.Mode = AccessMode.CacheOnly;
             MainMap.MapProvider = GMapProviders.OpenStreetMapQuestHybrid;
-            MainMap.Position = new PointLatLng(0,0);//new PointLatLng(37.848544, -91.7715303);
+            MainMap.Position = new PointLatLng(37.848544, -91.7715303);
             MainMap.Zoom = 10.0;
         }
 
         private void AddWaypointBtn_Click(object sender, RoutedEventArgs e)
         {
             double xCoord, yCoord;
-            if (Double.TryParse(LatitudeTextBox.Text, out xCoord) && Double.TryParse(LongitudeTextBox.Text, out yCoord))
-                ((GPSViewModel)DataContext).Waypoints.Add(new Addons.GPSCoordinate(xCoord, yCoord));
+            if (Double.TryParse(LatitudeTextBox.Text, out yCoord) && Double.TryParse(LongitudeTextBox.Text, out xCoord))
+                ((GPSViewModel)DataContext).Waypoints.Add(new Addons.GPSCoordinate(yCoord, xCoord));
             else
                 MessageBox.Show("Invalid Longitude or Latitude. Must be a floating point number.");
         }
