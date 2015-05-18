@@ -46,11 +46,11 @@ namespace RED.ViewModels.ControlCenter
             if (angle > -Math.PI / 6 && angle < Math.PI / 6) //Joystick Right
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristClockwise"), (Int16)(InputVM.JoyStick2X * 1024));
             else if (angle > Math.PI / 3 && angle < 2 * Math.PI / 3) //Joystick Up
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristUp"), (Int16)(InputVM.JoyStick2Y * 1024));
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristUp"), (Int16)(-InputVM.JoyStick2Y * 1024));
             else if (angle > 5 * Math.PI / 6 || angle < -5 * Math.PI / 6) //Joystick Left
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristClockwise"), (Int16)(InputVM.JoyStick2X * 1024));
             else if (angle > -2 * Math.PI / 3 && angle < Math.PI / 3) //Joystick Down
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristUp"), (Int16)(InputVM.JoyStick2Y * 1024));
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristUp"), (Int16)(-InputVM.JoyStick2Y * 1024));
             else
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristUp"), (Int16)(0));
 
@@ -58,11 +58,11 @@ namespace RED.ViewModels.ControlCenter
             if (angle > -Math.PI / 6 && angle < Math.PI / 6) //Joystick Right
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowClockwise"), (Int16)(InputVM.JoyStick1X * 1024));
             else if (angle > Math.PI / 3 && angle < 2 * Math.PI / 3) //Joystick Up
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowUp"), (Int16)(InputVM.JoyStick1Y * 1024));
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowUp"), (Int16)(-InputVM.JoyStick1Y * 1024));
             else if (angle > 5 * Math.PI / 6 || angle < -5 * Math.PI / 6) //Joystick Left
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowClockwise"), (Int16)(InputVM.JoyStick1X * 1024));
             else if (angle > -2 * Math.PI / 3 && angle < Math.PI / 3) //Joystick Down
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowUp"), (Int16)(InputVM.JoyStick1Y * 1024));
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowUp"), (Int16)(-InputVM.JoyStick1Y * 1024));
             else
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristUp"), (Int16)(0));
 
