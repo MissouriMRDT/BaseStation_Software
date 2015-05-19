@@ -43,7 +43,7 @@
                 NotifyOfPropertyChange(() => AutoDeadzone);
             }
         }
-        public int ManualDeadzone 
+        public int ManualDeadzone
         {
             get
             {
@@ -179,6 +179,7 @@
             }
             set
             {
+                DebouncedButtonA = !Model.ButtonA && value;
                 Model.ButtonA = value;
                 NotifyOfPropertyChangeThreadSafe(() => ButtonA);
             }
@@ -191,6 +192,7 @@
             }
             set
             {
+                DebouncedButtonB = !Model.ButtonB && value;
                 Model.ButtonB = value;
                 NotifyOfPropertyChangeThreadSafe(() => ButtonB);
             }
@@ -203,6 +205,7 @@
             }
             set
             {
+                DebouncedButtonX = !Model.ButtonX && value;
                 Model.ButtonX = value;
                 NotifyOfPropertyChangeThreadSafe(() => ButtonX);
             }
@@ -215,6 +218,7 @@
             }
             set
             {
+                DebouncedButtonY = !Model.ButtonY && value;
                 Model.ButtonY = value;
                 NotifyOfPropertyChangeThreadSafe(() => ButtonY);
             }
@@ -227,6 +231,7 @@
             }
             set
             {
+                DebouncedButtonRb = !Model.ButtonRb && value;
                 Model.ButtonRb = value;
                 NotifyOfPropertyChangeThreadSafe(() => ButtonRb);
             }
@@ -239,6 +244,7 @@
             }
             set
             {
+                DebouncedButtonLb = !Model.ButtonLb && value;
                 Model.ButtonLb = value;
                 NotifyOfPropertyChangeThreadSafe(() => ButtonLb);
             }
@@ -251,6 +257,7 @@
             }
             set
             {
+                DebouncedButtonRs = !Model.ButtonRs && value;
                 Model.ButtonRs = value;
                 NotifyOfPropertyChangeThreadSafe(() => ButtonRs);
             }
@@ -263,6 +270,7 @@
             }
             set
             {
+                DebouncedButtonLs = !Model.ButtonLs && value;
                 Model.ButtonLs = value;
                 NotifyOfPropertyChangeThreadSafe(() => ButtonLs);
             }
@@ -275,8 +283,7 @@
             }
             set
             {
-                if (Model.ButtonStart != value && value)
-                    NextControlMode();
+                DebouncedButtonStart = !Model.ButtonStart && value;
                 Model.ButtonStart = value;
                 NotifyOfPropertyChangeThreadSafe(() => ButtonStart);
             }
@@ -289,10 +296,132 @@
             }
             set
             {
-                if (Model.ButtonBack != value && value)
-                    PreviousControlMode();
+                DebouncedButtonBack = !Model.ButtonBack && value;
                 Model.ButtonBack = value;
                 NotifyOfPropertyChangeThreadSafe(() => ButtonBack);
+            }
+        }
+        public bool DebouncedButtonA
+        {
+            get
+            {
+                return Model.ButtonADebounced;
+            }
+            set
+            {
+                Model.ButtonADebounced = value;
+                NotifyOfPropertyChangeThreadSafe(() => DebouncedButtonA);
+            }
+        }
+        public bool DebouncedButtonB
+        {
+            get
+            {
+                return Model.ButtonBDebounced;
+            }
+            set
+            {
+                Model.ButtonBDebounced = value;
+                NotifyOfPropertyChangeThreadSafe(() => DebouncedButtonB);
+            }
+        }
+        public bool DebouncedButtonX
+        {
+            get
+            {
+                return Model.ButtonXDebounced;
+            }
+            set
+            {
+                Model.ButtonXDebounced = value;
+                NotifyOfPropertyChangeThreadSafe(() => DebouncedButtonX);
+            }
+        }
+        public bool DebouncedButtonY
+        {
+            get
+            {
+                return Model.ButtonYDebounced;
+            }
+            set
+            {
+                Model.ButtonYDebounced = value;
+                NotifyOfPropertyChangeThreadSafe(() => DebouncedButtonY);
+
+            }
+        }
+        public bool DebouncedButtonRb
+        {
+            get
+            {
+                return Model.ButtonRbDebounced;
+            }
+            set
+            {
+                Model.ButtonRbDebounced = value;
+                NotifyOfPropertyChangeThreadSafe(() => DebouncedButtonRb);
+            }
+        }
+        public bool DebouncedButtonLb
+        {
+            get
+            {
+                return Model.ButtonLbDebounced;
+            }
+            set
+            {
+                Model.ButtonLbDebounced = value;
+                NotifyOfPropertyChangeThreadSafe(() => DebouncedButtonLb);
+            }
+        }
+        public bool DebouncedButtonRs
+        {
+            get
+            {
+                return Model.ButtonRsDebounced;
+            }
+            set
+            {
+                Model.ButtonRsDebounced = value;
+                NotifyOfPropertyChangeThreadSafe(() => DebouncedButtonRs);
+            }
+        }
+        public bool DebouncedButtonLs
+        {
+            get
+            {
+                return Model.ButtonLsDebounced;
+            }
+            set
+            {
+                Model.ButtonLsDebounced = value;
+                NotifyOfPropertyChangeThreadSafe(() => DebouncedButtonLs);
+            }
+        }
+        public bool DebouncedButtonStart
+        {
+            get
+            {
+                return Model.ButtonStartDebounced;
+            }
+            set
+            {
+                if (value) NextControlMode();
+                Model.ButtonStartDebounced = value;
+                NotifyOfPropertyChangeThreadSafe(() => DebouncedButtonStart);
+            }
+        }
+        public bool DebouncedButtonBack
+        {
+            get
+            {
+                return Model.ButtonBackDebounced;
+            }
+            set
+            {
+                if (value) PreviousControlMode();
+                Model.ButtonBackDebounced = value;
+                NotifyOfPropertyChangeThreadSafe(() => DebouncedButtonBack);
             }
         }
         public bool DPadL
