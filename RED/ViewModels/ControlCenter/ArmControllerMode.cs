@@ -11,6 +11,7 @@ namespace RED.ViewModels.ControlCenter
 {
     public class ArmControllerMode : IControllerMode
     {
+        private const short motorRangeFactor = 1000;
         private readonly EndEffectorModes[] AvailibleEndEffectorModes = { EndEffectorModes.Gripper, EndEffectorModes.Drill };
 
         private readonly ControlCenterViewModel _controlCenter;
@@ -54,25 +55,25 @@ namespace RED.ViewModels.ControlCenter
 
             var angle = Math.Atan2(InputVM.JoyStick2Y, InputVM.JoyStick2X);
             if (angle > -Math.PI / 6 && angle < Math.PI / 6) //Joystick Right
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristClockwise"), (Int16)(InputVM.JoyStick2X * 1024));
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristClockwise"), (Int16)(InputVM.JoyStick2X * motorRangeFactor));
             else if (angle > Math.PI / 3 && angle < 2 * Math.PI / 3) //Joystick Up
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristUp"), (Int16)(-InputVM.JoyStick2Y * 1024));
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristUp"), (Int16)(-InputVM.JoyStick2Y * motorRangeFactor));
             else if (angle > 5 * Math.PI / 6 || angle < -5 * Math.PI / 6) //Joystick Left
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristClockwise"), (Int16)(InputVM.JoyStick2X * 1024));
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristClockwise"), (Int16)(InputVM.JoyStick2X * motorRangeFactor));
             else if (angle > -2 * Math.PI / 3 && angle < Math.PI / 3) //Joystick Down
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristUp"), (Int16)(-InputVM.JoyStick2Y * 1024));
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristUp"), (Int16)(-InputVM.JoyStick2Y * motorRangeFactor));
             else
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristUp"), (Int16)(0));
 
             angle = Math.Atan2(InputVM.JoyStick1Y, InputVM.JoyStick1X);
             if (angle > -Math.PI / 6 && angle < Math.PI / 6) //Joystick Right
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowClockwise"), (Int16)(InputVM.JoyStick1X * 1024));
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowClockwise"), (Int16)(InputVM.JoyStick1X * motorRangeFactor));
             else if (angle > Math.PI / 3 && angle < 2 * Math.PI / 3) //Joystick Up
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowUp"), (Int16)(-InputVM.JoyStick1Y * 1024));
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowUp"), (Int16)(-InputVM.JoyStick1Y * motorRangeFactor));
             else if (angle > 5 * Math.PI / 6 || angle < -5 * Math.PI / 6) //Joystick Left
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowClockwise"), (Int16)(InputVM.JoyStick1X * 1024));
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowClockwise"), (Int16)(InputVM.JoyStick1X * motorRangeFactor));
             else if (angle > -2 * Math.PI / 3 && angle < Math.PI / 3) //Joystick Down
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowUp"), (Int16)(-InputVM.JoyStick1Y * 1024));
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowUp"), (Int16)(-InputVM.JoyStick1Y * motorRangeFactor));
             else
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristUp"), (Int16)(0));
 
@@ -83,9 +84,9 @@ namespace RED.ViewModels.ControlCenter
             else
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseActuatorForward"), (Int16)(0));
             if (InputVM.DPadR)
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseServoClockwise"), (Int16)(BaseServoSpeed * 1024));
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseServoClockwise"), (Int16)(BaseServoSpeed * motorRangeFactor));
             else if (InputVM.DPadL)
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseServoClockwise"), (Int16)(-BaseServoSpeed * 1024));
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseServoClockwise"), (Int16)(-BaseServoSpeed * motorRangeFactor));
             else
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseServoClockwise"), (Int16)(0));
 
@@ -93,9 +94,9 @@ namespace RED.ViewModels.ControlCenter
             {
                 case EndEffectorModes.Gripper:
                     if (InputVM.RightTrigger > 0)
-                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(InputVM.RightTrigger * 1024));
+                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(InputVM.RightTrigger * motorRangeFactor));
                     else if (InputVM.LeftTrigger > 0)
-                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(-InputVM.LeftTrigger * 1024));
+                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(-InputVM.LeftTrigger * motorRangeFactor));
                     else
                         _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(0));
                     break;
