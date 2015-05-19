@@ -151,7 +151,7 @@
         {
             get
             {
-                return -(Model.LeftTrigger * 180) - 90;
+                return Model.LeftTrigger;
             }
             set
             {
@@ -163,7 +163,7 @@
         {
             get
             {
-                return (Model.RightTrigger * 180) - 90;
+                return Model.RightTrigger;
             }
             set
             {
