@@ -11,6 +11,8 @@ namespace RED.ViewModels.ControlCenter
 {
     public class ArmControllerMode : IControllerMode
     {
+        private readonly EndEffectorModes[] AvailibleEndEffectorModes = { EndEffectorModes.Gripper, EndEffectorModes.Drill };
+
         private readonly ControlCenterViewModel _controlCenter;
 
         public string Name { get; set; }
@@ -19,11 +21,14 @@ namespace RED.ViewModels.ControlCenter
         public const float BaseServoSpeed = .5f;
         public const int BaseActuatorSpeed = 127;
 
+        public int CurrentEndEffectorMode { get; set; }
+
         public ArmControllerMode(InputViewModel inputVM, ControlCenterViewModel cc)
         {
             InputVM = inputVM;
             _controlCenter = cc;
             Name = "Arm";
+            CurrentEndEffectorMode = 0;
         }
 
         public void EnterMode()
@@ -36,12 +41,16 @@ namespace RED.ViewModels.ControlCenter
             Controller c = InputVM.ControllerOne;
             if (c != null && !c.IsConnected) return;
 
-
             if (InputVM.ButtonY)
             {
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmStop"), (Int16)(0));
                 _controlCenter.Console.WriteToConsole("Robotic Arm Resetting...");
             }
+            if (InputVM.ButtonX)
+                PreviousEndeffectorMode();
+            else if (InputVM.ButtonB)
+                NextEndeffectorMode();
+
             var angle = Math.Atan2(InputVM.JoyStick2Y, InputVM.JoyStick2X);
             if (angle > -Math.PI / 6 && angle < Math.PI / 6) //Joystick Right
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristClockwise"), (Int16)(InputVM.JoyStick2X * 1024));
@@ -78,11 +87,55 @@ namespace RED.ViewModels.ControlCenter
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseServoClockwise"), (Int16)(-BaseServoSpeed * 1024));
             else
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseServoClockwise"), (Int16)(0));
+
+            switch (AvailibleEndEffectorModes[CurrentEndEffectorMode])
+            {
+                case EndEffectorModes.Gripper:
+                    if (InputVM.RightTrigger > 0)
+                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(InputVM.RightTrigger * 1024));
+                    else if (InputVM.LeftTrigger > 0)
+                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(-InputVM.LeftTrigger * 1024));
+                    else
+                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(0));
+                    break;
+                case EndEffectorModes.Drill:
+                    if (InputVM.ButtonRb)
+                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Drill"), (Int16)(DrillCommands.Forward));
+                    else if (InputVM.ButtonLb)
+                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Drill"), (Int16)(DrillCommands.Reverse));
+                    else
+                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Drill"), (Int16)(DrillCommands.Stop));
+                    break;
+            }
         }
 
         public void ExitMode()
         {
             _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmStop"), (Int16)(0));
         }
+
+        public void NextEndeffectorMode()
+        {
+            CurrentEndEffectorMode = (CurrentEndEffectorMode + 1) % AvailibleEndEffectorModes.Length;
+        }
+        public void PreviousEndeffectorMode()
+        {
+            CurrentEndEffectorMode = (CurrentEndEffectorMode + 1 + AvailibleEndEffectorModes.Length) % AvailibleEndEffectorModes.Length;
+
+        }
+    }
+
+    public enum EndEffectorModes
+    {
+        None = 0,
+        Gripper = 1,
+        Drill = 2
+    }
+
+    public enum DrillCommands : short
+    {
+        Stop = 0,
+        Forward = 1,
+        Reverse = 2
     }
 }
