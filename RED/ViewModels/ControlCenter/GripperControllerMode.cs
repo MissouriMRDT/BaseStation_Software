@@ -44,7 +44,7 @@ namespace RED.ViewModels.ControlCenter
 
         public void ExitMode()
         {
-            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), 0);
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(0));
         }
     }
 }
