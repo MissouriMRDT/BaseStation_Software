@@ -15,6 +15,9 @@ namespace RED.ViewModels.ControlCenter
 
         private readonly ControlCenterViewModel _controlCenter;
 
+        private bool ButtonYPressed = false;
+        private bool ButtonXBPressed = false;
+
         public string Name { get; set; }
         public InputViewModel InputVM { get; set; }
 
@@ -41,15 +44,27 @@ namespace RED.ViewModels.ControlCenter
             Controller c = InputVM.ControllerOne;
             if (c != null && !c.IsConnected) return;
 
-            if (InputVM.ButtonY)
+            if (!ButtonYPressed && InputVM.ButtonY)
             {
+                ButtonYPressed = true;
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmStop"), (Int16)(0));
                 _controlCenter.Console.WriteToConsole("Robotic Arm Resetting...");
             }
-            if (InputVM.ButtonX)
+            else if (ButtonYPressed && !InputVM.ButtonY)
+                ButtonYPressed = false;
+
+            if (!ButtonXBPressed && InputVM.ButtonX)
+            {
+                ButtonXBPressed = true;
                 PreviousEndeffectorMode();
-            else if (InputVM.ButtonB)
+            }
+            else if (!ButtonXBPressed && InputVM.ButtonB)
+            {
+                ButtonXBPressed = true;
                 NextEndeffectorMode();
+            }
+            else if (ButtonXBPressed && !InputVM.ButtonX && !InputVM.ButtonY)
+                ButtonXBPressed = false;
 
             var angle = Math.Atan2(InputVM.JoyStick2Y, InputVM.JoyStick2X);
             if (angle > -Math.PI / 6 && angle < Math.PI / 6) //Joystick Right
@@ -117,11 +132,12 @@ namespace RED.ViewModels.ControlCenter
         public void NextEndeffectorMode()
         {
             CurrentEndEffectorMode = (CurrentEndEffectorMode + 1) % AvailibleEndEffectorModes.Length;
+            _controlCenter.Console.WriteToConsole("Switched to Next Endeffector Mode");
         }
         public void PreviousEndeffectorMode()
         {
             CurrentEndEffectorMode = (CurrentEndEffectorMode + 1 + AvailibleEndEffectorModes.Length) % AvailibleEndEffectorModes.Length;
-
+            _controlCenter.Console.WriteToConsole("Switched to Previous Endeffector Mode");
         }
     }
 
