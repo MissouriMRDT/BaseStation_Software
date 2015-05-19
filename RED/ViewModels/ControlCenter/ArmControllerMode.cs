@@ -15,9 +15,6 @@ namespace RED.ViewModels.ControlCenter
 
         private readonly ControlCenterViewModel _controlCenter;
 
-        private bool ButtonYPressed = false;
-        private bool ButtonXBPressed = false;
-
         public string Name { get; set; }
         public InputViewModel InputVM { get; set; }
 
@@ -44,27 +41,16 @@ namespace RED.ViewModels.ControlCenter
             Controller c = InputVM.ControllerOne;
             if (c != null && !c.IsConnected) return;
 
-            if (!ButtonYPressed && InputVM.ButtonY)
+            if (InputVM.DebouncedButtonY)
             {
-                ButtonYPressed = true;
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmStop"), (Int16)(0));
                 _controlCenter.Console.WriteToConsole("Robotic Arm Resetting...");
             }
-            else if (ButtonYPressed && !InputVM.ButtonY)
-                ButtonYPressed = false;
 
-            if (!ButtonXBPressed && InputVM.ButtonX)
-            {
-                ButtonXBPressed = true;
+            if (InputVM.DebouncedButtonX)
                 PreviousEndeffectorMode();
-            }
-            else if (!ButtonXBPressed && InputVM.ButtonB)
-            {
-                ButtonXBPressed = true;
+            else if (InputVM.DebouncedButtonB)
                 NextEndeffectorMode();
-            }
-            else if (ButtonXBPressed && !InputVM.ButtonX && !InputVM.ButtonY)
-                ButtonXBPressed = false;
 
             var angle = Math.Atan2(InputVM.JoyStick2Y, InputVM.JoyStick2X);
             if (angle > -Math.PI / 6 && angle < Math.PI / 6) //Joystick Right
