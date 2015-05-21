@@ -115,6 +115,8 @@
     </ApplicationDefinition>
     <Compile Include="Addons\GMapMarkerCollectionMultiConverter.cs" />
     <Compile Include="Addons\GPSCoordinate.cs" />
+    <Compile Include="Addons\GPSCoordinateToLongitudeConverter.cs" />
+    <Compile Include="Addons\GPSCoordinateToLatitudeConverter.cs" />
     <Compile Include="Addons\RelayCommand.cs" />
     <Compile Include="Contexts\BarContext.cs" />
     <Compile Include="App.xaml.cs">
