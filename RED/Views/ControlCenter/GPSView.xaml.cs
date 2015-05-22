@@ -46,7 +46,7 @@ namespace RED.Views.ControlCenter
             else
                 MessageBox.Show("Invalid Longitude or Latitude. Must be a floating point number.");
         }
-       
+
         private void ImportBtn_Click(object sender, RoutedEventArgs e)
         {
             MainMap.ShowImportDialog();

@@ -63,7 +63,7 @@
                     <Label Grid.Row="6" Grid.Column="1" x:Name="Speed" />
                     <Label Grid.Row="7" Grid.Column="0">Speed Angle</Label>
                     <Label Grid.Row="7" Grid.Column="1" x:Name="SpeedAngle" />
-                     </Grid>
+                </Grid>
             </GroupBox>
         </StackPanel>
         <GroupBox Header="Map">
