@@ -20,5 +20,8 @@
         <TabItem Content="Modules Settings are not implemented yet" Header="Modules" />
         <TabItem Content="GPS Settings are not implemented yet" Header="GPS" />
         <TabItem Content="Arm Settings are not implemented yet" Header="Arm" />
+        <TabItem Header="Science">
+            <ContentControl x:Name="Science" />
+        </TabItem>
     </controls:MetroAnimatedTabControl>
 </UserControl>

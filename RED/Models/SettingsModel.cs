@@ -11,5 +11,6 @@ namespace RED.Models
     {
         internal NetworkSettingsViewModel network;
         internal DriveSettingsViewModel drive;
+        internal ScienceSettingsViewModel science;
     }
 }
