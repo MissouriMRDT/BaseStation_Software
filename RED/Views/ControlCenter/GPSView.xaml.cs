@@ -34,8 +34,13 @@ namespace RED.Views.ControlCenter
             MainMap.Position = new PointLatLng(37.848544, -91.7715303);
             MainMap.Zoom = 10.0;
 
+            MainMap.EmptyMapBackground = Brushes.White;
             MainMap.EmptytileBrush = Brushes.White;
             MainMap.EmptyTileText = new FormattedText("No imagery available in cache.", System.Globalization.CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Sans Serif"), SystemFonts.MessageFontSize, Brushes.Black);
+
+            MainMap.IgnoreMarkerOnMouseWheel = true;
+            MainMap.MouseWheelZoomType = MouseWheelZoomType.MousePositionWithoutCenter;
+            //MainMap.FillEmptyTiles = false; //Good for debugging map cache
         }
 
         private void AddWaypointBtn_Click(object sender, RoutedEventArgs e)

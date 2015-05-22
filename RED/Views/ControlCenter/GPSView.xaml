@@ -65,9 +65,13 @@
                     <Label Grid.Row="7" Grid.Column="1" x:Name="SpeedAngle" />
                 </Grid>
             </GroupBox>
+            <StackPanel Orientation="Horizontal" Canvas.Bottom="0" Canvas.Right="0">
+                <Label>Zoom:</Label>
+                <Label Content="{Binding Zoom, ElementName=MainMap}" />
+            </StackPanel>
         </StackPanel>
         <GroupBox Header="Map">
-            <gmap:GMapControl x:Name="MainMap" Zoom="13" MaxZoom="20" MinZoom="5">
+            <gmap:GMapControl x:Name="MainMap" Zoom="13" MaxZoom="18" MinZoom="1">
                 <gmap:GMapControl.ItemsSource>
                     <MultiBinding Converter="{StaticResource GPSMarkerConverter}">
                         <Binding Path="CurrentLocation" />
