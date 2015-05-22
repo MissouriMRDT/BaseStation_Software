@@ -149,6 +149,7 @@ namespace RED.ViewModels.ControlCenter
         {
             CCDIsReceiving = true;
             CCDProgress = 0;
+            CCDPixelBuffer = new short[CCDPixelCount];
         }
 
         private void FinishCCDReceive()
