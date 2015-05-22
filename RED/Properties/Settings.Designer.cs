@@ -130,5 +130,29 @@ namespace RED.Properties {
                 this["DriveParabolicScaling"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3184")]
+        public short ScienceCCDPixelCount {
+            get {
+                return ((short)(this["ScienceCCDPixelCount"]));
+            }
+            set {
+                this["ScienceCCDPixelCount"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ScienceCCDFilePath {
+            get {
+                return ((string)(this["ScienceCCDFilePath"]));
+            }
+            set {
+                this["ScienceCCDFilePath"] = value;
+            }
+        }
     }
 }
