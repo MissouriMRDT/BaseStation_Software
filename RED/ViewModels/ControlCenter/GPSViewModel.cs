@@ -123,6 +123,7 @@ namespace RED.ViewModels.ControlCenter
 
             Waypoints.Add(new GPSCoordinate(37.951631, -91.777713));//Rolla
             Waypoints.Add(new GPSCoordinate(37.850025, -91.701845));//Fugitive Beach
+            Waypoints.Add(new GPSCoordinate(38.406426, -110.791919));//Mars Desert Research Station
         }
 
         public void ReceiveFromRouter(byte dataId, byte[] data)
