@@ -18,6 +18,7 @@
         private readonly TcpConnectionModel _model;
         private readonly ControlCenterViewModel _controlCenter;
 
+        private AsyncTcpServerViewModel _sourceServer;
         private IProtocol protocol;
 
         public Stream DataStream { get; private set; }
@@ -41,25 +42,31 @@
             }
         }
 
-        public TcpConnection(TcpClient client, ControlCenterViewModel controlCenter)
+        public TcpConnection(AsyncTcpServerViewModel server, TcpClient client, ControlCenterViewModel controlCenter)
         {
             _model = new TcpConnectionModel();
             _controlCenter = controlCenter;
 
+            _sourceServer = server;
             protocol = new RoverConnection(_controlCenter); //In the future, detect which protocol we're using for various types of connections and create the coresponding object
 
             Client = client;
             DataStream = Client.GetStream();
+        }
+
+        public async Task Connect()
+        {
             _model._ipAddress = ((IPEndPoint)(Client.Client.RemoteEndPoint)).Address;
             _controlCenter.Console.WriteToConsole("Connected to " + RemoteIp.ToString());
 
-            protocol.Connect(this);
+            await protocol.Connect(this);
         }
 
         public void Close()
         {
             _controlCenter.Console.WriteToConsole("Disconnected from " + RemoteIp.ToString());
             Client.Close();
+            _sourceServer.CloseConnection(this);
         }
     }
 }
