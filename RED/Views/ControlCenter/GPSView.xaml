@@ -71,7 +71,7 @@
             </StackPanel>
         </StackPanel>
         <GroupBox Header="Map">
-            <gmap:GMapControl x:Name="MainMap" Zoom="13" MaxZoom="18" MinZoom="1">
+            <gmap:GMapControl x:Name="MainMap" Zoom="13" MaxZoom="18" MinZoom="1" Margin="-5">
                 <gmap:GMapControl.ItemsSource>
                     <MultiBinding Converter="{StaticResource GPSMarkerConverter}">
                         <Binding Path="CurrentLocation" />
