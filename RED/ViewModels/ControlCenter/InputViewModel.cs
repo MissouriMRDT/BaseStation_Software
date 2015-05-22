@@ -87,9 +87,9 @@
             set
             {
                 Model.Connected = value;
-                NotifyOfPropertyChangeThreadSafe(() => Connected);
+                NotifyOfPropertyChange(() => Connected);
                 _controlCenter.StateManager.ControllerIsConnected = value;
-                NotifyOfPropertyChangeThreadSafe(() => ConnectionStatus);
+                NotifyOfPropertyChange(() => ConnectionStatus);
             }
         }
         public string ConnectionStatus
@@ -108,7 +108,7 @@
             set
             {
                 Model.JoyStick1X = value;
-                NotifyOfPropertyChangeThreadSafe(() => JoyStick1X);
+                NotifyOfPropertyChange(() => JoyStick1X);
             }
         }
         public float JoyStick1Y
@@ -120,7 +120,7 @@
             set
             {
                 Model.JoyStick1Y = value;
-                NotifyOfPropertyChangeThreadSafe(() => JoyStick1Y);
+                NotifyOfPropertyChange(() => JoyStick1Y);
             }
         }
         public float JoyStick2X
@@ -132,7 +132,7 @@
             set
             {
                 Model.JoyStick2X = value;
-                NotifyOfPropertyChangeThreadSafe(() => JoyStick2X);
+                NotifyOfPropertyChange(() => JoyStick2X);
             }
         }
         public float JoyStick2Y
@@ -144,7 +144,7 @@
             set
             {
                 Model.JoyStick2Y = value;
-                NotifyOfPropertyChangeThreadSafe(() => JoyStick2Y);
+                NotifyOfPropertyChange(() => JoyStick2Y);
             }
         }
         public float LeftTrigger
@@ -156,7 +156,7 @@
             set
             {
                 Model.LeftTrigger = value;
-                NotifyOfPropertyChangeThreadSafe(() => LeftTrigger);
+                NotifyOfPropertyChange(() => LeftTrigger);
             }
         }
         public float RightTrigger
@@ -168,7 +168,7 @@
             set
             {
                 Model.RightTrigger = value;
-                NotifyOfPropertyChangeThreadSafe(() => RightTrigger);
+                NotifyOfPropertyChange(() => RightTrigger);
             }
         }
         public bool ButtonA
@@ -181,7 +181,7 @@
             {
                 DebouncedButtonA = !Model.ButtonA && value;
                 Model.ButtonA = value;
-                NotifyOfPropertyChangeThreadSafe(() => ButtonA);
+                NotifyOfPropertyChange(() => ButtonA);
             }
         }
         public bool ButtonB
@@ -194,7 +194,7 @@
             {
                 DebouncedButtonB = !Model.ButtonB && value;
                 Model.ButtonB = value;
-                NotifyOfPropertyChangeThreadSafe(() => ButtonB);
+                NotifyOfPropertyChange(() => ButtonB);
             }
         }
         public bool ButtonX
@@ -207,7 +207,7 @@
             {
                 DebouncedButtonX = !Model.ButtonX && value;
                 Model.ButtonX = value;
-                NotifyOfPropertyChangeThreadSafe(() => ButtonX);
+                NotifyOfPropertyChange(() => ButtonX);
             }
         }
         public bool ButtonY
@@ -220,7 +220,7 @@
             {
                 DebouncedButtonY = !Model.ButtonY && value;
                 Model.ButtonY = value;
-                NotifyOfPropertyChangeThreadSafe(() => ButtonY);
+                NotifyOfPropertyChange(() => ButtonY);
             }
         }
         public bool ButtonRb
@@ -233,7 +233,7 @@
             {
                 DebouncedButtonRb = !Model.ButtonRb && value;
                 Model.ButtonRb = value;
-                NotifyOfPropertyChangeThreadSafe(() => ButtonRb);
+                NotifyOfPropertyChange(() => ButtonRb);
             }
         }
         public bool ButtonLb
@@ -246,7 +246,7 @@
             {
                 DebouncedButtonLb = !Model.ButtonLb && value;
                 Model.ButtonLb = value;
-                NotifyOfPropertyChangeThreadSafe(() => ButtonLb);
+                NotifyOfPropertyChange(() => ButtonLb);
             }
         }
         public bool ButtonRs
@@ -259,7 +259,7 @@
             {
                 DebouncedButtonRs = !Model.ButtonRs && value;
                 Model.ButtonRs = value;
-                NotifyOfPropertyChangeThreadSafe(() => ButtonRs);
+                NotifyOfPropertyChange(() => ButtonRs);
             }
         }
         public bool ButtonLs
@@ -272,7 +272,7 @@
             {
                 DebouncedButtonLs = !Model.ButtonLs && value;
                 Model.ButtonLs = value;
-                NotifyOfPropertyChangeThreadSafe(() => ButtonLs);
+                NotifyOfPropertyChange(() => ButtonLs);
             }
         }
         public bool ButtonStart
@@ -285,7 +285,7 @@
             {
                 DebouncedButtonStart = !Model.ButtonStart && value;
                 Model.ButtonStart = value;
-                NotifyOfPropertyChangeThreadSafe(() => ButtonStart);
+                NotifyOfPropertyChange(() => ButtonStart);
             }
         }
         public bool ButtonBack
@@ -298,7 +298,7 @@
             {
                 DebouncedButtonBack = !Model.ButtonBack && value;
                 Model.ButtonBack = value;
-                NotifyOfPropertyChangeThreadSafe(() => ButtonBack);
+                NotifyOfPropertyChange(() => ButtonBack);
             }
         }
         public bool DebouncedButtonA
@@ -310,7 +310,7 @@
             set
             {
                 Model.ButtonADebounced = value;
-                NotifyOfPropertyChangeThreadSafe(() => DebouncedButtonA);
+                NotifyOfPropertyChange(() => DebouncedButtonA);
             }
         }
         public bool DebouncedButtonB
@@ -322,7 +322,7 @@
             set
             {
                 Model.ButtonBDebounced = value;
-                NotifyOfPropertyChangeThreadSafe(() => DebouncedButtonB);
+                NotifyOfPropertyChange(() => DebouncedButtonB);
             }
         }
         public bool DebouncedButtonX
@@ -334,7 +334,7 @@
             set
             {
                 Model.ButtonXDebounced = value;
-                NotifyOfPropertyChangeThreadSafe(() => DebouncedButtonX);
+                NotifyOfPropertyChange(() => DebouncedButtonX);
             }
         }
         public bool DebouncedButtonY
@@ -346,7 +346,7 @@
             set
             {
                 Model.ButtonYDebounced = value;
-                NotifyOfPropertyChangeThreadSafe(() => DebouncedButtonY);
+                NotifyOfPropertyChange(() => DebouncedButtonY);
 
             }
         }
@@ -359,7 +359,7 @@
             set
             {
                 Model.ButtonRbDebounced = value;
-                NotifyOfPropertyChangeThreadSafe(() => DebouncedButtonRb);
+                NotifyOfPropertyChange(() => DebouncedButtonRb);
             }
         }
         public bool DebouncedButtonLb
@@ -371,7 +371,7 @@
             set
             {
                 Model.ButtonLbDebounced = value;
-                NotifyOfPropertyChangeThreadSafe(() => DebouncedButtonLb);
+                NotifyOfPropertyChange(() => DebouncedButtonLb);
             }
         }
         public bool DebouncedButtonRs
@@ -383,7 +383,7 @@
             set
             {
                 Model.ButtonRsDebounced = value;
-                NotifyOfPropertyChangeThreadSafe(() => DebouncedButtonRs);
+                NotifyOfPropertyChange(() => DebouncedButtonRs);
             }
         }
         public bool DebouncedButtonLs
@@ -395,7 +395,7 @@
             set
             {
                 Model.ButtonLsDebounced = value;
-                NotifyOfPropertyChangeThreadSafe(() => DebouncedButtonLs);
+                NotifyOfPropertyChange(() => DebouncedButtonLs);
             }
         }
         public bool DebouncedButtonStart
@@ -408,7 +408,7 @@
             {
                 if (value) NextControlMode();
                 Model.ButtonStartDebounced = value;
-                NotifyOfPropertyChangeThreadSafe(() => DebouncedButtonStart);
+                NotifyOfPropertyChange(() => DebouncedButtonStart);
             }
         }
         public bool DebouncedButtonBack
@@ -421,7 +421,7 @@
             {
                 if (value) PreviousControlMode();
                 Model.ButtonBackDebounced = value;
-                NotifyOfPropertyChangeThreadSafe(() => DebouncedButtonBack);
+                NotifyOfPropertyChange(() => DebouncedButtonBack);
             }
         }
         public bool DPadL
@@ -433,7 +433,7 @@
             set
             {
                 Model.DPadL = value;
-                NotifyOfPropertyChangeThreadSafe(() => DPadL);
+                NotifyOfPropertyChange(() => DPadL);
             }
         }
         public bool DPadU
@@ -445,7 +445,7 @@
             set
             {
                 Model.DPadU = value;
-                NotifyOfPropertyChangeThreadSafe(() => DPadU);
+                NotifyOfPropertyChange(() => DPadU);
             }
         }
         public bool DPadR
@@ -457,7 +457,7 @@
             set
             {
                 Model.DPadR = value;
-                NotifyOfPropertyChangeThreadSafe(() => DPadR);
+                NotifyOfPropertyChange(() => DPadR);
             }
         }
         public bool DPadD
@@ -469,7 +469,7 @@
             set
             {
                 Model.DPadD = value;
-                NotifyOfPropertyChangeThreadSafe(() => DPadD);
+                NotifyOfPropertyChange(() => DPadD);
             }
         }
         #endregion
@@ -545,15 +545,6 @@
         private void EvaluateCurrentMode()
         {
             ControllerModes[CurrentModeIndex].EvaluateMode();
-        }
-
-        /// <summary>
-        /// Wraps the Caliburn.Micro NotifyOfPropertyChange method to always perform on the UI thread.
-        /// </summary>
-        /// <param name="property">Name of the property</param>
-        private void NotifyOfPropertyChangeThreadSafe<T>(System.Linq.Expressions.Expression<Func<T>> property)
-        {
-            new System.Action(() => NotifyOfPropertyChange(property)).BeginOnUIThread();
         }
     }
 }
