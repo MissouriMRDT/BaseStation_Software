@@ -13,7 +13,7 @@ namespace RED.Models
 
         internal short CCDPixelCount = 3184;
         internal float CCDProgress = 0f;
-        internal string CCDFilePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        internal string CCDFilePath = Environment.CurrentDirectory;
         internal bool CCDIsReceiving = false;
     }
 }
