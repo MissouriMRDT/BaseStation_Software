@@ -97,6 +97,10 @@ namespace RED.ViewModels.ControlCenter
         {
             _model = new ScienceModel();
             _cc = cc;
+
+            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Ph"));
+            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Moisture"));
+            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("CCD"));
         }
 
         public void RequestData()

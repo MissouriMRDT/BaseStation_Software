@@ -107,6 +107,7 @@ namespace RED.ViewModels.ControlCenter
                 case "uint64": return 8;
                 case "single": return 4;
                 case "double": return 8;
+                case "ccd": return 25;
                 default: throw new ArgumentException("Unsupported Data Type");
             }
         }
