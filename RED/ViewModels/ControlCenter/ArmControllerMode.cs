@@ -12,6 +12,7 @@ namespace RED.ViewModels.ControlCenter
     public class ArmControllerMode : IControllerMode
     {
         private const short motorRangeFactor = 1000;
+        private const int burstSeparation = 5;
         private readonly EndEffectorModes[] AvailibleEndEffectorModes = { EndEffectorModes.Gripper, EndEffectorModes.Drill };
 
         private readonly ControlCenterViewModel _controlCenter;
@@ -37,7 +38,7 @@ namespace RED.ViewModels.ControlCenter
 
         }
 
-        public void EvaluateMode()
+        public async void EvaluateMode()
         {
             Controller c = InputVM.ControllerOne;
             if (c != null && !c.IsConnected) return;
@@ -65,6 +66,8 @@ namespace RED.ViewModels.ControlCenter
             else
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristUp"), (Int16)(0));
 
+            await Task.Delay(burstSeparation);
+
             angle = Math.Atan2(InputVM.JoyStick1Y, InputVM.JoyStick1X);
             if (angle > -Math.PI / 6 && angle < Math.PI / 6) //Joystick Right
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowClockwise"), (Int16)(InputVM.JoyStick1X * motorRangeFactor));
@@ -77,12 +80,17 @@ namespace RED.ViewModels.ControlCenter
             else
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristUp"), (Int16)(0));
 
+            await Task.Delay(burstSeparation);
+
             if (InputVM.DPadU)
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseActuatorForward"), (Int16)(BaseActuatorSpeed));
             else if (InputVM.DPadD)
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseActuatorForward"), (Int16)(-BaseActuatorSpeed));
             else
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseActuatorForward"), (Int16)(0));
+
+            await Task.Delay(burstSeparation);
+
             if (InputVM.DPadR)
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseServoClockwise"), (Int16)(BaseServoSpeed / 10f * motorRangeFactor));
             else if (InputVM.DPadL)
@@ -90,6 +98,8 @@ namespace RED.ViewModels.ControlCenter
             else
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseServoClockwise"), (Int16)(0));
 
+            await Task.Delay(burstSeparation);
+            
             switch (AvailibleEndEffectorModes[CurrentEndEffectorMode])
             {
                 case EndEffectorModes.Gripper:
