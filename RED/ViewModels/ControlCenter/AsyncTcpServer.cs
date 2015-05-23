@@ -95,8 +95,8 @@
         {
             _server.Stop();
             IsListening = false;
-            foreach (TcpConnection client in _connections)
-                client.Close();
+            for (int i = 0; i < _connections.Count; i++)
+                _connections[i].Close();
             _controlCenter.Console.WriteToConsole("Server Stopped");
         }
 
@@ -108,13 +108,20 @@
                 while (IsListening)
                 {
                     var client = await _server.AcceptTcpClientAsync();
-                    _connections.Add(new TcpConnection(client, _controlCenter));
+                    var conn = new TcpConnection(this, client, _controlCenter);
+                    _connections.Add(conn);
+                    conn.Connect();
                 }
             }
             catch (ObjectDisposedException)
             {
                 //disregard - server stopped listening
             }
+        }
+
+        public void CloseConnection(TcpConnection connection)
+        {
+            _connections.Remove(connection);
         }
     }
 }

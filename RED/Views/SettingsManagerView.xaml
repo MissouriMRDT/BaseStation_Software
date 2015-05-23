@@ -13,7 +13,9 @@
         </TabItem>
         <TabItem Content="Data Router Settings are not implemented yet" Header="Data Router" />
         <TabItem Content="Metadata Settings are not implemented yet" Header="Metadata" />
-        <TabItem Content="Controller Settings are not implemented yet" Header="Controller" />
+        <TabItem Header="Controller">
+            <ContentControl x:Name="Input" />
+        </TabItem>
         <TabItem Header="Drive">
             <ContentControl x:Name="Drive" />
         </TabItem>

@@ -1,7 +1,9 @@
-﻿namespace RED.Interfaces
+﻿using System.Threading.Tasks;
+
+namespace RED.Interfaces
 {
     public interface IProtocol
     {
-        void Connect(IConnection source);
+        Task Connect(IConnection source);
     }
 }
