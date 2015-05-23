@@ -110,6 +110,7 @@ namespace RED.ViewModels.ControlCenter
             {
                 _model.baseStationLocation = value;
                 NotifyOfPropertyChange(() => BaseStationLocation);
+                RecalculateAntennaDirection();
             }
         }
         public double AntennaDirectionDeg
@@ -167,6 +168,12 @@ namespace RED.ViewModels.ControlCenter
                 Speed = br.ReadSingle();
                 SpeedAngle = br.ReadSingle();
             }
+        }
+
+        private void RecalculateAntennaDirection()
+        {
+            var thetaRad = Math.Atan2(CurrentLocation.Latitude - BaseStationLocation.Latitude, CurrentLocation.Longitude - BaseStationLocation.Longitude);
+            AntennaDirectionDeg = thetaRad / Math.PI * 180;
         }
     }
 }
