@@ -6,9 +6,19 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel>
-        <Label>Left Speed:</Label>
-        <Label x:Name="SpeedLeft" />
-        <Label>Right Speed:</Label>
-        <Label x:Name="SpeedRight" />
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="0">Left Speed</Label>
+            <Label Grid.Row="0" Grid.Column="1" x:Name="SpeedLeft" />
+            <Label Grid.Row="1" Grid.Column="0">Right Speed</Label>
+            <Label Grid.Row="1" Grid.Column="1" x:Name="SpeedRight" />
+        </Grid>
     </StackPanel>
 </UserControl>
