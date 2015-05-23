@@ -30,7 +30,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="ScienceCCDPixelCount" Type="System.Int16" Scope="User">
-      <Value Profile="(Default)">3184</Value>
+      <Value Profile="(Default)">3684</Value>
     </Setting>
     <Setting Name="ScienceCCDFilePath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />

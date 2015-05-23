@@ -11,7 +11,7 @@ namespace RED.Models
         internal float Ph = 0;
         internal short Moisture;
 
-        internal short CCDPixelCount = 3184;
+        internal short CCDPixelCount = 3684;
         internal float CCDProgress = 0f;
         internal string CCDFilePath = Environment.CurrentDirectory;
         internal bool CCDIsReceiving = false;
