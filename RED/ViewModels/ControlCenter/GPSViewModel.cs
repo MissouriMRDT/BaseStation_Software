@@ -112,6 +112,18 @@ namespace RED.ViewModels.ControlCenter
                 NotifyOfPropertyChange(() => BaseStationLocation);
             }
         }
+        public double AntennaDirectionDeg
+        {
+            get
+            {
+                return _model.antennaDirectionDeg;
+            }
+            set
+            {
+                _model.antennaDirectionDeg = value;
+                NotifyOfPropertyChange(() => AntennaDirectionDeg);
+            }
+        }
 
         public ObservableCollection<GPSCoordinate> Waypoints
         {

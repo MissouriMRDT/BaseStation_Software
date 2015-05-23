@@ -17,6 +17,7 @@ namespace RED.Models
         internal float speed;
         internal float speedAngle;
         internal GPSCoordinate baseStationLocation;
+        internal double antennaDirectionDeg;
 
         internal ObservableCollection<GPSCoordinate> waypoints=new ObservableCollection<GPSCoordinate>();
     }
