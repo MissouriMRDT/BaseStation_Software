@@ -1,4 +1,6 @@
-﻿using RED.Interfaces;
+﻿using Caliburn.Micro;
+using RED.Interfaces;
+using RED.Models;
 using RED.ViewModels.ControlCenter;
 using SharpDX.XInput;
 using System;
@@ -9,12 +11,13 @@ using System.Threading.Tasks;
 
 namespace RED.ViewModels.ControlCenter
 {
-    public class ArmControllerModeViewModel : IControllerMode
+    public class ArmControllerModeViewModel : PropertyChangedBase, IControllerMode
     {
         private const short motorRangeFactor = 1000;
         private const int burstSeparation = 5;
         private readonly EndEffectorModes[] AvailibleEndEffectorModes = { EndEffectorModes.Gripper, EndEffectorModes.Drill };
 
+        private readonly ArmControllerModeModel _model;
         private readonly ControlCenterViewModel _controlCenter;
 
         public string Name { get; set; }
@@ -23,10 +26,22 @@ namespace RED.ViewModels.ControlCenter
         public const float BaseServoSpeed = .5f;
         public const int BaseActuatorSpeed = 127;
 
-        public int CurrentEndEffectorMode { get; set; }
+        public int CurrentEndEffectorMode
+        {
+            get
+            {
+                return _model.CurrentEndEffectorMode;
+            }
+            set
+            {
+                _model.CurrentEndEffectorMode = value;
+                NotifyOfPropertyChange(() => CurrentEndEffectorMode);
+            }
+        }
 
         public ArmControllerModeViewModel(InputViewModel inputVM, ControlCenterViewModel cc)
         {
+            _model = new ArmControllerModeModel();
             InputVM = inputVM;
             _controlCenter = cc;
             Name = "Arm";
@@ -99,7 +114,7 @@ namespace RED.ViewModels.ControlCenter
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseServoClockwise"), (Int16)(0));
 
             await Task.Delay(burstSeparation);
-            
+
             switch (AvailibleEndEffectorModes[CurrentEndEffectorMode])
             {
                 case EndEffectorModes.Gripper:
