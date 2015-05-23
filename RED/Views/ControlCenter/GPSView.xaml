@@ -42,6 +42,7 @@
                         <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
@@ -63,6 +64,8 @@
                     <Label Grid.Row="6" Grid.Column="1" x:Name="Speed" />
                     <Label Grid.Row="7" Grid.Column="0">Speed Angle</Label>
                     <Label Grid.Row="7" Grid.Column="1" x:Name="SpeedAngle" />
+                    <Label Grid.Row="8" Grid.Column="0">Antenna Angle</Label>
+                    <Label Grid.Row="8" Grid.Column="1" x:Name="AntennaDirectionDeg" ContentStringFormat="{}{0:#0}&#x00B0;" />
                 </Grid>
             </GroupBox>
             <StackPanel Orientation="Horizontal" Canvas.Bottom="0" Canvas.Right="0">
