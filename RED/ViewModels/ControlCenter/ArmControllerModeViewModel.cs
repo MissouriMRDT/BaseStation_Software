@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RED.ViewModels.ControlCenter
 {
-    public class ArmControllerMode : IControllerMode
+    public class ArmControllerModeViewModel : IControllerMode
     {
         private const short motorRangeFactor = 1000;
         private const int burstSeparation = 5;
@@ -25,7 +25,7 @@ namespace RED.ViewModels.ControlCenter
 
         public int CurrentEndEffectorMode { get; set; }
 
-        public ArmControllerMode(InputViewModel inputVM, ControlCenterViewModel cc)
+        public ArmControllerModeViewModel(InputViewModel inputVM, ControlCenterViewModel cc)
         {
             InputVM = inputVM;
             _controlCenter = cc;
