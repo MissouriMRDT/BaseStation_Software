@@ -138,6 +138,13 @@
                 return (DriveControllerModeViewModel)Input.ControllerModes[0];
             }
         }
+        public ArmControllerModeViewModel ArmControllerMode
+        {
+            get
+            {
+                return (ArmControllerModeViewModel)Input.ControllerModes[1];
+            }
+        }
 
         public ControlCenterViewModel()
         {

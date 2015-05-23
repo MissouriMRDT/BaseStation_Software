@@ -104,7 +104,10 @@
 
                 <!-- Customizable Module Grid -->
                 <ContentControl Grid.Column="0" Grid.Row="0" Content="{Binding ModuleManager.ModuleGrid}" />
-                <ContentControl Grid.Column="1" Grid.Row="0" x:Name="DriveControllerMode" />
+                <StackPanel Grid.Column="1" Grid.Row="0">
+                    <ContentControl x:Name="DriveControllerMode" />
+                    <ContentControl x:Name="ArmControllerMode" />
+                </StackPanel>
                 <!-- Static Side Panel Grid -->
                 <Grid Grid.Column="2" Grid.Row="0">
                     <Grid.ColumnDefinitions>

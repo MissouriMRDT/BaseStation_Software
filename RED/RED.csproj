@@ -144,6 +144,9 @@
     <Compile Include="Views\ControlCenterView.xaml.cs">
       <DependentUpon>ControlCenterView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ControlCenter\ArmControllerModeView.xaml.cs">
+      <DependentUpon>ArmControllerModeView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ControlCenter\DriveControllerModeView.xaml.cs">
       <DependentUpon>DriveControllerModeView.xaml</DependentUpon>
     </Compile>
@@ -164,6 +167,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ControlCenterView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ControlCenter\ArmControllerModeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
