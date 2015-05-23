@@ -55,6 +55,7 @@ namespace RED.ViewModels.ControlCenter
             set
             {
                 _model.speedLimit = value;
+                NotifyOfPropertyChange(() => SpeedLimit);
             }
         }
 
