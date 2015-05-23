@@ -170,6 +170,9 @@
     <Compile Include="Views\Settings\DriveSettingsView.xaml.cs">
       <DependentUpon>DriveSettingsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Settings\GPSSettingsView.xaml.cs">
+      <DependentUpon>GPSSettingsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Settings\InputSettingsView.xaml.cs">
       <DependentUpon>InputSettingsView.xaml</DependentUpon>
     </Compile>
@@ -261,6 +264,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Settings\DriveSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Settings\GPSSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
