@@ -152,6 +152,7 @@
     <Compile Include="ViewModels\ControlCenter\ModuleGridViewModel.cs" />
     <Compile Include="ViewModels\SettingsManagerViewModel.cs" />
     <Compile Include="ViewModels\Settings\DriveSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Settings\GPSSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\InputSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\NetworkSettingsViewModel.cs" />
     <Compile Include="Views\ControlCenterView.xaml.cs">

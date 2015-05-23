@@ -38,5 +38,11 @@
     <Setting Name="InputManualDeadzone" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">4000</Value>
     </Setting>
+    <Setting Name="GPSBaseStationLocationLatitude" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="GPSBaseStationLocationLongitude" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

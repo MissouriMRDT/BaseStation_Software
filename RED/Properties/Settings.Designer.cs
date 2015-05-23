@@ -166,5 +166,29 @@ namespace RED.Properties {
                 this["InputManualDeadzone"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double GPSBaseStationLocationLatitude {
+            get {
+                return ((double)(this["GPSBaseStationLocationLatitude"]));
+            }
+            set {
+                this["GPSBaseStationLocationLatitude"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double GPSBaseStationLocationLongitude {
+            get {
+                return ((double)(this["GPSBaseStationLocationLongitude"]));
+            }
+            set {
+                this["GPSBaseStationLocationLongitude"] = value;
+            }
+        }
     }
 }
