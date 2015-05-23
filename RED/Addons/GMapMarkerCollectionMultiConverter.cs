@@ -31,7 +31,7 @@ namespace RED.Addons
                     Data = Geometry.Parse(RED.Images.ModernUIIcons.AppbarLocationCircle32)
                 },
                 Offset = new System.Windows.Point(-16, -16),
-                ZIndex = int.MaxValue
+                ZIndex = Int32.MaxValue
             });
 
             foreach (var coord in (IEnumerable<GPSCoordinate>)(value[1]))
@@ -45,8 +45,8 @@ namespace RED.Addons
                         Fill = Brushes.Red,
                         Data = Geometry.Parse(RED.Images.ModernUIIcons.AppbarLocationRound32)
                     },
-                    Offset = new System.Windows.Point(-16, -16),
-                    ZIndex = int.MaxValue
+                    Offset = new System.Windows.Point(-16, -32),
+                    ZIndex = Int32.MaxValue - 1
                 });
             return markers;
         }
