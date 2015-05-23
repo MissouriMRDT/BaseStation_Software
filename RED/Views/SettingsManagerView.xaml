@@ -20,7 +20,9 @@
             <ContentControl x:Name="Drive" />
         </TabItem>
         <TabItem Content="Modules Settings are not implemented yet" Header="Modules" />
-        <TabItem Content="GPS Settings are not implemented yet" Header="GPS" />
+        <TabItem Header="GPS">
+            <ContentControl x:Name="GPS" />
+        </TabItem>
         <TabItem Content="Arm Settings are not implemented yet" Header="Arm" />
     </controls:MetroAnimatedTabControl>
 </UserControl>
