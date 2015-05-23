@@ -480,7 +480,6 @@
 
             ControllerModes.Add(new DriveControllerModeViewModel(this, _controlCenter));
             ControllerModes.Add(new ArmControllerModeViewModel(this, _controlCenter));
-            ControllerModes.Add(new GripperControllerMode(this, _controlCenter));
             if (ControllerModes.Count == 0) throw new ArgumentException("IEnumerable 'modes' must have at least one item");
             CurrentModeIndex = 0;
         }
