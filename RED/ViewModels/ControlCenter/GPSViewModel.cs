@@ -100,6 +100,18 @@ namespace RED.ViewModels.ControlCenter
                 NotifyOfPropertyChange(() => SpeedAngle);
             }
         }
+        public GPSCoordinate BaseStationLocation
+        {
+            get
+            {
+                return _model.baseStationLocation;
+            }
+            set
+            {
+                _model.baseStationLocation = value;
+                NotifyOfPropertyChange(() => BaseStationLocation);
+            }
+        }
 
         public ObservableCollection<GPSCoordinate> Waypoints
         {
