@@ -17,5 +17,6 @@
         internal MetadataManager _metadataManager;
         internal AsyncTcpServerViewModel _tcpAsyncServer;
         internal InputViewModel _input;
+        internal GPSViewModel _GPS;
     }
 }
