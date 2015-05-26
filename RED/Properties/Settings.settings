@@ -30,13 +30,13 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="InputSerialReadSpeed" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">30</Value>
+      <Value Profile="(Default)">90</Value>
     </Setting>
     <Setting Name="InputAutoDeadzone" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="InputManualDeadzone" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">4000</Value>
+      <Value Profile="(Default)">5000</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -5,8 +5,8 @@ namespace RED.Models
 {
     internal class InputModel
     {
-        internal int SerialReadSpeed = 30;
-        internal int ManualDeadzone = 50;
+        internal int SerialReadSpeed;
+        internal int ManualDeadzone;
         internal bool AutoDeadzone = false;
 
         internal ObservableCollection<IControllerMode> ControllerModes = new ObservableCollection<IControllerMode>();
