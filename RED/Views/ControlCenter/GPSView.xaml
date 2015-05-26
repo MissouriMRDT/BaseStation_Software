@@ -69,19 +69,13 @@
                 </Grid>
             </GroupBox>
             <StackPanel Orientation="Horizontal" Canvas.Bottom="0" Canvas.Right="0">
+                <Button Click="RefreshMap_Click">Refresh</Button>
                 <Label>Zoom:</Label>
                 <Label Content="{Binding Zoom, ElementName=MainMap}" />
             </StackPanel>
         </StackPanel>
         <GroupBox Header="Map">
-            <gmap:GMapControl x:Name="MainMap" Zoom="13" MaxZoom="18" MinZoom="1" Margin="-5">
-                <gmap:GMapControl.ItemsSource>
-                    <MultiBinding Converter="{StaticResource GPSMarkerConverter}">
-                        <Binding Path="CurrentLocation" />
-                        <Binding Path="Waypoints" />
-                    </MultiBinding>
-                </gmap:GMapControl.ItemsSource>
-            </gmap:GMapControl>
+            <gmap:GMapControl x:Name="MainMap" Zoom="13" MaxZoom="18" MinZoom="1" Margin="-5" />
         </GroupBox>
     </DockPanel>
 </UserControl>

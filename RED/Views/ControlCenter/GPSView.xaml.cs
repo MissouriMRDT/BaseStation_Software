@@ -106,5 +106,15 @@ namespace RED.Views.ControlCenter
                 }
             }
         }
+
+        private void RefreshMap_Click(object sender, RoutedEventArgs e)
+        {
+            var converter=new RED.Addons.GMapMarkerCollectionMultiConverter();
+            var vm=(GPSViewModel)DataContext;
+            MainMap.Markers.Clear();
+            var newdata = (IEnumerable<GMapMarker>)converter.Convert(new object[] { vm.CurrentLocation, vm.Waypoints }, typeof(System.Collections.ObjectModel.ObservableCollection<GMapMarker>), null, System.Globalization.CultureInfo.DefaultThreadCurrentUICulture);
+            foreach(var marker in newdata)
+                MainMap.Markers.Add(marker);
+        }
     }
 }
