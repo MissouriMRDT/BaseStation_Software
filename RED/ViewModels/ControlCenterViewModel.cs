@@ -130,6 +130,18 @@
                 NotifyOfPropertyChange(() => Input);
             }
         }
+        public GPSViewModel GPS
+        {
+            get
+            {
+                return _model._GPS;
+            }
+            set
+            {
+                _model._GPS = value;
+                NotifyOfPropertyChange(() => GPS);
+            }
+        }
 
         public DriveControllerModeViewModel DriveControllerMode
         {
@@ -153,6 +165,7 @@
             TcpAsyncServer = new AsyncTcpServerViewModel(11000, this);
             ModuleManager = new ModuleManagerViewModel(this);
             Input = new InputViewModel(this);
+            GPS = new GPSViewModel(this);
 
             RemoveModuleState = new RemoveModuleStateViewModel(this);
             SaveModuleState = new SaveModuleStateViewModel(ModuleManager.ModuleGrid, this);
