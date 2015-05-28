@@ -112,7 +112,8 @@ namespace RED.ViewModels.ControlCenter
 
         public void ForceCCDSave()
         {
-            FinishCCDReceive();
+            if (CCDIsReceiving)
+                FinishCCDReceive();
         }
 
         public void ReceiveFromRouter(byte dataId, byte[] data)
