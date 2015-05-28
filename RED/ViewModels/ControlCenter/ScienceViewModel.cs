@@ -110,6 +110,11 @@ namespace RED.ViewModels.ControlCenter
             _cc.Console.WriteToConsole("Science data requested.");
         }
 
+        public void ForceCCDSave()
+        {
+            FinishCCDReceive();
+        }
+
         public void ReceiveFromRouter(byte dataId, byte[] data)
         {
             switch (_cc.MetadataManager.GetTelemetry(dataId).Name)
