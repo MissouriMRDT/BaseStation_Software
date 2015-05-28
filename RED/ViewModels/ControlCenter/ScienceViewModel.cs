@@ -145,7 +145,7 @@ namespace RED.ViewModels.ControlCenter
             }
         }
 
-        public void StartCCDReceive()
+        private void StartCCDReceive()
         {
             CCDIsReceiving = true;
             CCDProgress = 0;
