@@ -26,7 +26,7 @@
             <Label Grid.Row="2" Grid.Column="0">CCD Download</Label>
             <Label Grid.Row="2" Grid.Column="1" Content="{Binding CCDProgress}" ContentStringFormat="{}{0:0.#%}" />
         </Grid>
-        <controls:MetroProgressBar x:Name="CCDProgress" Minimum="0" Maximum="1" />
+        <controls:MetroProgressBar x:Name="CCDProgress" Minimum="0" Maximum="1" Foreground="Red" />
         <Button x:Name="ForceCCDSave">Force CCD Save</Button>
     </StackPanel>
 </UserControl>
