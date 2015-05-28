@@ -150,6 +150,8 @@ namespace RED.ViewModels.ControlCenter
             CCDIsReceiving = true;
             CCDProgress = 0;
             CCDPixelBuffer = new short[CCDPixelCount];
+            for (int i = 0; i < CCDPixelBuffer.Length; i++)
+                CCDPixelBuffer[i] = -1;
         }
 
         private void FinishCCDReceive()
@@ -158,10 +160,15 @@ namespace RED.ViewModels.ControlCenter
             CCDProgress = 1.0f;
 
             //Save CSV File
-            string csv = String.Join(",", CCDPixelBuffer);
+            StringBuilder csv = new StringBuilder();
+            for (int i = 0; i < CCDPixelBuffer.Length; i++)
+            {
+                if (CCDPixelBuffer[i] < 0) continue;
+                csv.AppendLine(i + ", " + CCDPixelBuffer[i]);
+            }
             string filename = "REDScienceData" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".csv";
             string path = Path.Combine(CCDFilePath, filename);
-            File.WriteAllText(path, csv);
+            File.WriteAllText(path, csv.ToString());
             _cc.Console.WriteToConsole("CCD data saved to file " + path + ".");
         }
     }
