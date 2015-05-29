@@ -45,11 +45,57 @@ namespace RED.Views.ControlCenter
 
         private void AddWaypointBtn_Click(object sender, RoutedEventArgs e)
         {
-            double xCoord, yCoord;
-            if (Double.TryParse(LatitudeTextBox.Text, out yCoord) && Double.TryParse(LongitudeTextBox.Text, out xCoord))
+            try
+            {
+                double xCoord, yCoord;
+                string[] latInputs = LatitudeTextBox.Text.Trim().Split((string[])null, StringSplitOptions.RemoveEmptyEntries);
+                switch (latInputs.Length)
+                {
+                    case 0: throw new ArgumentException();
+                    case 1: if (!Double.TryParse(latInputs[0], out yCoord)) throw new ArgumentException(); break;
+                    case 2:
+                        {
+                            int value0;
+                            double value1;
+                            if (!Int32.TryParse(latInputs[0], out value0) || !Double.TryParse(latInputs[1], out value1)) throw new ArgumentException();
+                            yCoord = (value0) + Math.Sign(value0) * (value1 * 1 / 60d);
+                        } break;
+                    case 3:
+                        {
+                            int value0, value1;
+                            double value2;
+                            if (!Int32.TryParse(latInputs[0], out value0) || !Int32.TryParse(latInputs[1], out value1) || !Double.TryParse(latInputs[2], out value2)) throw new ArgumentException();
+                            yCoord = (value0) + Math.Sign(value0) * ((value1 * 1 / 60d) + (value2 * 1 / 60d / 60d));
+                        } break;
+                    default: throw new ArgumentException();
+                }
+                string[] lonInputs = LongitudeTextBox.Text.Trim().Split((string[])null, StringSplitOptions.RemoveEmptyEntries);
+                switch (lonInputs.Length)
+                {
+                    case 0: throw new ArgumentException();
+                    case 1: if (!Double.TryParse(lonInputs[0], out xCoord)) throw new ArgumentException(); break;
+                    case 2:
+                        {
+                            int value0;
+                            double value1;
+                            if (!Int32.TryParse(lonInputs[0], out value0) || !Double.TryParse(lonInputs[1], out value1)) throw new ArgumentException();
+                            xCoord = (value0) + Math.Sign(value0) * (value1 * 1 / 60d);
+                        } break;
+                    case 3:
+                        {
+                            int value0, value1;
+                            double value2;
+                            if (!Int32.TryParse(lonInputs[0], out value0) || !Int32.TryParse(lonInputs[1], out value1) || !Double.TryParse(lonInputs[2], out value2)) throw new ArgumentException();
+                            xCoord = (value0) + Math.Sign(value0) * ((value1 * 1 / 60d) + (value2 * 1 / 60d / 60d));
+                        } break;
+                    default: throw new ArgumentException();
+                }
                 ((GPSViewModel)DataContext).Waypoints.Add(new Addons.GPSCoordinate(yCoord, xCoord));
-            else
+            }
+            catch (ArgumentException)
+            {
                 MessageBox.Show("Invalid Longitude or Latitude. Must be a floating point number.");
+            }
         }
 
         private void ImportBtn_Click(object sender, RoutedEventArgs e)
