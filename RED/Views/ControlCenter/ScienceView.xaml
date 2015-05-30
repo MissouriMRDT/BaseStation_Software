@@ -20,7 +20,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Button Grid.Row="0" Grid.Column="0" x:Name="RequestPhData">&lt;-&gt;</Button>
-            <Label Grid.Row="0" Grid.Column="1">Ph</Label>
+            <Label Grid.Row="0" Grid.Column="1">pH</Label>
             <Label Grid.Row="0" Grid.Column="2" x:Name="Ph" ContentStringFormat="{}{0:0.00}" />
             <Button Grid.Row="1" Grid.Column="0" x:Name="RequestMoistureData">&lt;-&gt;</Button>
             <Label Grid.Row="1" Grid.Column="1">Moisture</Label>
