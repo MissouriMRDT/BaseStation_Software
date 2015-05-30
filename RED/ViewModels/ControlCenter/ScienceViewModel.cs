@@ -105,28 +105,28 @@ namespace RED.ViewModels.ControlCenter
 
         public void RequestPhData()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceRequest"), ScienceRequestTypes.Ph);
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceRequest"), (byte)ScienceRequestTypes.Ph);
             _cc.Console.WriteToConsole("Science pH data requested.");
         }
         public void RequestMoistureData()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceRequest"), ScienceRequestTypes.Moisture);
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceRequest"), (byte)ScienceRequestTypes.Moisture);
             _cc.Console.WriteToConsole("Science moisture data requested.");
         }
         public void RequestCCDData()
         {
             StartCCDReceive();
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceRequest"), ScienceRequestTypes.CCD);
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceRequest"), (byte)ScienceRequestTypes.CCD);
             _cc.Console.WriteToConsole("Science CCD data requested.");
         }
         public void RequestLaserOn()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceRequest"), ScienceRequestTypes.LaserOn);
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceRequest"), (byte)ScienceRequestTypes.LaserOn);
             _cc.Console.WriteToConsole("Science Laser On requested.");
         }
         public void RequestLaserOff()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceRequest"), ScienceRequestTypes.LaserOff);
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceRequest"), (byte)ScienceRequestTypes.LaserOff);
             _cc.Console.WriteToConsole("Science Laser Off requested.");
         }
 
