@@ -186,16 +186,39 @@ namespace RED.ViewModels.ControlCenter
             CCDProgress = 1.0f;
 
             //Save CSV File
-            StringBuilder csv = new StringBuilder();
-            for (int i = 0; i < CCDPixelBuffer.Length; i++)
+            if (Path.GetFileName(CCDFilePath) == "") //new file
             {
-                if (CCDPixelBuffer[i] < 0) continue;
-                csv.AppendLine(i + ", " + CCDPixelBuffer[i]);
+                StringBuilder csv = new StringBuilder();
+                for (var i = 0; i < CCDPixelBuffer.Length; i++)
+                {
+                    if (i > 0) csv.Append(", ");
+                    csv.Append(i);
+                }
+                for (var i = 0; i < CCDPixelBuffer.Length; i++)
+                {
+                    if (i > 0) csv.Append(", ");
+                    if (CCDPixelBuffer[i] >= 0) csv.Append(i);
+                }
+
+                string filename = "REDScienceData" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".csv";
+                string path = Path.Combine(CCDFilePath, filename);
+                File.WriteAllText(path, csv.ToString());
+                CCDFilePath = path;
+                _cc.Console.WriteToConsole("CCD data saved to file " + path + ".");
             }
-            string filename = "REDScienceData" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".csv";
-            string path = Path.Combine(CCDFilePath, filename);
-            File.WriteAllText(path, csv.ToString());
-            _cc.Console.WriteToConsole("CCD data saved to file " + path + ".");
+            else
+            {
+                StringBuilder csv = new StringBuilder();
+                for (var i = 0; i < CCDPixelBuffer.Length; i++)
+                {
+                    if (i > 0) csv.Append(", ");
+                    if (CCDPixelBuffer[i] >= 0) csv.Append(i);
+                }
+
+                string path = CCDFilePath;
+                File.AppendAllText(path, csv.ToString());
+                _cc.Console.WriteToConsole("CCD data appended to file " + path + ".");
+            }
         }
 
         public enum ScienceRequestTypes
