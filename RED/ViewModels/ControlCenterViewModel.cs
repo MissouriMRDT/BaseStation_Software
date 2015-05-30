@@ -142,12 +142,31 @@
                 NotifyOfPropertyChange(() => Science);
             }
         }
+        public GPSViewModel GPS
+        {
+            get
+            {
+                return _model._GPS;
+            }
+            set
+            {
+                _model._GPS = value;
+                NotifyOfPropertyChange(() => GPS);
+            }
+        }
 
         public DriveControllerModeViewModel DriveControllerMode
         {
             get
             {
                 return (DriveControllerModeViewModel)Input.ControllerModes[0];
+            }
+        }
+        public ArmControllerModeViewModel ArmControllerMode
+        {
+            get
+            {
+                return (ArmControllerModeViewModel)Input.ControllerModes[1];
             }
         }
 
@@ -166,6 +185,7 @@
             ModuleManager = new ModuleManagerViewModel(this);
             Input = new InputViewModel(this);
             Science = new ScienceViewModel(this);
+            GPS = new GPSViewModel(this);
 
             RemoveModuleState = new RemoveModuleStateViewModel(this);
             SaveModuleState = new SaveModuleStateViewModel(ModuleManager.ModuleGrid, this);

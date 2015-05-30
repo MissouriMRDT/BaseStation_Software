@@ -108,6 +108,7 @@ namespace RED.ViewModels.ControlCenter
                 case "single": return 4;
                 case "double": return 8;
                 case "ccd": return 25;
+                case "gps": return 23;
                 default: throw new ArgumentException("Unsupported Data Type");
             }
         }

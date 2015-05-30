@@ -66,6 +66,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Caliburn.Micro.2.0.1\lib\net45\Caliburn.Micro.Platform.dll</HintPath>
     </Reference>
+    <Reference Include="GMap.NET.Core">
+      <HintPath>..\packages\GMap.NET.Presentation.1.7.1\lib\net40\GMap.NET.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="GMap.NET.WindowsPresentation">
+      <HintPath>..\packages\GMap.NET.Presentation.1.7.1\lib\net40\GMap.NET.WindowsPresentation.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=0.15.0.99, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\MahApps.Metro.0.15.0-ALPHA99\lib\net45\MahApps.Metro.dll</HintPath>
@@ -101,6 +107,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Addons\GMapMarkerCollectionMultiConverter.cs" />
+    <Compile Include="Addons\GPSCoordinate.cs" />
+    <Compile Include="Addons\GPSCoordinateToLongitudeConverter.cs" />
+    <Compile Include="Addons\GPSCoordinateToLatitudeConverter.cs" />
     <Compile Include="Addons\RelayCommand.cs" />
     <Compile Include="Contexts\BarContext.cs" />
     <Compile Include="App.xaml.cs">
@@ -111,19 +121,22 @@
     <Compile Include="Contexts\ErrorMetadataContext.cs" />
     <Compile Include="Contexts\MetadataSaveContext.cs" />
     <Compile Include="Contexts\TelemetryMetadataContext.cs" />
+    <Compile Include="Images\ModernUIIcons.cs" />
     <Compile Include="Interfaces\IConnection.cs" />
     <Compile Include="Interfaces\IControllerMode.cs" />
     <Compile Include="Interfaces\IMetadata.cs" />
     <Compile Include="Interfaces\IProtocol.cs" />
+    <Compile Include="Models\ArmControllerModeModel.cs" />
     <Compile Include="Models\DataRouterModel.cs" />
     <Compile Include="Models\AsyncTcpServerModel.cs" />
     <Compile Include="Models\DriveControllerModeModel.cs" />
     <Compile Include="Models\ScienceModel.cs" />
+    <Compile Include="Models\GPSModel.cs" />
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Models\TcpConnectionModel.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Models\InputModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\ArmControllerMode.cs" />
+    <Compile Include="ViewModels\ControlCenter\ArmControllerModeViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\DataRouter.cs" />
     <Compile Include="Interfaces\ISubscribe.cs" />
     <Compile Include="Models\ControlCenterModel.cs" />
@@ -131,7 +144,7 @@
     <Compile Include="RedBootstrapper.cs" />
     <Compile Include="ViewModels\ControlCenter\AsyncTcpServer.cs" />
     <Compile Include="ViewModels\ControlCenter\DriveControllerModeViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\GripperControllerMode.cs" />
+    <Compile Include="ViewModels\ControlCenter\GPSViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\InputViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\MetadataManager.cs" />
     <Compile Include="ViewModels\ControlCenter\RoverConnection.cs" />
@@ -141,10 +154,15 @@
     <Compile Include="ViewModels\ControlCenter\ModuleGridViewModel.cs" />
     <Compile Include="ViewModels\SettingsManagerViewModel.cs" />
     <Compile Include="ViewModels\Settings\DriveSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Settings\GPSSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Settings\InputSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\NetworkSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\ScienceSettingsViewModel.cs" />
     <Compile Include="Views\ControlCenterView.xaml.cs">
       <DependentUpon>ControlCenterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ControlCenter\ArmControllerModeView.xaml.cs">
+      <DependentUpon>ArmControllerModeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ControlCenter\DriveControllerModeView.xaml.cs">
       <DependentUpon>DriveControllerModeView.xaml</DependentUpon>
@@ -152,11 +170,20 @@
     <Compile Include="Views\ControlCenter\ScienceView.xaml.cs">
       <DependentUpon>ScienceView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ControlCenter\GPSView.xaml.cs">
+      <DependentUpon>GPSView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SettingsManagerView.xaml.cs">
       <DependentUpon>SettingsManagerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Settings\DriveSettingsView.xaml.cs">
       <DependentUpon>DriveSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Settings\GPSSettingsView.xaml.cs">
+      <DependentUpon>GPSSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Settings\InputSettingsView.xaml.cs">
+      <DependentUpon>InputSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Settings\NetworkSettingsView.xaml.cs">
       <DependentUpon>NetworkSettingsView.xaml</DependentUpon>
@@ -172,7 +199,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\ControlCenter\ArmControllerModeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ControlCenter\DriveControllerModeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ControlCenter\GPSView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -252,6 +287,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Settings\GPSSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Settings\InputSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Settings\NetworkSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -262,7 +305,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>

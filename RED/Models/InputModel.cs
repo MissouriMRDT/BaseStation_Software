@@ -5,7 +5,9 @@ namespace RED.Models
 {
     internal class InputModel
     {
-        internal int SerialReadSpeed = 30;
+        internal int SerialReadSpeed;
+        internal int ManualDeadzone;
+        internal bool AutoDeadzone = false;
 
         internal ObservableCollection<IControllerMode> ControllerModes = new ObservableCollection<IControllerMode>();
         internal int CurrentModeIndex;
@@ -28,6 +30,16 @@ namespace RED.Models
         internal bool ButtonRs;
         internal bool ButtonStart;
         internal bool ButtonBack;
+        internal bool ButtonADebounced;
+        internal bool ButtonBDebounced;
+        internal bool ButtonXDebounced;
+        internal bool ButtonYDebounced;
+        internal bool ButtonRbDebounced;
+        internal bool ButtonLbDebounced;
+        internal bool ButtonLsDebounced;
+        internal bool ButtonRsDebounced;
+        internal bool ButtonStartDebounced;
+        internal bool ButtonBackDebounced;
         internal bool DPadL;
         internal bool DPadU;
         internal bool DPadR;

@@ -55,6 +55,7 @@ namespace RED.ViewModels.ControlCenter
             set
             {
                 _model.speedLimit = value;
+                NotifyOfPropertyChange(() => SpeedLimit);
             }
         }
 
@@ -94,15 +95,8 @@ namespace RED.ViewModels.ControlCenter
 
             #region Normalization of joystick input
             {
-                float LX = InputVM.JoyStick1X, LY = InputVM.JoyStick1Y;
-                var leftMagnitude = Math.Sqrt(LX * LX + LY * LY);
-
-                float RX = InputVM.JoyStick2X, RY = InputVM.JoyStick2Y;
-                var rightMagnitude = Math.Sqrt(RX * RX + RY * RY);
-
-                // Update Working Values
-                var CurrentRawControllerSpeedLeft = (LY < 0) ? -leftMagnitude : leftMagnitude;
-                var CurrentRawControllerSpeedRight = (RY < 0) ? -rightMagnitude : rightMagnitude;
+                float CurrentRawControllerSpeedLeft = InputVM.JoyStick1Y;
+                float CurrentRawControllerSpeedRight = InputVM.JoyStick2Y;
 
                 //Scaling
                 if (ParabolicScaling) //Squares the value (0..1)
@@ -111,7 +105,7 @@ namespace RED.ViewModels.ControlCenter
                     CurrentRawControllerSpeedRight *= CurrentRawControllerSpeedRight * (CurrentRawControllerSpeedRight >= 0 ? 1 : -1);
                 }
 
-                double speedLimitFactor = (double)SpeedLimit / motorRangeFactor;
+                float speedLimitFactor = (float)SpeedLimit / motorRangeFactor;
                 if (speedLimitFactor > 1) speedLimitFactor = 1;
                 if (speedLimitFactor < 0) speedLimitFactor = 0;
                 CurrentRawControllerSpeedLeft *= speedLimitFactor;
@@ -146,7 +140,9 @@ namespace RED.ViewModels.ControlCenter
 
         public void ExitMode()
         {
-
+            int speed = 0;
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorLeftSpeed"), speed);
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorRightSpeed"), speed);
         }
     }
 }

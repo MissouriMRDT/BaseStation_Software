@@ -12,5 +12,7 @@ namespace RED.Models
         internal NetworkSettingsViewModel network;
         internal DriveSettingsViewModel drive;
         internal ScienceSettingsViewModel science;
+        internal InputSettingsViewModel input;
+        internal GPSSettingsViewModel gps;
     }
 }

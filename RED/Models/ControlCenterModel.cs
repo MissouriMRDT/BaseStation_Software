@@ -18,5 +18,6 @@
         internal AsyncTcpServerViewModel _tcpAsyncServer;
         internal InputViewModel _input;
         internal ScienceViewModel _science;
+        internal GPSViewModel _GPS;
     }
 }
