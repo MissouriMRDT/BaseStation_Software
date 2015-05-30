@@ -8,7 +8,7 @@ namespace RED.Models
 {
     internal class ScienceModel
     {
-        internal float Ph = 0;
+        internal float Ph = 7.86f;
         internal short Moisture;
 
         internal short CCDPixelCount = 3684;
