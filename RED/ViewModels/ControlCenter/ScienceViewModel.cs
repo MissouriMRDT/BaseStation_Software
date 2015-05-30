@@ -103,11 +103,31 @@ namespace RED.ViewModels.ControlCenter
             _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("CCD"));
         }
 
-        public void RequestData()
+        public void RequestPhData()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceRequest"), ScienceRequestTypes.Ph);
+            _cc.Console.WriteToConsole("Science pH data requested.");
+        }
+        public void RequestMoistureData()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceRequest"), ScienceRequestTypes.Moisture);
+            _cc.Console.WriteToConsole("Science moisture data requested.");
+        }
+        public void RequestCCDData()
         {
             StartCCDReceive();
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceRequest"), 0);
-            _cc.Console.WriteToConsole("Science data requested.");
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceRequest"), ScienceRequestTypes.CCD);
+            _cc.Console.WriteToConsole("Science CCD data requested.");
+        }
+        public void RequestLaserOn()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceRequest"), ScienceRequestTypes.LaserOn);
+            _cc.Console.WriteToConsole("Science Laser On requested.");
+        }
+        public void RequestLaserOff()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceRequest"), ScienceRequestTypes.LaserOff);
+            _cc.Console.WriteToConsole("Science Laser Off requested.");
         }
 
         public void ForceCCDSave()
@@ -176,6 +196,15 @@ namespace RED.ViewModels.ControlCenter
             string path = Path.Combine(CCDFilePath, filename);
             File.WriteAllText(path, csv.ToString());
             _cc.Console.WriteToConsole("CCD data saved to file " + path + ".");
+        }
+
+        public enum ScienceRequestTypes
+        {
+            Ph = 1,
+            Moisture = 2,
+            CCD = 3,
+            LaserOn = 4,
+            LaserOff = 5
         }
     }
 }
