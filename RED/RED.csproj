@@ -130,6 +130,7 @@
     <Compile Include="Models\DataRouterModel.cs" />
     <Compile Include="Models\AsyncTcpServerModel.cs" />
     <Compile Include="Models\DriveControllerModeModel.cs" />
+    <Compile Include="Models\ScienceModel.cs" />
     <Compile Include="Models\GPSModel.cs" />
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Models\TcpConnectionModel.cs" />
@@ -147,6 +148,7 @@
     <Compile Include="ViewModels\ControlCenter\InputViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\MetadataManager.cs" />
     <Compile Include="ViewModels\ControlCenter\RoverConnection.cs" />
+    <Compile Include="ViewModels\ControlCenter\ScienceViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\TcpConnection.cs" />
     <Compile Include="ViewModels\ControlCenterViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\ModuleGridViewModel.cs" />
@@ -155,6 +157,7 @@
     <Compile Include="ViewModels\Settings\GPSSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\InputSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\NetworkSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Settings\ScienceSettingsViewModel.cs" />
     <Compile Include="Views\ControlCenterView.xaml.cs">
       <DependentUpon>ControlCenterView.xaml</DependentUpon>
     </Compile>
@@ -163,6 +166,9 @@
     </Compile>
     <Compile Include="Views\ControlCenter\DriveControllerModeView.xaml.cs">
       <DependentUpon>DriveControllerModeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ControlCenter\ScienceView.xaml.cs">
+      <DependentUpon>ScienceView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ControlCenter\GPSView.xaml.cs">
       <DependentUpon>GPSView.xaml</DependentUpon>
@@ -181,6 +187,9 @@
     </Compile>
     <Compile Include="Views\Settings\NetworkSettingsView.xaml.cs">
       <DependentUpon>NetworkSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Settings\ScienceSettingsView.xaml.cs">
+      <DependentUpon>ScienceSettingsView.xaml</DependentUpon>
     </Compile>
     <Page Include="Resources\Icons\Icons.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -258,6 +267,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>-->
+    <Page Include="Views\ControlCenter\ScienceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ControlCenter\StateView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -286,9 +299,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Settings\ScienceSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>

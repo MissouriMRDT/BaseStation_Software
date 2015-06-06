@@ -46,6 +46,18 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => Drive);
             }
         }
+        public ScienceSettingsViewModel Science
+        {
+            get
+            {
+                return _model.science;
+            }
+            set
+            {
+                _model.science = value;
+                NotifyOfPropertyChange(() => Science);
+            }
+        }
         public InputSettingsViewModel Input
         {
             get
@@ -78,6 +90,7 @@ namespace RED.ViewModels
 
             Network = new NetworkSettingsViewModel(this, cc.TcpAsyncServer);
             Drive = new DriveSettingsViewModel(this, (ViewModels.ControlCenter.DriveControllerModeViewModel)cc.Input.ControllerModes[0]);
+            Science = new ScienceSettingsViewModel(this, cc.Science);
             Input = new InputSettingsViewModel(this, cc.Input);
             GPS = new GPSSettingsViewModel(this, cc.GPS);
         }

@@ -24,5 +24,8 @@
             <ContentControl x:Name="GPS" />
         </TabItem>
         <TabItem Content="Arm Settings are not implemented yet" Header="Arm" />
+        <TabItem Header="Science">
+            <ContentControl x:Name="Science" />
+        </TabItem>
     </controls:MetroAnimatedTabControl>
 </UserControl>

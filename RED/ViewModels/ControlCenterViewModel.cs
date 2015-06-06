@@ -130,6 +130,18 @@
                 NotifyOfPropertyChange(() => Input);
             }
         }
+        public ScienceViewModel Science
+        {
+            get
+            {
+                return _model._science;
+            }
+            set
+            {
+                _model._science = value;
+                NotifyOfPropertyChange(() => Science);
+            }
+        }
         public GPSViewModel GPS
         {
             get
@@ -172,6 +184,7 @@
             TcpAsyncServer = new AsyncTcpServerViewModel(11000, this);
             ModuleManager = new ModuleManagerViewModel(this);
             Input = new InputViewModel(this);
+            Science = new ScienceViewModel(this);
             GPS = new GPSViewModel(this);
 
             RemoveModuleState = new RemoveModuleStateViewModel(this);
