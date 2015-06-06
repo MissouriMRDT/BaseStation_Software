@@ -130,5 +130,65 @@ namespace RED.Properties {
                 this["DriveParabolicScaling"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("90")]
+        public int InputSerialReadSpeed {
+            get {
+                return ((int)(this["InputSerialReadSpeed"]));
+            }
+            set {
+                this["InputSerialReadSpeed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool InputAutoDeadzone {
+            get {
+                return ((bool)(this["InputAutoDeadzone"]));
+            }
+            set {
+                this["InputAutoDeadzone"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5000")]
+        public int InputManualDeadzone {
+            get {
+                return ((int)(this["InputManualDeadzone"]));
+            }
+            set {
+                this["InputManualDeadzone"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double GPSBaseStationLocationLatitude {
+            get {
+                return ((double)(this["GPSBaseStationLocationLatitude"]));
+            }
+            set {
+                this["GPSBaseStationLocationLatitude"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double GPSBaseStationLocationLongitude {
+            get {
+                return ((double)(this["GPSBaseStationLocationLongitude"]));
+            }
+            set {
+                this["GPSBaseStationLocationLongitude"] = value;
+            }
+        }
     }
 }

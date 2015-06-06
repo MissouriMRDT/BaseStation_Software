@@ -24,6 +24,7 @@
 
         public void Send(byte dataCode, byte[] data)
         {
+            if (dataCode == 0) return;
             List<ISubscribe> registered;
             if (Registrations.TryGetValue(dataCode, out registered))
                 foreach (ISubscribe subscription in registered)
@@ -40,6 +41,7 @@
 
         public void Subscribe(ISubscribe subscriber, byte dataCode)
         {
+            if (dataCode == 0) return;
             List<ISubscribe> existingRegistrations;
             if (Registrations.TryGetValue(dataCode, out existingRegistrations))
             {
@@ -52,7 +54,8 @@
 
         public void UnSubscribe(ISubscribe subscriber)
         {
-            foreach (KeyValuePair<byte, List<ISubscribe>> kvp in Registrations)
+            var registrationCopy = new Dictionary<byte, List<ISubscribe>>(Registrations); //Use a copy because we may modify it while removing stuff and that breaks the foreach
+            foreach (KeyValuePair<byte, List<ISubscribe>> kvp in registrationCopy)
                 UnSubscribe(subscriber, kvp.Key);
         }
         public void UnSubscribe(ISubscribe subscriber, byte dataCode)

@@ -29,5 +29,23 @@
     <Setting Name="DriveParabolicScaling" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="InputSerialReadSpeed" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">90</Value>
+    </Setting>
+    <Setting Name="InputAutoDeadzone" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="InputManualDeadzone" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">5000</Value>
+    </Setting>
+<<<<<<< HEAD
+=======
+    <Setting Name="GPSBaseStationLocationLatitude" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="GPSBaseStationLocationLongitude" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+>>>>>>> Feature/GPS
   </Settings>
 </SettingsFile>

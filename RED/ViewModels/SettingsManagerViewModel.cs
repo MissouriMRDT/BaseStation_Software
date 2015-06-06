@@ -46,6 +46,30 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => Drive);
             }
         }
+        public InputSettingsViewModel Input
+        {
+            get
+            {
+                return _model.input;
+            }
+            set
+            {
+                _model.input = value;
+                NotifyOfPropertyChange(() => Input);
+            }
+        }
+        public GPSSettingsViewModel GPS
+        {
+            get
+            {
+                return _model.gps;
+            }
+            set
+            {
+                _model.gps = value;
+                NotifyOfPropertyChange(() => GPS);
+            }
+        }
 
         public SettingsManagerViewModel(ControlCenterViewModel cc)
         {
@@ -54,6 +78,8 @@ namespace RED.ViewModels
 
             Network = new NetworkSettingsViewModel(this, cc.TcpAsyncServer);
             Drive = new DriveSettingsViewModel(this, (ViewModels.ControlCenter.DriveControllerModeViewModel)cc.Input.ControllerModes[0]);
+            Input = new InputSettingsViewModel(this, cc.Input);
+            GPS = new GPSSettingsViewModel(this, cc.GPS);
         }
 
         public void SaveSettings()
