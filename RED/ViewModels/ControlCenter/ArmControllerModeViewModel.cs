@@ -116,12 +116,20 @@ namespace RED.ViewModels.ControlCenter
                         _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(0));
                     break;
                 case EndEffectorModes.Drill:
+                    var drillpacket = new Int16[2];
                     if (InputVM.ButtonRb)
-                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Drill"), (Int16)(DrillCommands.Forward));
+                        drillpacket[0] = (Int16)DrillCommands.Forward;
                     else if (InputVM.ButtonLb)
-                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Drill"), (Int16)(DrillCommands.Reverse));
+                        drillpacket[0] = (Int16)DrillCommands.Reverse;
                     else
-                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Drill"), (Int16)(DrillCommands.Stop));
+                        drillpacket[0] = (Int16)DrillCommands.Stop;
+                    if (InputVM.RightTrigger > 0)
+                        drillpacket[1] = BaseActuatorSpeed;
+                    else if (InputVM.LeftTrigger > 0)
+                        drillpacket[1] = -BaseActuatorSpeed;
+                    else
+                        drillpacket[1] = 0;
+                    _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("DrillAndActuator"), drillpacket);
                     break;
             }
         }
