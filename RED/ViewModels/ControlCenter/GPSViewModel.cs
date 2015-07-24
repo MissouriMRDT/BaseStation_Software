@@ -126,6 +126,19 @@ namespace RED.ViewModels.ControlCenter
             }
         }
 
+        public float Heading
+        {
+            get
+            {
+                return _model.heading;
+            }
+            set
+            {
+                _model.heading = value;
+                NotifyOfPropertyChange(() => Heading);
+            }
+        }
+
         public ObservableCollection<GPSCoordinate> Waypoints
         {
             get
@@ -145,6 +158,7 @@ namespace RED.ViewModels.ControlCenter
             _cc = cc;
 
             _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("GPSData"));
+            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Heading"));
 
             Waypoints.Add(new GPSCoordinate(37.951631, -91.777713));//Rolla
             Waypoints.Add(new GPSCoordinate(37.850025, -91.701845));//Fugitive Beach
@@ -153,20 +167,28 @@ namespace RED.ViewModels.ControlCenter
 
         public void ReceiveFromRouter(byte dataId, byte[] data)
         {
-            var ms = new MemoryStream(data);
-            using (var br = new BinaryReader(ms))
+            switch (_cc.MetadataManager.GetTelemetry(dataId).Name)
             {
-                FixObtained = br.ReadByte() != 0;
-                FixQuality = br.ReadByte();
-                NumberOfSatellites = br.ReadByte();
-                CurrentLocation = new GPSCoordinate()
-                {
-                    Latitude = br.ReadInt32() / 10000000f,
-                    Longitude = br.ReadInt32() / 10000000f
-                };
-                CurrentAltitude = br.ReadSingle();
-                Speed = br.ReadSingle();
-                SpeedAngle = br.ReadSingle();
+                case "GPSData":
+                    var ms = new MemoryStream(data);
+                    using (var br = new BinaryReader(ms))
+                    {
+                        FixObtained = br.ReadByte() != 0;
+                        FixQuality = br.ReadByte();
+                        NumberOfSatellites = br.ReadByte();
+                        CurrentLocation = new GPSCoordinate()
+                        {
+                            Latitude = br.ReadInt32() / 10000000f,
+                            Longitude = br.ReadInt32() / 10000000f
+                        };
+                        CurrentAltitude = br.ReadSingle();
+                        Speed = br.ReadSingle();
+                        SpeedAngle = br.ReadSingle();
+                    }
+                    break;
+                case "Heading":
+                    Heading = BitConverter.ToSingle(data, 0);
+                    break;
             }
         }
 
