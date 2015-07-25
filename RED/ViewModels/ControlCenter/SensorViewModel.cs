@@ -80,6 +80,9 @@ namespace RED.ViewModels.ControlCenter
         {
             _model = new SensorModel();
             _cc = cc;
+
+            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Voltage"));
+            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Ultrasonic"));
         }
 
         public void ReceiveFromRouter(byte dataId, byte[] data)
@@ -93,6 +96,7 @@ namespace RED.ViewModels.ControlCenter
                         case 1: Ultrasonic1 = data[1]; break;
                         case 2: Ultrasonic2 = data[1]; break;
                         case 3: Ultrasonic3 = data[1]; break;
+                        default: _cc.Console.WriteToConsole("Unsupported Ultrasonic Sensor (#" + data[0] + ") Telemetry Recieved"); break;
                     }
                     break;
                 case "Voltage":
