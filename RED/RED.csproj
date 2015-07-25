@@ -175,6 +175,9 @@
     <Compile Include="Views\ControlCenter\GPSView.xaml.cs">
       <DependentUpon>GPSView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ControlCenter\SensorView.xaml.cs">
+      <DependentUpon>SensorView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SettingsManagerView.xaml.cs">
       <DependentUpon>SettingsManagerView.xaml</DependentUpon>
     </Compile>
@@ -270,6 +273,10 @@
       <SubType>Designer</SubType>
     </Page>-->
     <Page Include="Views\ControlCenter\ScienceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ControlCenter\SensorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
