@@ -19,5 +19,6 @@
         internal InputViewModel _input;
         internal ScienceViewModel _science;
         internal GPSViewModel _GPS;
+        internal SensorViewModel _sensor;
     }
 }

@@ -132,6 +132,7 @@
     <Compile Include="Models\DriveControllerModeModel.cs" />
     <Compile Include="Models\ScienceModel.cs" />
     <Compile Include="Models\GPSModel.cs" />
+    <Compile Include="Models\SensorModel.cs" />
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Models\TcpConnectionModel.cs" />
     <Compile Include="Settings.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="ViewModels\ControlCenter\MetadataManager.cs" />
     <Compile Include="ViewModels\ControlCenter\RoverConnection.cs" />
     <Compile Include="ViewModels\ControlCenter\ScienceViewModel.cs" />
+    <Compile Include="ViewModels\ControlCenter\SensorViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\TcpConnection.cs" />
     <Compile Include="ViewModels\ControlCenterViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\ModuleGridViewModel.cs" />
@@ -172,6 +174,9 @@
     </Compile>
     <Compile Include="Views\ControlCenter\GPSView.xaml.cs">
       <DependentUpon>GPSView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ControlCenter\SensorView.xaml.cs">
+      <DependentUpon>SensorView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsManagerView.xaml.cs">
       <DependentUpon>SettingsManagerView.xaml</DependentUpon>
@@ -268,6 +273,10 @@
       <SubType>Designer</SubType>
     </Page>-->
     <Page Include="Views\ControlCenter\ScienceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ControlCenter\SensorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

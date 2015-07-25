@@ -154,6 +154,18 @@
                 NotifyOfPropertyChange(() => GPS);
             }
         }
+        public SensorViewModel Sensor
+        {
+            get
+            {
+                return _model._sensor;
+            }
+            set
+            {
+                _model._sensor = value;
+                NotifyOfPropertyChange(() => Sensor);
+            }
+        }
 
         public DriveControllerModeViewModel DriveControllerMode
         {
@@ -186,6 +198,7 @@
             Input = new InputViewModel(this);
             Science = new ScienceViewModel(this);
             GPS = new GPSViewModel(this);
+            Sensor = new SensorViewModel(this);
 
             RemoveModuleState = new RemoveModuleStateViewModel(this);
             SaveModuleState = new SaveModuleStateViewModel(ModuleManager.ModuleGrid, this);
