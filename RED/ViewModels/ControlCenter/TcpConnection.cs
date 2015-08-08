@@ -20,6 +20,7 @@
 
         private AsyncTcpServerViewModel _sourceServer;
         private IProtocol protocol;
+        private bool connected;
 
         public Stream DataStream { get; private set; }
         public TcpClient Client
@@ -58,12 +59,15 @@
         {
             _model._ipAddress = ((IPEndPoint)(Client.Client.RemoteEndPoint)).Address;
             _controlCenter.Console.WriteToConsole("Connected to " + RemoteIp.ToString());
+            connected = true;
 
             await protocol.Connect(this);
         }
 
         public void Close()
         {
+            if (!connected) return;
+            connected = false;
             _controlCenter.Console.WriteToConsole("Disconnected from " + RemoteIp.ToString());
             Client.Close();
             _sourceServer.CloseConnection(this);
