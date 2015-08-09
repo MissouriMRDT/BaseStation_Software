@@ -111,6 +111,7 @@ namespace RED.ViewModels.ControlCenter
                 case "gps": return 23;
                 case "drillActuator": return 4;
                 case "ultrasonic": return 2;
+                case "sensorcombine": return 32;
                 default: throw new ArgumentException("Unsupported Data Type");
             }
         }
