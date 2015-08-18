@@ -18,7 +18,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Label Grid.Row="0" Grid.Column="0">Voltage</Label>
-        <Label Grid.Row="0" Grid.Column="1" x:Name="Voltage" ContentStringFormat="{}{0:#0} V" />
+        <Label Grid.Row="0" Grid.Column="1" x:Name="Voltage" ContentStringFormat="{}{0:0.0} V" />
         <Label Grid.Row="1" Grid.Column="0">Ultrasonic 0</Label>
         <Label Grid.Row="1" Grid.Column="1" x:Name="Ultrasonic0" ContentStringFormat="{}{0:#0} in" />
         <Label Grid.Row="2" Grid.Column="0">Ultrasonic 1</Label>

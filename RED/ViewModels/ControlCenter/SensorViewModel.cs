@@ -14,7 +14,7 @@ namespace RED.ViewModels.ControlCenter
         private SensorModel _model;
         private ControlCenterViewModel _cc;
 
-        public short Voltage
+        public float Voltage
         {
             get
             {
@@ -100,7 +100,10 @@ namespace RED.ViewModels.ControlCenter
                     }
                     break;
                 case "Voltage":
-                    Voltage = BitConverter.ToInt16(data, 0);
+                    /* 0    ->  -30V
+                     * 512  ->    0V
+                     * 1023 ->  +30V */
+                    Voltage = (BitConverter.ToInt16(data, 0) - 512) * (30f / 512);
                     break;
             }
         }
