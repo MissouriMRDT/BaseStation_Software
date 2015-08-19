@@ -136,6 +136,14 @@ namespace RED.ViewModels.ControlCenter
             {
                 _model.heading = value;
                 NotifyOfPropertyChange(() => Heading);
+                NotifyOfPropertyChange(() => HeadingDeg);
+            }
+        }
+        public float HeadingDeg
+        {
+            get
+            {
+                return (float)(Heading * 180d / Math.PI);
             }
         }
 
