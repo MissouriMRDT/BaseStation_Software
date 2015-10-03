@@ -116,19 +116,25 @@ namespace RED.ViewModels.ControlCenter
                         _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(0));
                     break;
                 case EndEffectorModes.Drill:
-                    var drillpacket = new Int16[2];
+                    int drillCmd, actCmd;
                     if (InputVM.ButtonRb)
-                        drillpacket[0] = (Int16)DrillCommands.Forward;
+                        drillCmd = (int)DrillCommands.Forward;
                     else if (InputVM.ButtonLb)
-                        drillpacket[0] = (Int16)DrillCommands.Reverse;
+                        drillCmd = (int)DrillCommands.Reverse;
                     else
-                        drillpacket[0] = (Int16)DrillCommands.Stop;
+                        drillCmd = (int)DrillCommands.Stop;
                     if (InputVM.RightTrigger > 0)
-                        drillpacket[1] = BaseActuatorSpeed;
+                        actCmd = (int)DrillCommands.Forward;
                     else if (InputVM.LeftTrigger > 0)
-                        drillpacket[1] = -BaseActuatorSpeed;
+                        actCmd = (int)DrillCommands.Reverse;
                     else
-                        drillpacket[1] = 0;
+                        actCmd = (int)DrillCommands.Stop;
+
+                    byte drillActCombinedCmd8Bit = (byte)(actCmd << 4 | drillCmd);
+                    var drillpacket = new byte[4] { drillActCombinedCmd8Bit, drillActCombinedCmd8Bit, drillActCombinedCmd8Bit, drillActCombinedCmd8Bit };
+                    //Int16 drillActCombinedCmd16Bit = (Int16)(drillActCombinedCmd8Bit << 8 | drillActCombinedCmd8Bit);
+                    //var drillpacket = new Int16[2] { drillActCombinedCmd16Bit, drillActCombinedCmd16Bit };
+
                     _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("DrillAndActuator"), drillpacket);
                     break;
             }
