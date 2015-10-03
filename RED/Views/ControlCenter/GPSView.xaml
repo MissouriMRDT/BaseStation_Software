@@ -14,7 +14,7 @@
         <addons:GPSCoordinateToLongitudeConverter x:Key="LongitudeConverter" />
     </UserControl.Resources>
     <DockPanel>
-        <StackPanel DockPanel.Dock="Right" Width="165">
+        <StackPanel DockPanel.Dock="Right" Width="256">
             <GroupBox Header="Cache Options">
                 <Grid>
                     <Grid.RowDefinitions>
