@@ -80,7 +80,7 @@
                     <Canvas Width="32" Height="32">
                         <Path Fill="Red" Data="M 8,32 16,0 24,32 16,28 8,32" Width="32" Height="32">
                             <Path.LayoutTransform>
-                                <RotateTransform Angle="{Binding Heading}"/>
+                                <RotateTransform Angle="{Binding HeadingDeg}"/>
                             </Path.LayoutTransform>
                         </Path>
                     </Canvas>
