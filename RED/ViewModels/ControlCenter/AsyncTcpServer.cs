@@ -95,8 +95,9 @@
         {
             _server.Stop();
             IsListening = false;
-            for (int i = 0; i < _connections.Count; i++)
-                _connections[i].Close();
+            var connectionCopy = new List<TcpConnection>(_connections); //Use a copy because we may modify it while removing stuff and that breaks the foreach
+            foreach (TcpConnection c in connectionCopy)
+                c.Close();
             _controlCenter.Console.WriteToConsole("Server Stopped");
         }
 

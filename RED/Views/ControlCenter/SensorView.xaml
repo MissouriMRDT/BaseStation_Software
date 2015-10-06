@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="RED.Views.ControlCenter.SensorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Label Grid.Row="0" Grid.Column="0">Voltage</Label>
+        <Label Grid.Row="0" Grid.Column="1" x:Name="Voltage" ContentStringFormat="{}{0:0.0} V" />
+        <Label Grid.Row="1" Grid.Column="0">Ultrasonic 0</Label>
+        <Label Grid.Row="1" Grid.Column="1" x:Name="Ultrasonic0" ContentStringFormat="{}{0:#0} in" />
+        <Label Grid.Row="2" Grid.Column="0">Ultrasonic 1</Label>
+        <Label Grid.Row="2" Grid.Column="1" x:Name="Ultrasonic1" ContentStringFormat="{}{0:#0} in" />
+        <Label Grid.Row="3" Grid.Column="0">Ultrasonic 2</Label>
+        <Label Grid.Row="3" Grid.Column="1" x:Name="Ultrasonic2" ContentStringFormat="{}{0:#0} in"/>
+        <Label Grid.Row="4" Grid.Column="0">Ultrasonic 3</Label>
+        <Label Grid.Row="4" Grid.Column="1" x:Name="Ultrasonic3" ContentStringFormat="{}{0:#0} in" />
+    </Grid>
+</UserControl>

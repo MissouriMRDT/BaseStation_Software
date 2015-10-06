@@ -154,6 +154,31 @@
                 NotifyOfPropertyChange(() => GPS);
             }
         }
+        public SensorViewModel Sensor
+        {
+            get
+            {
+                return _model._sensor;
+            }
+            set
+            {
+                _model._sensor = value;
+                NotifyOfPropertyChange(() => Sensor);
+            }
+        }
+        public SensorCombinedViewModel SensorCombined
+        {
+            get
+            {
+                return _model._sensorCombined;
+            }
+            set
+            {
+                _model._sensorCombined = value;
+                NotifyOfPropertyChange(() => SensorCombined);
+
+            }
+        }
 
         public DriveControllerModeViewModel DriveControllerMode
         {
@@ -186,6 +211,8 @@
             Input = new InputViewModel(this);
             Science = new ScienceViewModel(this);
             GPS = new GPSViewModel(this);
+            Sensor = new SensorViewModel(this);
+            SensorCombined = new SensorCombinedViewModel(this);
 
             RemoveModuleState = new RemoveModuleStateViewModel(this);
             SaveModuleState = new SaveModuleStateViewModel(ModuleManager.ModuleGrid, this);

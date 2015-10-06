@@ -109,6 +109,9 @@ namespace RED.ViewModels.ControlCenter
                 case "double": return 8;
                 case "ccd": return 25;
                 case "gps": return 23;
+                case "drillactuator": return 4;
+                case "ultrasonic": return 2;
+                case "sensorcombine": return 32;
                 default: throw new ArgumentException("Unsupported Data Type");
             }
         }
