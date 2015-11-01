@@ -130,6 +130,7 @@
     <Compile Include="Models\DataRouterModel.cs" />
     <Compile Include="Models\AsyncTcpServerModel.cs" />
     <Compile Include="Models\DriveControllerModeModel.cs" />
+    <Compile Include="Models\NetworkManagerModel.cs" />
     <Compile Include="Models\ScienceModel.cs" />
     <Compile Include="Models\GPSModel.cs" />
     <Compile Include="Models\SensorModel.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="Settings.cs" />
     <Compile Include="Models\InputModel.cs" />
     <Compile Include="ViewModels\ControlCenter\ArmControllerModeViewModel.cs" />
+    <Compile Include="ViewModels\ControlCenter\NetworkManagerViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\DataRouter.cs" />
     <Compile Include="Interfaces\ISubscribe.cs" />
     <Compile Include="Models\ControlCenterModel.cs" />
