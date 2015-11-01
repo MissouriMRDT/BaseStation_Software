@@ -126,6 +126,7 @@
     <Compile Include="Interfaces\IControllerMode.cs" />
     <Compile Include="Interfaces\IMetadata.cs" />
     <Compile Include="Interfaces\INetworkEncoding.cs" />
+    <Compile Include="Interfaces\INetworkTransportProtocol.cs" />
     <Compile Include="Interfaces\IProtocol.cs" />
     <Compile Include="Models\ArmControllerModeModel.cs" />
     <Compile Include="Models\DataRouterModel.cs" />
