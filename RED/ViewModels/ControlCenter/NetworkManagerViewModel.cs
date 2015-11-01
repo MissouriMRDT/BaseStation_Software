@@ -14,10 +14,14 @@ namespace RED.ViewModels.ControlCenter
         private NetworkManagerModel _model;
         private ControlCenterViewModel _cc;
 
+        private INetworkEncoding encoding;
+
         public NetworkManagerViewModel(ControlCenterViewModel cc)
         {
             _model = new NetworkManagerModel();
             _cc = cc;
+
+            encoding = new RoverProtocol();
 
             foreach (var command in _cc.MetadataManager.Commands)
                 _cc.DataRouter.Subscribe(this, command.Id);
