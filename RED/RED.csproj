@@ -151,6 +151,7 @@
     <Compile Include="ViewModels\ControlCenter\InputViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\MetadataManager.cs" />
     <Compile Include="ViewModels\ControlCenter\RoverConnection.cs" />
+    <Compile Include="ViewModels\ControlCenter\RoverProtocol.cs" />
     <Compile Include="ViewModels\ControlCenter\ScienceViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\SensorCombinedViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\SensorViewModel.cs" />
