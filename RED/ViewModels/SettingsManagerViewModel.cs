@@ -88,7 +88,7 @@ namespace RED.ViewModels
             _model = new SettingsManagerModel();
             _controlCenter = cc;
 
-            Network = new NetworkSettingsViewModel(this, cc.TcpAsyncServer);
+            //Network = new NetworkSettingsViewModel(this, cc.TcpAsyncServer);
             Drive = new DriveSettingsViewModel(this, (ViewModels.ControlCenter.DriveControllerModeViewModel)cc.Input.ControllerModes[0]);
             Science = new ScienceSettingsViewModel(this, cc.Science);
             Input = new InputSettingsViewModel(this, cc.Input);

@@ -106,6 +106,18 @@
                 NotifyOfPropertyChange(() => TcpAsyncServer);
             }
         }
+        public NetworkManagerViewModel NetworkManager
+        {
+            get
+            {
+                return _model._networkManager;
+            }
+            set
+            {
+                _model._networkManager = value;
+                NotifyOfPropertyChange(() => NetworkManager);
+            }
+        }
         public ModuleManagerViewModel ModuleManager
         {
             get
@@ -206,7 +218,8 @@
             MetadataManager = new MetadataManager(this);
             MetadataManager.AddFromFile("NoSyncMetadata.xml");
 
-            TcpAsyncServer = new AsyncTcpServerViewModel(11000, this);
+            //TcpAsyncServer = new AsyncTcpServerViewModel(11000, this);
+            NetworkManager = new NetworkManagerViewModel(this);
             ModuleManager = new ModuleManagerViewModel(this);
             Input = new InputViewModel(this);
             Science = new ScienceViewModel(this);
