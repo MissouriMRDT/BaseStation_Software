@@ -11,10 +11,13 @@ namespace RED.ViewModels.ControlCenter
 {
     public class NetworkManagerViewModel : PropertyChangedBase, ISubscribe
     {
+        private const ushort DestinationPort = 11000;
+
         private NetworkManagerModel _model;
         private ControlCenterViewModel _cc;
 
         private INetworkEncoding encoding;
+        private INetworkTransportProtocol continuousDataSocket;
 
         public NetworkManagerViewModel(ControlCenterViewModel cc)
         {
@@ -22,6 +25,7 @@ namespace RED.ViewModels.ControlCenter
             _cc = cc;
 
             encoding = new RoverProtocol();
+            continuousDataSocket = new UDPEndpoint(DestinationPort);
 
             foreach (var command in _cc.MetadataManager.Commands)
                 _cc.DataRouter.Subscribe(this, command.Id);
@@ -29,7 +33,7 @@ namespace RED.ViewModels.ControlCenter
 
         public void ReceiveFromRouter(byte dataId, byte[] data)
         {
-            //TODO: send data over network
+            throw new NotImplementedException();
         }
     }
 }
