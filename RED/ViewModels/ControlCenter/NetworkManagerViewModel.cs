@@ -4,6 +4,7 @@ using RED.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,6 +13,7 @@ namespace RED.ViewModels.ControlCenter
     public class NetworkManagerViewModel : PropertyChangedBase, ISubscribe
     {
         private const ushort DestinationPort = 11000;
+        private readonly IPAddress TempDestinationIP = IPAddress.Parse("192.168.1.51");
 
         private NetworkManagerModel _model;
         private ControlCenterViewModel _cc;
@@ -31,9 +33,10 @@ namespace RED.ViewModels.ControlCenter
                 _cc.DataRouter.Subscribe(this, command.Id);
         }
 
-        public void ReceiveFromRouter(byte dataId, byte[] data)
+        public async void ReceiveFromRouter(byte dataId, byte[] data)
         {
-            throw new NotImplementedException();
+            byte[] packet=encoding.EncodePacket(dataId,data);
+            await continuousDataSocket.SendMessage(TempDestinationIP, packet);
         }
     }
 }
