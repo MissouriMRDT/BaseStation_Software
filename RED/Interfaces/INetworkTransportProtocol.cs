@@ -9,7 +9,7 @@ namespace RED.Interfaces
 {
     public interface INetworkTransportProtocol
     {
-        void SendMessage(IPAddress DestIP, byte[] data);
-        byte[] ReceiveMessage(out IPAddress SourceIP);
+        Task SendMessage(IPAddress DestIP, byte[] data);
+        Task<byte[]> ReceiveMessage();
     }
 }
