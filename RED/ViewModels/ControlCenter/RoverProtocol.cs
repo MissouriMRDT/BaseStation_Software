@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,9 +27,9 @@ namespace RED.ViewModels.ControlCenter
                     using (var bw = new BinaryWriter(ms))
                     {
                         bw.Write(VersionNumber);
-                        bw.Write(TempSequenceNumber);
-                        bw.Write((ushort)dataId);
-                        bw.Write((ushort)data.Length);
+                        bw.Write(IPAddress.HostToNetworkOrder((short)TempSequenceNumber));
+                        bw.Write(IPAddress.HostToNetworkOrder((short)(ushort)dataId));
+                        bw.Write(IPAddress.HostToNetworkOrder((short)(ushort)data.Length));
                         bw.Write(data);
                     }
                     return ms.ToArray();
@@ -52,9 +53,9 @@ namespace RED.ViewModels.ControlCenter
                 using (var br = new BinaryReader(ms))
                 {
                     versionNumber = br.ReadByte();
-                    sequenceNumber = br.ReadUInt16();
-                    rawDataId = br.ReadUInt16();
-                    ushort dataLength = br.ReadUInt16();
+                    sequenceNumber = (ushort)IPAddress.NetworkToHostOrder((short)br.ReadUInt16());
+                    rawDataId = (ushort)IPAddress.NetworkToHostOrder((short)br.ReadUInt16());
+                    ushort dataLength = (ushort)IPAddress.NetworkToHostOrder((short)br.ReadUInt16());
                     rawData = br.ReadBytes(dataLength);
                 }
             }
