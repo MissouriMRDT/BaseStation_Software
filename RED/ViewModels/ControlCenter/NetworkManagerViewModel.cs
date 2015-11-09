@@ -13,7 +13,7 @@ namespace RED.ViewModels.ControlCenter
     public class NetworkManagerViewModel : PropertyChangedBase, ISubscribe
     {
         private const ushort DestinationPort = 11000;
-        private readonly IPAddress TempDestinationIP = IPAddress.Parse("192.168.1.51");
+        private readonly IPAddress TempDestinationIP = IPAddress.Parse("192.168.1.52");//1.51");
 
         private NetworkManagerModel _model;
         private ControlCenterViewModel _cc;
@@ -31,6 +31,8 @@ namespace RED.ViewModels.ControlCenter
 
             foreach (var command in _cc.MetadataManager.Commands)
                 _cc.DataRouter.Subscribe(this, command.Id);
+            //_cc.DataRouter.Subscribe(this, 1);
+            //_cc.DataRouter.Subscribe(this, 50);
         }
 
         public async void ReceiveFromRouter(byte dataId, byte[] data)
