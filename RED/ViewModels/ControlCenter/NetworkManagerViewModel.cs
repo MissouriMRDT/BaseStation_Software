@@ -27,7 +27,7 @@ namespace RED.ViewModels.ControlCenter
             _cc = cc;
 
             encoding = new RoverProtocol();
-            continuousDataSocket = new UDPEndpoint(DestinationPort);
+            continuousDataSocket = new UDPEndpoint(DestinationPort,DestinationPort);
 
             foreach (var command in _cc.MetadataManager.Commands)
                 _cc.DataRouter.Subscribe(this, command.Id);
