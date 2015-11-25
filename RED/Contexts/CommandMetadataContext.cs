@@ -13,6 +13,7 @@ namespace RED.Contexts
         public string Name { get; set; }
         public string Description { get; set; }
         public string Datatype { get; set; }
+        public string IPAddress { get; set; }
 
         public CommandMetadataContext()
         {
