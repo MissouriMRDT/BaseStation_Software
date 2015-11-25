@@ -124,6 +124,7 @@
     <Compile Include="Images\ModernUIIcons.cs" />
     <Compile Include="Interfaces\IConnection.cs" />
     <Compile Include="Interfaces\IControllerMode.cs" />
+    <Compile Include="Interfaces\IIPAddressProvider.cs" />
     <Compile Include="Interfaces\IMetadata.cs" />
     <Compile Include="Interfaces\INetworkEncoding.cs" />
     <Compile Include="Interfaces\INetworkTransportProtocol.cs" />
