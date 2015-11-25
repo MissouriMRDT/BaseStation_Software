@@ -140,5 +140,10 @@ namespace RED.ViewModels.ControlCenter
             var data = GetMetadata(DataId);
             return data == null ? String.Empty : data.Name;
         }
+        public string GetServerAddress(byte DataId)
+        {
+            var data = GetMetadata(DataId);
+            return data == null ? String.Empty : data.ServerAddress;
+        }
     }
 }
