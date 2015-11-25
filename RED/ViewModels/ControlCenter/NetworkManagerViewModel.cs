@@ -34,6 +34,19 @@ namespace RED.ViewModels.ControlCenter
                 _cc.DataRouter.Subscribe(this, command.Id);
             //_cc.DataRouter.Subscribe(this, 1);
             //_cc.DataRouter.Subscribe(this, 50);
+
+            Listen();
+        }
+
+        private async void Listen()
+        {
+            while(true)
+            {
+                byte[] buffer = await continuousDataSocket.ReceiveMessage();
+                byte dataId;
+                byte[] data = encoding.DecodePacket(buffer, out dataId);
+                _cc.DataRouter.Send(dataId, data);
+            }
         }
 
         public async void ReceiveFromRouter(byte dataId, byte[] data)
