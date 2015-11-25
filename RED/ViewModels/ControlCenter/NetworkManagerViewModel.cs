@@ -13,13 +13,13 @@ namespace RED.ViewModels.ControlCenter
     public class NetworkManagerViewModel : PropertyChangedBase, ISubscribe
     {
         private const ushort DestinationPort = 11000;
-        private readonly IPAddress TempDestinationIP = IPAddress.Parse("192.168.1.52");//1.51");
 
         private NetworkManagerModel _model;
         private ControlCenterViewModel _cc;
 
         private INetworkEncoding encoding;
         private INetworkTransportProtocol continuousDataSocket;
+        private IIPAddressProvider ipAddressProvider;
 
         public NetworkManagerViewModel(ControlCenterViewModel cc)
         {
@@ -27,7 +27,8 @@ namespace RED.ViewModels.ControlCenter
             _cc = cc;
 
             encoding = new RoverProtocol();
-            continuousDataSocket = new UDPEndpoint(DestinationPort,DestinationPort);
+            continuousDataSocket = new UDPEndpoint(DestinationPort, DestinationPort);
+            ipAddressProvider = cc.MetadataManager;
 
             foreach (var command in _cc.MetadataManager.Commands)
                 _cc.DataRouter.Subscribe(this, command.Id);
@@ -37,8 +38,9 @@ namespace RED.ViewModels.ControlCenter
 
         public async void ReceiveFromRouter(byte dataId, byte[] data)
         {
-            byte[] packet=encoding.EncodePacket(dataId,data);
-            await continuousDataSocket.SendMessage(TempDestinationIP, packet);
+            byte[] packet = encoding.EncodePacket(dataId, data);
+            IPAddress destIP = ipAddressProvider.GetIPAddress(dataId);
+            await continuousDataSocket.SendMessage(destIP, packet);
         }
     }
 }
