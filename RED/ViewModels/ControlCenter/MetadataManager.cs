@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 
 namespace RED.ViewModels.ControlCenter
 {
-    public class MetadataManager
+    public class MetadataManager : IIPAddressProvider
     {
         private readonly ControlCenterViewModel _controlCenter;
 
@@ -144,6 +144,24 @@ namespace RED.ViewModels.ControlCenter
         {
             var data = GetMetadata(DataId);
             return data == null ? String.Empty : data.ServerAddress;
+        }
+
+        public System.Net.IPAddress GetIPAddress(byte dataId)
+        {
+            System.Net.IPAddress ip;
+            if (System.Net.IPAddress.TryParse(GetServerAddress(dataId), out ip))
+                return ip;
+            else
+            {
+                _controlCenter.Console.WriteToConsole("Error Parsing IP Address for DataId " + dataId.ToString());
+                return null;
+            }
+        }
+
+        public byte[] GetAllDataIds(System.Net.IPAddress ip)
+        {
+            IEnumerable<IMetadata> allMetadata = Commands.Cast<IMetadata>().Union(Telemetry).Union(Errors);
+            return allMetadata.Where(x => x.ServerAddress == ip.ToString()).Select(x => x.Id).ToArray();
         }
     }
 }
