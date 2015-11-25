@@ -6,6 +6,6 @@
         string Name { get; set; }
         string Description { get; set; }
         string Datatype { get; set; }
-        string IPAddress { get; set; }
+        string ServerAddress { get; set; }
     }
 }
