@@ -40,7 +40,7 @@ namespace RED.ViewModels.ControlCenter
 
         private async void Listen()
         {
-            while(true)
+            while (true)
             {
                 byte[] buffer = await continuousDataSocket.ReceiveMessage();
                 byte dataId;
@@ -49,10 +49,15 @@ namespace RED.ViewModels.ControlCenter
             }
         }
 
-        public async void ReceiveFromRouter(byte dataId, byte[] data)
+        public void ReceiveFromRouter(byte dataId, byte[] data)
+        {
+            IPAddress destIP = ipAddressProvider.GetIPAddress(dataId);
+            SendPacket(dataId, data, destIP);
+        }
+
+        public async void SendPacket(byte dataId, byte[] data, IPAddress destIP)
         {
             byte[] packet = encoding.EncodePacket(dataId, data);
-            IPAddress destIP = ipAddressProvider.GetIPAddress(dataId);
             await continuousDataSocket.SendMessage(destIP, packet);
         }
     }
