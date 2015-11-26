@@ -32,6 +32,9 @@ namespace RED.ViewModels.ControlCenter
             _model = new SubscriptionManagerModel();
             _cc = cc;
             ipProvider = _cc.MetadataManager;
+
+            foreach (var telemetry in _cc.MetadataManager.Telemetry)
+                Subscribe(telemetry.Id);
         }
 
         public void Subscribe(byte dataId)
