@@ -57,6 +57,11 @@ namespace RED.ViewModels.ControlCenter
 
         public async void SendPacket(byte dataId, byte[] data, IPAddress destIP)
         {
+            if (destIP == null)
+            {
+                _cc.Console.WriteToConsole("Attempted to send packet with unknown IP address. DataId=" + dataId.ToString());
+                return;
+            }
             byte[] packet = encoding.EncodePacket(dataId, data);
             await continuousDataSocket.SendMessage(destIP, packet);
         }
