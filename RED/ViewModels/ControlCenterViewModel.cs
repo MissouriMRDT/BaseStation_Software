@@ -94,6 +94,18 @@
                 NotifyOfPropertyChange(() => MetadataManager);
             }
         }
+        public SubscriptionManagerViewModel SubscriptionManager
+        {
+            get
+            {
+                return _model._subscriptionManager;
+            }
+            set
+            {
+                _model._subscriptionManager = value;
+                NotifyOfPropertyChange(() => SubscriptionManager);
+            }
+        }
         public AsyncTcpServerViewModel TcpAsyncServer
         {
             get
@@ -220,6 +232,7 @@
 
             //TcpAsyncServer = new AsyncTcpServerViewModel(11000, this);
             NetworkManager = new NetworkManagerViewModel(this);
+            SubscriptionManager = new SubscriptionManagerViewModel(this);
             ModuleManager = new ModuleManagerViewModel(this);
             Input = new InputViewModel(this);
             Science = new ScienceViewModel(this);
