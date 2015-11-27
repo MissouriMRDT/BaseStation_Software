@@ -112,6 +112,7 @@
     <Compile Include="Addons\GPSCoordinateToLongitudeConverter.cs" />
     <Compile Include="Addons\GPSCoordinateToLatitudeConverter.cs" />
     <Compile Include="Addons\RelayCommand.cs" />
+    <Compile Include="Addons\SubscriptionRecord.cs" />
     <Compile Include="Contexts\BarContext.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -138,6 +139,7 @@
     <Compile Include="Models\GPSModel.cs" />
     <Compile Include="Models\SensorModel.cs" />
     <Compile Include="Models\SettingsModel.cs" />
+    <Compile Include="Models\SubscriptionManagerModel.cs" />
     <Compile Include="Models\TcpConnectionModel.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Models\InputModel.cs" />
@@ -158,6 +160,7 @@
     <Compile Include="ViewModels\ControlCenter\ScienceViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\SensorCombinedViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\SensorViewModel.cs" />
+    <Compile Include="ViewModels\ControlCenter\SubscriptionManagerViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\TcpConnection.cs" />
     <Compile Include="ViewModels\ControlCenterViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\ModuleGridViewModel.cs" />
