@@ -161,6 +161,7 @@
     <Compile Include="ViewModels\ControlCenter\ScienceViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\SensorCombinedViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\SensorViewModel.cs" />
+    <Compile Include="ViewModels\ControlCenter\SequenceNumberManager.cs" />
     <Compile Include="ViewModels\ControlCenter\SubscriptionManagerViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\TcpConnection.cs" />
     <Compile Include="ViewModels\ControlCenterViewModel.cs" />
