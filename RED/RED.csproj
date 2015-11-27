@@ -130,6 +130,7 @@
     <Compile Include="Interfaces\INetworkEncoding.cs" />
     <Compile Include="Interfaces\INetworkTransportProtocol.cs" />
     <Compile Include="Interfaces\IProtocol.cs" />
+    <Compile Include="Interfaces\ISequenceNumberProvider.cs" />
     <Compile Include="Models\ArmControllerModeModel.cs" />
     <Compile Include="Models\DataRouterModel.cs" />
     <Compile Include="Models\AsyncTcpServerModel.cs" />
