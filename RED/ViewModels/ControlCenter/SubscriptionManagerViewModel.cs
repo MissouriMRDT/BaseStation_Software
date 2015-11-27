@@ -14,6 +14,7 @@ namespace RED.ViewModels.ControlCenter
     public class SubscriptionManagerViewModel
     {
         public const byte SubscriptionDataId = 2;
+        public const byte UnSubscribeDataId = 3;
 
         private SubscriptionManagerModel _model;
         private ControlCenterViewModel _cc;
@@ -46,7 +47,7 @@ namespace RED.ViewModels.ControlCenter
 
         public void Unsubscribe(byte dataId)
         {
-            _cc.NetworkManager.SendPacket(SubscriptionDataId, BitConverter.GetBytes(dataId), Subscriptions[dataId].HostIP);
+            _cc.NetworkManager.SendPacket(UnSubscribeDataId, BitConverter.GetBytes(dataId), Subscriptions[dataId].HostIP);
             Subscriptions[dataId].Status = SubscriptionStatus.Unsubscribed;
             Subscriptions[dataId].Timestamp = DateTime.Now;
         }
