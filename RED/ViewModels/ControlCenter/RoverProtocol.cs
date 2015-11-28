@@ -66,4 +66,18 @@ namespace RED.ViewModels.ControlCenter
             return rawData;
         }
     }
+
+    [Serializable]
+    public class SequenceNumberException : Exception
+    {
+        public readonly ushort OffendingSequenceNumber;
+        public SequenceNumberException() { }
+        public SequenceNumberException(string message) : base(message) { }
+        public SequenceNumberException(string message, Exception inner) : base(message, inner) { }
+        protected SequenceNumberException(
+          System.Runtime.Serialization.SerializationInfo info,
+          System.Runtime.Serialization.StreamingContext context)
+            : base(info, context) { }
+        public SequenceNumberException(ushort seqNum) : base() { }
+    }
 }
