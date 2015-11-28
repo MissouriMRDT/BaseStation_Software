@@ -28,7 +28,7 @@ namespace RED.ViewModels.ControlCenter
 
         public ushort IncrementValue(byte dataId)
         {
-            return Table.ContainsKey(dataId) ? Table[dataId]++ : Table[dataId] = 0;
+            return Table.ContainsKey(dataId) ? ++Table[dataId] : Table[dataId] = 0;
         }
 
         public bool UpdateNewer(byte dataId, ushort value)
