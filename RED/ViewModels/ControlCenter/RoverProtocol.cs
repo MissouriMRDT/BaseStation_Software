@@ -12,10 +12,11 @@ namespace RED.ViewModels.ControlCenter
     public class RoverProtocol : INetworkEncoding
     {
         public const byte VersionNumber = 1;
-        private const ushort TempSequenceNumber = 0;
+        private readonly ISequenceNumberProvider sequenceNumberProvider;
 
-        public RoverProtocol()
+        public RoverProtocol(ISequenceNumberProvider seqNumProvider)
         {
+            sequenceNumberProvider = seqNumProvider;
         }
 
         public byte[] EncodePacket(byte dataId, byte[] data)
@@ -27,7 +28,7 @@ namespace RED.ViewModels.ControlCenter
                     using (var bw = new BinaryWriter(ms))
                     {
                         bw.Write(VersionNumber);
-                        bw.Write(IPAddress.HostToNetworkOrder((short)TempSequenceNumber));
+                        bw.Write(IPAddress.HostToNetworkOrder((short)sequenceNumberProvider.IncrementValue(dataId)));
                         bw.Write(IPAddress.HostToNetworkOrder((short)(ushort)dataId));
                         bw.Write(IPAddress.HostToNetworkOrder((short)(ushort)data.Length));
                         bw.Write(data);
@@ -63,6 +64,8 @@ namespace RED.ViewModels.ControlCenter
             if (versionNumber != VersionNumber)
                 throw new InvalidDataException("Version number of packet is not supported.");
             dataId = (byte)rawDataId;
+            if (!sequenceNumberProvider.UpdateNewer(dataId, sequenceNumber))
+                throw new SequenceNumberException(sequenceNumber);
             return rawData;
         }
     }

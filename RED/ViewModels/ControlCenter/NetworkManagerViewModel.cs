@@ -20,13 +20,15 @@ namespace RED.ViewModels.ControlCenter
         private INetworkEncoding encoding;
         private INetworkTransportProtocol continuousDataSocket;
         private IIPAddressProvider ipAddressProvider;
+        private ISequenceNumberProvider sequenceNumberProvider;
 
         public NetworkManagerViewModel(ControlCenterViewModel cc)
         {
             _model = new NetworkManagerModel();
             _cc = cc;
 
-            encoding = new RoverProtocol();
+            sequenceNumberProvider = new SequenceNumberManager();
+            encoding = new RoverProtocol(sequenceNumberProvider);
             continuousDataSocket = new UDPEndpoint(DestinationPort, DestinationPort);
             ipAddressProvider = cc.MetadataManager;
 
@@ -43,9 +45,7 @@ namespace RED.ViewModels.ControlCenter
             while (true)
             {
                 byte[] buffer = await continuousDataSocket.ReceiveMessage();
-                byte dataId;
-                byte[] data = encoding.DecodePacket(buffer, out dataId);
-                _cc.DataRouter.Send(dataId, data);
+                ReceivePacket(buffer);
             }
         }
 
@@ -64,6 +64,20 @@ namespace RED.ViewModels.ControlCenter
             }
             byte[] packet = encoding.EncodePacket(dataId, data);
             await continuousDataSocket.SendMessage(destIP, packet);
+        }
+
+        private void ReceivePacket(byte[] buffer)
+        {
+            byte dataId = 0;
+            try
+            {
+                byte[] data = encoding.DecodePacket(buffer, out dataId);
+                _cc.DataRouter.Send(dataId, data);
+            }
+            catch (SequenceNumberException e)
+            {
+                _cc.Console.WriteToConsole("Packet recieved with invalid sequence number=" + e.OffendingSequenceNumber.ToString() + " DataId=" + dataId);
+            }
         }
     }
 }
