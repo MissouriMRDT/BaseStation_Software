@@ -95,8 +95,8 @@ namespace RED.ViewModels.ControlCenter
 
             #region Normalization of joystick input
             {
-                float CurrentRawControllerSpeedLeft = InputVM.JoyStick1Y;
-                float CurrentRawControllerSpeedRight = InputVM.JoyStick2Y;
+                float CurrentRawControllerSpeedLeft = InputVM.WheelsLeft;
+                float CurrentRawControllerSpeedRight = InputVM.WheelsRight;
 
                 //Scaling
                 if (ParabolicScaling) //Squares the value (0..1)
