@@ -12,9 +12,9 @@
     using System.Timers;
     using System.Threading.Tasks;
 
-    public class InputViewModel : PropertyChangedBase
+    public class XboxControllerInputViewModel : PropertyChangedBase, IInputDevice
     {
-        private readonly InputModel Model = new InputModel();
+        private readonly XboxControllerInputModel Model = new XboxControllerInputModel();
         private readonly ControlCenterViewModel _controlCenter;
         [CanBeNull]
         public readonly Controller ControllerOne = new Controller(UserIndex.One);
@@ -99,76 +99,76 @@
                 return !Connected ? "Disconnected" : "Connected";
             }
         }
-        public float JoyStick1X
+        public float WheelsLeft
         {
             get
             {
-                return Model.JoyStick1X;
+                return Model.WheelsLeft;
             }
             set
             {
-                Model.JoyStick1X = value;
-                NotifyOfPropertyChange(() => JoyStick1X);
+                Model.WheelsLeft = value;
+                NotifyOfPropertyChange(() => WheelsLeft);
             }
         }
-        public float JoyStick1Y
+        public float WheelsRight
         {
             get
             {
-                return Model.JoyStick1Y;
+                return Model.WheelsRight;
             }
             set
             {
-                Model.JoyStick1Y = value;
-                NotifyOfPropertyChange(() => JoyStick1Y);
+                Model.WheelsRight = value;
+                NotifyOfPropertyChange(() => WheelsRight);
             }
         }
-        public float JoyStick2X
+        public float ElbowBend
         {
             get
             {
-                return Model.JoyStick2X;
+                return Model.ElbowBend;
             }
             set
             {
-                Model.JoyStick2X = value;
-                NotifyOfPropertyChange(() => JoyStick2X);
+                Model.ElbowBend = value;
+                NotifyOfPropertyChange(() => ElbowBend);
             }
         }
-        public float JoyStick2Y
+        public float ElbowTwist
         {
             get
             {
-                return Model.JoyStick2Y;
+                return Model.ElbowTwist;
             }
             set
             {
-                Model.JoyStick2Y = value;
-                NotifyOfPropertyChange(() => JoyStick2Y);
+                Model.ElbowTwist = value;
+                NotifyOfPropertyChange(() => ElbowTwist);
             }
         }
-        public float LeftTrigger
+        public float GripperOpen
         {
             get
             {
-                return Model.LeftTrigger;
+                return Model.GripperOpen;
             }
             set
             {
-                Model.LeftTrigger = value;
-                NotifyOfPropertyChange(() => LeftTrigger);
+                Model.GripperOpen = value;
+                NotifyOfPropertyChange(() => GripperOpen);
             }
         }
-        public float RightTrigger
+        public float GripperClose
         {
             get
             {
-                return Model.RightTrigger;
+                return Model.GripperClose;
             }
             set
             {
-                Model.RightTrigger = value;
-                NotifyOfPropertyChange(() => RightTrigger);
+                Model.GripperClose = value;
+                NotifyOfPropertyChange(() => GripperClose);
             }
         }
         public bool ButtonA
@@ -184,69 +184,69 @@
                 NotifyOfPropertyChange(() => ButtonA);
             }
         }
-        public bool ButtonB
+        public bool ToolNext
         {
             get
             {
-                return Model.ButtonB;
+                return Model.ToolNext;
             }
             set
             {
-                DebouncedButtonB = !Model.ButtonB && value;
-                Model.ButtonB = value;
-                NotifyOfPropertyChange(() => ButtonB);
+                DebouncedToolNext = !Model.ToolNext && value;
+                Model.ToolNext = value;
+                NotifyOfPropertyChange(() => ToolNext);
             }
         }
-        public bool ButtonX
+        public bool ToolPrev
         {
             get
             {
-                return Model.ButtonX;
+                return Model.ToolPrev;
             }
             set
             {
-                DebouncedButtonX = !Model.ButtonX && value;
-                Model.ButtonX = value;
-                NotifyOfPropertyChange(() => ButtonX);
+                DebouncedToolPrev = !Model.ToolPrev && value;
+                Model.ToolPrev = value;
+                NotifyOfPropertyChange(() => ToolPrev);
             }
         }
-        public bool ButtonY
+        public bool ArmReset
         {
             get
             {
-                return Model.ButtonY;
+                return Model.ArmReset;
             }
             set
             {
-                DebouncedButtonY = !Model.ButtonY && value;
-                Model.ButtonY = value;
-                NotifyOfPropertyChange(() => ButtonY);
+                DebouncedArmReset = !Model.ArmReset && value;
+                Model.ArmReset = value;
+                NotifyOfPropertyChange(() => ArmReset);
             }
         }
-        public bool ButtonRb
+        public bool DrillClockwise
         {
             get
             {
-                return Model.ButtonRb;
+                return Model.DrillClockwise;
             }
             set
             {
-                DebouncedButtonRb = !Model.ButtonRb && value;
-                Model.ButtonRb = value;
-                NotifyOfPropertyChange(() => ButtonRb);
+                DebouncedDrillClockwise = !Model.DrillClockwise && value;
+                Model.DrillClockwise = value;
+                NotifyOfPropertyChange(() => DrillClockwise);
             }
         }
-        public bool ButtonLb
+        public bool DrillCounterClockwise
         {
             get
             {
-                return Model.ButtonLb;
+                return Model.DrillCounterClockwise;
             }
             set
             {
-                DebouncedButtonLb = !Model.ButtonLb && value;
-                Model.ButtonLb = value;
-                NotifyOfPropertyChange(() => ButtonLb);
+                DebouncedDrillCounterClockwise = !Model.DrillCounterClockwise && value;
+                Model.DrillCounterClockwise = value;
+                NotifyOfPropertyChange(() => DrillCounterClockwise);
             }
         }
         public bool ButtonRs
@@ -275,30 +275,30 @@
                 NotifyOfPropertyChange(() => ButtonLs);
             }
         }
-        public bool ButtonStart
+        public bool ModeNext
         {
             get
             {
-                return Model.ButtonStart;
+                return Model.ModeNext;
             }
             set
             {
-                DebouncedButtonStart = !Model.ButtonStart && value;
-                Model.ButtonStart = value;
-                NotifyOfPropertyChange(() => ButtonStart);
+                DebouncedModeNext = !Model.ModeNext && value;
+                Model.ModeNext = value;
+                NotifyOfPropertyChange(() => ModeNext);
             }
         }
-        public bool ButtonBack
+        public bool ModePrev
         {
             get
             {
-                return Model.ButtonBack;
+                return Model.ModePrev;
             }
             set
             {
-                DebouncedButtonBack = !Model.ButtonBack && value;
-                Model.ButtonBack = value;
-                NotifyOfPropertyChange(() => ButtonBack);
+                DebouncedModePrev = !Model.ModePrev && value;
+                Model.ModePrev = value;
+                NotifyOfPropertyChange(() => ModePrev);
             }
         }
         public bool DebouncedButtonA
@@ -313,65 +313,65 @@
                 NotifyOfPropertyChange(() => DebouncedButtonA);
             }
         }
-        public bool DebouncedButtonB
+        public bool DebouncedToolNext
         {
             get
             {
-                return Model.ButtonBDebounced;
+                return Model.ToolNextDebounced;
             }
             set
             {
-                Model.ButtonBDebounced = value;
-                NotifyOfPropertyChange(() => DebouncedButtonB);
+                Model.ToolNextDebounced = value;
+                NotifyOfPropertyChange(() => DebouncedToolNext);
             }
         }
-        public bool DebouncedButtonX
+        public bool DebouncedToolPrev
         {
             get
             {
-                return Model.ButtonXDebounced;
+                return Model.ToolPrevDebounced;
             }
             set
             {
-                Model.ButtonXDebounced = value;
-                NotifyOfPropertyChange(() => DebouncedButtonX);
+                Model.ToolPrevDebounced = value;
+                NotifyOfPropertyChange(() => DebouncedToolPrev);
             }
         }
-        public bool DebouncedButtonY
+        public bool DebouncedArmReset
         {
             get
             {
-                return Model.ButtonYDebounced;
+                return Model.ArmResetDebounced;
             }
             set
             {
-                Model.ButtonYDebounced = value;
-                NotifyOfPropertyChange(() => DebouncedButtonY);
+                Model.ArmResetDebounced = value;
+                NotifyOfPropertyChange(() => DebouncedArmReset);
 
             }
         }
-        public bool DebouncedButtonRb
+        public bool DebouncedDrillClockwise
         {
             get
             {
-                return Model.ButtonRbDebounced;
+                return Model.DrillClockwiseDebounced;
             }
             set
             {
-                Model.ButtonRbDebounced = value;
-                NotifyOfPropertyChange(() => DebouncedButtonRb);
+                Model.DrillClockwiseDebounced = value;
+                NotifyOfPropertyChange(() => DebouncedDrillClockwise);
             }
         }
-        public bool DebouncedButtonLb
+        public bool DebouncedDrillCounterClockwise
         {
             get
             {
-                return Model.ButtonLbDebounced;
+                return Model.DrillCounterClockwiseDebounced;
             }
             set
             {
-                Model.ButtonLbDebounced = value;
-                NotifyOfPropertyChange(() => DebouncedButtonLb);
+                Model.DrillCounterClockwiseDebounced = value;
+                NotifyOfPropertyChange(() => DebouncedDrillCounterClockwise);
             }
         }
         public bool DebouncedButtonRs
@@ -398,83 +398,83 @@
                 NotifyOfPropertyChange(() => DebouncedButtonLs);
             }
         }
-        public bool DebouncedButtonStart
+        public bool DebouncedModeNext
         {
             get
             {
-                return Model.ButtonStartDebounced;
+                return Model.ModeNextDebounced;
             }
             set
             {
                 if (value) NextControlMode();
-                Model.ButtonStartDebounced = value;
-                NotifyOfPropertyChange(() => DebouncedButtonStart);
+                Model.ModeNextDebounced = value;
+                NotifyOfPropertyChange(() => DebouncedModeNext);
             }
         }
-        public bool DebouncedButtonBack
+        public bool DebouncedModePrev
         {
             get
             {
-                return Model.ButtonBackDebounced;
+                return Model.ModePrevDebounced;
             }
             set
             {
                 if (value) PreviousControlMode();
-                Model.ButtonBackDebounced = value;
-                NotifyOfPropertyChange(() => DebouncedButtonBack);
+                Model.ModePrevDebounced = value;
+                NotifyOfPropertyChange(() => DebouncedModePrev);
             }
         }
-        public bool DPadL
+        public bool BaseCounterClockwise
         {
             get
             {
-                return Model.DPadL;
+                return Model.BaseCounterClockwise;
             }
             set
             {
-                Model.DPadL = value;
-                NotifyOfPropertyChange(() => DPadL);
+                Model.BaseCounterClockwise = value;
+                NotifyOfPropertyChange(() => BaseCounterClockwise);
             }
         }
-        public bool DPadU
+        public bool ActuatorForward
         {
             get
             {
-                return Model.DPadU;
+                return Model.ActuatorForward;
             }
             set
             {
-                Model.DPadU = value;
-                NotifyOfPropertyChange(() => DPadU);
+                Model.ActuatorForward = value;
+                NotifyOfPropertyChange(() => ActuatorForward);
             }
         }
-        public bool DPadR
+        public bool BaseClockwise
         {
             get
             {
-                return Model.DPadR;
+                return Model.BaseClockwise;
             }
             set
             {
-                Model.DPadR = value;
-                NotifyOfPropertyChange(() => DPadR);
+                Model.BaseClockwise = value;
+                NotifyOfPropertyChange(() => BaseClockwise);
             }
         }
-        public bool DPadD
+        public bool ActuatorBackward
         {
             get
             {
-                return Model.DPadD;
+                return Model.ActuatorBackward;
             }
             set
             {
-                Model.DPadD = value;
-                NotifyOfPropertyChange(() => DPadD);
+                Model.ActuatorBackward = value;
+                NotifyOfPropertyChange(() => ActuatorBackward);
             }
         }
         #endregion
 
-        public InputViewModel(ControlCenterViewModel cc)
+        public XboxControllerInputViewModel(ControlCenterViewModel cc)
         {
             _controlCenter = cc;
 
@@ -518,27 +518,27 @@
             Connected = true;
 
             var deadzone = AutoDeadzone ? Math.Max(Gamepad.LeftThumbDeadZone, Gamepad.RightThumbDeadZone) : ManualDeadzone;
-            JoyStick1X = currentGamepad.LeftThumbX < deadzone && currentGamepad.LeftThumbX > -deadzone ? 0 : ((currentGamepad.LeftThumbX + (currentGamepad.LeftThumbX < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
-            JoyStick1Y = currentGamepad.LeftThumbY < deadzone && currentGamepad.LeftThumbY > -deadzone ? 0 : ((currentGamepad.LeftThumbY + (currentGamepad.LeftThumbY < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
-            JoyStick2X = currentGamepad.RightThumbX < deadzone && currentGamepad.RightThumbX > -deadzone ? 0 : ((currentGamepad.RightThumbX + (currentGamepad.RightThumbX < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
-            JoyStick2Y = currentGamepad.RightThumbY < deadzone && currentGamepad.RightThumbY > -deadzone ? 0 : ((currentGamepad.RightThumbY + (currentGamepad.RightThumbY < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
+            WheelsLeft = currentGamepad.LeftThumbX < deadzone && currentGamepad.LeftThumbX > -deadzone ? 0 : ((currentGamepad.LeftThumbX + (currentGamepad.LeftThumbX < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
+            WheelsRight = currentGamepad.LeftThumbY < deadzone && currentGamepad.LeftThumbY > -deadzone ? 0 : ((currentGamepad.LeftThumbY + (currentGamepad.LeftThumbY < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
+            ElbowBend = currentGamepad.RightThumbX < deadzone && currentGamepad.RightThumbX > -deadzone ? 0 : ((currentGamepad.RightThumbX + (currentGamepad.RightThumbX < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
+            ElbowTwist = currentGamepad.RightThumbY < deadzone && currentGamepad.RightThumbY > -deadzone ? 0 : ((currentGamepad.RightThumbY + (currentGamepad.RightThumbY < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
 
-            LeftTrigger = (float)currentGamepad.LeftTrigger / 255;
-            RightTrigger = (float)currentGamepad.RightTrigger / 255;
+            GripperOpen = (float)currentGamepad.LeftTrigger / 255;
+            GripperClose = (float)currentGamepad.RightTrigger / 255;
             ButtonA = (currentGamepad.Buttons & GamepadButtonFlags.A) != 0;
-            ButtonB = (currentGamepad.Buttons & GamepadButtonFlags.B) != 0;
-            ButtonX = (currentGamepad.Buttons & GamepadButtonFlags.X) != 0;
-            ButtonY = (currentGamepad.Buttons & GamepadButtonFlags.Y) != 0;
-            ButtonLb = (currentGamepad.Buttons & GamepadButtonFlags.LeftShoulder) != 0;
-            ButtonRb = (currentGamepad.Buttons & GamepadButtonFlags.RightShoulder) != 0;
+            ToolNext = (currentGamepad.Buttons & GamepadButtonFlags.B) != 0;
+            ToolPrev = (currentGamepad.Buttons & GamepadButtonFlags.X) != 0;
+            ArmReset = (currentGamepad.Buttons & GamepadButtonFlags.Y) != 0;
+            DrillCounterClockwise = (currentGamepad.Buttons & GamepadButtonFlags.LeftShoulder) != 0;
+            DrillClockwise = (currentGamepad.Buttons & GamepadButtonFlags.RightShoulder) != 0;
             ButtonLs = (currentGamepad.Buttons & GamepadButtonFlags.LeftThumb) != 0;
             ButtonRs = (currentGamepad.Buttons & GamepadButtonFlags.RightThumb) != 0;
-            ButtonStart = (currentGamepad.Buttons & GamepadButtonFlags.Start) != 0;
-            ButtonBack = (currentGamepad.Buttons & GamepadButtonFlags.Back) != 0;
-            DPadL = (currentGamepad.Buttons & GamepadButtonFlags.DPadLeft) != 0;
-            DPadU = (currentGamepad.Buttons & GamepadButtonFlags.DPadUp) != 0;
-            DPadR = (currentGamepad.Buttons & GamepadButtonFlags.DPadRight) != 0;
-            DPadD = (currentGamepad.Buttons & GamepadButtonFlags.DPadDown) != 0;
+            ModeNext = (currentGamepad.Buttons & GamepadButtonFlags.Start) != 0;
+            ModePrev = (currentGamepad.Buttons & GamepadButtonFlags.Back) != 0;
+            BaseCounterClockwise = (currentGamepad.Buttons & GamepadButtonFlags.DPadLeft) != 0;
+            ActuatorForward = (currentGamepad.Buttons & GamepadButtonFlags.DPadUp) != 0;
+            BaseClockwise = (currentGamepad.Buttons & GamepadButtonFlags.DPadRight) != 0;
+            ActuatorBackward = (currentGamepad.Buttons & GamepadButtonFlags.DPadDown) != 0;
         }
 
         private void EvaluateCurrentMode()

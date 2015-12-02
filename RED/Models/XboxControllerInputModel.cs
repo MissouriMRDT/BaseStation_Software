@@ -32,15 +32,15 @@ namespace RED.Models
         internal bool ModeNext; // ButtonStart
         internal bool ModePrev; // ButtonBack
         internal bool ButtonADebounced; // Unused
-        internal bool ButtonBDebounced; // Unused
-        internal bool ButtonXDebounced; // Unused
-        internal bool ButtonYDebounced; // Unused
-        internal bool ButtonRbDebounced; // Unused
-        internal bool ButtonLbDebounced; // Unused
+        internal bool ToolNextDebounced; // Unused
+        internal bool ToolPrevDebounced; // Unused
+        internal bool ArmResetDebounced; // Unused
+        internal bool DrillClockwiseDebounced; // Unused
+        internal bool DrillCounterClockwiseDebounced; // Unused
         internal bool ButtonLsDebounced; // Unused
         internal bool ButtonRsDebounced; // Unused
-        internal bool ButtonStartDebounced; // Unused
-        internal bool ButtonBackDebounced; // Unused
+        internal bool ModeNextDebounced; // Unused
+        internal bool ModePrevDebounced; // Unused
         internal bool BaseCounterClockwise; // DPadL
         internal bool BaseClockwise; // DPadR
         internal bool ActuatorForward; // DPadU
