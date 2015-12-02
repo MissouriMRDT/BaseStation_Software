@@ -2,6 +2,7 @@
 {
     using ViewModels;
     using ViewModels.ControlCenter;
+    using Interfaces;
 
     public class ControlCenterModel
     {
@@ -16,7 +17,7 @@
         internal DataRouter _dataRouter;
         internal MetadataManager _metadataManager;
         internal AsyncTcpServerViewModel _tcpAsyncServer;
-        internal InputViewModel _input;
+        internal IInputDevice _input;
         internal ScienceViewModel _science;
         internal GPSViewModel _GPS;
         internal SensorViewModel _sensor;

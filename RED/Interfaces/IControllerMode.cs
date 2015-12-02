@@ -5,7 +5,7 @@ namespace RED.Interfaces
     public interface IControllerMode
     {
         string Name { get; set; }
-        InputViewModel InputVM { get; set; }
+        IInputDevice InputVM { get; set; }
 
         void EnterMode();
         void EvaluateMode();

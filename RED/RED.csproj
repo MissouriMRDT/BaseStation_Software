@@ -147,7 +147,7 @@
     <Compile Include="ViewModels\ControlCenter\AsyncTcpServer.cs" />
     <Compile Include="ViewModels\ControlCenter\DriveControllerModeViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\GPSViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\InputViewModel.cs" />
+    <Compile Include="ViewModels\ControlCenter\XboxControllerInputViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\MetadataManager.cs" />
     <Compile Include="ViewModels\ControlCenter\RoverConnection.cs" />
     <Compile Include="ViewModels\ControlCenter\ScienceViewModel.cs" />
