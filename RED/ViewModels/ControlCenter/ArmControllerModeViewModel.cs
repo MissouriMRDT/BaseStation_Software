@@ -116,21 +116,23 @@ namespace RED.ViewModels.ControlCenter
                         _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(0));
                     break;
                 case EndEffectorModes.Drill:
-                    int drillCmd, actCmd;
+                    int drillCmd; //, actCmd;
                     if (InputVM.DrillClockwise)
                         drillCmd = (int)DrillCommands.Forward;
                     else if (InputVM.DrillCounterClockwise)
                         drillCmd = (int)DrillCommands.Reverse;
                     else
                         drillCmd = (int)DrillCommands.Stop;
+                    /*
                     if (InputVM.RightTrigger > 0)
                         actCmd = (int)DrillCommands.Forward;
                     else if (InputVM.LeftTrigger > 0)
                         actCmd = (int)DrillCommands.Reverse;
                     else
                         actCmd = (int)DrillCommands.Stop;
+                    */
 
-                    byte drillActCombinedCmd8Bit = (byte)(actCmd << 4 | drillCmd);
+                    byte drillActCombinedCmd8Bit = (byte)(/*actCmd << 4 | */drillCmd);
                     var drillpacket = new byte[4] { drillActCombinedCmd8Bit, drillActCombinedCmd8Bit, drillActCombinedCmd8Bit, drillActCombinedCmd8Bit };
                     //Int16 drillActCombinedCmd16Bit = (Int16)(drillActCombinedCmd8Bit << 8 | drillActCombinedCmd8Bit);
                     //var drillpacket = new Int16[2] { drillActCombinedCmd16Bit, drillActCombinedCmd16Bit };
