@@ -543,6 +543,7 @@
 
         private void EvaluateCurrentMode()
         {
+            if (ControllerOne != null && !ControllerOne.IsConnected) return;
             ControllerModes[CurrentModeIndex].EvaluateMode();
         }
     }

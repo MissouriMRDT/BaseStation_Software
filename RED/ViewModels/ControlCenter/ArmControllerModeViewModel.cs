@@ -54,9 +54,6 @@ namespace RED.ViewModels.ControlCenter
 
         public void EvaluateMode()
         {
-            Controller c = InputVM.ControllerOne;
-            if (c != null && !c.IsConnected) return;
-
             if (InputVM.DebouncedArmReset)
             {
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmStop"), (Int16)(0));

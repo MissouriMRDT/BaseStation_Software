@@ -87,9 +87,6 @@ namespace RED.ViewModels.ControlCenter
 
         public void EvaluateMode()
         {
-            Controller c = InputVM.ControllerOne;
-            if (c != null && !c.IsConnected) return;
-
             int newSpeedLeft;
             int newSpeedRight;
 
