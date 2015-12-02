@@ -15,10 +15,12 @@ namespace RED.Models
         internal bool Connected;
         internal string ConnectionStatus = "Disconnected";
 
-        internal float WheelsLeft; // JoyStick1X
-        internal float WheelsRight; // JoyStick1Y
-        internal float ElbowBend; // JoyStick2X
-        internal float ElbowTwist; // JoyStick2Y
+        internal float WheelsLeft; // JoyStick1Y
+        internal float WheelsRight; // JoyStick2Y
+        internal float ElbowBend; // JoyStick1Y
+        internal float ElbowTwist; // JoyStick1X
+        internal float WristBend; // JoyStick2Y
+        internal float WristTwist; // JoyStick2X
         internal float GripperOpen; // LeftTrigger
         internal float GripperClose; // RightTrigger
         internal bool ButtonA; // Unused

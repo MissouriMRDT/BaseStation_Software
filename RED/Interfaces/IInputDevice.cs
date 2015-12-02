@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RED.Interfaces
 {
-    interface IInputDevice
+    public interface IInputDevice
     {
         bool ModeNext { get; set; }
         bool ModePrev { get; set; }
