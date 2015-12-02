@@ -18,8 +18,11 @@ namespace RED.Interfaces
         bool ActuatorForward { get; set; }
         bool ActuatorBackward { get; set; }
         bool ArmReset { get; set; }
+        bool DebouncedArmReset { get; set; }
         bool ToolNext { get; set; }
+        bool DebouncedToolNext { get; set; }
         bool ToolPrev { get; set; }
+        bool DebouncedToolPrev { get; set; }
         float WheelsLeft { get; set; }
         float WheelsRight { get; set; }
         float WristBend { get; set; }
