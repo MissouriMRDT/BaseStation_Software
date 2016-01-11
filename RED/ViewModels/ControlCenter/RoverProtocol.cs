@@ -54,6 +54,9 @@ namespace RED.ViewModels.ControlCenter
                 using (var br = new BinaryReader(ms))
                 {
                     versionNumber = br.ReadByte();
+                    if (versionNumber != VersionNumber)
+                        throw new InvalidDataException("Version number of packet is not supported.");
+
                     rawSequenceNumber = (ushort)IPAddress.NetworkToHostOrder((short)br.ReadUInt16());
                     rawFlags = (RoveCommFlags)br.ReadByte();
                     rawDataId = (ushort)IPAddress.NetworkToHostOrder((short)br.ReadUInt16());
@@ -62,8 +65,6 @@ namespace RED.ViewModels.ControlCenter
                 }
             }
 
-            if (versionNumber != VersionNumber)
-                throw new InvalidDataException("Version number of packet is not supported.");
             dataId = (byte)rawDataId;
             seqNum = rawSequenceNumber;
             requiresACK = (rawFlags & RoveCommFlags.ACK) != RoveCommFlags.None;
