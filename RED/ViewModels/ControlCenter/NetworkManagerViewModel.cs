@@ -109,6 +109,8 @@ namespace RED.ViewModels.ControlCenter
                 _cc.Console.WriteToConsole("Packet recieved with invalid sequence number=" + seqNum.ToString() + " DataId=" + dataId);
                 return;
             }
+            if (needsACK)
+                SendAck(srcIP, dataId, seqNum);
             InterpretDataId(srcIP, data, dataId, seqNum);
         }
 
@@ -138,6 +140,14 @@ namespace RED.ViewModels.ControlCenter
                     _cc.DataRouter.Send(dataId, data);
                     break;
             }
+        }
+
+        private void SendAck(IPAddress srcIP, byte dataId, ushort seqNum)
+        {
+            byte[] ackedId = BitConverter.GetBytes(IPAddress.NetworkToHostOrder((ushort)dataId));
+            byte[] ackedSeqNum = BitConverter.GetBytes(IPAddress.NetworkToHostOrder(seqNum));
+            byte[] data = new byte[4]; data.CopyTo(ackedId, 0); data.CopyTo(ackedSeqNum, ackedId.Length);
+            SendPacket((byte)SystemDataId.ACK, data, srcIP, false);
         }
 
         private enum SystemDataId : ushort
