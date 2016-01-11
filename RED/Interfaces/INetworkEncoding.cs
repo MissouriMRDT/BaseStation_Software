@@ -8,7 +8,7 @@ namespace RED.Interfaces
 {
     public interface INetworkEncoding
     {
-        byte[] EncodePacket(byte dataId, byte[] data);
-        byte[] DecodePacket(byte[] data, out byte dataId);
+        byte[] EncodePacket(byte dataId, byte[] data, ushort seqNum);
+        byte[] DecodePacket(byte[] data, out byte dataId, out ushort seqNum);
     }
 }

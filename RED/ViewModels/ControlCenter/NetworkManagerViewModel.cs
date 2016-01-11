@@ -28,7 +28,7 @@ namespace RED.ViewModels.ControlCenter
             _cc = cc;
 
             sequenceNumberProvider = new SequenceNumberManager();
-            encoding = new RoverProtocol(sequenceNumberProvider);
+            encoding = new RoverProtocol();
             continuousDataSocket = new UDPEndpoint(DestinationPort, DestinationPort);
             ipAddressProvider = cc.MetadataManager;
 
@@ -62,22 +62,22 @@ namespace RED.ViewModels.ControlCenter
                 _cc.Console.WriteToConsole("Attempted to send packet with unknown IP address. DataId=" + dataId.ToString());
                 return;
             }
-            byte[] packet = encoding.EncodePacket(dataId, data);
+            ushort seqNum = sequenceNumberProvider.IncrementValue(dataId);
+            byte[] packet = encoding.EncodePacket(dataId, data, seqNum);
             await continuousDataSocket.SendMessage(destIP, packet);
         }
 
         private void ReceivePacket(byte[] buffer)
         {
             byte dataId = 0;
-            try
+            ushort seqNum;
+            byte[] data = encoding.DecodePacket(buffer, out dataId, out seqNum);
+            if (!sequenceNumberProvider.UpdateNewer(dataId, seqNum))
             {
-                byte[] data = encoding.DecodePacket(buffer, out dataId);
-                _cc.DataRouter.Send(dataId, data);
+                _cc.Console.WriteToConsole("Packet recieved with invalid sequence number=" + seqNum.ToString() + " DataId=" + dataId);
+                return;
             }
-            catch (SequenceNumberException e)
-            {
-                _cc.Console.WriteToConsole("Packet recieved with invalid sequence number=" + e.OffendingSequenceNumber.ToString() + " DataId=" + dataId);
-            }
+            _cc.DataRouter.Send(dataId, data);
         }
     }
 }

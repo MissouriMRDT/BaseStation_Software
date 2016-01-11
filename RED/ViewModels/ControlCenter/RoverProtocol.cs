@@ -12,14 +12,11 @@ namespace RED.ViewModels.ControlCenter
     public class RoverProtocol : INetworkEncoding
     {
         public const byte VersionNumber = 1;
-        private readonly ISequenceNumberProvider sequenceNumberProvider;
 
-        public RoverProtocol(ISequenceNumberProvider seqNumProvider)
-        {
-            sequenceNumberProvider = seqNumProvider;
-        }
+        public RoverProtocol()
+        { }
 
-        public byte[] EncodePacket(byte dataId, byte[] data)
+        public byte[] EncodePacket(byte dataId, byte[] data, ushort seqNum)
         {
             try
             {
@@ -28,7 +25,7 @@ namespace RED.ViewModels.ControlCenter
                     using (var bw = new BinaryWriter(ms))
                     {
                         bw.Write(VersionNumber);
-                        bw.Write(IPAddress.HostToNetworkOrder((short)sequenceNumberProvider.IncrementValue(dataId)));
+                        bw.Write(IPAddress.HostToNetworkOrder((short)seqNum));
                         bw.Write(IPAddress.HostToNetworkOrder((short)(ushort)dataId));
                         bw.Write(IPAddress.HostToNetworkOrder((short)(ushort)data.Length));
                         bw.Write(data);
@@ -42,10 +39,10 @@ namespace RED.ViewModels.ControlCenter
             }
         }
 
-        public byte[] DecodePacket(byte[] data, out byte dataId)
+        public byte[] DecodePacket(byte[] data, out byte dataId, out ushort seqNum)
         {
             byte versionNumber;
-            ushort sequenceNumber;
+            ushort rawSequenceNumber;
             ushort rawDataId;
             byte[] rawData;
 
@@ -54,7 +51,7 @@ namespace RED.ViewModels.ControlCenter
                 using (var br = new BinaryReader(ms))
                 {
                     versionNumber = br.ReadByte();
-                    sequenceNumber = (ushort)IPAddress.NetworkToHostOrder((short)br.ReadUInt16());
+                    rawSequenceNumber = (ushort)IPAddress.NetworkToHostOrder((short)br.ReadUInt16());
                     rawDataId = (ushort)IPAddress.NetworkToHostOrder((short)br.ReadUInt16());
                     ushort dataLength = (ushort)IPAddress.NetworkToHostOrder((short)br.ReadUInt16());
                     rawData = br.ReadBytes(dataLength);
@@ -64,23 +61,8 @@ namespace RED.ViewModels.ControlCenter
             if (versionNumber != VersionNumber)
                 throw new InvalidDataException("Version number of packet is not supported.");
             dataId = (byte)rawDataId;
-            if (!sequenceNumberProvider.UpdateNewer(dataId, sequenceNumber))
-                throw new SequenceNumberException(sequenceNumber);
+            seqNum = rawSequenceNumber;
             return rawData;
         }
-    }
-
-    [Serializable]
-    public class SequenceNumberException : Exception
-    {
-        public readonly ushort OffendingSequenceNumber;
-        public SequenceNumberException() { }
-        public SequenceNumberException(string message) : base(message) { }
-        public SequenceNumberException(string message, Exception inner) : base(message, inner) { }
-        protected SequenceNumberException(
-          System.Runtime.Serialization.SerializationInfo info,
-          System.Runtime.Serialization.StreamingContext context)
-            : base(info, context) { }
-        public SequenceNumberException(ushort seqNum) : base() { }
     }
 }
