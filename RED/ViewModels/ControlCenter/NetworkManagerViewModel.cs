@@ -70,7 +70,7 @@ namespace RED.ViewModels.ControlCenter
             }
 
             ushort seqNum = sequenceNumberProvider.IncrementValue(dataId);
-            byte[] packetData = encoding.EncodePacket(dataId, data, seqNum);
+            byte[] packetData = encoding.EncodePacket(dataId, data, seqNum, isReliable);
 
             if (isReliable)
                 SendPacketReliable(destIP, packetData, dataId, seqNum);
@@ -102,7 +102,8 @@ namespace RED.ViewModels.ControlCenter
         {
             byte dataId;
             ushort seqNum;
-            byte[] data = encoding.DecodePacket(buffer, out dataId, out seqNum);
+            bool needsACK;
+            byte[] data = encoding.DecodePacket(buffer, out dataId, out seqNum, out needsACK);
             if (!sequenceNumberProvider.UpdateNewer(dataId, seqNum))
             {
                 _cc.Console.WriteToConsole("Packet recieved with invalid sequence number=" + seqNum.ToString() + " DataId=" + dataId);

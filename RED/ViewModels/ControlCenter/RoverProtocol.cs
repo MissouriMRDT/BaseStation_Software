@@ -16,16 +16,18 @@ namespace RED.ViewModels.ControlCenter
         public RoverProtocol()
         { }
 
-        public byte[] EncodePacket(byte dataId, byte[] data, ushort seqNum)
+        public byte[] EncodePacket(byte dataId, byte[] data, ushort seqNum, bool requireACK)
         {
             try
             {
+                var flags = (requireACK) ? RoveCommFlags.ACK : RoveCommFlags.None;
                 using (var ms = new MemoryStream())
                 {
                     using (var bw = new BinaryWriter(ms))
                     {
                         bw.Write(VersionNumber);
                         bw.Write(IPAddress.HostToNetworkOrder((short)seqNum));
+                        bw.Write((byte)flags);
                         bw.Write(IPAddress.HostToNetworkOrder((short)(ushort)dataId));
                         bw.Write(IPAddress.HostToNetworkOrder((short)(ushort)data.Length));
                         bw.Write(data);
@@ -39,10 +41,11 @@ namespace RED.ViewModels.ControlCenter
             }
         }
 
-        public byte[] DecodePacket(byte[] data, out byte dataId, out ushort seqNum)
+        public byte[] DecodePacket(byte[] data, out byte dataId, out ushort seqNum, out bool requiresACK)
         {
             byte versionNumber;
             ushort rawSequenceNumber;
+            RoveCommFlags rawFlags;
             ushort rawDataId;
             byte[] rawData;
 
@@ -52,6 +55,7 @@ namespace RED.ViewModels.ControlCenter
                 {
                     versionNumber = br.ReadByte();
                     rawSequenceNumber = (ushort)IPAddress.NetworkToHostOrder((short)br.ReadUInt16());
+                    rawFlags = (RoveCommFlags)br.ReadByte();
                     rawDataId = (ushort)IPAddress.NetworkToHostOrder((short)br.ReadUInt16());
                     ushort dataLength = (ushort)IPAddress.NetworkToHostOrder((short)br.ReadUInt16());
                     rawData = br.ReadBytes(dataLength);
@@ -62,7 +66,15 @@ namespace RED.ViewModels.ControlCenter
                 throw new InvalidDataException("Version number of packet is not supported.");
             dataId = (byte)rawDataId;
             seqNum = rawSequenceNumber;
+            requiresACK = (rawFlags & RoveCommFlags.ACK) != RoveCommFlags.None;
             return rawData;
+        }
+
+        [Flags]
+        private enum RoveCommFlags : byte
+        {
+            None = 0,
+            ACK = 1
         }
     }
 }
