@@ -41,13 +41,13 @@ namespace RED.ViewModels.ControlCenter
         public void Subscribe(byte dataId)
         {
             var ip = ipProvider.GetIPAddress(dataId);
-            _cc.NetworkManager.SendPacket(SubscriptionDataId, BitConverter.GetBytes(dataId), ip);
+            _cc.NetworkManager.SendPacket(SubscriptionDataId, BitConverter.GetBytes(dataId), ip, true);
             Subscriptions.Add(dataId, new SubscriptionRecord(SubscriptionStatus.Subscribed, ip, DateTime.Now));
         }
 
         public void Unsubscribe(byte dataId)
         {
-            _cc.NetworkManager.SendPacket(UnSubscribeDataId, BitConverter.GetBytes(dataId), Subscriptions[dataId].HostIP);
+            _cc.NetworkManager.SendPacket(UnSubscribeDataId, BitConverter.GetBytes(dataId), Subscriptions[dataId].HostIP, true);
             Subscriptions[dataId].Status = SubscriptionStatus.Unsubscribed;
             Subscriptions[dataId].Timestamp = DateTime.Now;
         }
@@ -55,7 +55,7 @@ namespace RED.ViewModels.ControlCenter
         public void Resubscribe(byte dataId)
         {
             var ip = ipProvider.GetIPAddress(dataId);
-            _cc.NetworkManager.SendPacket(SubscriptionDataId, BitConverter.GetBytes(dataId), ip);
+            _cc.NetworkManager.SendPacket(SubscriptionDataId, BitConverter.GetBytes(dataId), ip, true);
             Subscriptions[dataId].Timestamp = DateTime.Now;
         }
 
