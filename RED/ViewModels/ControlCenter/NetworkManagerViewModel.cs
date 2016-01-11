@@ -51,14 +51,14 @@ namespace RED.ViewModels.ControlCenter
             while (true)
             {
                 byte[] buffer = await continuousDataSocket.ReceiveMessage();
-                ReceivePacket(buffer);
+                ReceivePacket(IPAddress.None, buffer);
             }
         }
 
         public void ReceiveFromRouter(byte dataId, byte[] data)
         {
             IPAddress destIP = ipAddressProvider.GetIPAddress(dataId);
-            SendPacket(dataId, data, destIP);
+            SendPacket(dataId, data, destIP, defaultReliable);
         }
 
         public void SendPacket(byte dataId, byte[] data, IPAddress destIP, bool isReliable)
@@ -98,9 +98,9 @@ namespace RED.ViewModels.ControlCenter
             _cc.Console.WriteToConsole("No ACK recieved for reliable packet with DataId=" + packetInfo.DataId.ToString() + " and SeqNum=" + packetInfo.SeqNum.ToString() + " after " + ReliableMaxRetries + " retries.");
         }
 
-        private void ReceivePacket(byte[] buffer)
+        private void ReceivePacket(IPAddress srcIP, byte[] buffer)
         {
-            byte dataId = 0;
+            byte dataId;
             ushort seqNum;
             byte[] data = encoding.DecodePacket(buffer, out dataId, out seqNum);
             if (!sequenceNumberProvider.UpdateNewer(dataId, seqNum))
@@ -108,7 +108,46 @@ namespace RED.ViewModels.ControlCenter
                 _cc.Console.WriteToConsole("Packet recieved with invalid sequence number=" + seqNum.ToString() + " DataId=" + dataId);
                 return;
             }
-            _cc.DataRouter.Send(dataId, data);
+            InterpretDataId(srcIP, data, dataId, seqNum);
+        }
+
+        private void InterpretDataId(IPAddress srcIP, byte[] data, byte dataId, ushort seqNum)
+        {
+            switch ((SystemDataId)dataId)
+            {
+                case SystemDataId.Null:
+                    _cc.Console.WriteToConsole("Packet recieved with null dataId.");
+                    break;
+                case SystemDataId.Ping:
+                    SendPacket((byte)SystemDataId.PingReply, BitConverter.GetBytes(IPAddress.HostToNetworkOrder(seqNum)), srcIP, false);
+                    break;
+                case SystemDataId.Subscribe:
+                    _cc.Console.WriteToConsole("Packet recieved requesting subscription to dataId=" + dataId.ToString());
+                    break;
+                case SystemDataId.Unsubscribe:
+                    _cc.Console.WriteToConsole("Packet recieved requesting unsubscription from dataId=" + dataId.ToString());
+                    break;
+                case SystemDataId.ACK:
+                    byte ackedId = (byte)IPAddress.NetworkToHostOrder(BitConverter.ToUInt16(data, 0));
+                    ushort ackedSeqNum = (ushort)IPAddress.NetworkToHostOrder(BitConverter.ToUInt16(data, 2));
+                    if (!OutgoingUnACKed.Remove(new UnACKedPacket { DataId = dataId, SeqNum = seqNum }))
+                        _cc.Console.WriteToConsole("Unexected ACK recieved from ip=??? with dataId=" + ackedId.ToString() + " and seqNum=" + ackedSeqNum.ToString() + ".");
+                    break;
+                default: //Regular DataId
+                    _cc.DataRouter.Send(dataId, data);
+                    break;
+            }
+        }
+
+        private enum SystemDataId : ushort
+        {
+            Null = 0,
+            Ping = 1,
+            PingReply = 2,
+            Subscribe = 3,
+            Unsubscribe = 4,
+            ForceUnsubscribe = 5,
+            ACK = 6
         }
 
         private struct UnACKedPacket { public byte DataId; public ushort SeqNum;}
