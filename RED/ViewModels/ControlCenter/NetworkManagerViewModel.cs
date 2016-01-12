@@ -122,7 +122,7 @@ namespace RED.ViewModels.ControlCenter
                     _cc.Console.WriteToConsole("Packet recieved with null dataId.");
                     break;
                 case SystemDataId.Ping:
-                    SendPacket((byte)SystemDataId.PingReply, BitConverter.GetBytes(IPAddress.HostToNetworkOrder(seqNum)), srcIP, false);
+                    SendPacket((byte)SystemDataId.PingReply, BitConverter.GetBytes(IPAddress.HostToNetworkOrder((short)seqNum)), srcIP, false);
                     break;
                 case SystemDataId.Subscribe:
                     _cc.Console.WriteToConsole("Packet recieved requesting subscription to dataId=" + dataId.ToString());
@@ -131,8 +131,8 @@ namespace RED.ViewModels.ControlCenter
                     _cc.Console.WriteToConsole("Packet recieved requesting unsubscription from dataId=" + dataId.ToString());
                     break;
                 case SystemDataId.ACK:
-                    byte ackedId = (byte)IPAddress.NetworkToHostOrder(BitConverter.ToUInt16(data, 0));
-                    ushort ackedSeqNum = (ushort)IPAddress.NetworkToHostOrder(BitConverter.ToUInt16(data, 2));
+                    byte ackedId = (byte)IPAddress.NetworkToHostOrder((short)BitConverter.ToUInt16(data, 0));
+                    ushort ackedSeqNum = (ushort)IPAddress.NetworkToHostOrder((short)BitConverter.ToUInt16(data, 2));
                     if (!OutgoingUnACKed.Remove(new UnACKedPacket { DataId = dataId, SeqNum = seqNum }))
                         _cc.Console.WriteToConsole("Unexected ACK recieved from ip=??? with dataId=" + ackedId.ToString() + " and seqNum=" + ackedSeqNum.ToString() + ".");
                     break;
@@ -144,8 +144,8 @@ namespace RED.ViewModels.ControlCenter
 
         private void SendAck(IPAddress srcIP, byte dataId, ushort seqNum)
         {
-            byte[] ackedId = BitConverter.GetBytes(IPAddress.NetworkToHostOrder((ushort)dataId));
-            byte[] ackedSeqNum = BitConverter.GetBytes(IPAddress.NetworkToHostOrder(seqNum));
+            byte[] ackedId = BitConverter.GetBytes(IPAddress.NetworkToHostOrder((short)(ushort)dataId));
+            byte[] ackedSeqNum = BitConverter.GetBytes(IPAddress.NetworkToHostOrder((short)seqNum));
             byte[] data = new byte[4]; data.CopyTo(ackedId, 0); data.CopyTo(ackedSeqNum, ackedId.Length);
             SendPacket((byte)SystemDataId.ACK, data, srcIP, false);
         }
