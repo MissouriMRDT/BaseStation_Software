@@ -3,6 +3,7 @@
     using Caliburn.Micro;
     using ControlCenter;
     using Models;
+    using Interfaces;
 
     public class ControlCenterViewModel : Screen
     {
@@ -118,7 +119,7 @@
                 NotifyOfPropertyChange(() => ModuleManager);
             }
         }
-        public InputViewModel Input
+        public IInputDevice Input
         {
             get
             {
@@ -208,7 +209,7 @@
 
             TcpAsyncServer = new AsyncTcpServerViewModel(11000, this);
             ModuleManager = new ModuleManagerViewModel(this);
-            Input = new InputViewModel(this);
+            Input = new XboxControllerInputViewModel(this);
             Science = new ScienceViewModel(this);
             GPS = new GPSViewModel(this);
             Sensor = new SensorViewModel(this);

@@ -6,13 +6,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RED.Interfaces;
 
 namespace RED.ViewModels.Settings
 {
     public class InputSettingsViewModel : PropertyChangedBase
     {
         private SettingsManagerViewModel _settings;
-        private InputViewModel _vm;
+        private IInputDevice _vm;
 
         public int SerialReadSpeed
         {
@@ -54,7 +55,7 @@ namespace RED.ViewModels.Settings
             }
         }
 
-        public InputSettingsViewModel(SettingsManagerViewModel settings, InputViewModel vm)
+        public InputSettingsViewModel(SettingsManagerViewModel settings, IInputDevice vm)
         {
             _settings = settings;
             _vm = vm;

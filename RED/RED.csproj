@@ -125,6 +125,7 @@
     <Compile Include="Interfaces\IConnection.cs" />
     <Compile Include="Interfaces\IControllerMode.cs" />
     <Compile Include="Interfaces\IMetadata.cs" />
+    <Compile Include="Interfaces\IInputDevice.cs" />
     <Compile Include="Interfaces\IProtocol.cs" />
     <Compile Include="Models\ArmControllerModeModel.cs" />
     <Compile Include="Models\DataRouterModel.cs" />
@@ -136,7 +137,7 @@
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Models\TcpConnectionModel.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="Models\InputModel.cs" />
+    <Compile Include="Models\XboxControllerInputModel.cs" />
     <Compile Include="ViewModels\ControlCenter\ArmControllerModeViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\DataRouter.cs" />
     <Compile Include="Interfaces\ISubscribe.cs" />
@@ -146,7 +147,7 @@
     <Compile Include="ViewModels\ControlCenter\AsyncTcpServer.cs" />
     <Compile Include="ViewModels\ControlCenter\DriveControllerModeViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\GPSViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\InputViewModel.cs" />
+    <Compile Include="ViewModels\ControlCenter\XboxControllerInputViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\MetadataManager.cs" />
     <Compile Include="ViewModels\ControlCenter\RoverConnection.cs" />
     <Compile Include="ViewModels\ControlCenter\ScienceViewModel.cs" />

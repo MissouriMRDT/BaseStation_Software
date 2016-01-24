@@ -20,7 +20,7 @@ namespace RED.ViewModels.ControlCenter
         private readonly ControlCenterViewModel _controlCenter;
 
         public string Name { get; set; }
-        public InputViewModel InputVM { get; set; }
+        public IInputDevice InputVM { get; set; }
 
         public const float BaseServoSpeed = .5f;
         public const int BaseActuatorSpeed = 127;
@@ -38,7 +38,7 @@ namespace RED.ViewModels.ControlCenter
             }
         }
 
-        public ArmControllerModeViewModel(InputViewModel inputVM, ControlCenterViewModel cc)
+        public ArmControllerModeViewModel(IInputDevice inputVM, ControlCenterViewModel cc)
         {
             _model = new ArmControllerModeModel();
             InputVM = inputVM;
@@ -54,53 +54,50 @@ namespace RED.ViewModels.ControlCenter
 
         public void EvaluateMode()
         {
-            Controller c = InputVM.ControllerOne;
-            if (c != null && !c.IsConnected) return;
-
-            if (InputVM.DebouncedButtonY)
+            if (InputVM.DebouncedArmReset)
             {
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmStop"), (Int16)(0));
                 _controlCenter.Console.WriteToConsole("Robotic Arm Resetting...");
             }
 
-            if (InputVM.DebouncedButtonX)
+            if (InputVM.DebouncedToolPrev)
                 PreviousEndeffectorMode();
-            else if (InputVM.DebouncedButtonB)
+            else if (InputVM.DebouncedToolNext)
                 NextEndeffectorMode();
 
-            var angle = Math.Atan2(InputVM.JoyStick2Y, InputVM.JoyStick2X);
+            var angle = Math.Atan2(InputVM.WristBend, InputVM.WristTwist);
             if (angle > -Math.PI / 6 && angle < Math.PI / 6) //Joystick Right
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristClockwise"), (Int16)(InputVM.JoyStick2X * motorRangeFactor));
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristClockwise"), (Int16)(InputVM.WristTwist * motorRangeFactor));
             else if (angle > Math.PI / 3 && angle < 2 * Math.PI / 3) //Joystick Up
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristUp"), (Int16)(-InputVM.JoyStick2Y * motorRangeFactor));
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristUp"), (Int16)(-InputVM.WristBend * motorRangeFactor));
             else if (angle > 5 * Math.PI / 6 || angle < -5 * Math.PI / 6) //Joystick Left
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristClockwise"), (Int16)(InputVM.JoyStick2X * motorRangeFactor));
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristClockwise"), (Int16)(InputVM.WristTwist * motorRangeFactor));
             else if (angle > -2 * Math.PI / 3 && angle < Math.PI / 3) //Joystick Down
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristUp"), (Int16)(-InputVM.JoyStick2Y * motorRangeFactor));
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristUp"), (Int16)(-InputVM.WristBend * motorRangeFactor));
             else
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristUp"), (Int16)(0));
 
-            angle = Math.Atan2(InputVM.JoyStick1Y, InputVM.JoyStick1X);
+            angle = Math.Atan2(InputVM.ElbowBend, InputVM.ElbowTwist);
             if (angle > -Math.PI / 6 && angle < Math.PI / 6) //Joystick Right
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowClockwise"), (Int16)(InputVM.JoyStick1X * motorRangeFactor));
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowClockwise"), (Int16)(InputVM.ElbowTwist * motorRangeFactor));
             else if (angle > Math.PI / 3 && angle < 2 * Math.PI / 3) //Joystick Up
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowUp"), (Int16)(-InputVM.JoyStick1Y * motorRangeFactor));
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowUp"), (Int16)(-InputVM.ElbowBend * motorRangeFactor));
             else if (angle > 5 * Math.PI / 6 || angle < -5 * Math.PI / 6) //Joystick Left
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowClockwise"), (Int16)(InputVM.JoyStick1X * motorRangeFactor));
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowClockwise"), (Int16)(InputVM.ElbowTwist * motorRangeFactor));
             else if (angle > -2 * Math.PI / 3 && angle < Math.PI / 3) //Joystick Down
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowUp"), (Int16)(-InputVM.JoyStick1Y * motorRangeFactor));
+                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowUp"), (Int16)(-InputVM.ElbowBend * motorRangeFactor));
             else
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristUp"), (Int16)(0));
 
-            if (InputVM.DPadU)
+            if (InputVM.ActuatorForward)
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseActuatorForward"), (Int16)(BaseActuatorSpeed));
-            else if (InputVM.DPadD)
+            else if (InputVM.ActuatorBackward)
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseActuatorForward"), (Int16)(-BaseActuatorSpeed));
             else
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseActuatorForward"), (Int16)(0));
-            if (InputVM.DPadR)
+            if (InputVM.BaseClockwise)
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseServoClockwise"), (Int16)(BaseServoSpeed / 10f * motorRangeFactor));
-            else if (InputVM.DPadL)
+            else if (InputVM.BaseCounterClockwise)
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseServoClockwise"), (Int16)(-BaseServoSpeed / 10f * motorRangeFactor));
             else
                 _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseServoClockwise"), (Int16)(0));
@@ -108,29 +105,31 @@ namespace RED.ViewModels.ControlCenter
             switch (AvailibleEndEffectorModes[CurrentEndEffectorMode])
             {
                 case EndEffectorModes.Gripper:
-                    if (InputVM.RightTrigger > 0)
-                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(InputVM.RightTrigger * motorRangeFactor));
-                    else if (InputVM.LeftTrigger > 0)
-                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(-InputVM.LeftTrigger * motorRangeFactor));
+                    if (InputVM.GripperClose > 0)
+                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(InputVM.GripperClose * motorRangeFactor));
+                    else if (InputVM.GripperOpen > 0)
+                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(-InputVM.GripperOpen * motorRangeFactor));
                     else
                         _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(0));
                     break;
                 case EndEffectorModes.Drill:
-                    int drillCmd, actCmd;
-                    if (InputVM.ButtonRb)
+                    int drillCmd; //, actCmd;
+                    if (InputVM.DrillClockwise)
                         drillCmd = (int)DrillCommands.Forward;
-                    else if (InputVM.ButtonLb)
+                    else if (InputVM.DrillCounterClockwise)
                         drillCmd = (int)DrillCommands.Reverse;
                     else
                         drillCmd = (int)DrillCommands.Stop;
+                    /*
                     if (InputVM.RightTrigger > 0)
                         actCmd = (int)DrillCommands.Forward;
                     else if (InputVM.LeftTrigger > 0)
                         actCmd = (int)DrillCommands.Reverse;
                     else
                         actCmd = (int)DrillCommands.Stop;
+                    */
 
-                    byte drillActCombinedCmd8Bit = (byte)(actCmd << 4 | drillCmd);
+                    byte drillActCombinedCmd8Bit = (byte)(/*actCmd << 4 | */drillCmd);
                     var drillpacket = new byte[4] { drillActCombinedCmd8Bit, drillActCombinedCmd8Bit, drillActCombinedCmd8Bit, drillActCombinedCmd8Bit };
                     //Int16 drillActCombinedCmd16Bit = (Int16)(drillActCombinedCmd8Bit << 8 | drillActCombinedCmd8Bit);
                     //var drillpacket = new Int16[2] { drillActCombinedCmd16Bit, drillActCombinedCmd16Bit };

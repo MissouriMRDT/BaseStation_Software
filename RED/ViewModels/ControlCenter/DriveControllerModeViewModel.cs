@@ -44,7 +44,7 @@ namespace RED.ViewModels.ControlCenter
         }
 
         public string Name { get; set; }
-        public InputViewModel InputVM { get; set; }
+        public IInputDevice InputVM { get; set; }
 
         public int SpeedLimit
         {
@@ -71,7 +71,7 @@ namespace RED.ViewModels.ControlCenter
             }
         }
 
-        public DriveControllerModeViewModel(InputViewModel inputVM, ControlCenterViewModel cc)
+        public DriveControllerModeViewModel(IInputDevice inputVM, ControlCenterViewModel cc)
         {
             _model = new DriveControllerModeModel();
             _controlCenter = cc;
@@ -87,16 +87,13 @@ namespace RED.ViewModels.ControlCenter
 
         public void EvaluateMode()
         {
-            Controller c = InputVM.ControllerOne;
-            if (c != null && !c.IsConnected) return;
-
             int newSpeedLeft;
             int newSpeedRight;
 
             #region Normalization of joystick input
             {
-                float CurrentRawControllerSpeedLeft = InputVM.JoyStick1Y;
-                float CurrentRawControllerSpeedRight = InputVM.JoyStick2Y;
+                float CurrentRawControllerSpeedLeft = InputVM.WheelsLeft;
+                float CurrentRawControllerSpeedRight = InputVM.WheelsRight;
 
                 //Scaling
                 if (ParabolicScaling) //Squares the value (0..1)
