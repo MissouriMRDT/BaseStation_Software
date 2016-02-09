@@ -19,29 +19,29 @@ namespace RED.Models
 
         internal float WheelsLeft; // Key Q / Key A
         internal float WheelsRight; // Keys E / Key D
-        internal float ElbowBend; // JoyStick1Y
-        internal float ElbowTwist; // JoyStick1X
-        internal float WristBend; // JoyStick2Y
-        internal float WristTwist; // JoyStick2X
-        internal float GripperOpen; // LeftTrigger
-        internal float GripperClose; // RightTrigger
-        internal bool ToolNext; // ButtonB
-        internal bool ToolPrev; // ButtonX
-        internal bool ArmReset; // ButtonY
-        internal bool DrillClockwise; // ButtonRb
-        internal bool DrillCounterClockwise; // ButtonLb
-        internal bool ModeNext; // Unused
-        internal bool ModePrev; // Unused
-        internal bool ToolNextDebounced; // Unused
-        internal bool ToolPrevDebounced; // Unused
-        internal bool ArmResetDebounced; // Unused
-        internal bool DrillClockwiseDebounced; // Unused
-        internal bool DrillCounterClockwiseDebounced; // Unused
-        internal bool ModeNextDebounced; // Unused
-        internal bool ModePrevDebounced; // Unused
-        internal bool BaseCounterClockwise; // DPadL
-        internal bool BaseClockwise; // DPadR
-        internal bool ActuatorForward; // DPadU
-        internal bool ActuatorBackward; // DPadD
+        internal float ElbowBend;
+        internal float ElbowTwist; 
+        internal float WristBend; 
+        internal float WristTwist; 
+        internal float GripperOpen; 
+        internal float GripperClose; 
+        internal bool ToolNext; 
+        internal bool ToolPrev; 
+        internal bool ArmReset; 
+        internal bool DrillClockwise; 
+        internal bool DrillCounterClockwise; 
+        internal bool ModeNext; 
+        internal bool ModePrev; 
+        internal bool ToolNextDebounced; 
+        internal bool ToolPrevDebounced; 
+        internal bool ArmResetDebounced; 
+        internal bool DrillClockwiseDebounced; 
+        internal bool DrillCounterClockwiseDebounced; 
+        internal bool ModeNextDebounced; 
+        internal bool ModePrevDebounced; 
+        internal bool BaseCounterClockwise; 
+        internal bool BaseClockwise; 
+        internal bool ActuatorForward; 
+        internal bool ActuatorBackward; 
     }
 }
