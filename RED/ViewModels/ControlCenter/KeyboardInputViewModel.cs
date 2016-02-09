@@ -496,6 +496,15 @@
             if (Keyboard.IsKeyDown(Key.D0))
                 speedMultiplier = 1.0f;
 
+            // Fine tune the speed multiplier
+            if (speedMultiplier < 1f && Keyboard.IsKeyDown(Key.OemPlus))
+                speedMultiplier += 0.01f;
+            // speedMultiplier will have round-off error, so check before it hits zero
+            if (speedMultiplier > 0.01f && Keyboard.IsKeyDown(Key.OemMinus))
+                speedMultiplier -= 0.01f;
+
+            Console.WriteLine(speedMultiplier);
+
             // Keys A and Q control the left wheels in drive mode
             // and the elbow bend in arm mode
             if (Keyboard.IsKeyDown(Key.A))
