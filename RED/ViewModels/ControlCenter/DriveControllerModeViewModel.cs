@@ -113,26 +113,11 @@ namespace RED.ViewModels.ControlCenter
             }
             #endregion
 
-            if (newSpeedLeft == 0)
-            {
-                SpeedLeft = newSpeedLeft;
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorLeftSpeed"), SpeedLeft);
-            }
-            else if (newSpeedLeft != SpeedLeft)
-            {
-                SpeedLeft = newSpeedLeft;
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorLeftSpeed"), SpeedLeft);
-            }
-            if (newSpeedRight == 0)
-            {
-                SpeedRight = newSpeedRight;
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorRightSpeed"), SpeedRight);
-            }
-            else if (newSpeedRight != SpeedRight)
-            {
-                SpeedRight = newSpeedRight;
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorRightSpeed"), SpeedRight);
-            }
+            SpeedLeft = newSpeedLeft;
+           _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorLeftSpeed"), SpeedLeft);
+
+            SpeedRight = newSpeedRight;
+           _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorRightSpeed"), SpeedRight);
         }
 
         public void ExitMode()
