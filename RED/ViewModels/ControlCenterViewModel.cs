@@ -209,7 +209,8 @@
 
             TcpAsyncServer = new AsyncTcpServerViewModel(11000, this);
             ModuleManager = new ModuleManagerViewModel(this);
-            Input = new XboxControllerInputViewModel(this);
+            Input = new KeyboardInputViewModel(this);
+            //Input = new XboxControllerInputViewModel(this);
             Science = new ScienceViewModel(this);
             GPS = new GPSViewModel(this);
             Sensor = new SensorViewModel(this);
