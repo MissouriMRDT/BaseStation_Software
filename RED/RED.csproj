@@ -159,6 +159,7 @@
     <Compile Include="ViewModels\ControlCenter\TcpConnection.cs" />
     <Compile Include="ViewModels\ControlCenterViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\ModuleGridViewModel.cs" />
+    <Compile Include="ViewModels\InputManagerViewModel.cs" />
     <Compile Include="ViewModels\SettingsManagerViewModel.cs" />
     <Compile Include="ViewModels\Settings\DriveSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\GPSSettingsViewModel.cs" />
