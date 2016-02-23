@@ -128,6 +128,7 @@
     <Compile Include="Interfaces\IInputDevice.cs" />
     <Compile Include="Interfaces\IProtocol.cs" />
     <Compile Include="Models\ArmControllerModeModel.cs" />
+    <Compile Include="Models\InputManagerModel.cs" />
     <Compile Include="Models\DataRouterModel.cs" />
     <Compile Include="Models\AsyncTcpServerModel.cs" />
     <Compile Include="Models\DriveControllerModeModel.cs" />
