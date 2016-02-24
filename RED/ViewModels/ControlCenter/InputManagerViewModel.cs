@@ -5,10 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using RED.Interfaces;
 using RED.Models;
-using RED.ViewModels.ControlCenter;
 using Caliburn.Micro;
 
-namespace RED.ViewModels
+namespace RED.ViewModels.ControlCenter
 {
     public class InputManagerViewModel : Screen
     {
@@ -37,8 +36,8 @@ namespace RED.ViewModels
         public InputManagerViewModel(ControlCenterViewModel cc)
         {
             // Set default input device as the keyboard
-            //Input = new KeyboardInputViewModel(cc);
-            Input = new XboxControllerInputViewModel(cc));
+            Input = new KeyboardInputViewModel(cc);
+            //Input = new XboxControllerInputViewModel(cc);
         }
 
         public void SwitchDevice(DeviceType newDevice, ControlCenterViewModel cc)
