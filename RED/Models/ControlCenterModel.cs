@@ -17,7 +17,7 @@
         internal DataRouter _dataRouter;
         internal MetadataManager _metadataManager;
         internal AsyncTcpServerViewModel _tcpAsyncServer;
-        internal IInputDevice _input;
+        internal InputManagerViewModel _input;
         internal ScienceViewModel _science;
         internal GPSViewModel _GPS;
         internal SensorViewModel _sensor;

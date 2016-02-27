@@ -119,7 +119,7 @@
                 NotifyOfPropertyChange(() => ModuleManager);
             }
         }
-        public IInputDevice Input
+        public InputManagerViewModel IManager
         {
             get
             {
@@ -128,7 +128,7 @@
             set
             {
                 _model._input = value;
-                NotifyOfPropertyChange(() => Input);
+                NotifyOfPropertyChange(() => IManager);
             }
         }
         public ScienceViewModel Science
@@ -185,14 +185,14 @@
         {
             get
             {
-                return (DriveControllerModeViewModel)Input.ControllerModes[0];
+                return (DriveControllerModeViewModel)IManager.Input.ControllerModes[0];
             }
         }
         public ArmControllerModeViewModel ArmControllerMode
         {
             get
             {
-                return (ArmControllerModeViewModel)Input.ControllerModes[1];
+                return (ArmControllerModeViewModel)IManager.Input.ControllerModes[1];
             }
         }
 
@@ -206,10 +206,9 @@
             DataRouter = new DataRouter();
             MetadataManager = new MetadataManager(this);
             MetadataManager.AddFromFile("NoSyncMetadata.xml");
-
+            IManager = new InputManagerViewModel(this);
             TcpAsyncServer = new AsyncTcpServerViewModel(11000, this);
             ModuleManager = new ModuleManagerViewModel(this);
-            Input = new XboxControllerInputViewModel(this);
             Science = new ScienceViewModel(this);
             GPS = new GPSViewModel(this);
             Sensor = new SensorViewModel(this);
@@ -220,7 +219,7 @@
 
             SettingsManager = new SettingsManagerViewModel(this);
 
-            Input.Start();
+            IManager.Start();
 
             ModuleManager.ReloadModuleButtonContexts();
         }
