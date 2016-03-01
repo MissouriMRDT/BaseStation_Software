@@ -120,7 +120,7 @@ namespace RED.ViewModels.ControlCenter
                         drillCmd = (int)DrillCommands.Reverse;
                     else
                         drillCmd = (int)DrillCommands.Stop;
-                    /*
+                    /* CURRENTLY NOT IMPLEMENTED
                     if (InputVM.RightTrigger > 0)
                         actCmd = (int)DrillCommands.Forward;
                     else if (InputVM.LeftTrigger > 0)

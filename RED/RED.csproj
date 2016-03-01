@@ -128,6 +128,7 @@
     <Compile Include="Interfaces\IInputDevice.cs" />
     <Compile Include="Interfaces\IProtocol.cs" />
     <Compile Include="Models\ArmControllerModeModel.cs" />
+    <Compile Include="Models\InputManagerModel.cs" />
     <Compile Include="Models\DataRouterModel.cs" />
     <Compile Include="Models\AsyncTcpServerModel.cs" />
     <Compile Include="Models\DriveControllerModeModel.cs" />
@@ -136,6 +137,7 @@
     <Compile Include="Models\SensorModel.cs" />
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Models\TcpConnectionModel.cs" />
+    <Compile Include="Models\KeyboardInputModel.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Models\XboxControllerInputModel.cs" />
     <Compile Include="ViewModels\ControlCenter\ArmControllerModeViewModel.cs" />
@@ -147,6 +149,7 @@
     <Compile Include="ViewModels\ControlCenter\AsyncTcpServer.cs" />
     <Compile Include="ViewModels\ControlCenter\DriveControllerModeViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\GPSViewModel.cs" />
+    <Compile Include="ViewModels\ControlCenter\KeyboardInputViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\XboxControllerInputViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\MetadataManager.cs" />
     <Compile Include="ViewModels\ControlCenter\RoverConnection.cs" />
@@ -156,6 +159,7 @@
     <Compile Include="ViewModels\ControlCenter\TcpConnection.cs" />
     <Compile Include="ViewModels\ControlCenterViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\ModuleGridViewModel.cs" />
+    <Compile Include="ViewModels\ControlCenter\InputManagerViewModel.cs" />
     <Compile Include="ViewModels\SettingsManagerViewModel.cs" />
     <Compile Include="ViewModels\Settings\DriveSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\GPSSettingsViewModel.cs" />
