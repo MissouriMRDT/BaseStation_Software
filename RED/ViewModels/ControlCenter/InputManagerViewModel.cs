@@ -19,6 +19,7 @@ namespace RED.ViewModels.ControlCenter
         };
 
         InputManagerModel _model = new InputManagerModel();
+        ControlCenterViewModel _cc;
 
         public IInputDevice Input
         {
@@ -37,10 +38,11 @@ namespace RED.ViewModels.ControlCenter
         {
             // Set default input device as the keyboard
             Input = new KeyboardInputViewModel(cc);
+            _cc = cc;
             //Input = new XboxControllerInputViewModel(cc);
         }
 
-        public void SwitchDevice(DeviceType newDevice, ControlCenterViewModel cc)
+        public void SwitchDevice(DeviceType newDevice)
         {
             // Delete old input
             Input = null;
@@ -49,13 +51,13 @@ namespace RED.ViewModels.ControlCenter
             switch (newDevice)
             {
                 case DeviceType.Keyboard:
-                    Input = new KeyboardInputViewModel(cc);
+                    Input = new KeyboardInputViewModel(_cc);
                     break;
                 case DeviceType.XboxController:
-                    Input = new XboxControllerInputViewModel(cc);
+                    Input = new XboxControllerInputViewModel(_cc);
                     break;
                 //case DeviceType.FlightStick:
-                //    Input = new FlightStickInputViewModel(cc);
+                //    Input = new FlightStickInputViewModel(_cc);
                 //    break;
             }
         }
