@@ -55,6 +55,32 @@ namespace RED.ViewModels.Settings
             }
         }
 
+        private string selectedDevice;
+
+        public List<string> DeviceType
+        {
+            get
+            {
+                return new List<string> { "Xbox", "Keyboard", "Flight Stick" };
+            }
+        }
+
+        public string SelectedDevice
+        {
+            get
+            {
+                return this.selectedDevice;
+            }
+
+            set
+            {
+                this.selectedDevice = value;
+                this.NotifyOfPropertyChange(() => this.SelectedDevice);
+                System.Console.Write("SELECTED: ");
+                System.Console.WriteLine(this.selectedDevice);
+            }
+        }
+
         public InputSettingsViewModel(SettingsManagerViewModel settings, IInputDevice vm)
         {
             _settings = settings;
