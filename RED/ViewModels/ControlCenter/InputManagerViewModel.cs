@@ -62,9 +62,34 @@ namespace RED.ViewModels.ControlCenter
             }
         }
 
-        public void Start()
+        public async void Start()
         {
+            DeviceType oldDevice, selectedDevice;
+            oldDevice = DeviceType.Keyboard;
             Input.Start();
+            while (true)
+            {
+                /*
+                 * TODO: get the selected device from the view,
+                 *       and check if it's different from the device
+                 *       that we're currently using.
+                 *       If it is, call the switch device using the newly
+                 *       selected device.
+                 *
+                 *       NOTE: But like seriously, this is an infinite loop,
+                 *       so if it isn't working, it needs to be deleted.
+                 *       
+                 * selectedDevice = // get this from the view
+                 * // Call the switch controller function here
+                 * if (oldDevice != selectedDevice)
+                 * {
+                 *     SwitchDevice(selectedDevice);
+                 *     oldDevice = selectedDevice;
+                 * }
+                **/
+
+                await Task.Delay(1000);
+            }
         }
     }
 }
