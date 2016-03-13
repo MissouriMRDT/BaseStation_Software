@@ -14,6 +14,7 @@ namespace RED.Contexts
         public string Subsystem { get; set; }
         public string Description { get; set; }
         public string Datatype { get; set; }
+        public string ServerAddress { get; set; }
         public string Units { get; set; }
 
         public ErrorMetadataContext()

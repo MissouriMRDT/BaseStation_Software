@@ -95,6 +95,18 @@
                 NotifyOfPropertyChange(() => MetadataManager);
             }
         }
+        public SubscriptionManagerViewModel SubscriptionManager
+        {
+            get
+            {
+                return _model._subscriptionManager;
+            }
+            set
+            {
+                _model._subscriptionManager = value;
+                NotifyOfPropertyChange(() => SubscriptionManager);
+            }
+        }
         public AsyncTcpServerViewModel TcpAsyncServer
         {
             get
@@ -105,6 +117,18 @@
             {
                 _model._tcpAsyncServer = value;
                 NotifyOfPropertyChange(() => TcpAsyncServer);
+            }
+        }
+        public NetworkManagerViewModel NetworkManager
+        {
+            get
+            {
+                return _model._networkManager;
+            }
+            set
+            {
+                _model._networkManager = value;
+                NotifyOfPropertyChange(() => NetworkManager);
             }
         }
         public ModuleManagerViewModel ModuleManager
@@ -207,7 +231,9 @@
             MetadataManager = new MetadataManager(this);
             MetadataManager.AddFromFile("NoSyncMetadata.xml");
             IManager = new InputManagerViewModel(this);
-            TcpAsyncServer = new AsyncTcpServerViewModel(11000, this);
+            //TcpAsyncServer = new AsyncTcpServerViewModel(11000, this);
+            NetworkManager = new NetworkManagerViewModel(this);
+            SubscriptionManager = new SubscriptionManagerViewModel(this);
             ModuleManager = new ModuleManagerViewModel(this);
             Science = new ScienceViewModel(this);
             GPS = new GPSViewModel(this);
@@ -220,6 +246,10 @@
             SettingsManager = new SettingsManagerViewModel(this);
 
             IManager.Start();
+            //DataRouter.Send(100, new byte[] { 10, 20, 30, 40 });
+            //DataRouter.Send(1, new byte[] { 2, 3, 4, 5 });
+            //DataRouter.Send(101, new byte[] { 15, 25, 35, 45 });
+            //DataRouter.Send(180, new byte[] { 0x23, 0x52, 0x4f, 0x56, 0x45, 0x53, 0x4f, 0x48, 0x41, 0x52, 0x44, 0x00 });
 
             ModuleManager.ReloadModuleButtonContexts();
         }
