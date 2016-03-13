@@ -68,6 +68,11 @@ namespace RED.ViewModels.ControlCenter
                 _cc.Console.WriteToConsole("Attempted to send packet with unknown IP address. DataId=" + dataId.ToString());
                 return;
             }
+            if (destIP.Equals(IPAddress.None))
+            {
+                _cc.Console.WriteToConsole("Attempted to send packet with invalid IP address. DataId=" + dataId.ToString() + " IP=" + destIP.ToString());
+                return;
+            }
 
             ushort seqNum = sequenceNumberProvider.IncrementValue(dataId);
             byte[] packetData = encoding.EncodePacket(dataId, data, seqNum, isReliable);
