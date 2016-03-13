@@ -13,7 +13,7 @@ namespace RED.ViewModels.ControlCenter
     public class NetworkManagerViewModel : PropertyChangedBase, ISubscribe
     {
         private const ushort DestinationPort = 11000;
-        private const bool defaultReliable = true;
+        private const bool defaultReliable = false;
 
         private TimeSpan ReliableRetransmissionTimeout { get { return TimeSpan.FromMilliseconds(1000); } }
         private int ReliableMaxRetries { get { return 5; } }
