@@ -2,6 +2,6 @@
 {
     public interface ISubscribe
     {
-        void ReceiveFromRouter(byte dataId, byte[] data);
+        void ReceiveFromRouter(ushort dataId, byte[] data);
     }
 }

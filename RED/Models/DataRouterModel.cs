@@ -5,6 +5,6 @@
 
     public class DataRouterModel
     {
-        internal Dictionary<byte, List<ISubscribe>> _registrations = new Dictionary<byte, List<ISubscribe>>();
+        internal Dictionary<ushort, List<ISubscribe>> _registrations = new Dictionary<ushort, List<ISubscribe>>();
     }
 }

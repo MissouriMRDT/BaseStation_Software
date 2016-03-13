@@ -9,7 +9,7 @@ namespace RED.Interfaces
 {
     public interface IIPAddressProvider
     {
-        IPAddress GetIPAddress(byte dataId);
-        byte[] GetAllDataIds(IPAddress ip);
+        IPAddress GetIPAddress(ushort dataId);
+        ushort[] GetAllDataIds(IPAddress ip);
     }
 }

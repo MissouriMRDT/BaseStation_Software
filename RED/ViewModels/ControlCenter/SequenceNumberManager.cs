@@ -9,36 +9,36 @@ namespace RED.ViewModels.ControlCenter
 {
     public class SequenceNumberManager : ISequenceNumberProvider
     {
-        private Dictionary<byte, ushort> Table = new Dictionary<byte, ushort>();
+        private Dictionary<ushort, ushort> Table = new Dictionary<ushort, ushort>();
 
-        public ushort GetValue(byte dataId)
+        public ushort GetValue(ushort dataId)
         {
             return Table.ContainsKey(dataId) ? Table[dataId] : (ushort)0;
         }
 
-        public void SetValue(byte dataId, ushort value)
+        public void SetValue(ushort dataId, ushort value)
         {
             Table[dataId] = value;
         }
 
-        public void ClearValue(byte dataId)
+        public void ClearValue(ushort dataId)
         {
             Table.Remove(dataId);
         }
 
-        public ushort IncrementValue(byte dataId)
+        public ushort IncrementValue(ushort dataId)
         {
             return Table.ContainsKey(dataId) ? ++Table[dataId] : Table[dataId] = 0;
         }
 
-        public bool UpdateNewer(byte dataId, ushort value)
+        public bool UpdateNewer(ushort dataId, ushort value)
         {
             if (Table.ContainsKey(dataId) && (short)(value - Table[dataId]) < 0) return false;
             Table[dataId] = value;
             return true;
         }
 
-        public bool UpdateConsecutive(byte dataId, ushort value)
+        public bool UpdateConsecutive(ushort dataId, ushort value)
         {
             if (Table.ContainsKey(dataId) && Table[dataId] + 1 != value) return false;
             Table[dataId] = value;

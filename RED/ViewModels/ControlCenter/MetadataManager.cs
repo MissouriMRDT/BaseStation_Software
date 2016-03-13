@@ -60,7 +60,7 @@ namespace RED.ViewModels.ControlCenter
             }
         }
 
-        public CommandMetadataContext GetCommand(byte DataId)
+        public CommandMetadataContext GetCommand(ushort DataId)
         {
             return Commands.Find(x => x.Id == DataId);
         }
@@ -68,7 +68,7 @@ namespace RED.ViewModels.ControlCenter
         {
             return Commands.Find(x => x.Name == name);
         }
-        public TelemetryMetadataContext GetTelemetry(byte DataId)
+        public TelemetryMetadataContext GetTelemetry(ushort DataId)
         {
             return Telemetry.Find(x => x.Id == DataId);
         }
@@ -76,7 +76,7 @@ namespace RED.ViewModels.ControlCenter
         {
             return Telemetry.Find(x => x.Name == name);
         }
-        public ErrorMetadataContext GetError(byte DataId)
+        public ErrorMetadataContext GetError(ushort DataId)
         {
             return Errors.Find(x => x.Id == DataId);
         }
@@ -84,7 +84,7 @@ namespace RED.ViewModels.ControlCenter
         {
             return Errors.Find(x => x.Name == name);
         }
-        public IMetadata GetMetadata(byte DataId)
+        public IMetadata GetMetadata(ushort DataId)
         {
             return GetCommand(DataId) ?? GetTelemetry(DataId) ?? (IMetadata)GetError(DataId) ?? null;
         }
@@ -115,7 +115,7 @@ namespace RED.ViewModels.ControlCenter
                 default: throw new ArgumentException("Unsupported Data Type");
             }
         }
-        public int GetDataTypeByteLength(byte DataId)
+        public int GetDataTypeByteLength(ushort DataId)
         {
             var m = GetMetadata(DataId);
             if (m == null) throw new ArgumentException("Invalid DataId");
@@ -130,23 +130,23 @@ namespace RED.ViewModels.ControlCenter
             return GetByteLength(GetMetadata(name).Datatype);
         }
 
-        public byte GetId(string name)
+        public ushort GetId(string name)
         {
             var data = GetMetadata(name);
-            return data == null ? (byte)0 : data.Id;
+            return data == null ? (ushort)0 : data.Id;
         }
-        public string GetName(byte DataId)
+        public string GetName(ushort DataId)
         {
             var data = GetMetadata(DataId);
             return data == null ? String.Empty : data.Name;
         }
-        public string GetServerAddress(byte DataId)
+        public string GetServerAddress(ushort DataId)
         {
             var data = GetMetadata(DataId);
             return data == null ? String.Empty : data.ServerAddress;
         }
 
-        public System.Net.IPAddress GetIPAddress(byte dataId)
+        public System.Net.IPAddress GetIPAddress(ushort dataId)
         {
             System.Net.IPAddress ip;
             if (System.Net.IPAddress.TryParse(GetServerAddress(dataId), out ip))
@@ -158,7 +158,7 @@ namespace RED.ViewModels.ControlCenter
             }
         }
 
-        public byte[] GetAllDataIds(System.Net.IPAddress ip)
+        public ushort[] GetAllDataIds(System.Net.IPAddress ip)
         {
             IEnumerable<IMetadata> allMetadata = Commands.Cast<IMetadata>().Union(Telemetry).Union(Errors);
             return allMetadata.Where(x => x.ServerAddress == ip.ToString()).Select(x => x.Id).ToArray();

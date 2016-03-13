@@ -8,11 +8,11 @@ namespace RED.Interfaces
 {
     public interface ISequenceNumberProvider
     {
-        ushort GetValue(byte dataId);
-        void SetValue(byte dataId, ushort value);
-        void ClearValue(byte dataId);
-        ushort IncrementValue(byte dataId);
-        bool UpdateNewer(byte dataId, ushort value);
-        bool UpdateConsecutive(byte dataId, ushort value);
+        ushort GetValue(ushort dataId);
+        void SetValue(ushort dataId, ushort value);
+        void ClearValue(ushort dataId);
+        ushort IncrementValue(ushort dataId);
+        bool UpdateNewer(ushort dataId, ushort value);
+        bool UpdateConsecutive(ushort dataId, ushort value);
     }
 }

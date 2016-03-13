@@ -9,6 +9,6 @@ namespace RED.Models
 {
     public class SubscriptionManagerModel
     {
-        internal Dictionary<byte, SubscriptionRecord> _subscriptions = new Dictionary<byte, SubscriptionRecord>();
+        internal Dictionary<ushort, SubscriptionRecord> _subscriptions = new Dictionary<ushort, SubscriptionRecord>();
     }
 }

@@ -55,13 +55,13 @@ namespace RED.ViewModels.ControlCenter
             }
         }
 
-        public void ReceiveFromRouter(byte dataId, byte[] data)
+        public void ReceiveFromRouter(ushort dataId, byte[] data)
         {
             IPAddress destIP = ipAddressProvider.GetIPAddress(dataId);
             SendPacket(dataId, data, destIP, defaultReliable);
         }
 
-        public void SendPacket(byte dataId, byte[] data, IPAddress destIP, bool isReliable)
+        public void SendPacket(ushort dataId, byte[] data, IPAddress destIP, bool isReliable)
         {
             if (destIP == null)
             {
@@ -88,7 +88,7 @@ namespace RED.ViewModels.ControlCenter
             await continuousDataSocket.SendMessage(destIP, packetData);
         }
 
-        private async void SendPacketReliable(IPAddress destIP, byte[] packetData, byte dataId, ushort seqNum)
+        private async void SendPacketReliable(IPAddress destIP, byte[] packetData, ushort dataId, ushort seqNum)
         {
             var packetInfo = new UnACKedPacket() { DataId = dataId, SeqNum = seqNum };
             OutgoingUnACKed.Add(packetInfo);
@@ -105,7 +105,7 @@ namespace RED.ViewModels.ControlCenter
 
         private void ReceivePacket(IPAddress srcIP, byte[] buffer)
         {
-            byte dataId;
+            ushort dataId;
             ushort seqNum;
             bool needsACK;
             byte[] data = encoding.DecodePacket(buffer, out dataId, out seqNum, out needsACK);
@@ -119,7 +119,7 @@ namespace RED.ViewModels.ControlCenter
             InterpretDataId(srcIP, data, dataId, seqNum);
         }
 
-        private void InterpretDataId(IPAddress srcIP, byte[] data, byte dataId, ushort seqNum)
+        private void InterpretDataId(IPAddress srcIP, byte[] data, ushort dataId, ushort seqNum)
         {
             switch ((SystemDataId)dataId)
             {
@@ -127,7 +127,7 @@ namespace RED.ViewModels.ControlCenter
                     _cc.Console.WriteToConsole("Packet recieved with null dataId.");
                     break;
                 case SystemDataId.Ping:
-                    SendPacket((byte)SystemDataId.PingReply, BitConverter.GetBytes(IPAddress.HostToNetworkOrder((short)seqNum)), srcIP, false);
+                    SendPacket((ushort)SystemDataId.PingReply, BitConverter.GetBytes(IPAddress.HostToNetworkOrder((short)seqNum)), srcIP, false);
                     break;
                 case SystemDataId.Subscribe:
                     _cc.Console.WriteToConsole("Packet recieved requesting subscription to dataId=" + dataId.ToString());
@@ -136,7 +136,7 @@ namespace RED.ViewModels.ControlCenter
                     _cc.Console.WriteToConsole("Packet recieved requesting unsubscription from dataId=" + dataId.ToString());
                     break;
                 case SystemDataId.ACK:
-                    byte ackedId = (byte)IPAddress.NetworkToHostOrder((short)BitConverter.ToUInt16(data, 0));
+                    ushort ackedId = (ushort)IPAddress.NetworkToHostOrder((short)BitConverter.ToUInt16(data, 0));
                     ushort ackedSeqNum = (ushort)IPAddress.NetworkToHostOrder((short)BitConverter.ToUInt16(data, 2));
                     if (!OutgoingUnACKed.Remove(new UnACKedPacket { DataId = dataId, SeqNum = seqNum }))
                         _cc.Console.WriteToConsole("Unexected ACK recieved from ip=??? with dataId=" + ackedId.ToString() + " and seqNum=" + ackedSeqNum.ToString() + ".");
@@ -147,12 +147,12 @@ namespace RED.ViewModels.ControlCenter
             }
         }
 
-        private void SendAck(IPAddress srcIP, byte dataId, ushort seqNum)
+        private void SendAck(IPAddress srcIP, ushort dataId, ushort seqNum)
         {
-            byte[] ackedId = BitConverter.GetBytes(IPAddress.NetworkToHostOrder((short)(ushort)dataId));
+            byte[] ackedId = BitConverter.GetBytes(IPAddress.NetworkToHostOrder((short)dataId));
             byte[] ackedSeqNum = BitConverter.GetBytes(IPAddress.NetworkToHostOrder((short)seqNum));
             byte[] data = new byte[4]; data.CopyTo(ackedId, 0); data.CopyTo(ackedSeqNum, ackedId.Length);
-            SendPacket((byte)SystemDataId.ACK, data, srcIP, false);
+            SendPacket((ushort)SystemDataId.ACK, data, srcIP, false);
         }
 
         private enum SystemDataId : ushort
@@ -166,6 +166,6 @@ namespace RED.ViewModels.ControlCenter
             ACK = 6
         }
 
-        private struct UnACKedPacket { public byte DataId; public ushort SeqNum;}
+        private struct UnACKedPacket { public ushort DataId; public ushort SeqNum;}
     }
 }

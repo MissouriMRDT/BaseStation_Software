@@ -105,7 +105,7 @@ namespace RED.ViewModels.ControlCenter
 
         public void RequestPhData()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceRequest"), (byte)ScienceRequestTypes.Ph);
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceRequest"), (ushort)ScienceRequestTypes.Ph);
             _cc.Console.WriteToConsole("Science pH data requested.");
         }
         public void RequestMoistureData()
@@ -116,7 +116,7 @@ namespace RED.ViewModels.ControlCenter
         public void RequestCCDData()
         {
             StartCCDReceive();
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceRequest"), (byte)ScienceRequestTypes.CCD);
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceRequest"), (ushort)ScienceRequestTypes.CCD);
             _cc.Console.WriteToConsole("Science CCD data requested.");
         }
         public void RequestLaserOn()
@@ -136,7 +136,7 @@ namespace RED.ViewModels.ControlCenter
                 FinishCCDReceive();
         }
 
-        public void ReceiveFromRouter(byte dataId, byte[] data)
+        public void ReceiveFromRouter(ushort dataId, byte[] data)
         {
             switch (_cc.MetadataManager.GetTelemetry(dataId).Name)
             {
@@ -221,7 +221,7 @@ namespace RED.ViewModels.ControlCenter
             }
         }
 
-        public enum ScienceRequestTypes
+        public enum ScienceRequestTypes : ushort
         {
             Ph = 1,
             Moisture = 2,

@@ -16,7 +16,7 @@ namespace RED.ViewModels.ControlCenter
         public RoverProtocol()
         { }
 
-        public byte[] EncodePacket(byte dataId, byte[] data, ushort seqNum, bool requireACK)
+        public byte[] EncodePacket(ushort dataId, byte[] data, ushort seqNum, bool requireACK)
         {
             try
             {
@@ -28,8 +28,8 @@ namespace RED.ViewModels.ControlCenter
                         bw.Write(VersionNumber);
                         bw.Write(IPAddress.HostToNetworkOrder((short)seqNum));
                         bw.Write((byte)flags);
-                        bw.Write(IPAddress.HostToNetworkOrder((short)(ushort)dataId));
-                        bw.Write(IPAddress.HostToNetworkOrder((short)(ushort)data.Length));
+                        bw.Write(IPAddress.HostToNetworkOrder((short)dataId));
+                        bw.Write(IPAddress.HostToNetworkOrder((short)data.Length));
                         bw.Write(data);
                     }
                     return ms.ToArray();
@@ -41,7 +41,7 @@ namespace RED.ViewModels.ControlCenter
             }
         }
 
-        public byte[] DecodePacket(byte[] data, out byte dataId, out ushort seqNum, out bool requiresACK)
+        public byte[] DecodePacket(byte[] data, out ushort dataId, out ushort seqNum, out bool requiresACK)
         {
             byte versionNumber;
             ushort rawSequenceNumber;
@@ -65,7 +65,7 @@ namespace RED.ViewModels.ControlCenter
                 }
             }
 
-            dataId = (byte)rawDataId;
+            dataId = rawDataId;
             seqNum = rawSequenceNumber;
             requiresACK = (rawFlags & RoveCommFlags.ACK) != RoveCommFlags.None;
             return rawData;

@@ -20,7 +20,7 @@ namespace RED.ViewModels.ControlCenter
         private ControlCenterViewModel _cc;
         private IIPAddressProvider ipProvider;
 
-        public Dictionary<byte, SubscriptionRecord> Subscriptions
+        public Dictionary<ushort, SubscriptionRecord> Subscriptions
         {
             get
             {
@@ -38,21 +38,21 @@ namespace RED.ViewModels.ControlCenter
                 Subscribe(telemetry.Id);
         }
 
-        public void Subscribe(byte dataId)
+        public void Subscribe(ushort dataId)
         {
             var ip = ipProvider.GetIPAddress(dataId);
             _cc.NetworkManager.SendPacket(SubscriptionDataId, BitConverter.GetBytes(dataId), ip, false);
             Subscriptions.Add(dataId, new SubscriptionRecord(SubscriptionStatus.Subscribed, ip, DateTime.Now));
         }
 
-        public void Unsubscribe(byte dataId)
+        public void Unsubscribe(ushort dataId)
         {
             _cc.NetworkManager.SendPacket(UnSubscribeDataId, BitConverter.GetBytes(dataId), Subscriptions[dataId].HostIP, false);
             Subscriptions[dataId].Status = SubscriptionStatus.Unsubscribed;
             Subscriptions[dataId].Timestamp = DateTime.Now;
         }
 
-        public void Resubscribe(byte dataId)
+        public void Resubscribe(ushort dataId)
         {
             var ip = ipProvider.GetIPAddress(dataId);
             _cc.NetworkManager.SendPacket(SubscriptionDataId, BitConverter.GetBytes(dataId), ip, false);
