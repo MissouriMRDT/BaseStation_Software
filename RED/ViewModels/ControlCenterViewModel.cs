@@ -246,9 +246,10 @@
             SettingsManager = new SettingsManagerViewModel(this);
 
             Input.Start();
-            DataRouter.Send(100, new byte[] { 10, 20, 30, 40 });
+            //DataRouter.Send(100, new byte[] { 10, 20, 30, 40 });
             //DataRouter.Send(1, new byte[] { 2, 3, 4, 5 });
-            DataRouter.Send(101, new byte[] { 15, 25, 35, 45 });
+            //DataRouter.Send(101, new byte[] { 15, 25, 35, 45 });
+            //DataRouter.Send(180, new byte[] { 0x23, 0x52, 0x4f, 0x56, 0x45, 0x53, 0x4f, 0x48, 0x41, 0x52, 0x44, 0x00 });
 
             ModuleManager.ReloadModuleButtonContexts();
         }

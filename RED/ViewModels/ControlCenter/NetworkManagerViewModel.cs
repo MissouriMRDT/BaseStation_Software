@@ -41,7 +41,7 @@ namespace RED.ViewModels.ControlCenter
             foreach (var command in _cc.MetadataManager.Commands)
                 _cc.DataRouter.Subscribe(this, command.Id);
             //_cc.DataRouter.Subscribe(this, 1);
-            //_cc.DataRouter.Subscribe(this, 50);
+            //_cc.DataRouter.Subscribe(this, 180);
 
             Listen();
         }
