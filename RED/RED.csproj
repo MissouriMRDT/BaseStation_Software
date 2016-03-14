@@ -230,7 +230,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Compile Include="Contexts\TelemetryContext.cs" />
     <Page Include="Views\ControlCenter\ConsoleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -243,7 +242,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Interfaces\IModule.cs" />
     <Compile Include="ViewModels\ControlCenter\ConsoleViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\StateViewModel.cs" />
     <Compile Include="Views\ControlCenter\ConsoleView.xaml.cs">
