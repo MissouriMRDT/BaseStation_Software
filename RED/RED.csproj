@@ -232,7 +232,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Compile Include="Contexts\TelemetryContext.cs" />
-    <Compile Include="Contexts\ButtonContext.cs" />
     <Page Include="Views\ControlCenter\ConsoleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
