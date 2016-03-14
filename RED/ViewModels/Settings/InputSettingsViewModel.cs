@@ -13,17 +13,17 @@ namespace RED.ViewModels.Settings
     public class InputSettingsViewModel : PropertyChangedBase
     {
         private SettingsManagerViewModel _settings;
-        private IInputDevice _vm;
+        private InputManagerViewModel _manager;
 
         public int SerialReadSpeed
         {
             get
             {
-                return _vm.SerialReadSpeed;
+                return _manager.Input.SerialReadSpeed;
             }
             set
             {
-                _vm.SerialReadSpeed = value;
+                _manager.Input.SerialReadSpeed = value;
                 _settings.CurrentSettings.InputSerialReadSpeed = value;
                 NotifyOfPropertyChange(() => SerialReadSpeed);
             }
@@ -32,11 +32,11 @@ namespace RED.ViewModels.Settings
         {
             get
             {
-                return _vm.AutoDeadzone;
+                return _manager.Input.AutoDeadzone;
             }
             set
             {
-                _vm.AutoDeadzone = value;
+                _manager.Input.AutoDeadzone = value;
                 _settings.CurrentSettings.InputAutoDeadzone = value;
                 NotifyOfPropertyChange(() => AutoDeadzone);
             }
@@ -45,11 +45,11 @@ namespace RED.ViewModels.Settings
         {
             get
             {
-                return _vm.ManualDeadzone;
+                return _manager.Input.ManualDeadzone;
             }
             set
             {
-                _vm.ManualDeadzone = value;
+                _manager.Input.ManualDeadzone = value;
                 _settings.CurrentSettings.InputManualDeadzone = value;
                 NotifyOfPropertyChange(() => ManualDeadzone);
             }
@@ -81,14 +81,14 @@ namespace RED.ViewModels.Settings
             }
         }
 
-        public InputSettingsViewModel(SettingsManagerViewModel settings, IInputDevice vm)
+        public InputSettingsViewModel(SettingsManagerViewModel settings, InputManagerViewModel manager)
         {
             _settings = settings;
-            _vm = vm;
+            _manager = manager;
 
-            _vm.SerialReadSpeed = _settings.CurrentSettings.InputSerialReadSpeed;
-            _vm.AutoDeadzone = _settings.CurrentSettings.InputAutoDeadzone;
-            _vm.ManualDeadzone = _settings.CurrentSettings.InputManualDeadzone;
+            _manager.Input.SerialReadSpeed = _settings.CurrentSettings.InputSerialReadSpeed;
+            _manager.Input.AutoDeadzone = _settings.CurrentSettings.InputAutoDeadzone;
+            _manager.Input.ManualDeadzone = _settings.CurrentSettings.InputManualDeadzone;
         }
     }
 }
