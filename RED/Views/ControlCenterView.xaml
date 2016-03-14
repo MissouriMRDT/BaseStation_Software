@@ -15,8 +15,6 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Resources/Icons/Icons.xaml" />
-                <ResourceDictionary>
-                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
@@ -24,25 +22,6 @@
     <i:Interaction.Behaviors>
         <behaviours:BorderlessWindowBehavior/>
     </i:Interaction.Behaviors>
-    <controls:MetroWindow.RightWindowCommands>
-        <controls:WindowCommands>
-            <Button Content="settings" Click="ToggleSettingsFlyout" />
-            <Button Content="layouts" Click="ToggleLayoutsFlyout" />
-        </controls:WindowCommands>
-    </controls:MetroWindow.RightWindowCommands>
-    <controls:MetroWindow.Flyouts>
-        <controls:FlyoutsControl>
-            <controls:Flyout Name="SettingsFlyout" Header="Settings" Position="Right" Width="800" Theme="Dark">
-                <TextBlock>Flyout settings doesn't work right, so it's on a tab instead.</TextBlock>
-            </controls:Flyout>
-            <controls:Flyout Name="LayoutsFlyout" Position="Bottom" 
-                             CloseButtonVisibility="Collapsed" 
-                             TitleVisibility ="Collapsed" 
-                             IsPinned="False"
-                             Height="75">
-            </controls:Flyout>
-        </controls:FlyoutsControl>
-    </controls:MetroWindow.Flyouts>
 
     <controls:MetroTabControl Name="MainTabs">
         <TabItem Header="Control Center">
