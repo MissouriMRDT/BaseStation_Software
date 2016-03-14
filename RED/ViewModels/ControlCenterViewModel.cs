@@ -82,18 +82,6 @@
                 NotifyOfPropertyChange(() => SubscriptionManager);
             }
         }
-        public AsyncTcpServerViewModel TcpAsyncServer
-        {
-            get
-            {
-                return _model._tcpAsyncServer;
-            }
-            set
-            {
-                _model._tcpAsyncServer = value;
-                NotifyOfPropertyChange(() => TcpAsyncServer);
-            }
-        }
         public NetworkManagerViewModel NetworkManager
         {
             get
@@ -194,7 +182,6 @@
             MetadataManager = new MetadataManager(this);
             MetadataManager.AddFromFile("NoSyncMetadata.xml");
             IManager = new InputManagerViewModel(this);
-            //TcpAsyncServer = new AsyncTcpServerViewModel(11000, this);
             NetworkManager = new NetworkManagerViewModel(this);
             SubscriptionManager = new SubscriptionManagerViewModel(this);
             Science = new ScienceViewModel(this);

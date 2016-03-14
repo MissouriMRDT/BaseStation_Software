@@ -9,7 +9,6 @@ namespace RED.Models
 {
     public class SettingsManagerModel
     {
-        internal NetworkSettingsViewModel network;
         internal DriveSettingsViewModel drive;
         internal ScienceSettingsViewModel science;
         internal InputSettingsViewModel input;

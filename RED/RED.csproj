@@ -121,19 +121,16 @@
     <Compile Include="Contexts\MetadataSaveContext.cs" />
     <Compile Include="Contexts\TelemetryMetadataContext.cs" />
     <Compile Include="Images\ModernUIIcons.cs" />
-    <Compile Include="Interfaces\IConnection.cs" />
     <Compile Include="Interfaces\IControllerMode.cs" />
     <Compile Include="Interfaces\IIPAddressProvider.cs" />
     <Compile Include="Interfaces\IMetadata.cs" />
     <Compile Include="Interfaces\IInputDevice.cs" />
     <Compile Include="Interfaces\INetworkEncoding.cs" />
     <Compile Include="Interfaces\INetworkTransportProtocol.cs" />
-    <Compile Include="Interfaces\IProtocol.cs" />
     <Compile Include="Interfaces\ISequenceNumberProvider.cs" />
     <Compile Include="Models\ArmControllerModeModel.cs" />
     <Compile Include="Models\InputManagerModel.cs" />
     <Compile Include="Models\DataRouterModel.cs" />
-    <Compile Include="Models\AsyncTcpServerModel.cs" />
     <Compile Include="Models\DriveControllerModeModel.cs" />
     <Compile Include="Models\NetworkManagerModel.cs" />
     <Compile Include="Models\ScienceModel.cs" />
@@ -141,7 +138,6 @@
     <Compile Include="Models\SensorModel.cs" />
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Models\SubscriptionManagerModel.cs" />
-    <Compile Include="Models\TcpConnectionModel.cs" />
     <Compile Include="Models\KeyboardInputModel.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Models\XboxControllerInputModel.cs" />
@@ -151,20 +147,17 @@
     <Compile Include="Interfaces\ISubscribe.cs" />
     <Compile Include="Models\ControlCenterModel.cs" />
     <Compile Include="RedBootstrapper.cs" />
-    <Compile Include="ViewModels\ControlCenter\AsyncTcpServer.cs" />
     <Compile Include="ViewModels\ControlCenter\DriveControllerModeViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\GPSViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\KeyboardInputViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\XboxControllerInputViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\MetadataManager.cs" />
-    <Compile Include="ViewModels\ControlCenter\RoverConnection.cs" />
     <Compile Include="ViewModels\ControlCenter\RoverProtocol.cs" />
     <Compile Include="ViewModels\ControlCenter\ScienceViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\SensorCombinedViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\SensorViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\SequenceNumberManager.cs" />
     <Compile Include="ViewModels\ControlCenter\SubscriptionManagerViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\TcpConnection.cs" />
     <Compile Include="ViewModels\ControlCenterViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\InputManagerViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\UDPEndpoint.cs" />
@@ -172,7 +165,6 @@
     <Compile Include="ViewModels\Settings\DriveSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\GPSSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\InputSettingsViewModel.cs" />
-    <Compile Include="ViewModels\Settings\NetworkSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\ScienceSettingsViewModel.cs" />
     <Compile Include="Views\ControlCenterView.xaml.cs">
       <DependentUpon>ControlCenterView.xaml</DependentUpon>
@@ -203,9 +195,6 @@
     </Compile>
     <Compile Include="Views\Settings\InputSettingsView.xaml.cs">
       <DependentUpon>InputSettingsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Settings\NetworkSettingsView.xaml.cs">
-      <DependentUpon>NetworkSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Settings\ScienceSettingsView.xaml.cs">
       <DependentUpon>ScienceSettingsView.xaml</DependentUpon>
@@ -280,10 +269,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Settings\InputSettingsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Settings\NetworkSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

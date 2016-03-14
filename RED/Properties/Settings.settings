@@ -2,9 +2,6 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="RED.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="ServerListeningPort" Type="System.Int16" Scope="User">
-      <Value Profile="(Default)">11000</Value>
-    </Setting>
     <Setting Name="DriveSpeedLimit" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1000</Value>
     </Setting>

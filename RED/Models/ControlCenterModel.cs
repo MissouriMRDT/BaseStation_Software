@@ -13,7 +13,6 @@
         internal DataRouter _dataRouter;
         internal MetadataManager _metadataManager;
         internal SubscriptionManagerViewModel _subscriptionManager;
-        internal AsyncTcpServerViewModel _tcpAsyncServer;
         internal NetworkManagerViewModel _networkManager;
         internal InputManagerViewModel _input;
         internal ScienceViewModel _science;

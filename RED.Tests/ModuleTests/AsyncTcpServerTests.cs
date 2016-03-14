@@ -23,23 +23,11 @@
         [Test]
         public void ServerConstructor()
         {
-            // Arrange
-            // Act
-            var cc=new ControlCenterViewModel();
-            var server = new AsyncTcpServerViewModel(11000, cc);
-            // Assert
-            Assert.AreEqual(server.ListeningPort, 11000);
         }
 
         [Test]
         public void ServerListen()
         {
-            // Arrange
-            // Act
-            var cc = new ControlCenterViewModel();
-            var server = new AsyncTcpServerViewModel(11000, cc);
-            // Assert
-            Assert.AreEqual(server.ListeningPort, 11000);
         }
     }
 }
