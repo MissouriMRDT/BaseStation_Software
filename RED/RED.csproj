@@ -310,12 +310,6 @@
     <Content Include="Resources\Icons\Entypo-license.txt" />
     <Content Include="Resources\Icons\WindowsIcons-license.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\RED.JSON\RED.JSON.csproj">
-      <Project>{278bf0b9-0c40-4b9b-87d2-ee89e677f2f5}</Project>
-      <Name>RED.JSON</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\SharpDX.2.6.3\build\SharpDX.targets" Condition="Exists('..\packages\SharpDX.2.6.3\build\SharpDX.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
