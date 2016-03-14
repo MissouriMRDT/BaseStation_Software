@@ -111,7 +111,6 @@
     <Compile Include="Addons\GPSCoordinate.cs" />
     <Compile Include="Addons\GPSCoordinateToLongitudeConverter.cs" />
     <Compile Include="Addons\GPSCoordinateToLatitudeConverter.cs" />
-    <Compile Include="Addons\RelayCommand.cs" />
     <Compile Include="Addons\SubscriptionRecord.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
