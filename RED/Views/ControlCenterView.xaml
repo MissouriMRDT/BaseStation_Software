@@ -16,9 +16,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Resources/Icons/Icons.xaml" />
                 <ResourceDictionary>
-                    <DataTemplate DataType="{x:Type controlCenterViewModels:ModuleGridViewModel}">
-                        <controlCenter:ModuleGridView />
-                    </DataTemplate>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -43,48 +40,6 @@
                              TitleVisibility ="Collapsed" 
                              IsPinned="False"
                              Height="75">
-                <DockPanel>
-                    <Button Command="{Binding ModuleManager.ResetGridProportionsCommand}" ToolTip="Click this to reset the grid proportions."
-                            Height="35" Width="35"
-                            Style="{DynamicResource MetroCircleButtonStyle}">
-                        <Rectangle Width="15" Height="15" 
-                                    Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
-                            <Rectangle.OpacityMask>
-                                <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_reset}" />
-                            </Rectangle.OpacityMask>
-                        </Rectangle>
-                    </Button>
-                    <Button Name="SaveButton" Height="35" Width="35" Click="ShowSavePresetDialog"
-                            Style="{DynamicResource MetroCircleButtonStyle}">
-                        <Rectangle Width="15" Height="15" 
-                                    Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
-                            <Rectangle.OpacityMask>
-                                <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_save}" />
-                            </Rectangle.OpacityMask>
-                        </Rectangle>
-                    </Button>
-                    <Button Margin="0 0 5 0" Name="LoadButton" Height="35" Width="35" Click="ShowDeletePresetDialog"
-                            Style="{DynamicResource MetroCircleButtonStyle}">
-                        <Rectangle Width="15" Height="15" 
-                                    Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
-                            <Rectangle.OpacityMask>
-                                <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_delete}" />
-                            </Rectangle.OpacityMask>
-                        </Rectangle>
-                    </Button>
-                    <ItemsControl ItemsSource="{Binding ModuleManager.ButtonContexts}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal"/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate DataType="{x:Type contexts:ButtonContext}">
-                                <Button Command="{Binding Command}" Content="{Binding Text}" Margin="0 0 2 0" Width="125"/>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </DockPanel>
             </controls:Flyout>
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>

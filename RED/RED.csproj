@@ -152,7 +152,6 @@
     <Compile Include="ViewModels\ControlCenter\DataRouter.cs" />
     <Compile Include="Interfaces\ISubscribe.cs" />
     <Compile Include="Models\ControlCenterModel.cs" />
-    <Compile Include="Models\ModuleGridModel.cs" />
     <Compile Include="RedBootstrapper.cs" />
     <Compile Include="ViewModels\ControlCenter\AsyncTcpServer.cs" />
     <Compile Include="ViewModels\ControlCenter\DriveControllerModeViewModel.cs" />
@@ -169,7 +168,6 @@
     <Compile Include="ViewModels\ControlCenter\SubscriptionManagerViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\TcpConnection.cs" />
     <Compile Include="ViewModels\ControlCenterViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\ModuleGridViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\InputManagerViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\UDPEndpoint.cs" />
     <Compile Include="ViewModels\SettingsManagerViewModel.cs" />
@@ -234,36 +232,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ControlCenter\ModuleGridView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ControlCenter\RemoveModuleStateView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ControlCenter\SaveModuleStateView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Compile Include="Contexts\TelemetryContext.cs" />
     <Compile Include="Contexts\ButtonContext.cs" />
     <Compile Include="Addons\ModuleStateSave.cs" />
-    <Compile Include="ViewModels\ControlCenter\RemoveModuleStateViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\SaveModuleStateViewModel.cs" />
-    <Compile Include="Views\ControlCenter\ModuleGridView.xaml.cs">
-      <DependentUpon>ModuleGridView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ControlCenter\RemoveModuleStateView.xaml.cs">
-      <DependentUpon>RemoveModuleStateView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ControlCenter\SaveModuleStateView.xaml.cs">
-      <DependentUpon>SaveModuleStateView.xaml</DependentUpon>
-    </Compile>
-    <Page Include="Views\ControlCenter\ModuleManagerView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\ControlCenter\ConsoleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -277,11 +248,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\IModule.cs" />
-    <Compile Include="ViewModels\ControlCenter\ModuleManagerViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\ConsoleViewModel.cs" />
-    <Compile Include="Views\ControlCenter\ModuleManagerView.xaml.cs">
-      <DependentUpon>ModuleManagerView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ViewModels\ControlCenter\StateViewModel.cs" />
     <Compile Include="Views\ControlCenter\ConsoleView.xaml.cs">
       <DependentUpon>ConsoleView.xaml</DependentUpon>
