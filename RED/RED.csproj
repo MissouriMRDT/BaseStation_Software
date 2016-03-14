@@ -233,7 +233,6 @@
     </Page>
     <Compile Include="Contexts\TelemetryContext.cs" />
     <Compile Include="Contexts\ButtonContext.cs" />
-    <Compile Include="Addons\ModuleStateSave.cs" />
     <Page Include="Views\ControlCenter\ConsoleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
