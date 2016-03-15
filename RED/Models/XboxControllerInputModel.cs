@@ -5,7 +5,6 @@ namespace RED.Models
 {
     internal class XboxControllerInputModel
     {
-        internal int SerialReadSpeed;
         internal int ManualDeadzone;
         internal bool AutoDeadzone = false;
 

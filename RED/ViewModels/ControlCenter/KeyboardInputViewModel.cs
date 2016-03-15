@@ -19,18 +19,6 @@
         private readonly ControlCenterViewModel _controlCenter;
         [CanBeNull]
 
-        public int SerialReadSpeed
-        {
-            get
-            {
-                return Model.SerialReadSpeed;
-            }
-            set
-            {
-                Model.SerialReadSpeed = value;
-                NotifyOfPropertyChange(() => SerialReadSpeed);
-            }
-        }
         public bool AutoDeadzone
         {
             get
@@ -446,15 +434,6 @@
             CurrentModeIndex = 0;
         }
 
-        public async void Start()
-        {
-            while (true)
-            {
-                Update();
-                EvaluateCurrentMode();
-                await Task.Delay(SerialReadSpeed);
-            }
-        }
 
         public void NextControlMode()
         {
@@ -469,7 +448,7 @@
             ControllerModes[CurrentModeIndex].EnterMode();
         }
 
-        private void Update()
+        public void Update()
         {
             // Tell RED that this controller is connected
             Connected = true;
@@ -563,7 +542,7 @@
             ActuatorBackward = Keyboard.IsKeyDown(Key.Down);
         }
 
-        private void EvaluateCurrentMode()
+        public void EvaluateCurrentMode()
         {
             ControllerModes[CurrentModeIndex].EvaluateMode();
         }

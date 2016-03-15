@@ -32,8 +32,8 @@ namespace RED.Interfaces
         float GripperOpen { get; set; }
         float GripperClose { get; set; }
 
-        void Start();
-        int SerialReadSpeed { get; set; }
+        void Update();
+        void EvaluateCurrentMode();
         bool AutoDeadzone { get; set; }
         int ManualDeadzone { get; set; }
         ObservableCollection<IControllerMode> ControllerModes { get; }

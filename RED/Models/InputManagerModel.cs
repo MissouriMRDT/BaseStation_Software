@@ -10,5 +10,6 @@ namespace RED.Models
     public class InputManagerModel
     {
         internal IInputDevice _input;
+        internal int SerialReadSpeed;
     }
 }

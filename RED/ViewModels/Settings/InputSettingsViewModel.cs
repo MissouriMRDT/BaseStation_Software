@@ -19,11 +19,11 @@ namespace RED.ViewModels.Settings
         {
             get
             {
-                return _manager.Input.SerialReadSpeed;
+                return _manager.SerialReadSpeed;
             }
             set
             {
-                _manager.Input.SerialReadSpeed = value;
+                _manager.SerialReadSpeed = value;
                 _settings.CurrentSettings.InputSerialReadSpeed = value;
                 NotifyOfPropertyChange(() => SerialReadSpeed);
             }
@@ -86,7 +86,7 @@ namespace RED.ViewModels.Settings
             _settings = settings;
             _manager = manager;
 
-            _manager.Input.SerialReadSpeed = _settings.CurrentSettings.InputSerialReadSpeed;
+            _manager.SerialReadSpeed = _settings.CurrentSettings.InputSerialReadSpeed;
             _manager.Input.AutoDeadzone = _settings.CurrentSettings.InputAutoDeadzone;
             _manager.Input.ManualDeadzone = _settings.CurrentSettings.InputManualDeadzone;
         }

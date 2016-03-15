@@ -19,18 +19,6 @@
         [CanBeNull]
         public readonly Controller ControllerOne = new Controller(UserIndex.One);
 
-        public int SerialReadSpeed
-        {
-            get
-            {
-                return Model.SerialReadSpeed;
-            }
-            set
-            {
-                Model.SerialReadSpeed = value;
-                NotifyOfPropertyChange(() => SerialReadSpeed);
-            }
-        }
         public bool AutoDeadzone
         {
             get
@@ -508,16 +496,6 @@
             CurrentModeIndex = 0;
         }
 
-        public async void Start()
-        {
-            while (true)
-            {
-                Update();
-                EvaluateCurrentMode();
-                await Task.Delay(SerialReadSpeed);
-            }
-        }
-
         public void NextControlMode()
         {
             ControllerModes[CurrentModeIndex].ExitMode();
@@ -531,7 +509,7 @@
             ControllerModes[CurrentModeIndex].EnterMode();
         }
 
-        private void Update()
+        public void Update()
         {
             if (ControllerOne == null || !ControllerOne.IsConnected)
             {
@@ -565,7 +543,7 @@
             ActuatorBackward = (currentGamepad.Buttons & GamepadButtonFlags.DPadDown) != 0;
         }
 
-        private void EvaluateCurrentMode()
+        public void EvaluateCurrentMode()
         {
             if (ControllerOne != null && !ControllerOne.IsConnected) return;
             ControllerModes[CurrentModeIndex].EvaluateMode();

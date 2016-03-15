@@ -5,7 +5,6 @@ namespace RED.Models
 {
     internal class KeyboardInputModel
     {
-        internal int SerialReadSpeed;
         internal int ManualDeadzone;
         internal bool AutoDeadzone = false;
 
