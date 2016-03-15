@@ -482,8 +482,6 @@
             if (speedMultiplier > 0.01f && Keyboard.IsKeyDown(Key.OemMinus))
                 speedMultiplier -= 0.01f;
 
-            Console.WriteLine(speedMultiplier);
-
             // Keys A and Q control the left wheels in drive mode
             // and the elbow bend in arm mode
             if (Keyboard.IsKeyDown(Key.A))

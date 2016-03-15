@@ -75,8 +75,6 @@ namespace RED.ViewModels.Settings
             {
                 _manager.SelectedDevice = value;
                 _manager.NotifyOfPropertyChange(() => _manager.SelectedDevice);
-                System.Console.Write("SELECTED: ");
-                System.Console.WriteLine(_manager.SelectedDevice);
             }
         }
 
