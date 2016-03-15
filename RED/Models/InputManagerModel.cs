@@ -11,5 +11,6 @@ namespace RED.Models
     {
         internal IInputDevice _input;
         internal int SerialReadSpeed;
+        internal string SelectedDevice;
     }
 }

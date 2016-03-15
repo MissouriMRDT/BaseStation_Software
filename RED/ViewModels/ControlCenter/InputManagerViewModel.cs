@@ -40,11 +40,22 @@ namespace RED.ViewModels.ControlCenter
             }
         }
 
+        public string SelectedDevice
+        {
+            get
+            {
+                return _model.SelectedDevice;
+            }
+
+            set
+            {
+                _model.SelectedDevice = value;
+                NotifyOfPropertyChange(() => SelectedDevice);
+            }
+        }
+
         public void SwitchDevice(string newDevice)
         {
-            // Delete old input
-            Input = null;
-
             // Switch on newDevice
             switch (newDevice)
             {
@@ -62,36 +73,21 @@ namespace RED.ViewModels.ControlCenter
 
         public async void Start()
         {
+            string oldDevice = "Keyboard";
             while (true)
             {
                 Input.Update();
                 Input.EvaluateCurrentMode();
+
+                // Check if the input device has changed
+                if (oldDevice != SelectedDevice)
+                {
+                    SwitchDevice(SelectedDevice);
+                    oldDevice = SelectedDevice;
+                }
+
                 await Task.Delay(SerialReadSpeed);
             }
-            //Input.Start();
-            //while (true)
-            //{
-            /*
-             * TODO: get the selected device from the view,
-             *       and check if it's different from the device
-             *       that we're currently using.
-             *       If it is, call the switch device using the newly
-             *       selected device.
-             *
-             *       NOTE: But like seriously, this is an infinite loop,
-             *       so if it isn't working, it needs to be deleted.
-             *       
-             * selectedDevice = // get this from the view
-             * // Call the switch controller function here
-             * if (oldDevice != selectedDevice)
-             * {
-             *     SwitchDevice(selectedDevice);
-             *     oldDevice = selectedDevice;
-             * }
-            **/
-
-                //await Task.Delay(1000);
-            //}
         }
 
         public InputManagerViewModel(ControlCenterViewModel cc)
@@ -99,7 +95,6 @@ namespace RED.ViewModels.ControlCenter
             // Set default input device as the keyboard
             Input = new KeyboardInputViewModel(cc);
             _cc = cc;
-            //Input = new XboxControllerInputViewModel(cc);
         }
     }
 }

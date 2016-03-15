@@ -28,6 +28,7 @@ namespace RED.ViewModels.Settings
                 NotifyOfPropertyChange(() => SerialReadSpeed);
             }
         }
+
         public bool AutoDeadzone
         {
             get
@@ -55,8 +56,6 @@ namespace RED.ViewModels.Settings
             }
         }
 
-        private string selectedDevice;
-
         public List<string> DeviceType
         {
             get
@@ -69,15 +68,15 @@ namespace RED.ViewModels.Settings
         {
             get
             {
-                return this.selectedDevice;
+                return _manager.SelectedDevice;
             }
 
             set
             {
-                this.selectedDevice = value;
-                this.NotifyOfPropertyChange(() => this.SelectedDevice);
+                _manager.SelectedDevice = value;
+                _manager.NotifyOfPropertyChange(() => _manager.SelectedDevice);
                 System.Console.Write("SELECTED: ");
-                System.Console.WriteLine(this.selectedDevice);
+                System.Console.WriteLine(_manager.SelectedDevice);
             }
         }
 
@@ -89,6 +88,7 @@ namespace RED.ViewModels.Settings
             _manager.SerialReadSpeed = _settings.CurrentSettings.InputSerialReadSpeed;
             _manager.Input.AutoDeadzone = _settings.CurrentSettings.InputAutoDeadzone;
             _manager.Input.ManualDeadzone = _settings.CurrentSettings.InputManualDeadzone;
+            _manager.SelectedDevice = _settings.CurrentSettings.InputSelectedDevice;
         }
     }
 }
