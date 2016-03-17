@@ -165,8 +165,7 @@ namespace RED.ViewModels.ControlCenter
             _model = new GPSModel();
             _cc = cc;
 
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("GPSData"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Heading"));
+            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("GPSQuality"));
 
             Waypoints.Add(new GPSCoordinate(37.951631, -91.777713));//Rolla
             Waypoints.Add(new GPSCoordinate(37.850025, -91.701845));//Fugitive Beach
@@ -196,6 +195,29 @@ namespace RED.ViewModels.ControlCenter
                     break;
                 case "Heading":
                     Heading = BitConverter.ToSingle(data, 0);
+                    break;
+                case "GPSQuality":
+                    FixObtained = data[0] == 0;
+                    FixQuality = data[0];
+                    break;
+                case "GPSPosition":
+                    CurrentLocation = new GPSCoordinate()
+                    {
+                        Latitude = BitConverter.ToInt32(data, 0) / 100000f,
+                        Longitude = BitConverter.ToInt32(data, 4) / 100000f
+                    };
+                    break;
+                case "GPSSpeed":
+                    Speed = BitConverter.ToSingle(data, 0);
+                    break;
+                case "GPSSpeedAngle":
+                    SpeedAngle = BitConverter.ToSingle(data, 0);
+                    break;
+                case "GPSAltitude":
+                    CurrentAltitude = BitConverter.ToSingle(data, 0);
+                    break;
+                case "GPSSatellites":
+                    NumberOfSatellites = data[0];
                     break;
             }
         }
