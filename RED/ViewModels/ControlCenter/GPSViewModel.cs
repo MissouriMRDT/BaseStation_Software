@@ -173,7 +173,7 @@ namespace RED.ViewModels.ControlCenter
             Waypoints.Add(new GPSCoordinate(38.406426, -110.791919));//Mars Desert Research Station
         }
 
-        public void ReceiveFromRouter(byte dataId, byte[] data)
+        public void ReceiveFromRouter(ushort dataId, byte[] data)
         {
             switch (_cc.MetadataManager.GetTelemetry(dataId).Name)
             {

@@ -20,7 +20,7 @@ namespace RED.ViewModels.ControlCenter
             _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("SensorCombined"));
         }
 
-        public void ReceiveFromRouter(byte dataId, byte[] data)
+        public void ReceiveFromRouter(ushort dataId, byte[] data)
         {
             switch (_cc.MetadataManager.GetTelemetry(dataId).Name)
             {

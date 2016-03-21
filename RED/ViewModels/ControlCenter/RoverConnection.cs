@@ -194,7 +194,7 @@ namespace RED.ViewModels.ControlCenter
 
         private async Task receiveTelemetryData(Stream s)
         {
-            byte dataId = (byte)(s.ReadByte()); //TODO: handle disconnection here
+            ushort dataId = (ushort)(s.ReadByte()); //TODO: handle disconnection here
             int dataLength = _controlCenter.MetadataManager.GetDataTypeByteLength(dataId);
             byte[] buffer = new byte[dataLength];
             await s.ReadAsync(buffer, 0, dataLength);
@@ -210,7 +210,7 @@ namespace RED.ViewModels.ControlCenter
         }
 
         //ISubscribe.Receive
-        public void ReceiveFromRouter(byte dataId, byte[] data)
+        public void ReceiveFromRouter(ushort dataId, byte[] data)
         {
             //This forwards the data across the connection
             try

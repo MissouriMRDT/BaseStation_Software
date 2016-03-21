@@ -9,11 +9,12 @@ namespace RED.Contexts
     [Serializable]
     public class ErrorMetadataContext : IMetadata
     {
-        public byte Id { get; set; }
+        public ushort Id { get; set; }
         public string Name { get; set; }
         public string Subsystem { get; set; }
         public string Description { get; set; }
         public string Datatype { get; set; }
+        public string ServerAddress { get; set; }
         public string Units { get; set; }
 
         public ErrorMetadataContext()
@@ -34,7 +35,7 @@ namespace RED.Contexts
         {
             return new JsonErrorMetadataContext()
             {
-                Error_ID = Id,
+                Error_ID = (byte)Id,
                 Name = Name,
                 Subsystem = Subsystem,
                 Error_String = Description,

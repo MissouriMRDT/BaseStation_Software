@@ -9,7 +9,7 @@
     {
         private readonly DataRouterModel _model;
 
-        public Dictionary<byte, List<ISubscribe>> Registrations
+        public Dictionary<ushort, List<ISubscribe>> Registrations
         {
             get
             {
@@ -22,50 +22,50 @@
             _model = new DataRouterModel();
         }
 
-        public void Send(byte dataCode, byte[] data)
+        public void Send(ushort dataId, byte[] data)
         {
-            if (dataCode == 0) return;
+            if (dataId == 0) return;
             List<ISubscribe> registered;
-            if (Registrations.TryGetValue(dataCode, out registered))
+            if (Registrations.TryGetValue(dataId, out registered))
                 foreach (ISubscribe subscription in registered)
-                    subscription.ReceiveFromRouter(dataCode, data);
+                    subscription.ReceiveFromRouter(dataId, data);
         }
-        public void Send(byte dataCode, byte obj)
+        public void Send(ushort dataId, byte obj)
         {
-            Send(dataCode, new byte[] { obj });
+            Send(dataId, new byte[] { obj });
         }
-        public void Send(byte dataCode, dynamic obj)
+        public void Send(ushort dataId, dynamic obj)
         {
-            Send(dataCode, System.BitConverter.GetBytes(obj));
+            Send(dataId, System.BitConverter.GetBytes(obj));
         }
 
-        public void Subscribe(ISubscribe subscriber, byte dataCode)
+        public void Subscribe(ISubscribe subscriber, ushort dataId)
         {
-            if (dataCode == 0) return;
+            if (dataId == 0) return;
             List<ISubscribe> existingRegistrations;
-            if (Registrations.TryGetValue(dataCode, out existingRegistrations))
+            if (Registrations.TryGetValue(dataId, out existingRegistrations))
             {
                 if (!existingRegistrations.Contains(subscriber))
                     existingRegistrations.Add(subscriber);
             }
             else
-                Registrations.Add(dataCode, new List<ISubscribe> { subscriber });
+                Registrations.Add(dataId, new List<ISubscribe> { subscriber });
         }
 
         public void UnSubscribe(ISubscribe subscriber)
         {
-            var registrationCopy = new Dictionary<byte, List<ISubscribe>>(Registrations); //Use a copy because we may modify it while removing stuff and that breaks the foreach
-            foreach (KeyValuePair<byte, List<ISubscribe>> kvp in registrationCopy)
+            var registrationCopy = new Dictionary<ushort, List<ISubscribe>>(Registrations); //Use a copy because we may modify it while removing stuff and that breaks the foreach
+            foreach (KeyValuePair<ushort, List<ISubscribe>> kvp in registrationCopy)
                 UnSubscribe(subscriber, kvp.Key);
         }
-        public void UnSubscribe(ISubscribe subscriber, byte dataCode)
+        public void UnSubscribe(ISubscribe subscriber, ushort dataId)
         {
             List<ISubscribe> existingRegistrations;
-            if (Registrations.TryGetValue(dataCode, out existingRegistrations))
+            if (Registrations.TryGetValue(dataId, out existingRegistrations))
             {
                 existingRegistrations.Remove(subscriber);
                 if (existingRegistrations.Count == 0)
-                    Registrations.Remove(dataCode);
+                    Registrations.Remove(dataId);
             }
         }
     }

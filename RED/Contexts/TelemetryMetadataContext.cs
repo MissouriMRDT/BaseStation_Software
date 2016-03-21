@@ -9,10 +9,11 @@ namespace RED.Contexts
     [Serializable]
     public class TelemetryMetadataContext : IMetadata
     {
-        public byte Id { get; set; }
+        public ushort Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string Datatype { get; set; }
+        public string ServerAddress { get; set; }
         public string Units { get; set; }
         public string Minimum { get; set; }
         public string Maximum { get; set; }
@@ -36,7 +37,7 @@ namespace RED.Contexts
         {
             return new JsonTelemetryMetadataContext()
             {
-                Telem_ID = Id,
+                Telem_ID = (byte)Id,
                 Name = Name,
                 Description = Description,
                 Datatype = Datatype,
