@@ -8,16 +8,11 @@
     {
         internal SettingsManagerViewModel _settingsManager;
 
-        internal SaveModuleStateViewModel _saveModuleState;
-        internal RemoveModuleStateViewModel _removeModuleState;
-
         internal StateViewModel _stateManager;
         internal ConsoleViewModel _console;
-        internal ModuleManagerViewModel _gridManager;
         internal DataRouter _dataRouter;
         internal MetadataManager _metadataManager;
         internal SubscriptionManagerViewModel _subscriptionManager;
-        internal AsyncTcpServerViewModel _tcpAsyncServer;
         internal NetworkManagerViewModel _networkManager;
         internal InputManagerViewModel _input;
         internal ScienceViewModel _science;

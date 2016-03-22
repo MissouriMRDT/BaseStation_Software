@@ -8,13 +8,8 @@
 
     public partial class ControlCenterView
     {
-        private readonly SaveModuleStateView _saveDialog;
-        private readonly RemoveModuleStateView _removeDialog;
-
         public ControlCenterView()
         {
-            _removeDialog = new RemoveModuleStateView(this);
-            _saveDialog = new SaveModuleStateView(this);
             InitializeComponent();
             MainTabs.SelectionChanged += MainTabs_SelectionChanged;
         }
@@ -45,19 +40,6 @@
             }
 
             flyout.IsOpen = !flyout.IsOpen;
-        }
-
-        private async void ShowSavePresetDialog(object sender, RoutedEventArgs e)
-        {
-            var dialog = (BaseMetroDialog)_saveDialog;
-            ToggleFlyout(1);
-            await this.ShowMetroDialogAsync(dialog);
-        }
-        private async void ShowDeletePresetDialog(object sender, RoutedEventArgs e)
-        {
-            var dialog = (BaseMetroDialog)_removeDialog;
-            ToggleFlyout(1);
-            await this.ShowMetroDialogAsync(dialog);
         }
     }
 }

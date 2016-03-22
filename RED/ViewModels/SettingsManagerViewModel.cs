@@ -22,18 +22,6 @@ namespace RED.ViewModels
             }
         }
 
-        public NetworkSettingsViewModel Network
-        {
-            get
-            {
-                return _model.network;
-            }
-            set
-            {
-                _model.network = value;
-                NotifyOfPropertyChange(() => Network);
-            }
-        }
         public DriveSettingsViewModel Drive
         {
             get
@@ -88,7 +76,6 @@ namespace RED.ViewModels
             _model = new SettingsManagerModel();
             _controlCenter = cc;
 
-            //Network = new NetworkSettingsViewModel(this, cc.TcpAsyncServer);
             Drive = new DriveSettingsViewModel(this, (ViewModels.ControlCenter.DriveControllerModeViewModel)cc.IManager.Input.ControllerModes[0]);
             Science = new ScienceSettingsViewModel(this, cc.Science);
             Input = new InputSettingsViewModel(this, cc.IManager.Input);

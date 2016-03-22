@@ -71,32 +71,10 @@
             }
         }
 
-        public bool ServerIsRunning
-        {
-            get
-            {
-                return _model._serverIsRunning;
-            }
-            set
-            {
-                _model._serverIsRunning = value;
-                NotifyOfPropertyChange(() => ServerIsRunning);
-            }
-        }
-
         public StateViewModel(ControlCenterViewModel controlCenter)
         {
             _controlCenter = controlCenter;
             CurrentControlMode = "";
-        }
-
-        public void ToggleServer()
-        {
-            ServerIsRunning = !ServerIsRunning;
-            if (ServerIsRunning)
-                _controlCenter.TcpAsyncServer.Start();
-            else
-                _controlCenter.TcpAsyncServer.Stop();
         }
 
         protected T ParseEnum<T>(string name)

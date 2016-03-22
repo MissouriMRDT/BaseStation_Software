@@ -22,31 +22,6 @@
             }
         }
 
-        public RemoveModuleStateViewModel RemoveModuleState
-        {
-            get
-            {
-                return _model._removeModuleState;
-            }
-            set
-            {
-                _model._removeModuleState = value;
-                NotifyOfPropertyChange(() => RemoveModuleState);
-            }
-        }
-        public SaveModuleStateViewModel SaveModuleState
-        {
-            get
-            {
-                return _model._saveModuleState;
-            }
-            set
-            {
-                _model._saveModuleState = value;
-                NotifyOfPropertyChange(() => SaveModuleState);
-            }
-        }
-
         public StateViewModel StateManager
         {
             get
@@ -107,18 +82,6 @@
                 NotifyOfPropertyChange(() => SubscriptionManager);
             }
         }
-        public AsyncTcpServerViewModel TcpAsyncServer
-        {
-            get
-            {
-                return _model._tcpAsyncServer;
-            }
-            set
-            {
-                _model._tcpAsyncServer = value;
-                NotifyOfPropertyChange(() => TcpAsyncServer);
-            }
-        }
         public NetworkManagerViewModel NetworkManager
         {
             get
@@ -129,18 +92,6 @@
             {
                 _model._networkManager = value;
                 NotifyOfPropertyChange(() => NetworkManager);
-            }
-        }
-        public ModuleManagerViewModel ModuleManager
-        {
-            get
-            {
-                return _model._gridManager;
-            }
-            set
-            {
-                _model._gridManager = value;
-                NotifyOfPropertyChange(() => ModuleManager);
             }
         }
         public InputManagerViewModel IManager
@@ -231,17 +182,12 @@
             MetadataManager = new MetadataManager(this);
             MetadataManager.AddFromFile("NoSyncMetadata.xml");
             IManager = new InputManagerViewModel(this);
-            //TcpAsyncServer = new AsyncTcpServerViewModel(11000, this);
             NetworkManager = new NetworkManagerViewModel(this);
             SubscriptionManager = new SubscriptionManagerViewModel(this);
-            ModuleManager = new ModuleManagerViewModel(this);
             Science = new ScienceViewModel(this);
             GPS = new GPSViewModel(this);
             Sensor = new SensorViewModel(this);
             SensorCombined = new SensorCombinedViewModel(this);
-
-            RemoveModuleState = new RemoveModuleStateViewModel(this);
-            SaveModuleState = new SaveModuleStateViewModel(ModuleManager.ModuleGrid, this);
 
             SettingsManager = new SettingsManagerViewModel(this);
 
@@ -250,8 +196,6 @@
             //DataRouter.Send(1, new byte[] { 2, 3, 4, 5 });
             //DataRouter.Send(101, new byte[] { 15, 25, 35, 45 });
             //DataRouter.Send(180, new byte[] { 0x23, 0x52, 0x4f, 0x56, 0x45, 0x53, 0x4f, 0x48, 0x41, 0x52, 0x44, 0x00 });
-
-            ModuleManager.ReloadModuleButtonContexts();
         }
     }
 }

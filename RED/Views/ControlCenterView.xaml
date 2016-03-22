@@ -11,83 +11,10 @@
         Name="Shell" MinHeight="640" MinWidth="1024" Height="640" Width="1024" 
         EnableDWMDropShadow="True" ResizeMode="CanResizeWithGrip" TitleCaps="False"
         WindowTransitionsEnabled="False" WindowStartupLocation="CenterScreen">
-    <controls:MetroWindow.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Resources/Icons/Icons.xaml" />
-                <ResourceDictionary>
-                    <DataTemplate DataType="{x:Type controlCenterViewModels:ModuleGridViewModel}">
-                        <controlCenter:ModuleGridView />
-                    </DataTemplate>
-                </ResourceDictionary>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </controls:MetroWindow.Resources>
 
     <i:Interaction.Behaviors>
         <behaviours:BorderlessWindowBehavior/>
     </i:Interaction.Behaviors>
-    <controls:MetroWindow.RightWindowCommands>
-        <controls:WindowCommands>
-            <Button Content="settings" Click="ToggleSettingsFlyout" />
-            <Button Content="layouts" Click="ToggleLayoutsFlyout" />
-        </controls:WindowCommands>
-    </controls:MetroWindow.RightWindowCommands>
-    <controls:MetroWindow.Flyouts>
-        <controls:FlyoutsControl>
-            <controls:Flyout Name="SettingsFlyout" Header="Settings" Position="Right" Width="800" Theme="Dark">
-                <TextBlock>Flyout settings doesn't work right, so it's on a tab instead.</TextBlock>
-            </controls:Flyout>
-            <controls:Flyout Name="LayoutsFlyout" Position="Bottom" 
-                             CloseButtonVisibility="Collapsed" 
-                             TitleVisibility ="Collapsed" 
-                             IsPinned="False"
-                             Height="75">
-                <DockPanel>
-                    <Button Command="{Binding ModuleManager.ResetGridProportionsCommand}" ToolTip="Click this to reset the grid proportions."
-                            Height="35" Width="35"
-                            Style="{DynamicResource MetroCircleButtonStyle}">
-                        <Rectangle Width="15" Height="15" 
-                                    Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
-                            <Rectangle.OpacityMask>
-                                <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_reset}" />
-                            </Rectangle.OpacityMask>
-                        </Rectangle>
-                    </Button>
-                    <Button Name="SaveButton" Height="35" Width="35" Click="ShowSavePresetDialog"
-                            Style="{DynamicResource MetroCircleButtonStyle}">
-                        <Rectangle Width="15" Height="15" 
-                                    Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
-                            <Rectangle.OpacityMask>
-                                <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_save}" />
-                            </Rectangle.OpacityMask>
-                        </Rectangle>
-                    </Button>
-                    <Button Margin="0 0 5 0" Name="LoadButton" Height="35" Width="35" Click="ShowDeletePresetDialog"
-                            Style="{DynamicResource MetroCircleButtonStyle}">
-                        <Rectangle Width="15" Height="15" 
-                                    Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
-                            <Rectangle.OpacityMask>
-                                <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_delete}" />
-                            </Rectangle.OpacityMask>
-                        </Rectangle>
-                    </Button>
-                    <ItemsControl ItemsSource="{Binding ModuleManager.ButtonContexts}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal"/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate DataType="{x:Type contexts:ButtonContext}">
-                                <Button Command="{Binding Command}" Content="{Binding Text}" Margin="0 0 2 0" Width="125"/>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </DockPanel>
-            </controls:Flyout>
-        </controls:FlyoutsControl>
-    </controls:MetroWindow.Flyouts>
 
     <controls:MetroTabControl Name="MainTabs">
         <TabItem Header="Control Center">
@@ -128,9 +55,6 @@
                     </DockPanel>
                     <DockPanel Grid.Column="0" Grid.Row="1" Margin="10 0">
                         <ContentControl x:Name="Console"/>
-                    </DockPanel>
-                    <DockPanel Grid.Column="0" Grid.Row="2" Margin="10 10 10 0">
-                        <ContentControl x:Name="ModuleManager"/>
                     </DockPanel>
                 </Grid>
             </Grid>
