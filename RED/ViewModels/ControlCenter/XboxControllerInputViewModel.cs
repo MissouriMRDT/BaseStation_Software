@@ -44,27 +44,6 @@
             }
         }
 
-        public ObservableCollection<IControllerMode> ControllerModes
-        {
-            get
-            {
-                return Model.ControllerModes;
-            }
-        }
-        public int CurrentModeIndex
-        {
-            get
-            {
-                return Model.CurrentModeIndex;
-            }
-            private set
-            {
-                Model.CurrentModeIndex = value;
-                NotifyOfPropertyChange(() => CurrentModeIndex);
-                _controlCenter.StateManager.CurrentControlMode = ControllerModes[CurrentModeIndex].Name;
-            }
-        }
-
         #region Controller Display Values
         public bool Connected
         {
@@ -418,7 +397,6 @@
             }
             set
             {
-                if (value) NextControlMode();
                 Model.ModeNextDebounced = value;
                 NotifyOfPropertyChange(() => DebouncedModeNext);
             }
@@ -431,7 +409,6 @@
             }
             set
             {
-                if (value) PreviousControlMode();
                 Model.ModePrevDebounced = value;
                 NotifyOfPropertyChange(() => DebouncedModePrev);
             }
@@ -489,24 +466,6 @@
         public XboxControllerInputViewModel(ControlCenterViewModel cc)
         {
             _controlCenter = cc;
-
-            ControllerModes.Add(new DriveControllerModeViewModel(this, _controlCenter));
-            ControllerModes.Add(new ArmControllerModeViewModel(this, _controlCenter));
-            if (ControllerModes.Count == 0) throw new ArgumentException("IEnumerable 'modes' must have at least one item");
-            CurrentModeIndex = 0;
-        }
-
-        public void NextControlMode()
-        {
-            ControllerModes[CurrentModeIndex].ExitMode();
-            CurrentModeIndex = (CurrentModeIndex + 1) % ControllerModes.Count;
-            ControllerModes[CurrentModeIndex].EnterMode();
-        }
-        public void PreviousControlMode()
-        {
-            ControllerModes[CurrentModeIndex].ExitMode();
-            CurrentModeIndex = (CurrentModeIndex - 1 + ControllerModes.Count) % ControllerModes.Count;
-            ControllerModes[CurrentModeIndex].EnterMode();
         }
 
         public void Update()
@@ -541,12 +500,6 @@
             ActuatorForward = (currentGamepad.Buttons & GamepadButtonFlags.DPadUp) != 0;
             BaseClockwise = (currentGamepad.Buttons & GamepadButtonFlags.DPadRight) != 0;
             ActuatorBackward = (currentGamepad.Buttons & GamepadButtonFlags.DPadDown) != 0;
-        }
-
-        public void EvaluateCurrentMode()
-        {
-            if (ControllerOne != null && !ControllerOne.IsConnected) return;
-            ControllerModes[CurrentModeIndex].EvaluateMode();
         }
     }
 }

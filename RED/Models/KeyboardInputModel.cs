@@ -1,5 +1,4 @@
 ﻿using RED.Interfaces;
-using System.Collections.ObjectModel;
 
 namespace RED.Models
 {
@@ -9,10 +8,6 @@ namespace RED.Models
         internal bool AutoDeadzone = false;
 
         internal float speedMultiplier = 1.0f;
-
-        internal ObservableCollection<IControllerMode> ControllerModes = new ObservableCollection<IControllerMode>();
-        internal int CurrentModeIndex;
-
         internal bool Connected;
         internal string ConnectionStatus = "Disconnected";
 

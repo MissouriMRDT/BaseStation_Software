@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using RED.Interfaces;
 using RED.Models;
 using Caliburn.Micro;
+using System.Collections.ObjectModel;
 
 namespace RED.ViewModels.ControlCenter
 {
@@ -54,6 +55,47 @@ namespace RED.ViewModels.ControlCenter
             }
         }
 
+        public ObservableCollection<IControllerMode> ControllerModes
+        {
+            get
+            {
+                return _model.ControllerModes;
+            }
+        }
+
+        public int CurrentModeIndex
+        {
+            get
+            {
+                return _model.CurrentModeIndex;
+            }
+            private set
+            {
+                _model.CurrentModeIndex = value;
+                NotifyOfPropertyChange(() => CurrentModeIndex);
+                _cc.StateManager.CurrentControlMode = ControllerModes[CurrentModeIndex].Name;
+            }
+        }
+
+        public void NextControlMode()
+        {
+            ControllerModes[CurrentModeIndex].ExitMode();
+            CurrentModeIndex = (CurrentModeIndex + 1) % ControllerModes.Count;
+            ControllerModes[CurrentModeIndex].EnterMode();
+        }
+
+        public void PreviousControlMode()
+        {
+            ControllerModes[CurrentModeIndex].ExitMode();
+            CurrentModeIndex = (CurrentModeIndex - 1 + ControllerModes.Count) % ControllerModes.Count;
+            ControllerModes[CurrentModeIndex].EnterMode();
+        }
+
+        public void EvaluateCurrentMode()
+        {
+            ControllerModes[CurrentModeIndex].EvaluateMode();
+        }
+
         public void SwitchDevice(string newDevice)
         {
             // Switch on newDevice
@@ -77,7 +119,13 @@ namespace RED.ViewModels.ControlCenter
             while (true)
             {
                 Input.Update();
-                Input.EvaluateCurrentMode();
+
+                if (Input.DebouncedModeNext)
+                    NextControlMode();
+                if (Input.DebouncedModePrev)
+                    PreviousControlMode();
+
+                EvaluateCurrentMode();
 
                 // Check if the input device has changed
                 if (oldDevice != SelectedDevice)
@@ -95,6 +143,12 @@ namespace RED.ViewModels.ControlCenter
             // Set default input device as the keyboard
             Input = new KeyboardInputViewModel(cc);
             _cc = cc;
+
+            // Add Keyboard's default controller modes
+            ControllerModes.Add(new DriveControllerModeViewModel(Input, _cc));
+            ControllerModes.Add(new ArmControllerModeViewModel(Input, _cc));
+            if (ControllerModes.Count == 0) throw new ArgumentException("IEnumerable 'modes' must have at least one item");
+            CurrentModeIndex = 0;
         }
     }
 }

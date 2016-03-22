@@ -10,7 +10,9 @@ namespace RED.Interfaces
     public interface IInputDevice
     {
         bool ModeNext { get; set; }
+        bool DebouncedModeNext { get; set; }
         bool ModePrev { get; set; }
+        bool DebouncedModePrev { get; set; }
         bool DrillCounterClockwise { get; set; }
         bool DrillClockwise { get; set; }
         bool BaseCounterClockwise { get; set; }
@@ -33,9 +35,7 @@ namespace RED.Interfaces
         float GripperClose { get; set; }
 
         void Update();
-        void EvaluateCurrentMode();
         bool AutoDeadzone { get; set; }
         int ManualDeadzone { get; set; }
-        ObservableCollection<IControllerMode> ControllerModes { get; }
     }
 }

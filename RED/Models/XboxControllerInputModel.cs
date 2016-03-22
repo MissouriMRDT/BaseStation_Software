@@ -8,9 +8,6 @@ namespace RED.Models
         internal int ManualDeadzone;
         internal bool AutoDeadzone = false;
 
-        internal ObservableCollection<IControllerMode> ControllerModes = new ObservableCollection<IControllerMode>();
-        internal int CurrentModeIndex;
-
         internal bool Connected;
         internal string ConnectionStatus = "Disconnected";
 

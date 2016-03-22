@@ -7,7 +7,6 @@
     using SharpDX.XInput;
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Timers;
     using System.Threading.Tasks;
@@ -54,27 +53,6 @@
             {
                 Model.speedMultiplier = value;
                 NotifyOfPropertyChange(() => speedMultiplier);
-            }
-        }
-
-        public ObservableCollection<IControllerMode> ControllerModes
-        {
-            get
-            {
-                return Model.ControllerModes;
-            }
-        }
-        public int CurrentModeIndex
-        {
-            get
-            {
-                return Model.CurrentModeIndex;
-            }
-            private set
-            {
-                Model.CurrentModeIndex = value;
-                NotifyOfPropertyChange(() => CurrentModeIndex);
-                _controlCenter.StateManager.CurrentControlMode = ControllerModes[CurrentModeIndex].Name;
             }
         }
 
@@ -330,7 +308,6 @@
             }
             set
             {
-                if (value) NextControlMode();
                 Model.ModeNextDebounced = value;
                 NotifyOfPropertyChange(() => DebouncedModeNext);
             }
@@ -343,7 +320,6 @@
             }
             set
             {
-                if (value) PreviousControlMode();
                 Model.ModePrevDebounced = value;
                 NotifyOfPropertyChange(() => DebouncedModePrev);
             }
@@ -428,24 +404,6 @@
         {
             _controlCenter = cc;
 
-            ControllerModes.Add(new DriveControllerModeViewModel(this, _controlCenter));
-            ControllerModes.Add(new ArmControllerModeViewModel(this, _controlCenter));
-            if (ControllerModes.Count == 0) throw new ArgumentException("IEnumerable 'modes' must have at least one item");
-            CurrentModeIndex = 0;
-        }
-
-
-        public void NextControlMode()
-        {
-            ControllerModes[CurrentModeIndex].ExitMode();
-            CurrentModeIndex = (CurrentModeIndex + 1) % ControllerModes.Count;
-            ControllerModes[CurrentModeIndex].EnterMode();
-        }
-        public void PreviousControlMode()
-        {
-            ControllerModes[CurrentModeIndex].ExitMode();
-            CurrentModeIndex = (CurrentModeIndex - 1 + ControllerModes.Count) % ControllerModes.Count;
-            ControllerModes[CurrentModeIndex].EnterMode();
         }
 
         public void Update()
@@ -540,9 +498,5 @@
             ActuatorBackward = Keyboard.IsKeyDown(Key.Down);
         }
 
-        public void EvaluateCurrentMode()
-        {
-            ControllerModes[CurrentModeIndex].EvaluateMode();
-        }
     }
 }
