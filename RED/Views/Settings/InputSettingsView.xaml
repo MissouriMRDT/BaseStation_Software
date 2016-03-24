@@ -23,7 +23,7 @@
             <Label Grid.Row="2" Grid.Column="0">Manual Deadzone (0-32768)</Label>
             <TextBox Grid.Row="2" Grid.Column="1" x:Name="ManualDeadzone" />
             <Label Grid.Row="3" Grid.Column="0">Input Selection</Label>
-            <ComboBox Grid.Row="3" Grid.Column="1" x:Name="DeviceType" SelectedItem ="{Binding SelectedDevice}" />
+            <ComboBox Grid.Row="3" Grid.Column="1" x:Name="DeviceType" SelectedItem="{Binding SelectedDevice}" />
         </Grid>
     </StackPanel>
 </UserControl>

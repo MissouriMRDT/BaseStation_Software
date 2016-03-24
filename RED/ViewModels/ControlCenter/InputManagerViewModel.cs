@@ -93,7 +93,7 @@ namespace RED.ViewModels.ControlCenter
 
         public void EvaluateCurrentMode()
         {
-            ControllerModes[CurrentModeIndex].EvaluateMode();
+            ControllerModes[CurrentModeIndex].EvaluateMode(Input);
         }
 
         public void SwitchDevice(string newDevice)
@@ -145,8 +145,8 @@ namespace RED.ViewModels.ControlCenter
             _cc = cc;
 
             // Add Keyboard's default controller modes
-            ControllerModes.Add(new DriveControllerModeViewModel(Input, _cc));
-            ControllerModes.Add(new ArmControllerModeViewModel(Input, _cc));
+            ControllerModes.Add(new DriveControllerModeViewModel(_cc));
+            ControllerModes.Add(new ArmControllerModeViewModel(_cc));
             if (ControllerModes.Count == 0) throw new ArgumentException("IEnumerable 'modes' must have at least one item");
             CurrentModeIndex = 0;
         }
