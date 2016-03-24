@@ -130,5 +130,17 @@ namespace RED.Properties {
                 this["GPSBaseStationLocationLongitude"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Keyboard")]
+        public string InputSelectedDevice {
+            get {
+                return ((string)(this["InputSelectedDevice"]));
+            }
+            set {
+                this["InputSelectedDevice"] = value;
+            }
+        }
     }
 }

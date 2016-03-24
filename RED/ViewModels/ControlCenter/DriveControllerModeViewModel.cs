@@ -44,7 +44,6 @@ namespace RED.ViewModels.ControlCenter
         }
 
         public string Name { get; set; }
-        public IInputDevice InputVM { get; set; }
 
         public int SpeedLimit
         {
@@ -71,11 +70,10 @@ namespace RED.ViewModels.ControlCenter
             }
         }
 
-        public DriveControllerModeViewModel(IInputDevice inputVM, ControlCenterViewModel cc)
+        public DriveControllerModeViewModel(ControlCenterViewModel cc)
         {
             _model = new DriveControllerModeModel();
             _controlCenter = cc;
-            InputVM = inputVM;
             Name = "Drive";
         }
 
@@ -85,7 +83,7 @@ namespace RED.ViewModels.ControlCenter
             SpeedRight = 0;
         }
 
-        public void EvaluateMode()
+        public void EvaluateMode(IInputDevice InputVM)
         {
             int newSpeedLeft;
             int newSpeedRight;

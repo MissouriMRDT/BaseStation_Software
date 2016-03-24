@@ -5,15 +5,10 @@ namespace RED.Models
 {
     internal class XboxControllerInputModel
     {
-        internal int SerialReadSpeed;
         internal int ManualDeadzone;
         internal bool AutoDeadzone = false;
 
-        internal ObservableCollection<IControllerMode> ControllerModes = new ObservableCollection<IControllerMode>();
-        internal int CurrentModeIndex;
-
         internal bool Connected;
-        internal string ConnectionStatus = "Disconnected";
 
         internal float WheelsLeft; // JoyStick1Y
         internal float WheelsRight; // JoyStick2Y

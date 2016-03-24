@@ -29,5 +29,8 @@
     <Setting Name="GPSBaseStationLocationLongitude" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
+    <Setting Name="InputSelectedDevice" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Keyboard</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

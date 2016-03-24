@@ -13,30 +13,31 @@ namespace RED.ViewModels.Settings
     public class InputSettingsViewModel : PropertyChangedBase
     {
         private SettingsManagerViewModel _settings;
-        private IInputDevice _vm;
+        private InputManagerViewModel _manager;
 
         public int SerialReadSpeed
         {
             get
             {
-                return _vm.SerialReadSpeed;
+                return _manager.SerialReadSpeed;
             }
             set
             {
-                _vm.SerialReadSpeed = value;
+                _manager.SerialReadSpeed = value;
                 _settings.CurrentSettings.InputSerialReadSpeed = value;
                 NotifyOfPropertyChange(() => SerialReadSpeed);
             }
         }
+
         public bool AutoDeadzone
         {
             get
             {
-                return _vm.AutoDeadzone;
+                return _manager.Input.AutoDeadzone;
             }
             set
             {
-                _vm.AutoDeadzone = value;
+                _manager.Input.AutoDeadzone = value;
                 _settings.CurrentSettings.InputAutoDeadzone = value;
                 NotifyOfPropertyChange(() => AutoDeadzone);
             }
@@ -45,24 +46,47 @@ namespace RED.ViewModels.Settings
         {
             get
             {
-                return _vm.ManualDeadzone;
+                return _manager.Input.ManualDeadzone;
             }
             set
             {
-                _vm.ManualDeadzone = value;
+                _manager.Input.ManualDeadzone = value;
                 _settings.CurrentSettings.InputManualDeadzone = value;
                 NotifyOfPropertyChange(() => ManualDeadzone);
             }
         }
 
-        public InputSettingsViewModel(SettingsManagerViewModel settings, IInputDevice vm)
+        public List<string> DeviceType
+        {
+            get
+            {
+                return new List<string> { "Xbox", "Keyboard", "Flight Stick" };
+            }
+        }
+
+        public string SelectedDevice
+        {
+            get
+            {
+                return _manager.SelectedDevice;
+            }
+
+            set
+            {
+                _manager.SelectedDevice = value;
+                _manager.NotifyOfPropertyChange(() => _manager.SelectedDevice);
+            }
+        }
+
+        public InputSettingsViewModel(SettingsManagerViewModel settings, InputManagerViewModel manager)
         {
             _settings = settings;
-            _vm = vm;
+            _manager = manager;
 
-            _vm.SerialReadSpeed = _settings.CurrentSettings.InputSerialReadSpeed;
-            _vm.AutoDeadzone = _settings.CurrentSettings.InputAutoDeadzone;
-            _vm.ManualDeadzone = _settings.CurrentSettings.InputManualDeadzone;
+            _manager.SerialReadSpeed = _settings.CurrentSettings.InputSerialReadSpeed;
+            _manager.Input.AutoDeadzone = _settings.CurrentSettings.InputAutoDeadzone;
+            _manager.Input.ManualDeadzone = _settings.CurrentSettings.InputManualDeadzone;
+            _manager.SelectedDevice = _settings.CurrentSettings.InputSelectedDevice;
         }
     }
 }

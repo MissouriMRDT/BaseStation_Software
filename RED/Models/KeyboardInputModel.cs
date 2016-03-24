@@ -1,21 +1,14 @@
 ﻿using RED.Interfaces;
-using System.Collections.ObjectModel;
 
 namespace RED.Models
 {
     internal class KeyboardInputModel
     {
-        internal int SerialReadSpeed;
         internal int ManualDeadzone;
         internal bool AutoDeadzone = false;
 
         internal float speedMultiplier = 1.0f;
-
-        internal ObservableCollection<IControllerMode> ControllerModes = new ObservableCollection<IControllerMode>();
-        internal int CurrentModeIndex;
-
         internal bool Connected;
-        internal string ConnectionStatus = "Disconnected";
 
         internal float WheelsLeft; // Key Q / Key A
         internal float WheelsRight; // Keys E / Key D

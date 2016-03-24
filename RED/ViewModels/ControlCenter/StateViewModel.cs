@@ -30,6 +30,18 @@
                 NotifyOfPropertyChange(()=> CurrentControlMode);
             }
         }
+        public string CurrentController
+        {
+            get
+            {
+                return _model._currentController;
+            }
+            set
+            {
+                _model._currentController = value;
+                NotifyOfPropertyChange(()=> CurrentController);
+            }
+        }
         public bool NetworkHasConnection
         {
             get
@@ -67,7 +79,7 @@
         {
             get
             {
-                return !ControllerIsConnected ? "Disconnected" : "Connected";
+                return !ControllerIsConnected ? "Disconnected" : CurrentController;
             }
         }
 
