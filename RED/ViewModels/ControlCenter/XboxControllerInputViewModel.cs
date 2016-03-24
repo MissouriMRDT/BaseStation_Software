@@ -56,14 +56,7 @@
                 Model.Connected = value;
                 NotifyOfPropertyChange(() => Connected);
                 _controlCenter.StateManager.ControllerIsConnected = value;
-                NotifyOfPropertyChange(() => ConnectionStatus);
-            }
-        }
-        public string ConnectionStatus
-        {
-            get
-            {
-                return !Connected ? "Disconnected" : "Connected";
+                _controlCenter.StateManager.CurrentController = "Xbox";
             }
         }
         public float WheelsLeft

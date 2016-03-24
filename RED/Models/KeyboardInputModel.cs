@@ -9,7 +9,6 @@ namespace RED.Models
 
         internal float speedMultiplier = 1.0f;
         internal bool Connected;
-        internal string ConnectionStatus = "Disconnected";
 
         internal float WheelsLeft; // Key Q / Key A
         internal float WheelsRight; // Keys E / Key D

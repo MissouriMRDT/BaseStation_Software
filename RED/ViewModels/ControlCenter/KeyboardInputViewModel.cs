@@ -68,16 +68,17 @@
                 Model.Connected = value;
                 NotifyOfPropertyChange(() => Connected);
                 _controlCenter.StateManager.ControllerIsConnected = value;
-                NotifyOfPropertyChange(() => ConnectionStatus);
+                _controlCenter.StateManager.CurrentController = "Keyboard";
+                //NotifyOfPropertyChange(() => ConnectionStatus);
             }
         }
-        public string ConnectionStatus
-        {
-            get
-            {
-                return !Connected ? "Disconnected" : "Connected";
-            }
-        }
+        //public string ConnectionStatus
+        //{
+            //get
+            //{
+                //return !Connected ? "Disconnected" : "Keyboard";
+            //}
+        //}
         public float WheelsLeft
         {
             get

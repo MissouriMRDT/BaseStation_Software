@@ -9,7 +9,6 @@ namespace RED.Models
         internal bool AutoDeadzone = false;
 
         internal bool Connected;
-        internal string ConnectionStatus = "Disconnected";
 
         internal float WheelsLeft; // JoyStick1Y
         internal float WheelsRight; // JoyStick2Y
