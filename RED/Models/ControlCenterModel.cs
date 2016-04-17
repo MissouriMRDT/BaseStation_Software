@@ -19,5 +19,6 @@
         internal GPSViewModel _GPS;
         internal SensorViewModel _sensor;
         internal SensorCombinedViewModel _sensorCombined;
+        internal DropBaysViewModel _dropBays;
     }
 }
