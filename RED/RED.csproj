@@ -167,6 +167,9 @@
     <Compile Include="Views\ControlCenter\DriveControllerModeView.xaml.cs">
       <DependentUpon>DriveControllerModeView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ControlCenter\DropBaysView.xaml.cs">
+      <DependentUpon>DropBaysView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ControlCenter\ScienceView.xaml.cs">
       <DependentUpon>ScienceView.xaml</DependentUpon>
     </Compile>
@@ -200,6 +203,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ControlCenter\DriveControllerModeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ControlCenter\DropBaysView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
