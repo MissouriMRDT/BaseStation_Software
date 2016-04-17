@@ -17,5 +17,10 @@ namespace RED.ViewModels.ControlCenter
         {
             _cc = cc;
         }
+
+        public void OpenBay(byte index)
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("DropBayOpen"), index);
+        }
     }
 }
