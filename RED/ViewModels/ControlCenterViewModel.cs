@@ -155,6 +155,19 @@
 
             }
         }
+        public GimbalViewModel Gimbal
+        {
+            get
+            {
+                return _model._gimbal;
+            }
+            set
+            {
+                _model._gimbal = value;
+                NotifyOfPropertyChange(() => Gimbal);
+
+            }
+        }
 
         public DriveControllerModeViewModel DriveControllerMode
         {
@@ -188,6 +201,7 @@
             GPS = new GPSViewModel(this);
             Sensor = new SensorViewModel(this);
             SensorCombined = new SensorCombinedViewModel(this);
+            Gimbal = new GimbalViewModel(this);
 
             SettingsManager = new SettingsManagerViewModel(this);
 
