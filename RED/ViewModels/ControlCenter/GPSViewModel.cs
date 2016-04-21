@@ -166,6 +166,11 @@ namespace RED.ViewModels.ControlCenter
             _cc = cc;
 
             _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("GPSQuality"));
+            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("GPSPosition"));
+            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("GPSSpeed"));
+            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("GPSSpeedAngle"));
+            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("GPSAltitude"));
+            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("GPSSatellites"));
 
             Waypoints.Add(new GPSCoordinate(37.951631, -91.777713));//Rolla
             Waypoints.Add(new GPSCoordinate(37.850025, -91.701845));//Fugitive Beach
