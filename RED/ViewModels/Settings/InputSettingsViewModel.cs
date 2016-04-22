@@ -60,7 +60,7 @@ namespace RED.ViewModels.Settings
         {
             get
             {
-                return new List<string> { "Xbox", "Keyboard", "Flight Stick" };
+                return new List<string> { "Xbox", "Keyboard", "Joystick" };
             }
         }
 

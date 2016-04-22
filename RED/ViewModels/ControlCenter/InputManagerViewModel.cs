@@ -107,6 +107,9 @@ namespace RED.ViewModels.ControlCenter
                 case "Xbox":
                     Input = new XboxControllerInputViewModel(_cc);
                     break;
+                case "Joystick":
+                    Input = new JoystickInputViewModel(_cc);
+                    break;
                 //case "FlightStick":
                 //    Input = new FlightStickInputViewModel(_cc);
                 //    break;
