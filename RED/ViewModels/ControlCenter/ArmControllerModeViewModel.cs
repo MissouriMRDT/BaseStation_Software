@@ -20,7 +20,6 @@ namespace RED.ViewModels.ControlCenter
         private readonly ControlCenterViewModel _controlCenter;
 
         public string Name { get; set; }
-        public IInputDevice InputVM { get; set; }
 
         public const float BaseServoSpeed = .5f;
         public const int BaseActuatorSpeed = 127;
@@ -38,10 +37,9 @@ namespace RED.ViewModels.ControlCenter
             }
         }
 
-        public ArmControllerModeViewModel(IInputDevice inputVM, ControlCenterViewModel cc)
+        public ArmControllerModeViewModel(ControlCenterViewModel cc)
         {
             _model = new ArmControllerModeModel();
-            InputVM = inputVM;
             _controlCenter = cc;
             Name = "Arm";
             CurrentEndEffectorMode = 0;
@@ -52,7 +50,7 @@ namespace RED.ViewModels.ControlCenter
 
         }
 
-        public void EvaluateMode()
+        public void EvaluateMode(IInputDevice InputVM)
         {
             if (InputVM.DebouncedArmReset)
             {

@@ -4,7 +4,7 @@
     using Caliburn.Micro;
     using Interfaces;
     using Models;
-    using SharpDX.XInput;
+    using SharpDX.DirectInput;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -12,12 +12,19 @@
     using System.Timers;
     using System.Threading.Tasks;
 
-    public class XboxControllerInputViewModel : PropertyChangedBase, IInputDevice
+    public class JoystickInputViewModel : PropertyChangedBase, IInputDevice
     {
-        private readonly XboxControllerInputModel Model = new XboxControllerInputModel();
+        private readonly JoystickInputModel Model = new JoystickInputModel();
         private readonly ControlCenterViewModel _controlCenter;
         [CanBeNull]
-        public readonly Controller ControllerOne = new Controller(UserIndex.One);
+        // Initialize DirectInput
+        private readonly DirectInput directInput = new DirectInput();
+
+        // Find a Joystick Guid
+        private readonly Guid joystickGuid = Guid.Empty;
+
+        private readonly Joystick joystick;
+
 
         public bool AutoDeadzone
         {
@@ -56,7 +63,14 @@
                 Model.Connected = value;
                 NotifyOfPropertyChange(() => Connected);
                 _controlCenter.StateManager.ControllerIsConnected = value;
-                _controlCenter.StateManager.CurrentController = "Xbox";
+                NotifyOfPropertyChange(() => ConnectionStatus);
+            }
+        }
+        public string ConnectionStatus
+        {
+            get
+            {
+                return !Connected ? "Disconnected" : "Connected";
             }
         }
         public float WheelsLeft
@@ -456,43 +470,63 @@
         }
         #endregion
 
-        public XboxControllerInputViewModel(ControlCenterViewModel cc)
+        public JoystickInputViewModel(ControlCenterViewModel cc)
         {
             _controlCenter = cc;
+
+
+            // If Gamepad not found, look for a Joystick
+            if (joystickGuid == Guid.Empty)
+                foreach (var deviceInstance in directInput.GetDevices(DeviceType.Joystick,
+                        DeviceEnumerationFlags.AllDevices))
+                    joystickGuid = deviceInstance.InstanceGuid;
+
+            // If Joystick not found, throws an error
+            if (joystickGuid == Guid.Empty)
+            {
+                Console.WriteLine("No joystick/Gamepad found.");
+                Console.ReadKey();
+                Environment.Exit(1);
+            }
+
+            // Instantiate the joystick
+            Console.WriteLine("HERE");
+            joystick = new Joystick(directInput, joystickGuid);
+            Console.WriteLine("Found Joystick/Gamepad with GUID: {0}", joystickGuid);
+
+            // Query all suported ForceFeedback effects
+            var allEffects = joystick.GetEffects();
+            foreach (var effectInfo in allEffects)
+                Console.WriteLine("Effect available {0}", effectInfo.Name);
+
+            // Set BufferSize in order to use buffered data.
+            joystick.Properties.BufferSize = 128;
+
+            // Acquire the joystick
+            joystick.Acquire();
+
+            var datas = joystick.GetBufferedData();
+            foreach (var state in datas)
+                Console.WriteLine(state);
         }
+
 
         public void Update()
         {
-            if (ControllerOne == null || !ControllerOne.IsConnected)
+            // If Joystick not found, throws an error
+            if (joystickGuid == Guid.Empty)
             {
                 Connected = false;
                 return;
             }
-            var currentGamepad = ControllerOne.GetState().Gamepad;
             Connected = true;
+            var datas = joystick.GetBufferedData();
+            foreach (var state in datas)
+            {
+                ModeNext = (state.Offset.ToString() == "Buttons2");
+                ModePrev = (state.Offset.ToString() == "Buttons3");
+            }
 
-            var deadzone = AutoDeadzone ? Math.Max(Gamepad.LeftThumbDeadZone, Gamepad.RightThumbDeadZone) : ManualDeadzone;
-            ElbowBend = WheelsLeft = currentGamepad.LeftThumbY < deadzone && currentGamepad.LeftThumbY > -deadzone ? 0 : ((currentGamepad.LeftThumbY + (currentGamepad.LeftThumbY < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
-            WristBend = WheelsRight = currentGamepad.RightThumbY < deadzone && currentGamepad.RightThumbY > -deadzone ? 0 : ((currentGamepad.RightThumbY + (currentGamepad.RightThumbY < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
-            ElbowTwist = currentGamepad.LeftThumbX < deadzone && currentGamepad.LeftThumbX > -deadzone ? 0 : ((currentGamepad.LeftThumbX + (currentGamepad.LeftThumbX < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
-            WristTwist = currentGamepad.RightThumbX < deadzone && currentGamepad.RightThumbX > -deadzone ? 0 : ((currentGamepad.RightThumbX + (currentGamepad.RightThumbX < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
-
-            GripperOpen = (float)currentGamepad.LeftTrigger / 255;
-            GripperClose = (float)currentGamepad.RightTrigger / 255;
-            ButtonA = (currentGamepad.Buttons & GamepadButtonFlags.A) != 0;
-            ToolNext = (currentGamepad.Buttons & GamepadButtonFlags.B) != 0;
-            ToolPrev = (currentGamepad.Buttons & GamepadButtonFlags.X) != 0;
-            ArmReset = (currentGamepad.Buttons & GamepadButtonFlags.Y) != 0;
-            DrillCounterClockwise = (currentGamepad.Buttons & GamepadButtonFlags.LeftShoulder) != 0;
-            DrillClockwise = (currentGamepad.Buttons & GamepadButtonFlags.RightShoulder) != 0;
-            ButtonLs = (currentGamepad.Buttons & GamepadButtonFlags.LeftThumb) != 0;
-            ButtonRs = (currentGamepad.Buttons & GamepadButtonFlags.RightThumb) != 0;
-            ModeNext = (currentGamepad.Buttons & GamepadButtonFlags.Start) != 0;
-            ModePrev = (currentGamepad.Buttons & GamepadButtonFlags.Back) != 0;
-            BaseCounterClockwise = (currentGamepad.Buttons & GamepadButtonFlags.DPadLeft) != 0;
-            ActuatorForward = (currentGamepad.Buttons & GamepadButtonFlags.DPadUp) != 0;
-            BaseClockwise = (currentGamepad.Buttons & GamepadButtonFlags.DPadRight) != 0;
-            ActuatorBackward = (currentGamepad.Buttons & GamepadButtonFlags.DPadDown) != 0;
         }
     }
 }

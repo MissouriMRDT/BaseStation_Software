@@ -160,14 +160,14 @@
         {
             get
             {
-                return (DriveControllerModeViewModel)IManager.Input.ControllerModes[0];
+                return (DriveControllerModeViewModel)IManager.ControllerModes[0];
             }
         }
         public ArmControllerModeViewModel ArmControllerMode
         {
             get
             {
-                return (ArmControllerModeViewModel)IManager.Input.ControllerModes[1];
+                return (ArmControllerModeViewModel)IManager.ControllerModes[1];
             }
         }
 

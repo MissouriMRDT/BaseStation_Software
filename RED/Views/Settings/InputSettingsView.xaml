@@ -11,6 +11,7 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -21,6 +22,8 @@
             <CheckBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="AutoDeadzone">AutoDeadzone</CheckBox>
             <Label Grid.Row="2" Grid.Column="0">Manual Deadzone (0-32768)</Label>
             <TextBox Grid.Row="2" Grid.Column="1" x:Name="ManualDeadzone" />
+            <Label Grid.Row="3" Grid.Column="0">Input Selection</Label>
+            <ComboBox Grid.Row="3" Grid.Column="1" x:Name="DeviceType" SelectedItem="{Binding SelectedDevice}" />
         </Grid>
     </StackPanel>
 </UserControl>

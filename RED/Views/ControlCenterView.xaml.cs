@@ -16,7 +16,7 @@
 
         private void MainTabs_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            if (e.RemovedItems.Count > 0 && (System.Windows.Controls.TabItem)(e.RemovedItems[0]) == SettingsTab)
+            if (e.RemovedItems.Count > 0 && (e.RemovedItems[0] as System.Windows.Controls.TabItem) == SettingsTab)
             {
                 var vm = DataContext as ControlCenterViewModel;
                 vm.SettingsManager.SaveSettings();

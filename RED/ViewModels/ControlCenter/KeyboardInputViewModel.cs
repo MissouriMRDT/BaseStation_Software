@@ -7,7 +7,6 @@
     using SharpDX.XInput;
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Timers;
     using System.Threading.Tasks;
@@ -19,18 +18,6 @@
         private readonly ControlCenterViewModel _controlCenter;
         [CanBeNull]
 
-        public int SerialReadSpeed
-        {
-            get
-            {
-                return Model.SerialReadSpeed;
-            }
-            set
-            {
-                Model.SerialReadSpeed = value;
-                NotifyOfPropertyChange(() => SerialReadSpeed);
-            }
-        }
         public bool AutoDeadzone
         {
             get
@@ -69,27 +56,6 @@
             }
         }
 
-        public ObservableCollection<IControllerMode> ControllerModes
-        {
-            get
-            {
-                return Model.ControllerModes;
-            }
-        }
-        public int CurrentModeIndex
-        {
-            get
-            {
-                return Model.CurrentModeIndex;
-            }
-            private set
-            {
-                Model.CurrentModeIndex = value;
-                NotifyOfPropertyChange(() => CurrentModeIndex);
-                _controlCenter.StateManager.CurrentControlMode = ControllerModes[CurrentModeIndex].Name;
-            }
-        }
-
         #region Controller Display Values
         public bool Connected
         {
@@ -102,16 +68,17 @@
                 Model.Connected = value;
                 NotifyOfPropertyChange(() => Connected);
                 _controlCenter.StateManager.ControllerIsConnected = value;
-                NotifyOfPropertyChange(() => ConnectionStatus);
+                _controlCenter.StateManager.CurrentController = "Keyboard";
+                //NotifyOfPropertyChange(() => ConnectionStatus);
             }
         }
-        public string ConnectionStatus
-        {
-            get
-            {
-                return !Connected ? "Disconnected" : "Connected";
-            }
-        }
+        //public string ConnectionStatus
+        //{
+            //get
+            //{
+                //return !Connected ? "Disconnected" : "Keyboard";
+            //}
+        //}
         public float WheelsLeft
         {
             get
@@ -342,7 +309,6 @@
             }
             set
             {
-                if (value) NextControlMode();
                 Model.ModeNextDebounced = value;
                 NotifyOfPropertyChange(() => DebouncedModeNext);
             }
@@ -355,7 +321,6 @@
             }
             set
             {
-                if (value) PreviousControlMode();
                 Model.ModePrevDebounced = value;
                 NotifyOfPropertyChange(() => DebouncedModePrev);
             }
@@ -440,36 +405,9 @@
         {
             _controlCenter = cc;
 
-            ControllerModes.Add(new DriveControllerModeViewModel(this, _controlCenter));
-            ControllerModes.Add(new ArmControllerModeViewModel(this, _controlCenter));
-            if (ControllerModes.Count == 0) throw new ArgumentException("IEnumerable 'modes' must have at least one item");
-            CurrentModeIndex = 0;
         }
 
-        public async void Start()
-        {
-            while (true)
-            {
-                Update();
-                EvaluateCurrentMode();
-                await Task.Delay(SerialReadSpeed);
-            }
-        }
-
-        public void NextControlMode()
-        {
-            ControllerModes[CurrentModeIndex].ExitMode();
-            CurrentModeIndex = (CurrentModeIndex + 1) % ControllerModes.Count;
-            ControllerModes[CurrentModeIndex].EnterMode();
-        }
-        public void PreviousControlMode()
-        {
-            ControllerModes[CurrentModeIndex].ExitMode();
-            CurrentModeIndex = (CurrentModeIndex - 1 + ControllerModes.Count) % ControllerModes.Count;
-            ControllerModes[CurrentModeIndex].EnterMode();
-        }
-
-        private void Update()
+        public void Update()
         {
             // Tell RED that this controller is connected
             Connected = true;
@@ -502,8 +440,6 @@
             // speedMultiplier will have round-off error, so check before it hits zero
             if (speedMultiplier > 0.01f && Keyboard.IsKeyDown(Key.OemMinus))
                 speedMultiplier -= 0.01f;
-
-            Console.WriteLine(speedMultiplier);
 
             // Keys A and Q control the left wheels in drive mode
             // and the elbow bend in arm mode
@@ -563,9 +499,5 @@
             ActuatorBackward = Keyboard.IsKeyDown(Key.Down);
         }
 
-        private void EvaluateCurrentMode()
-        {
-            ControllerModes[CurrentModeIndex].EvaluateMode();
-        }
     }
 }

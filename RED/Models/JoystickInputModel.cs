@@ -3,12 +3,13 @@ using System.Collections.ObjectModel;
 
 namespace RED.Models
 {
-    internal class XboxControllerInputModel
+    internal class JoystickInputModel
     {
         internal int ManualDeadzone;
         internal bool AutoDeadzone = false;
 
         internal bool Connected;
+        internal string ConnectionStatus = "Disconnected";
 
         internal float WheelsLeft; // JoyStick1Y
         internal float WheelsRight; // JoyStick2Y
