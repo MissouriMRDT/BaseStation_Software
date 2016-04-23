@@ -164,7 +164,15 @@ namespace RED.ViewModels.ControlCenter
         }
         public void DisableAll()
         {
-            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmDisableAll"), ArmDisableCommand);
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableAll"), ArmDisableCommand);
+        }
+        public void EnableMain()
+        {
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableMain"), ArmEnableCommand);
+        }
+        public void DisableMain()
+        {
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableMain"), ArmDisableCommand);
         }
         public void EnableJ1()
         {
@@ -172,7 +180,7 @@ namespace RED.ViewModels.ControlCenter
         }
         public void DisableJ1()
         {
-            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmDisableJ1"), ArmDisableCommand);
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableJ1"), ArmDisableCommand);
         }
         public void EnableJ2()
         {
@@ -180,7 +188,7 @@ namespace RED.ViewModels.ControlCenter
         }
         public void DisableJ2()
         {
-            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmDisableJ2"), ArmDisableCommand);
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableJ2"), ArmDisableCommand);
         }
         public void EnableJ34()
         {
@@ -188,7 +196,7 @@ namespace RED.ViewModels.ControlCenter
         }
         public void DisableJ34()
         {
-            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmDisableJ34"), ArmDisableCommand);
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableJ34"), ArmDisableCommand);
         }
         public void EnableJ56()
         {
@@ -196,7 +204,15 @@ namespace RED.ViewModels.ControlCenter
         }
         public void DisableJ56()
         {
-            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmDisableJ56"), ArmDisableCommand);
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableJ56"), ArmDisableCommand);
+        }
+        public void EnableEndeff()
+        {
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableEndeff"), ArmEnableCommand);
+        }
+        public void DisableEndeff()
+        {
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableEndeff"), ArmDisableCommand);
         }
     }
 
