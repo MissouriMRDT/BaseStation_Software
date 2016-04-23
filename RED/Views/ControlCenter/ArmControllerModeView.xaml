@@ -17,5 +17,28 @@
             <Label Grid.Row="0" Grid.Column="0">Current Endeffector Mode</Label>
             <Label Grid.Row="0" Grid.Column="1" x:Name="CurrentEndEffectorMode" />
         </Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Row="0" Grid.Column="0" x:Name="EnableAll">J1 All</Button>
+            <Button Grid.Row="1" Grid.Column="0" x:Name="DisableAll">J1 All</Button>
+            <Button Grid.Row="0" Grid.Column="1" x:Name="EnableJ1">J1 On</Button>
+            <Button Grid.Row="1" Grid.Column="1" x:Name="DisableJ1">J1 Off</Button>
+            <Button Grid.Row="0" Grid.Column="2" x:Name="EnableJ2">J2 On</Button>
+            <Button Grid.Row="1" Grid.Column="2" x:Name="DisableJ2">J2 Off</Button>
+            <Button Grid.Row="0" Grid.Column="3" x:Name="EnableJ34">J34 On</Button>
+            <Button Grid.Row="1" Grid.Column="3" x:Name="DisableJ34">J34 Off</Button>
+            <Button Grid.Row="0" Grid.Column="4" x:Name="EnableJ56">J56 On</Button>
+            <Button Grid.Row="1" Grid.Column="4" x:Name="DisableJ56">J56 Off</Button>
+        </Grid>
     </StackPanel>
 </UserControl>
