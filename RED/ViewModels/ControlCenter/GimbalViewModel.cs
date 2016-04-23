@@ -89,10 +89,10 @@ namespace RED.ViewModels.ControlCenter
         private enum GimbalMenuCommands : byte
         {
             Menu = 0,
-            MenuUp = 1,
-            MenuDown = 2,
-            MenuLeft = 3,
-            MenuRight = 4
+            MenuLeft = 1,
+            MenuRight = 2,
+            MenuUp = 3,
+            MenuDown = 4
         }
     }
 }
