@@ -1,4 +1,6 @@
 ﻿using Caliburn.Micro;
+using RED.Interfaces;
+using RED.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,32 +9,61 @@ using System.Threading.Tasks;
 
 namespace RED.ViewModels.ControlCenter
 {
-    public class GimbalViewModel : PropertyChangedBase
+    public class GimbalViewModel : PropertyChangedBase, IControllerMode
     {
-        private const short Speed = 1000;
-
         private ControlCenterViewModel _cc;
+        private GimbalModel _model;
 
-        public GimbalViewModel(ControlCenterViewModel cc)
+        public string Name { get; set; }
+        public IInputDevice InputVM { get; set; }
+
+        public int SpeedLimit
+        {
+            get
+            {
+                return _model.speedLimit;
+            }
+            set
+            {
+                _model.speedLimit = value;
+                NotifyOfPropertyChange(() => SpeedLimit);
+            }
+        }
+
+        public GimbalViewModel(IInputDevice inputVM, ControlCenterViewModel cc)
         {
             _cc = cc;
+            _model = new GimbalModel();
+            InputVM = inputVM;
+            Name = "Gimbal";
+            SpeedLimit = 1000;
         }
 
-        public void MoveUp()
+        public void EnterMode()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("PTZ1Speed"), (int)Speed << 16);
+
         }
-        public void MoveDown()
+
+        public void EvaluateMode()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("PTZ1Speed"), (int)(-Speed) << 16);
+            short pan, tilt;
+
+            pan = (short)(InputVM.GimbalPan * SpeedLimit);
+            tilt = (short)(InputVM.GimbalTilt * SpeedLimit);
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("PTZ1Speed"), ((int)pan << 16) | (int)tilt);
+
+            if (InputVM.GimbalZoomIn)
+                _cc.DataRouter.Send(_cc.MetadataManager.GetId("Camera1Command"), (byte)GimbalZoomCommands.ZoomIn);
+            else if (InputVM.GimbalZoomOut)
+                _cc.DataRouter.Send(_cc.MetadataManager.GetId("Camera1Command"), (byte)GimbalZoomCommands.ZoomOut);
+            else
+                _cc.DataRouter.Send(_cc.MetadataManager.GetId("Camera1Command"), (byte)GimbalZoomCommands.Stop);
+
         }
-        public void MoveLeft()
+
+        public void ExitMode()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("PTZ1Speed"), (int)(-Speed & 0xFFFF));
-        }
-        public void MoveRight()
-        {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("PTZ1Speed"), (int)Speed & 0xFFFF);
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("PTZ1Speed"), (int)0);
         }
 
         public void ZoomFocusStop()

@@ -55,7 +55,7 @@
                 NotifyOfPropertyChange(() => ManualDeadzone);
             }
         }
-        
+
         public float speedMultiplier
         {
             get
@@ -434,6 +434,54 @@
                 NotifyOfPropertyChange(() => ActuatorBackward);
             }
         }
+        public float GimbalPan
+        {
+            get
+            {
+                return Model.GimbalPan;
+            }
+            set
+            {
+                Model.GimbalPan = value;
+                NotifyOfPropertyChange(() => GimbalPan);
+            }
+        }
+        public float GimbalTilt
+        {
+            get
+            {
+                return Model.GimbalTilt;
+            }
+            set
+            {
+                Model.GimbalTilt = value;
+                NotifyOfPropertyChange(() => GimbalTilt);
+            }
+        }
+        public bool GimbalZoomIn
+        {
+            get
+            {
+                return Model.GimbalZoomIn;
+            }
+            set
+            {
+                Model.GimbalZoomIn = value;
+                NotifyOfPropertyChange(() => GimbalZoomIn);
+            }
+        }
+        public bool GimbalZoomOut
+        {
+            get
+            {
+                return Model.GimbalZoomOut;
+            }
+            set
+            {
+                Model.GimbalZoomOut = value;
+                NotifyOfPropertyChange(() => GimbalZoomOut);
+            }
+        }
         #endregion
 
         public KeyboardInputViewModel(ControlCenterViewModel cc)
@@ -442,6 +490,7 @@
 
             ControllerModes.Add(new DriveControllerModeViewModel(this, _controlCenter));
             ControllerModes.Add(new ArmControllerModeViewModel(this, _controlCenter));
+            ControllerModes.Add(new GimbalViewModel(this, _controlCenter));
             if (ControllerModes.Count == 0) throw new ArgumentException("IEnumerable 'modes' must have at least one item");
             CurrentModeIndex = 0;
         }
@@ -508,7 +557,7 @@
             // Keys A and Q control the left wheels in drive mode
             // and the elbow bend in arm mode
             if (Keyboard.IsKeyDown(Key.A))
-                ElbowBend = WheelsLeft = -(float)(Math.Sqrt(speedMultiplier));
+                ElbowBend = GimbalPan = WheelsLeft = -(float)(Math.Sqrt(speedMultiplier));
             else if (Keyboard.IsKeyDown(Key.Q))
                 ElbowBend = WheelsLeft = (float)(Math.Sqrt(speedMultiplier));
             else
@@ -517,7 +566,7 @@
             // Keys D and E control the right wheels in drive mode
             // and the wrist bend in arm mode
             if (Keyboard.IsKeyDown(Key.D))
-                WristBend = WheelsRight = -(float)(Math.Sqrt(speedMultiplier));
+                WristBend = GimbalPan = WheelsRight = -(float)(Math.Sqrt(speedMultiplier));
             else if (Keyboard.IsKeyDown(Key.E))
                 WristBend = WheelsRight = (float)(Math.Sqrt(speedMultiplier));
             else
@@ -526,9 +575,9 @@
             // Keys D and E control the right wheels in drive mode
             // and the wrist bend in arm mode
             if (Keyboard.IsKeyDown(Key.W))
-                ElbowTwist = 1;
+                ElbowTwist = GimbalTilt = 1;
             else if (Keyboard.IsKeyDown(Key.S))
-                ElbowTwist = -1;
+                ElbowTwist = GimbalTilt = -1;
             else
                 ElbowTwist = 0;
 

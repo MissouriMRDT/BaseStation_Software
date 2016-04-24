@@ -42,6 +42,10 @@ namespace RED.Models
         internal bool BaseCounterClockwise; 
         internal bool BaseClockwise; 
         internal bool ActuatorForward; 
-        internal bool ActuatorBackward; 
+        internal bool ActuatorBackward;
+        internal float GimbalPan;
+        internal float GimbalTilt;
+        internal bool GimbalZoomIn;
+        internal bool GimbalZoomOut;
     }
 }

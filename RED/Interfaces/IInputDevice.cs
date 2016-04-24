@@ -31,6 +31,10 @@ namespace RED.Interfaces
         float ElbowTwist { get; set; }
         float GripperOpen { get; set; }
         float GripperClose { get; set; }
+        float GimbalPan { get; set; }
+        float GimbalTilt { get; set; }
+        bool GimbalZoomIn { get; set; }
+        bool GimbalZoomOut { get; set; }
 
         void Start();
         int SerialReadSpeed { get; set; }
