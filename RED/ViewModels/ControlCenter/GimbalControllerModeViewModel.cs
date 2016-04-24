@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RED.ViewModels.ControlCenter
 {
-    public class GimbalViewModel : PropertyChangedBase, IControllerMode
+    public class GimbalControllerModeViewModel : PropertyChangedBase, IControllerMode
     {
         private ControlCenterViewModel _cc;
         private GimbalModel _model;
@@ -30,7 +30,7 @@ namespace RED.ViewModels.ControlCenter
             }
         }
 
-        public GimbalViewModel(IInputDevice inputVM, ControlCenterViewModel cc)
+        public GimbalControllerModeViewModel(IInputDevice inputVM, ControlCenterViewModel cc)
         {
             _cc = cc;
             _model = new GimbalModel();

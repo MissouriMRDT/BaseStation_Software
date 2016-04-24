@@ -19,6 +19,6 @@
         internal GPSViewModel _GPS;
         internal SensorViewModel _sensor;
         internal SensorCombinedViewModel _sensorCombined;
-        internal GimbalViewModel _gimbal;
+        internal GimbalControllerModeViewModel _gimbalControllerMode;
     }
 }

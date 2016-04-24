@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace RED.Views.ControlCenter
 {
     /// <summary>
-    /// Interaction logic for GimbalView.xaml
+    /// Interaction logic for GimbalControllerModeView.xaml
     /// </summary>
-    public partial class GimbalView : UserControl
+    public partial class GimbalControllerModeView : UserControl
     {
-        public GimbalView()
+        public GimbalControllerModeView()
         {
             InitializeComponent();
         }

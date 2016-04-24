@@ -170,11 +170,11 @@
                 return (ArmControllerModeViewModel)IManager.Input.ControllerModes[1];
             }
         }
-        public GimbalViewModel Gimbal
+        public GimbalControllerModeViewModel GimbalControllerMode
         {
             get
             {
-                return (GimbalViewModel)IManager.Input.ControllerModes[2];
+                return (GimbalControllerModeViewModel)IManager.Input.ControllerModes[2];
             }
         }
 
