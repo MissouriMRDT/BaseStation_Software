@@ -30,22 +30,22 @@ namespace RED.Views.ControlCenter
 
         private async void OpenBay1_Click(object sender, RoutedEventArgs e)
         {
-            await PromptOpenBay(1);
+            await PromptOpenBay(0);
         }
 
         private async void OpenBay2_Click(object sender, RoutedEventArgs e)
         {
-            await PromptOpenBay(2);
+            await PromptOpenBay(1);
         }
 
         private async void OpenBay3_Click(object sender, RoutedEventArgs e)
         {
-            await PromptOpenBay(3);
+            await PromptOpenBay(2);
         }
 
         private async void OpenBay4_Click(object sender, RoutedEventArgs e)
         {
-            await PromptOpenBay(4);
+            await PromptOpenBay(3);
         }
 
         private async Task PromptOpenBay(byte index)
