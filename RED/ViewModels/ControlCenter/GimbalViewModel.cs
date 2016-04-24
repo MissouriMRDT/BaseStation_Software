@@ -20,19 +20,19 @@ namespace RED.ViewModels.ControlCenter
 
         public void MoveUp()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("PTZ1Speed"), (int)Speed);
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("PTZ1Speed"), (int)Speed << 16);
         }
         public void MoveDown()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("PTZ1Speed"), (int)(-Speed & 0xFFFF));
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("PTZ1Speed"), (int)(-Speed) << 16);
         }
         public void MoveLeft()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("PTZ1Speed"), (int)(-Speed) << 16);
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("PTZ1Speed"), (int)(-Speed & 0xFFFF));
         }
         public void MoveRight()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("PTZ1Speed"), (int)Speed << 16);
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("PTZ1Speed"), (int)Speed & 0xFFFF);
         }
 
         public void ZoomFocusStop()
