@@ -47,5 +47,9 @@ namespace RED.Models
         internal bool BaseClockwise; // DPadR
         internal bool ActuatorForward; // DPadU
         internal bool ActuatorBackward; // DPadD
+        internal float GimbalPan;
+        internal float GimbalTilt;
+        internal bool GimbalZoomIn;
+        internal bool GimbalZoomOut;
     }
 }

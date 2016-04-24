@@ -120,6 +120,7 @@
     <Compile Include="Interfaces\INetworkTransportProtocol.cs" />
     <Compile Include="Interfaces\ISequenceNumberProvider.cs" />
     <Compile Include="Models\ArmControllerModeModel.cs" />
+    <Compile Include="Models\GimbalModel.cs" />
     <Compile Include="Models\InputManagerModel.cs" />
     <Compile Include="Models\DataRouterModel.cs" />
     <Compile Include="Models\DriveControllerModeModel.cs" />
@@ -133,6 +134,7 @@
     <Compile Include="Settings.cs" />
     <Compile Include="Models\XboxControllerInputModel.cs" />
     <Compile Include="ViewModels\ControlCenter\ArmControllerModeViewModel.cs" />
+    <Compile Include="ViewModels\ControlCenter\GimbalControllerModeViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\NetworkManagerViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\DataRouter.cs" />
     <Compile Include="Interfaces\ISubscribe.cs" />
@@ -165,6 +167,9 @@
     </Compile>
     <Compile Include="Views\ControlCenter\DriveControllerModeView.xaml.cs">
       <DependentUpon>DriveControllerModeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ControlCenter\GimbalControllerModeView.xaml.cs">
+      <DependentUpon>GimbalControllerModeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ControlCenter\ScienceView.xaml.cs">
       <DependentUpon>ScienceView.xaml</DependentUpon>
@@ -199,6 +204,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ControlCenter\DriveControllerModeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ControlCenter\GimbalControllerModeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
