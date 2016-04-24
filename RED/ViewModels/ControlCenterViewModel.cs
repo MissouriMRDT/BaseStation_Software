@@ -155,6 +155,19 @@
 
             }
         }
+        public DropBaysViewModel DropBays
+        {
+            get
+            {
+                return _model._dropBays;
+            }
+            set
+            {
+                _model._dropBays = value;
+                NotifyOfPropertyChange(() => DropBays);
+
+            }
+        }
 
         public DriveControllerModeViewModel DriveControllerMode
         {
@@ -195,6 +208,7 @@
             GPS = new GPSViewModel(this);
             Sensor = new SensorViewModel(this);
             SensorCombined = new SensorCombinedViewModel(this);
+            DropBays = new DropBaysViewModel(this);
 
             SettingsManager = new SettingsManagerViewModel(this);
 

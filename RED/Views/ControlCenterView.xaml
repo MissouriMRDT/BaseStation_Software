@@ -41,6 +41,8 @@
                     <ContentControl x:Name="Sensor" />
                     <Label FontSize="16">Gimbal</Label>
                     <ContentControl x:Name="GimbalControllerMode" />
+                    <Label FontSize="16">Drop Bays</Label>
+                    <ContentControl x:Name="DropBays" />
                 </StackPanel>
                 <!-- Static Side Panel Grid -->
                 <Grid Grid.Column="2" Grid.Row="0">
