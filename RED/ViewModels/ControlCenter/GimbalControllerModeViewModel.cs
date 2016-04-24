@@ -50,7 +50,7 @@ namespace RED.ViewModels.ControlCenter
 
             pan = (short)(InputVM.GimbalPan * SpeedLimit);
             tilt = (short)(InputVM.GimbalTilt * SpeedLimit);
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("PTZ1Speed"), ((int)pan << 16) | (int)tilt);
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("PTZ1Speed"), ((int)tilt << 16) | (((int)pan) & 0xFFFF));
 
             if (InputVM.GimbalZoomIn)
                 _cc.DataRouter.Send(_cc.MetadataManager.GetId("Camera1Command"), (byte)GimbalZoomCommands.ZoomIn);
