@@ -17,5 +17,37 @@
             <Label Grid.Row="0" Grid.Column="0">Current Endeffector Mode</Label>
             <Label Grid.Row="0" Grid.Column="1" x:Name="CurrentEndEffectorMode" />
         </Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="0">On</Label>
+            <Label Grid.Row="1" Grid.Column="0">Off</Label>
+            <Button Grid.Row="0" Grid.Column="1" x:Name="EnableAll">All</Button>
+            <Button Grid.Row="1" Grid.Column="1" x:Name="DisableAll">All</Button>
+            <Button Grid.Row="0" Grid.Column="2" x:Name="EnableMain">Main</Button>
+            <Button Grid.Row="1" Grid.Column="2" x:Name="DisableMain">Main</Button>
+            <Button Grid.Row="0" Grid.Column="3" x:Name="EnableJ1">J1</Button>
+            <Button Grid.Row="1" Grid.Column="3" x:Name="DisableJ1">J1</Button>
+            <Button Grid.Row="0" Grid.Column="4" x:Name="EnableJ2">J2</Button>
+            <Button Grid.Row="1" Grid.Column="4" x:Name="DisableJ2">J2</Button>
+            <Button Grid.Row="0" Grid.Column="5" x:Name="EnableJ34">J34</Button>
+            <Button Grid.Row="1" Grid.Column="5" x:Name="DisableJ34">J34</Button>
+            <Button Grid.Row="0" Grid.Column="6" x:Name="EnableJ56">J56</Button>
+            <Button Grid.Row="1" Grid.Column="6" x:Name="DisableJ56">J56</Button>
+            <Button Grid.Row="0" Grid.Column="7" x:Name="EnableEndeff">Endeffector</Button>
+            <Button Grid.Row="1" Grid.Column="7" x:Name="DisableEndeff">Endeffector</Button>
+        </Grid>
     </StackPanel>
 </UserControl>

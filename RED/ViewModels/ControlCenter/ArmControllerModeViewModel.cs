@@ -13,6 +13,9 @@ namespace RED.ViewModels.ControlCenter
 {
     public class ArmControllerModeViewModel : PropertyChangedBase, IControllerMode
     {
+        private const byte ArmDisableCommand = 0x00;
+        private const byte ArmEnableCommand = 0x01;
+
         private const short motorRangeFactor = 1000;
         private readonly EndEffectorModes[] AvailibleEndEffectorModes = { EndEffectorModes.Gripper, EndEffectorModes.Drill };
 
@@ -153,6 +156,63 @@ namespace RED.ViewModels.ControlCenter
         {
             CurrentEndEffectorMode = (CurrentEndEffectorMode + 1 + AvailibleEndEffectorModes.Length) % AvailibleEndEffectorModes.Length;
             _controlCenter.Console.WriteToConsole("Switched to Previous Endeffector Mode");
+        }
+
+        public void EnableAll()
+        {
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableAll"), ArmEnableCommand);
+        }
+        public void DisableAll()
+        {
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableAll"), ArmDisableCommand);
+        }
+        public void EnableMain()
+        {
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableMain"), ArmEnableCommand);
+        }
+        public void DisableMain()
+        {
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableMain"), ArmDisableCommand);
+        }
+        public void EnableJ1()
+        {
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableJ1"), ArmEnableCommand);
+        }
+        public void DisableJ1()
+        {
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableJ1"), ArmDisableCommand);
+        }
+        public void EnableJ2()
+        {
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableJ2"), ArmEnableCommand);
+        }
+        public void DisableJ2()
+        {
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableJ2"), ArmDisableCommand);
+        }
+        public void EnableJ34()
+        {
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableJ34"), ArmEnableCommand);
+        }
+        public void DisableJ34()
+        {
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableJ34"), ArmDisableCommand);
+        }
+        public void EnableJ56()
+        {
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableJ56"), ArmEnableCommand);
+        }
+        public void DisableJ56()
+        {
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableJ56"), ArmDisableCommand);
+        }
+        public void EnableEndeff()
+        {
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableEndeff"), ArmEnableCommand);
+        }
+        public void DisableEndeff()
+        {
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableEndeff"), ArmDisableCommand);
         }
     }
 
