@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace RED.ViewModels.ControlCenter
 {
-    public class ArmControllerModeViewModel : PropertyChangedBase, IControllerMode
+    public class ArmControllerModeViewModel : PropertyChangedBase, IControllerMode, ISubscribe
     {
         private const byte ArmDisableCommand = 0x00;
         private const byte ArmEnableCommand = 0x01;
@@ -121,6 +121,23 @@ namespace RED.ViewModels.ControlCenter
             _controlCenter = cc;
             Name = "Arm";
             CurrentEndEffectorMode = 0;
+
+            _controlCenter.DataRouter.Subscribe(this, _controlCenter.MetadataManager.GetId("ArmCurrentPosition"));
+        }
+
+        public void ReceiveFromRouter(ushort dataId, byte[] data)
+        {
+            switch (_controlCenter.MetadataManager.GetTelemetry(dataId).Name)
+            {
+                case "ArmCurrentPosition":
+                    AngleJ1 = BitConverter.ToSingle(data, 0);
+                    AngleJ2 = BitConverter.ToSingle(data, 4);
+                    AngleJ3 = BitConverter.ToSingle(data, 8);
+                    AngleJ4 = BitConverter.ToSingle(data, 12);
+                    AngleJ5 = BitConverter.ToSingle(data, 26);
+                    AngleJ6 = BitConverter.ToSingle(data, 20);
+                    break;
+            }
         }
 
         public void EnterMode()
