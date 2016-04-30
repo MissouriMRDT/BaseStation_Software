@@ -41,6 +41,79 @@ namespace RED.ViewModels.ControlCenter
             }
         }
 
+        public float AngleJ1
+        {
+            get
+            {
+                return _model.AngleJ1;
+            }
+            set
+            {
+                _model.AngleJ1 = value;
+                NotifyOfPropertyChange(() => AngleJ1);
+            }
+        }
+        public float AngleJ2
+        {
+            get
+            {
+                return _model.AngleJ2;
+            }
+            set
+            {
+                _model.AngleJ2 = value;
+                NotifyOfPropertyChange(() => AngleJ2);
+            }
+        }
+        public float AngleJ3
+        {
+            get
+            {
+                return _model.AngleJ3;
+            }
+            set
+            {
+                _model.AngleJ3 = value;
+                NotifyOfPropertyChange(() => AngleJ3);
+            }
+        }
+        public float AngleJ4
+        {
+            get
+            {
+                return _model.AngleJ4;
+            }
+            set
+            {
+                _model.AngleJ4 = value;
+                NotifyOfPropertyChange(() => AngleJ4);
+            }
+        }
+        public float AngleJ5
+        {
+            get
+            {
+                return _model.AngleJ5;
+            }
+            set
+            {
+                _model.AngleJ5 = value;
+                NotifyOfPropertyChange(() => AngleJ5);
+            }
+        }
+        public float AngleJ6
+        {
+            get
+            {
+                return _model.AngleJ6;
+            }
+            set
+            {
+                _model.AngleJ6 = value;
+                NotifyOfPropertyChange(() => AngleJ6);
+            }
+        }
+
         public ArmControllerModeViewModel(IInputDevice inputVM, ControlCenterViewModel cc)
         {
             _model = new ArmControllerModeModel();
@@ -213,6 +286,18 @@ namespace RED.ViewModels.ControlCenter
         public void DisableEndeff()
         {
             _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableEndeff"), ArmDisableCommand);
+        }
+
+        public void GetPosition()
+        {
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmGetPosition"), new byte[0]);
+        }
+        public void SendPosition()
+        {
+            float[] angles = { AngleJ1, AngleJ2, AngleJ3, AngleJ4, AngleJ5, AngleJ6 };
+            byte[] data = new byte[angles.Length * sizeof(float)];
+            Buffer.BlockCopy(angles, 0, data, 0, data.Length);
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmAbsoluteAngle"), data);
         }
     }
 
