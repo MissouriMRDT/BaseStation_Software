@@ -118,5 +118,17 @@ namespace RED.Properties {
                 this["GPSBaseStationLocationLongitude"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("11001")]
+        public ushort ScienceCCDPortNumber {
+            get {
+                return ((ushort)(this["ScienceCCDPortNumber"]));
+            }
+            set {
+                this["ScienceCCDPortNumber"] = value;
+            }
+        }
     }
 }

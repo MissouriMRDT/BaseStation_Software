@@ -13,6 +13,19 @@ namespace RED.ViewModels.Settings
         private SettingsManagerViewModel _settings;
         private ScienceViewModel _vm;
 
+        public ushort CCDPortNumber
+        {
+            get
+            {
+                return _vm.CCDPortNumber;
+            }
+            set
+            {
+                _vm.CCDPortNumber = value;
+                _settings.CurrentSettings.ScienceCCDPortNumber = value;
+                NotifyOfPropertyChange(() => CCDPortNumber);
+            }
+        }
         public string CCDFilePath
         {
             get
@@ -32,6 +45,7 @@ namespace RED.ViewModels.Settings
             _settings = settings;
             _vm = server;
 
+            _vm.CCDPortNumber = _settings.CurrentSettings.ScienceCCDPortNumber;
             _vm.CCDFilePath = _settings.CurrentSettings.ScienceCCDFilePath;
         }
     }

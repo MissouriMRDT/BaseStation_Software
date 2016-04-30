@@ -17,7 +17,7 @@ namespace RED.Models
         internal float Moisture3Value;
         internal float Moisture4Value;
 
-        internal ushort CCDPortNumber = 11001;
+        internal ushort CCDPortNumber;
         internal string CCDFilePath = Environment.CurrentDirectory;
     }
 }

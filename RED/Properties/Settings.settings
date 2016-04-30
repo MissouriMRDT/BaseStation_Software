@@ -26,5 +26,8 @@
     <Setting Name="GPSBaseStationLocationLongitude" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
+    <Setting Name="ScienceCCDPortNumber" Type="System.UInt16" Scope="User">
+      <Value Profile="(Default)">11001</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
