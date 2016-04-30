@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -113,6 +114,18 @@ namespace RED.ViewModels.ControlCenter
             }
         }
 
+        public ushort CCDPortNumber
+        {
+            get
+            {
+                return _model.CCDPortNumber;
+            }
+            set
+            {
+                _model.CCDPortNumber = value;
+                NotifyOfPropertyChange(() => CCDPortNumber);
+            }
+        }
         public string CCDFilePath
         {
             get
@@ -250,6 +263,23 @@ namespace RED.ViewModels.ControlCenter
                 case "Moisture4":
                     Moisture4Value = BitConverter.ToSingle(data, 0);
                     break;
+            }
+        }
+
+        public async void StartCCDListener()
+        {
+            var listener = new TcpListener(System.Net.IPAddress.Any, CCDPortNumber);
+
+            listener.Start();
+            while (true)
+            {
+                string filename = Path.Combine(CCDFilePath, "REDCCDData" + DateTime.Now.ToString("s") + ".dat");
+
+                using (var client = await listener.AcceptTcpClientAsync())
+                using (var file = File.Create(filename))
+                {
+                    await client.GetStream().CopyToAsync(file);
+                }
             }
         }
 

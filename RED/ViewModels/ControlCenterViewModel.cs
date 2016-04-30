@@ -205,6 +205,7 @@
             NetworkManager = new NetworkManagerViewModel(this);
             SubscriptionManager = new SubscriptionManagerViewModel(this);
             Science = new ScienceViewModel(this);
+            Science.StartCCDListener();
             GPS = new GPSViewModel(this);
             Sensor = new SensorViewModel(this);
             SensorCombined = new SensorCombinedViewModel(this);
