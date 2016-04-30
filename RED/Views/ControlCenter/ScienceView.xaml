@@ -72,14 +72,29 @@
         </Grid>
         <Button x:Name="RequestCCD">Request CCD Data</Button>
         <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Label Grid.Row="0" Grid.Column="0">Laser</Label>
-            <Button Grid.Row="0" Grid.Column="1" x:Name="RequestLaserOn">On</Button>
-            <Button Grid.Row="0" Grid.Column="2" x:Name="RequestLaserOff">Off</Button>
+            <UniformGrid Grid.Row="0" Grid.Column="1" Rows="1">
+                <Button x:Name="RequestLaserOn">On</Button>
+                <Button x:Name="RequestLaserOff">Off</Button>
+            </UniformGrid>
+            <Label Grid.Row="1" Grid.Column="0">Carousel</Label>
+            <UniformGrid Grid.Row="1" Grid.Column="1" Rows="1">
+                <Button x:Name="Carousel1">1</Button>
+                <Button x:Name="Carousel2">2</Button>
+                <Button x:Name="Carousel3">3</Button>
+                <Button x:Name="Carousel4">4</Button>
+                <Button x:Name="Carousel5">5</Button>
+                <Button x:Name="Carousel6">6</Button>
+            </UniformGrid>
         </Grid>
+
     </StackPanel>
 </UserControl>

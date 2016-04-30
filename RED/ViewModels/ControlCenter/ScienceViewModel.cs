@@ -235,6 +235,31 @@ namespace RED.ViewModels.ControlCenter
             _cc.Console.WriteToConsole("Science Laser Off requested.");
         }
 
+        public void Carousel1()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("CarouselPosition"), (byte)0);
+        }
+        public void Carousel2()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("CarouselPosition"), (byte)1);
+        }
+        public void Carousel3()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("CarouselPosition"), (byte)2);
+        }
+        public void Carousel4()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("CarouselPosition"), (byte)3);
+        }
+        public void Carousel5()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("CarouselPosition"), (byte)4);
+        }
+        public void Carousel6()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("CarouselPosition"), (byte)5);
+        }
+
         public void ReceiveFromRouter(ushort dataId, byte[] data)
         {
             switch (_cc.MetadataManager.GetTelemetry(dataId).Name)
