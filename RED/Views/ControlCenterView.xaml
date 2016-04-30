@@ -32,17 +32,24 @@
                 <!-- Customizable Module Grid -->
                 <ContentControl Grid.Column="0" Grid.Row="0" x:Name="GPS" />
                 <StackPanel Grid.Column="1" Grid.Row="0">
-                    <Label FontSize="16">Drive</Label>
-                    <ContentControl x:Name="DriveControllerMode" />
-                    <ContentControl x:Name="ArmControllerMode" />
-                    <Label FontSize="16">Science</Label>
-                    <ContentControl Grid.Column="1" Grid.Row="0" x:Name="Science" />
-                    <Label FontSize="16">Sensors</Label>
-                    <ContentControl x:Name="Sensor" />
-                    <Label FontSize="16">Gimbal</Label>
-                    <ContentControl x:Name="GimbalControllerMode" />
-                    <Label FontSize="16">Drop Bays</Label>
-                    <ContentControl x:Name="DropBays" />
+                    <Expander Header="Drive" IsExpanded="True">
+                        <ContentControl x:Name="DriveControllerMode" />
+                    </Expander>
+                    <Expander Header="Arm" IsExpanded="True">
+                        <ContentControl x:Name="ArmControllerMode" />
+                    </Expander>
+                    <Expander Header="Science">
+                        <ContentControl Grid.Column="1" Grid.Row="0" x:Name="Science" />
+                    </Expander>
+                    <Expander Header="Sensors">
+                        <ContentControl x:Name="Sensor" />
+                    </Expander>
+                    <Expander Header="Gimbal">
+                        <ContentControl x:Name="GimbalControllerMode" />
+                    </Expander>
+                    <Expander Header="Drop Bays">
+                        <ContentControl x:Name="DropBays" />
+                    </Expander>
                 </StackPanel>
                 <!-- Static Side Panel Grid -->
                 <Grid Grid.Column="2" Grid.Row="0">
