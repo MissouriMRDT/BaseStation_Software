@@ -13,19 +13,6 @@ namespace RED.ViewModels.Settings
         private SettingsManagerViewModel _settings;
         private ScienceViewModel _vm;
 
-        public short CCDPixelCount
-        {
-            get
-            {
-                return _vm.CCDPixelCount;
-            }
-            set
-            {
-                _vm.CCDPixelCount = value;
-                _settings.CurrentSettings.ScienceCCDPixelCount = value;
-                NotifyOfPropertyChange(() => CCDPixelCount);
-            }
-        }
         public string CCDFilePath
         {
             get
@@ -45,7 +32,6 @@ namespace RED.ViewModels.Settings
             _settings = settings;
             _vm = server;
 
-            _vm.CCDPixelCount = _settings.CurrentSettings.ScienceCCDPixelCount;
             _vm.CCDFilePath = _settings.CurrentSettings.ScienceCCDFilePath;
         }
     }

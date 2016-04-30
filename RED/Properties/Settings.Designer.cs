@@ -49,18 +49,6 @@ namespace RED.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("3684")]
-        public short ScienceCCDPixelCount {
-            get {
-                return ((short)(this["ScienceCCDPixelCount"]));
-            }
-            set {
-                this["ScienceCCDPixelCount"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string ScienceCCDFilePath {
             get {
