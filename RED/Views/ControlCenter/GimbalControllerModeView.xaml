@@ -5,34 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Grid Grid.Column="0" Grid.Row="0" Margin="3px">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Button Grid.Row="0" Grid.Column="1" x:Name="MoveUp">Up</Button>
-            <Button Grid.Row="2" Grid.Column="1" x:Name="MoveDown">Down</Button>
-            <Button Grid.Row="1" Grid.Column="0" x:Name="MoveLeft">Left</Button>
-            <Button Grid.Row="1" Grid.Column="2" x:Name="MoveRight">Right</Button>
-            <Label Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center">Move</Label>
-        </Grid>
-        <Grid Grid.Column="0" Grid.Row="1" Margin="3px">
+    <StackPanel>
+        <Grid Margin="3px">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
@@ -49,7 +23,7 @@
             <Button Grid.Row="1" Grid.Column="2" x:Name="FocusFar">Far</Button>
             <Button Grid.Row="1" Grid.Column="1" x:Name="ZoomFocusStop">Stop</Button>
         </Grid>
-        <Grid Grid.Column="0" Grid.Row="2" Margin="3px">
+        <Grid Margin="3px">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
@@ -66,6 +40,5 @@
             <Button Grid.Row="1" Grid.Column="2" x:Name="MenuRight">Right</Button>
             <Button Grid.Row="1" Grid.Column="1" x:Name="MenuCenter">Menu</Button>
         </Grid>
-    </Grid>
-    
+    </StackPanel>
 </UserControl>
