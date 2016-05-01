@@ -75,6 +75,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
@@ -93,6 +94,11 @@
                 <Button x:Name="Carousel4">4</Button>
                 <Button x:Name="Carousel5">5</Button>
                 <Button x:Name="Carousel6">6</Button>
+            </UniformGrid>
+            <Label Grid.Row="2" Grid.Column="0">Funnel</Label>
+            <UniformGrid Grid.Row="2" Grid.Column="1" Rows="1">
+                <Button x:Name="FunnelOpen">Open</Button>
+                <Button x:Name="FunnelClose">Close</Button>
             </UniformGrid>
         </Grid>
 

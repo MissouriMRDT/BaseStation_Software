@@ -260,6 +260,16 @@ namespace RED.ViewModels.ControlCenter
             _cc.DataRouter.Send(_cc.MetadataManager.GetId("CarouselPosition"), (byte)5);
         }
 
+        public void FunnelOpen()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (byte)ScienceRequestTypes.FunnelOpen);
+        }
+        public void FunnelClose()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (byte)ScienceRequestTypes.FunnelClose);
+        }
+
+
         public void ReceiveFromRouter(ushort dataId, byte[] data)
         {
             switch (_cc.MetadataManager.GetTelemetry(dataId).Name)
@@ -328,7 +338,9 @@ namespace RED.ViewModels.ControlCenter
             Moisture4Disable = 16,
             CCDRequest = 17,
             LaserOn = 18,
-            LaserOff = 19
+            LaserOff = 19,
+            FunnelOpen = 20,
+            FunnelClose = 21
         }
     }
 }
