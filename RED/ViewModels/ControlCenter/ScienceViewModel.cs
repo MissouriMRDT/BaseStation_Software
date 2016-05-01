@@ -221,17 +221,17 @@ namespace RED.ViewModels.ControlCenter
 
         public void RequestCCD()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceRequest"), (ushort)ScienceRequestTypes.CCDRequest);
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.CCDRequest);
             _cc.Console.WriteToConsole("CCD data requested");
         }
         public void RequestLaserOn()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceRequest"), (byte)ScienceRequestTypes.LaserOn);
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (byte)ScienceRequestTypes.LaserOn);
             _cc.Console.WriteToConsole("Science Laser On requested.");
         }
         public void RequestLaserOff()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceRequest"), (byte)ScienceRequestTypes.LaserOff);
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (byte)ScienceRequestTypes.LaserOff);
             _cc.Console.WriteToConsole("Science Laser Off requested.");
         }
 
