@@ -51,7 +51,7 @@ namespace RED.ViewModels.ControlCenter
             _cc = cc;
             _model = new GimbalModel();
             InputVM = inputVM;
-            Name = "Gimbal " + gimbalIndex.ToString();
+            Name = "Gimbal " + (gimbalIndex + 1).ToString();
             SpeedLimit = 1000;
             GimbalIndex = gimbalIndex;
         }
