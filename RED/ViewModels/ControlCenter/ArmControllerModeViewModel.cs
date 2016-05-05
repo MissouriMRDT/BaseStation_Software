@@ -309,7 +309,7 @@ namespace RED.ViewModels.ControlCenter
         {
             _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmGetPosition"), new byte[0]);
         }
-        public void SendPosition()
+        public void SetPosition()
         {
             float[] angles = { AngleJ1, AngleJ2, AngleJ3, AngleJ4, AngleJ5, AngleJ6 };
             byte[] data = new byte[angles.Length * sizeof(float)];
