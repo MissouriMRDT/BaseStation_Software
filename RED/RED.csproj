@@ -120,6 +120,7 @@
     <Compile Include="Interfaces\INetworkTransportProtocol.cs" />
     <Compile Include="Interfaces\ISequenceNumberProvider.cs" />
     <Compile Include="Models\ArmControllerModeModel.cs" />
+    <Compile Include="Models\CameraMuxModel.cs" />
     <Compile Include="Models\GimbalModel.cs" />
     <Compile Include="Models\InputManagerModel.cs" />
     <Compile Include="Models\DataRouterModel.cs" />
@@ -134,6 +135,7 @@
     <Compile Include="Settings.cs" />
     <Compile Include="Models\XboxControllerInputModel.cs" />
     <Compile Include="ViewModels\ControlCenter\ArmControllerModeViewModel.cs" />
+    <Compile Include="ViewModels\ControlCenter\CameraMuxViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\GimbalControllerModeViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\DropBaysViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\NetworkManagerViewModel.cs" />
