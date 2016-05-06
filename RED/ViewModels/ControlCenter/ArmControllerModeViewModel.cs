@@ -134,7 +134,7 @@ namespace RED.ViewModels.ControlCenter
                     AngleJ2 = BitConverter.ToSingle(data, 4);
                     AngleJ3 = BitConverter.ToSingle(data, 8);
                     AngleJ4 = BitConverter.ToSingle(data, 12);
-                    AngleJ5 = BitConverter.ToSingle(data, 26);
+                    AngleJ5 = BitConverter.ToSingle(data, 16);
                     AngleJ6 = BitConverter.ToSingle(data, 20);
                     break;
             }
