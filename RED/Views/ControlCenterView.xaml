@@ -51,6 +51,9 @@
                         <Expander Header="Drop Bays">
                             <ContentControl x:Name="DropBays" />
                         </Expander>
+                        <Expander Header="Camera Mux">
+                            <ContentControl x:Name="CameraMux" />
+                        </Expander>
                     </StackPanel>
                 </ScrollViewer>
                 <!-- Static Side Panel Grid -->
