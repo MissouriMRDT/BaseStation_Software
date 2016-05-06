@@ -125,6 +125,7 @@
     <Compile Include="Models\DataRouterModel.cs" />
     <Compile Include="Models\DriveControllerModeModel.cs" />
     <Compile Include="Models\NetworkManagerModel.cs" />
+    <Compile Include="Models\PowerModel.cs" />
     <Compile Include="Models\ScienceModel.cs" />
     <Compile Include="Models\GPSModel.cs" />
     <Compile Include="Models\SensorModel.cs" />
@@ -144,6 +145,7 @@
     <Compile Include="ViewModels\ControlCenter\DriveControllerModeViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\GPSViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\KeyboardInputViewModel.cs" />
+    <Compile Include="ViewModels\ControlCenter\PowerViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\XboxControllerInputViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\MetadataManager.cs" />
     <Compile Include="ViewModels\ControlCenter\RoverProtocol.cs" />
