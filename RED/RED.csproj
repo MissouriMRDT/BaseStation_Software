@@ -177,6 +177,9 @@
     <Compile Include="Views\ControlCenter\DropBaysView.xaml.cs">
       <DependentUpon>DropBaysView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ControlCenter\PowerView.xaml.cs">
+      <DependentUpon>PowerView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ControlCenter\ScienceView.xaml.cs">
       <DependentUpon>ScienceView.xaml</DependentUpon>
     </Compile>
@@ -246,6 +249,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>-->
+    <Page Include="Views\ControlCenter\PowerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ControlCenter\ScienceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
