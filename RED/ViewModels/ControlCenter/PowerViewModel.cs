@@ -325,6 +325,10 @@ namespace RED.ViewModels.ControlCenter
                 case "Cell8Voltage": Cell8Voltage = BitConverter.ToSingle(data, 0); break;
                 case "TotalPackCurrent": TotalPackCurrent = BitConverter.ToSingle(data, 0); break;
                 case "TotalPackVoltage": TotalPackVoltage = BitConverter.ToSingle(data, 0); break;
+
+                case "PowerBusOverCurrentNotification":
+                    _cc.Console.WriteToConsole("Overcurrent notification from Powerboard from Bus Index " + data[0].ToString());
+                    break;
             }
         }
 
