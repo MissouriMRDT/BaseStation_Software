@@ -327,5 +327,14 @@ namespace RED.ViewModels.ControlCenter
                 case "TotalPackVoltage": TotalPackVoltage = BitConverter.ToSingle(data, 0); break;
             }
         }
+
+        public void RebootRover()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("BMSReboot"), new byte[0]);
+        }
+        public void EStopRover()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("BMSStop"), new byte[0]);
+        }
     }
 }

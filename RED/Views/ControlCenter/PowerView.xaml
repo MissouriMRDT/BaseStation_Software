@@ -44,6 +44,10 @@
             <Label Grid.Row="9" Grid.Column="0">TotalPackCurrent</Label>
             <Label Grid.Row="9" Grid.Column="1" x:Name="TotalPackCurrent" />
         </Grid>
+        <UniformGrid Rows="1">
+            <Button Grid.Row="0" Grid.Column="0" Click="RebootButton_Click">Reboot</Button>
+            <Button Grid.Row="0" Grid.Column="1" Click="ShutDownButton_Click">Shut Down</Button>
+        </UniformGrid>
         <Expander Header="Other">
             <Grid>
                 <Grid.RowDefinitions>

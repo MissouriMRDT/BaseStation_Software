@@ -1,4 +1,7 @@
-﻿using System;
+﻿using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
+using RED.ViewModels.ControlCenter;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +26,48 @@ namespace RED.Views.ControlCenter
         public PowerView()
         {
             InitializeComponent();
+        }
+
+        private async void RebootButton_Click(object sender, RoutedEventArgs e)
+        {
+            MetroDialogSettings settings = new MetroDialogSettings()
+            {
+                AffirmativeButtonText = "Reboot",
+                NegativeButtonText = "Cancel",
+                AnimateShow = false,
+                AnimateHide = false
+            };
+            var result = await ((MetroWindow)MetroWindow.GetWindow(this)).ShowMessageAsync(
+                title: "Rover Reboot",
+                message: "This will command the Battery Management System to reboot the rover. Communications will be intrrupted until RED reconnects to the rover.",
+                style: MessageDialogStyle.AffirmativeAndNegative,
+                settings: settings);
+
+            if (result == MessageDialogResult.Affirmative)
+            {
+                ((PowerViewModel)DataContext).RebootRover();
+            }
+        }
+
+        private async void ShutDownButton_Click(object sender, RoutedEventArgs e)
+        {
+            MetroDialogSettings settings = new MetroDialogSettings()
+            {
+                AffirmativeButtonText = "Shut Down",
+                NegativeButtonText = "Cancel",
+                AnimateShow = false,
+                AnimateHide = false
+            };
+            var result = await ((MetroWindow)MetroWindow.GetWindow(this)).ShowMessageAsync(
+                title: "Rover Shut Down",
+                message: "This will command the Battery Management System to shut down the rover. Communications will be interrupted. THIS CANNOT BE REVERSED REMOTELY!",
+                style: MessageDialogStyle.AffirmativeAndNegative,
+                settings: settings);
+
+            if (result == MessageDialogResult.Affirmative)
+            {
+                ((PowerViewModel)DataContext).EStopRover();
+            }
         }
     }
 }
