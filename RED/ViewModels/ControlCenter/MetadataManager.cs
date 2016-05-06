@@ -133,7 +133,12 @@ namespace RED.ViewModels.ControlCenter
         public ushort GetId(string name)
         {
             var data = GetMetadata(name);
-            return data == null ? (ushort)0 : data.Id;
+            if (data == null)
+            {
+                _controlCenter.Console.WriteToConsole("DataId for \"" + name + "\" not found.");
+                return (ushort)0;
+            }
+            return data.Id;
         }
         public string GetName(ushort DataId)
         {

@@ -36,8 +36,8 @@ namespace RED.ViewModels.ControlCenter
         public InputManagerViewModel(ControlCenterViewModel cc)
         {
             // Set default input device as the keyboard
-            Input = new KeyboardInputViewModel(cc);
-            //Input = new XboxControllerInputViewModel(cc);
+            //Input = new KeyboardInputViewModel(cc);
+            Input = new XboxControllerInputViewModel(cc);
         }
 
         public void SwitchDevice(DeviceType newDevice, ControlCenterViewModel cc)

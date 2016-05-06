@@ -15,7 +15,7 @@
     </UserControl.Resources>
     <DockPanel>
         <StackPanel DockPanel.Dock="Right" Width="256">
-            <GroupBox Header="Cache Options">
+            <Expander Header="Cache Options">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
@@ -30,8 +30,8 @@
                     <Button Grid.Row="1" Grid.Column="0" x:Name="PrefetchBtn" Click="PrefetchBtn_Click" Content="Prefetch"/>
                     <Button Grid.Row="1" Grid.Column="1" x:Name="ClearBtn" Click="ClearBtn_Click" Content="Clear Cache"/>
                 </Grid>
-            </GroupBox>
-            <GroupBox Header="Manage Waypoints">
+            </Expander>
+            <Expander Header="Manage Waypoints" IsExpanded="True">
                 <StackPanel>
                     <Label Content="Latitude:" />
                     <TextBox x:Name="LatitudeTextBox" />
@@ -39,8 +39,8 @@
                     <TextBox x:Name="LongitudeTextBox" />
                     <Button x:Name="AddWaypointBtn" Click="AddWaypointBtn_Click" Content="Add Waypoint"/>
                 </StackPanel>
-            </GroupBox>
-            <GroupBox Header="Data">
+            </Expander>
+            <Expander Header="Data" IsExpanded="True">
                 <StackPanel>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -85,7 +85,7 @@
                         </Path>
                     </Canvas>
                 </StackPanel>
-            </GroupBox>
+            </Expander>
             <StackPanel Orientation="Horizontal" Canvas.Bottom="0" Canvas.Right="0">
                 <Button Click="RefreshMap_Click">Refresh</Button>
                 <Label>Zoom:</Label>

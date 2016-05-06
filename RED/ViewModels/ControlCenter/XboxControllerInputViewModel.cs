@@ -496,6 +496,54 @@
                 NotifyOfPropertyChange(() => ActuatorBackward);
             }
         }
+        public float GimbalPan
+        {
+            get
+            {
+                return Model.GimbalPan;
+            }
+            set
+            {
+                Model.GimbalPan = value;
+                NotifyOfPropertyChange(() => GimbalPan);
+            }
+        }
+        public float GimbalTilt
+        {
+            get
+            {
+                return Model.GimbalTilt;
+            }
+            set
+            {
+                Model.GimbalTilt = value;
+                NotifyOfPropertyChange(() => GimbalTilt);
+            }
+        }
+        public bool GimbalZoomIn
+        {
+            get
+            {
+                return Model.GimbalZoomIn;
+            }
+            set
+            {
+                Model.GimbalZoomIn = value;
+                NotifyOfPropertyChange(() => GimbalZoomIn);
+            }
+        }
+        public bool GimbalZoomOut
+        {
+            get
+            {
+                return Model.GimbalZoomOut;
+            }
+            set
+            {
+                Model.GimbalZoomOut = value;
+                NotifyOfPropertyChange(() => GimbalZoomOut);
+            }
+        }
         #endregion
 
         public XboxControllerInputViewModel(ControlCenterViewModel cc)
@@ -504,6 +552,7 @@
 
             ControllerModes.Add(new DriveControllerModeViewModel(this, _controlCenter));
             ControllerModes.Add(new ArmControllerModeViewModel(this, _controlCenter));
+            ControllerModes.Add(new GimbalControllerModeViewModel(this, _controlCenter));
             if (ControllerModes.Count == 0) throw new ArgumentException("IEnumerable 'modes' must have at least one item");
             CurrentModeIndex = 0;
         }
@@ -542,9 +591,9 @@
             Connected = true;
 
             var deadzone = AutoDeadzone ? Math.Max(Gamepad.LeftThumbDeadZone, Gamepad.RightThumbDeadZone) : ManualDeadzone;
-            ElbowBend = WheelsLeft = currentGamepad.LeftThumbY < deadzone && currentGamepad.LeftThumbY > -deadzone ? 0 : ((currentGamepad.LeftThumbY + (currentGamepad.LeftThumbY < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
+            ElbowBend = GimbalTilt = WheelsLeft = currentGamepad.LeftThumbY < deadzone && currentGamepad.LeftThumbY > -deadzone ? 0 : ((currentGamepad.LeftThumbY + (currentGamepad.LeftThumbY < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
             WristBend = WheelsRight = currentGamepad.RightThumbY < deadzone && currentGamepad.RightThumbY > -deadzone ? 0 : ((currentGamepad.RightThumbY + (currentGamepad.RightThumbY < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
-            ElbowTwist = currentGamepad.LeftThumbX < deadzone && currentGamepad.LeftThumbX > -deadzone ? 0 : ((currentGamepad.LeftThumbX + (currentGamepad.LeftThumbX < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
+            ElbowTwist = GimbalPan = currentGamepad.LeftThumbX < deadzone && currentGamepad.LeftThumbX > -deadzone ? 0 : ((currentGamepad.LeftThumbX + (currentGamepad.LeftThumbX < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
             WristTwist = currentGamepad.RightThumbX < deadzone && currentGamepad.RightThumbX > -deadzone ? 0 : ((currentGamepad.RightThumbX + (currentGamepad.RightThumbX < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
 
             GripperOpen = (float)currentGamepad.LeftTrigger / 255;
@@ -560,9 +609,9 @@
             ModeNext = (currentGamepad.Buttons & GamepadButtonFlags.Start) != 0;
             ModePrev = (currentGamepad.Buttons & GamepadButtonFlags.Back) != 0;
             BaseCounterClockwise = (currentGamepad.Buttons & GamepadButtonFlags.DPadLeft) != 0;
-            ActuatorForward = (currentGamepad.Buttons & GamepadButtonFlags.DPadUp) != 0;
+            ActuatorForward = GimbalZoomIn = (currentGamepad.Buttons & GamepadButtonFlags.DPadUp) != 0;
             BaseClockwise = (currentGamepad.Buttons & GamepadButtonFlags.DPadRight) != 0;
-            ActuatorBackward = (currentGamepad.Buttons & GamepadButtonFlags.DPadDown) != 0;
+            ActuatorBackward = GimbalZoomOut = (currentGamepad.Buttons & GamepadButtonFlags.DPadDown) != 0;
         }
 
         private void EvaluateCurrentMode()
