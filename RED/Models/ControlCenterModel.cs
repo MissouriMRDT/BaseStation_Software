@@ -21,5 +21,6 @@
         internal SensorCombinedViewModel _sensorCombined;
         internal GimbalControllerModeViewModel _gimbalControllerMode;
         internal DropBaysViewModel _dropBays;
+        internal CameraMuxViewModel _cameraMux;
     }
 }

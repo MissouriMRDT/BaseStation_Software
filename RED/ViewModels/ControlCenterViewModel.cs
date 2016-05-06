@@ -168,6 +168,19 @@
 
             }
         }
+        public CameraMuxViewModel CameraMux
+        {
+            get
+            {
+                return _model._cameraMux;
+            }
+            set
+            {
+                _model._cameraMux = value;
+                NotifyOfPropertyChange(() => CameraMux);
+
+            }
+        }
 
         public DriveControllerModeViewModel DriveControllerMode
         {
@@ -209,6 +222,7 @@
             Sensor = new SensorViewModel(this);
             SensorCombined = new SensorCombinedViewModel(this);
             DropBays = new DropBaysViewModel(this);
+            CameraMux = new CameraMuxViewModel(this);
 
             SettingsManager = new SettingsManagerViewModel(this);
 
