@@ -51,6 +51,9 @@
                         <Expander Header="Drop Bays">
                             <ContentControl x:Name="DropBays" />
                         </Expander>
+                        <Expander Header="Power and BMS">
+                            <ContentControl x:Name="Power" />
+                        </Expander>
                     </StackPanel>
                 </ScrollViewer>
                 <!-- Static Side Panel Grid -->

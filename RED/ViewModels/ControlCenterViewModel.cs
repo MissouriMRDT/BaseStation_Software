@@ -168,6 +168,19 @@
 
             }
         }
+        public PowerViewModel Power
+        {
+            get
+            {
+                return _model._power;
+            }
+            set
+            {
+                _model._power = value;
+                NotifyOfPropertyChange(() => Power);
+
+            }
+        }
 
         public DriveControllerModeViewModel DriveControllerMode
         {
@@ -209,6 +222,7 @@
             Sensor = new SensorViewModel(this);
             SensorCombined = new SensorCombinedViewModel(this);
             DropBays = new DropBaysViewModel(this);
+            Power = new PowerViewModel(this);
 
             SettingsManager = new SettingsManagerViewModel(this);
 
