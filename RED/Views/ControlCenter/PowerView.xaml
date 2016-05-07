@@ -28,39 +28,39 @@
             <Button Grid.Row="0" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="0" />
             <Button Grid.Row="0" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="0" />
             <Label Grid.Row="0" Grid.Column="2">Motor1Current</Label>
-            <Label Grid.Row="0" Grid.Column="3" x:Name="Motor1Current" />
+            <Label Grid.Row="0" Grid.Column="3" x:Name="Motor1Current" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
             <Button Grid.Row="1" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="1" />
             <Button Grid.Row="1" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="1" />
             <Label Grid.Row="1" Grid.Column="2">Motor2Current</Label>
-            <Label Grid.Row="1" Grid.Column="3" x:Name="Motor2Current" />
+            <Label Grid.Row="1" Grid.Column="3" x:Name="Motor2Current" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
             <Button Grid.Row="2" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="2" />
             <Button Grid.Row="2" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="2" />
             <Label Grid.Row="2" Grid.Column="2">Motor3Current</Label>
-            <Label Grid.Row="2" Grid.Column="3" x:Name="Motor3Current" />
+            <Label Grid.Row="2" Grid.Column="3" x:Name="Motor3Current" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
             <Button Grid.Row="3" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="3" />
             <Button Grid.Row="3" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="3" />
             <Label Grid.Row="3" Grid.Column="2">Motor4Current</Label>
-            <Label Grid.Row="3" Grid.Column="3" x:Name="Motor4Current" />
+            <Label Grid.Row="3" Grid.Column="3" x:Name="Motor4Current" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
             <Button Grid.Row="4" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="4" />
             <Button Grid.Row="4" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="4" />
             <Label Grid.Row="4" Grid.Column="2">Motor5Current</Label>
-            <Label Grid.Row="4" Grid.Column="3" x:Name="Motor5Current" />
+            <Label Grid.Row="4" Grid.Column="3" x:Name="Motor5Current" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
             <Button Grid.Row="5" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="5" />
             <Button Grid.Row="5" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="5" />
             <Label Grid.Row="5" Grid.Column="2">Motor6Current</Label>
-            <Label Grid.Row="5" Grid.Column="3" x:Name="Motor6Current" />
+            <Label Grid.Row="5" Grid.Column="3" x:Name="Motor6Current" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
             <Button Grid.Row="6" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="8" />
             <Button Grid.Row="6" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="8" />
             <Label Grid.Row="6" Grid.Column="2">Bus5VCurrent</Label>
-            <Label Grid.Row="6" Grid.Column="3" x:Name="Bus5VCurrent" />
+            <Label Grid.Row="6" Grid.Column="3" x:Name="Bus5VCurrent" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
             <Button Grid.Row="7" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="9" />
             <Button Grid.Row="7" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="9" />
             <Label Grid.Row="7" Grid.Column="2">Bus12VCurrent</Label>
-            <Label Grid.Row="7" Grid.Column="3" x:Name="Bus12VCurrent" />
+            <Label Grid.Row="7" Grid.Column="3" x:Name="Bus12VCurrent" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
             <Label Grid.Row="8" Grid.Column="2">InputVoltage</Label>
-            <Label Grid.Row="8" Grid.Column="3" x:Name="InputVoltage" />
+            <Label Grid.Row="8" Grid.Column="3" x:Name="InputVoltage" ContentStringFormat="{}{0:00.00} V" HorizontalContentAlignment="Right" />
             <Label Grid.Row="9" Grid.Column="2">TotalPackCurrent</Label>
-            <Label Grid.Row="9" Grid.Column="3" x:Name="TotalPackCurrent" />
+            <Label Grid.Row="9" Grid.Column="3" x:Name="TotalPackCurrent" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
         </Grid>
         <UniformGrid Rows="1">
             <Button Grid.Row="0" Grid.Column="0" Click="RebootButton_Click">Reboot</Button>
