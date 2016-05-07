@@ -29,5 +29,8 @@
     <Setting Name="ScienceCCDPortNumber" Type="System.UInt16" Scope="User">
       <Value Profile="(Default)">11001</Value>
     </Setting>
+    <Setting Name="ScienceCCDIPAddress" Type="System.String" Scope="User">
+      <Value Profile="(Default)">192.168.1.135</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

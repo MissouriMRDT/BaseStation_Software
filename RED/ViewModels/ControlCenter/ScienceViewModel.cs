@@ -114,6 +114,18 @@ namespace RED.ViewModels.ControlCenter
             }
         }
 
+        public System.Net.IPAddress CCDIPAddress
+        {
+            get
+            {
+                return _model.CCDIPAddress;
+            }
+            set
+            {
+                _model.CCDIPAddress = value;
+                NotifyOfPropertyChange(() => CCDIPAddress);
+            }
+        }
         public ushort CCDPortNumber
         {
             get
@@ -224,6 +236,20 @@ namespace RED.ViewModels.ControlCenter
             _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.CCDRequest);
             _cc.Console.WriteToConsole("CCD data requested");
         }
+        public async void DownloadCCD()
+        {
+            _cc.Console.WriteToConsole("CCD data downloaded started.");
+            string filename = Path.Combine(CCDFilePath, "REDCCDData" + DateTime.Now.ToString("s") + ".dat");
+            using (var client = new TcpClient())
+            {
+                await client.ConnectAsync(CCDIPAddress, CCDPortNumber);
+                using (var file = File.Create(filename))
+                {
+                    await client.GetStream().CopyToAsync(file);
+                }
+            }
+            _cc.Console.WriteToConsole("CCD data downloaded into " + filename + ".");
+        }
         public void RequestLaserOn()
         {
             _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (byte)ScienceRequestTypes.LaserOn);
@@ -269,7 +295,6 @@ namespace RED.ViewModels.ControlCenter
             _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (byte)ScienceRequestTypes.FunnelClose);
         }
 
-
         public void ReceiveFromRouter(ushort dataId, byte[] data)
         {
             switch (_cc.MetadataManager.GetTelemetry(dataId).Name)
@@ -298,23 +323,6 @@ namespace RED.ViewModels.ControlCenter
                 case "Moisture4":
                     Moisture4Value = BitConverter.ToSingle(data, 0);
                     break;
-            }
-        }
-
-        public async void StartCCDListener()
-        {
-            var listener = new TcpListener(System.Net.IPAddress.Any, CCDPortNumber);
-
-            listener.Start();
-            while (true)
-            {
-                string filename = Path.Combine(CCDFilePath, "REDCCDData" + DateTime.Now.ToString("s") + ".dat");
-
-                using (var client = await listener.AcceptTcpClientAsync())
-                using (var file = File.Create(filename))
-                {
-                    await client.GetStream().CopyToAsync(file);
-                }
             }
         }
 

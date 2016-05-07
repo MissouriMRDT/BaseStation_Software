@@ -213,7 +213,6 @@
             SettingsManager = new SettingsManagerViewModel(this);
 
             IManager.Start();
-            Science.StartCCDListener();
             //DataRouter.Send(100, new byte[] { 10, 20, 30, 40 });
             //DataRouter.Send(1, new byte[] { 2, 3, 4, 5 });
             //DataRouter.Send(101, new byte[] { 15, 25, 35, 45 });

@@ -130,5 +130,17 @@ namespace RED.Properties {
                 this["ScienceCCDPortNumber"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("192.168.1.135")]
+        public string ScienceCCDIPAddress {
+            get {
+                return ((string)(this["ScienceCCDIPAddress"]));
+            }
+            set {
+                this["ScienceCCDIPAddress"] = value;
+            }
+        }
     }
 }
