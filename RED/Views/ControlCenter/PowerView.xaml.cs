@@ -30,18 +30,10 @@ namespace RED.Views.ControlCenter
 
         private async void RebootButton_Click(object sender, RoutedEventArgs e)
         {
-            MetroDialogSettings settings = new MetroDialogSettings()
-            {
-                AffirmativeButtonText = "Reboot",
-                NegativeButtonText = "Cancel",
-                AnimateShow = false,
-                AnimateHide = false
-            };
-            var result = await ((MetroWindow)MetroWindow.GetWindow(this)).ShowMessageAsync(
+            var result = await ShowMessage(
+                buttonText: "Reboot",
                 title: "Rover Reboot",
-                message: "This will command the Battery Management System to reboot the rover. Communications will be intrrupted until RED reconnects to the rover.",
-                style: MessageDialogStyle.AffirmativeAndNegative,
-                settings: settings);
+                message: "This will command the Battery Management System to reboot the rover. Communications will be intrrupted until RED reconnects to the rover.");
 
             if (result == MessageDialogResult.Affirmative)
             {
@@ -51,18 +43,10 @@ namespace RED.Views.ControlCenter
 
         private async void ShutDownButton_Click(object sender, RoutedEventArgs e)
         {
-            MetroDialogSettings settings = new MetroDialogSettings()
-            {
-                AffirmativeButtonText = "Shut Down",
-                NegativeButtonText = "Cancel",
-                AnimateShow = false,
-                AnimateHide = false
-            };
-            var result = await ((MetroWindow)MetroWindow.GetWindow(this)).ShowMessageAsync(
+            var result = await ShowMessage(
+                buttonText: "Shut Down",
                 title: "Rover Shut Down",
-                message: "This will command the Battery Management System to shut down the rover. Communications will be interrupted. THIS CANNOT BE REVERSED REMOTELY!",
-                style: MessageDialogStyle.AffirmativeAndNegative,
-                settings: settings);
+                message: "This will command the Battery Management System to shut down the rover. Communications will be interrupted. THIS CANNOT BE REVERSED REMOTELY!");
 
             if (result == MessageDialogResult.Affirmative)
             {
@@ -73,18 +57,10 @@ namespace RED.Views.ControlCenter
         private async void EnableButton_Click(object sender, RoutedEventArgs e)
         {
             byte busIndex = Byte.Parse((string)((Button)sender).Tag);
-            MetroDialogSettings settings = new MetroDialogSettings()
-            {
-                AffirmativeButtonText = "Enable",
-                NegativeButtonText = "Cancel",
-                AnimateShow = false,
-                AnimateHide = false
-            };
-            var result = await ((MetroWindow)MetroWindow.GetWindow(this)).ShowMessageAsync(
+            var result = await ShowMessage(
+                buttonText: "Enable",
                 title: "Power Bus Enable",
-                message: "This will command the Powerboard to enable Bus #" + busIndex.ToString() + ".",
-                style: MessageDialogStyle.AffirmativeAndNegative,
-                settings: settings);
+                message: "This will command the Powerboard to enable Bus #" + busIndex.ToString() + ".");
 
             if (result == MessageDialogResult.Affirmative)
             {
@@ -95,23 +71,31 @@ namespace RED.Views.ControlCenter
         private async void DisableButton_Click(object sender, RoutedEventArgs e)
         {
             byte busIndex = Byte.Parse((string)((Button)sender).Tag);
-            MetroDialogSettings settings = new MetroDialogSettings()
-            {
-                AffirmativeButtonText = "Disable",
-                NegativeButtonText = "Cancel",
-                AnimateShow = false,
-                AnimateHide = false
-            };
-            var result = await ((MetroWindow)MetroWindow.GetWindow(this)).ShowMessageAsync(
+            var result = await ShowMessage(
+                buttonText: "Disable",
                 title: "Power Bus Disable",
-                message: "This will command the Powerboard to disable Bus #" + busIndex.ToString() + ". If this bus powers communications equipment, communications will be interrupted.",
-                style: MessageDialogStyle.AffirmativeAndNegative,
-                settings: settings);
+                message: "This will command the Powerboard to disable Bus #" + busIndex.ToString() + ". If this bus powers communications equipment, communications will be interrupted.");
 
             if (result == MessageDialogResult.Affirmative)
             {
                 ((PowerViewModel)DataContext).DisableBus(busIndex);
             }
+        }
+
+        private Task<MessageDialogResult> ShowMessage(string buttonText, string title, string message)
+        {
+            MetroDialogSettings settings = new MetroDialogSettings()
+            {
+                AffirmativeButtonText = buttonText,
+                NegativeButtonText = "Cancel",
+                AnimateShow = false,
+                AnimateHide = false
+            };
+            return ((MetroWindow)MetroWindow.GetWindow(this)).ShowMessageAsync(
+                title: title,
+                message: message,
+                style: MessageDialogStyle.AffirmativeAndNegative,
+                settings: settings);
         }
     }
 }
