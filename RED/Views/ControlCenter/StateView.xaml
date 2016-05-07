@@ -8,23 +8,27 @@
     <ScrollViewer>
         <StackPanel Margin="0 0 2 0">
             <TextBlock Text="System Status" Margin="0 0 0 5" Height="30" VerticalAlignment="Center" />
-
-            <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5">
-                <TextBlock Text="Control Mode:" Width="100" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
-                <TextBlock Text="{Binding CurrentControlMode}" FontWeight="Bold" VerticalAlignment="Center" />
-            </DockPanel>
-            <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5">
-                <TextBlock Text="Rover:" Width="100" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
-                <TextBlock Text="{Binding NetworkConnectionStatus}" FontWeight="Bold" VerticalAlignment="Center" />
-            </DockPanel>
-            <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5">
-                <TextBlock Text="Controller:" Width="100" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
-                <TextBlock Text="{Binding ControllerConnectionStatus}" FontWeight="Bold" VerticalAlignment="Center" />
-            </DockPanel>
-            <DockPanel LastChildFill="True" VerticalAlignment="Top" Margin="0 0 0 5">
-                <TextBlock Text="RED Version:" Width="100" DockPanel.Dock="Left" Margin="0 0 5 0" VerticalAlignment="Center" />
-                <TextBlock Text="{Binding Version}" FontWeight="Bold" VerticalAlignment="Center" />
-            </DockPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.Column="0">Control Mode:</Label>
+                <Label Grid.Row="0" Grid.Column="1" FontWeight="Bold" x:Name="CurrentControlMode" />
+                <Label Grid.Row="1" Grid.Column="0">Rover:</Label>
+                <Label Grid.Row="1" Grid.Column="1" FontWeight="Bold" x:Name="NetworkConnectionStatus" />
+                <Label Grid.Row="2" Grid.Column="0">Controller:</Label>
+                <Label Grid.Row="2" Grid.Column="1" FontWeight="Bold" x:Name="ControllerConnectionStatus" />
+                <Label Grid.Row="3" Grid.Column="0">RED Version:</Label>
+                <Label Grid.Row="3" Grid.Column="1" FontWeight="Bold" x:Name="Version" />
+            </Grid>
             <Button x:Name="ResubscribeAll">Resubscribe All</Button>
         </StackPanel>
     </ScrollViewer>

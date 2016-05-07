@@ -27,7 +27,7 @@
             set
             {
                 _model._currentControlMode = value;
-                NotifyOfPropertyChange(()=> CurrentControlMode);
+                NotifyOfPropertyChange(() => CurrentControlMode);
             }
         }
         public bool NetworkHasConnection
@@ -47,7 +47,7 @@
         {
             get
             {
-                return !NetworkHasConnection ? "Disconnected" : "Connected";
+                return NetworkHasConnection ? "Connected" : "Disconnected";
             }
         }
         public bool ControllerIsConnected
@@ -67,7 +67,7 @@
         {
             get
             {
-                return !ControllerIsConnected ? "Disconnected" : "Connected";
+                return ControllerIsConnected ? "Connected" : "Disconnected";
             }
         }
 
@@ -80,11 +80,6 @@
         public void ResubscribeAll()
         {
             _controlCenter.SubscriptionManager.ResubscribeAll();
-        }
-
-        protected T ParseEnum<T>(string name)
-        {
-            return (T)Enum.Parse(typeof(T), name, true);
         }
     }
 }
