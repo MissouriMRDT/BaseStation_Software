@@ -77,10 +77,14 @@
             CurrentControlMode = "";
         }
 
+        public void ResubscribeAll()
+        {
+            _controlCenter.SubscriptionManager.ResubscribeAll();
+        }
+
         protected T ParseEnum<T>(string name)
         {
             return (T)Enum.Parse(typeof(T), name, true);
         }
-
     }
 }
