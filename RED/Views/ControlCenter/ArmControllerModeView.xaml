@@ -62,17 +62,17 @@
                 <ColumnDefinition Width="3*" />
             </Grid.ColumnDefinitions>
             <Label Grid.Row="0" Grid.Column="0">J1</Label>
-            <TextBox Grid.Row="0" Grid.Column="1" x:Name="AngleJ1" />
+            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding AngleJ1, StringFormat=0.##}" />
             <Label Grid.Row="0" Grid.Column="2">J2</Label>
-            <TextBox Grid.Row="0" Grid.Column="3" x:Name="AngleJ2" />
+            <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding AngleJ2, StringFormat=0.##}" />
             <Label Grid.Row="1" Grid.Column="0">J3</Label>
-            <TextBox Grid.Row="1" Grid.Column="1" x:Name="AngleJ3" />
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding AngleJ3, StringFormat=0.##}" />
             <Label Grid.Row="1" Grid.Column="2">J4</Label>
-            <TextBox Grid.Row="1" Grid.Column="3" x:Name="AngleJ4" />
+            <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding AngleJ4, StringFormat=0.##}" />
             <Label Grid.Row="2" Grid.Column="0">J5</Label>
-            <TextBox Grid.Row="2" Grid.Column="1" x:Name="AngleJ5" />
+            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding AngleJ5, StringFormat=0.##}" />
             <Label Grid.Row="2" Grid.Column="2">J6</Label>
-            <TextBox Grid.Row="2" Grid.Column="3" x:Name="AngleJ6" />
+            <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding AngleJ6, StringFormat=0.##}" />
         </Grid>
         <UniformGrid Rows="1">
             <Button x:Name="GetPosition">Get Position</Button>
