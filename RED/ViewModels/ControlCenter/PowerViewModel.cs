@@ -340,5 +340,14 @@ namespace RED.ViewModels.ControlCenter
         {
             _cc.DataRouter.Send(_cc.MetadataManager.GetId("BMSStop"), new byte[0]);
         }
+
+        public void EnableBus(byte index)
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("PowerBusEnable"), index);
+        }
+        public void DisableBus(byte index)
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("PowerBusDisable"), index);
+        }
     }
 }

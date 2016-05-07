@@ -69,5 +69,49 @@ namespace RED.Views.ControlCenter
                 ((PowerViewModel)DataContext).EStopRover();
             }
         }
+
+        private async void EnableButton_Click(object sender, RoutedEventArgs e)
+        {
+            byte busIndex = Byte.Parse((string)((Button)sender).Tag);
+            MetroDialogSettings settings = new MetroDialogSettings()
+            {
+                AffirmativeButtonText = "Enable",
+                NegativeButtonText = "Cancel",
+                AnimateShow = false,
+                AnimateHide = false
+            };
+            var result = await ((MetroWindow)MetroWindow.GetWindow(this)).ShowMessageAsync(
+                title: "Power Bus Enable",
+                message: "This will command the Powerboard to enable Bus #" + busIndex.ToString() + ".",
+                style: MessageDialogStyle.AffirmativeAndNegative,
+                settings: settings);
+
+            if (result == MessageDialogResult.Affirmative)
+            {
+                ((PowerViewModel)DataContext).EnableBus(busIndex);
+            }
+        }
+
+        private async void DisableButton_Click(object sender, RoutedEventArgs e)
+        {
+            byte busIndex = Byte.Parse((string)((Button)sender).Tag);
+            MetroDialogSettings settings = new MetroDialogSettings()
+            {
+                AffirmativeButtonText = "Disable",
+                NegativeButtonText = "Cancel",
+                AnimateShow = false,
+                AnimateHide = false
+            };
+            var result = await ((MetroWindow)MetroWindow.GetWindow(this)).ShowMessageAsync(
+                title: "Power Bus Disable",
+                message: "This will command the Powerboard to disable Bus #" + busIndex.ToString() + ". If this bus powers communications equipment, communications will be interrupted.",
+                style: MessageDialogStyle.AffirmativeAndNegative,
+                settings: settings);
+
+            if (result == MessageDialogResult.Affirmative)
+            {
+                ((PowerViewModel)DataContext).DisableBus(busIndex);
+            }
+        }
     }
 }
