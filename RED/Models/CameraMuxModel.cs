@@ -8,6 +8,6 @@ namespace RED.Models
 {
     public class CameraMuxModel
     {
-        internal uint MuxIndex;
+        internal byte MuxIndex;
     }
 }

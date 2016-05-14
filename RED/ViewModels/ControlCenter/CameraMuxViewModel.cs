@@ -14,7 +14,7 @@ namespace RED.ViewModels.ControlCenter
         private ControlCenterViewModel _cc;
         private CameraMuxModel _model;
 
-        public uint MuxIndex
+        public byte MuxIndex
         {
             get
             {
