@@ -10,15 +10,18 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Label Grid.Row="0" Grid.Column="0">CCD Pixel Count</Label>
-            <TextBox Grid.Row="0" Grid.Column="1" x:Name="CCDPixelCount" />
-            <Label Grid.Row="1" Grid.Column="0">CCD File Path</Label>
-            <TextBox Grid.Row="1" Grid.Column="1" x:Name="CCDFilePath" />
+            <Label Grid.Row="0" Grid.Column="0">CCD IP Address</Label>
+            <TextBox Grid.Row="0" Grid.Column="1" x:Name="CCDIPAddress" />
+            <Label Grid.Row="1" Grid.Column="0">CCD Port Number</Label>
+            <TextBox Grid.Row="1" Grid.Column="1" x:Name="CCDPortNumber" />
+            <Label Grid.Row="2" Grid.Column="0">CCD File Path</Label>
+            <TextBox Grid.Row="2" Grid.Column="1" x:Name="CCDFilePath" />
         </Grid>
     </StackPanel>
 </UserControl>

@@ -168,6 +168,30 @@
 
             }
         }
+        public PowerViewModel Power
+        {
+            get
+            {
+                return _model._power;
+            }
+            set
+            {
+                _model._power = value;
+                NotifyOfPropertyChange(() => Power);
+            }
+        }
+        public CameraMuxViewModel CameraMux
+        {
+            get
+            {
+                return _model._cameraMux;
+            }
+            set
+            {
+                _model._cameraMux = value;
+                NotifyOfPropertyChange(() => CameraMux);
+            }
+        }
 
         public DriveControllerModeViewModel DriveControllerMode
         {
@@ -190,6 +214,13 @@
                 return (GimbalControllerModeViewModel)IManager.Input.ControllerModes[2];
             }
         }
+        public GimbalControllerModeViewModel Gimbal2ControllerMode
+        {
+            get
+            {
+                return (GimbalControllerModeViewModel)IManager.Input.ControllerModes[3];
+            }
+        }
 
         public ControlCenterViewModel()
         {
@@ -209,6 +240,8 @@
             Sensor = new SensorViewModel(this);
             SensorCombined = new SensorCombinedViewModel(this);
             DropBays = new DropBaysViewModel(this);
+            Power = new PowerViewModel(this);
+            CameraMux = new CameraMuxViewModel(this);
 
             SettingsManager = new SettingsManagerViewModel(this);
 

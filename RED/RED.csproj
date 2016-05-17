@@ -120,11 +120,13 @@
     <Compile Include="Interfaces\INetworkTransportProtocol.cs" />
     <Compile Include="Interfaces\ISequenceNumberProvider.cs" />
     <Compile Include="Models\ArmControllerModeModel.cs" />
+    <Compile Include="Models\CameraMuxModel.cs" />
     <Compile Include="Models\GimbalModel.cs" />
     <Compile Include="Models\InputManagerModel.cs" />
     <Compile Include="Models\DataRouterModel.cs" />
     <Compile Include="Models\DriveControllerModeModel.cs" />
     <Compile Include="Models\NetworkManagerModel.cs" />
+    <Compile Include="Models\PowerModel.cs" />
     <Compile Include="Models\ScienceModel.cs" />
     <Compile Include="Models\GPSModel.cs" />
     <Compile Include="Models\SensorModel.cs" />
@@ -134,6 +136,7 @@
     <Compile Include="Settings.cs" />
     <Compile Include="Models\XboxControllerInputModel.cs" />
     <Compile Include="ViewModels\ControlCenter\ArmControllerModeViewModel.cs" />
+    <Compile Include="ViewModels\ControlCenter\CameraMuxViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\GimbalControllerModeViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\DropBaysViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\NetworkManagerViewModel.cs" />
@@ -144,6 +147,7 @@
     <Compile Include="ViewModels\ControlCenter\DriveControllerModeViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\GPSViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\KeyboardInputViewModel.cs" />
+    <Compile Include="ViewModels\ControlCenter\PowerViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\XboxControllerInputViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\MetadataManager.cs" />
     <Compile Include="ViewModels\ControlCenter\RoverProtocol.cs" />
@@ -166,6 +170,9 @@
     <Compile Include="Views\ControlCenter\ArmControllerModeView.xaml.cs">
       <DependentUpon>ArmControllerModeView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ControlCenter\CameraMuxView.xaml.cs">
+      <DependentUpon>CameraMuxView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ControlCenter\DriveControllerModeView.xaml.cs">
       <DependentUpon>DriveControllerModeView.xaml</DependentUpon>
     </Compile>
@@ -174,6 +181,9 @@
     </Compile>
     <Compile Include="Views\ControlCenter\DropBaysView.xaml.cs">
       <DependentUpon>DropBaysView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ControlCenter\PowerView.xaml.cs">
+      <DependentUpon>PowerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ControlCenter\ScienceView.xaml.cs">
       <DependentUpon>ScienceView.xaml</DependentUpon>
@@ -204,6 +214,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ControlCenter\ArmControllerModeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ControlCenter\CameraMuxView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -244,6 +258,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>-->
+    <Page Include="Views\ControlCenter\PowerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ControlCenter\ScienceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -49,18 +49,6 @@ namespace RED.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("3684")]
-        public short ScienceCCDPixelCount {
-            get {
-                return ((short)(this["ScienceCCDPixelCount"]));
-            }
-            set {
-                this["ScienceCCDPixelCount"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string ScienceCCDFilePath {
             get {
@@ -128,6 +116,30 @@ namespace RED.Properties {
             }
             set {
                 this["GPSBaseStationLocationLongitude"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("11001")]
+        public ushort ScienceCCDPortNumber {
+            get {
+                return ((ushort)(this["ScienceCCDPortNumber"]));
+            }
+            set {
+                this["ScienceCCDPortNumber"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("192.168.1.135")]
+        public string ScienceCCDIPAddress {
+            get {
+                return ((string)(this["ScienceCCDIPAddress"]));
+            }
+            set {
+                this["ScienceCCDIPAddress"] = value;
             }
         }
     }

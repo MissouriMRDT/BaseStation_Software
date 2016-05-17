@@ -64,6 +64,12 @@ namespace RED.ViewModels.ControlCenter
             foreach (var sub in Subscriptions.Where(x => x.Value.HostIP == ip))
                 Resubscribe(sub.Key);
         }
+
+        public void ResubscribeAll()
+        {
+            foreach (var sub in Subscriptions)
+                Resubscribe(sub.Key);
+        }
     }
 
     public enum SubscriptionStatus

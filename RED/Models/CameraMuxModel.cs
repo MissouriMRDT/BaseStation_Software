@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace RED.Models
 {
-    public class GimbalModel
+    public class CameraMuxModel
     {
-        internal int gimbalIndex;
-        internal int speedLimit;
+        internal byte MuxIndex;
     }
 }

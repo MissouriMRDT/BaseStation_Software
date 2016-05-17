@@ -3,6 +3,7 @@ using RED.ViewModels.ControlCenter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,17 +14,30 @@ namespace RED.ViewModels.Settings
         private SettingsManagerViewModel _settings;
         private ScienceViewModel _vm;
 
-        public short CCDPixelCount
+        public IPAddress CCDIPAddress
         {
             get
             {
-                return _vm.CCDPixelCount;
+                return _vm.CCDIPAddress;
             }
             set
             {
-                _vm.CCDPixelCount = value;
-                _settings.CurrentSettings.ScienceCCDPixelCount = value;
-                NotifyOfPropertyChange(() => CCDPixelCount);
+                _vm.CCDIPAddress = value;
+                _settings.CurrentSettings.ScienceCCDIPAddress = value.ToString();
+                NotifyOfPropertyChange(() => CCDIPAddress);
+            }
+        }
+        public ushort CCDPortNumber
+        {
+            get
+            {
+                return _vm.CCDPortNumber;
+            }
+            set
+            {
+                _vm.CCDPortNumber = value;
+                _settings.CurrentSettings.ScienceCCDPortNumber = value;
+                NotifyOfPropertyChange(() => CCDPortNumber);
             }
         }
         public string CCDFilePath
@@ -45,7 +59,9 @@ namespace RED.ViewModels.Settings
             _settings = settings;
             _vm = server;
 
-            _vm.CCDPixelCount = _settings.CurrentSettings.ScienceCCDPixelCount;
+            IPAddress ip;
+            _vm.CCDIPAddress = IPAddress.TryParse(_settings.CurrentSettings.ScienceCCDIPAddress, out ip) ? ip : IPAddress.None;
+            _vm.CCDPortNumber = _settings.CurrentSettings.ScienceCCDPortNumber;
             _vm.CCDFilePath = _settings.CurrentSettings.ScienceCCDFilePath;
         }
     }

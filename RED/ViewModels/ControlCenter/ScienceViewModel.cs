@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,56 +17,125 @@ namespace RED.ViewModels.ControlCenter
         private ScienceModel _model;
         private ControlCenterViewModel _cc;
 
-        private short[] CCDPixelBuffer;
-        private short CCDPixelsRecieved;
+        public float Temperature1Value
+        {
+            get
+            {
+                return _model.Temperature1Value;
+            }
+            set
+            {
+                _model.Temperature1Value = value;
+                NotifyOfPropertyChange(() => Temperature1Value);
+            }
+        }
+        public float Temperature2Value
+        {
+            get
+            {
+                return _model.Temperature2Value;
+            }
+            set
+            {
+                _model.Temperature2Value = value;
+                NotifyOfPropertyChange(() => Temperature2Value);
+            }
+        }
+        public float Temperature3Value
+        {
+            get
+            {
+                return _model.Temperature3Value;
+            }
+            set
+            {
+                _model.Temperature3Value = value;
+                NotifyOfPropertyChange(() => Temperature3Value);
+            }
+        }
+        public float Temperature4Value
+        {
+            get
+            {
+                return _model.Temperature4Value;
+            }
+            set
+            {
+                _model.Temperature4Value = value;
+                NotifyOfPropertyChange(() => Temperature4Value);
+            }
+        }
+        public float Moisture1Value
+        {
+            get
+            {
+                return _model.Moisture1Value;
+            }
+            set
+            {
+                _model.Moisture1Value = value;
+                NotifyOfPropertyChange(() => Moisture1Value);
+            }
+        }
+        public float Moisture2Value
+        {
+            get
+            {
+                return _model.Moisture2Value;
+            }
+            set
+            {
+                _model.Moisture2Value = value;
+                NotifyOfPropertyChange(() => Moisture2Value);
+            }
+        }
+        public float Moisture3Value
+        {
+            get
+            {
+                return _model.Moisture3Value;
+            }
+            set
+            {
+                _model.Moisture3Value = value;
+                NotifyOfPropertyChange(() => Moisture3Value);
+            }
+        }
+        public float Moisture4Value
+        {
+            get
+            {
+                return _model.Moisture4Value;
+            }
+            set
+            {
+                _model.Moisture4Value = value;
+                NotifyOfPropertyChange(() => Moisture4Value);
+            }
+        }
 
-        public float Ph
+        public System.Net.IPAddress CCDIPAddress
         {
             get
             {
-                return _model.Ph;
+                return _model.CCDIPAddress;
             }
             set
             {
-                _model.Ph = value;
-                NotifyOfPropertyChange(() => Ph);
+                _model.CCDIPAddress = value;
+                NotifyOfPropertyChange(() => CCDIPAddress);
             }
         }
-        public short Moisture
+        public ushort CCDPortNumber
         {
             get
             {
-                return _model.Moisture;
+                return _model.CCDPortNumber;
             }
             set
             {
-                _model.Moisture = value;
-                NotifyOfPropertyChange(() => Moisture);
-            }
-        }
-
-        public short CCDPixelCount
-        {
-            get
-            {
-                return _model.CCDPixelCount;
-            }
-            set
-            {
-                _model.CCDPixelCount = value;
-                NotifyOfPropertyChange(() => CCDPixelCount);
-            }
-        }
-        public float CCDProgress
-        {
-            get
-            {
-                return _model.CCDProgress;
-            }
-            set
-            {
-                _model.CCDProgress = value;
-                NotifyOfPropertyChange(() => CCDProgress);
+                _model.CCDPortNumber = value;
+                NotifyOfPropertyChange(() => CCDPortNumber);
             }
         }
         public string CCDFilePath
@@ -80,154 +150,205 @@ namespace RED.ViewModels.ControlCenter
                 NotifyOfPropertyChange(() => CCDFilePath);
             }
         }
-        public bool CCDIsReceiving
-        {
-            get
-            {
-                return _model.CCDIsReceiving;
-            }
-            set
-            {
-                _model.CCDIsReceiving = value;
-                NotifyOfPropertyChange(() => CCDIsReceiving);
-            }
-        }
 
         public ScienceViewModel(ControlCenterViewModel cc)
         {
             _model = new ScienceModel();
             _cc = cc;
 
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Ph"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Moisture"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("CCD"));
+            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Temperature1"));
+            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Temperature2"));
+            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Temperature3"));
+            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Temperature4"));
+            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Moisture1"));
+            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Moisture2"));
+            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Moisture3"));
+            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Moisture4"));
         }
 
-        public void RequestPhData()
+        public void Temperature1On()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceRequest"), (ushort)ScienceRequestTypes.Ph);
-            _cc.Console.WriteToConsole("Science pH data requested.");
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Temp1Enable);
         }
-        public void RequestMoistureData()
+        public void Temperature1Off()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceRequest"), (byte)ScienceRequestTypes.Moisture);
-            _cc.Console.WriteToConsole("Science moisture data requested.");
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Temp1Disable);
         }
-        public void RequestCCDData()
+        public void Temperature2On()
         {
-            StartCCDReceive();
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceRequest"), (ushort)ScienceRequestTypes.CCD);
-            _cc.Console.WriteToConsole("Science CCD data requested.");
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Temp2Enable);
+        }
+        public void Temperature2Off()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Temp2Disable);
+        }
+        public void Temperature3On()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Temp3Enable);
+        }
+        public void Temperature3Off()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Temp3Disable);
+        }
+        public void Temperature4On()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Temp4Enable);
+        }
+        public void Temperature4Off()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Temp4Disable);
+        }
+        public void Moisture1On()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Moisture1Enable);
+        }
+        public void Moisture1Off()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Moisture1Disable);
+        }
+        public void Moisture2On()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Moisture2Enable);
+        }
+        public void Moisture2Off()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Moisture2Disable);
+        }
+        public void Moisture3On()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Moisture3Enable);
+        }
+        public void Moisture3Off()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Moisture3Disable);
+        }
+        public void Moisture4On()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Moisture4Enable);
+        }
+        public void Moisture4Off()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Moisture4Disable);
+        }
+
+        public void RequestCCD()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.CCDRequest);
+            _cc.Console.WriteToConsole("CCD data requested");
+        }
+        public async void DownloadCCD()
+        {
+            _cc.Console.WriteToConsole("CCD data downloaded started.");
+            string filename = Path.Combine(CCDFilePath, "REDCCDData" + DateTime.Now.ToString("s") + ".dat");
+            using (var client = new TcpClient())
+            {
+                await client.ConnectAsync(CCDIPAddress, CCDPortNumber);
+                using (var file = File.Create(filename))
+                {
+                    await client.GetStream().CopyToAsync(file);
+                }
+            }
+            _cc.Console.WriteToConsole("CCD data downloaded into " + filename + ".");
         }
         public void RequestLaserOn()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceRequest"), (byte)ScienceRequestTypes.LaserOn);
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (byte)ScienceRequestTypes.LaserOn);
             _cc.Console.WriteToConsole("Science Laser On requested.");
         }
         public void RequestLaserOff()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceRequest"), (byte)ScienceRequestTypes.LaserOff);
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (byte)ScienceRequestTypes.LaserOff);
             _cc.Console.WriteToConsole("Science Laser Off requested.");
         }
 
-        public void ForceCCDSave()
+        public void Carousel1()
         {
-            if (CCDIsReceiving)
-                FinishCCDReceive();
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("CarouselPosition"), (byte)0);
+        }
+        public void Carousel2()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("CarouselPosition"), (byte)1);
+        }
+        public void Carousel3()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("CarouselPosition"), (byte)2);
+        }
+        public void Carousel4()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("CarouselPosition"), (byte)3);
+        }
+        public void Carousel5()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("CarouselPosition"), (byte)4);
+        }
+        public void Carousel6()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("CarouselPosition"), (byte)5);
+        }
+
+        public void FunnelOpen()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (byte)ScienceRequestTypes.FunnelOpen);
+        }
+        public void FunnelClose()
+        {
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (byte)ScienceRequestTypes.FunnelClose);
         }
 
         public void ReceiveFromRouter(ushort dataId, byte[] data)
         {
             switch (_cc.MetadataManager.GetTelemetry(dataId).Name)
             {
-                case "Ph":
-                    Ph = BitConverter.ToSingle(data, 0);
+                case "Temperature1":
+                    Temperature1Value = BitConverter.ToSingle(data, 0);
                     break;
-                case "Moisture":
-                    Moisture = BitConverter.ToInt16(data, 0);
+                case "Temperature2":
+                    Temperature2Value = BitConverter.ToSingle(data, 0);
                     break;
-                case "CCD":
-                    if (!CCDIsReceiving)
-                    {
-                        _cc.Console.WriteToConsole("Unexpected CCD data received. Packet number " + data[0].ToString());
-                        break;
-                    }
-
-                    byte packetNum = data[0];
-                    int index = packetNum * 12;
-                    for (int i = 1; i < data.Length; i += 2)
-                    {
-                        short pixel = BitConverter.ToInt16(data, i);
-                        CCDPixelBuffer[index++] = pixel;
-                        CCDPixelsRecieved++;
-                    }
-
-                    CCDProgress = (float)CCDPixelsRecieved / CCDPixelCount;
-
-                    if (CCDPixelsRecieved == CCDPixelCount)
-                        FinishCCDReceive();
-
+                case "Temperature3":
+                    Temperature3Value = BitConverter.ToSingle(data, 0);
                     break;
-            }
-        }
-
-        private void StartCCDReceive()
-        {
-            CCDIsReceiving = true;
-            CCDProgress = 0;
-            CCDPixelBuffer = new short[CCDPixelCount];
-            for (int i = 0; i < CCDPixelBuffer.Length; i++)
-                CCDPixelBuffer[i] = -1;
-        }
-
-        private void FinishCCDReceive()
-        {
-            CCDIsReceiving = false;
-            CCDProgress = 1.0f;
-
-            //Save CSV File
-            if (Path.GetFileName(CCDFilePath) == "") //new file
-            {
-                StringBuilder csv = new StringBuilder();
-                for (var i = 0; i < CCDPixelBuffer.Length; i++)
-                {
-                    if (i > 0) csv.Append(", ");
-                    csv.Append(i);
-                }
-                for (var i = 0; i < CCDPixelBuffer.Length; i++)
-                {
-                    if (i > 0) csv.Append(", ");
-                    if (CCDPixelBuffer[i] >= 0) csv.Append(i);
-                }
-
-                string filename = "REDScienceData" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".csv";
-                string path = Path.Combine(CCDFilePath, filename);
-                File.WriteAllText(path, csv.ToString());
-                CCDFilePath = path;
-                _cc.Console.WriteToConsole("CCD data saved to file " + path + ".");
-            }
-            else
-            {
-                StringBuilder csv = new StringBuilder();
-                for (var i = 0; i < CCDPixelBuffer.Length; i++)
-                {
-                    if (i > 0) csv.Append(", ");
-                    if (CCDPixelBuffer[i] >= 0) csv.Append(i);
-                }
-
-                string path = CCDFilePath;
-                File.AppendAllText(path, csv.ToString());
-                _cc.Console.WriteToConsole("CCD data appended to file " + path + ".");
+                case "Temperature4":
+                    Temperature4Value = BitConverter.ToSingle(data, 0);
+                    break;
+                case "Moisture1":
+                    Moisture1Value = BitConverter.ToSingle(data, 0);
+                    break;
+                case "Moisture2":
+                    Moisture2Value = BitConverter.ToSingle(data, 0);
+                    break;
+                case "Moisture3":
+                    Moisture3Value = BitConverter.ToSingle(data, 0);
+                    break;
+                case "Moisture4":
+                    Moisture4Value = BitConverter.ToSingle(data, 0);
+                    break;
             }
         }
 
         public enum ScienceRequestTypes : ushort
         {
-            Ph = 1,
-            Moisture = 2,
-            CCD = 3,
-            LaserOn = 4,
-            LaserOff = 5
+            Temp1Enable = 1,
+            Temp1Disable = 2,
+            Temp2Enable = 3,
+            Temp2Disable = 4,
+            Temp3Enable = 5,
+            Temp3Disable = 6,
+            Temp4Enable = 7,
+            Temp4Disable = 8,
+            Moisture1Enable = 9,
+            Moisture1Disable = 10,
+            Moisture2Enable = 11,
+            Moisture2Disable = 12,
+            Moisture3Enable = 13,
+            Moisture3Disable = 14,
+            Moisture4Enable = 15,
+            Moisture4Disable = 16,
+            CCDRequest = 17,
+            LaserOn = 18,
+            LaserOff = 19,
+            FunnelOpen = 20,
+            FunnelClose = 21
         }
     }
 }
