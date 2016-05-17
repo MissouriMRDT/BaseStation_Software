@@ -17,7 +17,7 @@ namespace RED.ViewModels.ControlCenter
         private const byte ArmEnableCommand = 0x01;
 
         private const short motorRangeFactor = 1000;
-        private readonly EndEffectorModes[] AvailibleEndEffectorModes = { EndEffectorModes.Gripper, EndEffectorModes.Drill };
+        private readonly EndEffectorModes[] AvailibleEndEffectorModes = { EndEffectorModes.Gripper, EndEffectorModes.Drill, EndEffectorModes.RegulatorDetach };
 
         private readonly ArmControllerModeModel _model;
         private readonly ControlCenterViewModel _controlCenter;
@@ -206,28 +206,28 @@ namespace RED.ViewModels.ControlCenter
                         _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(0));
                     break;
                 case EndEffectorModes.Drill:
-                    int drillCmd; //, actCmd;
                     if (InputVM.DrillClockwise)
-                        drillCmd = (int)DrillCommands.Forward;
+                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Drill"), (short)DrillCommands.Forward);
                     else if (InputVM.DrillCounterClockwise)
-                        drillCmd = (int)DrillCommands.Reverse;
+                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Drill"), (short)DrillCommands.Reverse);
                     else
-                        drillCmd = (int)DrillCommands.Stop;
-                    /* CURRENTLY NOT IMPLEMENTED
-                    if (InputVM.RightTrigger > 0)
-                        actCmd = (int)DrillCommands.Forward;
-                    else if (InputVM.LeftTrigger > 0)
-                        actCmd = (int)DrillCommands.Reverse;
+                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Drill"), (short)DrillCommands.Stop);
+                    break;
+
+                case EndEffectorModes.RegulatorDetach:
+                    if (InputVM.GripperClose > 0)
+                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(InputVM.GripperClose * motorRangeFactor));
+                    else if (InputVM.GripperOpen > 0)
+                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(-InputVM.GripperOpen * motorRangeFactor));
                     else
-                        actCmd = (int)DrillCommands.Stop;
-                    */
+                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(0));
 
-                    byte drillActCombinedCmd8Bit = (byte)(/*actCmd << 4 | */drillCmd);
-                    var drillpacket = new byte[4] { drillActCombinedCmd8Bit, drillActCombinedCmd8Bit, drillActCombinedCmd8Bit, drillActCombinedCmd8Bit };
-                    //Int16 drillActCombinedCmd16Bit = (Int16)(drillActCombinedCmd8Bit << 8 | drillActCombinedCmd8Bit);
-                    //var drillpacket = new Int16[2] { drillActCombinedCmd16Bit, drillActCombinedCmd16Bit };
-
-                    _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("DrillAndActuator"), drillpacket);
+                    if (InputVM.DrillClockwise)
+                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("RegulatorDetach"), (short)DrillCommands.Forward);
+                    else if (InputVM.DrillCounterClockwise)
+                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("RegulatorDetach"), (short)DrillCommands.Reverse);
+                    else
+                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("RegulatorDetach"), (short)DrillCommands.Stop);
                     break;
             }
         }
@@ -322,7 +322,8 @@ namespace RED.ViewModels.ControlCenter
     {
         None = 0,
         Gripper = 1,
-        Drill = 2
+        Drill = 2,
+        RegulatorDetach = 3
     }
 
     public enum DrillCommands : short
