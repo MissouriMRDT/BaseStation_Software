@@ -203,6 +203,13 @@
                 return (GimbalControllerModeViewModel)IManager.Input.ControllerModes[2];
             }
         }
+        public GimbalControllerModeViewModel Gimbal2ControllerMode
+        {
+            get
+            {
+                return (GimbalControllerModeViewModel)IManager.Input.ControllerModes[3];
+            }
+        }
 
         public ControlCenterViewModel()
         {

@@ -8,6 +8,7 @@ namespace RED.Models
 {
     public class GimbalModel
     {
+        internal int gimbalIndex;
         internal int speedLimit;
     }
 }

@@ -14,9 +14,25 @@ namespace RED.ViewModels.ControlCenter
         private ControlCenterViewModel _cc;
         private GimbalModel _model;
 
+        private readonly string[] CommandDataId = { "Camera1Command", "Camera2Command" };
+        private readonly string[] PTZDataId = { "PTZ1Speed", "PTZ2Speed" };
+        private readonly string[] MenuDataId = { "Camera1Menu", "Camera2Menu" };
+
         public string Name { get; set; }
         public IInputDevice InputVM { get; set; }
 
+        public int GimbalIndex
+        {
+            get
+            {
+                return _model.gimbalIndex;
+            }
+            set
+            {
+                _model.gimbalIndex = value;
+                NotifyOfPropertyChange(() => GimbalIndex);
+            }
+        }
         public int SpeedLimit
         {
             get
@@ -30,13 +46,14 @@ namespace RED.ViewModels.ControlCenter
             }
         }
 
-        public GimbalControllerModeViewModel(IInputDevice inputVM, ControlCenterViewModel cc)
+        public GimbalControllerModeViewModel(IInputDevice inputVM, ControlCenterViewModel cc, int gimbalIndex)
         {
             _cc = cc;
             _model = new GimbalModel();
             InputVM = inputVM;
-            Name = "Gimbal";
+            Name = "Gimbal " + (gimbalIndex + 1).ToString();
             SpeedLimit = 1000;
+            GimbalIndex = gimbalIndex;
         }
 
         public void EnterMode()
@@ -50,14 +67,14 @@ namespace RED.ViewModels.ControlCenter
 
             pan = (short)(InputVM.GimbalPan * SpeedLimit);
             tilt = (short)(InputVM.GimbalTilt * SpeedLimit);
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("PTZ1Speed"), ((int)tilt << 16) | (((int)pan) & 0xFFFF));
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId(PTZDataId[GimbalIndex]), ((int)tilt << 16) | (((int)pan) & 0xFFFF));
 
             if (InputVM.GimbalZoomIn)
-                _cc.DataRouter.Send(_cc.MetadataManager.GetId("Camera1Command"), (byte)GimbalZoomCommands.ZoomIn);
+                _cc.DataRouter.Send(_cc.MetadataManager.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.ZoomIn);
             else if (InputVM.GimbalZoomOut)
-                _cc.DataRouter.Send(_cc.MetadataManager.GetId("Camera1Command"), (byte)GimbalZoomCommands.ZoomOut);
+                _cc.DataRouter.Send(_cc.MetadataManager.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.ZoomOut);
             else
-                _cc.DataRouter.Send(_cc.MetadataManager.GetId("Camera1Command"), (byte)GimbalZoomCommands.Stop);
+                _cc.DataRouter.Send(_cc.MetadataManager.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.Stop);
 
         }
 
@@ -68,44 +85,44 @@ namespace RED.ViewModels.ControlCenter
 
         public void ZoomFocusStop()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("Camera1Command"), (byte)GimbalZoomCommands.Stop);
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.Stop);
         }
         public void ZoomIn()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("Camera1Command"), (byte)GimbalZoomCommands.ZoomIn);
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.ZoomIn);
         }
         public void ZoomOut()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("Camera1Command"), (byte)GimbalZoomCommands.ZoomOut);
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.ZoomOut);
         }
         public void FocusNear()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("Camera1Command"), (byte)GimbalZoomCommands.FocusNear);
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.FocusNear);
         }
         public void FocusFar()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("Camera1Command"), (byte)GimbalZoomCommands.FocusFar);
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.FocusFar);
         }
 
         public void MenuCenter()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("Camera1Menu"), (byte)GimbalMenuCommands.Menu);
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.Menu);
         }
         public void MenuUp()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("Camera1Menu"), (byte)GimbalMenuCommands.MenuUp);
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.MenuUp);
         }
         public void MenuDown()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("Camera1Menu"), (byte)GimbalMenuCommands.MenuDown);
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.MenuDown);
         }
         public void MenuLeft()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("Camera1Menu"), (byte)GimbalMenuCommands.MenuLeft);
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.MenuLeft);
         }
         public void MenuRight()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("Camera1Menu"), (byte)GimbalMenuCommands.MenuRight);
+            _cc.DataRouter.Send(_cc.MetadataManager.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.MenuRight);
         }
 
         private enum GimbalZoomCommands : byte
