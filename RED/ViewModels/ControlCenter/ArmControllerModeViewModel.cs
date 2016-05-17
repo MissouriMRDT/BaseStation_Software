@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace RED.ViewModels.ControlCenter
 {
-    public class ArmControllerModeViewModel : PropertyChangedBase, IControllerMode
+    public class ArmControllerModeViewModel : PropertyChangedBase, IControllerMode, ISubscribe
     {
         private const byte ArmDisableCommand = 0x00;
         private const byte ArmEnableCommand = 0x01;
@@ -41,6 +41,79 @@ namespace RED.ViewModels.ControlCenter
             }
         }
 
+        public float AngleJ1
+        {
+            get
+            {
+                return _model.AngleJ1;
+            }
+            set
+            {
+                _model.AngleJ1 = value;
+                NotifyOfPropertyChange(() => AngleJ1);
+            }
+        }
+        public float AngleJ2
+        {
+            get
+            {
+                return _model.AngleJ2;
+            }
+            set
+            {
+                _model.AngleJ2 = value;
+                NotifyOfPropertyChange(() => AngleJ2);
+            }
+        }
+        public float AngleJ3
+        {
+            get
+            {
+                return _model.AngleJ3;
+            }
+            set
+            {
+                _model.AngleJ3 = value;
+                NotifyOfPropertyChange(() => AngleJ3);
+            }
+        }
+        public float AngleJ4
+        {
+            get
+            {
+                return _model.AngleJ4;
+            }
+            set
+            {
+                _model.AngleJ4 = value;
+                NotifyOfPropertyChange(() => AngleJ4);
+            }
+        }
+        public float AngleJ5
+        {
+            get
+            {
+                return _model.AngleJ5;
+            }
+            set
+            {
+                _model.AngleJ5 = value;
+                NotifyOfPropertyChange(() => AngleJ5);
+            }
+        }
+        public float AngleJ6
+        {
+            get
+            {
+                return _model.AngleJ6;
+            }
+            set
+            {
+                _model.AngleJ6 = value;
+                NotifyOfPropertyChange(() => AngleJ6);
+            }
+        }
+
         public ArmControllerModeViewModel(IInputDevice inputVM, ControlCenterViewModel cc)
         {
             _model = new ArmControllerModeModel();
@@ -48,6 +121,23 @@ namespace RED.ViewModels.ControlCenter
             _controlCenter = cc;
             Name = "Arm";
             CurrentEndEffectorMode = 0;
+
+            _controlCenter.DataRouter.Subscribe(this, _controlCenter.MetadataManager.GetId("ArmCurrentPosition"));
+        }
+
+        public void ReceiveFromRouter(ushort dataId, byte[] data)
+        {
+            switch (_controlCenter.MetadataManager.GetTelemetry(dataId).Name)
+            {
+                case "ArmCurrentPosition":
+                    AngleJ1 = BitConverter.ToSingle(data, 0);
+                    AngleJ2 = BitConverter.ToSingle(data, 4);
+                    AngleJ3 = BitConverter.ToSingle(data, 8);
+                    AngleJ4 = BitConverter.ToSingle(data, 12);
+                    AngleJ5 = BitConverter.ToSingle(data, 16);
+                    AngleJ6 = BitConverter.ToSingle(data, 20);
+                    break;
+            }
         }
 
         public void EnterMode()
@@ -213,6 +303,18 @@ namespace RED.ViewModels.ControlCenter
         public void DisableEndeff()
         {
             _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableEndeff"), ArmDisableCommand);
+        }
+
+        public void GetPosition()
+        {
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmGetPosition"), new byte[0]);
+        }
+        public void SetPosition()
+        {
+            float[] angles = { AngleJ1, AngleJ2, AngleJ3, AngleJ4, AngleJ5, AngleJ6 };
+            byte[] data = new byte[angles.Length * sizeof(float)];
+            Buffer.BlockCopy(angles, 0, data, 0, data.Length);
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmAbsoluteAngle"), data);
         }
     }
 
