@@ -116,29 +116,14 @@ namespace RED.ViewModels.ControlCenter
                         _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(0));
                     break;
                 case EndEffectorModes.Drill:
-                    int drillCmd; //, actCmd;
                     if (InputVM.DrillClockwise)
-                        drillCmd = (int)DrillCommands.Forward;
+                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Drill"), (short)DrillCommands.Forward);
                     else if (InputVM.DrillCounterClockwise)
-                        drillCmd = (int)DrillCommands.Reverse;
+                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Drill"), (short)DrillCommands.Reverse);
                     else
-                        drillCmd = (int)DrillCommands.Stop;
-                    /* CURRENTLY NOT IMPLEMENTED
-                    if (InputVM.RightTrigger > 0)
-                        actCmd = (int)DrillCommands.Forward;
-                    else if (InputVM.LeftTrigger > 0)
-                        actCmd = (int)DrillCommands.Reverse;
-                    else
-                        actCmd = (int)DrillCommands.Stop;
-                    */
-
-                    byte drillActCombinedCmd8Bit = (byte)(/*actCmd << 4 | */drillCmd);
-                    var drillpacket = new byte[4] { drillActCombinedCmd8Bit, drillActCombinedCmd8Bit, drillActCombinedCmd8Bit, drillActCombinedCmd8Bit };
-                    //Int16 drillActCombinedCmd16Bit = (Int16)(drillActCombinedCmd8Bit << 8 | drillActCombinedCmd8Bit);
-                    //var drillpacket = new Int16[2] { drillActCombinedCmd16Bit, drillActCombinedCmd16Bit };
-
-                    _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("DrillAndActuator"), drillpacket);
+                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Drill"), (short)DrillCommands.Stop);
                     break;
+
                 case EndEffectorModes.RegulatorDetach:
                     if (InputVM.GripperClose > 0)
                         _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(InputVM.GripperClose * motorRangeFactor));
