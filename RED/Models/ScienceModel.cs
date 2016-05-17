@@ -8,12 +8,17 @@ namespace RED.Models
 {
     internal class ScienceModel
     {
-        internal float Ph = 7.86f;
-        internal short Moisture;
+        internal float Temperature1Value;
+        internal float Temperature2Value;
+        internal float Temperature3Value;
+        internal float Temperature4Value;
+        internal float Moisture1Value;
+        internal float Moisture2Value;
+        internal float Moisture3Value;
+        internal float Moisture4Value;
 
-        internal short CCDPixelCount = 3684;
-        internal float CCDProgress = 0f;
+        internal System.Net.IPAddress CCDIPAddress;
+        internal ushort CCDPortNumber;
         internal string CCDFilePath = Environment.CurrentDirectory;
-        internal bool CCDIsReceiving = false;
     }
 }
