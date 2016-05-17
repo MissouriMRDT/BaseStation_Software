@@ -17,7 +17,7 @@ namespace RED.ViewModels.ControlCenter
         private const byte ArmEnableCommand = 0x01;
 
         private const short motorRangeFactor = 1000;
-        private readonly EndEffectorModes[] AvailibleEndEffectorModes = { EndEffectorModes.Gripper, EndEffectorModes.Drill };
+        private readonly EndEffectorModes[] AvailibleEndEffectorModes = { EndEffectorModes.Gripper, EndEffectorModes.Drill, EndEffectorModes.RegulatorDetach };
 
         private readonly ArmControllerModeModel _model;
         private readonly ControlCenterViewModel _controlCenter;
@@ -139,6 +139,21 @@ namespace RED.ViewModels.ControlCenter
 
                     _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("DrillAndActuator"), drillpacket);
                     break;
+                case EndEffectorModes.RegulatorDetach:
+                    if (InputVM.GripperClose > 0)
+                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(InputVM.GripperClose * motorRangeFactor));
+                    else if (InputVM.GripperOpen > 0)
+                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(-InputVM.GripperOpen * motorRangeFactor));
+                    else
+                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(0));
+
+                    if (InputVM.DrillClockwise)
+                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("RegulatorDetach"), (short)DrillCommands.Forward);
+                    else if (InputVM.DrillCounterClockwise)
+                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("RegulatorDetach"), (short)DrillCommands.Reverse);
+                    else
+                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("RegulatorDetach"), (short)DrillCommands.Stop);
+                    break;
             }
         }
 
@@ -220,7 +235,8 @@ namespace RED.ViewModels.ControlCenter
     {
         None = 0,
         Gripper = 1,
-        Drill = 2
+        Drill = 2,
+        RegulatorDetach = 3
     }
 
     public enum DrillCommands : short
