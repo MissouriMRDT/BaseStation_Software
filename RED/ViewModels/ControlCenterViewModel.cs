@@ -178,7 +178,18 @@
             {
                 _model._power = value;
                 NotifyOfPropertyChange(() => Power);
-
+            }
+        }
+        public CameraMuxViewModel CameraMux
+        {
+            get
+            {
+                return _model._cameraMux;
+            }
+            set
+            {
+                _model._cameraMux = value;
+                NotifyOfPropertyChange(() => CameraMux);
             }
         }
 
@@ -230,6 +241,7 @@
             SensorCombined = new SensorCombinedViewModel(this);
             DropBays = new DropBaysViewModel(this);
             Power = new PowerViewModel(this);
+            CameraMux = new CameraMuxViewModel(this);
 
             SettingsManager = new SettingsManagerViewModel(this);
 

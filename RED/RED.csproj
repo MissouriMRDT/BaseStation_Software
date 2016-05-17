@@ -120,6 +120,7 @@
     <Compile Include="Interfaces\INetworkTransportProtocol.cs" />
     <Compile Include="Interfaces\ISequenceNumberProvider.cs" />
     <Compile Include="Models\ArmControllerModeModel.cs" />
+    <Compile Include="Models\CameraMuxModel.cs" />
     <Compile Include="Models\GimbalModel.cs" />
     <Compile Include="Models\InputManagerModel.cs" />
     <Compile Include="Models\DataRouterModel.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="Settings.cs" />
     <Compile Include="Models\XboxControllerInputModel.cs" />
     <Compile Include="ViewModels\ControlCenter\ArmControllerModeViewModel.cs" />
+    <Compile Include="ViewModels\ControlCenter\CameraMuxViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\GimbalControllerModeViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\DropBaysViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\NetworkManagerViewModel.cs" />
@@ -167,6 +169,9 @@
     </Compile>
     <Compile Include="Views\ControlCenter\ArmControllerModeView.xaml.cs">
       <DependentUpon>ArmControllerModeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ControlCenter\CameraMuxView.xaml.cs">
+      <DependentUpon>CameraMuxView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ControlCenter\DriveControllerModeView.xaml.cs">
       <DependentUpon>DriveControllerModeView.xaml</DependentUpon>
@@ -209,6 +214,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ControlCenter\ArmControllerModeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ControlCenter\CameraMuxView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

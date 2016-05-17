@@ -57,6 +57,9 @@
                         <Expander Header="Power and BMS">
                             <ContentControl x:Name="Power" />
                         </Expander>
+                        <Expander Header="Camera Mux">
+                            <ContentControl x:Name="CameraMux" />
+                        </Expander>
                     </StackPanel>
                 </ScrollViewer>
                 <!-- Static Side Panel Grid -->
