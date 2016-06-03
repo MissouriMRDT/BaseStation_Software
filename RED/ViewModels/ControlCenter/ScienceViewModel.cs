@@ -239,7 +239,7 @@ namespace RED.ViewModels.ControlCenter
         public async void DownloadCCD()
         {
             _cc.Console.WriteToConsole("CCD data downloaded started.");
-            string filename = Path.Combine(CCDFilePath, "REDCCDData" + DateTime.Now.ToString("s") + ".dat");
+            string filename = Path.Combine(CCDFilePath, "REDCCDData" + DateTime.Now.ToString("yyyyMMdd'T'HHmmss") + ".dat");
             using (var client = new TcpClient())
             {
                 await client.ConnectAsync(CCDIPAddress, CCDPortNumber);
