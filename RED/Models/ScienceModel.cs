@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,5 +21,7 @@ namespace RED.Models
         internal System.Net.IPAddress CCDIPAddress;
         internal ushort CCDPortNumber;
         internal string CCDFilePath = Environment.CurrentDirectory;
+
+        internal Stream SensorDataFile;
     }
 }
