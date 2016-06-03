@@ -18,6 +18,7 @@ namespace RED.ViewModels.ControlCenter
 
         private const short motorRangeFactor = 1000;
         private readonly EndEffectorModes[] AvailibleEndEffectorModes = { EndEffectorModes.Gripper, EndEffectorModes.Drill, EndEffectorModes.RegulatorDetach };
+        private readonly string[] EndEffectorModeNames = { "Gripper", "Drill", "Regulator Detachment" };
 
         private readonly ArmControllerModeModel _model;
         private readonly ControlCenterViewModel _controlCenter;
@@ -38,6 +39,14 @@ namespace RED.ViewModels.ControlCenter
             {
                 _model.CurrentEndEffectorMode = value;
                 NotifyOfPropertyChange(() => CurrentEndEffectorMode);
+                NotifyOfPropertyChange(() => CurrentEndEffectorModeName);
+            }
+        }
+        public string CurrentEndEffectorModeName
+        {
+            get
+            {
+                return EndEffectorModeNames[CurrentEndEffectorMode];
             }
         }
 
