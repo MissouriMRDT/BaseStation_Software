@@ -46,10 +46,13 @@
                             <ContentControl x:Name="Sensor" />
                         </Expander>
                         <Expander Header="Gimbal">
-                            <UniformGrid Rows="1">
-                                <ContentControl x:Name="GimbalControllerMode" />
-                                <ContentControl x:Name="Gimbal2ControllerMode" />
-                            </UniformGrid>
+                            <StackPanel>
+                                <ContentControl x:Name="ExternalControls" />
+                                <UniformGrid Rows="1">
+                                    <ContentControl x:Name="GimbalControllerMode" />
+                                    <ContentControl x:Name="Gimbal2ControllerMode" />
+                                </UniformGrid>
+                            </StackPanel>
                         </Expander>
                         <Expander Header="Drop Bays">
                             <ContentControl x:Name="DropBays" />

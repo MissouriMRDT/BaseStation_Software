@@ -23,5 +23,6 @@
         internal DropBaysViewModel _dropBays;
         internal PowerViewModel _power;
         internal CameraMuxViewModel _cameraMux;
+        internal ExternalControlsViewModel _externalControls;
     }
 }
