@@ -15,5 +15,6 @@ namespace RED.Models
         internal float AngleJ4;
         internal float AngleJ5;
         internal float AngleJ6;
+        internal int EndeffectorSpeedLimit = 500;
     }
 }

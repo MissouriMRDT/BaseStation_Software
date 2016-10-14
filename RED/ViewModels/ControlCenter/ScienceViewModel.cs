@@ -151,6 +151,19 @@ namespace RED.ViewModels.ControlCenter
             }
         }
 
+        public Stream SensorDataFile
+        {
+            get
+            {
+                return _model.SensorDataFile;
+            }
+            set
+            {
+                _model.SensorDataFile = value;
+                NotifyOfPropertyChange(() => SensorDataFile);
+            }
+        }
+
         public ScienceViewModel(ControlCenterViewModel cc)
         {
             _model = new ScienceModel();
@@ -239,7 +252,7 @@ namespace RED.ViewModels.ControlCenter
         public async void DownloadCCD()
         {
             _cc.Console.WriteToConsole("CCD data downloaded started.");
-            string filename = Path.Combine(CCDFilePath, "REDCCDData" + DateTime.Now.ToString("s") + ".dat");
+            string filename = Path.Combine(CCDFilePath, "REDCCDData" + DateTime.Now.ToString("yyyyMMdd'T'HHmmss") + ".dat");
             using (var client = new TcpClient())
             {
                 await client.ConnectAsync(CCDIPAddress, CCDPortNumber);
@@ -295,33 +308,57 @@ namespace RED.ViewModels.ControlCenter
             _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (byte)ScienceRequestTypes.FunnelClose);
         }
 
+        public void SaveFileStart()
+        {
+            SensorDataFile = new FileStream("REDSensorData" + DateTime.Now.ToString("yyyyMMdd'T'HHmmss") + ".dat", FileMode.Create);
+        }
+        public void SaveFileStop()
+        {
+            if (SensorDataFile.CanWrite)
+                SensorDataFile.Close();
+        }
+        private async void SaveFileWrite(string sensorName, object value)
+        {
+            if (!SensorDataFile.CanWrite) return;
+            var data = Encoding.UTF8.GetBytes(String.Format("{0:s} {1} {2}{3}", DateTime.Now, sensorName, value.ToString(), Environment.NewLine));
+            await SensorDataFile.WriteAsync(data, 0, data.Length);
+        }
+
         public void ReceiveFromRouter(ushort dataId, byte[] data)
         {
             switch (_cc.MetadataManager.GetTelemetry(dataId).Name)
             {
                 case "Temperature1":
                     Temperature1Value = BitConverter.ToSingle(data, 0);
+                    SaveFileWrite("Temperature1", Temperature1Value);
                     break;
                 case "Temperature2":
                     Temperature2Value = BitConverter.ToSingle(data, 0);
+                    SaveFileWrite("Temperature2", Temperature2Value);
                     break;
                 case "Temperature3":
                     Temperature3Value = BitConverter.ToSingle(data, 0);
+                    SaveFileWrite("Temperature3", Temperature3Value);
                     break;
                 case "Temperature4":
                     Temperature4Value = BitConverter.ToSingle(data, 0);
+                    SaveFileWrite("Temperature4", Temperature4Value);
                     break;
                 case "Moisture1":
                     Moisture1Value = BitConverter.ToSingle(data, 0);
+                    SaveFileWrite("Moisture1", Moisture1Value);
                     break;
                 case "Moisture2":
                     Moisture2Value = BitConverter.ToSingle(data, 0);
+                    SaveFileWrite("Moisture2", Moisture2Value);
                     break;
                 case "Moisture3":
                     Moisture3Value = BitConverter.ToSingle(data, 0);
+                    SaveFileWrite("Moisture3", Moisture3Value);
                     break;
                 case "Moisture4":
                     Moisture4Value = BitConverter.ToSingle(data, 0);
+                    SaveFileWrite("Moisture4", Moisture4Value);
                     break;
             }
         }

@@ -192,6 +192,18 @@
                 NotifyOfPropertyChange(() => CameraMux);
             }
         }
+        public ExternalControlsViewModel ExternalControls
+        {
+            get
+            {
+                return _model._externalControls;
+            }
+            set
+            {
+                _model._externalControls = value;
+                NotifyOfPropertyChange(() => ExternalControls);
+            }
+        }
 
         public DriveControllerModeViewModel DriveControllerMode
         {
@@ -242,6 +254,7 @@
             DropBays = new DropBaysViewModel(this);
             Power = new PowerViewModel(this);
             CameraMux = new CameraMuxViewModel(this);
+            ExternalControls = new ExternalControlsViewModel(this);
 
             SettingsManager = new SettingsManagerViewModel(this);
 

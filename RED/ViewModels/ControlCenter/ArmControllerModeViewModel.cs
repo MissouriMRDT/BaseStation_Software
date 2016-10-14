@@ -18,6 +18,7 @@ namespace RED.ViewModels.ControlCenter
 
         private const short motorRangeFactor = 1000;
         private readonly EndEffectorModes[] AvailibleEndEffectorModes = { EndEffectorModes.Gripper, EndEffectorModes.Drill, EndEffectorModes.RegulatorDetach };
+        private readonly string[] EndEffectorModeNames = { "Gripper", "Drill", "Regulator Detachment" };
 
         private readonly ArmControllerModeModel _model;
         private readonly ControlCenterViewModel _controlCenter;
@@ -38,6 +39,14 @@ namespace RED.ViewModels.ControlCenter
             {
                 _model.CurrentEndEffectorMode = value;
                 NotifyOfPropertyChange(() => CurrentEndEffectorMode);
+                NotifyOfPropertyChange(() => CurrentEndEffectorModeName);
+            }
+        }
+        public string CurrentEndEffectorModeName
+        {
+            get
+            {
+                return EndEffectorModeNames[CurrentEndEffectorMode];
             }
         }
 
@@ -111,6 +120,19 @@ namespace RED.ViewModels.ControlCenter
             {
                 _model.AngleJ6 = value;
                 NotifyOfPropertyChange(() => AngleJ6);
+            }
+        }
+
+        public int EndeffectorSpeedLimit
+        {
+            get
+            {
+                return _model.EndeffectorSpeedLimit;
+            }
+            set
+            {
+                _model.EndeffectorSpeedLimit = value;
+                NotifyOfPropertyChange(() => EndeffectorSpeedLimit);
             }
         }
 
@@ -199,9 +221,9 @@ namespace RED.ViewModels.ControlCenter
             {
                 case EndEffectorModes.Gripper:
                     if (InputVM.GripperClose > 0)
-                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(InputVM.GripperClose * motorRangeFactor));
+                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(InputVM.GripperClose * EndeffectorSpeedLimit));
                     else if (InputVM.GripperOpen > 0)
-                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(-InputVM.GripperOpen * motorRangeFactor));
+                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(-InputVM.GripperOpen * EndeffectorSpeedLimit));
                     else
                         _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(0));
                     break;
@@ -216,9 +238,9 @@ namespace RED.ViewModels.ControlCenter
 
                 case EndEffectorModes.RegulatorDetach:
                     if (InputVM.GripperClose > 0)
-                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(InputVM.GripperClose * motorRangeFactor));
+                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(InputVM.GripperClose * EndeffectorSpeedLimit));
                     else if (InputVM.GripperOpen > 0)
-                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(-InputVM.GripperOpen * motorRangeFactor));
+                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(-InputVM.GripperOpen * EndeffectorSpeedLimit));
                     else
                         _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(0));
 
