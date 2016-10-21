@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RED.Interfaces;
 
-namespace RED.Models
+namespace RED.Models.Input
 {
     public class InputManagerModel
     {

@@ -1,9 +1,10 @@
-﻿namespace RED.ViewModels.ControlCenter
+﻿namespace RED.ViewModels.Input.Controllers
 {
     using Annotations;
     using Caliburn.Micro;
     using Interfaces;
-    using Models;
+    using Models.Input.Controllers;
+    using ViewModels.ControlCenter;
     using SharpDX.XInput;
     using System;
     using System.Collections.Generic;
@@ -11,13 +12,13 @@
     using System.Linq;
     using System.Timers;
     using System.Threading.Tasks;
-    using System.Windows.Input;
 
-    public class KeyboardInputViewModel : PropertyChangedBase, IInputDevice
+    public class XboxControllerInputViewModel : PropertyChangedBase, IInputDevice
     {
-        private readonly KeyboardInputModel Model = new KeyboardInputModel();
+        private readonly XboxControllerInputModel Model = new XboxControllerInputModel();
         private readonly ControlCenterViewModel _controlCenter;
         [CanBeNull]
+        public readonly Controller ControllerOne = new Controller(UserIndex.One);
 
         public int SerialReadSpeed
         {
@@ -53,19 +54,6 @@
             {
                 Model.ManualDeadzone = value;
                 NotifyOfPropertyChange(() => ManualDeadzone);
-            }
-        }
-
-        public float speedMultiplier
-        {
-            get
-            {
-                return Model.speedMultiplier;
-            }
-            set
-            {
-                Model.speedMultiplier = value;
-                NotifyOfPropertyChange(() => speedMultiplier);
             }
         }
 
@@ -208,6 +196,19 @@
                 NotifyOfPropertyChange(() => GripperClose);
             }
         }
+        public bool ButtonA
+        {
+            get
+            {
+                return Model.ButtonA;
+            }
+            set
+            {
+                DebouncedButtonA = !Model.ButtonA && value;
+                Model.ButtonA = value;
+                NotifyOfPropertyChange(() => ButtonA);
+            }
+        }
         public bool ToolNext
         {
             get
@@ -273,6 +274,70 @@
                 NotifyOfPropertyChange(() => DrillCounterClockwise);
             }
         }
+        public bool ButtonRs
+        {
+            get
+            {
+                return Model.ButtonRs;
+            }
+            set
+            {
+                DebouncedButtonRs = !Model.ButtonRs && value;
+                Model.ButtonRs = value;
+                NotifyOfPropertyChange(() => ButtonRs);
+            }
+        }
+        public bool ButtonLs
+        {
+            get
+            {
+                return Model.ButtonLs;
+            }
+            set
+            {
+                DebouncedButtonLs = !Model.ButtonLs && value;
+                Model.ButtonLs = value;
+                NotifyOfPropertyChange(() => ButtonLs);
+            }
+        }
+        public bool ModeNext
+        {
+            get
+            {
+                return Model.ModeNext;
+            }
+            set
+            {
+                DebouncedModeNext = !Model.ModeNext && value;
+                Model.ModeNext = value;
+                NotifyOfPropertyChange(() => ModeNext);
+            }
+        }
+        public bool ModePrev
+        {
+            get
+            {
+                return Model.ModePrev;
+            }
+            set
+            {
+                DebouncedModePrev = !Model.ModePrev && value;
+                Model.ModePrev = value;
+                NotifyOfPropertyChange(() => ModePrev);
+            }
+        }
+        public bool DebouncedButtonA
+        {
+            get
+            {
+                return Model.ButtonADebounced;
+            }
+            set
+            {
+                Model.ButtonADebounced = value;
+                NotifyOfPropertyChange(() => DebouncedButtonA);
+            }
+        }
         public bool DebouncedToolNext
         {
             get
@@ -334,6 +399,30 @@
                 NotifyOfPropertyChange(() => DebouncedDrillCounterClockwise);
             }
         }
+        public bool DebouncedButtonRs
+        {
+            get
+            {
+                return Model.ButtonRsDebounced;
+            }
+            set
+            {
+                Model.ButtonRsDebounced = value;
+                NotifyOfPropertyChange(() => DebouncedButtonRs);
+            }
+        }
+        public bool DebouncedButtonLs
+        {
+            get
+            {
+                return Model.ButtonLsDebounced;
+            }
+            set
+            {
+                Model.ButtonLsDebounced = value;
+                NotifyOfPropertyChange(() => DebouncedButtonLs);
+            }
+        }
         public bool DebouncedModeNext
         {
             get
@@ -358,32 +447,6 @@
                 if (value) PreviousControlMode();
                 Model.ModePrevDebounced = value;
                 NotifyOfPropertyChange(() => DebouncedModePrev);
-            }
-        }
-        public bool ModeNext
-        {
-            get
-            {
-                return Model.ModeNext;
-            }
-            set
-            {
-                DebouncedModeNext = !Model.ModeNext && value;
-                Model.ModeNext = value;
-                NotifyOfPropertyChange(() => ModeNext);
-            }
-        }
-        public bool ModePrev
-        {
-            get
-            {
-                return Model.ModePrev;
-            }
-            set
-            {
-                DebouncedModePrev = !Model.ModePrev && value;
-                Model.ModePrev = value;
-                NotifyOfPropertyChange(() => ModePrev);
             }
         }
         public bool BaseCounterClockwise
@@ -484,7 +547,7 @@
         }
         #endregion
 
-        public KeyboardInputViewModel(ControlCenterViewModel cc)
+        public XboxControllerInputViewModel(ControlCenterViewModel cc)
         {
             _controlCenter = cc;
 
@@ -521,100 +584,41 @@
 
         private void Update()
         {
-            // Tell RED that this controller is connected
+            if (ControllerOne == null || !ControllerOne.IsConnected)
+            {
+                Connected = false;
+                return;
+            }
+            var currentGamepad = ControllerOne.GetState().Gamepad;
             Connected = true;
 
-            // Set the speed multiplier; 1-9 for 10%-90%; 0 for 100%
-            if (Keyboard.IsKeyDown(Key.D1))
-                speedMultiplier = 0.1F;
-            if (Keyboard.IsKeyDown(Key.D2))
-                speedMultiplier = 0.2F;
-            if (Keyboard.IsKeyDown(Key.D3))
-                speedMultiplier = 0.3F;
-            if (Keyboard.IsKeyDown(Key.D4))
-                speedMultiplier = 0.4F;
-            if (Keyboard.IsKeyDown(Key.D5))
-                speedMultiplier = 0.5F;
-            if (Keyboard.IsKeyDown(Key.D6))
-                speedMultiplier = 0.6F;
-            if (Keyboard.IsKeyDown(Key.D7))
-                speedMultiplier = 0.7F;
-            if (Keyboard.IsKeyDown(Key.D8))
-                speedMultiplier = 0.8F;
-            if (Keyboard.IsKeyDown(Key.D9))
-                speedMultiplier = 0.9F;
-            if (Keyboard.IsKeyDown(Key.D0))
-                speedMultiplier = 1.0f;
+            var deadzone = AutoDeadzone ? Math.Max(Gamepad.LeftThumbDeadZone, Gamepad.RightThumbDeadZone) : ManualDeadzone;
+            ElbowBend = GimbalTilt = WheelsLeft = currentGamepad.LeftThumbY < deadzone && currentGamepad.LeftThumbY > -deadzone ? 0 : ((currentGamepad.LeftThumbY + (currentGamepad.LeftThumbY < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
+            WristBend = WheelsRight = currentGamepad.RightThumbY < deadzone && currentGamepad.RightThumbY > -deadzone ? 0 : ((currentGamepad.RightThumbY + (currentGamepad.RightThumbY < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
+            ElbowTwist = GimbalPan = currentGamepad.LeftThumbX < deadzone && currentGamepad.LeftThumbX > -deadzone ? 0 : ((currentGamepad.LeftThumbX + (currentGamepad.LeftThumbX < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
+            WristTwist = currentGamepad.RightThumbX < deadzone && currentGamepad.RightThumbX > -deadzone ? 0 : ((currentGamepad.RightThumbX + (currentGamepad.RightThumbX < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
 
-            // Fine tune the speed multiplier
-            if (speedMultiplier < 1f && Keyboard.IsKeyDown(Key.OemPlus))
-                speedMultiplier += 0.01f;
-            // speedMultiplier will have round-off error, so check before it hits zero
-            if (speedMultiplier > 0.01f && Keyboard.IsKeyDown(Key.OemMinus))
-                speedMultiplier -= 0.01f;
-
-            Console.WriteLine(speedMultiplier);
-
-            // Keys A and Q control the left wheels in drive mode
-            // and the elbow bend in arm mode
-            if (Keyboard.IsKeyDown(Key.A))
-                ElbowBend = GimbalPan = WheelsLeft = -(float)(Math.Sqrt(speedMultiplier));
-            else if (Keyboard.IsKeyDown(Key.Q))
-                ElbowBend = WheelsLeft = (float)(Math.Sqrt(speedMultiplier));
-            else
-                ElbowBend = WheelsLeft = 0;
-
-            // Keys D and E control the right wheels in drive mode
-            // and the wrist bend in arm mode
-            if (Keyboard.IsKeyDown(Key.D))
-                WristBend = GimbalPan = WheelsRight = -(float)(Math.Sqrt(speedMultiplier));
-            else if (Keyboard.IsKeyDown(Key.E))
-                WristBend = WheelsRight = (float)(Math.Sqrt(speedMultiplier));
-            else
-                WristBend = WheelsRight = 0;
-
-            // Keys D and E control the right wheels in drive mode
-            // and the wrist bend in arm mode
-            if (Keyboard.IsKeyDown(Key.W))
-                ElbowTwist = GimbalTilt = 1;
-            else if (Keyboard.IsKeyDown(Key.S))
-                ElbowTwist = GimbalTilt = -1;
-            else
-                ElbowTwist = 0;
-
-            // Keys Z and C control the wrist twist
-            if (Keyboard.IsKeyDown(Key.Z))
-                WristTwist = 1;
-            else if (Keyboard.IsKeyDown(Key.C))
-                WristTwist = -1;
-            else
-                WristTwist = 0;
-
-            // Keys J and K control the gripper
-            if (Keyboard.IsKeyDown(Key.J))
-                GripperOpen = 1.0f;
-            else
-                GripperOpen = 0.0f;
-            if (Keyboard.IsKeyDown(Key.K))
-                GripperClose = 1.0f;
-            else
-                GripperClose = 0.0f;
-
-            ToolNext = Keyboard.IsKeyDown(Key.T);
-            ToolPrev = Keyboard.IsKeyDown(Key.Y);
-            ArmReset = Keyboard.IsKeyDown(Key.OemTilde);
-            DrillCounterClockwise = Keyboard.IsKeyDown(Key.OemComma);
-            DrillClockwise = Keyboard.IsKeyDown(Key.OemPeriod);
-            ModeNext = Keyboard.IsKeyDown(Key.RightShift);
-            ModePrev = Keyboard.IsKeyDown(Key.LeftShift);
-            BaseCounterClockwise = Keyboard.IsKeyDown(Key.Left);
-            BaseClockwise = Keyboard.IsKeyDown(Key.Right);
-            ActuatorForward = Keyboard.IsKeyDown(Key.Up);
-            ActuatorBackward = Keyboard.IsKeyDown(Key.Down);
+            GripperOpen = (float)currentGamepad.LeftTrigger / 255;
+            GripperClose = (float)currentGamepad.RightTrigger / 255;
+            ButtonA = (currentGamepad.Buttons & GamepadButtonFlags.A) != 0;
+            ToolNext = (currentGamepad.Buttons & GamepadButtonFlags.B) != 0;
+            ToolPrev = (currentGamepad.Buttons & GamepadButtonFlags.X) != 0;
+            ArmReset = (currentGamepad.Buttons & GamepadButtonFlags.Y) != 0;
+            DrillCounterClockwise = (currentGamepad.Buttons & GamepadButtonFlags.LeftShoulder) != 0;
+            DrillClockwise = (currentGamepad.Buttons & GamepadButtonFlags.RightShoulder) != 0;
+            ButtonLs = (currentGamepad.Buttons & GamepadButtonFlags.LeftThumb) != 0;
+            ButtonRs = (currentGamepad.Buttons & GamepadButtonFlags.RightThumb) != 0;
+            ModeNext = (currentGamepad.Buttons & GamepadButtonFlags.Start) != 0;
+            ModePrev = (currentGamepad.Buttons & GamepadButtonFlags.Back) != 0;
+            BaseCounterClockwise = (currentGamepad.Buttons & GamepadButtonFlags.DPadLeft) != 0;
+            ActuatorForward = GimbalZoomIn = (currentGamepad.Buttons & GamepadButtonFlags.DPadUp) != 0;
+            BaseClockwise = (currentGamepad.Buttons & GamepadButtonFlags.DPadRight) != 0;
+            ActuatorBackward = GimbalZoomOut = (currentGamepad.Buttons & GamepadButtonFlags.DPadDown) != 0;
         }
 
         private void EvaluateCurrentMode()
         {
+            if (ControllerOne != null && !ControllerOne.IsConnected) return;
             ControllerModes[CurrentModeIndex].EvaluateMode();
         }
     }

@@ -114,10 +114,10 @@ namespace RED.ViewModels.ControlCenter
             #endregion
 
             SpeedLeft = newSpeedLeft;
-           _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorLeftSpeed"), SpeedLeft);
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorLeftSpeed"), SpeedLeft);
 
             SpeedRight = newSpeedRight;
-           _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorRightSpeed"), SpeedRight);
+            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorRightSpeed"), SpeedRight);
         }
 
         public void ExitMode()

@@ -122,7 +122,7 @@
     <Compile Include="Models\ArmControllerModeModel.cs" />
     <Compile Include="Models\Modules\CameraMuxModel.cs" />
     <Compile Include="Models\Modules\GimbalModel.cs" />
-    <Compile Include="Models\InputManagerModel.cs" />
+    <Compile Include="Models\Input\InputManagerModel.cs" />
     <Compile Include="Models\DataRouterModel.cs" />
     <Compile Include="Models\DriveControllerModeModel.cs" />
     <Compile Include="Models\Network\NetworkManagerModel.cs" />
@@ -132,9 +132,9 @@
     <Compile Include="Models\Modules\SensorModel.cs" />
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Models\Network\SubscriptionManagerModel.cs" />
-    <Compile Include="Models\KeyboardInputModel.cs" />
+    <Compile Include="Models\Input\Controllers\KeyboardInputModel.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="Models\XboxControllerInputModel.cs" />
+    <Compile Include="Models\Input\Controllers\XboxControllerInputModel.cs" />
     <Compile Include="ViewModels\ControlCenter\ArmControllerModeViewModel.cs" />
     <Compile Include="ViewModels\Modules\CameraMuxViewModel.cs" />
     <Compile Include="ViewModels\Modules\ExternalControlsViewModel.cs" />
@@ -147,9 +147,9 @@
     <Compile Include="RedBootstrapper.cs" />
     <Compile Include="ViewModels\ControlCenter\DriveControllerModeViewModel.cs" />
     <Compile Include="ViewModels\Modules\GPSViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\KeyboardInputViewModel.cs" />
+    <Compile Include="ViewModels\Input\Controllers\KeyboardInputViewModel.cs" />
     <Compile Include="ViewModels\Modules\PowerViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\XboxControllerInputViewModel.cs" />
+    <Compile Include="ViewModels\Input\Controllers\XboxControllerInputViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\MetadataManager.cs" />
     <Compile Include="ViewModels\Network\RoverProtocol.cs" />
     <Compile Include="ViewModels\Modules\ScienceViewModel.cs" />
@@ -158,7 +158,7 @@
     <Compile Include="ViewModels\Network\SequenceNumberManager.cs" />
     <Compile Include="ViewModels\Network\SubscriptionManagerViewModel.cs" />
     <Compile Include="ViewModels\ControlCenterViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\InputManagerViewModel.cs" />
+    <Compile Include="ViewModels\Input\InputManagerViewModel.cs" />
     <Compile Include="ViewModels\Network\UDPEndpoint.cs" />
     <Compile Include="ViewModels\SettingsManagerViewModel.cs" />
     <Compile Include="ViewModels\Settings\DriveSettingsViewModel.cs" />

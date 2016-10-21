@@ -1,7 +1,7 @@
 ﻿using RED.Interfaces;
 using System.Collections.ObjectModel;
 
-namespace RED.Models
+namespace RED.Models.Input.Controllers
 {
     internal class XboxControllerInputModel
     {

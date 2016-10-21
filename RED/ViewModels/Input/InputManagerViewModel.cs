@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RED.Interfaces;
-using RED.Models;
+using RED.Models.Input;
+using RED.ViewModels.Input.Controllers;
 using Caliburn.Micro;
 
-namespace RED.ViewModels.ControlCenter
+namespace RED.ViewModels.Input
 {
     public class InputManagerViewModel : Screen
     {

@@ -4,6 +4,7 @@
     using ViewModels.ControlCenter;
     using ViewModels.Modules;
     using ViewModels.Network;
+    using ViewModels.Input;
     using Interfaces;
     using Modules;
 
