@@ -1,6 +1,5 @@
 ﻿using Caliburn.Micro;
 using RED.Models;
-using RED.ViewModels.ControlCenter;
 using System;
 using System.Collections.Generic;
 using System.Linq;

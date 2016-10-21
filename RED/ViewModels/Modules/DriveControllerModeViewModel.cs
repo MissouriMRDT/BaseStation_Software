@@ -1,7 +1,6 @@
 ﻿using Caliburn.Micro;
 using RED.Interfaces;
 using RED.Models.Modules;
-using RED.ViewModels.ControlCenter;
 using SharpDX.XInput;
 using System;
 using System.Collections.Generic;

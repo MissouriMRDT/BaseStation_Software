@@ -1,4 +1,4 @@
-﻿namespace RED.Views.ControlCenter
+﻿namespace RED.Views
 {
     public partial class StateView
     {

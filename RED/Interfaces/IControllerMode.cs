@@ -1,6 +1,4 @@
-﻿using RED.ViewModels.ControlCenter;
-
-namespace RED.Interfaces
+﻿namespace RED.Interfaces
 {
     public interface IControllerMode
     {

@@ -141,7 +141,7 @@
     <Compile Include="ViewModels\Modules\GimbalControllerModeViewModel.cs" />
     <Compile Include="ViewModels\Modules\DropBaysViewModel.cs" />
     <Compile Include="ViewModels\Network\NetworkManagerViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\DataRouter.cs" />
+    <Compile Include="ViewModels\DataRouter.cs" />
     <Compile Include="Interfaces\ISubscribe.cs" />
     <Compile Include="Models\ControlCenterModel.cs" />
     <Compile Include="RedBootstrapper.cs" />
@@ -150,7 +150,7 @@
     <Compile Include="ViewModels\Input\Controllers\KeyboardInputViewModel.cs" />
     <Compile Include="ViewModels\Modules\PowerViewModel.cs" />
     <Compile Include="ViewModels\Input\Controllers\XboxControllerInputViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\MetadataManager.cs" />
+    <Compile Include="ViewModels\MetadataManager.cs" />
     <Compile Include="ViewModels\Network\RoverProtocol.cs" />
     <Compile Include="ViewModels\Modules\ScienceViewModel.cs" />
     <Compile Include="ViewModels\Modules\SensorCombinedViewModel.cs" />
@@ -245,7 +245,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ControlCenter\ConsoleView.xaml">
+    <Page Include="Views\ConsoleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -257,9 +257,9 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\ControlCenter\ConsoleViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\StateViewModel.cs" />
-    <Compile Include="Views\ControlCenter\ConsoleView.xaml.cs">
+    <Compile Include="ViewModels\ConsoleViewModel.cs" />
+    <Compile Include="ViewModels\StateViewModel.cs" />
+    <Compile Include="Views\ConsoleView.xaml.cs">
       <DependentUpon>ConsoleView.xaml</DependentUpon>
     </Compile>
     <!--<Page Include="Views\Modules\ConsoleModuleView.xaml">
@@ -278,11 +278,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ControlCenter\StateView.xaml">
+    <Page Include="Views\StateView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Views\ControlCenter\StateView.xaml.cs">
+    <Compile Include="Views\StateView.xaml.cs">
       <DependentUpon>StateView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

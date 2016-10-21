@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
 
-namespace RED.ViewModels.ControlCenter
+namespace RED.ViewModels
 {
     public class MetadataManager : IIPAddressProvider
     {

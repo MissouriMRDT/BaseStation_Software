@@ -1,7 +1,6 @@
 ﻿namespace RED.ViewModels
 {
     using Caliburn.Micro;
-    using ControlCenter;
     using Models;
     using Interfaces;
     using Modules;

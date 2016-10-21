@@ -1,7 +1,6 @@
 ﻿namespace RED.Models
 {
     using ViewModels;
-    using ViewModels.ControlCenter;
     using ViewModels.Modules;
     using ViewModels.Network;
     using ViewModels.Input;

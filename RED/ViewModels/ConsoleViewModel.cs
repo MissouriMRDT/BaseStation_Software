@@ -1,4 +1,4 @@
-﻿namespace RED.ViewModels.ControlCenter
+﻿namespace RED.ViewModels
 {
     using Caliburn.Micro;
     using System;
