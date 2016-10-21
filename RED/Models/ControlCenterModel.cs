@@ -3,6 +3,7 @@
     using ViewModels;
     using ViewModels.ControlCenter;
     using ViewModels.Modules;
+    using ViewModels.Network;
     using Interfaces;
     using Modules;
 

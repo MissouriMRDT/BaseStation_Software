@@ -1,5 +1,5 @@
 ﻿using Caliburn.Micro;
-using RED.Models;
+using RED.Models.Network;
 using RED.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RED.ViewModels.ControlCenter
+namespace RED.ViewModels.Network
 {
     public class NetworkManagerViewModel : PropertyChangedBase, ISubscribe
     {

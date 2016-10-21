@@ -5,6 +5,7 @@
     using Models;
     using Interfaces;
     using Modules;
+    using Network;
 
     public class ControlCenterViewModel : Screen
     {

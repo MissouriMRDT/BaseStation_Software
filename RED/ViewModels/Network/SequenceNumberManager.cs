@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RED.ViewModels.ControlCenter
+namespace RED.ViewModels.Network
 {
     public class SequenceNumberManager : ISequenceNumberProvider
     {

@@ -7,7 +7,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RED.ViewModels.ControlCenter
+namespace RED.ViewModels.Network
 {
     public class UDPEndpoint : INetworkTransportProtocol
     {

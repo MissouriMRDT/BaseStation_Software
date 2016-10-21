@@ -1,7 +1,7 @@
 ﻿using RED.Addons;
 using RED.Interfaces;
-using RED.Models;
-using RED.ViewModels;
+using RED.Models.Network;
+using RED.ViewModels.Network;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RED.ViewModels.ControlCenter
+namespace RED.ViewModels.Network
 {
     public class SubscriptionManagerViewModel
     {
