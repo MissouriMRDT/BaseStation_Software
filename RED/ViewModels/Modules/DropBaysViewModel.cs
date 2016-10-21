@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RED.ViewModels.ControlCenter
+namespace RED.ViewModels.Modules
 {
     public class DropBaysViewModel : PropertyChangedBase
     {

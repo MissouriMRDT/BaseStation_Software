@@ -1,5 +1,5 @@
 ﻿using Caliburn.Micro;
-using RED.ViewModels.ControlCenter;
+using RED.ViewModels.Modules;
 using System;
 using System.Collections.Generic;
 using System.Linq;

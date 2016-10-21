@@ -120,41 +120,41 @@
     <Compile Include="Interfaces\INetworkTransportProtocol.cs" />
     <Compile Include="Interfaces\ISequenceNumberProvider.cs" />
     <Compile Include="Models\ArmControllerModeModel.cs" />
-    <Compile Include="Models\CameraMuxModel.cs" />
-    <Compile Include="Models\GimbalModel.cs" />
+    <Compile Include="Models\Modules\CameraMuxModel.cs" />
+    <Compile Include="Models\Modules\GimbalModel.cs" />
     <Compile Include="Models\InputManagerModel.cs" />
     <Compile Include="Models\DataRouterModel.cs" />
     <Compile Include="Models\DriveControllerModeModel.cs" />
     <Compile Include="Models\NetworkManagerModel.cs" />
-    <Compile Include="Models\PowerModel.cs" />
-    <Compile Include="Models\ScienceModel.cs" />
-    <Compile Include="Models\GPSModel.cs" />
-    <Compile Include="Models\SensorModel.cs" />
+    <Compile Include="Models\Modules\PowerModel.cs" />
+    <Compile Include="Models\Modules\ScienceModel.cs" />
+    <Compile Include="Models\Modules\GPSModel.cs" />
+    <Compile Include="Models\Modules\SensorModel.cs" />
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Models\SubscriptionManagerModel.cs" />
     <Compile Include="Models\KeyboardInputModel.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Models\XboxControllerInputModel.cs" />
     <Compile Include="ViewModels\ControlCenter\ArmControllerModeViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\CameraMuxViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\ExternalControlsViewModel.cs" />
+    <Compile Include="ViewModels\Modules\CameraMuxViewModel.cs" />
+    <Compile Include="ViewModels\Modules\ExternalControlsViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\GimbalControllerModeViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\DropBaysViewModel.cs" />
+    <Compile Include="ViewModels\Modules\DropBaysViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\NetworkManagerViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\DataRouter.cs" />
     <Compile Include="Interfaces\ISubscribe.cs" />
     <Compile Include="Models\ControlCenterModel.cs" />
     <Compile Include="RedBootstrapper.cs" />
     <Compile Include="ViewModels\ControlCenter\DriveControllerModeViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\GPSViewModel.cs" />
+    <Compile Include="ViewModels\Modules\GPSViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\KeyboardInputViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\PowerViewModel.cs" />
+    <Compile Include="ViewModels\Modules\PowerViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\XboxControllerInputViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\MetadataManager.cs" />
     <Compile Include="ViewModels\ControlCenter\RoverProtocol.cs" />
-    <Compile Include="ViewModels\ControlCenter\ScienceViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\SensorCombinedViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\SensorViewModel.cs" />
+    <Compile Include="ViewModels\Modules\ScienceViewModel.cs" />
+    <Compile Include="ViewModels\Modules\SensorCombinedViewModel.cs" />
+    <Compile Include="ViewModels\Modules\SensorViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\SequenceNumberManager.cs" />
     <Compile Include="ViewModels\ControlCenter\SubscriptionManagerViewModel.cs" />
     <Compile Include="ViewModels\ControlCenterViewModel.cs" />
@@ -171,31 +171,31 @@
     <Compile Include="Views\ControlCenter\ArmControllerModeView.xaml.cs">
       <DependentUpon>ArmControllerModeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ControlCenter\CameraMuxView.xaml.cs">
+    <Compile Include="Views\Modules\CameraMuxView.xaml.cs">
       <DependentUpon>CameraMuxView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ControlCenter\DriveControllerModeView.xaml.cs">
       <DependentUpon>DriveControllerModeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ControlCenter\ExternalControlsView.xaml.cs">
+    <Compile Include="Views\Modules\ExternalControlsView.xaml.cs">
       <DependentUpon>ExternalControlsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ControlCenter\GimbalControllerModeView.xaml.cs">
       <DependentUpon>GimbalControllerModeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ControlCenter\DropBaysView.xaml.cs">
+    <Compile Include="Views\Modules\DropBaysView.xaml.cs">
       <DependentUpon>DropBaysView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ControlCenter\PowerView.xaml.cs">
+    <Compile Include="Views\Modules\PowerView.xaml.cs">
       <DependentUpon>PowerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ControlCenter\ScienceView.xaml.cs">
+    <Compile Include="Views\Modules\ScienceView.xaml.cs">
       <DependentUpon>ScienceView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ControlCenter\GPSView.xaml.cs">
+    <Compile Include="Views\Modules\GPSView.xaml.cs">
       <DependentUpon>GPSView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ControlCenter\SensorView.xaml.cs">
+    <Compile Include="Views\Modules\SensorView.xaml.cs">
       <DependentUpon>SensorView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsManagerView.xaml.cs">
@@ -221,7 +221,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ControlCenter\CameraMuxView.xaml">
+    <Page Include="Views\Modules\CameraMuxView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -229,7 +229,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ControlCenter\ExternalControlsView.xaml">
+    <Page Include="Views\Modules\ExternalControlsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -237,11 +237,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ControlCenter\DropBaysView.xaml">
+    <Page Include="Views\Modules\DropBaysView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ControlCenter\GPSView.xaml">
+    <Page Include="Views\Modules\GPSView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -266,15 +266,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>-->
-    <Page Include="Views\ControlCenter\PowerView.xaml">
+    <Page Include="Views\Modules\PowerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ControlCenter\ScienceView.xaml">
+    <Page Include="Views\Modules\ScienceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ControlCenter\SensorView.xaml">
+    <Page Include="Views\Modules\SensorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -337,6 +337,7 @@
   <ItemGroup>
     <Content Include="Images\favicon.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\SharpDX.2.6.3\build\SharpDX.targets" Condition="Exists('..\packages\SharpDX.2.6.3\build\SharpDX.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

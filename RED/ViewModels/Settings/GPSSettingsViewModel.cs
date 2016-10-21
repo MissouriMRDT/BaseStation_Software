@@ -1,7 +1,7 @@
 ﻿using Caliburn.Micro;
 using RED.Addons;
 using RED.Models;
-using RED.ViewModels.ControlCenter;
+using RED.ViewModels.Modules;
 using System;
 using System.Collections.Generic;
 using System.Linq;

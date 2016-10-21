@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace RED.Views.ControlCenter
+namespace RED.Views.Modules
 {
     /// <summary>
     /// Interaction logic for ExternalControlsView.xaml

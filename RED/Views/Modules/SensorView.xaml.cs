@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace RED.Views.ControlCenter
+namespace RED.Views.Modules
 {
     /// <summary>
-    /// Interaction logic for ScienceView.xaml
+    /// Interaction logic for SensorView.xaml
     /// </summary>
-    public partial class ScienceView : UserControl
+    public partial class SensorView : UserControl
     {
-        public ScienceView()
+        public SensorView()
         {
             InitializeComponent();
         }

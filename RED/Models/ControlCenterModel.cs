@@ -2,7 +2,9 @@
 {
     using ViewModels;
     using ViewModels.ControlCenter;
+    using ViewModels.Modules;
     using Interfaces;
+    using Modules;
 
     public class ControlCenterModel
     {

@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace RED.Views.ControlCenter
+namespace RED.Views.Modules
 {
     /// <summary>
-    /// Interaction logic for SensorView.xaml
+    /// Interaction logic for CameraMuxView.xaml
     /// </summary>
-    public partial class SensorView : UserControl
+    public partial class CameraMuxView : UserControl
     {
-        public SensorView()
+        public CameraMuxView()
         {
             InitializeComponent();
         }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RED.Models
+namespace RED.Models.Modules
 {
     internal class SensorModel
     {

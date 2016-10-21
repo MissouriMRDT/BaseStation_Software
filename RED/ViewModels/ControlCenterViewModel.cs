@@ -4,6 +4,7 @@
     using ControlCenter;
     using Models;
     using Interfaces;
+    using Modules;
 
     public class ControlCenterViewModel : Screen
     {

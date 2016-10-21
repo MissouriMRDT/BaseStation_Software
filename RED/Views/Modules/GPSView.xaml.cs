@@ -1,7 +1,7 @@
 ﻿using GMap.NET;
 using GMap.NET.WindowsPresentation;
 using GMap.NET.MapProviders;
-using RED.ViewModels.ControlCenter;
+using RED.ViewModels.Modules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace RED.Views.ControlCenter
+namespace RED.Views.Modules
 {
     /// <summary>
     /// Interaction logic for GPSView.xaml

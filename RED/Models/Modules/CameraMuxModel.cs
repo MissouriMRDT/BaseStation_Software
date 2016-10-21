@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RED.Models
+namespace RED.Models.Modules
 {
-    public class GimbalModel
+    public class CameraMuxModel
     {
-        internal int gimbalIndex;
-        internal int speedLimit;
+        internal byte MuxIndex;
     }
 }
