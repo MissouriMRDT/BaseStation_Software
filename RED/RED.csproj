@@ -119,12 +119,12 @@
     <Compile Include="Interfaces\INetworkEncoding.cs" />
     <Compile Include="Interfaces\INetworkTransportProtocol.cs" />
     <Compile Include="Interfaces\ISequenceNumberProvider.cs" />
-    <Compile Include="Models\ArmControllerModeModel.cs" />
+    <Compile Include="Models\Modules\ArmControllerModeModel.cs" />
     <Compile Include="Models\Modules\CameraMuxModel.cs" />
     <Compile Include="Models\Modules\GimbalModel.cs" />
     <Compile Include="Models\Input\InputManagerModel.cs" />
     <Compile Include="Models\DataRouterModel.cs" />
-    <Compile Include="Models\DriveControllerModeModel.cs" />
+    <Compile Include="Models\Modules\DriveControllerModeModel.cs" />
     <Compile Include="Models\Network\NetworkManagerModel.cs" />
     <Compile Include="Models\Modules\PowerModel.cs" />
     <Compile Include="Models\Modules\ScienceModel.cs" />
@@ -135,17 +135,17 @@
     <Compile Include="Models\Input\Controllers\KeyboardInputModel.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Models\Input\Controllers\XboxControllerInputModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\ArmControllerModeViewModel.cs" />
+    <Compile Include="ViewModels\Modules\ArmControllerModeViewModel.cs" />
     <Compile Include="ViewModels\Modules\CameraMuxViewModel.cs" />
     <Compile Include="ViewModels\Modules\ExternalControlsViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\GimbalControllerModeViewModel.cs" />
+    <Compile Include="ViewModels\Modules\GimbalControllerModeViewModel.cs" />
     <Compile Include="ViewModels\Modules\DropBaysViewModel.cs" />
     <Compile Include="ViewModels\Network\NetworkManagerViewModel.cs" />
     <Compile Include="ViewModels\ControlCenter\DataRouter.cs" />
     <Compile Include="Interfaces\ISubscribe.cs" />
     <Compile Include="Models\ControlCenterModel.cs" />
     <Compile Include="RedBootstrapper.cs" />
-    <Compile Include="ViewModels\ControlCenter\DriveControllerModeViewModel.cs" />
+    <Compile Include="ViewModels\Modules\DriveControllerModeViewModel.cs" />
     <Compile Include="ViewModels\Modules\GPSViewModel.cs" />
     <Compile Include="ViewModels\Input\Controllers\KeyboardInputViewModel.cs" />
     <Compile Include="ViewModels\Modules\PowerViewModel.cs" />
@@ -168,19 +168,19 @@
     <Compile Include="Views\ControlCenterView.xaml.cs">
       <DependentUpon>ControlCenterView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ControlCenter\ArmControllerModeView.xaml.cs">
+    <Compile Include="Views\Modules\ArmControllerModeView.xaml.cs">
       <DependentUpon>ArmControllerModeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CameraMuxView.xaml.cs">
       <DependentUpon>CameraMuxView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ControlCenter\DriveControllerModeView.xaml.cs">
+    <Compile Include="Views\Modules\DriveControllerModeView.xaml.cs">
       <DependentUpon>DriveControllerModeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\ExternalControlsView.xaml.cs">
       <DependentUpon>ExternalControlsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ControlCenter\GimbalControllerModeView.xaml.cs">
+    <Compile Include="Views\Modules\GimbalControllerModeView.xaml.cs">
       <DependentUpon>GimbalControllerModeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DropBaysView.xaml.cs">
@@ -217,7 +217,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ControlCenter\ArmControllerModeView.xaml">
+    <Page Include="Views\Modules\ArmControllerModeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -225,7 +225,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ControlCenter\DriveControllerModeView.xaml">
+    <Page Include="Views\Modules\DriveControllerModeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -233,7 +233,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ControlCenter\GimbalControllerModeView.xaml">
+    <Page Include="Views\Modules\GimbalControllerModeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -4,7 +4,7 @@
     using Caliburn.Micro;
     using Interfaces;
     using Models.Input.Controllers;
-    using ViewModels.ControlCenter;
+    using ViewModels.Modules;
     using SharpDX.XInput;
     using System;
     using System.Collections.Generic;

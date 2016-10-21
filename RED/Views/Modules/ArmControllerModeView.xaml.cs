@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace RED.Views.ControlCenter
+namespace RED.Views.Modules
 {
     /// <summary>
-    /// Interaction logic for DriveControllerModeView.xaml
+    /// Interaction logic for ArmControllerModeView.xaml
     /// </summary>
-    public partial class DriveControllerModeView : UserControl
+    public partial class ArmControllerModeView : UserControl
     {
-        public DriveControllerModeView()
+        public ArmControllerModeView()
         {
             InitializeComponent();
         }
