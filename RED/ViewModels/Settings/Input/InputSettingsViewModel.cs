@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RED.Interfaces;
+using RED.Interfaces.Input;
 
 namespace RED.ViewModels.Settings.Input
 {

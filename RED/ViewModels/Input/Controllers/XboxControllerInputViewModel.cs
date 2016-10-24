@@ -2,7 +2,7 @@
 {
     using Annotations;
     using Caliburn.Micro;
-    using Interfaces;
+    using Interfaces.Input;
     using Models.Input.Controllers;
     using ViewModels.Modules;
     using SharpDX.XInput;

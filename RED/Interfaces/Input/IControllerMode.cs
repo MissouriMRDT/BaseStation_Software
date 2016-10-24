@@ -1,4 +1,4 @@
-﻿namespace RED.Interfaces
+﻿namespace RED.Interfaces.Input
 {
     public interface IControllerMode
     {

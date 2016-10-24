@@ -112,10 +112,10 @@
     <Compile Include="Contexts\MetadataSaveContext.cs" />
     <Compile Include="Contexts\TelemetryMetadataContext.cs" />
     <Compile Include="Images\ModernUIIcons.cs" />
-    <Compile Include="Interfaces\IControllerMode.cs" />
+    <Compile Include="Interfaces\Input\IControllerMode.cs" />
     <Compile Include="Interfaces\IIPAddressProvider.cs" />
     <Compile Include="Interfaces\IMetadata.cs" />
-    <Compile Include="Interfaces\IInputDevice.cs" />
+    <Compile Include="Interfaces\Input\IInputDevice.cs" />
     <Compile Include="Interfaces\INetworkEncoding.cs" />
     <Compile Include="Interfaces\INetworkTransportProtocol.cs" />
     <Compile Include="Interfaces\ISequenceNumberProvider.cs" />

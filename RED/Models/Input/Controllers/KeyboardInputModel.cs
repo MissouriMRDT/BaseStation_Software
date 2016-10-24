@@ -1,4 +1,4 @@
-﻿using RED.Interfaces;
+﻿using RED.Interfaces.Input;
 using System.Collections.ObjectModel;
 
 namespace RED.Models.Input.Controllers

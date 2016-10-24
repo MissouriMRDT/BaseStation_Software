@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RED.Interfaces
+namespace RED.Interfaces.Input
 {
     public interface IInputDevice
     {
