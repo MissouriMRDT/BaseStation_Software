@@ -1,12 +1,11 @@
-﻿namespace RED.ViewModels
-{
-    using Caliburn.Micro;
-    using Models;
-    using Interfaces;
-    using Modules;
-    using Network;
-    using Input;
+﻿using Caliburn.Micro;
+using RED.Models;
+using RED.ViewModels.Input;
+using RED.ViewModels.Modules;
+using RED.ViewModels.Network;
 
+namespace RED.ViewModels
+{
     public class ControlCenterViewModel : Screen
     {
         private readonly ControlCenterModel _model;

@@ -1,9 +1,9 @@
-﻿namespace RED
-{
-    using Caliburn.Micro;
-    using System.Windows;
-    using ViewModels;
+﻿using Caliburn.Micro;
+using RED.ViewModels;
+using System.Windows;
 
+namespace RED
+{
     public class RedBootstrapper : BootstrapperBase
     {
         public RedBootstrapper()

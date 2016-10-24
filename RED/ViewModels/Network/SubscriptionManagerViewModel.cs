@@ -1,13 +1,10 @@
 ﻿using RED.Addons;
 using RED.Interfaces.Network;
 using RED.Models.Network;
-using RED.ViewModels.Network;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RED.ViewModels.Network
 {

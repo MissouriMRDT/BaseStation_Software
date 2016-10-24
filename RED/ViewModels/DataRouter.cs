@@ -1,10 +1,10 @@
-﻿namespace RED.ViewModels
-{
-    using Caliburn.Micro;
-    using Interfaces;
-    using Models;
-    using System.Collections.Generic;
+﻿using Caliburn.Micro;
+using RED.Interfaces;
+using RED.Models;
+using System.Collections.Generic;
 
+namespace RED.ViewModels
+{
     public class DataRouter : PropertyChangedBase
     {
         private readonly DataRouterModel _model;

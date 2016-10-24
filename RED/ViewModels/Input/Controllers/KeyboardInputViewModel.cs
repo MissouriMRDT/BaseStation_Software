@@ -1,19 +1,15 @@
-﻿namespace RED.ViewModels.Input.Controllers
-{
-    using Annotations;
-    using Caliburn.Micro;
-    using Interfaces.Input;
-    using Models.Input.Controllers;
-    using ViewModels.Modules;
-    using SharpDX.XInput;
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Timers;
-    using System.Threading.Tasks;
-    using System.Windows.Input;
+﻿using Caliburn.Micro;
+using RED.Annotations;
+using RED.Interfaces.Input;
+using RED.Models.Input.Controllers;
+using RED.ViewModels.Modules;
+using System;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using System.Windows.Input;
 
+namespace RED.ViewModels.Input.Controllers
+{
     public class KeyboardInputViewModel : PropertyChangedBase, IInputDevice
     {
         private readonly KeyboardInputModel Model = new KeyboardInputModel();

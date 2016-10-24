@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Caliburn.Micro;
 using RED.Interfaces.Input;
 using RED.Models.Input;
 using RED.ViewModels.Input.Controllers;
-using Caliburn.Micro;
 
 namespace RED.ViewModels.Input
 {

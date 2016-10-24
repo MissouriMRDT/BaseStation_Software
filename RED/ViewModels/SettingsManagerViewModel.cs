@@ -1,13 +1,7 @@
 ﻿using Caliburn.Micro;
 using RED.Models;
-using RED.Models.Modules;
-using RED.ViewModels.Settings.Modules;
 using RED.ViewModels.Settings.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using RED.ViewModels.Settings.Modules;
 
 namespace RED.ViewModels
 {

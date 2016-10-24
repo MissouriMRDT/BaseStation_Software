@@ -1,10 +1,10 @@
-﻿namespace RED.ViewModels
-{
-    using Caliburn.Micro;
-    using System;
-    using System.Globalization;
-    using Models;
+﻿using Caliburn.Micro;
+using RED.Models;
+using System;
+using System.Globalization;
 
+namespace RED.ViewModels
+{
     public class ConsoleViewModel : PropertyChangedBase
     {
         private readonly ConsoleModel _model = new ConsoleModel();

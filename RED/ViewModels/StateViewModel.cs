@@ -1,11 +1,8 @@
-﻿namespace RED.ViewModels
-{
-    using Caliburn.Micro;
-    using Models;
-    using Properties;
-    using System;
-    using System.Linq;
+﻿using Caliburn.Micro;
+using RED.Models;
 
+namespace RED.ViewModels
+{
     public class StateViewModel : PropertyChangedBase
     {
         private readonly StateModel _model = new StateModel();

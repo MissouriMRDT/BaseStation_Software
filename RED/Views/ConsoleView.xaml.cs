@@ -1,4 +1,6 @@
-﻿namespace RED.Views
+﻿using System.Windows.Controls;
+
+namespace RED.Views
 {
     public partial class ConsoleView
     {
@@ -7,7 +9,7 @@
             InitializeComponent();
         }
 
-        private void ConsoleText_Changed(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        private void ConsoleText_Changed(object sender, TextChangedEventArgs e)
         {
             ConsoleTextBox.ScrollToEnd();
         }

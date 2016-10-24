@@ -1,12 +1,10 @@
-﻿namespace RED.Models
-{
-    using ViewModels;
-    using ViewModels.Modules;
-    using ViewModels.Network;
-    using ViewModels.Input;
-    using Interfaces;
-    using Modules;
+﻿using RED.ViewModels;
+using RED.ViewModels.Input;
+using RED.ViewModels.Modules;
+using RED.ViewModels.Network;
 
+namespace RED.Models
+{
     public class ControlCenterModel
     {
         internal SettingsManagerViewModel _settingsManager;
