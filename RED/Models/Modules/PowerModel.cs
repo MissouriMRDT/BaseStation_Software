@@ -1,6 +1,6 @@
 ﻿namespace RED.Models.Modules
 {
-    public class PowerModel
+    internal class PowerModel
     {
         internal float Motor1Current;
         internal float Motor2Current;

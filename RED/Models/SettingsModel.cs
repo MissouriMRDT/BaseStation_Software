@@ -3,7 +3,7 @@ using RED.ViewModels.Settings.Modules;
 
 namespace RED.Models
 {
-    public class SettingsManagerModel
+    internal class SettingsManagerModel
     {
         internal DriveSettingsViewModel drive;
         internal ScienceSettingsViewModel science;

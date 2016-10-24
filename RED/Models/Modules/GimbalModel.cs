@@ -1,6 +1,6 @@
 ﻿namespace RED.Models.Modules
 {
-    public class GimbalModel
+    internal class GimbalModel
     {
         internal int gimbalIndex;
         internal int speedLimit;

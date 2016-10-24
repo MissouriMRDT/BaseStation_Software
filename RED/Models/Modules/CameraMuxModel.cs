@@ -1,6 +1,6 @@
 ﻿namespace RED.Models.Modules
 {
-    public class CameraMuxModel
+    internal class CameraMuxModel
     {
         internal byte MuxIndex;
     }

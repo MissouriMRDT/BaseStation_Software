@@ -5,7 +5,7 @@ using RED.ViewModels.Network;
 
 namespace RED.Models
 {
-    public class ControlCenterModel
+    internal class ControlCenterModel
     {
         internal SettingsManagerViewModel _settingsManager;
 

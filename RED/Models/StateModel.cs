@@ -1,6 +1,6 @@
 ﻿namespace RED.Models
 {
-    public class StateModel
+    internal class StateModel
     {
         internal string _currentControlMode;
         internal bool _networkHasConnection = false;

@@ -2,7 +2,7 @@
 
 namespace RED.Models.Input
 {
-    public class InputManagerModel
+    internal class InputManagerModel
     {
         internal IInputDevice _input;
     }
