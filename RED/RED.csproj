@@ -113,12 +113,12 @@
     <Compile Include="Contexts\TelemetryMetadataContext.cs" />
     <Compile Include="Images\ModernUIIcons.cs" />
     <Compile Include="Interfaces\Input\IControllerMode.cs" />
-    <Compile Include="Interfaces\IIPAddressProvider.cs" />
+    <Compile Include="Interfaces\Network\IIPAddressProvider.cs" />
     <Compile Include="Interfaces\IMetadata.cs" />
     <Compile Include="Interfaces\Input\IInputDevice.cs" />
-    <Compile Include="Interfaces\INetworkEncoding.cs" />
-    <Compile Include="Interfaces\INetworkTransportProtocol.cs" />
-    <Compile Include="Interfaces\ISequenceNumberProvider.cs" />
+    <Compile Include="Interfaces\Network\INetworkEncoding.cs" />
+    <Compile Include="Interfaces\Network\INetworkTransportProtocol.cs" />
+    <Compile Include="Interfaces\Network\ISequenceNumberProvider.cs" />
     <Compile Include="Models\Modules\ArmControllerModeModel.cs" />
     <Compile Include="Models\Modules\CameraMuxModel.cs" />
     <Compile Include="Models\Modules\GimbalModel.cs" />

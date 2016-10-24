@@ -1,4 +1,4 @@
-﻿using RED.Interfaces;
+﻿using RED.Interfaces.Network;
 using System;
 using System.Collections.Generic;
 using System.IO;

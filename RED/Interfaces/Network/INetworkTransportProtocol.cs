@@ -5,7 +5,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RED.Interfaces
+namespace RED.Interfaces.Network
 {
     public interface INetworkTransportProtocol
     {

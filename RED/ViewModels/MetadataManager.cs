@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 
 namespace RED.ViewModels
 {
-    public class MetadataManager : IIPAddressProvider
+    public class MetadataManager : RED.Interfaces.Network.IIPAddressProvider
     {
         private readonly ControlCenterViewModel _controlCenter;
 

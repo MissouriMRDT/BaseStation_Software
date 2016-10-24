@@ -1,6 +1,6 @@
 ﻿using Caliburn.Micro;
 using RED.Models.Network;
-using RED.Interfaces;
+using RED.Interfaces.Network;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace RED.ViewModels.Network
 {
-    public class NetworkManagerViewModel : PropertyChangedBase, ISubscribe
+    public class NetworkManagerViewModel : PropertyChangedBase, RED.Interfaces.ISubscribe
     {
         private const ushort DestinationPort = 11000;
         private const bool defaultReliable = false;

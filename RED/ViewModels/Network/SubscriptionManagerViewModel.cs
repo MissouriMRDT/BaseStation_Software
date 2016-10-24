@@ -1,5 +1,5 @@
 ﻿using RED.Addons;
-using RED.Interfaces;
+using RED.Interfaces.Network;
 using RED.Models.Network;
 using RED.ViewModels.Network;
 using System;
