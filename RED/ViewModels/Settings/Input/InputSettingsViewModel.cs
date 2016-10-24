@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RED.Interfaces;
 
-namespace RED.ViewModels.Settings
+namespace RED.ViewModels.Settings.Input
 {
     public class InputSettingsViewModel : PropertyChangedBase
     {

@@ -161,10 +161,10 @@
     <Compile Include="ViewModels\Input\InputManagerViewModel.cs" />
     <Compile Include="ViewModels\Network\UDPEndpoint.cs" />
     <Compile Include="ViewModels\SettingsManagerViewModel.cs" />
-    <Compile Include="ViewModels\Settings\DriveSettingsViewModel.cs" />
-    <Compile Include="ViewModels\Settings\GPSSettingsViewModel.cs" />
-    <Compile Include="ViewModels\Settings\InputSettingsViewModel.cs" />
-    <Compile Include="ViewModels\Settings\ScienceSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Settings\Modules\DriveSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Settings\Modules\GPSSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Settings\Input\InputSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Settings\Modules\ScienceSettingsViewModel.cs" />
     <Compile Include="Views\ControlCenterView.xaml.cs">
       <DependentUpon>ControlCenterView.xaml</DependentUpon>
     </Compile>
@@ -201,16 +201,16 @@
     <Compile Include="Views\SettingsManagerView.xaml.cs">
       <DependentUpon>SettingsManagerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Settings\DriveSettingsView.xaml.cs">
+    <Compile Include="Views\Settings\Modules\DriveSettingsView.xaml.cs">
       <DependentUpon>DriveSettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Settings\GPSSettingsView.xaml.cs">
+    <Compile Include="Views\Settings\Modules\GPSSettingsView.xaml.cs">
       <DependentUpon>GPSSettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Settings\InputSettingsView.xaml.cs">
+    <Compile Include="Views\Settings\Input\InputSettingsView.xaml.cs">
       <DependentUpon>InputSettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Settings\ScienceSettingsView.xaml.cs">
+    <Compile Include="Views\Settings\Modules\ScienceSettingsView.xaml.cs">
       <DependentUpon>ScienceSettingsView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\ControlCenterView.xaml">
@@ -290,19 +290,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Settings\DriveSettingsView.xaml">
+    <Page Include="Views\Settings\Modules\DriveSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Settings\GPSSettingsView.xaml">
+    <Page Include="Views\Settings\Modules\GPSSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Settings\InputSettingsView.xaml">
+    <Page Include="Views\Settings\Input\InputSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Settings\ScienceSettingsView.xaml">
+    <Page Include="Views\Settings\Modules\ScienceSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

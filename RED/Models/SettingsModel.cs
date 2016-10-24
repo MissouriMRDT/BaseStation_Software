@@ -1,4 +1,5 @@
-﻿using RED.ViewModels.Settings;
+﻿using RED.ViewModels.Settings.Modules;
+using RED.ViewModels.Settings.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;

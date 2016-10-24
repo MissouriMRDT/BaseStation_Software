@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace RED.Views.Settings
+namespace RED.Views.Settings.Modules
 {
     /// <summary>
-    /// Interaction logic for ScienceSettingsView.xaml
+    /// Interaction logic for DriveSettingsView.xaml
     /// </summary>
-    public partial class ScienceSettingsView : UserControl
+    public partial class DriveSettingsView : UserControl
     {
-        public ScienceSettingsView()
+        public DriveSettingsView()
         {
             InitializeComponent();
         }

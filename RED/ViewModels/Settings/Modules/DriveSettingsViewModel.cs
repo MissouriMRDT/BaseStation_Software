@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RED.ViewModels.Settings
+namespace RED.ViewModels.Settings.Modules
 {
     public class DriveSettingsViewModel : PropertyChangedBase
     {

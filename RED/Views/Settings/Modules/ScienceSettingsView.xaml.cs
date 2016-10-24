@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace RED.Views.Settings
+namespace RED.Views.Settings.Modules
 {
     /// <summary>
-    /// Interaction logic for GPSSettingsView.xaml
+    /// Interaction logic for ScienceSettingsView.xaml
     /// </summary>
-    public partial class GPSSettingsView : UserControl
+    public partial class ScienceSettingsView : UserControl
     {
-        public GPSSettingsView()
+        public ScienceSettingsView()
         {
             InitializeComponent();
         }

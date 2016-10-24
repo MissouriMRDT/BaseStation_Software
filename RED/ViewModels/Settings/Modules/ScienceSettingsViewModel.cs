@@ -7,7 +7,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RED.ViewModels.Settings
+namespace RED.ViewModels.Settings.Modules
 {
     public class ScienceSettingsViewModel : PropertyChangedBase
     {
