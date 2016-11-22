@@ -72,9 +72,9 @@ namespace RED.ViewModels
             _model = new SettingsManagerModel();
             _controlCenter = cc;
 
-            Drive = new DriveSettingsViewModel(this, (Modules.DriveControllerModeViewModel)cc.IManager.Input.ControllerModes[0]);
+            Drive = new DriveSettingsViewModel(this, (Modules.DriveControllerModeViewModel)cc.InputManager.Input.ControllerModes[0]);
             Science = new ScienceSettingsViewModel(this, cc.Science);
-            Input = new InputSettingsViewModel(this, cc.IManager.Input);
+            Input = new InputSettingsViewModel(this, cc.InputManager.Input);
             GPS = new GPSSettingsViewModel(this, cc.GPS);
         }
 

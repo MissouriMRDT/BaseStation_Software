@@ -95,7 +95,7 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => NetworkManager);
             }
         }
-        public InputManagerViewModel IManager
+        public InputManagerViewModel InputManager
         {
             get
             {
@@ -104,7 +104,7 @@ namespace RED.ViewModels
             set
             {
                 _model._input = value;
-                NotifyOfPropertyChange(() => IManager);
+                NotifyOfPropertyChange(() => InputManager);
             }
         }
         public ScienceViewModel Science
@@ -210,28 +210,28 @@ namespace RED.ViewModels
         {
             get
             {
-                return (DriveControllerModeViewModel)IManager.Input.ControllerModes[0];
+                return (DriveControllerModeViewModel)InputManager.Input.ControllerModes[0];
             }
         }
         public ArmControllerModeViewModel ArmControllerMode
         {
             get
             {
-                return (ArmControllerModeViewModel)IManager.Input.ControllerModes[1];
+                return (ArmControllerModeViewModel)InputManager.Input.ControllerModes[1];
             }
         }
         public GimbalControllerModeViewModel GimbalControllerMode
         {
             get
             {
-                return (GimbalControllerModeViewModel)IManager.Input.ControllerModes[2];
+                return (GimbalControllerModeViewModel)InputManager.Input.ControllerModes[2];
             }
         }
         public GimbalControllerModeViewModel Gimbal2ControllerMode
         {
             get
             {
-                return (GimbalControllerModeViewModel)IManager.Input.ControllerModes[3];
+                return (GimbalControllerModeViewModel)InputManager.Input.ControllerModes[3];
             }
         }
 
@@ -248,7 +248,7 @@ namespace RED.ViewModels
             NetworkManager = new NetworkManagerViewModel(DataRouter, MetadataManager.Commands.ToArray(), Console, MetadataManager);
             SubscriptionManager = new SubscriptionManagerViewModel(MetadataManager.Telemetry.ToArray(), MetadataManager, NetworkManager);
             StateManager = new StateViewModel(SubscriptionManager);
-            IManager = new InputManagerViewModel(DataRouter, MetadataManager, Console, StateManager);
+            InputManager = new InputManagerViewModel(DataRouter, MetadataManager, Console, StateManager);
 
             Science = new ScienceViewModel(DataRouter, MetadataManager, Console);
             GPS = new GPSViewModel(DataRouter, MetadataManager);
@@ -261,7 +261,7 @@ namespace RED.ViewModels
 
             SettingsManager = new SettingsManagerViewModel(this);
 
-            IManager.Start();
+            InputManager.Start();
             //DataRouter.Send(100, new byte[] { 10, 20, 30, 40 });
             //DataRouter.Send(1, new byte[] { 2, 3, 4, 5 });
             //DataRouter.Send(101, new byte[] { 15, 25, 35, 45 });
