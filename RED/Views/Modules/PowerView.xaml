@@ -1,0 +1,119 @@
+﻿<UserControl x:Class="RED.Views.Modules.PowerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <StackPanel>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Row="0" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="0" />
+            <Button Grid.Row="0" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="0" />
+            <Label Grid.Row="0" Grid.Column="2">Motor1Current</Label>
+            <Label Grid.Row="0" Grid.Column="3" x:Name="Motor1Current" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
+            <Button Grid.Row="1" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="1" />
+            <Button Grid.Row="1" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="1" />
+            <Label Grid.Row="1" Grid.Column="2">Motor2Current</Label>
+            <Label Grid.Row="1" Grid.Column="3" x:Name="Motor2Current" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
+            <Button Grid.Row="2" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="2" />
+            <Button Grid.Row="2" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="2" />
+            <Label Grid.Row="2" Grid.Column="2">Motor3Current</Label>
+            <Label Grid.Row="2" Grid.Column="3" x:Name="Motor3Current" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
+            <Button Grid.Row="3" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="3" />
+            <Button Grid.Row="3" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="3" />
+            <Label Grid.Row="3" Grid.Column="2">Motor4Current</Label>
+            <Label Grid.Row="3" Grid.Column="3" x:Name="Motor4Current" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
+            <Button Grid.Row="4" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="4" />
+            <Button Grid.Row="4" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="4" />
+            <Label Grid.Row="4" Grid.Column="2">Motor5Current</Label>
+            <Label Grid.Row="4" Grid.Column="3" x:Name="Motor5Current" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
+            <Button Grid.Row="5" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="5" />
+            <Button Grid.Row="5" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="5" />
+            <Label Grid.Row="5" Grid.Column="2">Motor6Current</Label>
+            <Label Grid.Row="5" Grid.Column="3" x:Name="Motor6Current" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
+            <Button Grid.Row="6" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="8" />
+            <Button Grid.Row="6" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="8" />
+            <Label Grid.Row="6" Grid.Column="2">Bus5VCurrent</Label>
+            <Label Grid.Row="6" Grid.Column="3" x:Name="Bus5VCurrent" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
+            <Button Grid.Row="7" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="9" />
+            <Button Grid.Row="7" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="9" />
+            <Label Grid.Row="7" Grid.Column="2">Bus12VCurrent</Label>
+            <Label Grid.Row="7" Grid.Column="3" x:Name="Bus12VCurrent" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
+            <Label Grid.Row="8" Grid.Column="2">InputVoltage</Label>
+            <Label Grid.Row="8" Grid.Column="3" x:Name="InputVoltage" ContentStringFormat="{}{0:00.00} V" HorizontalContentAlignment="Right" />
+            <Label Grid.Row="9" Grid.Column="2">TotalPackCurrent</Label>
+            <Label Grid.Row="9" Grid.Column="3" x:Name="TotalPackCurrent" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
+        </Grid>
+        <UniformGrid Rows="1">
+            <Button Grid.Row="0" Grid.Column="0" Click="RebootButton_Click">Reboot</Button>
+            <Button Grid.Row="0" Grid.Column="1" Click="ShutDownButton_Click">Shut Down</Button>
+        </UniformGrid>
+        <Expander Header="Other">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Row="0" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="6" />
+                <Button Grid.Row="0" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="6" />
+                <Label Grid.Row="0" Grid.Column="2">Motor7Current</Label>
+                <Label Grid.Row="0" Grid.Column="3" x:Name="Motor7Current" />
+                <Button Grid.Row="1" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="7" />
+                <Button Grid.Row="1" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="7" />
+                <Label Grid.Row="1" Grid.Column="2">Motor8Current</Label>
+                <Label Grid.Row="1" Grid.Column="3" x:Name="Motor8Current" />
+                <Label Grid.Row="2" Grid.Column="2">Cell1Voltage</Label>
+                <Label Grid.Row="2" Grid.Column="3" x:Name="Cell1Voltage" />
+                <Label Grid.Row="3" Grid.Column="2">Cell2Voltage</Label>
+                <Label Grid.Row="3" Grid.Column="3" x:Name="Cell2Voltage" />
+                <Label Grid.Row="4" Grid.Column="2">Cell3Voltage</Label>
+                <Label Grid.Row="4" Grid.Column="3" x:Name="Cell3Voltage" />
+                <Label Grid.Row="5" Grid.Column="2">Cell4Voltage</Label>
+                <Label Grid.Row="5" Grid.Column="3" x:Name="Cell4Voltage" />
+                <Label Grid.Row="6" Grid.Column="2">Cell5Voltage</Label>
+                <Label Grid.Row="6" Grid.Column="3" x:Name="Cell5Voltage" />
+                <Label Grid.Row="7" Grid.Column="2">Cell6Voltage</Label>
+                <Label Grid.Row="7" Grid.Column="3" x:Name="Cell6Voltage" />
+                <Label Grid.Row="8" Grid.Column="2">Cell7Voltage</Label>
+                <Label Grid.Row="8" Grid.Column="3" x:Name="Cell7Voltage" />
+                <Label Grid.Row="9" Grid.Column="2">Cell8Voltage</Label>
+                <Label Grid.Row="9" Grid.Column="3" x:Name="Cell8Voltage" />
+                <Label Grid.Row="10" Grid.Column="2">TotalPackVoltage</Label>
+                <Label Grid.Row="10" Grid.Column="3" x:Name="TotalPackVoltage" />
+            </Grid>
+        </Expander>
+    </StackPanel>
+</UserControl>

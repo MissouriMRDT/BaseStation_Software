@@ -1,10 +1,11 @@
-﻿namespace RED.Models
-{
-    using ViewModels;
-    using ViewModels.ControlCenter;
-    using Interfaces;
+﻿using RED.ViewModels;
+using RED.ViewModels.Input;
+using RED.ViewModels.Modules;
+using RED.ViewModels.Network;
 
-    public class ControlCenterModel
+namespace RED.Models
+{
+    internal class ControlCenterModel
     {
         internal SettingsManagerViewModel _settingsManager;
 
@@ -19,7 +20,6 @@
         internal GPSViewModel _GPS;
         internal SensorViewModel _sensor;
         internal SensorCombinedViewModel _sensorCombined;
-        internal GimbalControllerModeViewModel _gimbalControllerMode;
         internal DropBaysViewModel _dropBays;
         internal PowerViewModel _power;
         internal CameraMuxViewModel _cameraMux;

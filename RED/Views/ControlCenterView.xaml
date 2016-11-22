@@ -4,8 +4,6 @@
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:behaviours="clr-namespace:MahApps.Metro.Behaviours;assembly=MahApps.Metro"
-        xmlns:controlCenterViewModels="clr-namespace:RED.ViewModels.ControlCenter"
-        xmlns:controlCenter="clr-namespace:RED.Views.ControlCenter"
         xmlns:contexts="clr-namespace:RED.Contexts"
         xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
         Name="Shell" MinHeight="640" MinWidth="1024" Height="640" Width="1024" 

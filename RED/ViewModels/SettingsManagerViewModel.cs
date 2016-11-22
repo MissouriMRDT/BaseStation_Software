@@ -1,11 +1,7 @@
 ﻿using Caliburn.Micro;
 using RED.Models;
-using RED.ViewModels.Settings;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using RED.ViewModels.Settings.Input;
+using RED.ViewModels.Settings.Modules;
 
 namespace RED.ViewModels
 {
@@ -76,9 +72,9 @@ namespace RED.ViewModels
             _model = new SettingsManagerModel();
             _controlCenter = cc;
 
-            Drive = new DriveSettingsViewModel(this, (ViewModels.ControlCenter.DriveControllerModeViewModel)cc.IManager.Input.ControllerModes[0]);
+            Drive = new DriveSettingsViewModel(this, (Modules.DriveControllerModeViewModel)cc.InputManager.Input.ControllerModes[0]);
             Science = new ScienceSettingsViewModel(this, cc.Science);
-            Input = new InputSettingsViewModel(this, cc.IManager.Input);
+            Input = new InputSettingsViewModel(this, cc.InputManager.Input);
             GPS = new GPSSettingsViewModel(this, cc.GPS);
         }
 
