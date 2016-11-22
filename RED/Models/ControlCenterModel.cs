@@ -19,7 +19,6 @@ namespace RED.Models
         internal ScienceViewModel _science;
         internal GPSViewModel _GPS;
         internal SensorViewModel _sensor;
-        internal SensorCombinedViewModel _sensorCombined;
         internal DropBaysViewModel _dropBays;
         internal PowerViewModel _power;
         internal CameraMuxViewModel _cameraMux;

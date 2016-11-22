@@ -143,19 +143,6 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => Sensor);
             }
         }
-        public SensorCombinedViewModel SensorCombined
-        {
-            get
-            {
-                return _model._sensorCombined;
-            }
-            set
-            {
-                _model._sensorCombined = value;
-                NotifyOfPropertyChange(() => SensorCombined);
-
-            }
-        }
         public DropBaysViewModel DropBays
         {
             get
@@ -253,7 +240,6 @@ namespace RED.ViewModels
             Science = new ScienceViewModel(DataRouter, MetadataManager, Console);
             GPS = new GPSViewModel(DataRouter, MetadataManager);
             Sensor = new SensorViewModel(DataRouter, MetadataManager, Console);
-            SensorCombined = new SensorCombinedViewModel(DataRouter, MetadataManager);
             DropBays = new DropBaysViewModel(DataRouter, MetadataManager);
             Power = new PowerViewModel(DataRouter, MetadataManager, Console);
             CameraMux = new CameraMuxViewModel(DataRouter, MetadataManager);

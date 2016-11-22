@@ -156,7 +156,6 @@
     <Compile Include="ViewModels\MetadataManager.cs" />
     <Compile Include="ViewModels\Network\RoverProtocol.cs" />
     <Compile Include="ViewModels\Modules\ScienceViewModel.cs" />
-    <Compile Include="ViewModels\Modules\SensorCombinedViewModel.cs" />
     <Compile Include="ViewModels\Modules\SensorViewModel.cs" />
     <Compile Include="ViewModels\Network\SequenceNumberManager.cs" />
     <Compile Include="ViewModels\Network\SubscriptionManagerViewModel.cs" />
