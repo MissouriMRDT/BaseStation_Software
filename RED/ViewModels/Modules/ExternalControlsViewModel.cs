@@ -1,8 +1,9 @@
-﻿using RED.Interfaces;
+﻿using Caliburn.Micro;
+using RED.Interfaces;
 
 namespace RED.ViewModels.Modules
 {
-    public class ExternalControlsViewModel
+    public class ExternalControlsViewModel : PropertyChangedBase
     {
         private IDataRouter _router;
         private IDataIdResolver _idResolver;
