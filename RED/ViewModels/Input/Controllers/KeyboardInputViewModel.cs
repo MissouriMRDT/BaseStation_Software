@@ -1,5 +1,4 @@
 ﻿using Caliburn.Micro;
-using RED.Annotations;
 using RED.Interfaces;
 using RED.Interfaces.Input;
 using RED.Models.Input.Controllers;
@@ -18,7 +17,6 @@ namespace RED.ViewModels.Input.Controllers
         private IDataIdResolver _idResolver;
         private ILogger _log;
         private StateViewModel _state;
-        [CanBeNull]
 
         public int SerialReadSpeed
         {

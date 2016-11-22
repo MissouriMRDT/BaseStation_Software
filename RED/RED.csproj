@@ -254,7 +254,6 @@
     </Page>
     <Compile Include="Models\ConsoleModel.cs" />
     <Compile Include="Models\StateModel.cs" />
-    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>

@@ -1,5 +1,4 @@
 ﻿using Caliburn.Micro;
-using RED.Annotations;
 using RED.Interfaces;
 using RED.Interfaces.Input;
 using RED.Models.Input.Controllers;
@@ -17,7 +16,6 @@ namespace RED.ViewModels.Input.Controllers
         private IDataRouter _router;
         private IDataIdResolver _idResolver;
         private StateViewModel _state;
-        [CanBeNull]
         public readonly Controller ControllerOne = new Controller(UserIndex.One);
 
         public int SerialReadSpeed
