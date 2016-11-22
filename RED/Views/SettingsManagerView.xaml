@@ -7,23 +7,15 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <controls:MetroAnimatedTabControl TabStripPlacement="Left">
-        <TabItem Content="General Settings are not implemented yet" Header="General" />
-        <TabItem Header="Networking">
-            <ContentControl x:Name="Network" />
-        </TabItem>
-        <TabItem Content="Data Router Settings are not implemented yet" Header="Data Router" />
-        <TabItem Content="Metadata Settings are not implemented yet" Header="Metadata" />
         <TabItem Header="Controller">
             <ContentControl x:Name="Input" />
         </TabItem>
         <TabItem Header="Drive">
             <ContentControl x:Name="Drive" />
         </TabItem>
-        <TabItem Content="Modules Settings are not implemented yet" Header="Modules" />
         <TabItem Header="GPS">
             <ContentControl x:Name="GPS" />
         </TabItem>
-        <TabItem Content="Arm Settings are not implemented yet" Header="Arm" />
         <TabItem Header="Science">
             <ContentControl x:Name="Science" />
         </TabItem>
