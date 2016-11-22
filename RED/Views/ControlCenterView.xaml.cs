@@ -1,11 +1,9 @@
-﻿namespace RED.Views
-{
-    using System.Windows;
-    using ControlCenter;
-    using ViewModels;
-    using MahApps.Metro.Controls;
-    using MahApps.Metro.Controls.Dialogs;
+﻿using MahApps.Metro.Controls;
+using RED.ViewModels;
+using System.Windows;
 
+namespace RED.Views
+{
     public partial class ControlCenterView
     {
         public ControlCenterView()

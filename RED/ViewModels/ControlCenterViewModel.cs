@@ -1,10 +1,11 @@
-﻿namespace RED.ViewModels
-{
-    using Caliburn.Micro;
-    using ControlCenter;
-    using Models;
-    using Interfaces;
+﻿using Caliburn.Micro;
+using RED.Models;
+using RED.ViewModels.Input;
+using RED.ViewModels.Modules;
+using RED.ViewModels.Network;
 
+namespace RED.ViewModels
+{
     public class ControlCenterViewModel : Screen
     {
         private readonly ControlCenterModel _model;
@@ -94,7 +95,7 @@
                 NotifyOfPropertyChange(() => NetworkManager);
             }
         }
-        public InputManagerViewModel IManager
+        public InputManagerViewModel InputManager
         {
             get
             {
@@ -103,7 +104,7 @@
             set
             {
                 _model._input = value;
-                NotifyOfPropertyChange(() => IManager);
+                NotifyOfPropertyChange(() => InputManager);
             }
         }
         public ScienceViewModel Science
@@ -140,19 +141,6 @@
             {
                 _model._sensor = value;
                 NotifyOfPropertyChange(() => Sensor);
-            }
-        }
-        public SensorCombinedViewModel SensorCombined
-        {
-            get
-            {
-                return _model._sensorCombined;
-            }
-            set
-            {
-                _model._sensorCombined = value;
-                NotifyOfPropertyChange(() => SensorCombined);
-
             }
         }
         public DropBaysViewModel DropBays
@@ -209,28 +197,28 @@
         {
             get
             {
-                return (DriveControllerModeViewModel)IManager.Input.ControllerModes[0];
+                return (DriveControllerModeViewModel)InputManager.Input.ControllerModes[0];
             }
         }
         public ArmControllerModeViewModel ArmControllerMode
         {
             get
             {
-                return (ArmControllerModeViewModel)IManager.Input.ControllerModes[1];
+                return (ArmControllerModeViewModel)InputManager.Input.ControllerModes[1];
             }
         }
         public GimbalControllerModeViewModel GimbalControllerMode
         {
             get
             {
-                return (GimbalControllerModeViewModel)IManager.Input.ControllerModes[2];
+                return (GimbalControllerModeViewModel)InputManager.Input.ControllerModes[2];
             }
         }
         public GimbalControllerModeViewModel Gimbal2ControllerMode
         {
             get
             {
-                return (GimbalControllerModeViewModel)IManager.Input.ControllerModes[3];
+                return (GimbalControllerModeViewModel)InputManager.Input.ControllerModes[3];
             }
         }
 
@@ -239,26 +227,27 @@
             base.DisplayName = "Rover Engagement Display";
             _model = new ControlCenterModel();
 
-            StateManager = new StateViewModel(this);
             Console = new ConsoleViewModel();
             DataRouter = new DataRouter();
-            MetadataManager = new MetadataManager(this);
+            MetadataManager = new MetadataManager(Console);
             MetadataManager.AddFromFile("NoSyncMetadata.xml");
-            IManager = new InputManagerViewModel(this);
-            NetworkManager = new NetworkManagerViewModel(this);
-            SubscriptionManager = new SubscriptionManagerViewModel(this);
-            Science = new ScienceViewModel(this);
-            GPS = new GPSViewModel(this);
-            Sensor = new SensorViewModel(this);
-            SensorCombined = new SensorCombinedViewModel(this);
-            DropBays = new DropBaysViewModel(this);
-            Power = new PowerViewModel(this);
-            CameraMux = new CameraMuxViewModel(this);
-            ExternalControls = new ExternalControlsViewModel(this);
+
+            NetworkManager = new NetworkManagerViewModel(DataRouter, MetadataManager.Commands.ToArray(), Console, MetadataManager);
+            SubscriptionManager = new SubscriptionManagerViewModel(MetadataManager.Telemetry.ToArray(), MetadataManager, NetworkManager);
+            StateManager = new StateViewModel(SubscriptionManager);
+            InputManager = new InputManagerViewModel(DataRouter, MetadataManager, Console, StateManager);
+
+            Science = new ScienceViewModel(DataRouter, MetadataManager, Console);
+            GPS = new GPSViewModel(DataRouter, MetadataManager);
+            Sensor = new SensorViewModel(DataRouter, MetadataManager, Console);
+            DropBays = new DropBaysViewModel(DataRouter, MetadataManager);
+            Power = new PowerViewModel(DataRouter, MetadataManager, Console);
+            CameraMux = new CameraMuxViewModel(DataRouter, MetadataManager);
+            ExternalControls = new ExternalControlsViewModel(DataRouter, MetadataManager);
 
             SettingsManager = new SettingsManagerViewModel(this);
 
-            IManager.Start();
+            InputManager.Start();
             //DataRouter.Send(100, new byte[] { 10, 20, 30, 40 });
             //DataRouter.Send(1, new byte[] { 2, 3, 4, 5 });
             //DataRouter.Send(101, new byte[] { 15, 25, 35, 45 });

@@ -1,13 +1,9 @@
-﻿using RED.ViewModels.Settings;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using RED.ViewModels.Settings.Input;
+using RED.ViewModels.Settings.Modules;
 
 namespace RED.Models
 {
-    public class SettingsManagerModel
+    internal class SettingsManagerModel
     {
         internal DriveSettingsViewModel drive;
         internal ScienceSettingsViewModel science;

@@ -112,177 +112,178 @@
     <Compile Include="Contexts\MetadataSaveContext.cs" />
     <Compile Include="Contexts\TelemetryMetadataContext.cs" />
     <Compile Include="Images\ModernUIIcons.cs" />
-    <Compile Include="Interfaces\IControllerMode.cs" />
-    <Compile Include="Interfaces\IIPAddressProvider.cs" />
+    <Compile Include="Interfaces\IDataIdResolver.cs" />
+    <Compile Include="Interfaces\ILogger.cs" />
+    <Compile Include="Interfaces\Input\IControllerMode.cs" />
+    <Compile Include="Interfaces\Network\IIPAddressProvider.cs" />
     <Compile Include="Interfaces\IMetadata.cs" />
-    <Compile Include="Interfaces\IInputDevice.cs" />
-    <Compile Include="Interfaces\INetworkEncoding.cs" />
-    <Compile Include="Interfaces\INetworkTransportProtocol.cs" />
-    <Compile Include="Interfaces\ISequenceNumberProvider.cs" />
-    <Compile Include="Models\ArmControllerModeModel.cs" />
-    <Compile Include="Models\CameraMuxModel.cs" />
-    <Compile Include="Models\GimbalModel.cs" />
-    <Compile Include="Models\InputManagerModel.cs" />
+    <Compile Include="Interfaces\Input\IInputDevice.cs" />
+    <Compile Include="Interfaces\Network\INetworkEncoding.cs" />
+    <Compile Include="Interfaces\Network\INetworkTransportProtocol.cs" />
+    <Compile Include="Interfaces\Network\ISequenceNumberProvider.cs" />
+    <Compile Include="Models\Modules\ArmControllerModeModel.cs" />
+    <Compile Include="Models\Modules\CameraMuxModel.cs" />
+    <Compile Include="Models\Modules\GimbalModel.cs" />
+    <Compile Include="Models\Input\InputManagerModel.cs" />
     <Compile Include="Models\DataRouterModel.cs" />
-    <Compile Include="Models\DriveControllerModeModel.cs" />
-    <Compile Include="Models\NetworkManagerModel.cs" />
-    <Compile Include="Models\PowerModel.cs" />
-    <Compile Include="Models\ScienceModel.cs" />
-    <Compile Include="Models\GPSModel.cs" />
-    <Compile Include="Models\SensorModel.cs" />
+    <Compile Include="Models\Modules\DriveControllerModeModel.cs" />
+    <Compile Include="Models\Network\NetworkManagerModel.cs" />
+    <Compile Include="Models\Modules\PowerModel.cs" />
+    <Compile Include="Models\Modules\ScienceModel.cs" />
+    <Compile Include="Models\Modules\GPSModel.cs" />
+    <Compile Include="Models\Modules\SensorModel.cs" />
     <Compile Include="Models\SettingsModel.cs" />
-    <Compile Include="Models\SubscriptionManagerModel.cs" />
-    <Compile Include="Models\KeyboardInputModel.cs" />
+    <Compile Include="Models\Network\SubscriptionManagerModel.cs" />
+    <Compile Include="Models\Input\Controllers\KeyboardInputModel.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="Models\XboxControllerInputModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\ArmControllerModeViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\CameraMuxViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\ExternalControlsViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\GimbalControllerModeViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\DropBaysViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\NetworkManagerViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\DataRouter.cs" />
+    <Compile Include="Models\Input\Controllers\XboxControllerInputModel.cs" />
+    <Compile Include="Interfaces\IDataRouter.cs" />
+    <Compile Include="ViewModels\Modules\ArmControllerModeViewModel.cs" />
+    <Compile Include="ViewModels\Modules\CameraMuxViewModel.cs" />
+    <Compile Include="ViewModels\Modules\ExternalControlsViewModel.cs" />
+    <Compile Include="ViewModels\Modules\GimbalControllerModeViewModel.cs" />
+    <Compile Include="ViewModels\Modules\DropBaysViewModel.cs" />
+    <Compile Include="ViewModels\Network\NetworkManagerViewModel.cs" />
+    <Compile Include="ViewModels\DataRouter.cs" />
     <Compile Include="Interfaces\ISubscribe.cs" />
     <Compile Include="Models\ControlCenterModel.cs" />
     <Compile Include="RedBootstrapper.cs" />
-    <Compile Include="ViewModels\ControlCenter\DriveControllerModeViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\GPSViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\KeyboardInputViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\PowerViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\XboxControllerInputViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\MetadataManager.cs" />
-    <Compile Include="ViewModels\ControlCenter\RoverProtocol.cs" />
-    <Compile Include="ViewModels\ControlCenter\ScienceViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\SensorCombinedViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\SensorViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\SequenceNumberManager.cs" />
-    <Compile Include="ViewModels\ControlCenter\SubscriptionManagerViewModel.cs" />
+    <Compile Include="ViewModels\Modules\DriveControllerModeViewModel.cs" />
+    <Compile Include="ViewModels\Modules\GPSViewModel.cs" />
+    <Compile Include="ViewModels\Input\Controllers\KeyboardInputViewModel.cs" />
+    <Compile Include="ViewModels\Modules\PowerViewModel.cs" />
+    <Compile Include="ViewModels\Input\Controllers\XboxControllerInputViewModel.cs" />
+    <Compile Include="ViewModels\MetadataManager.cs" />
+    <Compile Include="ViewModels\Network\RoverProtocol.cs" />
+    <Compile Include="ViewModels\Modules\ScienceViewModel.cs" />
+    <Compile Include="ViewModels\Modules\SensorViewModel.cs" />
+    <Compile Include="ViewModels\Network\SequenceNumberManager.cs" />
+    <Compile Include="ViewModels\Network\SubscriptionManagerViewModel.cs" />
     <Compile Include="ViewModels\ControlCenterViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\InputManagerViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\UDPEndpoint.cs" />
+    <Compile Include="ViewModels\Input\InputManagerViewModel.cs" />
+    <Compile Include="ViewModels\Network\UDPEndpoint.cs" />
     <Compile Include="ViewModels\SettingsManagerViewModel.cs" />
-    <Compile Include="ViewModels\Settings\DriveSettingsViewModel.cs" />
-    <Compile Include="ViewModels\Settings\GPSSettingsViewModel.cs" />
-    <Compile Include="ViewModels\Settings\InputSettingsViewModel.cs" />
-    <Compile Include="ViewModels\Settings\ScienceSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Settings\Modules\DriveSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Settings\Modules\GPSSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Settings\Input\InputSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Settings\Modules\ScienceSettingsViewModel.cs" />
     <Compile Include="Views\ControlCenterView.xaml.cs">
       <DependentUpon>ControlCenterView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ControlCenter\ArmControllerModeView.xaml.cs">
+    <Compile Include="Views\Modules\ArmControllerModeView.xaml.cs">
       <DependentUpon>ArmControllerModeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ControlCenter\CameraMuxView.xaml.cs">
+    <Compile Include="Views\Modules\CameraMuxView.xaml.cs">
       <DependentUpon>CameraMuxView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ControlCenter\DriveControllerModeView.xaml.cs">
+    <Compile Include="Views\Modules\DriveControllerModeView.xaml.cs">
       <DependentUpon>DriveControllerModeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ControlCenter\ExternalControlsView.xaml.cs">
+    <Compile Include="Views\Modules\ExternalControlsView.xaml.cs">
       <DependentUpon>ExternalControlsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ControlCenter\GimbalControllerModeView.xaml.cs">
+    <Compile Include="Views\Modules\GimbalControllerModeView.xaml.cs">
       <DependentUpon>GimbalControllerModeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ControlCenter\DropBaysView.xaml.cs">
+    <Compile Include="Views\Modules\DropBaysView.xaml.cs">
       <DependentUpon>DropBaysView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ControlCenter\PowerView.xaml.cs">
+    <Compile Include="Views\Modules\PowerView.xaml.cs">
       <DependentUpon>PowerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ControlCenter\ScienceView.xaml.cs">
+    <Compile Include="Views\Modules\ScienceView.xaml.cs">
       <DependentUpon>ScienceView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ControlCenter\GPSView.xaml.cs">
+    <Compile Include="Views\Modules\GPSView.xaml.cs">
       <DependentUpon>GPSView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ControlCenter\SensorView.xaml.cs">
+    <Compile Include="Views\Modules\SensorView.xaml.cs">
       <DependentUpon>SensorView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsManagerView.xaml.cs">
       <DependentUpon>SettingsManagerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Settings\DriveSettingsView.xaml.cs">
+    <Compile Include="Views\Settings\Modules\DriveSettingsView.xaml.cs">
       <DependentUpon>DriveSettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Settings\GPSSettingsView.xaml.cs">
+    <Compile Include="Views\Settings\Modules\GPSSettingsView.xaml.cs">
       <DependentUpon>GPSSettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Settings\InputSettingsView.xaml.cs">
+    <Compile Include="Views\Settings\Input\InputSettingsView.xaml.cs">
       <DependentUpon>InputSettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Settings\ScienceSettingsView.xaml.cs">
+    <Compile Include="Views\Settings\Modules\ScienceSettingsView.xaml.cs">
       <DependentUpon>ScienceSettingsView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\ControlCenterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ControlCenter\ArmControllerModeView.xaml">
+    <Page Include="Views\Modules\ArmControllerModeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ControlCenter\CameraMuxView.xaml">
+    <Page Include="Views\Modules\CameraMuxView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ControlCenter\DriveControllerModeView.xaml">
+    <Page Include="Views\Modules\DriveControllerModeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ControlCenter\ExternalControlsView.xaml">
+    <Page Include="Views\Modules\ExternalControlsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ControlCenter\GimbalControllerModeView.xaml">
+    <Page Include="Views\Modules\GimbalControllerModeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ControlCenter\DropBaysView.xaml">
+    <Page Include="Views\Modules\DropBaysView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ControlCenter\GPSView.xaml">
+    <Page Include="Views\Modules\GPSView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ControlCenter\ConsoleView.xaml">
+    <Page Include="Views\ConsoleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Compile Include="Models\ConsoleModel.cs" />
     <Compile Include="Models\StateModel.cs" />
-    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\ControlCenter\ConsoleViewModel.cs" />
-    <Compile Include="ViewModels\ControlCenter\StateViewModel.cs" />
-    <Compile Include="Views\ControlCenter\ConsoleView.xaml.cs">
+    <Compile Include="ViewModels\ConsoleViewModel.cs" />
+    <Compile Include="ViewModels\StateViewModel.cs" />
+    <Compile Include="Views\ConsoleView.xaml.cs">
       <DependentUpon>ConsoleView.xaml</DependentUpon>
     </Compile>
     <!--<Page Include="Views\Modules\ConsoleModuleView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>-->
-    <Page Include="Views\ControlCenter\PowerView.xaml">
+    <Page Include="Views\Modules\PowerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ControlCenter\ScienceView.xaml">
+    <Page Include="Views\Modules\ScienceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ControlCenter\SensorView.xaml">
+    <Page Include="Views\Modules\SensorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ControlCenter\StateView.xaml">
+    <Page Include="Views\StateView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Views\ControlCenter\StateView.xaml.cs">
+    <Compile Include="Views\StateView.xaml.cs">
       <DependentUpon>StateView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -290,19 +291,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Settings\DriveSettingsView.xaml">
+    <Page Include="Views\Settings\Modules\DriveSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Settings\GPSSettingsView.xaml">
+    <Page Include="Views\Settings\Modules\GPSSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Settings\InputSettingsView.xaml">
+    <Page Include="Views\Settings\Input\InputSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Settings\ScienceSettingsView.xaml">
+    <Page Include="Views\Settings\Modules\ScienceSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -337,6 +338,7 @@
   <ItemGroup>
     <Content Include="Images\favicon.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\SharpDX.2.6.3\build\SharpDX.targets" Condition="Exists('..\packages\SharpDX.2.6.3\build\SharpDX.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
