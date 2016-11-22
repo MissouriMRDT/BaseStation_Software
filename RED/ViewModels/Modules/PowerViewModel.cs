@@ -7,8 +7,10 @@ namespace RED.ViewModels.Modules
 {
     public class PowerViewModel : PropertyChangedBase, ISubscribe
     {
-        private ControlCenterViewModel _cc;
         private PowerModel _model;
+        private IDataRouter _router;
+        private IDataIdResolver _idResolver;
+        private ILogger _log;
 
         public float Motor1Current
         {
@@ -264,39 +266,41 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public PowerViewModel(ControlCenterViewModel cc)
+        public PowerViewModel(IDataRouter router, IDataIdResolver idResolver, ILogger log)
         {
-            _cc = cc;
             _model = new PowerModel();
+            _router = router;
+            _idResolver = idResolver;
+            _log = log;
 
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("GPSQuality"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Motor1Current"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Motor2Current"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Motor3Current"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Motor4Current"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Motor5Current"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Motor6Current"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Motor7Current"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Motor8Current"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Bus5VCurrent"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Bus12VCurrent"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("InputVoltage"));
+            _router.Subscribe(this, _idResolver.GetId("GPSQuality"));
+            _router.Subscribe(this, _idResolver.GetId("Motor1Current"));
+            _router.Subscribe(this, _idResolver.GetId("Motor2Current"));
+            _router.Subscribe(this, _idResolver.GetId("Motor3Current"));
+            _router.Subscribe(this, _idResolver.GetId("Motor4Current"));
+            _router.Subscribe(this, _idResolver.GetId("Motor5Current"));
+            _router.Subscribe(this, _idResolver.GetId("Motor6Current"));
+            _router.Subscribe(this, _idResolver.GetId("Motor7Current"));
+            _router.Subscribe(this, _idResolver.GetId("Motor8Current"));
+            _router.Subscribe(this, _idResolver.GetId("Bus5VCurrent"));
+            _router.Subscribe(this, _idResolver.GetId("Bus12VCurrent"));
+            _router.Subscribe(this, _idResolver.GetId("InputVoltage"));
 
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Cell1Voltage"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Cell2Voltage"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Cell3Voltage"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Cell4Voltage"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Cell5Voltage"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Cell6Voltage"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Cell7Voltage"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Cell8Voltage"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("TotalPackCurrent"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("TotalPackVoltage"));
+            _router.Subscribe(this, _idResolver.GetId("Cell1Voltage"));
+            _router.Subscribe(this, _idResolver.GetId("Cell2Voltage"));
+            _router.Subscribe(this, _idResolver.GetId("Cell3Voltage"));
+            _router.Subscribe(this, _idResolver.GetId("Cell4Voltage"));
+            _router.Subscribe(this, _idResolver.GetId("Cell5Voltage"));
+            _router.Subscribe(this, _idResolver.GetId("Cell6Voltage"));
+            _router.Subscribe(this, _idResolver.GetId("Cell7Voltage"));
+            _router.Subscribe(this, _idResolver.GetId("Cell8Voltage"));
+            _router.Subscribe(this, _idResolver.GetId("TotalPackCurrent"));
+            _router.Subscribe(this, _idResolver.GetId("TotalPackVoltage"));
         }
 
         public void ReceiveFromRouter(ushort dataId, byte[] data)
         {
-            switch (_cc.MetadataManager.GetTelemetry(dataId).Name)
+            switch (_idResolver.GetName(dataId))
             {
                 case "Motor1Current": Motor1Current = BitConverter.ToSingle(data, 0); break;
                 case "Motor2Current": Motor2Current = BitConverter.ToSingle(data, 0); break;
@@ -322,27 +326,27 @@ namespace RED.ViewModels.Modules
                 case "TotalPackVoltage": TotalPackVoltage = BitConverter.ToSingle(data, 0); break;
 
                 case "PowerBusOverCurrentNotification":
-                    _cc.Console.WriteToConsole("Overcurrent notification from Powerboard from Bus Index " + data[0].ToString());
+                    _log.Log("Overcurrent notification from Powerboard from Bus Index " + data[0].ToString());
                     break;
             }
         }
 
         public void RebootRover()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("BMSReboot"), new byte[0]);
+            _router.Send(_idResolver.GetId("BMSReboot"), new byte[0]);
         }
         public void EStopRover()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("BMSStop"), new byte[0]);
+            _router.Send(_idResolver.GetId("BMSStop"), new byte[0]);
         }
 
         public void EnableBus(byte index)
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("PowerBusEnable"), index);
+            _router.Send(_idResolver.GetId("PowerBusEnable"), index);
         }
         public void DisableBus(byte index)
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("PowerBusDisable"), index);
+            _router.Send(_idResolver.GetId("PowerBusDisable"), index);
         }
     }
 }

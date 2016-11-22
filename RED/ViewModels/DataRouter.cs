@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace RED.ViewModels
 {
-    public class DataRouter : PropertyChangedBase
+    public class DataRouter : PropertyChangedBase, IDataRouter
     {
         private readonly DataRouterModel _model;
 

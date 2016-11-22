@@ -1,12 +1,13 @@
 ﻿using Caliburn.Micro;
 using RED.Models;
+using RED.ViewModels.Network;
 
 namespace RED.ViewModels
 {
     public class StateViewModel : PropertyChangedBase
     {
         private readonly StateModel _model = new StateModel();
-        private readonly ControlCenterViewModel _controlCenter;
+        private readonly SubscriptionManagerViewModel _subscriptionManager;
 
         public string Version
         {
@@ -68,15 +69,15 @@ namespace RED.ViewModels
             }
         }
 
-        public StateViewModel(ControlCenterViewModel controlCenter)
+        public StateViewModel(SubscriptionManagerViewModel subscriptionManager)
         {
-            _controlCenter = controlCenter;
+            _subscriptionManager = subscriptionManager;
             CurrentControlMode = "";
         }
 
         public void ResubscribeAll()
         {
-            _controlCenter.SubscriptionManager.ResubscribeAll();
+            _subscriptionManager.ResubscribeAll();
         }
     }
 }

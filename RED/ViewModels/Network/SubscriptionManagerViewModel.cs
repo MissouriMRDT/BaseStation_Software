@@ -1,4 +1,6 @@
 ﻿using RED.Addons;
+using RED.Contexts;
+using RED.Interfaces;
 using RED.Interfaces.Network;
 using RED.Models.Network;
 using System;
@@ -14,8 +16,8 @@ namespace RED.ViewModels.Network
         public const byte UnSubscribeDataId = 4;
 
         private SubscriptionManagerModel _model;
-        private ControlCenterViewModel _cc;
-        private IIPAddressProvider ipProvider;
+        private IIPAddressProvider _ipProvider;
+        private NetworkManagerViewModel _networkManager;
 
         public Dictionary<ushort, SubscriptionRecord> Subscriptions
         {
@@ -25,34 +27,34 @@ namespace RED.ViewModels.Network
             }
         }
 
-        public SubscriptionManagerViewModel(ControlCenterViewModel cc)
+        public SubscriptionManagerViewModel(TelemetryMetadataContext[] telemetry, IIPAddressProvider ipProvider, NetworkManagerViewModel networkManager)
         {
             _model = new SubscriptionManagerModel();
-            _cc = cc;
-            ipProvider = _cc.MetadataManager;
+            _ipProvider = ipProvider;
+            _networkManager = networkManager;
 
-            foreach (var telemetry in _cc.MetadataManager.Telemetry)
-                Subscribe(telemetry.Id);
+            foreach (var t in telemetry)
+                Subscribe(t.Id);
         }
 
         public void Subscribe(ushort dataId)
         {
-            var ip = ipProvider.GetIPAddress(dataId);
-            _cc.NetworkManager.SendPacket(SubscriptionDataId, BitConverter.GetBytes(dataId), ip, false);
+            var ip = _ipProvider.GetIPAddress(dataId);
+            _networkManager.SendPacket(SubscriptionDataId, BitConverter.GetBytes(dataId), ip, false);
             Subscriptions.Add(dataId, new SubscriptionRecord(SubscriptionStatus.Subscribed, ip, DateTime.Now));
         }
 
         public void Unsubscribe(ushort dataId)
         {
-            _cc.NetworkManager.SendPacket(UnSubscribeDataId, BitConverter.GetBytes(dataId), Subscriptions[dataId].HostIP, false);
+            _networkManager.SendPacket(UnSubscribeDataId, BitConverter.GetBytes(dataId), Subscriptions[dataId].HostIP, false);
             Subscriptions[dataId].Status = SubscriptionStatus.Unsubscribed;
             Subscriptions[dataId].Timestamp = DateTime.Now;
         }
 
         public void Resubscribe(ushort dataId)
         {
-            var ip = ipProvider.GetIPAddress(dataId);
-            _cc.NetworkManager.SendPacket(SubscriptionDataId, BitConverter.GetBytes(dataId), ip, false);
+            var ip = _ipProvider.GetIPAddress(dataId);
+            _networkManager.SendPacket(SubscriptionDataId, BitConverter.GetBytes(dataId), ip, false);
             Subscriptions[dataId].Timestamp = DateTime.Now;
         }
 

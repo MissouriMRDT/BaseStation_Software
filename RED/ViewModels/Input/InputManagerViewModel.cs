@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using RED.Interfaces;
 using RED.Interfaces.Input;
 using RED.Models.Input;
 using RED.ViewModels.Input.Controllers;
@@ -29,14 +30,14 @@ namespace RED.ViewModels.Input
             }
         }
 
-        public InputManagerViewModel(ControlCenterViewModel cc)
+        public InputManagerViewModel(IDataRouter router, IDataIdResolver idResolver, ILogger log, StateViewModel state)
         {
             // Set default input device as the keyboard
-            //Input = new KeyboardInputViewModel(cc);
-            Input = new XboxControllerInputViewModel(cc);
+            //Input = new KeyboardInputViewModel(router, idResolver, log, state);
+            Input = new XboxControllerInputViewModel(router, idResolver, log, state);
         }
 
-        public void SwitchDevice(DeviceType newDevice, ControlCenterViewModel cc)
+        public void SwitchDevice(DeviceType newDevice, IDataRouter router, IDataIdResolver idResolver, ILogger log, StateViewModel state)
         {
             // Delete old input
             Input = null;
@@ -45,10 +46,10 @@ namespace RED.ViewModels.Input
             switch (newDevice)
             {
                 case DeviceType.Keyboard:
-                    Input = new KeyboardInputViewModel(cc);
+                    Input = new KeyboardInputViewModel(router, idResolver, log, state);
                     break;
                 case DeviceType.XboxController:
-                    Input = new XboxControllerInputViewModel(cc);
+                    Input = new XboxControllerInputViewModel(router, idResolver, log, state);
                     break;
                 //case DeviceType.FlightStick:
                 //    Input = new FlightStickInputViewModel(cc);

@@ -240,22 +240,24 @@ namespace RED.ViewModels
             base.DisplayName = "Rover Engagement Display";
             _model = new ControlCenterModel();
 
-            StateManager = new StateViewModel(this);
             Console = new ConsoleViewModel();
             DataRouter = new DataRouter();
-            MetadataManager = new MetadataManager(this);
+            MetadataManager = new MetadataManager(Console);
             MetadataManager.AddFromFile("NoSyncMetadata.xml");
-            IManager = new InputManagerViewModel(this);
-            NetworkManager = new NetworkManagerViewModel(this);
-            SubscriptionManager = new SubscriptionManagerViewModel(this);
-            Science = new ScienceViewModel(this);
-            GPS = new GPSViewModel(this);
-            Sensor = new SensorViewModel(this);
-            SensorCombined = new SensorCombinedViewModel(this);
-            DropBays = new DropBaysViewModel(this);
-            Power = new PowerViewModel(this);
-            CameraMux = new CameraMuxViewModel(this);
-            ExternalControls = new ExternalControlsViewModel(this);
+
+            NetworkManager = new NetworkManagerViewModel(DataRouter, MetadataManager.Commands.ToArray(), Console, MetadataManager);
+            SubscriptionManager = new SubscriptionManagerViewModel(MetadataManager.Telemetry.ToArray(), MetadataManager, NetworkManager);
+            StateManager = new StateViewModel(SubscriptionManager);
+            IManager = new InputManagerViewModel(DataRouter, MetadataManager, Console, StateManager);
+
+            Science = new ScienceViewModel(DataRouter, MetadataManager, Console);
+            GPS = new GPSViewModel(DataRouter, MetadataManager);
+            Sensor = new SensorViewModel(DataRouter, MetadataManager, Console);
+            SensorCombined = new SensorCombinedViewModel(DataRouter, MetadataManager);
+            DropBays = new DropBaysViewModel(DataRouter, MetadataManager);
+            Power = new PowerViewModel(DataRouter, MetadataManager, Console);
+            CameraMux = new CameraMuxViewModel(DataRouter, MetadataManager);
+            ExternalControls = new ExternalControlsViewModel(DataRouter, MetadataManager);
 
             SettingsManager = new SettingsManagerViewModel(this);
 

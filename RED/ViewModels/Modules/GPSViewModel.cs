@@ -11,7 +11,8 @@ namespace RED.ViewModels.Modules
     public class GPSViewModel : PropertyChangedBase, ISubscribe
     {
         GPSModel _model;
-        ControlCenterViewModel _cc;
+        private IDataIdResolver _idResolver;
+        private IDataRouter _router;
 
         public bool FixObtained
         {
@@ -157,17 +158,18 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public GPSViewModel(ControlCenterViewModel cc)
+        public GPSViewModel(IDataRouter router, IDataIdResolver idResolver)
         {
             _model = new GPSModel();
-            _cc = cc;
+            _router = router;
+            _idResolver = idResolver;
 
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("GPSQuality"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("GPSPosition"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("GPSSpeed"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("GPSSpeedAngle"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("GPSAltitude"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("GPSSatellites"));
+            _router.Subscribe(this, _idResolver.GetId("GPSQuality"));
+            _router.Subscribe(this, _idResolver.GetId("GPSPosition"));
+            _router.Subscribe(this, _idResolver.GetId("GPSSpeed"));
+            _router.Subscribe(this, _idResolver.GetId("GPSSpeedAngle"));
+            _router.Subscribe(this, _idResolver.GetId("GPSAltitude"));
+            _router.Subscribe(this, _idResolver.GetId("GPSSatellites"));
 
             Waypoints.Add(new GPSCoordinate(37.951631, -91.777713));//Rolla
             Waypoints.Add(new GPSCoordinate(37.850025, -91.701845));//Fugitive Beach
@@ -176,7 +178,7 @@ namespace RED.ViewModels.Modules
 
         public void ReceiveFromRouter(ushort dataId, byte[] data)
         {
-            switch (_cc.MetadataManager.GetTelemetry(dataId).Name)
+            switch (_idResolver.GetName(dataId))
             {
                 case "GPSData":
                     var ms = new MemoryStream(data);

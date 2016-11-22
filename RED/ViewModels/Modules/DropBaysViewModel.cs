@@ -1,19 +1,22 @@
 ﻿using Caliburn.Micro;
+using RED.Interfaces;
 
 namespace RED.ViewModels.Modules
 {
     public class DropBaysViewModel : PropertyChangedBase
     {
-        private ControlCenterViewModel _cc;
+        private IDataRouter _router;
+        private IDataIdResolver _idResolver;
 
-        public DropBaysViewModel(ControlCenterViewModel cc)
+        public DropBaysViewModel(IDataRouter router, IDataIdResolver idResolver)
         {
-            _cc = cc;
+            _router = router;
+            _idResolver = idResolver;
         }
 
         public void OpenBay(byte index)
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("DropBayOpen"), index);
+            _router.Send(_idResolver.GetId("DropBayOpen"), index);
         }
     }
 }

@@ -6,18 +6,20 @@ namespace RED.ViewModels.Modules
 {
     public class SensorCombinedViewModel : PropertyChangedBase, ISubscribe
     {
-        private ControlCenterViewModel _cc;
+        private IDataRouter _router;
+        private IDataIdResolver _idResolver;
 
-        public SensorCombinedViewModel(ControlCenterViewModel cc)
+        public SensorCombinedViewModel(IDataRouter router, IDataIdResolver idResolver)
         {
-            _cc = cc;
+            _router = router;
+            _idResolver = idResolver;
 
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("SensorCombined"));
+            _router.Subscribe(this, _idResolver.GetId("SensorCombined"));
         }
 
         public void ReceiveFromRouter(ushort dataId, byte[] data)
         {
-            switch (_cc.MetadataManager.GetTelemetry(dataId).Name)
+            switch (_idResolver.GetName(dataId))
             {
                 //This is separating the separate sensors' data and forwarding it over the correct dataid
                 case "SensorCombined":
@@ -25,20 +27,20 @@ namespace RED.ViewModels.Modules
                     using (var br = new BinaryReader(ms))
                     {
                         var gpsBuffer = br.ReadBytes(23);
-                        _cc.DataRouter.Send(_cc.MetadataManager.GetId("GPSData"), gpsBuffer);
+                        _router.Send(_idResolver.GetId("GPSData"), gpsBuffer);
 
                         var headingBuffer = br.ReadSingle();
-                        _cc.DataRouter.Send(_cc.MetadataManager.GetId("Heading"), headingBuffer);
+                        _router.Send(_idResolver.GetId("Heading"), headingBuffer);
 
                         var ultrasonicBuffer0 = new byte[] { 0, br.ReadByte() };
-                        _cc.DataRouter.Send(_cc.MetadataManager.GetId("Ultrasonic"), ultrasonicBuffer0);
+                        _router.Send(_idResolver.GetId("Ultrasonic"), ultrasonicBuffer0);
                         var ultrasonicBuffer1 = new byte[] { 1, br.ReadByte() };
-                        _cc.DataRouter.Send(_cc.MetadataManager.GetId("Ultrasonic"), ultrasonicBuffer1);
+                        _router.Send(_idResolver.GetId("Ultrasonic"), ultrasonicBuffer1);
                         var ultrasonicBuffer2 = new byte[] { 2, br.ReadByte() };
-                        _cc.DataRouter.Send(_cc.MetadataManager.GetId("Ultrasonic"), ultrasonicBuffer2);
+                        _router.Send(_idResolver.GetId("Ultrasonic"), ultrasonicBuffer2);
 
                         var voltageBuffer = br.ReadInt16();
-                        _cc.DataRouter.Send(_cc.MetadataManager.GetId("Voltage"), voltageBuffer);
+                        _router.Send(_idResolver.GetId("Voltage"), voltageBuffer);
                     }
                     break;
             }

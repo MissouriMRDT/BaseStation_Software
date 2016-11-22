@@ -1,4 +1,6 @@
 ﻿using Caliburn.Micro;
+using RED.Contexts;
+using RED.Interfaces;
 using RED.Interfaces.Network;
 using RED.Models.Network;
 using System;
@@ -17,27 +19,29 @@ namespace RED.ViewModels.Network
         private int ReliableMaxRetries { get { return 5; } }
 
         private NetworkManagerModel _model;
-        private ControlCenterViewModel _cc;
+        private IDataRouter _router;
+        private ILogger _log;
+        private IIPAddressProvider _ipProvider;
 
         private INetworkEncoding encoding;
         private INetworkTransportProtocol continuousDataSocket;
-        private IIPAddressProvider ipAddressProvider;
         private ISequenceNumberProvider sequenceNumberProvider;
 
         private HashSet<UnACKedPacket> OutgoingUnACKed = new HashSet<UnACKedPacket>();
 
-        public NetworkManagerViewModel(ControlCenterViewModel cc)
+        public NetworkManagerViewModel(IDataRouter router, CommandMetadataContext[] commands, ILogger log, IIPAddressProvider ipProvider)
         {
             _model = new NetworkManagerModel();
-            _cc = cc;
+            _router = router;
+            _log = log;
+            _ipProvider = ipProvider;
 
             sequenceNumberProvider = new SequenceNumberManager();
             encoding = new RoverProtocol();
             continuousDataSocket = new UDPEndpoint(DestinationPort, DestinationPort);
-            ipAddressProvider = cc.MetadataManager;
 
-            foreach (var command in _cc.MetadataManager.Commands)
-                _cc.DataRouter.Subscribe(this, command.Id);
+            foreach (var command in commands)
+                _router.Subscribe(this, command.Id);
             //_cc.DataRouter.Subscribe(this, 1);
             //_cc.DataRouter.Subscribe(this, 180);
 
@@ -55,7 +59,7 @@ namespace RED.ViewModels.Network
 
         public void ReceiveFromRouter(ushort dataId, byte[] data)
         {
-            IPAddress destIP = ipAddressProvider.GetIPAddress(dataId);
+            IPAddress destIP = _ipProvider.GetIPAddress(dataId);
             SendPacket(dataId, data, destIP, defaultReliable);
         }
 
@@ -63,12 +67,12 @@ namespace RED.ViewModels.Network
         {
             if (destIP == null)
             {
-                _cc.Console.WriteToConsole("Attempted to send packet with unknown IP address. DataId=" + dataId.ToString());
+                _log.Log("Attempted to send packet with unknown IP address. DataId=" + dataId.ToString());
                 return;
             }
             if (destIP.Equals(IPAddress.None))
             {
-                _cc.Console.WriteToConsole("Attempted to send packet with invalid IP address. DataId=" + dataId.ToString() + " IP=" + destIP.ToString());
+                _log.Log("Attempted to send packet with invalid IP address. DataId=" + dataId.ToString() + " IP=" + destIP.ToString());
                 return;
             }
 
@@ -98,7 +102,7 @@ namespace RED.ViewModels.Network
                 if (!OutgoingUnACKed.Contains(packetInfo)) return;
             }
 
-            _cc.Console.WriteToConsole("No ACK recieved for reliable packet with DataId=" + packetInfo.DataId.ToString() + " and SeqNum=" + packetInfo.SeqNum.ToString() + " after " + ReliableMaxRetries + " retries.");
+            _log.Log("No ACK recieved for reliable packet with DataId=" + packetInfo.DataId.ToString() + " and SeqNum=" + packetInfo.SeqNum.ToString() + " after " + ReliableMaxRetries + " retries.");
         }
 
         private void ReceivePacket(IPAddress srcIP, byte[] buffer)
@@ -109,7 +113,7 @@ namespace RED.ViewModels.Network
             byte[] data = encoding.DecodePacket(buffer, out dataId, out seqNum, out needsACK);
             if (!sequenceNumberProvider.UpdateNewer(dataId, seqNum))
             {
-                _cc.Console.WriteToConsole("Packet recieved with invalid sequence number=" + seqNum.ToString() + " DataId=" + dataId);
+                _log.Log("Packet recieved with invalid sequence number=" + seqNum.ToString() + " DataId=" + dataId);
                 return;
             }
             if (needsACK)
@@ -122,25 +126,25 @@ namespace RED.ViewModels.Network
             switch ((SystemDataId)dataId)
             {
                 case SystemDataId.Null:
-                    _cc.Console.WriteToConsole("Packet recieved with null dataId.");
+                    _log.Log("Packet recieved with null dataId.");
                     break;
                 case SystemDataId.Ping:
                     SendPacket((ushort)SystemDataId.PingReply, BitConverter.GetBytes(IPAddress.HostToNetworkOrder((short)seqNum)), srcIP, false);
                     break;
                 case SystemDataId.Subscribe:
-                    _cc.Console.WriteToConsole("Packet recieved requesting subscription to dataId=" + dataId.ToString());
+                    _log.Log("Packet recieved requesting subscription to dataId=" + dataId.ToString());
                     break;
                 case SystemDataId.Unsubscribe:
-                    _cc.Console.WriteToConsole("Packet recieved requesting unsubscription from dataId=" + dataId.ToString());
+                    _log.Log("Packet recieved requesting unsubscription from dataId=" + dataId.ToString());
                     break;
                 case SystemDataId.ACK:
                     ushort ackedId = (ushort)IPAddress.NetworkToHostOrder((short)BitConverter.ToUInt16(data, 0));
                     ushort ackedSeqNum = (ushort)IPAddress.NetworkToHostOrder((short)BitConverter.ToUInt16(data, 2));
                     if (!OutgoingUnACKed.Remove(new UnACKedPacket { DataId = dataId, SeqNum = seqNum }))
-                        _cc.Console.WriteToConsole("Unexected ACK recieved from ip=??? with dataId=" + ackedId.ToString() + " and seqNum=" + ackedSeqNum.ToString() + ".");
+                        _log.Log("Unexected ACK recieved from ip=??? with dataId=" + ackedId.ToString() + " and seqNum=" + ackedSeqNum.ToString() + ".");
                     break;
                 default: //Regular DataId
-                    _cc.DataRouter.Send(dataId, data);
+                    _router.Send(dataId, data);
                     break;
             }
         }

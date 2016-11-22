@@ -112,6 +112,8 @@
     <Compile Include="Contexts\MetadataSaveContext.cs" />
     <Compile Include="Contexts\TelemetryMetadataContext.cs" />
     <Compile Include="Images\ModernUIIcons.cs" />
+    <Compile Include="Interfaces\IDataIdResolver.cs" />
+    <Compile Include="Interfaces\ILogger.cs" />
     <Compile Include="Interfaces\Input\IControllerMode.cs" />
     <Compile Include="Interfaces\Network\IIPAddressProvider.cs" />
     <Compile Include="Interfaces\IMetadata.cs" />
@@ -135,6 +137,7 @@
     <Compile Include="Models\Input\Controllers\KeyboardInputModel.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Models\Input\Controllers\XboxControllerInputModel.cs" />
+    <Compile Include="Interfaces\IDataRouter.cs" />
     <Compile Include="ViewModels\Modules\ArmControllerModeViewModel.cs" />
     <Compile Include="ViewModels\Modules\CameraMuxViewModel.cs" />
     <Compile Include="ViewModels\Modules\ExternalControlsViewModel.cs" />

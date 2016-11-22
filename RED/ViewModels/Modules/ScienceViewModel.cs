@@ -11,7 +11,9 @@ namespace RED.ViewModels.Modules
     public class ScienceViewModel : PropertyChangedBase, ISubscribe
     {
         private ScienceModel _model;
-        private ControlCenterViewModel _cc;
+        private IDataRouter _router;
+        private IDataIdResolver _idResolver;
+        private ILogger _log;
 
         public float Temperature1Value
         {
@@ -160,94 +162,96 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public ScienceViewModel(ControlCenterViewModel cc)
+        public ScienceViewModel(IDataRouter router, IDataIdResolver idResolver, ILogger log)
         {
             _model = new ScienceModel();
-            _cc = cc;
+            _router = router;
+            _idResolver = idResolver;
+            _log = log;
 
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Temperature1"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Temperature2"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Temperature3"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Temperature4"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Moisture1"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Moisture2"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Moisture3"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Moisture4"));
+            _router.Subscribe(this, _idResolver.GetId("Temperature1"));
+            _router.Subscribe(this, _idResolver.GetId("Temperature2"));
+            _router.Subscribe(this, _idResolver.GetId("Temperature3"));
+            _router.Subscribe(this, _idResolver.GetId("Temperature4"));
+            _router.Subscribe(this, _idResolver.GetId("Moisture1"));
+            _router.Subscribe(this, _idResolver.GetId("Moisture2"));
+            _router.Subscribe(this, _idResolver.GetId("Moisture3"));
+            _router.Subscribe(this, _idResolver.GetId("Moisture4"));
         }
 
         public void Temperature1On()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Temp1Enable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Temp1Enable);
         }
         public void Temperature1Off()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Temp1Disable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Temp1Disable);
         }
         public void Temperature2On()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Temp2Enable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Temp2Enable);
         }
         public void Temperature2Off()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Temp2Disable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Temp2Disable);
         }
         public void Temperature3On()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Temp3Enable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Temp3Enable);
         }
         public void Temperature3Off()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Temp3Disable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Temp3Disable);
         }
         public void Temperature4On()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Temp4Enable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Temp4Enable);
         }
         public void Temperature4Off()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Temp4Disable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Temp4Disable);
         }
         public void Moisture1On()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Moisture1Enable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Moisture1Enable);
         }
         public void Moisture1Off()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Moisture1Disable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Moisture1Disable);
         }
         public void Moisture2On()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Moisture2Enable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Moisture2Enable);
         }
         public void Moisture2Off()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Moisture2Disable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Moisture2Disable);
         }
         public void Moisture3On()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Moisture3Enable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Moisture3Enable);
         }
         public void Moisture3Off()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Moisture3Disable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Moisture3Disable);
         }
         public void Moisture4On()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Moisture4Enable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Moisture4Enable);
         }
         public void Moisture4Off()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Moisture4Disable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Moisture4Disable);
         }
 
         public void RequestCCD()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.CCDRequest);
-            _cc.Console.WriteToConsole("CCD data requested");
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.CCDRequest);
+            _log.Log("CCD data requested");
         }
         public async void DownloadCCD()
         {
-            _cc.Console.WriteToConsole("CCD data downloaded started.");
+            _log.Log("CCD data downloaded started.");
             string filename = Path.Combine(CCDFilePath, "REDCCDData" + DateTime.Now.ToString("yyyyMMdd'T'HHmmss") + ".dat");
             using (var client = new TcpClient())
             {
@@ -257,51 +261,51 @@ namespace RED.ViewModels.Modules
                     await client.GetStream().CopyToAsync(file);
                 }
             }
-            _cc.Console.WriteToConsole("CCD data downloaded into " + filename + ".");
+            _log.Log("CCD data downloaded into " + filename + ".");
         }
         public void RequestLaserOn()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (byte)ScienceRequestTypes.LaserOn);
-            _cc.Console.WriteToConsole("Science Laser On requested.");
+            _router.Send(_idResolver.GetId("ScienceCommand"), (byte)ScienceRequestTypes.LaserOn);
+            _log.Log("Science Laser On requested.");
         }
         public void RequestLaserOff()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (byte)ScienceRequestTypes.LaserOff);
-            _cc.Console.WriteToConsole("Science Laser Off requested.");
+            _router.Send(_idResolver.GetId("ScienceCommand"), (byte)ScienceRequestTypes.LaserOff);
+            _log.Log("Science Laser Off requested.");
         }
 
         public void Carousel1()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("CarouselPosition"), (byte)0);
+            _router.Send(_idResolver.GetId("CarouselPosition"), (byte)0);
         }
         public void Carousel2()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("CarouselPosition"), (byte)1);
+            _router.Send(_idResolver.GetId("CarouselPosition"), (byte)1);
         }
         public void Carousel3()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("CarouselPosition"), (byte)2);
+            _router.Send(_idResolver.GetId("CarouselPosition"), (byte)2);
         }
         public void Carousel4()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("CarouselPosition"), (byte)3);
+            _router.Send(_idResolver.GetId("CarouselPosition"), (byte)3);
         }
         public void Carousel5()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("CarouselPosition"), (byte)4);
+            _router.Send(_idResolver.GetId("CarouselPosition"), (byte)4);
         }
         public void Carousel6()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("CarouselPosition"), (byte)5);
+            _router.Send(_idResolver.GetId("CarouselPosition"), (byte)5);
         }
 
         public void FunnelOpen()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (byte)ScienceRequestTypes.FunnelOpen);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (byte)ScienceRequestTypes.FunnelOpen);
         }
         public void FunnelClose()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("ScienceCommand"), (byte)ScienceRequestTypes.FunnelClose);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (byte)ScienceRequestTypes.FunnelClose);
         }
 
         public void SaveFileStart()
@@ -322,7 +326,7 @@ namespace RED.ViewModels.Modules
 
         public void ReceiveFromRouter(ushort dataId, byte[] data)
         {
-            switch (_cc.MetadataManager.GetTelemetry(dataId).Name)
+            switch (_idResolver.GetName(dataId))
             {
                 case "Temperature1":
                     Temperature1Value = BitConverter.ToSingle(data, 0);

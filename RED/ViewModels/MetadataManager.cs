@@ -8,17 +8,17 @@ using System.Xml.Serialization;
 
 namespace RED.ViewModels
 {
-    public class MetadataManager : RED.Interfaces.Network.IIPAddressProvider
+    public class MetadataManager : RED.Interfaces.Network.IIPAddressProvider, IDataIdResolver
     {
-        private readonly ControlCenterViewModel _controlCenter;
+        private ILogger _log;
 
         public List<CommandMetadataContext> Commands { get; private set; }
         public List<TelemetryMetadataContext> Telemetry { get; private set; }
         public List<ErrorMetadataContext> Errors { get; private set; }
 
-        public MetadataManager(ControlCenterViewModel cc)
+        public MetadataManager(ILogger log)
         {
-            _controlCenter = cc;
+            _log = log;
             Commands = new List<CommandMetadataContext>();
             Telemetry = new List<TelemetryMetadataContext>();
             Errors = new List<ErrorMetadataContext>();
@@ -48,7 +48,7 @@ namespace RED.ViewModels
                 Telemetry.AddRange(save.Telemetry);
                 Errors.AddRange(save.Errors);
 
-                _controlCenter.Console.WriteToConsole("Metadata loaded from file \"" + url + "\"");
+                _log.Log("Metadata loaded from file \"" + url + "\"");
             }
         }
         public void SaveToFile(string url)
@@ -135,7 +135,7 @@ namespace RED.ViewModels
             var data = GetMetadata(name);
             if (data == null)
             {
-                _controlCenter.Console.WriteToConsole("DataId for \"" + name + "\" not found.");
+                _log.Log("DataId for \"" + name + "\" not found.");
                 return (ushort)0;
             }
             return data.Id;
@@ -158,7 +158,7 @@ namespace RED.ViewModels
                 return ip;
             else
             {
-                _controlCenter.Console.WriteToConsole("Error Parsing IP Address for DataId " + dataId.ToString());
+                _log.Log("Error Parsing IP Address for DataId " + dataId.ToString());
                 return null;
             }
         }

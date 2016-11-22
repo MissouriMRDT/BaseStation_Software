@@ -8,7 +8,9 @@ namespace RED.ViewModels.Modules
     public class SensorViewModel : PropertyChangedBase, ISubscribe
     {
         private SensorModel _model;
-        private ControlCenterViewModel _cc;
+        private IDataRouter _router;
+        private IDataIdResolver _idResolver;
+        private ILogger _log;
 
         public float Voltage
         {
@@ -72,18 +74,20 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public SensorViewModel(ControlCenterViewModel cc)
+        public SensorViewModel(IDataRouter router, IDataIdResolver idResolver, ILogger log)
         {
             _model = new SensorModel();
-            _cc = cc;
+            _router = router;
+            _idResolver = idResolver;
+            _log = log;
 
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Voltage"));
-            _cc.DataRouter.Subscribe(this, _cc.MetadataManager.GetId("Ultrasonic"));
+            _router.Subscribe(this, _idResolver.GetId("Voltage"));
+            _router.Subscribe(this, _idResolver.GetId("Ultrasonic"));
         }
 
         public void ReceiveFromRouter(ushort dataId, byte[] data)
         {
-            switch (_cc.MetadataManager.GetTelemetry(dataId).Name)
+            switch (_idResolver.GetName(dataId))
             {
                 case "Ultrasonic":
                     switch (data[0])
@@ -92,7 +96,7 @@ namespace RED.ViewModels.Modules
                         case 1: Ultrasonic1 = data[1]; break;
                         case 2: Ultrasonic2 = data[1]; break;
                         case 3: Ultrasonic3 = data[1]; break;
-                        default: _cc.Console.WriteToConsole("Unsupported Ultrasonic Sensor (#" + data[0] + ") Telemetry Recieved"); break;
+                        default: _log.Log("Unsupported Ultrasonic Sensor (#" + data[0] + ") Telemetry Recieved"); break;
                     }
                     break;
                 case "Voltage":

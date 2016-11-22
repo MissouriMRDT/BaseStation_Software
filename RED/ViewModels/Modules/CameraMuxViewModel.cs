@@ -1,12 +1,14 @@
 ﻿using Caliburn.Micro;
+using RED.Interfaces;
 using RED.Models.Modules;
 
 namespace RED.ViewModels.Modules
 {
     public class CameraMuxViewModel : PropertyChangedBase
     {
-        private ControlCenterViewModel _cc;
         private CameraMuxModel _model;
+        private IDataRouter _router;
+        private IDataIdResolver _idResolver;
 
         public byte MuxIndex
         {
@@ -21,15 +23,16 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public CameraMuxViewModel(ControlCenterViewModel cc)
+        public CameraMuxViewModel(IDataRouter router, IDataIdResolver idResolver)
         {
-            _cc = cc;
             _model = new CameraMuxModel();
+            _router = router;
+            _idResolver = idResolver;
         }
 
         public void SetMux()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("CameraMuxSet"), MuxIndex);
+            _router.Send(_idResolver.GetId("CameraMuxSet"), MuxIndex);
         }
     }
 }

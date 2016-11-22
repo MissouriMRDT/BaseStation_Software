@@ -1,11 +1,12 @@
 ﻿using Caliburn.Micro;
+using RED.Interfaces;
 using RED.Models;
 using System;
 using System.Globalization;
 
 namespace RED.ViewModels
 {
-    public class ConsoleViewModel : PropertyChangedBase
+    public class ConsoleViewModel : PropertyChangedBase, ILogger
     {
         private readonly ConsoleModel _model = new ConsoleModel();
 
@@ -22,7 +23,7 @@ namespace RED.ViewModels
             }
         }
 
-        public void WriteToConsole(string text)
+        public void Log(string text)
         {
             var timeStamp = DateTime.Now.ToString("HH:mm:ss.ff", CultureInfo.InvariantCulture);
             var newText = String.Format("{0}: {1} {2}", timeStamp, text, Environment.NewLine);

@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using RED.Interfaces;
 using RED.Interfaces.Input;
 using RED.Models.Modules;
 
@@ -9,7 +10,8 @@ namespace RED.ViewModels.Modules
         private const int motorRangeFactor = 1000;
 
         private readonly DriveControllerModeModel _model;
-        private readonly ControlCenterViewModel _controlCenter;
+        private IDataRouter _router;
+        private IDataIdResolver _idResolver;
 
         public int SpeedLeft
         {
@@ -64,10 +66,11 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public DriveControllerModeViewModel(IInputDevice inputVM, ControlCenterViewModel cc)
+        public DriveControllerModeViewModel(IInputDevice inputVM, IDataRouter router, IDataIdResolver idResolver)
         {
             _model = new DriveControllerModeModel();
-            _controlCenter = cc;
+            _router = router;
+            _idResolver = idResolver;
             InputVM = inputVM;
             Name = "Drive";
         }
@@ -107,17 +110,17 @@ namespace RED.ViewModels.Modules
             #endregion
 
             SpeedLeft = newSpeedLeft;
-            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorLeftSpeed"), SpeedLeft);
+            _router.Send(_idResolver.GetId("MotorLeftSpeed"), SpeedLeft);
 
             SpeedRight = newSpeedRight;
-            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorRightSpeed"), SpeedRight);
+            _router.Send(_idResolver.GetId("MotorRightSpeed"), SpeedRight);
         }
 
         public void ExitMode()
         {
             int speed = 0;
-            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorLeftSpeed"), speed);
-            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("MotorRightSpeed"), speed);
+            _router.Send(_idResolver.GetId("MotorLeftSpeed"), speed);
+            _router.Send(_idResolver.GetId("MotorRightSpeed"), speed);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using RED.Annotations;
+using RED.Interfaces;
 using RED.Interfaces.Input;
 using RED.Models.Input.Controllers;
 using RED.ViewModels.Modules;
@@ -13,7 +14,9 @@ namespace RED.ViewModels.Input.Controllers
     public class XboxControllerInputViewModel : PropertyChangedBase, IInputDevice
     {
         private readonly XboxControllerInputModel Model = new XboxControllerInputModel();
-        private readonly ControlCenterViewModel _controlCenter;
+        private IDataRouter _router;
+        private IDataIdResolver _idResolver;
+        private StateViewModel _state;
         [CanBeNull]
         public readonly Controller ControllerOne = new Controller(UserIndex.One);
 
@@ -71,7 +74,7 @@ namespace RED.ViewModels.Input.Controllers
             {
                 Model.CurrentModeIndex = value;
                 NotifyOfPropertyChange(() => CurrentModeIndex);
-                _controlCenter.StateManager.CurrentControlMode = ControllerModes[CurrentModeIndex].Name;
+                _state.CurrentControlMode = ControllerModes[CurrentModeIndex].Name;
             }
         }
 
@@ -86,7 +89,7 @@ namespace RED.ViewModels.Input.Controllers
             {
                 Model.Connected = value;
                 NotifyOfPropertyChange(() => Connected);
-                _controlCenter.StateManager.ControllerIsConnected = value;
+                _state.ControllerIsConnected = value;
                 NotifyOfPropertyChange(() => ConnectionStatus);
             }
         }
@@ -544,14 +547,16 @@ namespace RED.ViewModels.Input.Controllers
         }
         #endregion
 
-        public XboxControllerInputViewModel(ControlCenterViewModel cc)
+        public XboxControllerInputViewModel(IDataRouter router, IDataIdResolver idResolver, ILogger log, StateViewModel state)
         {
-            _controlCenter = cc;
+            _router = router;
+            _idResolver = idResolver;
+            _state = state;
 
-            ControllerModes.Add(new DriveControllerModeViewModel(this, _controlCenter));
-            ControllerModes.Add(new ArmControllerModeViewModel(this, _controlCenter));
-            ControllerModes.Add(new GimbalControllerModeViewModel(this, _controlCenter, 0));
-            ControllerModes.Add(new GimbalControllerModeViewModel(this, _controlCenter, 1));
+            ControllerModes.Add(new DriveControllerModeViewModel(this, _router, _idResolver));
+            ControllerModes.Add(new ArmControllerModeViewModel(this, _router, _idResolver, log));
+            ControllerModes.Add(new GimbalControllerModeViewModel(this, _router, _idResolver, log, 0));
+            ControllerModes.Add(new GimbalControllerModeViewModel(this, _router, _idResolver, log, 1));
             if (ControllerModes.Count == 0) throw new ArgumentException("IEnumerable 'modes' must have at least one item");
             CurrentModeIndex = 0;
         }

@@ -16,7 +16,9 @@ namespace RED.ViewModels.Modules
         private readonly string[] EndEffectorModeNames = { "Gripper", "Drill", "Regulator Detachment" };
 
         private readonly ArmControllerModeModel _model;
-        private readonly ControlCenterViewModel _controlCenter;
+        private IDataRouter _router;
+        private IDataIdResolver _idResolver;
+        private ILogger _log;
 
         public string Name { get; set; }
         public IInputDevice InputVM { get; set; }
@@ -131,20 +133,22 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public ArmControllerModeViewModel(IInputDevice inputVM, ControlCenterViewModel cc)
+        public ArmControllerModeViewModel(IInputDevice inputVM, IDataRouter router, IDataIdResolver idResolver, ILogger log)
         {
             _model = new ArmControllerModeModel();
             InputVM = inputVM;
-            _controlCenter = cc;
+            _router = router;
+            _idResolver = idResolver;
+            _log = log;
             Name = "Arm";
             CurrentEndEffectorMode = 0;
 
-            _controlCenter.DataRouter.Subscribe(this, _controlCenter.MetadataManager.GetId("ArmCurrentPosition"));
+            _router.Subscribe(this, _idResolver.GetId("ArmCurrentPosition"));
         }
 
         public void ReceiveFromRouter(ushort dataId, byte[] data)
         {
-            switch (_controlCenter.MetadataManager.GetTelemetry(dataId).Name)
+            switch (_idResolver.GetName(dataId))
             {
                 case "ArmCurrentPosition":
                     AngleJ1 = BitConverter.ToSingle(data, 0);
@@ -166,8 +170,8 @@ namespace RED.ViewModels.Modules
         {
             if (InputVM.DebouncedArmReset)
             {
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmStop"), (Int16)(0));
-                _controlCenter.Console.WriteToConsole("Robotic Arm Resetting...");
+                _router.Send(_idResolver.GetId("ArmStop"), (Int16)(0));
+                _log.Log("Robotic Arm Resetting...");
             }
 
             if (InputVM.DebouncedToolPrev)
@@ -177,161 +181,161 @@ namespace RED.ViewModels.Modules
 
             var angle = Math.Atan2(InputVM.WristBend, InputVM.WristTwist);
             if (angle > -Math.PI / 6 && angle < Math.PI / 6) //Joystick Right
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristClockwise"), (Int16)(InputVM.WristTwist * motorRangeFactor));
+                _router.Send(_idResolver.GetId("ArmWristClockwise"), (Int16)(InputVM.WristTwist * motorRangeFactor));
             else if (angle > Math.PI / 3 && angle < 2 * Math.PI / 3) //Joystick Up
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristUp"), (Int16)(-InputVM.WristBend * motorRangeFactor));
+                _router.Send(_idResolver.GetId("ArmWristUp"), (Int16)(-InputVM.WristBend * motorRangeFactor));
             else if (angle > 5 * Math.PI / 6 || angle < -5 * Math.PI / 6) //Joystick Left
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristClockwise"), (Int16)(InputVM.WristTwist * motorRangeFactor));
+                _router.Send(_idResolver.GetId("ArmWristClockwise"), (Int16)(InputVM.WristTwist * motorRangeFactor));
             else if (angle > -2 * Math.PI / 3 && angle < Math.PI / 3) //Joystick Down
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristUp"), (Int16)(-InputVM.WristBend * motorRangeFactor));
+                _router.Send(_idResolver.GetId("ArmWristUp"), (Int16)(-InputVM.WristBend * motorRangeFactor));
             else
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristUp"), (Int16)(0));
+                _router.Send(_idResolver.GetId("ArmWristUp"), (Int16)(0));
 
             angle = Math.Atan2(InputVM.ElbowBend, InputVM.ElbowTwist);
             if (angle > -Math.PI / 6 && angle < Math.PI / 6) //Joystick Right
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowClockwise"), (Int16)(InputVM.ElbowTwist * motorRangeFactor));
+                _router.Send(_idResolver.GetId("ArmElbowClockwise"), (Int16)(InputVM.ElbowTwist * motorRangeFactor));
             else if (angle > Math.PI / 3 && angle < 2 * Math.PI / 3) //Joystick Up
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowUp"), (Int16)(-InputVM.ElbowBend * motorRangeFactor));
+                _router.Send(_idResolver.GetId("ArmElbowUp"), (Int16)(-InputVM.ElbowBend * motorRangeFactor));
             else if (angle > 5 * Math.PI / 6 || angle < -5 * Math.PI / 6) //Joystick Left
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowClockwise"), (Int16)(InputVM.ElbowTwist * motorRangeFactor));
+                _router.Send(_idResolver.GetId("ArmElbowClockwise"), (Int16)(InputVM.ElbowTwist * motorRangeFactor));
             else if (angle > -2 * Math.PI / 3 && angle < Math.PI / 3) //Joystick Down
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmElbowUp"), (Int16)(-InputVM.ElbowBend * motorRangeFactor));
+                _router.Send(_idResolver.GetId("ArmElbowUp"), (Int16)(-InputVM.ElbowBend * motorRangeFactor));
             else
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmWristUp"), (Int16)(0));
+                _router.Send(_idResolver.GetId("ArmWristUp"), (Int16)(0));
 
             if (InputVM.ActuatorForward)
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseActuatorForward"), (Int16)(BaseActuatorSpeed));
+                _router.Send(_idResolver.GetId("ArmBaseActuatorForward"), (Int16)(BaseActuatorSpeed));
             else if (InputVM.ActuatorBackward)
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseActuatorForward"), (Int16)(-BaseActuatorSpeed));
+                _router.Send(_idResolver.GetId("ArmBaseActuatorForward"), (Int16)(-BaseActuatorSpeed));
             else
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseActuatorForward"), (Int16)(0));
+                _router.Send(_idResolver.GetId("ArmBaseActuatorForward"), (Int16)(0));
             if (InputVM.BaseClockwise)
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseServoClockwise"), (Int16)(BaseServoSpeed / 10f * motorRangeFactor));
+                _router.Send(_idResolver.GetId("ArmBaseServoClockwise"), (Int16)(BaseServoSpeed / 10f * motorRangeFactor));
             else if (InputVM.BaseCounterClockwise)
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseServoClockwise"), (Int16)(-BaseServoSpeed / 10f * motorRangeFactor));
+                _router.Send(_idResolver.GetId("ArmBaseServoClockwise"), (Int16)(-BaseServoSpeed / 10f * motorRangeFactor));
             else
-                _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmBaseServoClockwise"), (Int16)(0));
+                _router.Send(_idResolver.GetId("ArmBaseServoClockwise"), (Int16)(0));
 
             switch (AvailibleEndEffectorModes[CurrentEndEffectorMode])
             {
                 case EndEffectorModes.Gripper:
                     if (InputVM.GripperClose > 0)
-                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(InputVM.GripperClose * EndeffectorSpeedLimit));
+                        _router.Send(_idResolver.GetId("Gripper"), (Int16)(InputVM.GripperClose * EndeffectorSpeedLimit));
                     else if (InputVM.GripperOpen > 0)
-                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(-InputVM.GripperOpen * EndeffectorSpeedLimit));
+                        _router.Send(_idResolver.GetId("Gripper"), (Int16)(-InputVM.GripperOpen * EndeffectorSpeedLimit));
                     else
-                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(0));
+                        _router.Send(_idResolver.GetId("Gripper"), (Int16)(0));
                     break;
                 case EndEffectorModes.Drill:
                     if (InputVM.DrillClockwise)
-                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Drill"), (short)DrillCommands.Forward);
+                        _router.Send(_idResolver.GetId("Drill"), (short)DrillCommands.Forward);
                     else if (InputVM.DrillCounterClockwise)
-                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Drill"), (short)DrillCommands.Reverse);
+                        _router.Send(_idResolver.GetId("Drill"), (short)DrillCommands.Reverse);
                     else
-                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Drill"), (short)DrillCommands.Stop);
+                        _router.Send(_idResolver.GetId("Drill"), (short)DrillCommands.Stop);
                     break;
 
                 case EndEffectorModes.RegulatorDetach:
                     if (InputVM.GripperClose > 0)
-                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(InputVM.GripperClose * EndeffectorSpeedLimit));
+                        _router.Send(_idResolver.GetId("Gripper"), (Int16)(InputVM.GripperClose * EndeffectorSpeedLimit));
                     else if (InputVM.GripperOpen > 0)
-                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(-InputVM.GripperOpen * EndeffectorSpeedLimit));
+                        _router.Send(_idResolver.GetId("Gripper"), (Int16)(-InputVM.GripperOpen * EndeffectorSpeedLimit));
                     else
-                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("Gripper"), (Int16)(0));
+                        _router.Send(_idResolver.GetId("Gripper"), (Int16)(0));
 
                     if (InputVM.DrillClockwise)
-                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("RegulatorDetach"), (short)DrillCommands.Forward);
+                        _router.Send(_idResolver.GetId("RegulatorDetach"), (short)DrillCommands.Forward);
                     else if (InputVM.DrillCounterClockwise)
-                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("RegulatorDetach"), (short)DrillCommands.Reverse);
+                        _router.Send(_idResolver.GetId("RegulatorDetach"), (short)DrillCommands.Reverse);
                     else
-                        _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("RegulatorDetach"), (short)DrillCommands.Stop);
+                        _router.Send(_idResolver.GetId("RegulatorDetach"), (short)DrillCommands.Stop);
                     break;
             }
         }
 
         public void ExitMode()
         {
-            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmStop"), (Int16)(0));
+            _router.Send(_idResolver.GetId("ArmStop"), (Int16)(0));
         }
 
         public void NextEndeffectorMode()
         {
             CurrentEndEffectorMode = (CurrentEndEffectorMode + 1) % AvailibleEndEffectorModes.Length;
-            _controlCenter.Console.WriteToConsole("Switched to Next Endeffector Mode");
+            _log.Log("Switched to Next Endeffector Mode");
         }
         public void PreviousEndeffectorMode()
         {
             CurrentEndEffectorMode = (CurrentEndEffectorMode + 1 + AvailibleEndEffectorModes.Length) % AvailibleEndEffectorModes.Length;
-            _controlCenter.Console.WriteToConsole("Switched to Previous Endeffector Mode");
+            _log.Log("Switched to Previous Endeffector Mode");
         }
 
         public void EnableAll()
         {
-            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableAll"), ArmEnableCommand);
+            _router.Send(_idResolver.GetId("ArmEnableAll"), ArmEnableCommand);
         }
         public void DisableAll()
         {
-            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableAll"), ArmDisableCommand);
+            _router.Send(_idResolver.GetId("ArmEnableAll"), ArmDisableCommand);
         }
         public void EnableMain()
         {
-            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableMain"), ArmEnableCommand);
+            _router.Send(_idResolver.GetId("ArmEnableMain"), ArmEnableCommand);
         }
         public void DisableMain()
         {
-            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableMain"), ArmDisableCommand);
+            _router.Send(_idResolver.GetId("ArmEnableMain"), ArmDisableCommand);
         }
         public void EnableJ1()
         {
-            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableJ1"), ArmEnableCommand);
+            _router.Send(_idResolver.GetId("ArmEnableJ1"), ArmEnableCommand);
         }
         public void DisableJ1()
         {
-            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableJ1"), ArmDisableCommand);
+            _router.Send(_idResolver.GetId("ArmEnableJ1"), ArmDisableCommand);
         }
         public void EnableJ2()
         {
-            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableJ2"), ArmEnableCommand);
+            _router.Send(_idResolver.GetId("ArmEnableJ2"), ArmEnableCommand);
         }
         public void DisableJ2()
         {
-            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableJ2"), ArmDisableCommand);
+            _router.Send(_idResolver.GetId("ArmEnableJ2"), ArmDisableCommand);
         }
         public void EnableJ34()
         {
-            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableJ34"), ArmEnableCommand);
+            _router.Send(_idResolver.GetId("ArmEnableJ34"), ArmEnableCommand);
         }
         public void DisableJ34()
         {
-            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableJ34"), ArmDisableCommand);
+            _router.Send(_idResolver.GetId("ArmEnableJ34"), ArmDisableCommand);
         }
         public void EnableJ56()
         {
-            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableJ56"), ArmEnableCommand);
+            _router.Send(_idResolver.GetId("ArmEnableJ56"), ArmEnableCommand);
         }
         public void DisableJ56()
         {
-            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableJ56"), ArmDisableCommand);
+            _router.Send(_idResolver.GetId("ArmEnableJ56"), ArmDisableCommand);
         }
         public void EnableEndeff()
         {
-            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableEndeff"), ArmEnableCommand);
+            _router.Send(_idResolver.GetId("ArmEnableEndeff"), ArmEnableCommand);
         }
         public void DisableEndeff()
         {
-            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmEnableEndeff"), ArmDisableCommand);
+            _router.Send(_idResolver.GetId("ArmEnableEndeff"), ArmDisableCommand);
         }
 
         public void GetPosition()
         {
-            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmGetPosition"), new byte[0]);
+            _router.Send(_idResolver.GetId("ArmGetPosition"), new byte[0]);
         }
         public void SetPosition()
         {
             float[] angles = { AngleJ1, AngleJ2, AngleJ3, AngleJ4, AngleJ5, AngleJ6 };
             byte[] data = new byte[angles.Length * sizeof(float)];
             Buffer.BlockCopy(angles, 0, data, 0, data.Length);
-            _controlCenter.DataRouter.Send(_controlCenter.MetadataManager.GetId("ArmAbsoluteAngle"), data);
+            _router.Send(_idResolver.GetId("ArmAbsoluteAngle"), data);
         }
     }
 

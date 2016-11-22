@@ -1,24 +1,28 @@
-﻿namespace RED.ViewModels.Modules
+﻿using RED.Interfaces;
+
+namespace RED.ViewModels.Modules
 {
     public class ExternalControlsViewModel
     {
-        private ControlCenterViewModel _cc;
+        private IDataRouter _router;
+        private IDataIdResolver _idResolver;
 
         private const byte GimbalDisableCommand = 0x00;
         private const byte GimbalEnableCommand = 0x01;
 
-        public ExternalControlsViewModel(ControlCenterViewModel cc)
+        public ExternalControlsViewModel(IDataRouter router, IDataIdResolver idResolver)
         {
-            _cc = cc;
+            _router = router;
+            _idResolver = idResolver;
         }
 
         public void EnableAll()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("GimbalEnableAll"), GimbalEnableCommand);
+            _router.Send(_idResolver.GetId("GimbalEnableAll"), GimbalEnableCommand);
         }
         public void DisableAll()
         {
-            _cc.DataRouter.Send(_cc.MetadataManager.GetId("GimbalEnableAll"), GimbalDisableCommand);
+            _router.Send(_idResolver.GetId("GimbalEnableAll"), GimbalDisableCommand);
         }
     }
 }
