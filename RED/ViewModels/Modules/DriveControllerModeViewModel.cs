@@ -2,6 +2,7 @@
 using RED.Interfaces;
 using RED.Interfaces.Input;
 using RED.Models.Modules;
+using System.Collections.Generic;
 
 namespace RED.ViewModels.Modules
 {
@@ -38,7 +39,8 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public string Name { get; set; }
+        public string Name { get; private set; }
+        public string ModeType { get; private set; }
         public IInputDevice InputVM { get; set; }
 
         public int SpeedLimit
@@ -73,23 +75,24 @@ namespace RED.ViewModels.Modules
             _idResolver = idResolver;
             InputVM = inputVM;
             Name = "Drive";
+            ModeType = "Drive";
         }
 
-        public void EnterMode()
+        public void StartMode()
         {
             SpeedLeft = 0;
             SpeedRight = 0;
         }
 
-        public void EvaluateMode()
+        public void SetValues(Dictionary<string, float> values)
         {
             int newSpeedLeft;
             int newSpeedRight;
 
             #region Normalization of joystick input
             {
-                float CurrentRawControllerSpeedLeft = InputVM.WheelsLeft;
-                float CurrentRawControllerSpeedRight = InputVM.WheelsRight;
+                float CurrentRawControllerSpeedLeft = values["WheelsLeft"];
+                float CurrentRawControllerSpeedRight = values["WheelsRight"];
 
                 //Scaling
                 if (ParabolicScaling) //Squares the value (0..1)
@@ -116,7 +119,7 @@ namespace RED.ViewModels.Modules
             _router.Send(_idResolver.GetId("MotorRightSpeed"), SpeedRight);
         }
 
-        public void ExitMode()
+        public void StopMode()
         {
             int speed = 0;
             _router.Send(_idResolver.GetId("MotorLeftSpeed"), speed);
