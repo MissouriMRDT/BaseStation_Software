@@ -5,6 +5,7 @@ using RED.Models.Input.Controllers;
 using RED.ViewModels.Modules;
 using SharpDX.XInput;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
@@ -17,6 +18,9 @@ namespace RED.ViewModels.Input.Controllers
         private IDataIdResolver _idResolver;
         private StateViewModel _state;
         public readonly Controller ControllerOne = new Controller(UserIndex.One);
+
+        public string Name { get; private set; }
+        public string DeviceType { get; private set; }
 
         public int SerialReadSpeed
         {
@@ -429,7 +433,6 @@ namespace RED.ViewModels.Input.Controllers
             }
             set
             {
-                if (value) NextControlMode();
                 Model.ModeNextDebounced = value;
                 NotifyOfPropertyChange(() => DebouncedModeNext);
             }
@@ -442,7 +445,6 @@ namespace RED.ViewModels.Input.Controllers
             }
             set
             {
-                if (value) PreviousControlMode();
                 Model.ModePrevDebounced = value;
                 NotifyOfPropertyChange(() => DebouncedModePrev);
             }
@@ -551,6 +553,9 @@ namespace RED.ViewModels.Input.Controllers
             _idResolver = idResolver;
             _state = state;
 
+            Name = "Xbox Controller 1";
+            DeviceType = "Xbox";
+
             ControllerModes.Add(new DriveControllerModeViewModel(this, _router, _idResolver));
             ControllerModes.Add(new ArmControllerModeViewModel(this, _router, _idResolver, log));
             ControllerModes.Add(new GimbalControllerModeViewModel(this, _router, _idResolver, log, 0));
@@ -559,67 +564,49 @@ namespace RED.ViewModels.Input.Controllers
             CurrentModeIndex = 0;
         }
 
-        public async void Start()
-        {
-            while (true)
-            {
-                Update();
-                EvaluateCurrentMode();
-                await Task.Delay(SerialReadSpeed);
-            }
-        }
-
-        public void NextControlMode()
-        {
-            ControllerModes[CurrentModeIndex].ExitMode();
-            CurrentModeIndex = (CurrentModeIndex + 1) % ControllerModes.Count;
-            ControllerModes[CurrentModeIndex].EnterMode();
-        }
-        public void PreviousControlMode()
-        {
-            ControllerModes[CurrentModeIndex].ExitMode();
-            CurrentModeIndex = (CurrentModeIndex - 1 + ControllerModes.Count) % ControllerModes.Count;
-            ControllerModes[CurrentModeIndex].EnterMode();
-        }
-
-        private void Update()
+        public Dictionary<string, float> GetValues()
         {
             if (ControllerOne == null || !ControllerOne.IsConnected)
             {
                 Connected = false;
-                return;
+                throw new Exception("Controller Disconnected");
             }
-            var currentGamepad = ControllerOne.GetState().Gamepad;
             Connected = true;
 
+            var currentGamepad = ControllerOne.GetState().Gamepad;
+
             var deadzone = AutoDeadzone ? Math.Max(Gamepad.LeftThumbDeadZone, Gamepad.RightThumbDeadZone) : ManualDeadzone;
-            ElbowBend = GimbalTilt = WheelsLeft = currentGamepad.LeftThumbY < deadzone && currentGamepad.LeftThumbY > -deadzone ? 0 : ((currentGamepad.LeftThumbY + (currentGamepad.LeftThumbY < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
-            WristBend = WheelsRight = currentGamepad.RightThumbY < deadzone && currentGamepad.RightThumbY > -deadzone ? 0 : ((currentGamepad.RightThumbY + (currentGamepad.RightThumbY < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
-            ElbowTwist = GimbalPan = currentGamepad.LeftThumbX < deadzone && currentGamepad.LeftThumbX > -deadzone ? 0 : ((currentGamepad.LeftThumbX + (currentGamepad.LeftThumbX < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
-            WristTwist = currentGamepad.RightThumbX < deadzone && currentGamepad.RightThumbX > -deadzone ? 0 : ((currentGamepad.RightThumbX + (currentGamepad.RightThumbX < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
 
-            GripperOpen = (float)currentGamepad.LeftTrigger / 255;
-            GripperClose = (float)currentGamepad.RightTrigger / 255;
-            ButtonA = (currentGamepad.Buttons & GamepadButtonFlags.A) != 0;
-            ToolNext = (currentGamepad.Buttons & GamepadButtonFlags.B) != 0;
-            ToolPrev = (currentGamepad.Buttons & GamepadButtonFlags.X) != 0;
-            ArmReset = (currentGamepad.Buttons & GamepadButtonFlags.Y) != 0;
-            DrillCounterClockwise = (currentGamepad.Buttons & GamepadButtonFlags.LeftShoulder) != 0;
-            DrillClockwise = (currentGamepad.Buttons & GamepadButtonFlags.RightShoulder) != 0;
-            ButtonLs = (currentGamepad.Buttons & GamepadButtonFlags.LeftThumb) != 0;
-            ButtonRs = (currentGamepad.Buttons & GamepadButtonFlags.RightThumb) != 0;
-            ModeNext = (currentGamepad.Buttons & GamepadButtonFlags.Start) != 0;
-            ModePrev = (currentGamepad.Buttons & GamepadButtonFlags.Back) != 0;
-            BaseCounterClockwise = (currentGamepad.Buttons & GamepadButtonFlags.DPadLeft) != 0;
-            ActuatorForward = GimbalZoomIn = (currentGamepad.Buttons & GamepadButtonFlags.DPadUp) != 0;
-            BaseClockwise = (currentGamepad.Buttons & GamepadButtonFlags.DPadRight) != 0;
-            ActuatorBackward = GimbalZoomOut = (currentGamepad.Buttons & GamepadButtonFlags.DPadDown) != 0;
+            return new Dictionary<string, float>()
+            {
+                {"JoyStick1X", currentGamepad.LeftThumbX < deadzone && currentGamepad.LeftThumbX > -deadzone ? 0 : ((currentGamepad.LeftThumbX + (currentGamepad.LeftThumbX < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone))},
+                {"JoyStick1Y", currentGamepad.LeftThumbY < deadzone && currentGamepad.LeftThumbY > -deadzone ? 0 : ((currentGamepad.LeftThumbY + (currentGamepad.LeftThumbY < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone))},
+                {"JoyStick2X", currentGamepad.RightThumbX < deadzone && currentGamepad.RightThumbX > -deadzone ? 0 : ((currentGamepad.RightThumbX + (currentGamepad.RightThumbX < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone))},
+                {"JoyStick2Y", currentGamepad.RightThumbY < deadzone && currentGamepad.RightThumbY > -deadzone ? 0 : ((currentGamepad.RightThumbY + (currentGamepad.RightThumbY < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone))},
+                
+                {"LeftTrigger", (float)currentGamepad.LeftTrigger / 255},
+                {"RightTrigger", (float)currentGamepad.RightTrigger / 255},
+                {"ButtonA", ((currentGamepad.Buttons & GamepadButtonFlags.A) != 0) ? 0 : 1},
+                {"ButtonB", ((currentGamepad.Buttons & GamepadButtonFlags.B) != 0) ? 0 : 1},
+                {"ButtonX", ((currentGamepad.Buttons & GamepadButtonFlags.X) != 0) ? 0 : 1},
+                {"ButtonY", ((currentGamepad.Buttons & GamepadButtonFlags.Y) != 0) ? 0 : 1},
+                {"ButtonLb", ((currentGamepad.Buttons & GamepadButtonFlags.LeftShoulder) != 0) ? 0 : 1},
+                {"ButtonRb", ((currentGamepad.Buttons & GamepadButtonFlags.RightShoulder) != 0) ? 0 : 1},
+                {"ButtonLs", ((currentGamepad.Buttons & GamepadButtonFlags.LeftThumb) != 0) ? 0 : 1},
+                {"ButtonRs", ((currentGamepad.Buttons & GamepadButtonFlags.RightThumb) != 0) ? 0 : 1},
+                {"ButtonStart", ((currentGamepad.Buttons & GamepadButtonFlags.Start) != 0) ? 0 : 1},
+                {"ButtonBack", ((currentGamepad.Buttons & GamepadButtonFlags.Back) != 0) ? 0 : 1},
+                {"DPadL", ((currentGamepad.Buttons & GamepadButtonFlags.DPadLeft) != 0) ? 0 : 1},
+                {"DPadU", ((currentGamepad.Buttons & GamepadButtonFlags.DPadUp) != 0) ? 0 : 1},
+                {"DPadR", ((currentGamepad.Buttons & GamepadButtonFlags.DPadRight) != 0) ? 0 : 1},
+                {"DPadD", ((currentGamepad.Buttons & GamepadButtonFlags.DPadDown) != 0) ? 0 : 1}
+            };
         }
 
-        private void EvaluateCurrentMode()
-        {
-            if (ControllerOne != null && !ControllerOne.IsConnected) return;
-            ControllerModes[CurrentModeIndex].EvaluateMode();
-        }
+        public void StartDevice()
+        { }
+
+        public void StopDevice()
+        { }
     }
 }
