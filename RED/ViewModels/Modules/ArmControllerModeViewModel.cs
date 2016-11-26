@@ -6,7 +6,7 @@ using System;
 
 namespace RED.ViewModels.Modules
 {
-    public class ArmControllerModeViewModel : PropertyChangedBase, IControllerMode, ISubscribe
+    public class ArmControllerModeViewModel : PropertyChangedBase, IInputMode, ISubscribe
     {
         private const byte ArmDisableCommand = 0x00;
         private const byte ArmEnableCommand = 0x01;

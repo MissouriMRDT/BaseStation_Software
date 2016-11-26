@@ -5,7 +5,7 @@ using RED.Models.Modules;
 
 namespace RED.ViewModels.Modules
 {
-    public class GimbalControllerModeViewModel : PropertyChangedBase, IControllerMode
+    public class GimbalControllerModeViewModel : PropertyChangedBase, IInputMode
     {
         private GimbalModel _model;
         private IDataRouter _router;

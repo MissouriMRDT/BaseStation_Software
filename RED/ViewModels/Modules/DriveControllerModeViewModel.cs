@@ -5,7 +5,7 @@ using RED.Models.Modules;
 
 namespace RED.ViewModels.Modules
 {
-    public class DriveControllerModeViewModel : PropertyChangedBase, IControllerMode
+    public class DriveControllerModeViewModel : PropertyChangedBase, IInputMode
     {
         private const int motorRangeFactor = 1000;
 

@@ -68,7 +68,7 @@ namespace RED.ViewModels.Input.Controllers
             }
         }
 
-        public ObservableCollection<IControllerMode> ControllerModes
+        public ObservableCollection<IInputMode> ControllerModes
         {
             get
             {

@@ -9,7 +9,7 @@ namespace RED.Models.Input.Controllers
         internal int ManualDeadzone;
         internal bool AutoDeadzone = false;
 
-        internal ObservableCollection<IControllerMode> ControllerModes = new ObservableCollection<IControllerMode>();
+        internal ObservableCollection<IInputMode> ControllerModes = new ObservableCollection<IInputMode>();
         internal int CurrentModeIndex;
 
         internal bool Connected;
