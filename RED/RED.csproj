@@ -163,6 +163,7 @@
     <Compile Include="ViewModels\Input\InputManagerViewModel.cs" />
     <Compile Include="ViewModels\Network\UDPEndpoint.cs" />
     <Compile Include="ViewModels\SettingsManagerViewModel.cs" />
+    <Compile Include="ViewModels\Settings\Input\Controllers\XboxControllerInputSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Modules\DriveSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Modules\GPSSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Input\InputSettingsViewModel.cs" />

@@ -1,5 +1,6 @@
 ﻿using RED.ViewModels;
 using RED.ViewModels.Input;
+using RED.ViewModels.Input.Controllers;
 using RED.ViewModels.Modules;
 using RED.ViewModels.Network;
 
@@ -23,5 +24,10 @@ namespace RED.Models
         internal PowerViewModel _power;
         internal CameraMuxViewModel _cameraMux;
         internal ExternalControlsViewModel _externalControls;
+        internal DriveControllerModeViewModel _driveControllerMode;
+        internal ArmControllerModeViewModel _armControllerMode;
+        internal GimbalControllerModeViewModel _gimbal1ControllerMode;
+        internal GimbalControllerModeViewModel _gimbal2ControllerMode;
+        internal XboxControllerInputViewModel _xboxController;
     }
 }

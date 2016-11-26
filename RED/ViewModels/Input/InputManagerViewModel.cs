@@ -17,49 +17,28 @@ namespace RED.ViewModels.Input
 
         InputManagerModel _model = new InputManagerModel();
 
-        public IInputDevice Input
+        private int _defaultSerialReadSpeed = 30;
+        public int DefaultSerialReadSpeed
         {
             get
             {
-                return _model._input;
+                return _defaultSerialReadSpeed;
             }
             set
             {
-                _model._input = value;
-                NotifyOfPropertyChange(() => Input);
+                _defaultSerialReadSpeed = value;
+                NotifyOfPropertyChange(() => DefaultSerialReadSpeed);
             }
         }
 
         public InputManagerViewModel(IDataRouter router, IDataIdResolver idResolver, ILogger log, StateViewModel state)
         {
-            // Set default input device as the keyboard
-            //Input = new KeyboardInputViewModel(router, idResolver, log, state);
-            Input = new XboxControllerInputViewModel(router, idResolver, log, state);
-        }
 
-        public void SwitchDevice(DeviceType newDevice, IDataRouter router, IDataIdResolver idResolver, ILogger log, StateViewModel state)
-        {
-            // Delete old input
-            Input = null;
-
-            // Switch on newDevice
-            switch (newDevice)
-            {
-                case DeviceType.Keyboard:
-                    Input = new KeyboardInputViewModel(router, idResolver, log, state);
-                    break;
-                case DeviceType.XboxController:
-                    Input = new XboxControllerInputViewModel(router, idResolver, log, state);
-                    break;
-                //case DeviceType.FlightStick:
-                //    Input = new FlightStickInputViewModel(cc);
-                //    break;
-            }
         }
 
         public void Start()
         {
-            Input.Start();
+
         }
     }
 }
