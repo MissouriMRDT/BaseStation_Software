@@ -108,5 +108,18 @@ namespace RED.ViewModels.Input
         {
             _model = new MappingChannelModel();
         }
+
+        public float Map(float input)
+        {
+            if (Parabolic)
+                input = input * input * (input >= 0 ? 1 : -1);
+
+            float result = input * LinearScaling + Offset;
+
+            if (result < Minimum) result = Minimum;
+            if (result > Maximum) result = Maximum;
+
+            return result;
+        }
     }
 }

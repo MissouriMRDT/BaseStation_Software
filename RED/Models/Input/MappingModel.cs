@@ -8,7 +8,7 @@ namespace RED.Models.Input
         internal ObservableCollection<MappingChannelViewModel> Channels;
         internal string DeviceType;
         internal string ModeType;
-        internal uint UpdatePeriod;
+        internal int UpdatePeriod;
         internal bool IsActive;
     }
 }
