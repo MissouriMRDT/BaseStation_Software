@@ -4,6 +4,7 @@ using RED.Interfaces.Input;
 using RED.Models.Input.Controllers;
 using RED.ViewModels.Modules;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -17,6 +18,9 @@ namespace RED.ViewModels.Input.Controllers
         private IDataIdResolver _idResolver;
         private ILogger _log;
         private StateViewModel _state;
+
+        public string Name { get; private set; }
+        public string DeviceType { get; private set; }
 
         public int SerialReadSpeed
         {
@@ -341,7 +345,6 @@ namespace RED.ViewModels.Input.Controllers
             }
             set
             {
-                if (value) NextControlMode();
                 Model.ModeNextDebounced = value;
                 NotifyOfPropertyChange(() => DebouncedModeNext);
             }
@@ -354,7 +357,6 @@ namespace RED.ViewModels.Input.Controllers
             }
             set
             {
-                if (value) PreviousControlMode();
                 Model.ModePrevDebounced = value;
                 NotifyOfPropertyChange(() => DebouncedModePrev);
             }
@@ -490,6 +492,9 @@ namespace RED.ViewModels.Input.Controllers
             _log = log;
             _state = state;
 
+            Name = "Keyboard";
+            DeviceType = "Keyboard";
+
             ControllerModes.Add(new DriveControllerModeViewModel(this, router, idResolver));
             ControllerModes.Add(new ArmControllerModeViewModel(this, router, idResolver, log));
             ControllerModes.Add(new GimbalControllerModeViewModel(this, router, idResolver, log, 0));
@@ -498,126 +503,66 @@ namespace RED.ViewModels.Input.Controllers
             CurrentModeIndex = 0;
         }
 
-        public async void Start()
+        public Dictionary<string, float> GetValues()
         {
-            while (true)
-            {
-                Update();
-                EvaluateCurrentMode();
-                await Task.Delay(SerialReadSpeed);
-            }
-        }
-
-        public void NextControlMode()
-        {
-            ControllerModes[CurrentModeIndex].ExitMode();
-            CurrentModeIndex = (CurrentModeIndex + 1) % ControllerModes.Count;
-            ControllerModes[CurrentModeIndex].EnterMode();
-        }
-        public void PreviousControlMode()
-        {
-            ControllerModes[CurrentModeIndex].ExitMode();
-            CurrentModeIndex = (CurrentModeIndex - 1 + ControllerModes.Count) % ControllerModes.Count;
-            ControllerModes[CurrentModeIndex].EnterMode();
-        }
-
-        private void Update()
-        {
-            // Tell RED that this controller is connected
             Connected = true;
 
-            // Set the speed multiplier; 1-9 for 10%-90%; 0 for 100%
-            if (Keyboard.IsKeyDown(Key.D1))
-                speedMultiplier = 0.1F;
-            if (Keyboard.IsKeyDown(Key.D2))
-                speedMultiplier = 0.2F;
-            if (Keyboard.IsKeyDown(Key.D3))
-                speedMultiplier = 0.3F;
-            if (Keyboard.IsKeyDown(Key.D4))
-                speedMultiplier = 0.4F;
-            if (Keyboard.IsKeyDown(Key.D5))
-                speedMultiplier = 0.5F;
-            if (Keyboard.IsKeyDown(Key.D6))
-                speedMultiplier = 0.6F;
-            if (Keyboard.IsKeyDown(Key.D7))
-                speedMultiplier = 0.7F;
-            if (Keyboard.IsKeyDown(Key.D8))
-                speedMultiplier = 0.8F;
-            if (Keyboard.IsKeyDown(Key.D9))
-                speedMultiplier = 0.9F;
-            if (Keyboard.IsKeyDown(Key.D0))
-                speedMultiplier = 1.0f;
-
-            // Fine tune the speed multiplier
-            if (speedMultiplier < 1f && Keyboard.IsKeyDown(Key.OemPlus))
-                speedMultiplier += 0.01f;
-            // speedMultiplier will have round-off error, so check before it hits zero
-            if (speedMultiplier > 0.01f && Keyboard.IsKeyDown(Key.OemMinus))
-                speedMultiplier -= 0.01f;
-
-            Console.WriteLine(speedMultiplier);
-
-            // Keys A and Q control the left wheels in drive mode
-            // and the elbow bend in arm mode
-            if (Keyboard.IsKeyDown(Key.A))
-                ElbowBend = GimbalPan = WheelsLeft = -(float)(Math.Sqrt(speedMultiplier));
-            else if (Keyboard.IsKeyDown(Key.Q))
-                ElbowBend = WheelsLeft = (float)(Math.Sqrt(speedMultiplier));
-            else
-                ElbowBend = WheelsLeft = 0;
-
-            // Keys D and E control the right wheels in drive mode
-            // and the wrist bend in arm mode
-            if (Keyboard.IsKeyDown(Key.D))
-                WristBend = GimbalPan = WheelsRight = -(float)(Math.Sqrt(speedMultiplier));
-            else if (Keyboard.IsKeyDown(Key.E))
-                WristBend = WheelsRight = (float)(Math.Sqrt(speedMultiplier));
-            else
-                WristBend = WheelsRight = 0;
-
-            // Keys D and E control the right wheels in drive mode
-            // and the wrist bend in arm mode
-            if (Keyboard.IsKeyDown(Key.W))
-                ElbowTwist = GimbalTilt = 1;
-            else if (Keyboard.IsKeyDown(Key.S))
-                ElbowTwist = GimbalTilt = -1;
-            else
-                ElbowTwist = 0;
-
-            // Keys Z and C control the wrist twist
-            if (Keyboard.IsKeyDown(Key.Z))
-                WristTwist = 1;
-            else if (Keyboard.IsKeyDown(Key.C))
-                WristTwist = -1;
-            else
-                WristTwist = 0;
-
-            // Keys J and K control the gripper
-            if (Keyboard.IsKeyDown(Key.J))
-                GripperOpen = 1.0f;
-            else
-                GripperOpen = 0.0f;
-            if (Keyboard.IsKeyDown(Key.K))
-                GripperClose = 1.0f;
-            else
-                GripperClose = 0.0f;
-
-            ToolNext = Keyboard.IsKeyDown(Key.T);
-            ToolPrev = Keyboard.IsKeyDown(Key.Y);
-            ArmReset = Keyboard.IsKeyDown(Key.OemTilde);
-            DrillCounterClockwise = Keyboard.IsKeyDown(Key.OemComma);
-            DrillClockwise = Keyboard.IsKeyDown(Key.OemPeriod);
-            ModeNext = Keyboard.IsKeyDown(Key.RightShift);
-            ModePrev = Keyboard.IsKeyDown(Key.LeftShift);
-            BaseCounterClockwise = Keyboard.IsKeyDown(Key.Left);
-            BaseClockwise = Keyboard.IsKeyDown(Key.Right);
-            ActuatorForward = Keyboard.IsKeyDown(Key.Up);
-            ActuatorBackward = Keyboard.IsKeyDown(Key.Down);
+            return new Dictionary<string, float>()
+            {
+                {"A", Keyboard.IsKeyDown(Key.A) ? 1 : 0},
+                {"B", Keyboard.IsKeyDown(Key.B) ? 1 : 0},
+                {"C", Keyboard.IsKeyDown(Key.C) ? 1 : 0},
+                {"D", Keyboard.IsKeyDown(Key.D) ? 1 : 0},
+                {"E", Keyboard.IsKeyDown(Key.E) ? 1 : 0},
+                {"F", Keyboard.IsKeyDown(Key.F) ? 1 : 0},
+                {"G", Keyboard.IsKeyDown(Key.G) ? 1 : 0},
+                {"H", Keyboard.IsKeyDown(Key.H) ? 1 : 0},
+                {"I", Keyboard.IsKeyDown(Key.I) ? 1 : 0},
+                {"J", Keyboard.IsKeyDown(Key.J) ? 1 : 0},
+                {"K", Keyboard.IsKeyDown(Key.K) ? 1 : 0},
+                {"L", Keyboard.IsKeyDown(Key.L) ? 1 : 0},
+                {"M", Keyboard.IsKeyDown(Key.M) ? 1 : 0},
+                {"N", Keyboard.IsKeyDown(Key.N) ? 1 : 0},
+                {"O", Keyboard.IsKeyDown(Key.O) ? 1 : 0},
+                {"P", Keyboard.IsKeyDown(Key.P) ? 1 : 0},
+                {"Q", Keyboard.IsKeyDown(Key.Q) ? 1 : 0},
+                {"R", Keyboard.IsKeyDown(Key.R) ? 1 : 0},
+                {"S", Keyboard.IsKeyDown(Key.S) ? 1 : 0},
+                {"T", Keyboard.IsKeyDown(Key.T) ? 1 : 0},
+                {"U", Keyboard.IsKeyDown(Key.U) ? 1 : 0},
+                {"V", Keyboard.IsKeyDown(Key.V) ? 1 : 0},
+                {"W", Keyboard.IsKeyDown(Key.W) ? 1 : 0},
+                {"X", Keyboard.IsKeyDown(Key.X) ? 1 : 0},
+                {"Y", Keyboard.IsKeyDown(Key.Y) ? 1 : 0},
+                {"Z", Keyboard.IsKeyDown(Key.Z) ? 1 : 0},
+                {"D1", Keyboard.IsKeyDown(Key.D1) ? 1 : 0},
+                {"D2", Keyboard.IsKeyDown(Key.D2) ? 1 : 0},
+                {"D3", Keyboard.IsKeyDown(Key.D3) ? 1 : 0},
+                {"D4", Keyboard.IsKeyDown(Key.D4) ? 1 : 0},
+                {"D5", Keyboard.IsKeyDown(Key.D5) ? 1 : 0},
+                {"D6", Keyboard.IsKeyDown(Key.D6) ? 1 : 0},
+                {"D7", Keyboard.IsKeyDown(Key.D7) ? 1 : 0},
+                {"D8", Keyboard.IsKeyDown(Key.D8) ? 1 : 0},
+                {"D9", Keyboard.IsKeyDown(Key.D9) ? 1 : 0},
+                {"D0", Keyboard.IsKeyDown(Key.D0) ? 1 : 0},
+                {"Tilde", Keyboard.IsKeyDown(Key.OemTilde) ? 1 : 0},
+                {"Comma", Keyboard.IsKeyDown(Key.OemComma) ? 1 : 0},
+                {"Period", Keyboard.IsKeyDown(Key.OemPeriod) ? 1 : 0},
+                {"Plus", Keyboard.IsKeyDown(Key.OemPlus) ? 1 : 0},
+                {"Minus", Keyboard.IsKeyDown(Key.OemMinus) ? 1 : 0},
+                {"RightShift", Keyboard.IsKeyDown(Key.RightShift) ? 1 : 0},
+                {"ShiftLeft", Keyboard.IsKeyDown(Key.LeftShift) ? 1 : 0},
+                {"ArrowLeft", Keyboard.IsKeyDown(Key.Left) ? 1 : 0},
+                {"ArrowRight", Keyboard.IsKeyDown(Key.Right) ? 1 : 0},
+                {"ArrowUp", Keyboard.IsKeyDown(Key.Up) ? 1 : 0},
+                {"ArrowDown", Keyboard.IsKeyDown(Key.Down) ? 1 : 0}
+            };
         }
 
-        private void EvaluateCurrentMode()
-        {
-            ControllerModes[CurrentModeIndex].EvaluateMode();
-        }
+        public void StartDevice()
+        { }
+
+        public void StopDevice()
+        { }
     }
 }
