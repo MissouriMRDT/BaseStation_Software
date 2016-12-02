@@ -81,6 +81,8 @@ namespace RED.ViewModels.Input
         public MappingViewModel()
         {
             _model = new MappingModel();
+
+            Channels = new ObservableCollection<MappingChannelViewModel>();
         }
 
         public async Task Start()
