@@ -284,9 +284,35 @@ namespace RED.ViewModels
             Gimbal2ControllerMode = new GimbalControllerModeViewModel(null, DataRouter, MetadataManager, Console, 1);
             XboxController = new XboxControllerInputViewModel(DataRouter, MetadataManager, Console, StateManager);
 
+            var XboxToDriveMapping = new MappingViewModel();
+            XboxToDriveMapping.Device = XboxController;
+            XboxToDriveMapping.Mode = DriveControllerMode;
+            XboxToDriveMapping.UpdatePeriod = 30;
+            XboxToDriveMapping.Channels.Add(new MappingChannelViewModel()
+            {
+                Name = "Left Wheels",
+                InputKey = "JoyStick1Y",
+                OutputKey = "WheelsLeft",
+                LinearScaling = 1f,
+                Minimum = -1f,
+                Maximum = 1f,
+                Parabolic = true
+            });
+            XboxToDriveMapping.Channels.Add(new MappingChannelViewModel()
+            {
+                Name = "Right Wheels",
+                InputKey = "JoyStick2Y",
+                OutputKey = "WheelsRight",
+                LinearScaling = 1f,
+                Minimum = -1f,
+                Maximum = 1f,
+                Parabolic = true
+            });
+            XboxToDriveMapping.IsActive = true;
+
             InputManager = new InputManagerViewModel(
                 new IInputDevice[] { XboxController },
-                new MappingViewModel[] { },
+                new MappingViewModel[] { XboxToDriveMapping },
                 new IInputMode[] { DriveControllerMode, ArmControllerMode, GimbalControllerMode, Gimbal2ControllerMode });
 
             SettingsManager = new SettingsManagerViewModel(this);
