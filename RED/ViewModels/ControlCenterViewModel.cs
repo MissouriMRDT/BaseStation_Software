@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using RED.Interfaces.Input;
 using RED.Models;
 using RED.ViewModels.Input;
 using RED.ViewModels.Input.Controllers;
@@ -268,7 +269,6 @@ namespace RED.ViewModels
             NetworkManager = new NetworkManagerViewModel(DataRouter, MetadataManager.Commands.ToArray(), Console, MetadataManager);
             SubscriptionManager = new SubscriptionManagerViewModel(MetadataManager.Telemetry.ToArray(), MetadataManager, NetworkManager);
             StateManager = new StateViewModel(SubscriptionManager);
-            InputManager = new InputManagerViewModel(DataRouter, MetadataManager, Console, StateManager);
 
             Science = new ScienceViewModel(DataRouter, MetadataManager, Console);
             GPS = new GPSViewModel(DataRouter, MetadataManager);
@@ -283,6 +283,11 @@ namespace RED.ViewModels
             GimbalControllerMode = new GimbalControllerModeViewModel(null, DataRouter, MetadataManager, Console, 0);
             Gimbal2ControllerMode = new GimbalControllerModeViewModel(null, DataRouter, MetadataManager, Console, 1);
             XboxController = new XboxControllerInputViewModel(DataRouter, MetadataManager, Console, StateManager);
+
+            InputManager = new InputManagerViewModel(
+                new IInputDevice[] { XboxController },
+                new MappingViewModel[] { },
+                new IInputMode[] { DriveControllerMode, ArmControllerMode, GimbalControllerMode, Gimbal2ControllerMode });
 
             SettingsManager = new SettingsManagerViewModel(this);
 
