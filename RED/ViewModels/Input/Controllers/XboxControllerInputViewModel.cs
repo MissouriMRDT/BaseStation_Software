@@ -91,13 +91,14 @@ namespace RED.ViewModels.Input.Controllers
             var currentGamepad = ControllerOne.GetState().Gamepad;
 
             var deadzone = AutoDeadzone ? Math.Max(Gamepad.LeftThumbDeadZone, Gamepad.RightThumbDeadZone) : ManualDeadzone;
+            Func<short, float> deadzoneTransform = x => x < deadzone && x > -deadzone ? 0 : ((x + (x < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
 
             return new Dictionary<string, float>()
             {
-                {"JoyStick1X", currentGamepad.LeftThumbX < deadzone && currentGamepad.LeftThumbX > -deadzone ? 0 : ((currentGamepad.LeftThumbX + (currentGamepad.LeftThumbX < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone))},
-                {"JoyStick1Y", currentGamepad.LeftThumbY < deadzone && currentGamepad.LeftThumbY > -deadzone ? 0 : ((currentGamepad.LeftThumbY + (currentGamepad.LeftThumbY < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone))},
-                {"JoyStick2X", currentGamepad.RightThumbX < deadzone && currentGamepad.RightThumbX > -deadzone ? 0 : ((currentGamepad.RightThumbX + (currentGamepad.RightThumbX < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone))},
-                {"JoyStick2Y", currentGamepad.RightThumbY < deadzone && currentGamepad.RightThumbY > -deadzone ? 0 : ((currentGamepad.RightThumbY + (currentGamepad.RightThumbY < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone))},
+                {"JoyStick1X", deadzoneTransform(currentGamepad.LeftThumbX)},
+                {"JoyStick1Y", deadzoneTransform(currentGamepad.LeftThumbY)},
+                {"JoyStick2X", deadzoneTransform(currentGamepad.RightThumbX)},
+                {"JoyStick2Y", deadzoneTransform(currentGamepad.RightThumbY)},
                 
                 {"LeftTrigger", (float)currentGamepad.LeftTrigger / 255},
                 {"RightTrigger", (float)currentGamepad.RightTrigger / 255},
