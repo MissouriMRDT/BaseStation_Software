@@ -175,6 +175,9 @@
     <Compile Include="Views\Modules\ArmControllerModeView.xaml.cs">
       <DependentUpon>ArmControllerModeView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\AutonomyView.xaml.cs">
+      <DependentUpon>AutonomyView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\CameraMuxView.xaml.cs">
       <DependentUpon>CameraMuxView.xaml</DependentUpon>
     </Compile>
@@ -222,6 +225,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Modules\ArmControllerModeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Modules\AutonomyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

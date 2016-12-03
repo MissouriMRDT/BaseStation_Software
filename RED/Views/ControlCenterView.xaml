@@ -61,6 +61,9 @@
                         <Expander Header="Camera Mux">
                             <ContentControl x:Name="CameraMux" />
                         </Expander>
+                        <Expander Header="Autonomy Mode">
+                            <ContentControl x:Name="Autonomy" />
+                        </Expander>
                     </StackPanel>
                 </ScrollViewer>
                 <!-- Static Side Panel Grid -->

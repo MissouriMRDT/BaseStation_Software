@@ -12,6 +12,31 @@ namespace RED.ViewModels.Modules
         private IDataIdResolver _idResolver;
         private ILogger _logger;
 
+        public float LatitudeInput
+        {
+            get
+            {
+                return _model.latitudeInput;
+            }
+            set
+            {
+                _model.latitudeInput = value;
+                NotifyOfPropertyChange(() => LatitudeInput);
+            }
+        }
+        public float LongitudeInput
+        {
+            get
+            {
+                return _model.longitudeInput;
+            }
+            set
+            {
+                _model.longitudeInput = value;
+                NotifyOfPropertyChange(() => LongitudeInput);
+            }
+        }
+
         public AutonomyViewModel(IDataRouter router, IDataIdResolver idResolver, ILogger logger)
         {
             _model = new AutonomyModel();
@@ -23,24 +48,21 @@ namespace RED.ViewModels.Modules
             _router.Subscribe(this, _idResolver.GetId("WaypointReached"));
         }
 
-        public void EnableAutonomousMode()
+        public void EnableMode()
         {
             _router.Send(_idResolver.GetId("AutonomousModeEnable"), new byte[0]);
         }
 
-        public void DisableAutonomousMode()
+        public void DisableMode()
         {
             _router.Send(_idResolver.GetId("AutonomousModeDisable"), new byte[0]);
         }
 
         public void AddWaypoint()
         {
-            double lat = 0;
-            double lon = 0;
-
             byte[] msg = new byte[8];
-            Buffer.BlockCopy(BitConverter.GetBytes(lat), 0, msg, 0, 4);
-            Buffer.BlockCopy(BitConverter.GetBytes(lon), 0, msg, 4, 4);
+            Buffer.BlockCopy(BitConverter.GetBytes(LatitudeInput), 0, msg, 0, 4);
+            Buffer.BlockCopy(BitConverter.GetBytes(LongitudeInput), 0, msg, 4, 4);
 
             _router.Send(_idResolver.GetId("WaypointAdd"), msg);
         }
