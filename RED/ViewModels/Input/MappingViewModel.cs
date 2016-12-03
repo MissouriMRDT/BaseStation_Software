@@ -87,15 +87,28 @@ namespace RED.ViewModels.Input
 
         public async Task Start()
         {
-            Mode.StartMode();
-            isRunning = true;
-            while (isRunning)
+            try
             {
-                var values = Device.GetValues();
-                Mode.SetValues(Map(values));
-                await Task.Delay(UpdatePeriod);
+                Mode.StartMode();
+                Device.StartDevice();
+                isRunning = true;
+                while (isRunning)
+                {
+                    var values = Device.GetValues();
+                    Mode.SetValues(Map(values));
+                    await Task.Delay(UpdatePeriod);
+                }
             }
-            Mode.StopMode();
+            catch
+            {
+                
+            }
+            finally
+            {
+                isRunning = false;
+                Device.StopDevice();
+                Mode.StopMode();
+            }
         }
 
         public void Stop()

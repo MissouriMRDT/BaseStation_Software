@@ -8,8 +8,7 @@ namespace RED.ViewModels.Input.Controllers
 {
     public class FlightStickViewModel : PropertyChangedBase, IInputDevice
     {
-        private readonly Guid joystickGuid = Guid.Empty;
-        private readonly Joystick joystick;
+        private Joystick joystick;
 
         public string Name { get; private set; }
         public string DeviceType { get; private set; }
@@ -18,23 +17,13 @@ namespace RED.ViewModels.Input.Controllers
         {
             Name = "Flight Stick";
             DeviceType = "FlightStick";
-
-            DirectInput directInput = new DirectInput();
-
-            foreach (var deviceInstance in directInput.GetDevices(SharpDX.DirectInput.DeviceType.Joystick, DeviceEnumerationFlags.AllDevices))
-                joystickGuid = deviceInstance.InstanceGuid;
-
-            if (joystickGuid == Guid.Empty)
-                throw new Exception("No joystick/Gamepad found.");
-
-            joystick = new Joystick(directInput, joystickGuid);
-
-            joystick.Properties.BufferSize = 128;
-            joystick.Acquire();
         }
 
         public Dictionary<string, float> GetValues()
         {
+            if (joystick == null)
+                throw new Exception("Flight Stick Disconnected");
+
             JoystickState state = joystick.GetCurrentState();
 
             return new Dictionary<string, float>()
@@ -105,9 +94,25 @@ namespace RED.ViewModels.Input.Controllers
         }
 
         public void StartDevice()
-        { }
+        {
+            DirectInput directInput = new DirectInput();
+            Guid joystickGuid = Guid.Empty;
+
+            var device = directInput.GetDevices(SharpDX.DirectInput.DeviceType.Joystick, DeviceEnumerationFlags.AllDevices);
+            if (device.Count > 0)
+                joystickGuid = device[0].InstanceGuid;
+
+            if (joystickGuid == Guid.Empty)
+                throw new Exception("No flight stick found");
+
+            joystick = new Joystick(directInput, joystickGuid);
+            joystick.Properties.BufferSize = 128;
+            joystick.Acquire();
+        }
 
         public void StopDevice()
-        { }
+        {
+            joystick = null;
+        }
     }
 }

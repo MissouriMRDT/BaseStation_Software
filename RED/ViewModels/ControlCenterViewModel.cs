@@ -318,6 +318,7 @@ namespace RED.ViewModels
             SettingsManager = new SettingsManagerViewModel(this);
 
             FlightStickViewModel x = new FlightStickViewModel();
+            x.StartDevice();
 
             InputManager.Start();
             //DataRouter.Send(100, new byte[] { 10, 20, 30, 40 });
