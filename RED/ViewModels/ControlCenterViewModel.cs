@@ -317,6 +317,8 @@ namespace RED.ViewModels
 
             SettingsManager = new SettingsManagerViewModel(this);
 
+            FlightStickViewModel x = new FlightStickViewModel();
+
             InputManager.Start();
             //DataRouter.Send(100, new byte[] { 10, 20, 30, 40 });
             //DataRouter.Send(1, new byte[] { 2, 3, 4, 5 });
