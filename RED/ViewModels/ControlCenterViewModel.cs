@@ -256,7 +256,7 @@ namespace RED.ViewModels
             Power = new PowerViewModel(DataRouter, MetadataManager, Console);
             CameraMux = new CameraMuxViewModel(DataRouter, MetadataManager);
             ExternalControls = new ExternalControlsViewModel(DataRouter, MetadataManager);
-            Autonomy = new AutonomyViewModel(DataRouter, MetadataManager);
+            Autonomy = new AutonomyViewModel(DataRouter, MetadataManager, Console);
 
             SettingsManager = new SettingsManagerViewModel(this);
 
