@@ -282,7 +282,7 @@ namespace RED.ViewModels
             ArmControllerMode = new ArmControllerModeViewModel(null, DataRouter, MetadataManager, Console);
             GimbalControllerMode = new GimbalControllerModeViewModel(null, DataRouter, MetadataManager, Console, 0);
             Gimbal2ControllerMode = new GimbalControllerModeViewModel(null, DataRouter, MetadataManager, Console, 1);
-            XboxController = new XboxControllerInputViewModel(DataRouter, MetadataManager, Console, StateManager);
+            XboxController = new XboxControllerInputViewModel(StateManager);
 
             var XboxToDriveMapping = new MappingViewModel();
             XboxToDriveMapping.Device = XboxController;
