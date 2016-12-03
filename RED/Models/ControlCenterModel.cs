@@ -23,5 +23,6 @@ namespace RED.Models
         internal PowerViewModel _power;
         internal CameraMuxViewModel _cameraMux;
         internal ExternalControlsViewModel _externalControls;
+        internal AutonomyViewModel _autonomy;
     }
 }
