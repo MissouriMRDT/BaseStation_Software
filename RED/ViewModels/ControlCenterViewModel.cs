@@ -314,6 +314,7 @@ namespace RED.ViewModels
                 new IInputDevice[] { XboxController },
                 new MappingViewModel[] { XboxToDriveMapping },
                 new IInputMode[] { DriveControllerMode, ArmControllerMode, GimbalControllerMode, Gimbal2ControllerMode });
+            InputManager.SaveMappingsToFile("inputmappings.xml");
 
             SettingsManager = new SettingsManagerViewModel(this);
 

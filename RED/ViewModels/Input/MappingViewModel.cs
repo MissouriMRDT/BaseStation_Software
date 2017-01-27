@@ -5,9 +5,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace RED.ViewModels.Input
 {
+    [XmlType(TypeName = "Mapping")]
     public class MappingViewModel : PropertyChangedBase
     {
         private MappingModel _model;
@@ -73,9 +75,12 @@ namespace RED.ViewModels.Input
 
         }
 
+        [XmlIgnore]
         public IInputDevice Device { get; set; }
+        [XmlIgnore]
         public IInputMode Mode { get; set; }
 
+        [XmlIgnore]
         private bool isRunning = false;
 
         public MappingViewModel()

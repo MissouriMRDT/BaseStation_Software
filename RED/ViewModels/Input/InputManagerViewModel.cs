@@ -4,12 +4,17 @@ using RED.Interfaces.Input;
 using RED.Models.Input;
 using RED.ViewModels.Input.Controllers;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Xml.Serialization;
 
 namespace RED.ViewModels.Input
 {
     public class InputManagerViewModel : Screen
     {
         InputManagerModel _model;
+
+        private XmlSerializer mappingsSerializer = new XmlSerializer(typeof(MappingViewModel[]));
 
         public int DefaultSerialReadSpeed
         {
@@ -101,14 +106,26 @@ namespace RED.ViewModels.Input
             Devices.Add(device);
         }
 
-        public void SaveMappingsToFile()
+        public void SaveMappingsToFile(string url)
         {
-            throw new System.NotImplementedException();
+            using (var stream = new FileStream(url, FileMode.Create))
+            {
+                mappingsSerializer.Serialize(stream, Mappings.ToArray());
+            }
         }
 
-        public void LoadMappingsFromFile()
+        public void LoadMappingsFromFile(string url)
         {
-            throw new System.NotImplementedException();
+            using (var stream = File.OpenRead(url))
+            {
+                MappingViewModel[] save = (MappingViewModel[])mappingsSerializer.Deserialize(stream);
+
+                //Process 'save'
+                foreach (MappingViewModel mapping in save)
+                    Mappings.Add(mapping);
+
+                //_log.Log("Input Mappings loaded from file \"" + url + "\"");
+            }
         }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using Caliburn.Micro;
 using RED.Models.Input;
+using System.Xml.Serialization;
 
 namespace RED.ViewModels.Input
 {
+    [XmlType(TypeName = "MappingChannel")]
     public class MappingChannelViewModel : PropertyChangedBase
     {
         private MappingChannelModel _model;
