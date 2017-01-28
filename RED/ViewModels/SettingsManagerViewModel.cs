@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using RED.Models;
 using RED.ViewModels.Settings.Input;
+using RED.ViewModels.Settings.Input.Controllers;
 using RED.ViewModels.Settings.Modules;
 
 namespace RED.ViewModels
@@ -54,6 +55,18 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => Input);
             }
         }
+        public XboxControllerInputSettingsViewModel Xbox
+        {
+            get
+            {
+                return _model.xbox;
+            }
+            set
+            {
+                _model.xbox = value;
+                NotifyOfPropertyChange(() => Xbox);
+            }
+        }
         public GPSSettingsViewModel GPS
         {
             get
@@ -72,9 +85,10 @@ namespace RED.ViewModels
             _model = new SettingsManagerModel();
             _controlCenter = cc;
 
-            Drive = new DriveSettingsViewModel(this, (Modules.DriveControllerModeViewModel)cc.InputManager.Input.ControllerModes[0]);
+            Drive = new DriveSettingsViewModel(this, cc.DriveControllerMode);
             Science = new ScienceSettingsViewModel(this, cc.Science);
-            Input = new InputSettingsViewModel(this, cc.InputManager.Input);
+            Input = new InputSettingsViewModel(this, cc.InputManager);
+            Xbox = new XboxControllerInputSettingsViewModel(this, cc.XboxController);
             GPS = new GPSSettingsViewModel(this, cc.GPS);
         }
 

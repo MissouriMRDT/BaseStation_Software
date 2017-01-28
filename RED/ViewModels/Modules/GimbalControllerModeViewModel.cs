@@ -2,10 +2,11 @@
 using RED.Interfaces;
 using RED.Interfaces.Input;
 using RED.Models.Modules;
+using System.Collections.Generic;
 
 namespace RED.ViewModels.Modules
 {
-    public class GimbalControllerModeViewModel : PropertyChangedBase, IControllerMode
+    public class GimbalControllerModeViewModel : PropertyChangedBase, IInputMode
     {
         private GimbalModel _model;
         private IDataRouter _router;
@@ -16,7 +17,8 @@ namespace RED.ViewModels.Modules
         private readonly string[] PTZDataId = { "PTZ1Speed", "PTZ2Speed" };
         private readonly string[] MenuDataId = { "Camera1Menu", "Camera2Menu" };
 
-        public string Name { get; set; }
+        public string Name { get; private set; }
+        public string ModeType { get; private set; }
         public IInputDevice InputVM { get; set; }
 
         public int GimbalIndex
@@ -52,33 +54,34 @@ namespace RED.ViewModels.Modules
             _log = log;
             InputVM = inputVM;
             Name = "Gimbal " + (gimbalIndex + 1).ToString();
+            ModeType = "Gimbal";
             SpeedLimit = 1000;
             GimbalIndex = gimbalIndex;
         }
 
-        public void EnterMode()
+        public void StartMode()
         {
 
         }
 
-        public void EvaluateMode()
+        public void SetValues(Dictionary<string, float> values)
         {
             short pan, tilt;
 
-            pan = (short)(InputVM.GimbalPan * SpeedLimit);
-            tilt = (short)(InputVM.GimbalTilt * SpeedLimit);
+            pan = (short)(values["GimbalPan"] * SpeedLimit);
+            tilt = (short)(values["GimbalTilt"] * SpeedLimit);
             _router.Send(_idResolver.GetId(PTZDataId[GimbalIndex]), ((int)tilt << 16) | (((int)pan) & 0xFFFF));
 
-            if (InputVM.GimbalZoomIn)
+            if (values["GimbalZoomIn"] != 0)
                 _router.Send(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.ZoomIn);
-            else if (InputVM.GimbalZoomOut)
+            else if (values["GimbalZoomOut"] != 0)
                 _router.Send(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.ZoomOut);
             else
                 _router.Send(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.Stop);
 
         }
 
-        public void ExitMode()
+        public void StopMode()
         {
             _router.Send(_idResolver.GetId("PTZ1Speed"), (int)0);
         }
