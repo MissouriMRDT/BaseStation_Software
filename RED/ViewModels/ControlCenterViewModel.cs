@@ -255,6 +255,18 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => XboxController);
             }
         }
+        public FlightStickViewModel FlightStickController
+        {
+            get
+            {
+                return _model._flightStickController;
+            }
+            set
+            {
+                _model._flightStickController = value;
+                NotifyOfPropertyChange(() => FlightStickController);
+            }
+        }
 
         public ControlCenterViewModel()
         {
@@ -283,17 +295,15 @@ namespace RED.ViewModels
             GimbalControllerMode = new GimbalControllerModeViewModel(null, DataRouter, MetadataManager, Console, 0);
             Gimbal2ControllerMode = new GimbalControllerModeViewModel(null, DataRouter, MetadataManager, Console, 1);
             XboxController = new XboxControllerInputViewModel(StateManager);
+            FlightStickController = new FlightStickViewModel();
 
             InputManager = new InputManagerViewModel(
-                new IInputDevice[] { XboxController },
+                new IInputDevice[] { XboxController, FlightStickController },
                 new MappingViewModel[0],
                 new IInputMode[] { DriveControllerMode, ArmControllerMode, GimbalControllerMode, Gimbal2ControllerMode });
             InputManager.LoadMappingsFromFile("inputmappings.xml");
 
             SettingsManager = new SettingsManagerViewModel(this);
-
-            FlightStickViewModel x = new FlightStickViewModel();
-            x.StartDevice();
 
             InputManager.Start();
             //DataRouter.Send(100, new byte[] { 10, 20, 30, 40 });

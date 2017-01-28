@@ -29,5 +29,6 @@ namespace RED.Models
         internal GimbalControllerModeViewModel _gimbal1ControllerMode;
         internal GimbalControllerModeViewModel _gimbal2ControllerMode;
         internal XboxControllerInputViewModel _xboxController;
+        internal FlightStickViewModel _flightStickController;
     }
 }
