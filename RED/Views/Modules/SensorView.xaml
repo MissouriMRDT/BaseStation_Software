@@ -5,27 +5,69 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Label Grid.Row="0" Grid.Column="0">Voltage</Label>
-        <Label Grid.Row="0" Grid.Column="1" x:Name="Voltage" ContentStringFormat="{}{0:0.0} V" />
-        <Label Grid.Row="1" Grid.Column="0">Ultrasonic 0</Label>
-        <Label Grid.Row="1" Grid.Column="1" x:Name="Ultrasonic0" ContentStringFormat="{}{0:#0} in" />
-        <Label Grid.Row="2" Grid.Column="0">Ultrasonic 1</Label>
-        <Label Grid.Row="2" Grid.Column="1" x:Name="Ultrasonic1" ContentStringFormat="{}{0:#0} in" />
-        <Label Grid.Row="3" Grid.Column="0">Ultrasonic 2</Label>
-        <Label Grid.Row="3" Grid.Column="1" x:Name="Ultrasonic2" ContentStringFormat="{}{0:#0} in"/>
-        <Label Grid.Row="4" Grid.Column="0">Ultrasonic 3</Label>
-        <Label Grid.Row="4" Grid.Column="1" x:Name="Ultrasonic3" ContentStringFormat="{}{0:#0} in" />
-    </Grid>
+    <StackPanel>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="0">Temperature</Label>
+            <Label Grid.Row="0" Grid.Column="1" x:Name="IMUTemperature" ContentStringFormat="{}{0:0.00}" />
+            <Label Grid.Row="1" Grid.Column="0">Accel X</Label>
+            <Label Grid.Row="1" Grid.Column="1" x:Name="IMUAccelerometerX" ContentStringFormat="{}{0:0.00}" />
+            <Label Grid.Row="2" Grid.Column="0">Accel Y</Label>
+            <Label Grid.Row="2" Grid.Column="1" x:Name="IMUAccelerometerY" ContentStringFormat="{}{0:0.00}" />
+            <Label Grid.Row="3" Grid.Column="0">Accel Z</Label>
+            <Label Grid.Row="3" Grid.Column="1" x:Name="IMUAccelerometerZ" ContentStringFormat="{}{0:0.00}" />
+            <Label Grid.Row="4" Grid.Column="0">Gyro Roll</Label>
+            <Label Grid.Row="4" Grid.Column="1" x:Name="IMUGyroscopeRoll" ContentStringFormat="{}{0:0.00}" />
+            <Label Grid.Row="5" Grid.Column="0">Gyro Pitch</Label>
+            <Label Grid.Row="5" Grid.Column="1" x:Name="IMUGyroscopePitch" ContentStringFormat="{}{0:0.00}" />
+            <Label Grid.Row="6" Grid.Column="0">Gyro Yaw</Label>
+            <Label Grid.Row="6" Grid.Column="1" x:Name="IMUGyroscopeYaw" ContentStringFormat="{}{0:0.00}" />
+            <Label Grid.Row="7" Grid.Column="0">Magnet X</Label>
+            <Label Grid.Row="7" Grid.Column="1" x:Name="IMUMagnetometerX" ContentStringFormat="{}{0:0.00}" />
+            <Label Grid.Row="8" Grid.Column="0">Magnet Y</Label>
+            <Label Grid.Row="8" Grid.Column="1" x:Name="IMUMagnetometerY" ContentStringFormat="{}{0:0.00}" />
+            <Label Grid.Row="9" Grid.Column="0">Magnet Z</Label>
+            <Label Grid.Row="9" Grid.Column="1" x:Name="IMUMagnetometerZ" ContentStringFormat="{}{0:0.00}" />
+        </Grid>
+        <Expander Header="Other">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.Column="0">Voltage</Label>
+                <Label Grid.Row="0" Grid.Column="1" x:Name="Voltage" ContentStringFormat="{}{0:0.0} V" />
+                <Label Grid.Row="1" Grid.Column="0">Ultrasonic 0</Label>
+                <Label Grid.Row="1" Grid.Column="1" x:Name="Ultrasonic0" ContentStringFormat="{}{0:#0} in" />
+                <Label Grid.Row="2" Grid.Column="0">Ultrasonic 1</Label>
+                <Label Grid.Row="2" Grid.Column="1" x:Name="Ultrasonic1" ContentStringFormat="{}{0:#0} in" />
+                <Label Grid.Row="3" Grid.Column="0">Ultrasonic 2</Label>
+                <Label Grid.Row="3" Grid.Column="1" x:Name="Ultrasonic2" ContentStringFormat="{}{0:#0} in"/>
+                <Label Grid.Row="4" Grid.Column="0">Ultrasonic 3</Label>
+                <Label Grid.Row="4" Grid.Column="1" x:Name="Ultrasonic3" ContentStringFormat="{}{0:#0} in" />
+            </Grid>
+        </Expander>
+    </StackPanel>
 </UserControl>
