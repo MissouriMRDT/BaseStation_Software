@@ -122,7 +122,14 @@ namespace RED.ViewModels.Input
 
                 //Process 'save'
                 foreach (MappingViewModel mapping in save)
+                {
                     Mappings.Add(mapping);
+                    if(mapping.IsActive)
+                    {
+                        mapping.Device = Devices.FirstOrDefault(x => x.DeviceType == mapping.DeviceType);
+                        mapping.Mode = Modes.FirstOrDefault(x => x.ModeType == mapping.ModeType);
+                    }
+                }  
 
                 //_log.Log("Input Mappings loaded from file \"" + url + "\"");
             }
