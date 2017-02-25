@@ -325,7 +325,6 @@ namespace RED.ViewModels.Modules
             _idResolver = idResolver;
             _log = log;
 
-            _router.Subscribe(this, _idResolver.GetId("GPSQuality"));
             _router.Subscribe(this, _idResolver.GetId("Motor1Current"));
             _router.Subscribe(this, _idResolver.GetId("Motor2Current"));
             _router.Subscribe(this, _idResolver.GetId("Motor3Current"));
