@@ -15,100 +15,100 @@ namespace RED.ViewModels.Modules
         private IDataIdResolver _idResolver;
         private ILogger _log;
 
-        public float Temperature1Value
+        public float Sensor0Value
         {
             get
             {
-                return _model.Temperature1Value;
+                return _model.Sensor0Value;
             }
             set
             {
-                _model.Temperature1Value = value;
-                NotifyOfPropertyChange(() => Temperature1Value);
+                _model.Sensor0Value = value;
+                NotifyOfPropertyChange(() => Sensor0Value);
             }
         }
-        public float Temperature2Value
+        public float Sensor1Value
         {
             get
             {
-                return _model.Temperature2Value;
+                return _model.Sensor1Value;
             }
             set
             {
-                _model.Temperature2Value = value;
-                NotifyOfPropertyChange(() => Temperature2Value);
+                _model.Sensor1Value = value;
+                NotifyOfPropertyChange(() => Sensor1Value);
             }
         }
-        public float Temperature3Value
+        public float Sensor2Value
         {
             get
             {
-                return _model.Temperature3Value;
+                return _model.Sensor2Value;
             }
             set
             {
-                _model.Temperature3Value = value;
-                NotifyOfPropertyChange(() => Temperature3Value);
+                _model.Sensor2Value = value;
+                NotifyOfPropertyChange(() => Sensor2Value);
             }
         }
-        public float Temperature4Value
+        public float Sensor3Value
         {
             get
             {
-                return _model.Temperature4Value;
+                return _model.Sensor3Value;
             }
             set
             {
-                _model.Temperature4Value = value;
-                NotifyOfPropertyChange(() => Temperature4Value);
+                _model.Sensor3Value = value;
+                NotifyOfPropertyChange(() => Sensor3Value);
             }
         }
-        public float Moisture1Value
+        public float Sensor4Value
         {
             get
             {
-                return _model.Moisture1Value;
+                return _model.Sensor4Value;
             }
             set
             {
-                _model.Moisture1Value = value;
-                NotifyOfPropertyChange(() => Moisture1Value);
+                _model.Sensor4Value = value;
+                NotifyOfPropertyChange(() => Sensor4Value);
             }
         }
-        public float Moisture2Value
+        public float Sensor5Value
         {
             get
             {
-                return _model.Moisture2Value;
+                return _model.Sensor5Value;
             }
             set
             {
-                _model.Moisture2Value = value;
-                NotifyOfPropertyChange(() => Moisture2Value);
+                _model.Sensor5Value = value;
+                NotifyOfPropertyChange(() => Sensor5Value);
             }
         }
-        public float Moisture3Value
+        public float Sensor6Value
         {
             get
             {
-                return _model.Moisture3Value;
+                return _model.Sensor6Value;
             }
             set
             {
-                _model.Moisture3Value = value;
-                NotifyOfPropertyChange(() => Moisture3Value);
+                _model.Sensor6Value = value;
+                NotifyOfPropertyChange(() => Sensor6Value);
             }
         }
-        public float Moisture4Value
+        public float Sensor7Value
         {
             get
             {
-                return _model.Moisture4Value;
+                return _model.Sensor7Value;
             }
             set
             {
-                _model.Moisture4Value = value;
-                NotifyOfPropertyChange(() => Moisture4Value);
+                _model.Sensor7Value = value;
+                NotifyOfPropertyChange(() => Sensor7Value);
             }
         }
 
@@ -169,79 +169,79 @@ namespace RED.ViewModels.Modules
             _idResolver = idResolver;
             _log = log;
 
-            _router.Subscribe(this, _idResolver.GetId("Temperature1"));
-            _router.Subscribe(this, _idResolver.GetId("Temperature2"));
-            _router.Subscribe(this, _idResolver.GetId("Temperature3"));
-            _router.Subscribe(this, _idResolver.GetId("Temperature4"));
-            _router.Subscribe(this, _idResolver.GetId("Moisture1"));
-            _router.Subscribe(this, _idResolver.GetId("Moisture2"));
-            _router.Subscribe(this, _idResolver.GetId("Moisture3"));
-            _router.Subscribe(this, _idResolver.GetId("Moisture4"));
+            _router.Subscribe(this, _idResolver.GetId("SciSensor0"));
+            _router.Subscribe(this, _idResolver.GetId("SciSensor1"));
+            _router.Subscribe(this, _idResolver.GetId("SciSensor2"));
+            _router.Subscribe(this, _idResolver.GetId("SciSensor3"));
+            _router.Subscribe(this, _idResolver.GetId("SciSensor4"));
+            _router.Subscribe(this, _idResolver.GetId("SciSensor5"));
+            _router.Subscribe(this, _idResolver.GetId("SciSensor6"));
+            _router.Subscribe(this, _idResolver.GetId("SciSensor7"));
         }
 
-        public void Temperature1On()
+        public void Sensor0On()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Temp1Enable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor0Enable);
         }
-        public void Temperature1Off()
+        public void Sensor0Off()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Temp1Disable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor0Disable);
         }
-        public void Temperature2On()
+        public void Sensor1On()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Temp2Enable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor1Enable);
         }
-        public void Temperature2Off()
+        public void Sensor1Off()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Temp2Disable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor1Disable);
         }
-        public void Temperature3On()
+        public void Sensor2On()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Temp3Enable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor2Enable);
         }
-        public void Temperature3Off()
+        public void Sensor2Off()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Temp3Disable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor2Disable);
         }
-        public void Temperature4On()
+        public void Sensor3On()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Temp4Enable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor4Enable);
         }
-        public void Temperature4Off()
+        public void Sensor3Off()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Temp4Disable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor4Disable);
         }
-        public void Moisture1On()
+        public void Sensor4On()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Moisture1Enable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor4Enable);
         }
-        public void Moisture1Off()
+        public void Sensor4Off()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Moisture1Disable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor4Disable);
         }
-        public void Moisture2On()
+        public void Sensor5On()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Moisture2Enable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor5Enable);
         }
-        public void Moisture2Off()
+        public void Sensor5Off()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Moisture2Disable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor5Disable);
         }
-        public void Moisture3On()
+        public void Sensor6On()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Moisture3Enable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor6Enable);
         }
-        public void Moisture3Off()
+        public void Sensor6Off()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Moisture3Disable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor6Disable);
         }
-        public void Moisture4On()
+        public void Sensor7On()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Moisture4Enable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor7Enable);
         }
-        public void Moisture4Off()
+        public void Sensor7Off()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Moisture4Disable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor7Disable);
         }
 
         public void RequestCCD()
@@ -328,59 +328,59 @@ namespace RED.ViewModels.Modules
         {
             switch (_idResolver.GetName(dataId))
             {
-                case "Temperature1":
-                    Temperature1Value = BitConverter.ToSingle(data, 0);
-                    SaveFileWrite("Temperature1", Temperature1Value);
+                case "SciSensor0":
+                    Sensor0Value = BitConverter.ToSingle(data, 0);
+                    SaveFileWrite("Sensor0", Sensor0Value);
                     break;
-                case "Temperature2":
-                    Temperature2Value = BitConverter.ToSingle(data, 0);
-                    SaveFileWrite("Temperature2", Temperature2Value);
+                case "SciSensor1":
+                    Sensor1Value = BitConverter.ToSingle(data, 0);
+                    SaveFileWrite("Sensor1", Sensor1Value);
                     break;
-                case "Temperature3":
-                    Temperature3Value = BitConverter.ToSingle(data, 0);
-                    SaveFileWrite("Temperature3", Temperature3Value);
+                case "SciSensor2":
+                    Sensor2Value = BitConverter.ToSingle(data, 0);
+                    SaveFileWrite("Sensor2", Sensor2Value);
                     break;
-                case "Temperature4":
-                    Temperature4Value = BitConverter.ToSingle(data, 0);
-                    SaveFileWrite("Temperature4", Temperature4Value);
+                case "SciSensor3":
+                    Sensor3Value = BitConverter.ToSingle(data, 0);
+                    SaveFileWrite("Sensor3", Sensor3Value);
                     break;
-                case "Moisture1":
-                    Moisture1Value = BitConverter.ToSingle(data, 0);
-                    SaveFileWrite("Moisture1", Moisture1Value);
+                case "SciSensor4":
+                    Sensor4Value = BitConverter.ToSingle(data, 0);
+                    SaveFileWrite("Sensor4", Sensor4Value);
                     break;
-                case "Moisture2":
-                    Moisture2Value = BitConverter.ToSingle(data, 0);
-                    SaveFileWrite("Moisture2", Moisture2Value);
+                case "SciSensor5":
+                    Sensor5Value = BitConverter.ToSingle(data, 0);
+                    SaveFileWrite("Sensor5", Sensor5Value);
                     break;
-                case "Moisture3":
-                    Moisture3Value = BitConverter.ToSingle(data, 0);
-                    SaveFileWrite("Moisture3", Moisture3Value);
+                case "SciSensor6":
+                    Sensor6Value = BitConverter.ToSingle(data, 0);
+                    SaveFileWrite("Sensor6", Sensor6Value);
                     break;
-                case "Moisture4":
-                    Moisture4Value = BitConverter.ToSingle(data, 0);
-                    SaveFileWrite("Moisture4", Moisture4Value);
+                case "SciSensor7":
+                    Sensor7Value = BitConverter.ToSingle(data, 0);
+                    SaveFileWrite("Sensor7", Sensor7Value);
                     break;
             }
         }
 
         public enum ScienceRequestTypes : ushort
         {
-            Temp1Enable = 1,
-            Temp1Disable = 2,
-            Temp2Enable = 3,
-            Temp2Disable = 4,
-            Temp3Enable = 5,
-            Temp3Disable = 6,
-            Temp4Enable = 7,
-            Temp4Disable = 8,
-            Moisture1Enable = 9,
-            Moisture1Disable = 10,
-            Moisture2Enable = 11,
-            Moisture2Disable = 12,
-            Moisture3Enable = 13,
-            Moisture3Disable = 14,
-            Moisture4Enable = 15,
-            Moisture4Disable = 16,
+            Sensor0Enable = 1,
+            Sensor0Disable = 2,
+            Sensor1Enable = 3,
+            Sensor1Disable = 4,
+            Sensor2Enable = 5,
+            Sensor2Disable = 6,
+            Sensor3Enable = 7,
+            Sensor3Disable = 8,
+            Sensor4Enable = 9,
+            Sensor4Disable = 10,
+            Sensor5Enable = 11,
+            Sensor5Disable = 12,
+            Sensor6Enable = 13,
+            Sensor6Disable = 14,
+            Sensor7Enable = 15,
+            Sensor7Disable = 16,
             CCDRequest = 17,
             LaserOn = 18,
             LaserOff = 19,

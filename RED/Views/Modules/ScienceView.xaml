@@ -30,45 +30,45 @@
             <Button Grid.Row="0" Grid.Column="1" x:Name="AllOff">Off</Button>
             <Label Grid.Row="0" Grid.Column="2">All</Label>
 
-            <Button Grid.Row="1" Grid.Column="0" x:Name="Temperature1On">On</Button>
-            <Button Grid.Row="1" Grid.Column="1" x:Name="Temperature1Off">Off</Button>
+            <Button Grid.Row="1" Grid.Column="0" x:Name="Sensor0On">On</Button>
+            <Button Grid.Row="1" Grid.Column="1" x:Name="Sensor0Off">Off</Button>
             <Label Grid.Row="1" Grid.Column="2">Temp 1</Label>
-            <Label Grid.Row="1" Grid.Column="3" x:Name="Temperature1Value" ContentStringFormat="{}{0:0.#&#176;}" />
+            <Label Grid.Row="1" Grid.Column="3" x:Name="Sensor0Value" ContentStringFormat="{}{0:0.#&#176;}" />
 
-            <Button Grid.Row="2" Grid.Column="0" x:Name="Temperature2On">On</Button>
-            <Button Grid.Row="2" Grid.Column="1" x:Name="Temperature2Off">Off</Button>
+            <Button Grid.Row="2" Grid.Column="0" x:Name="Sensor1On">On</Button>
+            <Button Grid.Row="2" Grid.Column="1" x:Name="Sensor1Off">Off</Button>
             <Label Grid.Row="2" Grid.Column="2">Temp 2</Label>
-            <Label Grid.Row="2" Grid.Column="3" x:Name="Temperature2Value" ContentStringFormat="{}{0:0.#&#176;}" />
+            <Label Grid.Row="2" Grid.Column="3" x:Name="Sensor1Value" ContentStringFormat="{}{0:0.#&#176;}" />
 
-            <Button Grid.Row="3" Grid.Column="0" x:Name="Temperature3On">On</Button>
-            <Button Grid.Row="3" Grid.Column="1" x:Name="Temperature3Off">Off</Button>
+            <Button Grid.Row="3" Grid.Column="0" x:Name="Sensor2On">On</Button>
+            <Button Grid.Row="3" Grid.Column="1" x:Name="Sensor2Off">Off</Button>
             <Label Grid.Row="3" Grid.Column="2">Temp 3</Label>
-            <Label Grid.Row="3" Grid.Column="3" x:Name="Temperature3Value" ContentStringFormat="{}{0:0.#&#176;}" />
+            <Label Grid.Row="3" Grid.Column="3" x:Name="Sensor2Value" ContentStringFormat="{}{0:0.#&#176;}" />
 
-            <Button Grid.Row="4" Grid.Column="0" x:Name="Temperature4On">On</Button>
-            <Button Grid.Row="4" Grid.Column="1" x:Name="Temperature4Off">Off</Button>
+            <Button Grid.Row="4" Grid.Column="0" x:Name="Sensor3On">On</Button>
+            <Button Grid.Row="4" Grid.Column="1" x:Name="Sensor3Off">Off</Button>
             <Label Grid.Row="4" Grid.Column="2">Temp 4</Label>
-            <Label Grid.Row="4" Grid.Column="3" x:Name="Temperature4Value" ContentStringFormat="{}{0:0.#&#176;}" />
+            <Label Grid.Row="4" Grid.Column="3" x:Name="Sensor3Value" ContentStringFormat="{}{0:0.#&#176;}" />
 
-            <Button Grid.Row="5" Grid.Column="0" x:Name="Moisture1On">On</Button>
-            <Button Grid.Row="5" Grid.Column="1" x:Name="Moisture1Off">Off</Button>
+            <Button Grid.Row="5" Grid.Column="0" x:Name="Sensor4On">On</Button>
+            <Button Grid.Row="5" Grid.Column="1" x:Name="Sensor4Off">Off</Button>
             <Label Grid.Row="5" Grid.Column="2">Moisture 1</Label>
-            <Label Grid.Row="5" Grid.Column="3" x:Name="Moisture1Value"/>
+            <Label Grid.Row="5" Grid.Column="3" x:Name="Sensor4Value"/>
 
-            <Button Grid.Row="6" Grid.Column="0" x:Name="Moisture2On">On</Button>
-            <Button Grid.Row="6" Grid.Column="1" x:Name="Moisture2Off">Off</Button>
+            <Button Grid.Row="6" Grid.Column="0" x:Name="Sensor5On">On</Button>
+            <Button Grid.Row="6" Grid.Column="1" x:Name="Sensor5Off">Off</Button>
             <Label Grid.Row="6" Grid.Column="2">Moisture 2</Label>
-            <Label Grid.Row="6" Grid.Column="3" x:Name="Moisture2Value"/>
+            <Label Grid.Row="6" Grid.Column="3" x:Name="Sensor5Value"/>
 
-            <Button Grid.Row="7" Grid.Column="0" x:Name="Moisture3On">On</Button>
-            <Button Grid.Row="7" Grid.Column="1" x:Name="Moisture3Off">Off</Button>
+            <Button Grid.Row="7" Grid.Column="0" x:Name="Sensor6On">On</Button>
+            <Button Grid.Row="7" Grid.Column="1" x:Name="Sensor6Off">Off</Button>
             <Label Grid.Row="7" Grid.Column="2">Moisture 3</Label>
-            <Label Grid.Row="7" Grid.Column="3" x:Name="Moisture3Value"/>
+            <Label Grid.Row="7" Grid.Column="3" x:Name="Sensor6Value"/>
 
-            <Button Grid.Row="8" Grid.Column="0" x:Name="Moisture4On">On</Button>
-            <Button Grid.Row="8" Grid.Column="1" x:Name="Moisture4Off">Off</Button>
+            <Button Grid.Row="8" Grid.Column="0" x:Name="Sensor7On">On</Button>
+            <Button Grid.Row="8" Grid.Column="1" x:Name="Sensor7Off">Off</Button>
             <Label Grid.Row="8" Grid.Column="2">Moisture 4</Label>
-            <Label Grid.Row="8" Grid.Column="3" x:Name="Moisture4Value"/>
+            <Label Grid.Row="8" Grid.Column="3" x:Name="Sensor7Value"/>
         </Grid>
         <Grid>
             <Grid.RowDefinitions>
