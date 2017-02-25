@@ -2,6 +2,7 @@
 using RED.Interfaces;
 using RED.Models.Modules;
 using System;
+using System.IO;
 
 namespace RED.ViewModels.Modules
 {
@@ -11,6 +12,9 @@ namespace RED.ViewModels.Modules
         private IDataRouter _router;
         private IDataIdResolver _idResolver;
         private ILogger _log;
+
+        private const string LogFilePath = "powerTelemetry.log";
+        private TextWriter LogFile;
 
         public float Motor1Current
         {
@@ -350,6 +354,8 @@ namespace RED.ViewModels.Modules
             _router.Subscribe(this, _idResolver.GetId("TotalPackVoltage"));
 
             _router.Subscribe(this, _idResolver.GetId("PowerBusOverCurrentNotification"));
+
+            LogFile = File.AppendText(LogFilePath);
         }
 
         public void ReceiveFromRouter(ushort dataId, byte[] data)
@@ -387,6 +393,12 @@ namespace RED.ViewModels.Modules
                     _log.Log("Overcurrent notification from Powerboard from Bus Index " + data[0].ToString());
                     break;
             }
+
+            if (_idResolver.GetName(dataId) != "PowerBusOverCurrentNotification")
+                LogFile.WriteLine(String.Format("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, {2}", DateTime.Now, dataId, BitConverter.ToSingle(data, 0)));
+            else
+                LogFile.WriteLine(String.Format("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, {2}", DateTime.Now, dataId, "Overcurrent: Bus " + data[0].ToString()));
+            LogFile.Flush();
         }
 
         public void RebootRover()
