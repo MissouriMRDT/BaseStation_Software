@@ -7,8 +7,8 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel>
         <UniformGrid Rows="1">
-            <Button x:Name="Enable">Enable</Button>
-            <Button x:Name="Disable">Disable</Button>
+            <Button x:Name="EnableMode">Enable</Button>
+            <Button x:Name="DisableMode">Disable</Button>
         </UniformGrid>
         <Grid>
             <Grid.RowDefinitions>
