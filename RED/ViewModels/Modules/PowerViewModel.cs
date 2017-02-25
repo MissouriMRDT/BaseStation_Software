@@ -348,6 +348,8 @@ namespace RED.ViewModels.Modules
             _router.Subscribe(this, _idResolver.GetId("Cell8Voltage"));
             _router.Subscribe(this, _idResolver.GetId("TotalPackCurrent"));
             _router.Subscribe(this, _idResolver.GetId("TotalPackVoltage"));
+
+            _router.Subscribe(this, _idResolver.GetId("PowerBusOverCurrentNotification"));
         }
 
         public void ReceiveFromRouter(ushort dataId, byte[] data)
