@@ -156,6 +156,7 @@
     <Compile Include="ViewModels\Modules\ExternalControlsViewModel.cs" />
     <Compile Include="ViewModels\Modules\GimbalControllerModeViewModel.cs" />
     <Compile Include="ViewModels\Modules\DropBaysViewModel.cs" />
+    <Compile Include="ViewModels\Modules\ScienceArmViewModel.cs" />
     <Compile Include="ViewModels\Network\NetworkManagerViewModel.cs" />
     <Compile Include="ViewModels\DataRouter.cs" />
     <Compile Include="Interfaces\ISubscribe.cs" />

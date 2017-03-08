@@ -206,6 +206,18 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => Autonomy);
             }
         }
+        public ScienceArmViewModel ScienceArm
+        {
+            get
+            {
+                return _model._scienceArm;
+            }
+            set
+            {
+                _model._scienceArm = value;
+                NotifyOfPropertyChange(() => ScienceArm);
+            }
+        }
 
         public DriveControllerModeViewModel DriveControllerMode
         {
@@ -302,6 +314,7 @@ namespace RED.ViewModels
             CameraMux = new CameraMuxViewModel(DataRouter, MetadataManager);
             ExternalControls = new ExternalControlsViewModel(DataRouter, MetadataManager);
             Autonomy = new AutonomyViewModel(DataRouter, MetadataManager, Console);
+            ScienceArm = new ScienceArmViewModel(null, DataRouter, MetadataManager, Console);
 
             DriveControllerMode = new DriveControllerModeViewModel(null, DataRouter, MetadataManager);
             ArmControllerMode = new ArmControllerModeViewModel(null, DataRouter, MetadataManager, Console);
@@ -313,7 +326,7 @@ namespace RED.ViewModels
             InputManager = new InputManagerViewModel(
                 new IInputDevice[] { XboxController, FlightStickController },
                 new MappingViewModel[0],
-                new IInputMode[] { DriveControllerMode, ArmControllerMode, GimbalControllerMode, Gimbal2ControllerMode });
+                new IInputMode[] { DriveControllerMode, ArmControllerMode, GimbalControllerMode, Gimbal2ControllerMode, ScienceArm });
             InputManager.LoadMappingsFromFile("inputmappings.xml");
 
             SettingsManager = new SettingsManagerViewModel(this);

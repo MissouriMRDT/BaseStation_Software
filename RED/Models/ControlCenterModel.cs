@@ -25,6 +25,7 @@ namespace RED.Models
         internal CameraMuxViewModel _cameraMux;
         internal ExternalControlsViewModel _externalControls;
         internal AutonomyViewModel _autonomy;
+        internal ScienceArmViewModel _scienceArm;
         internal DriveControllerModeViewModel _driveControllerMode;
         internal ArmControllerModeViewModel _armControllerMode;
         internal GimbalControllerModeViewModel _gimbal1ControllerMode;
