@@ -222,10 +222,6 @@ namespace RED.ViewModels.Modules
         {
             _router.Send(_idResolver.GetId("CarouselPosition"), (byte)4);
         }
-        public void Carousel6()
-        {
-            _router.Send(_idResolver.GetId("CarouselPosition"), (byte)5);
-        }
 
         public void FunnelOpen()
         {

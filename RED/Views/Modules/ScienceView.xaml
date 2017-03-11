@@ -88,7 +88,6 @@
                 <Button x:Name="Carousel3">3</Button>
                 <Button x:Name="Carousel4">4</Button>
                 <Button x:Name="Carousel5">5</Button>
-                <Button x:Name="Carousel6">6</Button>
             </UniformGrid>
             <Label Grid.Row="2" Grid.Column="0">Funnel</Label>
             <UniformGrid Grid.Row="2" Grid.Column="1" Rows="1">
