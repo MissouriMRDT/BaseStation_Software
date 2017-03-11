@@ -10,6 +10,8 @@ namespace RED.ViewModels.Input.Controllers
     {
         private Joystick joystick;
 
+        const int Deadzone = 3;
+
         public string Name { get; private set; }
         public string DeviceType { get; private set; }
 
@@ -26,10 +28,12 @@ namespace RED.ViewModels.Input.Controllers
 
             JoystickState state = joystick.GetCurrentState();
 
+            Func<int, float> deadzoneTransform = x => x < Deadzone && x > -Deadzone ? 0 : ((x + (x < 0 ? Deadzone : -Deadzone)) / (float)(32768 - Deadzone));
+            
             return new Dictionary<string, float>()
             {
-                {"X", (state.X - 32768) / 32768f},
-                {"Y", -(state.Y - 32768) / 32768f},
+                {"X", (deadzoneTransform(state.X) - 32768) / 32768f},
+                {"Y", -(deadzoneTransform(state.Y) - 32768) / 32768f},
                 {"RotationZ", (state.RotationZ - 32768) / 32768f},
 
                 {"POVX", POVtoX(state.PointOfViewControllers[0])},
