@@ -99,18 +99,6 @@ namespace RED.ViewModels.Modules
                 NotifyOfPropertyChange(() => Sensor6Value);
             }
         }
-        public float Sensor7Value
-        {
-            get
-            {
-                return _model.Sensor7Value;
-            }
-            set
-            {
-                _model.Sensor7Value = value;
-                NotifyOfPropertyChange(() => Sensor7Value);
-            }
-        }
 
         public Stream SensorDataFile
         {
@@ -139,7 +127,6 @@ namespace RED.ViewModels.Modules
             _router.Subscribe(this, _idResolver.GetId("SciSensor4"));
             _router.Subscribe(this, _idResolver.GetId("SciSensor5"));
             _router.Subscribe(this, _idResolver.GetId("SciSensor6"));
-            _router.Subscribe(this, _idResolver.GetId("SciSensor7"));
         }
 
         public void Sensor0On()
@@ -197,14 +184,6 @@ namespace RED.ViewModels.Modules
         public void Sensor6Off()
         {
             _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor6Disable);
-        }
-        public void Sensor7On()
-        {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor7Enable);
-        }
-        public void Sensor7Off()
-        {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor7Disable);
         }
 
         public void RequestLaserOn()
@@ -304,10 +283,6 @@ namespace RED.ViewModels.Modules
                 case "SciSensor6":
                     Sensor6Value = BitConverter.ToSingle(data, 0);
                     SaveFileWrite("Sensor6", Sensor6Value);
-                    break;
-                case "SciSensor7":
-                    Sensor7Value = BitConverter.ToSingle(data, 0);
-                    SaveFileWrite("Sensor7", Sensor7Value);
                     break;
             }
         }

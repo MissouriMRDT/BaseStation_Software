@@ -12,7 +12,6 @@ namespace RED.Models.Modules
         internal float Sensor4Value;
         internal float Sensor5Value;
         internal float Sensor6Value;
-        internal float Sensor7Value;
 
         internal Stream SensorDataFile;
     }
