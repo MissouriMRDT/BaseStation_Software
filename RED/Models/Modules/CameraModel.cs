@@ -2,6 +2,7 @@
 {
     internal class CameraModel
     {
-        internal byte MuxIndex;
+        internal byte Mux1Index;
+        internal byte Mux2Index;
     }
 }

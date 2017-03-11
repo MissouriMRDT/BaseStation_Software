@@ -6,11 +6,17 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
-        <TextBox x:Name="MuxIndex" Grid.Column="0" />
-        <Button x:Name="SetMux" Grid.Column="1">Set Mux</Button>
+        <TextBox x:Name="Mux1Index" Grid.Column="0" Grid.Row="0" />
+        <Button x:Name="SetMux1" Grid.Column="1" Grid.Row="0">Set Mux 1</Button>
+        <TextBox x:Name="Mux2Index" Grid.Column="0" Grid.Row="1" />
+        <Button x:Name="SetMux2" Grid.Column="1" Grid.Row="1">Set Mux 2</Button>
     </Grid>
 </UserControl>
