@@ -170,7 +170,7 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => Power);
             }
         }
-        public CameraMuxViewModel CameraMux
+        public CameraViewModel CameraMux
         {
             get
             {
@@ -311,7 +311,7 @@ namespace RED.ViewModels
             Sensor = new SensorViewModel(DataRouter, MetadataManager, Console);
             DropBays = new DropBaysViewModel(DataRouter, MetadataManager);
             Power = new PowerViewModel(DataRouter, MetadataManager, Console);
-            CameraMux = new CameraMuxViewModel(DataRouter, MetadataManager);
+            CameraMux = new CameraViewModel(DataRouter, MetadataManager);
             ExternalControls = new ExternalControlsViewModel(DataRouter, MetadataManager);
             Autonomy = new AutonomyViewModel(DataRouter, MetadataManager, Console);
             ScienceArm = new ScienceArmViewModel(null, DataRouter, MetadataManager, Console);

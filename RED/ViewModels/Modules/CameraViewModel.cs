@@ -4,9 +4,9 @@ using RED.Models.Modules;
 
 namespace RED.ViewModels.Modules
 {
-    public class CameraMuxViewModel : PropertyChangedBase
+    public class CameraViewModel : PropertyChangedBase
     {
-        private CameraMuxModel _model;
+        private CameraModel _model;
         private IDataRouter _router;
         private IDataIdResolver _idResolver;
 
@@ -23,9 +23,9 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public CameraMuxViewModel(IDataRouter router, IDataIdResolver idResolver)
+        public CameraViewModel(IDataRouter router, IDataIdResolver idResolver)
         {
-            _model = new CameraMuxModel();
+            _model = new CameraModel();
             _router = router;
             _idResolver = idResolver;
         }

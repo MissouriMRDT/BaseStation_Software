@@ -131,7 +131,7 @@
     <Compile Include="Models\Input\MappingModel.cs" />
     <Compile Include="Models\Modules\ArmControllerModeModel.cs" />
     <Compile Include="Models\Modules\AutonomyModel.cs" />
-    <Compile Include="Models\Modules\CameraMuxModel.cs" />
+    <Compile Include="Models\Modules\CameraModel.cs" />
     <Compile Include="Models\Modules\GimbalModel.cs" />
     <Compile Include="Models\Input\InputManagerModel.cs" />
     <Compile Include="Models\DataRouterModel.cs" />
@@ -152,7 +152,7 @@
     <Compile Include="ViewModels\Input\MappingChannelViewModel.cs" />
     <Compile Include="ViewModels\Modules\ArmControllerModeViewModel.cs" />
     <Compile Include="ViewModels\Modules\AutonomyViewModel.cs" />
-    <Compile Include="ViewModels\Modules\CameraMuxViewModel.cs" />
+    <Compile Include="ViewModels\Modules\CameraViewModel.cs" />
     <Compile Include="ViewModels\Modules\ExternalControlsViewModel.cs" />
     <Compile Include="ViewModels\Modules\GimbalControllerModeViewModel.cs" />
     <Compile Include="ViewModels\Modules\DropBaysViewModel.cs" />
@@ -191,8 +191,8 @@
     <Compile Include="Views\Modules\AutonomyView.xaml.cs">
       <DependentUpon>AutonomyView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\CameraMuxView.xaml.cs">
-      <DependentUpon>CameraMuxView.xaml</DependentUpon>
+    <Compile Include="Views\Modules\CameraView.xaml.cs">
+      <DependentUpon>CameraView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DriveControllerModeView.xaml.cs">
       <DependentUpon>DriveControllerModeView.xaml</DependentUpon>
@@ -245,7 +245,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Modules\CameraMuxView.xaml">
+    <Page Include="Views\Modules\CameraView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

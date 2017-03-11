@@ -22,7 +22,7 @@ namespace RED.Models
         internal SensorViewModel _sensor;
         internal DropBaysViewModel _dropBays;
         internal PowerViewModel _power;
-        internal CameraMuxViewModel _cameraMux;
+        internal CameraViewModel _cameraMux;
         internal ExternalControlsViewModel _externalControls;
         internal AutonomyViewModel _autonomy;
         internal ScienceArmViewModel _scienceArm;
