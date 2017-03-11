@@ -217,6 +217,11 @@ namespace RED.ViewModels.Modules
             _router.Send(_idResolver.GetId("ScienceCommand"), (byte)ScienceRequestTypes.LaserOff);
             _log.Log("Science Laser Off requested.");
         }
+        public void SpectrometerRun()
+        {
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.SpectrometerRun);
+            _log.Log("Spectrometer Run command sent");
+        }
 
         public void Carousel1()
         {
@@ -329,7 +334,8 @@ namespace RED.ViewModels.Modules
             LaserOn = 18,
             LaserOff = 19,
             FunnelOpen = 20,
-            FunnelClose = 21
+            FunnelClose = 21,
+            SpectrometerRun = 22
         }
     }
 }

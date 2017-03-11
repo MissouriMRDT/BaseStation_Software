@@ -102,6 +102,8 @@
                 <Button x:Name="FunnelClose">Close</Button>
             </UniformGrid>
             <Label Grid.Row="4" Grid.Column="0">Save</Label>
+            <Label Grid.Row="3" Grid.Column="0">Spectrometer</Label>
+            <Button Grid.Row="3" Grid.Column="1" x:Name="SpectrometerRun">Run</Button>
             <UniformGrid Grid.Row="4" Grid.Column="1" Rows="1">
                 <Button x:Name="SaveFileStart">Start</Button>
                 <Button x:Name="SaveFileStop">Stop</Button>
