@@ -13,6 +13,7 @@ namespace RED.ViewModels.Input
     public class InputManagerViewModel : Screen
     {
         InputManagerModel _model;
+        ILogger _log;
 
         private XmlSerializer mappingsSerializer = new XmlSerializer(typeof(MappingViewModel[]));
 
@@ -81,9 +82,10 @@ namespace RED.ViewModels.Input
             }
         }
 
-        public InputManagerViewModel(IInputDevice[] devices, MappingViewModel[] mappings, IInputMode[] modes)
+        public InputManagerViewModel(ILogger log, IInputDevice[] devices, MappingViewModel[] mappings, IInputMode[] modes)
         {
             _model = new InputManagerModel();
+            _log = log;
 
             Devices = new ObservableCollection<IInputDevice>(devices);
             Mappings = new ObservableCollection<MappingViewModel>(mappings);
@@ -140,7 +142,7 @@ namespace RED.ViewModels.Input
                 }
                 SelectedMapping = Mappings.FirstOrDefault(x => x.IsActive);
 
-                //_log.Log("Input Mappings loaded from file \"" + url + "\"");
+                _log.Log("Input Mappings loaded from file \"" + url + "\"");
             }
         }
     }

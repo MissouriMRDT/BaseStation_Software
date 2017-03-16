@@ -323,7 +323,7 @@ namespace RED.ViewModels
             XboxController = new XboxControllerInputViewModel(StateManager);
             FlightStickController = new FlightStickViewModel();
 
-            InputManager = new InputManagerViewModel(
+            InputManager = new InputManagerViewModel( Console,
                 new IInputDevice[] { XboxController, FlightStickController },
                 new MappingViewModel[0],
                 new IInputMode[] { DriveControllerMode, ArmControllerMode, GimbalControllerMode, Gimbal2ControllerMode, ScienceArm });
