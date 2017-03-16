@@ -352,6 +352,8 @@ namespace RED.ViewModels.Modules
             _router.Subscribe(this, _idResolver.GetId("TotalPackVoltage"));
 
             _router.Subscribe(this, _idResolver.GetId("PowerBusOverCurrentNotification"));
+            _router.Subscribe(this, _idResolver.GetId("BMSPackOvercurrent"));
+            _router.Subscribe(this, _idResolver.GetId("BMSPackUndervoltage"));
         }
 
         public void ReceiveFromRouter(ushort dataId, byte[] data)
@@ -388,14 +390,32 @@ namespace RED.ViewModels.Modules
                 case "PowerBusOverCurrentNotification":
                     _log.Log("Overcurrent notification from Powerboard from Bus Index " + data[0].ToString());
                     break;
+                case "BMSPackOvercurrent":
+                    _log.Log("Overcurrent notification from BMS");
+                    break;
+                case "BMSPackUndervoltage":
+                    _log.Log("Undervoltage notification from BMS");
+                    break;
             }
 
             if (LogFile != null)
             {
-                if (_idResolver.GetName(dataId) != "PowerBusOverCurrentNotification")
-                    LogFile.WriteLine(String.Format("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, {2}", DateTime.Now, dataId, BitConverter.ToSingle(data, 0)));
-                else
-                    LogFile.WriteLine(String.Format("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, {2}", DateTime.Now, dataId, "Overcurrent: Bus " + data[0].ToString()));
+                switch (_idResolver.GetName(dataId))
+                {
+                    case "PowerBusOverCurrentNotification":
+                        LogFile.WriteLine(String.Format("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, {2}", DateTime.Now, dataId, "Power Overcurrent: Bus " + data[0].ToString()));
+                        break;
+                    case "BMSPackOvercurrent":
+                        LogFile.WriteLine(String.Format("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, {2}", DateTime.Now, dataId, "BMS Overcurrent"));
+                        break;
+                    case "BMSPackUndervoltage":
+                        LogFile.WriteLine(String.Format("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, {2}", DateTime.Now, dataId, "BMS Undervoltage"));
+                        break;
+                    default:
+                        if (data.Length != 4) break;
+                        LogFile.WriteLine(String.Format("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, {2}", DateTime.Now, dataId, BitConverter.ToSingle(data, 0)));
+                        break;
+                }
                 LogFile.Flush();
             }
         }
