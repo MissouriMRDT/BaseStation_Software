@@ -3,10 +3,11 @@ using RED.Interfaces;
 using RED.Interfaces.Input;
 using RED.Models.Modules;
 using System;
+using System.Collections.Generic;
 
 namespace RED.ViewModels.Modules
 {
-    public class ArmControllerModeViewModel : PropertyChangedBase, IControllerMode, ISubscribe
+    public class ArmControllerModeViewModel : PropertyChangedBase, IInputMode, ISubscribe
     {
         private const byte ArmDisableCommand = 0x00;
         private const byte ArmEnableCommand = 0x01;
@@ -20,7 +21,8 @@ namespace RED.ViewModels.Modules
         private IDataIdResolver _idResolver;
         private ILogger _log;
 
-        public string Name { get; set; }
+        public string Name { get; private set; }
+        public string ModeType { get; private set; }
         public IInputDevice InputVM { get; set; }
 
         public const float BaseServoSpeed = .5f;
@@ -141,6 +143,7 @@ namespace RED.ViewModels.Modules
             _idResolver = idResolver;
             _log = log;
             Name = "Arm";
+            ModeType = "Arm";
             CurrentEndEffectorMode = 0;
 
             _router.Subscribe(this, _idResolver.GetId("ArmCurrentPosition"));
@@ -161,57 +164,57 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public void EnterMode()
+        public void StartMode()
         {
 
         }
 
-        public void EvaluateMode()
+        public void SetValues(Dictionary<string, float> values)
         {
-            if (InputVM.DebouncedArmReset)
+            if (values["DebouncedArmReset"] != 0)
             {
                 _router.Send(_idResolver.GetId("ArmStop"), (Int16)(0));
                 _log.Log("Robotic Arm Resetting...");
             }
 
-            if (InputVM.DebouncedToolPrev)
+            if (values["DebouncedToolPrev"] != 0)
                 PreviousEndeffectorMode();
-            else if (InputVM.DebouncedToolNext)
+            else if (values["DebouncedToolNext"] != 0)
                 NextEndeffectorMode();
 
-            var angle = Math.Atan2(InputVM.WristBend, InputVM.WristTwist);
+            var angle = Math.Atan2(values["WristBend"], values["WristTwist"]);
             if (angle > -Math.PI / 6 && angle < Math.PI / 6) //Joystick Right
-                _router.Send(_idResolver.GetId("ArmWristClockwise"), (Int16)(InputVM.WristTwist * motorRangeFactor));
+                _router.Send(_idResolver.GetId("ArmWristClockwise"), (Int16)(values["WristTwist"] * motorRangeFactor));
             else if (angle > Math.PI / 3 && angle < 2 * Math.PI / 3) //Joystick Up
-                _router.Send(_idResolver.GetId("ArmWristUp"), (Int16)(-InputVM.WristBend * motorRangeFactor));
+                _router.Send(_idResolver.GetId("ArmWristUp"), (Int16)(-values["WristBend"] * motorRangeFactor));
             else if (angle > 5 * Math.PI / 6 || angle < -5 * Math.PI / 6) //Joystick Left
-                _router.Send(_idResolver.GetId("ArmWristClockwise"), (Int16)(InputVM.WristTwist * motorRangeFactor));
+                _router.Send(_idResolver.GetId("ArmWristClockwise"), (Int16)(values["WristTwist"] * motorRangeFactor));
             else if (angle > -2 * Math.PI / 3 && angle < Math.PI / 3) //Joystick Down
-                _router.Send(_idResolver.GetId("ArmWristUp"), (Int16)(-InputVM.WristBend * motorRangeFactor));
+                _router.Send(_idResolver.GetId("ArmWristUp"), (Int16)(-values["WristBend"] * motorRangeFactor));
             else
                 _router.Send(_idResolver.GetId("ArmWristUp"), (Int16)(0));
 
-            angle = Math.Atan2(InputVM.ElbowBend, InputVM.ElbowTwist);
+            angle = Math.Atan2(values["ElbowBend"], values["ElbowTwist"]);
             if (angle > -Math.PI / 6 && angle < Math.PI / 6) //Joystick Right
-                _router.Send(_idResolver.GetId("ArmElbowClockwise"), (Int16)(InputVM.ElbowTwist * motorRangeFactor));
+                _router.Send(_idResolver.GetId("ArmElbowClockwise"), (Int16)(values["ElbowTwist"] * motorRangeFactor));
             else if (angle > Math.PI / 3 && angle < 2 * Math.PI / 3) //Joystick Up
-                _router.Send(_idResolver.GetId("ArmElbowUp"), (Int16)(-InputVM.ElbowBend * motorRangeFactor));
+                _router.Send(_idResolver.GetId("ArmElbowUp"), (Int16)(-values["ElbowBend"] * motorRangeFactor));
             else if (angle > 5 * Math.PI / 6 || angle < -5 * Math.PI / 6) //Joystick Left
-                _router.Send(_idResolver.GetId("ArmElbowClockwise"), (Int16)(InputVM.ElbowTwist * motorRangeFactor));
+                _router.Send(_idResolver.GetId("ArmElbowClockwise"), (Int16)(values["ElbowTwist"] * motorRangeFactor));
             else if (angle > -2 * Math.PI / 3 && angle < Math.PI / 3) //Joystick Down
-                _router.Send(_idResolver.GetId("ArmElbowUp"), (Int16)(-InputVM.ElbowBend * motorRangeFactor));
+                _router.Send(_idResolver.GetId("ArmElbowUp"), (Int16)(-values["ElbowBend"] * motorRangeFactor));
             else
                 _router.Send(_idResolver.GetId("ArmWristUp"), (Int16)(0));
 
-            if (InputVM.ActuatorForward)
+            if (values["ActuatorForward"] != 0)
                 _router.Send(_idResolver.GetId("ArmBaseActuatorForward"), (Int16)(BaseActuatorSpeed));
-            else if (InputVM.ActuatorBackward)
+            else if (values["ActuatorBackward"] != 0)
                 _router.Send(_idResolver.GetId("ArmBaseActuatorForward"), (Int16)(-BaseActuatorSpeed));
             else
                 _router.Send(_idResolver.GetId("ArmBaseActuatorForward"), (Int16)(0));
-            if (InputVM.BaseClockwise)
+            if (values["BaseClockwise"] != 0)
                 _router.Send(_idResolver.GetId("ArmBaseServoClockwise"), (Int16)(BaseServoSpeed / 10f * motorRangeFactor));
-            else if (InputVM.BaseCounterClockwise)
+            else if (values["BaseCounterClockwise"] != 0)
                 _router.Send(_idResolver.GetId("ArmBaseServoClockwise"), (Int16)(-BaseServoSpeed / 10f * motorRangeFactor));
             else
                 _router.Send(_idResolver.GetId("ArmBaseServoClockwise"), (Int16)(0));
@@ -219,33 +222,33 @@ namespace RED.ViewModels.Modules
             switch (AvailibleEndEffectorModes[CurrentEndEffectorMode])
             {
                 case EndEffectorModes.Gripper:
-                    if (InputVM.GripperClose > 0)
-                        _router.Send(_idResolver.GetId("Gripper"), (Int16)(InputVM.GripperClose * EndeffectorSpeedLimit));
-                    else if (InputVM.GripperOpen > 0)
-                        _router.Send(_idResolver.GetId("Gripper"), (Int16)(-InputVM.GripperOpen * EndeffectorSpeedLimit));
+                    if (values["GripperClose"] > 0)
+                        _router.Send(_idResolver.GetId("Gripper"), (Int16)(values["GripperClose"] * EndeffectorSpeedLimit));
+                    else if (values["GripperOpen"] > 0)
+                        _router.Send(_idResolver.GetId("Gripper"), (Int16)(-values["GripperOpen"] * EndeffectorSpeedLimit));
                     else
                         _router.Send(_idResolver.GetId("Gripper"), (Int16)(0));
                     break;
                 case EndEffectorModes.Drill:
-                    if (InputVM.DrillClockwise)
+                    if (values["DrillClockwise"] != 0)
                         _router.Send(_idResolver.GetId("Drill"), (short)DrillCommands.Forward);
-                    else if (InputVM.DrillCounterClockwise)
+                    else if (values["DrillCounterClockwise"] != 0)
                         _router.Send(_idResolver.GetId("Drill"), (short)DrillCommands.Reverse);
                     else
                         _router.Send(_idResolver.GetId("Drill"), (short)DrillCommands.Stop);
                     break;
 
                 case EndEffectorModes.RegulatorDetach:
-                    if (InputVM.GripperClose > 0)
-                        _router.Send(_idResolver.GetId("Gripper"), (Int16)(InputVM.GripperClose * EndeffectorSpeedLimit));
-                    else if (InputVM.GripperOpen > 0)
-                        _router.Send(_idResolver.GetId("Gripper"), (Int16)(-InputVM.GripperOpen * EndeffectorSpeedLimit));
+                    if (values["GripperClose"] > 0)
+                        _router.Send(_idResolver.GetId("Gripper"), (Int16)(values["GripperClose"] * EndeffectorSpeedLimit));
+                    else if (values["GripperOpen"] > 0)
+                        _router.Send(_idResolver.GetId("Gripper"), (Int16)(-values["GripperOpen"] * EndeffectorSpeedLimit));
                     else
                         _router.Send(_idResolver.GetId("Gripper"), (Int16)(0));
 
-                    if (InputVM.DrillClockwise)
+                    if (values["DrillClockwise"] != 0)
                         _router.Send(_idResolver.GetId("RegulatorDetach"), (short)DrillCommands.Forward);
-                    else if (InputVM.DrillCounterClockwise)
+                    else if (values["DrillCounterClockwise"] != 0)
                         _router.Send(_idResolver.GetId("RegulatorDetach"), (short)DrillCommands.Reverse);
                     else
                         _router.Send(_idResolver.GetId("RegulatorDetach"), (short)DrillCommands.Stop);
@@ -253,7 +256,7 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public void ExitMode()
+        public void StopMode()
         {
             _router.Send(_idResolver.GetId("ArmStop"), (Int16)(0));
         }

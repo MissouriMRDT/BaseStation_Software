@@ -2,10 +2,12 @@
 using RED.Interfaces;
 using RED.Interfaces.Input;
 using RED.Models.Modules;
+using Math = System.Math;
+using System.Collections.Generic;
 
 namespace RED.ViewModels.Modules
 {
-    public class DriveControllerModeViewModel : PropertyChangedBase, IControllerMode
+    public class DriveControllerModeViewModel : PropertyChangedBase, IInputMode
     {
         private const int motorRangeFactor = 1000;
 
@@ -38,7 +40,8 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public string Name { get; set; }
+        public string Name { get; private set; }
+        public string ModeType { get; private set; }
         public IInputDevice InputVM { get; set; }
 
         public int SpeedLimit
@@ -73,29 +76,48 @@ namespace RED.ViewModels.Modules
             _idResolver = idResolver;
             InputVM = inputVM;
             Name = "Drive";
+            ModeType = "Drive";
         }
 
-        public void EnterMode()
+        public void StartMode()
         {
             SpeedLeft = 0;
             SpeedRight = 0;
         }
 
-        public void EvaluateMode()
+        public void SetValues(Dictionary<string, float> values)
         {
+            float commandLeft;
+            float commandRight;
+
+            if (values.ContainsKey("VectorX") && values.ContainsKey("VectorY"))
+            {
+                float x = values["VectorX"];
+                float y = values["VectorY"];
+                float theta = (float)Math.Atan2(y, x);
+                float r = (float)Math.Sqrt(x * x + y * y) / (float)Math.Min(Math.Abs(Math.Pow(Math.Sin(theta), -1.0)), Math.Abs(Math.Pow(Math.Cos(theta), -1.0)));
+                commandLeft = -1F * r * scaleVector(theta - (float)Math.PI / 2);
+                commandRight = r * scaleVector(theta);
+            }
+            else
+            {
+                commandLeft = values["WheelsLeft"];
+                commandRight = values["WheelsRight"];
+            }
+
             int newSpeedLeft;
             int newSpeedRight;
 
             #region Normalization of joystick input
             {
-                float CurrentRawControllerSpeedLeft = InputVM.WheelsLeft;
-                float CurrentRawControllerSpeedRight = InputVM.WheelsRight;
+                float CurrentRawControllerSpeedLeft = commandLeft;
+                float CurrentRawControllerSpeedRight = commandRight;
 
                 //Scaling
                 if (ParabolicScaling) //Squares the value (0..1)
                 {
-                    CurrentRawControllerSpeedLeft *= CurrentRawControllerSpeedLeft * (CurrentRawControllerSpeedLeft >= 0 ? 1 : -1);
-                    CurrentRawControllerSpeedRight *= CurrentRawControllerSpeedRight * (CurrentRawControllerSpeedRight >= 0 ? 1 : -1);
+                    //    CurrentRawControllerSpeedLeft *= CurrentRawControllerSpeedLeft * (CurrentRawControllerSpeedLeft >= 0 ? 1 : -1);
+                    //    CurrentRawControllerSpeedRight *= CurrentRawControllerSpeedRight * (CurrentRawControllerSpeedRight >= 0 ? 1 : -1);
                 }
 
                 float speedLimitFactor = (float)SpeedLimit / motorRangeFactor;
@@ -116,7 +138,19 @@ namespace RED.ViewModels.Modules
             _router.Send(_idResolver.GetId("MotorRightSpeed"), SpeedRight);
         }
 
-        public void ExitMode()
+        private float scaleVector(float theta)
+        {
+            float pi = (float)Math.PI;
+            if (theta < -pi) theta += 2 * pi;
+
+            if (theta >= 0 && theta <= pi / 2) return 4F * theta / pi - 1F;
+            else if (theta >= pi / 2 && theta <= pi) return 1F;
+            else if (theta >= -pi && theta <= -pi / 2) return -4F / pi * (theta + 5F / 4F * pi) + 2F;
+            else if (theta >= -pi / 2 && theta <= 0) return -1F;
+            throw new System.ArgumentOutOfRangeException("Theta value is out of range.");
+        }
+
+        public void StopMode()
         {
             int speed = 0;
             _router.Send(_idResolver.GetId("MotorLeftSpeed"), speed);

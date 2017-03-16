@@ -58,8 +58,11 @@
                         <Expander Header="Power and BMS">
                             <ContentControl x:Name="Power" />
                         </Expander>
-                        <Expander Header="Camera Mux">
+                        <Expander Header="Cameras">
                             <ContentControl x:Name="CameraMux" />
+                        </Expander>
+                        <Expander Header="Autonomy Mode">
+                            <ContentControl x:Name="Autonomy" />
                         </Expander>
                     </StackPanel>
                 </ScrollViewer>
@@ -79,6 +82,7 @@
                     <DockPanel Grid.Column="0" Grid.Row="1" Margin="10 0">
                         <ContentControl x:Name="Console"/>
                     </DockPanel>
+                    <ContentControl Grid.Column="0" Grid.Row="2" x:Name="InputManager" />
                 </Grid>
             </Grid>
         </TabItem>

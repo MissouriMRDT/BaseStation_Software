@@ -2,6 +2,7 @@
 using RED.Interfaces;
 using RED.Models.Modules;
 using System;
+using System.IO;
 
 namespace RED.ViewModels.Modules
 {
@@ -11,6 +12,8 @@ namespace RED.ViewModels.Modules
         private IDataRouter _router;
         private IDataIdResolver _idResolver;
         private ILogger _log;
+
+        private TextWriter LogFile;
 
         public float Motor1Current
         {
@@ -130,6 +133,54 @@ namespace RED.ViewModels.Modules
             {
                 _model.Bus12VCurrent = value;
                 NotifyOfPropertyChange(() => Bus12VCurrent);
+            }
+        }
+        public float ExtraCurrent
+        {
+            get
+            {
+                return _model.ExtraCurrent;
+            }
+            set
+            {
+                _model.ExtraCurrent = value;
+                NotifyOfPropertyChange(() => ExtraCurrent);
+            }
+        }
+        public float ActuationCurrent
+        {
+            get
+            {
+                return _model.ActuationCurrent;
+            }
+            set
+            {
+                _model.ActuationCurrent = value;
+                NotifyOfPropertyChange(() => ActuationCurrent);
+            }
+        }
+        public float LogicCurrent
+        {
+            get
+            {
+                return _model.LogicCurrent;
+            }
+            set
+            {
+                _model.LogicCurrent = value;
+                NotifyOfPropertyChange(() => LogicCurrent);
+            }
+        }
+        public float CommunicationsCurrent
+        {
+            get
+            {
+                return _model.CommunicationsCurrent;
+            }
+            set
+            {
+                _model.CommunicationsCurrent = value;
+                NotifyOfPropertyChange(() => CommunicationsCurrent);
             }
         }
         public float InputVoltage
@@ -273,7 +324,6 @@ namespace RED.ViewModels.Modules
             _idResolver = idResolver;
             _log = log;
 
-            _router.Subscribe(this, _idResolver.GetId("GPSQuality"));
             _router.Subscribe(this, _idResolver.GetId("Motor1Current"));
             _router.Subscribe(this, _idResolver.GetId("Motor2Current"));
             _router.Subscribe(this, _idResolver.GetId("Motor3Current"));
@@ -284,6 +334,10 @@ namespace RED.ViewModels.Modules
             _router.Subscribe(this, _idResolver.GetId("Motor8Current"));
             _router.Subscribe(this, _idResolver.GetId("Bus5VCurrent"));
             _router.Subscribe(this, _idResolver.GetId("Bus12VCurrent"));
+            _router.Subscribe(this, _idResolver.GetId("ExtraCurrent"));
+            _router.Subscribe(this, _idResolver.GetId("ActuationCurrent"));
+            _router.Subscribe(this, _idResolver.GetId("LogicCurrent"));
+            _router.Subscribe(this, _idResolver.GetId("CommunicationsCurrent"));
             _router.Subscribe(this, _idResolver.GetId("InputVoltage"));
 
             _router.Subscribe(this, _idResolver.GetId("Cell1Voltage"));
@@ -296,6 +350,10 @@ namespace RED.ViewModels.Modules
             _router.Subscribe(this, _idResolver.GetId("Cell8Voltage"));
             _router.Subscribe(this, _idResolver.GetId("TotalPackCurrent"));
             _router.Subscribe(this, _idResolver.GetId("TotalPackVoltage"));
+
+            _router.Subscribe(this, _idResolver.GetId("PowerBusOverCurrentNotification"));
+            _router.Subscribe(this, _idResolver.GetId("BMSPackOvercurrent"));
+            _router.Subscribe(this, _idResolver.GetId("BMSPackUndervoltage"));
         }
 
         public void ReceiveFromRouter(ushort dataId, byte[] data)
@@ -312,6 +370,10 @@ namespace RED.ViewModels.Modules
                 case "Motor8Current": Motor8Current = BitConverter.ToSingle(data, 0); break;
                 case "Bus5VCurrent": Bus5VCurrent = BitConverter.ToSingle(data, 0); break;
                 case "Bus12VCurrent": Bus12VCurrent = BitConverter.ToSingle(data, 0); break;
+                case "ExtraCurrent": ExtraCurrent = BitConverter.ToSingle(data, 0); break;
+                case "ActuationCurrent": ActuationCurrent = BitConverter.ToSingle(data, 0); break;
+                case "LogicCurrent": LogicCurrent = BitConverter.ToSingle(data, 0); break;
+                case "CommunicationsCurrent": CommunicationsCurrent = BitConverter.ToSingle(data, 0); break;
                 case "InputVoltage": InputVoltage = BitConverter.ToSingle(data, 0); break;
 
                 case "Cell1Voltage": Cell1Voltage = BitConverter.ToSingle(data, 0); break;
@@ -328,6 +390,33 @@ namespace RED.ViewModels.Modules
                 case "PowerBusOverCurrentNotification":
                     _log.Log("Overcurrent notification from Powerboard from Bus Index " + data[0].ToString());
                     break;
+                case "BMSPackOvercurrent":
+                    _log.Log("Overcurrent notification from BMS");
+                    break;
+                case "BMSPackUndervoltage":
+                    _log.Log("Undervoltage notification from BMS");
+                    break;
+            }
+
+            if (LogFile != null)
+            {
+                switch (_idResolver.GetName(dataId))
+                {
+                    case "PowerBusOverCurrentNotification":
+                        LogFile.WriteLine(String.Format("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, {2}", DateTime.Now, dataId, "Power Overcurrent: Bus " + data[0].ToString()));
+                        break;
+                    case "BMSPackOvercurrent":
+                        LogFile.WriteLine(String.Format("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, {2}", DateTime.Now, dataId, "BMS Overcurrent"));
+                        break;
+                    case "BMSPackUndervoltage":
+                        LogFile.WriteLine(String.Format("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, {2}", DateTime.Now, dataId, "BMS Undervoltage"));
+                        break;
+                    default:
+                        if (data.Length != 4) break;
+                        LogFile.WriteLine(String.Format("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, {2}", DateTime.Now, dataId, BitConverter.ToSingle(data, 0)));
+                        break;
+                }
+                LogFile.Flush();
             }
         }
 
@@ -347,6 +436,19 @@ namespace RED.ViewModels.Modules
         public void DisableBus(byte index)
         {
             _router.Send(_idResolver.GetId("PowerBusDisable"), index);
+        }
+
+        public void SaveFileStart()
+        {
+            LogFile = File.AppendText("REDPowerData" + DateTime.Now.ToString("yyyyMMdd'T'HHmmss") + ".log");
+        }
+        public void SaveFileStop()
+        {
+            if (LogFile != null)
+            {
+                LogFile.Close();
+                LogFile = null;
+            }
         }
     }
 }

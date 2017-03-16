@@ -201,7 +201,7 @@ namespace RED.ViewModels.Modules
                     Heading = BitConverter.ToSingle(data, 0);
                     break;
                 case "GPSQuality":
-                    FixObtained = data[0] == 0;
+                    FixObtained = data[0] != 0;
                     FixQuality = data[0];
                     break;
                 case "GPSPosition":

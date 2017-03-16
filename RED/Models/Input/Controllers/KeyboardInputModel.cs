@@ -11,7 +11,7 @@ namespace RED.Models.Input.Controllers
 
         internal float speedMultiplier = 1.0f;
 
-        internal ObservableCollection<IControllerMode> ControllerModes = new ObservableCollection<IControllerMode>();
+        internal ObservableCollection<IInputMode> ControllerModes = new ObservableCollection<IInputMode>();
         internal int CurrentModeIndex;
 
         internal bool Connected;

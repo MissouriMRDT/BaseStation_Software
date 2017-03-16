@@ -12,65 +12,124 @@ namespace RED.ViewModels.Modules
         private IDataIdResolver _idResolver;
         private ILogger _log;
 
-        public float Voltage
+        public float IMUTemperature
         {
             get
             {
-                return _model.Voltage;
+                return _model.IMUTemperature;
             }
             set
             {
-                _model.Voltage = value;
-                NotifyOfPropertyChange(() => Voltage);
+                _model.IMUTemperature = value;
+                NotifyOfPropertyChange(() => IMUTemperature);
             }
         }
-
-        public byte Ultrasonic0
+        public float IMUAccelerometerX
         {
             get
             {
-                return _model.Ultrasonic0;
+                return _model.IMUAccelerometerX;
             }
             set
             {
-                _model.Ultrasonic0 = value;
-                NotifyOfPropertyChange(() => Ultrasonic0);
+                _model.IMUAccelerometerX = value;
+                NotifyOfPropertyChange(() => IMUAccelerometerX);
             }
         }
-        public byte Ultrasonic1
+        public float IMUAccelerometerY
         {
             get
             {
-                return _model.Ultrasonic1;
+                return _model.IMUAccelerometerY;
             }
             set
             {
-                _model.Ultrasonic1 = value;
-                NotifyOfPropertyChange(() => Ultrasonic1);
+                _model.IMUAccelerometerY = value;
+                NotifyOfPropertyChange(() => IMUAccelerometerY);
             }
         }
-        public byte Ultrasonic2
+        public float IMUAccelerometerZ
         {
             get
             {
-                return _model.Ultrasonic2;
+                return _model.IMUAccelerometerZ;
             }
             set
             {
-                _model.Ultrasonic2 = value;
-                NotifyOfPropertyChange(() => Ultrasonic2);
+                _model.IMUAccelerometerZ = value;
+                NotifyOfPropertyChange(() => IMUAccelerometerZ);
             }
         }
-        public byte Ultrasonic3
+        public float IMUGyroscopeRoll
         {
             get
             {
-                return _model.Ultrasonic3;
+                return _model.IMUGyroscopeRoll;
             }
             set
             {
-                _model.Ultrasonic3 = value;
-                NotifyOfPropertyChange(() => Ultrasonic3);
+                _model.IMUGyroscopeRoll = value;
+                NotifyOfPropertyChange(() => IMUGyroscopeRoll);
+            }
+        }
+        public float IMUGyroscopePitch
+        {
+            get
+            {
+                return _model.IMUGyroscopePitch;
+            }
+            set
+            {
+                _model.IMUGyroscopePitch = value;
+                NotifyOfPropertyChange(() => IMUGyroscopePitch);
+            }
+        }
+        public float IMUGyroscopeYaw
+        {
+            get
+            {
+                return _model.IMUGyroscopeYaw;
+            }
+            set
+            {
+                _model.IMUGyroscopeYaw = value;
+                NotifyOfPropertyChange(() => IMUGyroscopeYaw);
+            }
+        }
+        public float IMUMagnetometerX
+        {
+            get
+            {
+                return _model.IMUMagnetometerX;
+            }
+            set
+            {
+                _model.IMUMagnetometerX = value;
+                NotifyOfPropertyChange(() => IMUMagnetometerX);
+            }
+        }
+        public float IMUMagnetometerY
+        {
+            get
+            {
+                return _model.IMUMagnetometerY;
+            }
+            set
+            {
+                _model.IMUMagnetometerY = value;
+                NotifyOfPropertyChange(() => IMUMagnetometerY);
+            }
+        }
+        public float IMUMagnetometerZ
+        {
+            get
+            {
+                return _model.IMUMagnetometerZ;
+            }
+            set
+            {
+                _model.IMUMagnetometerZ = value;
+                NotifyOfPropertyChange(() => IMUMagnetometerZ);
             }
         }
 
@@ -81,29 +140,31 @@ namespace RED.ViewModels.Modules
             _idResolver = idResolver;
             _log = log;
 
-            _router.Subscribe(this, _idResolver.GetId("Voltage"));
-            _router.Subscribe(this, _idResolver.GetId("Ultrasonic"));
+            _router.Subscribe(this, _idResolver.GetId("IMUTemperature"));
+            _router.Subscribe(this, _idResolver.GetId("IMUAccelerometer"));
+            _router.Subscribe(this, _idResolver.GetId("IMUGyroscope"));
+            _router.Subscribe(this, _idResolver.GetId("IMUMagnetometer"));
         }
 
         public void ReceiveFromRouter(ushort dataId, byte[] data)
         {
             switch (_idResolver.GetName(dataId))
             {
-                case "Ultrasonic":
-                    switch (data[0])
-                    {
-                        case 0: Ultrasonic0 = data[1]; break;
-                        case 1: Ultrasonic1 = data[1]; break;
-                        case 2: Ultrasonic2 = data[1]; break;
-                        case 3: Ultrasonic3 = data[1]; break;
-                        default: _log.Log("Unsupported Ultrasonic Sensor (#" + data[0] + ") Telemetry Recieved"); break;
-                    }
+                case "IMUTemperature": IMUTemperature = BitConverter.ToSingle(data, 0); break;
+                case "IMUAccelerometer":
+                    IMUAccelerometerX = BitConverter.ToSingle(data, 0);
+                    IMUAccelerometerY = BitConverter.ToSingle(data, 4);
+                    IMUAccelerometerZ = BitConverter.ToSingle(data, 8);
                     break;
-                case "Voltage":
-                    /* 0    ->  -30V
-                     * 512  ->    0V
-                     * 1023 ->  +30V */
-                    Voltage = (BitConverter.ToInt16(data, 0) - 512) * (30f / 512);
+                case "IMUGyroscope":
+                    IMUGyroscopeRoll = BitConverter.ToSingle(data, 0);
+                    IMUGyroscopePitch = BitConverter.ToSingle(data, 4);
+                    IMUGyroscopeYaw = BitConverter.ToSingle(data, 8);
+                    break;
+                case "IMUMagnetometer":
+                    IMUMagnetometerX = BitConverter.ToSingle(data, 0);
+                    IMUMagnetometerY = BitConverter.ToSingle(data, 4);
+                    IMUMagnetometerZ = BitConverter.ToSingle(data, 8);
                     break;
             }
         }
