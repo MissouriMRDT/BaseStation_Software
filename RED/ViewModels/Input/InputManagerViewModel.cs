@@ -66,6 +66,21 @@ namespace RED.ViewModels.Input
             }
         }
 
+        public MappingViewModel SelectedMapping
+        {
+            get
+            {
+                return _model.SelectedMapping;
+            }
+            set
+            {
+                if (SelectedMapping != null) DeactivateMapping(SelectedMapping);
+                _model.SelectedMapping = value;
+                if (SelectedMapping != null) ActivateMapping(SelectedMapping);
+                NotifyOfPropertyChange(() => SelectedMapping);
+            }
+        }
+
         public InputManagerViewModel(IInputDevice[] devices, MappingViewModel[] mappings, IInputMode[] modes)
         {
             _model = new InputManagerModel();
@@ -77,9 +92,6 @@ namespace RED.ViewModels.Input
 
         public void Start()
         {
-            foreach (var mapping in Mappings)
-                if (mapping.IsActive)
-                    ActivateMapping(mapping);
         }
 
         public void Stop()
@@ -118,18 +130,15 @@ namespace RED.ViewModels.Input
         {
             using (var stream = File.OpenRead(url))
             {
-                MappingViewModel[] save = (MappingViewModel[])mappingsSerializer.Deserialize(stream);
+                MappingViewModel[] savedMappings = (MappingViewModel[])mappingsSerializer.Deserialize(stream);
 
-                //Process 'save'
-                foreach (MappingViewModel mapping in save)
+                foreach (MappingViewModel mapping in savedMappings)
                 {
+                    mapping.Device = Devices.FirstOrDefault(x => x.DeviceType == mapping.DeviceType);
+                    mapping.Mode = Modes.FirstOrDefault(x => x.ModeType == mapping.ModeType);
                     Mappings.Add(mapping);
-                    if(mapping.IsActive)
-                    {
-                        mapping.Device = Devices.FirstOrDefault(x => x.DeviceType == mapping.DeviceType);
-                        mapping.Mode = Modes.FirstOrDefault(x => x.ModeType == mapping.ModeType);
-                    }
-                }  
+                }
+                SelectedMapping = Mappings.FirstOrDefault(x => x.IsActive);
 
                 //_log.Log("Input Mappings loaded from file \"" + url + "\"");
             }

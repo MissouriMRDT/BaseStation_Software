@@ -92,6 +92,8 @@ namespace RED.ViewModels.Input
 
         public async Task Start()
         {
+            if (Device == null || Mode == null) return;
+
             try
             {
                 Mode.StartMode();
@@ -106,19 +108,15 @@ namespace RED.ViewModels.Input
             }
             catch
             {
-                
-            }
-            finally
-            {
-                isRunning = false;
-                Device.StopDevice();
-                Mode.StopMode();
+                Stop();
             }
         }
 
         public void Stop()
         {
             isRunning = false;
+            if (Device != null) Device.StopDevice();
+            if (Mode != null) Mode.StopMode();
         }
 
         public Dictionary<string, float> Map(Dictionary<string, float> values)

@@ -68,17 +68,16 @@ namespace RED.ViewModels.Modules
         {
             short pan, tilt;
 
-            pan = (short)(values["GimbalPan"] * SpeedLimit);
-            tilt = (short)(values["GimbalTilt"] * SpeedLimit);
+            pan = (short)(values["Pan"] * SpeedLimit);
+            tilt = (short)(values["Tilt"] * SpeedLimit);
             _router.Send(_idResolver.GetId(PTZDataId[GimbalIndex]), ((int)tilt << 16) | (((int)pan) & 0xFFFF));
 
-            if (values["GimbalZoomIn"] != 0)
+            if (values["ZoomIn"] != 0)
                 _router.Send(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.ZoomIn);
-            else if (values["GimbalZoomOut"] != 0)
+            else if (values["ZoomOut"] != 0)
                 _router.Send(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.ZoomOut);
             else
                 _router.Send(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.Stop);
-
         }
 
         public void StopMode()
