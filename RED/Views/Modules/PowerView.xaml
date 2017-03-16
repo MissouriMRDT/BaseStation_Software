@@ -87,6 +87,10 @@
             <Button Grid.Row="0" Grid.Column="0" Click="RebootButton_Click">Reboot</Button>
             <Button Grid.Row="0" Grid.Column="1" Click="ShutDownButton_Click">Shut Down</Button>
         </UniformGrid>
+        <UniformGrid Grid.Row="4" Grid.Column="1" Rows="1">
+            <Button x:Name="SaveFileStart">Start Log</Button>
+            <Button x:Name="SaveFileStop">Stop Log</Button>
+        </UniformGrid>
         <Expander Header="Other">
             <Grid>
                 <Grid.RowDefinitions>

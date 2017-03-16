@@ -13,7 +13,6 @@ namespace RED.ViewModels.Modules
         private IDataIdResolver _idResolver;
         private ILogger _log;
 
-        private const string LogFilePath = "powerTelemetry.log";
         private TextWriter LogFile;
 
         public float Motor1Current
@@ -353,8 +352,6 @@ namespace RED.ViewModels.Modules
             _router.Subscribe(this, _idResolver.GetId("TotalPackVoltage"));
 
             _router.Subscribe(this, _idResolver.GetId("PowerBusOverCurrentNotification"));
-
-            LogFile = File.AppendText(LogFilePath);
         }
 
         public void ReceiveFromRouter(ushort dataId, byte[] data)
@@ -393,11 +390,14 @@ namespace RED.ViewModels.Modules
                     break;
             }
 
-            if (_idResolver.GetName(dataId) != "PowerBusOverCurrentNotification")
-                LogFile.WriteLine(String.Format("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, {2}", DateTime.Now, dataId, BitConverter.ToSingle(data, 0)));
-            else
-                LogFile.WriteLine(String.Format("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, {2}", DateTime.Now, dataId, "Overcurrent: Bus " + data[0].ToString()));
-            LogFile.Flush();
+            if (LogFile != null)
+            {
+                if (_idResolver.GetName(dataId) != "PowerBusOverCurrentNotification")
+                    LogFile.WriteLine(String.Format("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, {2}", DateTime.Now, dataId, BitConverter.ToSingle(data, 0)));
+                else
+                    LogFile.WriteLine(String.Format("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, {2}", DateTime.Now, dataId, "Overcurrent: Bus " + data[0].ToString()));
+                LogFile.Flush();
+            }
         }
 
         public void RebootRover()
@@ -416,6 +416,19 @@ namespace RED.ViewModels.Modules
         public void DisableBus(byte index)
         {
             _router.Send(_idResolver.GetId("PowerBusDisable"), index);
+        }
+
+        public void SaveFileStart()
+        {
+            LogFile = File.AppendText("REDPowerData" + DateTime.Now.ToString("yyyyMMdd'T'HHmmss") + ".log");
+        }
+        public void SaveFileStop()
+        {
+            if (LogFile != null)
+            {
+                LogFile.Close();
+                LogFile = null;
+            }
         }
     }
 }
