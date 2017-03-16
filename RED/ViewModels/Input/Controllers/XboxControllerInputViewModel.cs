@@ -102,20 +102,20 @@ namespace RED.ViewModels.Input.Controllers
                 
                 {"LeftTrigger", (float)currentGamepad.LeftTrigger / 255},
                 {"RightTrigger", (float)currentGamepad.RightTrigger / 255},
-                {"ButtonA", ((currentGamepad.Buttons & GamepadButtonFlags.A) != 0) ? 0 : 1},
-                {"ButtonB", ((currentGamepad.Buttons & GamepadButtonFlags.B) != 0) ? 0 : 1},
-                {"ButtonX", ((currentGamepad.Buttons & GamepadButtonFlags.X) != 0) ? 0 : 1},
-                {"ButtonY", ((currentGamepad.Buttons & GamepadButtonFlags.Y) != 0) ? 0 : 1},
-                {"ButtonLb", ((currentGamepad.Buttons & GamepadButtonFlags.LeftShoulder) != 0) ? 0 : 1},
-                {"ButtonRb", ((currentGamepad.Buttons & GamepadButtonFlags.RightShoulder) != 0) ? 0 : 1},
-                {"ButtonLs", ((currentGamepad.Buttons & GamepadButtonFlags.LeftThumb) != 0) ? 0 : 1},
-                {"ButtonRs", ((currentGamepad.Buttons & GamepadButtonFlags.RightThumb) != 0) ? 0 : 1},
-                {"ButtonStart", ((currentGamepad.Buttons & GamepadButtonFlags.Start) != 0) ? 0 : 1},
-                {"ButtonBack", ((currentGamepad.Buttons & GamepadButtonFlags.Back) != 0) ? 0 : 1},
-                {"DPadL", ((currentGamepad.Buttons & GamepadButtonFlags.DPadLeft) != 0) ? 0 : 1},
-                {"DPadU", ((currentGamepad.Buttons & GamepadButtonFlags.DPadUp) != 0) ? 0 : 1},
-                {"DPadR", ((currentGamepad.Buttons & GamepadButtonFlags.DPadRight) != 0) ? 0 : 1},
-                {"DPadD", ((currentGamepad.Buttons & GamepadButtonFlags.DPadDown) != 0) ? 0 : 1}
+                {"ButtonA", ((currentGamepad.Buttons & GamepadButtonFlags.A) != 0) ? 1 : 0},
+                {"ButtonB", ((currentGamepad.Buttons & GamepadButtonFlags.B) != 0) ? 1 : 0},
+                {"ButtonX", ((currentGamepad.Buttons & GamepadButtonFlags.X) != 0) ? 1 : 0},
+                {"ButtonY", ((currentGamepad.Buttons & GamepadButtonFlags.Y) != 0) ? 1 : 0},
+                {"ButtonLb", ((currentGamepad.Buttons & GamepadButtonFlags.LeftShoulder) != 0) ? 1 : 0},
+                {"ButtonRb", ((currentGamepad.Buttons & GamepadButtonFlags.RightShoulder) != 0) ? 1 : 0},
+                {"ButtonLs", ((currentGamepad.Buttons & GamepadButtonFlags.LeftThumb) != 0) ? 1 : 0},
+                {"ButtonRs", ((currentGamepad.Buttons & GamepadButtonFlags.RightThumb) != 0) ? 1 : 0},
+                {"ButtonStart", ((currentGamepad.Buttons & GamepadButtonFlags.Start) != 0) ? 1 : 0},
+                {"ButtonBack", ((currentGamepad.Buttons & GamepadButtonFlags.Back) != 0) ? 1 : 0},
+                {"DPadL", ((currentGamepad.Buttons & GamepadButtonFlags.DPadLeft) != 0) ? 1 : 0},
+                {"DPadU", ((currentGamepad.Buttons & GamepadButtonFlags.DPadUp) != 0) ? 1 : 0},
+                {"DPadR", ((currentGamepad.Buttons & GamepadButtonFlags.DPadRight) != 0) ? 1 : 0},
+                {"DPadD", ((currentGamepad.Buttons & GamepadButtonFlags.DPadDown) != 0) ? 1 : 0}
             };
         }
 
