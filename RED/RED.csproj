@@ -185,6 +185,9 @@
     <Compile Include="Views\ControlCenterView.xaml.cs">
       <DependentUpon>ControlCenterView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Input\InputManagerView.xaml.cs">
+      <DependentUpon>InputManagerView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\ArmControllerModeView.xaml.cs">
       <DependentUpon>ArmControllerModeView.xaml</DependentUpon>
     </Compile>
@@ -234,6 +237,10 @@
       <DependentUpon>ScienceSettingsView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\ControlCenterView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Input\InputManagerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

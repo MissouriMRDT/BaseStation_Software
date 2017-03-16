@@ -106,19 +106,15 @@ namespace RED.ViewModels.Input
             }
             catch
             {
-                
-            }
-            finally
-            {
-                isRunning = false;
-                Device.StopDevice();
-                Mode.StopMode();
+                Stop();
             }
         }
 
         public void Stop()
         {
             isRunning = false;
+            Device.StopDevice();
+            Mode.StopMode();
         }
 
         public Dictionary<string, float> Map(Dictionary<string, float> values)
