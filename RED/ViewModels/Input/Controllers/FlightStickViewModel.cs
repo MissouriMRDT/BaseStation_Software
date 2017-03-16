@@ -10,7 +10,7 @@ namespace RED.ViewModels.Input.Controllers
     {
         private Joystick joystick;
 
-        const int Deadzone = 3;
+        const int Deadzone = 32768 * 10 / 1000;
 
         public string Name { get; private set; }
         public string DeviceType { get; private set; }
@@ -32,8 +32,8 @@ namespace RED.ViewModels.Input.Controllers
             
             return new Dictionary<string, float>()
             {
-                {"X", (deadzoneTransform(state.X) - 32768) / 32768f},
-                {"Y", -(deadzoneTransform(state.Y) - 32768) / 32768f},
+                {"X", deadzoneTransform(state.X - 32768)},
+                {"Y", -deadzoneTransform(state.Y - 32768)},
                 {"RotationZ", (state.RotationZ - 32768) / 32768f},
 
                 {"POVX", POVtoX(state.PointOfViewControllers[0])},
