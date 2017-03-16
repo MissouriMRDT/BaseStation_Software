@@ -141,15 +141,9 @@ namespace RED.ViewModels.Modules
             _log = log;
 
             _router.Subscribe(this, _idResolver.GetId("IMUTemperature"));
-            _router.Subscribe(this, _idResolver.GetId("IMUAccelerometerX"));
-            _router.Subscribe(this, _idResolver.GetId("IMUAccelerometerY"));
-            _router.Subscribe(this, _idResolver.GetId("IMUAccelerometerZ"));
-            _router.Subscribe(this, _idResolver.GetId("IMUGyroscopeRoll"));
-            _router.Subscribe(this, _idResolver.GetId("IMUGyroscopePitch"));
-            _router.Subscribe(this, _idResolver.GetId("IMUGyroscopeYaw"));
-            _router.Subscribe(this, _idResolver.GetId("IMUMagnetometerX"));
-            _router.Subscribe(this, _idResolver.GetId("IMUMagnetometerY"));
-            _router.Subscribe(this, _idResolver.GetId("IMUMagnetometerZ"));
+            _router.Subscribe(this, _idResolver.GetId("IMUAccelerometer"));
+            _router.Subscribe(this, _idResolver.GetId("IMUGyroscope"));
+            _router.Subscribe(this, _idResolver.GetId("IMUMagnetometer"));
         }
 
         public void ReceiveFromRouter(ushort dataId, byte[] data)
@@ -157,15 +151,21 @@ namespace RED.ViewModels.Modules
             switch (_idResolver.GetName(dataId))
             {
                 case "IMUTemperature": IMUTemperature = BitConverter.ToSingle(data, 0); break;
-                case "IMUAccelerometerX": IMUAccelerometerX = BitConverter.ToSingle(data, 0); break;
-                case "IMUAccelerometerY": IMUAccelerometerY = BitConverter.ToSingle(data, 0); break;
-                case "IMUAccelerometerZ": IMUAccelerometerZ = BitConverter.ToSingle(data, 0); break;
-                case "IMUGyroscopeRoll": IMUGyroscopeRoll = BitConverter.ToSingle(data, 0); break;
-                case "IMUGyroscopePitch": IMUGyroscopePitch = BitConverter.ToSingle(data, 0); break;
-                case "IMUGyroscopeYaw": IMUGyroscopeYaw = BitConverter.ToSingle(data, 0); break;
-                case "IMUMagnetometerX": IMUMagnetometerX = BitConverter.ToSingle(data, 0); break;
-                case "IMUMagnetometerY": IMUMagnetometerY = BitConverter.ToSingle(data, 0); break;
-                case "IMUMagnetometerZ": IMUMagnetometerZ = BitConverter.ToSingle(data, 0); break;
+                case "IMUAccelerometer":
+                    IMUAccelerometerX = BitConverter.ToSingle(data, 0);
+                    IMUAccelerometerY = BitConverter.ToSingle(data, 4);
+                    IMUAccelerometerZ = BitConverter.ToSingle(data, 8);
+                    break;
+                case "IMUGyroscope":
+                    IMUGyroscopeRoll = BitConverter.ToSingle(data, 0);
+                    IMUGyroscopePitch = BitConverter.ToSingle(data, 4);
+                    IMUGyroscopeYaw = BitConverter.ToSingle(data, 8);
+                    break;
+                case "IMUMagnetometer":
+                    IMUMagnetometerX = BitConverter.ToSingle(data, 0);
+                    IMUMagnetometerY = BitConverter.ToSingle(data, 4);
+                    IMUMagnetometerZ = BitConverter.ToSingle(data, 8);
+                    break;
             }
         }
     }
