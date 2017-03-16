@@ -58,7 +58,7 @@
                         <Expander Header="Power and BMS">
                             <ContentControl x:Name="Power" />
                         </Expander>
-                        <Expander Header="Camera Mux">
+                        <Expander Header="Cameras">
                             <ContentControl x:Name="CameraMux" />
                         </Expander>
                         <Expander Header="Autonomy Mode">
