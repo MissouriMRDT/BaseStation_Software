@@ -26,5 +26,6 @@
         </Grid>
         <Button x:Name="AddWaypoint">Add Waypoint</Button>
         <Button x:Name="ClearAllWaypoints">Clear All Waypoints</Button>
+        <Button Click="Calibrate_Click">Calibrate</Button>
     </StackPanel>
 </UserControl>

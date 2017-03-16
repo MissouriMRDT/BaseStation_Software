@@ -72,6 +72,11 @@ namespace RED.ViewModels.Modules
             _router.Send(_idResolver.GetId("WaypointsClearAll"), new byte[0]);
         }
 
+        public void Calibrate()
+        {
+            _router.Send(_idResolver.GetId("AutonomyCalibrate"), new byte[0]);
+        }
+
         public void ReceiveFromRouter(ushort dataId, byte[] data)
         {
             switch (_idResolver.GetName(dataId))
