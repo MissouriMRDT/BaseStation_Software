@@ -5,6 +5,7 @@ namespace RED.Models.Input
 {
     internal class MappingModel
     {
+        internal string Name;
         internal ObservableCollection<MappingChannelViewModel> Channels;
         internal string DeviceType;
         internal string ModeType;
