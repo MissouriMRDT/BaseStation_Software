@@ -1,6 +1,7 @@
 ﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using RED.ViewModels.Modules;
+using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,24 +18,10 @@ namespace RED.Views.Modules
             InitializeComponent();
         }
 
-        private async void OpenBay1_Click(object sender, RoutedEventArgs e)
+        private async void OpenBay_Click(object sender, RoutedEventArgs e)
         {
-            await PromptOpenBay(0);
-        }
-
-        private async void OpenBay2_Click(object sender, RoutedEventArgs e)
-        {
-            await PromptOpenBay(1);
-        }
-
-        private async void OpenBay3_Click(object sender, RoutedEventArgs e)
-        {
-            await PromptOpenBay(2);
-        }
-
-        private async void OpenBay4_Click(object sender, RoutedEventArgs e)
-        {
-            await PromptOpenBay(3);
+            byte bayIndex = Byte.Parse((string)((Button)sender).Tag);
+            await PromptOpenBay(bayIndex);
         }
 
         private async Task PromptOpenBay(byte index)
