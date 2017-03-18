@@ -23,5 +23,11 @@
     <Setting Name="GPSBaseStationLocationLongitude" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
+    <Setting Name="GPSStartLocationLatitude" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">38.406426</Value>
+    </Setting>
+    <Setting Name="GPSStartLocationLongitude" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">-110.791919</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
