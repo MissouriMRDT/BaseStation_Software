@@ -9,18 +9,6 @@ namespace RED.ViewModels.Input
     {
         private MappingChannelModel _model;
 
-        public string Name
-        {
-            get
-            {
-                return _model.Name;
-            }
-            set
-            {
-                _model.Name = value;
-                NotifyOfPropertyChange(() => Name);
-            }
-        }
         public string InputKey
         {
             get
