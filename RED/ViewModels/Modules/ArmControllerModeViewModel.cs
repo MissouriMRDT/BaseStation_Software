@@ -272,61 +272,22 @@ namespace RED.ViewModels.Modules
             _log.Log("Switched to Previous Endeffector Mode");
         }
 
-        public void EnableAll()
+        public void EnableCommand(string bus, bool enableState)
         {
-            _router.Send(_idResolver.GetId("ArmEnableAll"), ArmEnableCommand);
-        }
-        public void DisableAll()
-        {
-            _router.Send(_idResolver.GetId("ArmEnableAll"), ArmDisableCommand);
-        }
-        public void EnableMain()
-        {
-            _router.Send(_idResolver.GetId("ArmEnableMain"), ArmEnableCommand);
-        }
-        public void DisableMain()
-        {
-            _router.Send(_idResolver.GetId("ArmEnableMain"), ArmDisableCommand);
-        }
-        public void EnableJ1()
-        {
-            _router.Send(_idResolver.GetId("ArmEnableJ1"), ArmEnableCommand);
-        }
-        public void DisableJ1()
-        {
-            _router.Send(_idResolver.GetId("ArmEnableJ1"), ArmDisableCommand);
-        }
-        public void EnableJ2()
-        {
-            _router.Send(_idResolver.GetId("ArmEnableJ2"), ArmEnableCommand);
-        }
-        public void DisableJ2()
-        {
-            _router.Send(_idResolver.GetId("ArmEnableJ2"), ArmDisableCommand);
-        }
-        public void EnableJ34()
-        {
-            _router.Send(_idResolver.GetId("ArmEnableJ34"), ArmEnableCommand);
-        }
-        public void DisableJ34()
-        {
-            _router.Send(_idResolver.GetId("ArmEnableJ34"), ArmDisableCommand);
-        }
-        public void EnableJ56()
-        {
-            _router.Send(_idResolver.GetId("ArmEnableJ56"), ArmEnableCommand);
-        }
-        public void DisableJ56()
-        {
-            _router.Send(_idResolver.GetId("ArmEnableJ56"), ArmDisableCommand);
-        }
-        public void EnableEndeff()
-        {
-            _router.Send(_idResolver.GetId("ArmEnableEndeff"), ArmEnableCommand);
-        }
-        public void DisableEndeff()
-        {
-            _router.Send(_idResolver.GetId("ArmEnableEndeff"), ArmDisableCommand);
+            ushort id;
+            switch(bus)
+            {
+                case "All": id = _idResolver.GetId("ArmEnableAll"); break;
+                case "Main": id = _idResolver.GetId("ArmEnableMain"); break;
+                case "J1": id = _idResolver.GetId("ArmEnableJ1"); break;
+                case "J2": id = _idResolver.GetId("ArmEnableJ2"); break;
+                case "J34": id = _idResolver.GetId("ArmEnableJ34"); break;
+                case "J56": id = _idResolver.GetId("ArmEnableJ56"); break;
+                case "Endeff": id = _idResolver.GetId("ArmEnableEndeff"); break;
+                default: return;
+            }
+
+            _router.Send(id, (enableState) ? ArmEnableCommand : ArmDisableCommand);
         }
 
         public void GetPosition()
