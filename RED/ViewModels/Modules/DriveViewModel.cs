@@ -7,11 +7,11 @@ using System.Collections.Generic;
 
 namespace RED.ViewModels.Modules
 {
-    public class DriveControllerModeViewModel : PropertyChangedBase, IInputMode
+    public class DriveViewModel : PropertyChangedBase, IInputMode
     {
         private const int motorRangeFactor = 1000;
 
-        private readonly DriveControllerModeModel _model;
+        private readonly DriveModel _model;
         private IDataRouter _router;
         private IDataIdResolver _idResolver;
 
@@ -69,9 +69,9 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public DriveControllerModeViewModel(IInputDevice inputVM, IDataRouter router, IDataIdResolver idResolver)
+        public DriveViewModel(IInputDevice inputVM, IDataRouter router, IDataIdResolver idResolver)
         {
-            _model = new DriveControllerModeModel();
+            _model = new DriveModel();
             _router = router;
             _idResolver = idResolver;
             InputVM = inputVM;

@@ -219,7 +219,7 @@ namespace RED.ViewModels
             }
         }
 
-        public DriveControllerModeViewModel DriveControllerMode
+        public DriveViewModel DriveControllerMode
         {
             get
             {
@@ -231,7 +231,7 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => DriveControllerMode);
             }
         }
-        public ArmControllerModeViewModel ArmControllerMode
+        public ArmViewModel ArmControllerMode
         {
             get
             {
@@ -243,7 +243,7 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => ArmControllerMode);
             }
         }
-        public GimbalControllerModeViewModel GimbalControllerMode
+        public GimbalViewModel GimbalControllerMode
         {
             get
             {
@@ -255,7 +255,7 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => GimbalControllerMode);
             }
         }
-        public GimbalControllerModeViewModel Gimbal2ControllerMode
+        public GimbalViewModel Gimbal2ControllerMode
         {
             get
             {
@@ -316,10 +316,10 @@ namespace RED.ViewModels
             Autonomy = new AutonomyViewModel(DataRouter, MetadataManager, Console);
             ScienceArm = new ScienceArmViewModel(null, DataRouter, MetadataManager, Console);
 
-            DriveControllerMode = new DriveControllerModeViewModel(null, DataRouter, MetadataManager);
-            ArmControllerMode = new ArmControllerModeViewModel(null, DataRouter, MetadataManager, Console);
-            GimbalControllerMode = new GimbalControllerModeViewModel(null, DataRouter, MetadataManager, Console, 0);
-            Gimbal2ControllerMode = new GimbalControllerModeViewModel(null, DataRouter, MetadataManager, Console, 1);
+            DriveControllerMode = new DriveViewModel(null, DataRouter, MetadataManager);
+            ArmControllerMode = new ArmViewModel(null, DataRouter, MetadataManager, Console);
+            GimbalControllerMode = new GimbalViewModel(null, DataRouter, MetadataManager, Console, 0);
+            Gimbal2ControllerMode = new GimbalViewModel(null, DataRouter, MetadataManager, Console, 1);
             XboxController = new XboxControllerInputViewModel(StateManager);
             FlightStickController = new FlightStickViewModel();
 

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace RED.ViewModels.Modules
 {
-    public class ArmControllerModeViewModel : PropertyChangedBase, IInputMode, ISubscribe
+    public class ArmViewModel : PropertyChangedBase, IInputMode, ISubscribe
     {
         private const byte ArmDisableCommand = 0x00;
         private const byte ArmEnableCommand = 0x01;
@@ -16,7 +16,7 @@ namespace RED.ViewModels.Modules
         private readonly EndEffectorModes[] AvailibleEndEffectorModes = { EndEffectorModes.Gripper, EndEffectorModes.Drill, EndEffectorModes.RegulatorDetach };
         private readonly string[] EndEffectorModeNames = { "Gripper", "Drill", "Regulator Detachment" };
 
-        private readonly ArmControllerModeModel _model;
+        private readonly ArmModel _model;
         private IDataRouter _router;
         private IDataIdResolver _idResolver;
         private ILogger _log;
@@ -135,9 +135,9 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public ArmControllerModeViewModel(IInputDevice inputVM, IDataRouter router, IDataIdResolver idResolver, ILogger log)
+        public ArmViewModel(IInputDevice inputVM, IDataRouter router, IDataIdResolver idResolver, ILogger log)
         {
-            _model = new ArmControllerModeModel();
+            _model = new ArmModel();
             InputVM = inputVM;
             _router = router;
             _idResolver = idResolver;

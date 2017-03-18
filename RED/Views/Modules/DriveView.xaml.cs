@@ -3,11 +3,11 @@
 namespace RED.Views.Modules
 {
     /// <summary>
-    /// Interaction logic for GimbalControllerModeView.xaml
+    /// Interaction logic for DriveView.xaml
     /// </summary>
-    public partial class GimbalControllerModeView : UserControl
+    public partial class DriveView : UserControl
     {
-        public GimbalControllerModeView()
+        public DriveView()
         {
             InitializeComponent();
         }

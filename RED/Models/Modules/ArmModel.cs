@@ -1,6 +1,6 @@
 ﻿namespace RED.Models.Modules
 {
-    internal class ArmControllerModeModel
+    internal class ArmModel
     {
         internal int CurrentEndEffectorMode;
         internal float AngleJ1;

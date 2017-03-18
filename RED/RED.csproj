@@ -129,12 +129,12 @@
     <Compile Include="Interfaces\Network\ISequenceNumberProvider.cs" />
     <Compile Include="Models\Input\MappingChannelModel.cs" />
     <Compile Include="Models\Input\MappingModel.cs" />
-    <Compile Include="Models\Modules\ArmControllerModeModel.cs" />
+    <Compile Include="Models\Modules\ArmModel.cs" />
     <Compile Include="Models\Modules\AutonomyModel.cs" />
     <Compile Include="Models\Modules\GimbalModel.cs" />
     <Compile Include="Models\Input\InputManagerModel.cs" />
     <Compile Include="Models\DataRouterModel.cs" />
-    <Compile Include="Models\Modules\DriveControllerModeModel.cs" />
+    <Compile Include="Models\Modules\DriveModel.cs" />
     <Compile Include="Models\Network\NetworkManagerModel.cs" />
     <Compile Include="Models\Modules\PowerModel.cs" />
     <Compile Include="Models\Modules\ScienceModel.cs" />
@@ -149,11 +149,11 @@
     <Compile Include="ViewModels\Input\Controllers\FlightStickViewModel.cs" />
     <Compile Include="ViewModels\Input\MappingViewModel.cs" />
     <Compile Include="ViewModels\Input\MappingChannelViewModel.cs" />
-    <Compile Include="ViewModels\Modules\ArmControllerModeViewModel.cs" />
+    <Compile Include="ViewModels\Modules\ArmViewModel.cs" />
     <Compile Include="ViewModels\Modules\AutonomyViewModel.cs" />
     <Compile Include="ViewModels\Modules\CameraViewModel.cs" />
     <Compile Include="ViewModels\Modules\ExternalControlsViewModel.cs" />
-    <Compile Include="ViewModels\Modules\GimbalControllerModeViewModel.cs" />
+    <Compile Include="ViewModels\Modules\GimbalViewModel.cs" />
     <Compile Include="ViewModels\Modules\DropBaysViewModel.cs" />
     <Compile Include="ViewModels\Modules\ScienceArmViewModel.cs" />
     <Compile Include="ViewModels\Network\NetworkManagerViewModel.cs" />
@@ -161,7 +161,7 @@
     <Compile Include="Interfaces\ISubscribe.cs" />
     <Compile Include="Models\ControlCenterModel.cs" />
     <Compile Include="RedBootstrapper.cs" />
-    <Compile Include="ViewModels\Modules\DriveControllerModeViewModel.cs" />
+    <Compile Include="ViewModels\Modules\DriveViewModel.cs" />
     <Compile Include="ViewModels\Modules\GPSViewModel.cs" />
     <Compile Include="ViewModels\Input\Controllers\KeyboardInputViewModel.cs" />
     <Compile Include="ViewModels\Modules\PowerViewModel.cs" />
@@ -187,8 +187,8 @@
     <Compile Include="Views\Input\InputManagerView.xaml.cs">
       <DependentUpon>InputManagerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\ArmControllerModeView.xaml.cs">
-      <DependentUpon>ArmControllerModeView.xaml</DependentUpon>
+    <Compile Include="Views\Modules\ArmView.xaml.cs">
+      <DependentUpon>ArmView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\AutonomyView.xaml.cs">
       <DependentUpon>AutonomyView.xaml</DependentUpon>
@@ -196,14 +196,14 @@
     <Compile Include="Views\Modules\CameraView.xaml.cs">
       <DependentUpon>CameraView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\DriveControllerModeView.xaml.cs">
-      <DependentUpon>DriveControllerModeView.xaml</DependentUpon>
+    <Compile Include="Views\Modules\DriveView.xaml.cs">
+      <DependentUpon>DriveView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\ExternalControlsView.xaml.cs">
       <DependentUpon>ExternalControlsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\GimbalControllerModeView.xaml.cs">
-      <DependentUpon>GimbalControllerModeView.xaml</DependentUpon>
+    <Compile Include="Views\Modules\GimbalView.xaml.cs">
+      <DependentUpon>GimbalView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DropBaysView.xaml.cs">
       <DependentUpon>DropBaysView.xaml</DependentUpon>
@@ -243,7 +243,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Modules\ArmControllerModeView.xaml">
+    <Page Include="Views\Modules\ArmView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -255,7 +255,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Modules\DriveControllerModeView.xaml">
+    <Page Include="Views\Modules\DriveView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -263,7 +263,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Modules\GimbalControllerModeView.xaml">
+    <Page Include="Views\Modules\GimbalView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
