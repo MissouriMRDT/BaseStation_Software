@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel>
@@ -83,11 +84,11 @@
             </UniformGrid>
             <Label Grid.Row="1" Grid.Column="0">Carousel</Label>
             <UniformGrid Grid.Row="1" Grid.Column="1" Rows="1">
-                <Button x:Name="Carousel1">1</Button>
-                <Button x:Name="Carousel2">2</Button>
-                <Button x:Name="Carousel3">3</Button>
-                <Button x:Name="Carousel4">4</Button>
-                <Button x:Name="Carousel5">5</Button>
+                <Button cal:Message.Attach="SetCarouselPosition(0)">1</Button>
+                <Button cal:Message.Attach="SetCarouselPosition(1)">2</Button>
+                <Button cal:Message.Attach="SetCarouselPosition(2)">3</Button>
+                <Button cal:Message.Attach="SetCarouselPosition(3)">4</Button>
+                <Button cal:Message.Attach="SetCarouselPosition(4)">5</Button>
             </UniformGrid>
             <Label Grid.Row="2" Grid.Column="0">Funnel</Label>
             <UniformGrid Grid.Row="2" Grid.Column="1" Rows="1">

@@ -202,25 +202,9 @@ namespace RED.ViewModels.Modules
             _log.Log("Spectrometer Run command sent");
         }
 
-        public void Carousel1()
+        public void SetCarouselPosition(byte carouselIndex)
         {
-            _router.Send(_idResolver.GetId("CarouselPosition"), (byte)0);
-        }
-        public void Carousel2()
-        {
-            _router.Send(_idResolver.GetId("CarouselPosition"), (byte)1);
-        }
-        public void Carousel3()
-        {
-            _router.Send(_idResolver.GetId("CarouselPosition"), (byte)2);
-        }
-        public void Carousel4()
-        {
-            _router.Send(_idResolver.GetId("CarouselPosition"), (byte)3);
-        }
-        public void Carousel5()
-        {
-            _router.Send(_idResolver.GetId("CarouselPosition"), (byte)4);
+            _router.Send(_idResolver.GetId("CarouselPosition"), carouselIndex);
         }
 
         public void FunnelOpen()
