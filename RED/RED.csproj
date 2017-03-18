@@ -131,7 +131,6 @@
     <Compile Include="Models\Input\MappingModel.cs" />
     <Compile Include="Models\Modules\ArmControllerModeModel.cs" />
     <Compile Include="Models\Modules\AutonomyModel.cs" />
-    <Compile Include="Models\Modules\CameraModel.cs" />
     <Compile Include="Models\Modules\GimbalModel.cs" />
     <Compile Include="Models\Input\InputManagerModel.cs" />
     <Compile Include="Models\DataRouterModel.cs" />
