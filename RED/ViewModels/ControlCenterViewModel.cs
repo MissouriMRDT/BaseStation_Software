@@ -303,7 +303,7 @@ namespace RED.ViewModels
             MetadataManager.AddFromFile("NoSyncMetadata.xml");
 
             NetworkManager = new NetworkManagerViewModel(DataRouter, MetadataManager.Commands.ToArray(), Console, MetadataManager);
-            SubscriptionManager = new SubscriptionManagerViewModel(MetadataManager.Telemetry.ToArray(), MetadataManager, NetworkManager);
+            SubscriptionManager = new SubscriptionManagerViewModel(Console, MetadataManager.Telemetry.ToArray(), MetadataManager, NetworkManager);
             StateManager = new StateViewModel(SubscriptionManager);
 
             Science = new ScienceViewModel(DataRouter, MetadataManager, Console);
