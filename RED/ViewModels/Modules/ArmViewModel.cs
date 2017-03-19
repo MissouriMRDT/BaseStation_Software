@@ -212,36 +212,32 @@ namespace RED.ViewModels.Modules
                     break;
             }
 
-            Func<bool, bool, Int16, Int16, Int16, Int16> twoButtonTransform = (bool1, bool2, val1, val2, val0) => bool1 ? val1 : (bool2 ? val2 : val0);
-
-            Int16 actuatorSpeed = twoButtonTransform(values["ActuatorForward"] != 0, values["ActuatorBackward"] != 0, BaseActuatorSpeed, -BaseActuatorSpeed, 0);
+            Int16 actuatorSpeed = (Int16)twoButtonTransform(values["ActuatorForward"] != 0, values["ActuatorBackward"] != 0, BaseActuatorSpeed, -BaseActuatorSpeed, 0);
             _router.Send(_idResolver.GetId("ArmBaseActuatorForward"), actuatorSpeed);
 
-            float baseSpeed = 0;
-            if (values["ActuatorForward"] != 0) baseSpeed = BaseServoSpeed;
-            else if (values["ActuatorBackward"] != 0) baseSpeed = -BaseServoSpeed;
+            float baseSpeed = (float)twoButtonTransform(values["ActuatorForward"] != 0, values["ActuatorBackward"] != 0, BaseServoSpeed, -BaseServoSpeed, 0f);
             _router.Send(_idResolver.GetId("ArmBaseServoClockwise"), (Int16)(baseSpeed / 10f * motorRangeFactor));
 
             switch (AvailibleEndEffectorModes[CurrentEndEffectorMode])
             {
                 case EndEffectorModes.Gripper:
                     {
-                        Int16 gripperSpeed = twoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, (Int16)(values["GripperClose"] * EndeffectorSpeedLimit), (Int16)(-values["GripperOpen"] * EndeffectorSpeedLimit), 0);
-                        _router.Send(_idResolver.GetId("Gripper"), gripperSpeed);
+                        float gripperSpeed = (float)twoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0F);
+                        _router.Send(_idResolver.GetId("Gripper"), (Int16)(gripperSpeed * EndeffectorSpeedLimit));
                         break;
                     }
                 case EndEffectorModes.Drill:
                     {
-                        Int16 drillSpeed = twoButtonTransform(values["DrillClockwise"] != 0, values["DrillCounterClockwise"] != 0, (Int16)DrillCommands.Forward, (Int16)DrillCommands.Reverse, (Int16)DrillCommands.Stop);
+                        Int16 drillSpeed = (Int16)twoButtonTransform(values["DrillClockwise"] != 0, values["DrillCounterClockwise"] != 0, DrillCommands.Forward, DrillCommands.Reverse, DrillCommands.Stop);
                         _router.Send(_idResolver.GetId("Drill"), drillSpeed);
                         break;
                     }
                 case EndEffectorModes.RegulatorDetach:
                     {
-                        Int16 gripperSpeed = twoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, (Int16)(values["GripperClose"] * EndeffectorSpeedLimit), (Int16)(-values["GripperOpen"] * EndeffectorSpeedLimit), 0);
-                        _router.Send(_idResolver.GetId("Gripper"), gripperSpeed);
+                        float gripperSpeed = (float)twoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0F);
+                        _router.Send(_idResolver.GetId("Gripper"), (Int16)(gripperSpeed * EndeffectorSpeedLimit));
 
-                        Int16 drillSpeed = twoButtonTransform(values["DrillClockwise"] != 0, values["DrillCounterClockwise"] != 0, (Int16)DrillCommands.Forward, (Int16)DrillCommands.Reverse, (Int16)DrillCommands.Stop);
+                        Int16 drillSpeed = (Int16)twoButtonTransform(values["DrillClockwise"] != 0, values["DrillCounterClockwise"] != 0, DrillCommands.Forward, DrillCommands.Reverse, DrillCommands.Stop);
                         _router.Send(_idResolver.GetId("RegulatorDetach"), drillSpeed);
                         break;
                     }
@@ -316,6 +312,11 @@ namespace RED.ViewModels.Modules
             Right,
             Up,
             Down
+        }
+
+        private T twoButtonTransform<T>(bool bool1, bool bool2, T val1, T val2, T val0)
+        {
+            return bool1 ? val1 : (bool2 ? val2 : val0);
         }
     }
 
