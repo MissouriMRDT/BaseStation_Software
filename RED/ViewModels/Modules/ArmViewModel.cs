@@ -154,12 +154,12 @@ namespace RED.ViewModels.Modules
             switch (_idResolver.GetName(dataId))
             {
                 case "ArmCurrentPosition":
-                    AngleJ1 = BitConverter.ToSingle(data, 0);
-                    AngleJ2 = BitConverter.ToSingle(data, 4);
-                    AngleJ3 = BitConverter.ToSingle(data, 8);
-                    AngleJ4 = BitConverter.ToSingle(data, 12);
-                    AngleJ5 = BitConverter.ToSingle(data, 16);
-                    AngleJ6 = BitConverter.ToSingle(data, 20);
+                    AngleJ1 = BitConverter.ToSingle(data, 0 * sizeof(float));
+                    AngleJ2 = BitConverter.ToSingle(data, 1 * sizeof(float));
+                    AngleJ3 = BitConverter.ToSingle(data, 2 * sizeof(float));
+                    AngleJ4 = BitConverter.ToSingle(data, 3 * sizeof(float));
+                    AngleJ5 = BitConverter.ToSingle(data, 4 * sizeof(float));
+                    AngleJ6 = BitConverter.ToSingle(data, 5 * sizeof(float));
                     break;
             }
         }

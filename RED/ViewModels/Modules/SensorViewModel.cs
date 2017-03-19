@@ -152,19 +152,19 @@ namespace RED.ViewModels.Modules
             {
                 case "IMUTemperature": IMUTemperature = BitConverter.ToSingle(data, 0); break;
                 case "IMUAccelerometer":
-                    IMUAccelerometerX = BitConverter.ToSingle(data, 0);
-                    IMUAccelerometerY = BitConverter.ToSingle(data, 4);
-                    IMUAccelerometerZ = BitConverter.ToSingle(data, 8);
+                    IMUAccelerometerX = BitConverter.ToSingle(data, 0 * sizeof(Single));
+                    IMUAccelerometerY = BitConverter.ToSingle(data, 1 * sizeof(Single));
+                    IMUAccelerometerZ = BitConverter.ToSingle(data, 2 * sizeof(Single));
                     break;
                 case "IMUGyroscope":
-                    IMUGyroscopeRoll = BitConverter.ToSingle(data, 0);
-                    IMUGyroscopePitch = BitConverter.ToSingle(data, 4);
-                    IMUGyroscopeYaw = BitConverter.ToSingle(data, 8);
+                    IMUGyroscopeRoll = BitConverter.ToSingle(data, 0 * sizeof(Single));
+                    IMUGyroscopePitch = BitConverter.ToSingle(data, 1 * sizeof(Single));
+                    IMUGyroscopeYaw = BitConverter.ToSingle(data, 2 * sizeof(Single));
                     break;
                 case "IMUMagnetometer":
-                    IMUMagnetometerX = BitConverter.ToSingle(data, 0);
-                    IMUMagnetometerY = BitConverter.ToSingle(data, 4);
-                    IMUMagnetometerZ = BitConverter.ToSingle(data, 8);
+                    IMUMagnetometerX = BitConverter.ToSingle(data, 0 * sizeof(Single));
+                    IMUMagnetometerY = BitConverter.ToSingle(data, 1 * sizeof(Single));
+                    IMUMagnetometerZ = BitConverter.ToSingle(data, 2 * sizeof(Single));
                     break;
             }
         }

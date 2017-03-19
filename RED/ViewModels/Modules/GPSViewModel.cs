@@ -207,8 +207,8 @@ namespace RED.ViewModels.Modules
                 case "GPSPosition":
                     CurrentLocation = new GPSCoordinate()
                     {
-                        Latitude = BitConverter.ToInt32(data, 4) / 10000000f,
-                        Longitude = -BitConverter.ToInt32(data, 0) / 10000000f
+                        Latitude = BitConverter.ToInt32(data, 1 * sizeof(Int32)) / 10000000f,
+                        Longitude = -BitConverter.ToInt32(data, 0 * sizeof(Int32)) / 10000000f
                     };
                     break;
                 case "GPSSpeed":

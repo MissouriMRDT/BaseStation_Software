@@ -60,9 +60,9 @@ namespace RED.ViewModels.Modules
 
         public void AddWaypoint()
         {
-            byte[] msg = new byte[16];
-            Buffer.BlockCopy(BitConverter.GetBytes(LatitudeInput), 0, msg, 0, 8);
-            Buffer.BlockCopy(BitConverter.GetBytes(LongitudeInput), 0, msg, 8, 8);
+            byte[] msg = new byte[2 * sizeof(double)];
+            Buffer.BlockCopy(BitConverter.GetBytes(LatitudeInput), 0, msg, 0 * sizeof(double), sizeof(double));
+            Buffer.BlockCopy(BitConverter.GetBytes(LongitudeInput), 0, msg, 1 * sizeof(double), sizeof(double));
 
             _router.Send(_idResolver.GetId("WaypointAdd"), msg);
         }
