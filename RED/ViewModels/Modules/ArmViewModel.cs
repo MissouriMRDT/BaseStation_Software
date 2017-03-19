@@ -182,77 +182,69 @@ namespace RED.ViewModels.Modules
             else if (values["DebouncedToolNext"] != 0)
                 NextEndeffectorMode();
 
-            var angle = Math.Atan2(values["WristBend"], values["WristTwist"]);
-            if (angle > -Math.PI / 6 && angle < Math.PI / 6) //Joystick Right
-                _router.Send(_idResolver.GetId("ArmWristClockwise"), (Int16)(values["WristTwist"] * motorRangeFactor));
-            else if (angle > Math.PI / 3 && angle < 2 * Math.PI / 3) //Joystick Up
-                _router.Send(_idResolver.GetId("ArmWristUp"), (Int16)(-values["WristBend"] * motorRangeFactor));
-            else if (angle > 5 * Math.PI / 6 || angle < -5 * Math.PI / 6) //Joystick Left
-                _router.Send(_idResolver.GetId("ArmWristClockwise"), (Int16)(values["WristTwist"] * motorRangeFactor));
-            else if (angle > -2 * Math.PI / 3 && angle < Math.PI / 3) //Joystick Down
-                _router.Send(_idResolver.GetId("ArmWristUp"), (Int16)(-values["WristBend"] * motorRangeFactor));
-            else
-                _router.Send(_idResolver.GetId("ArmWristUp"), (Int16)(0));
+            switch (JoystickDirection(values["WristBend"], values["WristTwist"]))
+            {
+                case JoystickDirections.Right:
+                case JoystickDirections.Left:
+                    _router.Send(_idResolver.GetId("ArmWristClockwise"), (Int16)(values["WristTwist"] * motorRangeFactor));
+                    break;
+                case JoystickDirections.Up:
+                case JoystickDirections.Down:
+                    _router.Send(_idResolver.GetId("ArmWristUp"), (Int16)(-values["WristBend"] * motorRangeFactor));
+                    break;
+                case JoystickDirections.None:
+                    _router.Send(_idResolver.GetId("ArmWristUp"), (Int16)(0));
+                    break;
+            }
 
-            angle = Math.Atan2(values["ElbowBend"], values["ElbowTwist"]);
-            if (angle > -Math.PI / 6 && angle < Math.PI / 6) //Joystick Right
-                _router.Send(_idResolver.GetId("ArmElbowClockwise"), (Int16)(values["ElbowTwist"] * motorRangeFactor));
-            else if (angle > Math.PI / 3 && angle < 2 * Math.PI / 3) //Joystick Up
-                _router.Send(_idResolver.GetId("ArmElbowUp"), (Int16)(-values["ElbowBend"] * motorRangeFactor));
-            else if (angle > 5 * Math.PI / 6 || angle < -5 * Math.PI / 6) //Joystick Left
-                _router.Send(_idResolver.GetId("ArmElbowClockwise"), (Int16)(values["ElbowTwist"] * motorRangeFactor));
-            else if (angle > -2 * Math.PI / 3 && angle < Math.PI / 3) //Joystick Down
-                _router.Send(_idResolver.GetId("ArmElbowUp"), (Int16)(-values["ElbowBend"] * motorRangeFactor));
-            else
-                _router.Send(_idResolver.GetId("ArmWristUp"), (Int16)(0));
+            switch (JoystickDirection(values["ElbowBend"], values["ElbowTwist"]))
+            {
+                case JoystickDirections.Right:
+                case JoystickDirections.Left:
+                    _router.Send(_idResolver.GetId("ArmElbowClockwise"), (Int16)(values["ElbowTwist"] * motorRangeFactor));
+                    break;
+                case JoystickDirections.Up:
+                case JoystickDirections.Down:
+                    _router.Send(_idResolver.GetId("ArmElbowUp"), (Int16)(-values["ElbowBend"] * motorRangeFactor));
+                    break;
+                case JoystickDirections.None:
+                    _router.Send(_idResolver.GetId("ArmWristUp"), (Int16)(0));
+                    break;
+            }
 
-            if (values["ActuatorForward"] != 0)
-                _router.Send(_idResolver.GetId("ArmBaseActuatorForward"), (Int16)(BaseActuatorSpeed));
-            else if (values["ActuatorBackward"] != 0)
-                _router.Send(_idResolver.GetId("ArmBaseActuatorForward"), (Int16)(-BaseActuatorSpeed));
-            else
-                _router.Send(_idResolver.GetId("ArmBaseActuatorForward"), (Int16)(0));
-            if (values["BaseClockwise"] != 0)
-                _router.Send(_idResolver.GetId("ArmBaseServoClockwise"), (Int16)(BaseServoSpeed / 10f * motorRangeFactor));
-            else if (values["BaseCounterClockwise"] != 0)
-                _router.Send(_idResolver.GetId("ArmBaseServoClockwise"), (Int16)(-BaseServoSpeed / 10f * motorRangeFactor));
-            else
-                _router.Send(_idResolver.GetId("ArmBaseServoClockwise"), (Int16)(0));
+            Func<bool, bool, Int16, Int16, Int16, Int16> twoButtonTransform = (bool1, bool2, val1, val2, val0) => bool1 ? val1 : (bool2 ? val2 : val0);
+
+            Int16 actuatorSpeed = twoButtonTransform(values["ActuatorForward"] != 0, values["ActuatorBackward"] != 0, BaseActuatorSpeed, -BaseActuatorSpeed, 0);
+            _router.Send(_idResolver.GetId("ArmBaseActuatorForward"), actuatorSpeed);
+
+            float baseSpeed = 0;
+            if (values["ActuatorForward"] != 0) baseSpeed = BaseServoSpeed;
+            else if (values["ActuatorBackward"] != 0) baseSpeed = -BaseServoSpeed;
+            _router.Send(_idResolver.GetId("ArmBaseServoClockwise"), (Int16)(baseSpeed / 10f * motorRangeFactor));
 
             switch (AvailibleEndEffectorModes[CurrentEndEffectorMode])
             {
                 case EndEffectorModes.Gripper:
-                    if (values["GripperClose"] > 0)
-                        _router.Send(_idResolver.GetId("Gripper"), (Int16)(values["GripperClose"] * EndeffectorSpeedLimit));
-                    else if (values["GripperOpen"] > 0)
-                        _router.Send(_idResolver.GetId("Gripper"), (Int16)(-values["GripperOpen"] * EndeffectorSpeedLimit));
-                    else
-                        _router.Send(_idResolver.GetId("Gripper"), (Int16)(0));
-                    break;
+                    {
+                        Int16 gripperSpeed = twoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, (Int16)(values["GripperClose"] * EndeffectorSpeedLimit), (Int16)(-values["GripperOpen"] * EndeffectorSpeedLimit), 0);
+                        _router.Send(_idResolver.GetId("Gripper"), gripperSpeed);
+                        break;
+                    }
                 case EndEffectorModes.Drill:
-                    if (values["DrillClockwise"] != 0)
-                        _router.Send(_idResolver.GetId("Drill"), (short)DrillCommands.Forward);
-                    else if (values["DrillCounterClockwise"] != 0)
-                        _router.Send(_idResolver.GetId("Drill"), (short)DrillCommands.Reverse);
-                    else
-                        _router.Send(_idResolver.GetId("Drill"), (short)DrillCommands.Stop);
-                    break;
-
+                    {
+                        Int16 drillSpeed = twoButtonTransform(values["DrillClockwise"] != 0, values["DrillCounterClockwise"] != 0, (Int16)DrillCommands.Forward, (Int16)DrillCommands.Reverse, (Int16)DrillCommands.Stop);
+                        _router.Send(_idResolver.GetId("Drill"), drillSpeed);
+                        break;
+                    }
                 case EndEffectorModes.RegulatorDetach:
-                    if (values["GripperClose"] > 0)
-                        _router.Send(_idResolver.GetId("Gripper"), (Int16)(values["GripperClose"] * EndeffectorSpeedLimit));
-                    else if (values["GripperOpen"] > 0)
-                        _router.Send(_idResolver.GetId("Gripper"), (Int16)(-values["GripperOpen"] * EndeffectorSpeedLimit));
-                    else
-                        _router.Send(_idResolver.GetId("Gripper"), (Int16)(0));
+                    {
+                        Int16 gripperSpeed = twoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, (Int16)(values["GripperClose"] * EndeffectorSpeedLimit), (Int16)(-values["GripperOpen"] * EndeffectorSpeedLimit), 0);
+                        _router.Send(_idResolver.GetId("Gripper"), gripperSpeed);
 
-                    if (values["DrillClockwise"] != 0)
-                        _router.Send(_idResolver.GetId("RegulatorDetach"), (short)DrillCommands.Forward);
-                    else if (values["DrillCounterClockwise"] != 0)
-                        _router.Send(_idResolver.GetId("RegulatorDetach"), (short)DrillCommands.Reverse);
-                    else
-                        _router.Send(_idResolver.GetId("RegulatorDetach"), (short)DrillCommands.Stop);
-                    break;
+                        Int16 drillSpeed = twoButtonTransform(values["DrillClockwise"] != 0, values["DrillCounterClockwise"] != 0, (Int16)DrillCommands.Forward, (Int16)DrillCommands.Reverse, (Int16)DrillCommands.Stop);
+                        _router.Send(_idResolver.GetId("RegulatorDetach"), drillSpeed);
+                        break;
+                    }
             }
         }
 
@@ -275,7 +267,7 @@ namespace RED.ViewModels.Modules
         public void EnableCommand(string bus, bool enableState)
         {
             ushort id;
-            switch(bus)
+            switch (bus)
             {
                 case "All": id = _idResolver.GetId("ArmEnableAll"); break;
                 case "Main": id = _idResolver.GetId("ArmEnableMain"); break;
@@ -300,6 +292,30 @@ namespace RED.ViewModels.Modules
             byte[] data = new byte[angles.Length * sizeof(float)];
             Buffer.BlockCopy(angles, 0, data, 0, data.Length);
             _router.Send(_idResolver.GetId("ArmAbsoluteAngle"), data);
+        }
+
+        private JoystickDirections JoystickDirection(float y, float x)
+        {
+            var angle = Math.Atan2(y, x);
+            if (angle > -Math.PI / 6 && angle < Math.PI / 6)
+                return JoystickDirections.Right;
+            else if (angle > Math.PI / 3 && angle < 2 * Math.PI / 3)
+                return JoystickDirections.Up;
+            else if (angle > 5 * Math.PI / 6 || angle < -5 * Math.PI / 6)
+                return JoystickDirections.Left;
+            else if (angle > -2 * Math.PI / 3 && angle < Math.PI / 3)
+                return JoystickDirections.Down;
+            else
+                return JoystickDirections.None;
+        }
+
+        private enum JoystickDirections
+        {
+            None = 0,
+            Left,
+            Right,
+            Up,
+            Down
         }
     }
 
