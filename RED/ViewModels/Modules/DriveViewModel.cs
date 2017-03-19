@@ -87,8 +87,7 @@ namespace RED.ViewModels.Modules
 
         public void SetValues(Dictionary<string, float> values)
         {
-            float commandLeft;
-            float commandRight;
+            float commandLeft, commandRight;
 
             if (values.ContainsKey("VectorX") && values.ContainsKey("VectorY"))
             {
@@ -105,31 +104,12 @@ namespace RED.ViewModels.Modules
                 commandRight = values["WheelsRight"];
             }
 
-            int newSpeedLeft;
-            int newSpeedRight;
+            float speedLimitFactor = (float)SpeedLimit / motorRangeFactor;
+            if (speedLimitFactor > 1F) speedLimitFactor = 1F;
+            if (speedLimitFactor < 0F) speedLimitFactor = 0F;
 
-            #region Normalization of joystick input
-            {
-                float CurrentRawControllerSpeedLeft = commandLeft;
-                float CurrentRawControllerSpeedRight = commandRight;
-
-                //Scaling
-                if (ParabolicScaling) //Squares the value (0..1)
-                {
-                    //    CurrentRawControllerSpeedLeft *= CurrentRawControllerSpeedLeft * (CurrentRawControllerSpeedLeft >= 0 ? 1 : -1);
-                    //    CurrentRawControllerSpeedRight *= CurrentRawControllerSpeedRight * (CurrentRawControllerSpeedRight >= 0 ? 1 : -1);
-                }
-
-                float speedLimitFactor = (float)SpeedLimit / motorRangeFactor;
-                if (speedLimitFactor > 1) speedLimitFactor = 1;
-                if (speedLimitFactor < 0) speedLimitFactor = 0;
-                CurrentRawControllerSpeedLeft *= speedLimitFactor;
-                CurrentRawControllerSpeedRight *= speedLimitFactor;
-
-                newSpeedLeft = (int)(CurrentRawControllerSpeedLeft * motorRangeFactor);
-                newSpeedRight = (int)(CurrentRawControllerSpeedRight * motorRangeFactor);
-            }
-            #endregion
+            int newSpeedLeft = (int)(commandLeft * speedLimitFactor * motorRangeFactor);
+            int newSpeedRight = (int)(commandRight * speedLimitFactor * motorRangeFactor);
 
             SpeedLeft = newSpeedLeft;
             _router.Send(_idResolver.GetId("MotorLeftSpeed"), SpeedLeft);
