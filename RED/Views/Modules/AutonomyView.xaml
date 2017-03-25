@@ -20,9 +20,9 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Label Grid.Row="0" Grid.Column="0">Lat</Label>
-            <TextBox Grid.Row="0" Grid.Column="1" x:Name="LatitudeInput" />
+            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding LatitudeInput, StringFormat=G}" />
             <Label Grid.Row="1" Grid.Column="0">Lon</Label>
-            <TextBox Grid.Row="1" Grid.Column="1" x:Name="LongitudeInput" />
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding LongitudeInput, StringFormat=G}" />
         </Grid>
         <Button x:Name="AddWaypoint">Add Waypoint</Button>
         <Button x:Name="ClearAllWaypoints">Clear All Waypoints</Button>

@@ -33,9 +33,9 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Label Grid.Row="0" Grid.Column="0">Latitude</Label>
-                    <TextBox Grid.Row="0" Grid.Column="1" x:Name="StartLocationLatitude" />
+                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding StartLocationLatitude, StringFormat=G}" />
                     <Label Grid.Row="1" Grid.Column="0">Longitude</Label>
-                    <TextBox Grid.Row="1" Grid.Column="1" x:Name="StartLocationLongitude" />
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding StartLocationLongitude, StringFormat=G}" />
                 </Grid>
                 <Label>Recall Preset Location:</Label>
                 <UniformGrid Columns="2">
