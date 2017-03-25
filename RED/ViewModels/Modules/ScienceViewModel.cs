@@ -227,7 +227,7 @@ namespace RED.ViewModels.Modules
         }
         private async void SaveFileWrite(string sensorName, object value)
         {
-            if (!SensorDataFile.CanWrite) return;
+            if (SensorDataFile == null || !SensorDataFile.CanWrite) return;
             var data = Encoding.UTF8.GetBytes(String.Format("{0:s} {1} {2}{3}", DateTime.Now, sensorName, value.ToString(), Environment.NewLine));
             await SensorDataFile.WriteAsync(data, 0, data.Length);
         }
