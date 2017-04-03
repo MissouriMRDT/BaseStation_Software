@@ -26,8 +26,8 @@
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Button Grid.Row="0" Grid.Column="0" x:Name="AllOn">On</Button>
-            <Button Grid.Row="0" Grid.Column="1" x:Name="AllOff">Off</Button>
+            <Button Grid.Row="0" Grid.Column="0" x:Name="SensorAllOn">On</Button>
+            <Button Grid.Row="0" Grid.Column="1" x:Name="SensorAllOff">Off</Button>
             <Label Grid.Row="0" Grid.Column="2">All</Label>
 
             <Button Grid.Row="1" Grid.Column="0" x:Name="Sensor0On">On</Button>

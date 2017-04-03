@@ -129,6 +129,14 @@ namespace RED.ViewModels.Modules
             _router.Subscribe(this, _idResolver.GetId("SciSensor6"));
         }
 
+        public void SensorAllOn()
+        {
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.SensorAllEnable);
+        }
+        public void SensorAllOff()
+        {
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.SensorAllDisable);
+        }
         public void Sensor0On()
         {
             _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor0Enable);
@@ -155,11 +163,11 @@ namespace RED.ViewModels.Modules
         }
         public void Sensor3On()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor4Enable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor3Enable);
         }
         public void Sensor3Off()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor4Disable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor3Disable);
         }
         public void Sensor4On()
         {
