@@ -7,17 +7,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Label Grid.Row="0" Grid.Column="0">Current Endeffector Mode</Label>
-            <Label Grid.Row="0" Grid.Column="1" x:Name="CurrentEndEffectorModeName" />
-        </Grid>
         <DockPanel>
             <Label x:Name="EndeffectorSpeedLimit" Width="40px" DockPanel.Dock="Right" HorizontalContentAlignment="Right" />
             <Slider Minimum="0" Maximum="1000" Value="{Binding EndeffectorSpeedLimit}" Margin="3px" />

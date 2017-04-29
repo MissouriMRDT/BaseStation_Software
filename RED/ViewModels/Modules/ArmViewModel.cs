@@ -13,8 +13,6 @@ namespace RED.ViewModels.Modules
         private const byte ArmEnableCommand = 0x01;
 
         private const short motorRangeFactor = 1000;
-        private readonly EndEffectorModes[] AvailibleEndEffectorModes = { EndEffectorModes.Gripper, EndEffectorModes.Drill, EndEffectorModes.RegulatorDetach };
-        private readonly string[] EndEffectorModeNames = { "Gripper", "Drill", "Regulator Detachment" };
 
         private readonly ArmModel _model;
         private IDataRouter _router;
@@ -27,27 +25,6 @@ namespace RED.ViewModels.Modules
 
         public const float BaseServoSpeed = .5f;
         public const int BaseActuatorSpeed = 127;
-
-        public int CurrentEndEffectorMode
-        {
-            get
-            {
-                return _model.CurrentEndEffectorMode;
-            }
-            set
-            {
-                _model.CurrentEndEffectorMode = value;
-                NotifyOfPropertyChange(() => CurrentEndEffectorMode);
-                NotifyOfPropertyChange(() => CurrentEndEffectorModeName);
-            }
-        }
-        public string CurrentEndEffectorModeName
-        {
-            get
-            {
-                return EndEffectorModeNames[CurrentEndEffectorMode];
-            }
-        }
 
         public float AngleJ1
         {
@@ -157,7 +134,6 @@ namespace RED.ViewModels.Modules
             _log = log;
             Name = "Arm";
             ModeType = "Arm";
-            CurrentEndEffectorMode = 0;
 
             _router.Subscribe(this, _idResolver.GetId("ArmCurrentPosition"));
             _router.Subscribe(this, _idResolver.GetId("ArmFault"));
@@ -198,11 +174,6 @@ namespace RED.ViewModels.Modules
                 _log.Log("Robotic Arm Resetting...");
             }
 
-            if (values["DebouncedToolPrev"] != 0)
-                PreviousEndeffectorMode();
-            else if (values["DebouncedToolNext"] != 0)
-                NextEndeffectorMode();
-
             switch (JoystickDirection(values["WristBend"], values["WristTwist"]))
             {
                 case JoystickDirections.Right:
@@ -239,46 +210,16 @@ namespace RED.ViewModels.Modules
             float baseSpeed = (float)twoButtonTransform(values["ActuatorForward"] != 0, values["ActuatorBackward"] != 0, BaseServoSpeed, -BaseServoSpeed, 0f);
             _router.Send(_idResolver.GetId("ArmBaseServoClockwise"), (Int16)(baseSpeed / 10f * motorRangeFactor));
 
-            switch (AvailibleEndEffectorModes[CurrentEndEffectorMode])
-            {
-                case EndEffectorModes.Gripper:
-                    {
-                        float gripperSpeed = (float)twoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0F);
-                        _router.Send(_idResolver.GetId("Gripper"), (Int16)(gripperSpeed * EndeffectorSpeedLimit));
-                        break;
-                    }
-                case EndEffectorModes.Drill:
-                    {
-                        Int16 drillSpeed = (Int16)twoButtonTransform(values["DrillClockwise"] != 0, values["DrillCounterClockwise"] != 0, DrillCommands.Forward, DrillCommands.Reverse, DrillCommands.Stop);
-                        _router.Send(_idResolver.GetId("Drill"), drillSpeed);
-                        break;
-                    }
-                case EndEffectorModes.RegulatorDetach:
-                    {
-                        float gripperSpeed = (float)twoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0F);
-                        _router.Send(_idResolver.GetId("Gripper"), (Int16)(gripperSpeed * EndeffectorSpeedLimit));
+            float gripperSpeed = (float)twoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0F);
+            _router.Send(_idResolver.GetId("Gripper"), (Int16)(gripperSpeed * EndeffectorSpeedLimit));
 
-                        Int16 drillSpeed = (Int16)twoButtonTransform(values["DrillClockwise"] != 0, values["DrillCounterClockwise"] != 0, DrillCommands.Forward, DrillCommands.Reverse, DrillCommands.Stop);
-                        _router.Send(_idResolver.GetId("RegulatorDetach"), drillSpeed);
-                        break;
-                    }
-            }
+            Int16 servoSpeed = (Int16)twoButtonTransform(values["servoClockwise"] > 0, values["servoCounterClockwise"] > 0, values["servoClockwise"], values["servoCounterClockwise"], 0F);
+            _router.Send(_idResolver.GetId("EndeffectorServo"), servoSpeed * EndeffectorSpeedLimit);
         }
 
         public void StopMode()
         {
             _router.Send(_idResolver.GetId("ArmStop"), (Int16)(0));
-        }
-
-        public void NextEndeffectorMode()
-        {
-            CurrentEndEffectorMode = (CurrentEndEffectorMode + 1) % AvailibleEndEffectorModes.Length;
-            _log.Log("Switched to Next Endeffector Mode");
-        }
-        public void PreviousEndeffectorMode()
-        {
-            CurrentEndEffectorMode = (CurrentEndEffectorMode + 1 + AvailibleEndEffectorModes.Length) % AvailibleEndEffectorModes.Length;
-            _log.Log("Switched to Previous Endeffector Mode");
         }
 
         public void EnableCommand(string bus, bool enableState)
@@ -339,20 +280,5 @@ namespace RED.ViewModels.Modules
         {
             return bool1 ? val1 : (bool2 ? val2 : val0);
         }
-    }
-
-    public enum EndEffectorModes
-    {
-        None = 0,
-        Gripper = 1,
-        Drill = 2,
-        RegulatorDetach = 3
-    }
-
-    public enum DrillCommands : short
-    {
-        Stop = 0,
-        Forward = 1,
-        Reverse = 2
     }
 }

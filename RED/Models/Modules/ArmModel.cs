@@ -2,7 +2,6 @@
 {
     internal class ArmModel
     {
-        internal int CurrentEndEffectorMode;
         internal float AngleJ1;
         internal float AngleJ2;
         internal float AngleJ3;
