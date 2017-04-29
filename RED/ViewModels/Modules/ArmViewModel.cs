@@ -23,8 +23,8 @@ namespace RED.ViewModels.Modules
         public string ModeType { get; private set; }
         public IInputDevice InputVM { get; set; }
 
-        public const float BaseServoSpeed = .5f;
-        public const int BaseActuatorSpeed = 127;
+        public const float Joint1FixedSpeed = .5f;
+        public const int Joint2FixedSpeed = 127;
 
         public float AngleJ1
         {
@@ -178,14 +178,15 @@ namespace RED.ViewModels.Modules
             {
                 case JoystickDirections.Right:
                 case JoystickDirections.Left:
-                    _router.Send(_idResolver.GetId("ArmWristClockwise"), (Int16)(values["WristTwist"] * motorRangeFactor));
+                    _router.Send(_idResolver.GetId("ArmJ5"), (Int16)(values["WristTwist"] * motorRangeFactor));
                     break;
                 case JoystickDirections.Up:
                 case JoystickDirections.Down:
-                    _router.Send(_idResolver.GetId("ArmWristUp"), (Int16)(-values["WristBend"] * motorRangeFactor));
+                    _router.Send(_idResolver.GetId("ArmJ4"), (Int16)(-values["WristBend"] * motorRangeFactor));
                     break;
                 case JoystickDirections.None:
-                    _router.Send(_idResolver.GetId("ArmWristUp"), (Int16)(0));
+                    _router.Send(_idResolver.GetId("ArmJ4"), (Int16)(0));
+                    _router.Send(_idResolver.GetId("ArmJ5"), (Int16)(0));
                     break;
             }
 
@@ -193,22 +194,22 @@ namespace RED.ViewModels.Modules
             {
                 case JoystickDirections.Right:
                 case JoystickDirections.Left:
-                    _router.Send(_idResolver.GetId("ArmElbowClockwise"), (Int16)(values["ElbowTwist"] * motorRangeFactor));
+                    //_router.Send(_idResolver.GetId(""), (Int16)(values["ElbowTwist"] * motorRangeFactor));
                     break;
                 case JoystickDirections.Up:
                 case JoystickDirections.Down:
-                    _router.Send(_idResolver.GetId("ArmElbowUp"), (Int16)(-values["ElbowBend"] * motorRangeFactor));
+                    _router.Send(_idResolver.GetId("ArmJ3"), (Int16)(-values["ElbowBend"] * motorRangeFactor));
                     break;
                 case JoystickDirections.None:
-                    _router.Send(_idResolver.GetId("ArmWristUp"), (Int16)(0));
+                    _router.Send(_idResolver.GetId("ArmJ3"), (Int16)(0));
                     break;
             }
 
-            Int16 actuatorSpeed = (Int16)twoButtonTransform(values["ActuatorForward"] != 0, values["ActuatorBackward"] != 0, BaseActuatorSpeed, -BaseActuatorSpeed, 0);
-            _router.Send(_idResolver.GetId("ArmBaseActuatorForward"), actuatorSpeed);
+            Int16 actuatorSpeed = (Int16)twoButtonTransform(values["ShoulderBendForward"] != 0, values["ShoulderBendBackward"] != 0, Joint2FixedSpeed, -Joint2FixedSpeed, 0);
+            _router.Send(_idResolver.GetId("ArmJ2"), actuatorSpeed);
 
-            float baseSpeed = (float)twoButtonTransform(values["ActuatorForward"] != 0, values["ActuatorBackward"] != 0, BaseServoSpeed, -BaseServoSpeed, 0f);
-            _router.Send(_idResolver.GetId("ArmBaseServoClockwise"), (Int16)(baseSpeed / 10f * motorRangeFactor));
+            float baseSpeed = (float)twoButtonTransform(values["ShoulderTwistForward"] != 0, values["ShoulderTwistBackward"] != 0, Joint1FixedSpeed, -Joint1FixedSpeed, 0f);
+            _router.Send(_idResolver.GetId("ArmJ1"), (Int16)(baseSpeed / 10f * motorRangeFactor));
 
             float gripperSpeed = (float)twoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0F);
             _router.Send(_idResolver.GetId("Gripper"), (Int16)(gripperSpeed * EndeffectorSpeedLimit));
