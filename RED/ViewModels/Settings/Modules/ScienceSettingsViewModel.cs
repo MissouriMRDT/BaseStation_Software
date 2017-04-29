@@ -9,43 +9,44 @@ namespace RED.ViewModels.Settings.Modules
         private SettingsManagerViewModel _settings;
         private ScienceViewModel _vm;
 
-        public IPAddress CCDIPAddress
+        public string SpectrometerIPAddress
         {
             get
             {
-                return _vm.CCDIPAddress;
+                return _vm.SpectrometerIPAddress.ToString();
             }
             set
             {
-                _vm.CCDIPAddress = value;
-                _settings.CurrentSettings.ScienceCCDIPAddress = value.ToString();
-                NotifyOfPropertyChange(() => CCDIPAddress);
+                IPAddress ip;
+                _vm.SpectrometerIPAddress = IPAddress.TryParse(value, out ip) ? ip : IPAddress.None;
+                _settings.CurrentSettings.ScienceSpectrometerIPAddress = value;
+                NotifyOfPropertyChange(() => SpectrometerIPAddress);
             }
         }
-        public ushort CCDPortNumber
+        public ushort SpectrometerPortNumber
         {
             get
             {
-                return _vm.CCDPortNumber;
+                return _vm.SpectrometerPortNumber;
             }
             set
             {
-                _vm.CCDPortNumber = value;
-                _settings.CurrentSettings.ScienceCCDPortNumber = value;
-                NotifyOfPropertyChange(() => CCDPortNumber);
+                _vm.SpectrometerPortNumber = value;
+                _settings.CurrentSettings.ScienceSpectrometerPortNumber = value;
+                NotifyOfPropertyChange(() => SpectrometerPortNumber);
             }
         }
-        public string CCDFilePath
+        public string SpectrometerFilePath
         {
             get
             {
-                return _vm.CCDFilePath;
+                return _vm.SpectrometerFilePath;
             }
             set
             {
-                _vm.CCDFilePath = value;
-                _settings.CurrentSettings.ScienceCCDFilePath = value;
-                NotifyOfPropertyChange(() => CCDFilePath);
+                _vm.SpectrometerFilePath = value;
+                _settings.CurrentSettings.ScienceSpectrometerFilePath = value;
+                NotifyOfPropertyChange(() => SpectrometerFilePath);
             }
         }
 
@@ -55,9 +56,9 @@ namespace RED.ViewModels.Settings.Modules
             _vm = server;
 
             IPAddress ip;
-            _vm.CCDIPAddress = IPAddress.TryParse(_settings.CurrentSettings.ScienceCCDIPAddress, out ip) ? ip : IPAddress.None;
-            _vm.CCDPortNumber = _settings.CurrentSettings.ScienceCCDPortNumber;
-            _vm.CCDFilePath = _settings.CurrentSettings.ScienceCCDFilePath;
+            _vm.SpectrometerIPAddress = IPAddress.TryParse(_settings.CurrentSettings.ScienceSpectrometerIPAddress, out ip) ? ip : IPAddress.None;
+            _vm.SpectrometerPortNumber = _settings.CurrentSettings.ScienceSpectrometerPortNumber;
+            _vm.SpectrometerFilePath = _settings.CurrentSettings.ScienceSpectrometerFilePath;
         }
     }
 }

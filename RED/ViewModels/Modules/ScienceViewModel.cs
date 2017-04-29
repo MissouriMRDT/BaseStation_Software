@@ -136,40 +136,40 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public System.Net.IPAddress CCDIPAddress
+        public System.Net.IPAddress SpectrometerIPAddress
         {
             get
             {
-                return _model.CCDIPAddress;
+                return _model.SpectrometerIPAddress;
             }
             set
             {
-                _model.CCDIPAddress = value;
-                NotifyOfPropertyChange(() => CCDIPAddress);
+                _model.SpectrometerIPAddress = value;
+                NotifyOfPropertyChange(() => SpectrometerIPAddress);
             }
         }
-        public ushort CCDPortNumber
+        public ushort SpectrometerPortNumber
         {
             get
             {
-                return _model.CCDPortNumber;
+                return _model.SpectrometerPortNumber;
             }
             set
             {
-                _model.CCDPortNumber = value;
-                NotifyOfPropertyChange(() => CCDPortNumber);
+                _model.SpectrometerPortNumber = value;
+                NotifyOfPropertyChange(() => SpectrometerPortNumber);
             }
         }
-        public string CCDFilePath
+        public string SpectrometerFilePath
         {
             get
             {
-                return _model.CCDFilePath;
+                return _model.SpectrometerFilePath;
             }
             set
             {
-                _model.CCDFilePath = value;
-                NotifyOfPropertyChange(() => CCDFilePath);
+                _model.SpectrometerFilePath = value;
+                NotifyOfPropertyChange(() => SpectrometerFilePath);
             }
         }
 
@@ -293,24 +293,24 @@ namespace RED.ViewModels.Modules
             _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor9Disable);
         }
 
-        public void RequestCCD()
+        public void RequestSpectrometer()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.CCDRequest);
-            _log.Log("CCD data requested");
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.SpectrometerRun);
+            _log.Log("Spectrometer data requested");
         }
-        public async void DownloadCCD()
+        public async void DownloadSpectrometer()
         {
-            _log.Log("CCD data downloaded started.");
-            string filename = Path.Combine(CCDFilePath, "REDCCDData" + DateTime.Now.ToString("yyyyMMdd'T'HHmmss") + ".dat");
+            _log.Log("Spectrometer data download started.");
+            string filename = Path.Combine(SpectrometerFilePath, "REDSpectrometerData" + DateTime.Now.ToString("yyyyMMdd'T'HHmmss") + ".dat");
             using (var client = new TcpClient())
             {
-                await client.ConnectAsync(CCDIPAddress, CCDPortNumber);
+                await client.ConnectAsync(SpectrometerIPAddress, SpectrometerPortNumber);
                 using (var file = File.Create(filename))
                 {
                     await client.GetStream().CopyToAsync(file);
                 }
             }
-            _log.Log("CCD data downloaded into " + filename + ".");
+            _log.Log("Spectrometer data downloaded into " + filename + ".");
         }
 
         public void RequestLaserOn()
@@ -425,11 +425,11 @@ namespace RED.ViewModels.Modules
             Sensor8Disable = 33,
             Sensor9Enable = 34,
             Sensor9Disable = 35,
-            CCDRequest = 16,
             LaserOn = 16,
             LaserOff = 17,
             FunnelOpen = 18,
             FunnelClose = 19,
+            SpectrometerRun = 20
         }
     }
 }

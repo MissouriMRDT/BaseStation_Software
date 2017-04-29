@@ -16,12 +16,12 @@
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Label Grid.Row="0" Grid.Column="0">CCD IP Address</Label>
-            <TextBox Grid.Row="0" Grid.Column="1" x:Name="CCDIPAddress" />
-            <Label Grid.Row="1" Grid.Column="0">CCD Port Number</Label>
-            <TextBox Grid.Row="1" Grid.Column="1" x:Name="CCDPortNumber" />
-            <Label Grid.Row="2" Grid.Column="0">CCD File Path</Label>
-            <TextBox Grid.Row="2" Grid.Column="1" x:Name="CCDFilePath" />
+            <Label Grid.Row="0" Grid.Column="0">Spectrometer IP Address</Label>
+            <TextBox Grid.Row="0" Grid.Column="1" x:Name="SpectrometerIPAddress" />
+            <Label Grid.Row="1" Grid.Column="0">Spectrometer Port Number</Label>
+            <TextBox Grid.Row="1" Grid.Column="1" x:Name="SpectrometerPortNumber" />
+            <Label Grid.Row="2" Grid.Column="0">Spectrometer File Path</Label>
+            <TextBox Grid.Row="2" Grid.Column="1" x:Name="SpectrometerFilePath" />
         </Grid>
     </StackPanel>
 </UserControl>

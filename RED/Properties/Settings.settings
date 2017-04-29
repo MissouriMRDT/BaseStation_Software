@@ -8,7 +8,7 @@
     <Setting Name="DriveParabolicScaling" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="ScienceCCDFilePath" Type="System.String" Scope="User">
+    <Setting Name="ScienceSpectrometerFilePath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="InputSerialReadSpeed" Type="System.Int32" Scope="User">
@@ -26,19 +26,17 @@
     <Setting Name="GPSBaseStationLocationLongitude" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-<<<<<<< HEAD
     <Setting Name="GPSStartLocationLatitude" Type="System.Double" Scope="User">
       <Value Profile="(Default)">38.406426</Value>
     </Setting>
     <Setting Name="GPSStartLocationLongitude" Type="System.Double" Scope="User">
       <Value Profile="(Default)">-110.791919</Value>
-=======
-    <Setting Name="ScienceCCDPortNumber" Type="System.UInt16" Scope="User">
+	</Setting>
+    <Setting Name="ScienceSpectrometerPortNumber" Type="System.UInt16" Scope="User">
       <Value Profile="(Default)">11001</Value>
     </Setting>
-    <Setting Name="ScienceCCDIPAddress" Type="System.String" Scope="User">
+    <Setting Name="ScienceSpectrometerIPAddress" Type="System.String" Scope="User">
       <Value Profile="(Default)">192.168.1.135</Value>
->>>>>>> parent of adb40ba... Remove CCD
     </Setting>
   </Settings>
 </SettingsFile>
