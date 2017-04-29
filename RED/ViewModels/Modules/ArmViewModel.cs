@@ -147,6 +147,7 @@ namespace RED.ViewModels.Modules
             CurrentEndEffectorMode = 0;
 
             _router.Subscribe(this, _idResolver.GetId("ArmCurrentPosition"));
+            _router.Subscribe(this, _idResolver.GetId("ArmFault"));
         }
 
         public void ReceiveFromRouter(ushort dataId, byte[] data)
@@ -160,6 +161,9 @@ namespace RED.ViewModels.Modules
                     AngleJ4 = BitConverter.ToSingle(data, 3 * sizeof(float));
                     AngleJ5 = BitConverter.ToSingle(data, 4 * sizeof(float));
                     AngleJ6 = BitConverter.ToSingle(data, 5 * sizeof(float));
+                    break;
+                case "ArmFault":
+                    _log.Log("Arm reported a fault code of " + data[0]);
                     break;
             }
         }
