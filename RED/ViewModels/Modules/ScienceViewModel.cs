@@ -373,7 +373,6 @@ namespace RED.ViewModels.Modules
             Sensor8Disable = 33,
             Sensor9Enable = 34,
             Sensor9Disable = 35,
-            CCDRequest = 16,
             LaserOn = 16,
             LaserOff = 17,
             FunnelOpen = 18,
