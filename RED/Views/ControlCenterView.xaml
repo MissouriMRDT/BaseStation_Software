@@ -30,10 +30,10 @@
                 <ScrollViewer Grid.Column="1" Grid.Row="0">
                     <StackPanel >
                         <Expander Header="Drive" IsExpanded="True">
-                            <ContentControl x:Name="DriveControllerMode" />
+                            <ContentControl x:Name="Drive" />
                         </Expander>
                         <Expander Header="Arm" IsExpanded="True">
-                            <ContentControl x:Name="ArmControllerMode" />
+                            <ContentControl x:Name="Arm" />
                         </Expander>
                         <Expander Header="Science">
                             <ContentControl Grid.Column="1" Grid.Row="0" x:Name="Science" />
@@ -45,8 +45,8 @@
                             <StackPanel>
                                 <ContentControl x:Name="ExternalControls" />
                                 <UniformGrid Rows="1">
-                                    <ContentControl x:Name="GimbalControllerMode" />
-                                    <ContentControl x:Name="Gimbal2ControllerMode" />
+                                    <ContentControl x:Name="Gimbal1" />
+                                    <ContentControl x:Name="Gimbal2" />
                                 </UniformGrid>
                             </StackPanel>
                         </Expander>

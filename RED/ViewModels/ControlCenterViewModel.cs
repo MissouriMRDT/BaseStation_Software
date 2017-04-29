@@ -219,52 +219,52 @@ namespace RED.ViewModels
             }
         }
 
-        public DriveViewModel DriveControllerMode
+        public DriveViewModel Drive
         {
             get
             {
-                return _model._driveControllerMode;
+                return _model._drive;
             }
             set
             {
-                _model._driveControllerMode = value;
-                NotifyOfPropertyChange(() => DriveControllerMode);
+                _model._drive = value;
+                NotifyOfPropertyChange(() => Drive);
             }
         }
-        public ArmViewModel ArmControllerMode
+        public ArmViewModel Arm
         {
             get
             {
-                return _model._armControllerMode;
+                return _model._arm;
             }
             set
             {
-                _model._armControllerMode = value;
-                NotifyOfPropertyChange(() => ArmControllerMode);
+                _model._arm = value;
+                NotifyOfPropertyChange(() => Arm);
             }
         }
-        public GimbalViewModel GimbalControllerMode
+        public GimbalViewModel Gimbal1
         {
             get
             {
-                return _model._gimbal1ControllerMode;
+                return _model._gimbal1;
             }
             set
             {
-                _model._gimbal1ControllerMode = value;
-                NotifyOfPropertyChange(() => GimbalControllerMode);
+                _model._gimbal1 = value;
+                NotifyOfPropertyChange(() => Gimbal1);
             }
         }
-        public GimbalViewModel Gimbal2ControllerMode
+        public GimbalViewModel Gimbal2
         {
             get
             {
-                return _model._gimbal2ControllerMode;
+                return _model._gimbal2;
             }
             set
             {
-                _model._gimbal2ControllerMode = value;
-                NotifyOfPropertyChange(() => Gimbal2ControllerMode);
+                _model._gimbal2 = value;
+                NotifyOfPropertyChange(() => Gimbal2);
             }
         }
         public XboxControllerInputViewModel XboxController
@@ -316,17 +316,17 @@ namespace RED.ViewModels
             Autonomy = new AutonomyViewModel(DataRouter, MetadataManager, Console);
             ScienceArm = new ScienceArmViewModel(null, DataRouter, MetadataManager, Console);
 
-            DriveControllerMode = new DriveViewModel(null, DataRouter, MetadataManager);
-            ArmControllerMode = new ArmViewModel(null, DataRouter, MetadataManager, Console);
-            GimbalControllerMode = new GimbalViewModel(null, DataRouter, MetadataManager, Console, 0);
-            Gimbal2ControllerMode = new GimbalViewModel(null, DataRouter, MetadataManager, Console, 1);
+            Drive = new DriveViewModel(null, DataRouter, MetadataManager);
+            Arm = new ArmViewModel(null, DataRouter, MetadataManager, Console);
+            Gimbal1 = new GimbalViewModel(null, DataRouter, MetadataManager, Console, 0);
+            Gimbal2 = new GimbalViewModel(null, DataRouter, MetadataManager, Console, 1);
             XboxController = new XboxControllerInputViewModel(StateManager);
             FlightStickController = new FlightStickViewModel();
 
-            InputManager = new InputManagerViewModel( Console,
+            InputManager = new InputManagerViewModel(Console,
                 new IInputDevice[] { XboxController, FlightStickController },
                 new MappingViewModel[0],
-                new IInputMode[] { DriveControllerMode, ArmControllerMode, GimbalControllerMode, Gimbal2ControllerMode, ScienceArm });
+                new IInputMode[] { Drive, Arm, Gimbal1, Gimbal2, ScienceArm });
             InputManager.LoadMappingsFromFile("inputmappings.xml");
 
             SettingsManager = new SettingsManagerViewModel(this);
