@@ -122,6 +122,19 @@ namespace RED.ViewModels.Modules
             }
         }
 
+        public float CurrentMain
+        {
+            get
+            {
+                return _model.CurrentMain;
+            }
+            set
+            {
+                _model.CurrentMain = value;
+                NotifyOfPropertyChange(() => CurrentMain);
+            }
+        }
+
         public int EndeffectorSpeedLimit
         {
             get
@@ -148,6 +161,7 @@ namespace RED.ViewModels.Modules
 
             _router.Subscribe(this, _idResolver.GetId("ArmCurrentPosition"));
             _router.Subscribe(this, _idResolver.GetId("ArmFault"));
+            _router.Subscribe(this, _idResolver.GetId("ArmCurrentMain"));
         }
 
         public void ReceiveFromRouter(ushort dataId, byte[] data)
@@ -164,6 +178,9 @@ namespace RED.ViewModels.Modules
                     break;
                 case "ArmFault":
                     _log.Log("Arm reported a fault code of " + data[0]);
+                    break;
+                case "ArmCurrentMain":
+                    CurrentMain = BitConverter.ToSingle(data, 0);
                     break;
             }
         }

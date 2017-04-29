@@ -69,5 +69,16 @@
             <Button x:Name="GetPosition">Get Position</Button>
             <Button x:Name="SetPosition">Set Position</Button>
         </UniformGrid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="1">Main Current</Label>
+            <Label Grid.Row="0" Grid.Column="1" x:Name="CurrentMain" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
+        </Grid>
     </StackPanel>
 </UserControl>
