@@ -19,6 +19,8 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
@@ -64,6 +66,16 @@
             <Button Grid.Row="7" Grid.Column="1" x:Name="Sensor6Off">Off</Button>
             <Label Grid.Row="7" Grid.Column="2">Methane</Label>
             <Label Grid.Row="7" Grid.Column="3" x:Name="Sensor6Value"/>
+
+            <Button Grid.Row="8" Grid.Column="0" x:Name="Sensor7On">On</Button>
+            <Button Grid.Row="8" Grid.Column="1" x:Name="Sensor7Off">Off</Button>
+            <Label Grid.Row="8" Grid.Column="2">Arm Soil Temp</Label>
+            <Label Grid.Row="8" Grid.Column="3" x:Name="Sensor7Value" ContentStringFormat="{}{0:0.#&#176;}" />
+
+            <Button Grid.Row="9" Grid.Column="0" x:Name="Sensor8On">On</Button>
+            <Button Grid.Row="9" Grid.Column="1" x:Name="Sensor8Off">Off</Button>
+            <Label Grid.Row="9" Grid.Column="2">Arm Soil Moisture</Label>
+            <Label Grid.Row="9" Grid.Column="3" x:Name="Sensor8Value"/>
         </Grid>
         <Grid>
             <Grid.RowDefinitions>
