@@ -267,11 +267,11 @@ namespace RED.ViewModels.Modules
             {
                 case "All": id = _idResolver.GetId("ArmEnableAll"); break;
                 case "Main": id = _idResolver.GetId("ArmEnableMain"); break;
-                case "J1": id = _idResolver.GetId("ArmEnableJ1"); break;
-                case "J2": id = _idResolver.GetId("ArmEnableJ2"); break;
-                case "J34": id = _idResolver.GetId("ArmEnableJ34"); break;
-                case "J56": id = _idResolver.GetId("ArmEnableJ56"); break;
+                case "J12": id = _idResolver.GetId("ArmEnableJ1"); break;
+                case "J3": id = _idResolver.GetId("ArmEnableJ3"); break;
+                case "J45": id = _idResolver.GetId("ArmEnableJ4"); break;
                 case "Endeff": id = _idResolver.GetId("ArmEnableEndeff"); break;
+                case "Servo": id = _idResolver.GetId("ArmEnableServo"); break;
                 default: return;
             }
 

@@ -26,19 +26,19 @@
             <Label>On</Label>
             <Button cal:Message.Attach="EnableCommand('All', 'True')">All</Button>
             <Button cal:Message.Attach="EnableCommand('Main', 'True')">Main</Button>
-            <Button cal:Message.Attach="EnableCommand('J1', 'True')">J1</Button>
-            <Button cal:Message.Attach="EnableCommand('J2', 'True')">J2</Button>
-            <Button cal:Message.Attach="EnableCommand('J34', 'True')">J34</Button>
-            <Button cal:Message.Attach="EnableCommand('J56', 'True')">J56</Button>
-            <Button cal:Message.Attach="EnableCommand('Endeff', 'True')">Endeffector</Button>
+            <Button cal:Message.Attach="EnableCommand('J12', 'True')">J12</Button>
+            <Button cal:Message.Attach="EnableCommand('J3', 'True')">J3</Button>
+            <Button cal:Message.Attach="EnableCommand('J45', 'True')">J45</Button>
+            <Button cal:Message.Attach="EnableCommand('Endeff', 'True')">Endeff</Button>
+            <Button cal:Message.Attach="EnableCommand('Servo', 'True')">Servo</Button>
             <Label>Off</Label>
             <Button cal:Message.Attach="EnableCommand('All', 'False')">All</Button>
             <Button cal:Message.Attach="EnableCommand('Main', 'False')">Main</Button>
-            <Button cal:Message.Attach="EnableCommand('J1', 'False')">J1</Button>
-            <Button cal:Message.Attach="EnableCommand('J2', 'False')">J2</Button>
-            <Button cal:Message.Attach="EnableCommand('J34', 'False')">J34</Button>
-            <Button cal:Message.Attach="EnableCommand('J56', 'False')">J56</Button>
-            <Button cal:Message.Attach="EnableCommand('Endeff', 'False')">Endeffector</Button>
+            <Button cal:Message.Attach="EnableCommand('J12', 'False')">J12</Button>
+            <Button cal:Message.Attach="EnableCommand('J3', 'False')">J3</Button>
+            <Button cal:Message.Attach="EnableCommand('J45', 'False')">J45</Button>
+            <Button cal:Message.Attach="EnableCommand('Endeff', 'False')">Endeff</Button>
+            <Button cal:Message.Attach="EnableCommand('Servo', 'False')">Servo</Button>
         </UniformGrid>
         <Grid Margin="0 10 0 10">
             <Grid.RowDefinitions>
