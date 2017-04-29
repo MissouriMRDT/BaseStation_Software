@@ -429,6 +429,15 @@ namespace RED.ViewModels.Modules
             _router.Send(_idResolver.GetId("BMSStop"), new byte[0]);
         }
 
+        public void FanControl(bool state)
+        {
+            _router.Send(_idResolver.GetId("BMSFanControl"), state ? 0 : 1);
+        }
+        public void BuzzerControl(bool state)
+        {
+            _router.Send(_idResolver.GetId("BMSBuzzerControl"), state ? 0 : 1);
+        }
+
         public void EnableBus(byte index)
         {
             _router.Send(_idResolver.GetId("PowerBusEnable"), index);
