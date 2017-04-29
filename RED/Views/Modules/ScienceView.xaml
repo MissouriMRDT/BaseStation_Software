@@ -107,8 +107,6 @@
                 <Button x:Name="FunnelOpen">Open</Button>
                 <Button x:Name="FunnelClose">Close</Button>
             </UniformGrid>
-            <Label Grid.Row="3" Grid.Column="0">Spectrometer</Label>
-            <Button Grid.Row="3" Grid.Column="1" x:Name="SpectrometerRun">Run</Button>
             <Label Grid.Row="3" Grid.Column="0">CCD</Label>
             <UniformGrid Grid.Row="3" Grid.Column="1" Rows="1">
                 <Button x:Name="RequestCCD">Request</Button>
