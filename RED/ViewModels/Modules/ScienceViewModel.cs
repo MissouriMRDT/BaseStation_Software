@@ -136,6 +136,43 @@ namespace RED.ViewModels.Modules
             }
         }
 
+        public System.Net.IPAddress CCDIPAddress
+        {
+            get
+            {
+                return _model.CCDIPAddress;
+            }
+            set
+            {
+                _model.CCDIPAddress = value;
+                NotifyOfPropertyChange(() => CCDIPAddress);
+            }
+        }
+        public ushort CCDPortNumber
+        {
+            get
+            {
+                return _model.CCDPortNumber;
+            }
+            set
+            {
+                _model.CCDPortNumber = value;
+                NotifyOfPropertyChange(() => CCDPortNumber);
+            }
+        }
+        public string CCDFilePath
+        {
+            get
+            {
+                return _model.CCDFilePath;
+            }
+            set
+            {
+                _model.CCDFilePath = value;
+                NotifyOfPropertyChange(() => CCDFilePath);
+            }
+        }
+
         public Stream SensorDataFile
         {
             get
@@ -256,6 +293,26 @@ namespace RED.ViewModels.Modules
             _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor9Disable);
         }
 
+        public void RequestCCD()
+        {
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.CCDRequest);
+            _log.Log("CCD data requested");
+        }
+        public async void DownloadCCD()
+        {
+            _log.Log("CCD data downloaded started.");
+            string filename = Path.Combine(CCDFilePath, "REDCCDData" + DateTime.Now.ToString("yyyyMMdd'T'HHmmss") + ".dat");
+            using (var client = new TcpClient())
+            {
+                await client.ConnectAsync(CCDIPAddress, CCDPortNumber);
+                using (var file = File.Create(filename))
+                {
+                    await client.GetStream().CopyToAsync(file);
+                }
+            }
+            _log.Log("CCD data downloaded into " + filename + ".");
+        }
+
         public void RequestLaserOn()
         {
             _router.Send(_idResolver.GetId("ScienceCommand"), (byte)ScienceRequestTypes.LaserOn);
@@ -373,6 +430,7 @@ namespace RED.ViewModels.Modules
             Sensor8Disable = 33,
             Sensor9Enable = 34,
             Sensor9Disable = 35,
+            CCDRequest = 16,
             LaserOn = 16,
             LaserOff = 17,
             FunnelOpen = 18,

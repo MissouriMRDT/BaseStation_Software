@@ -16,6 +16,10 @@ namespace RED.Models.Modules
         internal float Sensor8Value;
         internal float Sensor9Value;
 
+        internal System.Net.IPAddress CCDIPAddress;
+        internal ushort CCDPortNumber;
+        internal string CCDFilePath = Environment.CurrentDirectory;
+
         internal Stream SensorDataFile;
     }
 }
