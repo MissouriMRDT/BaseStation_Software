@@ -11,9 +11,12 @@
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <Label Content="{Binding DeviceType}" />
-                        <Label> &#x2192; </Label>
-                        <Label Content="{Binding ModeType}" />
+                        <TextBlock Text="{Binding Name}" />
+                        <TextBlock Foreground="Gray">&#160;[</TextBlock>
+                        <TextBlock Foreground="Gray" Text="{Binding DeviceType}" />
+                        <TextBlock Foreground="Gray"> &#x2192; </TextBlock>
+                        <TextBlock Foreground="Gray" Text="{Binding ModeType}" />
+                        <TextBlock Foreground="Gray">]</TextBlock>
                     </StackPanel>
                 </DataTemplate>
             </ComboBox.ItemTemplate>

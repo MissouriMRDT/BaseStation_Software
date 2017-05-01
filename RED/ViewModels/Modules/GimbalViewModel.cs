@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace RED.ViewModels.Modules
 {
-    public class GimbalControllerModeViewModel : PropertyChangedBase, IInputMode
+    public class GimbalViewModel : PropertyChangedBase, IInputMode
     {
         private GimbalModel _model;
         private IDataRouter _router;
@@ -46,7 +46,7 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public GimbalControllerModeViewModel(IInputDevice inputVM, IDataRouter router, IDataIdResolver idResolver, ILogger log, int gimbalIndex)
+        public GimbalViewModel(IInputDevice inputVM, IDataRouter router, IDataIdResolver idResolver, ILogger log, int gimbalIndex)
         {
             _model = new GimbalModel();
             _router = router;
@@ -54,7 +54,7 @@ namespace RED.ViewModels.Modules
             _log = log;
             InputVM = inputVM;
             Name = "Gimbal " + (gimbalIndex + 1).ToString();
-            ModeType = "Gimbal";
+            ModeType = "Gimbal " + (gimbalIndex + 1).ToString();
             SpeedLimit = 1000;
             GimbalIndex = gimbalIndex;
         }

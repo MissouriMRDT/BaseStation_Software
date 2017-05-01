@@ -6,7 +6,7 @@ namespace RED.ViewModels.Settings.Modules
     public class DriveSettingsViewModel : PropertyChangedBase
     {
         private SettingsManagerViewModel _settings;
-        private DriveControllerModeViewModel _vm;
+        private DriveViewModel _vm;
 
         public int SpeedLimit
         {
@@ -36,13 +36,28 @@ namespace RED.ViewModels.Settings.Modules
             }
         }
 
-        public DriveSettingsViewModel(SettingsManagerViewModel settings, DriveControllerModeViewModel vm)
+        public bool UseLegacyDataIds
+        {
+            get
+            {
+                return _vm.UseLegacyDataIds;
+            }
+            set
+            {
+                _vm.UseLegacyDataIds = value;
+                _settings.CurrentSettings.DriveUseLegacyDataIds = value;
+                NotifyOfPropertyChange(() => UseLegacyDataIds);
+            }
+        }
+
+        public DriveSettingsViewModel(SettingsManagerViewModel settings, DriveViewModel vm)
         {
             _settings = settings;
             _vm = vm;
 
             _vm.SpeedLimit = _settings.CurrentSettings.DriveSpeedLimit;
             _vm.ParabolicScaling = _settings.CurrentSettings.DriveParabolicScaling;
+            _vm.UseLegacyDataIds = _settings.CurrentSettings.DriveUseLegacyDataIds;
         }
     }
 }

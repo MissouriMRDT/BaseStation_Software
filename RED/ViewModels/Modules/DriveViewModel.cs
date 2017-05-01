@@ -7,11 +7,11 @@ using System.Collections.Generic;
 
 namespace RED.ViewModels.Modules
 {
-    public class DriveControllerModeViewModel : PropertyChangedBase, IInputMode
+    public class DriveViewModel : PropertyChangedBase, IInputMode
     {
         private const int motorRangeFactor = 1000;
 
-        private readonly DriveControllerModeModel _model;
+        private readonly DriveModel _model;
         private IDataRouter _router;
         private IDataIdResolver _idResolver;
 
@@ -57,6 +57,17 @@ namespace RED.ViewModels.Modules
             }
         }
 
+        public bool UseLegacyDataIds
+        {
+            get
+            {
+                return _model.useLegacyDataIds;
+            }
+            set
+            {
+                _model.useLegacyDataIds = value;
+            }
+        }
         public bool ParabolicScaling
         {
             get
@@ -69,9 +80,9 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public DriveControllerModeViewModel(IInputDevice inputVM, IDataRouter router, IDataIdResolver idResolver)
+        public DriveViewModel(IInputDevice inputVM, IDataRouter router, IDataIdResolver idResolver)
         {
-            _model = new DriveControllerModeModel();
+            _model = new DriveModel();
             _router = router;
             _idResolver = idResolver;
             InputVM = inputVM;
@@ -87,8 +98,7 @@ namespace RED.ViewModels.Modules
 
         public void SetValues(Dictionary<string, float> values)
         {
-            float commandLeft;
-            float commandRight;
+            float commandLeft, commandRight;
 
             if (values.ContainsKey("VectorX") && values.ContainsKey("VectorY"))
             {
@@ -105,37 +115,25 @@ namespace RED.ViewModels.Modules
                 commandRight = values["WheelsRight"];
             }
 
-            int newSpeedLeft;
-            int newSpeedRight;
+            float speedLimitFactor = (float)SpeedLimit / motorRangeFactor;
+            if (speedLimitFactor > 1F) speedLimitFactor = 1F;
+            if (speedLimitFactor < 0F) speedLimitFactor = 0F;
 
-            #region Normalization of joystick input
-            {
-                float CurrentRawControllerSpeedLeft = commandLeft;
-                float CurrentRawControllerSpeedRight = commandRight;
-
-                //Scaling
-                if (ParabolicScaling) //Squares the value (0..1)
-                {
-                    //    CurrentRawControllerSpeedLeft *= CurrentRawControllerSpeedLeft * (CurrentRawControllerSpeedLeft >= 0 ? 1 : -1);
-                    //    CurrentRawControllerSpeedRight *= CurrentRawControllerSpeedRight * (CurrentRawControllerSpeedRight >= 0 ? 1 : -1);
-                }
-
-                float speedLimitFactor = (float)SpeedLimit / motorRangeFactor;
-                if (speedLimitFactor > 1) speedLimitFactor = 1;
-                if (speedLimitFactor < 0) speedLimitFactor = 0;
-                CurrentRawControllerSpeedLeft *= speedLimitFactor;
-                CurrentRawControllerSpeedRight *= speedLimitFactor;
-
-                newSpeedLeft = (int)(CurrentRawControllerSpeedLeft * motorRangeFactor);
-                newSpeedRight = (int)(CurrentRawControllerSpeedRight * motorRangeFactor);
-            }
-            #endregion
+            int newSpeedLeft = (int)(commandLeft * speedLimitFactor * motorRangeFactor);
+            int newSpeedRight = (int)(commandRight * speedLimitFactor * motorRangeFactor);
 
             SpeedLeft = newSpeedLeft;
-            _router.Send(_idResolver.GetId("MotorLeftSpeed"), SpeedLeft);
-
             SpeedRight = newSpeedRight;
-            _router.Send(_idResolver.GetId("MotorRightSpeed"), SpeedRight);
+
+            if (UseLegacyDataIds)
+            {
+                _router.Send(_idResolver.GetId("MotorLeftSpeed"), SpeedLeft);
+                _router.Send(_idResolver.GetId("MotorRightSpeed"), SpeedRight);
+            }
+            else
+            {
+                _router.Send(_idResolver.GetId("DriveLeftRight"), (ushort)SpeedLeft << 16 | (ushort)SpeedRight);
+            }
         }
 
         private float scaleVector(float theta)

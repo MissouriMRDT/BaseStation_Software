@@ -2,7 +2,7 @@
 {
     internal class AutonomyModel
     {
-        internal float latitudeInput;
-        internal float longitudeInput;
+        internal double latitudeInput;
+        internal double longitudeInput;
     }
 }

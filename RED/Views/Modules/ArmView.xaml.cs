@@ -3,11 +3,11 @@
 namespace RED.Views.Modules
 {
     /// <summary>
-    /// Interaction logic for ArmControllerModeView.xaml
+    /// Interaction logic for ArmView.xaml
     /// </summary>
-    public partial class ArmControllerModeView : UserControl
+    public partial class ArmView : UserControl
     {
-        public ArmControllerModeView()
+        public ArmView()
         {
             InitializeComponent();
         }

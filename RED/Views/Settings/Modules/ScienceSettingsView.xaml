@@ -6,5 +6,22 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel Width="300" HorizontalAlignment="Left">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="0">Spectrometer IP Address</Label>
+            <TextBox Grid.Row="0" Grid.Column="1" x:Name="SpectrometerIPAddress" />
+            <Label Grid.Row="1" Grid.Column="0">Spectrometer Port Number</Label>
+            <TextBox Grid.Row="1" Grid.Column="1" x:Name="SpectrometerPortNumber" />
+            <Label Grid.Row="2" Grid.Column="0">Spectrometer File Path</Label>
+            <TextBox Grid.Row="2" Grid.Column="1" x:Name="SpectrometerFilePath" />
+        </Grid>
     </StackPanel>
 </UserControl>

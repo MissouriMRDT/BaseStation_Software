@@ -14,6 +14,17 @@ namespace RED.ViewModels.Input
     {
         private MappingModel _model;
 
+        public string Name
+        {
+            get
+            {
+                return _model.Name;
+            }
+            set
+            {
+                _model.Name = value; NotifyOfPropertyChange(() => Name);
+            }
+        }
         public ObservableCollection<MappingChannelViewModel> Channels
         {
             get

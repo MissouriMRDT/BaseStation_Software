@@ -6,9 +6,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <WrapPanel FlowDirection="LeftToRight" Orientation="Horizontal">
-        <Button Click="OpenBay1_Click">Open Bay 1</Button>
-        <Button Click="OpenBay2_Click">Open Bay 2</Button>
-        <Button Click="OpenBay3_Click">Open Bay 3</Button>
-        <Button Click="OpenBay4_Click">Open Bay 4</Button>
+        <Button Click="OpenBay_Click" Tag="0">Open Bay 1</Button>
+        <Button Click="OpenBay_Click" Tag="1">Open Bay 2</Button>
+        <Button Click="OpenBay_Click" Tag="2">Open Bay 3</Button>
+        <Button Click="OpenBay_Click" Tag="3">Open Bay 4</Button>
     </WrapPanel>
 </UserControl>

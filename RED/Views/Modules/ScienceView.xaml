@@ -5,11 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel>
         <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
@@ -25,8 +28,8 @@
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Button Grid.Row="0" Grid.Column="0" x:Name="AllOn">On</Button>
-            <Button Grid.Row="0" Grid.Column="1" x:Name="AllOff">Off</Button>
+            <Button Grid.Row="0" Grid.Column="0" x:Name="SensorAllOn">On</Button>
+            <Button Grid.Row="0" Grid.Column="1" x:Name="SensorAllOff">Off</Button>
             <Label Grid.Row="0" Grid.Column="2">All</Label>
 
             <Button Grid.Row="1" Grid.Column="0" x:Name="Sensor0On">On</Button>
@@ -63,6 +66,16 @@
             <Button Grid.Row="7" Grid.Column="1" x:Name="Sensor6Off">Off</Button>
             <Label Grid.Row="7" Grid.Column="2">Methane</Label>
             <Label Grid.Row="7" Grid.Column="3" x:Name="Sensor6Value"/>
+
+            <Button Grid.Row="8" Grid.Column="0" x:Name="Sensor7On">On</Button>
+            <Button Grid.Row="8" Grid.Column="1" x:Name="Sensor7Off">Off</Button>
+            <Label Grid.Row="8" Grid.Column="2">Arm Soil Temp</Label>
+            <Label Grid.Row="8" Grid.Column="3" x:Name="Sensor7Value" ContentStringFormat="{}{0:0.#&#176;}" />
+
+            <Button Grid.Row="9" Grid.Column="0" x:Name="Sensor8On">On</Button>
+            <Button Grid.Row="9" Grid.Column="1" x:Name="Sensor8Off">Off</Button>
+            <Label Grid.Row="9" Grid.Column="2">Arm Soil Moisture</Label>
+            <Label Grid.Row="9" Grid.Column="3" x:Name="Sensor8Value"/>
         </Grid>
         <Grid>
             <Grid.RowDefinitions>
@@ -83,11 +96,11 @@
             </UniformGrid>
             <Label Grid.Row="1" Grid.Column="0">Carousel</Label>
             <UniformGrid Grid.Row="1" Grid.Column="1" Rows="1">
-                <Button x:Name="Carousel1">1</Button>
-                <Button x:Name="Carousel2">2</Button>
-                <Button x:Name="Carousel3">3</Button>
-                <Button x:Name="Carousel4">4</Button>
-                <Button x:Name="Carousel5">5</Button>
+                <Button cal:Message.Attach="SetCarouselPosition(0)">1</Button>
+                <Button cal:Message.Attach="SetCarouselPosition(1)">2</Button>
+                <Button cal:Message.Attach="SetCarouselPosition(2)">3</Button>
+                <Button cal:Message.Attach="SetCarouselPosition(3)">4</Button>
+                <Button cal:Message.Attach="SetCarouselPosition(4)">5</Button>
             </UniformGrid>
             <Label Grid.Row="2" Grid.Column="0">Funnel</Label>
             <UniformGrid Grid.Row="2" Grid.Column="1" Rows="1">
@@ -95,12 +108,16 @@
                 <Button x:Name="FunnelClose">Close</Button>
             </UniformGrid>
             <Label Grid.Row="3" Grid.Column="0">Spectrometer</Label>
-            <Button Grid.Row="3" Grid.Column="1" x:Name="SpectrometerRun">Run</Button>
+            <UniformGrid Grid.Row="3" Grid.Column="1" Rows="1">
+                <Button x:Name="RequestSpectrometer">Request</Button>
+                <Button x:Name="DownloadSpectrometer">Download</Button>
+            </UniformGrid>
             <Label Grid.Row="4" Grid.Column="0">Sensor Data Save</Label>
             <UniformGrid Grid.Row="4" Grid.Column="1" Rows="1">
                 <Button x:Name="SaveFileStart">Start</Button>
                 <Button x:Name="SaveFileStop">Stop</Button>
             </UniformGrid>
         </Grid>
+
     </StackPanel>
 </UserControl>

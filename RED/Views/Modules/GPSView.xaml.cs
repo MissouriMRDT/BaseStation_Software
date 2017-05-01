@@ -22,7 +22,7 @@ namespace RED.Views.Modules
 
             MainMap.Manager.Mode = AccessMode.CacheOnly;
             MainMap.MapProvider = GMapProviders.OpenStreetMapQuestHybrid;
-            MainMap.Position = new PointLatLng(50.782542, 20.462027);//Hanksville=(38.373933, -110.708362);//Rolla=(37.848544, -91.7715303)
+            MainMap.Position = new PointLatLng(RED.Properties.Settings.Default.GPSStartLocationLatitude, RED.Properties.Settings.Default.GPSStartLocationLongitude);
             MainMap.Zoom = 10.0;
 
             MainMap.EmptyMapBackground = Brushes.White;

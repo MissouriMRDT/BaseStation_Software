@@ -99,6 +99,79 @@ namespace RED.ViewModels.Modules
                 NotifyOfPropertyChange(() => Sensor6Value);
             }
         }
+        public float Sensor7Value
+        {
+            get
+            {
+                return _model.Sensor7Value;
+            }
+            set
+            {
+                _model.Sensor7Value = value;
+                NotifyOfPropertyChange(() => Sensor7Value);
+            }
+        }
+        public float Sensor8Value
+        {
+            get
+            {
+                return _model.Sensor8Value;
+            }
+            set
+            {
+                _model.Sensor8Value = value;
+                NotifyOfPropertyChange(() => Sensor8Value);
+            }
+        }
+        public float Sensor9Value
+        {
+            get
+            {
+                return _model.Sensor9Value;
+            }
+            set
+            {
+                _model.Sensor9Value = value;
+                NotifyOfPropertyChange(() => Sensor9Value);
+            }
+        }
+
+        public System.Net.IPAddress SpectrometerIPAddress
+        {
+            get
+            {
+                return _model.SpectrometerIPAddress;
+            }
+            set
+            {
+                _model.SpectrometerIPAddress = value;
+                NotifyOfPropertyChange(() => SpectrometerIPAddress);
+            }
+        }
+        public ushort SpectrometerPortNumber
+        {
+            get
+            {
+                return _model.SpectrometerPortNumber;
+            }
+            set
+            {
+                _model.SpectrometerPortNumber = value;
+                NotifyOfPropertyChange(() => SpectrometerPortNumber);
+            }
+        }
+        public string SpectrometerFilePath
+        {
+            get
+            {
+                return _model.SpectrometerFilePath;
+            }
+            set
+            {
+                _model.SpectrometerFilePath = value;
+                NotifyOfPropertyChange(() => SpectrometerFilePath);
+            }
+        }
 
         public Stream SensorDataFile
         {
@@ -127,8 +200,18 @@ namespace RED.ViewModels.Modules
             _router.Subscribe(this, _idResolver.GetId("SciSensor4"));
             _router.Subscribe(this, _idResolver.GetId("SciSensor5"));
             _router.Subscribe(this, _idResolver.GetId("SciSensor6"));
+            _router.Subscribe(this, _idResolver.GetId("SciSensor7"));
+            _router.Subscribe(this, _idResolver.GetId("SciSensor8"));
         }
 
+        public void SensorAllOn()
+        {
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.SensorAllEnable);
+        }
+        public void SensorAllOff()
+        {
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.SensorAllDisable);
+        }
         public void Sensor0On()
         {
             _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor0Enable);
@@ -155,11 +238,11 @@ namespace RED.ViewModels.Modules
         }
         public void Sensor3On()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor4Enable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor3Enable);
         }
         public void Sensor3Off()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor4Disable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor3Disable);
         }
         public void Sensor4On()
         {
@@ -185,6 +268,50 @@ namespace RED.ViewModels.Modules
         {
             _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor6Disable);
         }
+        public void Sensor7On()
+        {
+            _router.Send(_idResolver.GetId("ScienceArmCommand"), (ushort)ScienceRequestTypes.Sensor7Enable);
+        }
+        public void Sensor7Off()
+        {
+            _router.Send(_idResolver.GetId("ScienceArmCommand"), (ushort)ScienceRequestTypes.Sensor7Disable);
+        }
+        public void Sensor8On()
+        {
+            _router.Send(_idResolver.GetId("ScienceArmCommand"), (ushort)ScienceRequestTypes.Sensor8Enable);
+        }
+        public void Sensor8Off()
+        {
+            _router.Send(_idResolver.GetId("ScienceArmCommand"), (ushort)ScienceRequestTypes.Sensor8Disable);
+        }
+        public void Sensor9On()
+        {
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor9Enable);
+        }
+        public void Sensor9Off()
+        {
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor9Disable);
+        }
+
+        public void RequestSpectrometer()
+        {
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.SpectrometerRun);
+            _log.Log("Spectrometer data requested");
+        }
+        public async void DownloadSpectrometer()
+        {
+            _log.Log("Spectrometer data download started.");
+            string filename = Path.Combine(SpectrometerFilePath, "REDSpectrometerData" + DateTime.Now.ToString("yyyyMMdd'T'HHmmss") + ".dat");
+            using (var client = new TcpClient())
+            {
+                await client.ConnectAsync(SpectrometerIPAddress, SpectrometerPortNumber);
+                using (var file = File.Create(filename))
+                {
+                    await client.GetStream().CopyToAsync(file);
+                }
+            }
+            _log.Log("Spectrometer data downloaded into " + filename + ".");
+        }
 
         public void RequestLaserOn()
         {
@@ -196,31 +323,10 @@ namespace RED.ViewModels.Modules
             _router.Send(_idResolver.GetId("ScienceCommand"), (byte)ScienceRequestTypes.LaserOff);
             _log.Log("Science Laser Off requested.");
         }
-        public void SpectrometerRun()
-        {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.SpectrometerRun);
-            _log.Log("Spectrometer Run command sent");
-        }
 
-        public void Carousel1()
+        public void SetCarouselPosition(byte carouselIndex)
         {
-            _router.Send(_idResolver.GetId("CarouselPosition"), (byte)0);
-        }
-        public void Carousel2()
-        {
-            _router.Send(_idResolver.GetId("CarouselPosition"), (byte)1);
-        }
-        public void Carousel3()
-        {
-            _router.Send(_idResolver.GetId("CarouselPosition"), (byte)2);
-        }
-        public void Carousel4()
-        {
-            _router.Send(_idResolver.GetId("CarouselPosition"), (byte)3);
-        }
-        public void Carousel5()
-        {
-            _router.Send(_idResolver.GetId("CarouselPosition"), (byte)4);
+            _router.Send(_idResolver.GetId("CarouselPosition"), carouselIndex);
         }
 
         public void FunnelOpen()
@@ -243,7 +349,7 @@ namespace RED.ViewModels.Modules
         }
         private async void SaveFileWrite(string sensorName, object value)
         {
-            if (!SensorDataFile.CanWrite) return;
+            if (SensorDataFile == null || !SensorDataFile.CanWrite) return;
             var data = Encoding.UTF8.GetBytes(String.Format("{0:s} {1} {2}{3}", DateTime.Now, sensorName, value.ToString(), Environment.NewLine));
             await SensorDataFile.WriteAsync(data, 0, data.Length);
         }
@@ -254,31 +360,43 @@ namespace RED.ViewModels.Modules
             {
                 case "SciSensor0":
                     Sensor0Value = BitConverter.ToSingle(data, 0);
-                    SaveFileWrite("Sensor0", Sensor0Value);
+                    SaveFileWrite("Sensor00", Sensor0Value);
                     break;
                 case "SciSensor1":
                     Sensor1Value = BitConverter.ToSingle(data, 0);
-                    SaveFileWrite("Sensor1", Sensor1Value);
+                    SaveFileWrite("Sensor01", Sensor1Value);
                     break;
                 case "SciSensor2":
                     Sensor2Value = BitConverter.ToSingle(data, 0);
-                    SaveFileWrite("Sensor2", Sensor2Value);
+                    SaveFileWrite("Sensor02", Sensor2Value);
                     break;
                 case "SciSensor3":
                     Sensor3Value = BitConverter.ToSingle(data, 0);
-                    SaveFileWrite("Sensor3", Sensor3Value);
+                    SaveFileWrite("Sensor03", Sensor3Value);
                     break;
                 case "SciSensor4":
                     Sensor4Value = BitConverter.ToSingle(data, 0);
-                    SaveFileWrite("Sensor4", Sensor4Value);
+                    SaveFileWrite("Sensor04", Sensor4Value);
                     break;
                 case "SciSensor5":
                     Sensor5Value = BitConverter.ToSingle(data, 0);
-                    SaveFileWrite("Sensor5", Sensor5Value);
+                    SaveFileWrite("Sensor05", Sensor5Value);
                     break;
                 case "SciSensor6":
                     Sensor6Value = BitConverter.ToSingle(data, 0);
-                    SaveFileWrite("Sensor6", Sensor6Value);
+                    SaveFileWrite("Sensor06", Sensor6Value);
+                    break;
+                case "SciSensor7":
+                    Sensor7Value = BitConverter.ToSingle(data, 0);
+                    SaveFileWrite("Sensor07", Sensor7Value);
+                    break;
+                case "SciSensor8":
+                    Sensor8Value = BitConverter.ToSingle(data, 0);
+                    SaveFileWrite("Sensor08", Sensor8Value);
+                    break;
+                case "SciSensor9":
+                    Sensor9Value = BitConverter.ToSingle(data, 0);
+                    SaveFileWrite("Sensor09", Sensor9Value);
                     break;
             }
         }
@@ -301,7 +419,12 @@ namespace RED.ViewModels.Modules
             Sensor5Disable = 13,
             Sensor6Enable = 14,
             Sensor6Disable = 15,
-            CCDRequest = 16,
+            Sensor7Enable = 30,
+            Sensor7Disable = 31,
+            Sensor8Enable = 32,
+            Sensor8Disable = 33,
+            Sensor9Enable = 34,
+            Sensor9Disable = 35,
             LaserOn = 16,
             LaserOff = 17,
             FunnelOpen = 18,

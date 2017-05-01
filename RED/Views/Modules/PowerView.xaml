@@ -3,11 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel>
         <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
@@ -53,7 +55,7 @@
             <Button Grid.Row="5" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="5" />
             <Label Grid.Row="5" Grid.Column="2">Motor6Current</Label>
             <Label Grid.Row="5" Grid.Column="3" x:Name="Motor6Current" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
-            
+
             <Button Grid.Row="6" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="7" />
             <Button Grid.Row="6" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="7" />
             <Label Grid.Row="6" Grid.Column="2">ExtraCurrent</Label>
@@ -70,18 +72,21 @@
             <Button Grid.Row="9" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="10" />
             <Label Grid.Row="9" Grid.Column="2">CommsCurrent</Label>
             <Label Grid.Row="9" Grid.Column="3" x:Name="CommunicationsCurrent" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
-            
+
             <Button Grid.Row="10" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="11" />
             <Button Grid.Row="10" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="11" />
             <Label Grid.Row="10" Grid.Column="2">CommLogic</Label>
-            <Button Grid.Row="11" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="12" />
-            <Button Grid.Row="11" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="12" />
+            <Button Grid.Row="11" Grid.Column="0" cal:Message.Attach="FanControl('True')">On</Button>
+            <Button Grid.Row="11" Grid.Column="1" cal:Message.Attach="FanControl('False')">Off</Button>
             <Label Grid.Row="11" Grid.Column="2">Fans</Label>
+            <Button Grid.Row="12" Grid.Column="0" cal:Message.Attach="BuzzerControl('True')">On</Button>
+            <Button Grid.Row="12" Grid.Column="1" cal:Message.Attach="BuzzerControl('False')">Off</Button>
+            <Label Grid.Row="12" Grid.Column="2">BMS Buzzer</Label>
 
-            <Label Grid.Row="12" Grid.Column="2">InputVoltage</Label>
-            <Label Grid.Row="12" Grid.Column="3" x:Name="InputVoltage" ContentStringFormat="{}{0:00.00} V" HorizontalContentAlignment="Right" />
-            <Label Grid.Row="13" Grid.Column="2">TotalPackCurrent</Label>
-            <Label Grid.Row="13" Grid.Column="3" x:Name="TotalPackCurrent" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
+            <Label Grid.Row="13" Grid.Column="2">InputVoltage</Label>
+            <Label Grid.Row="13" Grid.Column="3" x:Name="InputVoltage" ContentStringFormat="{}{0:00.00} V" HorizontalContentAlignment="Right" />
+            <Label Grid.Row="14" Grid.Column="2">TotalPackCurrent</Label>
+            <Label Grid.Row="14" Grid.Column="3" x:Name="TotalPackCurrent" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
         </Grid>
         <UniformGrid Rows="1">
             <Button Grid.Row="0" Grid.Column="0" Click="RebootButton_Click">Reboot</Button>

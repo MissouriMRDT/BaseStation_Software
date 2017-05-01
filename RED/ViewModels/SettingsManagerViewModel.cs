@@ -85,7 +85,7 @@ namespace RED.ViewModels
             _model = new SettingsManagerModel();
             _controlCenter = cc;
 
-            Drive = new DriveSettingsViewModel(this, cc.DriveControllerMode);
+            Drive = new DriveSettingsViewModel(this, cc.Drive);
             Science = new ScienceSettingsViewModel(this, cc.Science);
             Input = new InputSettingsViewModel(this, cc.InputManager);
             Xbox = new XboxControllerInputSettingsViewModel(this, cc.XboxController);

@@ -16,6 +16,7 @@ namespace RED.ViewModels.Network
         public const byte UnSubscribeDataId = 4;
 
         private SubscriptionManagerModel _model;
+        private ILogger _log;
         private IIPAddressProvider _ipProvider;
         private NetworkManagerViewModel _networkManager;
 
@@ -27,14 +28,17 @@ namespace RED.ViewModels.Network
             }
         }
 
-        public SubscriptionManagerViewModel(TelemetryMetadataContext[] telemetry, IIPAddressProvider ipProvider, NetworkManagerViewModel networkManager)
+        public SubscriptionManagerViewModel(ILogger log, TelemetryMetadataContext[] telemetry, IIPAddressProvider ipProvider, NetworkManagerViewModel networkManager)
         {
             _model = new SubscriptionManagerModel();
+            _log = log;
             _ipProvider = ipProvider;
             _networkManager = networkManager;
 
             foreach (var t in telemetry)
                 Subscribe(t.Id);
+
+            _log.Log("Telemetry Subscriptions Sent");
         }
 
         public void Subscribe(ushort dataId)
@@ -68,6 +72,7 @@ namespace RED.ViewModels.Network
         {
             foreach (var sub in Subscriptions)
                 Resubscribe(sub.Key);
+            _log.Log("Telemetry Subscriptions Sent");
         }
     }
 

@@ -12,7 +12,7 @@ namespace RED.ViewModels.Modules
         private IDataIdResolver _idResolver;
         private ILogger _logger;
 
-        public float LatitudeInput
+        public double LatitudeInput
         {
             get
             {
@@ -24,7 +24,7 @@ namespace RED.ViewModels.Modules
                 NotifyOfPropertyChange(() => LatitudeInput);
             }
         }
-        public float LongitudeInput
+        public double LongitudeInput
         {
             get
             {
@@ -60,9 +60,9 @@ namespace RED.ViewModels.Modules
 
         public void AddWaypoint()
         {
-            byte[] msg = new byte[8];
-            Buffer.BlockCopy(BitConverter.GetBytes(LatitudeInput), 0, msg, 0, 4);
-            Buffer.BlockCopy(BitConverter.GetBytes(LongitudeInput), 0, msg, 4, 4);
+            byte[] msg = new byte[2 * sizeof(double)];
+            Buffer.BlockCopy(BitConverter.GetBytes(LatitudeInput), 0, msg, 0 * sizeof(double), sizeof(double));
+            Buffer.BlockCopy(BitConverter.GetBytes(LongitudeInput), 0, msg, 1 * sizeof(double), sizeof(double));
 
             _router.Send(_idResolver.GetId("WaypointAdd"), msg);
         }
