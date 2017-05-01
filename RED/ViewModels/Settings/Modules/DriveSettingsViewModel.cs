@@ -36,6 +36,20 @@ namespace RED.ViewModels.Settings.Modules
             }
         }
 
+        public bool UseLegacyDataIds
+        {
+            get
+            {
+                return _vm.UseLegacyDataIds;
+            }
+            set
+            {
+                _vm.UseLegacyDataIds = value;
+                _settings.CurrentSettings.DriveUseLegacyDataIds = value;
+                NotifyOfPropertyChange(() => UseLegacyDataIds);
+            }
+        }
+
         public DriveSettingsViewModel(SettingsManagerViewModel settings, DriveViewModel vm)
         {
             _settings = settings;
@@ -43,6 +57,7 @@ namespace RED.ViewModels.Settings.Modules
 
             _vm.SpeedLimit = _settings.CurrentSettings.DriveSpeedLimit;
             _vm.ParabolicScaling = _settings.CurrentSettings.DriveParabolicScaling;
+            _vm.UseLegacyDataIds = _settings.CurrentSettings.DriveUseLegacyDataIds;
         }
     }
 }

@@ -166,5 +166,17 @@ namespace RED.Properties {
                 this["ScienceSpectrometerIPAddress"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DriveUseLegacyDataIds {
+            get {
+                return ((bool)(this["DriveUseLegacyDataIds"]));
+            }
+            set {
+                this["DriveUseLegacyDataIds"] = value;
+            }
+        }
     }
 }

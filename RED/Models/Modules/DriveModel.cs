@@ -7,5 +7,6 @@
 
         internal int speedLimit;
         internal bool parabolicScaling;
+        internal bool useLegacyDataIds;
     }
 }

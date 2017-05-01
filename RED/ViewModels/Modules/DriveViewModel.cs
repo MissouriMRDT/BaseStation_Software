@@ -57,6 +57,17 @@ namespace RED.ViewModels.Modules
             }
         }
 
+        public bool UseLegacyDataIds
+        {
+            get
+            {
+                return _model.useLegacyDataIds;
+            }
+            set
+            {
+                _model.useLegacyDataIds = value;
+            }
+        }
         public bool ParabolicScaling
         {
             get
@@ -112,10 +123,17 @@ namespace RED.ViewModels.Modules
             int newSpeedRight = (int)(commandRight * speedLimitFactor * motorRangeFactor);
 
             SpeedLeft = newSpeedLeft;
-            _router.Send(_idResolver.GetId("MotorLeftSpeed"), SpeedLeft);
-
             SpeedRight = newSpeedRight;
-            _router.Send(_idResolver.GetId("MotorRightSpeed"), SpeedRight);
+
+            if (UseLegacyDataIds)
+            {
+                _router.Send(_idResolver.GetId("MotorLeftSpeed"), SpeedLeft);
+                _router.Send(_idResolver.GetId("MotorRightSpeed"), SpeedRight);
+            }
+            else
+            {
+                _router.Send(_idResolver.GetId("DriveLeftRight"), (ushort)SpeedLeft << 16 | (ushort)SpeedRight);
+            }
         }
 
         private float scaleVector(float theta)
