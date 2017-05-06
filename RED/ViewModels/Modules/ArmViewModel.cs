@@ -178,11 +178,13 @@ namespace RED.ViewModels.Modules
             {
                 case JoystickDirections.Right:
                 case JoystickDirections.Left:
+                    _router.Send(_idResolver.GetId("ArmJ4"), (Int16)(0));
                     _router.Send(_idResolver.GetId("ArmJ5"), (Int16)(values["WristTwist"] * motorRangeFactor));
                     break;
                 case JoystickDirections.Up:
                 case JoystickDirections.Down:
                     _router.Send(_idResolver.GetId("ArmJ4"), (Int16)(-values["WristBend"] * motorRangeFactor));
+                    _router.Send(_idResolver.GetId("ArmJ5"), (Int16)(0));
                     break;
                 case JoystickDirections.None:
                     _router.Send(_idResolver.GetId("ArmJ4"), (Int16)(0));
@@ -192,14 +194,12 @@ namespace RED.ViewModels.Modules
 
             switch (JoystickDirection(values["ElbowBend"], values["ElbowTwist"]))
             {
-                case JoystickDirections.Right:
-                case JoystickDirections.Left:
-                    //_router.Send(_idResolver.GetId(""), (Int16)(values["ElbowTwist"] * motorRangeFactor));
-                    break;
                 case JoystickDirections.Up:
                 case JoystickDirections.Down:
                     _router.Send(_idResolver.GetId("ArmJ3"), (Int16)(-values["ElbowBend"] * motorRangeFactor));
                     break;
+                case JoystickDirections.Right:
+                case JoystickDirections.Left:
                 case JoystickDirections.None:
                     _router.Send(_idResolver.GetId("ArmJ3"), (Int16)(0));
                     break;
@@ -214,7 +214,7 @@ namespace RED.ViewModels.Modules
             float gripperSpeed = (float)twoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0F);
             _router.Send(_idResolver.GetId("Gripper"), (Int16)(gripperSpeed * EndeffectorSpeedLimit));
 
-            Int16 servoSpeed = (Int16)twoButtonTransform(values["servoClockwise"] > 0, values["servoCounterClockwise"] > 0, values["servoClockwise"], values["servoCounterClockwise"], 0F);
+            Int16 servoSpeed = (Int16)twoButtonTransform(values["ServoClockwise"] > 0, values["ServoCounterClockwise"] > 0, values["ServoClockwise"], values["ServoCounterClockwise"], 0F);
             _router.Send(_idResolver.GetId("EndeffectorServo"), servoSpeed * EndeffectorSpeedLimit);
         }
 
@@ -255,6 +255,8 @@ namespace RED.ViewModels.Modules
 
         private JoystickDirections JoystickDirection(float y, float x)
         {
+            if (x == 0.0f && y == 0.0f) return JoystickDirections.None;
+
             var angle = Math.Atan2(y, x);
             if (angle > -Math.PI / 6 && angle < Math.PI / 6)
                 return JoystickDirections.Right;
