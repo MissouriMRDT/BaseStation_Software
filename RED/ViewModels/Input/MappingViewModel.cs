@@ -81,7 +81,15 @@ namespace RED.ViewModels.Input
             }
             set
             {
-                _model.IsActive = value; NotifyOfPropertyChange(() => IsActive);
+                if (_model.IsActive == value) return;
+
+                _model.IsActive = value;
+                NotifyOfPropertyChange(() => IsActive);
+
+                if (IsActive)
+                    Start();
+                else
+                    Stop();
             }
 
         }
@@ -101,7 +109,7 @@ namespace RED.ViewModels.Input
             Channels = new ObservableCollection<MappingChannelViewModel>();
         }
 
-        public async Task Start()
+        public async void Start()
         {
             if (Device == null || Mode == null) return;
 

@@ -24,10 +24,5 @@ namespace RED.Views.Input
         {
             InitializeComponent();
         }
-
-        private void Mappings_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            e.Handled = true;
-        }
     }
 }

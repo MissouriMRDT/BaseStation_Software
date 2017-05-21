@@ -67,21 +67,6 @@ namespace RED.ViewModels.Input
             }
         }
 
-        public MappingViewModel SelectedMapping
-        {
-            get
-            {
-                return _model.SelectedMapping;
-            }
-            set
-            {
-                if (SelectedMapping != null) DeactivateMapping(SelectedMapping);
-                _model.SelectedMapping = value;
-                if (SelectedMapping != null) ActivateMapping(SelectedMapping);
-                NotifyOfPropertyChange(() => SelectedMapping);
-            }
-        }
-
         public InputManagerViewModel(ILogger log, IInputDevice[] devices, MappingViewModel[] mappings, IInputMode[] modes)
         {
             _model = new InputManagerModel();
@@ -99,20 +84,7 @@ namespace RED.ViewModels.Input
         public void Stop()
         {
             foreach (var mapping in Mappings)
-                if (mapping.IsActive)
-                    DeactivateMapping(mapping);
-        }
-
-        public async void ActivateMapping(MappingViewModel mapping)
-        {
-            mapping.IsActive = true;
-            await mapping.Start();
-        }
-
-        public void DeactivateMapping(MappingViewModel mapping)
-        {
-            mapping.Stop();
-            mapping.IsActive = false;
+                mapping.IsActive = false;
         }
 
         public void AddDevice(IInputDevice device)
@@ -140,7 +112,6 @@ namespace RED.ViewModels.Input
                     mapping.Mode = Modes.FirstOrDefault(x => x.ModeType == mapping.ModeType);
                     Mappings.Add(mapping);
                 }
-                SelectedMapping = Mappings.FirstOrDefault(x => x.IsActive);
 
                 _log.Log("Input Mappings loaded from file \"" + url + "\"");
             }

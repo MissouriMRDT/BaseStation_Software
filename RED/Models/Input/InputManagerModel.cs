@@ -10,6 +10,5 @@ namespace RED.Models.Input
         internal ObservableCollection<IInputDevice> Devices;
         internal ObservableCollection<MappingViewModel> Mappings;
         internal ObservableCollection<IInputMode> Modes;
-        internal MappingViewModel SelectedMapping;
     }
 }
