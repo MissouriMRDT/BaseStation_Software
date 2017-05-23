@@ -5,6 +5,7 @@ using RED.ViewModels.Input;
 using RED.ViewModels.Input.Controllers;
 using RED.ViewModels.Modules;
 using RED.ViewModels.Network;
+using System.IO;
 
 namespace RED.ViewModels
 {
@@ -328,7 +329,8 @@ namespace RED.ViewModels
                 new MappingViewModel[0],
                 new IInputMode[] { Drive, Arm, Gimbal1, Gimbal2, ScienceArm });
             InputManager.LoadMappingsFromFile("inputmappings.xml");
-            InputManager.LoadSelectionsFromFile("inputselections.xml");
+            if (File.Exists("inputselections.xml"))
+                InputManager.LoadSelectionsFromFile("inputselections.xml");
 
             SettingsManager = new SettingsManagerViewModel(this);
 
