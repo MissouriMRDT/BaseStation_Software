@@ -104,6 +104,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Addons\BoolToValueConverter.cs" />
     <Compile Include="Addons\GMapMarkerCollectionMultiConverter.cs" />
     <Compile Include="Addons\GPSCoordinate.cs" />
     <Compile Include="Addons\GPSCoordinateToLongitudeConverter.cs" />

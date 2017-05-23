@@ -7,6 +7,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
+        <Grid.Resources>
+            <local:BoolToStringConverter x:Key="OnOffConverter" FalseValue="Off" TrueValue="On" />
+        </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50" />
             <ColumnDefinition Width="*" />
@@ -32,6 +35,6 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ComboBox>
-        <ToggleButton Grid.Column="3" x:Name="Enabled">On/Off</ToggleButton>
+        <ToggleButton Grid.Column="3" x:Name="Enabled" Width="25" Content="{Binding Enabled, Converter={StaticResource OnOffConverter}}" />
     </Grid>
 </UserControl>
