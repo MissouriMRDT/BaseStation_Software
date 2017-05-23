@@ -189,6 +189,9 @@
     <Compile Include="Views\Input\InputManagerView.xaml.cs">
       <DependentUpon>InputManagerView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Input\InputSelectorView.xaml.cs">
+      <DependentUpon>InputSelectorView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\ArmView.xaml.cs">
       <DependentUpon>ArmView.xaml</DependentUpon>
     </Compile>
@@ -242,6 +245,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Input\InputManagerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Input\InputSelectorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

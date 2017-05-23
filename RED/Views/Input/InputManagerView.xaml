@@ -8,29 +8,7 @@
     <DockPanel LastChildFill="True">
         <Label DockPanel.Dock="Top">Control Scheme</Label>
         <ScrollViewer>
-            <ItemsControl x:Name="Mappings">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <DockPanel LastChildFill="True">
-                            <ToggleButton DockPanel.Dock="Left" IsChecked="{Binding IsActive}">Active</ToggleButton>
-                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="3 0 0 0">
-                                <TextBlock.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding Name}" />
-                                            <TextBlock Foreground="Gray">&#160;[</TextBlock>
-                                            <TextBlock Foreground="Gray" Text="{Binding DeviceType}" />
-                                            <TextBlock Foreground="Gray"> &#x2192;</TextBlock>
-                                            <TextBlock Foreground="Gray" Text="{Binding ModeType}" />
-                                            <TextBlock Foreground="Gray">]</TextBlock>
-                                        </StackPanel>
-                                    </ToolTip>
-                                </TextBlock.ToolTip>
-                           </TextBlock>
-                        </DockPanel>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+            <ItemsControl x:Name="Selectors" />
         </ScrollViewer>
     </DockPanel>
 </UserControl>

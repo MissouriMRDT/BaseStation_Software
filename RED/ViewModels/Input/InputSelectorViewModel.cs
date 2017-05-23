@@ -48,6 +48,7 @@ namespace RED.ViewModels.Input
             {
                 _model.Mappings = value;
                 NotifyOfPropertyChange(() => Mappings);
+                NotifyOfPropertyChange(() => SelectedMapping);
             }
         }
 
@@ -61,6 +62,7 @@ namespace RED.ViewModels.Input
             {
                 _model.SelectedDevice = value;
                 NotifyOfPropertyChange(() => SelectedDevice);
+                NotifyOfPropertyChange(() => EligibleMappings);
             }
         }
         public MappingViewModel SelectedMapping
@@ -73,6 +75,7 @@ namespace RED.ViewModels.Input
             {
                 _model.SelectedMapping = value;
                 NotifyOfPropertyChange(() => SelectedMapping);
+                Stop();
             }
         }
 
@@ -105,6 +108,7 @@ namespace RED.ViewModels.Input
         {
             get
             {
+                if (SelectedDevice == null || Mode == null) return Enumerable.Empty<MappingViewModel>();
                 return Mappings.Where(x => x.DeviceType == SelectedDevice.DeviceType && x.ModeType == Mode.ModeType);
             }
         }
@@ -117,7 +121,7 @@ namespace RED.ViewModels.Input
 
             Mode = mode;
             Devices = devices;
-            Mappings = Mappings;
+            Mappings = mappings;
         }
 
         public async void Start()
