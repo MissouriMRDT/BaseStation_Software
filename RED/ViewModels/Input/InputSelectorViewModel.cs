@@ -66,6 +66,7 @@ namespace RED.ViewModels.Input
                 _model.SelectedDevice = value;
                 NotifyOfPropertyChange(() => SelectedDevice);
                 NotifyOfPropertyChange(() => EligibleMappings);
+                Restart();
             }
         }
         public MappingViewModel SelectedMapping
@@ -78,7 +79,7 @@ namespace RED.ViewModels.Input
             {
                 _model.SelectedMapping = value;
                 NotifyOfPropertyChange(() => SelectedMapping);
-                Stop();
+                Restart();
             }
         }
 
@@ -172,6 +173,12 @@ namespace RED.ViewModels.Input
         {
             IsRunning = false;
             Disable();
+        }
+
+        public void Restart()
+        {
+            Stop();
+            Start();
         }
 
         public void Enable()
