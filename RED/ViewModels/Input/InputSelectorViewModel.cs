@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using RED.Contexts;
 using RED.Interfaces;
 using RED.Interfaces.Input;
 using RED.Models.Input;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace RED.ViewModels.Input
 {
@@ -176,6 +178,24 @@ namespace RED.ViewModels.Input
         {
             Enabled = false;
             Mode.StopMode();
+        }
+
+        public InputSelectionContext GetContext()
+        {
+            return new InputSelectionContext()
+            {
+                ModeName = Mode == null ? "" : Mode.Name,
+                DeviceName = SelectedDevice == null ? "" : SelectedDevice.Name,
+                MappingName = SelectedMapping == null ? "" : SelectedMapping.Name,
+                Active = IsRunning
+            };
+        }
+
+        public void SetContext(InputSelectionContext context)
+        {
+            SelectedDevice = Devices.FirstOrDefault(x => x.Name == context.DeviceName);
+            SelectedMapping = Mappings.FirstOrDefault(x => x.Name == context.MappingName);
+            if (context.Active) Start();
         }
     }
 }

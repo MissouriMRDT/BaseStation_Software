@@ -328,6 +328,7 @@ namespace RED.ViewModels
                 new MappingViewModel[0],
                 new IInputMode[] { Drive, Arm, Gimbal1, Gimbal2, ScienceArm });
             InputManager.LoadMappingsFromFile("inputmappings.xml");
+            InputManager.LoadSelectionsFromFile("inputselections.xml");
 
             SettingsManager = new SettingsManagerViewModel(this);
 
@@ -336,6 +337,12 @@ namespace RED.ViewModels
             //DataRouter.Send(1, new byte[] { 2, 3, 4, 5 });
             //DataRouter.Send(101, new byte[] { 15, 25, 35, 45 });
             //DataRouter.Send(180, new byte[] { 0x23, 0x52, 0x4f, 0x56, 0x45, 0x53, 0x4f, 0x48, 0x41, 0x52, 0x44, 0x00 });
+        }
+
+        protected override void OnDeactivate(bool close)
+        {
+            InputManager.SaveSelectionsToFile("inputselections.xml");
+            base.OnDeactivate(close);
         }
     }
 }

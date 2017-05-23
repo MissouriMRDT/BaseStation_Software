@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using RED.Contexts;
 using RED.Interfaces;
 using RED.Interfaces.Input;
 using RED.Models.Input;
@@ -16,6 +17,7 @@ namespace RED.ViewModels.Input
         ILogger _log;
 
         private XmlSerializer mappingsSerializer = new XmlSerializer(typeof(MappingViewModel[]));
+        private XmlSerializer selectionsSerializer = new XmlSerializer(typeof(InputSelectionContext[]));
 
         public int DefaultSerialReadSpeed
         {
@@ -127,6 +129,26 @@ namespace RED.ViewModels.Input
                     Mappings.Add(mapping);
 
                 _log.Log("Input Mappings loaded from file \"" + url + "\"");
+            }
+        }
+
+        public void SaveSelectionsToFile(string url)
+        {
+            using (var stream = new FileStream(url, FileMode.Create))
+            {
+                selectionsSerializer.Serialize(stream, Selectors.Select(x => x.GetContext()).ToArray());
+            }
+        }
+
+        public void LoadSelectionsFromFile(string url)
+        {
+            using (var stream = File.OpenRead(url))
+            {
+                InputSelectionContext[] savedSelections = (InputSelectionContext[])selectionsSerializer.Deserialize(stream);
+
+                foreach (InputSelectionContext selection in savedSelections)
+                    foreach (var selector in Selectors.Where(x => x.Mode.Name == selection.ModeName))
+                        selector.SetContext(selection);
             }
         }
     }
