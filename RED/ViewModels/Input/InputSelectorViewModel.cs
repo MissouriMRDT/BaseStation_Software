@@ -85,7 +85,7 @@ namespace RED.ViewModels.Input
             {
                 return _model.Enabled;
             }
-            set
+            private set
             {
                 _model.Enabled = value;
                 NotifyOfPropertyChange(() => Enabled);
@@ -97,7 +97,7 @@ namespace RED.ViewModels.Input
             {
                 return _model.IsRunning;
             }
-            set
+            private set
             {
                 _model.IsRunning = value;
                 NotifyOfPropertyChange(() => IsRunning);
@@ -126,7 +126,11 @@ namespace RED.ViewModels.Input
 
         public async void Start()
         {
-            if (SelectedDevice == null || Mode == null) return;
+            if (Mode == null || SelectedDevice == null || SelectedMapping == null)
+            {
+                Stop();
+                return;
+            }
 
             try
             {

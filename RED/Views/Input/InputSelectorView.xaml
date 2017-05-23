@@ -11,9 +11,10 @@
             <local:BoolToStringConverter x:Key="OnOffConverter" FalseValue="Off" TrueValue="On" />
         </Grid.Resources>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="50" />
+            <ColumnDefinition Width="75" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="25" />
             <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
         <Label Grid.Column="0" Content="{Binding Path=Mode.Name}" />
@@ -35,6 +36,6 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ComboBox>
-        <ToggleButton Grid.Column="3" x:Name="Enabled" Width="25" Content="{Binding Enabled, Converter={StaticResource OnOffConverter}}" />
+        <ToggleButton Grid.Column="3" x:Name="Enabled" Content="{Binding IsRunning, Converter={StaticResource OnOffConverter}}" Click="OnOffButton_Click" />
     </Grid>
 </UserControl>

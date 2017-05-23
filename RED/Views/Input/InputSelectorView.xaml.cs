@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using RED.ViewModels.Input;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace RED.Views.Input
 {
@@ -15,6 +17,15 @@ namespace RED.Views.Input
         private void HandleSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             e.Handled = true;
+        }
+
+        private void OnOffButton_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = ((InputSelectorViewModel)DataContext);
+            if (vm.IsRunning)
+                vm.Stop();
+            else
+                vm.Start();
         }
     }
 
