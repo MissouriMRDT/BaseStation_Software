@@ -73,69 +73,12 @@ namespace RED.ViewModels.Input
             }
 
         }
-        public bool IsActive
-        {
-            get
-            {
-                return _model.IsActive;
-            }
-            set
-            {
-                if (_model.IsActive == value) return;
-
-                _model.IsActive = value;
-                NotifyOfPropertyChange(() => IsActive);
-
-                if (IsActive)
-                    Start();
-                else
-                    Stop();
-            }
-
-        }
-
-        [XmlIgnore]
-        public IInputDevice Device { get; set; }
-        [XmlIgnore]
-        public IInputMode Mode { get; set; }
-
-        [XmlIgnore]
-        private bool isRunning = false;
 
         public MappingViewModel()
         {
             _model = new MappingModel();
 
             Channels = new ObservableCollection<MappingChannelViewModel>();
-        }
-
-        public async void Start()
-        {
-            if (Device == null || Mode == null) return;
-
-            try
-            {
-                Mode.StartMode();
-                Device.StartDevice();
-                isRunning = true;
-                while (isRunning)
-                {
-                    var values = Device.GetValues();
-                    Mode.SetValues(Map(values));
-                    await Task.Delay(UpdatePeriod);
-                }
-            }
-            catch
-            {
-                Stop();
-            }
-        }
-
-        public void Stop()
-        {
-            isRunning = false;
-            if (Device != null) Device.StopDevice();
-            if (Mode != null) Mode.StopMode();
         }
 
         public Dictionary<string, float> Map(Dictionary<string, float> values)

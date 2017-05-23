@@ -127,6 +127,7 @@
     <Compile Include="Interfaces\Network\INetworkEncoding.cs" />
     <Compile Include="Interfaces\Network\INetworkTransportProtocol.cs" />
     <Compile Include="Interfaces\Network\ISequenceNumberProvider.cs" />
+    <Compile Include="Models\Input\InputSelectorModel.cs" />
     <Compile Include="Models\Input\MappingChannelModel.cs" />
     <Compile Include="Models\Input\MappingModel.cs" />
     <Compile Include="Models\Modules\ArmModel.cs" />
@@ -147,6 +148,7 @@
     <Compile Include="Models\Input\Controllers\XboxControllerInputModel.cs" />
     <Compile Include="Interfaces\IDataRouter.cs" />
     <Compile Include="ViewModels\Input\Controllers\FlightStickViewModel.cs" />
+    <Compile Include="ViewModels\Input\InputSelectorViewModel.cs" />
     <Compile Include="ViewModels\Input\MappingViewModel.cs" />
     <Compile Include="ViewModels\Input\MappingChannelViewModel.cs" />
     <Compile Include="ViewModels\Modules\ArmViewModel.cs" />

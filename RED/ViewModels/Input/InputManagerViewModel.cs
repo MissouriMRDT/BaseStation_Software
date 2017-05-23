@@ -10,7 +10,7 @@ using System.Xml.Serialization;
 
 namespace RED.ViewModels.Input
 {
-    public class InputManagerViewModel : Screen
+    public class InputManagerViewModel : PropertyChangedBase
     {
         InputManagerModel _model;
         ILogger _log;
@@ -67,6 +67,19 @@ namespace RED.ViewModels.Input
             }
         }
 
+        public ObservableCollection<InputSelectorViewModel> Selectors
+        {
+            get
+            {
+                return _model.Selectors;
+            }
+            private set
+            {
+                _model.Selectors = value;
+                NotifyOfPropertyChange(() => Selectors);
+            }
+        }
+
         public InputManagerViewModel(ILogger log, IInputDevice[] devices, MappingViewModel[] mappings, IInputMode[] modes)
         {
             _model = new InputManagerModel();
@@ -75,6 +88,10 @@ namespace RED.ViewModels.Input
             Devices = new ObservableCollection<IInputDevice>(devices);
             Mappings = new ObservableCollection<MappingViewModel>(mappings);
             Modes = new ObservableCollection<IInputMode>(modes);
+            Selectors = new ObservableCollection<InputSelectorViewModel>();
+
+            foreach (IInputMode mode in Modes)
+                Selectors.Add(new InputSelectorViewModel(_log, mode, Devices, Mappings));
         }
 
         public void Start()
@@ -83,8 +100,8 @@ namespace RED.ViewModels.Input
 
         public void Stop()
         {
-            foreach (var mapping in Mappings)
-                mapping.IsActive = false;
+            foreach (var selector in Selectors)
+                selector.Disable();
         }
 
         public void AddDevice(IInputDevice device)
@@ -107,11 +124,7 @@ namespace RED.ViewModels.Input
                 MappingViewModel[] savedMappings = (MappingViewModel[])mappingsSerializer.Deserialize(stream);
 
                 foreach (MappingViewModel mapping in savedMappings)
-                {
-                    mapping.Device = Devices.FirstOrDefault(x => x.DeviceType == mapping.DeviceType);
-                    mapping.Mode = Modes.FirstOrDefault(x => x.ModeType == mapping.ModeType);
                     Mappings.Add(mapping);
-                }
 
                 _log.Log("Input Mappings loaded from file \"" + url + "\"");
             }
