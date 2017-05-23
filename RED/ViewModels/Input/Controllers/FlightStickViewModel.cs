@@ -23,13 +23,13 @@ namespace RED.ViewModels.Input.Controllers
 
         public Dictionary<string, float> GetValues()
         {
-            if (joystick == null)
+            if (!IsReady())
                 throw new Exception("Flight Stick Disconnected");
 
             JoystickState state = joystick.GetCurrentState();
 
             Func<int, float> deadzoneTransform = x => x < Deadzone && x > -Deadzone ? 0 : ((x + (x < 0 ? Deadzone : -Deadzone)) / (float)(32768 - Deadzone));
-            
+
             return new Dictionary<string, float>()
             {
                 {"X", deadzoneTransform(state.X - 32768)},
@@ -117,6 +117,11 @@ namespace RED.ViewModels.Input.Controllers
         public void StopDevice()
         {
             joystick = null;
+        }
+
+        public bool IsReady()
+        {
+            return joystick != null;
         }
     }
 }

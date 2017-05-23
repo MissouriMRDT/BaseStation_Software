@@ -81,7 +81,7 @@ namespace RED.ViewModels.Input.Controllers
 
         public Dictionary<string, float> GetValues()
         {
-            if (ControllerOne == null || !ControllerOne.IsConnected)
+            if (!IsReady())
             {
                 Connected = false;
                 throw new Exception("Controller Disconnected");
@@ -124,5 +124,10 @@ namespace RED.ViewModels.Input.Controllers
 
         public void StopDevice()
         { }
+
+        public bool IsReady()
+        {
+            return ControllerOne != null && ControllerOne.IsConnected;
+        }
     }
 }

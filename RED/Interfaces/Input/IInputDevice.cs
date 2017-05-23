@@ -10,5 +10,6 @@ namespace RED.Interfaces.Input
         void StartDevice();
         void StopDevice();
         Dictionary<string, float> GetValues();
+        bool IsReady();
     }
 }
