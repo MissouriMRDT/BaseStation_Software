@@ -94,6 +94,14 @@ namespace RED.ViewModels.Input
 
             foreach (IInputMode mode in Modes)
                 Selectors.Add(new InputSelectorViewModel(_log, mode, Devices, Mappings));
+            foreach(var selector in Selectors)
+                selector.SwitchDevice += SelectorSwitchDevice;
+        }
+
+        private void SelectorSwitchDevice(object sender, IInputDevice device)
+        {
+            foreach (var selector in Selectors.Where(x => x.SelectedDevice == device && x != sender))
+                selector.Stop();
         }
 
         public void Start()

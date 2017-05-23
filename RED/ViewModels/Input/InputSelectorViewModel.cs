@@ -3,6 +3,7 @@ using RED.Contexts;
 using RED.Interfaces;
 using RED.Interfaces.Input;
 using RED.Models.Input;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -115,6 +116,8 @@ namespace RED.ViewModels.Input
             }
         }
 
+        public event EventHandler<IInputDevice> SwitchDevice;
+
         public InputSelectorViewModel(ILogger log, IInputMode mode, ObservableCollection<IInputDevice> devices, ObservableCollection<MappingViewModel> mappings)
         {
             _model = new InputSelectorModel();
@@ -133,6 +136,8 @@ namespace RED.ViewModels.Input
                 Stop();
                 return;
             }
+
+            SwitchDevice(this, SelectedDevice);
 
             try
             {
