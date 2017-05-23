@@ -81,12 +81,7 @@ namespace RED.ViewModels.Input.Controllers
 
         public Dictionary<string, float> GetValues()
         {
-            if (!IsReady())
-            {
-                Connected = false;
-                throw new Exception("Controller Disconnected");
-            }
-            Connected = true;
+            if (!IsReady()) throw new Exception("Controller Disconnected");
 
             var currentGamepad = ControllerOne.GetState().Gamepad;
 
@@ -127,7 +122,8 @@ namespace RED.ViewModels.Input.Controllers
 
         public bool IsReady()
         {
-            return ControllerOne != null && ControllerOne.IsConnected;
+            Connected = ControllerOne != null && ControllerOne.IsConnected;
+            return Connected;
         }
     }
 }
