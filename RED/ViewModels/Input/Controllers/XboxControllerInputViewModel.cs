@@ -74,7 +74,7 @@ namespace RED.ViewModels.Input.Controllers
         {
             _state = state;
 
-            Name = "Xbox " + (controllerIndex + 1).ToString();
+            Name = "Xbox " + controllerIndex.ToString();
             DeviceType = "Xbox";
 
             Controller = new Controller(IntToUserIndex(controllerIndex));
@@ -84,10 +84,10 @@ namespace RED.ViewModels.Input.Controllers
         {
             switch(index)
             {
-                case 0: return UserIndex.One;
-                case 1: return UserIndex.Two;
-                case 2: return UserIndex.Three;
-                case 3: return UserIndex.Four;
+                case 1: return UserIndex.One;
+                case 2: return UserIndex.Two;
+                case 3: return UserIndex.Three;
+                case 4: return UserIndex.Four;
                 default:return UserIndex.Any;
             }
         }
