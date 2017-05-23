@@ -8,9 +8,10 @@ namespace RED.ViewModels.Input.Controllers
 {
     public class FlightStickViewModel : PropertyChangedBase, IInputDevice
     {
+        private DirectInput directInput;
         private Joystick joystick;
 
-        const int Deadzone = 32768 * 10 / 1000;
+        private const int Deadzone = 32768 * 10 / 1000;
 
         public string Name { get; private set; }
         public string DeviceType { get; private set; }
@@ -19,13 +20,15 @@ namespace RED.ViewModels.Input.Controllers
         {
             Name = "Flight Stick";
             DeviceType = "FlightStick";
+
+            directInput = new DirectInput();
+
+            EstablishJoystick();
         }
 
         public Dictionary<string, float> GetValues()
         {
-            if (!IsReady())
-                throw new Exception("Flight Stick Disconnected");
-
+            joystick.Acquire();
             JoystickState state = joystick.GetCurrentState();
 
             Func<int, float> deadzoneTransform = x => x < Deadzone && x > -Deadzone ? 0 : ((x + (x < 0 ? Deadzone : -Deadzone)) / (float)(32768 - Deadzone));
@@ -98,30 +101,36 @@ namespace RED.ViewModels.Input.Controllers
         }
 
         public void StartDevice()
-        {
-            DirectInput directInput = new DirectInput();
-            Guid joystickGuid = Guid.Empty;
-
-            var device = directInput.GetDevices(SharpDX.DirectInput.DeviceType.Joystick, DeviceEnumerationFlags.AllDevices);
-            if (device.Count > 0)
-                joystickGuid = device[0].InstanceGuid;
-
-            if (joystickGuid == Guid.Empty)
-                throw new Exception("No flight stick found");
-
-            joystick = new Joystick(directInput, joystickGuid);
-            joystick.Properties.BufferSize = 128;
-            joystick.Acquire();
-        }
+        { }
 
         public void StopDevice()
-        {
-            joystick = null;
-        }
+        { }
 
         public bool IsReady()
         {
-            return joystick != null;
+            try
+            {
+                joystick.Acquire();
+            }
+            catch (SharpDX.SharpDXException)
+            {
+                return EstablishJoystick();
+            }
+            return true;
+        }
+
+        private bool EstablishJoystick()
+        {
+            Guid joystickGuid = Guid.Empty;
+
+            var device = directInput.GetDevices(SharpDX.DirectInput.DeviceType.Joystick, DeviceEnumerationFlags.AllDevices);
+
+            if (device.Count <= 0) return false;
+
+            joystickGuid = device[0].InstanceGuid;
+            joystick = new Joystick(directInput, joystickGuid);
+            joystick.Properties.BufferSize = 128;
+            return true;
         }
     }
 }
