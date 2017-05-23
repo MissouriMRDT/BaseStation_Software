@@ -108,6 +108,8 @@ namespace RED.ViewModels.Input.Controllers
 
         public bool IsReady()
         {
+            if (joystick == null) return EstablishJoystick();
+
             try
             {
                 joystick.Acquire();
