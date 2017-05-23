@@ -564,5 +564,10 @@ namespace RED.ViewModels.Input.Controllers
 
         public void StopDevice()
         { }
+
+        public bool IsReady()
+        {
+            return true;
+        }
     }
 }

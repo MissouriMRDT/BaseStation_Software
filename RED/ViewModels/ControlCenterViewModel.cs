@@ -5,6 +5,7 @@ using RED.ViewModels.Input;
 using RED.ViewModels.Input.Controllers;
 using RED.ViewModels.Modules;
 using RED.ViewModels.Network;
+using System.IO;
 
 namespace RED.ViewModels
 {
@@ -267,16 +268,52 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => Gimbal2);
             }
         }
-        public XboxControllerInputViewModel XboxController
+        public XboxControllerInputViewModel XboxController1
         {
             get
             {
-                return _model._xboxController;
+                return _model._xboxController1;
             }
             set
             {
-                _model._xboxController = value;
-                NotifyOfPropertyChange(() => XboxController);
+                _model._xboxController1 = value;
+                NotifyOfPropertyChange(() => XboxController1);
+            }
+        }
+        public XboxControllerInputViewModel XboxController2
+        {
+            get
+            {
+                return _model._xboxController2;
+            }
+            set
+            {
+                _model._xboxController2 = value;
+                NotifyOfPropertyChange(() => XboxController2);
+            }
+        }
+        public XboxControllerInputViewModel XboxController3
+        {
+            get
+            {
+                return _model._xboxController3;
+            }
+            set
+            {
+                _model._xboxController3 = value;
+                NotifyOfPropertyChange(() => XboxController3);
+            }
+        }
+        public XboxControllerInputViewModel XboxController4
+        {
+            get
+            {
+                return _model._xboxController4;
+            }
+            set
+            {
+                _model._xboxController4 = value;
+                NotifyOfPropertyChange(() => XboxController4);
             }
         }
         public FlightStickViewModel FlightStickController
@@ -320,14 +357,19 @@ namespace RED.ViewModels
             Arm = new ArmViewModel(null, DataRouter, MetadataManager, Console);
             Gimbal1 = new GimbalViewModel(null, DataRouter, MetadataManager, Console, 0);
             Gimbal2 = new GimbalViewModel(null, DataRouter, MetadataManager, Console, 1);
-            XboxController = new XboxControllerInputViewModel(StateManager);
+            XboxController1 = new XboxControllerInputViewModel(1, StateManager);
+            XboxController2 = new XboxControllerInputViewModel(2, StateManager);
+            XboxController3 = new XboxControllerInputViewModel(3, StateManager);
+            XboxController4 = new XboxControllerInputViewModel(4, StateManager);
             FlightStickController = new FlightStickViewModel();
 
             InputManager = new InputManagerViewModel(Console,
-                new IInputDevice[] { XboxController, FlightStickController },
+                new IInputDevice[] { XboxController1, XboxController2, XboxController3, XboxController4, FlightStickController },
                 new MappingViewModel[0],
                 new IInputMode[] { Drive, Arm, Gimbal1, Gimbal2, ScienceArm });
             InputManager.LoadMappingsFromFile("inputmappings.xml");
+            if (File.Exists("inputselections.xml"))
+                InputManager.LoadSelectionsFromFile("inputselections.xml");
 
             SettingsManager = new SettingsManagerViewModel(this);
 
@@ -336,6 +378,12 @@ namespace RED.ViewModels
             //DataRouter.Send(1, new byte[] { 2, 3, 4, 5 });
             //DataRouter.Send(101, new byte[] { 15, 25, 35, 45 });
             //DataRouter.Send(180, new byte[] { 0x23, 0x52, 0x4f, 0x56, 0x45, 0x53, 0x4f, 0x48, 0x41, 0x52, 0x44, 0x00 });
+        }
+
+        protected override void OnDeactivate(bool close)
+        {
+            InputManager.SaveSelectionsToFile("inputselections.xml");
+            base.OnDeactivate(close);
         }
     }
 }

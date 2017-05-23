@@ -29,7 +29,7 @@ namespace RED.ViewModels.Modules
             _idResolver = idResolver;
             _log = log;
 
-            Name = "ScienceArm";
+            Name = "Science Arm";
             ModeType = "ScienceArm";
         }
 

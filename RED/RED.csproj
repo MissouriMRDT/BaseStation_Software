@@ -104,6 +104,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Addons\BoolToValueConverter.cs" />
     <Compile Include="Addons\GMapMarkerCollectionMultiConverter.cs" />
     <Compile Include="Addons\GPSCoordinate.cs" />
     <Compile Include="Addons\GPSCoordinateToLongitudeConverter.cs" />
@@ -115,6 +116,7 @@
     </Compile>
     <Compile Include="Contexts\CommandMetadataContext.cs" />
     <Compile Include="Contexts\ErrorMetadataContext.cs" />
+    <Compile Include="Contexts\InputSelectionContext.cs" />
     <Compile Include="Contexts\MetadataSaveContext.cs" />
     <Compile Include="Contexts\TelemetryMetadataContext.cs" />
     <Compile Include="Images\ModernUIIcons.cs" />
@@ -127,6 +129,7 @@
     <Compile Include="Interfaces\Network\INetworkEncoding.cs" />
     <Compile Include="Interfaces\Network\INetworkTransportProtocol.cs" />
     <Compile Include="Interfaces\Network\ISequenceNumberProvider.cs" />
+    <Compile Include="Models\Input\InputSelectorModel.cs" />
     <Compile Include="Models\Input\MappingChannelModel.cs" />
     <Compile Include="Models\Input\MappingModel.cs" />
     <Compile Include="Models\Modules\ArmModel.cs" />
@@ -147,6 +150,7 @@
     <Compile Include="Models\Input\Controllers\XboxControllerInputModel.cs" />
     <Compile Include="Interfaces\IDataRouter.cs" />
     <Compile Include="ViewModels\Input\Controllers\FlightStickViewModel.cs" />
+    <Compile Include="ViewModels\Input\InputSelectorViewModel.cs" />
     <Compile Include="ViewModels\Input\MappingViewModel.cs" />
     <Compile Include="ViewModels\Input\MappingChannelViewModel.cs" />
     <Compile Include="ViewModels\Modules\ArmViewModel.cs" />
@@ -186,6 +190,9 @@
     </Compile>
     <Compile Include="Views\Input\InputManagerView.xaml.cs">
       <DependentUpon>InputManagerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Input\InputSelectorView.xaml.cs">
+      <DependentUpon>InputSelectorView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\ArmView.xaml.cs">
       <DependentUpon>ArmView.xaml</DependentUpon>
@@ -240,6 +247,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Input\InputManagerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Input\InputSelectorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
