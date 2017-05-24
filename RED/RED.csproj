@@ -138,6 +138,7 @@
     <Compile Include="Models\Input\InputManagerModel.cs" />
     <Compile Include="Models\DataRouterModel.cs" />
     <Compile Include="Models\Modules\DriveModel.cs" />
+    <Compile Include="Models\Modules\LightingModel.cs" />
     <Compile Include="Models\Network\NetworkManagerModel.cs" />
     <Compile Include="Models\Modules\PowerModel.cs" />
     <Compile Include="Models\Modules\ScienceModel.cs" />
@@ -159,6 +160,7 @@
     <Compile Include="ViewModels\Modules\ExternalControlsViewModel.cs" />
     <Compile Include="ViewModels\Modules\GimbalViewModel.cs" />
     <Compile Include="ViewModels\Modules\DropBaysViewModel.cs" />
+    <Compile Include="ViewModels\Modules\LightingViewModel.cs" />
     <Compile Include="ViewModels\Modules\ScienceArmViewModel.cs" />
     <Compile Include="ViewModels\Network\NetworkManagerViewModel.cs" />
     <Compile Include="ViewModels\DataRouter.cs" />
@@ -214,6 +216,9 @@
     </Compile>
     <Compile Include="Views\Modules\DropBaysView.xaml.cs">
       <DependentUpon>DropBaysView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\LightingView.xaml.cs">
+      <DependentUpon>LightingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\PowerView.xaml.cs">
       <DependentUpon>PowerView.xaml</DependentUpon>
@@ -306,6 +311,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>-->
+    <Page Include="Views\Modules\LightingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Modules\PowerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

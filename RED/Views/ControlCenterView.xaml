@@ -62,6 +62,9 @@
                         <Expander Header="Autonomy Mode">
                             <ContentControl x:Name="Autonomy" />
                         </Expander>
+                        <Expander Header="Lighting">
+                            <ContentControl x:Name="Lighting" />
+                        </Expander>
                     </StackPanel>
                 </ScrollViewer>
                 <Grid Grid.Column="2" Grid.Row="0">

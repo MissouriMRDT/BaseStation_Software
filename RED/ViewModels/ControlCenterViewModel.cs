@@ -219,6 +219,18 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => ScienceArm);
             }
         }
+        public LightingViewModel Lighting
+        {
+            get
+            {
+                return _model._lighting;
+            }
+            set
+            {
+                _model._lighting = value;
+                NotifyOfPropertyChange(() => Lighting);
+            }
+        }
 
         public DriveViewModel Drive
         {
@@ -352,6 +364,7 @@ namespace RED.ViewModels
             ExternalControls = new ExternalControlsViewModel(DataRouter, MetadataManager);
             Autonomy = new AutonomyViewModel(DataRouter, MetadataManager, Console);
             ScienceArm = new ScienceArmViewModel(null, DataRouter, MetadataManager, Console);
+            Lighting = new LightingViewModel(DataRouter, MetadataManager);
 
             Drive = new DriveViewModel(null, DataRouter, MetadataManager);
             Arm = new ArmViewModel(null, DataRouter, MetadataManager, Console);

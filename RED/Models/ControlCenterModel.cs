@@ -26,6 +26,7 @@ namespace RED.Models
         internal ExternalControlsViewModel _externalControls;
         internal AutonomyViewModel _autonomy;
         internal ScienceArmViewModel _scienceArm;
+        internal LightingViewModel _lighting;
         internal DriveViewModel _drive;
         internal ArmViewModel _arm;
         internal GimbalViewModel _gimbal1;
