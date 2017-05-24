@@ -18,5 +18,10 @@ namespace RED.ViewModels.Modules
         {
             _router.Send(_idResolver.GetId("DropBayOpen"), index);
         }
+
+        public void CloseBay(byte index)
+        {
+            _router.Send(_idResolver.GetId("DropBayClose"), index);
+        }
     }
 }

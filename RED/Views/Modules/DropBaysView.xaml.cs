@@ -24,6 +24,12 @@ namespace RED.Views.Modules
             await PromptOpenBay(bayIndex);
         }
 
+        private async void CloseBay_Click(object sender, RoutedEventArgs e)
+        {
+            byte bayIndex = Byte.Parse((string)((Button)sender).Tag);
+            await PromptCloseBay(bayIndex);
+        }
+
         private async Task PromptOpenBay(byte index)
         {
             MetroDialogSettings settings = new MetroDialogSettings()
@@ -35,13 +41,34 @@ namespace RED.Views.Modules
             };
             var result = await ((MetroWindow)MetroWindow.GetWindow(this)).ShowMessageAsync(
                 title: "Drop Bay Open",
-                message: "This will command the drop bay to open. This bay cannot be closed remotely.",
+                message: "This will command the drop bay to open.",
                 style: MessageDialogStyle.AffirmativeAndNegative,
                 settings: settings);
 
             if (result == MessageDialogResult.Affirmative)
             {
                 ((DropBaysViewModel)DataContext).OpenBay(index);
+            }
+        }
+
+        private async Task PromptCloseBay(byte index)
+        {
+            MetroDialogSettings settings = new MetroDialogSettings()
+            {
+                AffirmativeButtonText = "Close Bay",
+                NegativeButtonText = "Cancel",
+                AnimateShow = false,
+                AnimateHide = false
+            };
+            var result = await ((MetroWindow)MetroWindow.GetWindow(this)).ShowMessageAsync(
+                title: "Drop Bay Close",
+                message: "This will command the drop bay to close.",
+                style: MessageDialogStyle.AffirmativeAndNegative,
+                settings: settings);
+
+            if (result == MessageDialogResult.Affirmative)
+            {
+                ((DropBaysViewModel)DataContext).CloseBay(index);
             }
         }
     }
