@@ -115,7 +115,9 @@ namespace RED.ViewModels.Modules
                 commandRight = values["WheelsRight"];
             }
 
-            float speedLimitFactor = (float)SpeedLimit / motorRangeFactor;
+            float throttle = values.ContainsKey("Throttle") ? values["Throttle"] : 1.0f;
+
+            float speedLimitFactor = (float)SpeedLimit / motorRangeFactor * throttle;
             if (speedLimitFactor > 1F) speedLimitFactor = 1F;
             if (speedLimitFactor < 0F) speedLimitFactor = 0F;
 
