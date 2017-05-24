@@ -35,49 +35,49 @@
             </Grid.ColumnDefinitions>
             <Button Grid.Row="0" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="0" />
             <Button Grid.Row="0" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="0" />
-            <Label Grid.Row="0" Grid.Column="2">Motor1Current</Label>
+            <Label Grid.Row="0" Grid.Column="2">Motor 1</Label>
             <Label Grid.Row="0" Grid.Column="3" x:Name="Motor1Current" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
             <Button Grid.Row="1" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="1" />
             <Button Grid.Row="1" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="1" />
-            <Label Grid.Row="1" Grid.Column="2">Motor2Current</Label>
+            <Label Grid.Row="1" Grid.Column="2">Motor 2</Label>
             <Label Grid.Row="1" Grid.Column="3" x:Name="Motor2Current" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
             <Button Grid.Row="2" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="2" />
             <Button Grid.Row="2" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="2" />
-            <Label Grid.Row="2" Grid.Column="2">Motor3Current</Label>
+            <Label Grid.Row="2" Grid.Column="2">Motor 3</Label>
             <Label Grid.Row="2" Grid.Column="3" x:Name="Motor3Current" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
             <Button Grid.Row="3" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="3" />
             <Button Grid.Row="3" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="3" />
-            <Label Grid.Row="3" Grid.Column="2">Motor4Current</Label>
+            <Label Grid.Row="3" Grid.Column="2">Motor 4</Label>
             <Label Grid.Row="3" Grid.Column="3" x:Name="Motor4Current" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
             <Button Grid.Row="4" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="4" />
             <Button Grid.Row="4" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="4" />
-            <Label Grid.Row="4" Grid.Column="2">Motor5Current</Label>
+            <Label Grid.Row="4" Grid.Column="2">Motor 5</Label>
             <Label Grid.Row="4" Grid.Column="3" x:Name="Motor5Current" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
             <Button Grid.Row="5" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="5" />
             <Button Grid.Row="5" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="5" />
-            <Label Grid.Row="5" Grid.Column="2">Motor6Current</Label>
+            <Label Grid.Row="5" Grid.Column="2">Motor 6</Label>
             <Label Grid.Row="5" Grid.Column="3" x:Name="Motor6Current" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
 
             <Button Grid.Row="6" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="7" />
             <Button Grid.Row="6" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="7" />
-            <Label Grid.Row="6" Grid.Column="2">ExtraCurrent</Label>
+            <Label Grid.Row="6" Grid.Column="2">Extra</Label>
             <Label Grid.Row="6" Grid.Column="3" x:Name="ExtraCurrent" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
             <Button Grid.Row="7" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="8" />
             <Button Grid.Row="7" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="8" />
-            <Label Grid.Row="7" Grid.Column="2">ActuationCurrent</Label>
+            <Label Grid.Row="7" Grid.Column="2">Actuation</Label>
             <Label Grid.Row="7" Grid.Column="3" x:Name="ActuationCurrent" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
             <Button Grid.Row="8" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="9" />
             <Button Grid.Row="8" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="9" />
-            <Label Grid.Row="8" Grid.Column="2">LogicCurrent</Label>
+            <Label Grid.Row="8" Grid.Column="2">Logic</Label>
             <Label Grid.Row="8" Grid.Column="3" x:Name="LogicCurrent" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
             <Button Grid.Row="9" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="10" />
             <Button Grid.Row="9" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="10" />
-            <Label Grid.Row="9" Grid.Column="2">CommsCurrent</Label>
+            <Label Grid.Row="9" Grid.Column="2">Comms</Label>
             <Label Grid.Row="9" Grid.Column="3" x:Name="CommunicationsCurrent" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
 
             <Button Grid.Row="10" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="11" />
             <Button Grid.Row="10" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="11" />
-            <Label Grid.Row="10" Grid.Column="2">CommLogic</Label>
+            <Label Grid.Row="10" Grid.Column="2">Comm Logic</Label>
             <Button Grid.Row="11" Grid.Column="0" cal:Message.Attach="FanControl('True')">On</Button>
             <Button Grid.Row="11" Grid.Column="1" cal:Message.Attach="FanControl('False')">Off</Button>
             <Label Grid.Row="11" Grid.Column="2">Fans</Label>
@@ -85,9 +85,9 @@
             <Button Grid.Row="12" Grid.Column="1" cal:Message.Attach="BuzzerControl('False')">Off</Button>
             <Label Grid.Row="12" Grid.Column="2">BMS Buzzer</Label>
 
-            <Label Grid.Row="13" Grid.Column="2">InputVoltage</Label>
+            <Label Grid.Row="13" Grid.Column="2">Input Voltage</Label>
             <Label Grid.Row="13" Grid.Column="3" x:Name="InputVoltage" ContentStringFormat="{}{0:00.00} V" HorizontalContentAlignment="Right" />
-            <Label Grid.Row="14" Grid.Column="2">TotalPackCurrent</Label>
+            <Label Grid.Row="14" Grid.Column="2">Total Pack Current</Label>
             <Label Grid.Row="14" Grid.Column="3" x:Name="TotalPackCurrent" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
 
             <Label Grid.Row="15" Grid.Column="2">BMS Temp 1</Label>
@@ -128,37 +128,37 @@
                 </Grid.ColumnDefinitions>
                 <Button Grid.Row="0" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="6" />
                 <Button Grid.Row="0" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="6" />
-                <Label Grid.Row="0" Grid.Column="2">Motor7Current</Label>
+                <Label Grid.Row="0" Grid.Column="2">Motor 7</Label>
                 <Label Grid.Row="0" Grid.Column="3" x:Name="Motor7Current" />
                 <Button Grid.Row="1" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="7" />
                 <Button Grid.Row="1" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="7" />
-                <Label Grid.Row="1" Grid.Column="2">Motor8Current</Label>
+                <Label Grid.Row="1" Grid.Column="2">Motor 8</Label>
                 <Label Grid.Row="1" Grid.Column="3" x:Name="Motor8Current" />
                 <Button Grid.Row="2" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="8" />
                 <Button Grid.Row="2" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="8" />
-                <Label Grid.Row="2" Grid.Column="2">Bus5VCurrent</Label>
+                <Label Grid.Row="2" Grid.Column="2">Bus 5V</Label>
                 <Label Grid.Row="2" Grid.Column="3" x:Name="Bus5VCurrent" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
                 <Button Grid.Row="3" Grid.Column="0" Content="On" Click="EnableButton_Click" Tag="9" />
                 <Button Grid.Row="3" Grid.Column="1" Content="Off" Click="DisableButton_Click" Tag="9" />
-                <Label Grid.Row="3" Grid.Column="2">Bus12VCurrent</Label>
+                <Label Grid.Row="3" Grid.Column="2">Bus 12V</Label>
                 <Label Grid.Row="3" Grid.Column="3" x:Name="Bus12VCurrent" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
-                <Label Grid.Row="4" Grid.Column="2">Cell1Voltage</Label>
+                <Label Grid.Row="4" Grid.Column="2">Cell 1</Label>
                 <Label Grid.Row="4" Grid.Column="3" x:Name="Cell1Voltage" />
-                <Label Grid.Row="5" Grid.Column="2">Cell2Voltage</Label>
+                <Label Grid.Row="5" Grid.Column="2">Cell 2</Label>
                 <Label Grid.Row="5" Grid.Column="3" x:Name="Cell2Voltage" />
-                <Label Grid.Row="6" Grid.Column="2">Cell3Voltage</Label>
+                <Label Grid.Row="6" Grid.Column="2">Cell 3</Label>
                 <Label Grid.Row="6" Grid.Column="3" x:Name="Cell3Voltage" />
-                <Label Grid.Row="7" Grid.Column="2">Cell4Voltage</Label>
+                <Label Grid.Row="7" Grid.Column="2">Cell 4</Label>
                 <Label Grid.Row="7" Grid.Column="3" x:Name="Cell4Voltage" />
-                <Label Grid.Row="8" Grid.Column="2">Cell5Voltage</Label>
+                <Label Grid.Row="8" Grid.Column="2">Cell 5</Label>
                 <Label Grid.Row="8" Grid.Column="3" x:Name="Cell5Voltage" />
-                <Label Grid.Row="9" Grid.Column="2">Cell6Voltage</Label>
+                <Label Grid.Row="9" Grid.Column="2">Cell 6</Label>
                 <Label Grid.Row="9" Grid.Column="3" x:Name="Cell6Voltage" />
-                <Label Grid.Row="10" Grid.Column="2">Cell7Voltage</Label>
+                <Label Grid.Row="10" Grid.Column="2">Cell 7</Label>
                 <Label Grid.Row="10" Grid.Column="3" x:Name="Cell7Voltage" />
-                <Label Grid.Row="11" Grid.Column="2">Cell8Voltage</Label>
+                <Label Grid.Row="11" Grid.Column="2">Cell 8</Label>
                 <Label Grid.Row="11" Grid.Column="3" x:Name="Cell8Voltage" />
-                <Label Grid.Row="12" Grid.Column="2">TotalPackVoltage</Label>
+                <Label Grid.Row="12" Grid.Column="2">Total Pack Voltage</Label>
                 <Label Grid.Row="12" Grid.Column="3" x:Name="TotalPackVoltage" />
             </Grid>
         </Expander>
