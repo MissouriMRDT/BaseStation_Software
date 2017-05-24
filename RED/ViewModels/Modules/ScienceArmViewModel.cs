@@ -20,11 +20,9 @@ namespace RED.ViewModels.Modules
 
         public string Name { get; private set; }
         public string ModeType { get; private set; }
-        public IInputDevice InputVM { get; set; }
 
-        public ScienceArmViewModel(IInputDevice inputVM, IDataRouter router, IDataIdResolver idResolver, ILogger log)
+        public ScienceArmViewModel(IDataRouter router, IDataIdResolver idResolver, ILogger log)
         {
-            InputVM = inputVM;
             _router = router;
             _idResolver = idResolver;
             _log = log;

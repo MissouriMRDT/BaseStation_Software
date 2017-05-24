@@ -363,7 +363,7 @@ namespace RED.ViewModels
             CameraMux = new CameraViewModel(DataRouter, MetadataManager);
             ExternalControls = new ExternalControlsViewModel(DataRouter, MetadataManager);
             Autonomy = new AutonomyViewModel(DataRouter, MetadataManager, Console);
-            ScienceArm = new ScienceArmViewModel(null, DataRouter, MetadataManager, Console);
+            ScienceArm = new ScienceArmViewModel(DataRouter, MetadataManager, Console);
             Lighting = new LightingViewModel(DataRouter, MetadataManager);
 
             Drive = new DriveViewModel(null, DataRouter, MetadataManager);
