@@ -24,6 +24,8 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
@@ -87,6 +89,11 @@
             <Label Grid.Row="13" Grid.Column="3" x:Name="InputVoltage" ContentStringFormat="{}{0:00.00} V" HorizontalContentAlignment="Right" />
             <Label Grid.Row="14" Grid.Column="2">TotalPackCurrent</Label>
             <Label Grid.Row="14" Grid.Column="3" x:Name="TotalPackCurrent" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
+
+            <Label Grid.Row="15" Grid.Column="2">BMS Temp 1</Label>
+            <Label Grid.Row="15" Grid.Column="3" x:Name="BMSTemperature1" ContentStringFormat="{}{0:0.0&#176;}" HorizontalContentAlignment="Right" />
+            <Label Grid.Row="16" Grid.Column="2">BMS Temp 2</Label>
+            <Label Grid.Row="16" Grid.Column="3" x:Name="BMSTemperature2" ContentStringFormat="{}{0:0.0&#176;}" HorizontalContentAlignment="Right" />
         </Grid>
         <UniformGrid Rows="1">
             <Button Grid.Row="0" Grid.Column="0" Click="RebootButton_Click">Reboot</Button>

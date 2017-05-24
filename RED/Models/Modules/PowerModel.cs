@@ -28,5 +28,7 @@
         internal float Cell8Voltage;
         internal float TotalPackCurrent;
         internal float TotalPackVoltage;
+        internal float BMSTemperature1;
+        internal float BMSTemperature2;
     }
 }
