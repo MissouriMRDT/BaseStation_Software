@@ -18,15 +18,6 @@ namespace RED.Views.Input
         {
             e.Handled = true;
         }
-
-        private void OnOffButton_Click(object sender, RoutedEventArgs e)
-        {
-            var vm = ((InputSelectorViewModel)DataContext);
-            if (vm.IsRunning)
-                vm.Stop();
-            else
-                vm.Start();
-        }
     }
 
     public class BoolToStringConverter : RED.Addons.BoolToValueConverter<string> { }

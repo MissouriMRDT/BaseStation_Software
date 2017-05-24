@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:cal="http://www.caliburnproject.org"
              xmlns:local="clr-namespace:RED.Views.Input"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
@@ -36,6 +37,6 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ComboBox>
-        <ToggleButton Grid.Column="3" x:Name="Enabled" Content="{Binding IsRunning, Converter={StaticResource OnOffConverter}}" Click="OnOffButton_Click" />
+        <ToggleButton Grid.Column="3" x:Name="Enabled" Content="{Binding IsRunning, Converter={StaticResource OnOffConverter}}" cal:Message.Attach="Toggle" />
     </Grid>
 </UserControl>
