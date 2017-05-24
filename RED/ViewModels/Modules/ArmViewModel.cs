@@ -214,8 +214,8 @@ namespace RED.ViewModels.Modules
             float gripperSpeed = (float)twoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0F);
             _router.Send(_idResolver.GetId("Gripper"), (Int16)(gripperSpeed * EndeffectorSpeedLimit));
 
-            Int16 servoSpeed = (Int16)twoButtonTransform(values["ServoClockwise"] > 0, values["ServoCounterClockwise"] > 0, values["ServoClockwise"], values["ServoCounterClockwise"], 0F);
-            _router.Send(_idResolver.GetId("EndeffectorServo"), servoSpeed * EndeffectorSpeedLimit);
+            float servoSpeed = (Int16)twoButtonTransform(values["ServoClockwise"] > 0, values["ServoCounterClockwise"] > 0, values["ServoClockwise"], values["ServoCounterClockwise"], 0F);
+            _router.Send(_idResolver.GetId("EndeffectorServo"), (Int16)(servoSpeed * EndeffectorSpeedLimit));
         }
 
         public void StopMode()
