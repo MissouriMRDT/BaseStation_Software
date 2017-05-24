@@ -181,7 +181,7 @@ namespace RED.ViewModels.Modules
                     break;
                 case JoystickDirections.Up:
                 case JoystickDirections.Down:
-                    _router.Send(_idResolver.GetId("ArmJ4"), (Int16)(-values["WristBend"] * motorRangeFactor));
+                    _router.Send(_idResolver.GetId("ArmJ4"), (Int16)(values["WristBend"] * motorRangeFactor));
                     _router.Send(_idResolver.GetId("ArmJ5"), (Int16)(0));
                     break;
                 case JoystickDirections.None:
@@ -194,7 +194,7 @@ namespace RED.ViewModels.Modules
             {
                 case JoystickDirections.Up:
                 case JoystickDirections.Down:
-                    _router.Send(_idResolver.GetId("ArmJ3"), (Int16)(-values["ElbowBend"] * motorRangeFactor));
+                    _router.Send(_idResolver.GetId("ArmJ3"), (Int16)(values["ElbowBend"] * motorRangeFactor));
                     break;
                 case JoystickDirections.Right:
                 case JoystickDirections.Left:
