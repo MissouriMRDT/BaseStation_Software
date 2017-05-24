@@ -11,6 +11,20 @@ namespace RED.ViewModels.Modules
         private const byte GimbalDisableCommand = 0x00;
         private const byte GimbalEnableCommand = 0x01;
 
+        private byte resetCode;
+        public byte ResetCode
+        {
+            get
+            {
+                return resetCode;
+            }
+            set
+            {
+                resetCode = value;
+                NotifyOfPropertyChange(() => ResetCode);
+            }
+        }
+
         public ExternalControlsViewModel(IDataRouter router, IDataIdResolver idResolver)
         {
             _router = router;
@@ -24,6 +38,11 @@ namespace RED.ViewModels.Modules
         public void DisableAll()
         {
             _router.Send(_idResolver.GetId("GimbalEnableAll"), GimbalDisableCommand);
+        }
+
+        public void ExternalControlsReset()
+        {
+            _router.Send(_idResolver.GetId("ExternalControlsReset"), ResetCode);
         }
     }
 }
