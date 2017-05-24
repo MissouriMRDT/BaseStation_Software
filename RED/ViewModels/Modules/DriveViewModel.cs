@@ -125,6 +125,11 @@ namespace RED.ViewModels.Modules
             SpeedLeft = newSpeedLeft;
             SpeedRight = newSpeedRight;
 
+            SendSpeeds();
+        }
+
+        private void SendSpeeds()
+        {
             if (UseLegacyDataIds)
             {
                 _router.Send(_idResolver.GetId("MotorLeftSpeed"), SpeedLeft);
@@ -150,9 +155,8 @@ namespace RED.ViewModels.Modules
 
         public void StopMode()
         {
-            int speed = 0;
-            _router.Send(_idResolver.GetId("MotorLeftSpeed"), speed);
-            _router.Send(_idResolver.GetId("MotorRightSpeed"), speed);
+            SpeedLeft = SpeedRight = 0;
+            SendSpeeds();
         }
     }
 }
