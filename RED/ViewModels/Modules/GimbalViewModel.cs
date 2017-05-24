@@ -55,7 +55,12 @@ namespace RED.ViewModels.Modules
             InputVM = inputVM;
             Name = "Gimbal " + (gimbalIndex + 1).ToString();
             ModeType = "Gimbal";
-            SpeedLimit = 1000;
+
+            if (gimbalIndex == 0)
+                SpeedLimit = 1000;
+            else if (gimbalIndex == 1)
+                SpeedLimit = 300;
+
             GimbalIndex = gimbalIndex;
         }
 
