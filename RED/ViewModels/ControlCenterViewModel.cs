@@ -346,7 +346,7 @@ namespace RED.ViewModels
             Science = new ScienceViewModel(DataRouter, MetadataManager, Console);
             GPS = new GPSViewModel(DataRouter, MetadataManager);
             Sensor = new SensorViewModel(DataRouter, MetadataManager, Console);
-            DropBays = new DropBaysViewModel(DataRouter, MetadataManager);
+            DropBays = new DropBaysViewModel(DataRouter, MetadataManager, Console);
             Power = new PowerViewModel(DataRouter, MetadataManager, Console);
             CameraMux = new CameraViewModel(DataRouter, MetadataManager);
             ExternalControls = new ExternalControlsViewModel(DataRouter, MetadataManager);
