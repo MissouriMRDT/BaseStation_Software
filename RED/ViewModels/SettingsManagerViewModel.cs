@@ -88,7 +88,7 @@ namespace RED.ViewModels
             Drive = new DriveSettingsViewModel(this, cc.Drive);
             Science = new ScienceSettingsViewModel(this, cc.Science);
             Input = new InputSettingsViewModel(this, cc.InputManager);
-            Xbox = new XboxControllerInputSettingsViewModel(this, cc.XboxController);
+            Xbox = new XboxControllerInputSettingsViewModel(this, cc.XboxController1);
             GPS = new GPSSettingsViewModel(this, cc.GPS);
         }
 

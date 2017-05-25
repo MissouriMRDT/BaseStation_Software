@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using RED.Contexts;
 using RED.Interfaces;
 using RED.Interfaces.Input;
 using RED.Models.Input;
@@ -10,12 +11,13 @@ using System.Xml.Serialization;
 
 namespace RED.ViewModels.Input
 {
-    public class InputManagerViewModel : Screen
+    public class InputManagerViewModel : PropertyChangedBase
     {
         InputManagerModel _model;
         ILogger _log;
 
         private XmlSerializer mappingsSerializer = new XmlSerializer(typeof(MappingViewModel[]));
+        private XmlSerializer selectionsSerializer = new XmlSerializer(typeof(InputSelectionContext[]));
 
         public int DefaultSerialReadSpeed
         {
@@ -67,18 +69,16 @@ namespace RED.ViewModels.Input
             }
         }
 
-        public MappingViewModel SelectedMapping
+        public ObservableCollection<InputSelectorViewModel> Selectors
         {
             get
             {
-                return _model.SelectedMapping;
+                return _model.Selectors;
             }
-            set
+            private set
             {
-                if (SelectedMapping != null) DeactivateMapping(SelectedMapping);
-                _model.SelectedMapping = value;
-                if (SelectedMapping != null) ActivateMapping(SelectedMapping);
-                NotifyOfPropertyChange(() => SelectedMapping);
+                _model.Selectors = value;
+                NotifyOfPropertyChange(() => Selectors);
             }
         }
 
@@ -90,6 +90,18 @@ namespace RED.ViewModels.Input
             Devices = new ObservableCollection<IInputDevice>(devices);
             Mappings = new ObservableCollection<MappingViewModel>(mappings);
             Modes = new ObservableCollection<IInputMode>(modes);
+            Selectors = new ObservableCollection<InputSelectorViewModel>();
+
+            foreach (IInputMode mode in Modes)
+                Selectors.Add(new InputSelectorViewModel(_log, mode, Devices, Mappings));
+            foreach(var selector in Selectors)
+                selector.SwitchDevice += SelectorSwitchDevice;
+        }
+
+        private void SelectorSwitchDevice(object sender, IInputDevice device)
+        {
+            foreach (var selector in Selectors.Where(x => x.SelectedDevice == device && x != sender))
+                selector.Stop();
         }
 
         public void Start()
@@ -98,21 +110,8 @@ namespace RED.ViewModels.Input
 
         public void Stop()
         {
-            foreach (var mapping in Mappings)
-                if (mapping.IsActive)
-                    DeactivateMapping(mapping);
-        }
-
-        public async void ActivateMapping(MappingViewModel mapping)
-        {
-            mapping.IsActive = true;
-            await mapping.Start();
-        }
-
-        public void DeactivateMapping(MappingViewModel mapping)
-        {
-            mapping.Stop();
-            mapping.IsActive = false;
+            foreach (var selector in Selectors)
+                selector.Disable();
         }
 
         public void AddDevice(IInputDevice device)
@@ -135,14 +134,29 @@ namespace RED.ViewModels.Input
                 MappingViewModel[] savedMappings = (MappingViewModel[])mappingsSerializer.Deserialize(stream);
 
                 foreach (MappingViewModel mapping in savedMappings)
-                {
-                    mapping.Device = Devices.FirstOrDefault(x => x.DeviceType == mapping.DeviceType);
-                    mapping.Mode = Modes.FirstOrDefault(x => x.ModeType == mapping.ModeType);
                     Mappings.Add(mapping);
-                }
-                SelectedMapping = Mappings.FirstOrDefault(x => x.IsActive);
 
                 _log.Log("Input Mappings loaded from file \"" + url + "\"");
+            }
+        }
+
+        public void SaveSelectionsToFile(string url)
+        {
+            using (var stream = new FileStream(url, FileMode.Create))
+            {
+                selectionsSerializer.Serialize(stream, Selectors.Select(x => x.GetContext()).ToArray());
+            }
+        }
+
+        public void LoadSelectionsFromFile(string url)
+        {
+            using (var stream = File.OpenRead(url))
+            {
+                InputSelectionContext[] savedSelections = (InputSelectionContext[])selectionsSerializer.Deserialize(stream);
+
+                foreach (InputSelectionContext selection in savedSelections)
+                    foreach (var selector in Selectors.Where(x => x.Mode.Name == selection.ModeName))
+                        selector.SetContext(selection);
             }
         }
     }

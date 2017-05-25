@@ -4,12 +4,16 @@ using System.Collections.ObjectModel;
 
 namespace RED.Models.Input
 {
-    internal class InputManagerModel
+    internal class InputSelectorModel
     {
-        internal int DefaultSerialReadSpeed;
+        internal IInputMode Mode;
         internal ObservableCollection<IInputDevice> Devices;
         internal ObservableCollection<MappingViewModel> Mappings;
-        internal ObservableCollection<IInputMode> Modes;
-        internal ObservableCollection<InputSelectorViewModel> Selectors;
+
+        internal IInputDevice SelectedDevice;
+        internal MappingViewModel SelectedMapping;
+        
+        internal bool Enabled;
+        internal bool IsRunning;
     }
 }

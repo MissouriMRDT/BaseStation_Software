@@ -45,27 +45,27 @@
             <Button Grid.Row="3" Grid.Column="0" x:Name="Sensor2On">On</Button>
             <Button Grid.Row="3" Grid.Column="1" x:Name="Sensor2Off">Off</Button>
             <Label Grid.Row="3" Grid.Column="2">Air Humidity</Label>
-            <Label Grid.Row="3" Grid.Column="3" x:Name="Sensor2Value"/>
+            <Label Grid.Row="3" Grid.Column="3" x:Name="Sensor2Value" ContentStringFormat="{}{0:0.\%;}" />
 
             <Button Grid.Row="4" Grid.Column="0" x:Name="Sensor3On">On</Button>
             <Button Grid.Row="4" Grid.Column="1" x:Name="Sensor3Off">Off</Button>
             <Label Grid.Row="4" Grid.Column="2">Soil Humidity</Label>
-            <Label Grid.Row="4" Grid.Column="3" x:Name="Sensor3Value"/>
+            <Label Grid.Row="4" Grid.Column="3" x:Name="Sensor3Value" ContentStringFormat="{}{0:0.\%;}" />
 
             <Button Grid.Row="5" Grid.Column="0" x:Name="Sensor4On">On</Button>
             <Button Grid.Row="5" Grid.Column="1" x:Name="Sensor4Off">Off</Button>
             <Label Grid.Row="5" Grid.Column="2">UV Intensity</Label>
-            <Label Grid.Row="5" Grid.Column="3" x:Name="Sensor4Value"/>
+            <Label Grid.Row="5" Grid.Column="3" x:Name="Sensor4Value" ContentStringFormat="{}{0:0.00;}" />
 
             <Button Grid.Row="6" Grid.Column="0" x:Name="Sensor5On">On</Button>
             <Button Grid.Row="6" Grid.Column="1" x:Name="Sensor5Off">Off</Button>
             <Label Grid.Row="6" Grid.Column="2">Pressure</Label>
-            <Label Grid.Row="6" Grid.Column="3" x:Name="Sensor5Value"/>
+            <Label Grid.Row="6" Grid.Column="3" x:Name="Sensor5Value" ContentStringFormat="{}{0:0.00;}" />
 
             <Button Grid.Row="7" Grid.Column="0" x:Name="Sensor6On">On</Button>
             <Button Grid.Row="7" Grid.Column="1" x:Name="Sensor6Off">Off</Button>
             <Label Grid.Row="7" Grid.Column="2">Methane</Label>
-            <Label Grid.Row="7" Grid.Column="3" x:Name="Sensor6Value"/>
+            <Label Grid.Row="7" Grid.Column="3" x:Name="Sensor6Value" ContentStringFormat="{}{0:0.000;}" />
 
             <Button Grid.Row="8" Grid.Column="0" x:Name="Sensor7On">On</Button>
             <Button Grid.Row="8" Grid.Column="1" x:Name="Sensor7Off">Off</Button>
@@ -75,7 +75,7 @@
             <Button Grid.Row="9" Grid.Column="0" x:Name="Sensor8On">On</Button>
             <Button Grid.Row="9" Grid.Column="1" x:Name="Sensor8Off">Off</Button>
             <Label Grid.Row="9" Grid.Column="2">Arm Soil Moisture</Label>
-            <Label Grid.Row="9" Grid.Column="3" x:Name="Sensor8Value"/>
+            <Label Grid.Row="9" Grid.Column="3" x:Name="Sensor8Value" ContentStringFormat="{}{0:0.\%;}" />
         </Grid>
         <Grid>
             <Grid.RowDefinitions>

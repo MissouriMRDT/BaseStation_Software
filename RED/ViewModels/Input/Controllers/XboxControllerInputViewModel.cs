@@ -15,7 +15,7 @@ namespace RED.ViewModels.Input.Controllers
     {
         private readonly XboxControllerInputModel Model = new XboxControllerInputModel();
         private StateViewModel _state;
-        public readonly Controller ControllerOne = new Controller(UserIndex.One);
+        public readonly Controller Controller;
 
         public string Name { get; private set; }
         public string DeviceType { get; private set; }
@@ -67,28 +67,36 @@ namespace RED.ViewModels.Input.Controllers
             {
                 Model.Connected = value;
                 NotifyOfPropertyChange(() => Connected);
-                _state.ControllerIsConnected = value;
             }
         }
 
-        public XboxControllerInputViewModel(StateViewModel state)
+        public XboxControllerInputViewModel(int controllerIndex, StateViewModel state)
         {
             _state = state;
 
-            Name = "Xbox Controller 1";
+            Name = "Xbox " + controllerIndex.ToString();
             DeviceType = "Xbox";
+
+            Controller = new Controller(IntToUserIndex(controllerIndex));
+        }
+
+        private UserIndex IntToUserIndex(int index)
+        {
+            switch(index)
+            {
+                case 1: return UserIndex.One;
+                case 2: return UserIndex.Two;
+                case 3: return UserIndex.Three;
+                case 4: return UserIndex.Four;
+                default:return UserIndex.Any;
+            }
         }
 
         public Dictionary<string, float> GetValues()
         {
-            if (ControllerOne == null || !ControllerOne.IsConnected)
-            {
-                Connected = false;
-                throw new Exception("Controller Disconnected");
-            }
-            Connected = true;
+            if (!IsReady()) throw new Exception("Controller Disconnected");
 
-            var currentGamepad = ControllerOne.GetState().Gamepad;
+            var currentGamepad = Controller.GetState().Gamepad;
 
             var deadzone = AutoDeadzone ? Math.Max(Gamepad.LeftThumbDeadZone, Gamepad.RightThumbDeadZone) : ManualDeadzone;
             Func<short, float> deadzoneTransform = x => x < deadzone && x > -deadzone ? 0 : ((x + (x < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
@@ -124,5 +132,11 @@ namespace RED.ViewModels.Input.Controllers
 
         public void StopDevice()
         { }
+
+        public bool IsReady()
+        {
+            Connected = Controller != null && Controller.IsConnected;
+            return Connected;
+        }
     }
 }

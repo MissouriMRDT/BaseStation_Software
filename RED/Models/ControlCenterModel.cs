@@ -26,11 +26,15 @@ namespace RED.Models
         internal ExternalControlsViewModel _externalControls;
         internal AutonomyViewModel _autonomy;
         internal ScienceArmViewModel _scienceArm;
+        internal LightingViewModel _lighting;
         internal DriveViewModel _drive;
         internal ArmViewModel _arm;
         internal GimbalViewModel _gimbal1;
         internal GimbalViewModel _gimbal2;
-        internal XboxControllerInputViewModel _xboxController;
+        internal XboxControllerInputViewModel _xboxController1;
+        internal XboxControllerInputViewModel _xboxController2;
+        internal XboxControllerInputViewModel _xboxController3;
+        internal XboxControllerInputViewModel _xboxController4;
         internal FlightStickViewModel _flightStickController;
     }
 }

@@ -316,6 +316,30 @@ namespace RED.ViewModels.Modules
                 NotifyOfPropertyChange(() => TotalPackVoltage);
             }
         }
+        public float BMSTemperature1
+        {
+            get
+            {
+                return _model.BMSTemperature1;
+            }
+            set
+            {
+                _model.BMSTemperature1 = value;
+                NotifyOfPropertyChange(() => BMSTemperature1);
+            }
+        }
+        public float BMSTemperature2
+        {
+            get
+            {
+                return _model.BMSTemperature2;
+            }
+            set
+            {
+                _model.BMSTemperature2 = value;
+                NotifyOfPropertyChange(() => BMSTemperature2);
+            }
+        }
 
         public PowerViewModel(IDataRouter router, IDataIdResolver idResolver, ILogger log)
         {
@@ -350,6 +374,8 @@ namespace RED.ViewModels.Modules
             _router.Subscribe(this, _idResolver.GetId("Cell8Voltage"));
             _router.Subscribe(this, _idResolver.GetId("TotalPackCurrent"));
             _router.Subscribe(this, _idResolver.GetId("TotalPackVoltage"));
+            _router.Subscribe(this, _idResolver.GetId("BMSTemperature1"));
+            _router.Subscribe(this, _idResolver.GetId("BMSTemperature2"));
 
             _router.Subscribe(this, _idResolver.GetId("PowerBusOverCurrentNotification"));
             _router.Subscribe(this, _idResolver.GetId("BMSPackOvercurrent"));
@@ -386,6 +412,8 @@ namespace RED.ViewModels.Modules
                 case "Cell8Voltage": Cell8Voltage = BitConverter.ToSingle(data, 0); break;
                 case "TotalPackCurrent": TotalPackCurrent = BitConverter.ToSingle(data, 0); break;
                 case "TotalPackVoltage": TotalPackVoltage = BitConverter.ToSingle(data, 0); break;
+                case "BMSTemperature1": BMSTemperature1 = BitConverter.ToSingle(data, 0); break;
+                case "BMSTemperature2": BMSTemperature2 = BitConverter.ToSingle(data, 0); break;
 
                 case "PowerBusOverCurrentNotification":
                     _log.Log("Overcurrent notification from Powerboard from Bus Index " + data[0].ToString());

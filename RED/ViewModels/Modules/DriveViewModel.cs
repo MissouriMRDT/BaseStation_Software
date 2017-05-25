@@ -115,7 +115,9 @@ namespace RED.ViewModels.Modules
                 commandRight = values["WheelsRight"];
             }
 
-            float speedLimitFactor = (float)SpeedLimit / motorRangeFactor;
+            float throttle = values.ContainsKey("Throttle") ? values["Throttle"] : 1.0f;
+
+            float speedLimitFactor = (float)SpeedLimit / motorRangeFactor * throttle;
             if (speedLimitFactor > 1F) speedLimitFactor = 1F;
             if (speedLimitFactor < 0F) speedLimitFactor = 0F;
 
@@ -125,6 +127,11 @@ namespace RED.ViewModels.Modules
             SpeedLeft = newSpeedLeft;
             SpeedRight = newSpeedRight;
 
+            SendSpeeds();
+        }
+
+        private void SendSpeeds()
+        {
             if (UseLegacyDataIds)
             {
                 _router.Send(_idResolver.GetId("MotorLeftSpeed"), SpeedLeft);
@@ -150,9 +157,8 @@ namespace RED.ViewModels.Modules
 
         public void StopMode()
         {
-            int speed = 0;
-            _router.Send(_idResolver.GetId("MotorLeftSpeed"), speed);
-            _router.Send(_idResolver.GetId("MotorRightSpeed"), speed);
+            SpeedLeft = SpeedRight = 0;
+            SendSpeeds();
         }
     }
 }
