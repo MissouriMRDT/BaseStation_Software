@@ -110,6 +110,7 @@
     <Compile Include="Addons\GPSCoordinateToLongitudeConverter.cs" />
     <Compile Include="Addons\GPSCoordinateToLatitudeConverter.cs" />
     <Compile Include="Addons\SubscriptionRecord.cs" />
+    <Compile Include="Addons\Utilities.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
