@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="RED.Views.Modules.AutonomyView"
+﻿<UserControl x:Class="RED.Views.Navigation.WaypointManagerView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,11 +6,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel>
-        <UniformGrid Rows="1">
-            <Button x:Name="EnableMode">Enable</Button>
-            <Button x:Name="DisableMode">Disable</Button>
-        </UniformGrid>
-        <Button x:Name="ClearAllWaypoints">Clear All Waypoints</Button>
-        <Button Click="Calibrate_Click">Calibrate</Button>
+        <Label Content="Latitude:" />
+        <TextBox x:Name="LatitudeTextBox" />
+        <Label Content="Longitude:" />
+        <TextBox x:Name="LongitudeTextBox" />
+        <Button x:Name="AddWaypointBtn" Click="AddWaypointBtn_Click" Content="Add Waypoint"/>
     </StackPanel>
 </UserControl>

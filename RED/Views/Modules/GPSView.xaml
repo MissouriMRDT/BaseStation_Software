@@ -9,21 +9,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
-        <addons:GMapMarkerCollectionMultiConverter x:Key="GPSMarkerConverter" />
         <addons:GPSCoordinateToLatitudeConverter x:Key="LatitudeConverter" />
         <addons:GPSCoordinateToLongitudeConverter x:Key="LongitudeConverter" />
     </UserControl.Resources>
-    <StackPanel DockPanel.Dock="Right" Width="256">
-        <Expander Header="Manage Waypoints" IsExpanded="True">
-            <StackPanel>
-                <Label Content="Latitude:" />
-                <TextBox x:Name="LatitudeTextBox" />
-                <Label Content="Longitude:" />
-                <TextBox x:Name="LongitudeTextBox" />
-                <Button x:Name="AddWaypointBtn" Click="AddWaypointBtn_Click" Content="Add Waypoint"/>
-            </StackPanel>
-        </Expander>
-        <Expander Header="Data" IsExpanded="True">
             <StackPanel>
                 <Grid>
                     <Grid.RowDefinitions>
@@ -68,6 +56,4 @@
                     </Path>
                 </Canvas>
             </StackPanel>
-        </Expander>
-    </StackPanel>
 </UserControl>

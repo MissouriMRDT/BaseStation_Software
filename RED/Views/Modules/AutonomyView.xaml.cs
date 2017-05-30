@@ -1,8 +1,6 @@
 ﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
-using RED.Addons;
 using RED.ViewModels.Modules;
-using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,21 +15,6 @@ namespace RED.Views.Modules
         public AutonomyView()
         {
             InitializeComponent();
-        }
-
-        public void AddWaypoint_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                var vm = (AutonomyViewModel)DataContext;
-                vm.LatitudeInput = Utilities.ParseCoordinate(LatitudeTextBox.Text);
-                vm.LongitudeInput = Utilities.ParseCoordinate(LongitudeTextBox.Text);
-                vm.AddWaypoint();
-            }
-            catch (ArgumentException)
-            {
-                MessageBox.Show("Invalid Longitude or Latitude. Must be a floating point number.");
-            }
         }
 
         public async void Calibrate_Click(object sender, RoutedEventArgs e)

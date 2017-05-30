@@ -1,9 +1,28 @@
-﻿using System;
+﻿using Caliburn.Micro;
+using RED.Addons;
+using RED.Models.Navigation;
+using System;
+using System.Collections.ObjectModel;
 
-namespace RED.Addons
+namespace RED.ViewModels.Navigation
 {
-    public static class Utilities
+    public class WaypointManagerViewModel : PropertyChangedBase
     {
+        private WaypointManagerModel _model;
+
+        public ObservableCollection<GPSCoordinate> Waypoints
+        {
+            get
+            {
+                return _model.Waypoints;
+            }
+        }
+
+        public WaypointManagerViewModel()
+        {
+            _model = new WaypointManagerModel();
+        }
+
         public static double ParseCoordinate(string coord)
         {
             string[] input = coord.Trim().Split((string[])null, StringSplitOptions.RemoveEmptyEntries);
@@ -35,6 +54,26 @@ namespace RED.Addons
                 default:
                     throw new ArgumentException();
             }
+        }
+
+        public bool AddWaypoint(string latitude, string longitude)
+        {
+            try
+            {
+                double lat = WaypointManagerViewModel.ParseCoordinate(latitude);
+                double lon = WaypointManagerViewModel.ParseCoordinate(longitude);
+                AddWaypoint(new GPSCoordinate(lat, lon));
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public void AddWaypoint(GPSCoordinate coord)
+        {
+            Waypoints.Add(coord);
         }
     }
 }

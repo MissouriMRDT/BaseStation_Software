@@ -1,0 +1,24 @@
+﻿using RED.ViewModels.Navigation;
+using System.Windows;
+using System.Windows.Controls;
+
+namespace RED.Views.Navigation
+{
+    /// <summary>
+    /// Interaction logic for WaypointManagerView.xaml
+    /// </summary>
+    public partial class WaypointManagerView : UserControl
+    {
+        public WaypointManagerView()
+        {
+            InitializeComponent();
+        }
+
+        private void AddWaypointBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = (WaypointManagerViewModel)DataContext;
+            if (!vm.AddWaypoint(LatitudeTextBox.Text, LongitudeTextBox.Text))
+                MessageBox.Show("Invalid Longitude or Latitude. Must be a floating point number.");
+        }
+    }
+}
