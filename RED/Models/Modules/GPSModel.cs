@@ -1,5 +1,4 @@
 ﻿using RED.Addons;
-using System.Collections.ObjectModel;
 
 namespace RED.Models.Modules
 {
@@ -15,7 +14,5 @@ namespace RED.Models.Modules
         internal GPSCoordinate baseStationLocation = new GPSCoordinate(0, 0);
         internal double antennaDirectionDeg = 0;
         internal float heading = 0;
-
-        internal ObservableCollection<GPSCoordinate> waypoints = new ObservableCollection<GPSCoordinate>();
     }
 }

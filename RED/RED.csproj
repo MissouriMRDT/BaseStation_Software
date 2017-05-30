@@ -140,6 +140,7 @@
     <Compile Include="Models\DataRouterModel.cs" />
     <Compile Include="Models\Modules\DriveModel.cs" />
     <Compile Include="Models\Modules\LightingModel.cs" />
+    <Compile Include="Models\Navigation\MapModel.cs" />
     <Compile Include="Models\Network\NetworkManagerModel.cs" />
     <Compile Include="Models\Modules\PowerModel.cs" />
     <Compile Include="Models\Modules\ScienceModel.cs" />
@@ -163,6 +164,7 @@
     <Compile Include="ViewModels\Modules\DropBaysViewModel.cs" />
     <Compile Include="ViewModels\Modules\LightingViewModel.cs" />
     <Compile Include="ViewModels\Modules\ScienceArmViewModel.cs" />
+    <Compile Include="ViewModels\Navigation\MapViewModel.cs" />
     <Compile Include="ViewModels\Network\NetworkManagerViewModel.cs" />
     <Compile Include="ViewModels\DataRouter.cs" />
     <Compile Include="Interfaces\ISubscribe.cs" />
@@ -232,6 +234,9 @@
     </Compile>
     <Compile Include="Views\Modules\SensorView.xaml.cs">
       <DependentUpon>SensorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Navigation\MapView.xaml.cs">
+      <DependentUpon>MapView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsManagerView.xaml.cs">
       <DependentUpon>SettingsManagerView.xaml</DependentUpon>
@@ -325,6 +330,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Modules\SensorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Navigation\MapView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
