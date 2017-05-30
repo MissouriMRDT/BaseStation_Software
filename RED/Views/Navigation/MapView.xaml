@@ -4,10 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:gmap="clr-namespace:GMap.NET.WindowsPresentation;assembly=GMap.NET.WindowsPresentation"
+             xmlns:addons="clr-namespace:RED.Addons"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <addons:GMapMarkerCollectionMultiConverter x:Key="GPSMarkerConverter" />
+    </UserControl.Resources>
     <DockPanel LastChildFill="True">
-        <Expander Header="Cache Options" DockPanel.Dock="Bottom">
+        <Expander Header="Cache Options" DockPanel.Dock="Bottom" ExpandDirection="Up">
             <UniformGrid Rows="1">
                 <Button x:Name="ImportBtn" Click="ImportBtn_Click" Content="Import"/>
                 <Button x:Name="ExportBtn" Click="ExportBtn_Click" Content="Export"/>
