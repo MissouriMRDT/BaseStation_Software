@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using RED.Addons;
+using RED.ViewModels.Modules;
 using RED.Models.Navigation;
 using System;
 using System.Collections.ObjectModel;
@@ -10,17 +11,52 @@ namespace RED.ViewModels.Navigation
     {
         private WaypointManagerModel _model;
 
+        public MapViewModel Map
+        {
+            get
+            {
+                return _model.Map;
+            }
+            private set
+            {
+                _model.Map = value;
+                NotifyOfPropertyChange(() => Map);
+            }
+        }
+        public AutonomyViewModel AutonomyModule
+        {
+            get
+            {
+                return _model.AutonomyModule;
+            }
+            private set
+            {
+                _model.AutonomyModule = value;
+                NotifyOfPropertyChange(() => AutonomyModule);
+            }
+        }
+
         public ObservableCollection<GPSCoordinate> Waypoints
         {
             get
             {
                 return _model.Waypoints;
             }
+            private set
+            {
+                _model.Waypoints = value;
+                NotifyOfPropertyChange(() => Waypoints);
+            }
         }
 
-        public WaypointManagerViewModel()
+        public WaypointManagerViewModel(MapViewModel map, AutonomyViewModel autonomy)
         {
             _model = new WaypointManagerModel();
+
+            Map = map;
+            AutonomyModule = autonomy;
+
+            Waypoints = new ObservableCollection<GPSCoordinate>();
         }
 
         public static double ParseCoordinate(string coord)
