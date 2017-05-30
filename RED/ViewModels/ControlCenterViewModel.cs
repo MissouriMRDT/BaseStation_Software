@@ -4,6 +4,7 @@ using RED.Models;
 using RED.ViewModels.Input;
 using RED.ViewModels.Input.Controllers;
 using RED.ViewModels.Modules;
+using RED.ViewModels.Navigation;
 using RED.ViewModels.Network;
 using System.IO;
 
@@ -231,6 +232,19 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => Lighting);
             }
         }
+        public MapViewModel Map
+        {
+            get
+            {
+                return _model._map;
+            }
+            set
+            {
+                _model._map = value;
+                NotifyOfPropertyChange(() => Map);
+            }
+        }
+
 
         public DriveViewModel Drive
         {
@@ -365,6 +379,7 @@ namespace RED.ViewModels
             Autonomy = new AutonomyViewModel(DataRouter, MetadataManager, Console);
             ScienceArm = new ScienceArmViewModel(DataRouter, MetadataManager, Console);
             Lighting = new LightingViewModel(DataRouter, MetadataManager);
+            Map = new MapViewModel();
 
             Drive = new DriveViewModel(null, DataRouter, MetadataManager);
             Arm = new ArmViewModel(null, DataRouter, MetadataManager, Console);

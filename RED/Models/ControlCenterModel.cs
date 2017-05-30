@@ -2,6 +2,7 @@
 using RED.ViewModels.Input;
 using RED.ViewModels.Input.Controllers;
 using RED.ViewModels.Modules;
+using RED.ViewModels.Navigation;
 using RED.ViewModels.Network;
 
 namespace RED.Models
@@ -27,6 +28,7 @@ namespace RED.Models
         internal AutonomyViewModel _autonomy;
         internal ScienceArmViewModel _scienceArm;
         internal LightingViewModel _lighting;
+        internal MapViewModel _map;
         internal DriveViewModel _drive;
         internal ArmViewModel _arm;
         internal GimbalViewModel _gimbal1;
