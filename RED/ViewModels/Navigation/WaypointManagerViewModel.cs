@@ -36,7 +36,7 @@ namespace RED.ViewModels.Navigation
             }
         }
 
-        public ObservableCollection<GPSCoordinate> Waypoints
+        public ObservableCollection<Waypoint> Waypoints
         {
             get
             {
@@ -56,7 +56,7 @@ namespace RED.ViewModels.Navigation
             Map = map;
             AutonomyModule = autonomy;
 
-            Waypoints = new ObservableCollection<GPSCoordinate>();
+            Waypoints = new ObservableCollection<Waypoint>();
         }
 
         public static double ParseCoordinate(string coord)
@@ -92,13 +92,13 @@ namespace RED.ViewModels.Navigation
             }
         }
 
-        public bool AddWaypoint(string latitude, string longitude)
+        public bool AddWaypoint(string name, string latitude, string longitude)
         {
             try
             {
                 double lat = WaypointManagerViewModel.ParseCoordinate(latitude);
                 double lon = WaypointManagerViewModel.ParseCoordinate(longitude);
-                AddWaypoint(new GPSCoordinate(lat, lon));
+                AddWaypoint(new Waypoint() { Name = name, Latitude = lat, Longitude = lon, Color = System.Windows.Media.Colors.Red, IsOnMap = true });
                 return true;
             }
             catch
@@ -107,9 +107,9 @@ namespace RED.ViewModels.Navigation
             }
         }
 
-        public void AddWaypoint(GPSCoordinate coord)
+        public void AddWaypoint(Waypoint waypoint)
         {
-            Waypoints.Add(coord);
+            Waypoints.Add(waypoint);
         }
     }
 }

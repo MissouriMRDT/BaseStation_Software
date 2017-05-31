@@ -165,6 +165,7 @@
     <Compile Include="ViewModels\Modules\LightingViewModel.cs" />
     <Compile Include="ViewModels\Modules\ScienceArmViewModel.cs" />
     <Compile Include="ViewModels\Navigation\MapViewModel.cs" />
+    <Compile Include="ViewModels\Navigation\Waypoint.cs" />
     <Compile Include="ViewModels\Navigation\WaypointManagerViewModel.cs" />
     <Compile Include="ViewModels\Network\NetworkManagerViewModel.cs" />
     <Compile Include="ViewModels\DataRouter.cs" />

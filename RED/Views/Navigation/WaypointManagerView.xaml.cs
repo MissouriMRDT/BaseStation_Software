@@ -17,7 +17,7 @@ namespace RED.Views.Navigation
         private void AddWaypointBtn_Click(object sender, RoutedEventArgs e)
         {
             var vm = (WaypointManagerViewModel)DataContext;
-            if (!vm.AddWaypoint(LatitudeTextBox.Text, LongitudeTextBox.Text))
+            if (!vm.AddWaypoint("Untitled Waypoint", LatitudeTextBox.Text, LongitudeTextBox.Text))
                 MessageBox.Show("Invalid Longitude or Latitude. Must be a floating point number.");
         }
     }
