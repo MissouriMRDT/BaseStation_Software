@@ -48,6 +48,7 @@ namespace RED.ViewModels.Navigation
                 NotifyOfPropertyChange(() => Waypoints);
             }
         }
+        public Waypoint SelectedWaypoint { get; set; }
 
         public WaypointManagerViewModel(MapViewModel map, AutonomyViewModel autonomy)
         {
@@ -116,6 +117,11 @@ namespace RED.ViewModels.Navigation
             Waypoints.Add(waypoint);
             Map.Waypoints.Add(waypoint);
             Map.RefreshMap();
+        }
+
+        public void RemoveSelectedWaypoint()
+        {
+            Waypoints.Remove(SelectedWaypoint);
         }
     }
 }
