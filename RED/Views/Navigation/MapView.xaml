@@ -11,21 +11,20 @@
         <addons:GMapMarkerCollectionMultiConverter x:Key="GPSMarkerConverter" />
     </UserControl.Resources>
     <DockPanel LastChildFill="True">
-        <Expander Header="Cache Options" DockPanel.Dock="Bottom" ExpandDirection="Up">
+        <Expander Header="Cache Control" DockPanel.Dock="Bottom" ExpandDirection="Up">
             <UniformGrid Rows="1">
-                <Button x:Name="ImportBtn" Click="ImportBtn_Click" Content="Import"/>
-                <Button x:Name="ExportBtn" Click="ExportBtn_Click" Content="Export"/>
-                <Button x:Name="PrefetchBtn" Click="PrefetchBtn_Click" Content="Prefetch"/>
-                <Button x:Name="ClearBtn" Click="ClearBtn_Click" Content="Clear Cache"/>
+                <Button x:Name="CacheImport">Import</Button>
+                <Button x:Name="CacheExport">Export</Button>
+                <Button x:Name="CachePrefetch">Prefetch</Button>
+                <Button x:Name="CacheClear">Clear</Button>
             </UniformGrid>
         </Expander>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
-            <Button Click="RefreshMap_Click">Refresh</Button>
+            <Button x:Name="RefreshMap">Refresh</Button>
             <Label>Zoom:</Label>
-            <Label Content="{Binding Zoom, ElementName=MainMap}" />
+            <Label Content="{Binding MainMap.Zoom}" Width="25" />
+            <Slider Value="{Binding MainMap.Zoom}" Minimum="1" Maximum="18" Width="100" Interval="1" IsSnapToTickEnabled="True" />
         </StackPanel>
-        <GroupBox Header="Map">
-            <gmap:GMapControl x:Name="MainMap" Zoom="13" MaxZoom="18" MinZoom="1" Margin="-5" />
-        </GroupBox>
+        <GroupBox Header="Map" Content="{Binding MainMap}" />
     </DockPanel>
 </UserControl>
