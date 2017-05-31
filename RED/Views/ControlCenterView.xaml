@@ -28,7 +28,10 @@
                 </Grid.ColumnDefinitions>
                 <DockPanel Grid.Column="0" Grid.Row="0" LastChildFill="True">
                     <ContentControl DockPanel.Dock="Right" x:Name="GPS" />
-                    <ContentControl x:Name="Map" />
+                    <UniformGrid Columns="1">
+                        <ContentControl x:Name="WaypointManager" />
+                        <ContentControl x:Name="Map" />
+                    </UniformGrid>
                 </DockPanel>
                 <ScrollViewer Grid.Column="1" Grid.Row="0">
                     <StackPanel >

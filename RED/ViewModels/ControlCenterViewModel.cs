@@ -111,6 +111,19 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => InputManager);
             }
         }
+        public WaypointManagerViewModel WaypointManager
+        {
+            get
+            {
+                return _model._waypoint;
+            }
+            set
+            {
+                _model._waypoint = value;
+                NotifyOfPropertyChange(() => WaypointManager);
+            }
+        }
+
         public ScienceViewModel Science
         {
             get
@@ -244,7 +257,6 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => Map);
             }
         }
-
 
         public DriveViewModel Drive
         {
@@ -398,6 +410,8 @@ namespace RED.ViewModels
             InputManager.LoadMappingsFromFile("inputmappings.xml");
             if (File.Exists("inputselections.xml"))
                 InputManager.LoadSelectionsFromFile("inputselections.xml");
+
+            WaypointManager = new WaypointManagerViewModel(Map, Autonomy);
 
             SettingsManager = new SettingsManagerViewModel(this);
 

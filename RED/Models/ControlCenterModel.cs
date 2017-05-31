@@ -18,6 +18,7 @@ namespace RED.Models
         internal SubscriptionManagerViewModel _subscriptionManager;
         internal NetworkManagerViewModel _networkManager;
         internal InputManagerViewModel _input;
+        internal WaypointManagerViewModel _waypoint;
         internal ScienceViewModel _science;
         internal GPSViewModel _GPS;
         internal SensorViewModel _sensor;
