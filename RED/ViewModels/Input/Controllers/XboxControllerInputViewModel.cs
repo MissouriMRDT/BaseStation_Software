@@ -70,6 +70,8 @@ namespace RED.ViewModels.Input.Controllers
             }
         }
 
+        private Dictionary<string, bool> DebounceStates;
+
         public XboxControllerInputViewModel(int controllerIndex, StateViewModel state)
         {
             _state = state;
@@ -78,17 +80,18 @@ namespace RED.ViewModels.Input.Controllers
             DeviceType = "Xbox";
 
             Controller = new Controller(IntToUserIndex(controllerIndex));
+            InitializeDebounce();
         }
 
         private UserIndex IntToUserIndex(int index)
         {
-            switch(index)
+            switch (index)
             {
                 case 1: return UserIndex.One;
                 case 2: return UserIndex.Two;
                 case 3: return UserIndex.Three;
                 case 4: return UserIndex.Four;
-                default:return UserIndex.Any;
+                default: return UserIndex.Any;
             }
         }
 
@@ -123,7 +126,21 @@ namespace RED.ViewModels.Input.Controllers
                 {"DPadL", ((currentGamepad.Buttons & GamepadButtonFlags.DPadLeft) != 0) ? 1 : 0},
                 {"DPadU", ((currentGamepad.Buttons & GamepadButtonFlags.DPadUp) != 0) ? 1 : 0},
                 {"DPadR", ((currentGamepad.Buttons & GamepadButtonFlags.DPadRight) != 0) ? 1 : 0},
-                {"DPadD", ((currentGamepad.Buttons & GamepadButtonFlags.DPadDown) != 0) ? 1 : 0}
+                {"DPadD", ((currentGamepad.Buttons & GamepadButtonFlags.DPadDown) != 0) ? 1 : 0},
+                {"ButtonADebounced", Debounce("ButtonA", (currentGamepad.Buttons & GamepadButtonFlags.A) != 0) },
+                {"ButtonBDebounced", Debounce("ButtonB", (currentGamepad.Buttons & GamepadButtonFlags.B) != 0) },
+                {"ButtonXDebounced", Debounce("ButtonX", (currentGamepad.Buttons & GamepadButtonFlags.X) != 0) },
+                {"ButtonYDebounced", Debounce("ButtonY", (currentGamepad.Buttons & GamepadButtonFlags.Y) != 0) },
+                {"ButtonLbDebounced", Debounce("ButtonLb", (currentGamepad.Buttons & GamepadButtonFlags.LeftShoulder) != 0) },
+                {"ButtonRbDebounced", Debounce("ButtonRb", (currentGamepad.Buttons & GamepadButtonFlags.RightShoulder) != 0) },
+                {"ButtonLsDebounced", Debounce("ButtonLs", (currentGamepad.Buttons & GamepadButtonFlags.LeftThumb) != 0) },
+                {"ButtonRsDebounced", Debounce("ButtonRs", (currentGamepad.Buttons & GamepadButtonFlags.RightThumb) != 0) },
+                {"ButtonStartDebounced", Debounce("ButtonStart", (currentGamepad.Buttons & GamepadButtonFlags.Start) != 0) },
+                {"ButtonBackDebounced", Debounce("ButtonBack", (currentGamepad.Buttons & GamepadButtonFlags.Back) != 0) },
+                {"ButtonDPadLDebounced", Debounce("DPadL", (currentGamepad.Buttons & GamepadButtonFlags.DPadLeft) != 0) },
+                {"ButtonDPadUDebounced", Debounce("DPadU", (currentGamepad.Buttons & GamepadButtonFlags.DPadUp) != 0) },
+                {"ButtonDPadRDebounced", Debounce("DPadR", (currentGamepad.Buttons & GamepadButtonFlags.DPadRight) != 0) },
+                {"ButtonDPadDDebounced", Debounce("DPadD", (currentGamepad.Buttons & GamepadButtonFlags.DPadDown) != 0) }
             };
         }
 
@@ -137,6 +154,44 @@ namespace RED.ViewModels.Input.Controllers
         {
             Connected = Controller != null && Controller.IsConnected;
             return Connected;
+        }
+
+        private void InitializeDebounce()
+        {
+            DebounceStates = new Dictionary<string, bool>() 
+            {
+                { "ButtonA", false },
+                { "ButtonB", false },
+                { "ButtonX", false },
+                { "ButtonY", false },
+                { "ButtonLb", false },
+                { "ButtonRb", false },
+                { "ButtonLs", false },
+                { "ButtonRs", false },
+                { "ButtonStart", false },
+                { "ButtonBack", false },
+                { "DPadL", false },
+                { "DPadU", false },
+                { "DPadR", false },
+                { "DPadD", false }
+            };
+        }
+        private float Debounce(string key, bool newState)
+        {
+            if (!DebounceStates[key] && newState)
+            {
+                DebounceStates[key] = true;
+                return 1f;
+            }
+            else if (DebounceStates[key] && !newState)
+            {
+                DebounceStates[key] = false;
+                return 0f;
+            }
+            else
+            {
+                return 0f;
+            }
         }
     }
 }
