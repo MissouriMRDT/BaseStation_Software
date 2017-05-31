@@ -57,6 +57,10 @@ namespace RED.ViewModels.Navigation
             AutonomyModule = autonomy;
 
             Waypoints = new ObservableCollection<Waypoint>();
+
+            Waypoints.Add(new Waypoint(37.951631, -91.777713)); //Rolla
+            Waypoints.Add(new Waypoint(37.850025, -91.701845)); //Fugitive Beach
+            Waypoints.Add(new Waypoint(38.406426, -110.791919)); //Mars Desert Research Station
         }
 
         public static double ParseCoordinate(string coord)

@@ -5,11 +5,22 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel>
-        <Label Content="Latitude:" />
-        <TextBox x:Name="LatitudeTextBox" />
-        <Label Content="Longitude:" />
-        <TextBox x:Name="LongitudeTextBox" />
-        <Button x:Name="AddWaypointBtn" Click="AddWaypointBtn_Click" Content="Add Waypoint"/>
-    </StackPanel>
+    <DockPanel LastChildFill="True">
+        <StackPanel DockPanel.Dock="Top">
+            <Label Content="Latitude:" />
+            <TextBox x:Name="LatitudeTextBox" />
+            <Label Content="Longitude:" />
+            <TextBox x:Name="LongitudeTextBox" />
+            <Button x:Name="AddWaypointBtn" Click="AddWaypointBtn_Click" Content="Add Waypoint"/>
+        </StackPanel>
+        <DataGrid ItemsSource="{Binding Waypoints}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" FrozenColumnCount="1" BorderThickness="1">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="Longitude" Binding="{Binding Longitude}" />
+                <DataGridTextColumn Header="Latitude" Binding="{Binding Latitude}" />
+                <DataGridComboBoxColumn Header="Color" />
+                <DataGridCheckBoxColumn Header="Map" Binding="{Binding IsOnMap}" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
 </UserControl>
