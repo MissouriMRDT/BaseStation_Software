@@ -98,7 +98,7 @@ namespace RED.ViewModels.Navigation
             {
                 double lat = WaypointManagerViewModel.ParseCoordinate(latitude);
                 double lon = WaypointManagerViewModel.ParseCoordinate(longitude);
-                AddWaypoint(new Waypoint() { Name = name, Latitude = lat, Longitude = lon, Color = System.Windows.Media.Colors.Red, IsOnMap = true });
+                AddWaypoint(new Waypoint(name, lat, lon));
                 return true;
             }
             catch
@@ -110,6 +110,8 @@ namespace RED.ViewModels.Navigation
         public void AddWaypoint(Waypoint waypoint)
         {
             Waypoints.Add(waypoint);
+            Map.Waypoints.Add(waypoint);
+            Map.RefreshMap();
         }
     }
 }

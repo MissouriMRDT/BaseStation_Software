@@ -1,11 +1,11 @@
-﻿using RED.Addons;
+﻿using RED.ViewModels.Navigation;
 using System.Collections.ObjectModel;
 
 namespace RED.Models.Navigation
 {
     internal class MapModel
     {
-        internal GPSCoordinate currentLocation = new GPSCoordinate(0, 0);
-        internal ObservableCollection<GPSCoordinate> waypoints = new ObservableCollection<GPSCoordinate>();
+        internal Waypoint currentLocation = new Waypoint(0, 0);
+        internal ObservableCollection<Waypoint> waypoints = new ObservableCollection<Waypoint>();
     }
 }

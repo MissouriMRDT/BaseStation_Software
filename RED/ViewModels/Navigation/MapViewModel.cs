@@ -17,7 +17,7 @@ namespace RED.ViewModels.Navigation
     {
         MapModel _model;
 
-        public GPSCoordinate CurrentLocation
+        public Waypoint CurrentLocation
         {
             get
             {
@@ -29,7 +29,7 @@ namespace RED.ViewModels.Navigation
                 NotifyOfPropertyChange(() => CurrentLocation);
             }
         }
-        public ObservableCollection<GPSCoordinate> Waypoints
+        public ObservableCollection<Waypoint> Waypoints
         {
             get
             {
@@ -56,9 +56,9 @@ namespace RED.ViewModels.Navigation
             _model = new MapModel();
             InitializeMapControl();
 
-            Waypoints.Add(new GPSCoordinate(37.951631, -91.777713)); //Rolla
-            Waypoints.Add(new GPSCoordinate(37.850025, -91.701845)); //Fugitive Beach
-            Waypoints.Add(new GPSCoordinate(38.406426, -110.791919)); //Mars Desert Research Station
+            Waypoints.Add(new Waypoint(37.951631, -91.777713)); //Rolla
+            Waypoints.Add(new Waypoint(37.850025, -91.701845)); //Fugitive Beach
+            Waypoints.Add(new Waypoint(38.406426, -110.791919)); //Mars Desert Research Station
             RefreshMap();
         }
 

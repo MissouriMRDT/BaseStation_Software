@@ -1,5 +1,6 @@
 ﻿using GMap.NET;
 using GMap.NET.WindowsPresentation;
+using RED.ViewModels.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -19,7 +20,7 @@ namespace RED.Addons
             List<GMapMarker> markers = new List<GMapMarker>();
 
             if (value[0] == null) return DependencyProperty.UnsetValue;
-            GPSCoordinate currPos = (GPSCoordinate)value[0];
+            Waypoint currPos = (Waypoint)value[0];
             markers.Add(new GMapMarker(new PointLatLng(currPos.Latitude, currPos.Longitude))
             {
                 Shape = new Path()
@@ -34,7 +35,7 @@ namespace RED.Addons
                 ZIndex = Int32.MaxValue
             });
 
-            foreach (var coord in (IEnumerable<GPSCoordinate>)(value[1]))
+            foreach (var coord in (IEnumerable<Waypoint>)(value[1]))
                 markers.Add(new GMapMarker(new PointLatLng(coord.Latitude, coord.Longitude))
                 {
                     Shape = new Path()
@@ -55,11 +56,11 @@ namespace RED.Addons
         {
             if (value == null) return new object[] { DependencyProperty.UnsetValue };
 
-            List<GPSCoordinate> coords = new List<GPSCoordinate>();
+            List<Waypoint> coords = new List<Waypoint>();
             foreach (var marker in (IEnumerable<GMapMarker>)value)
-                coords.Add(new GPSCoordinate(marker.Position.Lat, marker.Position.Lng));
+                coords.Add(new Waypoint(marker.Position.Lat, marker.Position.Lng));
 
-            GPSCoordinate currPos = coords[0];
+            Waypoint currPos = coords[0];
             coords.RemoveAt(0);
             return new object[] { currPos, coords.ToArray() };
         }
