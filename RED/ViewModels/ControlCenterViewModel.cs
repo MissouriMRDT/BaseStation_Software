@@ -4,6 +4,7 @@ using RED.Models;
 using RED.ViewModels.Input;
 using RED.ViewModels.Input.Controllers;
 using RED.ViewModels.Modules;
+using RED.ViewModels.Navigation;
 using RED.ViewModels.Network;
 using System.IO;
 
@@ -110,6 +111,19 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => InputManager);
             }
         }
+        public WaypointManagerViewModel WaypointManager
+        {
+            get
+            {
+                return _model._waypoint;
+            }
+            set
+            {
+                _model._waypoint = value;
+                NotifyOfPropertyChange(() => WaypointManager);
+            }
+        }
+
         public ScienceViewModel Science
         {
             get
@@ -229,6 +243,18 @@ namespace RED.ViewModels
             {
                 _model._lighting = value;
                 NotifyOfPropertyChange(() => Lighting);
+            }
+        }
+        public MapViewModel Map
+        {
+            get
+            {
+                return _model._map;
+            }
+            set
+            {
+                _model._map = value;
+                NotifyOfPropertyChange(() => Map);
             }
         }
 
@@ -365,6 +391,7 @@ namespace RED.ViewModels
             Autonomy = new AutonomyViewModel(DataRouter, MetadataManager, Console);
             ScienceArm = new ScienceArmViewModel(DataRouter, MetadataManager, Console);
             Lighting = new LightingViewModel(DataRouter, MetadataManager);
+            Map = new MapViewModel();
 
             Drive = new DriveViewModel(null, DataRouter, MetadataManager);
             Arm = new ArmViewModel(null, DataRouter, MetadataManager, Console);
@@ -385,6 +412,8 @@ namespace RED.ViewModels
             InputManager.LoadMappingsFromFile("inputmappings.xml");
             if (File.Exists("inputselections.xml"))
                 InputManager.LoadSelectionsFromFile("inputselections.xml");
+
+            WaypointManager = new WaypointManagerViewModel(Map, GPS, Autonomy);
 
             SettingsManager = new SettingsManagerViewModel(this);
 
