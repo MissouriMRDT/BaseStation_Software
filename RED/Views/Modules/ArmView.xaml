@@ -70,5 +70,31 @@
             <Label Grid.Row="0" Grid.Column="1">Main Current</Label>
             <Label Grid.Row="0" Grid.Column="1" x:Name="CurrentMain" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
         </Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Grid.Row="0">Limit Override</Label>
+            <UniformGrid Rows="1" Grid.Column="1" Grid.Row="0">
+                <Button cal:Message.Attach="LimitSwitchOverride(1)">J1</Button>
+                <Button cal:Message.Attach="LimitSwitchOverride(2)">J2</Button>
+                <Button cal:Message.Attach="LimitSwitchOverride(3)">J3</Button>
+                <Button cal:Message.Attach="LimitSwitchOverride(4)">J4</Button>
+                <Button cal:Message.Attach="LimitSwitchOverride(5)">J5</Button>
+            </UniformGrid>
+            <Label Grid.Column="0" Grid.Row="1">Limit Un-Override</Label>
+            <UniformGrid Rows="1" Grid.Column="1" Grid.Row="1">
+                <Button cal:Message.Attach="LimitSwitchUnOverride(1)">J1</Button>
+                <Button cal:Message.Attach="LimitSwitchUnOverride(2)">J2</Button>
+                <Button cal:Message.Attach="LimitSwitchUnOverride(3)">J3</Button>
+                <Button cal:Message.Attach="LimitSwitchUnOverride(4)">J4</Button>
+                <Button cal:Message.Attach="LimitSwitchUnOverride(5)">J5</Button>
+            </UniformGrid>
+        </Grid>
     </StackPanel>
 </UserControl>

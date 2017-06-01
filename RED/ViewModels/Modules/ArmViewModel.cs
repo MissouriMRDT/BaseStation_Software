@@ -257,6 +257,15 @@ namespace RED.ViewModels.Modules
             _router.Send(_idResolver.GetId("ArmAbsoluteAngle"), data);
         }
 
+        public void LimitSwitchOverride(byte index)
+        {
+            _router.Send(_idResolver.GetId("LimitSwitchOverride"), index);
+        }
+        public void LimitSwitchUnOverride(byte index)
+        {
+            _router.Send(_idResolver.GetId("LimitSwitchUnOverride"), index);
+        }
+
         private JoystickDirections JoystickDirection(float y, float x)
         {
             if (x == 0.0f && y == 0.0f) return JoystickDirections.None;
