@@ -1,4 +1,7 @@
-﻿namespace RED.Models.Modules
+﻿using RED.Contexts;
+using RED.ViewModels.Input;
+using System.Collections.ObjectModel;
+namespace RED.Models.Modules
 {
     internal class ArmModel
     {
@@ -10,5 +13,7 @@
         internal float AngleJ6;
         internal float CurrentMain;
         internal int EndeffectorSpeedLimit = 500;
+        internal ObservableCollection<ArmPositionContext> Positions = new ObservableCollection<ArmPositionContext>();
+        internal ArmPositionContext SelectedPosition;
     }
 }

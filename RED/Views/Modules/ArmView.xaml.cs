@@ -11,5 +11,10 @@ namespace RED.Views.Modules
         {
             InitializeComponent();
         }
+
+        private void HandleSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            e.Handled = true;
+        }
     }
 }

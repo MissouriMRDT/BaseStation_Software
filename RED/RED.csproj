@@ -115,6 +115,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Contexts\ArmPositionContext.cs" />
     <Compile Include="Contexts\CommandMetadataContext.cs" />
     <Compile Include="Contexts\ErrorMetadataContext.cs" />
     <Compile Include="Contexts\InputSelectionContext.cs" />
