@@ -23,6 +23,18 @@ namespace RED.ViewModels.Navigation
                 NotifyOfPropertyChange(() => Map);
             }
         }
+        public GPSViewModel GPSModule
+        {
+            get
+            {
+                return _model.GPSModule;
+            }
+            private set
+            {
+                _model.GPSModule = value;
+                NotifyOfPropertyChange(() => GPSModule);
+            }
+        }
         public AutonomyViewModel AutonomyModule
         {
             get
@@ -50,18 +62,29 @@ namespace RED.ViewModels.Navigation
         }
         public Waypoint SelectedWaypoint { get; set; }
 
-        public WaypointManagerViewModel(MapViewModel map, AutonomyViewModel autonomy)
+        public WaypointManagerViewModel(MapViewModel map, GPSViewModel gps, AutonomyViewModel autonomy)
         {
             _model = new WaypointManagerModel();
 
             Map = map;
+            GPSModule = gps;
             AutonomyModule = autonomy;
+
+            GPSModule.PropertyChanged += GPSModule_PropertyChanged;
 
             Waypoints = new ObservableCollection<Waypoint>();
 
-            Waypoints.Add(new Waypoint(37.951631, -91.777713)); //Rolla
-            Waypoints.Add(new Waypoint(37.850025, -91.701845)); //Fugitive Beach
-            Waypoints.Add(new Waypoint(38.406426, -110.791919)); //Mars Desert Research Station
+        }
+
+        void GPSModule_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "CurrentLocation")
+            {
+                var loc = GPSModule.CurrentLocation;
+                Map.CurrentLocation.Latitude = loc.Latitude;
+                Map.CurrentLocation.Longitude = loc.Longitude;
+                Map.RefreshMap();
+            }
         }
 
         public static double ParseCoordinate(string coord)
@@ -122,6 +145,8 @@ namespace RED.ViewModels.Navigation
         public void RemoveSelectedWaypoint()
         {
             Waypoints.Remove(SelectedWaypoint);
+            Map.Waypoints.Remove(SelectedWaypoint);
+            Map.RefreshMap();
         }
     }
 }

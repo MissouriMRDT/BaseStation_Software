@@ -411,7 +411,7 @@ namespace RED.ViewModels
             if (File.Exists("inputselections.xml"))
                 InputManager.LoadSelectionsFromFile("inputselections.xml");
 
-            WaypointManager = new WaypointManagerViewModel(Map, Autonomy);
+            WaypointManager = new WaypointManagerViewModel(Map, GPS, Autonomy);
 
             SettingsManager = new SettingsManagerViewModel(this);
 

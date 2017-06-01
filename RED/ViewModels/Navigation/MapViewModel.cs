@@ -142,7 +142,7 @@ namespace RED.ViewModels.Navigation
             MainMap.Markers.Clear();
 
             var converter = new RED.Addons.GMapMarkerCollectionMultiConverter();
-            var newdata = (IEnumerable<GMapMarker>)converter.Convert(new object[] { CurrentLocation, Waypoints }, typeof(System.Collections.ObjectModel.ObservableCollection<GMapMarker>), null, System.Globalization.CultureInfo.DefaultThreadCurrentUICulture);
+            var newdata = (IEnumerable<GMapMarker>)converter.Convert(new object[] { CurrentLocation, Waypoints.Where(x => x.IsOnMap) }, typeof(System.Collections.ObjectModel.ObservableCollection<GMapMarker>), null, System.Globalization.CultureInfo.DefaultThreadCurrentUICulture);
             foreach (var marker in newdata)
                 MainMap.Markers.Add(marker);
         }
