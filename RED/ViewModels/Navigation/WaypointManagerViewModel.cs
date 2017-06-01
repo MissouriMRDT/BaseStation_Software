@@ -151,5 +151,16 @@ namespace RED.ViewModels.Navigation
             Map.RefreshMap();
             Waypoints.Remove(SelectedWaypoint);
         }
+
+        public void CurrentLocationToWaypoint()
+        {
+            AddWaypoint(Map.CurrentLocation);
+        }
+
+        public void SendSelectedToAutonomy()
+        {
+            if (SelectedWaypoint != null)
+                AutonomyModule.AddWaypoint(SelectedWaypoint);
+        }
     }
 }

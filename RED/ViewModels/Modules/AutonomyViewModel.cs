@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using RED.Interfaces;
 using RED.Models.Modules;
+using RED.ViewModels.Navigation;
 using System;
 
 namespace RED.ViewModels.Modules
@@ -53,5 +54,13 @@ namespace RED.ViewModels.Modules
             }
         }
 
+        public void AddWaypoint(Waypoint waypoint)
+        {
+            byte[] msg = new byte[2 * sizeof(double)];
+            Buffer.BlockCopy(BitConverter.GetBytes(waypoint.Latitude), 0, msg, 0 * sizeof(double), sizeof(double));
+            Buffer.BlockCopy(BitConverter.GetBytes(waypoint.Longitude), 0, msg, 1 * sizeof(double), sizeof(double));
+
+            _router.Send(_idResolver.GetId("WaypointAdd"), msg);
+        }
     }
 }
