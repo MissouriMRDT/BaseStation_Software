@@ -42,24 +42,35 @@ namespace RED.ViewModels.Navigation
             }
         }
 
-        private GMapControl mainMap = new GMapControl();
+        private GMapControl _mainMap;
         public GMapControl MainMap
         {
             get
             {
-                return mainMap;
+                return _mainMap;
+            }
+            private set
+            {
+                _mainMap = value;
+                NotifyOfPropertyChange(() => MainMap);
             }
         }
 
         public MapViewModel()
         {
             _model = new MapModel();
-            InitializeMapControl();
+            //InitializeMapControl();
 
             //Waypoints.Add(new Waypoint(37.951631, -91.777713)); //Rolla
             //Waypoints.Add(new Waypoint(37.850025, -91.701845)); //Fugitive Beach
             //Waypoints.Add(new Waypoint(38.406426, -110.791919)); //Mars Desert Research Station
             RefreshMap();
+        }
+
+        public void SetMap(GMapControl map)
+        {
+            MainMap = map;
+            InitializeMapControl();
         }
 
         private void InitializeMapControl()
@@ -139,6 +150,7 @@ namespace RED.ViewModels.Navigation
 
         public void RefreshMap()
         {
+            if (MainMap == null) return;
             MainMap.Markers.Clear();
 
             var converter = new RED.Addons.GMapMarkerCollectionMultiConverter();

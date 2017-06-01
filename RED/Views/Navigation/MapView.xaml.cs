@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using RED.ViewModels.Navigation;
+using System.Windows.Controls;
 
 namespace RED.Views.Navigation
 {
@@ -10,6 +11,12 @@ namespace RED.Views.Navigation
         public MapView()
         {
             InitializeComponent();
+        }
+
+        private void Map_DataContextChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
+        {
+            if (DataContext.GetType() == typeof(MapViewModel))
+                ((MapViewModel)(DataContext)).SetMap(Gmap);
         }
     }
 }

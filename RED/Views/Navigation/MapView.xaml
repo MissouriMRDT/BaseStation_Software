@@ -25,6 +25,8 @@
             <Label Content="{Binding MainMap.Zoom}" Width="25" />
             <Slider Value="{Binding MainMap.Zoom}" Minimum="1" Maximum="18" Width="100" Interval="1" IsSnapToTickEnabled="True" />
         </StackPanel>
-        <GroupBox Header="Map" Content="{Binding MainMap}" />
+        <GroupBox Header="Map">
+            <gmap:GMapControl Name="Gmap" DataContextChanged="Map_DataContextChanged" />
+        </GroupBox>
     </DockPanel>
 </UserControl>

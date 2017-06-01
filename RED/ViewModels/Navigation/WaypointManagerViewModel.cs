@@ -74,6 +74,9 @@ namespace RED.ViewModels.Navigation
 
             Waypoints = new ObservableCollection<Waypoint>();
 
+            AddWaypoint(new Waypoint(37.951631, -91.777713)); //Rolla
+            AddWaypoint(new Waypoint(37.850025, -91.701845)); //Fugitive Beach
+            AddWaypoint(new Waypoint(38.406426, -110.791919)); //Mars Desert Research Station
         }
 
         void GPSModule_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -144,9 +147,9 @@ namespace RED.ViewModels.Navigation
 
         public void RemoveSelectedWaypoint()
         {
-            Waypoints.Remove(SelectedWaypoint);
             Map.Waypoints.Remove(SelectedWaypoint);
             Map.RefreshMap();
+            Waypoints.Remove(SelectedWaypoint);
         }
     }
 }
