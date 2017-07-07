@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="RED.Views.Navigation.MapView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:gmap="clr-namespace:GMap.NET.WindowsPresentation;assembly=GMap.NET.WindowsPresentation"
+             xmlns:addons="clr-namespace:RED.Addons"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <addons:GMapMarkerCollectionMultiConverter x:Key="GPSMarkerConverter" />
+    </UserControl.Resources>
+    <DockPanel LastChildFill="True">
+        <Expander Header="Cache Control" DockPanel.Dock="Bottom" ExpandDirection="Up">
+            <UniformGrid Rows="1">
+                <Button x:Name="CacheImport">Import</Button>
+                <Button x:Name="CacheExport">Export</Button>
+                <Button x:Name="CachePrefetch">Prefetch</Button>
+                <Button x:Name="CacheClear">Clear</Button>
+            </UniformGrid>
+        </Expander>
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
+            <Button x:Name="RefreshMap">Refresh</Button>
+            <Label>Zoom:</Label>
+            <Label Content="{Binding MainMap.Zoom}" Width="25" />
+            <Slider Value="{Binding MainMap.Zoom}" Minimum="1" Maximum="18" Width="100" Interval="1" IsSnapToTickEnabled="True" />
+        </StackPanel>
+        <GroupBox Header="Map">
+            <gmap:GMapControl Name="Gmap" DataContextChanged="Map_DataContextChanged" />
+        </GroupBox>
+    </DockPanel>
+</UserControl>

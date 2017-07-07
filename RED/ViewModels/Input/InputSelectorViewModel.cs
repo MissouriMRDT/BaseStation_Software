@@ -118,6 +118,7 @@ namespace RED.ViewModels.Input
         }
 
         public event EventHandler<IInputDevice> SwitchDevice;
+        public event EventHandler<IInputDevice> CycleMode;
 
         public InputSelectorViewModel(ILogger log, IInputMode mode, ObservableCollection<IInputDevice> devices, ObservableCollection<MappingViewModel> mappings)
         {
@@ -150,7 +151,10 @@ namespace RED.ViewModels.Input
                         if (!Enabled) Enable();
                         var rawValues = SelectedDevice.GetValues();
                         var mappedValues = SelectedMapping.Map(rawValues);
-                        Mode.SetValues(mappedValues);
+                        if (CheckForModeCycle(mappedValues))
+                            CycleMode(this, SelectedDevice);
+                        else
+                            Mode.SetValues(mappedValues);
                     }
                     else
                     {
@@ -192,6 +196,11 @@ namespace RED.ViewModels.Input
                 Stop();
             else
                 Start();
+        }
+
+        private bool CheckForModeCycle(Dictionary<string, float> values)
+        {
+            return values.ContainsKey("ModeCycle") && values["ModeCycle"] != 0f;
         }
 
         public InputSelectionContext GetContext()

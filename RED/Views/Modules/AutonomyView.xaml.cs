@@ -21,7 +21,6 @@ namespace RED.Views.Modules
         {
             await PromptCalibrate();
         }
-
         private async Task PromptCalibrate()
         {
             MetroDialogSettings settings = new MetroDialogSettings()

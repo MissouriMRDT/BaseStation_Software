@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using RED.Interfaces;
 using RED.Models.Modules;
+using RED.ViewModels.Navigation;
 using System;
 
 namespace RED.ViewModels.Modules
@@ -11,31 +12,6 @@ namespace RED.ViewModels.Modules
         private IDataRouter _router;
         private IDataIdResolver _idResolver;
         private ILogger _logger;
-
-        public double LatitudeInput
-        {
-            get
-            {
-                return _model.latitudeInput;
-            }
-            set
-            {
-                _model.latitudeInput = value;
-                NotifyOfPropertyChange(() => LatitudeInput);
-            }
-        }
-        public double LongitudeInput
-        {
-            get
-            {
-                return _model.longitudeInput;
-            }
-            set
-            {
-                _model.longitudeInput = value;
-                NotifyOfPropertyChange(() => LongitudeInput);
-            }
-        }
 
         public AutonomyViewModel(IDataRouter router, IDataIdResolver idResolver, ILogger logger)
         {
@@ -58,15 +34,6 @@ namespace RED.ViewModels.Modules
             _router.Send(_idResolver.GetId("AutonomousModeDisable"), new byte[0]);
         }
 
-        public void AddWaypoint()
-        {
-            byte[] msg = new byte[2 * sizeof(double)];
-            Buffer.BlockCopy(BitConverter.GetBytes(LatitudeInput), 0, msg, 0 * sizeof(double), sizeof(double));
-            Buffer.BlockCopy(BitConverter.GetBytes(LongitudeInput), 0, msg, 1 * sizeof(double), sizeof(double));
-
-            _router.Send(_idResolver.GetId("WaypointAdd"), msg);
-        }
-
         public void ClearAllWaypoints()
         {
             _router.Send(_idResolver.GetId("WaypointsClearAll"), new byte[0]);
@@ -87,5 +54,13 @@ namespace RED.ViewModels.Modules
             }
         }
 
+        public void AddWaypoint(Waypoint waypoint)
+        {
+            byte[] msg = new byte[2 * sizeof(double)];
+            Buffer.BlockCopy(BitConverter.GetBytes(waypoint.Latitude), 0, msg, 0 * sizeof(double), sizeof(double));
+            Buffer.BlockCopy(BitConverter.GetBytes(waypoint.Longitude), 0, msg, 1 * sizeof(double), sizeof(double));
+
+            _router.Send(_idResolver.GetId("WaypointAdd"), msg);
+        }
     }
 }

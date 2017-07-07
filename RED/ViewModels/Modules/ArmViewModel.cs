@@ -1,9 +1,14 @@
 ﻿using Caliburn.Micro;
+using RED.Contexts;
 using RED.Interfaces;
 using RED.Interfaces.Input;
 using RED.Models.Modules;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.IO;
+using System.Xml.Serialization;
 
 namespace RED.ViewModels.Modules
 {
@@ -18,6 +23,8 @@ namespace RED.ViewModels.Modules
         private IDataRouter _router;
         private IDataIdResolver _idResolver;
         private ILogger _log;
+
+        private XmlSerializer positionsSerializer = new XmlSerializer(typeof(ArmPositionContext[]));
 
         public string Name { get; private set; }
         public string ModeType { get; private set; }
@@ -122,6 +129,32 @@ namespace RED.ViewModels.Modules
             {
                 _model.EndeffectorSpeedLimit = value;
                 NotifyOfPropertyChange(() => EndeffectorSpeedLimit);
+            }
+        }
+
+        public ObservableCollection<ArmPositionContext> Positions
+        {
+            get
+            {
+                return _model.Positions;
+            }
+            private set
+            {
+                _model.Positions = value;
+                NotifyOfPropertyChange(() => Positions);
+            }
+
+        }
+        public ArmPositionContext SelectedPosition
+        {
+            get
+            {
+                return _model.SelectedPosition;
+            }
+            set
+            {
+                _model.SelectedPosition = value;
+                NotifyOfPropertyChange(() => SelectedPosition);
             }
         }
 
@@ -255,6 +288,59 @@ namespace RED.ViewModels.Modules
             byte[] data = new byte[angles.Length * sizeof(float)];
             Buffer.BlockCopy(angles, 0, data, 0, data.Length);
             _router.Send(_idResolver.GetId("ArmAbsoluteAngle"), data);
+        }
+
+        public void LimitSwitchOverride(byte index)
+        {
+            _router.Send(_idResolver.GetId("LimitSwitchOverride"), index);
+        }
+        public void LimitSwitchUnOverride(byte index)
+        {
+            _router.Send(_idResolver.GetId("LimitSwitchUnOverride"), index);
+        }
+
+        public void RecallPosition()
+        {
+            AngleJ1 = SelectedPosition.J1;
+            AngleJ2 = SelectedPosition.J2;
+            AngleJ3 = SelectedPosition.J3;
+            AngleJ4 = SelectedPosition.J4;
+            AngleJ5 = SelectedPosition.J5;
+            AngleJ6 = SelectedPosition.J6;
+        }
+        public void StorePosition()
+        {
+            Positions.Add(new ArmPositionContext()
+                {
+                    Name = "Unnamed Position",
+                    J1 = AngleJ1,
+                    J2 = AngleJ2,
+                    J3 = AngleJ3,
+                    J4 = AngleJ4,
+                    J5 = AngleJ5,
+                    J6 = AngleJ6
+                });
+        }
+        public void DeletePosition()
+        {
+            Positions.Remove(SelectedPosition);
+        }
+        public void SavePositionsToFile(string url)
+        {
+            using (var stream = new FileStream(url, FileMode.Create))
+            {
+                positionsSerializer.Serialize(stream, Positions.ToArray());
+            }
+        }
+        public void LoadPositionsFromFile(string url)
+        {
+            using (var stream = File.OpenRead(url))
+            {
+                ArmPositionContext[] savedPositions = (ArmPositionContext[])positionsSerializer.Deserialize(stream);
+
+                foreach (var position in savedPositions)
+                    Positions.Add(position);
+            }
         }
 
         private JoystickDirections JoystickDirection(float y, float x)

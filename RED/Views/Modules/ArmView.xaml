@@ -30,35 +30,53 @@
             <Button cal:Message.Attach="EnableCommand('Endeff', 'False')">Endeff</Button>
             <Button cal:Message.Attach="EnableCommand('Servo', 'False')">Servo</Button>
         </UniformGrid>
-        <Grid Margin="0 10 0 10">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="3*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="3*" />
-            </Grid.ColumnDefinitions>
-            <Label Grid.Row="0" Grid.Column="0">J1</Label>
-            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding AngleJ1, StringFormat=0.##}" />
-            <Label Grid.Row="0" Grid.Column="2">J2</Label>
-            <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding AngleJ2, StringFormat=0.##}" />
-            <Label Grid.Row="1" Grid.Column="0">J3</Label>
-            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding AngleJ3, StringFormat=0.##}" />
-            <Label Grid.Row="1" Grid.Column="2">J4</Label>
-            <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding AngleJ4, StringFormat=0.##}" />
-            <Label Grid.Row="2" Grid.Column="0">J5</Label>
-            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding AngleJ5, StringFormat=0.##}" />
-            <Label Grid.Row="2" Grid.Column="2">J6</Label>
-            <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding AngleJ6, StringFormat=0.##}" />
-        </Grid>
-        <UniformGrid Rows="1">
-            <Button x:Name="GetPosition">Get Position</Button>
-            <Button x:Name="SetPosition">Set Position</Button>
-        </UniformGrid>
+        <Expander Header="Closed Loop">
+            <StackPanel>
+                <Grid Margin="0 10 0 10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="3*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0">J1</Label>
+                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding AngleJ1, StringFormat=0.##}" />
+                    <Label Grid.Row="0" Grid.Column="2">J2</Label>
+                    <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding AngleJ2, StringFormat=0.##}" />
+                    <Label Grid.Row="1" Grid.Column="0">J3</Label>
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding AngleJ3, StringFormat=0.##}" />
+                    <Label Grid.Row="1" Grid.Column="2">J4</Label>
+                    <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding AngleJ4, StringFormat=0.##}" />
+                    <Label Grid.Row="2" Grid.Column="0">J5</Label>
+                    <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding AngleJ5, StringFormat=0.##}" />
+                    <Label Grid.Row="2" Grid.Column="2">J6</Label>
+                    <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding AngleJ6, StringFormat=0.##}" />
+                </Grid>
+                <UniformGrid Rows="1">
+                    <Button x:Name="GetPosition">Get Position</Button>
+                    <Button x:Name="SetPosition">Set Position</Button>
+                </UniformGrid>
+                <Border BorderThickness="1" BorderBrush="Gray">
+                    <ListBox x:Name="Positions" SelectedItem="{Binding SelectedPosition}" Height="100" SelectionChanged="HandleSelectionChanged">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ListBox>
+                </Border>
+                <UniformGrid Rows="1">
+                    <Button x:Name="StorePosition">Store</Button>
+                    <Button x:Name="RecallPosition">Recall</Button>
+                    <Button x:Name="DeletePosition">Delete</Button>
+                </UniformGrid>
+            </StackPanel>
+        </Expander>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
@@ -69,6 +87,32 @@
             </Grid.ColumnDefinitions>
             <Label Grid.Row="0" Grid.Column="1">Main Current</Label>
             <Label Grid.Row="0" Grid.Column="1" x:Name="CurrentMain" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
+        </Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Grid.Row="0">Limit Override</Label>
+            <UniformGrid Rows="1" Grid.Column="1" Grid.Row="0">
+                <Button cal:Message.Attach="LimitSwitchOverride(1)">J1</Button>
+                <Button cal:Message.Attach="LimitSwitchOverride(2)">J2</Button>
+                <Button cal:Message.Attach="LimitSwitchOverride(3)">J3</Button>
+                <Button cal:Message.Attach="LimitSwitchOverride(4)">J4</Button>
+                <Button cal:Message.Attach="LimitSwitchOverride(5)">J5</Button>
+            </UniformGrid>
+            <Label Grid.Column="0" Grid.Row="1">Limit Un-Override</Label>
+            <UniformGrid Rows="1" Grid.Column="1" Grid.Row="1">
+                <Button cal:Message.Attach="LimitSwitchUnOverride(1)">J1</Button>
+                <Button cal:Message.Attach="LimitSwitchUnOverride(2)">J2</Button>
+                <Button cal:Message.Attach="LimitSwitchUnOverride(3)">J3</Button>
+                <Button cal:Message.Attach="LimitSwitchUnOverride(4)">J4</Button>
+                <Button cal:Message.Attach="LimitSwitchUnOverride(5)">J5</Button>
+            </UniformGrid>
         </Grid>
     </StackPanel>
 </UserControl>

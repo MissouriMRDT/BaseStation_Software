@@ -3,7 +3,6 @@ using RED.Addons;
 using RED.Interfaces;
 using RED.Models.Modules;
 using System;
-using System.Collections.ObjectModel;
 using System.IO;
 
 namespace RED.ViewModels.Modules
@@ -145,19 +144,6 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public ObservableCollection<GPSCoordinate> Waypoints
-        {
-            get
-            {
-                return _model.waypoints;
-            }
-            set
-            {
-                _model.waypoints = value;
-                NotifyOfPropertyChange(() => Waypoints);
-            }
-        }
-
         public GPSViewModel(IDataRouter router, IDataIdResolver idResolver)
         {
             _model = new GPSModel();
@@ -170,10 +156,6 @@ namespace RED.ViewModels.Modules
             _router.Subscribe(this, _idResolver.GetId("GPSSpeedAngle"));
             _router.Subscribe(this, _idResolver.GetId("GPSAltitude"));
             _router.Subscribe(this, _idResolver.GetId("GPSSatellites"));
-
-            Waypoints.Add(new GPSCoordinate(37.951631, -91.777713));//Rolla
-            Waypoints.Add(new GPSCoordinate(37.850025, -91.701845));//Fugitive Beach
-            Waypoints.Add(new GPSCoordinate(38.406426, -110.791919));//Mars Desert Research Station
         }
 
         public void ReceiveFromRouter(ushort dataId, byte[] data)

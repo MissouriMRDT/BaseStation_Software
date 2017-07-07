@@ -10,21 +10,6 @@
             <Button x:Name="EnableMode">Enable</Button>
             <Button x:Name="DisableMode">Disable</Button>
         </UniformGrid>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Label Grid.Row="0" Grid.Column="0">Lat</Label>
-            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding LatitudeInput, StringFormat=G}" />
-            <Label Grid.Row="1" Grid.Column="0">Lon</Label>
-            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding LongitudeInput, StringFormat=G}" />
-        </Grid>
-        <Button x:Name="AddWaypoint">Add Waypoint</Button>
         <Button x:Name="ClearAllWaypoints">Clear All Waypoints</Button>
         <Button Click="Calibrate_Click">Calibrate</Button>
     </StackPanel>
