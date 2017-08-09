@@ -20,7 +20,9 @@ namespace RED.ViewModels.Modules
             {
                 _model.Enabled = value;
                 NotifyOfPropertyChange(() => Enabled);
-                if (!value)
+                if (value)
+                    SendColors();
+                else
                     TurnOff();
             }
         }
