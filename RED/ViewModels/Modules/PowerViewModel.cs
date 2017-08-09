@@ -416,7 +416,7 @@ namespace RED.ViewModels.Modules
                 case "BMSTemperature2": BMSTemperature2 = BitConverter.ToSingle(data, 0); break;
 
                 case "PowerBusOverCurrentNotification":
-                    _log.Log("Overcurrent notification from Powerboard from Bus Index " + data[0].ToString());
+                    _log.Log("Overcurrent notification from Powerboard from Bus Index {0}", data[0]);
                     break;
                 case "BMSPackOvercurrent":
                     _log.Log("Overcurrent notification from BMS");
@@ -431,17 +431,17 @@ namespace RED.ViewModels.Modules
                 switch (_idResolver.GetName(dataId))
                 {
                     case "PowerBusOverCurrentNotification":
-                        LogFile.WriteLine(String.Format("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, {2}", DateTime.Now, dataId, "Power Overcurrent: Bus " + data[0].ToString()));
+                        LogFile.WriteLine("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, Power Overcurrent: Bus {2}", DateTime.Now, dataId, data[0]);
                         break;
                     case "BMSPackOvercurrent":
-                        LogFile.WriteLine(String.Format("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, {2}", DateTime.Now, dataId, "BMS Overcurrent"));
+                        LogFile.WriteLine("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, BMS Overcurrent", DateTime.Now, dataId);
                         break;
                     case "BMSPackUndervoltage":
-                        LogFile.WriteLine(String.Format("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, {2}", DateTime.Now, dataId, "BMS Undervoltage"));
+                        LogFile.WriteLine("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, BMS Undervoltage", DateTime.Now, dataId);
                         break;
                     default:
                         if (data.Length != 4) break;
-                        LogFile.WriteLine(String.Format("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, {2}", DateTime.Now, dataId, BitConverter.ToSingle(data, 0)));
+                        LogFile.WriteLine("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, {2}", DateTime.Now, dataId, BitConverter.ToSingle(data, 0));
                         break;
                 }
                 LogFile.Flush();

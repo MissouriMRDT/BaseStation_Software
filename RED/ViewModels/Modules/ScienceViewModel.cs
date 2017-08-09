@@ -310,7 +310,7 @@ namespace RED.ViewModels.Modules
                     await client.GetStream().CopyToAsync(file);
                 }
             }
-            _log.Log("Spectrometer data downloaded into " + filename + ".");
+            _log.Log("Spectrometer data downloaded into {0}.", filename);
         }
 
         public void RequestLaserOn()

@@ -48,7 +48,7 @@ namespace RED.ViewModels
                 Telemetry.AddRange(save.Telemetry);
                 Errors.AddRange(save.Errors);
 
-                _log.Log("Metadata loaded from file \"" + url + "\"");
+                _log.Log("Metadata loaded from file \"{0}\"", url);
             }
         }
         public void SaveToFile(string url)
@@ -135,7 +135,7 @@ namespace RED.ViewModels
             var data = GetMetadata(name);
             if (data == null)
             {
-                _log.Log("DataId for \"" + name + "\" not found.");
+                _log.Log("DataId for \"{0}\" not found.", name);
                 return (ushort)0;
             }
             return data.Id;
@@ -158,7 +158,7 @@ namespace RED.ViewModels
                 return ip;
             else
             {
-                _log.Log("Error Parsing IP Address for DataId " + dataId.ToString());
+                _log.Log("Error Parsing IP Address for DataId {0}", dataId);
                 return null;
             }
         }

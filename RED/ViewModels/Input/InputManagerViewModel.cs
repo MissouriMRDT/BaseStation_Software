@@ -143,7 +143,7 @@ namespace RED.ViewModels.Input
                 foreach (MappingViewModel mapping in savedMappings)
                     Mappings.Add(mapping);
 
-                _log.Log("Input Mappings loaded from file \"" + url + "\"");
+                _log.Log("Input Mappings loaded from file \"{0}\"", url);
             }
         }
 

@@ -186,7 +186,7 @@ namespace RED.ViewModels.Modules
                     AngleJ6 = BitConverter.ToSingle(data, 5 * sizeof(float));
                     break;
                 case "ArmFault":
-                    _log.Log("Arm reported a fault code of " + data[0]);
+                    _log.Log("Arm reported a fault code of {0}", data[0]);
                     break;
                 case "ArmCurrentMain":
                     CurrentMain = BitConverter.ToSingle(data, 0);
