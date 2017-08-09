@@ -2,7 +2,6 @@
 using RED.Interfaces;
 using RED.Models;
 using System;
-using System.Globalization;
 
 namespace RED.ViewModels
 {
@@ -23,10 +22,10 @@ namespace RED.ViewModels
             }
         }
 
-        public void Log(string text)
+        public void Log(string text, params object[] args)
         {
-            var timeStamp = DateTime.Now.ToString("HH:mm:ss.ff", CultureInfo.InvariantCulture);
-            var newText = String.Format("{0}: {1} {2}", timeStamp, text, Environment.NewLine);
+            var msg = String.Format(text, args);
+            var newText = String.Format("{0:HH:mm:ss.ff}: {1} {2}", DateTime.Now, msg, Environment.NewLine);
             ConsoleText += newText;
         }
     }
