@@ -7,5 +7,8 @@ namespace RED.Models.Navigation
     {
         internal Waypoint currentLocation = new Waypoint(0, 0);
         internal ObservableCollection<Waypoint> waypoints = new ObservableCollection<Waypoint>();
+
+        internal int CachePrefetchStartZoom;
+        internal int CachePrefetchStopZoom;
     }
 }

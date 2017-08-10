@@ -42,6 +42,31 @@ namespace RED.ViewModels.Navigation
             }
         }
 
+        public int CachePrefetchStartZoom
+        {
+            get
+            {
+                return _model.CachePrefetchStartZoom;
+            }
+            set
+            {
+                _model.CachePrefetchStartZoom = value;
+                NotifyOfPropertyChange(() => CachePrefetchStartZoom);
+            }
+        }
+        public int CachePrefetchStopZoom
+        {
+            get
+            {
+                return _model.CachePrefetchStopZoom;
+            }
+            set
+            {
+                _model.CachePrefetchStopZoom = value;
+                NotifyOfPropertyChange(() => CachePrefetchStopZoom);
+            }
+        }
+
         private GMapControl _mainMap;
         public GMapControl MainMap
         {
@@ -71,6 +96,8 @@ namespace RED.ViewModels.Navigation
         {
             MainMap = map;
             InitializeMapControl();
+            CachePrefetchStartZoom = MainMap.MinZoom;
+            CachePrefetchStopZoom = MainMap.MaxZoom;
         }
 
         private void InitializeMapControl()
@@ -104,47 +131,28 @@ namespace RED.ViewModels.Navigation
         public void CachePrefetch()
         {
             RectLatLng area = MainMap.SelectedArea;
-            if (!area.IsEmpty)
+            if (area.IsEmpty)
             {
-                for (int i = (int)MainMap.Zoom; i <= MainMap.MaxZoom; i++)
-                {
-                    MessageBoxResult res = MessageBox.Show("Ready ripp at Zoom = " + i + " ?", "GMap.NET", MessageBoxButton.YesNoCancel);
-
-                    if (res == MessageBoxResult.Yes)
-                    {
-                        TilePrefetcher obj = new TilePrefetcher();
-                        obj.Owner = Application.Current.MainWindow;
-                        obj.ShowCompleteMessage = true;
-                        obj.Start(area, i, MainMap.MapProvider, 100);
-                    }
-                    else if (res == MessageBoxResult.No)
-                    {
-                        continue;
-                    }
-                    else if (res == MessageBoxResult.Cancel)
-                    {
-                        break;
-                    }
-                }
+                MessageBox.Show("Select map area holding ALT", "GMap.NET", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
-            else
+
+            for (int zoomLevel = CachePrefetchStartZoom; zoomLevel <= CachePrefetchStopZoom; zoomLevel++)
             {
-                MessageBox.Show("Select map area holding ALT", "GMap.NET", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                TilePrefetcher obj = new TilePrefetcher();
+                obj.Owner = Application.Current.MainWindow; 
+                obj.Start(area, zoomLevel, MainMap.MapProvider, 100);
             }
         }
         public void CacheClear()
         {
-            if (MessageBox.Show("Are You sure?", "Clear GMap.NET cache?", MessageBoxButton.OKCancel, MessageBoxImage.Warning) == MessageBoxResult.OK)
+            try
             {
-                try
-                {
-                    MainMap.Manager.PrimaryCache.DeleteOlderThan(System.DateTime.Now, null);
-                    MessageBox.Show("Done. Cache is clear.");
-                }
-                catch (System.Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
+                MainMap.Manager.PrimaryCache.DeleteOlderThan(System.DateTime.Now, null);
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 
