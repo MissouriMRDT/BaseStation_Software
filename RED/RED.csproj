@@ -121,9 +121,11 @@
     <Compile Include="Contexts\MetadataSaveContext.cs" />
     <Compile Include="Contexts\TelemetryMetadataContext.cs" />
     <Compile Include="Images\ModernUIIcons.cs" />
+    <Compile Include="Interfaces\IConfigurationManager.cs" />
     <Compile Include="Interfaces\IDataIdResolver.cs" />
     <Compile Include="Interfaces\ILogger.cs" />
     <Compile Include="Interfaces\Input\IInputMode.cs" />
+    <Compile Include="Interfaces\IConfigurationFile.cs" />
     <Compile Include="Interfaces\Network\IIPAddressProvider.cs" />
     <Compile Include="Interfaces\IMetadata.cs" />
     <Compile Include="Interfaces\Input\IInputDevice.cs" />
@@ -193,6 +195,7 @@
     <Compile Include="ViewModels\Settings\Modules\GPSSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Input\InputSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Modules\ScienceSettingsViewModel.cs" />
+    <Compile Include="ViewModels\XMLConfigManager.cs" />
     <Compile Include="Views\ControlCenterView.xaml.cs">
       <DependentUpon>ControlCenterView.xaml</DependentUpon>
     </Compile>
