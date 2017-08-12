@@ -425,7 +425,7 @@ namespace RED.ViewModels
 
             WaypointManager = new WaypointManagerViewModel(Map, GPS, Autonomy);
 
-            SettingsManager = new SettingsManagerViewModel(this);
+            SettingsManager = new SettingsManagerViewModel(ConfigManager, this);
 
             InputManager.Start();
             //DataRouter.Send(100, new byte[] { 10, 20, 30, 40 });

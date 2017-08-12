@@ -1,4 +1,6 @@
 ﻿using Caliburn.Micro;
+using RED.Contexts;
+using RED.Interfaces;
 using RED.Models;
 using RED.ViewModels.Settings.Input;
 using RED.ViewModels.Settings.Input.Controllers;
@@ -9,8 +11,16 @@ namespace RED.ViewModels
     public class SettingsManagerViewModel : PropertyChangedBase
     {
         private SettingsManagerModel _model;
+        private IConfigurationManager _configManager;
         private ControlCenterViewModel _controlCenter;
 
+        private const string SettingsFileName = "GeneralSettings";
+
+        public REDSettingsContext CurrentSettingsConfig
+        {
+            get;
+            private set;
+        }
         public Properties.Settings CurrentSettings
         {
             get
@@ -80,10 +90,14 @@ namespace RED.ViewModels
             }
         }
 
-        public SettingsManagerViewModel(ControlCenterViewModel cc)
+        public SettingsManagerViewModel(IConfigurationManager configManager, ControlCenterViewModel cc)
         {
             _model = new SettingsManagerModel();
             _controlCenter = cc;
+            _configManager = configManager;
+
+            _configManager.AddRecord(SettingsFileName, GetDefaultConfig());
+            CurrentSettingsConfig = _configManager.GetConfig<REDSettingsContext>(SettingsFileName);
 
             Drive = new DriveSettingsViewModel(this, cc.Drive);
             Science = new ScienceSettingsViewModel(this, cc.Science);
@@ -95,6 +109,14 @@ namespace RED.ViewModels
         public void SaveSettings()
         {
             CurrentSettings.Save();
+            _configManager.SetConfig(SettingsFileName, CurrentSettingsConfig);
+        }
+
+        static REDSettingsContext GetDefaultConfig()
+        {
+            return new REDSettingsContext()
+            {
+            };
         }
     }
 }

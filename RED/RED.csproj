@@ -118,6 +118,7 @@
     <Compile Include="Contexts\CommandMetadataContext.cs" />
     <Compile Include="Contexts\ConfigurationFile.cs" />
     <Compile Include="Contexts\ErrorMetadataContext.cs" />
+    <Compile Include="Contexts\REDSettingsContext.cs" />
     <Compile Include="Contexts\InputMappingsContext.cs" />
     <Compile Include="Contexts\InputSelectionContext.cs" />
     <Compile Include="Contexts\MetadataSaveContext.cs" />
