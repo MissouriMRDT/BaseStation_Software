@@ -139,7 +139,7 @@ namespace RED.ViewModels.Input
                 return;
             }
 
-            SwitchDevice(this, SelectedDevice);
+            if (SwitchDevice != null) SwitchDevice(this, SelectedDevice);
 
             try
             {
@@ -151,7 +151,7 @@ namespace RED.ViewModels.Input
                         if (!Enabled) Enable();
                         var rawValues = SelectedDevice.GetValues();
                         var mappedValues = SelectedMapping.Map(rawValues);
-                        if (CheckForModeCycle(mappedValues))
+                        if (CheckForModeCycle(mappedValues) && (CycleMode != null))
                             CycleMode(this, SelectedDevice);
                         else
                             Mode.SetValues(mappedValues);
