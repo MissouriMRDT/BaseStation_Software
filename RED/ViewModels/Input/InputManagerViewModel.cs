@@ -15,9 +15,7 @@ namespace RED.ViewModels.Input
     {
         InputManagerModel _model;
         ILogger _log;
-
-        private XmlSerializer mappingsSerializer = new XmlSerializer(typeof(MappingViewModel[]));
-        private XmlSerializer selectionsSerializer = new XmlSerializer(typeof(InputSelectionContext[]));
+        IConfigurationManager _configManager;
 
         public int DefaultSerialReadSpeed
         {
@@ -82,23 +80,22 @@ namespace RED.ViewModels.Input
             }
         }
 
-        public InputManagerViewModel(ILogger log, IInputDevice[] devices, MappingViewModel[] mappings, IInputMode[] modes)
+        public InputManagerViewModel(ILogger log, IConfigurationManager configs, IInputDevice[] devices, MappingViewModel[] mappings, IInputMode[] modes)
         {
             _model = new InputManagerModel();
             _log = log;
+            _configManager = configs;
 
             Devices = new ObservableCollection<IInputDevice>(devices);
             Mappings = new ObservableCollection<MappingViewModel>(mappings);
             Modes = new ObservableCollection<IInputMode>(modes);
             Selectors = new ObservableCollection<InputSelectorViewModel>();
 
-            foreach (IInputMode mode in Modes)
-                Selectors.Add(new InputSelectorViewModel(_log, mode, Devices, Mappings));
-            foreach (var selector in Selectors)
-            {
-                selector.SwitchDevice += SelectorSwitchDevice;
-                selector.CycleMode += SelectorCycleMode;
-            }
+            _configManager.AddRecord("InputMappings", DefaultInputMappings);
+            _configManager.AddRecord("InputSelections", DefaultInputSelections);
+
+            InitializeMappings(_configManager.GetConfig<InputMappingsContext>("InputMappings"));
+            InitializeSelections(_configManager.GetConfig<InputSelectionsContext>("InputSelections"));
         }
 
         private void SelectorSwitchDevice(object sender, IInputDevice device)
@@ -126,45 +123,83 @@ namespace RED.ViewModels.Input
             Devices.Add(device);
         }
 
-        public void SaveMappingsToFile(string url)
+        public void SaveConfigurations()
         {
-            using (var stream = new FileStream(url, FileMode.Create))
-            {
-                mappingsSerializer.Serialize(stream, Mappings.ToArray());
-            }
+            _configManager.SetConfig("InputMappings", new InputMappingsContext(Mappings.ToArray()));
+            _configManager.SetConfig("InputSelections", new InputSelectionsContext(Selectors.Select(x => x.GetContext()).ToArray()));
         }
 
-        public void LoadMappingsFromFile(string url)
+        private void InitializeMappings(InputMappingsContext config)
         {
-            using (var stream = File.OpenRead(url))
-            {
-                MappingViewModel[] savedMappings = (MappingViewModel[])mappingsSerializer.Deserialize(stream);
+            foreach (MappingViewModel mapping in config.Mappings)
+                Mappings.Add(mapping);
 
-                foreach (MappingViewModel mapping in savedMappings)
-                    Mappings.Add(mapping);
-
-                _log.Log("Input Mappings loaded from file \"{0}\"", url);
-            }
+            _log.Log("Input Mappings loaded");
         }
 
-        public void SaveSelectionsToFile(string url)
+        private void InitializeSelections(InputSelectionsContext config)
         {
-            using (var stream = new FileStream(url, FileMode.Create))
+            foreach (IInputMode mode in Modes)
+                Selectors.Add(new InputSelectorViewModel(_log, mode, Devices, Mappings));
+
+            foreach (var selector in Selectors)
             {
-                selectionsSerializer.Serialize(stream, Selectors.Select(x => x.GetContext()).ToArray());
+                selector.SwitchDevice += SelectorSwitchDevice;
+                selector.CycleMode += SelectorCycleMode;
             }
+
+            foreach (InputSelectionContext selection in config.Selections)
+                foreach (var selector in Selectors.Where(x => x.Mode.Name == selection.ModeName))
+                    selector.SetContext(selection);
         }
 
-        public void LoadSelectionsFromFile(string url)
-        {
-            using (var stream = File.OpenRead(url))
-            {
-                InputSelectionContext[] savedSelections = (InputSelectionContext[])selectionsSerializer.Deserialize(stream);
+        public static InputMappingsContext DefaultInputMappings = new InputMappingsContext(new[] {
+            new MappingViewModel("Tank Drive (Traditional)", "Xbox", "Drive", 30, new[] { 
+                new MappingChannelViewModel("JoyStick1Y", "WheelsLeft"){ Parabolic = true },
+                new MappingChannelViewModel("JoyStick2Y", "WheelsRight"){ Parabolic = true },
+                new MappingChannelViewModel("ButtonStartDebounced", "ModeCycle"){ Parabolic = true } }),
+            new MappingViewModel("Diagonal Drive", "FlightStick", "Drive", 30, new[] { 
+                new MappingChannelViewModel("X", "WheelsLeft"){ Parabolic = true },
+                new MappingChannelViewModel("Y", "WheelsRight"){ Parabolic = true } }),
+            new MappingViewModel("Vector Drive", "FlightStick", "Drive", 30, new[] { 
+                new MappingChannelViewModel("X", "VectorX"),
+                new MappingChannelViewModel("Y", "VectorY"),
+                new MappingChannelViewModel("Slider0", "Throttle") }),
+            new MappingViewModel("Arm (Traditional)", "Xbox", "Arm", 200, new[] { 
+                new MappingChannelViewModel("JoyStick1Y", "ElbowBend"){ Parabolic = true },
+                new MappingChannelViewModel("JoyStick1X", "ElbowTwist"){ Parabolic = true },
+                new MappingChannelViewModel("JoyStick2Y", "WristTwist"){ Parabolic = true, LinearScaling = -1 },
+                new MappingChannelViewModel("JoyStick2X", "WristBend"){ Parabolic = true },
+                new MappingChannelViewModel("DPadU", "ShoulderBendForward"),
+                new MappingChannelViewModel("DPadD", "ShoulderBendBackward"),
+                new MappingChannelViewModel("DPadR", "ShoulderTwistForward"),
+                new MappingChannelViewModel("DPadL", "ShoulderTwistBackward"),
+                new MappingChannelViewModel("ButtonY", "DebouncedArmReset"),
+                new MappingChannelViewModel("LeftTrigger", "GripperOpen"),
+                new MappingChannelViewModel("RightTrigger", "GripperClose"),
+                new MappingChannelViewModel("ButtonRb", "ServoClockwise"),
+                new MappingChannelViewModel("ButtonLb", "ServoCounterClockwise"),
+                new MappingChannelViewModel("ButtonB", "TowRopeOut"),
+                new MappingChannelViewModel("ButtonX", "TowRopeIn"),
+                new MappingChannelViewModel("ButtonStartDebounced", "ModeCycle"){ Parabolic = true } }),
+            new MappingViewModel("Xbox Science Arm", "Xbox", "ScienceArm", 30, new[] { 
+                new MappingChannelViewModel("JoyStick1Y", "Arm"){ Parabolic = true },
+                new MappingChannelViewModel("JoyStick2Y", "Drill"){ Parabolic = true },
+                new MappingChannelViewModel("ButtonStartDebounced", "ModeCycle"){ Parabolic = true } }),
+            new MappingViewModel("Xbox Gimbal", "Xbox", "Gimbal", 30, new[] { 
+                new MappingChannelViewModel("JoyStick1X", "Pan"){ Parabolic = true },
+                new MappingChannelViewModel("JoyStick1Y", "Tilt"){ Parabolic = true },
+                new MappingChannelViewModel("ButtonY", "ZoomIn"){ Parabolic = true },
+                new MappingChannelViewModel("ButtonA", "ZoomOut"){ Parabolic = true },
+                new MappingChannelViewModel("ButtonStartDebounced", "ModeCycle"){ Parabolic = true } })
+        });
 
-                foreach (InputSelectionContext selection in savedSelections)
-                    foreach (var selector in Selectors.Where(x => x.Mode.Name == selection.ModeName))
-                        selector.SetContext(selection);
-            }
-        }
+        public static InputSelectionsContext DefaultInputSelections = new InputSelectionsContext(new[] {
+            new InputSelectionContext("Drive", "Xbox 1", "Tank Drive (Traditional)", true),
+            new InputSelectionContext("Arm", "Xbox 1", "Arm (Traditional)", false),
+            new InputSelectionContext("Gimbal 1", "Xbox 1", "Xbox Gimbal",false),
+            new InputSelectionContext("Gimbal 2", "Xbox 1", "Xbox Gimbal",false),
+            new InputSelectionContext("Science Arm", "Xbox 1", "Xbox Science Arm", false)
+        });
     }
 }

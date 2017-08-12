@@ -205,13 +205,12 @@ namespace RED.ViewModels.Input
 
         public InputSelectionContext GetContext()
         {
-            return new InputSelectionContext()
-            {
-                ModeName = Mode == null ? "" : Mode.Name,
-                DeviceName = SelectedDevice == null ? "" : SelectedDevice.Name,
-                MappingName = SelectedMapping == null ? "" : SelectedMapping.Name,
-                Active = IsRunning
-            };
+            return new InputSelectionContext(
+                modeName: Mode == null ? "" : Mode.Name,
+                deviceName: SelectedDevice == null ? "" : SelectedDevice.Name,
+                mappingName: SelectedMapping == null ? "" : SelectedMapping.Name,
+                active: IsRunning
+            );
         }
 
         public void SetContext(InputSelectionContext context)

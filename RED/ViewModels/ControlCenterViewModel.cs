@@ -418,13 +418,10 @@ namespace RED.ViewModels
             XboxController4 = new XboxControllerInputViewModel(4, StateManager);
             FlightStickController = new FlightStickViewModel();
 
-            InputManager = new InputManagerViewModel(Console,
+            InputManager = new InputManagerViewModel(Console, ConfigManager,
                 new IInputDevice[] { XboxController1, XboxController2, XboxController3, XboxController4, FlightStickController },
                 new MappingViewModel[0],
                 new IInputMode[] { Drive, Arm, Gimbal1, Gimbal2, ScienceArm });
-            InputManager.LoadMappingsFromFile("inputmappings.xml");
-            if (File.Exists("inputselections.xml"))
-                InputManager.LoadSelectionsFromFile("inputselections.xml");
 
             WaypointManager = new WaypointManagerViewModel(Map, GPS, Autonomy);
 
@@ -439,7 +436,7 @@ namespace RED.ViewModels
 
         protected override void OnDeactivate(bool close)
         {
-            InputManager.SaveSelectionsToFile("inputselections.xml");
+            InputManager.SaveConfigurations();
             Arm.SavePositionsToFile("armpositions.xml");
             base.OnDeactivate(close);
         }

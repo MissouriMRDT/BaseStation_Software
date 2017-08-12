@@ -74,11 +74,21 @@ namespace RED.ViewModels.Input
 
         }
 
-        public MappingViewModel()
+        private MappingViewModel()
         {
             _model = new MappingModel();
 
             Channels = new ObservableCollection<MappingChannelViewModel>();
+        }
+
+        public MappingViewModel(string name, string deviceType, string modeType, int updatePeriod, IEnumerable<MappingChannelViewModel> channels)
+            : this()
+        {
+            Name = name;
+            Channels = new ObservableCollection<MappingChannelViewModel>(channels);
+            DeviceType = deviceType;
+            ModeType = modeType;
+            UpdatePeriod = updatePeriod;
         }
 
         public Dictionary<string, float> Map(Dictionary<string, float> values)
