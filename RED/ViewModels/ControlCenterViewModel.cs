@@ -51,6 +51,18 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange();
             }
         }
+        public XMLConfigManager ConfigManager
+        {
+            get
+            {
+                return _model._configManager;
+            }
+            set
+            {
+                _model._configManager = value;
+                NotifyOfPropertyChange();
+            }
+        }
         public DataRouter DataRouter
         {
             get
@@ -373,6 +385,7 @@ namespace RED.ViewModels
             _model = new ControlCenterModel();
 
             Console = new ConsoleViewModel();
+            ConfigManager = new XMLConfigManager(Console);
             DataRouter = new DataRouter();
             MetadataManager = new MetadataManager(Console);
             MetadataManager.AddFromFile("NoSyncMetadata.xml");
