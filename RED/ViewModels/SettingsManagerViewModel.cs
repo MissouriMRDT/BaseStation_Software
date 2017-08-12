@@ -100,7 +100,7 @@ namespace RED.ViewModels
             CurrentSettingsConfig = _configManager.GetConfig<REDSettingsContext>(SettingsFileName);
 
             Drive = new DriveSettingsViewModel(this, cc.Drive);
-            Science = new ScienceSettingsViewModel(this, cc.Science);
+            Science = new ScienceSettingsViewModel(CurrentSettingsConfig.Science, cc.Science);
             Input = new InputSettingsViewModel(this, cc.InputManager);
             Xbox = new XboxControllerInputSettingsViewModel(this, cc.XboxController1);
             GPS = new GPSSettingsViewModel(this, cc.GPS);
@@ -116,6 +116,7 @@ namespace RED.ViewModels
         {
             return new REDSettingsContext()
             {
+                Science = ScienceSettingsViewModel.DefaultConfig
             };
         }
     }

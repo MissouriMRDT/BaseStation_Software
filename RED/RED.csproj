@@ -122,6 +122,7 @@
     <Compile Include="Contexts\InputMappingsContext.cs" />
     <Compile Include="Contexts\InputSelectionContext.cs" />
     <Compile Include="Contexts\MetadataSaveContext.cs" />
+    <Compile Include="Contexts\ScienceSettingsContext.cs" />
     <Compile Include="Contexts\TelemetryMetadataContext.cs" />
     <Compile Include="Images\ModernUIIcons.cs" />
     <Compile Include="Interfaces\IConfigurationManager.cs" />

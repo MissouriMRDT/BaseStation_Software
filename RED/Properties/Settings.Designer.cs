@@ -49,18 +49,6 @@ namespace RED.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string ScienceSpectrometerFilePath {
-            get {
-                return ((string)(this["ScienceSpectrometerFilePath"]));
-            }
-            set {
-                this["ScienceSpectrometerFilePath"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("90")]
         public int InputSerialReadSpeed {
             get {
@@ -140,30 +128,6 @@ namespace RED.Properties {
             }
             set {
                 this["GPSStartLocationLongitude"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("11001")]
-        public ushort ScienceSpectrometerPortNumber {
-            get {
-                return ((ushort)(this["ScienceSpectrometerPortNumber"]));
-            }
-            set {
-                this["ScienceSpectrometerPortNumber"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("192.168.1.135")]
-        public string ScienceSpectrometerIPAddress {
-            get {
-                return ((string)(this["ScienceSpectrometerIPAddress"]));
-            }
-            set {
-                this["ScienceSpectrometerIPAddress"] = value;
             }
         }
         

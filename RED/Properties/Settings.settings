@@ -8,9 +8,6 @@
     <Setting Name="DriveParabolicScaling" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="ScienceSpectrometerFilePath" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="InputSerialReadSpeed" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">90</Value>
     </Setting>
@@ -31,12 +28,6 @@
     </Setting>
     <Setting Name="GPSStartLocationLongitude" Type="System.Double" Scope="User">
       <Value Profile="(Default)">-110.791919</Value>
-    </Setting>
-    <Setting Name="ScienceSpectrometerPortNumber" Type="System.UInt16" Scope="User">
-      <Value Profile="(Default)">11001</Value>
-    </Setting>
-    <Setting Name="ScienceSpectrometerIPAddress" Type="System.String" Scope="User">
-      <Value Profile="(Default)">192.168.1.135</Value>
     </Setting>
     <Setting Name="DriveUseLegacyDataIds" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>

@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using RED.Contexts;
 using RED.ViewModels.Modules;
 using System.Net;
 
@@ -6,20 +7,20 @@ namespace RED.ViewModels.Settings.Modules
 {
     public class ScienceSettingsViewModel : PropertyChangedBase
     {
-        private SettingsManagerViewModel _settings;
+        private ScienceSettingsContext _settings;
         private ScienceViewModel _vm;
 
-        public string SpectrometerIPAddress
+        public IPAddress SpectrometerIPAddress
         {
             get
             {
-                return _vm.SpectrometerIPAddress.ToString();
+                return _vm.SpectrometerIPAddress;
             }
             set
             {
                 IPAddress ip;
-                _vm.SpectrometerIPAddress = IPAddress.TryParse(value, out ip) ? ip : IPAddress.None;
-                _settings.CurrentSettings.ScienceSpectrometerIPAddress = value;
+                _vm.SpectrometerIPAddress = value;
+                _settings.SpectrometerIPAddress = value;
                 NotifyOfPropertyChange(() => SpectrometerIPAddress);
             }
         }
@@ -32,7 +33,7 @@ namespace RED.ViewModels.Settings.Modules
             set
             {
                 _vm.SpectrometerPortNumber = value;
-                _settings.CurrentSettings.ScienceSpectrometerPortNumber = value;
+                _settings.SpectrometerPortNumber = value;
                 NotifyOfPropertyChange(() => SpectrometerPortNumber);
             }
         }
@@ -45,20 +46,26 @@ namespace RED.ViewModels.Settings.Modules
             set
             {
                 _vm.SpectrometerFilePath = value;
-                _settings.CurrentSettings.ScienceSpectrometerFilePath = value;
+                _settings.SpectrometerFilePath = value;
                 NotifyOfPropertyChange(() => SpectrometerFilePath);
             }
         }
 
-        public ScienceSettingsViewModel(SettingsManagerViewModel settings, ScienceViewModel server)
+        public ScienceSettingsViewModel(ScienceSettingsContext settings, ScienceViewModel server)
         {
             _settings = settings;
             _vm = server;
 
-            IPAddress ip;
-            _vm.SpectrometerIPAddress = IPAddress.TryParse(_settings.CurrentSettings.ScienceSpectrometerIPAddress, out ip) ? ip : IPAddress.None;
-            _vm.SpectrometerPortNumber = _settings.CurrentSettings.ScienceSpectrometerPortNumber;
-            _vm.SpectrometerFilePath = _settings.CurrentSettings.ScienceSpectrometerFilePath;
+            _vm.SpectrometerIPAddress = _settings.SpectrometerIPAddress;
+            _vm.SpectrometerPortNumber = _settings.SpectrometerPortNumber;
+            _vm.SpectrometerFilePath = _settings.SpectrometerFilePath;
         }
+
+        public static ScienceSettingsContext DefaultConfig = new ScienceSettingsContext()
+        {
+            SpectrometerIPAddress = new IPAddress(new byte[] { 192, 168, 1, 135 }),
+            SpectrometerPortNumber = 11001,
+            SpectrometerFilePath = System.String.Empty
+        };
     }
 }
