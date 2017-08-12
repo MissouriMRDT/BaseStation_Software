@@ -4,7 +4,7 @@ namespace RED.Contexts
 {
     public class ScienceSettingsContext : ConfigurationFile
     {
-        public IPAddress SpectrometerIPAddress;
+        public string SpectrometerIPAddress;
         public ushort SpectrometerPortNumber;
         public string SpectrometerFilePath;
     }

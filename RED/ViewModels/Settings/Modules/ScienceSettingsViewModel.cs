@@ -10,16 +10,16 @@ namespace RED.ViewModels.Settings.Modules
         private ScienceSettingsContext _settings;
         private ScienceViewModel _vm;
 
-        public IPAddress SpectrometerIPAddress
+        public string SpectrometerIPAddress
         {
             get
             {
-                return _vm.SpectrometerIPAddress;
+                return _vm.SpectrometerIPAddress.ToString();
             }
             set
             {
                 IPAddress ip;
-                _vm.SpectrometerIPAddress = value;
+                _vm.SpectrometerIPAddress = IPAddress.TryParse(value, out ip) ? ip : IPAddress.None;
                 _settings.SpectrometerIPAddress = value;
                 NotifyOfPropertyChange(() => SpectrometerIPAddress);
             }
@@ -56,14 +56,15 @@ namespace RED.ViewModels.Settings.Modules
             _settings = settings;
             _vm = server;
 
-            _vm.SpectrometerIPAddress = _settings.SpectrometerIPAddress;
+            IPAddress ip;
+            _vm.SpectrometerIPAddress = IPAddress.TryParse(_settings.SpectrometerIPAddress, out ip) ? ip : IPAddress.None;
             _vm.SpectrometerPortNumber = _settings.SpectrometerPortNumber;
             _vm.SpectrometerFilePath = _settings.SpectrometerFilePath;
         }
 
         public static ScienceSettingsContext DefaultConfig = new ScienceSettingsContext()
         {
-            SpectrometerIPAddress = new IPAddress(new byte[] { 192, 168, 1, 135 }),
+            SpectrometerIPAddress = "192.168.1.135",
             SpectrometerPortNumber = 11001,
             SpectrometerFilePath = System.String.Empty
         };
