@@ -1,11 +1,12 @@
 ﻿using Caliburn.Micro;
+using RED.Contexts;
 using RED.ViewModels.Modules;
 
 namespace RED.ViewModels.Settings.Modules
 {
     public class DriveSettingsViewModel : PropertyChangedBase
     {
-        private SettingsManagerViewModel _settings;
+        private DriveSettingsContext _settings;
         private DriveViewModel _vm;
 
         public int SpeedLimit
@@ -17,7 +18,7 @@ namespace RED.ViewModels.Settings.Modules
             set
             {
                 _vm.SpeedLimit = value;
-                _settings.CurrentSettings.DriveSpeedLimit = value;
+                _settings.SpeedLimit = value;
                 NotifyOfPropertyChange(() => SpeedLimit);
             }
         }
@@ -31,18 +32,24 @@ namespace RED.ViewModels.Settings.Modules
             set
             {
                 _vm.UseLegacyDataIds = value;
-                _settings.CurrentSettings.DriveUseLegacyDataIds = value;
+                _settings.UseLegacyDataIds = value;
                 NotifyOfPropertyChange(() => UseLegacyDataIds);
             }
         }
 
-        public DriveSettingsViewModel(SettingsManagerViewModel settings, DriveViewModel vm)
+        public DriveSettingsViewModel(DriveSettingsContext settings, DriveViewModel vm)
         {
             _settings = settings;
             _vm = vm;
 
-            _vm.SpeedLimit = _settings.CurrentSettings.DriveSpeedLimit;
-            _vm.UseLegacyDataIds = _settings.CurrentSettings.DriveUseLegacyDataIds;
+            _vm.SpeedLimit = _settings.SpeedLimit;
+            _vm.UseLegacyDataIds = _settings.UseLegacyDataIds;
         }
+
+        public static DriveSettingsContext DefaultConfig = new DriveSettingsContext()
+        {
+            SpeedLimit = 1000,
+            UseLegacyDataIds = false
+        };
     }
 }

@@ -117,6 +117,7 @@
     <Compile Include="Contexts\ArmPositionContext.cs" />
     <Compile Include="Contexts\CommandMetadataContext.cs" />
     <Compile Include="Contexts\ConfigurationFile.cs" />
+    <Compile Include="Contexts\DriveSettingsContext.cs" />
     <Compile Include="Contexts\ErrorMetadataContext.cs" />
     <Compile Include="Contexts\REDSettingsContext.cs" />
     <Compile Include="Contexts\InputMappingsContext.cs" />

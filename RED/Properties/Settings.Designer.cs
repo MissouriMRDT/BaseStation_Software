@@ -25,18 +25,6 @@ namespace RED.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
-        public int DriveSpeedLimit {
-            get {
-                return ((int)(this["DriveSpeedLimit"]));
-            }
-            set {
-                this["DriveSpeedLimit"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("90")]
         public int InputSerialReadSpeed {
             get {
@@ -116,18 +104,6 @@ namespace RED.Properties {
             }
             set {
                 this["GPSStartLocationLongitude"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool DriveUseLegacyDataIds {
-            get {
-                return ((bool)(this["DriveUseLegacyDataIds"]));
-            }
-            set {
-                this["DriveUseLegacyDataIds"] = value;
             }
         }
     }

@@ -2,9 +2,6 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="RED.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="DriveSpeedLimit" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">1000</Value>
-    </Setting>
     <Setting Name="InputSerialReadSpeed" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">90</Value>
     </Setting>
@@ -25,9 +22,6 @@
     </Setting>
     <Setting Name="GPSStartLocationLongitude" Type="System.Double" Scope="User">
       <Value Profile="(Default)">-110.791919</Value>
-    </Setting>
-    <Setting Name="DriveUseLegacyDataIds" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>
