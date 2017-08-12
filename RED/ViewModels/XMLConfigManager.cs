@@ -15,32 +15,32 @@ namespace RED.ViewModels
 
         ILogger _log;
 
-        private HashSet<IConfigurationFile> DefaultConfigs;
+        private Dictionary<string, IConfigurationFile> DefaultConfigs;
 
         public XMLConfigManager(ILogger log)
         {
             _log = log;
-            DefaultConfigs = new HashSet<IConfigurationFile>();
+            DefaultConfigs = new Dictionary<string,IConfigurationFile>();
 
             if (!Directory.Exists(StoragePath))
                 Directory.CreateDirectory(StoragePath);
         }
 
-        public void AddRecord(IConfigurationFile defaultConfig)
+        public void AddRecord(string name, IConfigurationFile defaultConfig)
         {
-            DefaultConfigs.Add(defaultConfig);
-            if (!File.Exists(defaultConfig.ConfigName))
-                SetConfig(defaultConfig);
-        }
-        public void AddRecords(IConfigurationFile[] defaultConfigs)
-        {
-            foreach (var config in defaultConfigs)
-                AddRecord(config);
+            if (DefaultConfigs.ContainsKey(name))
+                throw new ArgumentException("A config with this name has already been loaded");
+
+            DefaultConfigs.Add(name, defaultConfig);
+            if (!File.Exists(GetPathFromConfigName(name)))
+                SetConfig(name, defaultConfig);
         }
 
         public T GetConfig<T>(string name) where T : IConfigurationFile
         {
-            if (!DefaultConfigs.Any(x => x.ConfigName == name))
+            if (name == String.Empty)
+                throw new ArgumentException("Config name cannot be empty");
+            if (!DefaultConfigs.ContainsKey(name))
             {
                 _log.Log("Error! No config loaded for \"{0}\".", name);
                 throw new ArgumentException("Config name not loaded");
@@ -72,40 +72,42 @@ namespace RED.ViewModels
                 _log.Log("Deserialization error when reading config file for \"{0}\". Using default config instead.", name);
             }
 
-            return (T)DefaultConfigs.First(x => x.ConfigName == name);
+            return (T)DefaultConfigs[name];
         }
-        public void SetConfig<T>(T config) where T : IConfigurationFile
+        public void SetConfig<T>(string name, T config) where T : IConfigurationFile
         {
+            if (name == String.Empty)
+                throw new ArgumentException("Config name cannot be empty");
             try
             {
-                using (var file = WriteFile(config.ConfigName))
+                using (var file = WriteFile(name))
                     SerializeFile(file, config);
             }
             catch (FileNotFoundException)
             {
-                _log.Log("Missing file when writing config for \"{0}\".", config.ConfigName);
+                _log.Log("Missing file when writing config for \"{0}\".", name);
             }
             catch (DirectoryNotFoundException)
             {
-                _log.Log("Missing config directory when writing config for \"{0}\".", config.ConfigName);
+                _log.Log("Missing config directory when writing config for \"{0}\".", name);
             }
             catch (IOException)
             {
-                _log.Log("Unknown IO error when writing config file for \"{0}\".", config.ConfigName);
+                _log.Log("Unknown IO error when writing config file for \"{0}\".", name);
             }
             catch (InvalidOperationException)
             {
-                _log.Log("Serialization error when writing config file for \"{0}\".", config.ConfigName);
+                _log.Log("Serialization error when writing config file for \"{0}\".", name);
             }
             catch (SerializationException)
             {
-                _log.Log("Serialization error when writing config file for \"{0}\".", config.ConfigName);
+                _log.Log("Serialization error when writing config file for \"{0}\".", name);
             }
         }
 
         private string GetPathFromConfigName(string name)
         {
-            return Path.Combine(StoragePath, name, ".xml");
+            return Path.Combine(StoragePath, name + ".xml");
         }
 
         private FileStream ReadFile(string name)
