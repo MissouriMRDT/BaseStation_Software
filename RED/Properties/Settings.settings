@@ -5,9 +5,6 @@
     <Setting Name="DriveSpeedLimit" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1000</Value>
     </Setting>
-    <Setting Name="DriveParabolicScaling" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
     <Setting Name="InputSerialReadSpeed" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">90</Value>
     </Setting>

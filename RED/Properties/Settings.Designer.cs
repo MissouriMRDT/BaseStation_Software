@@ -37,18 +37,6 @@ namespace RED.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool DriveParabolicScaling {
-            get {
-                return ((bool)(this["DriveParabolicScaling"]));
-            }
-            set {
-                this["DriveParabolicScaling"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("90")]
         public int InputSerialReadSpeed {
             get {

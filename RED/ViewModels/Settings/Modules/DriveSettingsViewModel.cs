@@ -22,20 +22,6 @@ namespace RED.ViewModels.Settings.Modules
             }
         }
 
-        public bool ParabolicScaling
-        {
-            get
-            {
-                return _vm.ParabolicScaling;
-            }
-            set
-            {
-                _vm.ParabolicScaling = value;
-                _settings.CurrentSettings.DriveParabolicScaling = value;
-                NotifyOfPropertyChange(() => ParabolicScaling);
-            }
-        }
-
         public bool UseLegacyDataIds
         {
             get
@@ -56,7 +42,6 @@ namespace RED.ViewModels.Settings.Modules
             _vm = vm;
 
             _vm.SpeedLimit = _settings.CurrentSettings.DriveSpeedLimit;
-            _vm.ParabolicScaling = _settings.CurrentSettings.DriveParabolicScaling;
             _vm.UseLegacyDataIds = _settings.CurrentSettings.DriveUseLegacyDataIds;
         }
     }

@@ -18,7 +18,6 @@
             <Label Grid.Row="0" Grid.Column="0">Speed Limit (0 - 1000)</Label>
             <TextBox Grid.Row="0" Grid.Column="1" x:Name="SpeedLimit" />
         </Grid>
-        <CheckBox x:Name="ParabolicScaling">Parabolic Scaling</CheckBox>
         <CheckBox x:Name="UseLegacyDataIds">Use Legacy DataIds</CheckBox>
     </StackPanel>
 </UserControl>
