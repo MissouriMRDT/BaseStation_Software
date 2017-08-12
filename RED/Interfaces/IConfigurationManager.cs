@@ -1,9 +1,11 @@
-﻿namespace RED.Interfaces
+﻿using RED.Contexts;
+
+namespace RED.Interfaces
 {
     public interface IConfigurationManager
     {
-        void AddRecord(string name, IConfigurationFile defaultConfig);
-        T GetConfig<T>(string name) where T : IConfigurationFile;
-        void SetConfig<T>(string name, T config) where T : IConfigurationFile;
+        void AddRecord<T>(string name, T defaultConfig) where T : ConfigurationFile;
+        T GetConfig<T>(string name) where T : ConfigurationFile;
+        void SetConfig<T>(string name, T config) where T : ConfigurationFile;
     }
 }

@@ -1,4 +1,5 @@
-﻿using RED.Interfaces;
+﻿using RED.Contexts;
+using RED.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,18 +16,18 @@ namespace RED.ViewModels
 
         ILogger _log;
 
-        private Dictionary<string, IConfigurationFile> DefaultConfigs;
+        private Dictionary<string, ConfigurationFile> DefaultConfigs;
 
         public XMLConfigManager(ILogger log)
         {
             _log = log;
-            DefaultConfigs = new Dictionary<string,IConfigurationFile>();
+            DefaultConfigs = new Dictionary<string, ConfigurationFile>();
 
             if (!Directory.Exists(StoragePath))
                 Directory.CreateDirectory(StoragePath);
         }
 
-        public void AddRecord(string name, IConfigurationFile defaultConfig)
+        public void AddRecord<T>(string name, T defaultConfig) where T : ConfigurationFile
         {
             if (DefaultConfigs.ContainsKey(name))
                 throw new ArgumentException("A config with this name has already been loaded");
@@ -36,7 +37,7 @@ namespace RED.ViewModels
                 SetConfig(name, defaultConfig);
         }
 
-        public T GetConfig<T>(string name) where T : IConfigurationFile
+        public T GetConfig<T>(string name) where T : ConfigurationFile
         {
             if (name == String.Empty)
                 throw new ArgumentException("Config name cannot be empty");
@@ -57,7 +58,7 @@ namespace RED.ViewModels
             }
             catch (DirectoryNotFoundException)
             {
-                _log.Log("Missing config directory for \"{0}\". Using default config instead.", name);
+                _log.Log("Missing config directory when reading config file for \"{0}\". Using default config instead.", name);
             }
             catch (IOException)
             {
@@ -69,12 +70,12 @@ namespace RED.ViewModels
             }
             catch (SerializationException)
             {
-                _log.Log("Deserialization error when reading config file for \"{0}\". Using default config instead.", name);
+                _log.Log("General deserialization error when reading config file for \"{0}\". Using default config instead.", name);
             }
 
             return (T)DefaultConfigs[name];
         }
-        public void SetConfig<T>(string name, T config) where T : IConfigurationFile
+        public void SetConfig<T>(string name, T config) where T : ConfigurationFile
         {
             if (name == String.Empty)
                 throw new ArgumentException("Config name cannot be empty");
@@ -101,7 +102,7 @@ namespace RED.ViewModels
             }
             catch (SerializationException)
             {
-                _log.Log("Serialization error when writing config file for \"{0}\".", name);
+                _log.Log("General serialization error when writing config file for \"{0}\".", name);
             }
         }
 
@@ -118,15 +119,15 @@ namespace RED.ViewModels
         private FileStream WriteFile(string name)
         {
             string file = GetPathFromConfigName(name);
-            return File.OpenWrite(file);
+            return File.Create(file);
         }
 
-        private T DeserializeFile<T>(Stream stream) where T : IConfigurationFile
+        private T DeserializeFile<T>(Stream stream) where T : ConfigurationFile
         {
             var obj = new XmlSerializer(typeof(T));
             return (T)obj.Deserialize(stream);
         }
-        private void SerializeFile<T>(Stream stream, T config) where T : IConfigurationFile
+        private void SerializeFile<T>(Stream stream, T config) where T : ConfigurationFile
         {
             var obj = new XmlSerializer(typeof(T));
             obj.Serialize(stream, config);

@@ -116,6 +116,7 @@
     </Compile>
     <Compile Include="Contexts\ArmPositionContext.cs" />
     <Compile Include="Contexts\CommandMetadataContext.cs" />
+    <Compile Include="Contexts\ConfigurationFileBase.cs" />
     <Compile Include="Contexts\ErrorMetadataContext.cs" />
     <Compile Include="Contexts\InputSelectionContext.cs" />
     <Compile Include="Contexts\MetadataSaveContext.cs" />
@@ -125,7 +126,6 @@
     <Compile Include="Interfaces\IDataIdResolver.cs" />
     <Compile Include="Interfaces\ILogger.cs" />
     <Compile Include="Interfaces\Input\IInputMode.cs" />
-    <Compile Include="Interfaces\IConfigurationFile.cs" />
     <Compile Include="Interfaces\Network\IIPAddressProvider.cs" />
     <Compile Include="Interfaces\IMetadata.cs" />
     <Compile Include="Interfaces\Input\IInputDevice.cs" />
