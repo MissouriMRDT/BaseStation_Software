@@ -496,7 +496,7 @@ namespace RED.ViewModels.Input.Controllers
             DeviceType = "Keyboard";
 
             ControllerModes.Add(new DriveViewModel(this, router, idResolver));
-            ControllerModes.Add(new ArmViewModel(this, router, idResolver, log));
+            ControllerModes.Add(new ArmViewModel(this, router, idResolver, log, null));
             ControllerModes.Add(new GimbalViewModel(this, router, idResolver, log, 0));
             ControllerModes.Add(new GimbalViewModel(this, router, idResolver, log, 1));
             if (ControllerModes.Count == 0) throw new ArgumentException("IEnumerable 'modes' must have at least one item");

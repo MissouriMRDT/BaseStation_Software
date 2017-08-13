@@ -14,6 +14,8 @@ namespace RED.ViewModels.Modules
 {
     public class ArmViewModel : PropertyChangedBase, IInputMode, ISubscribe
     {
+        private const string PositionsConfigName = "ArmPositions";
+
         private const byte ArmDisableCommand = 0x00;
         private const byte ArmEnableCommand = 0x01;
 
@@ -23,6 +25,7 @@ namespace RED.ViewModels.Modules
         private IDataRouter _router;
         private IDataIdResolver _idResolver;
         private ILogger _log;
+        private IConfigurationManager _configManager;
 
         private XmlSerializer positionsSerializer = new XmlSerializer(typeof(ArmPositionContext[]));
 
@@ -132,7 +135,7 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public ObservableCollection<ArmPositionContext> Positions
+        public ObservableCollection<ArmPositionViewModel> Positions
         {
             get
             {
@@ -145,7 +148,7 @@ namespace RED.ViewModels.Modules
             }
 
         }
-        public ArmPositionContext SelectedPosition
+        public ArmPositionViewModel SelectedPosition
         {
             get
             {
@@ -158,15 +161,19 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public ArmViewModel(IInputDevice inputVM, IDataRouter router, IDataIdResolver idResolver, ILogger log)
+        public ArmViewModel(IInputDevice inputVM, IDataRouter router, IDataIdResolver idResolver, ILogger log, IConfigurationManager configs)
         {
             _model = new ArmModel();
             InputVM = inputVM;
             _router = router;
             _idResolver = idResolver;
             _log = log;
+            _configManager = configs;
             Name = "Arm";
             ModeType = "Arm";
+
+            _configManager.AddRecord(PositionsConfigName, DefaultArmPositions);
+            InitializePositions(_configManager.GetConfig<ArmPositionsContext>(PositionsConfigName));
 
             _router.Subscribe(this, _idResolver.GetId("ArmCurrentPosition"));
             _router.Subscribe(this, _idResolver.GetId("ArmFault"));
@@ -310,7 +317,7 @@ namespace RED.ViewModels.Modules
         }
         public void StorePosition()
         {
-            Positions.Add(new ArmPositionContext()
+            Positions.Add(new ArmPositionViewModel()
                 {
                     Name = "Unnamed Position",
                     J1 = AngleJ1,
@@ -325,22 +332,14 @@ namespace RED.ViewModels.Modules
         {
             Positions.Remove(SelectedPosition);
         }
-        public void SavePositionsToFile(string url)
+        public void SaveConfigurations()
         {
-            using (var stream = new FileStream(url, FileMode.Create))
-            {
-                positionsSerializer.Serialize(stream, Positions.ToArray());
-            }
+            _configManager.SetConfig(PositionsConfigName, new ArmPositionsContext(Positions.Select(x => x.GetContext()).ToArray()));
         }
-        public void LoadPositionsFromFile(string url)
+        public void InitializePositions(ArmPositionsContext config)
         {
-            using (var stream = File.OpenRead(url))
-            {
-                ArmPositionContext[] savedPositions = (ArmPositionContext[])positionsSerializer.Deserialize(stream);
-
-                foreach (var position in savedPositions)
-                    Positions.Add(position);
-            }
+            foreach (var position in config.Positions)
+                Positions.Add(new ArmPositionViewModel(position));
         }
 
         private JoystickDirections JoystickDirection(float y, float x)
@@ -373,5 +372,43 @@ namespace RED.ViewModels.Modules
         {
             return bool1 ? val1 : (bool2 ? val2 : val0);
         }
+
+        public class ArmPositionViewModel : PropertyChangedBase
+        {
+            private string _Name;
+            private float _J1, _J2, _J3, _J4, _J5, _J6;
+
+            public string Name { get { return _Name; } set { _Name = value; NotifyOfPropertyChange(() => Name); } }
+            public float J1 { get { return _J1; } set { _J1 = value; NotifyOfPropertyChange(() => J1); } }
+            public float J2 { get { return _J2; } set { _J2 = value; NotifyOfPropertyChange(() => J2); } }
+            public float J3 { get { return _J3; } set { _J3 = value; NotifyOfPropertyChange(() => J3); } }
+            public float J4 { get { return _J4; } set { _J4 = value; NotifyOfPropertyChange(() => J4); } }
+            public float J5 { get { return _J5; } set { _J5 = value; NotifyOfPropertyChange(() => J5); } }
+            public float J6 { get { return _J6; } set { _J6 = value; NotifyOfPropertyChange(() => J6); } }
+
+            public ArmPositionViewModel()
+            { }
+
+            public ArmPositionViewModel(ArmPositionContext ctx)
+            {
+                Name = ctx.Name;
+                J1 = ctx.J1;
+                J2 = ctx.J2;
+                J3 = ctx.J3;
+                J4 = ctx.J4;
+                J5 = ctx.J5;
+                J6 = ctx.J6;
+            }
+            public ArmPositionContext GetContext()
+            {
+                return new ArmPositionContext(Name, J1, J2, J3, J4, J5, J6);
+            }
+        }
+
+        public static ArmPositionsContext DefaultArmPositions = new ArmPositionsContext(new[]{
+            new ArmPositionContext("Right Bay", 110.24f, 115.83f, 63.75f, 0, 180, 0),
+            new ArmPositionContext("Left Bay", 255, 115.83f, 63.75f, 0, 180, 0),
+            new ArmPositionContext("Reset Home", 0, 80, 100, 0, 185, 0)
+        });
     }
 }

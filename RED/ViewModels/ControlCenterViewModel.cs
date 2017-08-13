@@ -407,9 +407,7 @@ namespace RED.ViewModels
             Map = new MapViewModel();
 
             Drive = new DriveViewModel(null, DataRouter, MetadataManager);
-            Arm = new ArmViewModel(null, DataRouter, MetadataManager, Console);
-            if (File.Exists("armpositions.xml"))
-                Arm.LoadPositionsFromFile("armpositions.xml");
+            Arm = new ArmViewModel(null, DataRouter, MetadataManager, Console, ConfigManager);
             Gimbal1 = new GimbalViewModel(null, DataRouter, MetadataManager, Console, 0);
             Gimbal2 = new GimbalViewModel(null, DataRouter, MetadataManager, Console, 1);
             XboxController1 = new XboxControllerInputViewModel(1, StateManager);
@@ -437,7 +435,7 @@ namespace RED.ViewModels
         protected override void OnDeactivate(bool close)
         {
             InputManager.SaveConfigurations();
-            Arm.SavePositionsToFile("armpositions.xml");
+            Arm.SaveConfigurations();
             base.OnDeactivate(close);
         }
     }
