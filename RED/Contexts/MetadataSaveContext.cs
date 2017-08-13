@@ -17,7 +17,7 @@ namespace RED.Contexts
         }
     }
 
-    //[XmlType(TypeName = "Server")]
+    [XmlType(TypeName = "Server")]
     public class MetadataServerContext : ConfigurationFile
     {
         public string Name;
