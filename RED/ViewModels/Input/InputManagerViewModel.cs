@@ -17,6 +17,9 @@ namespace RED.ViewModels.Input
         ILogger _log;
         IConfigurationManager _configManager;
 
+        private const string MappingsConfigName = "InputMappings";
+        private const string SelectionsConfigName = "InputSelections";
+
         public ObservableCollection<IInputDevice> Devices
         {
             get
@@ -78,11 +81,11 @@ namespace RED.ViewModels.Input
             Modes = new ObservableCollection<IInputMode>(modes);
             Selectors = new ObservableCollection<InputSelectorViewModel>();
 
-            _configManager.AddRecord("InputMappings", DefaultInputMappings);
-            _configManager.AddRecord("InputSelections", DefaultInputSelections);
+            _configManager.AddRecord(MappingsConfigName, DefaultInputMappings);
+            _configManager.AddRecord(SelectionsConfigName, DefaultInputSelections);
 
-            InitializeMappings(_configManager.GetConfig<InputMappingsContext>("InputMappings"));
-            InitializeSelections(_configManager.GetConfig<InputSelectionsContext>("InputSelections"));
+            InitializeMappings(_configManager.GetConfig<InputMappingsContext>(MappingsConfigName));
+            InitializeSelections(_configManager.GetConfig<InputSelectionsContext>(SelectionsConfigName));
         }
 
         private void SelectorSwitchDevice(object sender, IInputDevice device)
@@ -112,8 +115,8 @@ namespace RED.ViewModels.Input
 
         public void SaveConfigurations()
         {
-            _configManager.SetConfig("InputMappings", new InputMappingsContext(Mappings.ToArray()));
-            _configManager.SetConfig("InputSelections", new InputSelectionsContext(Selectors.Select(x => x.GetContext()).ToArray()));
+            _configManager.SetConfig(MappingsConfigName, new InputMappingsContext(Mappings.ToArray()));
+            _configManager.SetConfig(SelectionsConfigName, new InputSelectionsContext(Selectors.Select(x => x.GetContext()).ToArray()));
         }
 
         private void InitializeMappings(InputMappingsContext config)

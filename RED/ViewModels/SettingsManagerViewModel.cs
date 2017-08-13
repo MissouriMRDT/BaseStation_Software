@@ -14,7 +14,7 @@ namespace RED.ViewModels
         private IConfigurationManager _configManager;
         private ControlCenterViewModel _controlCenter;
 
-        private const string SettingsFileName = "GeneralSettings";
+        private const string SettingsConfigName = "GeneralSettings";
 
         public REDSettingsContext CurrentSettingsConfig
         {
@@ -77,8 +77,8 @@ namespace RED.ViewModels
             _controlCenter = cc;
             _configManager = configManager;
 
-            _configManager.AddRecord(SettingsFileName, GetDefaultConfig());
-            CurrentSettingsConfig = _configManager.GetConfig<REDSettingsContext>(SettingsFileName);
+            _configManager.AddRecord(SettingsConfigName, GetDefaultConfig());
+            CurrentSettingsConfig = _configManager.GetConfig<REDSettingsContext>(SettingsConfigName);
 
             Drive = new DriveSettingsViewModel(CurrentSettingsConfig.Drive, cc.Drive);
             Science = new ScienceSettingsViewModel(CurrentSettingsConfig.Science, cc.Science);
@@ -88,7 +88,7 @@ namespace RED.ViewModels
 
         public void SaveSettings()
         {
-            _configManager.SetConfig(SettingsFileName, CurrentSettingsConfig);
+            _configManager.SetConfig(SettingsConfigName, CurrentSettingsConfig);
         }
 
         static REDSettingsContext GetDefaultConfig()
