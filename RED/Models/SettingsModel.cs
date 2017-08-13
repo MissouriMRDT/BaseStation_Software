@@ -8,7 +8,6 @@ namespace RED.Models
     {
         internal DriveSettingsViewModel drive;
         internal ScienceSettingsViewModel science;
-        internal InputSettingsViewModel input;
         internal XboxControllerInputSettingsViewModel xbox;
         internal GPSSettingsViewModel gps;
     }

@@ -17,19 +17,6 @@ namespace RED.ViewModels.Input
         ILogger _log;
         IConfigurationManager _configManager;
 
-        public int DefaultSerialReadSpeed
-        {
-            get
-            {
-                return _model.DefaultSerialReadSpeed;
-            }
-            set
-            {
-                _model.DefaultSerialReadSpeed = value;
-                NotifyOfPropertyChange(() => DefaultSerialReadSpeed);
-            }
-        }
-
         public ObservableCollection<IInputDevice> Devices
         {
             get

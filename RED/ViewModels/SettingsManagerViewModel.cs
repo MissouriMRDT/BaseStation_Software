@@ -53,18 +53,6 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => Science);
             }
         }
-        public InputSettingsViewModel Input
-        {
-            get
-            {
-                return _model.input;
-            }
-            set
-            {
-                _model.input = value;
-                NotifyOfPropertyChange(() => Input);
-            }
-        }
         public XboxControllerInputSettingsViewModel Xbox
         {
             get
@@ -101,7 +89,6 @@ namespace RED.ViewModels
 
             Drive = new DriveSettingsViewModel(CurrentSettingsConfig.Drive, cc.Drive);
             Science = new ScienceSettingsViewModel(CurrentSettingsConfig.Science, cc.Science);
-            Input = new InputSettingsViewModel(this, cc.InputManager);
             Xbox = new XboxControllerInputSettingsViewModel(this, cc.XboxController1);
             GPS = new GPSSettingsViewModel(this, cc.GPS);
         }

@@ -2,9 +2,6 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="RED.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="InputSerialReadSpeed" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">90</Value>
-    </Setting>
     <Setting Name="InputAutoDeadzone" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>

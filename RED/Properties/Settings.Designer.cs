@@ -25,18 +25,6 @@ namespace RED.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("90")]
-        public int InputSerialReadSpeed {
-            get {
-                return ((int)(this["InputSerialReadSpeed"]));
-            }
-            set {
-                this["InputSerialReadSpeed"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool InputAutoDeadzone {
             get {
