@@ -317,11 +317,6 @@
     </Page>
     <Compile Include="Models\ConsoleModel.cs" />
     <Compile Include="Models\StateModel.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
     <Compile Include="ViewModels\ConsoleViewModel.cs" />
     <Compile Include="ViewModels\StateViewModel.cs" />
     <Compile Include="Views\ConsoleView.xaml.cs">
@@ -389,10 +384,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>PublicSettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">

@@ -21,13 +21,6 @@ namespace RED.ViewModels
             get;
             private set;
         }
-        public Properties.Settings CurrentSettings
-        {
-            get
-            {
-                return Properties.Settings.Default;
-            }
-        }
 
         public DriveSettingsViewModel Drive
         {
@@ -95,7 +88,6 @@ namespace RED.ViewModels
 
         public void SaveSettings()
         {
-            CurrentSettings.Save();
             _configManager.SetConfig(SettingsFileName, CurrentSettingsConfig);
         }
 
