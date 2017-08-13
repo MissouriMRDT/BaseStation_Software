@@ -2,6 +2,8 @@
 {
     internal class PowerModel
     {
+        internal bool AutoStartLog;
+
         internal float Motor1Current;
         internal float Motor2Current;
         internal float Motor3Current;

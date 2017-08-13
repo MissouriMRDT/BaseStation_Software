@@ -10,5 +10,6 @@ namespace RED.Models
         internal ScienceSettingsViewModel science;
         internal XboxControllerInputSettingsViewModel xbox;
         internal GPSSettingsViewModel gps;
+        internal PowerSettingsViewModel power;
     }
 }

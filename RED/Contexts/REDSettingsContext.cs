@@ -9,5 +9,6 @@ namespace RED.Contexts
         public XboxControllerSettingsContext Xbox1;
         public GPSSettingsContext GPS;
         public ScienceSettingsContext Science;
+        public PowerSettingsContext Power;
     }
 }

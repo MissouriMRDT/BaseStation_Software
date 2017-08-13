@@ -70,6 +70,18 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => GPS);
             }
         }
+        public PowerSettingsViewModel Power
+        {
+            get
+            {
+                return _model.power;
+            }
+            set
+            {
+                _model.power = value;
+                NotifyOfPropertyChange(() => Power);
+            }
+        }
 
         public SettingsManagerViewModel(IConfigurationManager configManager, ControlCenterViewModel cc)
         {
@@ -84,6 +96,7 @@ namespace RED.ViewModels
             Science = new ScienceSettingsViewModel(CurrentSettingsConfig.Science, cc.Science);
             Xbox = new XboxControllerInputSettingsViewModel(CurrentSettingsConfig.Xbox1, cc.XboxController1);
             GPS = new GPSSettingsViewModel(CurrentSettingsConfig.GPS, cc.GPS, cc.Map);
+            Power = new PowerSettingsViewModel(CurrentSettingsConfig.Power, cc.Power);
         }
 
         public void SaveSettings()
@@ -98,7 +111,8 @@ namespace RED.ViewModels
                 Drive = DriveSettingsViewModel.DefaultConfig,
                 Xbox1 = XboxControllerInputSettingsViewModel.DefaultConfig,
                 GPS = GPSSettingsViewModel.DefaultConfig,
-                Science = ScienceSettingsViewModel.DefaultConfig
+                Science = ScienceSettingsViewModel.DefaultConfig,
+                Power = PowerSettingsViewModel.DefaultConfig
             };
         }
     }

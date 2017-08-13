@@ -19,5 +19,8 @@
         <TabItem Header="Science">
             <ContentControl x:Name="Science" />
         </TabItem>
+        <TabItem Header="Power">
+            <ContentControl x:Name="Power" />
+        </TabItem>
     </controls:MetroAnimatedTabControl>
 </UserControl>

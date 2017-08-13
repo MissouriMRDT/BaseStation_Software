@@ -120,6 +120,7 @@
     <Compile Include="Contexts\DriveSettingsContext.cs" />
     <Compile Include="Contexts\ErrorMetadataContext.cs" />
     <Compile Include="Contexts\GPSSettingsContext.cs" />
+    <Compile Include="Contexts\PowerSettingsContext.cs" />
     <Compile Include="Contexts\REDSettingsContext.cs" />
     <Compile Include="Contexts\InputMappingsContext.cs" />
     <Compile Include="Contexts\InputSelectionContext.cs" />
@@ -199,6 +200,7 @@
     <Compile Include="ViewModels\Settings\Input\Controllers\XboxControllerInputSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Modules\DriveSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Modules\GPSSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Settings\Modules\PowerSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Modules\ScienceSettingsViewModel.cs" />
     <Compile Include="ViewModels\XMLConfigManager.cs" />
     <Compile Include="Views\ControlCenterView.xaml.cs">
@@ -263,6 +265,9 @@
     </Compile>
     <Compile Include="Views\Settings\Modules\GPSSettingsView.xaml.cs">
       <DependentUpon>GPSSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Settings\Modules\PowerSettingsView.xaml.cs">
+      <DependentUpon>PowerSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Settings\Modules\ScienceSettingsView.xaml.cs">
       <DependentUpon>ScienceSettingsView.xaml</DependentUpon>
@@ -351,6 +356,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Settings\Input\Controllers\XboxControllerInputSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Settings\Modules\PowerSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
