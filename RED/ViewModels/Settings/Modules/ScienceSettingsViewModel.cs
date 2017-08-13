@@ -51,10 +51,10 @@ namespace RED.ViewModels.Settings.Modules
             }
         }
 
-        public ScienceSettingsViewModel(ScienceSettingsContext settings, ScienceViewModel server)
+        public ScienceSettingsViewModel(ScienceSettingsContext settings, ScienceViewModel vm)
         {
             _settings = settings;
-            _vm = server;
+            _vm = vm;
 
             IPAddress ip;
             _vm.SpectrometerIPAddress = IPAddress.TryParse(_settings.SpectrometerIPAddress, out ip) ? ip : IPAddress.None;
