@@ -1,10 +1,26 @@
-﻿using System;
+﻿using RED.Interfaces;
+using System;
 using System.Xml.Serialization;
 
 namespace RED.Contexts
 {
-    [XmlType(TypeName = "Selection")]
+    [XmlType(TypeName = "InputSelectionData")]
+    public class InputSelectionsContext : ConfigurationFile
+    {
+        public InputSelectionContext[] Selections;
+
+        public InputSelectionsContext()
+        { }
+
+        public InputSelectionsContext(InputSelectionContext[] selections)
+            : this()
+        {
+            Selections = selections;
+        }
+    }
+
     [Serializable]
+    [XmlType(TypeName = "Selection")]
     public class InputSelectionContext
     {
         public string ModeName;
@@ -12,7 +28,15 @@ namespace RED.Contexts
         public string MappingName;
         public bool Active;
 
-        public InputSelectionContext()
+        private InputSelectionContext()
         { }
+
+        public InputSelectionContext(string modeName, string deviceName, string mappingName, bool active)
+        {
+            ModeName = modeName;
+            DeviceName = deviceName;
+            MappingName = mappingName;
+            Active = active;
+        }
     }
 }

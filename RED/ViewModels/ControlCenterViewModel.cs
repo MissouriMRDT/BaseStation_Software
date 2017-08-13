@@ -51,6 +51,18 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange();
             }
         }
+        public XMLConfigManager ConfigManager
+        {
+            get
+            {
+                return _model._configManager;
+            }
+            set
+            {
+                _model._configManager = value;
+                NotifyOfPropertyChange();
+            }
+        }
         public DataRouter DataRouter
         {
             get
@@ -373,6 +385,7 @@ namespace RED.ViewModels
             _model = new ControlCenterModel();
 
             Console = new ConsoleViewModel();
+            ConfigManager = new XMLConfigManager(Console);
             DataRouter = new DataRouter();
             MetadataManager = new MetadataManager(Console);
             MetadataManager.AddFromFile("NoSyncMetadata.xml");
@@ -394,9 +407,7 @@ namespace RED.ViewModels
             Map = new MapViewModel();
 
             Drive = new DriveViewModel(null, DataRouter, MetadataManager);
-            Arm = new ArmViewModel(null, DataRouter, MetadataManager, Console);
-            if (File.Exists("armpositions.xml"))
-                Arm.LoadPositionsFromFile("armpositions.xml");
+            Arm = new ArmViewModel(null, DataRouter, MetadataManager, Console, ConfigManager);
             Gimbal1 = new GimbalViewModel(null, DataRouter, MetadataManager, Console, 0);
             Gimbal2 = new GimbalViewModel(null, DataRouter, MetadataManager, Console, 1);
             XboxController1 = new XboxControllerInputViewModel(1, StateManager);
@@ -405,17 +416,14 @@ namespace RED.ViewModels
             XboxController4 = new XboxControllerInputViewModel(4, StateManager);
             FlightStickController = new FlightStickViewModel();
 
-            InputManager = new InputManagerViewModel(Console,
+            InputManager = new InputManagerViewModel(Console, ConfigManager,
                 new IInputDevice[] { XboxController1, XboxController2, XboxController3, XboxController4, FlightStickController },
                 new MappingViewModel[0],
                 new IInputMode[] { Drive, Arm, Gimbal1, Gimbal2, ScienceArm });
-            InputManager.LoadMappingsFromFile("inputmappings.xml");
-            if (File.Exists("inputselections.xml"))
-                InputManager.LoadSelectionsFromFile("inputselections.xml");
 
             WaypointManager = new WaypointManagerViewModel(Map, GPS, Autonomy);
 
-            SettingsManager = new SettingsManagerViewModel(this);
+            SettingsManager = new SettingsManagerViewModel(ConfigManager, this);
 
             InputManager.Start();
             //DataRouter.Send(100, new byte[] { 10, 20, 30, 40 });
@@ -426,8 +434,8 @@ namespace RED.ViewModels
 
         protected override void OnDeactivate(bool close)
         {
-            InputManager.SaveSelectionsToFile("inputselections.xml");
-            Arm.SavePositionsToFile("armpositions.xml");
+            InputManager.SaveConfigurations();
+            Arm.SaveConfigurations();
             base.OnDeactivate(close);
         }
     }

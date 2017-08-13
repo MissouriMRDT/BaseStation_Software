@@ -68,17 +68,6 @@ namespace RED.ViewModels.Modules
                 _model.useLegacyDataIds = value;
             }
         }
-        public bool ParabolicScaling
-        {
-            get
-            {
-                return _model.parabolicScaling;
-            }
-            set
-            {
-                _model.parabolicScaling = value;
-            }
-        }
 
         public DriveViewModel(IInputDevice inputVM, IDataRouter router, IDataIdResolver idResolver)
         {

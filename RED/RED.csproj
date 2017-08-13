@@ -116,11 +116,20 @@
     </Compile>
     <Compile Include="Contexts\ArmPositionContext.cs" />
     <Compile Include="Contexts\CommandMetadataContext.cs" />
+    <Compile Include="Contexts\ConfigurationFile.cs" />
+    <Compile Include="Contexts\DriveSettingsContext.cs" />
     <Compile Include="Contexts\ErrorMetadataContext.cs" />
+    <Compile Include="Contexts\GPSSettingsContext.cs" />
+    <Compile Include="Contexts\PowerSettingsContext.cs" />
+    <Compile Include="Contexts\REDSettingsContext.cs" />
+    <Compile Include="Contexts\InputMappingsContext.cs" />
     <Compile Include="Contexts\InputSelectionContext.cs" />
     <Compile Include="Contexts\MetadataSaveContext.cs" />
+    <Compile Include="Contexts\ScienceSettingsContext.cs" />
     <Compile Include="Contexts\TelemetryMetadataContext.cs" />
+    <Compile Include="Contexts\XboxControllerSettingsContext.cs" />
     <Compile Include="Images\ModernUIIcons.cs" />
+    <Compile Include="Interfaces\IConfigurationManager.cs" />
     <Compile Include="Interfaces\IDataIdResolver.cs" />
     <Compile Include="Interfaces\ILogger.cs" />
     <Compile Include="Interfaces\Input\IInputMode.cs" />
@@ -191,8 +200,9 @@
     <Compile Include="ViewModels\Settings\Input\Controllers\XboxControllerInputSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Modules\DriveSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Modules\GPSSettingsViewModel.cs" />
-    <Compile Include="ViewModels\Settings\Input\InputSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Settings\Modules\PowerSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Modules\ScienceSettingsViewModel.cs" />
+    <Compile Include="ViewModels\XMLConfigManager.cs" />
     <Compile Include="Views\ControlCenterView.xaml.cs">
       <DependentUpon>ControlCenterView.xaml</DependentUpon>
     </Compile>
@@ -247,14 +257,17 @@
     <Compile Include="Views\SettingsManagerView.xaml.cs">
       <DependentUpon>SettingsManagerView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Settings\Input\Controllers\XboxControllerInputSettingsView.xaml.cs">
+      <DependentUpon>XboxControllerInputSettingsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Settings\Modules\DriveSettingsView.xaml.cs">
       <DependentUpon>DriveSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Settings\Modules\GPSSettingsView.xaml.cs">
       <DependentUpon>GPSSettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Settings\Input\InputSettingsView.xaml.cs">
-      <DependentUpon>InputSettingsView.xaml</DependentUpon>
+    <Compile Include="Views\Settings\Modules\PowerSettingsView.xaml.cs">
+      <DependentUpon>PowerSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Settings\Modules\ScienceSettingsView.xaml.cs">
       <DependentUpon>ScienceSettingsView.xaml</DependentUpon>
@@ -309,11 +322,6 @@
     </Page>
     <Compile Include="Models\ConsoleModel.cs" />
     <Compile Include="Models\StateModel.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
     <Compile Include="ViewModels\ConsoleViewModel.cs" />
     <Compile Include="ViewModels\StateViewModel.cs" />
     <Compile Include="Views\ConsoleView.xaml.cs">
@@ -347,6 +355,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Settings\Input\Controllers\XboxControllerInputSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Settings\Modules\PowerSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\StateView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -367,10 +383,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Settings\Input\InputSettingsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Settings\Modules\ScienceSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -381,10 +393,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>PublicSettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">

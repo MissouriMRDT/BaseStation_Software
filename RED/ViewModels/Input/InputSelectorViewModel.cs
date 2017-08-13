@@ -139,7 +139,7 @@ namespace RED.ViewModels.Input
                 return;
             }
 
-            SwitchDevice(this, SelectedDevice);
+            if (SwitchDevice != null) SwitchDevice(this, SelectedDevice);
 
             try
             {
@@ -151,7 +151,7 @@ namespace RED.ViewModels.Input
                         if (!Enabled) Enable();
                         var rawValues = SelectedDevice.GetValues();
                         var mappedValues = SelectedMapping.Map(rawValues);
-                        if (CheckForModeCycle(mappedValues))
+                        if (CheckForModeCycle(mappedValues) && (CycleMode != null))
                             CycleMode(this, SelectedDevice);
                         else
                             Mode.SetValues(mappedValues);
@@ -205,13 +205,12 @@ namespace RED.ViewModels.Input
 
         public InputSelectionContext GetContext()
         {
-            return new InputSelectionContext()
-            {
-                ModeName = Mode == null ? "" : Mode.Name,
-                DeviceName = SelectedDevice == null ? "" : SelectedDevice.Name,
-                MappingName = SelectedMapping == null ? "" : SelectedMapping.Name,
-                Active = IsRunning
-            };
+            return new InputSelectionContext(
+                modeName: Mode == null ? "" : Mode.Name,
+                deviceName: SelectedDevice == null ? "" : SelectedDevice.Name,
+                mappingName: SelectedMapping == null ? "" : SelectedMapping.Name,
+                active: IsRunning
+            );
         }
 
         public void SetContext(InputSelectionContext context)

@@ -15,6 +15,20 @@ namespace RED.ViewModels.Modules
 
         private TextWriter LogFile;
 
+        public bool AutoStartLog
+        {
+            get
+            {
+                return _model.AutoStartLog;
+            }
+            set
+            {
+                _model.AutoStartLog = value;
+                if (AutoStartLog && LogFile == null) SaveFileStart();
+                NotifyOfPropertyChange(() => AutoStartLog);
+            }
+        }
+
         public float Motor1Current
         {
             get

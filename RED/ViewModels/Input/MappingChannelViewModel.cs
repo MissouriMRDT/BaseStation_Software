@@ -94,9 +94,16 @@ namespace RED.ViewModels.Input
 
         }
 
-        public MappingChannelViewModel()
+        private MappingChannelViewModel()
         {
             _model = new MappingChannelModel();
+        }
+
+        public MappingChannelViewModel(string inputKey, string outputKey)
+            : this()
+        {
+            InputKey = inputKey;
+            OutputKey = outputKey;
         }
 
         public float Map(float input)

@@ -20,18 +20,6 @@ namespace RED.ViewModels.Input.Controllers
         public string Name { get; private set; }
         public string DeviceType { get; private set; }
 
-        public int SerialReadSpeed
-        {
-            get
-            {
-                return Model.SerialReadSpeed;
-            }
-            set
-            {
-                Model.SerialReadSpeed = value;
-                NotifyOfPropertyChange(() => SerialReadSpeed);
-            }
-        }
         public bool AutoDeadzone
         {
             get

@@ -1,4 +1,6 @@
 ﻿using Caliburn.Micro;
+using RED.Contexts;
+using RED.Interfaces;
 using RED.Models;
 using RED.ViewModels.Settings.Input;
 using RED.ViewModels.Settings.Input.Controllers;
@@ -9,14 +11,15 @@ namespace RED.ViewModels
     public class SettingsManagerViewModel : PropertyChangedBase
     {
         private SettingsManagerModel _model;
+        private IConfigurationManager _configManager;
         private ControlCenterViewModel _controlCenter;
 
-        public Properties.Settings CurrentSettings
+        private const string SettingsConfigName = "GeneralSettings";
+
+        public REDSettingsContext CurrentSettingsConfig
         {
-            get
-            {
-                return Properties.Settings.Default;
-            }
+            get;
+            private set;
         }
 
         public DriveSettingsViewModel Drive
@@ -43,18 +46,6 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => Science);
             }
         }
-        public InputSettingsViewModel Input
-        {
-            get
-            {
-                return _model.input;
-            }
-            set
-            {
-                _model.input = value;
-                NotifyOfPropertyChange(() => Input);
-            }
-        }
         public XboxControllerInputSettingsViewModel Xbox
         {
             get
@@ -79,22 +70,50 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => GPS);
             }
         }
+        public PowerSettingsViewModel Power
+        {
+            get
+            {
+                return _model.power;
+            }
+            set
+            {
+                _model.power = value;
+                NotifyOfPropertyChange(() => Power);
+            }
+        }
 
-        public SettingsManagerViewModel(ControlCenterViewModel cc)
+        public SettingsManagerViewModel(IConfigurationManager configManager, ControlCenterViewModel cc)
         {
             _model = new SettingsManagerModel();
             _controlCenter = cc;
+            _configManager = configManager;
 
-            Drive = new DriveSettingsViewModel(this, cc.Drive);
-            Science = new ScienceSettingsViewModel(this, cc.Science);
-            Input = new InputSettingsViewModel(this, cc.InputManager);
-            Xbox = new XboxControllerInputSettingsViewModel(this, cc.XboxController1);
-            GPS = new GPSSettingsViewModel(this, cc.GPS);
+            _configManager.AddRecord(SettingsConfigName, GetDefaultConfig());
+            CurrentSettingsConfig = _configManager.GetConfig<REDSettingsContext>(SettingsConfigName);
+
+            Drive = new DriveSettingsViewModel(CurrentSettingsConfig.Drive, cc.Drive);
+            Science = new ScienceSettingsViewModel(CurrentSettingsConfig.Science, cc.Science);
+            Xbox = new XboxControllerInputSettingsViewModel(CurrentSettingsConfig.Xbox1, cc.XboxController1);
+            GPS = new GPSSettingsViewModel(CurrentSettingsConfig.GPS, cc.GPS, cc.Map);
+            Power = new PowerSettingsViewModel(CurrentSettingsConfig.Power, cc.Power);
         }
 
         public void SaveSettings()
         {
-            CurrentSettings.Save();
+            _configManager.SetConfig(SettingsConfigName, CurrentSettingsConfig);
+        }
+
+        static REDSettingsContext GetDefaultConfig()
+        {
+            return new REDSettingsContext()
+            {
+                Drive = DriveSettingsViewModel.DefaultConfig,
+                Xbox1 = XboxControllerInputSettingsViewModel.DefaultConfig,
+                GPS = GPSSettingsViewModel.DefaultConfig,
+                Science = ScienceSettingsViewModel.DefaultConfig,
+                Power = PowerSettingsViewModel.DefaultConfig
+            };
         }
     }
 }

@@ -8,7 +8,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <controls:MetroAnimatedTabControl TabStripPlacement="Left">
         <TabItem Header="Controller">
-            <ContentControl x:Name="Input" />
+            <ContentControl x:Name="Xbox" />
         </TabItem>
         <TabItem Header="Drive">
             <ContentControl x:Name="Drive" />
@@ -18,6 +18,9 @@
         </TabItem>
         <TabItem Header="Science">
             <ContentControl x:Name="Science" />
+        </TabItem>
+        <TabItem Header="Power">
+            <ContentControl x:Name="Power" />
         </TabItem>
     </controls:MetroAnimatedTabControl>
 </UserControl>
