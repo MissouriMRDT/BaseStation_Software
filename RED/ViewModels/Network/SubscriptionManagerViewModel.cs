@@ -36,7 +36,7 @@ namespace RED.ViewModels.Network
             _networkManager = networkManager;
         }
 
-        public void SendInitialSubscriptions(TelemetryMetadataContext[] telemetry)
+        public void SendInitialSubscriptions(MetadataRecordContext[] telemetry)
         {
             foreach (var t in telemetry)
                 Subscribe(t.Id);

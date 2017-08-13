@@ -115,10 +115,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Contexts\ArmPositionContext.cs" />
-    <Compile Include="Contexts\CommandMetadataContext.cs" />
+    <Compile Include="Contexts\MetadataRecordContext.cs" />
     <Compile Include="Contexts\ConfigurationFile.cs" />
     <Compile Include="Contexts\DriveSettingsContext.cs" />
-    <Compile Include="Contexts\ErrorMetadataContext.cs" />
     <Compile Include="Contexts\GPSSettingsContext.cs" />
     <Compile Include="Contexts\PowerSettingsContext.cs" />
     <Compile Include="Contexts\REDSettingsContext.cs" />
@@ -126,7 +125,6 @@
     <Compile Include="Contexts\InputSelectionContext.cs" />
     <Compile Include="Contexts\MetadataSaveContext.cs" />
     <Compile Include="Contexts\ScienceSettingsContext.cs" />
-    <Compile Include="Contexts\TelemetryMetadataContext.cs" />
     <Compile Include="Contexts\XboxControllerSettingsContext.cs" />
     <Compile Include="Images\ModernUIIcons.cs" />
     <Compile Include="Interfaces\IConfigurationManager.cs" />
@@ -134,7 +132,6 @@
     <Compile Include="Interfaces\ILogger.cs" />
     <Compile Include="Interfaces\Input\IInputMode.cs" />
     <Compile Include="Interfaces\Network\IIPAddressProvider.cs" />
-    <Compile Include="Interfaces\IMetadata.cs" />
     <Compile Include="Interfaces\Input\IInputDevice.cs" />
     <Compile Include="Interfaces\Network\INetworkEncoding.cs" />
     <Compile Include="Interfaces\Network\INetworkTransportProtocol.cs" />

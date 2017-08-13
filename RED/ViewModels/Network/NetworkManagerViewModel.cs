@@ -29,7 +29,7 @@ namespace RED.ViewModels.Network
 
         private HashSet<UnACKedPacket> OutgoingUnACKed = new HashSet<UnACKedPacket>();
 
-        public NetworkManagerViewModel(IDataRouter router, CommandMetadataContext[] commands, ILogger log, IIPAddressProvider ipProvider)
+        public NetworkManagerViewModel(IDataRouter router, MetadataRecordContext[] commands, ILogger log, IIPAddressProvider ipProvider)
         {
             _model = new NetworkManagerModel();
             _router = router;

@@ -387,8 +387,7 @@ namespace RED.ViewModels
             Console = new ConsoleViewModel();
             ConfigManager = new XMLConfigManager(Console);
             DataRouter = new DataRouter();
-            MetadataManager = new MetadataManager(Console);
-            MetadataManager.AddFromFile("NoSyncMetadata.xml");
+            MetadataManager = new MetadataManager(Console, ConfigManager);
 
             NetworkManager = new NetworkManagerViewModel(DataRouter, MetadataManager.Commands.ToArray(), Console, MetadataManager);
             SubscriptionManager = new SubscriptionManagerViewModel(Console, MetadataManager, NetworkManager);
