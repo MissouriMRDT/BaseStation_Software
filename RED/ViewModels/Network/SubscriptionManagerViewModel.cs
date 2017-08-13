@@ -28,16 +28,18 @@ namespace RED.ViewModels.Network
             }
         }
 
-        public SubscriptionManagerViewModel(ILogger log, TelemetryMetadataContext[] telemetry, IIPAddressProvider ipProvider, NetworkManagerViewModel networkManager)
+        public SubscriptionManagerViewModel(ILogger log, IIPAddressProvider ipProvider, NetworkManagerViewModel networkManager)
         {
             _model = new SubscriptionManagerModel();
             _log = log;
             _ipProvider = ipProvider;
             _networkManager = networkManager;
+        }
 
+        public void SendInitialSubscriptions(TelemetryMetadataContext[] telemetry)
+        {
             foreach (var t in telemetry)
                 Subscribe(t.Id);
-
             _log.Log("Telemetry Subscriptions Sent");
         }
 
