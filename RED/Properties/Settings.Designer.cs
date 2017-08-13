@@ -22,53 +22,5 @@ namespace RED.Properties {
                 return defaultInstance;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public double GPSBaseStationLocationLatitude {
-            get {
-                return ((double)(this["GPSBaseStationLocationLatitude"]));
-            }
-            set {
-                this["GPSBaseStationLocationLatitude"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public double GPSBaseStationLocationLongitude {
-            get {
-                return ((double)(this["GPSBaseStationLocationLongitude"]));
-            }
-            set {
-                this["GPSBaseStationLocationLongitude"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("38.406426")]
-        public double GPSStartLocationLatitude {
-            get {
-                return ((double)(this["GPSStartLocationLatitude"]));
-            }
-            set {
-                this["GPSStartLocationLatitude"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("-110.791919")]
-        public double GPSStartLocationLongitude {
-            get {
-                return ((double)(this["GPSStartLocationLongitude"]));
-            }
-            set {
-                this["GPSStartLocationLongitude"] = value;
-            }
-        }
     }
 }

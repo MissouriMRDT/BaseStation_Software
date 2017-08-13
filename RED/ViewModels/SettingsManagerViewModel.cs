@@ -90,7 +90,7 @@ namespace RED.ViewModels
             Drive = new DriveSettingsViewModel(CurrentSettingsConfig.Drive, cc.Drive);
             Science = new ScienceSettingsViewModel(CurrentSettingsConfig.Science, cc.Science);
             Xbox = new XboxControllerInputSettingsViewModel(CurrentSettingsConfig.Xbox1, cc.XboxController1);
-            GPS = new GPSSettingsViewModel(this, cc.GPS);
+            GPS = new GPSSettingsViewModel(CurrentSettingsConfig.GPS, cc.GPS, cc.Map);
         }
 
         public void SaveSettings()
@@ -105,6 +105,7 @@ namespace RED.ViewModels
             {
                 Drive = DriveSettingsViewModel.DefaultConfig,
                 Xbox1 = XboxControllerInputSettingsViewModel.DefaultConfig,
+                GPS = GPSSettingsViewModel.DefaultConfig,
                 Science = ScienceSettingsViewModel.DefaultConfig
             };
         }

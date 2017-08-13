@@ -1,15 +1,14 @@
-﻿using GMap.NET;
+﻿using Caliburn.Micro;
+using GMap.NET;
 using GMap.NET.MapProviders;
 using GMap.NET.WindowsPresentation;
-using Caliburn.Micro;
 using RED.Addons;
 using RED.Models.Navigation;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Media;
 using System.Windows;
-using System.Collections.Generic;
-using System.Windows.Shapes;
+using System.Windows.Media;
 
 namespace RED.ViewModels.Navigation
 {
@@ -39,6 +38,19 @@ namespace RED.ViewModels.Navigation
             {
                 _model.waypoints = value;
                 NotifyOfPropertyChange(() => Waypoints);
+            }
+        }
+
+        public GPSCoordinate StartPosition
+        {
+            get
+            {
+                return _model.StartPosition;
+            }
+            set
+            {
+                _model.StartPosition = value;
+                NotifyOfPropertyChange(() => StartPosition);
             }
         }
 
@@ -106,7 +118,7 @@ namespace RED.ViewModels.Navigation
 
             MainMap.Manager.Mode = AccessMode.CacheOnly;
             MainMap.MapProvider = GMapProviders.OpenStreetMapQuestHybrid;
-            MainMap.Position = new PointLatLng(RED.Properties.Settings.Default.GPSStartLocationLatitude, RED.Properties.Settings.Default.GPSStartLocationLongitude);
+            MainMap.Position = new PointLatLng(StartPosition.Latitude, StartPosition.Longitude);
             MainMap.MinZoom = 1;
             MainMap.MaxZoom = 18;
             MainMap.Zoom = 10;
@@ -140,7 +152,7 @@ namespace RED.ViewModels.Navigation
             for (int zoomLevel = CachePrefetchStartZoom; zoomLevel <= CachePrefetchStopZoom; zoomLevel++)
             {
                 TilePrefetcher obj = new TilePrefetcher();
-                obj.Owner = Application.Current.MainWindow; 
+                obj.Owner = Application.Current.MainWindow;
                 obj.Start(area, zoomLevel, MainMap.MapProvider, 100);
             }
         }

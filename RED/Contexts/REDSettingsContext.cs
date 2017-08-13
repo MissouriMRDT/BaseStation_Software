@@ -7,6 +7,7 @@ namespace RED.Contexts
     {
         public DriveSettingsContext Drive;
         public XboxControllerSettingsContext Xbox1;
+        public GPSSettingsContext GPS;
         public ScienceSettingsContext Science;
     }
 }

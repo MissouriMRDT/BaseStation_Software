@@ -1,24 +1,27 @@
 ﻿using Caliburn.Micro;
 using RED.Addons;
+using RED.Contexts;
 using RED.ViewModels.Modules;
+using RED.ViewModels.Navigation;
 
 namespace RED.ViewModels.Settings.Modules
 {
     public class GPSSettingsViewModel : PropertyChangedBase
     {
-        private SettingsManagerViewModel _settings;
-        private GPSViewModel _vm;
+        private GPSSettingsContext _settings;
+        private GPSViewModel _gpsvm;
+        private MapViewModel _mapvm;
 
         public double BaseStationLocationLatitude
         {
             get
             {
-                return _vm.BaseStationLocation.Latitude;
+                return _gpsvm.BaseStationLocation.Latitude;
             }
             set
             {
-                _vm.BaseStationLocation = new GPSCoordinate(value, _vm.BaseStationLocation.Longitude);
-                _settings.CurrentSettings.GPSBaseStationLocationLatitude = value;
+                _gpsvm.BaseStationLocation = new GPSCoordinate(value, _gpsvm.BaseStationLocation.Longitude);
+                _settings.BaseStationLocationLatitude = value;
                 NotifyOfPropertyChange(() => BaseStationLocationLatitude);
             }
         }
@@ -27,12 +30,12 @@ namespace RED.ViewModels.Settings.Modules
         {
             get
             {
-                return _vm.BaseStationLocation.Longitude;
+                return _gpsvm.BaseStationLocation.Longitude;
             }
             set
             {
-                _vm.BaseStationLocation = new GPSCoordinate(_vm.BaseStationLocation.Latitude, value);
-                _settings.CurrentSettings.GPSBaseStationLocationLongitude = value;
+                _gpsvm.BaseStationLocation = new GPSCoordinate(_gpsvm.BaseStationLocation.Latitude, value);
+                _settings.BaseStationLocationLongitude = value;
                 NotifyOfPropertyChange(() => BaseStationLocationLongitude);
             }
         }
@@ -41,11 +44,12 @@ namespace RED.ViewModels.Settings.Modules
         {
             get
             {
-                return _settings.CurrentSettings.GPSStartLocationLatitude;
+                return _settings.StartLocationLatitude;
             }
             set
             {
-                _settings.CurrentSettings.GPSStartLocationLatitude = value;
+                _settings.StartLocationLatitude = value;
+                _mapvm.StartPosition = new GPSCoordinate(StartLocationLatitude, StartLocationLongitude);
                 NotifyOfPropertyChange(() => StartLocationLatitude);
             }
         }
@@ -54,21 +58,24 @@ namespace RED.ViewModels.Settings.Modules
         {
             get
             {
-                return _settings.CurrentSettings.GPSStartLocationLongitude;
+                return _settings.StartLocationLongitude;
             }
             set
             {
-                _settings.CurrentSettings.GPSStartLocationLongitude = value;
+                _settings.StartLocationLongitude = value;
+                _mapvm.StartPosition = new GPSCoordinate(StartLocationLatitude, StartLocationLongitude);
                 NotifyOfPropertyChange(() => StartLocationLongitude);
             }
         }
 
-        public GPSSettingsViewModel(SettingsManagerViewModel settings, GPSViewModel vm)
+        public GPSSettingsViewModel(GPSSettingsContext settings, GPSViewModel GpsVM, MapViewModel MapVM)
         {
             _settings = settings;
-            _vm = vm;
+            _gpsvm = GpsVM;
+            _mapvm = MapVM;
 
-            _vm.BaseStationLocation = new GPSCoordinate(_settings.CurrentSettings.GPSBaseStationLocationLatitude, _settings.CurrentSettings.GPSBaseStationLocationLongitude);
+            _gpsvm.BaseStationLocation = new GPSCoordinate(_settings.BaseStationLocationLatitude, _settings.BaseStationLocationLongitude);
+            _mapvm.StartPosition = new GPSCoordinate(StartLocationLatitude, StartLocationLongitude);
         }
 
         public void SetLocation(string presetName)
@@ -97,5 +104,13 @@ namespace RED.ViewModels.Settings.Modules
                     break;
             }
         }
+
+        public static GPSSettingsContext DefaultConfig = new GPSSettingsContext()
+        {
+            BaseStationLocationLatitude = 0,
+            BaseStationLocationLongitude = 0,
+            StartLocationLatitude = 38.406426,
+            StartLocationLongitude = -110.791919
+        };
     }
 }
