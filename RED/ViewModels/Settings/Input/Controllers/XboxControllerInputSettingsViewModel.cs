@@ -1,11 +1,12 @@
 ﻿using Caliburn.Micro;
+using RED.Contexts;
 using RED.ViewModels.Input.Controllers;
 
 namespace RED.ViewModels.Settings.Input.Controllers
 {
     public class XboxControllerInputSettingsViewModel : PropertyChangedBase
     {
-        private SettingsManagerViewModel _settings;
+        private XboxControllerSettingsContext _settings;
         private XboxControllerInputViewModel _vm;
 
         public bool AutoDeadzone
@@ -17,7 +18,7 @@ namespace RED.ViewModels.Settings.Input.Controllers
             set
             {
                 _vm.AutoDeadzone = value;
-                _settings.CurrentSettings.InputAutoDeadzone = value;
+                _settings.AutoDeadzone = value;
                 NotifyOfPropertyChange(() => AutoDeadzone);
             }
         }
@@ -30,18 +31,24 @@ namespace RED.ViewModels.Settings.Input.Controllers
             set
             {
                 _vm.ManualDeadzone = value;
-                _settings.CurrentSettings.InputManualDeadzone = value;
+                _settings.ManualDeadzone = value;
                 NotifyOfPropertyChange(() => ManualDeadzone);
             }
         }
 
-        public XboxControllerInputSettingsViewModel(SettingsManagerViewModel settings, XboxControllerInputViewModel vm)
+        public XboxControllerInputSettingsViewModel(XboxControllerSettingsContext settings, XboxControllerInputViewModel vm)
         {
             _settings = settings;
             _vm = vm;
 
-            _vm.AutoDeadzone = _settings.CurrentSettings.InputAutoDeadzone;
-            _vm.ManualDeadzone = _settings.CurrentSettings.InputManualDeadzone;
+            _vm.AutoDeadzone = _settings.AutoDeadzone;
+            _vm.ManualDeadzone = _settings.ManualDeadzone;
         }
+
+        public static XboxControllerSettingsContext DefaultConfig = new XboxControllerSettingsContext()
+        {
+            AutoDeadzone = false,
+            ManualDeadzone = 5000
+        };
     }
 }

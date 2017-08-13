@@ -25,30 +25,6 @@ namespace RED.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool InputAutoDeadzone {
-            get {
-                return ((bool)(this["InputAutoDeadzone"]));
-            }
-            set {
-                this["InputAutoDeadzone"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("5000")]
-        public int InputManualDeadzone {
-            get {
-                return ((int)(this["InputManualDeadzone"]));
-            }
-            set {
-                this["InputManualDeadzone"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public double GPSBaseStationLocationLatitude {
             get {

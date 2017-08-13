@@ -6,6 +6,7 @@ namespace RED.Contexts
     public class REDSettingsContext : ConfigurationFile
     {
         public DriveSettingsContext Drive;
+        public XboxControllerSettingsContext Xbox1;
         public ScienceSettingsContext Science;
     }
 }

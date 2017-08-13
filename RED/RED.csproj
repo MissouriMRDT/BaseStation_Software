@@ -125,6 +125,7 @@
     <Compile Include="Contexts\MetadataSaveContext.cs" />
     <Compile Include="Contexts\ScienceSettingsContext.cs" />
     <Compile Include="Contexts\TelemetryMetadataContext.cs" />
+    <Compile Include="Contexts\XboxControllerSettingsContext.cs" />
     <Compile Include="Images\ModernUIIcons.cs" />
     <Compile Include="Interfaces\IConfigurationManager.cs" />
     <Compile Include="Interfaces\IDataIdResolver.cs" />
@@ -253,6 +254,9 @@
     <Compile Include="Views\SettingsManagerView.xaml.cs">
       <DependentUpon>SettingsManagerView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Settings\Input\Controllers\XboxControllerInputSettingsView.xaml.cs">
+      <DependentUpon>XboxControllerInputSettingsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Settings\Modules\DriveSettingsView.xaml.cs">
       <DependentUpon>DriveSettingsView.xaml</DependentUpon>
     </Compile>
@@ -347,6 +351,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Navigation\WaypointManagerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Settings\Input\Controllers\XboxControllerInputSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
