@@ -302,15 +302,23 @@ namespace RED.ViewModels.Modules
         {
             _log.Log("Spectrometer data download started.");
             string filename = Path.Combine(SpectrometerFilePath, "REDSpectrometerData" + DateTime.Now.ToString("yyyyMMdd'T'HHmmss") + ".dat");
-            using (var client = new TcpClient())
+            try
             {
-                await client.ConnectAsync(SpectrometerIPAddress, SpectrometerPortNumber);
-                using (var file = File.Create(filename))
+                using (var client = new TcpClient())
                 {
-                    await client.GetStream().CopyToAsync(file);
+                    await client.ConnectAsync(SpectrometerIPAddress, SpectrometerPortNumber);
+                    _log.Log("Spectrometer connection established.");
+                    using (var file = File.Create(filename))
+                    {
+                        await client.GetStream().CopyToAsync(file);
+                    }
                 }
+                _log.Log("Spectrometer data downloaded into {0}.", filename);
             }
-            _log.Log("Spectrometer data downloaded into {0}.", filename);
+            catch (Exception e)
+            {
+                _log.Log("There was an error downloading the spectrometer data: {0}", e.ToString());
+            }
         }
 
         public void RequestLaserOn()
