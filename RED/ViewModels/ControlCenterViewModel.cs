@@ -433,6 +433,11 @@ namespace RED.ViewModels
             //DataRouter.Send(180, new byte[] { 0x23, 0x52, 0x4f, 0x56, 0x45, 0x53, 0x4f, 0x48, 0x41, 0x52, 0x44, 0x00 });
         }
 
+        public void ResubscribeAll()
+        {
+            SubscriptionManager.ResubscribeAll();
+        }
+
         protected override void OnDeactivate(bool close)
         {
             InputManager.SaveConfigurations();
