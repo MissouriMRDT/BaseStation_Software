@@ -109,7 +109,9 @@
     <Compile Include="Addons\GPSCoordinate.cs" />
     <Compile Include="Addons\GPSCoordinateToLongitudeConverter.cs" />
     <Compile Include="Addons\GPSCoordinateToLatitudeConverter.cs" />
+    <Compile Include="Addons\Server.cs" />
     <Compile Include="Addons\SubscriptionRecord.cs" />
+    <Compile Include="Addons\TimestampDisplayConverter.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -136,6 +138,7 @@
     <Compile Include="Interfaces\Network\INetworkEncoding.cs" />
     <Compile Include="Interfaces\Network\INetworkTransportProtocol.cs" />
     <Compile Include="Interfaces\Network\ISequenceNumberProvider.cs" />
+    <Compile Include="Interfaces\Network\IServerProvider.cs" />
     <Compile Include="Models\Input\InputSelectorModel.cs" />
     <Compile Include="Models\Input\MappingChannelModel.cs" />
     <Compile Include="Models\Input\MappingModel.cs" />
@@ -318,9 +321,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Compile Include="Models\ConsoleModel.cs" />
-    <Compile Include="Models\StateModel.cs" />
     <Compile Include="ViewModels\ConsoleViewModel.cs" />
-    <Compile Include="ViewModels\StateViewModel.cs" />
     <Compile Include="Views\ConsoleView.xaml.cs">
       <DependentUpon>ConsoleView.xaml</DependentUpon>
     </Compile>
@@ -360,13 +361,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StateView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="Views\StateView.xaml.cs">
-      <DependentUpon>StateView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Page Include="Views\SettingsManagerView.xaml">
       <SubType>Designer</SubType>

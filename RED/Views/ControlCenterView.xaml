@@ -6,9 +6,14 @@
         xmlns:behaviours="clr-namespace:MahApps.Metro.Behaviours;assembly=MahApps.Metro"
         xmlns:contexts="clr-namespace:RED.Contexts"
         xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+        xmlns:calproj="http://www.caliburnproject.org"
+        xmlns:addons="clr-namespace:RED.Addons"
         Name="Shell" MinHeight="640" MinWidth="1024" Height="640" Width="1024" 
         EnableDWMDropShadow="True" ResizeMode="CanResizeWithGrip" TitleCaps="False"
         WindowTransitionsEnabled="False" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <addons:TimestampDisplayConverter x:Key="TimestampConverter" />
+    </Window.Resources>
 
     <i:Interaction.Behaviors>
         <behaviours:BorderlessWindowBehavior/>
@@ -82,7 +87,31 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <ContentControl Grid.Row="0" Margin="10 0" x:Name="StateManager"/>
+                    <DockPanel Grid.Row="0" Margin="10 0" LastChildFill="True">
+                        <TextBlock DockPanel.Dock="Top" Text="System Status" Margin="0 0 0 5" VerticalAlignment="Center" />
+                        <!--<ContentControl Margin="10 0" x:Name="StateManager"/>-->
+                        <Button DockPanel.Dock="Bottom" x:Name="ResubscribeAll">Resubscribe All</Button>
+                        <ScrollViewer>
+                            <ItemsControl ItemsSource="{Binding NetworkManager.TelemetryLog}" Grid.IsSharedSizeScope="True">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="{Binding Name}" ToolTip="{Binding Address}" ToolTipService.Placement="Left" ToolTipService.InitialShowDelay="0" />
+                                            <TextBlock Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Text="{Binding Timestamp, Mode=OneWay, Converter={StaticResource TimestampConverter}}" ToolTipService.Placement="Left">
+                                                <TextBlock.ToolTip>
+                                                    <TextBlock Text="{Binding Timestamp, StringFormat='{}{0:yyyy-MM-dd hh:mm:ss tt}'}" />
+                                                </TextBlock.ToolTip>
+                                            </TextBlock>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </DockPanel>
                     <ContentControl Grid.Row="1" Margin="10 0" x:Name="Console"/>
                     <ContentControl Grid.Row="2" Margin="10 0" x:Name="InputManager" />
                 </Grid>

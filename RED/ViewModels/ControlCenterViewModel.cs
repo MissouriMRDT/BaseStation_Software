@@ -27,18 +27,6 @@ namespace RED.ViewModels
             }
         }
 
-        public StateViewModel StateManager
-        {
-            get
-            {
-                return _model._stateManager;
-            }
-            set
-            {
-                _model._stateManager = value;
-                NotifyOfPropertyChange();
-            }
-        }
         public ConsoleViewModel Console
         {
             get
@@ -389,10 +377,9 @@ namespace RED.ViewModels
             DataRouter = new DataRouter();
             MetadataManager = new MetadataManager(Console, ConfigManager);
 
-            NetworkManager = new NetworkManagerViewModel(DataRouter, MetadataManager.Commands.ToArray(), Console, MetadataManager);
+            NetworkManager = new NetworkManagerViewModel(DataRouter, MetadataManager.Commands.ToArray(), Console, MetadataManager, MetadataManager);
             SubscriptionManager = new SubscriptionManagerViewModel(Console, MetadataManager, NetworkManager);
             SubscriptionManager.SendInitialSubscriptions(MetadataManager.Telemetry.ToArray());
-            StateManager = new StateViewModel(SubscriptionManager);
 
             Science = new ScienceViewModel(DataRouter, MetadataManager, Console);
             GPS = new GPSViewModel(DataRouter, MetadataManager);
@@ -410,10 +397,10 @@ namespace RED.ViewModels
             Arm = new ArmViewModel(null, DataRouter, MetadataManager, Console, ConfigManager);
             Gimbal1 = new GimbalViewModel(null, DataRouter, MetadataManager, Console, 0);
             Gimbal2 = new GimbalViewModel(null, DataRouter, MetadataManager, Console, 1);
-            XboxController1 = new XboxControllerInputViewModel(1, StateManager);
-            XboxController2 = new XboxControllerInputViewModel(2, StateManager);
-            XboxController3 = new XboxControllerInputViewModel(3, StateManager);
-            XboxController4 = new XboxControllerInputViewModel(4, StateManager);
+            XboxController1 = new XboxControllerInputViewModel(1);
+            XboxController2 = new XboxControllerInputViewModel(2);
+            XboxController3 = new XboxControllerInputViewModel(3);
+            XboxController4 = new XboxControllerInputViewModel(4);
             FlightStickController = new FlightStickViewModel();
 
             InputManager = new InputManagerViewModel(Console, ConfigManager,
@@ -426,10 +413,16 @@ namespace RED.ViewModels
             SettingsManager = new SettingsManagerViewModel(ConfigManager, this);
 
             InputManager.Start();
+
             //DataRouter.Send(100, new byte[] { 10, 20, 30, 40 });
             //DataRouter.Send(1, new byte[] { 2, 3, 4, 5 });
             //DataRouter.Send(101, new byte[] { 15, 25, 35, 45 });
             //DataRouter.Send(180, new byte[] { 0x23, 0x52, 0x4f, 0x56, 0x45, 0x53, 0x4f, 0x48, 0x41, 0x52, 0x44, 0x00 });
+        }
+
+        public void ResubscribeAll()
+        {
+            SubscriptionManager.ResubscribeAll();
         }
 
         protected override void OnDeactivate(bool close)
