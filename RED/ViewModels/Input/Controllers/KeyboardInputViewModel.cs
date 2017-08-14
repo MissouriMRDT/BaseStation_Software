@@ -17,7 +17,6 @@ namespace RED.ViewModels.Input.Controllers
         private IDataRouter _router;
         private IDataIdResolver _idResolver;
         private ILogger _log;
-        private StateViewModel _state;
 
         public string Name { get; private set; }
         public string DeviceType { get; private set; }
@@ -89,7 +88,6 @@ namespace RED.ViewModels.Input.Controllers
             {
                 Model.CurrentModeIndex = value;
                 NotifyOfPropertyChange(() => CurrentModeIndex);
-                _state.CurrentControlMode = ControllerModes[CurrentModeIndex].Name;
             }
         }
 
@@ -104,7 +102,6 @@ namespace RED.ViewModels.Input.Controllers
             {
                 Model.Connected = value;
                 NotifyOfPropertyChange(() => Connected);
-                _state.ControllerIsConnected = value;
                 NotifyOfPropertyChange(() => ConnectionStatus);
             }
         }
@@ -485,12 +482,11 @@ namespace RED.ViewModels.Input.Controllers
         }
         #endregion
 
-        public KeyboardInputViewModel(IDataRouter router, IDataIdResolver idResolver, ILogger log, StateViewModel state)
+        public KeyboardInputViewModel(IDataRouter router, IDataIdResolver idResolver, ILogger log)
         {
             _router = router;
             _idResolver = idResolver;
             _log = log;
-            _state = state;
 
             Name = "Keyboard";
             DeviceType = "Keyboard";

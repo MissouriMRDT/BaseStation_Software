@@ -14,7 +14,6 @@ namespace RED.ViewModels.Input.Controllers
     public class XboxControllerInputViewModel : PropertyChangedBase, IInputDevice
     {
         private readonly XboxControllerInputModel Model = new XboxControllerInputModel();
-        private StateViewModel _state;
         public readonly Controller Controller;
 
         public string Name { get; private set; }
@@ -60,10 +59,8 @@ namespace RED.ViewModels.Input.Controllers
 
         private Dictionary<string, bool> DebounceStates;
 
-        public XboxControllerInputViewModel(int controllerIndex, StateViewModel state)
+        public XboxControllerInputViewModel(int controllerIndex)
         {
-            _state = state;
-
             Name = "Xbox " + controllerIndex.ToString();
             DeviceType = "Xbox";
 

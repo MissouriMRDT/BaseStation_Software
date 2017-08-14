@@ -321,9 +321,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Compile Include="Models\ConsoleModel.cs" />
-    <Compile Include="Models\StateModel.cs" />
     <Compile Include="ViewModels\ConsoleViewModel.cs" />
-    <Compile Include="ViewModels\StateViewModel.cs" />
     <Compile Include="Views\ConsoleView.xaml.cs">
       <DependentUpon>ConsoleView.xaml</DependentUpon>
     </Compile>
@@ -363,13 +361,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StateView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="Views\StateView.xaml.cs">
-      <DependentUpon>StateView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Page Include="Views\SettingsManagerView.xaml">
       <SubType>Designer</SubType>

@@ -11,7 +11,6 @@ namespace RED.Models
     {
         internal SettingsManagerViewModel _settingsManager;
 
-        internal StateViewModel _stateManager;
         internal ConsoleViewModel _console;
         internal XMLConfigManager _configManager;
         internal DataRouter _dataRouter;

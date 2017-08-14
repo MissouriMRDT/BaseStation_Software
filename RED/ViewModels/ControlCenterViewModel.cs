@@ -27,18 +27,6 @@ namespace RED.ViewModels
             }
         }
 
-        public StateViewModel StateManager
-        {
-            get
-            {
-                return _model._stateManager;
-            }
-            set
-            {
-                _model._stateManager = value;
-                NotifyOfPropertyChange();
-            }
-        }
         public ConsoleViewModel Console
         {
             get
@@ -392,7 +380,6 @@ namespace RED.ViewModels
             NetworkManager = new NetworkManagerViewModel(DataRouter, MetadataManager.Commands.ToArray(), Console, MetadataManager, MetadataManager);
             SubscriptionManager = new SubscriptionManagerViewModel(Console, MetadataManager, NetworkManager);
             SubscriptionManager.SendInitialSubscriptions(MetadataManager.Telemetry.ToArray());
-            StateManager = new StateViewModel(SubscriptionManager);
 
             Science = new ScienceViewModel(DataRouter, MetadataManager, Console);
             GPS = new GPSViewModel(DataRouter, MetadataManager);
@@ -410,10 +397,10 @@ namespace RED.ViewModels
             Arm = new ArmViewModel(null, DataRouter, MetadataManager, Console, ConfigManager);
             Gimbal1 = new GimbalViewModel(null, DataRouter, MetadataManager, Console, 0);
             Gimbal2 = new GimbalViewModel(null, DataRouter, MetadataManager, Console, 1);
-            XboxController1 = new XboxControllerInputViewModel(1, StateManager);
-            XboxController2 = new XboxControllerInputViewModel(2, StateManager);
-            XboxController3 = new XboxControllerInputViewModel(3, StateManager);
-            XboxController4 = new XboxControllerInputViewModel(4, StateManager);
+            XboxController1 = new XboxControllerInputViewModel(1);
+            XboxController2 = new XboxControllerInputViewModel(2);
+            XboxController3 = new XboxControllerInputViewModel(3);
+            XboxController4 = new XboxControllerInputViewModel(4);
             FlightStickController = new FlightStickViewModel();
 
             InputManager = new InputManagerViewModel(Console, ConfigManager,
