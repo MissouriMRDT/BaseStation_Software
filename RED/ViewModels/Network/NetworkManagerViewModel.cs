@@ -202,7 +202,10 @@ namespace RED.ViewModels.Network
                 Name = srv.Name;
                 Address = srv.Address;
                 Timestamp = DateTime.MinValue;
+                timer.Tick += (s, e) => NotifyOfPropertyChange(() => Timestamp);
             }
+
+            private static System.Windows.Threading.DispatcherTimer timer = new System.Windows.Threading.DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(250), IsEnabled = true };
         }
     }
 }

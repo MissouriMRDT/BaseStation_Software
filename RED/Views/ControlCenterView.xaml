@@ -6,9 +6,13 @@
         xmlns:behaviours="clr-namespace:MahApps.Metro.Behaviours;assembly=MahApps.Metro"
         xmlns:contexts="clr-namespace:RED.Contexts"
         xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+        xmlns:addons="clr-namespace:RED.Addons"
         Name="Shell" MinHeight="640" MinWidth="1024" Height="640" Width="1024" 
         EnableDWMDropShadow="True" ResizeMode="CanResizeWithGrip" TitleCaps="False"
         WindowTransitionsEnabled="False" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <addons:TimestampDisplayConverter x:Key="TimestampConverter" />
+    </Window.Resources>
 
     <i:Interaction.Behaviors>
         <behaviours:BorderlessWindowBehavior/>
@@ -89,17 +93,16 @@
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="auto" />
-                                                <RowDefinition Height="auto" />
-                                            </Grid.RowDefinitions>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="auto" />
                                                 <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
-                                            <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Name}" />
-                                            <TextBlock Grid.Row="1" Grid.Column="0" Foreground="Gray" Text="{Binding Address, StringFormat='[{0}]'}" />
-                                            <TextBlock Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" HorizontalAlignment="Right" VerticalAlignment="Center" Text="{Binding Timestamp}" />
+                                            <TextBlock Grid.Column="0" Text="{Binding Name}" ToolTip="{Binding Address}" ToolTipService.Placement="Left" ToolTipService.InitialShowDelay="0" />
+                                            <TextBlock Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Text="{Binding Timestamp, Mode=OneWay, Converter={StaticResource TimestampConverter}}" ToolTipService.Placement="Left">
+                                                <TextBlock.ToolTip>
+                                                    <TextBlock Text="{Binding Timestamp, StringFormat='{}{0:yyyy-MM-dd hh:mm:ss tt}'}" />
+                                                </TextBlock.ToolTip>
+                                            </TextBlock>
                                         </Grid>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
