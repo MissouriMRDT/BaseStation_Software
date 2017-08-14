@@ -1,15 +1,15 @@
-﻿using RED.Contexts;
+﻿using RED.Addons;
+using RED.Contexts;
 using RED.Interfaces;
 using RED.Interfaces.Network;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Xml.Serialization;
+using System.Net;
 
 namespace RED.ViewModels
 {
-    public class MetadataManager : IIPAddressProvider, IDataIdResolver
+    public class MetadataManager : IIPAddressProvider, IDataIdResolver, IServerProvider
     {
         private ILogger _log;
         private IConfigurationManager _configManager;
@@ -19,6 +19,8 @@ namespace RED.ViewModels
         public List<MetadataServerContext> Servers { get; private set; }
         public List<MetadataRecordContext> Commands { get; private set; }
         public List<MetadataRecordContext> Telemetry { get; private set; }
+
+        private List<Server> ServerObjs;
 
         public MetadataManager(ILogger log, IConfigurationManager configs)
         {
@@ -30,6 +32,8 @@ namespace RED.ViewModels
             Servers = new List<MetadataServerContext>();
             Commands = new List<MetadataRecordContext>();
             Telemetry = new List<MetadataRecordContext>();
+
+            ServerObjs = new List<Server>();
 
             InitializeMetadata(_configManager.GetConfig<MetadataSaveContext>(MetadataConfigName));
         }
@@ -43,6 +47,8 @@ namespace RED.ViewModels
                 Commands.AddRange(server.Commands);
                 Telemetry.AddRange(server.Telemetry);
             }
+
+            ServerObjs.AddRange(Servers.Select(x => new Server(x)));
 
             _log.Log("Metadata loaded.");
         }
@@ -81,10 +87,10 @@ namespace RED.ViewModels
             return data == null ? String.Empty : data.Address;
         }
 
-        public System.Net.IPAddress GetIPAddress(ushort dataId)
+        public IPAddress GetIPAddress(ushort dataId)
         {
-            System.Net.IPAddress ip;
-            if (System.Net.IPAddress.TryParse(GetServerAddress(dataId), out ip))
+            IPAddress ip;
+            if (IPAddress.TryParse(GetServerAddress(dataId), out ip))
                 return ip;
             else
             {
@@ -92,12 +98,21 @@ namespace RED.ViewModels
                 return null;
             }
         }
-        public ushort[] GetAllDataIds(System.Net.IPAddress ip)
+        public ushort[] GetAllDataIds(IPAddress ip)
         {
             var server = Servers.FirstOrDefault(x => x.Address == ip.ToString());
             if (server == null)
                 return new ushort[0];
             return server.Commands.Concat(server.Telemetry).Select(x => x.Id).ToArray();
+        }
+
+        public Server[] GetServerList()
+        {
+            return ServerObjs.ToArray();
+        }
+        public Server GetServer(IPAddress ip)
+        {
+            return ServerObjs.FirstOrDefault(x => x.Address.Equals(ip));
         }
 
         public static MetadataSaveContext DefaultMetadata = new MetadataSaveContext(new[] {

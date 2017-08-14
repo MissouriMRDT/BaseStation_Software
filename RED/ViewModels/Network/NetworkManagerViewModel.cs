@@ -1,10 +1,13 @@
 ﻿using Caliburn.Micro;
+using RED.Addons;
 using RED.Contexts;
 using RED.Interfaces;
 using RED.Interfaces.Network;
 using RED.Models.Network;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -22,6 +25,7 @@ namespace RED.ViewModels.Network
         private IDataRouter _router;
         private ILogger _log;
         private IIPAddressProvider _ipProvider;
+        private IServerProvider _serverProvider;
 
         private INetworkEncoding encoding;
         private INetworkTransportProtocol continuousDataSocket;
@@ -29,16 +33,21 @@ namespace RED.ViewModels.Network
 
         private HashSet<UnACKedPacket> OutgoingUnACKed = new HashSet<UnACKedPacket>();
 
-        public NetworkManagerViewModel(IDataRouter router, MetadataRecordContext[] commands, ILogger log, IIPAddressProvider ipProvider)
+        public ObservableCollection<ServerLog> TelemetryLog { get; set; }
+
+        public NetworkManagerViewModel(IDataRouter router, MetadataRecordContext[] commands, ILogger log, IIPAddressProvider ipProvider, IServerProvider serverProvider)
         {
             _model = new NetworkManagerModel();
             _router = router;
             _log = log;
             _ipProvider = ipProvider;
+            _serverProvider = serverProvider;
 
             sequenceNumberProvider = new SequenceNumberManager();
             encoding = new RoverProtocol();
             continuousDataSocket = new UDPEndpoint(DestinationPort, DestinationPort);
+
+            TelemetryLog = new ObservableCollection<ServerLog>(_serverProvider.GetServerList().Select(x => new ServerLog(x)));
 
             foreach (var command in commands)
                 _router.Subscribe(this, command.Id);
@@ -107,6 +116,7 @@ namespace RED.ViewModels.Network
 
         private void ReceivePacket(IPAddress srcIP, byte[] buffer)
         {
+            LogTelemetryRecieved(srcIP);
             ushort dataId;
             ushort seqNum;
             bool needsACK;
@@ -157,6 +167,13 @@ namespace RED.ViewModels.Network
             SendPacket((ushort)SystemDataId.ACK, data, srcIP, false);
         }
 
+        private void LogTelemetryRecieved(IPAddress srcIP)
+        {
+            var server = TelemetryLog.First(x => x.Address.Equals(srcIP));
+            if (server != null)
+                server.Timestamp = DateTime.Now;
+        }
+
         private enum SystemDataId : ushort
         {
             Null = 0,
@@ -169,5 +186,23 @@ namespace RED.ViewModels.Network
         }
 
         private struct UnACKedPacket { public ushort DataId; public ushort SeqNum;}
+
+        public class ServerLog : PropertyChangedBase
+        {
+            private string _name;
+            private IPAddress _address;
+            private DateTime _timestamp;
+
+            public string Name { get { return _name; } set { _name = value; NotifyOfPropertyChange(() => Name); } }
+            public IPAddress Address { get { return _address; } set { _address = value; NotifyOfPropertyChange(() => Address); } }
+            public DateTime Timestamp { get { return _timestamp; } set { _timestamp = value; NotifyOfPropertyChange(() => Timestamp); } }
+
+            public ServerLog(Server srv)
+            {
+                Name = srv.Name;
+                Address = srv.Address;
+                Timestamp = DateTime.MinValue;
+            }
+        }
     }
 }

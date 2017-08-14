@@ -389,7 +389,7 @@ namespace RED.ViewModels
             DataRouter = new DataRouter();
             MetadataManager = new MetadataManager(Console, ConfigManager);
 
-            NetworkManager = new NetworkManagerViewModel(DataRouter, MetadataManager.Commands.ToArray(), Console, MetadataManager);
+            NetworkManager = new NetworkManagerViewModel(DataRouter, MetadataManager.Commands.ToArray(), Console, MetadataManager, MetadataManager);
             SubscriptionManager = new SubscriptionManagerViewModel(Console, MetadataManager, NetworkManager);
             SubscriptionManager.SendInitialSubscriptions(MetadataManager.Telemetry.ToArray());
             StateManager = new StateViewModel(SubscriptionManager);
@@ -426,6 +426,7 @@ namespace RED.ViewModels
             SettingsManager = new SettingsManagerViewModel(ConfigManager, this);
 
             InputManager.Start();
+
             //DataRouter.Send(100, new byte[] { 10, 20, 30, 40 });
             //DataRouter.Send(1, new byte[] { 2, 3, 4, 5 });
             //DataRouter.Send(101, new byte[] { 15, 25, 35, 45 });
