@@ -32,6 +32,7 @@ namespace RED.ViewModels.Network
         private ISequenceNumberProvider sequenceNumberProvider;
 
         private HashSet<UnACKedPacket> OutgoingUnACKed = new HashSet<UnACKedPacket>();
+        private HashSet<PendingPing> PendingPings = new HashSet<PendingPing>();
 
         public ObservableCollection<ServerLog> TelemetryLog { get; set; }
 
@@ -74,6 +75,12 @@ namespace RED.ViewModels.Network
 
         public void SendPacket(ushort dataId, byte[] data, IPAddress destIP, bool isReliable)
         {
+            ushort seqNum = sequenceNumberProvider.IncrementValue(dataId);
+            SendPacket(dataId, data, destIP, isReliable, seqNum);
+        }
+
+        private void SendPacket(ushort dataId, byte[] data, IPAddress destIP, bool isReliable, ushort seqNum)
+        {
             if (destIP == null)
             {
                 _log.Log("Attempted to send packet with unknown IP address. DataId={0}", dataId);
@@ -85,13 +92,38 @@ namespace RED.ViewModels.Network
                 return;
             }
 
-            ushort seqNum = sequenceNumberProvider.IncrementValue(dataId);
             byte[] packetData = encoding.EncodePacket(dataId, data, seqNum, isReliable);
 
             if (isReliable)
                 SendPacketReliable(destIP, packetData, dataId, seqNum);
             else
                 SendPacketUnreliable(destIP, packetData);
+        }
+
+        public async Task<TimeSpan> SendPing(IPAddress ip, TimeSpan timeout)
+        {
+            PendingPing ping = new PendingPing()
+            {
+                Timestamp = DateTime.Now,
+                SeqNum = sequenceNumberProvider.IncrementValue((ushort)SystemDataId.Ping),
+                Semaphore = new System.Threading.SemaphoreSlim(0)
+            };
+            PendingPings.Add(ping);
+
+            SendPacket((ushort)SystemDataId.Ping, new byte[0], ip, false, ping.SeqNum);
+            await ping.Semaphore.WaitAsync(timeout);
+            return ping.RoundtripTime;
+        }
+
+        private void ProcessPing(byte[] data)
+        {
+            DateTime now = DateTime.Now;
+            ushort responseSeqNum = BitConverter.ToUInt16(data, 0);
+            PendingPing ping = PendingPings.FirstOrDefault(x => x.SeqNum == responseSeqNum);
+            if (ping == null) return;
+
+            ping.RoundtripTime = now - ping.Timestamp;
+            ping.Semaphore.Release();
         }
 
         private async void SendPacketUnreliable(IPAddress destIP, byte[] packetData)
@@ -141,6 +173,9 @@ namespace RED.ViewModels.Network
                 case SystemDataId.Ping:
                     SendPacket((ushort)SystemDataId.PingReply, BitConverter.GetBytes(IPAddress.HostToNetworkOrder((short)seqNum)), srcIP, false);
                     break;
+                case SystemDataId.PingReply:
+                    ProcessPing(data);
+                    break;
                 case SystemDataId.Subscribe:
                     _log.Log("Packet recieved requesting subscription to dataId={0}", dataId);
                     break;
@@ -169,7 +204,7 @@ namespace RED.ViewModels.Network
 
         private void LogTelemetryRecieved(IPAddress srcIP)
         {
-            var server = TelemetryLog.First(x => x.Address.Equals(srcIP));
+            var server = TelemetryLog.FirstOrDefault(x => x.Address.Equals(srcIP));
             if (server != null)
                 server.Timestamp = DateTime.Now;
         }
@@ -186,6 +221,13 @@ namespace RED.ViewModels.Network
         }
 
         private struct UnACKedPacket { public ushort DataId; public ushort SeqNum;}
+        private class PendingPing
+        {
+            public ushort SeqNum;
+            public DateTime Timestamp;
+            public System.Threading.SemaphoreSlim Semaphore;
+            public TimeSpan RoundtripTime;
+        }
 
         public class ServerLog : PropertyChangedBase
         {
