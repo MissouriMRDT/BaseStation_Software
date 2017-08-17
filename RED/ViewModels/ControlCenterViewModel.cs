@@ -123,6 +123,18 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => WaypointManager);
             }
         }
+        public PingToolViewModel PingTool
+        {
+            get
+            {
+                return _model._pingTool;
+            }
+            set
+            {
+                _model._pingTool = value;
+                NotifyOfPropertyChange(() => PingTool);
+            }
+        }
 
         public ScienceViewModel Science
         {
@@ -409,6 +421,7 @@ namespace RED.ViewModels
                 new IInputMode[] { Drive, Arm, Gimbal1, Gimbal2, ScienceArm });
 
             WaypointManager = new WaypointManagerViewModel(Map, GPS, Autonomy);
+            PingTool = new PingToolViewModel(NetworkManager, ConfigManager);
 
             SettingsManager = new SettingsManagerViewModel(ConfigManager, this);
 

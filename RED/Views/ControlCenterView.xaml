@@ -88,29 +88,34 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <DockPanel Grid.Row="0" Margin="10 0" LastChildFill="True">
-                        <TextBlock DockPanel.Dock="Top" Text="System Status" Margin="0 0 0 5" VerticalAlignment="Center" />
-                        <!--<ContentControl Margin="10 0" x:Name="StateManager"/>-->
                         <Button DockPanel.Dock="Bottom" x:Name="ResubscribeAll">Resubscribe All</Button>
-                        <ScrollViewer>
-                            <ItemsControl ItemsSource="{Binding NetworkManager.TelemetryLog}" Grid.IsSharedSizeScope="True">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Grid.Column="0" Text="{Binding Name}" ToolTip="{Binding Address}" ToolTipService.Placement="Left" ToolTipService.InitialShowDelay="0" />
-                                            <TextBlock Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Text="{Binding Timestamp, Mode=OneWay, Converter={StaticResource TimestampConverter}}" ToolTipService.Placement="Left">
-                                                <TextBlock.ToolTip>
-                                                    <TextBlock Text="{Binding Timestamp, StringFormat='{}{0:yyyy-MM-dd hh:mm:ss tt}'}" />
-                                                </TextBlock.ToolTip>
+                        <controls:MetroTabControl TabStripMargin="0">
+                            <TabItem Header="Telemetry" controls:ControlsHelper.HeaderFontSize="12" Margin="0">
+                                <ScrollViewer>
+                                    <ItemsControl ItemsSource="{Binding NetworkManager.TelemetryLog}" Grid.IsSharedSizeScope="True">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="0" Text="{Binding Name}" ToolTip="{Binding Address}" ToolTipService.Placement="Left" ToolTipService.InitialShowDelay="0" />
+                                                    <TextBlock Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Text="{Binding Timestamp, Mode=OneWay, Converter={StaticResource TimestampConverter}}" ToolTipService.Placement="Left">
+                                                        <TextBlock.ToolTip>
+                                                            <TextBlock Text="{Binding Timestamp, StringFormat='{}{0:yyyy-MM-dd hh:mm:ss tt}'}" />
+                                                        </TextBlock.ToolTip>
                                             </TextBlock>
-                                        </Grid>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </ScrollViewer>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </ScrollViewer>
+                            </TabItem>
+                            <TabItem Header="Ping" controls:ControlsHelper.HeaderFontSize="12">
+                                <ContentControl Grid.Row="1" x:Name="PingTool"/>
+                            </TabItem>
+                        </controls:MetroTabControl>
                     </DockPanel>
                     <ContentControl Grid.Row="1" Margin="10 0" x:Name="Console"/>
                     <ContentControl Grid.Row="2" Margin="10 0" x:Name="InputManager" />

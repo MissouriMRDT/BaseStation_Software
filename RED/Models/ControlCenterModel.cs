@@ -19,6 +19,8 @@ namespace RED.Models
         internal NetworkManagerViewModel _networkManager;
         internal InputManagerViewModel _input;
         internal WaypointManagerViewModel _waypoint;
+        internal PingToolViewModel _pingTool;
+
         internal ScienceViewModel _science;
         internal GPSViewModel _GPS;
         internal SensorViewModel _sensor;
