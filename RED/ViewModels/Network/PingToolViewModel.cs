@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace RED.ViewModels.Network
 {
@@ -54,13 +55,11 @@ namespace RED.ViewModels.Network
                 NotifyOfPropertyChange(() => PingServers);
             }
         }
-        private Ping ICMPPing;
 
         public PingToolViewModel(NetworkManagerViewModel network, IConfigurationManager config)
         {
             _model = new PingToolModel();
             _networkManager = network;
-            ICMPPing = new Ping();
 
             PingServers = new ObservableCollection<PingServer>();
 
@@ -79,14 +78,18 @@ namespace RED.ViewModels.Network
 
         private async Task<long> SendICMPPing(IPAddress ip)
         {
-            var reply = await ICMPPing.SendPingAsync(ip, Timeout);
-            return (reply.Status == IPStatus.Success) ? reply.RoundtripTime : -1;
+            using (Ping ICMPPing = new Ping())
+            {
+                var reply = await ICMPPing.SendPingAsync(ip, Timeout);
+                return (reply.Status == IPStatus.Success) ? reply.RoundtripTime : -1;
+            }
         }
 
         private async Task<long> SendRoveCommPing(IPAddress ip)
         {
             TimeSpan roundtripTime = await _networkManager.SendPing(ip, TimeSpan.FromMilliseconds(Timeout));
-            return (long)roundtripTime.TotalMilliseconds;
+            long time = (long)roundtripTime.TotalMilliseconds;
+            return (time != 0) ? time : -1;
         }
 
         public class PingServer : PropertyChangedBase
@@ -196,9 +199,15 @@ namespace RED.ViewModels.Network
                 set
                 {
                     _AutoModeEnabled = value;
+                    if (AutoModeEnabled)
+                        EnableAutoMode();
+                    else
+                        DisableAutoMode();
                     NotifyOfPropertyChange(() => AutoModeEnabled);
                 }
             }
+
+            private DispatcherTimer autoTimer;
 
             public PingServer(PingToolViewModel vm, PingServerContext context)
             {
@@ -212,22 +221,62 @@ namespace RED.ViewModels.Network
                 Result = 0;
             }
 
-            public async void SendICMPPing()
+            public async void RequestICMPPing()
             {
                 if (!SupportsICMP) return;
 
-                IsSendingICMP = true;
+                if (AutoModeEnabled)
+                {
+                    IsSendingICMP = !IsSendingICMP;
+                }
+                else
+                {
+                    IsSendingICMP = true;
+                    await SendICMPPing();
+                    IsSendingICMP = false;
+                }
+            }
+            public async Task SendICMPPing()
+            {
                 Result = await _pingTool.SendICMPPing(Address);
-                IsSendingICMP = false;
             }
 
-            public async void SendRoveCommPing()
+            public async void RequestRoveCommPing()
             {
                 if (!SupportsRoveComm) return;
 
-                IsSendingRoveComm = true;
+                if (AutoModeEnabled)
+                {
+                    IsSendingRoveComm = !IsSendingRoveComm;
+                }
+                else
+                {
+                    IsSendingRoveComm = true;
+                    await SendRoveCommPing();
+                    IsSendingRoveComm = false;
+                }
+            }
+            public async Task SendRoveCommPing()
+            {
                 Result = await _pingTool.SendRoveCommPing(Address);
-                IsSendingRoveComm = false;
+            }
+
+            private void EnableAutoMode()
+            {
+                autoTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(_pingTool.AutoRate) };
+                autoTimer.Tick += AutoModeTick;
+                autoTimer.Start();
+            }
+            private void DisableAutoMode()
+            {
+                autoTimer.Stop();
+            }
+            private async void AutoModeTick(object sender, EventArgs e)
+            {
+                if (SupportsICMP && IsSendingICMP)
+                    await SendICMPPing();
+                if (SupportsRoveComm && IsSendingRoveComm)
+                    await SendRoveCommPing();
             }
         }
 

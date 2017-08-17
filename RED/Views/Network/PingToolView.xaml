@@ -29,18 +29,18 @@
                                Content="{Binding Result}" ToolTip="Round-trip Time (ms)"
                                HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Margin="0 0 2 0" />
                         <ToggleButton Grid.Column="2"
-                                      cal:Message.Attach="SendICMPPing()"
+                                      cal:Message.Attach="RequestICMPPing()"
                                       IsChecked="{Binding IsSendingICMP, Mode=OneWay}"
                                       Visibility="{Binding SupportsICMP, Converter={StaticResource BoolToVis}}">
                             ICMP
                         </ToggleButton>
                         <ToggleButton Grid.Column="3"
-                                      cal:Message.Attach="SendRoveCommPing()"
+                                      cal:Message.Attach="RequestRoveCommPing()"
                                       IsChecked="{Binding IsSendingRoveComm, Mode=OneWay}"
                                       Visibility="{Binding SupportsRoveComm, Converter={StaticResource BoolToVis}}">
                             Rove
                         </ToggleButton>
-                        <CheckBox Grid.Column="4" x:Name="AutoModeEnabled" Margin="2" ToolTip="Auto" />
+                        <CheckBox Grid.Column="4" IsChecked="{Binding AutoModeEnabled, Mode=TwoWay}" Margin="2" ToolTip="Auto" />
                     </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
