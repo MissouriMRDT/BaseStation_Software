@@ -182,6 +182,7 @@ namespace RED.ViewModels
         }
         public void Start()
         {
+            if (ElapsedTime >= SelectedSchedule.Duration) return;
             StartTime = DateTime.Now - ElapsedTime;
             Timer.Interval = TimeSpan.FromSeconds(Math.Ceiling(ElapsedTime.TotalSeconds) - ElapsedTime.TotalSeconds);
             Timer.Start();
@@ -344,14 +345,8 @@ namespace RED.ViewModels
         }
 
         public static StopwatchContext DefaultSchedules = new StopwatchContext(new[] {
-            new StopwatchScheduleContext("Astro Assist", new[] {
-                new StopwatchPhaseContext("Find Cache", 60),
-                new StopwatchPhaseContext("Pick up Tools", 300),
-                new StopwatchPhaseContext("To Astro #1", 120),
-                new StopwatchPhaseContext("Drop Off #1", 60),
-                new StopwatchPhaseContext("To Astro #2", 120),
-                new StopwatchPhaseContext("Drop Off #1", 120),
-                new StopwatchPhaseContext("Return to Start", 120)
+            new StopwatchScheduleContext("", new[] {
+                new StopwatchPhaseContext("", 0)
             })
         });
     }
