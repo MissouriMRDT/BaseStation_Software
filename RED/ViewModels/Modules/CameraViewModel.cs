@@ -17,12 +17,12 @@ namespace RED.ViewModels.Modules
 
         public void SetMux1(byte index)
         {
-            _router.Send(_idResolver.GetId("CameraMuxChannel1"), index);
+            _router.Send(_idResolver.GetId("CameraMuxChannel1"), index, true);
         }
 
         public void SetMux2(byte index)
         {
-            _router.Send(_idResolver.GetId("CameraMuxChannel2"), index);
+            _router.Send(_idResolver.GetId("CameraMuxChannel2"), index, true);
         }
     }
 }

@@ -22,21 +22,21 @@ namespace RED.ViewModels
             _model = new DataRouterModel();
         }
 
-        public void Send(ushort dataId, byte[] data)
+        public void Send(ushort dataId, byte[] data, bool reliable = false)
         {
             if (dataId == 0) return;
             List<ISubscribe> registered;
             if (Registrations.TryGetValue(dataId, out registered))
                 foreach (ISubscribe subscription in registered)
-                    subscription.ReceiveFromRouter(dataId, data);
+                    subscription.ReceiveFromRouter(dataId, data, reliable);
         }
-        public void Send(ushort dataId, byte obj)
+        public void Send(ushort dataId, byte obj, bool reliable = false)
         {
-            Send(dataId, new byte[] { obj });
+            Send(dataId, new byte[] { obj }, reliable);
         }
-        public void Send(ushort dataId, dynamic obj)
+        public void Send(ushort dataId, dynamic obj, bool reliable = false)
         {
-            Send(dataId, System.BitConverter.GetBytes(obj));
+            Send(dataId, System.BitConverter.GetBytes(obj), reliable);
         }
 
         public void Subscribe(ISubscribe subscriber, ushort dataId)

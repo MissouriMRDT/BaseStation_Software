@@ -116,19 +116,19 @@ namespace RED.ViewModels.Modules
             SpeedLeft = newSpeedLeft;
             SpeedRight = newSpeedRight;
 
-            SendSpeeds();
+            SendSpeeds(false);
         }
 
-        private void SendSpeeds()
+        private void SendSpeeds(bool reliable)
         {
             if (UseLegacyDataIds)
             {
-                _router.Send(_idResolver.GetId("MotorLeftSpeed"), SpeedLeft);
-                _router.Send(_idResolver.GetId("MotorRightSpeed"), SpeedRight);
+                _router.Send(_idResolver.GetId("MotorLeftSpeed"), SpeedLeft, reliable);
+                _router.Send(_idResolver.GetId("MotorRightSpeed"), SpeedRight, reliable);
             }
             else
             {
-                _router.Send(_idResolver.GetId("DriveLeftRight"), (ushort)SpeedLeft << 16 | (ushort)SpeedRight);
+                _router.Send(_idResolver.GetId("DriveLeftRight"), (ushort)SpeedLeft << 16 | (ushort)SpeedRight, reliable);
             }
         }
 
@@ -147,7 +147,7 @@ namespace RED.ViewModels.Modules
         public void StopMode()
         {
             SpeedLeft = SpeedRight = 0;
-            SendSpeeds();
+            SendSpeeds(true);
         }
     }
 }

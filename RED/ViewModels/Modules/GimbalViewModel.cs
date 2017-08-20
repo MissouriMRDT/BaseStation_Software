@@ -87,49 +87,49 @@ namespace RED.ViewModels.Modules
 
         public void StopMode()
         {
-            _router.Send(_idResolver.GetId("PTZ1Speed"), (int)0);
+            _router.Send(_idResolver.GetId("PTZ1Speed"), (int)0, true);
         }
 
         public void ZoomFocusStop()
         {
-            _router.Send(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.Stop);
+            _router.Send(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.Stop, true);
         }
         public void ZoomIn()
         {
-            _router.Send(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.ZoomIn);
+            _router.Send(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.ZoomIn, true);
         }
         public void ZoomOut()
         {
-            _router.Send(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.ZoomOut);
+            _router.Send(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.ZoomOut, true);
         }
         public void FocusNear()
         {
-            _router.Send(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.FocusNear);
+            _router.Send(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.FocusNear, true);
         }
         public void FocusFar()
         {
-            _router.Send(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.FocusFar);
+            _router.Send(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.FocusFar, true);
         }
 
         public void MenuCenter()
         {
-            _router.Send(_idResolver.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.Menu);
+            _router.Send(_idResolver.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.Menu, true);
         }
         public void MenuUp()
         {
-            _router.Send(_idResolver.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.MenuUp);
+            _router.Send(_idResolver.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.MenuUp, true);
         }
         public void MenuDown()
         {
-            _router.Send(_idResolver.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.MenuDown);
+            _router.Send(_idResolver.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.MenuDown, true);
         }
         public void MenuLeft()
         {
-            _router.Send(_idResolver.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.MenuLeft);
+            _router.Send(_idResolver.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.MenuLeft, true);
         }
         public void MenuRight()
         {
-            _router.Send(_idResolver.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.MenuRight);
+            _router.Send(_idResolver.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.MenuRight, true);
         }
 
         private enum GimbalZoomCommands : byte

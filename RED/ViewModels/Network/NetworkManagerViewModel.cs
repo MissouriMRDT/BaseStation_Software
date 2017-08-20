@@ -67,10 +67,10 @@ namespace RED.ViewModels.Network
             }
         }
 
-        public void ReceiveFromRouter(ushort dataId, byte[] data)
+        public void ReceiveFromRouter(ushort dataId, byte[] data, bool reliable)
         {
             IPAddress destIP = _ipProvider.GetIPAddress(dataId);
-            SendPacket(dataId, data, destIP, defaultReliable);
+            SendPacket(dataId, data, destIP, reliable);
         }
 
         public void SendPacket(ushort dataId, byte[] data, IPAddress destIP, bool isReliable)
@@ -143,7 +143,9 @@ namespace RED.ViewModels.Network
                 if (!OutgoingUnACKed.Contains(packetInfo)) return;
             }
 
-            _log.Log("No ACK recieved for reliable packet with DataId={0} and SeqNum={1} after {2} retries.", packetInfo.DataId, packetInfo.SeqNum, ReliableMaxRetries);
+            OutgoingUnACKed.Remove(packetInfo);
+            if (dataId != (ushort)SystemDataId.Subscribe)
+                _log.Log("No ACK recieved for DataId={0} and SeqNum={1} after {2} retries.", packetInfo.DataId, packetInfo.SeqNum, ReliableMaxRetries);
         }
 
         private void ReceivePacket(IPAddress srcIP, byte[] buffer)
@@ -185,8 +187,8 @@ namespace RED.ViewModels.Network
                 case SystemDataId.ACK:
                     ushort ackedId = (ushort)IPAddress.NetworkToHostOrder((short)BitConverter.ToUInt16(data, 0));
                     ushort ackedSeqNum = (ushort)IPAddress.NetworkToHostOrder((short)BitConverter.ToUInt16(data, 2));
-                    if (!OutgoingUnACKed.Remove(new UnACKedPacket { DataId = dataId, SeqNum = seqNum }))
-                        _log.Log("Unexected ACK recieved from ip=??? with dataId={0} and seqNum={1}.", ackedId, ackedSeqNum);
+                    if (!OutgoingUnACKed.Remove(new UnACKedPacket { DataId = ackedId, SeqNum = ackedSeqNum }))
+                        _log.Log("Unexected ACK recieved from ip={0} with dataId={1} and seqNum={2}.", srcIP, ackedId, ackedSeqNum);
                     break;
                 default: //Regular DataId
                     _router.Send(dataId, data);

@@ -46,13 +46,13 @@ namespace RED.ViewModels.Network
         public void Subscribe(ushort dataId)
         {
             var ip = _ipProvider.GetIPAddress(dataId);
-            _networkManager.SendPacket(SubscriptionDataId, BitConverter.GetBytes(dataId), ip, false);
+            _networkManager.SendPacket(SubscriptionDataId, BitConverter.GetBytes(dataId), ip, true);
             Subscriptions.Add(dataId, new SubscriptionRecord(SubscriptionStatus.Subscribed, ip, DateTime.Now));
         }
 
         public void Unsubscribe(ushort dataId)
         {
-            _networkManager.SendPacket(UnSubscribeDataId, BitConverter.GetBytes(dataId), Subscriptions[dataId].HostIP, false);
+            _networkManager.SendPacket(UnSubscribeDataId, BitConverter.GetBytes(dataId), Subscriptions[dataId].HostIP, true);
             Subscriptions[dataId].Status = SubscriptionStatus.Unsubscribed;
             Subscriptions[dataId].Timestamp = DateTime.Now;
         }
@@ -60,7 +60,7 @@ namespace RED.ViewModels.Network
         public void Resubscribe(ushort dataId)
         {
             var ip = _ipProvider.GetIPAddress(dataId);
-            _networkManager.SendPacket(SubscriptionDataId, BitConverter.GetBytes(dataId), ip, false);
+            _networkManager.SendPacket(SubscriptionDataId, BitConverter.GetBytes(dataId), ip, true);
             Subscriptions[dataId].Timestamp = DateTime.Now;
         }
 

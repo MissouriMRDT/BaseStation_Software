@@ -81,7 +81,7 @@ namespace RED.ViewModels.Modules
 
         private void TurnOff()
         {
-            _router.Send(_idResolver.GetId("UnderglowColor"), new byte[] { 0, 0, 0 });
+            _router.Send(_idResolver.GetId("UnderglowColor"), new byte[] { 0, 0, 0 }, true);
         }
     }
 }

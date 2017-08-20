@@ -158,7 +158,7 @@ namespace RED.ViewModels.Modules
             _router.Subscribe(this, _idResolver.GetId("GPSSatellites"));
         }
 
-        public void ReceiveFromRouter(ushort dataId, byte[] data)
+        public void ReceiveFromRouter(ushort dataId, byte[] data, bool reliable)
         {
             switch (_idResolver.GetName(dataId))
             {

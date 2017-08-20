@@ -180,7 +180,7 @@ namespace RED.ViewModels.Modules
             _router.Subscribe(this, _idResolver.GetId("ArmCurrentMain"));
         }
 
-        public void ReceiveFromRouter(ushort dataId, byte[] data)
+        public void ReceiveFromRouter(ushort dataId, byte[] data, bool reliable)
         {
             switch (_idResolver.GetName(dataId))
             {
@@ -208,7 +208,7 @@ namespace RED.ViewModels.Modules
         {
             if (values["DebouncedArmReset"] != 0)
             {
-                _router.Send(_idResolver.GetId("ArmStop"), (Int16)(0));
+                _router.Send(_idResolver.GetId("ArmStop"), (Int16)(0), true);
                 _log.Log("Robotic Arm Resetting...");
             }
 
@@ -261,10 +261,10 @@ namespace RED.ViewModels.Modules
 
         public void StopMode()
         {
-            _router.Send(_idResolver.GetId("ArmStop"), (Int16)(0));
-            _router.Send(_idResolver.GetId("Gripper"), (Int16)(0));
-            _router.Send(_idResolver.GetId("EndeffectorServo"), (Int16)(0));
-            _router.Send(_idResolver.GetId("CarabinerSpeed"), (Int16)(0));
+            _router.Send(_idResolver.GetId("ArmStop"), (Int16)(0), true);
+            _router.Send(_idResolver.GetId("Gripper"), (Int16)(0), true);
+            _router.Send(_idResolver.GetId("EndeffectorServo"), (Int16)(0), true);
+            _router.Send(_idResolver.GetId("CarabinerSpeed"), (Int16)(0), true);
         }
 
         public void EnableCommand(string bus, bool enableState)
@@ -282,28 +282,28 @@ namespace RED.ViewModels.Modules
                 default: return;
             }
 
-            _router.Send(id, (enableState) ? ArmEnableCommand : ArmDisableCommand);
+            _router.Send(id, (enableState) ? ArmEnableCommand : ArmDisableCommand, true);
         }
 
         public void GetPosition()
         {
-            _router.Send(_idResolver.GetId("ArmGetPosition"), new byte[0]);
+            _router.Send(_idResolver.GetId("ArmGetPosition"), new byte[0], true);
         }
         public void SetPosition()
         {
             float[] angles = { AngleJ1, AngleJ2, AngleJ3, AngleJ4, AngleJ5, AngleJ6 };
             byte[] data = new byte[angles.Length * sizeof(float)];
             Buffer.BlockCopy(angles, 0, data, 0, data.Length);
-            _router.Send(_idResolver.GetId("ArmAbsoluteAngle"), data);
+            _router.Send(_idResolver.GetId("ArmAbsoluteAngle"), data, true);
         }
 
         public void LimitSwitchOverride(byte index)
         {
-            _router.Send(_idResolver.GetId("LimitSwitchOverride"), index);
+            _router.Send(_idResolver.GetId("LimitSwitchOverride"), index, true);
         }
         public void LimitSwitchUnOverride(byte index)
         {
-            _router.Send(_idResolver.GetId("LimitSwitchUnOverride"), index);
+            _router.Send(_idResolver.GetId("LimitSwitchUnOverride"), index, true);
         }
 
         public void RecallPosition()

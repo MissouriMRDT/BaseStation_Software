@@ -33,16 +33,16 @@ namespace RED.ViewModels.Modules
 
         public void EnableAll()
         {
-            _router.Send(_idResolver.GetId("GimbalEnableAll"), GimbalEnableCommand);
+            _router.Send(_idResolver.GetId("GimbalEnableAll"), GimbalEnableCommand, true);
         }
         public void DisableAll()
         {
-            _router.Send(_idResolver.GetId("GimbalEnableAll"), GimbalDisableCommand);
+            _router.Send(_idResolver.GetId("GimbalEnableAll"), GimbalDisableCommand, true);
         }
 
         public void ExternalControlsReset()
         {
-            _router.Send(_idResolver.GetId("ExternalControlsReset"), ResetCode);
+            _router.Send(_idResolver.GetId("ExternalControlsReset"), ResetCode, true);
         }
     }
 }

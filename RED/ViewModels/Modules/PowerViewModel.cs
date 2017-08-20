@@ -396,7 +396,7 @@ namespace RED.ViewModels.Modules
             _router.Subscribe(this, _idResolver.GetId("BMSPackUndervoltage"));
         }
 
-        public void ReceiveFromRouter(ushort dataId, byte[] data)
+        public void ReceiveFromRouter(ushort dataId, byte[] data, bool reliable)
         {
             switch (_idResolver.GetName(dataId))
             {
@@ -464,29 +464,29 @@ namespace RED.ViewModels.Modules
 
         public void RebootRover()
         {
-            _router.Send(_idResolver.GetId("BMSReboot"), new byte[0]);
+            _router.Send(_idResolver.GetId("BMSReboot"), new byte[0], true);
         }
         public void EStopRover()
         {
-            _router.Send(_idResolver.GetId("BMSStop"), new byte[0]);
+            _router.Send(_idResolver.GetId("BMSStop"), new byte[0], true);
         }
 
         public void FanControl(bool state)
         {
-            _router.Send(_idResolver.GetId("BMSFanControl"), state ? 0 : 1);
+            _router.Send(_idResolver.GetId("BMSFanControl"), state ? 0 : 1, true);
         }
         public void BuzzerControl(bool state)
         {
-            _router.Send(_idResolver.GetId("BMSBuzzerControl"), state ? 0 : 1);
+            _router.Send(_idResolver.GetId("BMSBuzzerControl"), state ? 0 : 1, true);
         }
 
         public void EnableBus(byte index)
         {
-            _router.Send(_idResolver.GetId("PowerBusEnable"), index);
+            _router.Send(_idResolver.GetId("PowerBusEnable"), index, true);
         }
         public void DisableBus(byte index)
         {
-            _router.Send(_idResolver.GetId("PowerBusDisable"), index);
+            _router.Send(_idResolver.GetId("PowerBusDisable"), index, true);
         }
 
         public void SaveFileStart()

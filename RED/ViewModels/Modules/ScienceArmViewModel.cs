@@ -47,8 +47,8 @@ namespace RED.ViewModels.Modules
 
         public void StopMode()
         {
-            _router.Send(_idResolver.GetId("ScienceArmDrive"), (Int16)(0));
-            _router.Send(_idResolver.GetId("Drill"), (Int16)(0));
+            _router.Send(_idResolver.GetId("ScienceArmDrive"), (Int16)(0), true);
+            _router.Send(_idResolver.GetId("Drill"), (Int16)(0), true);
         }
     }
 }
