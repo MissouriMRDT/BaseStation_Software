@@ -61,7 +61,13 @@
                 <Run Text="{Binding CurrentPhase.Name, Mode=OneWay}" />
                 <Run Foreground="{StaticResource GrayNormalBrush}" Text="{Binding CurrentPhase.Duration, StringFormat=\({0}\), Converter={StaticResource TimeSpanView}, Mode=OneWay}" />
             </TextBlock>
-            <Button Grid.Row="2" Grid.Column="2" IsEnabled="False">Edit</Button>
+            <ComboBox Grid.Row="2" Grid.Column="2" x:Name="Schedules" SelectedItem="{Binding SelectedSchedule}" SelectionChanged="HandleSelectionChanged">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ComboBox>
         </Grid>
     </Border>
 </UserControl>
