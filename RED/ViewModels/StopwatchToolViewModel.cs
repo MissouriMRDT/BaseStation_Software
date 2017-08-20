@@ -66,6 +66,18 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => IsRunning);
             }
         }
+        public TimeSpan FixTime
+        {
+            get
+            {
+                return _model.FixTime;
+            }
+            set
+            {
+                _model.FixTime = value;
+                NotifyOfPropertyChange(() => FixTime);
+            }
+        }
 
         public DateTime StartTime
         {
@@ -200,9 +212,9 @@ namespace RED.ViewModels
             if (IsRunning) Stop();
             ElapsedTime = TimeSpan.Zero;
         }
-        public void SetTime(TimeSpan newTime)
+        public void SetTime()
         {
-            ElapsedTime = newTime;
+            ElapsedTime = FixTime;
             if (IsRunning)
                 Start();
         }

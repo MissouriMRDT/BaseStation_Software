@@ -6,6 +6,7 @@
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:addons="clr-namespace:RED.Addons"
              xmlns:local="clr-namespace:RED.Views.Input"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
@@ -29,7 +30,24 @@
                 <Run Text="{Binding SelectedSchedule.Name, Mode=OneWay}" />
                 <Run Foreground="{StaticResource GrayNormalBrush}" Text="{Binding SelectedSchedule.Duration, StringFormat=\({0}\), Converter={StaticResource TimeSpanView},  Mode=OneWay}" />
             </TextBlock>
-            <Button Grid.Row="0" Grid.Column="2" x:Name="SetTime" IsEnabled="False">Set</Button>
+            <Button Grid.Row="0" Grid.Column="2" ContextMenuService.IsEnabled="False" Click="FixTime_Click" Content="Set">
+                <Button.ContextMenu>
+                    <ContextMenu Name="FixContextMenu">
+                        <ContextMenu.Template>
+                            <ControlTemplate>
+                                <Border Background="White">
+                                    <GroupBox Header="Fix Time" Margin="0">
+                                        <DockPanel Width="100" LastChildFill="True">
+                                            <Button DockPanel.Dock="Right" cal:Message.Attach="SetTime()" Width="25" Click="SetTime_Click">&gt;</Button>
+                                            <TextBox Text="{Binding FixTime}" />
+                                        </DockPanel>
+                                    </GroupBox>
+                                </Border>
+                            </ControlTemplate>
+                        </ContextMenu.Template>
+                    </ContextMenu>
+                </Button.ContextMenu>
+            </Button>
 
             <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
                 <Grid.RowDefinitions>
