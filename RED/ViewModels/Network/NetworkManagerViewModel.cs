@@ -34,6 +34,18 @@ namespace RED.ViewModels.Network
         private HashSet<UnACKedPacket> OutgoingUnACKed = new HashSet<UnACKedPacket>();
         private HashSet<PendingPing> PendingPings = new HashSet<PendingPing>();
 
+        public bool EnableReliablePackets
+        {
+            get
+            {
+                return _model.EnableReliablePackets;
+            }
+            set
+            {
+                _model.EnableReliablePackets = value;
+                NotifyOfPropertyChange(() => EnableReliablePackets);
+            }
+        }
         public ObservableCollection<ServerLog> TelemetryLog { get; set; }
 
         public NetworkManagerViewModel(IDataRouter router, MetadataRecordContext[] commands, ILogger log, IIPAddressProvider ipProvider, IServerProvider serverProvider)
@@ -94,7 +106,7 @@ namespace RED.ViewModels.Network
 
             byte[] packetData = encoding.EncodePacket(dataId, data, seqNum, isReliable);
 
-            if (isReliable)
+            if (isReliable && EnableReliablePackets)
                 SendPacketReliable(destIP, packetData, dataId, seqNum);
             else
                 SendPacketUnreliable(destIP, packetData);

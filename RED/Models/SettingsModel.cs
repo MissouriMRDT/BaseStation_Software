@@ -1,5 +1,6 @@
 ﻿using RED.ViewModels.Settings.Input;
 using RED.ViewModels.Settings.Input.Controllers;
+using RED.ViewModels.Settings.Network;
 using RED.ViewModels.Settings.Modules;
 
 namespace RED.Models
@@ -11,5 +12,6 @@ namespace RED.Models
         internal XboxControllerInputSettingsViewModel xbox;
         internal GPSSettingsViewModel gps;
         internal PowerSettingsViewModel power;
+        internal NetworkManagerSettingsViewModel network;
     }
 }

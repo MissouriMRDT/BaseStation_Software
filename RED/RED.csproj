@@ -122,6 +122,7 @@
     <Compile Include="Contexts\ConfigurationFile.cs" />
     <Compile Include="Contexts\DriveSettingsContext.cs" />
     <Compile Include="Contexts\GPSSettingsContext.cs" />
+    <Compile Include="Contexts\NetworkManagerSettingsContext.cs" />
     <Compile Include="Contexts\PingToolContext.cs" />
     <Compile Include="Contexts\PowerSettingsContext.cs" />
     <Compile Include="Contexts\REDSettingsContext.cs" />
@@ -208,6 +209,7 @@
     <Compile Include="ViewModels\Settings\Modules\GPSSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Modules\PowerSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Modules\ScienceSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Settings\Network\NetworkManagerSettingsViewModel.cs" />
     <Compile Include="ViewModels\StopwatchToolViewModel.cs" />
     <Compile Include="ViewModels\XMLConfigManager.cs" />
     <Compile Include="Views\ControlCenterView.xaml.cs">
@@ -275,6 +277,9 @@
     </Compile>
     <Compile Include="Views\Settings\Modules\GPSSettingsView.xaml.cs">
       <DependentUpon>GPSSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Settings\Network\NetworkManagerSettingsView.xaml.cs">
+      <DependentUpon>NetworkManagerSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Settings\Modules\PowerSettingsView.xaml.cs">
       <DependentUpon>PowerSettingsView.xaml</DependentUpon>
@@ -371,6 +376,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Settings\Input\Controllers\XboxControllerInputSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Settings\Network\NetworkManagerSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -22,5 +22,8 @@
         <TabItem Header="Power">
             <ContentControl x:Name="Power" />
         </TabItem>
+        <TabItem Header="Network">
+            <ContentControl x:Name="Network" />
+        </TabItem>
     </controls:MetroAnimatedTabControl>
 </UserControl>

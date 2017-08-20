@@ -4,6 +4,7 @@ using RED.Interfaces;
 using RED.Models;
 using RED.ViewModels.Settings.Input;
 using RED.ViewModels.Settings.Input.Controllers;
+using RED.ViewModels.Settings.Network;
 using RED.ViewModels.Settings.Modules;
 
 namespace RED.ViewModels
@@ -82,6 +83,18 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => Power);
             }
         }
+        public NetworkManagerSettingsViewModel Network
+        {
+            get
+            {
+                return _model.network;
+            }
+            set
+            {
+                _model.network = value;
+                NotifyOfPropertyChange(() => Network);
+            }
+        }
 
         public SettingsManagerViewModel(IConfigurationManager configManager, ControlCenterViewModel cc)
         {
@@ -97,6 +110,7 @@ namespace RED.ViewModels
             Xbox = new XboxControllerInputSettingsViewModel(CurrentSettingsConfig.Xbox1, cc.XboxController1);
             GPS = new GPSSettingsViewModel(CurrentSettingsConfig.GPS, cc.GPS, cc.Map);
             Power = new PowerSettingsViewModel(CurrentSettingsConfig.Power, cc.Power);
+            Network = new NetworkManagerSettingsViewModel(CurrentSettingsConfig.Network, cc.NetworkManager);
         }
 
         public void SaveSettings()
@@ -112,7 +126,8 @@ namespace RED.ViewModels
                 Xbox1 = XboxControllerInputSettingsViewModel.DefaultConfig,
                 GPS = GPSSettingsViewModel.DefaultConfig,
                 Science = ScienceSettingsViewModel.DefaultConfig,
-                Power = PowerSettingsViewModel.DefaultConfig
+                Power = PowerSettingsViewModel.DefaultConfig,
+                Network = NetworkManagerSettingsViewModel.DefaultConfig
             };
         }
     }

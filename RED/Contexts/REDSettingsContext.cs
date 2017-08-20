@@ -10,5 +10,6 @@ namespace RED.Contexts
         public GPSSettingsContext GPS;
         public ScienceSettingsContext Science;
         public PowerSettingsContext Power;
+        public NetworkManagerSettingsContext Network;
     }
 }
