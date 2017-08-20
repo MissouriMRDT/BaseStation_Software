@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using RED.Contexts;
 using RED.Interfaces;
 using RED.Models;
 using System;
@@ -12,6 +13,8 @@ namespace RED.ViewModels
     {
         private StopwatchToolModel _model;
         private IConfigurationManager _configManager;
+
+        private const string SchedulesConfigName = "StopwatchSchedules";
 
         public ObservableCollection<ScheduleViewModel> Schedules
         {
@@ -156,13 +159,13 @@ namespace RED.ViewModels
             _configManager = configs;
 
             Schedules = new ObservableCollection<ScheduleViewModel>();
-            Schedules.Add(new ScheduleViewModel("TestSchedule", new[] {
-                new SchedulePhaseViewModel("Blah", TimeSpan.FromMinutes(99)),
-                new SchedulePhaseViewModel("Phase0", TimeSpan.FromSeconds(30)),
-                new SchedulePhaseViewModel("Phase1", TimeSpan.FromSeconds(200)),
-                new SchedulePhaseViewModel("Phase2", TimeSpan.FromSeconds(10))
-            }));
             ElapsedTime = TimeSpan.FromSeconds(0);
+
+            _configManager.AddRecord(SchedulesConfigName, DefaultSchedules);
+
+            var ctx = _configManager.GetConfig<StopwatchContext>(SchedulesConfigName);
+            foreach (StopwatchScheduleContext schedule in ctx.Schedules)
+                Schedules.Add(new ScheduleViewModel(schedule));
 
             SelectedSchedule = Schedules.FirstOrDefault();
 
@@ -252,6 +255,15 @@ namespace RED.ViewModels
                 Name = name;
                 Phases = new ObservableCollection<SchedulePhaseViewModel>(phases);
             }
+            public ScheduleViewModel(StopwatchScheduleContext context)
+            {
+                _model = new StopwatchToolModel.ScheduleModel();
+                Name = context.Name;
+                Phases = new ObservableCollection<SchedulePhaseViewModel>();
+
+                foreach (var phase in context.Phases)
+                    Phases.Add(new SchedulePhaseViewModel(phase));
+            }
 
             public SchedulePhaseViewModel PhaseAtTime(TimeSpan time)
             {
@@ -323,6 +335,24 @@ namespace RED.ViewModels
                 Name = name;
                 Duration = duration;
             }
+            public SchedulePhaseViewModel(StopwatchPhaseContext context)
+            {
+                _model = new StopwatchToolModel.SchedulePhaseModel();
+                Name = context.Name;
+                Duration = TimeSpan.FromSeconds(context.Duration);
+            }
         }
+
+        public static StopwatchContext DefaultSchedules = new StopwatchContext(new[] {
+            new StopwatchScheduleContext("Astro Assist", new[] {
+                new StopwatchPhaseContext("Find Cache", 60),
+                new StopwatchPhaseContext("Pick up Tools", 300),
+                new StopwatchPhaseContext("To Astro #1", 120),
+                new StopwatchPhaseContext("Drop Off #1", 60),
+                new StopwatchPhaseContext("To Astro #2", 120),
+                new StopwatchPhaseContext("Drop Off #1", 120),
+                new StopwatchPhaseContext("Return to Start", 120)
+            })
+        });
     }
 }

@@ -129,6 +129,7 @@
     <Compile Include="Contexts\InputSelectionContext.cs" />
     <Compile Include="Contexts\MetadataSaveContext.cs" />
     <Compile Include="Contexts\ScienceSettingsContext.cs" />
+    <Compile Include="Contexts\StopwatchScheduleContext.cs" />
     <Compile Include="Contexts\XboxControllerSettingsContext.cs" />
     <Compile Include="Images\ModernUIIcons.cs" />
     <Compile Include="Interfaces\IConfigurationManager.cs" />
