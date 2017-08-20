@@ -113,7 +113,10 @@
                                 </ScrollViewer>
                             </TabItem>
                             <TabItem Header="Ping" controls:ControlsHelper.HeaderFontSize="12">
-                                <ContentControl Grid.Row="1" x:Name="PingTool"/>
+                                <ContentControl x:Name="PingTool" />
+                            </TabItem>
+                            <TabItem Header="Stopwatch" controls:ControlsHelper.HeaderFontSize="12">
+                                <ContentControl x:Name="StopwatchTool" />
                             </TabItem>
                         </controls:MetroTabControl>
                     </DockPanel>

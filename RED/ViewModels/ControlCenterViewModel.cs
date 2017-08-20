@@ -135,6 +135,18 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => PingTool);
             }
         }
+        public StopwatchToolViewModel StopwatchTool
+        {
+            get
+            {
+                return _model._stopwatchTool;
+            }
+            set
+            {
+                _model._stopwatchTool = value;
+                NotifyOfPropertyChange(() => StopwatchTool);
+            }
+        }
 
         public ScienceViewModel Science
         {
@@ -422,6 +434,7 @@ namespace RED.ViewModels
 
             WaypointManager = new WaypointManagerViewModel(Map, GPS, Autonomy);
             PingTool = new PingToolViewModel(NetworkManager, ConfigManager);
+            StopwatchTool = new StopwatchToolViewModel(ConfigManager);
 
             SettingsManager = new SettingsManagerViewModel(ConfigManager, this);
 

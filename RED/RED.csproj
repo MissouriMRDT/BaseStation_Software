@@ -112,6 +112,7 @@
     <Compile Include="Addons\Server.cs" />
     <Compile Include="Addons\SubscriptionRecord.cs" />
     <Compile Include="Addons\TimestampDisplayConverter.cs" />
+    <Compile Include="Addons\TimeSpanToStringConverter.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -128,6 +129,7 @@
     <Compile Include="Contexts\InputSelectionContext.cs" />
     <Compile Include="Contexts\MetadataSaveContext.cs" />
     <Compile Include="Contexts\ScienceSettingsContext.cs" />
+    <Compile Include="Contexts\StopwatchScheduleContext.cs" />
     <Compile Include="Contexts\XboxControllerSettingsContext.cs" />
     <Compile Include="Images\ModernUIIcons.cs" />
     <Compile Include="Interfaces\IConfigurationManager.cs" />
@@ -161,6 +163,7 @@
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Models\Network\SubscriptionManagerModel.cs" />
     <Compile Include="Models\Input\Controllers\KeyboardInputModel.cs" />
+    <Compile Include="Models\StopwatchToolModel.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Models\Input\Controllers\XboxControllerInputModel.cs" />
     <Compile Include="Interfaces\IDataRouter.cs" />
@@ -205,6 +208,7 @@
     <Compile Include="ViewModels\Settings\Modules\GPSSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Modules\PowerSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Modules\ScienceSettingsViewModel.cs" />
+    <Compile Include="ViewModels\StopwatchToolViewModel.cs" />
     <Compile Include="ViewModels\XMLConfigManager.cs" />
     <Compile Include="Views\ControlCenterView.xaml.cs">
       <DependentUpon>ControlCenterView.xaml</DependentUpon>
@@ -277,6 +281,9 @@
     </Compile>
     <Compile Include="Views\Settings\Modules\ScienceSettingsView.xaml.cs">
       <DependentUpon>ScienceSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StopwatchToolView.xaml.cs">
+      <DependentUpon>StopwatchToolView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\ControlCenterView.xaml">
       <SubType>Designer</SubType>
@@ -385,6 +392,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Settings\Modules\ScienceSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StopwatchToolView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
