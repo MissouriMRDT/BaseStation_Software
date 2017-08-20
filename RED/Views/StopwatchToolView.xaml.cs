@@ -31,6 +31,14 @@ namespace RED.Views
             FixContextMenu.IsOpen = false;
         }
 
+        private void EditTime_Click(object sender, RoutedEventArgs e)
+        {
+            EditContextMenu.IsEnabled = true;
+            EditContextMenu.PlacementTarget = (Button)sender;
+            EditContextMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
+            EditContextMenu.IsOpen = true;
+        }
+
         public class BoolToStringConverter : RED.Addons.BoolToValueConverter<string> { }
     }
 }

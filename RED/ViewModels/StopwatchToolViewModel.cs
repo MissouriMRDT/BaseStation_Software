@@ -66,6 +66,7 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => IsRunning);
             }
         }
+
         public TimeSpan FixTime
         {
             get
@@ -76,6 +77,30 @@ namespace RED.ViewModels
             {
                 _model.FixTime = value;
                 NotifyOfPropertyChange(() => FixTime);
+            }
+        }
+        public ScheduleViewModel SelectedEditSchedule
+        {
+            get
+            {
+                return _model.SelectedEditSchedule;
+            }
+            set
+            {
+                _model.SelectedEditSchedule = value;
+                NotifyOfPropertyChange(() => SelectedEditSchedule);
+            }
+        }
+        public SchedulePhaseViewModel SelectedEditPhase
+        {
+            get
+            {
+                return _model.SelectedEditPhase;
+            }
+            set
+            {
+                _model.SelectedEditPhase = value;
+                NotifyOfPropertyChange(() => SelectedEditPhase);
             }
         }
 
@@ -226,6 +251,35 @@ namespace RED.ViewModels
             if (ElapsedTime >= SelectedSchedule.Duration) Stop();
         }
 
+        public void EditAddSchedule()
+        {
+            Schedules.Add(new ScheduleViewModel("New Schedule", new[] { new SchedulePhaseViewModel("New Phase", TimeSpan.Zero) }));
+        }
+        public void EditRemoveSchedule()
+        {
+            if (SelectedEditSchedule == null) return;
+            Schedules.Remove(SelectedEditSchedule);
+        }
+        public void EditAddPhase()
+        {
+            if (SelectedEditSchedule == null) return;
+            SelectedEditSchedule.Phases.Add(new SchedulePhaseViewModel("New Phase", TimeSpan.Zero));
+        }
+        public void EditRemovePhase()
+        {
+            if (SelectedEditSchedule == null || SelectedEditPhase == null) return;
+            SelectedEditSchedule.Phases.Remove(SelectedEditPhase);
+        }
+        public void EditSwitch()
+        {
+            if (SelectedEditSchedule != null)
+                SelectedSchedule = SelectedEditSchedule;
+        }
+        public void EditSave()
+        {
+            _configManager.SetConfig(SchedulesConfigName, new StopwatchScheduleContext("", new StopwatchPhaseContext[0]));
+        }
+
         public class ScheduleViewModel : PropertyChangedBase
         {
             private StopwatchToolModel.ScheduleModel _model;
@@ -288,7 +342,7 @@ namespace RED.ViewModels
                     if (sum > time)
                         return phase;
                 }
-                return Phases.Last();
+                return Phases.LastOrDefault();
             }
             public TimeSpan ElapsedTimeInPhase(TimeSpan time)
             {

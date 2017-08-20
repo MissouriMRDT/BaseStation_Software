@@ -13,7 +13,10 @@ namespace RED.Models
         internal bool IsRunning;
         internal DateTime StartTime;
         internal TimeSpan ElapsedTime;
+
         internal TimeSpan FixTime;
+        public StopwatchToolViewModel.ScheduleViewModel SelectedEditSchedule;
+        internal StopwatchToolViewModel.SchedulePhaseViewModel SelectedEditPhase;
 
         public class ScheduleModel
         {
