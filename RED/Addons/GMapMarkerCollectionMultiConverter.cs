@@ -29,7 +29,8 @@ namespace RED.Addons
                     Height = 32,
                     Stretch = Stretch.Uniform,
                     Fill = new SolidColorBrush(currPos.Color),
-                    Data = Geometry.Parse(RED.Images.ModernUIIcons.AppbarLocationCircle32)
+                    Data = Geometry.Parse(RED.Images.ModernUIIcons.AppbarLocationCircle32),
+                    ToolTip = currPos.Name
                 },
                 Offset = new System.Windows.Point(-16, -16),
                 ZIndex = Int32.MaxValue
@@ -44,7 +45,8 @@ namespace RED.Addons
                         Height = 32,
                         Stretch = Stretch.Uniform,
                         Fill = new SolidColorBrush(coord.Color),
-                        Data = Geometry.Parse(RED.Images.ModernUIIcons.AppbarLocationRound32)
+                        Data = Geometry.Parse(RED.Images.ModernUIIcons.AppbarLocationRound32),
+                        ToolTip = coord.Name
                     },
                     Offset = new System.Windows.Point(-16, -32),
                     ZIndex = Int32.MaxValue - 1
