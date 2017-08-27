@@ -12,5 +12,6 @@ namespace RED.Models.Navigation
         internal AutonomyViewModel AutonomyModule;
 
         internal ObservableCollection<Waypoint> Waypoints;
+        internal Waypoint SelectedWaypoint;
     }
 }

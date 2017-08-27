@@ -4,6 +4,7 @@ using RED.ViewModels.Modules;
 using RED.Models.Navigation;
 using System;
 using System.Collections.ObjectModel;
+using System.Windows.Media;
 
 namespace RED.ViewModels.Navigation
 {
@@ -60,7 +61,18 @@ namespace RED.ViewModels.Navigation
                 NotifyOfPropertyChange(() => Waypoints);
             }
         }
-        public Waypoint SelectedWaypoint { get; set; }
+        public Waypoint SelectedWaypoint 
+        {
+            get
+            {
+                return _model.SelectedWaypoint;
+            }
+            set
+            {
+                _model.SelectedWaypoint = value;
+                NotifyOfPropertyChange(() => SelectedWaypoint);
+            }
+        }
 
         public WaypointManagerViewModel(MapViewModel map, GPSViewModel gps, AutonomyViewModel autonomy)
         {
@@ -74,9 +86,9 @@ namespace RED.ViewModels.Navigation
 
             Waypoints = new ObservableCollection<Waypoint>();
 
-            AddWaypoint(new Waypoint(37.951631, -91.777713)); //Rolla
-            AddWaypoint(new Waypoint(37.850025, -91.701845)); //Fugitive Beach
-            AddWaypoint(new Waypoint(38.406426, -110.791919)); //Mars Desert Research Station
+            AddWaypoint(new Waypoint("SDELC", 37.951631, -91.777713));
+            AddWaypoint(new Waypoint("Fugitive Beach", 37.850025, -91.701845));
+            AddWaypoint(new Waypoint("MDRS", 38.406426, -110.791919));
         }
 
         void GPSModule_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -129,7 +141,7 @@ namespace RED.ViewModels.Navigation
             {
                 double lat = WaypointManagerViewModel.ParseCoordinate(latitude);
                 double lon = WaypointManagerViewModel.ParseCoordinate(longitude);
-                AddWaypoint(new Waypoint(name, lat, lon));
+                AddWaypoint(new Waypoint(name, lat, lon) { Color = System.Windows.Media.Colors.Red });
                 return true;
             }
             catch
