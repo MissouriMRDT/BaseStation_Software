@@ -53,7 +53,7 @@ namespace RED.ViewModels
 
         public void LogToScreen(string msg)
         {
-            var newText = String.Format("{0:HH:mm:ss.ff}: {1} {2}", DateTime.Now, msg, Environment.NewLine);
+            var newText = String.Format("{0:HH:mm:ss.ff}: {1}{2}", DateTime.Now, msg, Environment.NewLine);
             ConsoleText += newText;
         }
 
