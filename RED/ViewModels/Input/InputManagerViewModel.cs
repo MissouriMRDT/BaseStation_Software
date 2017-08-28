@@ -147,7 +147,7 @@ namespace RED.ViewModels.Input
             new MappingViewModel("Tank Drive (Traditional)", "Xbox", "Drive", 30, new[] { 
                 new MappingChannelViewModel("JoyStick1Y", "WheelsLeft"){ Parabolic = true },
                 new MappingChannelViewModel("JoyStick2Y", "WheelsRight"){ Parabolic = true },
-                new MappingChannelViewModel("ButtonStartDebounced", "ModeCycle"){ Parabolic = true } }),
+                new MappingChannelViewModel("ButtonStartDebounced", "ModeCycle") }),
             new MappingViewModel("Diagonal Drive", "FlightStick", "Drive", 30, new[] { 
                 new MappingChannelViewModel("X", "WheelsLeft"){ Parabolic = true },
                 new MappingChannelViewModel("Y", "WheelsRight"){ Parabolic = true },
@@ -173,17 +173,17 @@ namespace RED.ViewModels.Input
                 new MappingChannelViewModel("ButtonLb", "ServoCounterClockwise"),
                 new MappingChannelViewModel("ButtonB", "TowRopeOut"),
                 new MappingChannelViewModel("ButtonX", "TowRopeIn"),
-                new MappingChannelViewModel("ButtonStartDebounced", "ModeCycle"){ Parabolic = true } }),
+                new MappingChannelViewModel("ButtonStartDebounced", "ModeCycle") }),
             new MappingViewModel("Xbox Science Arm", "Xbox", "ScienceArm", 30, new[] { 
                 new MappingChannelViewModel("JoyStick1Y", "Arm"){ Parabolic = true },
                 new MappingChannelViewModel("JoyStick2Y", "Drill"){ Parabolic = true },
-                new MappingChannelViewModel("ButtonStartDebounced", "ModeCycle"){ Parabolic = true } }),
+                new MappingChannelViewModel("ButtonStartDebounced", "ModeCycle") }),
             new MappingViewModel("Xbox Gimbal", "Xbox", "Gimbal", 30, new[] { 
                 new MappingChannelViewModel("JoyStick1X", "Pan"){ Parabolic = true },
                 new MappingChannelViewModel("JoyStick1Y", "Tilt"){ Parabolic = true },
                 new MappingChannelViewModel("ButtonY", "ZoomIn"){ Parabolic = true },
                 new MappingChannelViewModel("ButtonA", "ZoomOut"){ Parabolic = true },
-                new MappingChannelViewModel("ButtonStartDebounced", "ModeCycle"){ Parabolic = true } })
+                new MappingChannelViewModel("ButtonStartDebounced", "ModeCycle") })
         });
 
         public static InputSelectionsContext DefaultInputSelections = new InputSelectionsContext(new[] {

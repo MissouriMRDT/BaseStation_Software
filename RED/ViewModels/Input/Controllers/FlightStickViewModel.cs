@@ -128,12 +128,12 @@ namespace RED.ViewModels.Input.Controllers
             try
             {
                 joystick.Acquire();
+                return true;
             }
             catch (SharpDX.SharpDXException)
             {
                 return EstablishJoystick();
             }
-            return true;
         }
 
         private bool EstablishJoystick()
