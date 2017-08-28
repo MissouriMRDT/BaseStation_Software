@@ -60,7 +60,7 @@ namespace RED.ViewModels
         public void LogToFile(string msg)
         {
             if (LogFile == null) return;
-            LogFile.WriteLine("{0:yyyy-MM-dd HH:mm:ss.ffffff}: {1}", DateTime.Now, msg);
+            LogFile.WriteLine("{0:o}: {1}", DateTime.Now, msg);
             LogFile.Flush();
         }
     }
