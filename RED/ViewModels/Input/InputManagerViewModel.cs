@@ -150,11 +150,13 @@ namespace RED.ViewModels.Input
                 new MappingChannelViewModel("ButtonStartDebounced", "ModeCycle"){ Parabolic = true } }),
             new MappingViewModel("Diagonal Drive", "FlightStick", "Drive", 30, new[] { 
                 new MappingChannelViewModel("X", "WheelsLeft"){ Parabolic = true },
-                new MappingChannelViewModel("Y", "WheelsRight"){ Parabolic = true } }),
+                new MappingChannelViewModel("Y", "WheelsRight"){ Parabolic = true },
+                new MappingChannelViewModel("Button7Debounced", "ModeCycle") }),
             new MappingViewModel("Vector Drive", "FlightStick", "Drive", 30, new[] { 
                 new MappingChannelViewModel("X", "VectorX"),
                 new MappingChannelViewModel("Y", "VectorY"),
-                new MappingChannelViewModel("Slider0", "Throttle") }),
+                new MappingChannelViewModel("Slider0", "Throttle"),
+                new MappingChannelViewModel("Button7Debounced", "ModeCycle") }),
             new MappingViewModel("Arm (Traditional)", "Xbox", "Arm", 200, new[] { 
                 new MappingChannelViewModel("JoyStick1Y", "ElbowBend"){ Parabolic = true },
                 new MappingChannelViewModel("JoyStick1X", "ElbowTwist"){ Parabolic = true },

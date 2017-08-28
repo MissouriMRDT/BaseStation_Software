@@ -16,6 +16,8 @@ namespace RED.ViewModels.Input.Controllers
         public string Name { get; private set; }
         public string DeviceType { get; private set; }
 
+        private Dictionary<string, bool> DebounceStates;
+
         public FlightStickViewModel()
         {
             Name = "Flight Stick";
@@ -23,6 +25,7 @@ namespace RED.ViewModels.Input.Controllers
 
             directInput = new DirectInput();
 
+            InitializeDebounce();
             EstablishJoystick();
         }
 
@@ -55,7 +58,19 @@ namespace RED.ViewModels.Input.Controllers
                 {"Button8", (state.Buttons[8]) ? 1f : 0f},
                 {"Button9", (state.Buttons[9]) ? 1f : 0f},
                 {"Button10", (state.Buttons[10]) ? 1f : 0f},
-                {"Button11", (state.Buttons[11]) ? 1f : 0f}
+                {"Button11", (state.Buttons[11]) ? 1f : 0f},
+                {"Button0Debounced", Debounce("Button0", state.Buttons[0])},
+                {"Button1Debounced", Debounce("Button1", state.Buttons[1])},
+                {"Button2Debounced", Debounce("Button2", state.Buttons[2])},
+                {"Button3Debounced", Debounce("Button3", state.Buttons[3])},
+                {"Button4Debounced", Debounce("Button4", state.Buttons[4])},
+                {"Button5Debounced", Debounce("Button5", state.Buttons[5])},
+                {"Button6Debounced", Debounce("Button6", state.Buttons[6])},
+                {"Button7Debounced", Debounce("Button7", state.Buttons[7])},
+                {"Button8Debounced", Debounce("Button8", state.Buttons[8])},
+                {"Button9Debounced", Debounce("Button9", state.Buttons[9])},
+                {"Button10Debounced", Debounce("Button10", state.Buttons[10])},
+                {"Button11Debounced", Debounce("Button11", state.Buttons[11])}
             };
         }
 
@@ -133,6 +148,42 @@ namespace RED.ViewModels.Input.Controllers
             joystick = new Joystick(directInput, joystickGuid);
             joystick.Properties.BufferSize = 128;
             return true;
+        }
+
+        private void InitializeDebounce()
+        {
+            DebounceStates = new Dictionary<string, bool>() 
+            {
+                { "Button0", false },
+                { "Button1", false },
+                { "Button2", false },
+                { "Button3", false },
+                { "Button4", false },
+                { "Button5", false },
+                { "Button6", false },
+                { "Button7", false },
+                { "Button8", false },
+                { "Button9", false },
+                { "Button10", false },
+                { "Button11", false }
+            };
+        }
+        private float Debounce(string key, bool newState)
+        {
+            if (!DebounceStates[key] && newState)
+            {
+                DebounceStates[key] = true;
+                return 1f;
+            }
+            else if (DebounceStates[key] && !newState)
+            {
+                DebounceStates[key] = false;
+                return 0f;
+            }
+            else
+            {
+                return 0f;
+            }
         }
     }
 }
