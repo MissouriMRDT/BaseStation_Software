@@ -5,12 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:addons="clr-namespace:RED.Addons"
-             xmlns:local="clr-namespace:RED.Views.Input"
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
-        <local:BoolToStringConverter x:Key="StartStopButton" TrueValue="Pause" FalseValue="Play" />
+        <addons:BoolToStringConverter x:Key="StartStopButton" TrueValue="Pause" FalseValue="Play" />
         <addons:TimeSpanToStringConverter x:Key="TimeSpanView" />
     </UserControl.Resources>
     <Border BorderBrush="{StaticResource AccentColorBrush}" BorderThickness="1">

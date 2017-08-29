@@ -38,7 +38,5 @@ namespace RED.Views
             EditContextMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
             EditContextMenu.IsOpen = true;
         }
-
-        public class BoolToStringConverter : RED.Addons.BoolToValueConverter<string> { }
     }
 }

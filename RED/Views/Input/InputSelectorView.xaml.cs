@@ -19,6 +19,4 @@ namespace RED.Views.Input
             e.Handled = true;
         }
     }
-
-    public class BoolToStringConverter : RED.Addons.BoolToValueConverter<string> { }
 }

@@ -6,13 +6,12 @@
              xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:gmap="clr-namespace:GMap.NET.WindowsPresentation;assembly=GMap.NET.WindowsPresentation"
              xmlns:addons="clr-namespace:RED.Addons"
-             xmlns:local="clr-namespace:RED.Views.Modules"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <addons:GPSCoordinateToLatitudeConverter x:Key="LatitudeConverter" />
         <addons:GPSCoordinateToLongitudeConverter x:Key="LongitudeConverter" />
-        <local:BoolToStringConverter x:Key="StaleDataConverter" TrueValue="" FalseValue="Strikethrough" />
+        <addons:BoolToStringConverter x:Key="StaleDataConverter" TrueValue="" FalseValue="Strikethrough" />
         <Style x:Key="MaybeStale">
             <Setter Property="TextBlock.TextDecorations" Value="{Binding FixObtained, Converter={StaticResource StaleDataConverter}}" />
         </Style>

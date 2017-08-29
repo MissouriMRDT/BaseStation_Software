@@ -21,4 +21,6 @@ namespace RED.Addons
             return value != null ? value.Equals(TrueValue) : false;
         }
     }
+
+    public class BoolToStringConverter : BoolToValueConverter<string> { }
 }

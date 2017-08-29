@@ -13,6 +13,4 @@ namespace RED.Views.Modules
             InitializeComponent();
         }
     }
-
-    public class BoolToStringConverter : RED.Addons.BoolToValueConverter<string> { }
 }
