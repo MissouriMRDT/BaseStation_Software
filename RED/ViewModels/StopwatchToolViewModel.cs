@@ -4,6 +4,7 @@ using RED.Interfaces;
 using RED.Models;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Threading;
 
@@ -306,6 +307,7 @@ namespace RED.ViewModels
                 {
                     _model.Phases = value;
                     NotifyOfPropertyChange(() => Phases);
+                    NotifyOfPropertyChange(() => Duration);
                 }
             }
 
@@ -317,18 +319,23 @@ namespace RED.ViewModels
                 }
             }
 
-            public ScheduleViewModel(string name, SchedulePhaseViewModel[] phases)
+            private ScheduleViewModel()
             {
                 _model = new StopwatchToolModel.ScheduleModel();
+                Phases = new ObservableCollection<SchedulePhaseViewModel>();
+                Phases.CollectionChanged += Phases_CollectionChanged;
+            }
+            public ScheduleViewModel(string name, SchedulePhaseViewModel[] phases)
+                : this()
+            {
                 Name = name;
-                Phases = new ObservableCollection<SchedulePhaseViewModel>(phases);
+                foreach (var phase in phases)
+                    Phases.Add(phase);
             }
             public ScheduleViewModel(StopwatchScheduleContext context)
+                : this()
             {
-                _model = new StopwatchToolModel.ScheduleModel();
                 Name = context.Name;
-                Phases = new ObservableCollection<SchedulePhaseViewModel>();
-
                 foreach (var phase in context.Phases)
                     Phases.Add(new SchedulePhaseViewModel(phase));
             }
@@ -370,6 +377,22 @@ namespace RED.ViewModels
                         return sum - time;
                 }
                 return time - Duration;
+            }
+
+            private void Phases_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+            {
+                if (e.OldItems != null)
+                    foreach (INotifyPropertyChanged item in e.OldItems)
+                        item.PropertyChanged -= Phase_PropertyChanged;
+                if (e.NewItems != null)
+                    foreach (INotifyPropertyChanged item in e.NewItems)
+                        item.PropertyChanged += Phase_PropertyChanged;
+                NotifyOfPropertyChange(() => Duration);
+            }
+            private void Phase_PropertyChanged(object sender, PropertyChangedEventArgs e)
+            {
+                if (e.PropertyName == "Duration")
+                    NotifyOfPropertyChange(() => Duration);
             }
         }
 
