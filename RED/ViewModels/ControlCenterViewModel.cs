@@ -390,6 +390,18 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => FlightStickController);
             }
         }
+        public KeyboardInputViewModel KeyboardController
+        {
+            get
+            {
+                return _model._keyboardController;
+            }
+            set
+            {
+                _model._keyboardController = value;
+                NotifyOfPropertyChange(() => KeyboardController);
+            }
+        }
 
         public ControlCenterViewModel()
         {
@@ -426,9 +438,10 @@ namespace RED.ViewModels
             XboxController3 = new XboxControllerInputViewModel(3);
             XboxController4 = new XboxControllerInputViewModel(4);
             FlightStickController = new FlightStickViewModel();
+            KeyboardController = new KeyboardInputViewModel();
 
             InputManager = new InputManagerViewModel(Console, ConfigManager,
-                new IInputDevice[] { XboxController1, XboxController2, XboxController3, XboxController4, FlightStickController },
+                new IInputDevice[] { XboxController1, XboxController2, XboxController3, XboxController4, FlightStickController, KeyboardController },
                 new MappingViewModel[0],
                 new IInputMode[] { Drive, Arm, Gimbal1, Gimbal2, ScienceArm });
 

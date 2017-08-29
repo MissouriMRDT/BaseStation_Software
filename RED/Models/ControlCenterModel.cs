@@ -42,5 +42,6 @@ namespace RED.Models
         internal XboxControllerInputViewModel _xboxController3;
         internal XboxControllerInputViewModel _xboxController4;
         internal FlightStickViewModel _flightStickController;
+        internal KeyboardInputViewModel _keyboardController;
     }
 }
