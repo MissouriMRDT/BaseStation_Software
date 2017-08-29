@@ -277,7 +277,7 @@ namespace RED.ViewModels
         }
         public void EditSave()
         {
-            _configManager.SetConfig(SchedulesConfigName, new StopwatchScheduleContext("", new StopwatchPhaseContext[0]));
+            _configManager.SetConfig(SchedulesConfigName, new StopwatchContext(Schedules.Select(x => x.ToContext()).ToArray()));
         }
 
         public class ScheduleViewModel : PropertyChangedBase
@@ -331,6 +331,11 @@ namespace RED.ViewModels
 
                 foreach (var phase in context.Phases)
                     Phases.Add(new SchedulePhaseViewModel(phase));
+            }
+
+            public StopwatchScheduleContext ToContext()
+            {
+                return new StopwatchScheduleContext(Name, Phases.Select(x => x.ToContext()).ToArray());
             }
 
             public SchedulePhaseViewModel PhaseAtTime(TimeSpan time)
@@ -408,6 +413,11 @@ namespace RED.ViewModels
                 _model = new StopwatchToolModel.SchedulePhaseModel();
                 Name = context.Name;
                 Duration = TimeSpan.FromSeconds(context.Duration);
+            }
+
+            public StopwatchPhaseContext ToContext()
+            {
+                return new StopwatchPhaseContext(Name, (int)Duration.TotalSeconds);
             }
         }
 
