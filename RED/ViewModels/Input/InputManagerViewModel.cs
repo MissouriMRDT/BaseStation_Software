@@ -183,7 +183,11 @@ namespace RED.ViewModels.Input
                 new MappingChannelViewModel("JoyStick1Y", "Tilt"){ Parabolic = true },
                 new MappingChannelViewModel("ButtonY", "ZoomIn"){ Parabolic = true },
                 new MappingChannelViewModel("ButtonA", "ZoomOut"){ Parabolic = true },
-                new MappingChannelViewModel("ButtonStartDebounced", "ModeCycle") })
+                new MappingChannelViewModel("ButtonStartDebounced", "ModeCycle") }),
+            new MappingViewModel("Key Drive", "Keyboard", "Drive", 30, new[] { 
+                new MappingChannelViewModel("F", "WheelsLeft"){ Parabolic = true },
+                new MappingChannelViewModel("J", "WheelsRight"){ Parabolic = true },
+                new MappingChannelViewModel("R", "ModeCycle") }),
         });
 
         public static InputSelectionsContext DefaultInputSelections = new InputSelectionsContext(new[] {
