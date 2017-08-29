@@ -28,12 +28,21 @@
                                                 <Button Click="CachePrefetchButton_Click" ToolTip="Download selected map region (Alt-drag) within selected zoom range and add to working cache">Download</Button>
                                                 <Button Click="CacheClearButton_Click" ToolTip="Clear working cache">Clear</Button>
                                             </UniformGrid>
-                                            <controls:RangeSlider ToolTip="Zoom range for Download"
-                                            Minimum="{Binding MainMap.MinZoom}" Maximum="{Binding MainMap.MaxZoom}"
-                                            LowerValue="{Binding CachePrefetchStartZoom}" UpperValue="{Binding CachePrefetchStopZoom}"
-                                            MinRangeWidth="0"
-                                            Interval="1" TickPlacement="TopLeft"
-                                            IsSnapToTickEnabled="True" IsMoveToPointEnabled="True" />
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="30" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="30" />
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Column="0" Content="{Binding CachePrefetchStartZoom}" HorizontalAlignment="Center" />
+                                                <controls:RangeSlider Grid.Column="1" ToolTip="Zoom range for Download"
+                                                    Minimum="{Binding MainMap.MinZoom}" Maximum="{Binding MainMap.MaxZoom}"
+                                                    LowerValue="{Binding CachePrefetchStartZoom}" UpperValue="{Binding CachePrefetchStopZoom}"
+                                                    MinRangeWidth="0"
+                                                    Interval="1" TickPlacement="TopLeft"
+                                                    IsSnapToTickEnabled="True" IsMoveToPointEnabled="True" />
+                                                <Label Grid.Column="2" Content="{Binding CachePrefetchStopZoom}" HorizontalAlignment="Center" />
+                                            </Grid>
                                         </StackPanel>
                                     </GroupBox>
                                 </Border>
