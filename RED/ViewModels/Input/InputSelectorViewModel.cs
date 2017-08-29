@@ -66,7 +66,7 @@ namespace RED.ViewModels.Input
                 _model.SelectedDevice = value;
                 NotifyOfPropertyChange(() => SelectedDevice);
                 NotifyOfPropertyChange(() => EligibleMappings);
-                if(IsRunning) Stop();
+                Stop();
             }
         }
         public MappingViewModel SelectedMapping
@@ -79,7 +79,7 @@ namespace RED.ViewModels.Input
             {
                 _model.SelectedMapping = value;
                 NotifyOfPropertyChange(() => SelectedMapping);
-                if (IsRunning) Stop();
+                Stop();
             }
         }
 
@@ -148,7 +148,7 @@ namespace RED.ViewModels.Input
                 {
                     if (SelectedDevice.IsReady())
                     {
-                        if (!Enabled) Enable();
+                        Enable();
                         var rawValues = SelectedDevice.GetValues();
                         var mappedValues = SelectedMapping.Map(rawValues);
                         if (CheckForModeCycle(mappedValues) && (CycleMode != null))
@@ -175,19 +175,22 @@ namespace RED.ViewModels.Input
 
         public void Stop()
         {
+            if (IsRunning)
+                Disable();
             IsRunning = false;
-            Disable();
         }
 
         public void Enable()
         {
-            Mode.StartMode();
+            if (!Enabled)
+                Mode.StartMode();
             Enabled = true;
         }
         public void Disable()
         {
+            if (Enabled)
+                Mode.StopMode();
             Enabled = false;
-            Mode.StopMode();
         }
 
         public void Toggle()
