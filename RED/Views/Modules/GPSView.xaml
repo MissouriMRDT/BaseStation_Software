@@ -6,11 +6,16 @@
              xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:gmap="clr-namespace:GMap.NET.WindowsPresentation;assembly=GMap.NET.WindowsPresentation"
              xmlns:addons="clr-namespace:RED.Addons"
+             xmlns:local="clr-namespace:RED.Views.Modules"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <addons:GPSCoordinateToLatitudeConverter x:Key="LatitudeConverter" />
         <addons:GPSCoordinateToLongitudeConverter x:Key="LongitudeConverter" />
+        <local:BoolToStringConverter x:Key="StaleDataConverter" TrueValue="" FalseValue="Strikethrough" />
+        <Style x:Key="MaybeStale">
+            <Setter Property="TextBlock.TextDecorations" Value="{Binding FixObtained, Converter={StaticResource StaleDataConverter}}" />
+        </Style>
     </UserControl.Resources>
             <StackPanel>
                 <Grid>
@@ -32,21 +37,37 @@
                     <Label Grid.Row="0" Grid.Column="0">Fix Obtained</Label>
                     <Label Grid.Row="0" Grid.Column="1" x:Name="FixObtained" />
                     <Label Grid.Row="1" Grid.Column="0">Fix Quality</Label>
-                    <Label Grid.Row="1" Grid.Column="1" x:Name="FixQuality" />
+                    <Label Grid.Row="1" Grid.Column="1">
+                        <TextBlock  Grid.Row="1" Grid.Column="1" x:Name="FixQuality" Style="{DynamicResource MaybeStale}" />
+                    </Label>
                     <Label Grid.Row="2" Grid.Column="0">Satellite Count</Label>
-                    <Label Grid.Row="2" Grid.Column="1" x:Name="NumberOfSatellites" />
+                    <Label Grid.Row="2" Grid.Column="1">
+                        <TextBlock x:Name="NumberOfSatellites" Style="{DynamicResource MaybeStale}" />
+                    </Label>
                     <Label Grid.Row="3" Grid.Column="0">Current Lat</Label>
-                    <Label Grid.Row="3" Grid.Column="1" Content="{Binding CurrentLocation, Converter={StaticResource LatitudeConverter}}" />
+                    <Label Grid.Row="3" Grid.Column="1">
+                        <TextBlock Text="{Binding CurrentLocation, Converter={StaticResource LatitudeConverter}}" Style="{DynamicResource MaybeStale}" />
+                    </Label>
                     <Label Grid.Row="4" Grid.Column="0">Current Lon</Label>
-                    <Label Grid.Row="4" Grid.Column="1" Content="{Binding CurrentLocation, Converter={StaticResource LongitudeConverter}}" />
+                    <Label Grid.Row="4" Grid.Column="1">
+                        <TextBlock Text="{Binding CurrentLocation, Converter={StaticResource LongitudeConverter}}" Style="{DynamicResource MaybeStale}" />
+                    </Label>
                     <Label Grid.Row="5" Grid.Column="0">Altitude</Label>
-                    <Label Grid.Row="5" Grid.Column="1" x:Name="CurrentAltitude" />
+                    <Label Grid.Row="5" Grid.Column="1">
+                        <TextBlock x:Name="CurrentAltitude" Style="{DynamicResource MaybeStale}" />
+                    </Label>
                     <Label Grid.Row="6" Grid.Column="0">Speed</Label>
-                    <Label Grid.Row="6" Grid.Column="1" x:Name="Speed" />
+                    <Label Grid.Row="6" Grid.Column="1">
+                        <TextBlock x:Name="Speed" Style="{DynamicResource MaybeStale}" />
+                    </Label>
                     <Label Grid.Row="7" Grid.Column="0">Speed Angle</Label>
-                    <Label Grid.Row="7" Grid.Column="1" x:Name="SpeedAngle" />
+                    <Label Grid.Row="7" Grid.Column="1">
+                        <TextBlock x:Name="SpeedAngle" Style="{DynamicResource MaybeStale}" />
+                    </Label>
                     <Label Grid.Row="8" Grid.Column="0">Antenna Angle</Label>
-                    <Label Grid.Row="8" Grid.Column="1" x:Name="AntennaDirectionDeg" ContentStringFormat="{}{0:#0}&#x00B0;" />
+                    <Label Grid.Row="8" Grid.Column="1">
+                        <TextBlock Text="{Binding AntennaDirectionDeg, StringFormat={}{0:#0}&#x00B0;}" Style="{DynamicResource MaybeStale}" />
+                    </Label>
                 </Grid>
                 <Canvas Width="32" Height="32">
                     <Path Fill="Red" Data="M 8,32 16,0 24,32 16,28 8,32" Width="32" Height="32">
