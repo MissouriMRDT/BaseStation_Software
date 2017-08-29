@@ -8,7 +8,12 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <controls:MetroAnimatedTabControl TabStripPlacement="Left">
         <TabItem Header="Controller">
-            <ContentControl x:Name="Xbox" />
+            <StackPanel>
+                <ContentControl x:Name="Xbox1" />
+                <ContentControl x:Name="Xbox2" />
+                <ContentControl x:Name="Xbox3" />
+                <ContentControl x:Name="Xbox4" />
+            </StackPanel>
         </TabItem>
         <TabItem Header="Drive">
             <ContentControl x:Name="Drive" />

@@ -5,19 +5,16 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <CheckBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="AutoDeadzone">AutoDeadzone</CheckBox>
-            <Label Grid.Row="1" Grid.Column="0">Manual Deadzone (0-32768)</Label>
-            <TextBox Grid.Row="1" Grid.Column="1" x:Name="ManualDeadzone" />
-        </Grid>
-    </StackPanel>
+    <Grid Width="400" HorizontalAlignment="Left">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Label Grid.Column="0" Content="{Binding Index}" ContentStringFormat="#." />
+        <CheckBox Grid.Column="1" x:Name="AutoDeadzone">AutoDeadzone</CheckBox>
+        <Label Grid.Column="2" Margin="50 0 0 0">Manual Deadzone (0-32768)</Label>
+        <TextBox Grid.Column="3" x:Name="ManualDeadzone" />
+    </Grid>
 </UserControl>

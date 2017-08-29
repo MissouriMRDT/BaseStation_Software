@@ -9,7 +9,10 @@ namespace RED.Models
     {
         internal DriveSettingsViewModel drive;
         internal ScienceSettingsViewModel science;
-        internal XboxControllerInputSettingsViewModel xbox;
+        internal XboxControllerInputSettingsViewModel xbox1;
+        internal XboxControllerInputSettingsViewModel xbox2;
+        internal XboxControllerInputSettingsViewModel xbox3;
+        internal XboxControllerInputSettingsViewModel xbox4;
         internal GPSSettingsViewModel gps;
         internal PowerSettingsViewModel power;
         internal NetworkManagerSettingsViewModel network;

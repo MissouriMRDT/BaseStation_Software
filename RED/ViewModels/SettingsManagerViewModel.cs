@@ -47,16 +47,52 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => Science);
             }
         }
-        public XboxControllerInputSettingsViewModel Xbox
+        public XboxControllerInputSettingsViewModel Xbox1
         {
             get
             {
-                return _model.xbox;
+                return _model.xbox1;
             }
             set
             {
-                _model.xbox = value;
-                NotifyOfPropertyChange(() => Xbox);
+                _model.xbox1 = value;
+                NotifyOfPropertyChange(() => Xbox1);
+            }
+        }
+        public XboxControllerInputSettingsViewModel Xbox2
+        {
+            get
+            {
+                return _model.xbox2;
+            }
+            set
+            {
+                _model.xbox2 = value;
+                NotifyOfPropertyChange(() => Xbox2);
+            }
+        }
+        public XboxControllerInputSettingsViewModel Xbox3
+        {
+            get
+            {
+                return _model.xbox3;
+            }
+            set
+            {
+                _model.xbox3 = value;
+                NotifyOfPropertyChange(() => Xbox3);
+            }
+        }
+        public XboxControllerInputSettingsViewModel Xbox4
+        {
+            get
+            {
+                return _model.xbox4;
+            }
+            set
+            {
+                _model.xbox4 = value;
+                NotifyOfPropertyChange(() => Xbox4);
             }
         }
         public GPSSettingsViewModel GPS
@@ -107,7 +143,10 @@ namespace RED.ViewModels
 
             Drive = new DriveSettingsViewModel(CurrentSettingsConfig.Drive, cc.Drive);
             Science = new ScienceSettingsViewModel(CurrentSettingsConfig.Science, cc.Science);
-            Xbox = new XboxControllerInputSettingsViewModel(CurrentSettingsConfig.Xbox1, cc.XboxController1);
+            Xbox1 = new XboxControllerInputSettingsViewModel(CurrentSettingsConfig.Xbox1, cc.XboxController1, 1);
+            Xbox2 = new XboxControllerInputSettingsViewModel(CurrentSettingsConfig.Xbox2, cc.XboxController2, 2);
+            Xbox3 = new XboxControllerInputSettingsViewModel(CurrentSettingsConfig.Xbox3, cc.XboxController3, 3);
+            Xbox4 = new XboxControllerInputSettingsViewModel(CurrentSettingsConfig.Xbox4, cc.XboxController4, 4);
             GPS = new GPSSettingsViewModel(CurrentSettingsConfig.GPS, cc.GPS, cc.Map);
             Power = new PowerSettingsViewModel(CurrentSettingsConfig.Power, cc.Power);
             Network = new NetworkManagerSettingsViewModel(CurrentSettingsConfig.Network, cc.NetworkManager);
@@ -124,6 +163,9 @@ namespace RED.ViewModels
             {
                 Drive = DriveSettingsViewModel.DefaultConfig,
                 Xbox1 = XboxControllerInputSettingsViewModel.DefaultConfig,
+                Xbox2 = XboxControllerInputSettingsViewModel.DefaultConfig,
+                Xbox3 = XboxControllerInputSettingsViewModel.DefaultConfig,
+                Xbox4 = XboxControllerInputSettingsViewModel.DefaultConfig,
                 GPS = GPSSettingsViewModel.DefaultConfig,
                 Science = ScienceSettingsViewModel.DefaultConfig,
                 Power = PowerSettingsViewModel.DefaultConfig,

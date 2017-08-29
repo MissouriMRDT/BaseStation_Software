@@ -9,6 +9,19 @@ namespace RED.ViewModels.Settings.Input.Controllers
         private XboxControllerSettingsContext _settings;
         private XboxControllerInputViewModel _vm;
 
+        private int _index;
+        public int Index
+        {
+            get
+            {
+                return _index;
+            }
+            set
+            {
+                _index = value;
+                NotifyOfPropertyChange(() => Index);
+            }
+        }
         public bool AutoDeadzone
         {
             get
@@ -36,10 +49,11 @@ namespace RED.ViewModels.Settings.Input.Controllers
             }
         }
 
-        public XboxControllerInputSettingsViewModel(XboxControllerSettingsContext settings, XboxControllerInputViewModel vm)
+        public XboxControllerInputSettingsViewModel(XboxControllerSettingsContext settings, XboxControllerInputViewModel vm, int index)
         {
             _settings = settings;
             _vm = vm;
+            Index = index;
 
             _vm.AutoDeadzone = _settings.AutoDeadzone;
             _vm.ManualDeadzone = _settings.ManualDeadzone;
