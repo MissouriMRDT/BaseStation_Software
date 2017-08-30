@@ -185,14 +185,14 @@ namespace RED.ViewModels.Input
                 new MappingChannelViewModel("ButtonA", "ZoomOut"){ Parabolic = true },
                 new MappingChannelViewModel("ButtonStartDebounced", "ModeCycle") }),
             new MappingViewModel("Key Drive", "Keyboard", "Drive", 30, new[] {
-                new MappingChannelViewModel("F", "WheelsLeft"){ Parabolic = true },
-                new MappingChannelViewModel("J", "WheelsRight"){ Parabolic = true },
+                new MappingChannelViewModel("F", "WheelsLeft"),
+                new MappingChannelViewModel("J", "WheelsRight"),
                 new MappingChannelViewModel("RDebounced", "ModeCycle") }),
             new MappingViewModel("Key Gimbal", "Keyboard", "Gimbal", 30, new[] { 
-                new MappingChannelViewModel("W", "Pan"){ Parabolic = true },
-                new MappingChannelViewModel("D", "Tilt"){ Parabolic = true },
-                new MappingChannelViewModel("U", "ZoomIn"){ Parabolic = true },
-                new MappingChannelViewModel("J", "ZoomOut"){ Parabolic = true },
+                new MappingChannelViewModel("W", "Pan"),
+                new MappingChannelViewModel("D", "Tilt"),
+                new MappingChannelViewModel("U", "ZoomIn"),
+                new MappingChannelViewModel("J", "ZoomOut"),
                 new MappingChannelViewModel("RDebounced", "ModeCycle") }),
         });
 

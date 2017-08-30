@@ -25,16 +25,16 @@ namespace RED.ViewModels.Input.Controllers
                 NotifyOfPropertyChange(() => Connected);
             }
         }
-        public float speedMultiplier
+        public float SpeedMultiplier
         {
             get
             {
-                return Model.speedMultiplier;
+                return Model.SpeedMultiplier;
             }
             set
             {
-                Model.speedMultiplier = value;
-                NotifyOfPropertyChange(() => speedMultiplier);
+                Model.SpeedMultiplier = value;
+                NotifyOfPropertyChange(() => SpeedMultiplier);
             }
         }
 
@@ -45,19 +45,20 @@ namespace RED.ViewModels.Input.Controllers
             Name = "Keyboard";
             DeviceType = "Keyboard";
             InitializeDebounce();
+            Connected = true;
         }
 
         public Dictionary<string, float> GetValues()
         {
-            Connected = true;
-
             var mappingValues = new Dictionary<string, float>(AllKeys.Count * 2);
 
             foreach (var item in AllKeys)
             {
-                mappingValues.Add(item.Key, Keyboard.IsKeyDown(item.Value) ? 1f : 0f);
+                mappingValues.Add(item.Key, Keyboard.IsKeyDown(item.Value) ? 1f * SpeedMultiplier : 0f);
                 mappingValues.Add(item.Key + "Debounced", Debounce(item.Key, Keyboard.IsKeyDown(item.Value)));
             }
+
+            SpeedMultiplier = GetSpeedMultiplier(mappingValues);
 
             return mappingValues;
         }
@@ -70,7 +71,7 @@ namespace RED.ViewModels.Input.Controllers
 
         public bool IsReady()
         {
-            return true;
+            return Connected;
         }
 
         private void InitializeDebounce()
@@ -95,6 +96,21 @@ namespace RED.ViewModels.Input.Controllers
             {
                 return 0f;
             }
+        }
+
+        private float GetSpeedMultiplier(Dictionary<string, float> mappingValues)
+        {
+            if (mappingValues["D0Debounced"] > 0) return 1.0f;
+            if (mappingValues["D9Debounced"] > 0) return 0.9f;
+            if (mappingValues["D8Debounced"] > 0) return 0.8f;
+            if (mappingValues["D7Debounced"] > 0) return 0.7f;
+            if (mappingValues["D6Debounced"] > 0) return 0.6f;
+            if (mappingValues["D5Debounced"] > 0) return 0.5f;
+            if (mappingValues["D4Debounced"] > 0) return 0.4f;
+            if (mappingValues["D3Debounced"] > 0) return 0.3f;
+            if (mappingValues["D2Debounced"] > 0) return 0.2f;
+            if (mappingValues["D1Debounced"] > 0) return 0.1f;
+            return SpeedMultiplier;
         }
 
         private static Dictionary<string, Key> AllKeys = new Dictionary<string, Key>()

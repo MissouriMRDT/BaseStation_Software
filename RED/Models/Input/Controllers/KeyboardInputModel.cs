@@ -3,6 +3,6 @@
     internal class KeyboardInputModel
     {
         internal bool Connected;
-        internal float speedMultiplier = 1.0f;
+        internal float SpeedMultiplier = 1.0f;
     }
 }
