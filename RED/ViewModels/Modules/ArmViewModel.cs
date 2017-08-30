@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.IO;
 using System.Xml.Serialization;
+using RED.ViewModels.Input;
 
 namespace RED.ViewModels.Modules
 {
@@ -243,19 +244,19 @@ namespace RED.ViewModels.Modules
                     break;
             }
 
-            Int16 actuatorSpeed = (Int16)twoButtonTransform(values["ShoulderBendForward"] != 0, values["ShoulderBendBackward"] != 0, Joint2FixedSpeed, -Joint2FixedSpeed, 0);
+            Int16 actuatorSpeed = (Int16)ControllerBase.TwoButtonTransform(values["ShoulderBendForward"] != 0, values["ShoulderBendBackward"] != 0, Joint2FixedSpeed, -Joint2FixedSpeed, 0);
             _router.Send(_idResolver.GetId("ArmJ2"), actuatorSpeed);
 
-            float baseSpeed = (float)twoButtonTransform(values["ShoulderTwistForward"] != 0, values["ShoulderTwistBackward"] != 0, Joint1FixedSpeed, -Joint1FixedSpeed, 0f);
+            float baseSpeed = (float)ControllerBase.TwoButtonTransform(values["ShoulderTwistForward"] != 0, values["ShoulderTwistBackward"] != 0, Joint1FixedSpeed, -Joint1FixedSpeed, 0f);
             _router.Send(_idResolver.GetId("ArmJ1"), (Int16)(baseSpeed / 10f * motorRangeFactor));
 
-            float gripperSpeed = (float)twoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0F);
+            float gripperSpeed = (float)ControllerBase.TwoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0F);
             _router.Send(_idResolver.GetId("Gripper"), (Int16)(gripperSpeed * EndeffectorSpeedLimit));
 
-            float servoSpeed = (Int16)twoButtonTransform(values["ServoClockwise"] > 0, values["ServoCounterClockwise"] > 0, values["ServoClockwise"], -values["ServoCounterClockwise"], 0F);
+            float servoSpeed = (Int16)ControllerBase.TwoButtonTransform(values["ServoClockwise"] > 0, values["ServoCounterClockwise"] > 0, values["ServoClockwise"], -values["ServoCounterClockwise"], 0F);
             _router.Send(_idResolver.GetId("EndeffectorServo"), (Int16)(servoSpeed * EndeffectorSpeedLimit));
 
-            float towRopeSpeed = (Int16)twoButtonTransform(values["TowRopeOut"] > 0, values["TowRopeIn"] > 0, values["TowRopeOut"], -values["TowRopeIn"], 0F);
+            float towRopeSpeed = (Int16)ControllerBase.TwoButtonTransform(values["TowRopeOut"] > 0, values["TowRopeIn"] > 0, values["TowRopeOut"], -values["TowRopeIn"], 0F);
             _router.Send(_idResolver.GetId("CarabinerSpeed"), (Int16)(towRopeSpeed * EndeffectorSpeedLimit));
         }
 
@@ -366,11 +367,6 @@ namespace RED.ViewModels.Modules
             Right,
             Up,
             Down
-        }
-
-        private T twoButtonTransform<T>(bool bool1, bool bool2, T val1, T val2, T val0)
-        {
-            return bool1 ? val1 : (bool2 ? val2 : val0);
         }
 
         public class ArmPositionViewModel : PropertyChangedBase
