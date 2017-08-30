@@ -168,6 +168,7 @@
     <Compile Include="Settings.cs" />
     <Compile Include="Models\Input\Controllers\XboxControllerInputModel.cs" />
     <Compile Include="Interfaces\IDataRouter.cs" />
+    <Compile Include="ViewModels\Input\ControllerBase.cs" />
     <Compile Include="ViewModels\Input\Controllers\FlightStickViewModel.cs" />
     <Compile Include="ViewModels\Input\InputSelectorViewModel.cs" />
     <Compile Include="ViewModels\Input\MappingViewModel.cs" />

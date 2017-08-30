@@ -1,17 +1,12 @@
-﻿using Caliburn.Micro;
-using RED.Interfaces;
-using RED.Interfaces.Input;
+﻿using RED.Interfaces.Input;
 using RED.Models.Input.Controllers;
-using RED.ViewModels.Modules;
 using SharpDX.XInput;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 
 namespace RED.ViewModels.Input.Controllers
 {
-    public class XboxControllerInputViewModel : PropertyChangedBase, IInputDevice
+    public class XboxControllerInputViewModel : ControllerBase, IInputDevice
     {
         private readonly XboxControllerInputModel Model = new XboxControllerInputModel();
         public readonly Controller Controller;
@@ -57,15 +52,19 @@ namespace RED.ViewModels.Input.Controllers
             }
         }
 
-        private Dictionary<string, bool> DebounceStates;
-
         public XboxControllerInputViewModel(int controllerIndex)
         {
             Name = "Xbox " + controllerIndex.ToString();
             DeviceType = "Xbox";
 
             Controller = new Controller(IntToUserIndex(controllerIndex));
-            InitializeDebounce();
+            InitializeDebounce(new[] { 
+                "ButtonA", "ButtonB",
+                "ButtonX", "ButtonY", 
+                "ButtonLb", "ButtonRb", 
+                "ButtonLs", "ButtonRs", 
+                "ButtonStart", "ButtonBack", 
+                "DPadL", "DPadU", "DPadR", "DPadD" });
         }
 
         private UserIndex IntToUserIndex(int index)
@@ -86,15 +85,14 @@ namespace RED.ViewModels.Input.Controllers
 
             var currentGamepad = Controller.GetState().Gamepad;
 
-            var deadzone = AutoDeadzone ? Math.Max(Gamepad.LeftThumbDeadZone, Gamepad.RightThumbDeadZone) : ManualDeadzone;
-            Func<short, float> deadzoneTransform = x => x < deadzone && x > -deadzone ? 0 : ((x + (x < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone));
+            int deadzone = AutoDeadzone ? Math.Max(Gamepad.LeftThumbDeadZone, Gamepad.RightThumbDeadZone) : ManualDeadzone;
 
             return new Dictionary<string, float>()
             {
-                {"JoyStick1X", deadzoneTransform(currentGamepad.LeftThumbX)},
-                {"JoyStick1Y", deadzoneTransform(currentGamepad.LeftThumbY)},
-                {"JoyStick2X", deadzoneTransform(currentGamepad.RightThumbX)},
-                {"JoyStick2Y", deadzoneTransform(currentGamepad.RightThumbY)},
+                {"JoyStick1X", DeadzoneTransform(currentGamepad.LeftThumbX, deadzone)},
+                {"JoyStick1Y", DeadzoneTransform(currentGamepad.LeftThumbY, deadzone)},
+                {"JoyStick2X", DeadzoneTransform(currentGamepad.RightThumbX, deadzone)},
+                {"JoyStick2Y", DeadzoneTransform(currentGamepad.RightThumbY, deadzone)},
                 
                 {"LeftTrigger", (float)currentGamepad.LeftTrigger / 255},
                 {"RightTrigger", (float)currentGamepad.RightTrigger / 255},
@@ -139,44 +137,6 @@ namespace RED.ViewModels.Input.Controllers
         {
             Connected = Controller != null && Controller.IsConnected;
             return Connected;
-        }
-
-        private void InitializeDebounce()
-        {
-            DebounceStates = new Dictionary<string, bool>() 
-            {
-                { "ButtonA", false },
-                { "ButtonB", false },
-                { "ButtonX", false },
-                { "ButtonY", false },
-                { "ButtonLb", false },
-                { "ButtonRb", false },
-                { "ButtonLs", false },
-                { "ButtonRs", false },
-                { "ButtonStart", false },
-                { "ButtonBack", false },
-                { "DPadL", false },
-                { "DPadU", false },
-                { "DPadR", false },
-                { "DPadD", false }
-            };
-        }
-        private float Debounce(string key, bool newState)
-        {
-            if (!DebounceStates[key] && newState)
-            {
-                DebounceStates[key] = true;
-                return 1f;
-            }
-            else if (DebounceStates[key] && !newState)
-            {
-                DebounceStates[key] = false;
-                return 0f;
-            }
-            else
-            {
-                return 0f;
-            }
         }
     }
 }

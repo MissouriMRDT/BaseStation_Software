@@ -1,12 +1,11 @@
-﻿using Caliburn.Micro;
-using RED.Interfaces.Input;
+﻿using RED.Interfaces.Input;
 using SharpDX.DirectInput;
 using System;
 using System.Collections.Generic;
 
 namespace RED.ViewModels.Input.Controllers
 {
-    public class FlightStickViewModel : PropertyChangedBase, IInputDevice
+    public class FlightStickViewModel : ControllerBase, IInputDevice
     {
         private DirectInput directInput;
         private Joystick joystick;
@@ -16,8 +15,6 @@ namespace RED.ViewModels.Input.Controllers
         public string Name { get; private set; }
         public string DeviceType { get; private set; }
 
-        private Dictionary<string, bool> DebounceStates;
-
         public FlightStickViewModel()
         {
             Name = "Flight Stick";
@@ -25,7 +22,11 @@ namespace RED.ViewModels.Input.Controllers
 
             directInput = new DirectInput();
 
-            InitializeDebounce();
+            InitializeDebounce(new[] {
+                "Button0", "Button1", "Button2",
+                "Button3", "Button4", "Button5",
+                "Button6", "Button7", "Button8",
+                "Button9", "Button10", "Button11" });
             EstablishJoystick();
         }
 
@@ -34,12 +35,10 @@ namespace RED.ViewModels.Input.Controllers
             joystick.Acquire();
             JoystickState state = joystick.GetCurrentState();
 
-            Func<int, float> deadzoneTransform = x => x < Deadzone && x > -Deadzone ? 0 : ((x + (x < 0 ? Deadzone : -Deadzone)) / (float)(32768 - Deadzone));
-
             return new Dictionary<string, float>()
             {
-                {"X", deadzoneTransform(state.X - 32768)},
-                {"Y", -deadzoneTransform(state.Y - 32768)},
+                {"X", DeadzoneTransform(state.X - 32768, Deadzone)},
+                {"Y", -DeadzoneTransform(state.Y - 32768, Deadzone)},
                 {"RotationZ", (state.RotationZ - 32768) / 32768f},
 
                 {"POVX", POVtoX(state.PointOfViewControllers[0])},
@@ -148,42 +147,6 @@ namespace RED.ViewModels.Input.Controllers
             joystick = new Joystick(directInput, joystickGuid);
             joystick.Properties.BufferSize = 128;
             return true;
-        }
-
-        private void InitializeDebounce()
-        {
-            DebounceStates = new Dictionary<string, bool>() 
-            {
-                { "Button0", false },
-                { "Button1", false },
-                { "Button2", false },
-                { "Button3", false },
-                { "Button4", false },
-                { "Button5", false },
-                { "Button6", false },
-                { "Button7", false },
-                { "Button8", false },
-                { "Button9", false },
-                { "Button10", false },
-                { "Button11", false }
-            };
-        }
-        private float Debounce(string key, bool newState)
-        {
-            if (!DebounceStates[key] && newState)
-            {
-                DebounceStates[key] = true;
-                return 1f;
-            }
-            else if (DebounceStates[key] && !newState)
-            {
-                DebounceStates[key] = false;
-                return 0f;
-            }
-            else
-            {
-                return 0f;
-            }
         }
     }
 }

@@ -1,12 +1,11 @@
-﻿using Caliburn.Micro;
-using RED.Interfaces.Input;
+﻿using RED.Interfaces.Input;
 using RED.Models.Input.Controllers;
 using System.Collections.Generic;
 using System.Windows.Input;
 
 namespace RED.ViewModels.Input.Controllers
 {
-    public class KeyboardInputViewModel : PropertyChangedBase, IInputDevice
+    public class KeyboardInputViewModel : ControllerBase, IInputDevice
     {
         private readonly KeyboardInputModel Model = new KeyboardInputModel();
 
@@ -38,13 +37,11 @@ namespace RED.ViewModels.Input.Controllers
             }
         }
 
-        private Dictionary<string, bool> DebounceStates;
-
         public KeyboardInputViewModel()
         {
             Name = "Keyboard";
             DeviceType = "Keyboard";
-            InitializeDebounce();
+            InitializeDebounce(AllKeys.Keys);
             Connected = true;
         }
 
@@ -58,13 +55,13 @@ namespace RED.ViewModels.Input.Controllers
                 mappingValues.Add(item.Key + "Debounced", Debounce(item.Key, Keyboard.IsKeyDown(item.Value)));
             }
 
-            mappingValues.Add("ArrowUpDown", twoButtonTransform(Keyboard.IsKeyDown(Key.Up), Keyboard.IsKeyDown(Key.Down), SpeedMultiplier, -SpeedMultiplier, 0f));
-            mappingValues.Add("ArrowLeftRight", twoButtonTransform(Keyboard.IsKeyDown(Key.Left), Keyboard.IsKeyDown(Key.Right), SpeedMultiplier, -SpeedMultiplier, 0f));
-            mappingValues.Add("WS", twoButtonTransform(Keyboard.IsKeyDown(Key.W), Keyboard.IsKeyDown(Key.S), SpeedMultiplier, -SpeedMultiplier, 0f));
-            mappingValues.Add("AD", twoButtonTransform(Keyboard.IsKeyDown(Key.A), Keyboard.IsKeyDown(Key.D), SpeedMultiplier, -SpeedMultiplier, 0f));
-            mappingValues.Add("IK", twoButtonTransform(Keyboard.IsKeyDown(Key.I), Keyboard.IsKeyDown(Key.K), SpeedMultiplier, -SpeedMultiplier, 0f));
-            mappingValues.Add("JL", twoButtonTransform(Keyboard.IsKeyDown(Key.J), Keyboard.IsKeyDown(Key.L), SpeedMultiplier, -SpeedMultiplier, 0f));
-            
+            mappingValues.Add("ArrowUpDown", TwoButtonTransform(Keyboard.IsKeyDown(Key.Up), Keyboard.IsKeyDown(Key.Down), SpeedMultiplier, -SpeedMultiplier, 0f));
+            mappingValues.Add("ArrowLeftRight", TwoButtonTransform(Keyboard.IsKeyDown(Key.Left), Keyboard.IsKeyDown(Key.Right), SpeedMultiplier, -SpeedMultiplier, 0f));
+            mappingValues.Add("WS", TwoButtonTransform(Keyboard.IsKeyDown(Key.W), Keyboard.IsKeyDown(Key.S), SpeedMultiplier, -SpeedMultiplier, 0f));
+            mappingValues.Add("AD", TwoButtonTransform(Keyboard.IsKeyDown(Key.A), Keyboard.IsKeyDown(Key.D), SpeedMultiplier, -SpeedMultiplier, 0f));
+            mappingValues.Add("IK", TwoButtonTransform(Keyboard.IsKeyDown(Key.I), Keyboard.IsKeyDown(Key.K), SpeedMultiplier, -SpeedMultiplier, 0f));
+            mappingValues.Add("JL", TwoButtonTransform(Keyboard.IsKeyDown(Key.J), Keyboard.IsKeyDown(Key.L), SpeedMultiplier, -SpeedMultiplier, 0f));
+
             SpeedMultiplier = GetSpeedMultiplier(mappingValues);
 
             return mappingValues;
@@ -79,34 +76,6 @@ namespace RED.ViewModels.Input.Controllers
         public bool IsReady()
         {
             return Connected;
-        }
-
-        private void InitializeDebounce()
-        {
-            DebounceStates = new Dictionary<string, bool>();
-            foreach (var item in AllKeys)
-                DebounceStates.Add(item.Key, false);
-        }
-        private float Debounce(string key, bool newState)
-        {
-            if (!DebounceStates[key] && newState)
-            {
-                DebounceStates[key] = true;
-                return 1f;
-            }
-            else if (DebounceStates[key] && !newState)
-            {
-                DebounceStates[key] = false;
-                return 0f;
-            }
-            else
-            {
-                return 0f;
-            }
-        }
-        private T twoButtonTransform<T>(bool bool1, bool bool2, T val1, T val2, T val0)
-        {
-            return bool1 ? val1 : (bool2 ? val2 : val0);
         }
 
         private float GetSpeedMultiplier(Dictionary<string, float> mappingValues)
