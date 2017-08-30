@@ -25,7 +25,6 @@ namespace RED.ViewModels.Input.Controllers
                 NotifyOfPropertyChange(() => Connected);
             }
         }
-
         public float speedMultiplier
         {
             get
@@ -39,66 +38,28 @@ namespace RED.ViewModels.Input.Controllers
             }
         }
 
+        private Dictionary<string, bool> DebounceStates;
+
         public KeyboardInputViewModel()
         {
             Name = "Keyboard";
             DeviceType = "Keyboard";
+            InitializeDebounce();
         }
 
         public Dictionary<string, float> GetValues()
         {
             Connected = true;
 
-            return new Dictionary<string, float>()
+            var mappingValues = new Dictionary<string, float>(AllKeys.Count * 2);
+
+            foreach (var item in AllKeys)
             {
-                {"A", Keyboard.IsKeyDown(Key.A) ? 1 : 0},
-                {"B", Keyboard.IsKeyDown(Key.B) ? 1 : 0},
-                {"C", Keyboard.IsKeyDown(Key.C) ? 1 : 0},
-                {"D", Keyboard.IsKeyDown(Key.D) ? 1 : 0},
-                {"E", Keyboard.IsKeyDown(Key.E) ? 1 : 0},
-                {"F", Keyboard.IsKeyDown(Key.F) ? 1 : 0},
-                {"G", Keyboard.IsKeyDown(Key.G) ? 1 : 0},
-                {"H", Keyboard.IsKeyDown(Key.H) ? 1 : 0},
-                {"I", Keyboard.IsKeyDown(Key.I) ? 1 : 0},
-                {"J", Keyboard.IsKeyDown(Key.J) ? 1 : 0},
-                {"K", Keyboard.IsKeyDown(Key.K) ? 1 : 0},
-                {"L", Keyboard.IsKeyDown(Key.L) ? 1 : 0},
-                {"M", Keyboard.IsKeyDown(Key.M) ? 1 : 0},
-                {"N", Keyboard.IsKeyDown(Key.N) ? 1 : 0},
-                {"O", Keyboard.IsKeyDown(Key.O) ? 1 : 0},
-                {"P", Keyboard.IsKeyDown(Key.P) ? 1 : 0},
-                {"Q", Keyboard.IsKeyDown(Key.Q) ? 1 : 0},
-                {"R", Keyboard.IsKeyDown(Key.R) ? 1 : 0},
-                {"S", Keyboard.IsKeyDown(Key.S) ? 1 : 0},
-                {"T", Keyboard.IsKeyDown(Key.T) ? 1 : 0},
-                {"U", Keyboard.IsKeyDown(Key.U) ? 1 : 0},
-                {"V", Keyboard.IsKeyDown(Key.V) ? 1 : 0},
-                {"W", Keyboard.IsKeyDown(Key.W) ? 1 : 0},
-                {"X", Keyboard.IsKeyDown(Key.X) ? 1 : 0},
-                {"Y", Keyboard.IsKeyDown(Key.Y) ? 1 : 0},
-                {"Z", Keyboard.IsKeyDown(Key.Z) ? 1 : 0},
-                {"D1", Keyboard.IsKeyDown(Key.D1) ? 1 : 0},
-                {"D2", Keyboard.IsKeyDown(Key.D2) ? 1 : 0},
-                {"D3", Keyboard.IsKeyDown(Key.D3) ? 1 : 0},
-                {"D4", Keyboard.IsKeyDown(Key.D4) ? 1 : 0},
-                {"D5", Keyboard.IsKeyDown(Key.D5) ? 1 : 0},
-                {"D6", Keyboard.IsKeyDown(Key.D6) ? 1 : 0},
-                {"D7", Keyboard.IsKeyDown(Key.D7) ? 1 : 0},
-                {"D8", Keyboard.IsKeyDown(Key.D8) ? 1 : 0},
-                {"D9", Keyboard.IsKeyDown(Key.D9) ? 1 : 0},
-                {"D0", Keyboard.IsKeyDown(Key.D0) ? 1 : 0},
-                {"Tilde", Keyboard.IsKeyDown(Key.OemTilde) ? 1 : 0},
-                {"Comma", Keyboard.IsKeyDown(Key.OemComma) ? 1 : 0},
-                {"Period", Keyboard.IsKeyDown(Key.OemPeriod) ? 1 : 0},
-                {"Plus", Keyboard.IsKeyDown(Key.OemPlus) ? 1 : 0},
-                {"Minus", Keyboard.IsKeyDown(Key.OemMinus) ? 1 : 0},
-                {"RightShift", Keyboard.IsKeyDown(Key.RightShift) ? 1 : 0},
-                {"ShiftLeft", Keyboard.IsKeyDown(Key.LeftShift) ? 1 : 0},
-                {"ArrowLeft", Keyboard.IsKeyDown(Key.Left) ? 1 : 0},
-                {"ArrowRight", Keyboard.IsKeyDown(Key.Right) ? 1 : 0},
-                {"ArrowUp", Keyboard.IsKeyDown(Key.Up) ? 1 : 0},
-                {"ArrowDown", Keyboard.IsKeyDown(Key.Down) ? 1 : 0}
-            };
+                mappingValues.Add(item.Key, Keyboard.IsKeyDown(item.Value) ? 1f : 0f);
+                mappingValues.Add(item.Key + "Debounced", Debounce(item.Key, Keyboard.IsKeyDown(item.Value)));
+            }
+
+            return mappingValues;
         }
 
         public void StartDevice()
@@ -111,5 +72,80 @@ namespace RED.ViewModels.Input.Controllers
         {
             return true;
         }
+
+        private void InitializeDebounce()
+        {
+            DebounceStates = new Dictionary<string, bool>();
+            foreach (var item in AllKeys)
+                DebounceStates.Add(item.Key, false);
+        }
+        private float Debounce(string key, bool newState)
+        {
+            if (!DebounceStates[key] && newState)
+            {
+                DebounceStates[key] = true;
+                return 1f;
+            }
+            else if (DebounceStates[key] && !newState)
+            {
+                DebounceStates[key] = false;
+                return 0f;
+            }
+            else
+            {
+                return 0f;
+            }
+        }
+
+        private static Dictionary<string, Key> AllKeys = new Dictionary<string, Key>()
+        {
+            {"A", Key.A},
+            {"B", Key.B},
+            {"C", Key.C},
+            {"D", Key.D},
+            {"E", Key.E},
+            {"F", Key.F},
+            {"G", Key.G},
+            {"H", Key.H},
+            {"I", Key.I},
+            {"J", Key.J},
+            {"K", Key.K},
+            {"L", Key.L},
+            {"M", Key.M},
+            {"N", Key.N},
+            {"O", Key.O},
+            {"P", Key.P},
+            {"Q", Key.Q},
+            {"R", Key.R},
+            {"S", Key.S},
+            {"T", Key.T},
+            {"U", Key.U},
+            {"V", Key.V},
+            {"W", Key.W},
+            {"X", Key.X},
+            {"Y", Key.Y},
+            {"Z", Key.Z},
+            {"D1", Key.D1},
+            {"D2", Key.D2},
+            {"D3", Key.D3},
+            {"D4", Key.D4},
+            {"D5", Key.D5},
+            {"D6", Key.D6},
+            {"D7", Key.D7},
+            {"D8", Key.D8},
+            {"D9", Key.D9},
+            {"D0", Key.D0},
+            {"Tilde", Key.OemTilde},
+            {"Comma", Key.OemComma},
+            {"Period", Key.OemPeriod},
+            {"Plus", Key.OemPlus},
+            {"Minus", Key.OemMinus},
+            {"RightShift", Key.RightShift},
+            {"ShiftLeft", Key.LeftShift},
+            {"ArrowLeft", Key.Left},
+            {"ArrowRight", Key.Right},
+            {"ArrowUp", Key.Up},
+            {"ArrowDown", Key.Down}
+        };
     }
 }
