@@ -90,6 +90,15 @@
                     <DockPanel Grid.Row="0" Margin="10 0" LastChildFill="True">
                         <Button DockPanel.Dock="Bottom" x:Name="ResubscribeAll">Resubscribe All</Button>
                         <controls:MetroTabControl TabStripMargin="0">
+                            <TabItem Header="State" controls:ControlsHelper.HeaderFontSize="12">
+                                <StackPanel>
+                                    <DockPanel LastChildFill="True">
+                                        <Label DockPanel.Dock="Left">Keyboard Speed</Label>
+                                        <ToggleButton DockPanel.Dock="Right" IsChecked="{Binding KeyboardController.Connected}">Connected</ToggleButton>
+                                        <Label Content="{Binding KeyboardController.SpeedMultiplier}" ContentStringFormat="{}{0:##%}" HorizontalContentAlignment="Right" />
+                                    </DockPanel>
+                                </StackPanel>
+                            </TabItem>
                             <TabItem Header="Telemetry" controls:ControlsHelper.HeaderFontSize="12" Margin="0">
                                 <ScrollViewer>
                                     <ItemsControl ItemsSource="{Binding NetworkManager.TelemetryLog}" Grid.IsSharedSizeScope="True">
