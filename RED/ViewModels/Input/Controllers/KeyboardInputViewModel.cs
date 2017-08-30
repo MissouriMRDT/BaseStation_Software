@@ -54,10 +54,17 @@ namespace RED.ViewModels.Input.Controllers
 
             foreach (var item in AllKeys)
             {
-                mappingValues.Add(item.Key, Keyboard.IsKeyDown(item.Value) ? 1f * SpeedMultiplier : 0f);
+                mappingValues.Add(item.Key, Keyboard.IsKeyDown(item.Value) ? SpeedMultiplier : 0f);
                 mappingValues.Add(item.Key + "Debounced", Debounce(item.Key, Keyboard.IsKeyDown(item.Value)));
             }
 
+            mappingValues.Add("ArrowUpDown", twoButtonTransform(Keyboard.IsKeyDown(Key.Up), Keyboard.IsKeyDown(Key.Down), SpeedMultiplier, -SpeedMultiplier, 0f));
+            mappingValues.Add("ArrowLeftRight", twoButtonTransform(Keyboard.IsKeyDown(Key.Left), Keyboard.IsKeyDown(Key.Right), SpeedMultiplier, -SpeedMultiplier, 0f));
+            mappingValues.Add("WS", twoButtonTransform(Keyboard.IsKeyDown(Key.W), Keyboard.IsKeyDown(Key.S), SpeedMultiplier, -SpeedMultiplier, 0f));
+            mappingValues.Add("AD", twoButtonTransform(Keyboard.IsKeyDown(Key.A), Keyboard.IsKeyDown(Key.D), SpeedMultiplier, -SpeedMultiplier, 0f));
+            mappingValues.Add("IK", twoButtonTransform(Keyboard.IsKeyDown(Key.I), Keyboard.IsKeyDown(Key.K), SpeedMultiplier, -SpeedMultiplier, 0f));
+            mappingValues.Add("JL", twoButtonTransform(Keyboard.IsKeyDown(Key.J), Keyboard.IsKeyDown(Key.L), SpeedMultiplier, -SpeedMultiplier, 0f));
+            
             SpeedMultiplier = GetSpeedMultiplier(mappingValues);
 
             return mappingValues;
@@ -96,6 +103,10 @@ namespace RED.ViewModels.Input.Controllers
             {
                 return 0f;
             }
+        }
+        private T twoButtonTransform<T>(bool bool1, bool bool2, T val1, T val2, T val0)
+        {
+            return bool1 ? val1 : (bool2 ? val2 : val0);
         }
 
         private float GetSpeedMultiplier(Dictionary<string, float> mappingValues)
