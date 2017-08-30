@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using RED.Contexts;
 using RED.Interfaces.Input;
 using RED.Models.Input;
 using System.Collections.Generic;
@@ -91,12 +92,36 @@ namespace RED.ViewModels.Input
             UpdatePeriod = updatePeriod;
         }
 
+        public MappingViewModel(InputMappingContext context)
+            : this()
+        {
+            Name = context.Name;
+            DeviceType = context.DeviceType;
+            ModeType = context.ModeType;
+            UpdatePeriod = context.UpdatePeriod;
+
+            foreach (var channel in context.Channels)
+                Channels.Add(new MappingChannelViewModel(channel));
+        }
+
         public Dictionary<string, float> Map(Dictionary<string, float> values)
         {
             var result = new Dictionary<string, float>();
             foreach (var channel in Channels)
                 result.Add(channel.OutputKey, channel.Map(values[channel.InputKey]));
             return result;
+        }
+
+        public InputMappingContext ToContext()
+        {
+            return new InputMappingContext()
+            {
+                Name = Name,
+                Channels = Channels.Select(x => x.ToContext()).ToArray(),
+                DeviceType = DeviceType,
+                ModeType = ModeType,
+                UpdatePeriod = UpdatePeriod
+            };
         }
     }
 }

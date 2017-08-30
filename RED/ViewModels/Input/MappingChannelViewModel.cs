@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using RED.Contexts;
 using RED.Models.Input;
 using System.Xml.Serialization;
 
@@ -106,6 +107,18 @@ namespace RED.ViewModels.Input
             OutputKey = outputKey;
         }
 
+        public MappingChannelViewModel(InputChannelContext context)
+            : this()
+        {
+            InputKey = context.InputKey;
+            OutputKey = context.OutputKey;
+            LinearScaling = context.LinearScaling;
+            Parabolic = context.Parabolic;
+            Minimum = context.Minimum;
+            Maximum = context.Maximum;
+            Offset = context.Offset;
+        }
+
         public float Map(float input)
         {
             if (Parabolic)
@@ -117,6 +130,20 @@ namespace RED.ViewModels.Input
             if (result > Maximum) result = Maximum;
 
             return result;
+        }
+
+        public InputChannelContext ToContext()
+        {
+            return new InputChannelContext()
+            {
+                InputKey = InputKey,
+                OutputKey = OutputKey,
+                LinearScaling = LinearScaling,
+                Parabolic = Parabolic,
+                Minimum = Minimum,
+                Maximum = Maximum,
+                Offset = Offset
+            };
         }
     }
 }

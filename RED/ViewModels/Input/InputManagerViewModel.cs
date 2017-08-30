@@ -115,14 +115,14 @@ namespace RED.ViewModels.Input
 
         public void SaveConfigurations()
         {
-            _configManager.SetConfig(MappingsConfigName, new InputMappingsContext(Mappings.ToArray()));
+            _configManager.SetConfig(MappingsConfigName, new InputMappingsContext(Mappings.Select(x => x.ToContext()).ToArray()));
             _configManager.SetConfig(SelectionsConfigName, new InputSelectionsContext(Selectors.Select(x => x.GetContext()).ToArray()));
         }
 
         private void InitializeMappings(InputMappingsContext config)
         {
-            foreach (MappingViewModel mapping in config.Mappings)
-                Mappings.Add(mapping);
+            foreach (InputMappingContext mapping in config.Mappings)
+                Mappings.Add(new MappingViewModel(mapping));
 
             _log.Log("Input Mappings loaded");
         }
@@ -144,56 +144,56 @@ namespace RED.ViewModels.Input
         }
 
         public static InputMappingsContext DefaultInputMappings = new InputMappingsContext(new[] {
-            new MappingViewModel("Tank Drive (Traditional)", "Xbox", "Drive", 30, new[] { 
-                new MappingChannelViewModel("JoyStick1Y", "WheelsLeft"){ Parabolic = true },
-                new MappingChannelViewModel("JoyStick2Y", "WheelsRight"){ Parabolic = true },
-                new MappingChannelViewModel("ButtonStartDebounced", "ModeCycle") }),
-            new MappingViewModel("Diagonal Drive", "FlightStick", "Drive", 30, new[] { 
-                new MappingChannelViewModel("X", "WheelsLeft"){ Parabolic = true },
-                new MappingChannelViewModel("Y", "WheelsRight"){ Parabolic = true },
-                new MappingChannelViewModel("Button7Debounced", "ModeCycle") }),
-            new MappingViewModel("Vector Drive", "FlightStick", "Drive", 30, new[] { 
-                new MappingChannelViewModel("X", "VectorX"),
-                new MappingChannelViewModel("Y", "VectorY"),
-                new MappingChannelViewModel("Slider0", "Throttle"),
-                new MappingChannelViewModel("Button7Debounced", "ModeCycle") }),
-            new MappingViewModel("Arm (Traditional)", "Xbox", "Arm", 200, new[] { 
-                new MappingChannelViewModel("JoyStick1Y", "ElbowBend"){ Parabolic = true },
-                new MappingChannelViewModel("JoyStick1X", "ElbowTwist"){ Parabolic = true },
-                new MappingChannelViewModel("JoyStick2Y", "WristTwist"){ Parabolic = true, LinearScaling = -1 },
-                new MappingChannelViewModel("JoyStick2X", "WristBend"){ Parabolic = true },
-                new MappingChannelViewModel("DPadU", "ShoulderBendForward"),
-                new MappingChannelViewModel("DPadD", "ShoulderBendBackward"),
-                new MappingChannelViewModel("DPadR", "ShoulderTwistForward"),
-                new MappingChannelViewModel("DPadL", "ShoulderTwistBackward"),
-                new MappingChannelViewModel("ButtonY", "DebouncedArmReset"),
-                new MappingChannelViewModel("LeftTrigger", "GripperOpen"),
-                new MappingChannelViewModel("RightTrigger", "GripperClose"),
-                new MappingChannelViewModel("ButtonRb", "ServoClockwise"),
-                new MappingChannelViewModel("ButtonLb", "ServoCounterClockwise"),
-                new MappingChannelViewModel("ButtonB", "TowRopeOut"),
-                new MappingChannelViewModel("ButtonX", "TowRopeIn"),
-                new MappingChannelViewModel("ButtonStartDebounced", "ModeCycle") }),
-            new MappingViewModel("Xbox Science Arm", "Xbox", "ScienceArm", 30, new[] { 
-                new MappingChannelViewModel("JoyStick1Y", "Arm"){ Parabolic = true },
-                new MappingChannelViewModel("JoyStick2Y", "Drill"){ Parabolic = true },
-                new MappingChannelViewModel("ButtonStartDebounced", "ModeCycle") }),
-            new MappingViewModel("Xbox Gimbal", "Xbox", "Gimbal", 30, new[] { 
-                new MappingChannelViewModel("JoyStick1X", "Pan"){ Parabolic = true },
-                new MappingChannelViewModel("JoyStick1Y", "Tilt"){ Parabolic = true },
-                new MappingChannelViewModel("ButtonY", "ZoomIn"){ Parabolic = true },
-                new MappingChannelViewModel("ButtonA", "ZoomOut"){ Parabolic = true },
-                new MappingChannelViewModel("ButtonStartDebounced", "ModeCycle") }),
-            new MappingViewModel("Key Drive", "Keyboard", "Drive", 30, new[] {
-                new MappingChannelViewModel("WS", "WheelsLeft"),
-                new MappingChannelViewModel("IK", "WheelsRight"),
-                new MappingChannelViewModel("RDebounced", "ModeCycle") }),
-            new MappingViewModel("Key Gimbal", "Keyboard", "Gimbal", 30, new[] { 
-                new MappingChannelViewModel("AD", "Pan"),
-                new MappingChannelViewModel("WS", "Tilt"),
-                new MappingChannelViewModel("I", "ZoomIn"),
-                new MappingChannelViewModel("K", "ZoomOut"),
-                new MappingChannelViewModel("RDebounced", "ModeCycle") }),
+            new InputMappingContext("Tank Drive (Traditional)", "Xbox", "Drive", 30, new[] { 
+                new InputChannelContext("JoyStick1Y", "WheelsLeft"){ Parabolic = true },
+                new InputChannelContext("JoyStick2Y", "WheelsRight"){ Parabolic = true },
+                new InputChannelContext("ButtonStartDebounced", "ModeCycle") }),
+            new InputMappingContext("Diagonal Drive", "FlightStick", "Drive", 30, new[] { 
+                new InputChannelContext("X", "WheelsLeft"){ Parabolic = true },
+                new InputChannelContext("Y", "WheelsRight"){ Parabolic = true },
+                new InputChannelContext("Button7Debounced", "ModeCycle") }),
+            new InputMappingContext("Vector Drive", "FlightStick", "Drive", 30, new[] { 
+                new InputChannelContext("X", "VectorX"),
+                new InputChannelContext("Y", "VectorY"),
+                new InputChannelContext("Slider0", "Throttle"),
+                new InputChannelContext("Button7Debounced", "ModeCycle") }),
+            new InputMappingContext("Arm (Traditional)", "Xbox", "Arm", 200, new[] { 
+                new InputChannelContext("JoyStick1Y", "ElbowBend"){ Parabolic = true },
+                new InputChannelContext("JoyStick1X", "ElbowTwist"){ Parabolic = true },
+                new InputChannelContext("JoyStick2Y", "WristTwist"){ Parabolic = true, LinearScaling = -1 },
+                new InputChannelContext("JoyStick2X", "WristBend"){ Parabolic = true },
+                new InputChannelContext("DPadU", "ShoulderBendForward"),
+                new InputChannelContext("DPadD", "ShoulderBendBackward"),
+                new InputChannelContext("DPadR", "ShoulderTwistForward"),
+                new InputChannelContext("DPadL", "ShoulderTwistBackward"),
+                new InputChannelContext("ButtonY", "DebouncedArmReset"),
+                new InputChannelContext("LeftTrigger", "GripperOpen"),
+                new InputChannelContext("RightTrigger", "GripperClose"),
+                new InputChannelContext("ButtonRb", "ServoClockwise"),
+                new InputChannelContext("ButtonLb", "ServoCounterClockwise"),
+                new InputChannelContext("ButtonB", "TowRopeOut"),
+                new InputChannelContext("ButtonX", "TowRopeIn"),
+                new InputChannelContext("ButtonStartDebounced", "ModeCycle") }),
+            new InputMappingContext("Xbox Science Arm", "Xbox", "ScienceArm", 30, new[] { 
+                new InputChannelContext("JoyStick1Y", "Arm"){ Parabolic = true },
+                new InputChannelContext("JoyStick2Y", "Drill"){ Parabolic = true },
+                new InputChannelContext("ButtonStartDebounced", "ModeCycle") }),
+            new InputMappingContext("Xbox Gimbal", "Xbox", "Gimbal", 30, new[] { 
+                new InputChannelContext("JoyStick1X", "Pan"){ Parabolic = true },
+                new InputChannelContext("JoyStick1Y", "Tilt"){ Parabolic = true },
+                new InputChannelContext("ButtonY", "ZoomIn"){ Parabolic = true },
+                new InputChannelContext("ButtonA", "ZoomOut"){ Parabolic = true },
+                new InputChannelContext("ButtonStartDebounced", "ModeCycle") }),
+            new InputMappingContext("Key Drive", "Keyboard", "Drive", 30, new[] {
+                new InputChannelContext("WS", "WheelsLeft"),
+                new InputChannelContext("IK", "WheelsRight"),
+                new InputChannelContext("RDebounced", "ModeCycle") }),
+            new InputMappingContext("Key Gimbal", "Keyboard", "Gimbal", 30, new[] { 
+                new InputChannelContext("AD", "Pan"),
+                new InputChannelContext("WS", "Tilt"),
+                new InputChannelContext("I", "ZoomIn"),
+                new InputChannelContext("K", "ZoomOut"),
+                new InputChannelContext("RDebounced", "ModeCycle") }),
         });
 
         public static InputSelectionsContext DefaultInputSelections = new InputSelectionsContext(new[] {
