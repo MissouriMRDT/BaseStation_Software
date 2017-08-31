@@ -164,7 +164,7 @@ namespace RED.ViewModels.Input
             }
             catch (KeyNotFoundException)
             {
-                _log.Log("Missing key when mapping {0} to {1} with {2}.", SelectedDevice.Name, Mode.Name, SelectedMapping.Name);
+                _log.Log("Missing key when mapping {0} to {1} with {2}", SelectedDevice.Name, Mode.Name, SelectedMapping.Name);
             }
             finally
             {

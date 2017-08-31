@@ -51,7 +51,7 @@ namespace RED.ViewModels
 
             ServerObjs.AddRange(Servers.Select(x => new Server(x)));
 
-            _log.Log("Metadata loaded.");
+            _log.Log("Metadata loaded");
         }
 
         public MetadataServerContext GetServer(ushort dataId)
@@ -72,7 +72,7 @@ namespace RED.ViewModels
             var data = GetMetadata(name);
             if (data == null)
             {
-                _log.Log("DataId for \"{0}\" not found.", name);
+                _log.Log("DataId for \"{0}\" not found", name);
                 return (ushort)0;
             }
             return data.Id;

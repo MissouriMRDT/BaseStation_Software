@@ -300,20 +300,20 @@ namespace RED.ViewModels.Modules
         }
         public async void DownloadSpectrometer()
         {
-            _log.Log("Spectrometer data download started.");
+            _log.Log("Spectrometer data download started");
             string filename = Path.Combine(SpectrometerFilePath, "REDSpectrometerData" + DateTime.Now.ToString("yyyyMMdd'T'HHmmss") + ".dat");
             try
             {
                 using (var client = new TcpClient())
                 {
                     await client.ConnectAsync(SpectrometerIPAddress, SpectrometerPortNumber);
-                    _log.Log("Spectrometer connection established.");
+                    _log.Log("Spectrometer connection established");
                     using (var file = File.Create(filename))
                     {
                         await client.GetStream().CopyToAsync(file);
                     }
                 }
-                _log.Log("Spectrometer data downloaded into {0}.", filename);
+                _log.Log("Spectrometer data downloaded into {0}", filename);
             }
             catch (Exception e)
             {
@@ -324,12 +324,12 @@ namespace RED.ViewModels.Modules
         public void RequestLaserOn()
         {
             _router.Send(_idResolver.GetId("ScienceCommand"), (byte)ScienceRequestTypes.LaserOn, true);
-            _log.Log("Science Laser On requested.");
+            _log.Log("Science Laser On requested");
         }
         public void RequestLaserOff()
         {
             _router.Send(_idResolver.GetId("ScienceCommand"), (byte)ScienceRequestTypes.LaserOff, true);
-            _log.Log("Science Laser Off requested.");
+            _log.Log("Science Laser Off requested");
         }
 
         public void SetCarouselPosition(byte carouselIndex)

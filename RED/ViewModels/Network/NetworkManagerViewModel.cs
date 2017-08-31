@@ -150,7 +150,7 @@ namespace RED.ViewModels.Network
 
             OutgoingUnACKed.Remove(packetInfo);
             if (dataId != (ushort)SystemDataId.Subscribe)
-                _log.Log("No ACK recieved for DataId={0} and SeqNum={1} after {2} retries.", packetInfo.DataId, packetInfo.SeqNum, ReliableMaxRetries);
+                _log.Log("No ACK recieved for DataId={0} and SeqNum={1} after {2} retries", packetInfo.DataId, packetInfo.SeqNum, ReliableMaxRetries);
         }
 
         private void ReceivePacket(IPAddress srcIP, byte[] buffer)
@@ -175,7 +175,7 @@ namespace RED.ViewModels.Network
             switch ((SystemDataId)dataId)
             {
                 case SystemDataId.Null:
-                    _log.Log("Packet recieved with null dataId.");
+                    _log.Log("Packet recieved with null dataId");
                     break;
                 case SystemDataId.Ping:
                     SendPacket((ushort)SystemDataId.PingReply, BitConverter.GetBytes(IPAddress.HostToNetworkOrder((short)seqNum)), srcIP, false);
@@ -193,7 +193,7 @@ namespace RED.ViewModels.Network
                     ushort ackedId = (ushort)IPAddress.NetworkToHostOrder((short)BitConverter.ToUInt16(data, 0));
                     ushort ackedSeqNum = (ushort)IPAddress.NetworkToHostOrder((short)BitConverter.ToUInt16(data, 2));
                     if (!OutgoingUnACKed.Remove(new UnACKedPacket { DataId = ackedId, SeqNum = ackedSeqNum }))
-                        _log.Log("Unexected ACK recieved from ip={0} with dataId={1} and seqNum={2}.", srcIP, ackedId, ackedSeqNum);
+                        _log.Log("Unexected ACK recieved from ip={0} with dataId={1} and seqNum={2}", srcIP, ackedId, ackedSeqNum);
                     break;
                 default: //Regular DataId
                     _router.Send(dataId, data);
