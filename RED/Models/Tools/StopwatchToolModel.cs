@@ -5,7 +5,7 @@ using System.Windows.Threading;
 
 namespace RED.Models.Tools
 {
-    public class StopwatchToolModel
+    internal class StopwatchToolModel
     {
         internal ObservableCollection<StopwatchToolViewModel.ScheduleViewModel> Schedules;
         internal StopwatchToolViewModel.ScheduleViewModel SelectedSchedule;
@@ -18,13 +18,13 @@ namespace RED.Models.Tools
         public StopwatchToolViewModel.ScheduleViewModel SelectedEditSchedule;
         internal StopwatchToolViewModel.SchedulePhaseViewModel SelectedEditPhase;
 
-        public class ScheduleModel
+        internal class ScheduleModel
         {
             internal string Name;
             internal ObservableCollection<StopwatchToolViewModel.SchedulePhaseViewModel> Phases;
         }
 
-        public class SchedulePhaseModel
+        internal class SchedulePhaseModel
         {
             internal string Name;
             internal TimeSpan Duration;

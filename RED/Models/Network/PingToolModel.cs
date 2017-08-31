@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 
 namespace RED.Models.Network
 {
-    public class PingToolModel
+    internal class PingToolModel
     {
         internal int AutoRate;
         internal int Timeout;
