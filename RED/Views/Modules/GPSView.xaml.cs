@@ -7,7 +7,6 @@ namespace RED.Views.Modules
     /// </summary>
     public partial class GPSView : UserControl
     {
-        // Marker
         public GPSView()
         {
             InitializeComponent();

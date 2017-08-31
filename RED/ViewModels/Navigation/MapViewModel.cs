@@ -96,11 +96,7 @@ namespace RED.ViewModels.Navigation
         public MapViewModel()
         {
             _model = new MapModel();
-            //InitializeMapControl();
-
-            //Waypoints.Add(new Waypoint(37.951631, -91.777713)); //Rolla
-            //Waypoints.Add(new Waypoint(37.850025, -91.701845)); //Fugitive Beach
-            //Waypoints.Add(new Waypoint(38.406426, -110.791919)); //Mars Desert Research Station
+            
             CurrentLocation = new Waypoint("GPS", 0f, 0f) { Color = System.Windows.Media.Colors.Red };
             RefreshMap();
         }

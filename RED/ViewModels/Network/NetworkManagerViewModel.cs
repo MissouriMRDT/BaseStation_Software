@@ -59,8 +59,6 @@ namespace RED.ViewModels.Network
 
             foreach (var command in commands)
                 _router.Subscribe(this, command.Id);
-            //_cc.DataRouter.Subscribe(this, 1);
-            //_cc.DataRouter.Subscribe(this, 180);
 
             Listen();
         }
