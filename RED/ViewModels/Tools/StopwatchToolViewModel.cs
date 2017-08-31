@@ -1,14 +1,14 @@
 ﻿using Caliburn.Micro;
 using RED.Contexts;
 using RED.Interfaces;
-using RED.Models;
+using RED.Models.Tools;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Threading;
 
-namespace RED.ViewModels
+namespace RED.ViewModels.Tools
 {
     public class StopwatchToolViewModel : PropertyChangedBase
     {

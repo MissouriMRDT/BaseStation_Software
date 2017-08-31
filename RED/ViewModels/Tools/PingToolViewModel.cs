@@ -2,6 +2,7 @@
 using RED.Contexts;
 using RED.Interfaces;
 using RED.Models.Network;
+using RED.ViewModels.Network;
 using System;
 using System.Collections.ObjectModel;
 using System.Net;
@@ -9,7 +10,7 @@ using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 
-namespace RED.ViewModels.Network
+namespace RED.ViewModels.Tools
 {
     public class PingToolViewModel : PropertyChangedBase
     {

@@ -8,7 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Windows.Threading;
 
-namespace RED.ViewModels
+namespace RED.ViewModels.Tools
 {
     public class TelemetryLogToolViewModel : PropertyChangedBase
     {

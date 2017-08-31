@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using RED.ViewModels.Tools;
+using System.Collections.ObjectModel;
 
 namespace RED.Models.Network
 {
@@ -6,6 +7,6 @@ namespace RED.Models.Network
     {
         internal int AutoRate;
         internal int Timeout;
-        internal ObservableCollection<RED.ViewModels.Network.PingToolViewModel.PingServer> PingServers;
+        internal ObservableCollection<PingToolViewModel.PingServer> PingServers;
     }
 }

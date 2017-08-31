@@ -164,7 +164,7 @@
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Models\Network\SubscriptionManagerModel.cs" />
     <Compile Include="Models\Input\Controllers\KeyboardInputModel.cs" />
-    <Compile Include="Models\StopwatchToolModel.cs" />
+    <Compile Include="Models\Tools\StopwatchToolModel.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Models\Input\Controllers\XboxControllerInputModel.cs" />
     <Compile Include="Interfaces\IDataRouter.cs" />
@@ -195,7 +195,7 @@
     <Compile Include="ViewModels\Modules\PowerViewModel.cs" />
     <Compile Include="ViewModels\Input\Controllers\XboxControllerInputViewModel.cs" />
     <Compile Include="ViewModels\MetadataManager.cs" />
-    <Compile Include="ViewModels\Network\PingToolViewModel.cs" />
+    <Compile Include="ViewModels\Tools\PingToolViewModel.cs" />
     <Compile Include="ViewModels\Network\RoverProtocol.cs" />
     <Compile Include="ViewModels\Modules\ScienceViewModel.cs" />
     <Compile Include="ViewModels\Modules\SensorViewModel.cs" />
@@ -211,8 +211,8 @@
     <Compile Include="ViewModels\Settings\Modules\PowerSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Modules\ScienceSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Network\NetworkManagerSettingsViewModel.cs" />
-    <Compile Include="ViewModels\StopwatchToolViewModel.cs" />
-    <Compile Include="ViewModels\TelemetryLogToolViewModel.cs" />
+    <Compile Include="ViewModels\Tools\StopwatchToolViewModel.cs" />
+    <Compile Include="ViewModels\Tools\TelemetryLogToolViewModel.cs" />
     <Compile Include="ViewModels\XMLConfigManager.cs" />
     <Compile Include="Views\ControlCenterView.xaml.cs">
       <DependentUpon>ControlCenterView.xaml</DependentUpon>
@@ -265,7 +265,7 @@
     <Compile Include="Views\Navigation\WaypointManagerView.xaml.cs">
       <DependentUpon>WaypointManagerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Network\PingToolView.xaml.cs">
+    <Compile Include="Views\Tools\PingToolView.xaml.cs">
       <DependentUpon>PingToolView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsManagerView.xaml.cs">
@@ -289,10 +289,10 @@
     <Compile Include="Views\Settings\Modules\ScienceSettingsView.xaml.cs">
       <DependentUpon>ScienceSettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StopwatchToolView.xaml.cs">
+    <Compile Include="Views\Tools\StopwatchToolView.xaml.cs">
       <DependentUpon>StopwatchToolView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TelemetryLogToolView.xaml.cs">
+    <Compile Include="Views\Tools\TelemetryLogToolView.xaml.cs">
       <DependentUpon>TelemetryLogToolView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\ControlCenterView.xaml">
@@ -376,7 +376,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Network\PingToolView.xaml">
+    <Page Include="Views\Tools\PingToolView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -409,11 +409,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StopwatchToolView.xaml">
+    <Page Include="Views\Tools\StopwatchToolView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TelemetryLogToolView.xaml">
+    <Page Include="Views\Tools\TelemetryLogToolView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

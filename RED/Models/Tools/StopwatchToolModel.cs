@@ -1,9 +1,9 @@
-﻿using RED.ViewModels;
+﻿using RED.ViewModels.Tools;
 using System;
 using System.Collections.ObjectModel;
 using System.Windows.Threading;
 
-namespace RED.Models
+namespace RED.Models.Tools
 {
     public class StopwatchToolModel
     {

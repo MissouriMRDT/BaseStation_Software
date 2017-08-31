@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace RED.Views
+namespace RED.Views.Tools
 {
     /// <summary>
     /// Interaction logic for StopwatchToolView.xaml
