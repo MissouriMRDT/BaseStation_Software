@@ -74,8 +74,8 @@ namespace RED.ViewModels.Network
         {
             while (true)
             {
-                byte[] buffer = await continuousDataSocket.ReceiveMessage();
-                ReceivePacket(IPAddress.None, buffer);
+                Tuple<IPAddress, byte[]> result = await continuousDataSocket.ReceiveMessage();
+                ReceivePacket(result.Item1, result.Item2);
             }
         }
 
