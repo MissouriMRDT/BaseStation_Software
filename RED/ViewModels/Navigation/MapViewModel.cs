@@ -2,7 +2,7 @@
 using GMap.NET;
 using GMap.NET.MapProviders;
 using GMap.NET.WindowsPresentation;
-using RED.Addons;
+using RED.Addons.Navigation;
 using RED.Models.Navigation;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -174,7 +174,7 @@ namespace RED.ViewModels.Navigation
             if (MainMap == null) return;
             MainMap.Markers.Clear();
 
-            var converter = new RED.Addons.GMapMarkerCollectionMultiConverter();
+            var converter = new GMapMarkerCollectionMultiConverter();
             var newdata = (IEnumerable<GMapMarker>)converter.Convert(new object[] { CurrentLocation, Waypoints.Where(x => x.IsOnMap) }, typeof(System.Collections.ObjectModel.ObservableCollection<GMapMarker>), null, System.Globalization.CultureInfo.DefaultThreadCurrentUICulture);
             foreach (var marker in newdata)
                 MainMap.Markers.Add(marker);

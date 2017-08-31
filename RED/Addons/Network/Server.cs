@@ -1,7 +1,7 @@
 ﻿using RED.Contexts;
 using System.Net;
 
-namespace RED.Addons
+namespace RED.Addons.Network
 {
     public class Server
     {

@@ -1,18 +1,13 @@
 ﻿using System;
 using System.Windows.Data;
 
-namespace RED.Addons
+namespace RED.Addons.Navigation
 {
-    public class TimeSpanToStringConverter : IValueConverter
+    public class GPSCoordinateToLongitudeConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (value == null)
-                return String.Empty;
-
-            var val = (TimeSpan)value;
-            val = TimeSpan.FromSeconds(Math.Round(val.TotalSeconds));
-            return String.Format("{0:#00}:{1:00}", Math.Truncate(val.TotalMinutes), val.Seconds);
+            return ((GPSCoordinate)value).Longitude;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

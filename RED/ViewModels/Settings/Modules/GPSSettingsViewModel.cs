@@ -1,5 +1,5 @@
 ﻿using Caliburn.Micro;
-using RED.Addons;
+using RED.Addons.Navigation;
 using RED.Contexts.Modules;
 using RED.ViewModels.Modules;
 using RED.ViewModels.Navigation;

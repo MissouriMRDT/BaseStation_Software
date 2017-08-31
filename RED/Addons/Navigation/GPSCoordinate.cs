@@ -1,4 +1,4 @@
-﻿namespace RED.Addons
+﻿namespace RED.Addons.Navigation
 {
     public struct GPSCoordinate
     {

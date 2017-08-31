@@ -9,7 +9,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace RED.Addons
+namespace RED.Addons.Navigation
 {
     public class GMapMarkerCollectionMultiConverter : IMultiValueConverter
     {

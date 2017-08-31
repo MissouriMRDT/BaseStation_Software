@@ -105,14 +105,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Addons\BoolToValueConverter.cs" />
-    <Compile Include="Addons\GMapMarkerCollectionMultiConverter.cs" />
-    <Compile Include="Addons\GPSCoordinate.cs" />
-    <Compile Include="Addons\GPSCoordinateToLongitudeConverter.cs" />
-    <Compile Include="Addons\GPSCoordinateToLatitudeConverter.cs" />
-    <Compile Include="Addons\Server.cs" />
-    <Compile Include="Addons\SubscriptionRecord.cs" />
-    <Compile Include="Addons\TimestampDisplayConverter.cs" />
-    <Compile Include="Addons\TimeSpanToStringConverter.cs" />
+    <Compile Include="Addons\Navigation\GMapMarkerCollectionMultiConverter.cs" />
+    <Compile Include="Addons\Navigation\GPSCoordinate.cs" />
+    <Compile Include="Addons\Navigation\GPSCoordinateToLongitudeConverter.cs" />
+    <Compile Include="Addons\Navigation\GPSCoordinateToLatitudeConverter.cs" />
+    <Compile Include="Addons\Network\Server.cs" />
+    <Compile Include="Addons\Network\SubscriptionRecord.cs" />
+    <Compile Include="Addons\Tools\TimestampDisplayConverter.cs" />
+    <Compile Include="Addons\Tools\TimeSpanToStringConverter.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>

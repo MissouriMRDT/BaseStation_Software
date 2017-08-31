@@ -2,7 +2,7 @@
 using System;
 using System.Net;
 
-namespace RED.Addons
+namespace RED.Addons.Network
 {
     public class SubscriptionRecord
     {

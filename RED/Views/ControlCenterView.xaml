@@ -7,14 +7,9 @@
         xmlns:contexts="clr-namespace:RED.Contexts"
         xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
         xmlns:calproj="http://www.caliburnproject.org"
-        xmlns:addons="clr-namespace:RED.Addons"
         MinHeight="640" MinWidth="1024" Height="640" Width="1024" 
         EnableDWMDropShadow="True" ResizeMode="CanResizeWithGrip" TitleCaps="False"
         WindowTransitionsEnabled="False" WindowStartupLocation="CenterScreen">
-    <Window.Resources>
-        <addons:TimestampDisplayConverter x:Key="TimestampConverter" />
-    </Window.Resources>
-
     <i:Interaction.Behaviors>
         <behaviours:BorderlessWindowBehavior/>
     </i:Interaction.Behaviors>

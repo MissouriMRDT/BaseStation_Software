@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Data;
 
-namespace RED.Addons
+namespace RED.Addons.Navigation
 {
     public class GPSCoordinateToLatitudeConverter : IValueConverter
     {

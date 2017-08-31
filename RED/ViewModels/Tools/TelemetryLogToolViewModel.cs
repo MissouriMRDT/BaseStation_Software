@@ -1,5 +1,5 @@
 ﻿using Caliburn.Micro;
-using RED.Addons;
+using RED.Addons.Network;
 using RED.Interfaces.Network;
 using RED.ViewModels.Network;
 using System;

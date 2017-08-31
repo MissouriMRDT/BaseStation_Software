@@ -1,4 +1,4 @@
-﻿using RED.Addons;
+﻿using RED.Addons.Navigation;
 
 namespace RED.Models.Modules
 {

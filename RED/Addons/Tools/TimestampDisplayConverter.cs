@@ -2,7 +2,7 @@
 using System.Text;
 using System.Windows.Data;
 
-namespace RED.Addons
+namespace RED.Addons.Tools
 {
     public class TimestampDisplayConverter : IValueConverter
     {
