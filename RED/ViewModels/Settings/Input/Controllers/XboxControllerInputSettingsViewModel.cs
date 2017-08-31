@@ -1,5 +1,4 @@
 ﻿using Caliburn.Micro;
-using RED.Configurations.Input.Controllers;
 using RED.Contexts.Input.Controllers;
 using RED.ViewModels.Input.Controllers;
 

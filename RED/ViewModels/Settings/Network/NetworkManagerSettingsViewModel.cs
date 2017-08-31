@@ -1,5 +1,4 @@
 ﻿using Caliburn.Micro;
-using RED.Configurations.Network;
 using RED.Contexts.Network;
 using RED.ViewModels.Network;
 

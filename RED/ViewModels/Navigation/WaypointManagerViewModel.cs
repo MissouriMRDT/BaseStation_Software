@@ -1,10 +1,8 @@
 ﻿using Caliburn.Micro;
-using RED.Addons;
-using RED.ViewModels.Modules;
 using RED.Models.Navigation;
+using RED.ViewModels.Modules;
 using System;
 using System.Collections.ObjectModel;
-using System.Windows.Media;
 
 namespace RED.ViewModels.Navigation
 {

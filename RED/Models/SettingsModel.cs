@@ -1,7 +1,6 @@
-﻿using RED.ViewModels.Settings.Input;
-using RED.ViewModels.Settings.Input.Controllers;
-using RED.ViewModels.Settings.Network;
+﻿using RED.ViewModels.Settings.Input.Controllers;
 using RED.ViewModels.Settings.Modules;
+using RED.ViewModels.Settings.Network;
 
 namespace RED.Models
 {

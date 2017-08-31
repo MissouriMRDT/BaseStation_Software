@@ -1,12 +1,10 @@
 ﻿using Caliburn.Micro;
-using RED.Addons;
 using RED.Contexts;
 using RED.Interfaces;
 using RED.Interfaces.Network;
 using RED.Models.Network;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;

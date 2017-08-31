@@ -2,8 +2,8 @@
 using RED.Interfaces;
 using RED.Interfaces.Input;
 using RED.Models.Modules;
-using Math = System.Math;
 using System.Collections.Generic;
+using Math = System.Math;
 
 namespace RED.ViewModels.Modules
 {

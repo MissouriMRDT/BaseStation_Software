@@ -1,5 +1,4 @@
-﻿using RED.Interfaces;
-using System;
+﻿using System;
 using System.Xml.Serialization;
 
 namespace RED.Contexts.Input

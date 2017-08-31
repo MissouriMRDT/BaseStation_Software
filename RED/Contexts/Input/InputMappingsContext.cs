@@ -1,5 +1,4 @@
-﻿using RED.ViewModels.Input;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace RED.Contexts.Input
 {

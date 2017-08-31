@@ -1,6 +1,4 @@
-﻿using System.Net;
-
-namespace RED.Contexts.Modules
+﻿namespace RED.Contexts.Modules
 {
     public class ScienceSettingsContext : ConfigurationFile
     {

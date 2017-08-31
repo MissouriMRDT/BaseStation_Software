@@ -1,5 +1,4 @@
-﻿using GMap.NET;
-using RED.Addons.Navigation;
+﻿using RED.Addons.Navigation;
 using RED.ViewModels.Navigation;
 using System.Collections.ObjectModel;
 
