@@ -1,5 +1,6 @@
 ﻿using GMap.NET;
 using GMap.NET.WindowsPresentation;
+using RED.Images;
 using RED.ViewModels.Navigation;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ namespace RED.Addons.Navigation
                     Height = 32,
                     Stretch = Stretch.Uniform,
                     Fill = new SolidColorBrush(currPos.Color),
-                    Data = Geometry.Parse(RED.Images.ModernUIIcons.AppbarLocationCircle32),
+                    Data = Geometry.Parse(ModernUIIcons.AppbarLocationCircle32),
                     ToolTip = currPos.Name
                 },
                 Offset = new System.Windows.Point(-16, -16),
@@ -45,7 +46,7 @@ namespace RED.Addons.Navigation
                         Height = 32,
                         Stretch = Stretch.Uniform,
                         Fill = new SolidColorBrush(coord.Color),
-                        Data = Geometry.Parse(RED.Images.ModernUIIcons.AppbarLocationRound32),
+                        Data = Geometry.Parse(ModernUIIcons.AppbarLocationRound32),
                         ToolTip = coord.Name
                     },
                     Offset = new System.Windows.Point(-16, -32),
