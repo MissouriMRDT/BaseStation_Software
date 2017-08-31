@@ -32,11 +32,11 @@ namespace RED.Views.Navigation
             btn.ContextMenu.IsOpen = true;
         }
 
-        private async void CacheImportButton_Click(object sender, RoutedEventArgs e)
+        private void CacheImportButton_Click(object sender, RoutedEventArgs e)
         {
             ((MapViewModel)DataContext).CacheImport();
         }
-        private async void CacheExportButton_Click(object sender, RoutedEventArgs e)
+        private void CacheExportButton_Click(object sender, RoutedEventArgs e)
         {
             ((MapViewModel)DataContext).CacheExport();
         }
