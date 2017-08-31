@@ -1,5 +1,5 @@
 ﻿using Caliburn.Micro;
-using RED.Contexts;
+using RED.Contexts.Input;
 using RED.Models.Input;
 
 namespace RED.ViewModels.Input

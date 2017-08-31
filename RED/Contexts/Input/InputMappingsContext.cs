@@ -1,7 +1,7 @@
 ﻿using RED.ViewModels.Input;
 using System.Xml.Serialization;
 
-namespace RED.Contexts
+namespace RED.Contexts.Input
 {
     [XmlType(TypeName = "InputMappings")]
     public class InputMappingsContext : ConfigurationFile

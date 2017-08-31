@@ -2,7 +2,7 @@
 using System;
 using System.Xml.Serialization;
 
-namespace RED.Contexts
+namespace RED.Contexts.Input
 {
     [XmlType(TypeName = "InputSelectionData")]
     public class InputSelectionsContext : ConfigurationFile

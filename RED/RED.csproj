@@ -117,21 +117,21 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Contexts\ArmPositionContext.cs" />
+    <Compile Include="Contexts\Modules\ArmPositionContext.cs" />
     <Compile Include="Contexts\MetadataRecordContext.cs" />
     <Compile Include="Contexts\ConfigurationFile.cs" />
-    <Compile Include="Contexts\DriveSettingsContext.cs" />
-    <Compile Include="Contexts\GPSSettingsContext.cs" />
-    <Compile Include="Contexts\NetworkManagerSettingsContext.cs" />
-    <Compile Include="Contexts\PingToolContext.cs" />
-    <Compile Include="Contexts\PowerSettingsContext.cs" />
+    <Compile Include="Contexts\Modules\DriveSettingsContext.cs" />
+    <Compile Include="Contexts\Modules\GPSSettingsContext.cs" />
+    <Compile Include="Contexts\Network\NetworkManagerSettingsContext.cs" />
+    <Compile Include="Contexts\Tools\PingToolContext.cs" />
+    <Compile Include="Contexts\Modules\PowerSettingsContext.cs" />
     <Compile Include="Contexts\REDSettingsContext.cs" />
-    <Compile Include="Contexts\InputMappingsContext.cs" />
-    <Compile Include="Contexts\InputSelectionContext.cs" />
+    <Compile Include="Contexts\Input\InputMappingsContext.cs" />
+    <Compile Include="Contexts\Input\InputSelectionContext.cs" />
     <Compile Include="Contexts\MetadataSaveContext.cs" />
-    <Compile Include="Contexts\ScienceSettingsContext.cs" />
-    <Compile Include="Contexts\StopwatchScheduleContext.cs" />
-    <Compile Include="Contexts\XboxControllerSettingsContext.cs" />
+    <Compile Include="Contexts\Modules\ScienceSettingsContext.cs" />
+    <Compile Include="Contexts\Tools\StopwatchScheduleContext.cs" />
+    <Compile Include="Contexts\Input\Controllers\XboxControllerSettingsContext.cs" />
     <Compile Include="Images\ModernUIIcons.cs" />
     <Compile Include="Interfaces\IConfigurationManager.cs" />
     <Compile Include="Interfaces\IDataIdResolver.cs" />

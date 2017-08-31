@@ -1,4 +1,4 @@
-﻿namespace RED.Contexts
+﻿namespace RED.Contexts.Input.Controllers
 {
     public class XboxControllerSettingsContext : ConfigurationFile
     {

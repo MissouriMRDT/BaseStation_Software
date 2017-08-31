@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace RED.Contexts
+namespace RED.Contexts.Tools
 {
     [XmlType(TypeName = "StopwatchSchedules")]
     public class StopwatchContext : ConfigurationFile

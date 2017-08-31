@@ -1,4 +1,4 @@
-﻿namespace RED.Contexts
+﻿namespace RED.Contexts.Modules
 {
     public class PowerSettingsContext: ConfigurationFile
     {

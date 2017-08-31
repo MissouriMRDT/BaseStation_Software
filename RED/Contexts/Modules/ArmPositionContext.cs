@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace RED.Contexts
+namespace RED.Contexts.Modules
 {
     [XmlType(TypeName = "ArmPositions")]
     public class ArmPositionsContext : ConfigurationFile
