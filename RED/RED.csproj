@@ -212,6 +212,7 @@
     <Compile Include="ViewModels\Settings\Modules\ScienceSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Network\NetworkManagerSettingsViewModel.cs" />
     <Compile Include="ViewModels\StopwatchToolViewModel.cs" />
+    <Compile Include="ViewModels\TelemetryLogToolViewModel.cs" />
     <Compile Include="ViewModels\XMLConfigManager.cs" />
     <Compile Include="Views\ControlCenterView.xaml.cs">
       <DependentUpon>ControlCenterView.xaml</DependentUpon>
@@ -290,6 +291,9 @@
     </Compile>
     <Compile Include="Views\StopwatchToolView.xaml.cs">
       <DependentUpon>StopwatchToolView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TelemetryLogToolView.xaml.cs">
+      <DependentUpon>TelemetryLogToolView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\ControlCenterView.xaml">
       <SubType>Designer</SubType>
@@ -408,6 +412,10 @@
     <Page Include="Views\StopwatchToolView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TelemetryLogToolView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>

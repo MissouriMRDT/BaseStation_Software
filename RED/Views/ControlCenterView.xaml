@@ -100,26 +100,7 @@
                                 </StackPanel>
                             </TabItem>
                             <TabItem Header="Telemetry" controls:ControlsHelper.HeaderFontSize="12" Margin="0">
-                                <ScrollViewer>
-                                    <ItemsControl ItemsSource="{Binding NetworkManager.TelemetryLog}" Grid.IsSharedSizeScope="True">
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="auto" />
-                                                        <ColumnDefinition Width="*" />
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock Grid.Column="0" Text="{Binding Name}" ToolTip="{Binding Address}" ToolTipService.Placement="Left" ToolTipService.InitialShowDelay="0" />
-                                                    <TextBlock Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Text="{Binding Timestamp, Mode=OneWay, Converter={StaticResource TimestampConverter}}" ToolTipService.Placement="Left">
-                                                        <TextBlock.ToolTip>
-                                                            <TextBlock Text="{Binding Timestamp, StringFormat='{}{0:yyyy-MM-dd hh:mm:ss tt}'}" />
-                                                        </TextBlock.ToolTip>
-                                            </TextBlock>
-                                                </Grid>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
-                                </ScrollViewer>
+                                <ContentControl x:Name="TelemetryLogTool" />
                             </TabItem>
                             <TabItem Header="Ping" controls:ControlsHelper.HeaderFontSize="12">
                                 <ContentControl x:Name="PingTool" />

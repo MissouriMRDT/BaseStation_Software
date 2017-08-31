@@ -147,6 +147,18 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => StopwatchTool);
             }
         }
+        public TelemetryLogToolViewModel TelemetryLogTool
+        {
+            get
+            {
+                return _model._telemetryLogTool;
+            }
+            set
+            {
+                _model._telemetryLogTool = value;
+                NotifyOfPropertyChange(() => TelemetryLogTool);
+            }
+        }
 
         public ScienceViewModel Science
         {
@@ -413,7 +425,7 @@ namespace RED.ViewModels
             DataRouter = new DataRouter();
             MetadataManager = new MetadataManager(Console, ConfigManager);
 
-            NetworkManager = new NetworkManagerViewModel(DataRouter, MetadataManager.Commands.ToArray(), Console, MetadataManager, MetadataManager);
+            NetworkManager = new NetworkManagerViewModel(DataRouter, MetadataManager.Commands.ToArray(), Console, MetadataManager);
             SubscriptionManager = new SubscriptionManagerViewModel(Console, MetadataManager, NetworkManager);
             SubscriptionManager.SendInitialSubscriptions(MetadataManager.Telemetry.ToArray());
 
@@ -448,6 +460,7 @@ namespace RED.ViewModels
             WaypointManager = new WaypointManagerViewModel(Map, GPS, Autonomy);
             PingTool = new PingToolViewModel(NetworkManager, ConfigManager);
             StopwatchTool = new StopwatchToolViewModel(ConfigManager);
+            TelemetryLogTool = new TelemetryLogToolViewModel(NetworkManager, MetadataManager);
 
             SettingsManager = new SettingsManagerViewModel(ConfigManager, this);
 

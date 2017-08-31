@@ -25,7 +25,6 @@ namespace RED.ViewModels.Network
         private IDataRouter _router;
         private ILogger _log;
         private IIPAddressProvider _ipProvider;
-        private IServerProvider _serverProvider;
 
         private INetworkEncoding encoding;
         private INetworkTransportProtocol continuousDataSocket;
@@ -46,21 +45,19 @@ namespace RED.ViewModels.Network
                 NotifyOfPropertyChange(() => EnableReliablePackets);
             }
         }
-        public ObservableCollection<ServerLog> TelemetryLog { get; set; }
 
-        public NetworkManagerViewModel(IDataRouter router, MetadataRecordContext[] commands, ILogger log, IIPAddressProvider ipProvider, IServerProvider serverProvider)
+        public event Action<IPAddress> TelemetryRecieved;
+
+        public NetworkManagerViewModel(IDataRouter router, MetadataRecordContext[] commands, ILogger log, IIPAddressProvider ipProvider)
         {
             _model = new NetworkManagerModel();
             _router = router;
             _log = log;
             _ipProvider = ipProvider;
-            _serverProvider = serverProvider;
 
             sequenceNumberProvider = new SequenceNumberManager();
             encoding = new RoverProtocol();
             continuousDataSocket = new UDPEndpoint(DestinationPort, DestinationPort);
-
-            TelemetryLog = new ObservableCollection<ServerLog>(_serverProvider.GetServerList().Select(x => new ServerLog(x)));
 
             foreach (var command in commands)
                 _router.Subscribe(this, command.Id);
@@ -162,7 +159,7 @@ namespace RED.ViewModels.Network
 
         private void ReceivePacket(IPAddress srcIP, byte[] buffer)
         {
-            LogTelemetryRecieved(srcIP);
+            if (TelemetryRecieved != null) TelemetryRecieved(srcIP);
             ushort dataId;
             ushort seqNum;
             bool needsACK;
@@ -216,13 +213,6 @@ namespace RED.ViewModels.Network
             SendPacket((ushort)SystemDataId.ACK, data, srcIP, false);
         }
 
-        private void LogTelemetryRecieved(IPAddress srcIP)
-        {
-            var server = TelemetryLog.FirstOrDefault(x => x.Address.Equals(srcIP));
-            if (server != null)
-                server.Timestamp = DateTime.Now;
-        }
-
         private enum SystemDataId : ushort
         {
             Null = 0,
@@ -241,27 +231,6 @@ namespace RED.ViewModels.Network
             public DateTime Timestamp;
             public System.Threading.SemaphoreSlim Semaphore;
             public TimeSpan RoundtripTime;
-        }
-
-        public class ServerLog : PropertyChangedBase
-        {
-            private string _name;
-            private IPAddress _address;
-            private DateTime _timestamp;
-
-            public string Name { get { return _name; } set { _name = value; NotifyOfPropertyChange(() => Name); } }
-            public IPAddress Address { get { return _address; } set { _address = value; NotifyOfPropertyChange(() => Address); } }
-            public DateTime Timestamp { get { return _timestamp; } set { _timestamp = value; NotifyOfPropertyChange(() => Timestamp); } }
-
-            public ServerLog(Server srv)
-            {
-                Name = srv.Name;
-                Address = srv.Address;
-                Timestamp = DateTime.MinValue;
-                timer.Tick += (s, e) => NotifyOfPropertyChange(() => Timestamp);
-            }
-
-            private static System.Windows.Threading.DispatcherTimer timer = new System.Windows.Threading.DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(250), IsEnabled = true };
         }
     }
 }
