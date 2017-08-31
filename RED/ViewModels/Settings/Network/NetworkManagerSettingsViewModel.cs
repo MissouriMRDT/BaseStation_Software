@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using RED.Configurations.Network;
 using RED.Contexts.Network;
 using RED.ViewModels.Network;
 
@@ -30,10 +31,5 @@ namespace RED.ViewModels.Settings.Network
 
             _vm.EnableReliablePackets = _settings.EnableReliablePackets;
         }
-
-        public static NetworkManagerSettingsContext DefaultConfig = new NetworkManagerSettingsContext()
-        {
-            EnableReliablePackets = false
-        };
     }
 }

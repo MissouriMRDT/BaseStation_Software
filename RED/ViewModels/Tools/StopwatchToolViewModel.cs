@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using RED.Configurations.Tools;
 using RED.Contexts.Tools;
 using RED.Interfaces;
 using RED.Models.Tools;
@@ -200,7 +201,7 @@ namespace RED.ViewModels.Tools
             Schedules = new ObservableCollection<ScheduleViewModel>();
             ElapsedTime = TimeSpan.FromSeconds(0);
 
-            _configManager.AddRecord(SchedulesConfigName, DefaultSchedules);
+            _configManager.AddRecord(SchedulesConfigName, StopwatchToolConfig.DefaultSchedules);
 
             var ctx = _configManager.GetConfig<StopwatchContext>(SchedulesConfigName);
             foreach (StopwatchScheduleContext schedule in ctx.Schedules)
@@ -443,22 +444,5 @@ namespace RED.ViewModels.Tools
                 return new StopwatchPhaseContext(Name, (int)Duration.TotalSeconds);
             }
         }
-
-        public static StopwatchContext DefaultSchedules = new StopwatchContext(new[] {
-            new StopwatchScheduleContext("", new[] {
-                new StopwatchPhaseContext("", 0)
-            })
-        });
-        public static StopwatchContext SampleSchedules = new StopwatchContext(new[] {
-            new StopwatchScheduleContext("Astro Assist", new[] {
-                new StopwatchPhaseContext("Find Cache", 60),
-                new StopwatchPhaseContext("Pick up Tools", 300),
-                new StopwatchPhaseContext("To Astro #1", 120),
-                new StopwatchPhaseContext("Drop Off #1", 60),
-                new StopwatchPhaseContext("To Astro #2", 120),
-                new StopwatchPhaseContext("Drop Off #1", 120),
-                new StopwatchPhaseContext("Return to Start", 120)
-            })
-        });
     }
 }

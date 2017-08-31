@@ -1,11 +1,13 @@
 ﻿using Caliburn.Micro;
+using RED.Configurations.Input.Controllers;
+using RED.Configurations.Modules;
+using RED.Configurations.Network;
 using RED.Contexts;
 using RED.Interfaces;
 using RED.Models;
-using RED.ViewModels.Settings.Input;
 using RED.ViewModels.Settings.Input.Controllers;
-using RED.ViewModels.Settings.Network;
 using RED.ViewModels.Settings.Modules;
+using RED.ViewModels.Settings.Network;
 
 namespace RED.ViewModels
 {
@@ -161,15 +163,15 @@ namespace RED.ViewModels
         {
             return new REDSettingsContext()
             {
-                Drive = DriveSettingsViewModel.DefaultConfig,
-                Xbox1 = XboxControllerInputSettingsViewModel.DefaultConfig,
-                Xbox2 = XboxControllerInputSettingsViewModel.DefaultConfig,
-                Xbox3 = XboxControllerInputSettingsViewModel.DefaultConfig,
-                Xbox4 = XboxControllerInputSettingsViewModel.DefaultConfig,
-                GPS = GPSSettingsViewModel.DefaultConfig,
-                Science = ScienceSettingsViewModel.DefaultConfig,
-                Power = PowerSettingsViewModel.DefaultConfig,
-                Network = NetworkManagerSettingsViewModel.DefaultConfig
+                Drive = DriveConfig.DefaultConfig,
+                Xbox1 = XboxControllerInputConfig.DefaultConfig,
+                Xbox2 = XboxControllerInputConfig.DefaultConfig,
+                Xbox3 = XboxControllerInputConfig.DefaultConfig,
+                Xbox4 = XboxControllerInputConfig.DefaultConfig,
+                GPS = GPSConfig.DefaultConfig,
+                Science = ScienceConfig.DefaultConfig,
+                Power = PowerConfig.DefaultConfig,
+                Network = NetworkManagerConfig.DefaultConfig
             };
         }
     }

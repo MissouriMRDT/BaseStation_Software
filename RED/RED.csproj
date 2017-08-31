@@ -117,6 +117,17 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Configurations\Input\Controllers\XboxControllerInputConfig.cs" />
+    <Compile Include="Configurations\Input\InputManagerConfig.cs" />
+    <Compile Include="Configurations\MetadataManagerConfig.cs" />
+    <Compile Include="Configurations\Modules\ArmConfig.cs" />
+    <Compile Include="Configurations\Modules\DriveConfig.cs" />
+    <Compile Include="Configurations\Modules\GPSConfig.cs" />
+    <Compile Include="Configurations\Modules\PowerConfig.cs" />
+    <Compile Include="Configurations\Modules\ScienceConfig.cs" />
+    <Compile Include="Configurations\Network\NetworkManagerConfig.cs" />
+    <Compile Include="Configurations\Tools\PingToolConfig.cs" />
+    <Compile Include="Configurations\Tools\StopwatchToolConfig.cs" />
     <Compile Include="Contexts\Modules\ArmPositionContext.cs" />
     <Compile Include="Contexts\MetadataRecordContext.cs" />
     <Compile Include="Contexts\ConfigurationFile.cs" />

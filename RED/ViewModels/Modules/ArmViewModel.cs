@@ -1,15 +1,15 @@
 ﻿using Caliburn.Micro;
+using RED.Configurations.Modules;
 using RED.Contexts.Modules;
 using RED.Interfaces;
 using RED.Interfaces.Input;
 using RED.Models.Modules;
+using RED.ViewModels.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.IO;
 using System.Xml.Serialization;
-using RED.ViewModels.Input;
 
 namespace RED.ViewModels.Modules
 {
@@ -173,7 +173,7 @@ namespace RED.ViewModels.Modules
             Name = "Arm";
             ModeType = "Arm";
 
-            _configManager.AddRecord(PositionsConfigName, DefaultArmPositions);
+            _configManager.AddRecord(PositionsConfigName, ArmConfig.DefaultArmPositions);
             InitializePositions(_configManager.GetConfig<ArmPositionsContext>(PositionsConfigName));
 
             _router.Subscribe(this, _idResolver.GetId("ArmCurrentPosition"));
@@ -400,11 +400,5 @@ namespace RED.ViewModels.Modules
                 return new ArmPositionContext(Name, J1, J2, J3, J4, J5, J6);
             }
         }
-
-        public static ArmPositionsContext DefaultArmPositions = new ArmPositionsContext(new[]{
-            new ArmPositionContext("Right Bay", 110.24f, 115.83f, 63.75f, 0, 180, 0),
-            new ArmPositionContext("Left Bay", 255, 115.83f, 63.75f, 0, 180, 0),
-            new ArmPositionContext("Reset Home", 0, 80, 100, 0, 185, 0)
-        });
     }
 }

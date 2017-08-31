@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using RED.Configurations.Input.Controllers;
 using RED.Contexts.Input.Controllers;
 using RED.ViewModels.Input.Controllers;
 
@@ -58,11 +59,5 @@ namespace RED.ViewModels.Settings.Input.Controllers
             _vm.AutoDeadzone = _settings.AutoDeadzone;
             _vm.ManualDeadzone = _settings.ManualDeadzone;
         }
-
-        public static XboxControllerSettingsContext DefaultConfig = new XboxControllerSettingsContext()
-        {
-            AutoDeadzone = false,
-            ManualDeadzone = 5000
-        };
     }
 }
