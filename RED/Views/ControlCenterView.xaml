@@ -8,7 +8,7 @@
         xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
         xmlns:calproj="http://www.caliburnproject.org"
         xmlns:addons="clr-namespace:RED.Addons"
-        Name="Shell" MinHeight="640" MinWidth="1024" Height="640" Width="1024" 
+        MinHeight="640" MinWidth="1024" Height="640" Width="1024" 
         EnableDWMDropShadow="True" ResizeMode="CanResizeWithGrip" TitleCaps="False"
         WindowTransitionsEnabled="False" WindowStartupLocation="CenterScreen">
     <Window.Resources>

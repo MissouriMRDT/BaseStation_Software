@@ -1,6 +1,4 @@
-﻿using MahApps.Metro.Controls;
-using RED.ViewModels;
-using System.Windows;
+﻿using RED.ViewModels;
 
 namespace RED.Views
 {
@@ -19,25 +17,6 @@ namespace RED.Views
                 var vm = DataContext as ControlCenterViewModel;
                 vm.SettingsManager.SaveSettings();
             }
-        }
-
-        private void ToggleSettingsFlyout(object sender, RoutedEventArgs e)
-        {
-            Shell.ToggleFlyout(0);
-        }
-        private void ToggleLayoutsFlyout(object sender, RoutedEventArgs e)
-        {
-            Shell.ToggleFlyout(1);
-        }
-        internal void ToggleFlyout(int index)
-        {
-            var flyout = Flyouts.Items[index] as Flyout;
-            if (flyout == null)
-            {
-                return;
-            }
-
-            flyout.IsOpen = !flyout.IsOpen;
         }
     }
 }
