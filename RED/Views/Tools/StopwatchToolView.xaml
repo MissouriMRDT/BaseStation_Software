@@ -36,7 +36,7 @@
                             <ControlTemplate>
                                 <Border Background="White">
                                     <GroupBox Header="Fix Time" Margin="0">
-                                        <DockPanel Width="100" LastChildFill="True">
+                                        <DockPanel Width="100">
                                             <Button DockPanel.Dock="Right" cal:Message.Attach="SetTime()" Width="25" Click="SetTime_Click">&gt;</Button>
                                             <TextBox Text="{Binding FixTime}" />
                                         </DockPanel>

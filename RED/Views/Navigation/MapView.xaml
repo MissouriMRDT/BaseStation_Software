@@ -11,7 +11,7 @@
     <UserControl.Resources>
         <addons:GMapMarkerCollectionMultiConverter x:Key="GPSMarkerConverter" />
     </UserControl.Resources>
-    <DockPanel LastChildFill="True">
+    <DockPanel>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
             <Button x:Name="RefreshMap">Refresh</Button>
             <Button Content="Cache Control" ContextMenuService.IsEnabled="False" Click="CacheControl_Click">

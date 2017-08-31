@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel>
-        <DockPanel LastChildFill="True">
+        <DockPanel>
             <Label DockPanel.Dock="Left">Mechanism Speed</Label>
             <Label x:Name="EndeffectorSpeedLimit" Width="40px" DockPanel.Dock="Right" HorizontalContentAlignment="Right" />
             <Slider Minimum="0" Maximum="1000" Value="{Binding EndeffectorSpeedLimit}" Margin="3px" />
