@@ -59,7 +59,7 @@ namespace RED.ViewModels.Navigation
                 NotifyOfPropertyChange(() => Waypoints);
             }
         }
-        public Waypoint SelectedWaypoint 
+        public Waypoint SelectedWaypoint
         {
             get
             {
