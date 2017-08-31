@@ -32,7 +32,7 @@
                 <Button x:Name="SendSelectedToAutonomy">Send to Autonomy</Button>
             </UniformGrid>
         </StackPanel>
-        <DataGrid ItemsSource="{Binding Waypoints}" SelectedItem="{Binding SelectedWaypoint}" SelectionChanged="HandleSelectionChanged" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" FrozenColumnCount="1" BorderThickness="1">
+        <DataGrid ItemsSource="{Binding Waypoints}" SelectedItem="{Binding SelectedWaypoint}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" FrozenColumnCount="1" BorderThickness="1">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
                 <DataGridTextColumn Header="Longitude" Binding="{Binding Longitude}" />

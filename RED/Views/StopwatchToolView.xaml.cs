@@ -13,11 +13,6 @@ namespace RED.Views
             InitializeComponent();
         }
 
-        private void HandleSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            e.Handled = true;
-        }
-
         private void FixTime_Click(object sender, RoutedEventArgs e)
         {
             FixContextMenu.IsEnabled = true;

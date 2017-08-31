@@ -19,7 +19,7 @@
             <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
         <Label Grid.Column="0" Content="{Binding Path=Mode.Name}" />
-        <ComboBox Grid.Column="1" x:Name="Devices" SelectedItem="{Binding SelectedDevice}" SelectionChanged="HandleSelectionChanged">
+        <ComboBox Grid.Column="1" x:Name="Devices" SelectedItem="{Binding SelectedDevice}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
@@ -28,7 +28,7 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ComboBox>
-        <ComboBox Grid.Column="2" x:Name="EligibleMappings" SelectedItem="{Binding SelectedMapping}" SelectionChanged="HandleSelectionChanged">
+        <ComboBox Grid.Column="2" x:Name="EligibleMappings" SelectedItem="{Binding SelectedMapping}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>

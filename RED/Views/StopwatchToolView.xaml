@@ -94,7 +94,7 @@
                                                 <Button DockPanel.Dock="Right" MinWidth="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" cal:Message.Attach="EditAddPhase()" ToolTip="Add Phase">+</Button>
                                                 <Button MaxWidth="75" cal:Message.Attach="EditSave()">Save</Button>
                                             </DockPanel>
-                                            <ListBox DockPanel.Dock="Left" Width="100" ItemsSource="{Binding Schedules}" SelectedItem="{Binding SelectedEditSchedule}" SelectionChanged="HandleSelectionChanged">
+                                            <ListBox DockPanel.Dock="Left" Width="100" ItemsSource="{Binding Schedules}" SelectedItem="{Binding SelectedEditSchedule}">
                                                 <ListBox.ItemTemplate>
                                                     <DataTemplate>
                                                         <TextBlock Text="{Binding Name}" />

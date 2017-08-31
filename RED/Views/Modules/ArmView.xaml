@@ -62,7 +62,7 @@
                     <Button x:Name="SetPosition">Set Position</Button>
                 </UniformGrid>
                 <Border BorderThickness="1" BorderBrush="Gray">
-                    <ListBox x:Name="Positions" SelectedItem="{Binding SelectedPosition}" Height="100" SelectionChanged="HandleSelectionChanged">
+                    <ListBox x:Name="Positions" SelectedItem="{Binding SelectedPosition}" Height="100">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Name}" />

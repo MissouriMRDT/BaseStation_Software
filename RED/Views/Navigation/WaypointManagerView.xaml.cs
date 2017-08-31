@@ -16,11 +16,6 @@ namespace RED.Views.Navigation
             InitializeComponent();
         }
 
-        private void HandleSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            e.Handled = true;
-        }
-
         private void AddWaypointBtn_Click(object sender, RoutedEventArgs e)
         {
             var vm = (WaypointManagerViewModel)DataContext;
