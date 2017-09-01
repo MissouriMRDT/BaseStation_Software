@@ -1,13 +1,13 @@
 ﻿using Caliburn.Micro;
-using RED.Contexts;
+using RED.Contexts.Modules;
 using RED.ViewModels.Modules;
 
 namespace RED.ViewModels.Settings.Modules
 {
     public class PowerSettingsViewModel : PropertyChangedBase
     {
-        private PowerSettingsContext _settings;
-        private PowerViewModel _vm;
+        private readonly PowerSettingsContext _settings;
+        private readonly PowerViewModel _vm;
 
         public bool AutoStartLog
         {
@@ -30,10 +30,5 @@ namespace RED.ViewModels.Settings.Modules
 
             _vm.AutoStartLog = settings.AutoStartLog;
         }
-
-        public static PowerSettingsContext DefaultConfig = new PowerSettingsContext()
-        {
-            AutoStartLog = false
-        };
     }
 }

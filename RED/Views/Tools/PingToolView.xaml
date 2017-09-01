@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="RED.Views.Tools.PingToolView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:cal="http://www.caliburnproject.org"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </UserControl.Resources>
+    <ScrollViewer>
+        <ItemsControl ItemsSource="{Binding PingServers}" Grid.IsSharedSizeScope="True">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="30" SharedSizeGroup="Result" />
+                            <ColumnDefinition Width="auto" SharedSizeGroup="Button" />
+                            <ColumnDefinition Width="auto" SharedSizeGroup="Button" />
+                            <ColumnDefinition Width="auto" SharedSizeGroup="Checkmark" />
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0"
+                               Content="{Binding Name}"
+                               VerticalAlignment="Center" Padding="5 5 0 5" Margin="0"
+                               ToolTip="{Binding Address}" ToolTipService.Placement="Left" ToolTipService.InitialShowDelay="0" />
+                        <Label Grid.Column="1"
+                               Content="{Binding Result}" ToolTip="Round-trip Time (ms)"
+                               HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Margin="0 0 2 0" />
+                        <ToggleButton Grid.Column="2"
+                                      cal:Message.Attach="RequestICMPPing()"
+                                      IsChecked="{Binding IsSendingICMP, Mode=OneWay}"
+                                      Visibility="{Binding SupportsICMP, Converter={StaticResource BoolToVis}}">
+                            ICMP
+                        </ToggleButton>
+                        <ToggleButton Grid.Column="3"
+                                      cal:Message.Attach="RequestRoveCommPing()"
+                                      IsChecked="{Binding IsSendingRoveComm, Mode=OneWay}"
+                                      Visibility="{Binding SupportsRoveComm, Converter={StaticResource BoolToVis}}">
+                            Rove
+                        </ToggleButton>
+                        <CheckBox Grid.Column="4" IsChecked="{Binding AutoModeEnabled, Mode=TwoWay}" Margin="2" ToolTip="Auto" />
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </ScrollViewer>
+</UserControl>

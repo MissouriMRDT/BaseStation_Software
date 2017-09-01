@@ -1,13 +1,12 @@
 ﻿using Caliburn.Micro;
 using RED.Interfaces;
-using RED.Models.Modules;
 
 namespace RED.ViewModels.Modules
 {
     public class CameraViewModel : PropertyChangedBase
     {
-        private IDataRouter _router;
-        private IDataIdResolver _idResolver;
+        private readonly IDataRouter _router;
+        private readonly IDataIdResolver _idResolver;
 
         public CameraViewModel(IDataRouter router, IDataIdResolver idResolver)
         {

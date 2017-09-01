@@ -4,14 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:gmap="clr-namespace:GMap.NET.WindowsPresentation;assembly=GMap.NET.WindowsPresentation"
-             xmlns:addons="clr-namespace:RED.Addons"
+             xmlns:addons="clr-namespace:RED.Addons.Navigation"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <addons:GMapMarkerCollectionMultiConverter x:Key="GPSMarkerConverter" />
     </UserControl.Resources>
-    <DockPanel LastChildFill="True">
+    <DockPanel>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
             <Button x:Name="RefreshMap">Refresh</Button>
             <Button Content="Cache Control" ContextMenuService.IsEnabled="False" Click="CacheControl_Click">

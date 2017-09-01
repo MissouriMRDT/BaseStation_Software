@@ -1,15 +1,15 @@
 ﻿using Caliburn.Micro;
-using RED.Contexts;
+using RED.Configurations.Modules;
+using RED.Contexts.Modules;
 using RED.Interfaces;
 using RED.Interfaces.Input;
 using RED.Models.Modules;
+using RED.ViewModels.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.IO;
 using System.Xml.Serialization;
-using RED.ViewModels.Input;
 
 namespace RED.ViewModels.Modules
 {
@@ -20,19 +20,16 @@ namespace RED.ViewModels.Modules
         private const byte ArmDisableCommand = 0x00;
         private const byte ArmEnableCommand = 0x01;
 
-        private const short motorRangeFactor = 1000;
+        private const short MotorRangeFactor = 1000;
 
         private readonly ArmModel _model;
-        private IDataRouter _router;
-        private IDataIdResolver _idResolver;
-        private ILogger _log;
-        private IConfigurationManager _configManager;
-
-        private XmlSerializer positionsSerializer = new XmlSerializer(typeof(ArmPositionContext[]));
+        private readonly IDataRouter _router;
+        private readonly IDataIdResolver _idResolver;
+        private readonly ILogger _log;
+        private readonly IConfigurationManager _configManager;
 
         public string Name { get; private set; }
         public string ModeType { get; private set; }
-        public IInputDevice InputVM { get; set; }
 
         public const float Joint1FixedSpeed = .5f;
         public const int Joint2FixedSpeed = 127;
@@ -147,7 +144,6 @@ namespace RED.ViewModels.Modules
                 _model.Positions = value;
                 NotifyOfPropertyChange(() => Positions);
             }
-
         }
         public ArmPositionViewModel SelectedPosition
         {
@@ -162,10 +158,9 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public ArmViewModel(IInputDevice inputVM, IDataRouter router, IDataIdResolver idResolver, ILogger log, IConfigurationManager configs)
+        public ArmViewModel(IDataRouter router, IDataIdResolver idResolver, ILogger log, IConfigurationManager configs)
         {
             _model = new ArmModel();
-            InputVM = inputVM;
             _router = router;
             _idResolver = idResolver;
             _log = log;
@@ -173,7 +168,7 @@ namespace RED.ViewModels.Modules
             Name = "Arm";
             ModeType = "Arm";
 
-            _configManager.AddRecord(PositionsConfigName, DefaultArmPositions);
+            _configManager.AddRecord(PositionsConfigName, ArmConfig.DefaultArmPositions);
             InitializePositions(_configManager.GetConfig<ArmPositionsContext>(PositionsConfigName));
 
             _router.Subscribe(this, _idResolver.GetId("ArmCurrentPosition"));
@@ -218,11 +213,11 @@ namespace RED.ViewModels.Modules
                 case JoystickDirections.Right:
                 case JoystickDirections.Left:
                     _router.Send(_idResolver.GetId("ArmJ4"), (Int16)(0));
-                    _router.Send(_idResolver.GetId("ArmJ5"), (Int16)(values["WristTwist"] * motorRangeFactor));
+                    _router.Send(_idResolver.GetId("ArmJ5"), (Int16)(values["WristTwist"] * MotorRangeFactor));
                     break;
                 case JoystickDirections.Up:
                 case JoystickDirections.Down:
-                    _router.Send(_idResolver.GetId("ArmJ4"), (Int16)(values["WristBend"] * motorRangeFactor));
+                    _router.Send(_idResolver.GetId("ArmJ4"), (Int16)(values["WristBend"] * MotorRangeFactor));
                     _router.Send(_idResolver.GetId("ArmJ5"), (Int16)(0));
                     break;
                 case JoystickDirections.None:
@@ -235,7 +230,7 @@ namespace RED.ViewModels.Modules
             {
                 case JoystickDirections.Up:
                 case JoystickDirections.Down:
-                    _router.Send(_idResolver.GetId("ArmJ3"), (Int16)(values["ElbowBend"] * motorRangeFactor));
+                    _router.Send(_idResolver.GetId("ArmJ3"), (Int16)(values["ElbowBend"] * MotorRangeFactor));
                     break;
                 case JoystickDirections.Right:
                 case JoystickDirections.Left:
@@ -248,7 +243,7 @@ namespace RED.ViewModels.Modules
             _router.Send(_idResolver.GetId("ArmJ2"), actuatorSpeed);
 
             float baseSpeed = (float)ControllerBase.TwoButtonTransform(values["ShoulderTwistForward"] != 0, values["ShoulderTwistBackward"] != 0, Joint1FixedSpeed, -Joint1FixedSpeed, 0f);
-            _router.Send(_idResolver.GetId("ArmJ1"), (Int16)(baseSpeed / 10f * motorRangeFactor));
+            _router.Send(_idResolver.GetId("ArmJ1"), (Int16)(baseSpeed / 10f * MotorRangeFactor));
 
             float gripperSpeed = (float)ControllerBase.TwoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0F);
             _router.Send(_idResolver.GetId("Gripper"), (Int16)(gripperSpeed * EndeffectorSpeedLimit));
@@ -371,21 +366,100 @@ namespace RED.ViewModels.Modules
 
         public class ArmPositionViewModel : PropertyChangedBase
         {
-            private string _Name;
-            private float _J1, _J2, _J3, _J4, _J5, _J6;
+            private readonly ArmModel.ArmPositionModel _model;
 
-            public string Name { get { return _Name; } set { _Name = value; NotifyOfPropertyChange(() => Name); } }
-            public float J1 { get { return _J1; } set { _J1 = value; NotifyOfPropertyChange(() => J1); } }
-            public float J2 { get { return _J2; } set { _J2 = value; NotifyOfPropertyChange(() => J2); } }
-            public float J3 { get { return _J3; } set { _J3 = value; NotifyOfPropertyChange(() => J3); } }
-            public float J4 { get { return _J4; } set { _J4 = value; NotifyOfPropertyChange(() => J4); } }
-            public float J5 { get { return _J5; } set { _J5 = value; NotifyOfPropertyChange(() => J5); } }
-            public float J6 { get { return _J6; } set { _J6 = value; NotifyOfPropertyChange(() => J6); } }
+            public string Name
+            {
+                get
+                {
+                    return _model.Name;
+                }
+                set
+                {
+                    _model.Name = value; NotifyOfPropertyChange(() => Name);
+                }
+
+            }
+            public float J1
+            {
+                get
+                {
+                    return _model.J1;
+                }
+                set
+                {
+                    _model.J1 = value; NotifyOfPropertyChange(() => J1);
+                }
+
+            }
+            public float J2
+            {
+                get
+                {
+                    return _model.J2;
+                }
+                set
+                {
+                    _model.J2 = value; NotifyOfPropertyChange(() => J2);
+                }
+
+            }
+            public float J3
+            {
+                get
+                {
+                    return _model.J3;
+                }
+                set
+                {
+                    _model.J3 = value; NotifyOfPropertyChange(() => J3);
+                }
+
+            }
+            public float J4
+            {
+                get
+                {
+                    return _model.J4;
+                }
+                set
+                {
+                    _model.J4 = value; NotifyOfPropertyChange(() => J4);
+                }
+
+            }
+            public float J5
+            {
+                get
+                {
+                    return _model.J5;
+                }
+                set
+                {
+                    _model.J5 = value; NotifyOfPropertyChange(() => J5);
+                }
+
+            }
+            public float J6
+            {
+                get
+                {
+                    return _model.J6;
+                }
+                set
+                {
+                    _model.J6 = value; NotifyOfPropertyChange(() => J6);
+                }
+
+            }
 
             public ArmPositionViewModel()
-            { }
+            {
+                _model = new ArmModel.ArmPositionModel();
+            }
 
             public ArmPositionViewModel(ArmPositionContext ctx)
+                : this()
             {
                 Name = ctx.Name;
                 J1 = ctx.J1;
@@ -395,16 +469,11 @@ namespace RED.ViewModels.Modules
                 J5 = ctx.J5;
                 J6 = ctx.J6;
             }
+
             public ArmPositionContext GetContext()
             {
                 return new ArmPositionContext(Name, J1, J2, J3, J4, J5, J6);
             }
         }
-
-        public static ArmPositionsContext DefaultArmPositions = new ArmPositionsContext(new[]{
-            new ArmPositionContext("Right Bay", 110.24f, 115.83f, 63.75f, 0, 180, 0),
-            new ArmPositionContext("Left Bay", 255, 115.83f, 63.75f, 0, 180, 0),
-            new ArmPositionContext("Reset Home", 0, 80, 100, 0, 185, 0)
-        });
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Caliburn.Micro;
-using RED.Contexts;
+using RED.Contexts.Input;
 using RED.Models.Input;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,7 +9,7 @@ namespace RED.ViewModels.Input
 {
     public class MappingViewModel : PropertyChangedBase
     {
-        private MappingModel _model;
+        private readonly MappingModel _model;
 
         public string Name
         {
@@ -28,11 +28,10 @@ namespace RED.ViewModels.Input
             {
                 return _model.Channels;
             }
-            set
+            private set
             {
                 _model.Channels = value; NotifyOfPropertyChange(() => Channels);
             }
-
         }
         public string DeviceType
         {

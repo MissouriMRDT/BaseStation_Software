@@ -15,5 +15,16 @@ namespace RED.Models.Modules
         internal int EndeffectorSpeedLimit = 500;
         internal ObservableCollection<ArmPositionViewModel> Positions = new ObservableCollection<ArmPositionViewModel>();
         internal ArmPositionViewModel SelectedPosition;
+
+        internal class ArmPositionModel
+        {
+            internal string Name;
+            internal float J1;
+            internal float J2;
+            internal float J3;
+            internal float J4;
+            internal float J5;
+            internal float J6;
+        }
     }
 }

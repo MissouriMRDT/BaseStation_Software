@@ -1,4 +1,4 @@
-﻿using RED.Addons;
+﻿using RED.Addons.Network;
 using System.Net;
 
 namespace RED.Interfaces.Network

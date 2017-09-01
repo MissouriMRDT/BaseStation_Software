@@ -2,11 +2,10 @@
 {
     internal class DriveModel
     {
-        internal int speedLeft;
-        internal int speedRight;
+        internal int SpeedLeft;
+        internal int SpeedRight;
 
-        internal int speedLimit;
-        internal bool parabolicScaling;
-        internal bool useLegacyDataIds;
+        internal int SpeedLimit;
+        internal bool UseLegacyDataIds;
     }
 }

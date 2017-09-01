@@ -2,7 +2,7 @@
 using GMap.NET;
 using GMap.NET.MapProviders;
 using GMap.NET.WindowsPresentation;
-using RED.Addons;
+using RED.Addons.Navigation;
 using RED.Models.Navigation;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,17 +14,17 @@ namespace RED.ViewModels.Navigation
 {
     public class MapViewModel : PropertyChangedBase
     {
-        MapModel _model;
+        private readonly MapModel _model;
 
         public Waypoint CurrentLocation
         {
             get
             {
-                return _model.currentLocation;
+                return _model.CurrentLocation;
             }
             set
             {
-                _model.currentLocation = value;
+                _model.CurrentLocation = value;
                 NotifyOfPropertyChange(() => CurrentLocation);
             }
         }
@@ -32,11 +32,11 @@ namespace RED.ViewModels.Navigation
         {
             get
             {
-                return _model.waypoints;
+                return _model.Waypoints;
             }
-            set
+            private set
             {
-                _model.waypoints = value;
+                _model.Waypoints = value;
                 NotifyOfPropertyChange(() => Waypoints);
             }
         }
@@ -79,16 +79,15 @@ namespace RED.ViewModels.Navigation
             }
         }
 
-        private GMapControl _mainMap;
         public GMapControl MainMap
         {
             get
             {
-                return _mainMap;
+                return _model.MainMap;
             }
             private set
             {
-                _mainMap = value;
+                _model.MainMap = value;
                 NotifyOfPropertyChange(() => MainMap);
             }
         }
@@ -96,11 +95,7 @@ namespace RED.ViewModels.Navigation
         public MapViewModel()
         {
             _model = new MapModel();
-            //InitializeMapControl();
 
-            //Waypoints.Add(new Waypoint(37.951631, -91.777713)); //Rolla
-            //Waypoints.Add(new Waypoint(37.850025, -91.701845)); //Fugitive Beach
-            //Waypoints.Add(new Waypoint(38.406426, -110.791919)); //Mars Desert Research Station
             CurrentLocation = new Waypoint("GPS", 0f, 0f) { Color = System.Windows.Media.Colors.Red };
             RefreshMap();
         }
@@ -174,7 +169,7 @@ namespace RED.ViewModels.Navigation
             if (MainMap == null) return;
             MainMap.Markers.Clear();
 
-            var converter = new RED.Addons.GMapMarkerCollectionMultiConverter();
+            var converter = new GMapMarkerCollectionMultiConverter();
             var newdata = (IEnumerable<GMapMarker>)converter.Convert(new object[] { CurrentLocation, Waypoints.Where(x => x.IsOnMap) }, typeof(System.Collections.ObjectModel.ObservableCollection<GMapMarker>), null, System.Globalization.CultureInfo.DefaultThreadCurrentUICulture);
             foreach (var marker in newdata)
                 MainMap.Markers.Add(marker);

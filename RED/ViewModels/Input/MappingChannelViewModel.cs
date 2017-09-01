@@ -1,12 +1,12 @@
 ﻿using Caliburn.Micro;
-using RED.Contexts;
+using RED.Contexts.Input;
 using RED.Models.Input;
 
 namespace RED.ViewModels.Input
 {
     public class MappingChannelViewModel : PropertyChangedBase
     {
-        private MappingChannelModel _model;
+        private readonly MappingChannelModel _model;
 
         public string InputKey
         {

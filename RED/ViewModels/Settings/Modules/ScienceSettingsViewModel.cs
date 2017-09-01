@@ -1,5 +1,5 @@
 ﻿using Caliburn.Micro;
-using RED.Contexts;
+using RED.Contexts.Modules;
 using RED.ViewModels.Modules;
 using System.Net;
 
@@ -7,8 +7,8 @@ namespace RED.ViewModels.Settings.Modules
 {
     public class ScienceSettingsViewModel : PropertyChangedBase
     {
-        private ScienceSettingsContext _settings;
-        private ScienceViewModel _vm;
+        private readonly ScienceSettingsContext _settings;
+        private readonly ScienceViewModel _vm;
 
         public string SpectrometerIPAddress
         {
@@ -61,12 +61,5 @@ namespace RED.ViewModels.Settings.Modules
             _vm.SpectrometerPortNumber = _settings.SpectrometerPortNumber;
             _vm.SpectrometerFilePath = _settings.SpectrometerFilePath;
         }
-
-        public static ScienceSettingsContext DefaultConfig = new ScienceSettingsContext()
-        {
-            SpectrometerIPAddress = "192.168.1.135",
-            SpectrometerPortNumber = 11001,
-            SpectrometerFilePath = System.String.Empty
-        };
     }
 }

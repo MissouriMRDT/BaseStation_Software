@@ -5,8 +5,8 @@ namespace RED.ViewModels.Modules
 {
     public class ExternalControlsViewModel : PropertyChangedBase
     {
-        private IDataRouter _router;
-        private IDataIdResolver _idResolver;
+        private readonly IDataRouter _router;
+        private readonly IDataIdResolver _idResolver;
 
         private const byte GimbalDisableCommand = 0x00;
         private const byte GimbalEnableCommand = 0x01;

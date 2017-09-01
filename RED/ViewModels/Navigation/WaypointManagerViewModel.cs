@@ -1,16 +1,14 @@
 ﻿using Caliburn.Micro;
-using RED.Addons;
-using RED.ViewModels.Modules;
 using RED.Models.Navigation;
+using RED.ViewModels.Modules;
 using System;
 using System.Collections.ObjectModel;
-using System.Windows.Media;
 
 namespace RED.ViewModels.Navigation
 {
     public class WaypointManagerViewModel : PropertyChangedBase
     {
-        private WaypointManagerModel _model;
+        private readonly WaypointManagerModel _model;
 
         public MapViewModel Map
         {
@@ -61,7 +59,7 @@ namespace RED.ViewModels.Navigation
                 NotifyOfPropertyChange(() => Waypoints);
             }
         }
-        public Waypoint SelectedWaypoint 
+        public Waypoint SelectedWaypoint
         {
             get
             {

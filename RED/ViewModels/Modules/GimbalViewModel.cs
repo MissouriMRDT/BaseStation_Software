@@ -8,10 +8,10 @@ namespace RED.ViewModels.Modules
 {
     public class GimbalViewModel : PropertyChangedBase, IInputMode
     {
-        private GimbalModel _model;
-        private IDataRouter _router;
-        private IDataIdResolver _idResolver;
-        private ILogger _log;
+        private readonly GimbalModel _model;
+        private readonly IDataRouter _router;
+        private readonly IDataIdResolver _idResolver;
+        private readonly ILogger _log;
 
         private readonly string[] CommandDataId = { "Camera1Command", "Camera2Command" };
         private readonly string[] PTZDataId = { "PTZ1Speed", "PTZ2Speed" };
@@ -19,17 +19,16 @@ namespace RED.ViewModels.Modules
 
         public string Name { get; private set; }
         public string ModeType { get; private set; }
-        public IInputDevice InputVM { get; set; }
 
         public int GimbalIndex
         {
             get
             {
-                return _model.gimbalIndex;
+                return _model.GimbalIndex;
             }
             set
             {
-                _model.gimbalIndex = value;
+                _model.GimbalIndex = value;
                 NotifyOfPropertyChange(() => GimbalIndex);
             }
         }
@@ -37,22 +36,21 @@ namespace RED.ViewModels.Modules
         {
             get
             {
-                return _model.speedLimit;
+                return _model.SpeedLimit;
             }
             set
             {
-                _model.speedLimit = value;
+                _model.SpeedLimit = value;
                 NotifyOfPropertyChange(() => SpeedLimit);
             }
         }
 
-        public GimbalViewModel(IInputDevice inputVM, IDataRouter router, IDataIdResolver idResolver, ILogger log, int gimbalIndex)
+        public GimbalViewModel(IDataRouter router, IDataIdResolver idResolver, ILogger log, int gimbalIndex)
         {
             _model = new GimbalModel();
             _router = router;
             _idResolver = idResolver;
             _log = log;
-            InputVM = inputVM;
             Name = "Gimbal " + (gimbalIndex + 1).ToString();
             ModeType = "Gimbal";
 
@@ -65,9 +63,7 @@ namespace RED.ViewModels.Modules
         }
 
         public void StartMode()
-        {
-
-        }
+        { }
 
         public void SetValues(Dictionary<string, float> values)
         {

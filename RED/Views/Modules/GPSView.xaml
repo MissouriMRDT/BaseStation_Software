@@ -3,14 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-             xmlns:gmap="clr-namespace:GMap.NET.WindowsPresentation;assembly=GMap.NET.WindowsPresentation"
              xmlns:addons="clr-namespace:RED.Addons"
+             xmlns:addonsNav="clr-namespace:RED.Addons.Navigation"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
-        <addons:GPSCoordinateToLatitudeConverter x:Key="LatitudeConverter" />
-        <addons:GPSCoordinateToLongitudeConverter x:Key="LongitudeConverter" />
+        <addonsNav:GPSCoordinateToLatitudeConverter x:Key="LatitudeConverter" />
+        <addonsNav:GPSCoordinateToLongitudeConverter x:Key="LongitudeConverter" />
         <addons:BoolToStringConverter x:Key="StaleDataConverter" TrueValue="" FalseValue="Strikethrough" />
         <Style x:Key="MaybeStale">
             <Setter Property="TextBlock.TextDecorations" Value="{Binding FixObtained, Converter={StaticResource StaleDataConverter}}" />
@@ -37,7 +36,7 @@
             <Label Grid.Row="0" Grid.Column="1" x:Name="FixObtained" />
             <Label Grid.Row="1" Grid.Column="0">Fix Quality</Label>
             <Label Grid.Row="1" Grid.Column="1">
-                <TextBlock  Grid.Row="1" Grid.Column="1" x:Name="FixQuality" Style="{DynamicResource MaybeStale}" />
+                <TextBlock Grid.Row="1" Grid.Column="1" x:Name="FixQuality" Style="{DynamicResource MaybeStale}" />
             </Label>
             <Label Grid.Row="2" Grid.Column="0">Satellite Count</Label>
             <Label Grid.Row="2" Grid.Column="1">
@@ -69,9 +68,9 @@
             </Label>
         </Grid>
         <Canvas Width="32" Height="32">
-            <Path Fill="Red" Data="M 8,32 16,0 24,32 16,28 8,32" Width="32" Height="32">
+            <Path Fill="{StaticResource AccentColorBrush}" Data="M 8,32 16,0 24,32 16,28 8,32" Width="32" Height="32">
                 <Path.LayoutTransform>
-                    <RotateTransform Angle="{Binding HeadingDeg}"/>
+                    <RotateTransform Angle="{Binding HeadingDeg}" />
                 </Path.LayoutTransform>
             </Path>
         </Canvas>

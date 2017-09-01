@@ -8,10 +8,10 @@ namespace RED.ViewModels.Modules
 {
     public class PowerViewModel : PropertyChangedBase, ISubscribe
     {
-        private PowerModel _model;
-        private IDataRouter _router;
-        private IDataIdResolver _idResolver;
-        private ILogger _log;
+        private readonly PowerModel _model;
+        private readonly IDataRouter _router;
+        private readonly IDataIdResolver _idResolver;
+        private readonly ILogger _log;
 
         private TextWriter LogFile;
 

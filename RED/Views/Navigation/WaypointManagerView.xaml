@@ -19,7 +19,7 @@
             <Color R="0" G="0" B="0" A="255" />
         </x:Array>
     </UserControl.Resources>
-    <DockPanel LastChildFill="True">
+    <DockPanel>
         <StackPanel DockPanel.Dock="Top">
             <Label Content="Latitude:" />
             <TextBox x:Name="LatitudeTextBox" />

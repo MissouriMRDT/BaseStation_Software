@@ -105,33 +105,44 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Addons\BoolToValueConverter.cs" />
-    <Compile Include="Addons\GMapMarkerCollectionMultiConverter.cs" />
-    <Compile Include="Addons\GPSCoordinate.cs" />
-    <Compile Include="Addons\GPSCoordinateToLongitudeConverter.cs" />
-    <Compile Include="Addons\GPSCoordinateToLatitudeConverter.cs" />
-    <Compile Include="Addons\Server.cs" />
-    <Compile Include="Addons\SubscriptionRecord.cs" />
-    <Compile Include="Addons\TimestampDisplayConverter.cs" />
-    <Compile Include="Addons\TimeSpanToStringConverter.cs" />
+    <Compile Include="Addons\Navigation\GMapMarkerCollectionMultiConverter.cs" />
+    <Compile Include="Addons\Navigation\GPSCoordinate.cs" />
+    <Compile Include="Addons\Navigation\GPSCoordinateToLongitudeConverter.cs" />
+    <Compile Include="Addons\Navigation\GPSCoordinateToLatitudeConverter.cs" />
+    <Compile Include="Addons\Network\Server.cs" />
+    <Compile Include="Addons\Network\SubscriptionRecord.cs" />
+    <Compile Include="Addons\Tools\TimestampDisplayConverter.cs" />
+    <Compile Include="Addons\Tools\TimeSpanToStringConverter.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Contexts\ArmPositionContext.cs" />
+    <Compile Include="Configurations\Input\Controllers\XboxControllerInputConfig.cs" />
+    <Compile Include="Configurations\Input\InputManagerConfig.cs" />
+    <Compile Include="Configurations\MetadataManagerConfig.cs" />
+    <Compile Include="Configurations\Modules\ArmConfig.cs" />
+    <Compile Include="Configurations\Modules\DriveConfig.cs" />
+    <Compile Include="Configurations\Modules\GPSConfig.cs" />
+    <Compile Include="Configurations\Modules\PowerConfig.cs" />
+    <Compile Include="Configurations\Modules\ScienceConfig.cs" />
+    <Compile Include="Configurations\Network\NetworkManagerConfig.cs" />
+    <Compile Include="Configurations\Tools\PingToolConfig.cs" />
+    <Compile Include="Configurations\Tools\StopwatchToolConfig.cs" />
+    <Compile Include="Contexts\Modules\ArmPositionContext.cs" />
     <Compile Include="Contexts\MetadataRecordContext.cs" />
     <Compile Include="Contexts\ConfigurationFile.cs" />
-    <Compile Include="Contexts\DriveSettingsContext.cs" />
-    <Compile Include="Contexts\GPSSettingsContext.cs" />
-    <Compile Include="Contexts\NetworkManagerSettingsContext.cs" />
-    <Compile Include="Contexts\PingToolContext.cs" />
-    <Compile Include="Contexts\PowerSettingsContext.cs" />
+    <Compile Include="Contexts\Modules\DriveSettingsContext.cs" />
+    <Compile Include="Contexts\Modules\GPSSettingsContext.cs" />
+    <Compile Include="Contexts\Network\NetworkManagerSettingsContext.cs" />
+    <Compile Include="Contexts\Tools\PingToolContext.cs" />
+    <Compile Include="Contexts\Modules\PowerSettingsContext.cs" />
     <Compile Include="Contexts\REDSettingsContext.cs" />
-    <Compile Include="Contexts\InputMappingsContext.cs" />
-    <Compile Include="Contexts\InputSelectionContext.cs" />
+    <Compile Include="Contexts\Input\InputMappingsContext.cs" />
+    <Compile Include="Contexts\Input\InputSelectionContext.cs" />
     <Compile Include="Contexts\MetadataSaveContext.cs" />
-    <Compile Include="Contexts\ScienceSettingsContext.cs" />
-    <Compile Include="Contexts\StopwatchScheduleContext.cs" />
-    <Compile Include="Contexts\XboxControllerSettingsContext.cs" />
+    <Compile Include="Contexts\Modules\ScienceSettingsContext.cs" />
+    <Compile Include="Contexts\Tools\StopwatchScheduleContext.cs" />
+    <Compile Include="Contexts\Input\Controllers\XboxControllerSettingsContext.cs" />
     <Compile Include="Images\ModernUIIcons.cs" />
     <Compile Include="Interfaces\IConfigurationManager.cs" />
     <Compile Include="Interfaces\IDataIdResolver.cs" />
@@ -154,7 +165,8 @@
     <Compile Include="Models\Modules\DriveModel.cs" />
     <Compile Include="Models\Modules\LightingModel.cs" />
     <Compile Include="Models\Navigation\MapModel.cs" />
-    <Compile Include="Models\Network\PingToolModel.cs" />
+    <Compile Include="Models\Tools\PingToolModel.cs" />
+    <Compile Include="Models\Navigation\WaypointModel.cs" />
     <Compile Include="Models\Navigation\WaypointManagerModel.cs" />
     <Compile Include="Models\Network\NetworkManagerModel.cs" />
     <Compile Include="Models\Modules\PowerModel.cs" />
@@ -164,7 +176,8 @@
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Models\Network\SubscriptionManagerModel.cs" />
     <Compile Include="Models\Input\Controllers\KeyboardInputModel.cs" />
-    <Compile Include="Models\StopwatchToolModel.cs" />
+    <Compile Include="Models\Tools\StopwatchToolModel.cs" />
+    <Compile Include="Models\Tools\TelemetryLogToolModel.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Models\Input\Controllers\XboxControllerInputModel.cs" />
     <Compile Include="Interfaces\IDataRouter.cs" />
@@ -195,7 +208,7 @@
     <Compile Include="ViewModels\Modules\PowerViewModel.cs" />
     <Compile Include="ViewModels\Input\Controllers\XboxControllerInputViewModel.cs" />
     <Compile Include="ViewModels\MetadataManager.cs" />
-    <Compile Include="ViewModels\Network\PingToolViewModel.cs" />
+    <Compile Include="ViewModels\Tools\PingToolViewModel.cs" />
     <Compile Include="ViewModels\Network\RoverProtocol.cs" />
     <Compile Include="ViewModels\Modules\ScienceViewModel.cs" />
     <Compile Include="ViewModels\Modules\SensorViewModel.cs" />
@@ -211,8 +224,8 @@
     <Compile Include="ViewModels\Settings\Modules\PowerSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Modules\ScienceSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Network\NetworkManagerSettingsViewModel.cs" />
-    <Compile Include="ViewModels\StopwatchToolViewModel.cs" />
-    <Compile Include="ViewModels\TelemetryLogToolViewModel.cs" />
+    <Compile Include="ViewModels\Tools\StopwatchToolViewModel.cs" />
+    <Compile Include="ViewModels\Tools\TelemetryLogToolViewModel.cs" />
     <Compile Include="ViewModels\XMLConfigManager.cs" />
     <Compile Include="Views\ControlCenterView.xaml.cs">
       <DependentUpon>ControlCenterView.xaml</DependentUpon>
@@ -265,7 +278,7 @@
     <Compile Include="Views\Navigation\WaypointManagerView.xaml.cs">
       <DependentUpon>WaypointManagerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Network\PingToolView.xaml.cs">
+    <Compile Include="Views\Tools\PingToolView.xaml.cs">
       <DependentUpon>PingToolView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsManagerView.xaml.cs">
@@ -289,10 +302,10 @@
     <Compile Include="Views\Settings\Modules\ScienceSettingsView.xaml.cs">
       <DependentUpon>ScienceSettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StopwatchToolView.xaml.cs">
+    <Compile Include="Views\Tools\StopwatchToolView.xaml.cs">
       <DependentUpon>StopwatchToolView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TelemetryLogToolView.xaml.cs">
+    <Compile Include="Views\Tools\TelemetryLogToolView.xaml.cs">
       <DependentUpon>TelemetryLogToolView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\ControlCenterView.xaml">
@@ -376,7 +389,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Network\PingToolView.xaml">
+    <Page Include="Views\Tools\PingToolView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -409,11 +422,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StopwatchToolView.xaml">
+    <Page Include="Views\Tools\StopwatchToolView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TelemetryLogToolView.xaml">
+    <Page Include="Views\Tools\TelemetryLogToolView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

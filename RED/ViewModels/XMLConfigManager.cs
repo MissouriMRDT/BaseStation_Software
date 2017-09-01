@@ -3,9 +3,7 @@ using RED.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Xml;
 using System.Xml.Serialization;
 
 namespace RED.ViewModels
@@ -14,7 +12,7 @@ namespace RED.ViewModels
     {
         private const string StoragePath = "REDConfig/";
 
-        ILogger _log;
+        private readonly ILogger _log;
 
         private Dictionary<string, ConfigurationFile> DefaultConfigs;
 

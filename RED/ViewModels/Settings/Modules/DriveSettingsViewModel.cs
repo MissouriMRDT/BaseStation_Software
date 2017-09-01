@@ -1,13 +1,13 @@
 ﻿using Caliburn.Micro;
-using RED.Contexts;
+using RED.Contexts.Modules;
 using RED.ViewModels.Modules;
 
 namespace RED.ViewModels.Settings.Modules
 {
     public class DriveSettingsViewModel : PropertyChangedBase
     {
-        private DriveSettingsContext _settings;
-        private DriveViewModel _vm;
+        private readonly DriveSettingsContext _settings;
+        private readonly DriveViewModel _vm;
 
         public int SpeedLimit
         {
@@ -45,11 +45,5 @@ namespace RED.ViewModels.Settings.Modules
             _vm.SpeedLimit = _settings.SpeedLimit;
             _vm.UseLegacyDataIds = _settings.UseLegacyDataIds;
         }
-
-        public static DriveSettingsContext DefaultConfig = new DriveSettingsContext()
-        {
-            SpeedLimit = 1000,
-            UseLegacyDataIds = false
-        };
     }
 }

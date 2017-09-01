@@ -8,10 +8,10 @@ namespace RED.ViewModels.Modules
 {
     public class AutonomyViewModel : PropertyChangedBase, ISubscribe
     {
-        private AutonomyModel _model;
-        private IDataRouter _router;
-        private IDataIdResolver _idResolver;
-        private ILogger _logger;
+        private readonly AutonomyModel _model;
+        private readonly IDataRouter _router;
+        private readonly IDataIdResolver _idResolver;
+        private readonly ILogger _logger;
 
         public AutonomyViewModel(IDataRouter router, IDataIdResolver idResolver, ILogger logger)
         {

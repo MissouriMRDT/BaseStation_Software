@@ -1,19 +1,21 @@
 ﻿using Caliburn.Micro;
+using RED.Configurations.Input.Controllers;
+using RED.Configurations.Modules;
+using RED.Configurations.Network;
 using RED.Contexts;
 using RED.Interfaces;
 using RED.Models;
-using RED.ViewModels.Settings.Input;
 using RED.ViewModels.Settings.Input.Controllers;
-using RED.ViewModels.Settings.Network;
 using RED.ViewModels.Settings.Modules;
+using RED.ViewModels.Settings.Network;
 
 namespace RED.ViewModels
 {
     public class SettingsManagerViewModel : PropertyChangedBase
     {
-        private SettingsManagerModel _model;
-        private IConfigurationManager _configManager;
-        private ControlCenterViewModel _controlCenter;
+        private readonly SettingsManagerModel _model;
+        private readonly IConfigurationManager _configManager;
+        private readonly ControlCenterViewModel _controlCenter;
 
         private const string SettingsConfigName = "GeneralSettings";
 
@@ -27,11 +29,11 @@ namespace RED.ViewModels
         {
             get
             {
-                return _model.drive;
+                return _model.Drive;
             }
             set
             {
-                _model.drive = value;
+                _model.Drive = value;
                 NotifyOfPropertyChange(() => Drive);
             }
         }
@@ -39,11 +41,11 @@ namespace RED.ViewModels
         {
             get
             {
-                return _model.science;
+                return _model.Science;
             }
             set
             {
-                _model.science = value;
+                _model.Science = value;
                 NotifyOfPropertyChange(() => Science);
             }
         }
@@ -51,11 +53,11 @@ namespace RED.ViewModels
         {
             get
             {
-                return _model.xbox1;
+                return _model.Xbox1;
             }
             set
             {
-                _model.xbox1 = value;
+                _model.Xbox1 = value;
                 NotifyOfPropertyChange(() => Xbox1);
             }
         }
@@ -63,11 +65,11 @@ namespace RED.ViewModels
         {
             get
             {
-                return _model.xbox2;
+                return _model.Xbox2;
             }
             set
             {
-                _model.xbox2 = value;
+                _model.Xbox2 = value;
                 NotifyOfPropertyChange(() => Xbox2);
             }
         }
@@ -75,11 +77,11 @@ namespace RED.ViewModels
         {
             get
             {
-                return _model.xbox3;
+                return _model.Xbox3;
             }
             set
             {
-                _model.xbox3 = value;
+                _model.Xbox3 = value;
                 NotifyOfPropertyChange(() => Xbox3);
             }
         }
@@ -87,11 +89,11 @@ namespace RED.ViewModels
         {
             get
             {
-                return _model.xbox4;
+                return _model.Xbox4;
             }
             set
             {
-                _model.xbox4 = value;
+                _model.Xbox4 = value;
                 NotifyOfPropertyChange(() => Xbox4);
             }
         }
@@ -99,11 +101,11 @@ namespace RED.ViewModels
         {
             get
             {
-                return _model.gps;
+                return _model.GPS;
             }
             set
             {
-                _model.gps = value;
+                _model.GPS = value;
                 NotifyOfPropertyChange(() => GPS);
             }
         }
@@ -111,11 +113,11 @@ namespace RED.ViewModels
         {
             get
             {
-                return _model.power;
+                return _model.Power;
             }
             set
             {
-                _model.power = value;
+                _model.Power = value;
                 NotifyOfPropertyChange(() => Power);
             }
         }
@@ -123,11 +125,11 @@ namespace RED.ViewModels
         {
             get
             {
-                return _model.network;
+                return _model.Network;
             }
             set
             {
-                _model.network = value;
+                _model.Network = value;
                 NotifyOfPropertyChange(() => Network);
             }
         }
@@ -161,15 +163,15 @@ namespace RED.ViewModels
         {
             return new REDSettingsContext()
             {
-                Drive = DriveSettingsViewModel.DefaultConfig,
-                Xbox1 = XboxControllerInputSettingsViewModel.DefaultConfig,
-                Xbox2 = XboxControllerInputSettingsViewModel.DefaultConfig,
-                Xbox3 = XboxControllerInputSettingsViewModel.DefaultConfig,
-                Xbox4 = XboxControllerInputSettingsViewModel.DefaultConfig,
-                GPS = GPSSettingsViewModel.DefaultConfig,
-                Science = ScienceSettingsViewModel.DefaultConfig,
-                Power = PowerSettingsViewModel.DefaultConfig,
-                Network = NetworkManagerSettingsViewModel.DefaultConfig
+                Drive = DriveConfig.DefaultConfig,
+                Xbox1 = XboxControllerInputConfig.DefaultConfig,
+                Xbox2 = XboxControllerInputConfig.DefaultConfig,
+                Xbox3 = XboxControllerInputConfig.DefaultConfig,
+                Xbox4 = XboxControllerInputConfig.DefaultConfig,
+                GPS = GPSConfig.DefaultConfig,
+                Science = ScienceConfig.DefaultConfig,
+                Power = PowerConfig.DefaultConfig,
+                Network = NetworkManagerConfig.DefaultConfig
             };
         }
     }

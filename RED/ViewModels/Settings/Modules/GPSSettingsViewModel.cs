@@ -1,6 +1,6 @@
 ﻿using Caliburn.Micro;
-using RED.Addons;
-using RED.Contexts;
+using RED.Addons.Navigation;
+using RED.Contexts.Modules;
 using RED.ViewModels.Modules;
 using RED.ViewModels.Navigation;
 
@@ -8,9 +8,9 @@ namespace RED.ViewModels.Settings.Modules
 {
     public class GPSSettingsViewModel : PropertyChangedBase
     {
-        private GPSSettingsContext _settings;
-        private GPSViewModel _gpsvm;
-        private MapViewModel _mapvm;
+        private readonly GPSSettingsContext _settings;
+        private readonly GPSViewModel _gpsvm;
+        private readonly MapViewModel _mapvm;
 
         public double BaseStationLocationLatitude
         {
@@ -104,13 +104,5 @@ namespace RED.ViewModels.Settings.Modules
                     break;
             }
         }
-
-        public static GPSSettingsContext DefaultConfig = new GPSSettingsContext()
-        {
-            BaseStationLocationLatitude = 0,
-            BaseStationLocationLongitude = 0,
-            StartLocationLatitude = 38.406426,
-            StartLocationLongitude = -110.791919
-        };
     }
 }

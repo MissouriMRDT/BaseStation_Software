@@ -1,5 +1,4 @@
-﻿using RED.Addons;
-using RED.ViewModels.Modules;
+﻿using RED.ViewModels.Modules;
 using RED.ViewModels.Navigation;
 using System.Collections.ObjectModel;
 

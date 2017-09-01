@@ -12,7 +12,7 @@ namespace RED.Models.Input
 
         internal IInputDevice SelectedDevice;
         internal MappingViewModel SelectedMapping;
-        
+
         internal bool Enabled;
         internal bool IsRunning;
     }

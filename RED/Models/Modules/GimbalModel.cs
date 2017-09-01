@@ -2,7 +2,7 @@
 {
     internal class GimbalModel
     {
-        internal int gimbalIndex;
-        internal int speedLimit;
+        internal int GimbalIndex;
+        internal int SpeedLimit;
     }
 }
