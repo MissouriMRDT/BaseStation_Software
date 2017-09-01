@@ -165,7 +165,7 @@
     <Compile Include="Models\Modules\DriveModel.cs" />
     <Compile Include="Models\Modules\LightingModel.cs" />
     <Compile Include="Models\Navigation\MapModel.cs" />
-    <Compile Include="Models\Network\PingToolModel.cs" />
+    <Compile Include="Models\Tools\PingToolModel.cs" />
     <Compile Include="Models\Navigation\WaypointModel.cs" />
     <Compile Include="Models\Navigation\WaypointManagerModel.cs" />
     <Compile Include="Models\Network\NetworkManagerModel.cs" />

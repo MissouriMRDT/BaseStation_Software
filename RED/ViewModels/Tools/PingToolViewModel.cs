@@ -2,7 +2,7 @@
 using RED.Configurations.Tools;
 using RED.Contexts.Tools;
 using RED.Interfaces;
-using RED.Models.Network;
+using RED.Models.Tools;
 using RED.ViewModels.Network;
 using System;
 using System.Collections.ObjectModel;
@@ -96,27 +96,19 @@ namespace RED.ViewModels.Tools
 
         public class PingServer : PropertyChangedBase
         {
-            private PingToolViewModel _pingTool;
-
-            private string _Name;
-            private IPAddress _Address;
-            private bool _SupportsICMP;
-            private bool _SupportsRoveComm;
-            private long _Result;
-            private bool _IsSendingICMP;
-            private bool _IsSendingRoveComm;
-            private bool _AutoModeEnabled;
+            private readonly PingToolModel.PingServerModel _model;
+            private readonly PingToolViewModel _pingTool;
 
             public string Name
             {
 
                 get
                 {
-                    return _Name;
+                    return _model.Name;
                 }
                 private set
                 {
-                    _Name = value;
+                    _model.Name = value;
                     NotifyOfPropertyChange(() => Name);
                 }
             }
@@ -124,11 +116,11 @@ namespace RED.ViewModels.Tools
             {
                 get
                 {
-                    return _Address;
+                    return _model.Address;
                 }
                 private set
                 {
-                    _Address = value;
+                    _model.Address = value;
                     NotifyOfPropertyChange(() => Address);
                 }
             }
@@ -136,11 +128,11 @@ namespace RED.ViewModels.Tools
             {
                 get
                 {
-                    return _SupportsICMP;
+                    return _model.SupportsICMP;
                 }
                 private set
                 {
-                    _SupportsICMP = value;
+                    _model.SupportsICMP = value;
                     NotifyOfPropertyChange(() => SupportsICMP);
                 }
             }
@@ -148,11 +140,11 @@ namespace RED.ViewModels.Tools
             {
                 get
                 {
-                    return _SupportsRoveComm;
+                    return _model.SupportsRoveComm;
                 }
                 private set
                 {
-                    _SupportsRoveComm = value;
+                    _model.SupportsRoveComm = value;
                     NotifyOfPropertyChange(() => SupportsRoveComm);
                 }
             }
@@ -160,11 +152,11 @@ namespace RED.ViewModels.Tools
             {
                 get
                 {
-                    return _Result;
+                    return _model.Result;
                 }
                 private set
                 {
-                    _Result = value;
+                    _model.Result = value;
                     NotifyOfPropertyChange(() => Result);
                 }
             }
@@ -172,11 +164,11 @@ namespace RED.ViewModels.Tools
             {
                 get
                 {
-                    return _IsSendingICMP;
+                    return _model.IsSendingICMP;
                 }
                 private set
                 {
-                    _IsSendingICMP = value;
+                    _model.IsSendingICMP = value;
                     NotifyOfPropertyChange(() => IsSendingICMP);
                 }
             }
@@ -184,11 +176,11 @@ namespace RED.ViewModels.Tools
             {
                 get
                 {
-                    return _IsSendingRoveComm;
+                    return _model.IsSendingRoveComm;
                 }
                 private set
                 {
-                    _IsSendingRoveComm = value;
+                    _model.IsSendingRoveComm = value;
                     NotifyOfPropertyChange(() => IsSendingRoveComm);
                 }
             }
@@ -196,11 +188,11 @@ namespace RED.ViewModels.Tools
             {
                 get
                 {
-                    return _AutoModeEnabled;
+                    return _model.AutoModeEnabled;
                 }
                 private set
                 {
-                    _AutoModeEnabled = value;
+                    _model.AutoModeEnabled = value;
                     if (AutoModeEnabled)
                         EnableAutoMode();
                     else
@@ -213,6 +205,7 @@ namespace RED.ViewModels.Tools
 
             public PingServer(PingToolViewModel vm, PingServerContext context)
             {
+                _model = new PingToolModel.PingServerModel();
                 _pingTool = vm;
                 Name = context.Name;
                 IPAddress ip;
