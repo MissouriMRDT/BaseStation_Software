@@ -7,28 +7,28 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <controls:MetroAnimatedTabControl TabStripPlacement="Left">
-        <TabItem Header="Controller">
+        <controls:MetroTabItem Header="Controller">
             <StackPanel>
                 <ContentControl x:Name="Xbox1" />
                 <ContentControl x:Name="Xbox2" />
                 <ContentControl x:Name="Xbox3" />
                 <ContentControl x:Name="Xbox4" />
             </StackPanel>
-        </TabItem>
-        <TabItem Header="Drive">
+        </controls:MetroTabItem>
+        <controls:MetroTabItem Header="Drive">
             <ContentControl x:Name="Drive" />
-        </TabItem>
-        <TabItem Header="GPS">
+        </controls:MetroTabItem>
+        <controls:MetroTabItem Header="GPS">
             <ContentControl x:Name="GPS" />
-        </TabItem>
-        <TabItem Header="Science">
+        </controls:MetroTabItem>
+        <controls:MetroTabItem Header="Science">
             <ContentControl x:Name="Science" />
-        </TabItem>
-        <TabItem Header="Power">
+        </controls:MetroTabItem>
+        <controls:MetroTabItem Header="Power">
             <ContentControl x:Name="Power" />
-        </TabItem>
-        <TabItem Header="Network">
+        </controls:MetroTabItem>
+        <controls:MetroTabItem Header="Network">
             <ContentControl x:Name="Network" />
-        </TabItem>
+        </controls:MetroTabItem>
     </controls:MetroAnimatedTabControl>
 </UserControl>
