@@ -25,11 +25,11 @@ namespace RED.ViewModels.Modules
         {
             get
             {
-                return _model.gimbalIndex;
+                return _model.GimbalIndex;
             }
             set
             {
-                _model.gimbalIndex = value;
+                _model.GimbalIndex = value;
                 NotifyOfPropertyChange(() => GimbalIndex);
             }
         }
@@ -37,11 +37,11 @@ namespace RED.ViewModels.Modules
         {
             get
             {
-                return _model.speedLimit;
+                return _model.SpeedLimit;
             }
             set
             {
-                _model.speedLimit = value;
+                _model.SpeedLimit = value;
                 NotifyOfPropertyChange(() => SpeedLimit);
             }
         }

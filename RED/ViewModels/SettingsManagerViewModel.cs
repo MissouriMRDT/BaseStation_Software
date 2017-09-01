@@ -29,11 +29,11 @@ namespace RED.ViewModels
         {
             get
             {
-                return _model.drive;
+                return _model.Drive;
             }
             set
             {
-                _model.drive = value;
+                _model.Drive = value;
                 NotifyOfPropertyChange(() => Drive);
             }
         }
@@ -41,11 +41,11 @@ namespace RED.ViewModels
         {
             get
             {
-                return _model.science;
+                return _model.Science;
             }
             set
             {
-                _model.science = value;
+                _model.Science = value;
                 NotifyOfPropertyChange(() => Science);
             }
         }
@@ -53,11 +53,11 @@ namespace RED.ViewModels
         {
             get
             {
-                return _model.xbox1;
+                return _model.Xbox1;
             }
             set
             {
-                _model.xbox1 = value;
+                _model.Xbox1 = value;
                 NotifyOfPropertyChange(() => Xbox1);
             }
         }
@@ -65,11 +65,11 @@ namespace RED.ViewModels
         {
             get
             {
-                return _model.xbox2;
+                return _model.Xbox2;
             }
             set
             {
-                _model.xbox2 = value;
+                _model.Xbox2 = value;
                 NotifyOfPropertyChange(() => Xbox2);
             }
         }
@@ -77,11 +77,11 @@ namespace RED.ViewModels
         {
             get
             {
-                return _model.xbox3;
+                return _model.Xbox3;
             }
             set
             {
-                _model.xbox3 = value;
+                _model.Xbox3 = value;
                 NotifyOfPropertyChange(() => Xbox3);
             }
         }
@@ -89,11 +89,11 @@ namespace RED.ViewModels
         {
             get
             {
-                return _model.xbox4;
+                return _model.Xbox4;
             }
             set
             {
-                _model.xbox4 = value;
+                _model.Xbox4 = value;
                 NotifyOfPropertyChange(() => Xbox4);
             }
         }
@@ -101,11 +101,11 @@ namespace RED.ViewModels
         {
             get
             {
-                return _model.gps;
+                return _model.GPS;
             }
             set
             {
-                _model.gps = value;
+                _model.GPS = value;
                 NotifyOfPropertyChange(() => GPS);
             }
         }
@@ -113,11 +113,11 @@ namespace RED.ViewModels
         {
             get
             {
-                return _model.power;
+                return _model.Power;
             }
             set
             {
-                _model.power = value;
+                _model.Power = value;
                 NotifyOfPropertyChange(() => Power);
             }
         }
@@ -125,11 +125,11 @@ namespace RED.ViewModels
         {
             get
             {
-                return _model.network;
+                return _model.Network;
             }
             set
             {
-                _model.network = value;
+                _model.Network = value;
                 NotifyOfPropertyChange(() => Network);
             }
         }

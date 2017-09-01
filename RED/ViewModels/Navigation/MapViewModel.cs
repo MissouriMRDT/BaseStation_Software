@@ -20,11 +20,11 @@ namespace RED.ViewModels.Navigation
         {
             get
             {
-                return _model.currentLocation;
+                return _model.CurrentLocation;
             }
             set
             {
-                _model.currentLocation = value;
+                _model.CurrentLocation = value;
                 NotifyOfPropertyChange(() => CurrentLocation);
             }
         }
@@ -32,11 +32,11 @@ namespace RED.ViewModels.Navigation
         {
             get
             {
-                return _model.waypoints;
+                return _model.Waypoints;
             }
             set
             {
-                _model.waypoints = value;
+                _model.Waypoints = value;
                 NotifyOfPropertyChange(() => Waypoints);
             }
         }

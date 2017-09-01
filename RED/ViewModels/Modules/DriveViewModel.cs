@@ -19,11 +19,11 @@ namespace RED.ViewModels.Modules
         {
             get
             {
-                return _model.speedLeft;
+                return _model.SpeedLeft;
             }
             set
             {
-                _model.speedLeft = value;
+                _model.SpeedLeft = value;
                 NotifyOfPropertyChange(() => SpeedLeft);
             }
         }
@@ -31,11 +31,11 @@ namespace RED.ViewModels.Modules
         {
             get
             {
-                return _model.speedRight;
+                return _model.SpeedRight;
             }
             set
             {
-                _model.speedRight = value;
+                _model.SpeedRight = value;
                 NotifyOfPropertyChange(() => SpeedRight);
             }
         }
@@ -48,11 +48,11 @@ namespace RED.ViewModels.Modules
         {
             get
             {
-                return _model.speedLimit;
+                return _model.SpeedLimit;
             }
             set
             {
-                _model.speedLimit = value;
+                _model.SpeedLimit = value;
                 NotifyOfPropertyChange(() => SpeedLimit);
             }
         }
@@ -61,11 +61,11 @@ namespace RED.ViewModels.Modules
         {
             get
             {
-                return _model.useLegacyDataIds;
+                return _model.UseLegacyDataIds;
             }
             set
             {
-                _model.useLegacyDataIds = value;
+                _model.UseLegacyDataIds = value;
             }
         }
 
@@ -95,8 +95,8 @@ namespace RED.ViewModels.Modules
                 float y = values["VectorY"];
                 float theta = (float)Math.Atan2(y, x);
                 float r = (float)Math.Sqrt(x * x + y * y) / (float)Math.Min(Math.Abs(Math.Pow(Math.Sin(theta), -1.0)), Math.Abs(Math.Pow(Math.Cos(theta), -1.0)));
-                commandLeft = -1F * r * scaleVector(theta - (float)Math.PI / 2);
-                commandRight = r * scaleVector(theta);
+                commandLeft = -1F * r * ScaleVector(theta - (float)Math.PI / 2);
+                commandRight = r * ScaleVector(theta);
             }
             else
             {
@@ -132,7 +132,7 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        private float scaleVector(float theta)
+        private float ScaleVector(float theta)
         {
             float pi = (float)Math.PI;
             if (theta < -pi) theta += 2 * pi;

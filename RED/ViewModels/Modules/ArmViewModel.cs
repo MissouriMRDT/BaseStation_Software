@@ -20,7 +20,7 @@ namespace RED.ViewModels.Modules
         private const byte ArmDisableCommand = 0x00;
         private const byte ArmEnableCommand = 0x01;
 
-        private const short motorRangeFactor = 1000;
+        private const short MotorRangeFactor = 1000;
 
         private readonly ArmModel _model;
         private IDataRouter _router;
@@ -218,11 +218,11 @@ namespace RED.ViewModels.Modules
                 case JoystickDirections.Right:
                 case JoystickDirections.Left:
                     _router.Send(_idResolver.GetId("ArmJ4"), (Int16)(0));
-                    _router.Send(_idResolver.GetId("ArmJ5"), (Int16)(values["WristTwist"] * motorRangeFactor));
+                    _router.Send(_idResolver.GetId("ArmJ5"), (Int16)(values["WristTwist"] * MotorRangeFactor));
                     break;
                 case JoystickDirections.Up:
                 case JoystickDirections.Down:
-                    _router.Send(_idResolver.GetId("ArmJ4"), (Int16)(values["WristBend"] * motorRangeFactor));
+                    _router.Send(_idResolver.GetId("ArmJ4"), (Int16)(values["WristBend"] * MotorRangeFactor));
                     _router.Send(_idResolver.GetId("ArmJ5"), (Int16)(0));
                     break;
                 case JoystickDirections.None:
@@ -235,7 +235,7 @@ namespace RED.ViewModels.Modules
             {
                 case JoystickDirections.Up:
                 case JoystickDirections.Down:
-                    _router.Send(_idResolver.GetId("ArmJ3"), (Int16)(values["ElbowBend"] * motorRangeFactor));
+                    _router.Send(_idResolver.GetId("ArmJ3"), (Int16)(values["ElbowBend"] * MotorRangeFactor));
                     break;
                 case JoystickDirections.Right:
                 case JoystickDirections.Left:
@@ -248,7 +248,7 @@ namespace RED.ViewModels.Modules
             _router.Send(_idResolver.GetId("ArmJ2"), actuatorSpeed);
 
             float baseSpeed = (float)ControllerBase.TwoButtonTransform(values["ShoulderTwistForward"] != 0, values["ShoulderTwistBackward"] != 0, Joint1FixedSpeed, -Joint1FixedSpeed, 0f);
-            _router.Send(_idResolver.GetId("ArmJ1"), (Int16)(baseSpeed / 10f * motorRangeFactor));
+            _router.Send(_idResolver.GetId("ArmJ1"), (Int16)(baseSpeed / 10f * MotorRangeFactor));
 
             float gripperSpeed = (float)ControllerBase.TwoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0F);
             _router.Send(_idResolver.GetId("Gripper"), (Int16)(gripperSpeed * EndeffectorSpeedLimit));

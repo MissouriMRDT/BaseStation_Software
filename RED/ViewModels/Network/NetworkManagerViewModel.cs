@@ -28,8 +28,8 @@ namespace RED.ViewModels.Network
         private INetworkTransportProtocol continuousDataSocket;
         private ISequenceNumberProvider sequenceNumberProvider;
 
-        private HashSet<UnACKedPacket> OutgoingUnACKed = new HashSet<UnACKedPacket>();
-        private HashSet<PendingPing> PendingPings = new HashSet<PendingPing>();
+        private HashSet<UnACKedPacket> outgoingUnACKed = new HashSet<UnACKedPacket>();
+        private HashSet<PendingPing> pendingPings = new HashSet<PendingPing>();
 
         public bool EnableReliablePackets
         {
@@ -113,7 +113,7 @@ namespace RED.ViewModels.Network
                 SeqNum = sequenceNumberProvider.IncrementValue((ushort)SystemDataId.Ping),
                 Semaphore = new System.Threading.SemaphoreSlim(0)
             };
-            PendingPings.Add(ping);
+            pendingPings.Add(ping);
 
             SendPacket((ushort)SystemDataId.Ping, new byte[0], ip, false, ping.SeqNum);
             await ping.Semaphore.WaitAsync(timeout);
@@ -124,7 +124,7 @@ namespace RED.ViewModels.Network
         {
             DateTime now = DateTime.Now;
             ushort responseSeqNum = BitConverter.ToUInt16(data, 0);
-            PendingPing ping = PendingPings.FirstOrDefault(x => x.SeqNum == responseSeqNum);
+            PendingPing ping = pendingPings.FirstOrDefault(x => x.SeqNum == responseSeqNum);
             if (ping == null) return;
 
             ping.RoundtripTime = now - ping.Timestamp;
@@ -139,16 +139,16 @@ namespace RED.ViewModels.Network
         private async void SendPacketReliable(IPAddress destIP, byte[] packetData, ushort dataId, ushort seqNum)
         {
             var packetInfo = new UnACKedPacket() { DataId = dataId, SeqNum = seqNum };
-            OutgoingUnACKed.Add(packetInfo);
+            outgoingUnACKed.Add(packetInfo);
 
             for (int i = 0; i < ReliableMaxRetries; i++)
             {
                 await continuousDataSocket.SendMessage(destIP, packetData);
                 await Task.Delay(ReliableRetransmissionTimeout);
-                if (!OutgoingUnACKed.Contains(packetInfo)) return;
+                if (!outgoingUnACKed.Contains(packetInfo)) return;
             }
 
-            OutgoingUnACKed.Remove(packetInfo);
+            outgoingUnACKed.Remove(packetInfo);
             if (dataId != (ushort)SystemDataId.Subscribe)
                 _log.Log("No ACK recieved for DataId={0} and SeqNum={1} after {2} retries", packetInfo.DataId, packetInfo.SeqNum, ReliableMaxRetries);
         }
@@ -192,7 +192,7 @@ namespace RED.ViewModels.Network
                 case SystemDataId.ACK:
                     ushort ackedId = (ushort)IPAddress.NetworkToHostOrder((short)BitConverter.ToUInt16(data, 0));
                     ushort ackedSeqNum = (ushort)IPAddress.NetworkToHostOrder((short)BitConverter.ToUInt16(data, 2));
-                    if (!OutgoingUnACKed.Remove(new UnACKedPacket { DataId = ackedId, SeqNum = ackedSeqNum }))
+                    if (!outgoingUnACKed.Remove(new UnACKedPacket { DataId = ackedId, SeqNum = ackedSeqNum }))
                         _log.Log("Unexected ACK recieved from ip={0} with dataId={1} and seqNum={2}", srcIP, ackedId, ackedSeqNum);
                     break;
                 default: //Regular DataId

@@ -24,7 +24,7 @@ namespace RED.ViewModels.Network
         {
             get
             {
-                return _model._subscriptions;
+                return _model.Subscriptions;
             }
         }
 

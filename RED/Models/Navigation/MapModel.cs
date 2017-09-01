@@ -6,8 +6,8 @@ namespace RED.Models.Navigation
 {
     internal class MapModel
     {
-        internal Waypoint currentLocation = new Waypoint(0, 0);
-        internal ObservableCollection<Waypoint> waypoints = new ObservableCollection<Waypoint>();
+        internal Waypoint CurrentLocation = new Waypoint(0, 0);
+        internal ObservableCollection<Waypoint> Waypoints = new ObservableCollection<Waypoint>();
 
         internal GPSCoordinate StartPosition;
 
