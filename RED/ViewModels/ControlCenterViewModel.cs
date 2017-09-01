@@ -422,7 +422,7 @@ namespace RED.ViewModels
 
             Console = new ConsoleViewModel();
             ConfigManager = new XMLConfigManager(Console);
-            DataRouter = new DataRouter();
+            DataRouter = new DataRouter(Console);
             MetadataManager = new MetadataManager(Console, ConfigManager);
 
             NetworkManager = new NetworkManagerViewModel(DataRouter, MetadataManager.Commands.ToArray(), Console, MetadataManager);

@@ -8,6 +8,7 @@ namespace RED.ViewModels
     public class DataRouter : PropertyChangedBase, IDataRouter
     {
         private readonly DataRouterModel _model;
+        private readonly ILogger _log;
 
         public Dictionary<ushort, List<ISubscribe>> Registrations
         {
@@ -17,9 +18,10 @@ namespace RED.ViewModels
             }
         }
 
-        public DataRouter()
+        public DataRouter(ILogger log)
         {
             _model = new DataRouterModel();
+            _log = log;
         }
 
         public void Send(ushort dataId, byte[] data, bool reliable = false)
@@ -28,7 +30,16 @@ namespace RED.ViewModels
             List<ISubscribe> registered;
             if (Registrations.TryGetValue(dataId, out registered))
                 foreach (ISubscribe subscription in registered)
-                    subscription.ReceiveFromRouter(dataId, data, reliable);
+                {
+                    try
+                    {
+                        subscription.ReceiveFromRouter(dataId, data, reliable);
+                    }
+                    catch (System.Exception e)
+                    {
+                        _log.Log("Error parsing packet with dataid={0}{1}{2}", dataId, System.Environment.NewLine, e);
+                    }
+                }
         }
         public void Send(ushort dataId, byte obj, bool reliable = false)
         {
