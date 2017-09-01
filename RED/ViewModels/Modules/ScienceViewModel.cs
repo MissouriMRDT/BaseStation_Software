@@ -202,6 +202,7 @@ namespace RED.ViewModels.Modules
             _router.Subscribe(this, _idResolver.GetId("SciSensor6"));
             _router.Subscribe(this, _idResolver.GetId("SciSensor7"));
             _router.Subscribe(this, _idResolver.GetId("SciSensor8"));
+            _router.Subscribe(this, _idResolver.GetId("SciSensor9"));
         }
 
         public void SensorAllOn()
