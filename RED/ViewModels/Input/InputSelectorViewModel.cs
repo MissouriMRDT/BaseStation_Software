@@ -46,7 +46,7 @@ namespace RED.ViewModels.Input
             {
                 return _model.Mappings;
             }
-            set
+            private set
             {
                 _model.Mappings = value;
                 NotifyOfPropertyChange(() => Mappings);

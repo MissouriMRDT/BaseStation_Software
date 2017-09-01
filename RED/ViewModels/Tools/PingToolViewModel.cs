@@ -51,7 +51,7 @@ namespace RED.ViewModels.Tools
             {
                 return _model.PingServers;
             }
-            set
+            private set
             {
                 _model.PingServers = value;
                 NotifyOfPropertyChange(() => PingServers);
@@ -198,7 +198,7 @@ namespace RED.ViewModels.Tools
                 {
                     return _AutoModeEnabled;
                 }
-                set
+                private set
                 {
                     _AutoModeEnabled = value;
                     if (AutoModeEnabled)

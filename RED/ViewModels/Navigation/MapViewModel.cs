@@ -34,7 +34,7 @@ namespace RED.ViewModels.Navigation
             {
                 return _model.Waypoints;
             }
-            set
+            private set
             {
                 _model.Waypoints = value;
                 NotifyOfPropertyChange(() => Waypoints);

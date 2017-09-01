@@ -304,7 +304,7 @@ namespace RED.ViewModels.Tools
                 {
                     return _model.Phases;
                 }
-                set
+                private set
                 {
                     _model.Phases = value;
                     NotifyOfPropertyChange(() => Phases);

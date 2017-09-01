@@ -28,11 +28,10 @@ namespace RED.ViewModels.Input
             {
                 return _model.Channels;
             }
-            set
+            private set
             {
                 _model.Channels = value; NotifyOfPropertyChange(() => Channels);
             }
-
         }
         public string DeviceType
         {

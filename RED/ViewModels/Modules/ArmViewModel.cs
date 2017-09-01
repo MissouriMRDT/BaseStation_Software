@@ -147,7 +147,6 @@ namespace RED.ViewModels.Modules
                 _model.Positions = value;
                 NotifyOfPropertyChange(() => Positions);
             }
-
         }
         public ArmPositionViewModel SelectedPosition
         {
