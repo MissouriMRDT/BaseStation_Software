@@ -28,8 +28,6 @@ namespace RED.ViewModels.Modules
         private readonly ILogger _log;
         private readonly IConfigurationManager _configManager;
 
-        private XmlSerializer positionsSerializer = new XmlSerializer(typeof(ArmPositionContext[]));
-
         public string Name { get; private set; }
         public string ModeType { get; private set; }
         public IInputDevice InputVM { get; set; }
