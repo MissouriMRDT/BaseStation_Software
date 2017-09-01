@@ -7,10 +7,10 @@
              xmlns:addons="clr-namespace:RED.Addons"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <addons:BoolToStringConverter x:Key="OnOffConverter" FalseValue="Off" TrueValue="On" />
+    </UserControl.Resources>
     <Grid>
-        <Grid.Resources>
-            <addons:BoolToStringConverter x:Key="OnOffConverter" FalseValue="Off" TrueValue="On" />
-        </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="75" />
             <ColumnDefinition Width="*" />
