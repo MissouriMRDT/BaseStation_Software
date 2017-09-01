@@ -284,7 +284,7 @@ namespace RED.ViewModels.Tools
 
         public class ScheduleViewModel : PropertyChangedBase
         {
-            private StopwatchToolModel.ScheduleModel _model;
+            private readonly StopwatchToolModel.ScheduleModel _model;
 
             public string Name
             {
