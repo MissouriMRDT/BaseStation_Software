@@ -8,10 +8,10 @@ namespace RED.ViewModels.Modules
 {
     public class GimbalViewModel : PropertyChangedBase, IInputMode
     {
-        private GimbalModel _model;
-        private IDataRouter _router;
-        private IDataIdResolver _idResolver;
-        private ILogger _log;
+        private readonly GimbalModel _model;
+        private readonly IDataRouter _router;
+        private readonly IDataIdResolver _idResolver;
+        private readonly ILogger _log;
 
         private readonly string[] CommandDataId = { "Camera1Command", "Camera2Command" };
         private readonly string[] PTZDataId = { "PTZ1Speed", "PTZ2Speed" };

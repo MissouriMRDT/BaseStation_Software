@@ -13,9 +13,9 @@ namespace RED.ViewModels
 {
     public class SettingsManagerViewModel : PropertyChangedBase
     {
-        private SettingsManagerModel _model;
-        private IConfigurationManager _configManager;
-        private ControlCenterViewModel _controlCenter;
+        private readonly SettingsManagerModel _model;
+        private readonly IConfigurationManager _configManager;
+        private readonly ControlCenterViewModel _controlCenter;
 
         private const string SettingsConfigName = "GeneralSettings";
 

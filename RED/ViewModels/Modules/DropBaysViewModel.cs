@@ -5,9 +5,9 @@ namespace RED.ViewModels.Modules
 {
     public class DropBaysViewModel : PropertyChangedBase
     {
-        private IDataRouter _router;
-        private IDataIdResolver _idResolver;
-        private ILogger _log;
+        private readonly IDataRouter _router;
+        private readonly IDataIdResolver _idResolver;
+        private readonly ILogger _log;
 
         public DropBaysViewModel(IDataRouter router, IDataIdResolver idResolver, ILogger log)
         {

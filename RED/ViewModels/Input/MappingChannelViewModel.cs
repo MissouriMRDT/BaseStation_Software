@@ -6,7 +6,7 @@ namespace RED.ViewModels.Input
 {
     public class MappingChannelViewModel : PropertyChangedBase
     {
-        private MappingChannelModel _model;
+        private readonly MappingChannelModel _model;
 
         public string InputKey
         {

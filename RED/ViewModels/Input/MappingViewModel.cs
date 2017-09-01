@@ -9,7 +9,7 @@ namespace RED.ViewModels.Input
 {
     public class MappingViewModel : PropertyChangedBase
     {
-        private MappingModel _model;
+        private readonly MappingModel _model;
 
         public string Name
         {

@@ -15,10 +15,10 @@ namespace RED.ViewModels.Network
         public const byte SubscriptionDataId = 3;
         public const byte UnSubscribeDataId = 4;
 
-        private SubscriptionManagerModel _model;
-        private ILogger _log;
-        private IIPAddressProvider _ipProvider;
-        private NetworkManagerViewModel _networkManager;
+        private readonly SubscriptionManagerModel _model;
+        private readonly ILogger _log;
+        private readonly IIPAddressProvider _ipProvider;
+        private readonly NetworkManagerViewModel _networkManager;
 
         public Dictionary<ushort, SubscriptionRecord> Subscriptions
         {

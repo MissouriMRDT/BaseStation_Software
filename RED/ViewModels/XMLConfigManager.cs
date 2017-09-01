@@ -12,7 +12,7 @@ namespace RED.ViewModels
     {
         private const string StoragePath = "REDConfig/";
 
-        ILogger _log;
+        private readonly ILogger _log;
 
         private Dictionary<string, ConfigurationFile> DefaultConfigs;
 

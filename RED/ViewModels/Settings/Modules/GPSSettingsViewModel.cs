@@ -8,9 +8,9 @@ namespace RED.ViewModels.Settings.Modules
 {
     public class GPSSettingsViewModel : PropertyChangedBase
     {
-        private GPSSettingsContext _settings;
-        private GPSViewModel _gpsvm;
-        private MapViewModel _mapvm;
+        private readonly GPSSettingsContext _settings;
+        private readonly GPSViewModel _gpsvm;
+        private readonly MapViewModel _mapvm;
 
         public double BaseStationLocationLatitude
         {

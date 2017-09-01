@@ -10,10 +10,10 @@ namespace RED.ViewModels.Modules
 {
     public class ScienceViewModel : PropertyChangedBase, ISubscribe
     {
-        private ScienceModel _model;
-        private IDataRouter _router;
-        private IDataIdResolver _idResolver;
-        private ILogger _log;
+        private readonly ScienceModel _model;
+        private readonly IDataRouter _router;
+        private readonly IDataIdResolver _idResolver;
+        private readonly ILogger _log;
 
         public float Sensor0Value
         {

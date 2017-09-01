@@ -15,8 +15,8 @@ namespace RED.ViewModels.Tools
 {
     public class PingToolViewModel : PropertyChangedBase
     {
-        private PingToolModel _model;
-        private NetworkManagerViewModel _networkManager;
+        private readonly PingToolModel _model;
+        private readonly NetworkManagerViewModel _networkManager;
 
         private const string PingConfigName = "PingTool";
 

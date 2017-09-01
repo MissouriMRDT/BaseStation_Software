@@ -6,8 +6,8 @@ namespace RED.ViewModels.Settings.Modules
 {
     public class PowerSettingsViewModel : PropertyChangedBase
     {
-        private PowerSettingsContext _settings;
-        private PowerViewModel _vm;
+        private readonly PowerSettingsContext _settings;
+        private readonly PowerViewModel _vm;
 
         public bool AutoStartLog
         {

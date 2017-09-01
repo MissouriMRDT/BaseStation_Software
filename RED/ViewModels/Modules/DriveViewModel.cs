@@ -12,8 +12,8 @@ namespace RED.ViewModels.Modules
         private const int motorRangeFactor = 1000;
 
         private readonly DriveModel _model;
-        private IDataRouter _router;
-        private IDataIdResolver _idResolver;
+        private readonly IDataRouter _router;
+        private readonly IDataIdResolver _idResolver;
 
         public int SpeedLeft
         {

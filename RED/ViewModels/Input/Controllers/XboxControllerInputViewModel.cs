@@ -8,7 +8,7 @@ namespace RED.ViewModels.Input.Controllers
 {
     public class XboxControllerInputViewModel : ControllerBase, IInputDevice
     {
-        private readonly XboxControllerInputModel _model = new XboxControllerInputModel();
+        private readonly XboxControllerInputModel _model;
         public readonly Controller Controller;
 
         public string Name { get; private set; }
@@ -54,6 +54,7 @@ namespace RED.ViewModels.Input.Controllers
 
         public XboxControllerInputViewModel(int controllerIndex)
         {
+            _model = new XboxControllerInputModel();
             Name = "Xbox " + controllerIndex.ToString();
             DeviceType = "Xbox";
 

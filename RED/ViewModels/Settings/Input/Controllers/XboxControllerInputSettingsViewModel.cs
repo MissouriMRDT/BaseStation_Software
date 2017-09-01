@@ -6,8 +6,8 @@ namespace RED.ViewModels.Settings.Input.Controllers
 {
     public class XboxControllerInputSettingsViewModel : PropertyChangedBase
     {
-        private XboxControllerSettingsContext _settings;
-        private XboxControllerInputViewModel _vm;
+        private readonly XboxControllerSettingsContext _settings;
+        private readonly XboxControllerInputViewModel _vm;
 
         private int _index;
         public int Index

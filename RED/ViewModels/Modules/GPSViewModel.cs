@@ -9,9 +9,9 @@ namespace RED.ViewModels.Modules
 {
     public class GPSViewModel : PropertyChangedBase, ISubscribe
     {
-        GPSModel _model;
-        private IDataIdResolver _idResolver;
-        private IDataRouter _router;
+        private readonly GPSModel _model;
+        private readonly IDataIdResolver _idResolver;
+        private readonly IDataRouter _router;
 
         public bool FixObtained
         {

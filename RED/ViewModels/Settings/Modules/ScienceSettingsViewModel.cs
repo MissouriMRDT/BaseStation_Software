@@ -7,8 +7,8 @@ namespace RED.ViewModels.Settings.Modules
 {
     public class ScienceSettingsViewModel : PropertyChangedBase
     {
-        private ScienceSettingsContext _settings;
-        private ScienceViewModel _vm;
+        private readonly ScienceSettingsContext _settings;
+        private readonly ScienceViewModel _vm;
 
         public string SpectrometerIPAddress
         {

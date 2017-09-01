@@ -6,8 +6,8 @@ namespace RED.ViewModels.Settings.Network
 {
     public class NetworkManagerSettingsViewModel : PropertyChangedBase
     {
-        private NetworkManagerSettingsContext _settings;
-        private NetworkManagerViewModel _vm;
+        private readonly NetworkManagerSettingsContext _settings;
+        private readonly NetworkManagerViewModel _vm;
 
         public bool EnableReliablePackets
         {

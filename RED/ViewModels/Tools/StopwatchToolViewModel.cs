@@ -13,8 +13,8 @@ namespace RED.ViewModels.Tools
 {
     public class StopwatchToolViewModel : PropertyChangedBase
     {
-        private StopwatchToolModel _model;
-        private IConfigurationManager _configManager;
+        private readonly StopwatchToolModel _model;
+        private readonly IConfigurationManager _configManager;
 
         private const string SchedulesConfigName = "StopwatchSchedules";
 

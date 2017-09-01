@@ -13,8 +13,8 @@ namespace RED.ViewModels.Input
 {
     public class InputSelectorViewModel : PropertyChangedBase
     {
-        InputSelectorModel _model;
-        ILogger _log;
+        private readonly InputSelectorModel _model;
+        private readonly ILogger _log;
 
         public IInputMode Mode
         {

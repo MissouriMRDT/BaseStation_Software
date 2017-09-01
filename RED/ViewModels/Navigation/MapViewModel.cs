@@ -14,7 +14,7 @@ namespace RED.ViewModels.Navigation
 {
     public class MapViewModel : PropertyChangedBase
     {
-        MapModel _model;
+        private readonly MapModel _model;
 
         public Waypoint CurrentLocation
         {

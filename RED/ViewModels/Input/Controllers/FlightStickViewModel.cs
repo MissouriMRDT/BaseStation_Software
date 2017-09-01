@@ -7,7 +7,7 @@ namespace RED.ViewModels.Input.Controllers
 {
     public class FlightStickViewModel : ControllerBase, IInputDevice
     {
-        private DirectInput directInput;
+        private readonly DirectInput directInput;
         private Joystick joystick;
 
         private const int Deadzone = 32768 * 10 / 1000;

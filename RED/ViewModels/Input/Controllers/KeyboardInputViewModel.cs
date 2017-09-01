@@ -7,7 +7,7 @@ namespace RED.ViewModels.Input.Controllers
 {
     public class KeyboardInputViewModel : ControllerBase, IInputDevice
     {
-        private readonly KeyboardInputModel _model = new KeyboardInputModel();
+        private readonly KeyboardInputModel _model;
 
         public string Name { get; private set; }
         public string DeviceType { get; private set; }
@@ -39,6 +39,7 @@ namespace RED.ViewModels.Input.Controllers
 
         public KeyboardInputViewModel()
         {
+            _model = new KeyboardInputModel();
             Name = "Keyboard";
             DeviceType = "Keyboard";
             InitializeDebounce(AllKeys.Keys);

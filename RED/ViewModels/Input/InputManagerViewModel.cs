@@ -11,9 +11,9 @@ namespace RED.ViewModels.Input
 {
     public class InputManagerViewModel : PropertyChangedBase
     {
-        InputManagerModel _model;
-        ILogger _log;
-        IConfigurationManager _configManager;
+        private readonly InputManagerModel _model;
+        private readonly ILogger _log;
+        private readonly IConfigurationManager _configManager;
 
         private const string MappingsConfigName = "InputMappings";
         private const string SelectionsConfigName = "InputSelections";

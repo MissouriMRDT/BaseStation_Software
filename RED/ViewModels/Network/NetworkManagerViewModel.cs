@@ -19,10 +19,10 @@ namespace RED.ViewModels.Network
         private TimeSpan ReliableRetransmissionTimeout { get { return TimeSpan.FromMilliseconds(1000); } }
         private int ReliableMaxRetries { get { return 5; } }
 
-        private NetworkManagerModel _model;
-        private IDataRouter _router;
-        private ILogger _log;
-        private IIPAddressProvider _ipProvider;
+        private readonly NetworkManagerModel _model;
+        private readonly IDataRouter _router;
+        private readonly ILogger _log;
+        private readonly IIPAddressProvider _ipProvider;
 
         private INetworkEncoding encoding;
         private INetworkTransportProtocol continuousDataSocket;

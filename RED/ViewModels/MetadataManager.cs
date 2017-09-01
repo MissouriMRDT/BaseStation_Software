@@ -12,8 +12,8 @@ namespace RED.ViewModels
 {
     public class MetadataManager : IIPAddressProvider, IDataIdResolver, IServerProvider
     {
-        private ILogger _log;
-        private IConfigurationManager _configManager;
+        private readonly ILogger _log;
+        private readonly IConfigurationManager _configManager;
 
         private const string MetadataConfigName = "DataIdMetadata";
 

@@ -6,8 +6,8 @@ namespace RED.ViewModels.Settings.Modules
 {
     public class DriveSettingsViewModel : PropertyChangedBase
     {
-        private DriveSettingsContext _settings;
-        private DriveViewModel _vm;
+        private readonly DriveSettingsContext _settings;
+        private readonly DriveViewModel _vm;
 
         public int SpeedLimit
         {

@@ -8,7 +8,7 @@ namespace RED.ViewModels.Navigation
 {
     public class WaypointManagerViewModel : PropertyChangedBase
     {
-        private WaypointManagerModel _model;
+        private readonly WaypointManagerModel _model;
 
         public MapViewModel Map
         {

@@ -12,7 +12,7 @@ namespace RED.ViewModels.Tools
 {
     public class TelemetryLogToolViewModel : PropertyChangedBase
     {
-        private IServerProvider _serverProvider;
+        private readonly IServerProvider _serverProvider;
 
         public ObservableCollection<ServerLog> TelemetryLog { get; set; }
 

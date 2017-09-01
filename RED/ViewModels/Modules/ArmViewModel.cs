@@ -23,10 +23,10 @@ namespace RED.ViewModels.Modules
         private const short MotorRangeFactor = 1000;
 
         private readonly ArmModel _model;
-        private IDataRouter _router;
-        private IDataIdResolver _idResolver;
-        private ILogger _log;
-        private IConfigurationManager _configManager;
+        private readonly IDataRouter _router;
+        private readonly IDataIdResolver _idResolver;
+        private readonly ILogger _log;
+        private readonly IConfigurationManager _configManager;
 
         private XmlSerializer positionsSerializer = new XmlSerializer(typeof(ArmPositionContext[]));
 

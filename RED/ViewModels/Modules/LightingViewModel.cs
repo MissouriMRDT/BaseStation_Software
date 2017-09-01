@@ -6,9 +6,9 @@ namespace RED.ViewModels.Modules
 {
     public class LightingViewModel : PropertyChangedBase
     {
-        private LightingModel _model;
-        private IDataRouter _router;
-        private IDataIdResolver _idResolver;
+        private readonly LightingModel _model;
+        private readonly IDataRouter _router;
+        private readonly IDataIdResolver _idResolver;
 
         public bool Enabled
         {

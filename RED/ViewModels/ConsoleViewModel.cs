@@ -8,7 +8,7 @@ namespace RED.ViewModels
 {
     public class ConsoleViewModel : PropertyChangedBase, ILogger
     {
-        private readonly ConsoleModel _model = new ConsoleModel();
+        private readonly ConsoleModel _model;
 
         private const string LogFilePath = "REDConsole.log";
         private StreamWriter LogFile;
@@ -28,6 +28,7 @@ namespace RED.ViewModels
 
         public ConsoleViewModel()
         {
+            _model = new ConsoleModel();
             InitializeLogFile();
             LogToFile("New Logging Session Started");
         }
