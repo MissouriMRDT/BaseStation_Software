@@ -8,7 +8,7 @@ namespace RED.ViewModels.Input.Controllers
 {
     public class XboxControllerInputViewModel : ControllerBase, IInputDevice
     {
-        private readonly XboxControllerInputModel Model = new XboxControllerInputModel();
+        private readonly XboxControllerInputModel _model = new XboxControllerInputModel();
         public readonly Controller Controller;
 
         public string Name { get; private set; }
@@ -18,11 +18,11 @@ namespace RED.ViewModels.Input.Controllers
         {
             get
             {
-                return Model.AutoDeadzone;
+                return _model.AutoDeadzone;
             }
             set
             {
-                Model.AutoDeadzone = value;
+                _model.AutoDeadzone = value;
                 NotifyOfPropertyChange(() => AutoDeadzone);
             }
         }
@@ -30,11 +30,11 @@ namespace RED.ViewModels.Input.Controllers
         {
             get
             {
-                return Model.ManualDeadzone;
+                return _model.ManualDeadzone;
             }
             set
             {
-                Model.ManualDeadzone = value;
+                _model.ManualDeadzone = value;
                 NotifyOfPropertyChange(() => ManualDeadzone);
             }
         }
@@ -43,11 +43,11 @@ namespace RED.ViewModels.Input.Controllers
         {
             get
             {
-                return Model.Connected;
+                return _model.Connected;
             }
             set
             {
-                Model.Connected = value;
+                _model.Connected = value;
                 NotifyOfPropertyChange(() => Connected);
             }
         }

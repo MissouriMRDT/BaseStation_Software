@@ -7,7 +7,7 @@ namespace RED.ViewModels.Input.Controllers
 {
     public class KeyboardInputViewModel : ControllerBase, IInputDevice
     {
-        private readonly KeyboardInputModel Model = new KeyboardInputModel();
+        private readonly KeyboardInputModel _model = new KeyboardInputModel();
 
         public string Name { get; private set; }
         public string DeviceType { get; private set; }
@@ -16,11 +16,11 @@ namespace RED.ViewModels.Input.Controllers
         {
             get
             {
-                return Model.Connected;
+                return _model.Connected;
             }
             set
             {
-                Model.Connected = value;
+                _model.Connected = value;
                 NotifyOfPropertyChange(() => Connected);
             }
         }
@@ -28,11 +28,11 @@ namespace RED.ViewModels.Input.Controllers
         {
             get
             {
-                return Model.SpeedMultiplier;
+                return _model.SpeedMultiplier;
             }
             set
             {
-                Model.SpeedMultiplier = value;
+                _model.SpeedMultiplier = value;
                 NotifyOfPropertyChange(() => SpeedMultiplier);
             }
         }

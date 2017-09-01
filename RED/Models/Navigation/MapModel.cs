@@ -1,4 +1,5 @@
-﻿using RED.Addons.Navigation;
+﻿using GMap.NET.WindowsPresentation;
+using RED.Addons.Navigation;
 using RED.ViewModels.Navigation;
 using System.Collections.ObjectModel;
 
@@ -13,5 +14,7 @@ namespace RED.Models.Navigation
 
         internal int CachePrefetchStartZoom;
         internal int CachePrefetchStopZoom;
+
+        internal GMapControl MainMap;
     }
 }

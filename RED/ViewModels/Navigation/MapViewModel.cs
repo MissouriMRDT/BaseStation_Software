@@ -79,16 +79,15 @@ namespace RED.ViewModels.Navigation
             }
         }
 
-        private GMapControl _mainMap;
         public GMapControl MainMap
         {
             get
             {
-                return _mainMap;
+                return _model.MainMap;
             }
             private set
             {
-                _mainMap = value;
+                _model.MainMap = value;
                 NotifyOfPropertyChange(() => MainMap);
             }
         }
@@ -96,7 +95,7 @@ namespace RED.ViewModels.Navigation
         public MapViewModel()
         {
             _model = new MapModel();
-            
+
             CurrentLocation = new Waypoint("GPS", 0f, 0f) { Color = System.Windows.Media.Colors.Red };
             RefreshMap();
         }
