@@ -42,7 +42,6 @@ namespace RED.ViewModels.Modules
 
         public string Name { get; private set; }
         public string ModeType { get; private set; }
-        public IInputDevice InputVM { get; set; }
 
         public int SpeedLimit
         {
@@ -69,12 +68,11 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public DriveViewModel(IInputDevice inputVM, IDataRouter router, IDataIdResolver idResolver)
+        public DriveViewModel(IDataRouter router, IDataIdResolver idResolver)
         {
             _model = new DriveModel();
             _router = router;
             _idResolver = idResolver;
-            InputVM = inputVM;
             Name = "Drive";
             ModeType = "Drive";
         }

@@ -96,11 +96,7 @@ namespace RED.ViewModels.Input
             Selectors.Concat(Selectors).SkipWhile(x => x != sender).Skip(1).First(x => x.SelectedDevice == device).Start();
         }
 
-        public void Start()
-        {
-        }
-
-        public void Stop()
+        public void StopAll()
         {
             foreach (var selector in Selectors)
                 selector.Disable();

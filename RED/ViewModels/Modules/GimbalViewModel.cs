@@ -19,7 +19,6 @@ namespace RED.ViewModels.Modules
 
         public string Name { get; private set; }
         public string ModeType { get; private set; }
-        public IInputDevice InputVM { get; set; }
 
         public int GimbalIndex
         {
@@ -46,13 +45,12 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public GimbalViewModel(IInputDevice inputVM, IDataRouter router, IDataIdResolver idResolver, ILogger log, int gimbalIndex)
+        public GimbalViewModel(IDataRouter router, IDataIdResolver idResolver, ILogger log, int gimbalIndex)
         {
             _model = new GimbalModel();
             _router = router;
             _idResolver = idResolver;
             _log = log;
-            InputVM = inputVM;
             Name = "Gimbal " + (gimbalIndex + 1).ToString();
             ModeType = "Gimbal";
 
@@ -65,9 +63,7 @@ namespace RED.ViewModels.Modules
         }
 
         public void StartMode()
-        {
-
-        }
+        { }
 
         public void SetValues(Dictionary<string, float> values)
         {

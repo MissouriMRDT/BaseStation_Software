@@ -30,7 +30,6 @@ namespace RED.ViewModels.Modules
 
         public string Name { get; private set; }
         public string ModeType { get; private set; }
-        public IInputDevice InputVM { get; set; }
 
         public const float Joint1FixedSpeed = .5f;
         public const int Joint2FixedSpeed = 127;
@@ -159,10 +158,9 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public ArmViewModel(IInputDevice inputVM, IDataRouter router, IDataIdResolver idResolver, ILogger log, IConfigurationManager configs)
+        public ArmViewModel(IDataRouter router, IDataIdResolver idResolver, ILogger log, IConfigurationManager configs)
         {
             _model = new ArmModel();
-            InputVM = inputVM;
             _router = router;
             _idResolver = idResolver;
             _log = log;

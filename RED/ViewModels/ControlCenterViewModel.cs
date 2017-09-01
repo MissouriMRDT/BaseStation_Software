@@ -441,10 +441,10 @@ namespace RED.ViewModels
             Lighting = new LightingViewModel(DataRouter, MetadataManager);
             Map = new MapViewModel();
 
-            Drive = new DriveViewModel(null, DataRouter, MetadataManager);
-            Arm = new ArmViewModel(null, DataRouter, MetadataManager, Console, ConfigManager);
-            Gimbal1 = new GimbalViewModel(null, DataRouter, MetadataManager, Console, 0);
-            Gimbal2 = new GimbalViewModel(null, DataRouter, MetadataManager, Console, 1);
+            Drive = new DriveViewModel(DataRouter, MetadataManager);
+            Arm = new ArmViewModel(DataRouter, MetadataManager, Console, ConfigManager);
+            Gimbal1 = new GimbalViewModel(DataRouter, MetadataManager, Console, 0);
+            Gimbal2 = new GimbalViewModel(DataRouter, MetadataManager, Console, 1);
             XboxController1 = new XboxControllerInputViewModel(1);
             XboxController2 = new XboxControllerInputViewModel(2);
             XboxController3 = new XboxControllerInputViewModel(3);
@@ -463,8 +463,6 @@ namespace RED.ViewModels
             TelemetryLogTool = new TelemetryLogToolViewModel(NetworkManager, MetadataManager);
 
             SettingsManager = new SettingsManagerViewModel(ConfigManager, this);
-
-            InputManager.Start();
 
             //DataRouter.Send(100, new byte[] { 10, 20, 30, 40 });
             //DataRouter.Send(1, new byte[] { 2, 3, 4, 5 });
