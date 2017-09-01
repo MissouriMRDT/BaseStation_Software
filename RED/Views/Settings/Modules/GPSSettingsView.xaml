@@ -47,5 +47,6 @@
                 </UniformGrid>
             </StackPanel>
         </Grid>
+        <CheckBox x:Name="MapShowEmptyTiles">Show Empty Tiles on Map</CheckBox>
     </StackPanel>
 </UserControl>

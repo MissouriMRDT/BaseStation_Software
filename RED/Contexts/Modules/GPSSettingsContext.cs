@@ -6,5 +6,6 @@
         public double BaseStationLocationLongitude;
         public double StartLocationLatitude;
         public double StartLocationLongitude;
+        public bool MapShowEmptyTiles;
     }
 }

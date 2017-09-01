@@ -53,6 +53,19 @@ namespace RED.ViewModels.Navigation
                 NotifyOfPropertyChange(() => StartPosition);
             }
         }
+        public bool ShowEmptyTiles
+        {
+            get
+            {
+                return _model.ShowEmptyTiles;
+            }
+            set
+            {
+                _model.ShowEmptyTiles = value;
+                if (MainMap != null) MainMap.FillEmptyTiles = !ShowEmptyTiles;
+                NotifyOfPropertyChange(() => ShowEmptyTiles);
+            }
+        }
 
         public int CachePrefetchStartZoom
         {
@@ -112,8 +125,11 @@ namespace RED.ViewModels.Navigation
         {
             MainMap.Margin = new Thickness(-5);
 
+            MainMap.FillEmptyTiles = !ShowEmptyTiles;
+
             MainMap.Manager.Mode = AccessMode.CacheOnly;
             MainMap.MapProvider = GMapProviders.OpenStreetMapQuestHybrid;
+
             MainMap.Position = new PointLatLng(StartPosition.Latitude, StartPosition.Longitude);
             MainMap.MinZoom = 1;
             MainMap.MaxZoom = 18;
@@ -125,7 +141,6 @@ namespace RED.ViewModels.Navigation
 
             MainMap.IgnoreMarkerOnMouseWheel = true;
             MainMap.MouseWheelZoomType = MouseWheelZoomType.MousePositionWithoutCenter;
-            //MainMap.FillEmptyTiles = false; //Good for debugging map cache
         }
 
         public void CacheImport()

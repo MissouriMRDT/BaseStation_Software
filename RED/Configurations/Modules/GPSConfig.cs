@@ -9,7 +9,8 @@ namespace RED.Configurations.Modules
             BaseStationLocationLatitude = 0,
             BaseStationLocationLongitude = 0,
             StartLocationLatitude = 38.406426,
-            StartLocationLongitude = -110.791919
+            StartLocationLongitude = -110.791919,
+            MapShowEmptyTiles = false
         };
     }
 }

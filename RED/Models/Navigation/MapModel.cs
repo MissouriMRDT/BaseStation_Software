@@ -11,6 +11,7 @@ namespace RED.Models.Navigation
         internal ObservableCollection<Waypoint> Waypoints = new ObservableCollection<Waypoint>();
 
         internal GPSCoordinate StartPosition;
+        internal bool ShowEmptyTiles;
 
         internal int CachePrefetchStartZoom;
         internal int CachePrefetchStopZoom;

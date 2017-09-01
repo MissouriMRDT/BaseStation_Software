@@ -68,6 +68,20 @@ namespace RED.ViewModels.Settings.Modules
             }
         }
 
+        public bool MapShowEmptyTiles
+        {
+            get
+            {
+                return _settings.MapShowEmptyTiles;
+            }
+            set
+            {
+                _settings.MapShowEmptyTiles = value;
+                _mapvm.ShowEmptyTiles = value;
+                NotifyOfPropertyChange(() => MapShowEmptyTiles);
+            }
+        }
+
         public GPSSettingsViewModel(GPSSettingsContext settings, GPSViewModel GpsVM, MapViewModel MapVM)
         {
             _settings = settings;
@@ -76,6 +90,7 @@ namespace RED.ViewModels.Settings.Modules
 
             _gpsvm.BaseStationLocation = new GPSCoordinate(_settings.BaseStationLocationLatitude, _settings.BaseStationLocationLongitude);
             _mapvm.StartPosition = new GPSCoordinate(StartLocationLatitude, StartLocationLongitude);
+            _mapvm.ShowEmptyTiles = settings.MapShowEmptyTiles;
         }
 
         public void SetLocation(string presetName)
