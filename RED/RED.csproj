@@ -177,6 +177,7 @@
     <Compile Include="Models\Network\SubscriptionManagerModel.cs" />
     <Compile Include="Models\Input\Controllers\KeyboardInputModel.cs" />
     <Compile Include="Models\Tools\StopwatchToolModel.cs" />
+    <Compile Include="Models\Tools\TelemetryLogToolModel.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Models\Input\Controllers\XboxControllerInputModel.cs" />
     <Compile Include="Interfaces\IDataRouter.cs" />
