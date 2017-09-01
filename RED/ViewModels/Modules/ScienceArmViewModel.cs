@@ -29,9 +29,7 @@ namespace RED.ViewModels.Modules
         }
 
         public void StartMode()
-        {
-
-        }
+        { }
 
         public void SetValues(Dictionary<string, float> values)
         {

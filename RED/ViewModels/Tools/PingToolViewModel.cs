@@ -101,7 +101,6 @@ namespace RED.ViewModels.Tools
 
             public string Name
             {
-
                 get
                 {
                     return _model.Name;
