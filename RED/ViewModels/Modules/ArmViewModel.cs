@@ -370,21 +370,100 @@ namespace RED.ViewModels.Modules
 
         public class ArmPositionViewModel : PropertyChangedBase
         {
-            private string _Name;
-            private float _J1, _J2, _J3, _J4, _J5, _J6;
+            private readonly ArmModel.ArmPositionModel _model;
 
-            public string Name { get { return _Name; } set { _Name = value; NotifyOfPropertyChange(() => Name); } }
-            public float J1 { get { return _J1; } set { _J1 = value; NotifyOfPropertyChange(() => J1); } }
-            public float J2 { get { return _J2; } set { _J2 = value; NotifyOfPropertyChange(() => J2); } }
-            public float J3 { get { return _J3; } set { _J3 = value; NotifyOfPropertyChange(() => J3); } }
-            public float J4 { get { return _J4; } set { _J4 = value; NotifyOfPropertyChange(() => J4); } }
-            public float J5 { get { return _J5; } set { _J5 = value; NotifyOfPropertyChange(() => J5); } }
-            public float J6 { get { return _J6; } set { _J6 = value; NotifyOfPropertyChange(() => J6); } }
+            public string Name
+            {
+                get
+                {
+                    return _model.Name;
+                }
+                set
+                {
+                    _model.Name = value; NotifyOfPropertyChange(() => Name);
+                }
+
+            }
+            public float J1
+            {
+                get
+                {
+                    return _model.J1;
+                }
+                set
+                {
+                    _model.J1 = value; NotifyOfPropertyChange(() => J1);
+                }
+
+            }
+            public float J2
+            {
+                get
+                {
+                    return _model.J2;
+                }
+                set
+                {
+                    _model.J2 = value; NotifyOfPropertyChange(() => J2);
+                }
+
+            }
+            public float J3
+            {
+                get
+                {
+                    return _model.J3;
+                }
+                set
+                {
+                    _model.J3 = value; NotifyOfPropertyChange(() => J3);
+                }
+
+            }
+            public float J4
+            {
+                get
+                {
+                    return _model.J4;
+                }
+                set
+                {
+                    _model.J4 = value; NotifyOfPropertyChange(() => J4);
+                }
+
+            }
+            public float J5
+            {
+                get
+                {
+                    return _model.J5;
+                }
+                set
+                {
+                    _model.J5 = value; NotifyOfPropertyChange(() => J5);
+                }
+
+            }
+            public float J6
+            {
+                get
+                {
+                    return _model.J6;
+                }
+                set
+                {
+                    _model.J6 = value; NotifyOfPropertyChange(() => J6);
+                }
+
+            }
 
             public ArmPositionViewModel()
-            { }
+            {
+                _model = new ArmModel.ArmPositionModel();
+            }
 
             public ArmPositionViewModel(ArmPositionContext ctx)
+                : this()
             {
                 Name = ctx.Name;
                 J1 = ctx.J1;
@@ -394,6 +473,7 @@ namespace RED.ViewModels.Modules
                 J5 = ctx.J5;
                 J6 = ctx.J6;
             }
+
             public ArmPositionContext GetContext()
             {
                 return new ArmPositionContext(Name, J1, J2, J3, J4, J5, J6);
