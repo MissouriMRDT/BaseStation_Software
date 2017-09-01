@@ -19,7 +19,7 @@
             </Grid.ColumnDefinitions>
             <Label Grid.Row="0" Grid.Column="0">Left Speed</Label>
             <Label Grid.Row="0" Grid.Column="1" x:Name="SpeedLeft" />
-            <controls:MetroProgressBar Grid.Row="0" Grid.Column="2" Value="{Binding SpeedLeft}" Minimum="0" Maximum="1000" Foreground="{StaticResource AccentColorBrush}" Background="{StaticResource GrayNormalBrush}" />
+            <controls:MetroProgressBar Grid.Row="0" Grid.Column="2" Value="{Binding SpeedLeft}" Minimum="0" Maximum="1000" Foreground="{StaticResource HighlightBrush}" Background="{StaticResource GrayNormalBrush}" />
             <Label Grid.Row="1" Grid.Column="0">Right Speed</Label>
             <Label Grid.Row="1" Grid.Column="1" x:Name="SpeedRight" />
             <controls:MetroProgressBar Grid.Row="1" Grid.Column="2" Value="{Binding SpeedRight}" Minimum="0" Maximum="1000" Foreground="{StaticResource HighlightBrush}" Background="{StaticResource GrayNormalBrush}" />
