@@ -1,25 +1,22 @@
 ﻿using Caliburn.Micro;
+using RED.Models.Navigation;
 using System.Windows.Media;
 
 namespace RED.ViewModels.Navigation
 {
     public class Waypoint : PropertyChangedBase
     {
-        private string _name;
-        private double _longitude;
-        private double _latitude;
-        private Color _color;
-        private bool _isOnMap;
+        private readonly WaypointModel _model;
 
         public string Name
         {
             get
             {
-                return _name;
+                return _model.Name;
             }
             set
             {
-                _name = value;
+                _model.Name = value;
                 NotifyOfPropertyChange(() => Name);
             }
         }
@@ -27,11 +24,11 @@ namespace RED.ViewModels.Navigation
         {
             get
             {
-                return _longitude;
+                return _model.Longitude;
             }
             set
             {
-                _longitude = value;
+                _model.Longitude = value;
                 NotifyOfPropertyChange(() => Longitude);
             }
         }
@@ -39,11 +36,11 @@ namespace RED.ViewModels.Navigation
         {
             get
             {
-                return _latitude;
+                return _model.Latitude;
             }
             set
             {
-                _latitude = value;
+                _model.Latitude = value;
                 NotifyOfPropertyChange(() => Latitude);
             }
         }
@@ -51,11 +48,11 @@ namespace RED.ViewModels.Navigation
         {
             get
             {
-                return _color;
+                return _model.Color;
             }
             set
             {
-                _color = value;
+                _model.Color = value;
                 NotifyOfPropertyChange(() => Color);
             }
         }
@@ -63,17 +60,18 @@ namespace RED.ViewModels.Navigation
         {
             get
             {
-                return _isOnMap;
+                return _model.IsOnMap;
             }
             set
             {
-                _isOnMap = value;
+                _model.IsOnMap = value;
                 NotifyOfPropertyChange(() => IsOnMap);
             }
         }
 
         public Waypoint(string name, double latitude, double longitude)
         {
+            _model = new WaypointModel();
             Name = name;
             Latitude = latitude;
             Longitude = longitude;
