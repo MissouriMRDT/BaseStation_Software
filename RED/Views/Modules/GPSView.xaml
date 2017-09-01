@@ -36,7 +36,7 @@
             <Label Grid.Row="0" Grid.Column="1" x:Name="FixObtained" />
             <Label Grid.Row="1" Grid.Column="0">Fix Quality</Label>
             <Label Grid.Row="1" Grid.Column="1">
-                <TextBlock  Grid.Row="1" Grid.Column="1" x:Name="FixQuality" Style="{DynamicResource MaybeStale}" />
+                <TextBlock Grid.Row="1" Grid.Column="1" x:Name="FixQuality" Style="{DynamicResource MaybeStale}" />
             </Label>
             <Label Grid.Row="2" Grid.Column="0">Satellite Count</Label>
             <Label Grid.Row="2" Grid.Column="1">
@@ -70,7 +70,7 @@
         <Canvas Width="32" Height="32">
             <Path Fill="{StaticResource AccentColorBrush}" Data="M 8,32 16,0 24,32 16,28 8,32" Width="32" Height="32">
                 <Path.LayoutTransform>
-                    <RotateTransform Angle="{Binding HeadingDeg}"/>
+                    <RotateTransform Angle="{Binding HeadingDeg}" />
                 </Path.LayoutTransform>
             </Path>
         </Canvas>

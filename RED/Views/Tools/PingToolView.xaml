@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
     </UserControl.Resources>
     <ScrollViewer>
         <ItemsControl ItemsSource="{Binding PingServers}" Grid.IsSharedSizeScope="True">
@@ -16,7 +16,7 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="30" SharedSizeGroup="Result"  />
+                            <ColumnDefinition Width="30" SharedSizeGroup="Result" />
                             <ColumnDefinition Width="auto" SharedSizeGroup="Button" />
                             <ColumnDefinition Width="auto" SharedSizeGroup="Button" />
                             <ColumnDefinition Width="auto" SharedSizeGroup="Checkmark" />
