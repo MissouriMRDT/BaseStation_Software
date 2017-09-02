@@ -209,7 +209,7 @@ namespace RED.ViewModels.Tools
                 Name = context.Name;
                 IPAddress ip;
                 IPAddress.TryParse(context.Address, out ip);
-                Address = ip ?? null;
+                Address = ip;
                 SupportsICMP = context.SupportsICMP;
                 SupportsRoveComm = context.SupportsRoveComm;
                 Result = 0;

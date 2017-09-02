@@ -80,12 +80,12 @@ namespace RED.ViewModels
         public string GetName(ushort DataId)
         {
             var data = GetMetadata(DataId);
-            return data == null ? String.Empty : data.Name;
+            return data?.Name ?? String.Empty;
         }
         public string GetServerAddress(ushort DataId)
         {
             var data = GetServer(DataId);
-            return data == null ? String.Empty : data.Address;
+            return data?.Address ?? String.Empty;
         }
 
         public IPAddress GetIPAddress(ushort dataId)

@@ -136,7 +136,7 @@ namespace RED.ViewModels.Input.Controllers
 
         public bool IsReady()
         {
-            Connected = Controller != null && Controller.IsConnected;
+            Connected = Controller?.IsConnected ?? false;
             return Connected;
         }
     }

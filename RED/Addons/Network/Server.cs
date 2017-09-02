@@ -19,7 +19,7 @@ namespace RED.Addons.Network
             Name = context.Name;
             IPAddress ip;
             IPAddress.TryParse(context.Address, out ip);
-            Address = ip ?? null;
+            Address = ip;
         }
     }
 }

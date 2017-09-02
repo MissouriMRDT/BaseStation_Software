@@ -155,7 +155,7 @@ namespace RED.ViewModels.Network
 
         private void ReceivePacket(IPAddress srcIP, byte[] buffer)
         {
-            if (TelemetryRecieved != null) TelemetryRecieved(srcIP);
+            TelemetryRecieved?.Invoke(srcIP);
             ushort dataId;
             ushort seqNum;
             bool needsACK;

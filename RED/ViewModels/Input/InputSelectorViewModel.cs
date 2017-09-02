@@ -138,7 +138,7 @@ namespace RED.ViewModels.Input
                 return;
             }
 
-            if (SwitchDevice != null) SwitchDevice(this, SelectedDevice);
+            SwitchDevice?.Invoke(this, SelectedDevice);
 
             try
             {
@@ -150,8 +150,8 @@ namespace RED.ViewModels.Input
                         Enable();
                         var rawValues = SelectedDevice.GetValues();
                         var mappedValues = SelectedMapping.Map(rawValues);
-                        if (CheckForModeCycle(mappedValues) && (CycleMode != null))
-                            CycleMode(this, SelectedDevice);
+                        if (CheckForModeCycle(mappedValues))
+                            CycleMode?.Invoke(this, SelectedDevice);
                         else
                             Mode.SetValues(mappedValues);
                     }
@@ -208,9 +208,9 @@ namespace RED.ViewModels.Input
         public InputSelectionContext GetContext()
         {
             return new InputSelectionContext(
-                modeName: Mode == null ? "" : Mode.Name,
-                deviceName: SelectedDevice == null ? "" : SelectedDevice.Name,
-                mappingName: SelectedMapping == null ? "" : SelectedMapping.Name,
+                modeName: Mode?.Name ?? String.Empty,
+                deviceName: SelectedDevice?.Name ?? String.Empty,
+                mappingName: SelectedMapping?.Name ?? String.Empty,
                 active: IsRunning
             );
         }
