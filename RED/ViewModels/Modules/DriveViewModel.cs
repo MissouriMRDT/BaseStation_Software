@@ -40,8 +40,8 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public string Name { get; private set; }
-        public string ModeType { get; private set; }
+        public string Name { get; }
+        public string ModeType { get; }
 
         public int SpeedLimit
         {

@@ -15,8 +15,8 @@ namespace RED.ViewModels.Modules
         private const int ArmSpeedScale = 1000;
         private const int DrillSpeedScale = 1000;
 
-        public string Name { get; private set; }
-        public string ModeType { get; private set; }
+        public string Name { get; }
+        public string ModeType { get; }
 
         public ScienceArmViewModel(IDataRouter router, IDataIdResolver idResolver, ILogger log)
         {

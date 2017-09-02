@@ -12,8 +12,8 @@ namespace RED.ViewModels.Input.Controllers
 
         private const int Deadzone = 32768 * 10 / 1000;
 
-        public string Name { get; private set; }
-        public string DeviceType { get; private set; }
+        public string Name { get; }
+        public string DeviceType { get; }
 
         public FlightStickViewModel()
         {

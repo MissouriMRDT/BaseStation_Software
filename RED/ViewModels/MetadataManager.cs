@@ -17,9 +17,9 @@ namespace RED.ViewModels
 
         private const string MetadataConfigName = "DataIdMetadata";
 
-        public List<MetadataServerContext> Servers { get; private set; }
-        public List<MetadataRecordContext> Commands { get; private set; }
-        public List<MetadataRecordContext> Telemetry { get; private set; }
+        public List<MetadataServerContext> Servers { get; }
+        public List<MetadataRecordContext> Commands { get; }
+        public List<MetadataRecordContext> Telemetry { get; }
 
         private List<Server> ServerObjs;
 

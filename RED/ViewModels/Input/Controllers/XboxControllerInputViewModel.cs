@@ -11,8 +11,8 @@ namespace RED.ViewModels.Input.Controllers
         private readonly XboxControllerInputModel _model;
         public readonly Controller Controller;
 
-        public string Name { get; private set; }
-        public string DeviceType { get; private set; }
+        public string Name { get; }
+        public string DeviceType { get; }
 
         public bool AutoDeadzone
         {
