@@ -17,8 +17,7 @@ namespace RED.Addons.Network
         public Server(MetadataServerContext context)
         {
             Name = context.Name;
-            IPAddress ip;
-            IPAddress.TryParse(context.Address, out ip);
+            IPAddress.TryParse(context.Address, out IPAddress ip);
             Address = ip;
         }
     }

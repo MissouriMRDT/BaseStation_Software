@@ -156,10 +156,7 @@ namespace RED.ViewModels.Network
         private void ReceivePacket(IPAddress srcIP, byte[] buffer)
         {
             TelemetryRecieved?.Invoke(srcIP);
-            ushort dataId;
-            ushort seqNum;
-            bool needsACK;
-            byte[] data = encoding.DecodePacket(buffer, out dataId, out seqNum, out needsACK);
+            byte[] data = encoding.DecodePacket(buffer, out ushort dataId, out ushort seqNum, out bool needsACK);
             if (!sequenceNumberProvider.UpdateNewer(dataId, seqNum))
             {
                 _log.Log($"Packet recieved with invalid sequence number={seqNum} DataId={dataId}");

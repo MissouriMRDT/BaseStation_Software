@@ -27,8 +27,7 @@ namespace RED.ViewModels
         public void Send(ushort dataId, byte[] data, bool reliable = false)
         {
             if (dataId == 0) return;
-            List<ISubscribe> registered;
-            if (Registrations.TryGetValue(dataId, out registered))
+            if (Registrations.TryGetValue(dataId, out List<ISubscribe> registered))
                 foreach (ISubscribe subscription in registered)
                 {
                     try
@@ -53,8 +52,7 @@ namespace RED.ViewModels
         public void Subscribe(ISubscribe subscriber, ushort dataId)
         {
             if (dataId == 0) return;
-            List<ISubscribe> existingRegistrations;
-            if (Registrations.TryGetValue(dataId, out existingRegistrations))
+            if (Registrations.TryGetValue(dataId, out List<ISubscribe> existingRegistrations))
             {
                 if (!existingRegistrations.Contains(subscriber))
                     existingRegistrations.Add(subscriber);
@@ -71,8 +69,7 @@ namespace RED.ViewModels
         }
         public void UnSubscribe(ISubscribe subscriber, ushort dataId)
         {
-            List<ISubscribe> existingRegistrations;
-            if (Registrations.TryGetValue(dataId, out existingRegistrations))
+            if (Registrations.TryGetValue(dataId, out List<ISubscribe> existingRegistrations))
             {
                 existingRegistrations.Remove(subscriber);
                 if (existingRegistrations.Count == 0)

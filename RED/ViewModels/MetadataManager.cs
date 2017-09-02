@@ -90,8 +90,7 @@ namespace RED.ViewModels
 
         public IPAddress GetIPAddress(ushort dataId)
         {
-            IPAddress ip;
-            if (IPAddress.TryParse(GetServerAddress(dataId), out ip))
+            if (IPAddress.TryParse(GetServerAddress(dataId), out IPAddress ip))
                 return ip;
             else
             {

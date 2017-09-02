@@ -18,8 +18,7 @@ namespace RED.ViewModels.Settings.Modules
             }
             set
             {
-                IPAddress ip;
-                _vm.SpectrometerIPAddress = IPAddress.TryParse(value, out ip) ? ip : IPAddress.None;
+                _vm.SpectrometerIPAddress = IPAddress.TryParse(value, out IPAddress ip) ? ip : IPAddress.None;
                 _settings.SpectrometerIPAddress = value;
                 NotifyOfPropertyChange(() => SpectrometerIPAddress);
             }
@@ -56,8 +55,7 @@ namespace RED.ViewModels.Settings.Modules
             _settings = settings;
             _vm = vm;
 
-            IPAddress ip;
-            _vm.SpectrometerIPAddress = IPAddress.TryParse(_settings.SpectrometerIPAddress, out ip) ? ip : IPAddress.None;
+            _vm.SpectrometerIPAddress = IPAddress.TryParse(_settings.SpectrometerIPAddress, out IPAddress ip) ? ip : IPAddress.None;
             _vm.SpectrometerPortNumber = _settings.SpectrometerPortNumber;
             _vm.SpectrometerFilePath = _settings.SpectrometerFilePath;
         }
