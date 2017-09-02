@@ -2,5 +2,6 @@
 {
     internal class NetworkManagerModel
     {
+        internal bool EnableReliablePackets;
     }
 }

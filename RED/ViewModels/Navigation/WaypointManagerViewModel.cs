@@ -1,7 +1,6 @@
 ﻿using Caliburn.Micro;
-using RED.Addons;
-using RED.ViewModels.Modules;
 using RED.Models.Navigation;
+using RED.ViewModels.Modules;
 using System;
 using System.Collections.ObjectModel;
 
@@ -9,7 +8,7 @@ namespace RED.ViewModels.Navigation
 {
     public class WaypointManagerViewModel : PropertyChangedBase
     {
-        private WaypointManagerModel _model;
+        private readonly WaypointManagerModel _model;
 
         public MapViewModel Map
         {
@@ -60,7 +59,18 @@ namespace RED.ViewModels.Navigation
                 NotifyOfPropertyChange(() => Waypoints);
             }
         }
-        public Waypoint SelectedWaypoint { get; set; }
+        public Waypoint SelectedWaypoint
+        {
+            get
+            {
+                return _model.SelectedWaypoint;
+            }
+            set
+            {
+                _model.SelectedWaypoint = value;
+                NotifyOfPropertyChange(() => SelectedWaypoint);
+            }
+        }
 
         public WaypointManagerViewModel(MapViewModel map, GPSViewModel gps, AutonomyViewModel autonomy)
         {
@@ -74,9 +84,9 @@ namespace RED.ViewModels.Navigation
 
             Waypoints = new ObservableCollection<Waypoint>();
 
-            AddWaypoint(new Waypoint(37.951631, -91.777713)); //Rolla
-            AddWaypoint(new Waypoint(37.850025, -91.701845)); //Fugitive Beach
-            AddWaypoint(new Waypoint(38.406426, -110.791919)); //Mars Desert Research Station
+            AddWaypoint(new Waypoint("SDELC", 37.951631, -91.777713));
+            AddWaypoint(new Waypoint("Fugitive Beach", 37.850025, -91.701845));
+            AddWaypoint(new Waypoint("MDRS", 38.406426, -110.791919));
         }
 
         void GPSModule_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -97,24 +107,19 @@ namespace RED.ViewModels.Navigation
             {
                 case 1:
                     {
-                        double value0;
-                        if (!Double.TryParse(input[0], out value0))
+                        if (!Double.TryParse(input[0], out double value0))
                             throw new ArgumentException();
                         return value0;
                     }
                 case 2:
                     {
-                        int value0;
-                        double value1;
-                        if (!Int32.TryParse(input[0], out value0) || !Double.TryParse(input[1], out value1))
+                        if (!Int32.TryParse(input[0], out int value0) || !Double.TryParse(input[1], out double value1))
                             throw new ArgumentException();
                         return (value0) + Math.Sign(value0) * (value1 * 1 / 60d);
                     }
                 case 3:
                     {
-                        int value0, value1;
-                        double value2;
-                        if (!Int32.TryParse(input[0], out value0) || !Int32.TryParse(input[1], out value1) || !Double.TryParse(input[2], out value2))
+                        if (!Int32.TryParse(input[0], out int value0) || !Int32.TryParse(input[1], out int value1) || !Double.TryParse(input[2], out double value2))
                             throw new ArgumentException();
                         return (value0) + Math.Sign(value0) * ((value1 * 1 / 60d) + (value2 * 1 / 60d / 60d));
                     }
@@ -129,7 +134,7 @@ namespace RED.ViewModels.Navigation
             {
                 double lat = WaypointManagerViewModel.ParseCoordinate(latitude);
                 double lon = WaypointManagerViewModel.ParseCoordinate(longitude);
-                AddWaypoint(new Waypoint(name, lat, lon));
+                AddWaypoint(new Waypoint(name, lat, lon) { Color = System.Windows.Media.Colors.Red });
                 return true;
             }
             catch

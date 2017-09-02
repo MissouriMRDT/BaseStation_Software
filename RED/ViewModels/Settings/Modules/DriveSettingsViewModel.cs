@@ -1,12 +1,13 @@
 ﻿using Caliburn.Micro;
+using RED.Contexts.Modules;
 using RED.ViewModels.Modules;
 
 namespace RED.ViewModels.Settings.Modules
 {
     public class DriveSettingsViewModel : PropertyChangedBase
     {
-        private SettingsManagerViewModel _settings;
-        private DriveViewModel _vm;
+        private readonly DriveSettingsContext _settings;
+        private readonly DriveViewModel _vm;
 
         public int SpeedLimit
         {
@@ -17,22 +18,8 @@ namespace RED.ViewModels.Settings.Modules
             set
             {
                 _vm.SpeedLimit = value;
-                _settings.CurrentSettings.DriveSpeedLimit = value;
+                _settings.SpeedLimit = value;
                 NotifyOfPropertyChange(() => SpeedLimit);
-            }
-        }
-
-        public bool ParabolicScaling
-        {
-            get
-            {
-                return _vm.ParabolicScaling;
-            }
-            set
-            {
-                _vm.ParabolicScaling = value;
-                _settings.CurrentSettings.DriveParabolicScaling = value;
-                NotifyOfPropertyChange(() => ParabolicScaling);
             }
         }
 
@@ -45,19 +32,18 @@ namespace RED.ViewModels.Settings.Modules
             set
             {
                 _vm.UseLegacyDataIds = value;
-                _settings.CurrentSettings.DriveUseLegacyDataIds = value;
+                _settings.UseLegacyDataIds = value;
                 NotifyOfPropertyChange(() => UseLegacyDataIds);
             }
         }
 
-        public DriveSettingsViewModel(SettingsManagerViewModel settings, DriveViewModel vm)
+        public DriveSettingsViewModel(DriveSettingsContext settings, DriveViewModel vm)
         {
             _settings = settings;
             _vm = vm;
 
-            _vm.SpeedLimit = _settings.CurrentSettings.DriveSpeedLimit;
-            _vm.ParabolicScaling = _settings.CurrentSettings.DriveParabolicScaling;
-            _vm.UseLegacyDataIds = _settings.CurrentSettings.DriveUseLegacyDataIds;
+            _vm.SpeedLimit = _settings.SpeedLimit;
+            _vm.UseLegacyDataIds = _settings.UseLegacyDataIds;
         }
     }
 }

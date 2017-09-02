@@ -1,4 +1,5 @@
 ﻿using RED.Interfaces.Network;
+using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -23,9 +24,10 @@ namespace RED.ViewModels.Network
             await client.SendAsync(data, data.Length, new IPEndPoint(destIP, remotePort));
         }
 
-        public async Task<byte[]> ReceiveMessage()
+        public async Task<Tuple<IPAddress, byte[]>> ReceiveMessage()
         {
-            return (await client.ReceiveAsync()).Buffer;
+            var result = await client.ReceiveAsync();
+            return Tuple.Create(result.RemoteEndPoint.Address, result.Buffer);
         }
     }
 }

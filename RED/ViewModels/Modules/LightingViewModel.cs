@@ -6,9 +6,9 @@ namespace RED.ViewModels.Modules
 {
     public class LightingViewModel : PropertyChangedBase
     {
-        private LightingModel _model;
-        private IDataRouter _router;
-        private IDataIdResolver _idResolver;
+        private readonly LightingModel _model;
+        private readonly IDataRouter _router;
+        private readonly IDataIdResolver _idResolver;
 
         public bool Enabled
         {
@@ -20,7 +20,9 @@ namespace RED.ViewModels.Modules
             {
                 _model.Enabled = value;
                 NotifyOfPropertyChange(() => Enabled);
-                if (!value)
+                if (value)
+                    SendColors();
+                else
                     TurnOff();
             }
         }
@@ -79,7 +81,7 @@ namespace RED.ViewModels.Modules
 
         private void TurnOff()
         {
-            _router.Send(_idResolver.GetId("UnderglowColor"), new byte[] { 0, 0, 0 });
+            _router.Send(_idResolver.GetId("UnderglowColor"), new byte[] { 0, 0, 0 }, true);
         }
     }
 }

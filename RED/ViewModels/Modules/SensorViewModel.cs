@@ -7,10 +7,10 @@ namespace RED.ViewModels.Modules
 {
     public class SensorViewModel : PropertyChangedBase, ISubscribe
     {
-        private SensorModel _model;
-        private IDataRouter _router;
-        private IDataIdResolver _idResolver;
-        private ILogger _log;
+        private readonly SensorModel _model;
+        private readonly IDataRouter _router;
+        private readonly IDataIdResolver _idResolver;
+        private readonly ILogger _log;
 
         public float IMUTemperature
         {
@@ -146,7 +146,7 @@ namespace RED.ViewModels.Modules
             _router.Subscribe(this, _idResolver.GetId("IMUMagnetometer"));
         }
 
-        public void ReceiveFromRouter(ushort dataId, byte[] data)
+        public void ReceiveFromRouter(ushort dataId, byte[] data, bool reliable)
         {
             switch (_idResolver.GetName(dataId))
             {

@@ -18,16 +18,14 @@ namespace RED.ViewModels.Network
             {
                 var flags = (requireACK) ? RoveCommFlags.ACK : RoveCommFlags.None;
                 using (var ms = new MemoryStream())
+                using (var bw = new BinaryWriter(ms))
                 {
-                    using (var bw = new BinaryWriter(ms))
-                    {
-                        bw.Write(VersionNumber);
-                        bw.Write(IPAddress.HostToNetworkOrder((short)seqNum));
-                        bw.Write((byte)flags);
-                        bw.Write(IPAddress.HostToNetworkOrder((short)dataId));
-                        bw.Write(IPAddress.HostToNetworkOrder((short)data.Length));
-                        bw.Write(data);
-                    }
+                    bw.Write(VersionNumber);
+                    bw.Write(IPAddress.HostToNetworkOrder((short)seqNum));
+                    bw.Write((byte)flags);
+                    bw.Write(IPAddress.HostToNetworkOrder((short)dataId));
+                    bw.Write(IPAddress.HostToNetworkOrder((short)data.Length));
+                    bw.Write(data);
                     return ms.ToArray();
                 }
             }
@@ -46,19 +44,17 @@ namespace RED.ViewModels.Network
             byte[] rawData;
 
             using (var ms = new MemoryStream(data))
+            using (var br = new BinaryReader(ms))
             {
-                using (var br = new BinaryReader(ms))
-                {
-                    versionNumber = br.ReadByte();
-                    if (versionNumber != VersionNumber)
-                        throw new InvalidDataException("Version number of packet is not supported.");
+                versionNumber = br.ReadByte();
+                if (versionNumber != VersionNumber)
+                    throw new InvalidDataException("Version number of packet is not supported.");
 
-                    rawSequenceNumber = (ushort)IPAddress.NetworkToHostOrder((short)br.ReadUInt16());
-                    rawFlags = (RoveCommFlags)br.ReadByte();
-                    rawDataId = (ushort)IPAddress.NetworkToHostOrder((short)br.ReadUInt16());
-                    ushort dataLength = (ushort)IPAddress.NetworkToHostOrder((short)br.ReadUInt16());
-                    rawData = br.ReadBytes(dataLength);
-                }
+                rawSequenceNumber = (ushort)IPAddress.NetworkToHostOrder((short)br.ReadUInt16());
+                rawFlags = (RoveCommFlags)br.ReadByte();
+                rawDataId = (ushort)IPAddress.NetworkToHostOrder((short)br.ReadUInt16());
+                ushort dataLength = (ushort)IPAddress.NetworkToHostOrder((short)br.ReadUInt16());
+                rawData = br.ReadBytes(dataLength);
             }
 
             dataId = rawDataId;
@@ -70,8 +66,8 @@ namespace RED.ViewModels.Network
         [Flags]
         private enum RoveCommFlags : byte
         {
-            None = 0,
-            ACK = 1
+            None = 0b000_0000,
+            ACK = 0b000_0001
         }
     }
 }

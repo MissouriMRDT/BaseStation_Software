@@ -1,18 +1,18 @@
-﻿using RED.Addons;
+﻿using RED.Addons.Navigation;
 
 namespace RED.Models.Modules
 {
     internal class GPSModel
     {
-        internal bool fixObtained = false;
-        internal byte fixQuality = 255;
-        internal byte numberOfSatellites = 255;
-        internal GPSCoordinate currentLocation = new GPSCoordinate(0, 0);
-        internal float currentAltitude = -1;
-        internal float speed = -1;
-        internal float speedAngle = -1;
-        internal GPSCoordinate baseStationLocation = new GPSCoordinate(0, 0);
-        internal double antennaDirectionDeg = 0;
-        internal float heading = 0;
+        internal bool FixObtained = false;
+        internal byte FixQuality = 255;
+        internal byte NumberOfSatellites = 255;
+        internal GPSCoordinate CurrentLocation = new GPSCoordinate(0, 0);
+        internal float CurrentAltitude = -1;
+        internal float Speed = -1;
+        internal float SpeedAngle = -1;
+        internal GPSCoordinate BaseStationLocation = new GPSCoordinate(0, 0);
+        internal double AntennaDirectionDeg = 0;
+        internal float Heading = 0;
     }
 }

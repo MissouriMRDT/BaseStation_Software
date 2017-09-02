@@ -1,0 +1,120 @@
+﻿<UserControl x:Class="RED.Views.Tools.StopwatchToolView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:addons="clr-namespace:RED.Addons"
+             xmlns:addonsTools="clr-namespace:RED.Addons.Tools"
+             xmlns:cal="http://www.caliburnproject.org"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <addons:BoolToStringConverter x:Key="StartStopButton" TrueValue="Pause" FalseValue="Play" />
+        <addonsTools:TimeSpanToStringConverter x:Key="TimeSpanView" />
+    </UserControl.Resources>
+    <Border BorderBrush="{StaticResource AccentColorBrush}" BorderThickness="1">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="32" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="32" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="32" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="32" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Row="0" Grid.Column="0" x:Name="Toggle" Content="{Binding IsRunning, Converter={StaticResource StartStopButton}}" />
+            <TextBlock Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Run Text="{Binding SelectedSchedule.Name, Mode=OneWay}" />
+                <Run Foreground="{StaticResource GrayNormalBrush}" Text="{Binding SelectedSchedule.Duration, StringFormat=\({0}\), Converter={StaticResource TimeSpanView},  Mode=OneWay}" />
+            </TextBlock>
+            <Button Grid.Row="0" Grid.Column="2" ContextMenuService.IsEnabled="False" Click="FixTime_Click" Content="Set">
+                <Button.ContextMenu>
+                    <ContextMenu Name="FixContextMenu">
+                        <ContextMenu.Template>
+                            <ControlTemplate>
+                                <Border Background="White">
+                                    <GroupBox Header="Fix Time" Margin="0">
+                                        <DockPanel Width="100">
+                                            <Button DockPanel.Dock="Right" cal:Message.Attach="SetTime()" Width="25" Click="SetTime_Click">&gt;</Button>
+                                            <TextBox Text="{Binding FixTime}" />
+                                        </DockPanel>
+                                    </GroupBox>
+                                </Border>
+                            </ControlTemplate>
+                        </ContextMenu.Template>
+                    </ContextMenu>
+                </Button.ContextMenu>
+            </Button>
+
+            <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="30" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Viewbox Grid.Row="0" Grid.Column="0" Stretch="Uniform">
+                    <TextBlock Foreground="{StaticResource AccentColorBrush}" Text="{Binding ScheduleElapsedTime, Mode=OneWay, Converter={StaticResource TimeSpanView}}" />
+                </Viewbox>
+                <TextBlock Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding ScheduleElapsedPercent, StringFormat={}{0:0%}, Mode=OneWay}" />
+                <Viewbox Grid.Row="0" Grid.Column="2" Stretch="Uniform">
+                    <TextBlock Foreground="{StaticResource AccentColorBrush}" Text="{Binding ScheduleRemainingTime, Mode=OneWay, Converter={StaticResource TimeSpanView}}" />
+                </Viewbox>
+                <Viewbox Grid.Row="1" Grid.Column="0" Stretch="Uniform">
+                    <TextBlock Foreground="{StaticResource AccentColorBrush}" Text="{Binding PhaseElapsedTime, Mode=OneWay, Converter={StaticResource TimeSpanView}}" />
+                </Viewbox>
+                <TextBlock Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding PhaseElapsedPercent, StringFormat={}{0:0%}, Mode=OneWay}" />
+                <Viewbox Grid.Row="1" Grid.Column="2" Stretch="Uniform">
+                    <TextBlock Foreground="{StaticResource AccentColorBrush}" Text="{Binding PhaseRemainingTime, Mode=OneWay, Converter={StaticResource TimeSpanView}}" />
+                </Viewbox>
+            </Grid>
+            <Button Grid.Row="2" Grid.Column="0" x:Name="Reset">Reset</Button>
+            <TextBlock Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Run Text="{Binding CurrentPhase.Name, Mode=OneWay}" />
+                <Run Foreground="{StaticResource GrayNormalBrush}" Text="{Binding CurrentPhase.Duration, StringFormat=\({0}\), Converter={StaticResource TimeSpanView}, Mode=OneWay}" />
+            </TextBlock>
+            <Button Grid.Row="2" Grid.Column="2" ContextMenuService.IsEnabled="False" Click="EditTime_Click" Content="Edit">
+                <Button.ContextMenu>
+                    <ContextMenu Name="EditContextMenu">
+                        <ContextMenu.Template>
+                            <ControlTemplate>
+                                <Border Background="White">
+                                    <GroupBox Header="Edit Schedules" Margin="0">
+                                        <DockPanel Width="300" Height="250">
+                                            <DockPanel DockPanel.Dock="Top">
+                                                <Button DockPanel.Dock="Left" MinWidth="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" cal:Message.Attach="EditAddSchedule()" ToolTip="Add Schedule">+</Button>
+                                                <Button DockPanel.Dock="Left" MinWidth="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" cal:Message.Attach="EditRemoveSchedule()" ToolTip="Remove Schedule">&#x2212;</Button>
+                                                <Button DockPanel.Dock="Left" MinWidth="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" cal:Message.Attach="EditSwitch()" ToolTip="Switch To Schedule">&#x2194;</Button>
+                                                <Button DockPanel.Dock="Right" MinWidth="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" cal:Message.Attach="EditRemovePhase()" ToolTip="Remove Phase">&#x2212;</Button>
+                                                <Button DockPanel.Dock="Right" MinWidth="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" cal:Message.Attach="EditAddPhase()" ToolTip="Add Phase">+</Button>
+                                                <Button MaxWidth="75" cal:Message.Attach="EditSave()">Save</Button>
+                                            </DockPanel>
+                                            <ListBox DockPanel.Dock="Left" Width="100" ItemsSource="{Binding Schedules}" SelectedItem="{Binding SelectedEditSchedule}">
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding Name}" />
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>
+                                            <DataGrid ItemsSource="{Binding SelectedEditSchedule.Phases}" SelectedItem="{Binding SelectedEditPhase}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" FrozenColumnCount="1" BorderThickness="1">
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+                                                    <DataGridTextColumn Header="Duration" Binding="{Binding Duration}" />
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+                                        </DockPanel>
+                                    </GroupBox>
+                                </Border>
+                            </ControlTemplate>
+                        </ContextMenu.Template>
+                    </ContextMenu>
+                </Button.ContextMenu>
+            </Button>
+        </Grid>
+    </Border>
+</UserControl>

@@ -4,6 +4,7 @@ using RED.ViewModels.Input.Controllers;
 using RED.ViewModels.Modules;
 using RED.ViewModels.Navigation;
 using RED.ViewModels.Network;
+using RED.ViewModels.Tools;
 
 namespace RED.Models
 {
@@ -11,14 +12,18 @@ namespace RED.Models
     {
         internal SettingsManagerViewModel _settingsManager;
 
-        internal StateViewModel _stateManager;
         internal ConsoleViewModel _console;
+        internal XMLConfigManager _configManager;
         internal DataRouter _dataRouter;
         internal MetadataManager _metadataManager;
         internal SubscriptionManagerViewModel _subscriptionManager;
         internal NetworkManagerViewModel _networkManager;
         internal InputManagerViewModel _input;
         internal WaypointManagerViewModel _waypoint;
+        internal PingToolViewModel _pingTool;
+        internal StopwatchToolViewModel _stopwatchTool;
+        internal TelemetryLogToolViewModel _telemetryLogTool;
+
         internal ScienceViewModel _science;
         internal GPSViewModel _GPS;
         internal SensorViewModel _sensor;
@@ -39,5 +44,6 @@ namespace RED.Models
         internal XboxControllerInputViewModel _xboxController3;
         internal XboxControllerInputViewModel _xboxController4;
         internal FlightStickViewModel _flightStickController;
+        internal KeyboardInputViewModel _keyboardController;
     }
 }

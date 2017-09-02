@@ -4,13 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:cal="http://www.caliburnproject.org"
-             xmlns:local="clr-namespace:RED.Views.Input"
+             xmlns:addons="clr-namespace:RED.Addons"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <addons:BoolToStringConverter x:Key="OnOffConverter" FalseValue="Off" TrueValue="On" />
+    </UserControl.Resources>
     <Grid>
-        <Grid.Resources>
-            <local:BoolToStringConverter x:Key="OnOffConverter" FalseValue="Off" TrueValue="On" />
-        </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="75" />
             <ColumnDefinition Width="*" />
@@ -19,7 +19,7 @@
             <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
         <Label Grid.Column="0" Content="{Binding Path=Mode.Name}" />
-        <ComboBox Grid.Column="1" x:Name="Devices" SelectedItem="{Binding SelectedDevice}" SelectionChanged="HandleSelectionChanged">
+        <ComboBox Grid.Column="1" x:Name="Devices" SelectedItem="{Binding SelectedDevice}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
@@ -28,7 +28,7 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ComboBox>
-        <ComboBox Grid.Column="2" x:Name="EligibleMappings" SelectedItem="{Binding SelectedMapping}" SelectionChanged="HandleSelectionChanged">
+        <ComboBox Grid.Column="2" x:Name="EligibleMappings" SelectedItem="{Binding SelectedMapping}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>

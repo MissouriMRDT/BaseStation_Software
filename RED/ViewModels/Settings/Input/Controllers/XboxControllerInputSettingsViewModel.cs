@@ -1,13 +1,27 @@
 ﻿using Caliburn.Micro;
+using RED.Contexts.Input.Controllers;
 using RED.ViewModels.Input.Controllers;
 
 namespace RED.ViewModels.Settings.Input.Controllers
 {
     public class XboxControllerInputSettingsViewModel : PropertyChangedBase
     {
-        private SettingsManagerViewModel _settings;
-        private XboxControllerInputViewModel _vm;
+        private readonly XboxControllerSettingsContext _settings;
+        private readonly XboxControllerInputViewModel _vm;
 
+        private int _index;
+        public int Index
+        {
+            get
+            {
+                return _index;
+            }
+            set
+            {
+                _index = value;
+                NotifyOfPropertyChange(() => Index);
+            }
+        }
         public bool AutoDeadzone
         {
             get
@@ -17,7 +31,7 @@ namespace RED.ViewModels.Settings.Input.Controllers
             set
             {
                 _vm.AutoDeadzone = value;
-                _settings.CurrentSettings.InputAutoDeadzone = value;
+                _settings.AutoDeadzone = value;
                 NotifyOfPropertyChange(() => AutoDeadzone);
             }
         }
@@ -30,18 +44,19 @@ namespace RED.ViewModels.Settings.Input.Controllers
             set
             {
                 _vm.ManualDeadzone = value;
-                _settings.CurrentSettings.InputManualDeadzone = value;
+                _settings.ManualDeadzone = value;
                 NotifyOfPropertyChange(() => ManualDeadzone);
             }
         }
 
-        public XboxControllerInputSettingsViewModel(SettingsManagerViewModel settings, XboxControllerInputViewModel vm)
+        public XboxControllerInputSettingsViewModel(XboxControllerSettingsContext settings, XboxControllerInputViewModel vm, int index)
         {
             _settings = settings;
             _vm = vm;
+            Index = index;
 
-            _vm.AutoDeadzone = _settings.CurrentSettings.InputAutoDeadzone;
-            _vm.ManualDeadzone = _settings.CurrentSettings.InputManualDeadzone;
+            _vm.AutoDeadzone = _settings.AutoDeadzone;
+            _vm.ManualDeadzone = _settings.ManualDeadzone;
         }
     }
 }

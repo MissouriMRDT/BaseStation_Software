@@ -1,5 +1,5 @@
 ﻿using Caliburn.Micro;
-using RED.Contexts;
+using RED.Contexts.Input;
 using RED.Interfaces;
 using RED.Interfaces.Input;
 using RED.Models.Input;
@@ -8,14 +8,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 
 namespace RED.ViewModels.Input
 {
     public class InputSelectorViewModel : PropertyChangedBase
     {
-        InputSelectorModel _model;
-        ILogger _log;
+        private readonly InputSelectorModel _model;
+        private readonly ILogger _log;
 
         public IInputMode Mode
         {
@@ -47,7 +46,7 @@ namespace RED.ViewModels.Input
             {
                 return _model.Mappings;
             }
-            set
+            private set
             {
                 _model.Mappings = value;
                 NotifyOfPropertyChange(() => Mappings);
@@ -139,7 +138,7 @@ namespace RED.ViewModels.Input
                 return;
             }
 
-            SwitchDevice(this, SelectedDevice);
+            SwitchDevice?.Invoke(this, SelectedDevice);
 
             try
             {
@@ -148,11 +147,11 @@ namespace RED.ViewModels.Input
                 {
                     if (SelectedDevice.IsReady())
                     {
-                        if (!Enabled) Enable();
+                        Enable();
                         var rawValues = SelectedDevice.GetValues();
                         var mappedValues = SelectedMapping.Map(rawValues);
                         if (CheckForModeCycle(mappedValues))
-                            CycleMode(this, SelectedDevice);
+                            CycleMode?.Invoke(this, SelectedDevice);
                         else
                             Mode.SetValues(mappedValues);
                     }
@@ -165,7 +164,7 @@ namespace RED.ViewModels.Input
             }
             catch (KeyNotFoundException)
             {
-                _log.Log(string.Format("Missing key when mapping {0} to {1} with {2}.", SelectedDevice.Name, Mode.Name, SelectedMapping.Name));
+                _log.Log("Missing key when mapping {0} to {1} with {2}", SelectedDevice.Name, Mode.Name, SelectedMapping.Name);
             }
             finally
             {
@@ -175,19 +174,22 @@ namespace RED.ViewModels.Input
 
         public void Stop()
         {
+            if (IsRunning)
+                Disable();
             IsRunning = false;
-            Disable();
         }
 
         public void Enable()
         {
-            Mode.StartMode();
+            if (!Enabled)
+                Mode.StartMode();
             Enabled = true;
         }
         public void Disable()
         {
+            if (Enabled)
+                Mode.StopMode();
             Enabled = false;
-            Mode.StopMode();
         }
 
         public void Toggle()
@@ -205,13 +207,12 @@ namespace RED.ViewModels.Input
 
         public InputSelectionContext GetContext()
         {
-            return new InputSelectionContext()
-            {
-                ModeName = Mode == null ? "" : Mode.Name,
-                DeviceName = SelectedDevice == null ? "" : SelectedDevice.Name,
-                MappingName = SelectedMapping == null ? "" : SelectedMapping.Name,
-                Active = IsRunning
-            };
+            return new InputSelectionContext(
+                modeName: Mode?.Name ?? String.Empty,
+                deviceName: SelectedDevice?.Name ?? String.Empty,
+                mappingName: SelectedMapping?.Name ?? String.Empty,
+                active: IsRunning
+            );
         }
 
         public void SetContext(InputSelectionContext context)

@@ -1,36 +1,22 @@
 ﻿using Caliburn.Micro;
-using RED.Contexts;
+using RED.Configurations.Input;
+using RED.Contexts.Input;
 using RED.Interfaces;
 using RED.Interfaces.Input;
 using RED.Models.Input;
-using RED.ViewModels.Input.Controllers;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Xml.Serialization;
 
 namespace RED.ViewModels.Input
 {
     public class InputManagerViewModel : PropertyChangedBase
     {
-        InputManagerModel _model;
-        ILogger _log;
+        private readonly InputManagerModel _model;
+        private readonly ILogger _log;
+        private readonly IConfigurationManager _configManager;
 
-        private XmlSerializer mappingsSerializer = new XmlSerializer(typeof(MappingViewModel[]));
-        private XmlSerializer selectionsSerializer = new XmlSerializer(typeof(InputSelectionContext[]));
-
-        public int DefaultSerialReadSpeed
-        {
-            get
-            {
-                return _model.DefaultSerialReadSpeed;
-            }
-            set
-            {
-                _model.DefaultSerialReadSpeed = value;
-                NotifyOfPropertyChange(() => DefaultSerialReadSpeed);
-            }
-        }
+        private const string MappingsConfigName = "InputMappings";
+        private const string SelectionsConfigName = "InputSelections";
 
         public ObservableCollection<IInputDevice> Devices
         {
@@ -82,23 +68,22 @@ namespace RED.ViewModels.Input
             }
         }
 
-        public InputManagerViewModel(ILogger log, IInputDevice[] devices, MappingViewModel[] mappings, IInputMode[] modes)
+        public InputManagerViewModel(ILogger log, IConfigurationManager configs, IInputDevice[] devices, MappingViewModel[] mappings, IInputMode[] modes)
         {
             _model = new InputManagerModel();
             _log = log;
+            _configManager = configs;
 
             Devices = new ObservableCollection<IInputDevice>(devices);
             Mappings = new ObservableCollection<MappingViewModel>(mappings);
             Modes = new ObservableCollection<IInputMode>(modes);
             Selectors = new ObservableCollection<InputSelectorViewModel>();
 
-            foreach (IInputMode mode in Modes)
-                Selectors.Add(new InputSelectorViewModel(_log, mode, Devices, Mappings));
-            foreach (var selector in Selectors)
-            {
-                selector.SwitchDevice += SelectorSwitchDevice;
-                selector.CycleMode += SelectorCycleMode;
-            }
+            _configManager.AddRecord(MappingsConfigName, InputManagerConfig.DefaultInputMappings);
+            _configManager.AddRecord(SelectionsConfigName, InputManagerConfig.DefaultInputSelections);
+
+            InitializeMappings(_configManager.GetConfig<InputMappingsContext>(MappingsConfigName));
+            InitializeSelections(_configManager.GetConfig<InputSelectionsContext>(SelectionsConfigName));
         }
 
         private void SelectorSwitchDevice(object sender, IInputDevice device)
@@ -111,11 +96,7 @@ namespace RED.ViewModels.Input
             Selectors.Concat(Selectors).SkipWhile(x => x != sender).Skip(1).First(x => x.SelectedDevice == device).Start();
         }
 
-        public void Start()
-        {
-        }
-
-        public void Stop()
+        public void StopAll()
         {
             foreach (var selector in Selectors)
                 selector.Disable();
@@ -126,45 +107,34 @@ namespace RED.ViewModels.Input
             Devices.Add(device);
         }
 
-        public void SaveMappingsToFile(string url)
+        public void SaveConfigurations()
         {
-            using (var stream = new FileStream(url, FileMode.Create))
-            {
-                mappingsSerializer.Serialize(stream, Mappings.ToArray());
-            }
+            _configManager.SetConfig(MappingsConfigName, new InputMappingsContext(Mappings.Select(x => x.ToContext()).ToArray()));
+            _configManager.SetConfig(SelectionsConfigName, new InputSelectionsContext(Selectors.Select(x => x.GetContext()).ToArray()));
         }
 
-        public void LoadMappingsFromFile(string url)
+        private void InitializeMappings(InputMappingsContext config)
         {
-            using (var stream = File.OpenRead(url))
-            {
-                MappingViewModel[] savedMappings = (MappingViewModel[])mappingsSerializer.Deserialize(stream);
+            foreach (InputMappingContext mapping in config.Mappings)
+                Mappings.Add(new MappingViewModel(mapping));
 
-                foreach (MappingViewModel mapping in savedMappings)
-                    Mappings.Add(mapping);
-
-                _log.Log("Input Mappings loaded from file \"" + url + "\"");
-            }
+            _log.Log("Input Mappings loaded");
         }
 
-        public void SaveSelectionsToFile(string url)
+        private void InitializeSelections(InputSelectionsContext config)
         {
-            using (var stream = new FileStream(url, FileMode.Create))
-            {
-                selectionsSerializer.Serialize(stream, Selectors.Select(x => x.GetContext()).ToArray());
-            }
-        }
+            foreach (IInputMode mode in Modes)
+                Selectors.Add(new InputSelectorViewModel(_log, mode, Devices, Mappings));
 
-        public void LoadSelectionsFromFile(string url)
-        {
-            using (var stream = File.OpenRead(url))
+            foreach (var selector in Selectors)
             {
-                InputSelectionContext[] savedSelections = (InputSelectionContext[])selectionsSerializer.Deserialize(stream);
-
-                foreach (InputSelectionContext selection in savedSelections)
-                    foreach (var selector in Selectors.Where(x => x.Mode.Name == selection.ModeName))
-                        selector.SetContext(selection);
+                selector.SwitchDevice += SelectorSwitchDevice;
+                selector.CycleMode += SelectorCycleMode;
             }
+
+            foreach (InputSelectionContext selection in config.Selections)
+                foreach (var selector in Selectors.Where(x => x.Mode.Name == selection.ModeName))
+                    selector.SetContext(selection);
         }
     }
 }

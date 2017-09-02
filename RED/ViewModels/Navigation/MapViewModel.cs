@@ -1,31 +1,30 @@
-﻿using GMap.NET;
+﻿using Caliburn.Micro;
+using GMap.NET;
 using GMap.NET.MapProviders;
 using GMap.NET.WindowsPresentation;
-using Caliburn.Micro;
-using RED.Addons;
+using RED.Addons.Navigation;
 using RED.Models.Navigation;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Media;
 using System.Windows;
-using System.Collections.Generic;
-using System.Windows.Shapes;
+using System.Windows.Media;
 
 namespace RED.ViewModels.Navigation
 {
     public class MapViewModel : PropertyChangedBase
     {
-        MapModel _model;
+        private readonly MapModel _model;
 
         public Waypoint CurrentLocation
         {
             get
             {
-                return _model.currentLocation;
+                return _model.CurrentLocation;
             }
             set
             {
-                _model.currentLocation = value;
+                _model.CurrentLocation = value;
                 NotifyOfPropertyChange(() => CurrentLocation);
             }
         }
@@ -33,25 +32,75 @@ namespace RED.ViewModels.Navigation
         {
             get
             {
-                return _model.waypoints;
+                return _model.Waypoints;
             }
-            set
+            private set
             {
-                _model.waypoints = value;
+                _model.Waypoints = value;
                 NotifyOfPropertyChange(() => Waypoints);
             }
         }
 
-        private GMapControl _mainMap;
+        public GPSCoordinate StartPosition
+        {
+            get
+            {
+                return _model.StartPosition;
+            }
+            set
+            {
+                _model.StartPosition = value;
+                NotifyOfPropertyChange(() => StartPosition);
+            }
+        }
+        public bool ShowEmptyTiles
+        {
+            get
+            {
+                return _model.ShowEmptyTiles;
+            }
+            set
+            {
+                _model.ShowEmptyTiles = value;
+                if (MainMap != null) MainMap.FillEmptyTiles = !ShowEmptyTiles;
+                NotifyOfPropertyChange(() => ShowEmptyTiles);
+            }
+        }
+
+        public int CachePrefetchStartZoom
+        {
+            get
+            {
+                return _model.CachePrefetchStartZoom;
+            }
+            set
+            {
+                _model.CachePrefetchStartZoom = value;
+                NotifyOfPropertyChange(() => CachePrefetchStartZoom);
+            }
+        }
+        public int CachePrefetchStopZoom
+        {
+            get
+            {
+                return _model.CachePrefetchStopZoom;
+            }
+            set
+            {
+                _model.CachePrefetchStopZoom = value;
+                NotifyOfPropertyChange(() => CachePrefetchStopZoom);
+            }
+        }
+
         public GMapControl MainMap
         {
             get
             {
-                return _mainMap;
+                return _model.MainMap;
             }
             private set
             {
-                _mainMap = value;
+                _model.MainMap = value;
                 NotifyOfPropertyChange(() => MainMap);
             }
         }
@@ -59,11 +108,8 @@ namespace RED.ViewModels.Navigation
         public MapViewModel()
         {
             _model = new MapModel();
-            //InitializeMapControl();
 
-            //Waypoints.Add(new Waypoint(37.951631, -91.777713)); //Rolla
-            //Waypoints.Add(new Waypoint(37.850025, -91.701845)); //Fugitive Beach
-            //Waypoints.Add(new Waypoint(38.406426, -110.791919)); //Mars Desert Research Station
+            CurrentLocation = new Waypoint("GPS", 0f, 0f) { Color = System.Windows.Media.Colors.Red };
             RefreshMap();
         }
 
@@ -71,15 +117,20 @@ namespace RED.ViewModels.Navigation
         {
             MainMap = map;
             InitializeMapControl();
+            CachePrefetchStartZoom = MainMap.MinZoom;
+            CachePrefetchStopZoom = MainMap.MaxZoom;
         }
 
         private void InitializeMapControl()
         {
             MainMap.Margin = new Thickness(-5);
 
+            MainMap.FillEmptyTiles = !ShowEmptyTiles;
+
             MainMap.Manager.Mode = AccessMode.CacheOnly;
             MainMap.MapProvider = GMapProviders.OpenStreetMapQuestHybrid;
-            MainMap.Position = new PointLatLng(RED.Properties.Settings.Default.GPSStartLocationLatitude, RED.Properties.Settings.Default.GPSStartLocationLongitude);
+
+            MainMap.Position = new PointLatLng(StartPosition.Latitude, StartPosition.Longitude);
             MainMap.MinZoom = 1;
             MainMap.MaxZoom = 18;
             MainMap.Zoom = 10;
@@ -90,7 +141,6 @@ namespace RED.ViewModels.Navigation
 
             MainMap.IgnoreMarkerOnMouseWheel = true;
             MainMap.MouseWheelZoomType = MouseWheelZoomType.MousePositionWithoutCenter;
-            //MainMap.FillEmptyTiles = false; //Good for debugging map cache
         }
 
         public void CacheImport()
@@ -104,47 +154,28 @@ namespace RED.ViewModels.Navigation
         public void CachePrefetch()
         {
             RectLatLng area = MainMap.SelectedArea;
-            if (!area.IsEmpty)
+            if (area.IsEmpty)
             {
-                for (int i = (int)MainMap.Zoom; i <= MainMap.MaxZoom; i++)
-                {
-                    MessageBoxResult res = MessageBox.Show("Ready ripp at Zoom = " + i + " ?", "GMap.NET", MessageBoxButton.YesNoCancel);
-
-                    if (res == MessageBoxResult.Yes)
-                    {
-                        TilePrefetcher obj = new TilePrefetcher();
-                        obj.Owner = Application.Current.MainWindow;
-                        obj.ShowCompleteMessage = true;
-                        obj.Start(area, i, MainMap.MapProvider, 100);
-                    }
-                    else if (res == MessageBoxResult.No)
-                    {
-                        continue;
-                    }
-                    else if (res == MessageBoxResult.Cancel)
-                    {
-                        break;
-                    }
-                }
+                MessageBox.Show("Select map area holding ALT", "GMap.NET", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
-            else
+
+            for (int zoomLevel = CachePrefetchStartZoom; zoomLevel <= CachePrefetchStopZoom; zoomLevel++)
             {
-                MessageBox.Show("Select map area holding ALT", "GMap.NET", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                TilePrefetcher obj = new TilePrefetcher();
+                obj.Owner = Application.Current.MainWindow;
+                obj.Start(area, zoomLevel, MainMap.MapProvider, 100);
             }
         }
         public void CacheClear()
         {
-            if (MessageBox.Show("Are You sure?", "Clear GMap.NET cache?", MessageBoxButton.OKCancel, MessageBoxImage.Warning) == MessageBoxResult.OK)
+            try
             {
-                try
-                {
-                    MainMap.Manager.PrimaryCache.DeleteOlderThan(System.DateTime.Now, null);
-                    MessageBox.Show("Done. Cache is clear.");
-                }
-                catch (System.Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
+                MainMap.Manager.PrimaryCache.DeleteOlderThan(System.DateTime.Now, null);
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -153,7 +184,7 @@ namespace RED.ViewModels.Navigation
             if (MainMap == null) return;
             MainMap.Markers.Clear();
 
-            var converter = new RED.Addons.GMapMarkerCollectionMultiConverter();
+            var converter = new GMapMarkerCollectionMultiConverter();
             var newdata = (IEnumerable<GMapMarker>)converter.Convert(new object[] { CurrentLocation, Waypoints.Where(x => x.IsOnMap) }, typeof(System.Collections.ObjectModel.ObservableCollection<GMapMarker>), null, System.Globalization.CultureInfo.DefaultThreadCurrentUICulture);
             foreach (var marker in newdata)
                 MainMap.Markers.Add(marker);

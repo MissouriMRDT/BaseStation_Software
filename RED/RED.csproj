@@ -58,38 +58,38 @@
     <StartupObject>RED.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Caliburn.Micro, Version=2.0.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Caliburn.Micro.Core.2.0.1\lib\net45\Caliburn.Micro.dll</HintPath>
+    <Reference Include="Caliburn.Micro, Version=3.0.3.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.Core.3.1.0\lib\net45\Caliburn.Micro.dll</HintPath>
     </Reference>
-    <Reference Include="Caliburn.Micro.Platform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Caliburn.Micro.2.0.1\lib\net45\Caliburn.Micro.Platform.dll</HintPath>
+    <Reference Include="Caliburn.Micro.Platform, Version=3.0.3.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.3.1.0\lib\net45\Caliburn.Micro.Platform.dll</HintPath>
     </Reference>
-    <Reference Include="GMap.NET.Core">
-      <HintPath>..\packages\GMap.NET.Presentation.1.7.1\lib\net40\GMap.NET.Core.dll</HintPath>
+    <Reference Include="Caliburn.Micro.Platform.Core, Version=3.0.3.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.3.1.0\lib\net45\Caliburn.Micro.Platform.Core.dll</HintPath>
     </Reference>
-    <Reference Include="GMap.NET.WindowsPresentation">
-      <HintPath>..\packages\GMap.NET.Presentation.1.7.1\lib\net40\GMap.NET.WindowsPresentation.dll</HintPath>
+    <Reference Include="GMap.NET.Core, Version=1.7.5.0, Culture=neutral, PublicKeyToken=b85b9027b614afef, processorArchitecture=MSIL">
+      <HintPath>..\packages\GMap.NET.Presentation.1.7.5\lib\net40\GMap.NET.Core.dll</HintPath>
     </Reference>
-    <Reference Include="MahApps.Metro, Version=0.15.0.99, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MahApps.Metro.0.15.0-ALPHA99\lib\net45\MahApps.Metro.dll</HintPath>
+    <Reference Include="GMap.NET.WindowsPresentation, Version=1.7.5.0, Culture=neutral, PublicKeyToken=b85b9027b614afef, processorArchitecture=MSIL">
+      <HintPath>..\packages\GMap.NET.Presentation.1.7.5\lib\net40\GMap.NET.WindowsPresentation.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro, Version=1.5.0.23, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.1.5.0\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="SharpDX, Version=3.1.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SharpDX.3.1.1\lib\net45\SharpDX.dll</HintPath>
+    <Reference Include="SharpDX, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.4.0.1\lib\net45\SharpDX.dll</HintPath>
     </Reference>
-    <Reference Include="SharpDX.DirectInput">
-      <HintPath>..\packages\SharpDX.DirectInput.3.1.1\lib\net45\SharpDX.DirectInput.dll</HintPath>
+    <Reference Include="SharpDX.DirectInput, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.DirectInput.4.0.1\lib\net45\SharpDX.DirectInput.dll</HintPath>
     </Reference>
-    <Reference Include="SharpDX.XInput">
-      <HintPath>..\packages\SharpDX.XInput.3.1.1\lib\net45\SharpDX.XInput.dll</HintPath>
+    <Reference Include="SharpDX.XInput, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.XInput.4.0.1\lib\net45\SharpDX.XInput.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.0.15.0-ALPHA99\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\packages\MahApps.Metro.1.5.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Xaml">
@@ -105,31 +105,55 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Addons\BoolToValueConverter.cs" />
-    <Compile Include="Addons\GMapMarkerCollectionMultiConverter.cs" />
-    <Compile Include="Addons\GPSCoordinate.cs" />
-    <Compile Include="Addons\GPSCoordinateToLongitudeConverter.cs" />
-    <Compile Include="Addons\GPSCoordinateToLatitudeConverter.cs" />
-    <Compile Include="Addons\SubscriptionRecord.cs" />
+    <Compile Include="Addons\Navigation\GMapMarkerCollectionMultiConverter.cs" />
+    <Compile Include="Addons\Navigation\GPSCoordinate.cs" />
+    <Compile Include="Addons\Navigation\GPSCoordinateToLongitudeConverter.cs" />
+    <Compile Include="Addons\Navigation\GPSCoordinateToLatitudeConverter.cs" />
+    <Compile Include="Addons\Network\Server.cs" />
+    <Compile Include="Addons\Network\SubscriptionRecord.cs" />
+    <Compile Include="Addons\Tools\TimestampDisplayConverter.cs" />
+    <Compile Include="Addons\Tools\TimeSpanToStringConverter.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Contexts\ArmPositionContext.cs" />
-    <Compile Include="Contexts\CommandMetadataContext.cs" />
-    <Compile Include="Contexts\ErrorMetadataContext.cs" />
-    <Compile Include="Contexts\InputSelectionContext.cs" />
+    <Compile Include="Configurations\Input\Controllers\XboxControllerInputConfig.cs" />
+    <Compile Include="Configurations\Input\InputManagerConfig.cs" />
+    <Compile Include="Configurations\MetadataManagerConfig.cs" />
+    <Compile Include="Configurations\Modules\ArmConfig.cs" />
+    <Compile Include="Configurations\Modules\DriveConfig.cs" />
+    <Compile Include="Configurations\Modules\GPSConfig.cs" />
+    <Compile Include="Configurations\Modules\PowerConfig.cs" />
+    <Compile Include="Configurations\Modules\ScienceConfig.cs" />
+    <Compile Include="Configurations\Network\NetworkManagerConfig.cs" />
+    <Compile Include="Configurations\Tools\PingToolConfig.cs" />
+    <Compile Include="Configurations\Tools\StopwatchToolConfig.cs" />
+    <Compile Include="Contexts\Modules\ArmPositionContext.cs" />
+    <Compile Include="Contexts\MetadataRecordContext.cs" />
+    <Compile Include="Contexts\ConfigurationFile.cs" />
+    <Compile Include="Contexts\Modules\DriveSettingsContext.cs" />
+    <Compile Include="Contexts\Modules\GPSSettingsContext.cs" />
+    <Compile Include="Contexts\Network\NetworkManagerSettingsContext.cs" />
+    <Compile Include="Contexts\Tools\PingToolContext.cs" />
+    <Compile Include="Contexts\Modules\PowerSettingsContext.cs" />
+    <Compile Include="Contexts\REDSettingsContext.cs" />
+    <Compile Include="Contexts\Input\InputMappingsContext.cs" />
+    <Compile Include="Contexts\Input\InputSelectionContext.cs" />
     <Compile Include="Contexts\MetadataSaveContext.cs" />
-    <Compile Include="Contexts\TelemetryMetadataContext.cs" />
+    <Compile Include="Contexts\Modules\ScienceSettingsContext.cs" />
+    <Compile Include="Contexts\Tools\StopwatchScheduleContext.cs" />
+    <Compile Include="Contexts\Input\Controllers\XboxControllerSettingsContext.cs" />
     <Compile Include="Images\ModernUIIcons.cs" />
+    <Compile Include="Interfaces\IConfigurationManager.cs" />
     <Compile Include="Interfaces\IDataIdResolver.cs" />
     <Compile Include="Interfaces\ILogger.cs" />
     <Compile Include="Interfaces\Input\IInputMode.cs" />
     <Compile Include="Interfaces\Network\IIPAddressProvider.cs" />
-    <Compile Include="Interfaces\IMetadata.cs" />
     <Compile Include="Interfaces\Input\IInputDevice.cs" />
     <Compile Include="Interfaces\Network\INetworkEncoding.cs" />
     <Compile Include="Interfaces\Network\INetworkTransportProtocol.cs" />
     <Compile Include="Interfaces\Network\ISequenceNumberProvider.cs" />
+    <Compile Include="Interfaces\Network\IServerProvider.cs" />
     <Compile Include="Models\Input\InputSelectorModel.cs" />
     <Compile Include="Models\Input\MappingChannelModel.cs" />
     <Compile Include="Models\Input\MappingModel.cs" />
@@ -141,6 +165,8 @@
     <Compile Include="Models\Modules\DriveModel.cs" />
     <Compile Include="Models\Modules\LightingModel.cs" />
     <Compile Include="Models\Navigation\MapModel.cs" />
+    <Compile Include="Models\Tools\PingToolModel.cs" />
+    <Compile Include="Models\Navigation\WaypointModel.cs" />
     <Compile Include="Models\Navigation\WaypointManagerModel.cs" />
     <Compile Include="Models\Network\NetworkManagerModel.cs" />
     <Compile Include="Models\Modules\PowerModel.cs" />
@@ -150,9 +176,12 @@
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Models\Network\SubscriptionManagerModel.cs" />
     <Compile Include="Models\Input\Controllers\KeyboardInputModel.cs" />
+    <Compile Include="Models\Tools\StopwatchToolModel.cs" />
+    <Compile Include="Models\Tools\TelemetryLogToolModel.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Models\Input\Controllers\XboxControllerInputModel.cs" />
     <Compile Include="Interfaces\IDataRouter.cs" />
+    <Compile Include="ViewModels\Input\ControllerBase.cs" />
     <Compile Include="ViewModels\Input\Controllers\FlightStickViewModel.cs" />
     <Compile Include="ViewModels\Input\InputSelectorViewModel.cs" />
     <Compile Include="ViewModels\Input\MappingViewModel.cs" />
@@ -179,6 +208,7 @@
     <Compile Include="ViewModels\Modules\PowerViewModel.cs" />
     <Compile Include="ViewModels\Input\Controllers\XboxControllerInputViewModel.cs" />
     <Compile Include="ViewModels\MetadataManager.cs" />
+    <Compile Include="ViewModels\Tools\PingToolViewModel.cs" />
     <Compile Include="ViewModels\Network\RoverProtocol.cs" />
     <Compile Include="ViewModels\Modules\ScienceViewModel.cs" />
     <Compile Include="ViewModels\Modules\SensorViewModel.cs" />
@@ -191,8 +221,12 @@
     <Compile Include="ViewModels\Settings\Input\Controllers\XboxControllerInputSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Modules\DriveSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Modules\GPSSettingsViewModel.cs" />
-    <Compile Include="ViewModels\Settings\Input\InputSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Settings\Modules\PowerSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Modules\ScienceSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Settings\Network\NetworkManagerSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Tools\StopwatchToolViewModel.cs" />
+    <Compile Include="ViewModels\Tools\TelemetryLogToolViewModel.cs" />
+    <Compile Include="ViewModels\XMLConfigManager.cs" />
     <Compile Include="Views\ControlCenterView.xaml.cs">
       <DependentUpon>ControlCenterView.xaml</DependentUpon>
     </Compile>
@@ -244,8 +278,14 @@
     <Compile Include="Views\Navigation\WaypointManagerView.xaml.cs">
       <DependentUpon>WaypointManagerView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Tools\PingToolView.xaml.cs">
+      <DependentUpon>PingToolView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SettingsManagerView.xaml.cs">
       <DependentUpon>SettingsManagerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Settings\Input\Controllers\XboxControllerInputSettingsView.xaml.cs">
+      <DependentUpon>XboxControllerInputSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Settings\Modules\DriveSettingsView.xaml.cs">
       <DependentUpon>DriveSettingsView.xaml</DependentUpon>
@@ -253,11 +293,20 @@
     <Compile Include="Views\Settings\Modules\GPSSettingsView.xaml.cs">
       <DependentUpon>GPSSettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Settings\Input\InputSettingsView.xaml.cs">
-      <DependentUpon>InputSettingsView.xaml</DependentUpon>
+    <Compile Include="Views\Settings\Network\NetworkManagerSettingsView.xaml.cs">
+      <DependentUpon>NetworkManagerSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Settings\Modules\PowerSettingsView.xaml.cs">
+      <DependentUpon>PowerSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Settings\Modules\ScienceSettingsView.xaml.cs">
       <DependentUpon>ScienceSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tools\StopwatchToolView.xaml.cs">
+      <DependentUpon>StopwatchToolView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tools\TelemetryLogToolView.xaml.cs">
+      <DependentUpon>TelemetryLogToolView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\ControlCenterView.xaml">
       <SubType>Designer</SubType>
@@ -308,14 +357,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Compile Include="Models\ConsoleModel.cs" />
-    <Compile Include="Models\StateModel.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
     <Compile Include="ViewModels\ConsoleViewModel.cs" />
-    <Compile Include="ViewModels\StateViewModel.cs" />
     <Compile Include="Views\ConsoleView.xaml.cs">
       <DependentUpon>ConsoleView.xaml</DependentUpon>
     </Compile>
@@ -347,13 +389,22 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StateView.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="Views\Tools\PingToolView.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Compile Include="Views\StateView.xaml.cs">
-      <DependentUpon>StateView.xaml</DependentUpon>
-    </Compile>
+    <Page Include="Views\Settings\Input\Controllers\XboxControllerInputSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Settings\Network\NetworkManagerSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Settings\Modules\PowerSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Page Include="Views\SettingsManagerView.xaml">
       <SubType>Designer</SubType>
@@ -367,13 +418,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Settings\Input\InputSettingsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Settings\Modules\ScienceSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Tools\StopwatchToolView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Tools\TelemetryLogToolView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -381,10 +436,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>PublicSettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">

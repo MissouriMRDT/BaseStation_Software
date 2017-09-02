@@ -10,6 +10,5 @@ namespace RED.Models.Input
         internal string DeviceType;
         internal string ModeType;
         internal int UpdatePeriod;
-        internal bool IsActive;
     }
 }

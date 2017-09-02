@@ -10,10 +10,10 @@ namespace RED.ViewModels.Modules
 {
     public class ScienceViewModel : PropertyChangedBase, ISubscribe
     {
-        private ScienceModel _model;
-        private IDataRouter _router;
-        private IDataIdResolver _idResolver;
-        private ILogger _log;
+        private readonly ScienceModel _model;
+        private readonly IDataRouter _router;
+        private readonly IDataIdResolver _idResolver;
+        private readonly ILogger _log;
 
         public float Sensor0Value
         {
@@ -202,126 +202,135 @@ namespace RED.ViewModels.Modules
             _router.Subscribe(this, _idResolver.GetId("SciSensor6"));
             _router.Subscribe(this, _idResolver.GetId("SciSensor7"));
             _router.Subscribe(this, _idResolver.GetId("SciSensor8"));
+            _router.Subscribe(this, _idResolver.GetId("SciSensor9"));
         }
 
         public void SensorAllOn()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.SensorAllEnable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.SensorAllEnable, true);
         }
         public void SensorAllOff()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.SensorAllDisable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.SensorAllDisable, true);
         }
         public void Sensor0On()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor0Enable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor0Enable, true);
         }
         public void Sensor0Off()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor0Disable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor0Disable, true);
         }
         public void Sensor1On()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor1Enable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor1Enable, true);
         }
         public void Sensor1Off()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor1Disable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor1Disable, true);
         }
         public void Sensor2On()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor2Enable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor2Enable, true);
         }
         public void Sensor2Off()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor2Disable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor2Disable, true);
         }
         public void Sensor3On()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor3Enable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor3Enable, true);
         }
         public void Sensor3Off()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor3Disable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor3Disable, true);
         }
         public void Sensor4On()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor4Enable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor4Enable, true);
         }
         public void Sensor4Off()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor4Disable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor4Disable, true);
         }
         public void Sensor5On()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor5Enable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor5Enable, true);
         }
         public void Sensor5Off()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor5Disable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor5Disable, true);
         }
         public void Sensor6On()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor6Enable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor6Enable, true);
         }
         public void Sensor6Off()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor6Disable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor6Disable, true);
         }
         public void Sensor7On()
         {
-            _router.Send(_idResolver.GetId("ScienceArmCommand"), (ushort)ScienceRequestTypes.Sensor7Enable);
+            _router.Send(_idResolver.GetId("ScienceArmCommand"), (ushort)ScienceRequestTypes.Sensor7Enable, true);
         }
         public void Sensor7Off()
         {
-            _router.Send(_idResolver.GetId("ScienceArmCommand"), (ushort)ScienceRequestTypes.Sensor7Disable);
+            _router.Send(_idResolver.GetId("ScienceArmCommand"), (ushort)ScienceRequestTypes.Sensor7Disable, true);
         }
         public void Sensor8On()
         {
-            _router.Send(_idResolver.GetId("ScienceArmCommand"), (ushort)ScienceRequestTypes.Sensor8Enable);
+            _router.Send(_idResolver.GetId("ScienceArmCommand"), (ushort)ScienceRequestTypes.Sensor8Enable, true);
         }
         public void Sensor8Off()
         {
-            _router.Send(_idResolver.GetId("ScienceArmCommand"), (ushort)ScienceRequestTypes.Sensor8Disable);
+            _router.Send(_idResolver.GetId("ScienceArmCommand"), (ushort)ScienceRequestTypes.Sensor8Disable, true);
         }
         public void Sensor9On()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor9Enable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor9Enable, true);
         }
         public void Sensor9Off()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor9Disable);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor9Disable, true);
         }
 
         public void RequestSpectrometer()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.SpectrometerRun);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.SpectrometerRun, true);
             _log.Log("Spectrometer data requested");
         }
         public async void DownloadSpectrometer()
         {
-            _log.Log("Spectrometer data download started.");
+            _log.Log("Spectrometer data download started");
             string filename = Path.Combine(SpectrometerFilePath, "REDSpectrometerData" + DateTime.Now.ToString("yyyyMMdd'T'HHmmss") + ".dat");
-            using (var client = new TcpClient())
+            try
             {
-                await client.ConnectAsync(SpectrometerIPAddress, SpectrometerPortNumber);
-                using (var file = File.Create(filename))
+                using (var client = new TcpClient())
                 {
-                    await client.GetStream().CopyToAsync(file);
+                    await client.ConnectAsync(SpectrometerIPAddress, SpectrometerPortNumber);
+                    _log.Log("Spectrometer connection established");
+                    using (var file = File.Create(filename))
+                    {
+                        await client.GetStream().CopyToAsync(file);
+                    }
                 }
+                _log.Log($"Spectrometer data downloaded into {filename}");
             }
-            _log.Log("Spectrometer data downloaded into " + filename + ".");
+            catch (Exception e)
+            {
+                _log.Log("There was an error downloading the spectrometer data:{0}{1}", Environment.NewLine, e);
+            }
         }
 
         public void RequestLaserOn()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (byte)ScienceRequestTypes.LaserOn);
-            _log.Log("Science Laser On requested.");
+            _router.Send(_idResolver.GetId("ScienceCommand"), (byte)ScienceRequestTypes.LaserOn, true);
+            _log.Log("Science Laser On requested");
         }
         public void RequestLaserOff()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (byte)ScienceRequestTypes.LaserOff);
-            _log.Log("Science Laser Off requested.");
+            _router.Send(_idResolver.GetId("ScienceCommand"), (byte)ScienceRequestTypes.LaserOff, true);
+            _log.Log("Science Laser Off requested");
         }
 
         public void SetCarouselPosition(byte carouselIndex)
@@ -331,11 +340,11 @@ namespace RED.ViewModels.Modules
 
         public void FunnelOpen()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (byte)ScienceRequestTypes.FunnelOpen);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (byte)ScienceRequestTypes.FunnelOpen, true);
         }
         public void FunnelClose()
         {
-            _router.Send(_idResolver.GetId("ScienceCommand"), (byte)ScienceRequestTypes.FunnelClose);
+            _router.Send(_idResolver.GetId("ScienceCommand"), (byte)ScienceRequestTypes.FunnelClose, true);
         }
 
         public void SaveFileStart()
@@ -354,7 +363,7 @@ namespace RED.ViewModels.Modules
             await SensorDataFile.WriteAsync(data, 0, data.Length);
         }
 
-        public void ReceiveFromRouter(ushort dataId, byte[] data)
+        public void ReceiveFromRouter(ushort dataId, byte[] data, bool reliable)
         {
             switch (_idResolver.GetName(dataId))
             {

@@ -1,6 +1,4 @@
-﻿using RED.ViewModels.Input;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 
 namespace RED.Views.Input
 {
@@ -13,12 +11,5 @@ namespace RED.Views.Input
         {
             InitializeComponent();
         }
-
-        private void HandleSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            e.Handled = true;
-        }
     }
-
-    public class BoolToStringConverter : RED.Addons.BoolToValueConverter<string> { }
 }

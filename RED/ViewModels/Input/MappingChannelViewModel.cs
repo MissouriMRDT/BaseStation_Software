@@ -1,13 +1,12 @@
 ﻿using Caliburn.Micro;
+using RED.Contexts.Input;
 using RED.Models.Input;
-using System.Xml.Serialization;
 
 namespace RED.ViewModels.Input
 {
-    [XmlType(TypeName = "MappingChannel")]
     public class MappingChannelViewModel : PropertyChangedBase
     {
-        private MappingChannelModel _model;
+        private readonly MappingChannelModel _model;
 
         public string InputKey
         {
@@ -94,9 +93,28 @@ namespace RED.ViewModels.Input
 
         }
 
-        public MappingChannelViewModel()
+        private MappingChannelViewModel()
         {
             _model = new MappingChannelModel();
+        }
+
+        public MappingChannelViewModel(string inputKey, string outputKey)
+            : this()
+        {
+            InputKey = inputKey;
+            OutputKey = outputKey;
+        }
+
+        public MappingChannelViewModel(InputChannelContext context)
+            : this()
+        {
+            InputKey = context.InputKey;
+            OutputKey = context.OutputKey;
+            LinearScaling = context.LinearScaling;
+            Parabolic = context.Parabolic;
+            Minimum = context.Minimum;
+            Maximum = context.Maximum;
+            Offset = context.Offset;
         }
 
         public float Map(float input)
@@ -110,6 +128,20 @@ namespace RED.ViewModels.Input
             if (result > Maximum) result = Maximum;
 
             return result;
+        }
+
+        public InputChannelContext ToContext()
+        {
+            return new InputChannelContext()
+            {
+                InputKey = InputKey,
+                OutputKey = OutputKey,
+                LinearScaling = LinearScaling,
+                Parabolic = Parabolic,
+                Minimum = Minimum,
+                Maximum = Maximum,
+                Offset = Offset
+            };
         }
     }
 }

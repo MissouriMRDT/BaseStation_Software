@@ -1,4 +1,6 @@
-﻿using RED.ViewModels.Navigation;
+﻿using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
+using RED.ViewModels.Navigation;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -14,16 +16,24 @@ namespace RED.Views.Navigation
             InitializeComponent();
         }
 
-        private void HandleSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            e.Handled = true;
-        }
-
         private void AddWaypointBtn_Click(object sender, RoutedEventArgs e)
         {
             var vm = (WaypointManagerViewModel)DataContext;
             if (!vm.AddWaypoint("Untitled Waypoint", LatitudeTextBox.Text, LongitudeTextBox.Text))
-                MessageBox.Show("Invalid Longitude or Latitude. Must be a floating point number.");
+            {
+                MetroDialogSettings settings = new MetroDialogSettings()
+                {
+                    AffirmativeButtonText = "OK",
+                    NegativeButtonText = "Cancel",
+                    AnimateShow = false,
+                    AnimateHide = false,
+                };
+                ((MetroWindow)MetroWindow.GetWindow(this)).ShowMessageAsync(
+                    title: "Waypoint Management",
+                    message: "Invalid Longitude or Latitude. Must be a floating point number.",
+                    style: MessageDialogStyle.Affirmative,
+                    settings: settings);
+            }
         }
     }
 }

@@ -5,7 +5,21 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <DockPanel LastChildFill="True">
+    <UserControl.Resources>
+        <x:Array x:Key="Colors" Type="{x:Type Color}">
+            <Color R="255" G="0" B="0" A="255" />
+            <Color R="255" G="128" B="0" A="255" />
+            <Color R="255" G="255" B="0" A="255" />
+            <Color R="0" G="255" B="0" A="255" />
+            <Color R="0" G="128" B="0" A="255" />
+            <Color R="0" G="0" B="255" A="255" />
+            <Color R="128" G="0" B="128" A="255" />
+            <Color R="255" G="255" B="255" A="255" />
+            <Color R="128" G="128" B="128" A="255" />
+            <Color R="0" G="0" B="0" A="255" />
+        </x:Array>
+    </UserControl.Resources>
+    <DockPanel>
         <StackPanel DockPanel.Dock="Top">
             <Label Content="Latitude:" />
             <TextBox x:Name="LatitudeTextBox" />
@@ -17,14 +31,29 @@
                 <Button x:Name="RemoveSelectedWaypoint">Remove Selected</Button>
                 <Button x:Name="SendSelectedToAutonomy">Send to Autonomy</Button>
             </UniformGrid>
-
         </StackPanel>
-        <DataGrid ItemsSource="{Binding Waypoints}" SelectedItem="{Binding SelectedWaypoint}" SelectionChanged="HandleSelectionChanged" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" FrozenColumnCount="1" BorderThickness="1">
+        <DataGrid ItemsSource="{Binding Waypoints}" SelectedItem="{Binding SelectedWaypoint}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" FrozenColumnCount="1" BorderThickness="1">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
                 <DataGridTextColumn Header="Longitude" Binding="{Binding Longitude}" />
                 <DataGridTextColumn Header="Latitude" Binding="{Binding Latitude}" />
-                <DataGridComboBoxColumn Header="Color" />
+                <DataGridTemplateColumn Header="Color">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox ItemsSource="{Binding Source={StaticResource Colors}}" SelectedItem="{Binding Color, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Rectangle Height="10px" Width="30px" Margin="0">
+                                            <Rectangle.Fill>
+                                                <SolidColorBrush Color="{Binding}" />
+                                            </Rectangle.Fill>
+                                        </Rectangle>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridCheckBoxColumn Header="Map" Binding="{Binding IsOnMap}" />
             </DataGrid.Columns>
         </DataGrid>

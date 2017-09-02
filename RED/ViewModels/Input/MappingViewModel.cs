@@ -1,18 +1,15 @@
 ﻿using Caliburn.Micro;
-using RED.Interfaces.Input;
+using RED.Contexts.Input;
 using RED.Models.Input;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
 
 namespace RED.ViewModels.Input
 {
-    [XmlType(TypeName = "Mapping")]
     public class MappingViewModel : PropertyChangedBase
     {
-        private MappingModel _model;
+        private readonly MappingModel _model;
 
         public string Name
         {
@@ -31,11 +28,10 @@ namespace RED.ViewModels.Input
             {
                 return _model.Channels;
             }
-            set
+            private set
             {
                 _model.Channels = value; NotifyOfPropertyChange(() => Channels);
             }
-
         }
         public string DeviceType
         {
@@ -74,11 +70,33 @@ namespace RED.ViewModels.Input
 
         }
 
-        public MappingViewModel()
+        private MappingViewModel()
         {
             _model = new MappingModel();
 
             Channels = new ObservableCollection<MappingChannelViewModel>();
+        }
+
+        public MappingViewModel(string name, string deviceType, string modeType, int updatePeriod, IEnumerable<MappingChannelViewModel> channels)
+            : this()
+        {
+            Name = name;
+            Channels = new ObservableCollection<MappingChannelViewModel>(channels);
+            DeviceType = deviceType;
+            ModeType = modeType;
+            UpdatePeriod = updatePeriod;
+        }
+
+        public MappingViewModel(InputMappingContext context)
+            : this()
+        {
+            Name = context.Name;
+            DeviceType = context.DeviceType;
+            ModeType = context.ModeType;
+            UpdatePeriod = context.UpdatePeriod;
+
+            foreach (var channel in context.Channels)
+                Channels.Add(new MappingChannelViewModel(channel));
         }
 
         public Dictionary<string, float> Map(Dictionary<string, float> values)
@@ -87,6 +105,18 @@ namespace RED.ViewModels.Input
             foreach (var channel in Channels)
                 result.Add(channel.OutputKey, channel.Map(values[channel.InputKey]));
             return result;
+        }
+
+        public InputMappingContext ToContext()
+        {
+            return new InputMappingContext()
+            {
+                Name = Name,
+                Channels = Channels.Select(x => x.ToContext()).ToArray(),
+                DeviceType = DeviceType,
+                ModeType = ModeType,
+                UpdatePeriod = UpdatePeriod
+            };
         }
     }
 }

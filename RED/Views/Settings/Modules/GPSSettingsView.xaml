@@ -9,9 +9,9 @@
     <StackPanel>
         <Grid Width="350" HorizontalAlignment="Left">
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
@@ -25,8 +25,8 @@
             <StackPanel Grid.Row="2" Grid.Column="1">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
+                        <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
@@ -47,5 +47,6 @@
                 </UniformGrid>
             </StackPanel>
         </Grid>
+        <CheckBox x:Name="MapShowEmptyTiles">Show Empty Tiles on Map</CheckBox>
     </StackPanel>
 </UserControl>

@@ -6,7 +6,7 @@ using RED.ViewModels.Input.Controllers;
 using RED.ViewModels.Modules;
 using RED.ViewModels.Navigation;
 using RED.ViewModels.Network;
-using System.IO;
+using RED.ViewModels.Tools;
 
 namespace RED.ViewModels
 {
@@ -27,18 +27,6 @@ namespace RED.ViewModels
             }
         }
 
-        public StateViewModel StateManager
-        {
-            get
-            {
-                return _model._stateManager;
-            }
-            set
-            {
-                _model._stateManager = value;
-                NotifyOfPropertyChange();
-            }
-        }
         public ConsoleViewModel Console
         {
             get
@@ -48,6 +36,18 @@ namespace RED.ViewModels
             set
             {
                 _model._console = value;
+                NotifyOfPropertyChange();
+            }
+        }
+        public XMLConfigManager ConfigManager
+        {
+            get
+            {
+                return _model._configManager;
+            }
+            set
+            {
+                _model._configManager = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -121,6 +121,42 @@ namespace RED.ViewModels
             {
                 _model._waypoint = value;
                 NotifyOfPropertyChange(() => WaypointManager);
+            }
+        }
+        public PingToolViewModel PingTool
+        {
+            get
+            {
+                return _model._pingTool;
+            }
+            set
+            {
+                _model._pingTool = value;
+                NotifyOfPropertyChange(() => PingTool);
+            }
+        }
+        public StopwatchToolViewModel StopwatchTool
+        {
+            get
+            {
+                return _model._stopwatchTool;
+            }
+            set
+            {
+                _model._stopwatchTool = value;
+                NotifyOfPropertyChange(() => StopwatchTool);
+            }
+        }
+        public TelemetryLogToolViewModel TelemetryLogTool
+        {
+            get
+            {
+                return _model._telemetryLogTool;
+            }
+            set
+            {
+                _model._telemetryLogTool = value;
+                NotifyOfPropertyChange(() => TelemetryLogTool);
             }
         }
 
@@ -366,6 +402,18 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => FlightStickController);
             }
         }
+        public KeyboardInputViewModel KeyboardController
+        {
+            get
+            {
+                return _model._keyboardController;
+            }
+            set
+            {
+                _model._keyboardController = value;
+                NotifyOfPropertyChange(() => KeyboardController);
+            }
+        }
 
         public ControlCenterViewModel()
         {
@@ -373,13 +421,13 @@ namespace RED.ViewModels
             _model = new ControlCenterModel();
 
             Console = new ConsoleViewModel();
-            DataRouter = new DataRouter();
-            MetadataManager = new MetadataManager(Console);
-            MetadataManager.AddFromFile("NoSyncMetadata.xml");
+            ConfigManager = new XMLConfigManager(Console);
+            DataRouter = new DataRouter(Console);
+            MetadataManager = new MetadataManager(Console, ConfigManager);
 
             NetworkManager = new NetworkManagerViewModel(DataRouter, MetadataManager.Commands.ToArray(), Console, MetadataManager);
-            SubscriptionManager = new SubscriptionManagerViewModel(Console, MetadataManager.Telemetry.ToArray(), MetadataManager, NetworkManager);
-            StateManager = new StateViewModel(SubscriptionManager);
+            SubscriptionManager = new SubscriptionManagerViewModel(Console, MetadataManager, NetworkManager);
+            SubscriptionManager.SendInitialSubscriptions(MetadataManager.Telemetry.ToArray());
 
             Science = new ScienceViewModel(DataRouter, MetadataManager, Console);
             GPS = new GPSViewModel(DataRouter, MetadataManager);
@@ -393,41 +441,44 @@ namespace RED.ViewModels
             Lighting = new LightingViewModel(DataRouter, MetadataManager);
             Map = new MapViewModel();
 
-            Drive = new DriveViewModel(null, DataRouter, MetadataManager);
-            Arm = new ArmViewModel(null, DataRouter, MetadataManager, Console);
-            if (File.Exists("armpositions.xml"))
-                Arm.LoadPositionsFromFile("armpositions.xml");
-            Gimbal1 = new GimbalViewModel(null, DataRouter, MetadataManager, Console, 0);
-            Gimbal2 = new GimbalViewModel(null, DataRouter, MetadataManager, Console, 1);
-            XboxController1 = new XboxControllerInputViewModel(1, StateManager);
-            XboxController2 = new XboxControllerInputViewModel(2, StateManager);
-            XboxController3 = new XboxControllerInputViewModel(3, StateManager);
-            XboxController4 = new XboxControllerInputViewModel(4, StateManager);
+            Drive = new DriveViewModel(DataRouter, MetadataManager);
+            Arm = new ArmViewModel(DataRouter, MetadataManager, Console, ConfigManager);
+            Gimbal1 = new GimbalViewModel(DataRouter, MetadataManager, Console, 0);
+            Gimbal2 = new GimbalViewModel(DataRouter, MetadataManager, Console, 1);
+            XboxController1 = new XboxControllerInputViewModel(1);
+            XboxController2 = new XboxControllerInputViewModel(2);
+            XboxController3 = new XboxControllerInputViewModel(3);
+            XboxController4 = new XboxControllerInputViewModel(4);
             FlightStickController = new FlightStickViewModel();
+            KeyboardController = new KeyboardInputViewModel();
 
-            InputManager = new InputManagerViewModel(Console,
-                new IInputDevice[] { XboxController1, XboxController2, XboxController3, XboxController4, FlightStickController },
+            InputManager = new InputManagerViewModel(Console, ConfigManager,
+                new IInputDevice[] { XboxController1, XboxController2, XboxController3, XboxController4, FlightStickController, KeyboardController },
                 new MappingViewModel[0],
                 new IInputMode[] { Drive, Arm, Gimbal1, Gimbal2, ScienceArm });
-            InputManager.LoadMappingsFromFile("inputmappings.xml");
-            if (File.Exists("inputselections.xml"))
-                InputManager.LoadSelectionsFromFile("inputselections.xml");
 
             WaypointManager = new WaypointManagerViewModel(Map, GPS, Autonomy);
+            PingTool = new PingToolViewModel(NetworkManager, ConfigManager);
+            StopwatchTool = new StopwatchToolViewModel(ConfigManager);
+            TelemetryLogTool = new TelemetryLogToolViewModel(NetworkManager, MetadataManager);
 
-            SettingsManager = new SettingsManagerViewModel(this);
+            SettingsManager = new SettingsManagerViewModel(ConfigManager, this);
 
-            InputManager.Start();
             //DataRouter.Send(100, new byte[] { 10, 20, 30, 40 });
             //DataRouter.Send(1, new byte[] { 2, 3, 4, 5 });
             //DataRouter.Send(101, new byte[] { 15, 25, 35, 45 });
             //DataRouter.Send(180, new byte[] { 0x23, 0x52, 0x4f, 0x56, 0x45, 0x53, 0x4f, 0x48, 0x41, 0x52, 0x44, 0x00 });
         }
 
+        public void ResubscribeAll()
+        {
+            SubscriptionManager.ResubscribeAll();
+        }
+
         protected override void OnDeactivate(bool close)
         {
-            InputManager.SaveSelectionsToFile("inputselections.xml");
-            Arm.SavePositionsToFile("armpositions.xml");
+            InputManager.SaveConfigurations();
+            Arm.SaveConfigurations();
             base.OnDeactivate(close);
         }
     }

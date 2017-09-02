@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using RED.Contexts.Modules;
 using RED.ViewModels.Modules;
 using System.Net;
 
@@ -6,8 +7,8 @@ namespace RED.ViewModels.Settings.Modules
 {
     public class ScienceSettingsViewModel : PropertyChangedBase
     {
-        private SettingsManagerViewModel _settings;
-        private ScienceViewModel _vm;
+        private readonly ScienceSettingsContext _settings;
+        private readonly ScienceViewModel _vm;
 
         public string SpectrometerIPAddress
         {
@@ -17,9 +18,8 @@ namespace RED.ViewModels.Settings.Modules
             }
             set
             {
-                IPAddress ip;
-                _vm.SpectrometerIPAddress = IPAddress.TryParse(value, out ip) ? ip : IPAddress.None;
-                _settings.CurrentSettings.ScienceSpectrometerIPAddress = value;
+                _vm.SpectrometerIPAddress = IPAddress.TryParse(value, out IPAddress ip) ? ip : IPAddress.None;
+                _settings.SpectrometerIPAddress = value;
                 NotifyOfPropertyChange(() => SpectrometerIPAddress);
             }
         }
@@ -32,7 +32,7 @@ namespace RED.ViewModels.Settings.Modules
             set
             {
                 _vm.SpectrometerPortNumber = value;
-                _settings.CurrentSettings.ScienceSpectrometerPortNumber = value;
+                _settings.SpectrometerPortNumber = value;
                 NotifyOfPropertyChange(() => SpectrometerPortNumber);
             }
         }
@@ -45,20 +45,19 @@ namespace RED.ViewModels.Settings.Modules
             set
             {
                 _vm.SpectrometerFilePath = value;
-                _settings.CurrentSettings.ScienceSpectrometerFilePath = value;
+                _settings.SpectrometerFilePath = value;
                 NotifyOfPropertyChange(() => SpectrometerFilePath);
             }
         }
 
-        public ScienceSettingsViewModel(SettingsManagerViewModel settings, ScienceViewModel server)
+        public ScienceSettingsViewModel(ScienceSettingsContext settings, ScienceViewModel vm)
         {
             _settings = settings;
-            _vm = server;
+            _vm = vm;
 
-            IPAddress ip;
-            _vm.SpectrometerIPAddress = IPAddress.TryParse(_settings.CurrentSettings.ScienceSpectrometerIPAddress, out ip) ? ip : IPAddress.None;
-            _vm.SpectrometerPortNumber = _settings.CurrentSettings.ScienceSpectrometerPortNumber;
-            _vm.SpectrometerFilePath = _settings.CurrentSettings.ScienceSpectrometerFilePath;
+            _vm.SpectrometerIPAddress = IPAddress.TryParse(_settings.SpectrometerIPAddress, out IPAddress ip) ? ip : IPAddress.None;
+            _vm.SpectrometerPortNumber = _settings.SpectrometerPortNumber;
+            _vm.SpectrometerFilePath = _settings.SpectrometerFilePath;
         }
     }
 }

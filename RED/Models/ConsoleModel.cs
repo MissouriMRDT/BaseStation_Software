@@ -1,7 +1,9 @@
-﻿namespace RED.Models
+﻿using System;
+
+namespace RED.Models
 {
     internal class ConsoleModel
     {
-        internal string _consoleText = string.Empty;
+        internal string _consoleText = String.Empty;
     }
 }

@@ -1,133 +1,70 @@
-﻿using RED.Contexts;
+﻿using RED.Addons.Network;
+using RED.Configurations;
+using RED.Contexts;
 using RED.Interfaces;
+using RED.Interfaces.Network;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Xml.Serialization;
+using System.Net;
 
 namespace RED.ViewModels
 {
-    public class MetadataManager : RED.Interfaces.Network.IIPAddressProvider, IDataIdResolver
+    public class MetadataManager : IIPAddressProvider, IDataIdResolver, IServerProvider
     {
-        private ILogger _log;
+        private readonly ILogger _log;
+        private readonly IConfigurationManager _configManager;
 
-        public List<CommandMetadataContext> Commands { get; private set; }
-        public List<TelemetryMetadataContext> Telemetry { get; private set; }
-        public List<ErrorMetadataContext> Errors { get; private set; }
+        private const string MetadataConfigName = "DataIdMetadata";
 
-        public MetadataManager(ILogger log)
+        public List<MetadataServerContext> Servers { get; }
+        public List<MetadataRecordContext> Commands { get; }
+        public List<MetadataRecordContext> Telemetry { get; }
+
+        private List<Server> ServerObjs;
+
+        public MetadataManager(ILogger log, IConfigurationManager configs)
         {
             _log = log;
-            Commands = new List<CommandMetadataContext>();
-            Telemetry = new List<TelemetryMetadataContext>();
-            Errors = new List<ErrorMetadataContext>();
+            _configManager = configs;
+
+            _configManager.AddRecord(MetadataConfigName, MetadataManagerConfig.DefaultMetadata);
+
+            Servers = new List<MetadataServerContext>();
+            Commands = new List<MetadataRecordContext>();
+            Telemetry = new List<MetadataRecordContext>();
+
+            ServerObjs = new List<Server>();
+
+            InitializeMetadata(_configManager.GetConfig<MetadataSaveContext>(MetadataConfigName));
         }
 
-        public void Add(CommandMetadataContext metadata)
+        public void InitializeMetadata(MetadataSaveContext config)
         {
-            Commands.Add(metadata);
-        }
-        public void Add(TelemetryMetadataContext metadata)
-        {
-            Telemetry.Add(metadata);
-        }
-        public void Add(ErrorMetadataContext metadata)
-        {
-            Errors.Add(metadata);
-        }
+            Servers.AddRange(config.Servers);
 
-        public void AddFromFile(string url)
-        {
-            using (var stream = File.OpenRead(url))
+            foreach (var server in Servers)
             {
-                var serializer = new XmlSerializer(typeof(MetadataSaveContext));
-                MetadataSaveContext save = (MetadataSaveContext)serializer.Deserialize(stream);
-
-                Commands.AddRange(save.Commands);
-                Telemetry.AddRange(save.Telemetry);
-                Errors.AddRange(save.Errors);
-
-                _log.Log("Metadata loaded from file \"" + url + "\"");
+                Commands.AddRange(server.Commands);
+                Telemetry.AddRange(server.Telemetry);
             }
-        }
-        public void SaveToFile(string url)
-        {
-            using (var stream = new FileStream(url, FileMode.Create))
-            {
-                var serializer = new XmlSerializer(typeof(MetadataSaveContext));
-                serializer.Serialize(stream, new MetadataSaveContext(Commands.ToArray(), Telemetry.ToArray(), Errors.ToArray()));
-            }
+
+            ServerObjs.AddRange(Servers.Select(x => new Server(x)));
+
+            _log.Log("Metadata loaded");
         }
 
-        public CommandMetadataContext GetCommand(ushort DataId)
+        public MetadataServerContext GetServer(ushort dataId)
         {
-            return Commands.Find(x => x.Id == DataId);
+            return Servers.FirstOrDefault(x => x.Commands.Concat(x.Telemetry).Any(y => y.Id == dataId));
         }
-        public CommandMetadataContext GetCommand(string name)
+        public MetadataRecordContext GetMetadata(ushort dataId)
         {
-            return Commands.Find(x => x.Name == name);
+            return Telemetry.Concat(Commands).FirstOrDefault(x => x.Id == dataId);
         }
-        public TelemetryMetadataContext GetTelemetry(ushort DataId)
+        public MetadataRecordContext GetMetadata(string name)
         {
-            return Telemetry.Find(x => x.Id == DataId);
-        }
-        public TelemetryMetadataContext GetTelemetry(string name)
-        {
-            return Telemetry.Find(x => x.Name == name);
-        }
-        public ErrorMetadataContext GetError(ushort DataId)
-        {
-            return Errors.Find(x => x.Id == DataId);
-        }
-        public ErrorMetadataContext GetError(string name)
-        {
-            return Errors.Find(x => x.Name == name);
-        }
-        public IMetadata GetMetadata(ushort DataId)
-        {
-            return GetCommand(DataId) ?? GetTelemetry(DataId) ?? (IMetadata)GetError(DataId) ?? null;
-        }
-        public IMetadata GetMetadata(string name)
-        {
-            return GetCommand(name) ?? GetTelemetry(name) ?? (IMetadata)GetError(name) ?? null;
-        }
-
-        public int GetByteLength(string DataType)
-        {
-            switch (DataType.ToLowerInvariant())
-            {
-                case "int8": return 1;
-                case "int16": return 2;
-                case "int32": return 4;
-                case "int64": return 8;
-                case "uint8": return 1;
-                case "uint16": return 2;
-                case "uint32": return 4;
-                case "uint64": return 8;
-                case "single": return 4;
-                case "double": return 8;
-                case "ccd": return 25;
-                case "gps": return 23;
-                case "drillactuator": return 4;
-                case "ultrasonic": return 2;
-                case "sensorcombine": return 32;
-                default: throw new ArgumentException("Unsupported Data Type");
-            }
-        }
-        public int GetDataTypeByteLength(ushort DataId)
-        {
-            var m = GetMetadata(DataId);
-            if (m == null) throw new ArgumentException("Invalid DataId");
-            return GetByteLength(m.Datatype);
-        }
-        public int GetDataTypeByteLength(IMetadata item)
-        {
-            return GetByteLength(item.Datatype);
-        }
-        public int GetDataTypeByteLength(string name)
-        {
-            return GetByteLength(GetMetadata(name).Datatype);
+            return Commands.Concat(Telemetry).FirstOrDefault(x => x.Name == name);
         }
 
         public ushort GetId(string name)
@@ -135,7 +72,7 @@ namespace RED.ViewModels
             var data = GetMetadata(name);
             if (data == null)
             {
-                _log.Log("DataId for \"" + name + "\" not found.");
+                _log.Log($"DataId for \"{name}\" not found");
                 return (ushort)0;
             }
             return data.Id;
@@ -143,30 +80,39 @@ namespace RED.ViewModels
         public string GetName(ushort DataId)
         {
             var data = GetMetadata(DataId);
-            return data == null ? String.Empty : data.Name;
+            return data?.Name ?? String.Empty;
         }
         public string GetServerAddress(ushort DataId)
         {
-            var data = GetMetadata(DataId);
-            return data == null ? String.Empty : data.ServerAddress;
+            var data = GetServer(DataId);
+            return data?.Address ?? String.Empty;
         }
 
-        public System.Net.IPAddress GetIPAddress(ushort dataId)
+        public IPAddress GetIPAddress(ushort dataId)
         {
-            System.Net.IPAddress ip;
-            if (System.Net.IPAddress.TryParse(GetServerAddress(dataId), out ip))
+            if (IPAddress.TryParse(GetServerAddress(dataId), out IPAddress ip))
                 return ip;
             else
             {
-                _log.Log("Error Parsing IP Address for DataId " + dataId.ToString());
+                _log.Log($"Error Parsing IP Address for DataId {dataId}");
                 return null;
             }
         }
-
-        public ushort[] GetAllDataIds(System.Net.IPAddress ip)
+        public ushort[] GetAllDataIds(IPAddress ip)
         {
-            IEnumerable<IMetadata> allMetadata = Commands.Cast<IMetadata>().Union(Telemetry).Union(Errors);
-            return allMetadata.Where(x => x.ServerAddress == ip.ToString()).Select(x => x.Id).ToArray();
+            var server = Servers.FirstOrDefault(x => x.Address == ip.ToString());
+            if (server == null)
+                return new ushort[0];
+            return server.Commands.Concat(server.Telemetry).Select(x => x.Id).ToArray();
+        }
+
+        public Server[] GetServerList()
+        {
+            return ServerObjs.ToArray();
+        }
+        public Server GetServer(IPAddress ip)
+        {
+            return ServerObjs.FirstOrDefault(x => x.Address.Equals(ip));
         }
     }
 }

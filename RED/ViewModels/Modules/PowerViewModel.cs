@@ -8,12 +8,26 @@ namespace RED.ViewModels.Modules
 {
     public class PowerViewModel : PropertyChangedBase, ISubscribe
     {
-        private PowerModel _model;
-        private IDataRouter _router;
-        private IDataIdResolver _idResolver;
-        private ILogger _log;
+        private readonly PowerModel _model;
+        private readonly IDataRouter _router;
+        private readonly IDataIdResolver _idResolver;
+        private readonly ILogger _log;
 
         private TextWriter LogFile;
+
+        public bool AutoStartLog
+        {
+            get
+            {
+                return _model.AutoStartLog;
+            }
+            set
+            {
+                _model.AutoStartLog = value;
+                if (AutoStartLog && LogFile == null) SaveFileStart();
+                NotifyOfPropertyChange(() => AutoStartLog);
+            }
+        }
 
         public float Motor1Current
         {
@@ -382,7 +396,7 @@ namespace RED.ViewModels.Modules
             _router.Subscribe(this, _idResolver.GetId("BMSPackUndervoltage"));
         }
 
-        public void ReceiveFromRouter(ushort dataId, byte[] data)
+        public void ReceiveFromRouter(ushort dataId, byte[] data, bool reliable)
         {
             switch (_idResolver.GetName(dataId))
             {
@@ -416,7 +430,7 @@ namespace RED.ViewModels.Modules
                 case "BMSTemperature2": BMSTemperature2 = BitConverter.ToSingle(data, 0); break;
 
                 case "PowerBusOverCurrentNotification":
-                    _log.Log("Overcurrent notification from Powerboard from Bus Index " + data[0].ToString());
+                    _log.Log($"Overcurrent notification from Powerboard from Bus Index {data[0]}");
                     break;
                 case "BMSPackOvercurrent":
                     _log.Log("Overcurrent notification from BMS");
@@ -431,17 +445,17 @@ namespace RED.ViewModels.Modules
                 switch (_idResolver.GetName(dataId))
                 {
                     case "PowerBusOverCurrentNotification":
-                        LogFile.WriteLine(String.Format("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, {2}", DateTime.Now, dataId, "Power Overcurrent: Bus " + data[0].ToString()));
+                        LogFile.WriteLine("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, Power Overcurrent: Bus {2}", DateTime.Now, dataId, data[0]);
                         break;
                     case "BMSPackOvercurrent":
-                        LogFile.WriteLine(String.Format("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, {2}", DateTime.Now, dataId, "BMS Overcurrent"));
+                        LogFile.WriteLine("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, BMS Overcurrent", DateTime.Now, dataId);
                         break;
                     case "BMSPackUndervoltage":
-                        LogFile.WriteLine(String.Format("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, {2}", DateTime.Now, dataId, "BMS Undervoltage"));
+                        LogFile.WriteLine("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, BMS Undervoltage", DateTime.Now, dataId);
                         break;
                     default:
                         if (data.Length != 4) break;
-                        LogFile.WriteLine(String.Format("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, {2}", DateTime.Now, dataId, BitConverter.ToSingle(data, 0)));
+                        LogFile.WriteLine("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, {2}", DateTime.Now, dataId, BitConverter.ToSingle(data, 0));
                         break;
                 }
                 LogFile.Flush();
@@ -450,29 +464,29 @@ namespace RED.ViewModels.Modules
 
         public void RebootRover()
         {
-            _router.Send(_idResolver.GetId("BMSReboot"), new byte[0]);
+            _router.Send(_idResolver.GetId("BMSReboot"), new byte[0], true);
         }
         public void EStopRover()
         {
-            _router.Send(_idResolver.GetId("BMSStop"), new byte[0]);
+            _router.Send(_idResolver.GetId("BMSStop"), new byte[0], true);
         }
 
         public void FanControl(bool state)
         {
-            _router.Send(_idResolver.GetId("BMSFanControl"), state ? 0 : 1);
+            _router.Send(_idResolver.GetId("BMSFanControl"), state ? 0 : 1, true);
         }
         public void BuzzerControl(bool state)
         {
-            _router.Send(_idResolver.GetId("BMSBuzzerControl"), state ? 0 : 1);
+            _router.Send(_idResolver.GetId("BMSBuzzerControl"), state ? 0 : 1, true);
         }
 
         public void EnableBus(byte index)
         {
-            _router.Send(_idResolver.GetId("PowerBusEnable"), index);
+            _router.Send(_idResolver.GetId("PowerBusEnable"), index, true);
         }
         public void DisableBus(byte index)
         {
-            _router.Send(_idResolver.GetId("PowerBusDisable"), index);
+            _router.Send(_idResolver.GetId("PowerBusDisable"), index, true);
         }
 
         public void SaveFileStart()

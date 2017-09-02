@@ -4,23 +4,53 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:gmap="clr-namespace:GMap.NET.WindowsPresentation;assembly=GMap.NET.WindowsPresentation"
-             xmlns:addons="clr-namespace:RED.Addons"
+             xmlns:addons="clr-namespace:RED.Addons.Navigation"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <addons:GMapMarkerCollectionMultiConverter x:Key="GPSMarkerConverter" />
     </UserControl.Resources>
-    <DockPanel LastChildFill="True">
-        <Expander Header="Cache Control" DockPanel.Dock="Bottom" ExpandDirection="Up">
-            <UniformGrid Rows="1">
-                <Button x:Name="CacheImport">Import</Button>
-                <Button x:Name="CacheExport">Export</Button>
-                <Button x:Name="CachePrefetch">Prefetch</Button>
-                <Button x:Name="CacheClear">Clear</Button>
-            </UniformGrid>
-        </Expander>
+    <DockPanel>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
             <Button x:Name="RefreshMap">Refresh</Button>
+            <Button Content="Cache Control" ContextMenuService.IsEnabled="False" Click="CacheControl_Click">
+                <Button.ContextMenu>
+                    <ContextMenu>
+                        <ContextMenu.Template>
+                            <ControlTemplate>
+                                <Border Background="White">
+                                    <GroupBox Header="Offline Cache Control" Margin="0">
+                                        <StackPanel Width="300">
+                                            <UniformGrid Rows="1">
+                                                <Button Click="CacheImportButton_Click" x:Name="CacheImport" ToolTip="Open a file to add to working cache">Import</Button>
+                                                <Button Click="CacheExportButton_Click" x:Name="CacheExport" ToolTip="Save working cache to a file">Export</Button>
+                                                <Button Click="CachePrefetchButton_Click" ToolTip="Download selected map region (Alt-drag) within selected zoom range and add to working cache">Download</Button>
+                                                <Button Click="CacheClearButton_Click" ToolTip="Clear working cache">Clear</Button>
+                                            </UniformGrid>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="30" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="30" />
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Column="0" Content="{Binding CachePrefetchStartZoom}" HorizontalAlignment="Center" />
+                                                <controls:RangeSlider Grid.Column="1" ToolTip="Zoom range for Download"
+                                                    Minimum="{Binding MainMap.MinZoom}" Maximum="{Binding MainMap.MaxZoom}"
+                                                    LowerValue="{Binding CachePrefetchStartZoom}" UpperValue="{Binding CachePrefetchStopZoom}"
+                                                    MinRangeWidth="0"
+                                                    Interval="1" TickPlacement="TopLeft"
+                                                    IsSnapToTickEnabled="True" IsMoveToPointEnabled="True" />
+                                                <Label Grid.Column="2" Content="{Binding CachePrefetchStopZoom}" HorizontalAlignment="Center" />
+                                            </Grid>
+                                        </StackPanel>
+                                    </GroupBox>
+                                </Border>
+                            </ControlTemplate>
+                        </ContextMenu.Template>
+                    </ContextMenu>
+                </Button.ContextMenu>
+            </Button>
             <Label>Zoom:</Label>
             <Label Content="{Binding MainMap.Zoom}" Width="25" />
             <Slider Value="{Binding MainMap.Zoom}" Minimum="1" Maximum="18" Width="100" Interval="1" IsSnapToTickEnabled="True" />
@@ -29,4 +59,5 @@
             <gmap:GMapControl Name="Gmap" DataContextChanged="Map_DataContextChanged" />
         </GroupBox>
     </DockPanel>
+
 </UserControl>

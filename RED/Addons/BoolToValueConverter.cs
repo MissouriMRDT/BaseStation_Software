@@ -18,7 +18,9 @@ namespace RED.Addons
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return value != null ? value.Equals(TrueValue) : false;
+            return value?.Equals(TrueValue) ?? false;
         }
     }
+
+    public class BoolToStringConverter : BoolToValueConverter<string> { }
 }

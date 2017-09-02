@@ -1,5 +1,5 @@
 ﻿using Caliburn.Micro;
-using RED.Addons;
+using RED.Addons.Navigation;
 using RED.Interfaces;
 using RED.Models.Modules;
 using System;
@@ -9,19 +9,19 @@ namespace RED.ViewModels.Modules
 {
     public class GPSViewModel : PropertyChangedBase, ISubscribe
     {
-        GPSModel _model;
-        private IDataIdResolver _idResolver;
-        private IDataRouter _router;
+        private readonly GPSModel _model;
+        private readonly IDataIdResolver _idResolver;
+        private readonly IDataRouter _router;
 
         public bool FixObtained
         {
             get
             {
-                return _model.fixObtained;
+                return _model.FixObtained;
             }
             set
             {
-                _model.fixObtained = value;
+                _model.FixObtained = value;
                 NotifyOfPropertyChange(() => FixObtained);
             }
         }
@@ -29,11 +29,11 @@ namespace RED.ViewModels.Modules
         {
             get
             {
-                return _model.fixQuality;
+                return _model.FixQuality;
             }
             set
             {
-                _model.fixQuality = value;
+                _model.FixQuality = value;
                 NotifyOfPropertyChange(() => FixQuality);
             }
         }
@@ -41,11 +41,11 @@ namespace RED.ViewModels.Modules
         {
             get
             {
-                return _model.numberOfSatellites;
+                return _model.NumberOfSatellites;
             }
             set
             {
-                _model.numberOfSatellites = value;
+                _model.NumberOfSatellites = value;
                 NotifyOfPropertyChange(() => NumberOfSatellites);
             }
         }
@@ -53,11 +53,11 @@ namespace RED.ViewModels.Modules
         {
             get
             {
-                return _model.currentLocation;
+                return _model.CurrentLocation;
             }
             set
             {
-                _model.currentLocation = value;
+                _model.CurrentLocation = value;
                 NotifyOfPropertyChange(() => CurrentLocation);
             }
         }
@@ -65,11 +65,11 @@ namespace RED.ViewModels.Modules
         {
             get
             {
-                return _model.currentAltitude;
+                return _model.CurrentAltitude;
             }
             set
             {
-                _model.currentAltitude = value;
+                _model.CurrentAltitude = value;
                 NotifyOfPropertyChange(() => CurrentAltitude);
             }
         }
@@ -77,11 +77,11 @@ namespace RED.ViewModels.Modules
         {
             get
             {
-                return _model.speed;
+                return _model.Speed;
             }
             set
             {
-                _model.speed = value;
+                _model.Speed = value;
                 NotifyOfPropertyChange(() => Speed);
             }
         }
@@ -89,11 +89,11 @@ namespace RED.ViewModels.Modules
         {
             get
             {
-                return _model.speedAngle;
+                return _model.SpeedAngle;
             }
             set
             {
-                _model.speedAngle = value;
+                _model.SpeedAngle = value;
                 NotifyOfPropertyChange(() => SpeedAngle);
             }
         }
@@ -101,11 +101,11 @@ namespace RED.ViewModels.Modules
         {
             get
             {
-                return _model.baseStationLocation;
+                return _model.BaseStationLocation;
             }
             set
             {
-                _model.baseStationLocation = value;
+                _model.BaseStationLocation = value;
                 NotifyOfPropertyChange(() => BaseStationLocation);
                 RecalculateAntennaDirection();
             }
@@ -114,11 +114,11 @@ namespace RED.ViewModels.Modules
         {
             get
             {
-                return _model.antennaDirectionDeg;
+                return _model.AntennaDirectionDeg;
             }
             set
             {
-                _model.antennaDirectionDeg = value;
+                _model.AntennaDirectionDeg = value;
                 NotifyOfPropertyChange(() => AntennaDirectionDeg);
             }
         }
@@ -127,11 +127,11 @@ namespace RED.ViewModels.Modules
         {
             get
             {
-                return _model.heading;
+                return _model.Heading;
             }
             set
             {
-                _model.heading = value;
+                _model.Heading = value;
                 NotifyOfPropertyChange(() => Heading);
                 NotifyOfPropertyChange(() => HeadingDeg);
             }
@@ -158,7 +158,7 @@ namespace RED.ViewModels.Modules
             _router.Subscribe(this, _idResolver.GetId("GPSSatellites"));
         }
 
-        public void ReceiveFromRouter(ushort dataId, byte[] data)
+        public void ReceiveFromRouter(ushort dataId, byte[] data, bool reliable)
         {
             switch (_idResolver.GetName(dataId))
             {
