@@ -59,12 +59,12 @@ namespace RED.ViewModels.Input.Controllers
             DeviceType = "Xbox";
 
             Controller = new Controller(IntToUserIndex(controllerIndex));
-            InitializeDebounce(new[] { 
+            InitializeDebounce(new[] {
                 "ButtonA", "ButtonB",
-                "ButtonX", "ButtonY", 
-                "ButtonLb", "ButtonRb", 
-                "ButtonLs", "ButtonRs", 
-                "ButtonStart", "ButtonBack", 
+                "ButtonX", "ButtonY",
+                "ButtonLb", "ButtonRb",
+                "ButtonLs", "ButtonRs",
+                "ButtonStart", "ButtonBack",
                 "DPadL", "DPadU", "DPadR", "DPadD" });
         }
 

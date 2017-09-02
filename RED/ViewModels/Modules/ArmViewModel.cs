@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Xml.Serialization;
 
 namespace RED.ViewModels.Modules
 {
@@ -314,15 +313,15 @@ namespace RED.ViewModels.Modules
         public void StorePosition()
         {
             Positions.Add(new ArmPositionViewModel()
-                {
-                    Name = "Unnamed Position",
-                    J1 = AngleJ1,
-                    J2 = AngleJ2,
-                    J3 = AngleJ3,
-                    J4 = AngleJ4,
-                    J5 = AngleJ5,
-                    J6 = AngleJ6
-                });
+            {
+                Name = "Unnamed Position",
+                J1 = AngleJ1,
+                J2 = AngleJ2,
+                J3 = AngleJ3,
+                J4 = AngleJ4,
+                J5 = AngleJ5,
+                J6 = AngleJ6
+            });
         }
         public void DeletePosition()
         {

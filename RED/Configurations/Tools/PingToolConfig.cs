@@ -4,7 +4,7 @@ namespace RED.Configurations.Tools
 {
     internal static class PingToolConfig
     {
-        internal static PingToolContext DefaultPingToolConfig = new PingToolContext(1000, 1000, new[] { 
+        internal static PingToolContext DefaultPingToolConfig = new PingToolContext(1000, 1000, new[] {
             new PingServerContext("Base Rocket", "192.168.1.83", true, false),
             new PingServerContext("Rover Rocket", "192.168.1.82", true, false),
             new PingServerContext("Drive Board", "192.168.1.130", true, true),

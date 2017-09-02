@@ -5,20 +5,20 @@ namespace RED.Configurations.Input
     internal static class InputManagerConfig
     {
         internal static InputMappingsContext DefaultInputMappings = new InputMappingsContext(new[] {
-            new InputMappingContext("Tank Drive (Traditional)", "Xbox", "Drive", 30, new[] { 
+            new InputMappingContext("Tank Drive (Traditional)", "Xbox", "Drive", 30, new[] {
                 new InputChannelContext("JoyStick1Y", "WheelsLeft"){ Parabolic = true },
                 new InputChannelContext("JoyStick2Y", "WheelsRight"){ Parabolic = true },
                 new InputChannelContext("ButtonStartDebounced", "ModeCycle") }),
-            new InputMappingContext("Diagonal Drive", "FlightStick", "Drive", 30, new[] { 
+            new InputMappingContext("Diagonal Drive", "FlightStick", "Drive", 30, new[] {
                 new InputChannelContext("X", "WheelsLeft"){ Parabolic = true },
                 new InputChannelContext("Y", "WheelsRight"){ Parabolic = true },
                 new InputChannelContext("Button7Debounced", "ModeCycle") }),
-            new InputMappingContext("Vector Drive", "FlightStick", "Drive", 30, new[] { 
+            new InputMappingContext("Vector Drive", "FlightStick", "Drive", 30, new[] {
                 new InputChannelContext("X", "VectorX"),
                 new InputChannelContext("Y", "VectorY"),
                 new InputChannelContext("Slider0", "Throttle"),
                 new InputChannelContext("Button7Debounced", "ModeCycle") }),
-            new InputMappingContext("Arm (Traditional)", "Xbox", "Arm", 200, new[] { 
+            new InputMappingContext("Arm (Traditional)", "Xbox", "Arm", 200, new[] {
                 new InputChannelContext("JoyStick1Y", "ElbowBend"){ Parabolic = true },
                 new InputChannelContext("JoyStick1X", "ElbowTwist"){ Parabolic = true },
                 new InputChannelContext("JoyStick2Y", "WristTwist"){ Parabolic = true, LinearScaling = -1 },
@@ -35,11 +35,11 @@ namespace RED.Configurations.Input
                 new InputChannelContext("ButtonB", "TowRopeOut"),
                 new InputChannelContext("ButtonX", "TowRopeIn"),
                 new InputChannelContext("ButtonStartDebounced", "ModeCycle") }),
-            new InputMappingContext("Xbox Science Arm", "Xbox", "ScienceArm", 30, new[] { 
+            new InputMappingContext("Xbox Science Arm", "Xbox", "ScienceArm", 30, new[] {
                 new InputChannelContext("JoyStick1Y", "Arm"){ Parabolic = true },
                 new InputChannelContext("JoyStick2Y", "Drill"){ Parabolic = true },
                 new InputChannelContext("ButtonStartDebounced", "ModeCycle") }),
-            new InputMappingContext("Xbox Gimbal", "Xbox", "Gimbal", 30, new[] { 
+            new InputMappingContext("Xbox Gimbal", "Xbox", "Gimbal", 30, new[] {
                 new InputChannelContext("JoyStick1X", "Pan"){ Parabolic = true },
                 new InputChannelContext("JoyStick1Y", "Tilt"){ Parabolic = true },
                 new InputChannelContext("ButtonY", "ZoomIn"){ Parabolic = true },
@@ -49,7 +49,7 @@ namespace RED.Configurations.Input
                 new InputChannelContext("WS", "WheelsLeft"),
                 new InputChannelContext("IK", "WheelsRight"),
                 new InputChannelContext("RDebounced", "ModeCycle") }),
-            new InputMappingContext("Key Gimbal", "Keyboard", "Gimbal", 30, new[] { 
+            new InputMappingContext("Key Gimbal", "Keyboard", "Gimbal", 30, new[] {
                 new InputChannelContext("AD", "Pan"),
                 new InputChannelContext("WS", "Tilt"),
                 new InputChannelContext("I", "ZoomIn"),
