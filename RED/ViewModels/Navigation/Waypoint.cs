@@ -79,7 +79,7 @@ namespace RED.ViewModels.Navigation
             IsOnMap = true;
         }
         public Waypoint(double latitude, double longitude)
-            : this("", latitude, longitude)
+            : this(System.String.Empty, latitude, longitude)
         { }
     }
 }
