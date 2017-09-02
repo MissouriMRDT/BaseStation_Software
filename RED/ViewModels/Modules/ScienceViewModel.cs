@@ -314,11 +314,11 @@ namespace RED.ViewModels.Modules
                         await client.GetStream().CopyToAsync(file);
                     }
                 }
-                _log.Log("Spectrometer data downloaded into {0}", filename);
+                _log.Log($"Spectrometer data downloaded into {filename}");
             }
             catch (Exception e)
             {
-                _log.Log("There was an error downloading the spectrometer data: {0}", e.ToString());
+                _log.Log("There was an error downloading the spectrometer data:{0}{1}", Environment.NewLine, e);
             }
         }
 

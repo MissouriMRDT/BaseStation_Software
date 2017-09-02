@@ -17,8 +17,8 @@ namespace RED.ViewModels.Modules
         private readonly string[] PTZDataId = { "PTZ1Speed", "PTZ2Speed" };
         private readonly string[] MenuDataId = { "Camera1Menu", "Camera2Menu" };
 
-        public string Name { get; private set; }
-        public string ModeType { get; private set; }
+        public string Name { get; }
+        public string ModeType { get; }
 
         public int GimbalIndex
         {

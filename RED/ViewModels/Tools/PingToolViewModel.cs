@@ -207,9 +207,8 @@ namespace RED.ViewModels.Tools
                 _model = new PingToolModel.PingServerModel();
                 _pingTool = vm;
                 Name = context.Name;
-                IPAddress ip;
-                IPAddress.TryParse(context.Address, out ip);
-                Address = ip ?? null;
+                IPAddress.TryParse(context.Address, out IPAddress ip);
+                Address = ip;
                 SupportsICMP = context.SupportsICMP;
                 SupportsRoveComm = context.SupportsRoveComm;
                 Result = 0;

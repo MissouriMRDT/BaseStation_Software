@@ -88,12 +88,12 @@ namespace RED.ViewModels.Network
         {
             if (destIP == null)
             {
-                _log.Log("Attempted to send packet with unknown IP address. DataId={0}", dataId);
+                _log.Log($"Attempted to send packet with unknown IP address. DataId={dataId}");
                 return;
             }
             if (destIP.Equals(IPAddress.None))
             {
-                _log.Log("Attempted to send packet with invalid IP address. DataId={0} IP={1}", dataId, destIP);
+                _log.Log($"Attempted to send packet with invalid IP address. DataId={dataId} IP={destIP}");
                 return;
             }
 
@@ -150,19 +150,16 @@ namespace RED.ViewModels.Network
 
             outgoingUnACKed.Remove(packetInfo);
             if (dataId != (ushort)SystemDataId.Subscribe)
-                _log.Log("No ACK recieved for DataId={0} and SeqNum={1} after {2} retries", packetInfo.DataId, packetInfo.SeqNum, ReliableMaxRetries);
+                _log.Log($"No ACK recieved for DataId={packetInfo.DataId} and SeqNum={packetInfo.SeqNum} after {ReliableMaxRetries} retries");
         }
 
         private void ReceivePacket(IPAddress srcIP, byte[] buffer)
         {
-            if (TelemetryRecieved != null) TelemetryRecieved(srcIP);
-            ushort dataId;
-            ushort seqNum;
-            bool needsACK;
-            byte[] data = encoding.DecodePacket(buffer, out dataId, out seqNum, out needsACK);
+            TelemetryRecieved?.Invoke(srcIP);
+            byte[] data = encoding.DecodePacket(buffer, out ushort dataId, out ushort seqNum, out bool needsACK);
             if (!sequenceNumberProvider.UpdateNewer(dataId, seqNum))
             {
-                _log.Log("Packet recieved with invalid sequence number={0} DataId={1}", seqNum, dataId);
+                _log.Log($"Packet recieved with invalid sequence number={seqNum} DataId={dataId}");
                 return;
             }
             if (needsACK)
@@ -184,16 +181,16 @@ namespace RED.ViewModels.Network
                     ProcessPing(data);
                     break;
                 case SystemDataId.Subscribe:
-                    _log.Log("Packet recieved requesting subscription to dataId={0}", dataId);
+                    _log.Log($"Packet recieved requesting subscription to dataId={dataId}");
                     break;
                 case SystemDataId.Unsubscribe:
-                    _log.Log("Packet recieved requesting unsubscription from dataId={0}", dataId);
+                    _log.Log($"Packet recieved requesting unsubscription from dataId={dataId}");
                     break;
                 case SystemDataId.ACK:
                     ushort ackedId = (ushort)IPAddress.NetworkToHostOrder((short)BitConverter.ToUInt16(data, 0));
                     ushort ackedSeqNum = (ushort)IPAddress.NetworkToHostOrder((short)BitConverter.ToUInt16(data, 2));
                     if (!outgoingUnACKed.Remove(new UnACKedPacket { DataId = ackedId, SeqNum = ackedSeqNum }))
-                        _log.Log("Unexected ACK recieved from ip={0} with dataId={1} and seqNum={2}", srcIP, ackedId, ackedSeqNum);
+                        _log.Log($"Unexected ACK recieved from ip={srcIP} with dataId={ackedId} and seqNum={ackedSeqNum}");
                     break;
                 default: //Regular DataId
                     _router.Send(dataId, data);
@@ -220,7 +217,7 @@ namespace RED.ViewModels.Network
             ACK = 6
         }
 
-        private struct UnACKedPacket { public ushort DataId; public ushort SeqNum;}
+        private struct UnACKedPacket { public ushort DataId; public ushort SeqNum; }
         private class PendingPing
         {
             public ushort SeqNum;

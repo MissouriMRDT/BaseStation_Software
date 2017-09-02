@@ -107,24 +107,19 @@ namespace RED.ViewModels.Navigation
             {
                 case 1:
                     {
-                        double value0;
-                        if (!Double.TryParse(input[0], out value0))
+                        if (!Double.TryParse(input[0], out double value0))
                             throw new ArgumentException();
                         return value0;
                     }
                 case 2:
                     {
-                        int value0;
-                        double value1;
-                        if (!Int32.TryParse(input[0], out value0) || !Double.TryParse(input[1], out value1))
+                        if (!Int32.TryParse(input[0], out int value0) || !Double.TryParse(input[1], out double value1))
                             throw new ArgumentException();
                         return (value0) + Math.Sign(value0) * (value1 * 1 / 60d);
                     }
                 case 3:
                     {
-                        int value0, value1;
-                        double value2;
-                        if (!Int32.TryParse(input[0], out value0) || !Int32.TryParse(input[1], out value1) || !Double.TryParse(input[2], out value2))
+                        if (!Int32.TryParse(input[0], out int value0) || !Int32.TryParse(input[1], out int value1) || !Double.TryParse(input[2], out double value2))
                             throw new ArgumentException();
                         return (value0) + Math.Sign(value0) * ((value1 * 1 / 60d) + (value2 * 1 / 60d / 60d));
                     }

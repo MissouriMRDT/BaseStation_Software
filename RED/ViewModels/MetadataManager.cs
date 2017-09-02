@@ -17,9 +17,9 @@ namespace RED.ViewModels
 
         private const string MetadataConfigName = "DataIdMetadata";
 
-        public List<MetadataServerContext> Servers { get; private set; }
-        public List<MetadataRecordContext> Commands { get; private set; }
-        public List<MetadataRecordContext> Telemetry { get; private set; }
+        public List<MetadataServerContext> Servers { get; }
+        public List<MetadataRecordContext> Commands { get; }
+        public List<MetadataRecordContext> Telemetry { get; }
 
         private List<Server> ServerObjs;
 
@@ -72,7 +72,7 @@ namespace RED.ViewModels
             var data = GetMetadata(name);
             if (data == null)
             {
-                _log.Log("DataId for \"{0}\" not found", name);
+                _log.Log($"DataId for \"{name}\" not found");
                 return (ushort)0;
             }
             return data.Id;
@@ -80,22 +80,21 @@ namespace RED.ViewModels
         public string GetName(ushort DataId)
         {
             var data = GetMetadata(DataId);
-            return data == null ? String.Empty : data.Name;
+            return data?.Name ?? String.Empty;
         }
         public string GetServerAddress(ushort DataId)
         {
             var data = GetServer(DataId);
-            return data == null ? String.Empty : data.Address;
+            return data?.Address ?? String.Empty;
         }
 
         public IPAddress GetIPAddress(ushort dataId)
         {
-            IPAddress ip;
-            if (IPAddress.TryParse(GetServerAddress(dataId), out ip))
+            if (IPAddress.TryParse(GetServerAddress(dataId), out IPAddress ip))
                 return ip;
             else
             {
-                _log.Log("Error Parsing IP Address for DataId {0}", dataId);
+                _log.Log($"Error Parsing IP Address for DataId {dataId}");
                 return null;
             }
         }

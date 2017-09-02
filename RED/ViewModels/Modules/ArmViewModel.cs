@@ -28,8 +28,8 @@ namespace RED.ViewModels.Modules
         private readonly ILogger _log;
         private readonly IConfigurationManager _configManager;
 
-        public string Name { get; private set; }
-        public string ModeType { get; private set; }
+        public string Name { get; }
+        public string ModeType { get; }
 
         public const float Joint1FixedSpeed = .5f;
         public const int Joint2FixedSpeed = 127;
@@ -189,7 +189,7 @@ namespace RED.ViewModels.Modules
                     AngleJ6 = BitConverter.ToSingle(data, 5 * sizeof(float));
                     break;
                 case "ArmFault":
-                    _log.Log("Arm reported a fault code of {0}", data[0]);
+                    _log.Log($"Arm reported a fault code of {data[0]}");
                     break;
                 case "ArmCurrentMain":
                     CurrentMain = BitConverter.ToSingle(data, 0);
