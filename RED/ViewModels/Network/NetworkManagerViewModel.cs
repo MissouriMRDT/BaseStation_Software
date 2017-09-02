@@ -16,8 +16,8 @@ namespace RED.ViewModels.Network
         private const ushort DestinationPort = 11000;
         private const bool defaultReliable = false;
 
-        private TimeSpan ReliableRetransmissionTimeout { get { return TimeSpan.FromMilliseconds(1000); } }
-        private int ReliableMaxRetries { get { return 5; } }
+        private readonly TimeSpan ReliableRetransmissionTimeout = TimeSpan.FromMilliseconds(1000);
+        private const int ReliableMaxRetries = 5;
 
         private readonly NetworkManagerModel _model;
         private readonly IDataRouter _router;
