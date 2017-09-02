@@ -430,7 +430,7 @@ namespace RED.ViewModels.Modules
                 case "BMSTemperature2": BMSTemperature2 = BitConverter.ToSingle(data, 0); break;
 
                 case "PowerBusOverCurrentNotification":
-                    _log.Log("Overcurrent notification from Powerboard from Bus Index {0}", data[0]);
+                    _log.Log($"Overcurrent notification from Powerboard from Bus Index {data[0]}");
                     break;
                 case "BMSPackOvercurrent":
                     _log.Log("Overcurrent notification from BMS");

@@ -72,7 +72,7 @@ namespace RED.ViewModels
             var data = GetMetadata(name);
             if (data == null)
             {
-                _log.Log("DataId for \"{0}\" not found", name);
+                _log.Log($"DataId for \"{name}\" not found");
                 return (ushort)0;
             }
             return data.Id;
@@ -95,7 +95,7 @@ namespace RED.ViewModels
                 return ip;
             else
             {
-                _log.Log("Error Parsing IP Address for DataId {0}", dataId);
+                _log.Log($"Error Parsing IP Address for DataId {dataId}");
                 return null;
             }
         }

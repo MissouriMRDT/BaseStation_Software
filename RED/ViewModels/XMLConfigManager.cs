@@ -41,7 +41,7 @@ namespace RED.ViewModels
                 throw new ArgumentException("Config name cannot be empty");
             if (!DefaultConfigs.ContainsKey(name))
             {
-                _log.Log("Error! No config loaded for \"{0}\".", name);
+                _log.Log($"Error! No config loaded for \"{name}\".");
                 throw new ArgumentException("Config name not loaded");
             }
 
@@ -52,23 +52,23 @@ namespace RED.ViewModels
             }
             catch (FileNotFoundException)
             {
-                _log.Log("Missing config file for \"{0}\". Using default config instead.", name);
+                _log.Log($"Missing config file for \"{name}\". Using default config instead.");
             }
             catch (DirectoryNotFoundException)
             {
-                _log.Log("Missing config directory when reading config file for \"{0}\". Using default config instead.", name);
+                _log.Log($"Missing config directory when reading config file for \"{name}\". Using default config instead.");
             }
             catch (IOException)
             {
-                _log.Log("Unknown IO error when reading config file for \"{0}\". Using default config instead.", name);
+                _log.Log($"Unknown IO error when reading config file for \"{name}\". Using default config instead.");
             }
             catch (InvalidOperationException)
             {
-                _log.Log("Deserialization error when reading config file for \"{0}\". Using default config instead.", name);
+                _log.Log($"Deserialization error when reading config file for \"{name}\". Using default config instead.");
             }
             catch (SerializationException)
             {
-                _log.Log("General deserialization error when reading config file for \"{0}\". Using default config instead.", name);
+                _log.Log($"General deserialization error when reading config file for \"{name}\". Using default config instead.");
             }
 
             return (T)DefaultConfigs[name];
@@ -84,23 +84,23 @@ namespace RED.ViewModels
             }
             catch (FileNotFoundException)
             {
-                _log.Log("Missing file when writing config for \"{0}\".", name);
+                _log.Log($"Missing file when writing config for \"{name}\".");
             }
             catch (DirectoryNotFoundException)
             {
-                _log.Log("Missing config directory when writing config for \"{0}\".", name);
+                _log.Log($"Missing config directory when writing config for \"{name}\".");
             }
             catch (IOException)
             {
-                _log.Log("Unknown IO error when writing config file for \"{0}\".", name);
+                _log.Log($"Unknown IO error when writing config file for \"{name}\".");
             }
             catch (InvalidOperationException)
             {
-                _log.Log("Serialization error when writing config file for \"{0}\".", name);
+                _log.Log($"Serialization error when writing config file for \"{name}\".");
             }
             catch (SerializationException)
             {
-                _log.Log("General serialization error when writing config file for \"{0}\".", name);
+                _log.Log($"General serialization error when writing config file for \"{name}\".");
             }
         }
 
