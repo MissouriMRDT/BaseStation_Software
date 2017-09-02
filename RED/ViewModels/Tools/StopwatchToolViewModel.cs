@@ -392,7 +392,7 @@ namespace RED.ViewModels.Tools
             }
             private void Phase_PropertyChanged(object sender, PropertyChangedEventArgs e)
             {
-                if (e.PropertyName == "Duration")
+                if (e.PropertyName == nameof(Duration))
                     NotifyOfPropertyChange(() => Duration);
             }
         }
