@@ -9,11 +9,7 @@ namespace RED.Configurations
                 Commands = new[] {
                     new MetadataRecordContext(528, "DriveLeftRight", "Left wheels speed followed by right wheels speed"),
                     new MetadataRecordContext(100, "MotorLeftSpeed", "Left motor speed. Range is -1000 to 1000 (full reverse to full forward)"),
-                    new MetadataRecordContext(101, "MotorRightSpeed", "Right motor speed. Range is -1000 to 1000 (full reverse to full forward)"),
-                    new MetadataRecordContext(501, "DriveBoardReset", "Resets the driveboard")
-                },
-                Telemetry = new[] {
-                    new MetadataRecordContext(500, "MotorEStop", "TEMP: Milliseconds since epoch")
+                    new MetadataRecordContext(101, "MotorRightSpeed", "Right motor speed. Range is -1000 to 1000 (full reverse to full forward)")
                 }
             },
             new MetadataServerContext("Arm Board", "192.168.1.131") {
@@ -169,16 +165,6 @@ namespace RED.Configurations
                 Commands = new[] {
                     new MetadataRecordContext(2832, "CameraMuxChannel1", "Selection for Camera Mux Channel 1"),
                     new MetadataRecordContext(2833, "CameraMuxChannel2", "Selection for Camera Mux Channel 2")
-                }
-            },
-            new MetadataServerContext("Haptic Controller", "192.168.1.34") {
-                Telemetry = new[] {
-                    new MetadataRecordContext(849, "HapticJ1", "Haptic Joint 1"),
-                    new MetadataRecordContext(850, "HapticJ2", "Haptic Joint 2"),
-                    new MetadataRecordContext(851, "HapticJ3", "Haptic Joint 3"),
-                    new MetadataRecordContext(852, "HapticJ4", "Haptic Joint 4"),
-                    new MetadataRecordContext(853, "HapticJ5", "Haptic Joint 5"),
-                    new MetadataRecordContext(854, "HapticJ6", "Haptic Joint 6")
                 }
             }
         });
