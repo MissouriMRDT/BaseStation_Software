@@ -43,7 +43,7 @@ namespace RED.ViewModels.Input.Controllers
             Name = "Keyboard";
             DeviceType = "Keyboard";
             InitializeDebounce(AllKeys.Keys);
-            Connected = true;
+            Connected = false;
         }
 
         public Dictionary<string, float> GetValues()
