@@ -95,8 +95,8 @@ namespace RED.ViewModels.Input.Controllers
                 ["JoyStick2X"] = DeadzoneTransform(currentGamepad.RightThumbX, deadzone),
                 ["JoyStick2Y"] = DeadzoneTransform(currentGamepad.RightThumbY, deadzone),
 
-                ["LeftTrigger"] = (float)currentGamepad.LeftTrigger / 255,
-                ["RightTrigger"] = (float)currentGamepad.RightTrigger / 255,
+                ["LeftTrigger"] = (float)currentGamepad.LeftTrigger / 255.0f,
+                ["RightTrigger"] = (float)currentGamepad.RightTrigger / 255.0f,
                 ["ButtonA"] = ((currentGamepad.Buttons & GamepadButtonFlags.A) != 0) ? 1 : 0,
                 ["ButtonB"] = ((currentGamepad.Buttons & GamepadButtonFlags.B) != 0) ? 1 : 0,
                 ["ButtonX"] = ((currentGamepad.Buttons & GamepadButtonFlags.X) != 0) ? 1 : 0,

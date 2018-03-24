@@ -355,8 +355,8 @@ namespace RED.ViewModels.Modules
             }
 
 
-            ArmBaseTwist = (Int16)(TwoButtonToggleDirection(values["BaseTwistDirection"] != 0, (values["BaseTwistMagnitude"])) * MotorRangeFactor);
-            ArmBaseBend = (Int16)(TwoButtonToggleDirection(values["BaseBendDirection"] != 0, (values["BaseBendMagnitude"])) * MotorRangeFactor);
+            ArmBaseTwist = (Int16)(ControllerBase.TwoButtonToggleDirection(values["BaseTwistDirection"] != 0, (values["BaseTwistMagnitude"])) * MotorRangeFactor);
+            ArmBaseBend = (Int16)(ControllerBase.TwoButtonToggleDirection(values["BaseBendDirection"] != 0, (values["BaseBendMagnitude"])) * MotorRangeFactor);
             Gripper = (Int16)(ControllerBase.TwoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0) * EndeffectorSpeedLimit);
             Nipper = (Int16)(ControllerBase.TwoButtonTransform(values["NipperClose"] > 0, values["NipperOpen"] > 0, values["NipperClose"], -values["NipperOpen"], 0) * EndeffectorSpeedLimit);
 
@@ -417,8 +417,8 @@ namespace RED.ViewModels.Modules
             }
 
 
-            Z = (Int16)(TwoButtonToggleDirection(values["IKZDirection"] != 0, (values["IKZMagnitude"])) * MotorRangeFactor);
-            Roll = (Int16)(TwoButtonToggleDirection(values["IKRollDirection"] != 0, (values["IKRollMagnitude"])) * MotorRangeFactor);
+            Z = (Int16)(ControllerBase.TwoButtonToggleDirection(values["IKZDirection"] != 0, (values["IKZMagnitude"])) * MotorRangeFactor);
+            Roll = (Int16)(ControllerBase.TwoButtonToggleDirection(values["IKRollDirection"] != 0, (values["IKRollMagnitude"])) * MotorRangeFactor);
             Gripper = (Int16)(ControllerBase.TwoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0) * MotorRangeFactor);
             Nipper = (Int16)(ControllerBase.TwoButtonTransform(values["NipperClose"] > 0, values["NipperOpen"] > 0, values["NipperClose"], -values["NipperOpen"], 0) * MotorRangeFactor);
 
@@ -445,22 +445,22 @@ namespace RED.ViewModels.Modules
             if (values["UseAngular"] != 0)
             {
                 myState = ArmControlState.Angular;
-                stateLog = "Switching robotic arm control state to angular control";
+                stateLog = "Switching to angular control";
             }
             else if (values["UseOpenLoop"] != 0)
             {
                 myState = ArmControlState.OpenLoop;
-                stateLog = "Switching robotic arm control state to open loop";
+                stateLog = "Switching to open loop";
             }
             else if (values["UseRoverPerspectiveIK"] != 0)
             {
                 myState = ArmControlState.IKRoverPOV;
-                stateLog = "Switching robotic arm control state to rover perspective IK";
+                stateLog = "Switching to rover perspective IK";
             }
             else if (values["UseWristPerspectiveIK"] != 0)
             {
                 myState = ArmControlState.IKWristPOV;
-                stateLog = "Switching robotic arm control state to wrist perspective IK";
+                stateLog = "Switching to wrist perspective IK";
             }
 
             if (oldState != myState)
@@ -492,9 +492,8 @@ namespace RED.ViewModels.Modules
         public void StopMode()
         {
             _router.Send(_idResolver.GetId("ArmStop"), (Int16)(0), true);
-            _router.Send(_idResolver.GetId("Gripper"), (Int16)(0), true);
-            _router.Send(_idResolver.GetId("EndeffectorServo"), (Int16)(0), true);
-            _router.Send(_idResolver.GetId("CarabinerSpeed"), (Int16)(0), true);
+            _router.Send(_idResolver.GetId("Endeffector1"), (Int16)(0), true);
+            _router.Send(_idResolver.GetId("Endeffector2"), (Int16)(0), true);
         }
 
         public void EnableCommand(string bus, bool enableState)
@@ -504,11 +503,14 @@ namespace RED.ViewModels.Modules
             {
                 case "All": id = _idResolver.GetId("ArmEnableAll"); break;
                 case "Main": id = _idResolver.GetId("ArmEnableMain"); break;
-                case "J12": id = _idResolver.GetId("ArmEnableJ1"); break;
+                case "J1": id = _idResolver.GetId("ArmEnableJ1"); break;
+                case "J2": id = _idResolver.GetId("ArmEnableJ2"); break;
                 case "J3": id = _idResolver.GetId("ArmEnableJ3"); break;
-                case "J45": id = _idResolver.GetId("ArmEnableJ4"); break;
-                case "Endeff": id = _idResolver.GetId("ArmEnableEndeff"); break;
-                case "Servo": id = _idResolver.GetId("ArmEnableServo"); break;
+                case "J4": id = _idResolver.GetId("ArmEnableJ4"); break;
+                case "J5": id = _idResolver.GetId("ArmEnableJ5"); break;
+                case "J6": id = _idResolver.GetId("ArmEnableJ6"); break;
+                case "Endeff1": id = _idResolver.GetId("ArmEnableEndeff1"); break;
+                case "Endeff2": id = _idResolver.GetId("ArmEnableEndeff2"); break;
                 default: return;
             }
 
@@ -525,6 +527,14 @@ namespace RED.ViewModels.Modules
             byte[] data = new byte[angles.Length * sizeof(float)];
             Buffer.BlockCopy(angles, 0, data, 0, data.Length);
             _router.Send(_idResolver.GetId("ArmAbsoluteAngle"), data, true);
+        }
+
+        public void SetXYZPosition()
+        {
+            float[] coordinates = { CoordinateX, CoordinateY, CoordinateZ, Yaw, Pitch, Roll };
+            byte[] data = new byte[coordinates.Length * sizeof(float)];
+            Buffer.BlockCopy(coordinates, 0, data, 0, data.Length);
+            _router.Send(_idResolver.GetId("ArmAbsoluteXYZ"), data, true);
         }
 
         public void LimitSwitchOverride(byte index)
@@ -587,18 +597,6 @@ namespace RED.ViewModels.Modules
                 return JoystickDirections.Down;
             else
                 return JoystickDirections.None;
-        }
-
-        private float TwoButtonToggleDirection(bool directionButtonInput, float analogButtonInput)
-        {
-            if (directionButtonInput)
-            {
-                return -1 * analogButtonInput;
-            }
-            else
-            {
-                return analogButtonInput;
-            }
         }
 
         private enum JoystickDirections

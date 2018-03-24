@@ -31,6 +31,18 @@ namespace RED.ViewModels.Input
             }
         }
 
+        static public float TwoButtonToggleDirection(bool directionButtonInput, float analogButtonInput)
+        {
+            if (directionButtonInput)
+            {
+                return -1 * analogButtonInput;
+            }
+            else
+            {
+                return analogButtonInput;
+            }
+        }
+
         static public float DeadzoneTransform(int x, int deadzone)
         {
             return (x < deadzone && x > -deadzone) ? 0f : (x + (x < 0 ? deadzone : -deadzone)) / (float)(32768 - deadzone);
