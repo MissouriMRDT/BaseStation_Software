@@ -12,8 +12,34 @@ using System.Linq;
 
 namespace RED.ViewModels.Modules
 {
+    /// <summary>
+    /// The main class for handling all arm-based logic, and corresponds to the Arm dropbox in the gui 
+    /// 
+    /// Inhereting from PropertyBasedChange, IInputMode, and ISubscribe, this class essentially has three responsibilities.
+    /// First, it contains all the logic that tells the arm view what to fill itself with. Most of the fields below are for this,
+    /// such as AngleJ1 and so on. 
+    /// 
+    /// Second, as an IInputMode, the class is responsible for handling what happens when the user starts up arm control. 
+    /// An instance of this class is called when that happens, and methods such as StartMode, SetValues, and such are for 
+    /// this purpose
+    /// 
+    /// Finally, as an ISubscribe, this class is responsible for receiving messages from the router, and parsing them to 
+    /// find out if ti has any information relavent to the arm.
+    /// 
+    /// This class is designed to be constructed in the main view model class (usually ControlCenterViewModel).
+    /// </summary>
     public class ArmViewModel : PropertyChangedBase, IInputMode, ISubscribe
     {
+        private enum ArmControlState
+        {
+            OpenLoop,
+            IKRoverPOV,
+            IKWristPOV,
+            Angular
+        };
+
+        ArmControlState myState = ArmControlState.OpenLoop;
+
         private const string PositionsConfigName = "ArmPositions";
 
         private const byte ArmDisableCommand = 0x00;
@@ -103,6 +129,85 @@ namespace RED.ViewModels.Modules
             {
                 _model.AngleJ6 = value;
                 NotifyOfPropertyChange(() => AngleJ6);
+            }
+        }
+
+
+        public float CoordinateX
+        {
+            get
+            {
+                return _model.CoordinateX;
+            }
+            set
+            {
+                _model.CoordinateX = value;
+                NotifyOfPropertyChange(() => CoordinateX);
+            }
+        }
+
+        public float CoordinateY
+        {
+            get
+            {
+                return _model.CoordinateY;
+            }
+            set
+            {
+                _model.CoordinateY = value;
+                NotifyOfPropertyChange(() => CoordinateY);
+            }
+        }
+
+        public float CoordinateZ
+        {
+            get
+            {
+                return _model.CoordinateZ;
+            }
+            set
+            {
+                _model.CoordinateZ = value;
+                NotifyOfPropertyChange(() => CoordinateZ);
+            }
+        }
+
+        public float Yaw
+        {
+            get
+            {
+                return _model.Yaw;
+            }
+            set
+            {
+                _model.Yaw = value;
+                NotifyOfPropertyChange(() => Yaw);
+            }
+        }
+
+        public float Pitch
+        {
+            get
+            {
+                return _model.Pitch;
+            }
+            set
+            {
+                _model.Pitch = value;
+                NotifyOfPropertyChange(() => Pitch);
+            }
+        }
+
+        public float Roll
+        {
+            get
+            {
+                return _model.Roll;
+            }
+            set
+            {
+                _model.Roll = value;
+                NotifyOfPropertyChange(() => Roll);
             }
         }
 
@@ -199,29 +304,35 @@ namespace RED.ViewModels.Modules
         public void StartMode()
         { }
 
-        public void SetValues(Dictionary<string, float> values)
+        private void SetOpenLoopValues(Dictionary<string, float> values)
         {
             if (values["DebouncedArmReset"] != 0)
             {
-                _router.Send(_idResolver.GetId("ArmStop"), (Int16)(0), true);
+                _router.Send(_idResolver.GetId("ArmStop"), (Int16)(0));
                 _log.Log("Robotic Arm Resetting...");
             }
+
+            Int16 ArmWristBend = 0;
+            Int16 ArmWristTwist = 0;
+            Int16 ArmElbowTwist = 0;
+            Int16 ArmElbowBend = 0;
+            Int16 ArmBaseTwist = 0;
+            Int16 ArmBaseBend = 0;
+            Int16 Gripper = 0;
+            Int16 Nipper = 0;
 
             switch (JoystickDirection(values["WristBend"], values["WristTwist"]))
             {
                 case JoystickDirections.Right:
                 case JoystickDirections.Left:
-                    _router.Send(_idResolver.GetId("ArmJ4"), (Int16)(0));
-                    _router.Send(_idResolver.GetId("ArmJ5"), (Int16)(values["WristTwist"] * MotorRangeFactor));
-                    break;
                 case JoystickDirections.Up:
                 case JoystickDirections.Down:
-                    _router.Send(_idResolver.GetId("ArmJ4"), (Int16)(values["WristBend"] * MotorRangeFactor));
-                    _router.Send(_idResolver.GetId("ArmJ5"), (Int16)(0));
+                    ArmWristBend = (Int16)(values["WristBend"] * MotorRangeFactor);
+                    ArmWristTwist = (Int16)(values["WristTwist"] * MotorRangeFactor);
                     break;
                 case JoystickDirections.None:
-                    _router.Send(_idResolver.GetId("ArmJ4"), (Int16)(0));
-                    _router.Send(_idResolver.GetId("ArmJ5"), (Int16)(0));
+                    ArmWristTwist = 0;
+                    ArmWristBend = 0;
                     break;
             }
 
@@ -229,29 +340,153 @@ namespace RED.ViewModels.Modules
             {
                 case JoystickDirections.Up:
                 case JoystickDirections.Down:
-                    _router.Send(_idResolver.GetId("ArmJ3"), (Int16)(values["ElbowBend"] * MotorRangeFactor));
+                    ArmElbowTwist = 0;
+                    ArmElbowBend = (Int16)(values["ElbowBend"] * MotorRangeFactor);
                     break;
                 case JoystickDirections.Right:
                 case JoystickDirections.Left:
+                    ArmElbowTwist = (Int16)(values["ElbowTwist"] * MotorRangeFactor);
+                    ArmElbowBend = 0;
+                    break;
                 case JoystickDirections.None:
-                    _router.Send(_idResolver.GetId("ArmJ3"), (Int16)(0));
+                    ArmElbowTwist = 0;
+                    ArmElbowBend = 0;
                     break;
             }
 
-            Int16 actuatorSpeed = (Int16)ControllerBase.TwoButtonTransform(values["ShoulderBendForward"] != 0, values["ShoulderBendBackward"] != 0, Joint2FixedSpeed, -Joint2FixedSpeed, 0);
-            _router.Send(_idResolver.GetId("ArmJ2"), actuatorSpeed);
 
-            float baseSpeed = (float)ControllerBase.TwoButtonTransform(values["ShoulderTwistForward"] != 0, values["ShoulderTwistBackward"] != 0, Joint1FixedSpeed, -Joint1FixedSpeed, 0f);
-            _router.Send(_idResolver.GetId("ArmJ1"), (Int16)(baseSpeed / 10f * MotorRangeFactor));
+            ArmBaseTwist = (Int16)(TwoButtonToggleDirection(values["BaseTwistDirection"] != 0, (values["BaseTwistMagnitude"])) * MotorRangeFactor);
+            ArmBaseBend = (Int16)(TwoButtonToggleDirection(values["BaseBendDirection"] != 0, (values["BaseBendMagnitude"])) * MotorRangeFactor);
+            Gripper = (Int16)(ControllerBase.TwoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0) * EndeffectorSpeedLimit);
+            Nipper = (Int16)(ControllerBase.TwoButtonTransform(values["NipperClose"] > 0, values["NipperOpen"] > 0, values["NipperClose"], -values["NipperOpen"], 0) * EndeffectorSpeedLimit);
 
-            float gripperSpeed = (float)ControllerBase.TwoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0F);
-            _router.Send(_idResolver.GetId("Gripper"), (Int16)(gripperSpeed * EndeffectorSpeedLimit));
+            Int16[] sendValues = { ArmBaseTwist, ArmBaseBend, ArmElbowBend, ArmElbowTwist, ArmWristBend, ArmWristTwist, Gripper, Nipper };
+            byte[] data = new byte[sendValues.Length * sizeof(Int16)];
+            Buffer.BlockCopy(sendValues, 0, data, 0, data.Length);
+            _router.Send(_idResolver.GetId("ArmValues"), data);
+        }
 
-            float servoSpeed = (Int16)ControllerBase.TwoButtonTransform(values["ServoClockwise"] > 0, values["ServoCounterClockwise"] > 0, values["ServoClockwise"], -values["ServoCounterClockwise"], 0F);
-            _router.Send(_idResolver.GetId("EndeffectorServo"), (Int16)(servoSpeed * EndeffectorSpeedLimit));
+        private void SetIKValues(Dictionary<string, float> values, ArmControlState stateToUse)
+        {
+            if (values["DebouncedArmReset"] != 0)
+            {
+                _router.Send(_idResolver.GetId("ArmStop"), (Int16)(0));
+                _log.Log("Robotic Arm Resetting...");
+            }
 
-            float towRopeSpeed = (Int16)ControllerBase.TwoButtonTransform(values["TowRopeOut"] > 0, values["TowRopeIn"] > 0, values["TowRopeOut"], -values["TowRopeIn"], 0F);
-            _router.Send(_idResolver.GetId("CarabinerSpeed"), (Int16)(towRopeSpeed * EndeffectorSpeedLimit));
+            Int16 X = 0;
+            Int16 Y = 0;
+            Int16 Z = 0;
+            Int16 Yaw = 0;
+            Int16 Pitch = 0;
+            Int16 Roll = 0;
+            Int16 Gripper = 0;
+            Int16 Nipper = 0;
+
+            switch (JoystickDirection(values["IKYawIncrement"], values["IKPitchIncrement"]))
+            {
+                case JoystickDirections.Right:
+                case JoystickDirections.Left:
+                case JoystickDirections.Up:
+                case JoystickDirections.Down:
+                    Yaw = (Int16)(values["IKYawIncrement"] * MotorRangeFactor);
+                    Pitch = (Int16)(values["IKPitchIncrement"] * MotorRangeFactor);
+                    break;
+                case JoystickDirections.None:
+                    Yaw = 0;
+                    Pitch = 0;
+                    break;
+            }
+
+            switch (JoystickDirection(values["IKXIncrement"], values["IKYIncrement"]))
+            {
+                case JoystickDirections.Up:
+                case JoystickDirections.Down:
+                    Y = 0;
+                    X = (Int16)(values["IKXIncrement"] * MotorRangeFactor);
+                    break;
+                case JoystickDirections.Right:
+                case JoystickDirections.Left:
+                    Y = (Int16)(values["IKYIncrement"] * MotorRangeFactor);
+                    X = 0;
+                    break;
+                case JoystickDirections.None:
+                    Y = 0;
+                    X = 0;
+                    break;
+            }
+
+
+            Z = (Int16)(TwoButtonToggleDirection(values["IKZDirection"] != 0, (values["IKZMagnitude"])) * MotorRangeFactor);
+            Roll = (Int16)(TwoButtonToggleDirection(values["IKRollDirection"] != 0, (values["IKRollMagnitude"])) * MotorRangeFactor);
+            Gripper = (Int16)(ControllerBase.TwoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0) * MotorRangeFactor);
+            Nipper = (Int16)(ControllerBase.TwoButtonTransform(values["NipperClose"] > 0, values["NipperOpen"] > 0, values["NipperClose"], -values["NipperOpen"], 0) * MotorRangeFactor);
+
+
+            Int16[] sendValues = { X, Y, Z, Yaw, Pitch, Roll, Gripper, Nipper };
+            byte[] data = new byte[sendValues.Length * sizeof(Int16)];
+            Buffer.BlockCopy(sendValues, 0, data, 0, data.Length);
+
+            if (stateToUse == ArmControlState.IKWristPOV)
+            {
+                _router.Send(_idResolver.GetId("IKWristIncrement"), data);
+            }
+            else if (stateToUse == ArmControlState.IKRoverPOV)
+            {
+                _router.Send(_idResolver.GetId("IKRoverIncrement"), data);
+            }
+        }
+
+        private void UpdateControlState(Dictionary<string, float> values)
+        {
+            ArmControlState oldState = myState;
+            string stateLog = "";
+
+            if (values["UseAngular"] != 0)
+            {
+                myState = ArmControlState.Angular;
+                stateLog = "Switching robotic arm control state to angular control";
+            }
+            else if (values["UseOpenLoop"] != 0)
+            {
+                myState = ArmControlState.OpenLoop;
+                stateLog = "Switching robotic arm control state to open loop";
+            }
+            else if (values["UseRoverPerspectiveIK"] != 0)
+            {
+                myState = ArmControlState.IKRoverPOV;
+                stateLog = "Switching robotic arm control state to rover perspective IK";
+            }
+            else if (values["UseWristPerspectiveIK"] != 0)
+            {
+                myState = ArmControlState.IKWristPOV;
+                stateLog = "Switching robotic arm control state to wrist perspective IK";
+            }
+
+            if (oldState != myState)
+            {
+                _router.Send(_idResolver.GetId("ArmStop"), (Int16)(0));
+                _log.Log(stateLog);
+            }
+        }
+
+        public void SetValues(Dictionary<string, float> values)
+        {
+            UpdateControlState(values);
+
+            if (myState == ArmControlState.OpenLoop)
+            {
+                SetOpenLoopValues(values);
+            }
+            else if (myState == ArmControlState.Angular)
+            {
+                //controller does nothing in this state besides checking to see if you wanna switch states; otherwise user just
+                //uses the gui to input commands
+            }
+            else if (myState == ArmControlState.IKRoverPOV || myState == ArmControlState.IKWristPOV)
+            {
+                SetIKValues(values, myState);
+            }
         }
 
         public void StopMode()
@@ -352,6 +587,18 @@ namespace RED.ViewModels.Modules
                 return JoystickDirections.Down;
             else
                 return JoystickDirections.None;
+        }
+
+        private float TwoButtonToggleDirection(bool directionButtonInput, float analogButtonInput)
+        {
+            if (directionButtonInput)
+            {
+                return -1 * analogButtonInput;
+            }
+            else
+            {
+                return analogButtonInput;
+            }
         }
 
         private enum JoystickDirections
