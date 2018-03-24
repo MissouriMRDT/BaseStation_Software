@@ -97,12 +97,16 @@ namespace RED.ViewModels.Network
                 return;
             }
 
-            byte[] packetData = encoding.EncodePacket(dataId, data, seqNum, isReliable);
-
             if (isReliable && EnableReliablePackets)
+            {
+                byte[] packetData = encoding.EncodePacket(dataId, data, seqNum, isReliable);
                 SendPacketReliable(destIP, packetData, dataId, seqNum);
+            }
             else
+            {
+                byte[] packetData = encoding.EncodePacket(dataId, data, seqNum, false);
                 SendPacketUnreliable(destIP, packetData);
+            }
         }
 
         public async Task<TimeSpan> SendPing(IPAddress ip, TimeSpan timeout)
@@ -138,7 +142,7 @@ namespace RED.ViewModels.Network
 
         private async void SendPacketReliable(IPAddress destIP, byte[] packetData, ushort dataId, ushort seqNum)
         {
-            var packetInfo = new UnACKedPacket() { DataId = dataId, SeqNum = seqNum };
+            var packetInfo = new UnACKedPacket() { DataId = dataId };
             outgoingUnACKed.Add(packetInfo);
 
             for (int i = 0; i < ReliableMaxRetries; i++)
@@ -150,7 +154,7 @@ namespace RED.ViewModels.Network
 
             outgoingUnACKed.Remove(packetInfo);
             if (dataId != (ushort)SystemDataId.Subscribe)
-                _log.Log($"No ACK recieved for DataId={packetInfo.DataId} and SeqNum={packetInfo.SeqNum} after {ReliableMaxRetries} retries");
+                _log.Log($"No ACK recieved for DataId={packetInfo.DataId} after {ReliableMaxRetries} retries");
         }
 
         private void ReceivePacket(IPAddress srcIP, byte[] buffer)
@@ -188,9 +192,8 @@ namespace RED.ViewModels.Network
                     break;
                 case SystemDataId.ACK:
                     ushort ackedId = (ushort)IPAddress.NetworkToHostOrder((short)BitConverter.ToUInt16(data, 0));
-                    ushort ackedSeqNum = (ushort)IPAddress.NetworkToHostOrder((short)BitConverter.ToUInt16(data, 2));
-                    if (!outgoingUnACKed.Remove(new UnACKedPacket { DataId = ackedId, SeqNum = ackedSeqNum }))
-                        _log.Log($"Unexected ACK recieved from ip={srcIP} with dataId={ackedId} and seqNum={ackedSeqNum}");
+                    if (!outgoingUnACKed.Remove(new UnACKedPacket { DataId = ackedId }))
+                        _log.Log($"Unexected ACK recieved from ip={srcIP} with dataId={ackedId}");
                     break;
                 default: //Regular DataId
                     _router.Send(dataId, data);
@@ -217,7 +220,7 @@ namespace RED.ViewModels.Network
             ACK = 6
         }
 
-        private struct UnACKedPacket { public ushort DataId; public ushort SeqNum; }
+        private struct UnACKedPacket { public ushort DataId; }
         private class PendingPing
         {
             public ushort SeqNum;
