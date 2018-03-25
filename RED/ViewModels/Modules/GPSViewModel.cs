@@ -1,14 +1,13 @@
 ﻿using Caliburn.Micro;
 using RED.Addons.Navigation;
 using RED.Interfaces;
-using RED.Interfaces.Network;
 using RED.Models.Modules;
 using System;
 using System.IO;
 
 namespace RED.ViewModels.Modules
 {
-    public class GPSViewModel : PropertyChangedBase, ISubscribe
+    public class GPSViewModel : PropertyChangedBase, INetworkSubscriber
     {
         private readonly GPSModel _model;
         private readonly IDataIdResolver _idResolver;

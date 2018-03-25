@@ -5,6 +5,6 @@ namespace RED.Models
 {
     internal class DataRouterModel
     {
-        internal Dictionary<ushort, List<ISubscribe>> _registrations = new Dictionary<ushort, List<ISubscribe>>();
+        internal Dictionary<ushort, List<INetworkSubscriber>> _registrations = new Dictionary<ushort, List<INetworkSubscriber>>();
     }
 }

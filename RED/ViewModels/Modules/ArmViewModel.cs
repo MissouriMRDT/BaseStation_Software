@@ -3,7 +3,6 @@ using RED.Configurations.Modules;
 using RED.Contexts.Modules;
 using RED.Interfaces;
 using RED.Interfaces.Input;
-using RED.Interfaces.Network;
 using RED.Models.Modules;
 using RED.ViewModels.Input;
 using System;
@@ -32,7 +31,7 @@ namespace RED.ViewModels.Modules
     /// 
     /// This class is designed to be constructed in the main view model class (usually ControlCenterViewModel).
     /// </summary>
-    public class ArmViewModel : PropertyChangedBase, IInputMode, ISubscribe
+    public class ArmViewModel : PropertyChangedBase, IInputMode, INetworkSubscriber
     {
         private enum ArmControlState
         {

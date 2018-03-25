@@ -153,7 +153,7 @@
     <Compile Include="Interfaces\Network\IIPAddressProvider.cs" />
     <Compile Include="Interfaces\Input\IInputDevice.cs" />
     <Compile Include="Interfaces\Network\INetworkEncoding.cs" />
-    <Compile Include="Interfaces\Network\INetworkMessenger.cs" />
+    <Compile Include="Interfaces\INetworkMessenger.cs" />
     <Compile Include="Interfaces\Network\INetworkTransportProtocol.cs" />
     <Compile Include="Interfaces\Network\ISequenceNumberProvider.cs" />
     <Compile Include="Interfaces\Network\IServerProvider.cs" />
@@ -200,7 +200,7 @@
     <Compile Include="ViewModels\Navigation\Waypoint.cs" />
     <Compile Include="ViewModels\Navigation\WaypointManagerViewModel.cs" />
     <Compile Include="ViewModels\Network\NetworkManagerViewModel.cs" />
-    <Compile Include="Interfaces\ISubscribe.cs" />
+    <Compile Include="Interfaces\INetworkSubscriber.cs" />
     <Compile Include="Models\ControlCenterModel.cs" />
     <Compile Include="RedBootstrapper.cs" />
     <Compile Include="ViewModels\Modules\DriveViewModel.cs" />

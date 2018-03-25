@@ -1,13 +1,12 @@
 ﻿using Caliburn.Micro;
 using RED.Interfaces;
-using RED.Interfaces.Network;
 using RED.Models.Modules;
 using RED.ViewModels.Navigation;
 using System;
 
 namespace RED.ViewModels.Modules
 {
-    public class AutonomyViewModel : PropertyChangedBase, ISubscribe
+    public class AutonomyViewModel : PropertyChangedBase, INetworkSubscriber
     {
         private readonly AutonomyModel _model;
         private readonly INetworkMessenger _networkMessenger;

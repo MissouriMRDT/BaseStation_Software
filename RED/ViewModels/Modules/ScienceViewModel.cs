@@ -1,7 +1,6 @@
 ﻿using Caliburn.Micro;
 using RED.Interfaces;
 using RED.Models.Modules;
-using RED.Interfaces.Network;
 using System;
 using System.IO;
 using System.Net.Sockets;
@@ -9,7 +8,7 @@ using System.Text;
 
 namespace RED.ViewModels.Modules
 {
-    public class ScienceViewModel : PropertyChangedBase, ISubscribe
+    public class ScienceViewModel : PropertyChangedBase, INetworkSubscriber
     {
         private readonly ScienceModel _model;
         private readonly INetworkMessenger _networkMessenger;

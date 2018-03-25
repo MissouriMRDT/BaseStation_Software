@@ -1,7 +1,6 @@
 ﻿using Caliburn.Micro;
 using RED.Interfaces;
 using RED.Interfaces.Input;
-using RED.Interfaces.Network;
 using RED.Models.Modules;
 using System.Collections.Generic;
 using Math = System.Math;

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace RED.ViewModels.Network
 {
-    public class NetworkManagerViewModel : PropertyChangedBase, RED.Interfaces.Network.INetworkMessenger
+    public class NetworkManagerViewModel : PropertyChangedBase, RED.Interfaces.INetworkMessenger
     {
         private const ushort DestinationPort = 11000;
         private const bool defaultReliable = false;
@@ -30,7 +30,7 @@ namespace RED.ViewModels.Network
         private HashSet<UnACKedPacket> outgoingUnACKed = new HashSet<UnACKedPacket>();
         private HashSet<PendingPing> pendingPings = new HashSet<PendingPing>();
 
-        public Dictionary<ushort, List<ISubscribe>> Registrations
+        public Dictionary<ushort, List<INetworkSubscriber>> Registrations
         {
             get
             {
@@ -224,8 +224,8 @@ namespace RED.ViewModels.Network
         private void PassReceivedToSubscribers(ushort dataId, byte[] data, bool reliable = false)
         {
             if (dataId == 0) return;
-            if (Registrations.TryGetValue(dataId, out List<ISubscribe> registered))
-                foreach (ISubscribe subscription in registered)
+            if (Registrations.TryGetValue(dataId, out List<INetworkSubscriber> registered))
+                foreach (INetworkSubscriber subscription in registered)
                 {
                     try
                     {
@@ -238,27 +238,27 @@ namespace RED.ViewModels.Network
                 }
         }
 
-        public void Subscribe(ISubscribe subscriber, ushort dataId)
+        public void Subscribe(INetworkSubscriber subscriber, ushort dataId)
         {
             if (dataId == 0) return;
-            if (Registrations.TryGetValue(dataId, out List<ISubscribe> existingRegistrations))
+            if (Registrations.TryGetValue(dataId, out List<INetworkSubscriber> existingRegistrations))
             {
                 if (!existingRegistrations.Contains(subscriber))
                     existingRegistrations.Add(subscriber);
             }
             else
-                Registrations.Add(dataId, new List<ISubscribe> { subscriber });
+                Registrations.Add(dataId, new List<INetworkSubscriber> { subscriber });
         }
 
-        public void UnSubscribe(ISubscribe subscriber)
+        public void UnSubscribe(INetworkSubscriber subscriber)
         {
-            var registrationCopy = new Dictionary<ushort, List<ISubscribe>>(Registrations); //Use a copy because we may modify it while removing stuff and that breaks the foreach
-            foreach (KeyValuePair<ushort, List<ISubscribe>> kvp in registrationCopy)
+            var registrationCopy = new Dictionary<ushort, List<INetworkSubscriber>>(Registrations); //Use a copy because we may modify it while removing stuff and that breaks the foreach
+            foreach (KeyValuePair<ushort, List<INetworkSubscriber>> kvp in registrationCopy)
                 UnSubscribe(subscriber, kvp.Key);
         }
-        public void UnSubscribe(ISubscribe subscriber, ushort dataId)
+        public void UnSubscribe(INetworkSubscriber subscriber, ushort dataId)
         {
-            if (Registrations.TryGetValue(dataId, out List<ISubscribe> existingRegistrations))
+            if (Registrations.TryGetValue(dataId, out List<INetworkSubscriber> existingRegistrations))
             {
                 existingRegistrations.Remove(subscriber);
                 if (existingRegistrations.Count == 0)

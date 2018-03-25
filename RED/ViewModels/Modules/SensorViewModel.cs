@@ -1,12 +1,11 @@
 ﻿using Caliburn.Micro;
 using RED.Interfaces;
-using RED.Interfaces.Network;
 using RED.Models.Modules;
 using System;
 
 namespace RED.ViewModels.Modules
 {
-    public class SensorViewModel : PropertyChangedBase, ISubscribe
+    public class SensorViewModel : PropertyChangedBase, INetworkSubscriber
     {
         private readonly SensorModel _model;
         private readonly INetworkMessenger _networkMessenger;

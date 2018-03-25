@@ -1,13 +1,12 @@
 ﻿using Caliburn.Micro;
 using RED.Interfaces;
-using RED.Interfaces.Network;
 using RED.Models.Modules;
 using System;
 using System.IO;
 
 namespace RED.ViewModels.Modules
 {
-    public class PowerViewModel : PropertyChangedBase, ISubscribe
+    public class PowerViewModel : PropertyChangedBase, INetworkSubscriber
     {
         private readonly PowerModel _model;
         private readonly INetworkMessenger _networkMessenger;
