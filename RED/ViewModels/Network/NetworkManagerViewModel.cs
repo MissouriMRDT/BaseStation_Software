@@ -178,12 +178,19 @@ namespace RED.ViewModels.Network
                 _log.Log($"Packet recieved with invalid sequence number={seqNum} DataId={dataId}");
                 return;
             }
+
             if (needsACK)
                 SendAck(srcIP, dataId, seqNum);
-            InterpretDataId(srcIP, data, dataId, seqNum);
+
+            bool passToSubscribers = HandleSystemDataID(srcIP, data, dataId, seqNum);
+
+            if(passToSubscribers)
+            {
+                PassReceivedToSubscribers(dataId, data);
+            }
         }
 
-        private void InterpretDataId(IPAddress srcIP, byte[] data, ushort dataId, ushort seqNum)
+        private bool HandleSystemDataID(IPAddress srcIP, byte[] data, ushort dataId, ushort seqNum)
         {
             switch ((SystemDataId)dataId)
             {
@@ -208,9 +215,10 @@ namespace RED.ViewModels.Network
                         _log.Log($"Unexected ACK recieved from ip={srcIP} with dataId={ackedId}");
                     break;
                 default: //Regular DataId
-                    PassReceivedToSubscribers(dataId, data);
-                    break;
+                    return true;
             }
+
+            return false;
         }
 
         private void SendAck(IPAddress srcIP, ushort dataId, ushort seqNum)
