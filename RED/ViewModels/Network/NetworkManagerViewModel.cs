@@ -229,7 +229,7 @@ namespace RED.ViewModels.Network
                 {
                     try
                     {
-                        subscription.ReceiveFromRouter(dataId, data, reliable);
+                        subscription.ReceivedNetworkMessageCallback(dataId, data, reliable);
                     }
                     catch (System.Exception e)
                     {

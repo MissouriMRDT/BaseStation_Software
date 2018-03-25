@@ -147,7 +147,7 @@ namespace RED.ViewModels.Modules
             _networkMessenger.Subscribe(this, _idResolver.GetId("IMUMagnetometer"));
         }
 
-        public void ReceiveFromRouter(ushort dataId, byte[] data, bool reliable)
+        public void ReceivedNetworkMessageCallback(ushort dataId, byte[] data, bool reliable)
         {
             switch (_idResolver.GetName(dataId))
             {

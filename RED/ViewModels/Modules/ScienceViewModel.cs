@@ -364,7 +364,7 @@ namespace RED.ViewModels.Modules
             await SensorDataFile.WriteAsync(data, 0, data.Length);
         }
 
-        public void ReceiveFromRouter(ushort dataId, byte[] data, bool reliable)
+        public void ReceivedNetworkMessageCallback(ushort dataId, byte[] data, bool reliable)
         {
             switch (_idResolver.GetName(dataId))
             {

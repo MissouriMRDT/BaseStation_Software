@@ -45,7 +45,7 @@ namespace RED.ViewModels.Modules
             _networkMessenger.SendOverNetwork(_idResolver.GetId("AutonomyCalibrate"), new byte[0], true);
         }
 
-        public void ReceiveFromRouter(ushort dataId, byte[] data, bool reliable)
+        public void ReceivedNetworkMessageCallback(ushort dataId, byte[] data, bool reliable)
         {
             switch (_idResolver.GetName(dataId))
             {
