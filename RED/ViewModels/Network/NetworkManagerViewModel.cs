@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace RED.ViewModels.Network
 {
-    public class NetworkManagerViewModel : PropertyChangedBase, RED.Interfaces.ISubscribe
+    public class NetworkManagerViewModel : PropertyChangedBase, RED.Interfaces.Network.INetworkMessenger
     {
         private const ushort DestinationPort = 11000;
         private const bool defaultReliable = false;
@@ -20,7 +20,6 @@ namespace RED.ViewModels.Network
         private const int ReliableMaxRetries = 5;
 
         private readonly NetworkManagerModel _model;
-        private readonly IDataRouter _router;
         private readonly ILogger _log;
         private readonly IIPAddressProvider _ipProvider;
 
@@ -30,6 +29,14 @@ namespace RED.ViewModels.Network
 
         private HashSet<UnACKedPacket> outgoingUnACKed = new HashSet<UnACKedPacket>();
         private HashSet<PendingPing> pendingPings = new HashSet<PendingPing>();
+
+        public Dictionary<ushort, List<ISubscribe>> Registrations
+        {
+            get
+            {
+                return _model._registrations;
+            }
+        }
 
         public bool EnableReliablePackets
         {
@@ -46,19 +53,15 @@ namespace RED.ViewModels.Network
 
         public event Action<IPAddress> TelemetryRecieved;
 
-        public NetworkManagerViewModel(IDataRouter router, MetadataRecordContext[] commands, ILogger log, IIPAddressProvider ipProvider)
+        public NetworkManagerViewModel(MetadataRecordContext[] commands, ILogger log, IIPAddressProvider ipProvider)
         {
             _model = new NetworkManagerModel();
-            _router = router;
             _log = log;
             _ipProvider = ipProvider;
 
             sequenceNumberProvider = new SequenceNumberManager();
             encoding = new RoverProtocol();
             continuousDataSocket = new UDPEndpoint(DestinationPort, DestinationPort);
-
-            foreach (var command in commands)
-                _router.Subscribe(this, command.Id);
 
             Listen();
         }
@@ -70,12 +73,6 @@ namespace RED.ViewModels.Network
                 Tuple<IPAddress, byte[]> result = await continuousDataSocket.ReceiveMessage();
                 ReceivePacket(result.Item1, result.Item2);
             }
-        }
-
-        public void ReceiveFromRouter(ushort dataId, byte[] data, bool reliable)
-        {
-            IPAddress destIP = _ipProvider.GetIPAddress(dataId);
-            SendPacket(dataId, data, destIP, reliable);
         }
 
         public void SendPacket(ushort dataId, byte[] data, IPAddress destIP, bool isReliable)
@@ -133,6 +130,21 @@ namespace RED.ViewModels.Network
 
             ping.RoundtripTime = now - ping.Timestamp;
             ping.Semaphore.Release();
+        }
+
+        public void SendOverNetwork(ushort dataId, byte obj, bool reliable = false)
+        {
+            SendOverNetwork(dataId, new byte[] { obj }, reliable);
+        }
+        public void SendOverNetwork(ushort dataId, dynamic obj, bool reliable = false)
+        {
+            SendOverNetwork(dataId, System.BitConverter.GetBytes(obj), reliable);
+        }
+
+        public void SendOverNetwork(ushort dataId, byte[] data, bool reliable = false)
+        {
+            IPAddress destIP = _ipProvider.GetIPAddress(dataId);
+            SendPacket(dataId, data, destIP, reliable);
         }
 
         private async void SendPacketUnreliable(IPAddress destIP, byte[] packetData)
@@ -196,7 +208,7 @@ namespace RED.ViewModels.Network
                         _log.Log($"Unexected ACK recieved from ip={srcIP} with dataId={ackedId}");
                     break;
                 default: //Regular DataId
-                    _router.Send(dataId, data);
+                    PassReceivedToSubscribers(dataId, data);
                     break;
             }
         }
@@ -207,6 +219,51 @@ namespace RED.ViewModels.Network
             byte[] ackedSeqNum = BitConverter.GetBytes(IPAddress.NetworkToHostOrder((short)seqNum));
             byte[] data = new byte[4]; data.CopyTo(ackedId, 0); data.CopyTo(ackedSeqNum, ackedId.Length);
             SendPacket((ushort)SystemDataId.ACK, data, srcIP, false);
+        }
+
+        private void PassReceivedToSubscribers(ushort dataId, byte[] data, bool reliable = false)
+        {
+            if (dataId == 0) return;
+            if (Registrations.TryGetValue(dataId, out List<ISubscribe> registered))
+                foreach (ISubscribe subscription in registered)
+                {
+                    try
+                    {
+                        subscription.ReceiveFromRouter(dataId, data, reliable);
+                    }
+                    catch (System.Exception e)
+                    {
+                        _log.Log("Error parsing packet with dataid={0}{1}{2}", dataId, System.Environment.NewLine, e);
+                    }
+                }
+        }
+
+        public void Subscribe(ISubscribe subscriber, ushort dataId)
+        {
+            if (dataId == 0) return;
+            if (Registrations.TryGetValue(dataId, out List<ISubscribe> existingRegistrations))
+            {
+                if (!existingRegistrations.Contains(subscriber))
+                    existingRegistrations.Add(subscriber);
+            }
+            else
+                Registrations.Add(dataId, new List<ISubscribe> { subscriber });
+        }
+
+        public void UnSubscribe(ISubscribe subscriber)
+        {
+            var registrationCopy = new Dictionary<ushort, List<ISubscribe>>(Registrations); //Use a copy because we may modify it while removing stuff and that breaks the foreach
+            foreach (KeyValuePair<ushort, List<ISubscribe>> kvp in registrationCopy)
+                UnSubscribe(subscriber, kvp.Key);
+        }
+        public void UnSubscribe(ISubscribe subscriber, ushort dataId)
+        {
+            if (Registrations.TryGetValue(dataId, out List<ISubscribe> existingRegistrations))
+            {
+                existingRegistrations.Remove(subscriber);
+                if (existingRegistrations.Count == 0)
+                    Registrations.Remove(dataId);
+            }
         }
 
         private enum SystemDataId : ushort

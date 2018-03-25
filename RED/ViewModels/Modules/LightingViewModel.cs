@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using RED.Interfaces;
+using RED.Interfaces.Network;
 using RED.Models.Modules;
 
 namespace RED.ViewModels.Modules
@@ -7,7 +8,7 @@ namespace RED.ViewModels.Modules
     public class LightingViewModel : PropertyChangedBase
     {
         private readonly LightingModel _model;
-        private readonly IDataRouter _router;
+        private readonly INetworkMessenger _networkMessenger;
         private readonly IDataIdResolver _idResolver;
 
         public bool Enabled
@@ -66,22 +67,22 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public LightingViewModel(IDataRouter router, IDataIdResolver idResolver)
+        public LightingViewModel(INetworkMessenger networkMessenger, IDataIdResolver idResolver)
         {
             _model = new LightingModel();
-            _router = router;
+            _networkMessenger = networkMessenger;
             _idResolver = idResolver;
         }
 
         private void SendColors()
         {
             if (Enabled)
-                _router.Send(_idResolver.GetId("UnderglowColor"), new byte[] { Red, Green, Blue });
+                _networkMessenger.SendOverNetwork(_idResolver.GetId("UnderglowColor"), new byte[] { Red, Green, Blue });
         }
 
         private void TurnOff()
         {
-            _router.Send(_idResolver.GetId("UnderglowColor"), new byte[] { 0, 0, 0 }, true);
+            _networkMessenger.SendOverNetwork(_idResolver.GetId("UnderglowColor"), new byte[] { 0, 0, 0 }, true);
         }
     }
 }

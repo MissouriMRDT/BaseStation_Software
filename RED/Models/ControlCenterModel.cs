@@ -14,7 +14,6 @@ namespace RED.Models
 
         internal ConsoleViewModel _console;
         internal XMLConfigManager _configManager;
-        internal DataRouter _dataRouter;
         internal MetadataManager _metadataManager;
         internal SubscriptionManagerViewModel _subscriptionManager;
         internal NetworkManagerViewModel _networkManager;

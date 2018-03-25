@@ -1,30 +1,31 @@
 ﻿using Caliburn.Micro;
 using RED.Interfaces;
+using RED.Interfaces.Network;
 
 namespace RED.ViewModels.Modules
 {
     public class DropBaysViewModel : PropertyChangedBase
     {
-        private readonly IDataRouter _router;
+        private readonly INetworkMessenger _networkMessenger;
         private readonly IDataIdResolver _idResolver;
         private readonly ILogger _log;
 
-        public DropBaysViewModel(IDataRouter router, IDataIdResolver idResolver, ILogger log)
+        public DropBaysViewModel(INetworkMessenger networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
-            _router = router;
+            _networkMessenger = networkMessenger;
             _idResolver = idResolver;
             _log = log;
         }
 
         public void OpenBay(byte index)
         {
-            _router.Send(_idResolver.GetId("DropBayOpen"), index, true);
+            _networkMessenger.SendOverNetwork(_idResolver.GetId("DropBayOpen"), index, true);
             _log.Log("Drop bay #{0} opened", index + 1);
         }
 
         public void CloseBay(byte index)
         {
-            _router.Send(_idResolver.GetId("DropBayClose"), index, true);
+            _networkMessenger.SendOverNetwork(_idResolver.GetId("DropBayClose"), index, true);
             _log.Log("Drop bay #{0} closed", index + 1);
         }
     }

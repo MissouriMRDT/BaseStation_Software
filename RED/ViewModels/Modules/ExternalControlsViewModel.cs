@@ -1,11 +1,12 @@
 ﻿using Caliburn.Micro;
 using RED.Interfaces;
+using RED.Interfaces.Network;
 
 namespace RED.ViewModels.Modules
 {
     public class ExternalControlsViewModel : PropertyChangedBase
     {
-        private readonly IDataRouter _router;
+        private readonly INetworkMessenger _networkMessenger;
         private readonly IDataIdResolver _idResolver;
 
         private const byte GimbalDisableCommand = 0x00;
@@ -25,24 +26,24 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public ExternalControlsViewModel(IDataRouter router, IDataIdResolver idResolver)
+        public ExternalControlsViewModel(INetworkMessenger networkMessenger, IDataIdResolver idResolver)
         {
-            _router = router;
+            _networkMessenger = networkMessenger;
             _idResolver = idResolver;
         }
 
         public void EnableAll()
         {
-            _router.Send(_idResolver.GetId("GimbalEnableAll"), GimbalEnableCommand, true);
+            _networkMessenger.SendOverNetwork(_idResolver.GetId("GimbalEnableAll"), GimbalEnableCommand, true);
         }
         public void DisableAll()
         {
-            _router.Send(_idResolver.GetId("GimbalEnableAll"), GimbalDisableCommand, true);
+            _networkMessenger.SendOverNetwork(_idResolver.GetId("GimbalEnableAll"), GimbalDisableCommand, true);
         }
 
         public void ExternalControlsReset()
         {
-            _router.Send(_idResolver.GetId("ExternalControlsReset"), ResetCode, true);
+            _networkMessenger.SendOverNetwork(_idResolver.GetId("ExternalControlsReset"), ResetCode, true);
         }
     }
 }

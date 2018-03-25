@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using RED.Addons.Navigation;
 using RED.Interfaces;
+using RED.Interfaces.Network;
 using RED.Models.Modules;
 using System;
 using System.IO;
@@ -11,7 +12,7 @@ namespace RED.ViewModels.Modules
     {
         private readonly GPSModel _model;
         private readonly IDataIdResolver _idResolver;
-        private readonly IDataRouter _router;
+        private readonly INetworkMessenger _networkMessenger;
 
         public bool FixObtained
         {
@@ -144,18 +145,18 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public GPSViewModel(IDataRouter router, IDataIdResolver idResolver)
+        public GPSViewModel(INetworkMessenger networkMessenger, IDataIdResolver idResolver)
         {
             _model = new GPSModel();
-            _router = router;
+            _networkMessenger = networkMessenger;
             _idResolver = idResolver;
 
-            _router.Subscribe(this, _idResolver.GetId("GPSQuality"));
-            _router.Subscribe(this, _idResolver.GetId("GPSPosition"));
-            _router.Subscribe(this, _idResolver.GetId("GPSSpeed"));
-            _router.Subscribe(this, _idResolver.GetId("GPSSpeedAngle"));
-            _router.Subscribe(this, _idResolver.GetId("GPSAltitude"));
-            _router.Subscribe(this, _idResolver.GetId("GPSSatellites"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("GPSQuality"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("GPSPosition"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("GPSSpeed"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("GPSSpeedAngle"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("GPSAltitude"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("GPSSatellites"));
         }
 
         public void ReceiveFromRouter(ushort dataId, byte[] data, bool reliable)

@@ -153,6 +153,7 @@
     <Compile Include="Interfaces\Network\IIPAddressProvider.cs" />
     <Compile Include="Interfaces\Input\IInputDevice.cs" />
     <Compile Include="Interfaces\Network\INetworkEncoding.cs" />
+    <Compile Include="Interfaces\Network\INetworkMessenger.cs" />
     <Compile Include="Interfaces\Network\INetworkTransportProtocol.cs" />
     <Compile Include="Interfaces\Network\ISequenceNumberProvider.cs" />
     <Compile Include="Interfaces\Network\IServerProvider.cs" />
@@ -182,7 +183,6 @@
     <Compile Include="Models\Tools\TelemetryLogToolModel.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Models\Input\Controllers\XboxControllerInputModel.cs" />
-    <Compile Include="Interfaces\IDataRouter.cs" />
     <Compile Include="ViewModels\Input\ControllerBase.cs" />
     <Compile Include="ViewModels\Input\Controllers\FlightStickViewModel.cs" />
     <Compile Include="ViewModels\Input\InputSelectorViewModel.cs" />
@@ -200,7 +200,6 @@
     <Compile Include="ViewModels\Navigation\Waypoint.cs" />
     <Compile Include="ViewModels\Navigation\WaypointManagerViewModel.cs" />
     <Compile Include="ViewModels\Network\NetworkManagerViewModel.cs" />
-    <Compile Include="ViewModels\DataRouter.cs" />
     <Compile Include="Interfaces\ISubscribe.cs" />
     <Compile Include="Models\ControlCenterModel.cs" />
     <Compile Include="RedBootstrapper.cs" />

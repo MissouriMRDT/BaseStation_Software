@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using RED.Interfaces;
+using RED.Interfaces.Network;
 using RED.Models.Modules;
 using System;
 using System.IO;
@@ -9,7 +10,7 @@ namespace RED.ViewModels.Modules
     public class PowerViewModel : PropertyChangedBase, ISubscribe
     {
         private readonly PowerModel _model;
-        private readonly IDataRouter _router;
+        private readonly INetworkMessenger _networkMessenger;
         private readonly IDataIdResolver _idResolver;
         private readonly ILogger _log;
 
@@ -355,45 +356,45 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public PowerViewModel(IDataRouter router, IDataIdResolver idResolver, ILogger log)
+        public PowerViewModel(INetworkMessenger networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
             _model = new PowerModel();
-            _router = router;
+            _networkMessenger = networkMessenger;
             _idResolver = idResolver;
             _log = log;
 
-            _router.Subscribe(this, _idResolver.GetId("Motor1Current"));
-            _router.Subscribe(this, _idResolver.GetId("Motor2Current"));
-            _router.Subscribe(this, _idResolver.GetId("Motor3Current"));
-            _router.Subscribe(this, _idResolver.GetId("Motor4Current"));
-            _router.Subscribe(this, _idResolver.GetId("Motor5Current"));
-            _router.Subscribe(this, _idResolver.GetId("Motor6Current"));
-            _router.Subscribe(this, _idResolver.GetId("Motor7Current"));
-            _router.Subscribe(this, _idResolver.GetId("Motor8Current"));
-            _router.Subscribe(this, _idResolver.GetId("Bus5VCurrent"));
-            _router.Subscribe(this, _idResolver.GetId("Bus12VCurrent"));
-            _router.Subscribe(this, _idResolver.GetId("ExtraCurrent"));
-            _router.Subscribe(this, _idResolver.GetId("ActuationCurrent"));
-            _router.Subscribe(this, _idResolver.GetId("LogicCurrent"));
-            _router.Subscribe(this, _idResolver.GetId("CommunicationsCurrent"));
-            _router.Subscribe(this, _idResolver.GetId("InputVoltage"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("Motor1Current"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("Motor2Current"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("Motor3Current"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("Motor4Current"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("Motor5Current"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("Motor6Current"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("Motor7Current"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("Motor8Current"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("Bus5VCurrent"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("Bus12VCurrent"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("ExtraCurrent"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("ActuationCurrent"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("LogicCurrent"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("CommunicationsCurrent"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("InputVoltage"));
 
-            _router.Subscribe(this, _idResolver.GetId("Cell1Voltage"));
-            _router.Subscribe(this, _idResolver.GetId("Cell2Voltage"));
-            _router.Subscribe(this, _idResolver.GetId("Cell3Voltage"));
-            _router.Subscribe(this, _idResolver.GetId("Cell4Voltage"));
-            _router.Subscribe(this, _idResolver.GetId("Cell5Voltage"));
-            _router.Subscribe(this, _idResolver.GetId("Cell6Voltage"));
-            _router.Subscribe(this, _idResolver.GetId("Cell7Voltage"));
-            _router.Subscribe(this, _idResolver.GetId("Cell8Voltage"));
-            _router.Subscribe(this, _idResolver.GetId("TotalPackCurrent"));
-            _router.Subscribe(this, _idResolver.GetId("TotalPackVoltage"));
-            _router.Subscribe(this, _idResolver.GetId("BMSTemperature1"));
-            _router.Subscribe(this, _idResolver.GetId("BMSTemperature2"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("Cell1Voltage"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("Cell2Voltage"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("Cell3Voltage"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("Cell4Voltage"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("Cell5Voltage"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("Cell6Voltage"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("Cell7Voltage"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("Cell8Voltage"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("TotalPackCurrent"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("TotalPackVoltage"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("BMSTemperature1"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("BMSTemperature2"));
 
-            _router.Subscribe(this, _idResolver.GetId("PowerBusOverCurrentNotification"));
-            _router.Subscribe(this, _idResolver.GetId("BMSPackOvercurrent"));
-            _router.Subscribe(this, _idResolver.GetId("BMSPackUndervoltage"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("PowerBusOverCurrentNotification"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("BMSPackOvercurrent"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("BMSPackUndervoltage"));
         }
 
         public void ReceiveFromRouter(ushort dataId, byte[] data, bool reliable)
@@ -464,29 +465,29 @@ namespace RED.ViewModels.Modules
 
         public void RebootRover()
         {
-            _router.Send(_idResolver.GetId("BMSReboot"), new byte[0], true);
+            _networkMessenger.SendOverNetwork(_idResolver.GetId("BMSReboot"), new byte[0], true);
         }
         public void EStopRover()
         {
-            _router.Send(_idResolver.GetId("BMSStop"), new byte[0], true);
+            _networkMessenger.SendOverNetwork(_idResolver.GetId("BMSStop"), new byte[0], true);
         }
 
         public void FanControl(bool state)
         {
-            _router.Send(_idResolver.GetId("BMSFanControl"), state ? 0 : 1, true);
+            _networkMessenger.SendOverNetwork(_idResolver.GetId("BMSFanControl"), state ? 0 : 1, true);
         }
         public void BuzzerControl(bool state)
         {
-            _router.Send(_idResolver.GetId("BMSBuzzerControl"), state ? 0 : 1, true);
+            _networkMessenger.SendOverNetwork(_idResolver.GetId("BMSBuzzerControl"), state ? 0 : 1, true);
         }
 
         public void EnableBus(byte index)
         {
-            _router.Send(_idResolver.GetId("PowerBusEnable"), index, true);
+            _networkMessenger.SendOverNetwork(_idResolver.GetId("PowerBusEnable"), index, true);
         }
         public void DisableBus(byte index)
         {
-            _router.Send(_idResolver.GetId("PowerBusDisable"), index, true);
+            _networkMessenger.SendOverNetwork(_idResolver.GetId("PowerBusDisable"), index, true);
         }
 
         public void SaveFileStart()

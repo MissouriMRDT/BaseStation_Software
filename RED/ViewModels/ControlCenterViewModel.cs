@@ -51,18 +51,6 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange();
             }
         }
-        public DataRouter DataRouter
-        {
-            get
-            {
-                return _model._dataRouter;
-            }
-            set
-            {
-                _model._dataRouter = value;
-                NotifyOfPropertyChange(() => DataRouter);
-            }
-        }
         public MetadataManager MetadataManager
         {
             get
@@ -422,29 +410,28 @@ namespace RED.ViewModels
 
             Console = new ConsoleViewModel();
             ConfigManager = new XMLConfigManager(Console);
-            DataRouter = new DataRouter(Console);
             MetadataManager = new MetadataManager(Console, ConfigManager);
 
-            NetworkManager = new NetworkManagerViewModel(DataRouter, MetadataManager.Commands.ToArray(), Console, MetadataManager);
+            NetworkManager = new NetworkManagerViewModel( MetadataManager.Commands.ToArray(), Console, MetadataManager);
             SubscriptionManager = new SubscriptionManagerViewModel(Console, MetadataManager, NetworkManager);
             SubscriptionManager.SendInitialSubscriptions(MetadataManager.Telemetry.ToArray());
 
-            Science = new ScienceViewModel(DataRouter, MetadataManager, Console);
-            GPS = new GPSViewModel(DataRouter, MetadataManager);
-            Sensor = new SensorViewModel(DataRouter, MetadataManager, Console);
-            DropBays = new DropBaysViewModel(DataRouter, MetadataManager, Console);
-            Power = new PowerViewModel(DataRouter, MetadataManager, Console);
-            CameraMux = new CameraViewModel(DataRouter, MetadataManager);
-            ExternalControls = new ExternalControlsViewModel(DataRouter, MetadataManager);
-            Autonomy = new AutonomyViewModel(DataRouter, MetadataManager, Console);
-            ScienceArm = new ScienceArmViewModel(DataRouter, MetadataManager, Console);
-            Lighting = new LightingViewModel(DataRouter, MetadataManager);
+            Science = new ScienceViewModel(NetworkManager, MetadataManager, Console);
+            GPS = new GPSViewModel(NetworkManager, MetadataManager);
+            Sensor = new SensorViewModel(NetworkManager, MetadataManager, Console);
+            DropBays = new DropBaysViewModel(NetworkManager, MetadataManager, Console);
+            Power = new PowerViewModel(NetworkManager, MetadataManager, Console);
+            CameraMux = new CameraViewModel(NetworkManager, MetadataManager);
+            ExternalControls = new ExternalControlsViewModel(NetworkManager, MetadataManager);
+            Autonomy = new AutonomyViewModel(NetworkManager, MetadataManager, Console);
+            ScienceArm = new ScienceArmViewModel(NetworkManager, MetadataManager, Console);
+            Lighting = new LightingViewModel(NetworkManager, MetadataManager);
             Map = new MapViewModel();
 
-            Drive = new DriveViewModel(DataRouter, MetadataManager);
-            Arm = new ArmViewModel(DataRouter, MetadataManager, Console, ConfigManager);
-            Gimbal1 = new GimbalViewModel(DataRouter, MetadataManager, Console, 0);
-            Gimbal2 = new GimbalViewModel(DataRouter, MetadataManager, Console, 1);
+            Drive = new DriveViewModel(NetworkManager, MetadataManager);
+            Arm = new ArmViewModel(NetworkManager, MetadataManager, Console, ConfigManager);
+            Gimbal1 = new GimbalViewModel(NetworkManager, MetadataManager, Console, 0);
+            Gimbal2 = new GimbalViewModel(NetworkManager, MetadataManager, Console, 1);
             XboxController1 = new XboxControllerInputViewModel(1);
             XboxController2 = new XboxControllerInputViewModel(2);
             XboxController3 = new XboxControllerInputViewModel(3);

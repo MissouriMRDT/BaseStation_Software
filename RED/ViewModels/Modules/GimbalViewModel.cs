@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using RED.Interfaces;
+using RED.Interfaces.Network;
 using RED.Interfaces.Input;
 using RED.Models.Modules;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace RED.ViewModels.Modules
     public class GimbalViewModel : PropertyChangedBase, IInputMode
     {
         private readonly GimbalModel _model;
-        private readonly IDataRouter _router;
+        private readonly INetworkMessenger _networkMessenger;
         private readonly IDataIdResolver _idResolver;
         private readonly ILogger _log;
 
@@ -45,10 +46,10 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public GimbalViewModel(IDataRouter router, IDataIdResolver idResolver, ILogger log, int gimbalIndex)
+        public GimbalViewModel(INetworkMessenger networkMessenger, IDataIdResolver idResolver, ILogger log, int gimbalIndex)
         {
             _model = new GimbalModel();
-            _router = router;
+            _networkMessenger = networkMessenger;
             _idResolver = idResolver;
             _log = log;
             Name = "Gimbal " + (gimbalIndex + 1).ToString();
@@ -71,61 +72,61 @@ namespace RED.ViewModels.Modules
 
             pan = (short)(values["Pan"] * SpeedLimit);
             tilt = (short)(values["Tilt"] * SpeedLimit);
-            _router.Send(_idResolver.GetId(PTZDataId[GimbalIndex]), ((int)tilt << 16) | (((int)pan) & 0xFFFF));
+            _networkMessenger.SendOverNetwork(_idResolver.GetId(PTZDataId[GimbalIndex]), ((int)tilt << 16) | (((int)pan) & 0xFFFF));
 
             if (values["ZoomIn"] != 0)
-                _router.Send(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.ZoomIn);
+                _networkMessenger.SendOverNetwork(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.ZoomIn);
             else if (values["ZoomOut"] != 0)
-                _router.Send(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.ZoomOut);
+                _networkMessenger.SendOverNetwork(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.ZoomOut);
             else
-                _router.Send(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.Stop);
+                _networkMessenger.SendOverNetwork(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.Stop);
         }
 
         public void StopMode()
         {
-            _router.Send(_idResolver.GetId("PTZ1Speed"), (int)0, true);
+            _networkMessenger.SendOverNetwork(_idResolver.GetId("PTZ1Speed"), (int)0, true);
         }
 
         public void ZoomFocusStop()
         {
-            _router.Send(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.Stop, true);
+            _networkMessenger.SendOverNetwork(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.Stop, true);
         }
         public void ZoomIn()
         {
-            _router.Send(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.ZoomIn, true);
+            _networkMessenger.SendOverNetwork(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.ZoomIn, true);
         }
         public void ZoomOut()
         {
-            _router.Send(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.ZoomOut, true);
+            _networkMessenger.SendOverNetwork(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.ZoomOut, true);
         }
         public void FocusNear()
         {
-            _router.Send(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.FocusNear, true);
+            _networkMessenger.SendOverNetwork(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.FocusNear, true);
         }
         public void FocusFar()
         {
-            _router.Send(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.FocusFar, true);
+            _networkMessenger.SendOverNetwork(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.FocusFar, true);
         }
 
         public void MenuCenter()
         {
-            _router.Send(_idResolver.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.Menu, true);
+            _networkMessenger.SendOverNetwork(_idResolver.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.Menu, true);
         }
         public void MenuUp()
         {
-            _router.Send(_idResolver.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.MenuUp, true);
+            _networkMessenger.SendOverNetwork(_idResolver.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.MenuUp, true);
         }
         public void MenuDown()
         {
-            _router.Send(_idResolver.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.MenuDown, true);
+            _networkMessenger.SendOverNetwork(_idResolver.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.MenuDown, true);
         }
         public void MenuLeft()
         {
-            _router.Send(_idResolver.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.MenuLeft, true);
+            _networkMessenger.SendOverNetwork(_idResolver.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.MenuLeft, true);
         }
         public void MenuRight()
         {
-            _router.Send(_idResolver.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.MenuRight, true);
+            _networkMessenger.SendOverNetwork(_idResolver.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.MenuRight, true);
         }
 
         private enum GimbalZoomCommands : byte

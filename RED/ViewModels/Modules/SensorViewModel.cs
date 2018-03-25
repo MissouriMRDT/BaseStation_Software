@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using RED.Interfaces;
+using RED.Interfaces.Network;
 using RED.Models.Modules;
 using System;
 
@@ -8,7 +9,7 @@ namespace RED.ViewModels.Modules
     public class SensorViewModel : PropertyChangedBase, ISubscribe
     {
         private readonly SensorModel _model;
-        private readonly IDataRouter _router;
+        private readonly INetworkMessenger _networkMessenger;
         private readonly IDataIdResolver _idResolver;
         private readonly ILogger _log;
 
@@ -133,17 +134,17 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public SensorViewModel(IDataRouter router, IDataIdResolver idResolver, ILogger log)
+        public SensorViewModel(INetworkMessenger networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
             _model = new SensorModel();
-            _router = router;
+            _networkMessenger = networkMessenger;
             _idResolver = idResolver;
             _log = log;
 
-            _router.Subscribe(this, _idResolver.GetId("IMUTemperature"));
-            _router.Subscribe(this, _idResolver.GetId("IMUAccelerometer"));
-            _router.Subscribe(this, _idResolver.GetId("IMUGyroscope"));
-            _router.Subscribe(this, _idResolver.GetId("IMUMagnetometer"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("IMUTemperature"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("IMUAccelerometer"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("IMUGyroscope"));
+            _networkMessenger.Subscribe(this, _idResolver.GetId("IMUMagnetometer"));
         }
 
         public void ReceiveFromRouter(ushort dataId, byte[] data, bool reliable)

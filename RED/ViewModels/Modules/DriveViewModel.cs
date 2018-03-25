@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using RED.Interfaces;
 using RED.Interfaces.Input;
+using RED.Interfaces.Network;
 using RED.Models.Modules;
 using System.Collections.Generic;
 using Math = System.Math;
@@ -12,7 +13,7 @@ namespace RED.ViewModels.Modules
         private const int motorRangeFactor = 1000;
 
         private readonly DriveModel _model;
-        private readonly IDataRouter _router;
+        private readonly INetworkMessenger _networkMessenger;
         private readonly IDataIdResolver _idResolver;
 
         public int SpeedLeft
@@ -68,10 +69,10 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public DriveViewModel(IDataRouter router, IDataIdResolver idResolver)
+        public DriveViewModel(INetworkMessenger networkMessenger, IDataIdResolver idResolver)
         {
             _model = new DriveModel();
-            _router = router;
+            _networkMessenger = networkMessenger;
             _idResolver = idResolver;
             Name = "Drive";
             ModeType = "Drive";
@@ -121,12 +122,12 @@ namespace RED.ViewModels.Modules
         {
             if (UseLegacyDataIds)
             {
-                _router.Send(_idResolver.GetId("MotorLeftSpeed"), SpeedLeft, reliable);
-                _router.Send(_idResolver.GetId("MotorRightSpeed"), SpeedRight, reliable);
+                _networkMessenger.SendOverNetwork(_idResolver.GetId("MotorLeftSpeed"), SpeedLeft, reliable);
+                _networkMessenger.SendOverNetwork(_idResolver.GetId("MotorRightSpeed"), SpeedRight, reliable);
             }
             else
             {
-                _router.Send(_idResolver.GetId("DriveLeftRight"), (ushort)SpeedLeft << 16 | (ushort)SpeedRight, reliable);
+                _networkMessenger.SendOverNetwork(_idResolver.GetId("DriveLeftRight"), (ushort)SpeedLeft << 16 | (ushort)SpeedRight, reliable);
             }
         }
 
