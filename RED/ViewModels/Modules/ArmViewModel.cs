@@ -38,10 +38,10 @@ namespace RED.ViewModels.Modules
             OpenLoop,
             IKRoverPOV, //point of view
             IKWristPOV,
-            Angular
+            GuiControl
         };
 
-        ArmControlState myState = ArmControlState.OpenLoop;
+        ArmControlState myState;
 
         private const string PositionsConfigName = "ArmPositions";
 
@@ -59,9 +59,6 @@ namespace RED.ViewModels.Modules
         public string Name { get; }
         public string ModeType { get; }
 
-        public const float Joint1FixedSpeed = .5f;
-        public const int Joint2FixedSpeed = 127;
-
         public float AngleJ1
         {
             get
@@ -74,6 +71,20 @@ namespace RED.ViewModels.Modules
                 NotifyOfPropertyChange(() => AngleJ1);
             }
         }
+
+        public string ControlState
+        {
+            get
+            {
+                return _model.ControlState;
+            }
+            set
+            {
+                _model.ControlState = value;
+                NotifyOfPropertyChange(() => ControlState);
+            }
+        }
+
         public float AngleJ2
         {
             get
@@ -274,6 +285,8 @@ namespace RED.ViewModels.Modules
             _configManager = configs;
             Name = "Arm";
             ModeType = "Arm";
+            myState = ArmControlState.GuiControl;
+            ControlState = "GUI control";
 
             _configManager.AddRecord(PositionsConfigName, ArmConfig.DefaultArmPositions);
             InitializePositions(_configManager.GetConfig<ArmPositionsContext>(PositionsConfigName));
@@ -306,7 +319,8 @@ namespace RED.ViewModels.Modules
 
         public void StartMode()
         {
-            myState = ArmControlState.OpenLoop;      
+            myState = ArmControlState.OpenLoop;
+            ControlState = "Open loop";
         }
 
         private void SetOpenLoopValues(Dictionary<string, float> values)
@@ -447,33 +461,33 @@ namespace RED.ViewModels.Modules
         private void UpdateControlState(Dictionary<string, float> values)
         {
             ArmControlState oldState = myState;
-            string stateLog = "";
+            string state = "";
 
             if (values["UseAngular"] != 0)
             {
-                myState = ArmControlState.Angular;
-                stateLog = "Switching to angular control";
+                myState = ArmControlState.GuiControl;
+                state = "GUI control";
             }
             else if (values["UseOpenLoop"] != 0)
             {
                 myState = ArmControlState.OpenLoop;
-                stateLog = "Switching to open loop";
+                state = "Open loop";
             }
             else if (values["UseRoverPerspectiveIK"] != 0)
             {
                 myState = ArmControlState.IKRoverPOV;
-                stateLog = "Switching to rover perspective IK";
+                state = "Rover perspective IK";
             }
             else if (values["UseWristPerspectiveIK"] != 0)
             {
                 myState = ArmControlState.IKWristPOV;
-                stateLog = "Switching to wrist perspective IK";
+                state = "Wrist perspective IK";
             }
 
             if (oldState != myState)
             {
                 _rovecomm.SendCommand(_idResolver.GetId("ArmStop"), (Int16)(0));
-                _log.Log(stateLog);
+                ControlState = state;
             }
         }
 
@@ -485,7 +499,7 @@ namespace RED.ViewModels.Modules
             {
                 SetOpenLoopValues(values);
             }
-            else if (myState == ArmControlState.Angular)
+            else if (myState == ArmControlState.GuiControl)
             {
                 //controller does nothing in this state besides checking to see if you wanna switch states; otherwise user just
                 //uses the gui to input commands
@@ -501,6 +515,9 @@ namespace RED.ViewModels.Modules
             _rovecomm.SendCommand(_idResolver.GetId("ArmStop"), (Int16)(0), true);
             _rovecomm.SendCommand(_idResolver.GetId("Endeffector1"), (Int16)(0), true);
             _rovecomm.SendCommand(_idResolver.GetId("Endeffector2"), (Int16)(0), true);
+
+            myState = ArmControlState.GuiControl;
+            ControlState = "GUI control";
         }
 
         public void EnableCommand(string bus, bool enableState)

@@ -21,6 +21,7 @@ namespace RED.Models.Modules
         internal float Yaw;
         internal float Pitch;
         internal float Roll;
+        internal string ControlState;
 
         internal class ArmPositionModel
         {
