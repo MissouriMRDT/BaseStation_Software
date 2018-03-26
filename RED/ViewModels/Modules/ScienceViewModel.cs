@@ -8,10 +8,10 @@ using System.Text;
 
 namespace RED.ViewModels.Modules
 {
-    public class ScienceViewModel : PropertyChangedBase, INetworkSubscriber
+    public class ScienceViewModel : PropertyChangedBase, IRovecommReceiver
     {
         private readonly ScienceModel _model;
-        private readonly INetworkMessenger _networkMessenger;
+        private readonly IRovecomm _rovecomm;
         private readonly IDataIdResolver _idResolver;
         private readonly ILogger _log;
 
@@ -186,117 +186,117 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public ScienceViewModel(INetworkMessenger networkMessenger, IDataIdResolver idResolver, ILogger log)
+        public ScienceViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
             _model = new ScienceModel();
-            _networkMessenger = networkMessenger;
+            _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _log = log;
 
-            _networkMessenger.Subscribe(this, _idResolver.GetId("SciSensor0"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("SciSensor1"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("SciSensor2"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("SciSensor3"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("SciSensor4"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("SciSensor5"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("SciSensor6"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("SciSensor7"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("SciSensor8"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("SciSensor9"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("SciSensor0"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("SciSensor1"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("SciSensor2"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("SciSensor3"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("SciSensor4"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("SciSensor5"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("SciSensor6"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("SciSensor7"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("SciSensor8"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("SciSensor9"));
         }
 
         public void SensorAllOn()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.SensorAllEnable, true);
+            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.SensorAllEnable, true);
         }
         public void SensorAllOff()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.SensorAllDisable, true);
+            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.SensorAllDisable, true);
         }
         public void Sensor0On()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor0Enable, true);
+            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor0Enable, true);
         }
         public void Sensor0Off()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor0Disable, true);
+            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor0Disable, true);
         }
         public void Sensor1On()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor1Enable, true);
+            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor1Enable, true);
         }
         public void Sensor1Off()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor1Disable, true);
+            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor1Disable, true);
         }
         public void Sensor2On()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor2Enable, true);
+            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor2Enable, true);
         }
         public void Sensor2Off()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor2Disable, true);
+            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor2Disable, true);
         }
         public void Sensor3On()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor3Enable, true);
+            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor3Enable, true);
         }
         public void Sensor3Off()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor3Disable, true);
+            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor3Disable, true);
         }
         public void Sensor4On()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor4Enable, true);
+            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor4Enable, true);
         }
         public void Sensor4Off()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor4Disable, true);
+            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor4Disable, true);
         }
         public void Sensor5On()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor5Enable, true);
+            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor5Enable, true);
         }
         public void Sensor5Off()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor5Disable, true);
+            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor5Disable, true);
         }
         public void Sensor6On()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor6Enable, true);
+            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor6Enable, true);
         }
         public void Sensor6Off()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor6Disable, true);
+            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor6Disable, true);
         }
         public void Sensor7On()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ScienceArmCommand"), (ushort)ScienceRequestTypes.Sensor7Enable, true);
+            _rovecomm.SendCommand(_idResolver.GetId("ScienceArmCommand"), (ushort)ScienceRequestTypes.Sensor7Enable, true);
         }
         public void Sensor7Off()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ScienceArmCommand"), (ushort)ScienceRequestTypes.Sensor7Disable, true);
+            _rovecomm.SendCommand(_idResolver.GetId("ScienceArmCommand"), (ushort)ScienceRequestTypes.Sensor7Disable, true);
         }
         public void Sensor8On()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ScienceArmCommand"), (ushort)ScienceRequestTypes.Sensor8Enable, true);
+            _rovecomm.SendCommand(_idResolver.GetId("ScienceArmCommand"), (ushort)ScienceRequestTypes.Sensor8Enable, true);
         }
         public void Sensor8Off()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ScienceArmCommand"), (ushort)ScienceRequestTypes.Sensor8Disable, true);
+            _rovecomm.SendCommand(_idResolver.GetId("ScienceArmCommand"), (ushort)ScienceRequestTypes.Sensor8Disable, true);
         }
         public void Sensor9On()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor9Enable, true);
+            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor9Enable, true);
         }
         public void Sensor9Off()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor9Disable, true);
+            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor9Disable, true);
         }
 
         public void RequestSpectrometer()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.SpectrometerRun, true);
+            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.SpectrometerRun, true);
             _log.Log("Spectrometer data requested");
         }
         public async void DownloadSpectrometer()
@@ -324,27 +324,27 @@ namespace RED.ViewModels.Modules
 
         public void RequestLaserOn()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ScienceCommand"), (byte)ScienceRequestTypes.LaserOn, true);
+            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (byte)ScienceRequestTypes.LaserOn, true);
             _log.Log("Science Laser On requested");
         }
         public void RequestLaserOff()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ScienceCommand"), (byte)ScienceRequestTypes.LaserOff, true);
+            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (byte)ScienceRequestTypes.LaserOff, true);
             _log.Log("Science Laser Off requested");
         }
 
         public void SetCarouselPosition(byte carouselIndex)
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("CarouselPosition"), carouselIndex);
+            _rovecomm.SendCommand(_idResolver.GetId("CarouselPosition"), carouselIndex);
         }
 
         public void FunnelOpen()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ScienceCommand"), (byte)ScienceRequestTypes.FunnelOpen, true);
+            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (byte)ScienceRequestTypes.FunnelOpen, true);
         }
         public void FunnelClose()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ScienceCommand"), (byte)ScienceRequestTypes.FunnelClose, true);
+            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (byte)ScienceRequestTypes.FunnelClose, true);
         }
 
         public void SaveFileStart()
@@ -363,7 +363,7 @@ namespace RED.ViewModels.Modules
             await SensorDataFile.WriteAsync(data, 0, data.Length);
         }
 
-        public void ReceivedNetworkMessageCallback(ushort dataId, byte[] data, bool reliable)
+        public void ReceivedRovecommMessageCallback(ushort dataId, byte[] data, bool reliable)
         {
             switch (_idResolver.GetName(dataId))
             {

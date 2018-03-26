@@ -112,7 +112,7 @@
     <Compile Include="Addons\Navigation\GPSCoordinateToLongitudeConverter.cs" />
     <Compile Include="Addons\Navigation\GPSCoordinateToLatitudeConverter.cs" />
     <Compile Include="Addons\Network\Server.cs" />
-    <Compile Include="Addons\Network\SubscriptionRecord.cs" />
+    <Compile Include="RoveProtocol\SubscriptionRecord.cs" />
     <Compile Include="Addons\Tools\TimestampDisplayConverter.cs" />
     <Compile Include="Addons\Tools\TimeSpanToStringConverter.cs" />
     <Compile Include="App.xaml.cs">
@@ -150,10 +150,9 @@
     <Compile Include="Interfaces\IDataIdResolver.cs" />
     <Compile Include="Interfaces\ILogger.cs" />
     <Compile Include="Interfaces\Input\IInputMode.cs" />
+    <Compile Include="Interfaces\IRovecomm.cs" />
     <Compile Include="Interfaces\Network\IIPAddressProvider.cs" />
     <Compile Include="Interfaces\Input\IInputDevice.cs" />
-    <Compile Include="Interfaces\Network\INetworkEncoding.cs" />
-    <Compile Include="Interfaces\INetworkMessenger.cs" />
     <Compile Include="Interfaces\Network\INetworkTransportProtocol.cs" />
     <Compile Include="Interfaces\Network\ISequenceNumberProvider.cs" />
     <Compile Include="Interfaces\Network\IServerProvider.cs" />
@@ -164,7 +163,6 @@
     <Compile Include="Models\Modules\AutonomyModel.cs" />
     <Compile Include="Models\Modules\GimbalModel.cs" />
     <Compile Include="Models\Input\InputManagerModel.cs" />
-    <Compile Include="Models\DataRouterModel.cs" />
     <Compile Include="Models\Modules\DriveModel.cs" />
     <Compile Include="Models\Modules\LightingModel.cs" />
     <Compile Include="Models\Navigation\MapModel.cs" />
@@ -177,7 +175,6 @@
     <Compile Include="Models\Modules\GPSModel.cs" />
     <Compile Include="Models\Modules\SensorModel.cs" />
     <Compile Include="Models\SettingsModel.cs" />
-    <Compile Include="Models\Network\SubscriptionManagerModel.cs" />
     <Compile Include="Models\Input\Controllers\KeyboardInputModel.cs" />
     <Compile Include="Models\Tools\StopwatchToolModel.cs" />
     <Compile Include="Models\Tools\TelemetryLogToolModel.cs" />
@@ -200,7 +197,7 @@
     <Compile Include="ViewModels\Navigation\Waypoint.cs" />
     <Compile Include="ViewModels\Navigation\WaypointManagerViewModel.cs" />
     <Compile Include="ViewModels\Network\NetworkManagerViewModel.cs" />
-    <Compile Include="Interfaces\INetworkSubscriber.cs" />
+    <Compile Include="Interfaces\IRovecommReceiver.cs" />
     <Compile Include="Models\ControlCenterModel.cs" />
     <Compile Include="RedBootstrapper.cs" />
     <Compile Include="ViewModels\Modules\DriveViewModel.cs" />
@@ -208,13 +205,12 @@
     <Compile Include="ViewModels\Input\Controllers\KeyboardInputViewModel.cs" />
     <Compile Include="ViewModels\Modules\PowerViewModel.cs" />
     <Compile Include="ViewModels\Input\Controllers\XboxControllerInputViewModel.cs" />
-    <Compile Include="ViewModels\MetadataManager.cs" />
+    <Compile Include="RoveProtocol\MetadataManager.cs" />
+    <Compile Include="RoveProtocol\Rovecomm.cs" />
     <Compile Include="ViewModels\Tools\PingToolViewModel.cs" />
-    <Compile Include="ViewModels\Network\RoverProtocol.cs" />
     <Compile Include="ViewModels\Modules\ScienceViewModel.cs" />
     <Compile Include="ViewModels\Modules\SensorViewModel.cs" />
     <Compile Include="ViewModels\Network\SequenceNumberManager.cs" />
-    <Compile Include="ViewModels\Network\SubscriptionManagerViewModel.cs" />
     <Compile Include="ViewModels\ControlCenterViewModel.cs" />
     <Compile Include="ViewModels\Input\InputManagerViewModel.cs" />
     <Compile Include="ViewModels\Network\UDPEndpoint.cs" />

@@ -1,4 +1,5 @@
-﻿using RED.ViewModels;
+﻿using RED.Roveprotocol;
+using RED.ViewModels;
 using RED.ViewModels.Input;
 using RED.ViewModels.Input.Controllers;
 using RED.ViewModels.Modules;
@@ -15,7 +16,7 @@ namespace RED.Models
         internal ConsoleViewModel _console;
         internal XMLConfigManager _configManager;
         internal MetadataManager _metadataManager;
-        internal SubscriptionManagerViewModel _subscriptionManager;
+        internal Rovecomm _rovecomm;
         internal NetworkManagerViewModel _networkManager;
         internal InputManagerViewModel _input;
         internal WaypointManagerViewModel _waypoint;

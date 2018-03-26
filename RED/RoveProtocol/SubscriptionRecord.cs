@@ -2,7 +2,7 @@
 using System;
 using System.Net;
 
-namespace RED.Addons.Network
+namespace RED.Roveprotocol
 {
     public class SubscriptionRecord
     {

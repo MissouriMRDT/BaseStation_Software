@@ -9,7 +9,7 @@ namespace RED.ViewModels.Modules
     public class GimbalViewModel : PropertyChangedBase, IInputMode
     {
         private readonly GimbalModel _model;
-        private readonly INetworkMessenger _networkMessenger;
+        private readonly IRovecomm _rovecomm;
         private readonly IDataIdResolver _idResolver;
         private readonly ILogger _log;
 
@@ -45,10 +45,10 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public GimbalViewModel(INetworkMessenger networkMessenger, IDataIdResolver idResolver, ILogger log, int gimbalIndex)
+        public GimbalViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log, int gimbalIndex)
         {
             _model = new GimbalModel();
-            _networkMessenger = networkMessenger;
+            _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _log = log;
             Name = "Gimbal " + (gimbalIndex + 1).ToString();
@@ -71,61 +71,61 @@ namespace RED.ViewModels.Modules
 
             pan = (short)(values["Pan"] * SpeedLimit);
             tilt = (short)(values["Tilt"] * SpeedLimit);
-            _networkMessenger.SendOverNetwork(_idResolver.GetId(PTZDataId[GimbalIndex]), ((int)tilt << 16) | (((int)pan) & 0xFFFF));
+            _rovecomm.SendCommand(_idResolver.GetId(PTZDataId[GimbalIndex]), ((int)tilt << 16) | (((int)pan) & 0xFFFF));
 
             if (values["ZoomIn"] != 0)
-                _networkMessenger.SendOverNetwork(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.ZoomIn);
+                _rovecomm.SendCommand(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.ZoomIn);
             else if (values["ZoomOut"] != 0)
-                _networkMessenger.SendOverNetwork(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.ZoomOut);
+                _rovecomm.SendCommand(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.ZoomOut);
             else
-                _networkMessenger.SendOverNetwork(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.Stop);
+                _rovecomm.SendCommand(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.Stop);
         }
 
         public void StopMode()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("PTZ1Speed"), (int)0, true);
+            _rovecomm.SendCommand(_idResolver.GetId("PTZ1Speed"), (int)0, true);
         }
 
         public void ZoomFocusStop()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.Stop, true);
+            _rovecomm.SendCommand(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.Stop, true);
         }
         public void ZoomIn()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.ZoomIn, true);
+            _rovecomm.SendCommand(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.ZoomIn, true);
         }
         public void ZoomOut()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.ZoomOut, true);
+            _rovecomm.SendCommand(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.ZoomOut, true);
         }
         public void FocusNear()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.FocusNear, true);
+            _rovecomm.SendCommand(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.FocusNear, true);
         }
         public void FocusFar()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.FocusFar, true);
+            _rovecomm.SendCommand(_idResolver.GetId(CommandDataId[GimbalIndex]), (byte)GimbalZoomCommands.FocusFar, true);
         }
 
         public void MenuCenter()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.Menu, true);
+            _rovecomm.SendCommand(_idResolver.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.Menu, true);
         }
         public void MenuUp()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.MenuUp, true);
+            _rovecomm.SendCommand(_idResolver.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.MenuUp, true);
         }
         public void MenuDown()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.MenuDown, true);
+            _rovecomm.SendCommand(_idResolver.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.MenuDown, true);
         }
         public void MenuLeft()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.MenuLeft, true);
+            _rovecomm.SendCommand(_idResolver.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.MenuLeft, true);
         }
         public void MenuRight()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.MenuRight, true);
+            _rovecomm.SendCommand(_idResolver.GetId(MenuDataId[GimbalIndex]), (byte)GimbalMenuCommands.MenuRight, true);
         }
 
         private enum GimbalZoomCommands : byte

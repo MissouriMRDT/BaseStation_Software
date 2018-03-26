@@ -6,5 +6,6 @@ namespace RED.Interfaces.Network
     {
         IPAddress GetIPAddress(ushort dataId);
         ushort[] GetAllDataIds(IPAddress ip);
+        IPAddress[] GetAllIPAddresses();
     }
 }

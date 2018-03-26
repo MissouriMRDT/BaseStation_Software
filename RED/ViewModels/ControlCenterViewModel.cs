@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using RED.Interfaces.Input;
 using RED.Models;
+using RED.Roveprotocol;
 using RED.ViewModels.Input;
 using RED.ViewModels.Input.Controllers;
 using RED.ViewModels.Modules;
@@ -63,16 +64,16 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => MetadataManager);
             }
         }
-        public SubscriptionManagerViewModel SubscriptionManager
+        public Rovecomm Rovecomm
         {
             get
             {
-                return _model._subscriptionManager;
+                return _model._rovecomm;
             }
             set
             {
-                _model._subscriptionManager = value;
-                NotifyOfPropertyChange(() => SubscriptionManager);
+                _model._rovecomm = value;
+                NotifyOfPropertyChange((() => Rovecomm));
             }
         }
         public NetworkManagerViewModel NetworkManager
@@ -411,27 +412,27 @@ namespace RED.ViewModels
             Console = new ConsoleViewModel();
             ConfigManager = new XMLConfigManager(Console);
             MetadataManager = new MetadataManager(Console, ConfigManager);
-
+       
             NetworkManager = new NetworkManagerViewModel( MetadataManager.Commands.ToArray(), Console, MetadataManager);
-            SubscriptionManager = new SubscriptionManagerViewModel(Console, MetadataManager, NetworkManager);
-            SubscriptionManager.SendInitialSubscriptions(MetadataManager.Telemetry.ToArray());
+            Rovecomm = new Rovecomm(NetworkManager, Console, MetadataManager);
+            Rovecomm.SubscribeMyPCToAllDevices();
 
-            Science = new ScienceViewModel(NetworkManager, MetadataManager, Console);
-            GPS = new GPSViewModel(NetworkManager, MetadataManager);
-            Sensor = new SensorViewModel(NetworkManager, MetadataManager, Console);
-            DropBays = new DropBaysViewModel(NetworkManager, MetadataManager, Console);
-            Power = new PowerViewModel(NetworkManager, MetadataManager, Console);
-            CameraMux = new CameraViewModel(NetworkManager, MetadataManager);
-            ExternalControls = new ExternalControlsViewModel(NetworkManager, MetadataManager);
-            Autonomy = new AutonomyViewModel(NetworkManager, MetadataManager, Console);
-            ScienceArm = new ScienceArmViewModel(NetworkManager, MetadataManager, Console);
-            Lighting = new LightingViewModel(NetworkManager, MetadataManager);
+            Science = new ScienceViewModel(Rovecomm, MetadataManager, Console);
+            GPS = new GPSViewModel(Rovecomm, MetadataManager);
+            Sensor = new SensorViewModel(Rovecomm, MetadataManager, Console);
+            DropBays = new DropBaysViewModel(Rovecomm, MetadataManager, Console);
+            Power = new PowerViewModel(Rovecomm, MetadataManager, Console);
+            CameraMux = new CameraViewModel(Rovecomm, MetadataManager);
+            ExternalControls = new ExternalControlsViewModel(Rovecomm, MetadataManager);
+            Autonomy = new AutonomyViewModel(Rovecomm, MetadataManager, Console);
+            ScienceArm = new ScienceArmViewModel(Rovecomm, MetadataManager, Console);
+            Lighting = new LightingViewModel(Rovecomm, MetadataManager);
             Map = new MapViewModel();
 
-            Drive = new DriveViewModel(NetworkManager, MetadataManager);
-            Arm = new ArmViewModel(NetworkManager, MetadataManager, Console, ConfigManager);
-            Gimbal1 = new GimbalViewModel(NetworkManager, MetadataManager, Console, 0);
-            Gimbal2 = new GimbalViewModel(NetworkManager, MetadataManager, Console, 1);
+            Drive = new DriveViewModel(Rovecomm, MetadataManager);
+            Arm = new ArmViewModel(Rovecomm, MetadataManager, Console, ConfigManager);
+            Gimbal1 = new GimbalViewModel(Rovecomm, MetadataManager, Console, 0);
+            Gimbal2 = new GimbalViewModel(Rovecomm, MetadataManager, Console, 1);
             XboxController1 = new XboxControllerInputViewModel(1);
             XboxController2 = new XboxControllerInputViewModel(2);
             XboxController3 = new XboxControllerInputViewModel(3);
@@ -445,21 +446,16 @@ namespace RED.ViewModels
                 new IInputMode[] { Drive, Arm, Gimbal1, Gimbal2, ScienceArm });
 
             WaypointManager = new WaypointManagerViewModel(Map, GPS, Autonomy);
-            PingTool = new PingToolViewModel(NetworkManager, ConfigManager);
+            PingTool = new PingToolViewModel(Rovecomm, ConfigManager);
             StopwatchTool = new StopwatchToolViewModel(ConfigManager);
             TelemetryLogTool = new TelemetryLogToolViewModel(NetworkManager, MetadataManager);
 
             SettingsManager = new SettingsManagerViewModel(ConfigManager, this);
-
-            //DataRouter.Send(100, new byte[] { 10, 20, 30, 40 });
-            //DataRouter.Send(1, new byte[] { 2, 3, 4, 5 });
-            //DataRouter.Send(101, new byte[] { 15, 25, 35, 45 });
-            //DataRouter.Send(180, new byte[] { 0x23, 0x52, 0x4f, 0x56, 0x45, 0x53, 0x4f, 0x48, 0x41, 0x52, 0x44, 0x00 });
-        }
+    }
 
         public void ResubscribeAll()
         {
-            SubscriptionManager.ResubscribeAll();
+            Rovecomm.SubscribeMyPCToAllDevices();
         }
 
         protected override void OnDeactivate(bool close)

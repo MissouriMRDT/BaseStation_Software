@@ -7,7 +7,7 @@ namespace RED.ViewModels.Modules
     public class LightingViewModel : PropertyChangedBase
     {
         private readonly LightingModel _model;
-        private readonly INetworkMessenger _networkMessenger;
+        private readonly IRovecomm _rovecomm;
         private readonly IDataIdResolver _idResolver;
 
         public bool Enabled
@@ -66,22 +66,22 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public LightingViewModel(INetworkMessenger networkMessenger, IDataIdResolver idResolver)
+        public LightingViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver)
         {
             _model = new LightingModel();
-            _networkMessenger = networkMessenger;
+            _rovecomm = networkMessenger;
             _idResolver = idResolver;
         }
 
         private void SendColors()
         {
             if (Enabled)
-                _networkMessenger.SendOverNetwork(_idResolver.GetId("UnderglowColor"), new byte[] { Red, Green, Blue });
+                _rovecomm.SendCommand(_idResolver.GetId("UnderglowColor"), new byte[] { Red, Green, Blue });
         }
 
         private void TurnOff()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("UnderglowColor"), new byte[] { 0, 0, 0 }, true);
+            _rovecomm.SendCommand(_idResolver.GetId("UnderglowColor"), new byte[] { 0, 0, 0 }, true);
         }
     }
 }

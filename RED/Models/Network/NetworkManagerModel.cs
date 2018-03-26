@@ -6,6 +6,6 @@ namespace RED.Models.Network
     internal class NetworkManagerModel
     {
         internal bool EnableReliablePackets;
-        internal Dictionary<ushort, List<INetworkSubscriber>> _registrations = new Dictionary<ushort, List<INetworkSubscriber>>();
+        internal Dictionary<ushort, List<IRovecommReceiver>> _registrations = new Dictionary<ushort, List<IRovecommReceiver>>();
     }
 }

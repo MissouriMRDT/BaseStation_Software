@@ -31,7 +31,7 @@ namespace RED.ViewModels.Modules
     /// 
     /// This class is designed to be constructed in the main view model class (usually ControlCenterViewModel).
     /// </summary>
-    public class ArmViewModel : PropertyChangedBase, IInputMode, INetworkSubscriber
+    public class ArmViewModel : PropertyChangedBase, IInputMode, IRovecommReceiver
     {
         private enum ArmControlState
         {
@@ -51,7 +51,7 @@ namespace RED.ViewModels.Modules
         private const short MotorRangeFactor = 1000;
 
         private readonly ArmModel _model;
-        private readonly INetworkMessenger _networkMessenger;
+        private readonly IRovecomm _rovecomm;
         private readonly IDataIdResolver _idResolver;
         private readonly ILogger _log;
         private readonly IConfigurationManager _configManager;
@@ -265,10 +265,10 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public ArmViewModel(INetworkMessenger networkMessenger, IDataIdResolver idResolver, ILogger log, IConfigurationManager configs)
+        public ArmViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log, IConfigurationManager configs)
         {
             _model = new ArmModel();
-            _networkMessenger = networkMessenger;
+            _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _log = log;
             _configManager = configs;
@@ -278,12 +278,12 @@ namespace RED.ViewModels.Modules
             _configManager.AddRecord(PositionsConfigName, ArmConfig.DefaultArmPositions);
             InitializePositions(_configManager.GetConfig<ArmPositionsContext>(PositionsConfigName));
 
-            _networkMessenger.Subscribe(this, _idResolver.GetId("ArmCurrentPosition"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("ArmFault"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("ArmCurrentMain"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("ArmCurrentPosition"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("ArmFault"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("ArmCurrentMain"));
         }
 
-        public void ReceivedNetworkMessageCallback(ushort dataId, byte[] data, bool reliable)
+        public void ReceivedRovecommMessageCallback(ushort dataId, byte[] data, bool reliable)
         {
             switch (_idResolver.GetName(dataId))
             {
@@ -313,7 +313,7 @@ namespace RED.ViewModels.Modules
         {
             if (values["DebouncedArmReset"] != 0)
             {
-                _networkMessenger.SendOverNetwork(_idResolver.GetId("ArmStop"), (Int16)(0));
+                _rovecomm.SendCommand(_idResolver.GetId("ArmStop"), (Int16)(0));
                 _log.Log("Robotic Arm Resetting...");
                 return;
             }
@@ -369,14 +369,14 @@ namespace RED.ViewModels.Modules
             Int16[] sendValues = { ArmBaseTwist, ArmBaseBend, ArmElbowBend, ArmElbowTwist, ArmWristBend, ArmWristTwist, Gripper, Nipper };
             byte[] data = new byte[sendValues.Length * sizeof(Int16)];
             Buffer.BlockCopy(sendValues, 0, data, 0, data.Length);
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ArmValues"), data);
+            _rovecomm.SendCommand(_idResolver.GetId("ArmValues"), data);
         }
 
         private void SetIKValues(Dictionary<string, float> values, ArmControlState stateToUse)
         {
             if (values["DebouncedArmReset"] != 0)
             {
-                _networkMessenger.SendOverNetwork(_idResolver.GetId("ArmStop"), (Int16)(0));
+                _rovecomm.SendCommand(_idResolver.GetId("ArmStop"), (Int16)(0));
                 _log.Log("Robotic Arm Resetting...");
                 return;
             }
@@ -436,11 +436,11 @@ namespace RED.ViewModels.Modules
 
             if (stateToUse == ArmControlState.IKWristPOV)
             {
-                _networkMessenger.SendOverNetwork(_idResolver.GetId("IKWristIncrement"), data);
+                _rovecomm.SendCommand(_idResolver.GetId("IKWristIncrement"), data);
             }
             else if (stateToUse == ArmControlState.IKRoverPOV)
             {
-                _networkMessenger.SendOverNetwork(_idResolver.GetId("IKRoverIncrement"), data);
+                _rovecomm.SendCommand(_idResolver.GetId("IKRoverIncrement"), data);
             }
         }
 
@@ -472,7 +472,7 @@ namespace RED.ViewModels.Modules
 
             if (oldState != myState)
             {
-                _networkMessenger.SendOverNetwork(_idResolver.GetId("ArmStop"), (Int16)(0));
+                _rovecomm.SendCommand(_idResolver.GetId("ArmStop"), (Int16)(0));
                 _log.Log(stateLog);
             }
         }
@@ -498,9 +498,9 @@ namespace RED.ViewModels.Modules
 
         public void StopMode()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ArmStop"), (Int16)(0), true);
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("Endeffector1"), (Int16)(0), true);
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("Endeffector2"), (Int16)(0), true);
+            _rovecomm.SendCommand(_idResolver.GetId("ArmStop"), (Int16)(0), true);
+            _rovecomm.SendCommand(_idResolver.GetId("Endeffector1"), (Int16)(0), true);
+            _rovecomm.SendCommand(_idResolver.GetId("Endeffector2"), (Int16)(0), true);
         }
 
         public void EnableCommand(string bus, bool enableState)
@@ -521,19 +521,19 @@ namespace RED.ViewModels.Modules
                 default: return;
             }
 
-            _networkMessenger.SendOverNetwork(id, (enableState) ? ArmEnableCommand : ArmDisableCommand, true);
+            _rovecomm.SendCommand(id, (enableState) ? ArmEnableCommand : ArmDisableCommand, true);
         }
 
         public void GetPosition()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ArmGetPosition"), new byte[0], true);
+            _rovecomm.SendCommand(_idResolver.GetId("ArmGetPosition"), new byte[0], true);
         }
         public void SetPosition()
         {
             float[] angles = { AngleJ1, AngleJ2, AngleJ3, AngleJ4, AngleJ5, AngleJ6 };
             byte[] data = new byte[angles.Length * sizeof(float)];
             Buffer.BlockCopy(angles, 0, data, 0, data.Length);
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ArmAbsoluteAngle"), data, true);
+            _rovecomm.SendCommand(_idResolver.GetId("ArmAbsoluteAngle"), data, true);
         }
 
         public void SetXYZPosition()
@@ -541,16 +541,16 @@ namespace RED.ViewModels.Modules
             float[] coordinates = { CoordinateX, CoordinateY, CoordinateZ, Yaw, Pitch, Roll };
             byte[] data = new byte[coordinates.Length * sizeof(float)];
             Buffer.BlockCopy(coordinates, 0, data, 0, data.Length);
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ArmAbsoluteXYZ"), data, true);
+            _rovecomm.SendCommand(_idResolver.GetId("ArmAbsoluteXYZ"), data, true);
         }
 
         public void LimitSwitchOverride(byte index)
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("LimitSwitchOverride"), index, true);
+            _rovecomm.SendCommand(_idResolver.GetId("LimitSwitchOverride"), index, true);
         }
         public void LimitSwitchUnOverride(byte index)
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("LimitSwitchUnOverride"), index, true);
+            _rovecomm.SendCommand(_idResolver.GetId("LimitSwitchUnOverride"), index, true);
         }
 
         public void RecallPosition()

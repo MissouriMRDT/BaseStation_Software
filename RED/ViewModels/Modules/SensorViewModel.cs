@@ -5,10 +5,10 @@ using System;
 
 namespace RED.ViewModels.Modules
 {
-    public class SensorViewModel : PropertyChangedBase, INetworkSubscriber
+    public class SensorViewModel : PropertyChangedBase, IRovecommReceiver
     {
         private readonly SensorModel _model;
-        private readonly INetworkMessenger _networkMessenger;
+        private readonly IRovecomm _rovecomm;
         private readonly IDataIdResolver _idResolver;
         private readonly ILogger _log;
 
@@ -133,20 +133,20 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public SensorViewModel(INetworkMessenger networkMessenger, IDataIdResolver idResolver, ILogger log)
+        public SensorViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
             _model = new SensorModel();
-            _networkMessenger = networkMessenger;
+            _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _log = log;
 
-            _networkMessenger.Subscribe(this, _idResolver.GetId("IMUTemperature"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("IMUAccelerometer"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("IMUGyroscope"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("IMUMagnetometer"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("IMUTemperature"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("IMUAccelerometer"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("IMUGyroscope"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("IMUMagnetometer"));
         }
 
-        public void ReceivedNetworkMessageCallback(ushort dataId, byte[] data, bool reliable)
+        public void ReceivedRovecommMessageCallback(ushort dataId, byte[] data, bool reliable)
         {
             switch (_idResolver.GetName(dataId))
             {

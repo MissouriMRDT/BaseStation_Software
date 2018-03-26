@@ -5,23 +5,23 @@ namespace RED.ViewModels.Modules
 {
     public class CameraViewModel : PropertyChangedBase
     {
-        private readonly INetworkMessenger _networkMessenger;
+        private readonly IRovecomm _rovecomm;
         private readonly IDataIdResolver _idResolver;
 
-        public CameraViewModel(INetworkMessenger networkMessenger, IDataIdResolver idResolver)
+        public CameraViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver)
         {
-            _networkMessenger = networkMessenger;
+            _rovecomm = networkMessenger;
             _idResolver = idResolver;
         }
 
         public void SetMux1(byte index)
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("CameraMuxChannel1"), index, true);
+            _rovecomm.SendCommand(_idResolver.GetId("CameraMuxChannel1"), index, true);
         }
 
         public void SetMux2(byte index)
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("CameraMuxChannel2"), index, true);
+            _rovecomm.SendCommand(_idResolver.GetId("CameraMuxChannel2"), index, true);
         }
     }
 }

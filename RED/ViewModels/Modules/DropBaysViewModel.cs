@@ -5,26 +5,26 @@ namespace RED.ViewModels.Modules
 {
     public class DropBaysViewModel : PropertyChangedBase
     {
-        private readonly INetworkMessenger _networkMessenger;
+        private readonly IRovecomm _rovecomm;
         private readonly IDataIdResolver _idResolver;
         private readonly ILogger _log;
 
-        public DropBaysViewModel(INetworkMessenger networkMessenger, IDataIdResolver idResolver, ILogger log)
+        public DropBaysViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
-            _networkMessenger = networkMessenger;
+            _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _log = log;
         }
 
         public void OpenBay(byte index)
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("DropBayOpen"), index, true);
+            _rovecomm.SendCommand(_idResolver.GetId("DropBayOpen"), index, true);
             _log.Log("Drop bay #{0} opened", index + 1);
         }
 
         public void CloseBay(byte index)
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("DropBayClose"), index, true);
+            _rovecomm.SendCommand(_idResolver.GetId("DropBayClose"), index, true);
             _log.Log("Drop bay #{0} closed", index + 1);
         }
     }

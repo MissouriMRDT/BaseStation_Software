@@ -6,45 +6,45 @@ using System;
 
 namespace RED.ViewModels.Modules
 {
-    public class AutonomyViewModel : PropertyChangedBase, INetworkSubscriber
+    public class AutonomyViewModel : PropertyChangedBase, IRovecommReceiver
     {
         private readonly AutonomyModel _model;
-        private readonly INetworkMessenger _networkMessenger;
+        private readonly IRovecomm _rovecomm;
         private readonly IDataIdResolver _idResolver;
         private readonly ILogger _logger;
 
-        public AutonomyViewModel(INetworkMessenger networkMessenger, IDataIdResolver idResolver, ILogger logger)
+        public AutonomyViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger logger)
         {
             _model = new AutonomyModel();
 
-            _networkMessenger = networkMessenger;
+            _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _logger = logger;
 
-            _networkMessenger.Subscribe(this, _idResolver.GetId("WaypointReached"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("WaypointReached"));
         }
 
         public void EnableMode()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("AutonomousModeEnable"), new byte[0], true);
+            _rovecomm.SendCommand(_idResolver.GetId("AutonomousModeEnable"), new byte[0], true);
         }
 
         public void DisableMode()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("AutonomousModeDisable"), new byte[0], true);
+            _rovecomm.SendCommand(_idResolver.GetId("AutonomousModeDisable"), new byte[0], true);
         }
 
         public void ClearAllWaypoints()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("WaypointsClearAll"), new byte[0], true);
+            _rovecomm.SendCommand(_idResolver.GetId("WaypointsClearAll"), new byte[0], true);
         }
 
         public void Calibrate()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("AutonomyCalibrate"), new byte[0], true);
+            _rovecomm.SendCommand(_idResolver.GetId("AutonomyCalibrate"), new byte[0], true);
         }
 
-        public void ReceivedNetworkMessageCallback(ushort dataId, byte[] data, bool reliable)
+        public void ReceivedRovecommMessageCallback(ushort dataId, byte[] data, bool reliable)
         {
             switch (_idResolver.GetName(dataId))
             {
@@ -60,7 +60,7 @@ namespace RED.ViewModels.Modules
             Buffer.BlockCopy(BitConverter.GetBytes(waypoint.Latitude), 0, msg, 0 * sizeof(double), sizeof(double));
             Buffer.BlockCopy(BitConverter.GetBytes(waypoint.Longitude), 0, msg, 1 * sizeof(double), sizeof(double));
 
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("WaypointAdd"), msg, true);
+            _rovecomm.SendCommand(_idResolver.GetId("WaypointAdd"), msg, true);
         }
     }
 }

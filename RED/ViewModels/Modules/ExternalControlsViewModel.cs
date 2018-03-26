@@ -5,7 +5,7 @@ namespace RED.ViewModels.Modules
 {
     public class ExternalControlsViewModel : PropertyChangedBase
     {
-        private readonly INetworkMessenger _networkMessenger;
+        private readonly IRovecomm _rovecomm;
         private readonly IDataIdResolver _idResolver;
 
         private const byte GimbalDisableCommand = 0x00;
@@ -25,24 +25,24 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public ExternalControlsViewModel(INetworkMessenger networkMessenger, IDataIdResolver idResolver)
+        public ExternalControlsViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver)
         {
-            _networkMessenger = networkMessenger;
+            _rovecomm = networkMessenger;
             _idResolver = idResolver;
         }
 
         public void EnableAll()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("GimbalEnableAll"), GimbalEnableCommand, true);
+            _rovecomm.SendCommand(_idResolver.GetId("GimbalEnableAll"), GimbalEnableCommand, true);
         }
         public void DisableAll()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("GimbalEnableAll"), GimbalDisableCommand, true);
+            _rovecomm.SendCommand(_idResolver.GetId("GimbalEnableAll"), GimbalDisableCommand, true);
         }
 
         public void ExternalControlsReset()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ExternalControlsReset"), ResetCode, true);
+            _rovecomm.SendCommand(_idResolver.GetId("ExternalControlsReset"), ResetCode, true);
         }
     }
 }

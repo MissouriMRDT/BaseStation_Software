@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
-namespace RED.ViewModels
+namespace RED.Roveprotocol
 {
     public class MetadataManager : IIPAddressProvider, IDataIdResolver, IServerProvider
     {
@@ -113,6 +113,20 @@ namespace RED.ViewModels
         public Server GetServer(IPAddress ip)
         {
             return ServerObjs.FirstOrDefault(x => x.Address.Equals(ip));
+        }
+
+        public IPAddress[] GetAllIPAddresses()
+        {
+            Server[] servers = GetServerList();
+
+            IPAddress[] addresses = new IPAddress[servers.Length];
+
+            for(int i = 0; i < servers.Length; i++)
+            {
+                addresses[i] = servers[i].Address;
+            }
+
+            return addresses;
         }
     }
 }

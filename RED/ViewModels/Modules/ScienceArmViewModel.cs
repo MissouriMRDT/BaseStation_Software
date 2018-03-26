@@ -8,7 +8,7 @@ namespace RED.ViewModels.Modules
 {
     public class ScienceArmViewModel : PropertyChangedBase, IInputMode
     {
-        private readonly INetworkMessenger _networkMessenger;
+        private readonly IRovecomm _rovecomm;
         private readonly IDataIdResolver _idResolver;
         private readonly ILogger _log;
 
@@ -18,9 +18,9 @@ namespace RED.ViewModels.Modules
         public string Name { get; }
         public string ModeType { get; }
 
-        public ScienceArmViewModel(INetworkMessenger networkMessenger, IDataIdResolver idResolver, ILogger log)
+        public ScienceArmViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
-            _networkMessenger = networkMessenger;
+            _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _log = log;
 
@@ -36,14 +36,14 @@ namespace RED.ViewModels.Modules
             float armMovement = values["Arm"];
             float drillSpeed = values["Drill"];
 
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ScienceArmDrive"), (Int16)(armMovement * ArmSpeedScale));
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("Drill"), (Int16)(drillSpeed * DrillSpeedScale));
+            _rovecomm.SendCommand(_idResolver.GetId("ScienceArmDrive"), (Int16)(armMovement * ArmSpeedScale));
+            _rovecomm.SendCommand(_idResolver.GetId("Drill"), (Int16)(drillSpeed * DrillSpeedScale));
         }
 
         public void StopMode()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("ScienceArmDrive"), (Int16)(0), true);
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("Drill"), (Int16)(0), true);
+            _rovecomm.SendCommand(_idResolver.GetId("ScienceArmDrive"), (Int16)(0), true);
+            _rovecomm.SendCommand(_idResolver.GetId("Drill"), (Int16)(0), true);
         }
     }
 }

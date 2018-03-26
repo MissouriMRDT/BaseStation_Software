@@ -7,11 +7,11 @@ using System.IO;
 
 namespace RED.ViewModels.Modules
 {
-    public class GPSViewModel : PropertyChangedBase, INetworkSubscriber
+    public class GPSViewModel : PropertyChangedBase, IRovecommReceiver
     {
         private readonly GPSModel _model;
         private readonly IDataIdResolver _idResolver;
-        private readonly INetworkMessenger _networkMessenger;
+        private readonly IRovecomm _rovecomm;
 
         public bool FixObtained
         {
@@ -144,21 +144,21 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public GPSViewModel(INetworkMessenger networkMessenger, IDataIdResolver idResolver)
+        public GPSViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver)
         {
             _model = new GPSModel();
-            _networkMessenger = networkMessenger;
+            _rovecomm = networkMessenger;
             _idResolver = idResolver;
 
-            _networkMessenger.Subscribe(this, _idResolver.GetId("GPSQuality"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("GPSPosition"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("GPSSpeed"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("GPSSpeedAngle"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("GPSAltitude"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("GPSSatellites"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("GPSQuality"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("GPSPosition"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("GPSSpeed"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("GPSSpeedAngle"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("GPSAltitude"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("GPSSatellites"));
         }
 
-        public void ReceivedNetworkMessageCallback(ushort dataId, byte[] data, bool reliable)
+        public void ReceivedRovecommMessageCallback(ushort dataId, byte[] data, bool reliable)
         {
             switch (_idResolver.GetName(dataId))
             {

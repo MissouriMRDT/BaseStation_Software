@@ -6,10 +6,10 @@ using System.IO;
 
 namespace RED.ViewModels.Modules
 {
-    public class PowerViewModel : PropertyChangedBase, INetworkSubscriber
+    public class PowerViewModel : PropertyChangedBase, IRovecommReceiver
     {
         private readonly PowerModel _model;
-        private readonly INetworkMessenger _networkMessenger;
+        private readonly IRovecomm _rovecomm;
         private readonly IDataIdResolver _idResolver;
         private readonly ILogger _log;
 
@@ -355,48 +355,48 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public PowerViewModel(INetworkMessenger networkMessenger, IDataIdResolver idResolver, ILogger log)
+        public PowerViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
             _model = new PowerModel();
-            _networkMessenger = networkMessenger;
+            _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _log = log;
 
-            _networkMessenger.Subscribe(this, _idResolver.GetId("Motor1Current"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("Motor2Current"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("Motor3Current"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("Motor4Current"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("Motor5Current"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("Motor6Current"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("Motor7Current"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("Motor8Current"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("Bus5VCurrent"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("Bus12VCurrent"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("ExtraCurrent"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("ActuationCurrent"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("LogicCurrent"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("CommunicationsCurrent"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("InputVoltage"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Motor1Current"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Motor2Current"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Motor3Current"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Motor4Current"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Motor5Current"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Motor6Current"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Motor7Current"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Motor8Current"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Bus5VCurrent"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Bus12VCurrent"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("ExtraCurrent"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("ActuationCurrent"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("LogicCurrent"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("CommunicationsCurrent"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("InputVoltage"));
 
-            _networkMessenger.Subscribe(this, _idResolver.GetId("Cell1Voltage"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("Cell2Voltage"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("Cell3Voltage"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("Cell4Voltage"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("Cell5Voltage"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("Cell6Voltage"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("Cell7Voltage"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("Cell8Voltage"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("TotalPackCurrent"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("TotalPackVoltage"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("BMSTemperature1"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("BMSTemperature2"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Cell1Voltage"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Cell2Voltage"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Cell3Voltage"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Cell4Voltage"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Cell5Voltage"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Cell6Voltage"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Cell7Voltage"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Cell8Voltage"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("TotalPackCurrent"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("TotalPackVoltage"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("BMSTemperature1"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("BMSTemperature2"));
 
-            _networkMessenger.Subscribe(this, _idResolver.GetId("PowerBusOverCurrentNotification"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("BMSPackOvercurrent"));
-            _networkMessenger.Subscribe(this, _idResolver.GetId("BMSPackUndervoltage"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("PowerBusOverCurrentNotification"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("BMSPackOvercurrent"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("BMSPackUndervoltage"));
         }
 
-        public void ReceivedNetworkMessageCallback(ushort dataId, byte[] data, bool reliable)
+        public void ReceivedRovecommMessageCallback(ushort dataId, byte[] data, bool reliable)
         {
             switch (_idResolver.GetName(dataId))
             {
@@ -464,29 +464,29 @@ namespace RED.ViewModels.Modules
 
         public void RebootRover()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("BMSReboot"), new byte[0], true);
+            _rovecomm.SendCommand(_idResolver.GetId("BMSReboot"), new byte[0], true);
         }
         public void EStopRover()
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("BMSStop"), new byte[0], true);
+            _rovecomm.SendCommand(_idResolver.GetId("BMSStop"), new byte[0], true);
         }
 
         public void FanControl(bool state)
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("BMSFanControl"), state ? 0 : 1, true);
+            _rovecomm.SendCommand(_idResolver.GetId("BMSFanControl"), state ? 0 : 1, true);
         }
         public void BuzzerControl(bool state)
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("BMSBuzzerControl"), state ? 0 : 1, true);
+            _rovecomm.SendCommand(_idResolver.GetId("BMSBuzzerControl"), state ? 0 : 1, true);
         }
 
         public void EnableBus(byte index)
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("PowerBusEnable"), index, true);
+            _rovecomm.SendCommand(_idResolver.GetId("PowerBusEnable"), index, true);
         }
         public void DisableBus(byte index)
         {
-            _networkMessenger.SendOverNetwork(_idResolver.GetId("PowerBusDisable"), index, true);
+            _rovecomm.SendCommand(_idResolver.GetId("PowerBusDisable"), index, true);
         }
 
         public void SaveFileStart()

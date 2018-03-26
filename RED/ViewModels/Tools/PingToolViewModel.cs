@@ -16,7 +16,7 @@ namespace RED.ViewModels.Tools
     public class PingToolViewModel : PropertyChangedBase
     {
         private readonly PingToolModel _model;
-        private readonly NetworkManagerViewModel _networkManager;
+        private readonly IRovecomm _networkManager;
 
         private const string PingConfigName = "PingTool";
 
@@ -58,7 +58,7 @@ namespace RED.ViewModels.Tools
             }
         }
 
-        public PingToolViewModel(NetworkManagerViewModel network, IConfigurationManager config)
+        public PingToolViewModel(IRovecomm network, IConfigurationManager config)
         {
             _model = new PingToolModel();
             _networkManager = network;

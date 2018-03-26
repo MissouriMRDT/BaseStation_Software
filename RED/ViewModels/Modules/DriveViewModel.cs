@@ -12,7 +12,7 @@ namespace RED.ViewModels.Modules
         private const int motorRangeFactor = 1000;
 
         private readonly DriveModel _model;
-        private readonly INetworkMessenger _networkMessenger;
+        private readonly IRovecomm _rovecomm;
         private readonly IDataIdResolver _idResolver;
 
         public int SpeedLeft
@@ -68,10 +68,10 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public DriveViewModel(INetworkMessenger networkMessenger, IDataIdResolver idResolver)
+        public DriveViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver)
         {
             _model = new DriveModel();
-            _networkMessenger = networkMessenger;
+            _rovecomm = networkMessenger;
             _idResolver = idResolver;
             Name = "Drive";
             ModeType = "Drive";
@@ -121,12 +121,12 @@ namespace RED.ViewModels.Modules
         {
             if (UseLegacyDataIds)
             {
-                _networkMessenger.SendOverNetwork(_idResolver.GetId("MotorLeftSpeed"), SpeedLeft, reliable);
-                _networkMessenger.SendOverNetwork(_idResolver.GetId("MotorRightSpeed"), SpeedRight, reliable);
+                _rovecomm.SendCommand(_idResolver.GetId("MotorLeftSpeed"), SpeedLeft, reliable);
+                _rovecomm.SendCommand(_idResolver.GetId("MotorRightSpeed"), SpeedRight, reliable);
             }
             else
             {
-                _networkMessenger.SendOverNetwork(_idResolver.GetId("DriveLeftRight"), (ushort)SpeedLeft << 16 | (ushort)SpeedRight, reliable);
+                _rovecomm.SendCommand(_idResolver.GetId("DriveLeftRight"), (ushort)SpeedLeft << 16 | (ushort)SpeedRight, reliable);
             }
         }
 
