@@ -11,6 +11,13 @@ using RED.ViewModels.Settings.Network;
 
 namespace RED.ViewModels
 {
+    /// <summary>
+    /// The overseer class for RED's setting tab, containing logic for operating the tab in the GUI as well 
+    /// as all the individual setting sections contained within it. 
+    /// 
+    /// This class is split into a variety of sub classes, each in turn populating the overall settings tab 
+    /// with a specific section, such as controller settings classes.
+    /// </summary>
     public class SettingsManagerViewModel : PropertyChangedBase
     {
         private readonly SettingsManagerModel _model;
@@ -134,6 +141,16 @@ namespace RED.ViewModels
             }
         }
 
+        /// <summary>
+        /// Default constructor. For every element in the control center view that corresponds to a settings section,
+        /// construct it so that its gui gets populated. These elements are hardcoded in, IE there's a section 
+        /// for 4 xbox controllers specifically and so on. 
+        /// </summary>
+        /// <param name="configManager">the configuration manager that contains the default setting configurations
+        /// for the initial settings.</param>
+        /// <param name="cc">the control center view model. This class keeps a handle to it so we can manipulate
+        /// the elements in it when the settings change, such as changing the operation of its first xbox 
+        /// controller when the user changes its deadband settings.</param>
         public SettingsManagerViewModel(IConfigurationManager configManager, ControlCenterViewModel cc)
         {
             _model = new SettingsManagerModel();

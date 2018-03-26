@@ -14,6 +14,10 @@ namespace RED.ViewModels
 
         private readonly ILogger _log;
 
+        //we save the default configs as they come in into a dictionary. We also save them 
+        //as xml files after they get loaded in. The reason we maintain both is so that the dictionary 
+        //can act as a backup in case the xml files get deleted or lost in the middle of the program runtime
+        //for any reason.
         private Dictionary<string, ConfigurationFile> DefaultConfigs;
 
         public XMLConfigManager(ILogger log)
