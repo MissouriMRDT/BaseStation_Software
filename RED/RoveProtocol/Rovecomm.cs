@@ -25,7 +25,7 @@ namespace RED.Roveprotocol
     /// and decode messages between RED and devices and pass it over the network.
     /// 
     /// This class works together with MetadataManager, the latter containing all of the metadata ID's that rovecomm uses when passing messages around as well 
-    /// as information such as the ip addresses of the devices.
+    /// as information such as the ip addresses of the devices. As well with NetworkManagerViewModel, Rovecomm relies on it for actual network access.
     /// </summary>
     public class Rovecomm: IRovecomm
     {
@@ -68,7 +68,8 @@ namespace RED.Roveprotocol
         /// for repeated messages or commands. </param>
         public void SendCommand(ushort dataId, dynamic obj, bool reliable = false)
         {
-            SendCommand(dataId, new byte[] { obj }, reliable);
+
+            SendCommand(dataId, System.BitConverter.GetBytes(obj), reliable);
         }
 
         /// <summary>
@@ -81,7 +82,7 @@ namespace RED.Roveprotocol
         /// for repeated messages or commands. </param>
         public void SendCommand(ushort dataId, byte obj, bool reliable = false)
         {
-            SendCommand(dataId, System.BitConverter.GetBytes(obj), reliable);
+            SendCommand(dataId, new byte[] { obj }, reliable);
         }
 
         /// <summary>
@@ -191,7 +192,7 @@ namespace RED.Roveprotocol
         }
 
         /// <summary>
-        /// request to subscribe this computer to all devices on the network so that they will send this pc rovecomm
+        /// request to subscribe this computer to all rover devices on the network so that they will send this pc rovecomm
         /// messages. This must be called before any rovecomm streams can be received by this computer.
         /// </summary>
         /// <param name="deviceIP">the ip address of the device to request</param>
