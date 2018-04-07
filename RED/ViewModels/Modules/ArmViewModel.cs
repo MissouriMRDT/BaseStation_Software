@@ -26,7 +26,7 @@ namespace RED.ViewModels.Modules
     /// this purpose. More information can be found in IInputmode.cs over in Interfaces folder.
     /// 
     /// Finally, as an ISubscribe, this class is responsible for receiving messages from the router whenever RED 
-    /// gets telemetry messages from Rover. When that happens the router will call this class and ask it to see
+    /// gets telemetry messages from Rover. When that happens rovecomm will call this class and ask it to see
     /// if any of the messages (rovecomm dataid's) belong to it.
     /// 
     /// This class is designed to be constructed in the main view model class (usually ControlCenterViewModel).

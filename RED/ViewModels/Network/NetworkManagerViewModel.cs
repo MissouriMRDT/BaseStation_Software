@@ -21,7 +21,6 @@ namespace RED.ViewModels.Network
 
         private readonly NetworkManagerModel _model;
         private readonly ILogger _log;
-        private readonly IIPAddressProvider _ipProvider;
 
         private INetworkTransportProtocol continuousDataSocket;
 
@@ -49,11 +48,10 @@ namespace RED.ViewModels.Network
         public event Action<IPAddress, byte[]> PacketReceived;
         public event Action<IPAddress> TelemetryRecieved;
 
-        public NetworkManagerViewModel(MetadataRecordContext[] commands, ILogger log, IIPAddressProvider ipProvider)
+        public NetworkManagerViewModel(ILogger log)
         {
             _model = new NetworkManagerModel();
             _log = log;
-            _ipProvider = ipProvider;
 
             continuousDataSocket = new UDPEndpoint(DestinationPort, DestinationPort);
 

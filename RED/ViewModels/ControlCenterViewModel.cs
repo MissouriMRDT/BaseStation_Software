@@ -413,7 +413,7 @@ namespace RED.ViewModels
             ConfigManager = new XMLConfigManager(Console);
             MetadataManager = new MetadataManager(Console, ConfigManager);
        
-            NetworkManager = new NetworkManagerViewModel( MetadataManager.Commands.ToArray(), Console, MetadataManager);
+            NetworkManager = new NetworkManagerViewModel(Console);
             Rovecomm = new Rovecomm(NetworkManager, Console, MetadataManager);
             Rovecomm.SubscribeMyPCToAllDevices();
 
@@ -440,6 +440,7 @@ namespace RED.ViewModels
             FlightStickController = new FlightStickViewModel();
             KeyboardController = new KeyboardInputViewModel();
 
+            // Programatic instanciation of InputManager view, vs static like everything else in a xaml 
             InputManager = new InputManagerViewModel(Console, ConfigManager,
                 new IInputDevice[] { XboxController1, XboxController2, XboxController3, XboxController4, FlightStickController, KeyboardController },
                 new MappingViewModel[0],
@@ -452,11 +453,6 @@ namespace RED.ViewModels
 
             SettingsManager = new SettingsManagerViewModel(ConfigManager, this);
     }
-
-        public void ResubscribeAll()
-        {
-            Rovecomm.SubscribeMyPCToAllDevices();
-        }
 
         protected override void OnDeactivate(bool close)
         {
