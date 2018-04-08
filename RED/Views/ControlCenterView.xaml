@@ -30,9 +30,7 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Expander Grid.Row="0" Header="Map" IsExpanded="True">
-                        <ContentControl x:Name="Map" />
-                    </Expander>
+                    <ContentControl Grid.Row="0" x:Name="Map" />
                     <StackPanel Grid.Row="1">
                         <Expander Header="GPS" IsExpanded="True">
                             <ContentControl x:Name="GPS" />

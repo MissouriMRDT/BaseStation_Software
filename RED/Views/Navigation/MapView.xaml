@@ -11,13 +11,14 @@
     <UserControl.Resources>
         <addons:GMapMarkerCollectionMultiConverter x:Key="GPSMarkerConverter" />
     </UserControl.Resources>
-    <Grid>
+    <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="10"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <gmap:GMapControl Grid.Row="0" Name="Gmap" DataContextChanged="Map_DataContextChanged" DockPanel.Dock="Top" Margin="10"/>
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
+        <gmap:GMapControl Grid.Row="0" Name="Gmap" DataContextChanged="Map_DataContextChanged"/>
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
             <Button x:Name="RefreshMap">Refresh</Button>
             <Button Content="Cache Control" ContextMenuService.IsEnabled="False" Click="CacheControl_Click">
                 <Button.ContextMenu>
