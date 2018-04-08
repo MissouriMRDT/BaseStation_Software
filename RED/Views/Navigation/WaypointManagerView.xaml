@@ -23,15 +23,13 @@
         <UniformGrid Rows="2" DockPanel.Dock="Top">
             <Label Content="Latitude:" />
             <TextBox x:Name="LatitudeTextBox" />
-            <Label Content="Longitude:" />
-            <TextBox x:Name="LongitudeTextBox" />
-        </UniformGrid>
-        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
             <Button x:Name="AddWaypointBtn" Click="AddWaypointBtn_Click">Add Waypoint</Button>
             <Button x:Name="CurrentLocationToWaypoint">Save Current</Button>
+            <Label Content="Longitude:" />
+            <TextBox x:Name="LongitudeTextBox" />
             <Button x:Name="RemoveSelectedWaypoint">Remove Selected</Button>
             <Button x:Name="SendSelectedToAutonomy">Send to Autonomy</Button>
-        </StackPanel>
+        </UniformGrid>
         <DataGrid ItemsSource="{Binding Waypoints}" SelectedItem="{Binding SelectedWaypoint}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" FrozenColumnCount="1" BorderThickness="1">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
