@@ -452,13 +452,18 @@ namespace RED.ViewModels
             TelemetryLogTool = new TelemetryLogToolViewModel(NetworkManager, MetadataManager);
 
             SettingsManager = new SettingsManagerViewModel(ConfigManager, this);
-    }
+        }
 
         protected override void OnDeactivate(bool close)
         {
             InputManager.SaveConfigurations();
             Arm.SaveConfigurations();
             base.OnDeactivate(close);
+        }
+
+        public void ResubscribeAll()
+        {
+            Rovecomm.SubscribeMyPCToAllDevices();
         }
     }
 }
