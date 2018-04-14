@@ -81,6 +81,7 @@ namespace RED.ViewModels.Modules
             set
             {
                 _model.ControlState = value;
+                _log.Log(ControlState);
                 NotifyOfPropertyChange(() => ControlState);
             }
         }
@@ -307,6 +308,7 @@ namespace RED.ViewModels.Modules
                     AngleJ4 = BitConverter.ToSingle(data, 3 * sizeof(float));
                     AngleJ5 = BitConverter.ToSingle(data, 4 * sizeof(float));
                     AngleJ6 = BitConverter.ToSingle(data, 5 * sizeof(float));
+                    _log.Log("Recieved Arm Positions");
                     break;
                 case "ArmFault":
                     _log.Log($"Arm reported a fault code of {data[0]}");
