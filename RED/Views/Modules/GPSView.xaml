@@ -15,20 +15,25 @@
             <Setter Property="TextBlock.TextDecorations" Value="{Binding FixObtained, Converter={StaticResource StaleDataConverter}}" />
         </Style>
     </UserControl.Resources>
-    <StackPanel>
+    <StackPanel Orientation="Horizontal">
+        <Canvas Width="32" Height="32" Margin="16">
+            <Path Fill="{StaticResource AccentColorBrush}" Data="M 8,32 16,0 24,32 16,28 8,32" Width="32" Height="32">
+                <Path.LayoutTransform>
+                    <RotateTransform Angle="{Binding HeadingDeg}" />
+                </Path.LayoutTransform>
+            </Path>
+        </Canvas>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="100" />
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
@@ -42,37 +47,30 @@
             <Label Grid.Row="2" Grid.Column="1">
                 <TextBlock x:Name="NumberOfSatellites" Style="{DynamicResource MaybeStale}" />
             </Label>
-            <Label Grid.Row="3" Grid.Column="0">Current Lat</Label>
-            <Label Grid.Row="3" Grid.Column="1">
+            <Label Grid.Row="0" Grid.Column="2">Current Lat</Label>
+            <Label Grid.Row="0" Grid.Column="3">
                 <TextBlock Text="{Binding CurrentLocation, Converter={StaticResource LatitudeConverter}}" Style="{DynamicResource MaybeStale}" />
             </Label>
-            <Label Grid.Row="4" Grid.Column="0">Current Lon</Label>
-            <Label Grid.Row="4" Grid.Column="1">
+            <Label Grid.Row="1" Grid.Column="2">Current Lon</Label>
+            <Label Grid.Row="1" Grid.Column="3">
                 <TextBlock Text="{Binding CurrentLocation, Converter={StaticResource LongitudeConverter}}" Style="{DynamicResource MaybeStale}" />
             </Label>
-            <Label Grid.Row="5" Grid.Column="0">Altitude</Label>
-            <Label Grid.Row="5" Grid.Column="1">
+            <Label Grid.Row="2" Grid.Column="2">Altitude</Label>
+            <Label Grid.Row="2" Grid.Column="3">
                 <TextBlock x:Name="CurrentAltitude" Style="{DynamicResource MaybeStale}" />
             </Label>
-            <Label Grid.Row="6" Grid.Column="0">Speed</Label>
-            <Label Grid.Row="6" Grid.Column="1">
+            <Label Grid.Row="0" Grid.Column="4">Speed</Label>
+            <Label Grid.Row="0" Grid.Column="5">
                 <TextBlock x:Name="Speed" Style="{DynamicResource MaybeStale}" />
             </Label>
-            <Label Grid.Row="7" Grid.Column="0">Speed Angle</Label>
-            <Label Grid.Row="7" Grid.Column="1">
+            <Label Grid.Row="1" Grid.Column="4">Speed Angle</Label>
+            <Label Grid.Row="1" Grid.Column="5">
                 <TextBlock x:Name="SpeedAngle" Style="{DynamicResource MaybeStale}" />
             </Label>
-            <Label Grid.Row="8" Grid.Column="0">Antenna Angle</Label>
-            <Label Grid.Row="8" Grid.Column="1">
+            <Label Grid.Row="2" Grid.Column="4">Antenna Angle</Label>
+            <Label Grid.Row="2" Grid.Column="5">
                 <TextBlock Text="{Binding AntennaDirectionDeg, StringFormat={}{0:#0}&#x00B0;}" Style="{DynamicResource MaybeStale}" />
             </Label>
         </Grid>
-        <Canvas Width="32" Height="32">
-            <Path Fill="{StaticResource AccentColorBrush}" Data="M 8,32 16,0 24,32 16,28 8,32" Width="32" Height="32">
-                <Path.LayoutTransform>
-                    <RotateTransform Angle="{Binding HeadingDeg}" />
-                </Path.LayoutTransform>
-            </Path>
-        </Canvas>
     </StackPanel>
 </UserControl>
