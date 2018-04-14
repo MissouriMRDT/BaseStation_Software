@@ -59,6 +59,14 @@ namespace RED.ViewModels.Modules
         public string Name { get; }
         public string ModeType { get; }
 
+        //the arm should be coded to call its watchdog and reset itself frequently when we're not sending commands to it.
+        //It should be coded to hold off on this reset when it's in closed loop mode; when in gui control mode, it's in
+        //an odd state where RED is in closed loop mode, but until it sends a command manually to the arm the arm will 
+        //remain in open loop mode and thus keep resetting itself, making sending it commands harrowing. So when in gui ctl, 
+        //RED will keep sending empty commands to the arm to keep it alive until the user sends it a gui command and 
+        //puts it into closed loop mode as well
+        private bool guiControlInitialized;
+
         public float AngleJ1
         {
             get
@@ -467,6 +475,7 @@ namespace RED.ViewModels.Modules
             {
                 myState = ArmControlState.GuiControl;
                 state = "GUI control";
+                guiControlInitialized = false;
             }
             else if (values["UseOpenLoop"] != 0)
             {
@@ -499,14 +508,16 @@ namespace RED.ViewModels.Modules
             {
                 SetOpenLoopValues(values);
             }
-            else if (myState == ArmControlState.GuiControl)
-            {
-                //controller does nothing in this state besides checking to see if you wanna switch states; otherwise user just
-                //uses the gui to input commands
-            }
             else if (myState == ArmControlState.IKRoverPOV || myState == ArmControlState.IKWristPOV)
             {
                 SetIKValues(values, myState);
+            }
+            else if(myState == ArmControlState.GuiControl)
+            {
+                if(guiControlInitialized == false)
+                {
+                    _rovecomm.SendCommand(_idResolver.GetId("ArmStop"), (Int16)(0), true);
+                }
             }
         }
 
@@ -543,7 +554,7 @@ namespace RED.ViewModels.Modules
 
         public void GetPosition()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ArmGetPosition"), new byte[0], true);
+            _rovecomm.SendCommand(_idResolver.GetId("ArmGetPosition"), new byte[0]);
         }
         public void SetPosition()
         {
@@ -551,6 +562,11 @@ namespace RED.ViewModels.Modules
             byte[] data = new byte[angles.Length * sizeof(float)];
             Buffer.BlockCopy(angles, 0, data, 0, data.Length);
             _rovecomm.SendCommand(_idResolver.GetId("ArmAbsoluteAngle"), data, true);
+
+            if(myState == ArmControlState.GuiControl)
+            {
+                guiControlInitialized = true;
+            }
         }
 
         public void SetXYZPosition()
@@ -559,6 +575,11 @@ namespace RED.ViewModels.Modules
             byte[] data = new byte[coordinates.Length * sizeof(float)];
             Buffer.BlockCopy(coordinates, 0, data, 0, data.Length);
             _rovecomm.SendCommand(_idResolver.GetId("ArmAbsoluteXYZ"), data, true);
+
+            if (myState == ArmControlState.GuiControl)
+            {
+                guiControlInitialized = true;
+            }
         }
 
         public void LimitSwitchOverride(byte index)
