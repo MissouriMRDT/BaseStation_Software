@@ -12,11 +12,10 @@
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="75" />
+            <ColumnDefinition Width="80" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="25" />
-            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="30" />
         </Grid.ColumnDefinitions>
         <Label Grid.Column="0" Content="{Binding Path=Mode.Name}" />
         <ComboBox Grid.Column="1" x:Name="Devices" SelectedItem="{Binding SelectedDevice}">
