@@ -81,13 +81,13 @@
                         </Expander>
                     </StackPanel>
                 </ScrollViewer>
-                <Grid Grid.Column="2" Margin="5">
+                <Grid Grid.Column="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
-                    <DockPanel Grid.Row="0">
+                    <DockPanel Grid.Row="0" Margin="5">
                         <Button DockPanel.Dock="Bottom" x:Name="ResubscribeAll">Resubscribe All</Button>
                         <controls:MetroTabControl TabStripMargin="0">
                             <TabItem Header="State" controls:ControlsHelper.HeaderFontSize="12">
@@ -110,8 +110,8 @@
                             </TabItem>
                         </controls:MetroTabControl>
                     </DockPanel>
-                    <ContentControl Grid.Row="1" x:Name="Console" />
-                    <ContentControl Grid.Row="2" x:Name="InputManager"/>
+                    <ContentControl Grid.Row="1" Margin="5" x:Name="Console" />
+                    <ContentControl Grid.Row="2" Margin="5" x:Name="InputManager"/>
                 </Grid>
             </Grid>
         </TabItem>
