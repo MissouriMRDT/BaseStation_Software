@@ -114,8 +114,10 @@
                     <Label Grid.Row="2" Grid.Column="3">Roll</Label>
                     <TextBox Grid.Row="2" Grid.Column="4" Text="{Binding Roll, StringFormat=0.##}" />
                 </Grid>
-                <UniformGrid Rows="1"/>
-                <Button x:Name="SetXYZPosition" Content="Set absolute position" Height="29" HorizontalAlignment="Center" />
+                <UniformGrid Rows="1">
+                    <Button x:Name="SetXYZPosition" Content="Set absolute position" Height="29" HorizontalAlignment="Center" />
+                    <Button x:Name="GetXYZPosition" Content="Get Absolute Position" Height="29" HorizontalAlignment="Center" />
+                </UniformGrid>
             </StackPanel>
         </Expander>
         <Grid>

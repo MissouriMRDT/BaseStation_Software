@@ -302,6 +302,7 @@ namespace RED.ViewModels.Modules
             _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("ArmCurrentPosition"));
             _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("ArmFault"));
             _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("ArmCurrentMain"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("ArmCurrentXYZ"));
         }
 
         public void ReceivedRovecommMessageCallback(ushort dataId, byte[] data, bool reliable)
@@ -316,6 +317,15 @@ namespace RED.ViewModels.Modules
                     AngleJ5 = BitConverter.ToSingle(data, 4 * sizeof(float));
                     AngleJ6 = BitConverter.ToSingle(data, 5 * sizeof(float));
                     break;
+                case "ArmCurrentXYZ":
+                    CoordinateX = BitConverter.ToSingle(data, 0 * sizeof(float));
+                    CoordinateY = BitConverter.ToSingle(data, 1 * sizeof(float));
+                    CoordinateZ = BitConverter.ToSingle(data, 2 * sizeof(float));
+                    Yaw = BitConverter.ToSingle(data, 3 * sizeof(float));
+                    Pitch = BitConverter.ToSingle(data, 4 * sizeof(float));
+                    Roll = BitConverter.ToSingle(data, 5 * sizeof(float));
+                    break;
+
                 case "ArmFault":
                     _log.Log($"Arm reported a fault code of {data[0]}");
                     break;
@@ -563,10 +573,13 @@ namespace RED.ViewModels.Modules
             Buffer.BlockCopy(angles, 0, data, 0, data.Length);
             _rovecomm.SendCommand(_idResolver.GetId("ArmAbsoluteAngle"), data, true);
 
-            if(myState == ArmControlState.GuiControl)
-            {
-                guiControlInitialized = true;
-            }
+            myState = ArmControlState.GuiControl;
+            guiControlInitialized = true;
+        }
+
+        public void GetXYZPosition()
+        {
+            _rovecomm.SendCommand(_idResolver.GetId("ArmGetXYZ"), new byte[0]);
         }
 
         public void SetXYZPosition()
@@ -576,10 +589,8 @@ namespace RED.ViewModels.Modules
             Buffer.BlockCopy(coordinates, 0, data, 0, data.Length);
             _rovecomm.SendCommand(_idResolver.GetId("ArmAbsoluteXYZ"), data, true);
 
-            if (myState == ArmControlState.GuiControl)
-            {
-                guiControlInitialized = true;
-            }
+            myState = ArmControlState.GuiControl;
+            guiControlInitialized = true;
         }
 
         public void LimitSwitchOverride(byte index)
