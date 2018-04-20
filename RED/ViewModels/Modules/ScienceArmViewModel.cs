@@ -12,7 +12,7 @@ namespace RED.ViewModels.Modules
         private readonly IDataIdResolver _idResolver;
         private readonly ILogger _log;
 
-        private const int ArmSpeedScale = 1000;
+        private const int ScrewSpeedScale = 1000;
         private const int DrillSpeedScale = 1000;
 
         public string Name { get; }
@@ -33,16 +33,16 @@ namespace RED.ViewModels.Modules
 
         public void SetValues(Dictionary<string, float> values)
         {
-            float armMovement = values["Arm"];
+            float screwMovement = values["Screw"];
             float drillSpeed = values["Drill"];
 
-            _rovecomm.SendCommand(_idResolver.GetId("ScienceArmDrive"), (Int16)(armMovement * ArmSpeedScale));
+            _rovecomm.SendCommand(_idResolver.GetId("Screw"), (Int16)(screwMovement * ScrewSpeedScale));
             _rovecomm.SendCommand(_idResolver.GetId("Drill"), (Int16)(drillSpeed * DrillSpeedScale));
         }
 
         public void StopMode()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ScienceArmDrive"), (Int16)(0), true);
+            _rovecomm.SendCommand(_idResolver.GetId("Screw"), (Int16)(0), true);
             _rovecomm.SendCommand(_idResolver.GetId("Drill"), (Int16)(0), true);
         }
     }

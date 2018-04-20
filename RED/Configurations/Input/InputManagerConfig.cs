@@ -46,7 +46,7 @@ namespace RED.Configurations.Input
                 new InputChannelContext("ButtonBackDebounced", "DebouncedArmReset"),
                 new InputChannelContext("ButtonStartDebounced", "ModeCycle") }),
             new InputMappingContext("Xbox Science Arm", "Xbox", "ScienceArm", 30, new[] {
-                new InputChannelContext("JoyStick1Y", "Arm"){ Parabolic = true },
+                new InputChannelContext("JoyStick1Y", "Screw"){ Parabolic = true },
                 new InputChannelContext("JoyStick2Y", "Drill"){ Parabolic = true },
                 new InputChannelContext("ButtonStartDebounced", "ModeCycle") }),
             new InputMappingContext("Xbox Gimbal", "Xbox", "Gimbal", 30, new[] {

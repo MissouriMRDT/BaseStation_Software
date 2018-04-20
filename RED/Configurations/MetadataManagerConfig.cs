@@ -34,6 +34,7 @@ namespace RED.Configurations
                     new MetadataRecordContext(825, "ArmEnableEndeff2", "Enables/Disables Power to Endeffector Servo"),
                     new MetadataRecordContext(784, "ArmAbsoluteAngle", "Sets position based on six absolute angles"),
                     new MetadataRecordContext(785, "ArmAbsoluteXYZ", "Sets position based on absolute XYZ, yaw pitch and roll"),
+                    new MetadataRecordContext(808, "ArmGetXYZ", "Requests to get the arm's current IK coordinates"),
                     new MetadataRecordContext(786, "IKRoverIncrement", "Increments IK positions based on rover perspective, XYZ yaw pitch roll. Each value is normalized -1000 to 1000"),
                     new MetadataRecordContext(787, "IKWristIncrement", "Increments IK positions based on wrist perspective, XYZ yaw pitch roll. Each value is normalized -1000 to 1000"),
                     new MetadataRecordContext(793, "ArmGetPosition", "Requests Current Position"),
@@ -44,6 +45,7 @@ namespace RED.Configurations
                 },
                 Telemetry = new[] {
                     new MetadataRecordContext(792, "ArmCurrentPosition", "Contains the current angles from each joint"),
+                    new MetadataRecordContext(794, "ArmCurrentXYZ", "Contains the current IK coordinates of arm. xyz, yaw pitch roll"),
                     new MetadataRecordContext(832, "ArmFault", "Indicates when the arm reports a fault condition"),
                     new MetadataRecordContext(865, "GripperCurrent", "Current reading from gripper motor"),
                     new MetadataRecordContext(867, "DrillCurrent", "Current reading from drill motor"),
@@ -153,16 +155,11 @@ namespace RED.Configurations
                     new MetadataRecordContext(2580, "WaypointReached", "")
                 }
             },
-            new MetadataServerContext("Science Arm Board", "192.168.1.139") {
+            new MetadataServerContext("Drill Board", "192.168.1.139") {
                 Commands = new[] {
-                    new MetadataRecordContext(1840, "ScienceArmDrive", "Positive is forward. Negative is backward."),
-                    new MetadataRecordContext(1841, "ScienceArmPosition", "Go to specified coordinate"),
-                    new MetadataRecordContext(1810, "ScienceArmCommand", "Sends command/request to the Science Arm. Enumerated value indicates type of request."),
-                    new MetadataRecordContext(866, "Drill", "0 is stop. 1 is forward. 2 is reverse.")
-                },
-                Telemetry = new[] {
-                    new MetadataRecordContext(1831, "SciSensor7", "Sensor 7 reading from Science Experiment"),
-                    new MetadataRecordContext(1832, "SciSensor8", "Sensor 8 reading from Science Experiment")
+                    new MetadataRecordContext(2900, "Drill", "-1000 to 1000 open loop for drill control"),
+                    new MetadataRecordContext(2901, "Screw", "-1000 to 1000 open loop for screw control"),
+                    new MetadataRecordContext(2902, "ScrewPosition", "-1000 to 1000 open loop for screw control")
                 }
             },
             new MetadataServerContext("Camera Board", "192.168.1.140") {
@@ -170,7 +167,7 @@ namespace RED.Configurations
                     new MetadataRecordContext(2832, "CameraMuxChannel1", "Selection for Camera Mux Channel 1"),
                     new MetadataRecordContext(2833, "CameraMuxChannel2", "Selection for Camera Mux Channel 2")
                 }
-            }
+            },
         });
     }
 }

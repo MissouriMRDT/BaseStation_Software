@@ -15,6 +15,7 @@ namespace RED.Models.Modules
         internal float Sensor7Value;
         internal float Sensor8Value;
         internal float Sensor9Value;
+        internal float ScrewPosition;
 
         internal System.Net.IPAddress SpectrometerIPAddress;
         internal ushort SpectrometerPortNumber;
