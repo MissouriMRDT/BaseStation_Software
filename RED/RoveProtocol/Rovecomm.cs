@@ -115,7 +115,7 @@ namespace RED.Roveprotocol
             };
             pendingPings.Add(ping);
 
-            SendPacket((ushort)SystemDataId.Ping, new byte[0], ip, ping.SeqNum, false);
+            SendPacket((ushort)SystemDataId.Ping, new byte[0], ip, ping.SeqNum, true, true);
             await ping.Semaphore.WaitAsync(timeout);
             return ping.RoundtripTime;
         }
@@ -312,7 +312,7 @@ namespace RED.Roveprotocol
         /// <param name="destIP">ip of the device to send the message to</param>
         /// <param name="seqNum">sequence number of this dataID</param>
         /// <param name="reliable">whether to send it reliably (IE with a non broadcast protocol) or not</param>
-        private void SendPacket(ushort dataId, byte[] data, IPAddress destIP, ushort seqNum, bool reliable = false)
+        private void SendPacket(ushort dataId, byte[] data, IPAddress destIP, ushort seqNum, bool reliable = false, bool getReliableResponse = false)
         {
             if (destIP == null)
             {
@@ -325,10 +325,10 @@ namespace RED.Roveprotocol
                 return;
             }
 
-            if (reliable && networkManager.EnableReliablePackets)
+            if (reliable)
             {
                 byte[] packetData = EncodePacket(dataId, data, seqNum);
-                networkManager.SendPacketReliable(destIP, packetData, dataId, seqNum);
+                networkManager.SendPacketReliable(destIP, packetData, getReliableResponse);
             }
             else
             {

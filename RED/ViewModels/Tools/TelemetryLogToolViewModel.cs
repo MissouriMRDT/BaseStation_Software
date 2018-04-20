@@ -35,10 +35,10 @@ namespace RED.ViewModels.Tools
             _serverProvider = serverProvider;
 
             TelemetryLog = new ObservableCollection<ServerLog>(_serverProvider.GetServerList().Select(x => new ServerLog(x)));
-            networkVM.TelemetryRecieved += LogTelemetryRecieved;
+            networkVM.PacketReceived += LogTelemetryRecieved;
         }
 
-        private void LogTelemetryRecieved(IPAddress srcIP)
+        private void LogTelemetryRecieved(IPAddress srcIP, byte[] telemetry)
         {
             var server = TelemetryLog.FirstOrDefault(x => x.Address.Equals(srcIP));
             if (server != null)
