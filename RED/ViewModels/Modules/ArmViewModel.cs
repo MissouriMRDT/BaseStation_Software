@@ -534,8 +534,6 @@ namespace RED.ViewModels.Modules
         public void StopMode()
         {
             _rovecomm.SendCommand(_idResolver.GetId("ArmStop"), (Int16)(0), true);
-            _rovecomm.SendCommand(_idResolver.GetId("Endeffector1"), (Int16)(0), true);
-            _rovecomm.SendCommand(_idResolver.GetId("Endeffector2"), (Int16)(0), true);
 
             myState = ArmControlState.GuiControl;
             ControlState = "GUI control";
