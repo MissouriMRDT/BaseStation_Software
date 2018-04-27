@@ -14,7 +14,7 @@ namespace RED.ViewModels.Modules
 
         private const int ScrewSpeedScale = 1000;
         private const int DrillSpeedScale = 1000;
-        private const int GenevaSpeedScale = 250;
+        private const int GenevaSpeedScale = 666;
 
         public string Name { get; }
         public string ModeType { get; }
