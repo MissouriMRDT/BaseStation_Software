@@ -49,6 +49,7 @@ namespace RED.ViewModels.Modules
         private const byte ArmEnableCommand = 0x01;
 
         private const short MotorRangeFactor = 1000;
+        private const short GripperRangeFactor = 500;
 
         private readonly ArmModel _model;
         private readonly IRovecomm _rovecomm;
@@ -245,20 +246,6 @@ namespace RED.ViewModels.Modules
                 NotifyOfPropertyChange(() => CurrentMain);
             }
         }
-
-        public int EndeffectorSpeedLimit
-        {
-            get
-            {
-                return _model.EndeffectorSpeedLimit;
-            }
-            set
-            {
-                _model.EndeffectorSpeedLimit = value;
-                NotifyOfPropertyChange(() => EndeffectorSpeedLimit);
-            }
-        }
-
         public ObservableCollection<ArmPositionViewModel> Positions
         {
             get
@@ -395,8 +382,8 @@ namespace RED.ViewModels.Modules
 
             ArmBaseTwist = (Int16)(ControllerBase.TwoButtonToggleDirection(values["BaseTwistDirection"] != 0, (values["BaseTwistMagnitude"])) * MotorRangeFactor);
             ArmBaseBend = (Int16)(ControllerBase.TwoButtonToggleDirection(values["BaseBendDirection"] != 0, (values["BaseBendMagnitude"])) * MotorRangeFactor);
-            Gripper = (Int16)(ControllerBase.TwoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0) * EndeffectorSpeedLimit);
-            Nipper = (Int16)(ControllerBase.TwoButtonTransform(values["NipperClose"] > 0, values["NipperOpen"] > 0, values["NipperClose"], -values["NipperOpen"], 0) * EndeffectorSpeedLimit);
+            Gripper = (Int16)(ControllerBase.TwoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0) * GripperRangeFactor);
+            Nipper = (Int16)(ControllerBase.TwoButtonTransform(values["NipperClose"] > 0, values["NipperOpen"] > 0, values["NipperClose"], -values["NipperOpen"], 0) * MotorRangeFactor);
 
             Int16[] sendValues = { ArmBaseTwist, ArmBaseBend, ArmElbowBend, ArmElbowTwist, ArmWristBend, ArmWristTwist, Gripper, Nipper };
             byte[] data = new byte[sendValues.Length * sizeof(Int16)];
@@ -458,7 +445,7 @@ namespace RED.ViewModels.Modules
 
             Z = (Int16)(ControllerBase.TwoButtonToggleDirection(values["IKZDirection"] != 0, (values["IKZMagnitude"])) * MotorRangeFactor);
             Roll = (Int16)(ControllerBase.TwoButtonToggleDirection(values["IKRollDirection"] != 0, (values["IKRollMagnitude"])) * MotorRangeFactor);
-            Gripper = (Int16)(ControllerBase.TwoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0) * MotorRangeFactor);
+            Gripper = (Int16)(ControllerBase.TwoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0) * GripperRangeFactor);
             Nipper = (Int16)(ControllerBase.TwoButtonTransform(values["NipperClose"] > 0, values["NipperOpen"] > 0, values["NipperClose"], -values["NipperOpen"], 0) * MotorRangeFactor);
 
 
