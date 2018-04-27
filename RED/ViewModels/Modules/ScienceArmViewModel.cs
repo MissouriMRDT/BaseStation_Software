@@ -14,6 +14,7 @@ namespace RED.ViewModels.Modules
 
         private const int ScrewSpeedScale = 1000;
         private const int DrillSpeedScale = 1000;
+        private const int GenevaSpeedScale = 250;
 
         public string Name { get; }
         public string ModeType { get; }
@@ -35,9 +36,10 @@ namespace RED.ViewModels.Modules
         {
             float screwMovement = values["Screw"];
             float drillSpeed = values["Drill"];
-
+            float genevaSpeed = values["GenevaLeft"] == 1 ? 1 : values["GenevaRight"] == 1 ? -1 : 0;
             _rovecomm.SendCommand(_idResolver.GetId("Screw"), (Int16)(screwMovement * ScrewSpeedScale));
             _rovecomm.SendCommand(_idResolver.GetId("Drill"), (Int16)(drillSpeed * DrillSpeedScale));
+            _rovecomm.SendCommand(_idResolver.GetId("Geneva"), (Int16)(genevaSpeed * GenevaSpeedScale));
         }
 
         public void StopMode()

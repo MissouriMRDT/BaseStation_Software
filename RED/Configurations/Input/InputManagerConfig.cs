@@ -48,6 +48,8 @@ namespace RED.Configurations.Input
             new InputMappingContext("Xbox Science Arm", "Xbox", "ScienceArm", 30, new[] {
                 new InputChannelContext("JoyStick1Y", "Screw"){ Parabolic = true },
                 new InputChannelContext("JoyStick2Y", "Drill"){ Parabolic = true },
+                new InputChannelContext("DPadL", "GenevaLeft"){ Parabolic = true },
+                new InputChannelContext("DPadR", "GenevaRight"){ Parabolic = true },
                 new InputChannelContext("ButtonStartDebounced", "ModeCycle") }),
             new InputMappingContext("Xbox Gimbal", "Xbox", "Gimbal", 30, new[] {
                 new InputChannelContext("JoyStick1X", "Pan"){ Parabolic = true },

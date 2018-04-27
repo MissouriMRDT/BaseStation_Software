@@ -135,20 +135,6 @@ namespace RED.ViewModels.Modules
                 NotifyOfPropertyChange(() => Sensor9Value);
             }
         }
-
-        public float ScrewPosition
-        {
-            get
-            {
-                return _model.ScrewPosition;
-            }
-            set
-            {
-                _model.ScrewPosition = value;
-                NotifyOfPropertyChange(() => ScrewPosition);
-            }
-        }
-
         public System.Net.IPAddress SpectrometerIPAddress
         {
             get
@@ -368,11 +354,6 @@ namespace RED.ViewModels.Modules
         {
             if (SensorDataFile.CanWrite)
                 SensorDataFile.Close();
-        }
-        public void SendScrewPosition()
-        {
-            byte[] data = BitConverter.GetBytes(ScrewPosition);
-            _rovecomm.SendCommand(_idResolver.GetId("ScrewPosition"), data, true);
         }
 
         private async void SaveFileWrite(string sensorName, object value)

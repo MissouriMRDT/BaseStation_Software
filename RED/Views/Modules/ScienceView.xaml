@@ -82,7 +82,6 @@
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
-                <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
@@ -116,11 +115,6 @@
             <UniformGrid Grid.Row="4" Grid.Column="1" Rows="1">
                 <Button x:Name="SaveFileStart">Start</Button>
                 <Button x:Name="SaveFileStop">Stop</Button>
-            </UniformGrid>
-            <Label Grid.Row="5" Grid.Column="0">Screw Position</Label>
-            <UniformGrid Grid.Row="5" Grid.Column="1" Rows="1">
-                <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding ScrewPosition, StringFormat=0.##}" />
-                <Button x:Name="SendScrewPosition">Send position</Button>
             </UniformGrid>
         </Grid>
 

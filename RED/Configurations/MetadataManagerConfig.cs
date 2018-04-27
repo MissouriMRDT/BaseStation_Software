@@ -130,7 +130,6 @@ namespace RED.Configurations
             new MetadataServerContext("Science Board", "192.168.1.135") {
                 Commands = new[] {
                     new MetadataRecordContext(1808, "ScienceCommand", "Sends command/request to the Science experiment. Enumerated value indicates type of request."),
-                    new MetadataRecordContext(1809, "CarouselPosition", "Commands carousel to rotate to indexed position")
                 },
                 Telemetry = new[] {
                     new MetadataRecordContext(1824, "SciSensor0", "Sensor 0 reading from Science Experiment"),
@@ -157,9 +156,9 @@ namespace RED.Configurations
             },
             new MetadataServerContext("Drill Board", "192.168.1.139") {
                 Commands = new[] {
+                    new MetadataRecordContext(2902, "Geneva", "Commands carousel to rotate on open loop speed, -1000 to 1000"),
                     new MetadataRecordContext(2900, "Drill", "-1000 to 1000 open loop for drill control"),
                     new MetadataRecordContext(2901, "Screw", "-1000 to 1000 open loop for screw control"),
-                    new MetadataRecordContext(2902, "ScrewPosition", "-1000 to 1000 open loop for screw control")
                 }
             },
             new MetadataServerContext("Camera Board", "192.168.1.140") {
