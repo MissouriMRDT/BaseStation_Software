@@ -47,7 +47,6 @@ namespace RED.ViewModels.Modules
 
         private const byte ArmDisableCommand = 0x00;
         private const byte ArmEnableCommand = 0x01;
-
         private const short MotorRangeFactor = 1000;
         private const short GripperRangeFactor = 500;
 
@@ -56,7 +55,7 @@ namespace RED.ViewModels.Modules
         private readonly IDataIdResolver _idResolver;
         private readonly ILogger _log;
         private readonly IConfigurationManager _configManager;
-
+        private readonly Dictionary<int, string> _armFaultIds;
         public string Name { get; }
         public string ModeType { get; }
 
@@ -290,6 +289,21 @@ namespace RED.ViewModels.Modules
             _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("ArmFault"));
             _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("ArmCurrentMain"));
             _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("ArmCurrentXYZ"));
+
+            _armFaultIds = new Dictionary<int, string>();
+            _armFaultIds.Add(1, "Motor 1 fault");
+            _armFaultIds.Add(2, "Motor 2 fault");
+            _armFaultIds.Add(3, "Motor 3 fault");
+            _armFaultIds.Add(4, "Motor 4 fault");
+            _armFaultIds.Add(5, "Motor 5 fault");
+            _armFaultIds.Add(6, "Motor 6 fault");
+            _armFaultIds.Add(7, "Arm Master Overcurrent");
+            _armFaultIds.Add(8, "Base Rotate encoder disconnected");
+            _armFaultIds.Add(9, "Base Tilt encoder disconnected");
+            _armFaultIds.Add(10, "Elbow Tilt encoder disconnected");
+            _armFaultIds.Add(11, "Elbow Rotate encoder disconnected");
+            _armFaultIds.Add(12, "Wrist Tilt encoder disconnected");
+            _armFaultIds.Add(13, "Wrist Rotate encoder disconnected");
         }
 
         public void ReceivedRovecommMessageCallback(ushort dataId, byte[] data, bool reliable)
@@ -314,7 +328,7 @@ namespace RED.ViewModels.Modules
                     break;
 
                 case "ArmFault":
-                    _log.Log($"Arm reported a fault code of {data[0]}");
+                    _log.Log($"Arm reported a fault code of {_armFaultIds[data[0]]}");
                     break;
                 case "ArmCurrentMain":
                     CurrentMain = BitConverter.ToSingle(data, 0);
