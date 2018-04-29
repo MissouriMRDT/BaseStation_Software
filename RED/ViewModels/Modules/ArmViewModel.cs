@@ -328,7 +328,7 @@ namespace RED.ViewModels.Modules
                     Roll = BitConverter.ToSingle(data, 5 * sizeof(float));
                     break;
                 case "ArmFault":
-                    _log.Log($"Arm reported a fault code of {_armFaultIds[data[0]]}");
+                    _log.Log($"Arm fault: {_armFaultIds[data[0]]}");
 
                     //Arm will automatically exit closed loop mode when it detects an encoder fault
                     //so we make sure to stop spamming closed loop messages at it, as we do in IK control states.
