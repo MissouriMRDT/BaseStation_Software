@@ -50,6 +50,7 @@ namespace RED.ViewModels.Modules
         private const short MotorRangeFactor = 1000;
         private const short GripperRangeFactor = 500;
 
+        private readonly byte[] ArmEncoderFaultIds = { 8, 9, 10, 11, 12, 13 };
         private readonly ArmModel _model;
         private readonly IRovecomm _rovecomm;
         private readonly IDataIdResolver _idResolver;
@@ -326,9 +327,16 @@ namespace RED.ViewModels.Modules
                     Pitch = BitConverter.ToSingle(data, 4 * sizeof(float));
                     Roll = BitConverter.ToSingle(data, 5 * sizeof(float));
                     break;
-
                 case "ArmFault":
                     _log.Log($"Arm reported a fault code of {_armFaultIds[data[0]]}");
+
+                    //Arm will automatically exit closed loop mode when it detects an encoder fault
+                    //so we make sure to stop spamming closed loop messages at it, as we do in IK control states.
+                    if(ArmEncoderFaultIds.Contains(data[0]) && (myState == ArmControlState.IKRoverPOV || myState == ArmControlState.IKWristPOV))
+                    {
+                        myState = ArmControlState.OpenLoop;
+                        ControlState = "Open loop";
+                    }
                     break;
                 case "ArmCurrentMain":
                     CurrentMain = BitConverter.ToSingle(data, 0);
@@ -397,8 +405,8 @@ namespace RED.ViewModels.Modules
             ArmBaseTwist = (Int16)(ControllerBase.TwoButtonToggleDirection(values["BaseTwistDirection"] != 0, (values["BaseTwistMagnitude"])) * MotorRangeFactor);
             ArmBaseBend = (Int16)(ControllerBase.TwoButtonToggleDirection(values["BaseBendDirection"] != 0, (values["BaseBendMagnitude"])) * MotorRangeFactor);
             Gripper = (Int16)(ControllerBase.TwoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0) * GripperRangeFactor);
-            Nipper = (Int16)(ControllerBase.TwoButtonTransform(values["NipperClose"] > 0, values["NipperOpen"] > 0, values["NipperClose"], -values["NipperOpen"], 0) * MotorRangeFactor);
-
+            Nipper = (Int16)(values["Nipper"] * MotorRangeFactor);
+            
             Int16[] sendValues = { ArmBaseTwist, ArmBaseBend, ArmElbowBend, ArmElbowTwist, ArmWristBend, ArmWristTwist, Gripper, Nipper };
             byte[] data = new byte[sendValues.Length * sizeof(Int16)];
             Buffer.BlockCopy(sendValues, 0, data, 0, data.Length);
@@ -460,7 +468,7 @@ namespace RED.ViewModels.Modules
             Z = (Int16)(ControllerBase.TwoButtonToggleDirection(values["IKZDirection"] != 0, (values["IKZMagnitude"])) * MotorRangeFactor);
             Roll = (Int16)(ControllerBase.TwoButtonToggleDirection(values["IKRollDirection"] != 0, (values["IKRollMagnitude"])) * MotorRangeFactor);
             Gripper = (Int16)(ControllerBase.TwoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0) * GripperRangeFactor);
-            Nipper = (Int16)(ControllerBase.TwoButtonTransform(values["NipperClose"] > 0, values["NipperOpen"] > 0, values["NipperClose"], -values["NipperOpen"], 0) * MotorRangeFactor);
+            Nipper = (Int16)(values["Nipper"]* MotorRangeFactor);
 
 
             Int16[] sendValues = { X, Y, Z, Yaw, Pitch, Roll, Gripper, Nipper };
@@ -474,6 +482,11 @@ namespace RED.ViewModels.Modules
             else if (stateToUse == ArmControlState.IKRoverPOV)
             {
                 _rovecomm.SendCommand(_idResolver.GetId("IKRoverIncrement"), data);
+            }
+
+            if(values["GripperSwap"] == 1)
+            {
+                _rovecomm.SendCommand(_idResolver.GetId("GripperSwap"), data);
             }
         }
 
