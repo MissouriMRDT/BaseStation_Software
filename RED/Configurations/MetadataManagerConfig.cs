@@ -149,6 +149,7 @@ namespace RED.Configurations
                     new MetadataRecordContext(2577, "AutonomousModeDisable", ""),
                     new MetadataRecordContext(2578, "WaypointAdd", ""),
                     new MetadataRecordContext(2579, "WaypointsClearAll", ""),
+                    new MetadataRecordContext(2580, "WaypointReached", ""),
                     new MetadataRecordContext(2581, "AutonomyCalibrate", "")
                 },
                 Telemetry = new[] {
