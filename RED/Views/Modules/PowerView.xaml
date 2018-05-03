@@ -82,8 +82,8 @@
 
             <Button Grid.Row="6" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="7" />
             <Button Grid.Row="6" Grid.Column="1" Style="{StaticResource DisableBtn}" Tag="7" />
-            <Label Grid.Row="6" Grid.Column="2">Extra</Label>
-            <Label Grid.Row="6" Grid.Column="3" Style="{StaticResource CurrentTelem}" x:Name="ExtraCurrent" />
+            <Label Grid.Row="6" Grid.Column="2">General 12 V 40A</Label>
+            <Label Grid.Row="6" Grid.Column="3" Style="{StaticResource CurrentTelem}" x:Name="General12V40ACurrent" />
             <Button Grid.Row="7" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="8" />
             <Button Grid.Row="7" Grid.Column="1" Style="{StaticResource DisableBtn}" Tag="8" />
             <Label Grid.Row="7" Grid.Column="2">Actuation</Label>

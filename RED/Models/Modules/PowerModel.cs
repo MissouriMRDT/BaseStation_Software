@@ -14,7 +14,7 @@
         internal float Motor8Current;
         internal float Bus5VCurrent;
         internal float Bus12VCurrent;
-        internal float ExtraCurrent;
+        internal float General12V40ACurrent;
         internal float ActuationCurrent;
         internal float LogicCurrent;
         internal float CommunicationsCurrent;

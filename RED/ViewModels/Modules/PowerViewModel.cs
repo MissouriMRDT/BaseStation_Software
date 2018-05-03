@@ -149,16 +149,16 @@ namespace RED.ViewModels.Modules
                 NotifyOfPropertyChange(() => Bus12VCurrent);
             }
         }
-        public float ExtraCurrent
+        public float General12V40ACurrent
         {
             get
             {
-                return _model.ExtraCurrent;
+                return _model.General12V40ACurrent;
             }
             set
             {
-                _model.ExtraCurrent = value;
-                NotifyOfPropertyChange(() => ExtraCurrent);
+                _model.General12V40ACurrent = value;
+                NotifyOfPropertyChange(() => General12V40ACurrent);
             }
         }
         public float ActuationCurrent
@@ -372,7 +372,7 @@ namespace RED.ViewModels.Modules
             _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Motor8Current"));
             _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Bus5VCurrent"));
             _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Bus12VCurrent"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("ExtraCurrent"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("General12V40A"));
             _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("ActuationCurrent"));
             _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("LogicCurrent"));
             _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("CommunicationsCurrent"));
@@ -410,7 +410,7 @@ namespace RED.ViewModels.Modules
                 case "Motor8Current": Motor8Current = BitConverter.ToSingle(data, 0); break;
                 case "Bus5VCurrent": Bus5VCurrent = BitConverter.ToSingle(data, 0); break;
                 case "Bus12VCurrent": Bus12VCurrent = BitConverter.ToSingle(data, 0); break;
-                case "ExtraCurrent": ExtraCurrent = BitConverter.ToSingle(data, 0); break;
+                case "General12V40ACurrent": General12V40ACurrent = BitConverter.ToSingle(data, 0); break;
                 case "ActuationCurrent": ActuationCurrent = BitConverter.ToSingle(data, 0); break;
                 case "LogicCurrent": LogicCurrent = BitConverter.ToSingle(data, 0); break;
                 case "CommunicationsCurrent": CommunicationsCurrent = BitConverter.ToSingle(data, 0); break;

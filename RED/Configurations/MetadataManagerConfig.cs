@@ -87,7 +87,7 @@ namespace RED.Configurations
                     new MetadataRecordContext(1111, "Motor8Current", "Powerboard"),
                     new MetadataRecordContext(1112, "Bus5VCurrent", "Powerboard"),
                     new MetadataRecordContext(1113, "Bus12VCurrent", "Powerboard"),
-                    new MetadataRecordContext(1114, "ExtraCurrent", "Powerboard"),
+                    new MetadataRecordContext(1114, "General12V40ACurrent", "Powerboard"),
                     new MetadataRecordContext(1115, "ActuationCurrent", "Powerboard"),
                     new MetadataRecordContext(1116, "LogicCurrent", "Powerboard"),
                     new MetadataRecordContext(1117, "CommunicationsCurrent", "Powerboard"),
