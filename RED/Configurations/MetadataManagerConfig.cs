@@ -9,7 +9,11 @@ namespace RED.Configurations
                 Commands = new[] {
                     new MetadataRecordContext(528, "DriveLeftRight", "Left wheels speed followed by right wheels speed"),
                     new MetadataRecordContext(100, "MotorLeftSpeed", "Left motor speed. Range is -1000 to 1000 (full reverse to full forward)"),
-                    new MetadataRecordContext(101, "MotorRightSpeed", "Right motor speed. Range is -1000 to 1000 (full reverse to full forward)")
+                    new MetadataRecordContext(101, "MotorRightSpeed", "Right motor speed. Range is -1000 to 1000 (full reverse to full forward)"),
+                    new MetadataRecordContext(102, "DropBayOpen", "Commands the specified drop bay to open"),
+                    new MetadataRecordContext(103, "DropBayClose", "Commands the specified drop bay to close"),
+                    new MetadataRecordContext(104, "UnderglowColor", ""),
+                    new MetadataRecordContext(105, "Headlights", "")
                 }
             },
             new MetadataServerContext("Arm Board", "192.168.1.131") {
@@ -110,22 +114,13 @@ namespace RED.Configurations
                     new MetadataRecordContext(1301, "GPSSatellites", "Number of GPS Satellites")
                 }
             },
-            new MetadataServerContext("External Controls Board", "192.168.1.134") {
+            new MetadataServerContext("Gimbal Board", "192.168.1.134") {
                 Commands = new[] {
-                    new MetadataRecordContext(1552, "PTZ1Speed", "XY speed of pan/tilt mount 1 (-1000 to 1000)"),
-                    new MetadataRecordContext(1568, "Camera1Command", "Zoom/Focus Command. Enumerated: 0=Stop 1=ZoomIn 2=ZoomOut 3=FocusNear 4=FocusFar"),
-                    new MetadataRecordContext(1569, "Camera1Menu", "Menu Button. Enumerated: 0=Menu 1=MenuLeft 2=MenuRight 3=MenuUp 4=MenuDown"),
-                    new MetadataRecordContext(1553, "PTZ2Speed", "XY speed of pan/tilt mount 1 (-1000 to 1000)"),
-                    new MetadataRecordContext(1570, "Camera2Command", "Zoom/Focus Command. Enumerated: 0=Stop 1=ZoomIn 2=ZoomOut 3=FocusNear 4=FocusFar"),
-                    new MetadataRecordContext(1571, "Camera2Menu", "Menu Button. Enumerated: 0=Menu 1=MenuLeft 2=MenuRight 3=MenuUp 4=MenuDown"),
-                    new MetadataRecordContext(1584, "DropBayOpen", "Commands the specified drop bay to open"),
-                    new MetadataRecordContext(1585, "DropBayClose", "Commands the specified drop bay to close"),
-                    new MetadataRecordContext(1600, "CameraMuxSet", "Sets camera mux to feed with given index"),
-                    new MetadataRecordContext(1567, "GimbalEnableAll", "Enables/Disables 12V Power from External Controls Board"),
-                    new MetadataRecordContext(1616, "CarabinerSpeed", "Sets speed of carabiner hook (-1000 to 1000)"),
-                    new MetadataRecordContext(1632, "ExternalControlsReset", "Reset command to external controls board"),
-                    new MetadataRecordContext(2320, "UnderglowColor", ""),
-                    new MetadataRecordContext(2336, "Headlights", "")
+                    new MetadataRecordContext(1552, "Pan", "Pan speed of pan/tilt mount (-1000 to 1000)"),
+                    new MetadataRecordContext(1553, "Zoom", "Zoom/Focus Command. Enumerated: 0=Stop 1=ZoomIn 2=ZoomOut 3=FocusNear 4=FocusFar"),
+                    new MetadataRecordContext(1554, "Tilt", "Tilt speed of pan/tilt mount  (-1000 to 1000)"),
+                    new MetadataRecordContext(1555, "CameraMenu", "Menu Button. Enumerated: 0=Menu 1=MenuLeft 2=MenuRight 3=MenuUp 4=MenuDown"),
+                    new MetadataRecordContext(1556, "GimbalEnableAll", "Enables/Disables 12V Power from External Controls Board"),
                 }
             },
             new MetadataServerContext("Science Board", "192.168.1.135") {
