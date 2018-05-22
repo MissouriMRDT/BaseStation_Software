@@ -46,7 +46,8 @@ namespace RED.Configurations
                     new MetadataRecordContext(897, "LimitSwitchOverride", "Index of limit switch to override"),
                     new MetadataRecordContext(864, "Endeffector1", "Positive is open. Negative is close."),
                     new MetadataRecordContext(868, "Endeffector2", "Positive is clockwise. Negative is counterclockwise."),
-                    new MetadataRecordContext(869, "GripperSwap", "Swaps the gripper position by 180 degrees so that the rear facing gripper faces forward.")
+                    new MetadataRecordContext(869, "GripperSwap", "Swaps the gripper position by 180 degrees so that the rear facing gripper faces forward."),
+                    new MetadataRecordContext(870, "OpPoint", "Sets the IK Op Point, 3 floats, x y z")
                 },
                 Telemetry = new[] {
                     new MetadataRecordContext(792, "ArmCurrentPosition", "Contains the current angles from each joint"),

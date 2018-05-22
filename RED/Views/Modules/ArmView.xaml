@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="352" d:DesignWidth="300">
     <StackPanel>
         <DockPanel>
             <Label DockPanel.Dock="Left">Control State: </Label>
@@ -118,6 +118,27 @@
                     <Button x:Name="SetXYZPosition" Content="Set absolute position" Height="29" HorizontalAlignment="Center" />
                     <Button x:Name="GetXYZPosition" Content="Get Absolute Position" Height="29" HorizontalAlignment="Center" />
                 </UniformGrid>
+                <Grid Margin="0 10 0 10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="20*"/>
+                        <ColumnDefinition Width="40*" />
+                        <ColumnDefinition Width="20*" />
+                        <ColumnDefinition Width="40*" />
+                        <ColumnDefinition Width="20*" />
+                        <ColumnDefinition Width="40*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">OpX</Label>
+                    <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding OpX, StringFormat=0.##}" />
+                    <Label Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2">OpY</Label>
+                    <TextBox Grid.Row="0" Grid.Column="4" Text="{Binding OpY, StringFormat=0.##}" />
+                    <Label Grid.Row="0" Grid.Column="5" Grid.ColumnSpan="2">OpY</Label>
+                    <TextBox Grid.Row="0" Grid.Column="6" Text="{Binding OpZ, StringFormat=0.##}" />
+                </Grid>
+                <Button Width="100" Content="Set Op point" x:Name="SetOpPoint"/>
             </StackPanel>
         </Expander>
         <Grid>

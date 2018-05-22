@@ -270,6 +270,42 @@ namespace RED.ViewModels.Modules
                 NotifyOfPropertyChange(() => SelectedPosition);
             }
         }
+        public float OpX
+        {
+            get
+            {
+                return _model.OpX;
+            }
+            set
+            {
+                _model.OpX = value;
+                NotifyOfPropertyChange(() => OpX);
+            }
+        }
+        public float OpY
+        {
+            get
+            {
+                return _model.OpY;
+            }
+            set
+            {
+                _model.OpY = value;
+                NotifyOfPropertyChange(() => OpY);
+            }
+        }
+        public float OpZ
+        {
+            get
+            {
+                return _model.OpZ;
+            }
+            set
+            {
+                _model.OpZ = value;
+                NotifyOfPropertyChange(() => OpZ);
+            }
+        }
 
         public ArmViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log, IConfigurationManager configs)
         {
@@ -572,6 +608,15 @@ namespace RED.ViewModels.Modules
             }
 
             _rovecomm.SendCommand(id, (enableState) ? ArmEnableCommand : ArmDisableCommand, true);
+        }
+
+        public void SetOpPoint()
+        {
+            float[] opPoints = { OpX, OpY, OpZ };
+            byte[] data = new byte[opPoints.Length * sizeof(float)];
+            Buffer.BlockCopy(opPoints, 0, data, 0, data.Length);
+
+            _rovecomm.SendCommand(_idResolver.GetId("OpPoint"), data, true);
         }
 
         public void GetPosition()

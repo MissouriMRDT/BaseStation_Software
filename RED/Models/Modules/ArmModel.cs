@@ -22,6 +22,9 @@ namespace RED.Models.Modules
         internal float Pitch;
         internal float Roll;
         internal string ControlState;
+        internal float OpX;
+        internal float OpY;
+        internal float OpZ;
 
         internal class ArmPositionModel
         {
