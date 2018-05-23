@@ -12,30 +12,22 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="75" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Label Grid.Column="0" Grid.Row="0">Mux 1</Label>
         <UniformGrid Grid.Column="1" Grid.Row="0" Rows="1">
-            <Button cal:Message.Attach="SetMux1(0)">1</Button>
-            <Button cal:Message.Attach="SetMux1(1)">2</Button>
-            <Button cal:Message.Attach="SetMux1(2)">3</Button>
-            <Button cal:Message.Attach="SetMux1(3)">4</Button>
-            <Button cal:Message.Attach="SetMux1(4)">5</Button>
-            <Button cal:Message.Attach="SetMux1(5)">6</Button>
-            <Button cal:Message.Attach="SetMux1(6)">7</Button>
-            <Button cal:Message.Attach="SetMux1(7)">8</Button>
+            <Button cal:Message.Attach="SetMux1(1)">1</Button>
+            <Button cal:Message.Attach="SetMux1(2)">2</Button>
+            <Button cal:Message.Attach="SetMux1(3)">3</Button>
+            <Button cal:Message.Attach="SetMux1(4)">4</Button>
         </UniformGrid>
         <Label Grid.Column="0" Grid.Row="1">Mux 2</Label>
         <UniformGrid Grid.Column="1" Grid.Row="1" Rows="1">
-            <Button cal:Message.Attach="SetMux2(0)">1</Button>
-            <Button cal:Message.Attach="SetMux2(1)">2</Button>
-            <Button cal:Message.Attach="SetMux2(2)">3</Button>
-            <Button cal:Message.Attach="SetMux2(3)">4</Button>
-            <Button cal:Message.Attach="SetMux2(4)">5</Button>
-            <Button cal:Message.Attach="SetMux2(5)">6</Button>
-            <Button cal:Message.Attach="SetMux2(6)">7</Button>
-            <Button cal:Message.Attach="SetMux2(7)">8</Button>
+            <Button cal:Message.Attach="SetMux2(1)">1</Button>
+            <Button cal:Message.Attach="SetMux2(2)">2</Button>
+            <Button cal:Message.Attach="SetMux2(3)">3</Button>
+            <Button cal:Message.Attach="SetMux2(4)">4</Button>
         </UniformGrid>
     </Grid>
 </UserControl>
