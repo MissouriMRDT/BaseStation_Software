@@ -246,18 +246,6 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => Autonomy);
             }
         }
-        public ScienceArmViewModel ScienceArm
-        {
-            get
-            {
-                return _model._scienceArm;
-            }
-            set
-            {
-                _model._scienceArm = value;
-                NotifyOfPropertyChange(() => ScienceArm);
-            }
-        }
         public LightingViewModel Lighting
         {
             get
@@ -425,7 +413,6 @@ namespace RED.ViewModels
             CameraMux = new CameraViewModel(Rovecomm, MetadataManager);
             ExternalControls = new ExternalControlsViewModel(Rovecomm, MetadataManager);
             Autonomy = new AutonomyViewModel(Rovecomm, MetadataManager, Console);
-            ScienceArm = new ScienceArmViewModel(Rovecomm, MetadataManager, Console);
             Lighting = new LightingViewModel(Rovecomm, MetadataManager);
             Map = new MapViewModel();
 
@@ -444,7 +431,7 @@ namespace RED.ViewModels
             InputManager = new InputManagerViewModel(Console, ConfigManager,
                 new IInputDevice[] { XboxController1, XboxController2, XboxController3, XboxController4, FlightStickController, KeyboardController },
                 new MappingViewModel[0],
-                new IInputMode[] { Drive, Arm, Gimbal1, Gimbal2, ScienceArm });
+                new IInputMode[] { Drive, Arm, Gimbal1, Gimbal2, Science });
 
             WaypointManager = new WaypointManagerViewModel(Map, GPS, Autonomy);
             PingTool = new PingToolViewModel(Rovecomm, ConfigManager);

@@ -45,11 +45,13 @@ namespace RED.Configurations.Input
                 new InputChannelContext("ButtonX", "GripperClose"),
                 new InputChannelContext("ButtonBackDebounced", "DebouncedArmReset"),
                 new InputChannelContext("ButtonStartDebounced", "ModeCycle") }),
-            new InputMappingContext("Xbox Science Arm", "Xbox", "ScienceArm", 30, new[] {
+            new InputMappingContext("Xbox Science Controls", "Xbox", "ScienceControls", 30, new[] {
                 new InputChannelContext("JoyStick1Y", "Screw"){ Parabolic = true },
                 new InputChannelContext("JoyStick2Y", "Drill"){ Parabolic = true },
                 new InputChannelContext("DPadL", "GenevaLeft"){ Parabolic = true },
                 new InputChannelContext("DPadR", "GenevaRight"){ Parabolic = true },
+                new InputChannelContext("DPadT", "ScrewUp"){ Parabolic = true },
+                new InputChannelContext("DPadB", "ScrewDown"){ Parabolic = true },
                 new InputChannelContext("ButtonStartDebounced", "ModeCycle") }),
             new InputMappingContext("Xbox Gimbal", "Xbox", "Gimbal", 30, new[] {
                 new InputChannelContext("JoyStick1X", "Pan"){ Parabolic = true },
@@ -74,7 +76,7 @@ namespace RED.Configurations.Input
             new InputSelectionContext("Arm", "Xbox 1", "Arm (Traditional)", false),
             new InputSelectionContext("Gimbal 1", "Xbox 1", "Xbox Gimbal",false),
             new InputSelectionContext("Gimbal 2", "Xbox 1", "Xbox Gimbal",false),
-            new InputSelectionContext("Science Arm", "Xbox 1", "Xbox Science Arm", false)
+            new InputSelectionContext("Science Controls", "Xbox 1", "Xbox Science Controls", false)
         });
     }
 }

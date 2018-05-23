@@ -193,7 +193,6 @@
     <Compile Include="ViewModels\Modules\GimbalViewModel.cs" />
     <Compile Include="ViewModels\Modules\DropBaysViewModel.cs" />
     <Compile Include="ViewModels\Modules\LightingViewModel.cs" />
-    <Compile Include="ViewModels\Modules\ScienceArmViewModel.cs" />
     <Compile Include="ViewModels\Navigation\MapViewModel.cs" />
     <Compile Include="ViewModels\Navigation\Waypoint.cs" />
     <Compile Include="ViewModels\Navigation\WaypointManagerViewModel.cs" />

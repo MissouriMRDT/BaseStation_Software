@@ -1,19 +1,30 @@
 ﻿using Caliburn.Micro;
 using RED.Interfaces;
+using RED.Interfaces.Input;
 using RED.Models.Modules;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
 
 namespace RED.ViewModels.Modules
 {
-    public class ScienceViewModel : PropertyChangedBase, IRovecommReceiver
+    public class ScienceViewModel : PropertyChangedBase, IRovecommReceiver, IInputMode
     {
-        private readonly ScienceModel _model;
+
         private readonly IRovecomm _rovecomm;
         private readonly IDataIdResolver _idResolver;
         private readonly ILogger _log;
+
+        private const int ScrewSpeedScale = 1000;
+        private const int DrillSpeedScale = 1000;
+        private const int GenevaSpeedScale = 666;
+
+        public string Name { get; }
+        public string ModeType { get; }
+
+        private readonly ScienceModel _model;
 
         public float Sensor0Value
         {
@@ -192,6 +203,9 @@ namespace RED.ViewModels.Modules
             _idResolver = idResolver;
             _log = log;
 
+            Name = "Science Controls";
+            ModeType = "ScienceControls";
+
             _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("SciSensor0"));
             _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("SciSensor1"));
             _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("SciSensor2"));
@@ -202,6 +216,26 @@ namespace RED.ViewModels.Modules
             _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("SciSensor7"));
             _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("SciSensor8"));
             _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("SciSensor9"));
+        }
+
+        public void StartMode()
+        { }
+
+        public void SetValues(Dictionary<string, float> values)
+        {
+            float screwMovement = values["Screw"];
+            float drillSpeed = values["Drill"];
+            float genevaSpeed = values["GenevaLeft"] == 1 ? 1 : values["GenevaRight"] == 1 ? -1 : 0;
+            float screwSpeed = values["ScrewUp"] == 1 ? 1 : values["ScrewDown"] == 1 ? -1 : 0;
+            _rovecomm.SendCommand(_idResolver.GetId("Screw"), (Int16)(screwMovement * ScrewSpeedScale));
+            _rovecomm.SendCommand(_idResolver.GetId("Drill"), (Int16)(drillSpeed * DrillSpeedScale));
+            _rovecomm.SendCommand(_idResolver.GetId("Geneva"), (Int16)(genevaSpeed * GenevaSpeedScale));
+        }
+
+        public void StopMode()
+        {
+            _rovecomm.SendCommand(_idResolver.GetId("Screw"), (Int16)(0), true);
+            _rovecomm.SendCommand(_idResolver.GetId("Drill"), (Int16)(0), true);
         }
 
         public void SensorAllOn()
@@ -332,18 +366,14 @@ namespace RED.ViewModels.Modules
             _log.Log("Science Laser Off requested");
         }
 
-        public void SetCarouselPosition(byte carouselIndex)
+        public void SetGenevaPosition(byte index)
         {
-            _rovecomm.SendCommand(_idResolver.GetId("CarouselPosition"), carouselIndex);
+            _rovecomm.SendCommand(_idResolver.GetId("GenevaPosition"), index);
         }
 
-        public void FunnelOpen()
+        public void SetScrewPosition(byte index)
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (byte)ScienceRequestTypes.FunnelOpen, true);
-        }
-        public void FunnelClose()
-        {
-            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (byte)ScienceRequestTypes.FunnelClose, true);
+            _rovecomm.SendCommand(_idResolver.GetId("ScrewPosition"), index);
         }
 
         public void SaveFileStart()
@@ -416,8 +446,6 @@ namespace RED.ViewModels.Modules
             SensorAllDisable = 1,
             LaserOn = 2,
             LaserOff = 3,
-            FunnelOpen = 4,
-            FunnelClose = 5,
             SpectrometerRun = 6,
             Sensor0Enable = 16,
             Sensor0Disable = 17,

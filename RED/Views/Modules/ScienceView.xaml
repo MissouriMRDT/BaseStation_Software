@@ -14,6 +14,51 @@
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="125" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="0">Laser</Label>
+            <UniformGrid Grid.Row="0" Grid.Column="1" Rows="1">
+                <Button x:Name="RequestLaserOn">On</Button>
+                <Button x:Name="RequestLaserOff">Off</Button>
+            </UniformGrid>
+            <Label Grid.Row="1" Grid.Column="0">Geneva Position</Label>
+            <UniformGrid Grid.Row="1" Grid.Column="1" Rows="1">
+                <Button cal:Message.Attach="SetGenevaPosition(1)">1</Button>
+                <Button cal:Message.Attach="SetGenevaPosition(2)">2</Button>
+                <Button cal:Message.Attach="SetGenevaPosition(3)">3</Button>
+                <Button cal:Message.Attach="SetGenevaPosition(4)">4</Button>
+                <Button cal:Message.Attach="SetGenevaPosition(5)">5</Button>
+                <Button cal:Message.Attach="SetGenevaPosition(6)">6</Button>
+            </UniformGrid>
+            <Label Grid.Row="2" Grid.Column="0">Screw Position</Label>
+            <UniformGrid Grid.Row="2" Grid.Column="1" Rows="1">
+                <Button cal:Message.Attach="SetScrewPosition(1)">1</Button>
+                <Button cal:Message.Attach="SetScrewPosition(2)">2</Button>
+                <Button cal:Message.Attach="SetScrewPosition(3)">3</Button>
+                <Button cal:Message.Attach="SetScrewPosition(4)">4</Button>
+                <Button cal:Message.Attach="SetScrewPosition(5)">5</Button>
+            </UniformGrid>
+            <Label Grid.Row="3" Grid.Column="0">Spectrometer</Label>
+            <UniformGrid Grid.Row="3" Grid.Column="1" Rows="1">
+                <Button x:Name="RequestSpectrometer">Request</Button>
+                <Button x:Name="DownloadSpectrometer">Download</Button>
+            </UniformGrid>
+            <Label Grid.Row="4" Grid.Column="0">Sensor Data Save</Label>
+            <UniformGrid Grid.Row="4" Grid.Column="1" Rows="1">
+                <Button x:Name="SaveFileStart">Start</Button>
+                <Button x:Name="SaveFileStop">Stop</Button>
+            </UniformGrid>
+        </Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
@@ -21,9 +66,9 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Button Grid.Row="0" Grid.Column="0" x:Name="SensorAllOn">On</Button>
@@ -75,48 +120,5 @@
             <Label Grid.Row="9" Grid.Column="2">Arm Soil Moisture</Label>
             <Label Grid.Row="9" Grid.Column="3" x:Name="Sensor8Value" ContentStringFormat="{}{0:0.\%;}" />
         </Grid>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Label Grid.Row="0" Grid.Column="0">Laser</Label>
-            <UniformGrid Grid.Row="0" Grid.Column="1" Rows="1">
-                <Button x:Name="RequestLaserOn">On</Button>
-                <Button x:Name="RequestLaserOff">Off</Button>
-            </UniformGrid>
-            <Label Grid.Row="1" Grid.Column="0">Carousel</Label>
-            <UniformGrid Grid.Row="1" Grid.Column="1" Rows="1">
-                <Button cal:Message.Attach="SetCarouselPosition(0)">1</Button>
-                <Button cal:Message.Attach="SetCarouselPosition(1)">2</Button>
-                <Button cal:Message.Attach="SetCarouselPosition(2)">3</Button>
-                <Button cal:Message.Attach="SetCarouselPosition(3)">4</Button>
-                <Button cal:Message.Attach="SetCarouselPosition(4)">5</Button>
-                <Button cal:Message.Attach="SetCarouselPosition(5)">6</Button>
-            </UniformGrid>
-            <Label Grid.Row="2" Grid.Column="0">Funnel</Label>
-            <UniformGrid Grid.Row="2" Grid.Column="1" Rows="1">
-                <Button x:Name="FunnelOpen">Open</Button>
-                <Button x:Name="FunnelClose">Close</Button>
-            </UniformGrid>
-            <Label Grid.Row="3" Grid.Column="0">Spectrometer</Label>
-            <UniformGrid Grid.Row="3" Grid.Column="1" Rows="1">
-                <Button x:Name="RequestSpectrometer">Request</Button>
-                <Button x:Name="DownloadSpectrometer">Download</Button>
-            </UniformGrid>
-            <Label Grid.Row="4" Grid.Column="0">Sensor Data Save</Label>
-            <UniformGrid Grid.Row="4" Grid.Column="1" Rows="1">
-                <Button x:Name="SaveFileStart">Start</Button>
-                <Button x:Name="SaveFileStop">Stop</Button>
-            </UniformGrid>
-        </Grid>
-
     </StackPanel>
 </UserControl>

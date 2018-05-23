@@ -32,7 +32,6 @@ namespace RED.Models
         internal CameraViewModel _cameraMux;
         internal ExternalControlsViewModel _externalControls;
         internal AutonomyViewModel _autonomy;
-        internal ScienceArmViewModel _scienceArm;
         internal LightingViewModel _lighting;
         internal MapViewModel _map;
         internal DriveViewModel _drive;
