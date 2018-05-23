@@ -156,7 +156,7 @@ namespace RED.Configurations
                     new MetadataRecordContext(2900, "Drill", "-1000 to 1000 open loop for drill control"),
                     new MetadataRecordContext(2901, "Screw", "-1000 to 1000 open loop for screw control"),
                     new MetadataRecordContext(2902, "Geneva", "Commands carousel to rotate on open loop speed, CCW -> CW, -1000 to 1000"),
-                    new MetadataRecordContext(2903, "ScrewPosition", "(1,5) positions: (Bottom, Deploy, Empty, Reload, Top)"),
+                    new MetadataRecordContext(2903, "ScrewPosition", "(1,5) positions: (Bottom, Pick-Up, Staged, Drop Point, Top)"),
                     new MetadataRecordContext(2904, "GenevaPosition", "(1,2,3,4,5,6) positions")
                 }
             },
