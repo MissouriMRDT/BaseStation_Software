@@ -50,8 +50,8 @@ namespace RED.Configurations.Input
                 new InputChannelContext("JoyStick2Y", "Drill"){ Parabolic = true },
                 new InputChannelContext("DPadL", "GenevaLeft"){ Parabolic = true },
                 new InputChannelContext("DPadR", "GenevaRight"){ Parabolic = true },
-                new InputChannelContext("DPadT", "ScrewUp"){ Parabolic = true },
-                new InputChannelContext("DPadB", "ScrewDown"){ Parabolic = true },
+                new InputChannelContext("DPadU", "ScrewUp"){ Parabolic = true },
+                new InputChannelContext("DPadD", "ScrewDown"){ Parabolic = true },
                 new InputChannelContext("ButtonStartDebounced", "ModeCycle") }),
             new InputMappingContext("Xbox Gimbal", "Xbox", "Gimbal", 30, new[] {
                 new InputChannelContext("JoyStick1X", "Pan"){ Parabolic = true },
