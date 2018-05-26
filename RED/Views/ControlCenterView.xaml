@@ -46,16 +46,7 @@
                         <Expander Header="Drive" IsExpanded="True">
                             <ContentControl x:Name="Drive" />
                         </Expander>
-                        <Expander Header="Arm" IsExpanded="True">
-                            <ContentControl x:Name="Arm" />
-                        </Expander>
-                        <Expander Header="Science">
-                            <ContentControl x:Name="Science" />
-                        </Expander>
-                        <Expander Header="Sensors">
-                            <ContentControl x:Name="Sensor" />
-                        </Expander>
-                        <Expander Header="Gimbal">
+                        <Expander Header="Gimbal" IsExpanded="True">
                             <StackPanel>
                                 <ContentControl x:Name="ExternalControls" />
                                 <UniformGrid Rows="1">
@@ -64,17 +55,26 @@
                                 </UniformGrid>
                             </StackPanel>
                         </Expander>
-                        <Expander Header="Drop Bays">
-                            <ContentControl x:Name="DropBays" />
+                        <Expander Header="Arm">
+                            <ContentControl x:Name="Arm" />
                         </Expander>
-                        <Expander Header="Power and BMS">
-                            <ContentControl x:Name="Power" />
+                        <Expander Header="Science">
+                            <ContentControl x:Name="Science" />
+                        </Expander>
+                        <Expander Header="Autonomy">
+                            <ContentControl x:Name="Autonomy" />
+                        </Expander>
+                        <Expander Header="Sensors">
+                            <ContentControl x:Name="Sensor" />
                         </Expander>
                         <Expander Header="Cameras">
                             <ContentControl x:Name="CameraMux" />
                         </Expander>
-                        <Expander Header="Autonomy Mode">
-                            <ContentControl x:Name="Autonomy" />
+                        <Expander Header="Power and BMS">
+                            <ContentControl x:Name="Power" />
+                        </Expander>
+                        <Expander Header="Drop Bays">
+                            <ContentControl x:Name="DropBays" />
                         </Expander>
                         <Expander Header="Lighting">
                             <ContentControl x:Name="Lighting" />
