@@ -157,8 +157,16 @@ namespace RED.Configurations
                     new MetadataRecordContext(2900, "Drill", "-1000 to 1000 open loop for drill control"),
                     new MetadataRecordContext(2901, "Screw", "-1000 to 1000 open loop for screw control"),
                     new MetadataRecordContext(2902, "Geneva", "Commands carousel to rotate on open loop speed, CCW -> CW, -1000 to 1000"),
-                    new MetadataRecordContext(2903, "ScrewPosition", "(1,5) positions: (Bottom, Pick-Up, Staged, Drop Point, Top)"),
+                    new MetadataRecordContext(2903, "ScrewPosition", "(1,4) positions: (Bottom, Pick-Up, Staged, Drop Point)"),
                     new MetadataRecordContext(2904, "GenevaPosition", "(1,2,3,4,5,6) positions")
+                },
+                Telemetry = new[]
+                {
+                    new MetadataRecordContext(2905, "GenevaAtPos", "byte, returns (1,6)"),
+                    new MetadataRecordContext(2906, "ScrewAtPos", "byte, returns (1,4)"),
+                    new MetadataRecordContext(2907, "ScrewLimitTriggered", "byte, (0,4) (0 if no trigger)"),
+                    new MetadataRecordContext(2908, "GenevaLimitTriggered", "byte, (0,1)"),
+                    new MetadataRecordContext(2909, "CarouselLimitTriggered", "byte, (0,1)")
                 }
             },
             new MetadataServerContext("Camera Board", "192.168.1.140") {
