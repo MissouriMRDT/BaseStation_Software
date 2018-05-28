@@ -68,6 +68,7 @@
                 <UniformGrid Rows="1">
                     <Button x:Name="GetPosition">Get Position</Button>
                     <Button x:Name="SetPosition">Set Position</Button>
+                    <Button x:Name="ToggleAuto" FontSize="8">Toggle auto telem</Button>
                 </UniformGrid>
                 <UniformGrid Rows="1"/>
                 <Border BorderThickness="1" BorderBrush="Gray">

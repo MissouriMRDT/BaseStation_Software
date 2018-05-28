@@ -624,6 +624,10 @@ namespace RED.ViewModels.Modules
             myState = ArmControlState.GuiControl;
             guiControlInitialized = true;
         }
+        public void ToggleAuto()
+        {
+            _rovecomm.SendCommand(_idResolver.GetId("ToggleAutoPositionTelem"), new byte[0]);
+        }
 
         public void GetXYZPosition()
         {
