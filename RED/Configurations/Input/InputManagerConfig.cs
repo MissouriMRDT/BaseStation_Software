@@ -82,7 +82,7 @@ namespace RED.Configurations.Input
         internal static InputSelectionsContext DefaultInputSelections = new InputSelectionsContext(new[] {
             new InputSelectionContext("Drive", "Xbox 1", "Tank Drive (Traditional)", true),
             new InputSelectionContext("Arm", "Xbox 1", "Arm (Traditional)", false),
-            new InputSelectionContext("Gimbal", "Xbox 1", "Xbox Gimbal",false),
+            new InputSelectionContext("Main Gimbal", "Xbox 1", "Xbox Gimbal",false),
             new InputSelectionContext("Science Controls", "Xbox 1", "Xbox Science Controls", false)
         });
     }
