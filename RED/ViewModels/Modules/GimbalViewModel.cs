@@ -94,12 +94,14 @@ namespace RED.ViewModels.Modules
 
             roll = (Int16)(values["Roll"] * RollIncrement);
             short[] ptzrValues = { pan, tilt, zoom, roll };
-            _rovecomm.SendCommand(_idResolver.GetId("GimbalPTZR"), ptzrValues);
+            byte[] data = new byte[ptzrValues.Length * sizeof(Int16)];
+            Buffer.BlockCopy(ptzrValues, 0, data, 0, data.Length);
+            _rovecomm.SendCommand(_idResolver.GetId("GimbalPTZR"), data);
 
             if (_inClosedLoop == false)
             {
                 mast = (Int16)(ControllerBase.TwoButtonToggleDirection(values["GimbalMastTiltDirection"] != 0, (values["GimbalMastTiltMagnitude"])) * SpeedLimit);
-                _rovecomm.SendCommand(_idResolver.GetId("GimbalMastTilt"), mast);
+                _rovecomm.SendCommand(_idResolver.GetId("Mast"), mast);
             }
         }
 
@@ -117,7 +119,7 @@ namespace RED.ViewModels.Modules
             _rovecomm.SendCommand(_idResolver.GetId("ZoomFocus"), (byte)GimbalZoomCommands.ZoomIn, true);
         }
         public void ZoomOut()
-        {s
+        {
             _rovecomm.SendCommand(_idResolver.GetId("ZoomFocus"), (byte)GimbalZoomCommands.ZoomOut, true);
         }
         public void FocusNear()

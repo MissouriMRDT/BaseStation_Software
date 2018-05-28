@@ -63,8 +63,8 @@ namespace RED.Configurations.Input
                 new InputChannelContext("ButtonA", "ZoomOut"){ Parabolic = true },
                 new InputChannelContext("ButtonRb", "FocusIn"){ Parabolic = true },
                 new InputChannelContext("RightTrigger", "FocusOut"){ Parabolic = true },
-                new InputChannelContext("DpadU", "MastPositionUp"){ Parabolic = true },
-                new InputChannelContext("DpadD", "MastPositionDown"){ Parabolic = true },
+                new InputChannelContext("DPadU", "MastPositionUp"){ Parabolic = true },
+                new InputChannelContext("DPadD", "MastPositionDown"){ Parabolic = true },
                 new InputChannelContext("ButtonB", "CancelClosedLoop"){ Parabolic = true },
                 new InputChannelContext("ButtonStartDebounced", "ModeCycle") }),
             new InputMappingContext("Key Drive", "Keyboard", "Drive", 30, new[] {
