@@ -53,11 +53,19 @@ namespace RED.Configurations.Input
                 new InputChannelContext("DPadU", "ScrewUp"){ Parabolic = true },
                 new InputChannelContext("DPadD", "ScrewDown"){ Parabolic = true },
                 new InputChannelContext("ButtonStartDebounced", "ModeCycle") }),
-            new InputMappingContext("Xbox Gimbal", "Xbox", "Gimbal", 30, new[] {
+            new InputMappingContext("Xbox Gimbal", "Xbox", "Gimbal", 100, new[] {
                 new InputChannelContext("JoyStick1X", "Pan"){ Parabolic = true },
                 new InputChannelContext("JoyStick1Y", "Tilt"){ Parabolic = true },
+                new InputChannelContext("LeftTrigger", "GimbalMastTiltMagnitude"){ Parabolic = true },
+                new InputChannelContext("ButtonLb", "GimbalMastTiltDirection"),
+                new InputChannelContext("JoyStick2X", "Roll"){ Parabolic = true },
                 new InputChannelContext("ButtonY", "ZoomIn"){ Parabolic = true },
                 new InputChannelContext("ButtonA", "ZoomOut"){ Parabolic = true },
+                new InputChannelContext("ButtonB", "FocusIn"){ Parabolic = true },
+                new InputChannelContext("ButtonX", "FocusOut"){ Parabolic = true },
+                new InputChannelContext("DpadU", "MastPositionUp"){ Parabolic = true },
+                new InputChannelContext("DpadD", "MastPositionDown"){ Parabolic = true },
+                new InputChannelContext("DpadR", "CancelClosedLoop"){ Parabolic = true },
                 new InputChannelContext("ButtonStartDebounced", "ModeCycle") }),
             new InputMappingContext("Key Drive", "Keyboard", "Drive", 30, new[] {
                 new InputChannelContext("WS", "WheelsLeft"),

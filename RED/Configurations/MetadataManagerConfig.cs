@@ -122,7 +122,8 @@ namespace RED.Configurations
                     new MetadataRecordContext(1554, "Tilt", "Tilt speed of pan/tilt mount  (-1000 to 1000)"),
                     new MetadataRecordContext(1555, "Roll", "Roll of the (-1000,1000)"),
                     new MetadataRecordContext(1556, "Mast", "Mast control open loop (-1000,1000)"),
-                    new MetadataRecordContext(1557, "MastPosition", "0=Down, 1=Up")
+                    new MetadataRecordContext(1557, "MastPosition", "0=Down, 1=Up"),
+                    new MetadataRecordContext(1558, "GimbalPTZR", "Compacted values for pan tilt zoom and roll")
                 }
             },
             new MetadataServerContext("Science Board", "192.168.1.135") {
