@@ -8,7 +8,13 @@
     <StackPanel>
         <DockPanel>
             <Label x:Name="SpeedLimit" Width="40px" DockPanel.Dock="Right" HorizontalContentAlignment="Right" />
+            <Label HorizontalAlignment="Left" Content="Speed Limit" FontSize="10"/>
             <Slider Minimum="0" Maximum="1000" Value="{Binding SpeedLimit}" Margin="3px" />
+        </DockPanel>
+        <DockPanel>
+            <Label x:Name="RollIncrement" Width="40px" DockPanel.Dock="Right" HorizontalContentAlignment="Right" />
+            <Label HorizontalAlignment="Left" Content="Roll Increment" FontSize="10"/>
+            <Slider Minimum="0" Maximum="180" Value="{Binding RollIncrement}" Margin="3px" />
         </DockPanel>
         <Grid Margin="3px">
             <Grid.RowDefinitions>
