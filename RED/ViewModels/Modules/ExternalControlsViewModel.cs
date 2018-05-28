@@ -31,15 +31,6 @@ namespace RED.ViewModels.Modules
             _idResolver = idResolver;
         }
 
-        public void EnableAll()
-        {
-            _rovecomm.SendCommand(_idResolver.GetId("GimbalEnableAll"), GimbalEnableCommand, true);
-        }
-        public void DisableAll()
-        {
-            _rovecomm.SendCommand(_idResolver.GetId("GimbalEnableAll"), GimbalDisableCommand, true);
-        }
-
         public void ExternalControlsReset()
         {
             _rovecomm.SendCommand(_idResolver.GetId("ExternalControlsReset"), ResetCode, true);

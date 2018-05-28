@@ -36,8 +36,7 @@ namespace RED.Models
         internal MapViewModel _map;
         internal DriveViewModel _drive;
         internal ArmViewModel _arm;
-        internal GimbalViewModel _gimbal1;
-        internal GimbalViewModel _gimbal2;
+        internal GimbalViewModel _gimbal;
         internal XboxControllerInputViewModel _xboxController1;
         internal XboxControllerInputViewModel _xboxController2;
         internal XboxControllerInputViewModel _xboxController3;

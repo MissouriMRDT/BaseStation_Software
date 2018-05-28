@@ -48,11 +48,7 @@
                         </Expander>
                         <Expander Header="Gimbal" IsExpanded="True">
                             <StackPanel>
-                                <ContentControl x:Name="ExternalControls" />
-                                <UniformGrid Rows="1">
-                                    <ContentControl x:Name="Gimbal1" />
-                                    <ContentControl x:Name="Gimbal2" />
-                                </UniformGrid>
+                                <ContentControl x:Name="Gimbal" />
                             </StackPanel>
                         </Expander>
                         <Expander Header="Arm">

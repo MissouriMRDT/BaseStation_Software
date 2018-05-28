@@ -19,10 +19,5 @@
             <Button DockPanel.Dock="Right" x:Name="ExternalControlsReset">Reset</Button>
             <TextBox x:Name="ResetCode" />
         </DockPanel>
-        <Label Grid.Column="0" Grid.Row="1">12V</Label>
-        <UniformGrid Grid.Column="1" Grid.Row="1" Rows="1">
-            <Button x:Name="EnableAll">Enable</Button>
-            <Button x:Name="DisableAll">Disable</Button>
-        </UniformGrid>
     </Grid>
 </UserControl>

@@ -295,28 +295,16 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => Arm);
             }
         }
-        public GimbalViewModel Gimbal1
+        public GimbalViewModel Gimbal
         {
             get
             {
-                return _model._gimbal1;
+                return _model._gimbal;
             }
             set
             {
-                _model._gimbal1 = value;
-                NotifyOfPropertyChange(() => Gimbal1);
-            }
-        }
-        public GimbalViewModel Gimbal2
-        {
-            get
-            {
-                return _model._gimbal2;
-            }
-            set
-            {
-                _model._gimbal2 = value;
-                NotifyOfPropertyChange(() => Gimbal2);
+                _model._gimbal = value;
+                NotifyOfPropertyChange(() => Gimbal);
             }
         }
         public XboxControllerInputViewModel XboxController1
@@ -403,7 +391,7 @@ namespace RED.ViewModels
        
             NetworkManager = new NetworkManagerViewModel(Console);
             Rovecomm = new Rovecomm(NetworkManager, Console, MetadataManager);
-            Rovecomm.SubscribeMyPCToAllDevices();
+            ResubscribeAll();
 
             Science = new ScienceViewModel(Rovecomm, MetadataManager, Console);
             GPS = new GPSViewModel(Rovecomm, MetadataManager);
@@ -418,8 +406,7 @@ namespace RED.ViewModels
 
             Drive = new DriveViewModel(Rovecomm, MetadataManager);
             Arm = new ArmViewModel(Rovecomm, MetadataManager, Console, ConfigManager);
-            Gimbal1 = new GimbalViewModel(Rovecomm, MetadataManager, Console, 0);
-            Gimbal2 = new GimbalViewModel(Rovecomm, MetadataManager, Console, 1);
+            Gimbal = new GimbalViewModel(Rovecomm, MetadataManager, Console);
             XboxController1 = new XboxControllerInputViewModel(1);
             XboxController2 = new XboxControllerInputViewModel(2);
             XboxController3 = new XboxControllerInputViewModel(3);
@@ -431,7 +418,7 @@ namespace RED.ViewModels
             InputManager = new InputManagerViewModel(Console, ConfigManager,
                 new IInputDevice[] { XboxController1, XboxController2, XboxController3, XboxController4, FlightStickController, KeyboardController },
                 new MappingViewModel[0],
-                new IInputMode[] { Drive, Arm, Gimbal1, Gimbal2, Science });
+                new IInputMode[] { Drive, Arm, Gimbal, Science });
 
             WaypointManager = new WaypointManagerViewModel(Map, GPS, Autonomy);
             PingTool = new PingToolViewModel(Rovecomm, ConfigManager);
