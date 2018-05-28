@@ -66,7 +66,14 @@ namespace RED.ViewModels.Network
 
         public async void SendPacketUnreliable(IPAddress destIP, byte[] packetData)
         {
-            await continuousDataSocket.SendMessage(destIP, packetData);
+            try
+            {
+                await continuousDataSocket.SendMessage(destIP, packetData);
+            }
+            catch
+            {
+                _log.Log("No network to send msg");
+            }
         }
 
         public async void SendPacketReliable(IPAddress destIP, byte[] packetData, bool getResponse = false)
