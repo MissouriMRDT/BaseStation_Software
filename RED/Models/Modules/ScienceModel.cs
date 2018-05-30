@@ -6,9 +6,9 @@ namespace RED.Models.Modules
     internal class ScienceModel
     {
         internal float Sensor0Value;
-        internal float Sensor1Value;
+        internal int Sensor1Value;
         internal float Sensor2Value;
-        internal float Sensor3Value;
+        internal int Sensor3Value;
         internal float Sensor4Value;
         internal float Sensor5Value;
         internal float Sensor6Value;

@@ -138,8 +138,13 @@ namespace RED.Configurations
                     new MetadataRecordContext(1827, "SciSensor3", "Sensor 3 reading from Science Experiment"),
                     new MetadataRecordContext(1828, "SciSensor4", "Sensor 4 reading from Science Experiment"),
                     new MetadataRecordContext(1829, "SciSensor5", "Sensor 5 reading from Science Experiment"),
-                    new MetadataRecordContext(1830, "SciSensor6", "Sensor 6 reading from Science Experiment"),
-                    new MetadataRecordContext(1833, "SciSensor9", "Sensor 9 reading from Science Experiment")
+                    new MetadataRecordContext(1830, "SciSensor6", "Sensor 6 reading from Science Experiment")
+                }
+            },
+            new MetadataServerContext("Sensor Pod", "192.168.1.136") {
+                Telemetry = new[] {
+                    new MetadataRecordContext(1832, "Temperature", ""),
+                    new MetadataRecordContext(1833, "Moisture", "Moist")
                 }
             },
             new MetadataServerContext("Autonomy Board", "192.168.1.138") {

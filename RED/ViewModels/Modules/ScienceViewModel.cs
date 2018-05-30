@@ -38,7 +38,7 @@ namespace RED.ViewModels.Modules
                 NotifyOfPropertyChange(() => Sensor0Value);
             }
         }
-        public float Sensor1Value
+        public int Sensor1Value
         {
             get
             {
@@ -62,7 +62,7 @@ namespace RED.ViewModels.Modules
                 NotifyOfPropertyChange(() => Sensor2Value);
             }
         }
-        public float Sensor3Value
+        public int Sensor3Value
         {
             get
             {
@@ -216,6 +216,8 @@ namespace RED.ViewModels.Modules
             _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("SciSensor7"));
             _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("SciSensor8"));
             _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("SciSensor9"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Temperature"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Moisture"));
         }
 
         public void StartMode()
@@ -401,16 +403,16 @@ namespace RED.ViewModels.Modules
                     Sensor0Value = BitConverter.ToSingle(data, 0);
                     SaveFileWrite("Sensor00", Sensor0Value);
                     break;
-                case "SciSensor1":
-                    Sensor1Value = BitConverter.ToSingle(data, 0);
+                case "Temperature":
+                    Sensor1Value = BitConverter.ToInt16(data, 0);
                     SaveFileWrite("Sensor01", Sensor1Value);
                     break;
                 case "SciSensor2":
                     Sensor2Value = BitConverter.ToSingle(data, 0);
                     SaveFileWrite("Sensor02", Sensor2Value);
                     break;
-                case "SciSensor3":
-                    Sensor3Value = BitConverter.ToSingle(data, 0);
+                case "Moisture":
+                    Sensor3Value = BitConverter.ToInt16(data, 0);
                     SaveFileWrite("Sensor03", Sensor3Value);
                     break;
                 case "SciSensor4":
@@ -436,6 +438,8 @@ namespace RED.ViewModels.Modules
                 case "SciSensor9":
                     Sensor9Value = BitConverter.ToSingle(data, 0);
                     SaveFileWrite("Sensor09", Sensor9Value);
+                    break;
+                default:
                     break;
             }
         }
