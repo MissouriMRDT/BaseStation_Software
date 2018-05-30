@@ -10,11 +10,11 @@ namespace RED.ViewModels.Modules
 {
     public class GimbalViewModel : PropertyChangedBase, IInputMode
     {
+        private const float MaxZoomSpeed = 1000;
         private readonly GimbalModel _model;
         private readonly IRovecomm _rovecomm;
         private readonly IDataIdResolver _idResolver;
         private readonly ILogger _log;
-        private bool _inClosedLoop = false;
 
         public string Name { get; }
         public string ModeType { get; }
@@ -64,80 +64,51 @@ namespace RED.ViewModels.Modules
         {
             short pan, tilt, mast, zoom, roll;
 
-            if(values["MastPositionUp"] == 1)
+            switch (ControllerBase.JoystickDirection(values["Pan"], values["Tilt"]))
             {
-                _inClosedLoop = true;
-                _rovecomm.SendCommand(_idResolver.GetId("MastPosition"), 1);
-            }
-            else if(values["MastPositionDown"] == 1)
-            {
-                _inClosedLoop = true;
-                _rovecomm.SendCommand(_idResolver.GetId("MastPosition"), 0);
-            }
-            else if(values["CancelClosedLoop"] == 1)
-            {
-                _inClosedLoop = false;
+                case ControllerBase.JoystickDirections.Right:
+                case ControllerBase.JoystickDirections.Left:
+                    pan = (short)(values["Pan"] * SpeedLimit);
+                    tilt = 0;
+                    break;
+                case ControllerBase.JoystickDirections.Up:
+                case ControllerBase.JoystickDirections.Down:
+                    tilt = (short)(values["Tilt"] * SpeedLimit);
+                    pan = 0;
+                    break;
+
+                default:
+                    tilt = 0;
+                    pan = 0;
+                    break;
             }
 
-            pan = (short)(values["Pan"] * SpeedLimit);
-            tilt = (short)(values["Tilt"] * SpeedLimit);
-            if (values["ZoomIn"] != 0)
-                zoom = (byte)GimbalZoomCommands.ZoomIn;
-            else if (values["ZoomOut"] != 0)
-                zoom = (byte)GimbalZoomCommands.ZoomOut;
-            else if (values["FocusIn"] != 0)
-                zoom = (byte)GimbalZoomCommands.FocusNear;
-            else if (values["FocusOut"] != 0)
-                zoom = (byte)GimbalZoomCommands.FocusFar;
-            else
-                zoom = (byte)GimbalZoomCommands.Stop;
-
+            zoom = (Int16)(values["Zoom"] * MaxZoomSpeed);
             roll = (Int16)(values["Roll"] * RollIncrement);
-            short[] ptzrValues = { pan, tilt, zoom, roll };
-            byte[] data = new byte[ptzrValues.Length * sizeof(Int16)];
-            Buffer.BlockCopy(ptzrValues, 0, data, 0, data.Length);
-            _rovecomm.SendCommand(_idResolver.GetId("GimbalPTZR"), data);
+            mast = (Int16)(ControllerBase.TwoButtonToggleDirection(values["GimbalMastTiltDirection"] != 0, (values["GimbalMastTiltMagnitude"])) * SpeedLimit);
 
-            if (_inClosedLoop == false)
-            {
-                mast = (Int16)(ControllerBase.TwoButtonToggleDirection(values["GimbalMastTiltDirection"] != 0, (values["GimbalMastTiltMagnitude"])) * SpeedLimit);
-                _rovecomm.SendCommand(_idResolver.GetId("Mast"), mast);
-            }
+            short[] openVals = { pan, tilt, roll, mast, zoom };
+            byte[] data = new byte[openVals.Length * sizeof(Int16)];
+            Buffer.BlockCopy(openVals, 0, data, 0, data.Length);
+            _rovecomm.SendCommand(_idResolver.GetId("GimbalOpenValues"), data);
         }
 
         public void StopMode()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("GimbalPTZR"), (Int32)0, true);
+            _rovecomm.SendCommand(_idResolver.GetId("GimbalOpenValues"), new byte[]{ 0, 0, 0, 0, 0 }, true);
         }
 
         public void ZoomFocusStop()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ZoomFocus"), (byte)GimbalZoomCommands.Stop, true);
+            _rovecomm.SendCommand(_idResolver.GetId("ZoomFocus"), (Int16)0, true);
         }
         public void ZoomIn()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ZoomFocus"), (byte)GimbalZoomCommands.ZoomIn, true);
+            _rovecomm.SendCommand(_idResolver.GetId("ZoomFocus"), (Int16)MaxZoomSpeed, true);
         }
         public void ZoomOut()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ZoomFocus"), (byte)GimbalZoomCommands.ZoomOut, true);
-        }
-        public void FocusNear()
-        {
-            _rovecomm.SendCommand(_idResolver.GetId("ZoomFocus"), (byte)GimbalZoomCommands.FocusNear, true);
-        }
-        public void FocusFar()
-        {
-            _rovecomm.SendCommand(_idResolver.GetId("ZoomFocus"), (byte)GimbalZoomCommands.FocusFar, true);
-        }
-
-        private enum GimbalZoomCommands : byte
-        {
-            Stop = 0,
-            ZoomIn = 1,
-            ZoomOut = 2,
-            FocusNear = 3,
-            FocusFar = 4
+            _rovecomm.SendCommand(_idResolver.GetId("ZoomFocus"), (Int16)(-MaxZoomSpeed), true);
         }
     }
 }

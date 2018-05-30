@@ -45,13 +45,13 @@ namespace RED.Configurations.Input
                 new InputChannelContext("ButtonX", "GripperClose"),
                 new InputChannelContext("ButtonBackDebounced", "GripperSwap"),
                 new InputChannelContext("ButtonStartDebounced", "ModeCycle") }),
-            new InputMappingContext("Xbox Science Controls", "Xbox", "ScienceControls", 30, new[] {
+            new InputMappingContext("Xbox Science Controls", "Xbox", "ScienceControls", 100, new[] {
                 new InputChannelContext("JoyStick1Y", "Screw"){ Parabolic = true },
                 new InputChannelContext("JoyStick2Y", "Drill"){ Parabolic = true },
                 new InputChannelContext("DPadL", "GenevaLeft"){ Parabolic = true },
                 new InputChannelContext("DPadR", "GenevaRight"){ Parabolic = true },
-                new InputChannelContext("DPadU", "ScrewUp"){ Parabolic = true },
-                new InputChannelContext("DPadD", "ScrewDown"){ Parabolic = true },
+                new InputChannelContext("DPadU", "OpenLoop"){ Parabolic = true },
+                new InputChannelContext("DPadD", "ClosedLoop"){ Parabolic = true },
                 new InputChannelContext("ButtonStartDebounced", "ModeCycle") }),
             new InputMappingContext("Xbox Gimbal", "Xbox", "Gimbal", 100, new[] {
                 new InputChannelContext("JoyStick1X", "Pan"){ Parabolic = true },
@@ -59,13 +59,7 @@ namespace RED.Configurations.Input
                 new InputChannelContext("LeftTrigger", "GimbalMastTiltMagnitude"){ Parabolic = true },
                 new InputChannelContext("ButtonLb", "GimbalMastTiltDirection"),
                 new InputChannelContext("JoyStick2X", "Roll"){ Parabolic = true },
-                new InputChannelContext("ButtonY", "ZoomIn"){ Parabolic = true },
-                new InputChannelContext("ButtonA", "ZoomOut"){ Parabolic = true },
-                new InputChannelContext("ButtonRb", "FocusIn"){ Parabolic = true },
-                new InputChannelContext("RightTrigger", "FocusOut"){ Parabolic = true },
-                new InputChannelContext("DPadU", "MastPositionUp"){ Parabolic = true },
-                new InputChannelContext("DPadD", "MastPositionDown"){ Parabolic = true },
-                new InputChannelContext("ButtonB", "CancelClosedLoop"){ Parabolic = true },
+                new InputChannelContext("JoyStick2Y", "Zoom"){ Parabolic = true },
                 new InputChannelContext("ButtonStartDebounced", "ModeCycle") }),
             new InputMappingContext("Key Drive", "Keyboard", "Drive", 30, new[] {
                 new InputChannelContext("WS", "WheelsLeft"),

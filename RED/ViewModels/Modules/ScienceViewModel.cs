@@ -26,6 +26,18 @@ namespace RED.ViewModels.Modules
 
         private readonly ScienceModel _model;
 
+        public string ControlState
+        {
+            get
+            {
+                return _model.ControlState;
+            }
+            set
+            {
+                _model.ControlState = value;
+                NotifyOfPropertyChange(() => ControlState);
+            }
+        }
         public float Sensor0Value
         {
             get
@@ -221,17 +233,36 @@ namespace RED.ViewModels.Modules
         }
 
         public void StartMode()
-        { }
+        {
+            ControlState = "OpenLoop";
+        }
+
+        public void UpdateControlState(Dictionary<string, float> values)
+        {
+            if(values["ClosedLoop"] == 1)
+            {
+                ControlState = "ClosedLoop";
+            }
+            else if(values["OpenLoop"] == 1)
+            {
+                ControlState = "OpenLoop";
+            }
+        }
 
         public void SetValues(Dictionary<string, float> values)
         {
+            UpdateControlState(values);
+
             float screwMovement = values["Screw"];
             float drillSpeed = values["Drill"];
             float genevaSpeed = values["GenevaLeft"] == 1 ? 1 : values["GenevaRight"] == 1 ? -1 : 0;
-            float screwSpeed = values["ScrewUp"] == 1 ? 1 : values["ScrewDown"] == 1 ? -1 : 0;
-            _rovecomm.SendCommand(_idResolver.GetId("Screw"), (Int16)(screwMovement * ScrewSpeedScale));
             _rovecomm.SendCommand(_idResolver.GetId("Drill"), (Int16)(drillSpeed * DrillSpeedScale));
-            _rovecomm.SendCommand(_idResolver.GetId("Geneva"), (Int16)(genevaSpeed * GenevaSpeedScale));
+
+            if (ControlState == "OpenLoop")
+            {
+                _rovecomm.SendCommand(_idResolver.GetId("Screw"), (Int16)(screwMovement * ScrewSpeedScale));
+                _rovecomm.SendCommand(_idResolver.GetId("Geneva"), (Int16)(genevaSpeed * GenevaSpeedScale));
+            }
         }
 
         public void StopMode()

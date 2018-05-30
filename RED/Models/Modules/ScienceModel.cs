@@ -22,5 +22,6 @@ namespace RED.Models.Modules
         internal string SpectrometerFilePath = Environment.CurrentDirectory;
 
         internal Stream SensorDataFile;
+        internal string ControlState;
     }
 }

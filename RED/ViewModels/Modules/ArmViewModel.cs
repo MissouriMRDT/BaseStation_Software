@@ -397,34 +397,34 @@ namespace RED.ViewModels.Modules
             Int16 Gripper = 0;
             Int16 Nipper = 0;
 
-            switch (JoystickDirection(values["WristBend"], values["WristTwist"]))
+            switch (ControllerBase.JoystickDirection(values["WristBend"], values["WristTwist"]))
             {
-                case JoystickDirections.Right:
-                case JoystickDirections.Left:
-                case JoystickDirections.Up:
-                case JoystickDirections.Down:
+                case ControllerBase.JoystickDirections.Right:
+                case ControllerBase.JoystickDirections.Left:
+                case ControllerBase.JoystickDirections.Up:
+                case ControllerBase.JoystickDirections.Down:
                     ArmWristBend = (Int16)(values["WristBend"] * MotorRangeFactor);
                     ArmWristTwist = (Int16)(values["WristTwist"] * MotorRangeFactor);
                     break;
-                case JoystickDirections.None:
+                case ControllerBase.JoystickDirections.None:
                     ArmWristTwist = 0;
                     ArmWristBend = 0;
                     break;
             }
 
-            switch (JoystickDirection(values["ElbowBend"], values["ElbowTwist"]))
+            switch (ControllerBase.JoystickDirection(values["ElbowBend"], values["ElbowTwist"]))
             {
-                case JoystickDirections.Up:
-                case JoystickDirections.Down:
+                case ControllerBase.JoystickDirections.Up:
+                case ControllerBase.JoystickDirections.Down:
                     ArmElbowTwist = 0;
                     ArmElbowBend = (Int16)(values["ElbowBend"] * MotorRangeFactor);
                     break;
-                case JoystickDirections.Right:
-                case JoystickDirections.Left:
+                case ControllerBase.JoystickDirections.Right:
+                case ControllerBase.JoystickDirections.Left:
                     ArmElbowTwist = (Int16)(values["ElbowTwist"] * MotorRangeFactor);
                     ArmElbowBend = 0;
                     break;
-                case JoystickDirections.None:
+                case ControllerBase.JoystickDirections.None:
                     ArmElbowTwist = 0;
                     ArmElbowBend = 0;
                     break;
@@ -458,34 +458,34 @@ namespace RED.ViewModels.Modules
             Int16 Gripper = 0;
             Int16 Nipper = 0;
 
-            switch (JoystickDirection(values["IKYawIncrement"], values["IKPitchIncrement"]))
+            switch (ControllerBase.JoystickDirection(values["IKYawIncrement"], values["IKPitchIncrement"]))
             {
-                case JoystickDirections.Right:
-                case JoystickDirections.Left:
-                case JoystickDirections.Up:
-                case JoystickDirections.Down:
+                case ControllerBase.JoystickDirections.Right:
+                case ControllerBase.JoystickDirections.Left:
+                case ControllerBase.JoystickDirections.Up:
+                case ControllerBase.JoystickDirections.Down:
                     Yaw = (Int16)(values["IKYawIncrement"] * MotorRangeFactor);
                     Pitch = (Int16)(values["IKPitchIncrement"] * MotorRangeFactor);
                     break;
-                case JoystickDirections.None:
+                case ControllerBase.JoystickDirections.None:
                     Yaw = 0;
                     Pitch = 0;
                     break;
             }
 
-            switch (JoystickDirection(values["IKXIncrement"], values["IKYIncrement"]))
+            switch (ControllerBase.JoystickDirection(values["IKXIncrement"], values["IKYIncrement"]))
             {
-                case JoystickDirections.Up:
-                case JoystickDirections.Down:
+                case ControllerBase.JoystickDirections.Up:
+                case ControllerBase.JoystickDirections.Down:
                     Y = 0;
                     X = (Int16)(values["IKXIncrement"] * MotorRangeFactor);
                     break;
-                case JoystickDirections.Right:
-                case JoystickDirections.Left:
+                case ControllerBase.JoystickDirections.Right:
+                case ControllerBase.JoystickDirections.Left:
                     Y = (Int16)(values["IKYIncrement"] * MotorRangeFactor);
                     X = 0;
                     break;
-                case JoystickDirections.None:
+                case ControllerBase.JoystickDirections.None:
                     Y = 0;
                     X = 0;
                     break;
@@ -690,31 +690,7 @@ namespace RED.ViewModels.Modules
                 Positions.Add(new ArmPositionViewModel(position));
         }
 
-        private JoystickDirections JoystickDirection(float y, float x)
-        {
-            if (x == 0.0f && y == 0.0f) return JoystickDirections.None;
 
-            var angle = Math.Atan2(y, x);
-            if (angle > -Math.PI / 6 && angle < Math.PI / 6)
-                return JoystickDirections.Right;
-            else if (angle > Math.PI / 3 && angle < 2 * Math.PI / 3)
-                return JoystickDirections.Up;
-            else if (angle > 5 * Math.PI / 6 || angle < -5 * Math.PI / 6)
-                return JoystickDirections.Left;
-            else if (angle > -2 * Math.PI / 3 && angle < Math.PI / 3)
-                return JoystickDirections.Down;
-            else
-                return JoystickDirections.None;
-        }
-
-        private enum JoystickDirections
-        {
-            None = 0,
-            Left,
-            Right,
-            Up,
-            Down
-        }
 
         public class ArmPositionViewModel : PropertyChangedBase
         {

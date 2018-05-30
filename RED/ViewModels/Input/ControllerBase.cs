@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using System;
 using System.Collections.Generic;
 
 namespace RED.ViewModels.Input
@@ -29,6 +30,31 @@ namespace RED.ViewModels.Input
             {
                 return 0f;
             }
+        }
+        static public JoystickDirections JoystickDirection(float y, float x)
+        {
+            if (x == 0.0f && y == 0.0f) return JoystickDirections.None;
+
+            var angle = Math.Atan2(y, x);
+            if (angle > -Math.PI / 6 && angle < Math.PI / 6)
+                return JoystickDirections.Right;
+            else if (angle > Math.PI / 3 && angle < 2 * Math.PI / 3)
+                return JoystickDirections.Up;
+            else if (angle > 5 * Math.PI / 6 || angle < -5 * Math.PI / 6)
+                return JoystickDirections.Left;
+            else if (angle > -2 * Math.PI / 3 && angle < Math.PI / 3)
+                return JoystickDirections.Down;
+            else
+                return JoystickDirections.None;
+        }
+
+        public enum JoystickDirections
+        {
+            None = 0,
+            Left,
+            Right,
+            Up,
+            Down
         }
 
         static public float TwoButtonToggleDirection(bool directionButtonInput, float analogButtonInput)

@@ -119,12 +119,11 @@ namespace RED.Configurations
             new MetadataServerContext("Gimbal Board", "192.168.1.134") {
                 Commands = new[] {
                     new MetadataRecordContext(1552, "Pan", "Pan speed of pan/tilt mount (-1000 to 1000)"),
-                    new MetadataRecordContext(1553, "ZoomFocus", "Zoom/Focus Command. Enumerated: 0=Stop 1=ZoomIn 2=ZoomOut 3=FocusNear 4=FocusFar"),
+                    new MetadataRecordContext(1553, "Zoom", "Zoom the camera. -1000 to 1000 representing how fast to zoom in or out"),
                     new MetadataRecordContext(1554, "Tilt", "Tilt speed of pan/tilt mount  (-1000 to 1000)"),
                     new MetadataRecordContext(1555, "Roll", "Roll of the (-1000,1000)"),
                     new MetadataRecordContext(1556, "Mast", "Mast control open loop (-1000,1000)"),
-                    new MetadataRecordContext(1557, "MastPosition", "0=Down, 1=Up"),
-                    new MetadataRecordContext(1558, "GimbalPTZR", "Compacted values for pan tilt zoom and roll")
+                    new MetadataRecordContext(1557, "GimbalOpenValues", "Compacted values for pan tilt roll mast and Zoom")
                 }
             },
             new MetadataServerContext("Science Board", "192.168.1.135") {
