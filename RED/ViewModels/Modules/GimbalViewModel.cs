@@ -97,18 +97,5 @@ namespace RED.ViewModels.Modules
         {
             _rovecomm.SendCommand(_idResolver.GetId("GimbalOpenValues"), new byte[]{ 0, 0, 0, 0, 0 }, true);
         }
-
-        public void ZoomFocusStop()
-        {
-            _rovecomm.SendCommand(_idResolver.GetId("ZoomFocus"), (Int16)0, true);
-        }
-        public void ZoomIn()
-        {
-            _rovecomm.SendCommand(_idResolver.GetId("ZoomFocus"), (Int16)MaxZoomSpeed, true);
-        }
-        public void ZoomOut()
-        {
-            _rovecomm.SendCommand(_idResolver.GetId("ZoomFocus"), (Int16)(-MaxZoomSpeed), true);
-        }
     }
 }
