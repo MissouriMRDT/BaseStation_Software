@@ -13,7 +13,7 @@ namespace RED.Configurations
                     new MetadataRecordContext(1585, "DropBayOpen", "Commands the specified drop bay to open"),
                     new MetadataRecordContext(1584, "DropBayClose", "Commands the specified drop bay to close"),
                     new MetadataRecordContext(104, "UnderglowColor", ""),
-                    new MetadataRecordContext(105, "Headlights", "")
+                    new MetadataRecordContext(2336, "Headlights", "")
                 }
             },
             new MetadataServerContext("Arm Board", "192.168.1.131") {

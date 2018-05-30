@@ -9,6 +9,7 @@ namespace RED.ViewModels.Modules
         private readonly LightingModel _model;
         private readonly IRovecomm _rovecomm;
         private readonly IDataIdResolver _idResolver;
+        private readonly ILogger _log;
 
         public bool Enabled
         {
@@ -24,6 +25,26 @@ namespace RED.ViewModels.Modules
                     SendColors();
                 else
                     TurnOff();
+            }
+        }
+        public bool HeadlightsEnabled
+        {
+            get
+            {
+                return _model.HeadlightsEnabled;
+            }
+            set
+            {
+                _model.HeadlightsEnabled = value;
+                NotifyOfPropertyChange(() => HeadlightsEnabled);
+                if (value)
+                {
+                
+                    _log.Log("Doin our thing");
+                    TurnOnHeadlights();
+                }
+                else
+                    TurnOffHeadlights();
             }
         }
         public byte Red
@@ -66,11 +87,12 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public LightingViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver)
+        public LightingViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
             _model = new LightingModel();
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
+            _log = log;
         }
 
         private void SendColors()
@@ -82,6 +104,16 @@ namespace RED.ViewModels.Modules
         private void TurnOff()
         {
             _rovecomm.SendCommand(_idResolver.GetId("UnderglowColor"), new byte[] { 0, 0, 0 }, true);
+        }
+
+        private void TurnOnHeadlights()
+        {
+            _rovecomm.SendCommand(_idResolver.GetId("Headlights"), new byte[] { 1 }, false);
+        }
+
+        private void TurnOffHeadlights()
+        {
+            _rovecomm.SendCommand(_idResolver.GetId("Headlights"), new byte[] { 0 }, false);
         }
     }
 }

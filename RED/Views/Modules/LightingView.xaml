@@ -6,7 +6,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel>
-        <ToggleButton x:Name="Enabled">Enabled</ToggleButton>
+        <ToggleButton x:Name="HeadlightsEnabled">Headlights Enabled</ToggleButton>
+        <ToggleButton x:Name="Enabled">Underglow Enabled</ToggleButton>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition />
@@ -24,5 +25,6 @@
             <Label Grid.Row="2" Grid.Column="0">Blue</Label>
             <Slider Grid.Row="2" Grid.Column="1" x:Name="Blue" Minimum="0" Maximum="255" />
         </Grid>
+        
     </StackPanel>
 </UserControl>
