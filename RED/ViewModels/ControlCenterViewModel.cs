@@ -401,7 +401,7 @@ namespace RED.ViewModels
             CameraMux = new CameraViewModel(Rovecomm, MetadataManager);
             ExternalControls = new ExternalControlsViewModel(Rovecomm, MetadataManager);
             Autonomy = new AutonomyViewModel(Rovecomm, MetadataManager, Console);
-            Lighting = new LightingViewModel(Rovecomm, MetadataManager);
+            Lighting = new LightingViewModel(Rovecomm, MetadataManager, Console);
             Map = new MapViewModel();
 
             Drive = new DriveViewModel(Rovecomm, MetadataManager);
