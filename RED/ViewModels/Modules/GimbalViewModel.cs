@@ -98,5 +98,26 @@ namespace RED.ViewModels.Modules
             _rovecomm.SendCommand(_idResolver.GetId("GimbalOpenValues"), new byte[]{ 0, 0, 0, 0, 0 }, true);
         }
 
+        public void Snapshot()
+        {
+            _rovecomm.SendCommand(_idResolver.GetId("GimbalRecord"), (byte)GimbalRecordValues.Snapshot, true);
+        }
+
+        public void RecordStart()
+        {
+            _rovecomm.SendCommand(_idResolver.GetId("GimbalRecord"), (byte)GimbalRecordValues.Start, true);
+        }
+
+        public void RecordStop()
+        {
+            _rovecomm.SendCommand(_idResolver.GetId("GimbalRecord"), (byte)GimbalRecordValues.Stop, true);
+        }
+
+        private enum GimbalRecordValues
+        {
+            Stop = 0,
+            Start = 1,
+            Snapshot = 2
+        }
     }
 }

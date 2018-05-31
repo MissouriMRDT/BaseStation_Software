@@ -16,17 +16,10 @@
             <Label HorizontalAlignment="Left" Content="Roll Increment" FontSize="10"/>
             <Slider Minimum="0" Maximum="180" Value="{Binding RollIncrement}" Margin="3px" />
         </DockPanel>
-        <Grid Margin="3px">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-        </Grid>
+        <DockPanel>
+            <Button Content="Snapshot" x:Name="Snapshot" Width="100"/>
+            <Button Content="Record On" x:Name="RecordStart" Width="100" />
+            <Button Content="Record Off" x:Name="RecordStop" Width="100" />
+        </DockPanel>
     </StackPanel>
 </UserControl>
