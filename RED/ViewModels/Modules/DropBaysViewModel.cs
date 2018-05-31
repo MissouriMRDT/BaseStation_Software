@@ -18,13 +18,13 @@ namespace RED.ViewModels.Modules
 
         public void OpenBay(byte index)
         {
-            _rovecomm.SendCommand(_idResolver.GetId("DropBayOpen"), index, true);
+            _rovecomm.SendCommand(_idResolver.GetId("DropBayClose"), index, true);
             _log.Log("Drop bay #{0} opened", index + 1);
         }
 
         public void CloseBay(byte index)
         {
-            _rovecomm.SendCommand(_idResolver.GetId("DropBayClose"), index, true);
+            _rovecomm.SendCommand(_idResolver.GetId("DropBayOpen"), index, true);
             _log.Log("Drop bay #{0} closed", index + 1);
         }
     }
