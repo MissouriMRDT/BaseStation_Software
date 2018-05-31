@@ -47,7 +47,6 @@
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
-                <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
@@ -79,43 +78,34 @@
             <Button Grid.Row="5" Grid.Column="1" Style="{StaticResource DisableBtn}" Tag="5" />
             <Label Grid.Row="5" Grid.Column="2">Motor 6</Label>
             <Label Grid.Row="5" Grid.Column="3" Style="{StaticResource CurrentTelem}" x:Name="Motor6Current" />
+            <Button Grid.Row="6" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="8" />
+            <Button Grid.Row="6" Grid.Column="1" Style="{StaticResource DisableBtn}" Tag="8" />
+            <Label Grid.Row="6" Grid.Column="2">Actuation</Label>
+            <Label Grid.Row="6" Grid.Column="3" Style="{StaticResource CurrentTelem}" x:Name="ActuationCurrent" />
+            <Button Grid.Row="7" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="9" />
+            <Button Grid.Row="7" Grid.Column="1" Style="{StaticResource DisableBtn}" Tag="9" />
+            <Label Grid.Row="7" Grid.Column="2">Logic</Label>
+            <Label Grid.Row="7" Grid.Column="3" Style="{StaticResource CurrentTelem}" x:Name="LogicCurrent" />
+            <Button Grid.Row="8" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="10" />
+            <Button Grid.Row="8" Grid.Column="1" Style="{StaticResource DisableBtn}" Tag="10" />
+            <Label Grid.Row="8" Grid.Column="2">Comms</Label>
+            <Label Grid.Row="8" Grid.Column="3" Style="{StaticResource CurrentTelem}" x:Name="CommunicationsCurrent" />
+            <Button Grid.Row="9" Grid.Column="0" cal:Message.Attach="FanControl('True')">On</Button>
+            <Button Grid.Row="9" Grid.Column="1" cal:Message.Attach="FanControl('False')">Off</Button>
+            <Label Grid.Row="9" Grid.Column="2">Fans</Label>
+            <Button Grid.Row="10" Grid.Column="0" cal:Message.Attach="BuzzerControl('True')">On</Button>
+            <Button Grid.Row="10" Grid.Column="1" cal:Message.Attach="BuzzerControl('False')">Off</Button>
+            <Label Grid.Row="10" Grid.Column="2">BMS Buzzer</Label>
 
-            <Button Grid.Row="6" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="7" />
-            <Button Grid.Row="6" Grid.Column="1" Style="{StaticResource DisableBtn}" Tag="7" />
-            <Label Grid.Row="6" Grid.Column="2">General 12 V 40A</Label>
-            <Label Grid.Row="6" Grid.Column="3" Style="{StaticResource CurrentTelem}" x:Name="General12V40ACurrent" />
-            <Button Grid.Row="7" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="8" />
-            <Button Grid.Row="7" Grid.Column="1" Style="{StaticResource DisableBtn}" Tag="8" />
-            <Label Grid.Row="7" Grid.Column="2">Actuation</Label>
-            <Label Grid.Row="7" Grid.Column="3" Style="{StaticResource CurrentTelem}" x:Name="ActuationCurrent" />
-            <Button Grid.Row="8" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="9" />
-            <Button Grid.Row="8" Grid.Column="1" Style="{StaticResource DisableBtn}" Tag="9" />
-            <Label Grid.Row="8" Grid.Column="2">Logic</Label>
-            <Label Grid.Row="8" Grid.Column="3" Style="{StaticResource CurrentTelem}" x:Name="LogicCurrent" />
-            <Button Grid.Row="9" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="10" />
-            <Button Grid.Row="9" Grid.Column="1" Style="{StaticResource DisableBtn}" Tag="10" />
-            <Label Grid.Row="9" Grid.Column="2">Comms</Label>
-            <Label Grid.Row="9" Grid.Column="3" Style="{StaticResource CurrentTelem}" x:Name="CommunicationsCurrent" />
+            <Label Grid.Row="11" Grid.Column="2">Input Voltage</Label>
+            <Label Grid.Row="11" Grid.Column="3" Style="{StaticResource VoltageTelem}" x:Name="InputVoltage" />
+            <Label Grid.Row="12" Grid.Column="2">Total Pack Current</Label>
+            <Label Grid.Row="12" Grid.Column="3" Style="{StaticResource CurrentTelem}" x:Name="TotalPackCurrent" />
 
-            <Button Grid.Row="10" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="11" />
-            <Button Grid.Row="10" Grid.Column="1" Style="{StaticResource DisableBtn}" Tag="11" />
-            <Label Grid.Row="10" Grid.Column="2">Comm Logic</Label>
-            <Button Grid.Row="11" Grid.Column="0" cal:Message.Attach="FanControl('True')">On</Button>
-            <Button Grid.Row="11" Grid.Column="1" cal:Message.Attach="FanControl('False')">Off</Button>
-            <Label Grid.Row="11" Grid.Column="2">Fans</Label>
-            <Button Grid.Row="12" Grid.Column="0" cal:Message.Attach="BuzzerControl('True')">On</Button>
-            <Button Grid.Row="12" Grid.Column="1" cal:Message.Attach="BuzzerControl('False')">Off</Button>
-            <Label Grid.Row="12" Grid.Column="2">BMS Buzzer</Label>
-
-            <Label Grid.Row="13" Grid.Column="2">Input Voltage</Label>
-            <Label Grid.Row="13" Grid.Column="3" Style="{StaticResource VoltageTelem}" x:Name="InputVoltage" />
-            <Label Grid.Row="14" Grid.Column="2">Total Pack Current</Label>
-            <Label Grid.Row="14" Grid.Column="3" Style="{StaticResource CurrentTelem}" x:Name="TotalPackCurrent" />
-
-            <Label Grid.Row="15" Grid.Column="2">BMS Temp 1</Label>
-            <Label Grid.Row="15" Grid.Column="3" Style="{StaticResource TemperatureTelem}" x:Name="BMSTemperature1" />
-            <Label Grid.Row="16" Grid.Column="2">BMS Temp 2</Label>
-            <Label Grid.Row="16" Grid.Column="3" Style="{StaticResource TemperatureTelem}" x:Name="BMSTemperature2" />
+            <Label Grid.Row="13" Grid.Column="2">BMS Temp 1</Label>
+            <Label Grid.Row="13" Grid.Column="3" Style="{StaticResource TemperatureTelem}" x:Name="BMSTemperature1" />
+            <Label Grid.Row="14" Grid.Column="2">BMS Temp 2</Label>
+            <Label Grid.Row="14" Grid.Column="3" Style="{StaticResource TemperatureTelem}" x:Name="BMSTemperature2" />
         </Grid>
         <UniformGrid Rows="1">
             <Button Grid.Row="0" Grid.Column="0" Click="RebootButton_Click">Reboot</Button>
@@ -128,8 +118,6 @@
         <Expander Header="Other">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
@@ -156,32 +144,24 @@
                 <Button Grid.Row="1" Grid.Column="1" Style="{StaticResource DisableBtn}" Tag="7" />
                 <Label Grid.Row="1" Grid.Column="2">Motor 8</Label>
                 <Label Grid.Row="1" Grid.Column="3" Style="{StaticResource CurrentTelem}" x:Name="Motor8Current" />
-                <Button Grid.Row="2" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="8" />
-                <Button Grid.Row="2" Grid.Column="1" Style="{StaticResource DisableBtn}" Tag="8" />
-                <Label Grid.Row="2" Grid.Column="2">Bus 5V</Label>
-                <Label Grid.Row="2" Grid.Column="3" Style="{StaticResource CurrentTelem}" x:Name="Bus5VCurrent" />
-                <Button Grid.Row="3" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="9" />
-                <Button Grid.Row="3" Grid.Column="1" Style="{StaticResource DisableBtn}" Tag="9" />
-                <Label Grid.Row="3" Grid.Column="2">Bus 12V</Label>
-                <Label Grid.Row="3" Grid.Column="3" Style="{StaticResource CurrentTelem}" x:Name="Bus12VCurrent" />
-                <Label Grid.Row="4" Grid.Column="2">Cell 1</Label>
-                <Label Grid.Row="4" Grid.Column="3" Style="{StaticResource VoltageTelem}" x:Name="Cell1Voltage" />
-                <Label Grid.Row="5" Grid.Column="2">Cell 2</Label>
-                <Label Grid.Row="5" Grid.Column="3" Style="{StaticResource VoltageTelem}" x:Name="Cell2Voltage" />
-                <Label Grid.Row="6" Grid.Column="2">Cell 3</Label>
-                <Label Grid.Row="6" Grid.Column="3" Style="{StaticResource VoltageTelem}" x:Name="Cell3Voltage" />
-                <Label Grid.Row="7" Grid.Column="2">Cell 4</Label>
-                <Label Grid.Row="7" Grid.Column="3" Style="{StaticResource VoltageTelem}" x:Name="Cell4Voltage" />
-                <Label Grid.Row="8" Grid.Column="2">Cell 5</Label>
-                <Label Grid.Row="8" Grid.Column="3" Style="{StaticResource VoltageTelem}" x:Name="Cell5Voltage" />
-                <Label Grid.Row="9" Grid.Column="2">Cell 6</Label>
-                <Label Grid.Row="9" Grid.Column="3" Style="{StaticResource VoltageTelem}" x:Name="Cell6Voltage" />
-                <Label Grid.Row="10" Grid.Column="2">Cell 7</Label>
-                <Label Grid.Row="10" Grid.Column="3" Style="{StaticResource VoltageTelem}" x:Name="Cell7Voltage" />
-                <Label Grid.Row="11" Grid.Column="2">Cell 8</Label>
-                <Label Grid.Row="11" Grid.Column="3" Style="{StaticResource VoltageTelem}" x:Name="Cell8Voltage" />
-                <Label Grid.Row="12" Grid.Column="2">Total Pack Voltage</Label>
-                <Label Grid.Row="12" Grid.Column="3" Style="{StaticResource VoltageTelem}" x:Name="TotalPackVoltage" />
+                <Label Grid.Row="2" Grid.Column="2">Cell 1</Label>
+                <Label Grid.Row="2" Grid.Column="3" Style="{StaticResource VoltageTelem}" x:Name="Cell1Voltage" />
+                <Label Grid.Row="3" Grid.Column="2">Cell 2</Label>
+                <Label Grid.Row="3" Grid.Column="3" Style="{StaticResource VoltageTelem}" x:Name="Cell2Voltage" />
+                <Label Grid.Row="4" Grid.Column="2">Cell 3</Label>
+                <Label Grid.Row="4" Grid.Column="3" Style="{StaticResource VoltageTelem}" x:Name="Cell3Voltage" />
+                <Label Grid.Row="5" Grid.Column="2">Cell 4</Label>
+                <Label Grid.Row="5" Grid.Column="3" Style="{StaticResource VoltageTelem}" x:Name="Cell4Voltage" />
+                <Label Grid.Row="6" Grid.Column="2">Cell 5</Label>
+                <Label Grid.Row="6" Grid.Column="3" Style="{StaticResource VoltageTelem}" x:Name="Cell5Voltage" />
+                <Label Grid.Row="7" Grid.Column="2">Cell 6</Label>
+                <Label Grid.Row="7" Grid.Column="3" Style="{StaticResource VoltageTelem}" x:Name="Cell6Voltage" />
+                <Label Grid.Row="8" Grid.Column="2">Cell 7</Label>
+                <Label Grid.Row="8" Grid.Column="3" Style="{StaticResource VoltageTelem}" x:Name="Cell7Voltage" />
+                <Label Grid.Row="9" Grid.Column="2">Cell 8</Label>
+                <Label Grid.Row="9" Grid.Column="3" Style="{StaticResource VoltageTelem}" x:Name="Cell8Voltage" />
+                <Label Grid.Row="10" Grid.Column="2">Total Pack Voltage</Label>
+                <Label Grid.Row="10" Grid.Column="3" Style="{StaticResource VoltageTelem}" x:Name="TotalPackVoltage" />
             </Grid>
         </Expander>
     </StackPanel>
