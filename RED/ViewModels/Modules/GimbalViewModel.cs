@@ -64,7 +64,7 @@ namespace RED.ViewModels.Modules
         {
             short pan, tilt, mast, zoom, roll;
 
-            switch (ControllerBase.JoystickDirection(values["Pan"], values["Tilt"]))
+            switch (ControllerBase.JoystickDirection(values["Tilt"], values["Pan"]))
             {
                 case ControllerBase.JoystickDirections.Right:
                 case ControllerBase.JoystickDirections.Left:
@@ -97,5 +97,6 @@ namespace RED.ViewModels.Modules
         {
             _rovecomm.SendCommand(_idResolver.GetId("GimbalOpenValues"), new byte[]{ 0, 0, 0, 0, 0 }, true);
         }
+
     }
 }
