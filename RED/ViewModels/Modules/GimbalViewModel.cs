@@ -76,11 +76,8 @@ namespace RED.ViewModels.Modules
             short pan, tilt;
             pan = (Int16)(values["Pan"] * PanIncrement);
             tilt = (Int16)(values["Tilt"] * TiltIncrement);
-
-            short[] openVals = { pan, tilt, 0, 0, 0 };
-            byte[] data = new byte[openVals.Length * sizeof(Int16)];
-            Buffer.BlockCopy(openVals, 0, data, 0, data.Length);
-            _rovecomm.SendCommand(_idResolver.GetId("GimbalOpenValues"), data);
+            _rovecomm.SendCommand(_idResolver.GetId("Pan"), pan);
+            _rovecomm.SendCommand(_idResolver.GetId("Tilt"), tilt);
         }
 
         public void StopMode()
