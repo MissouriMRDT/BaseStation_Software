@@ -30,10 +30,11 @@
                 <Button cal:Message.Attach="SetGenevaPosition(2)">2</Button>
                 <Button cal:Message.Attach="SetGenevaPosition(3)">3</Button>
                 <Button cal:Message.Attach="SetGenevaPosition(4)">4</Button>
+                <Button cal:Message.Attach="SetGenevaPosition(5)">5</Button>
+                <Button cal:Message.Attach="SetGenevaPosition(6)">6</Button>
             </UniformGrid>
             <Label Grid.Row="2" Grid.Column="0">Screw Position</Label>
             <UniformGrid Grid.Row="2" Grid.Column="1" Rows="1">
-                <Button cal:Message.Attach="SetScrewPosition(1)">1</Button>
                 <Button cal:Message.Attach="SetScrewPosition(2)">2</Button>
                 <Button cal:Message.Attach="SetScrewPosition(3)">3</Button>
                 <Button cal:Message.Attach="SetScrewPosition(4)">4</Button>
