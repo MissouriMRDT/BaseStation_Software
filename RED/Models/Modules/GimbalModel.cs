@@ -2,7 +2,8 @@
 {
     internal class GimbalModel
     {
-        internal int SpeedLimit;
+        internal int PanIncrement = 5;
         internal int RollIncrement = 5;
+        internal int TiltIncrement = 5;
     }
 }

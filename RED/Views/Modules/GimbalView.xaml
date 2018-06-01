@@ -7,9 +7,9 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel>
         <DockPanel>
-            <Label x:Name="SpeedLimit" Width="40px" DockPanel.Dock="Right" HorizontalContentAlignment="Right" />
-            <Label HorizontalAlignment="Left" Content="Speed Limit" FontSize="10"/>
-            <Slider Minimum="0" Maximum="1000" Value="{Binding SpeedLimit}" Margin="3px" />
+            <Label x:Name="TiltIncrement" Width="40px" DockPanel.Dock="Right" HorizontalContentAlignment="Right" />
+            <Label HorizontalAlignment="Left" Content="Tilt Increment" FontSize="10"/>
+            <Slider Minimum="0" Maximum="1000" Value="{Binding TiltIncrement}" Margin="3px" />
         </DockPanel>
         <DockPanel>
             <Label x:Name="RollIncrement" Width="40px" DockPanel.Dock="Right" HorizontalContentAlignment="Right" />
@@ -17,9 +17,14 @@
             <Slider Minimum="0" Maximum="180" Value="{Binding RollIncrement}" Margin="3px" />
         </DockPanel>
         <DockPanel>
-            <Button Content="Snapshot" x:Name="Snapshot" Width="100"/>
-            <Button Content="Record On" x:Name="RecordStart" Width="100" />
-            <Button Content="Record Off" x:Name="RecordStop" Width="100" />
+            <Label x:Name="PanIncrement" Width="40px" DockPanel.Dock="Right" HorizontalContentAlignment="Right" />
+            <Label HorizontalAlignment="Left" Content="Pan Increment" FontSize="10"/>
+            <Slider Minimum="0" Maximum="180" Value="{Binding PanIncrement}" Margin="3px" />
         </DockPanel>
+        <UniformGrid Rows="1">
+            <Button Content="Snapshot" x:Name="Snapshot" />
+            <Button Content="Record On" x:Name="RecordStart" />
+            <Button Content="Record Off" x:Name="RecordStop" />
+        </UniformGrid>
     </StackPanel>
 </UserControl>

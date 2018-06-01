@@ -19,16 +19,16 @@ namespace RED.ViewModels.Modules
         public string Name { get; }
         public string ModeType { get; }
         
-        public int SpeedLimit
+        public int PanIncrement
         {
             get
             {
-                return _model.SpeedLimit;
+                return _model.PanIncrement;
             }
             set
             {
-                _model.SpeedLimit = value;
-                NotifyOfPropertyChange(() => SpeedLimit);
+                _model.PanIncrement = value;
+                NotifyOfPropertyChange(() => PanIncrement);
             }
         }
 
@@ -45,6 +45,19 @@ namespace RED.ViewModels.Modules
             }
         }
 
+        public int TiltIncrement
+        {
+            get
+            {
+                return _model.TiltIncrement;
+            }
+            set
+            {
+                _model.TiltIncrement = value;
+                NotifyOfPropertyChange(() => TiltIncrement);
+            }
+        }
+
         public GimbalViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
             _model = new GimbalModel();
@@ -53,8 +66,6 @@ namespace RED.ViewModels.Modules
             _log = log;
             Name = "Main Gimbal";
             ModeType = "Gimbal";
-            
-            SpeedLimit = 1000;
         }
 
         public void StartMode()
@@ -62,32 +73,11 @@ namespace RED.ViewModels.Modules
 
         public void SetValues(Dictionary<string, float> values)
         {
-            short pan, tilt, mast, zoom, roll;
+            short pan, tilt;
+            pan = (Int16)(values["Pan"] * PanIncrement);
+            tilt = (Int16)(values["Tilt"] * TiltIncrement);
 
-            switch (ControllerBase.JoystickDirection(values["Tilt"], values["Pan"]))
-            {
-                case ControllerBase.JoystickDirections.Right:
-                case ControllerBase.JoystickDirections.Left:
-                    pan = (short)(values["Pan"] * SpeedLimit);
-                    tilt = 0;
-                    break;
-                case ControllerBase.JoystickDirections.Up:
-                case ControllerBase.JoystickDirections.Down:
-                    tilt = (short)(values["Tilt"] * SpeedLimit);
-                    pan = 0;
-                    break;
-
-                default:
-                    tilt = 0;
-                    pan = 0;
-                    break;
-            }
-
-            zoom = (Int16)(values["Zoom"] * MaxZoomSpeed);
-            roll = (Int16)(values["Roll"] * RollIncrement);
-            mast = (Int16)(ControllerBase.TwoButtonToggleDirection(values["GimbalMastTiltDirection"] != 0, (values["GimbalMastTiltMagnitude"])) * SpeedLimit);
-
-            short[] openVals = { pan, tilt, roll, mast, zoom };
+            short[] openVals = { pan, tilt, 0, 0, 0 };
             byte[] data = new byte[openVals.Length * sizeof(Int16)];
             Buffer.BlockCopy(openVals, 0, data, 0, data.Length);
             _rovecomm.SendCommand(_idResolver.GetId("GimbalOpenValues"), data);

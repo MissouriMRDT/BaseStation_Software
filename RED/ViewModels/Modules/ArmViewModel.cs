@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace RED.ViewModels.Modules
 {
@@ -57,6 +58,11 @@ namespace RED.ViewModels.Modules
         private readonly ILogger _log;
         private readonly IConfigurationManager _configManager;
         private readonly Dictionary<int, string> _armFaultIds;
+
+        //flag that gets set when the arm detects and error and forces a change state, we want the user to have to wait a second 
+        //before commands can be sent again so they can register the fact taht said error occurred
+        private bool freezeArm = false; 
+
         public string Name { get; }
         public string ModeType { get; }
 
@@ -372,6 +378,7 @@ namespace RED.ViewModels.Modules
                     {
                         myState = ArmControlState.OpenLoop;
                         ControlState = "Open loop";
+                        freezeArm = true;
                     }
                     break;
                 case "ArmCurrentMain":
@@ -554,6 +561,13 @@ namespace RED.ViewModels.Modules
         public void SetValues(Dictionary<string, float> values)
         {
             UpdateControlState(values);
+
+            if(freezeArm)
+            {
+                //let user realzie an error has occurred before allowing commands to be sent again.
+                Task.Delay(500);
+                freezeArm = false;
+            }
 
             if (myState == ArmControlState.OpenLoop)
             {
