@@ -26,5 +26,9 @@
             <Button Content="Record On" x:Name="RecordStart" />
             <Button Content="Record Off" x:Name="RecordStop" />
         </UniformGrid>
+        <DockPanel>
+            <Label DockPanel.Dock="Left">Control State:</Label>
+            <Label DockPanel.Dock="Right" x:Name ="ControlState" HorizontalContentAlignment="Center" />
+        </DockPanel>
     </StackPanel>
 </UserControl>

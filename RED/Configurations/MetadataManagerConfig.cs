@@ -14,9 +14,8 @@ namespace RED.Configurations
                     new MetadataRecordContext(1585, "DropBayClose", "Commands the specified drop bay to close"),
                     new MetadataRecordContext(104, "UnderglowColor", ""),
                     new MetadataRecordContext(2336, "Headlights", ""),
-                    new MetadataRecordContext(1552, "Pan", "Pan speed of pan/tilt mount (-1000 to 1000)"),
-                    new MetadataRecordContext(1553, "Zoom", "Zoom the camera. -1000 to 1000 representing how fast to zoom in or out"),
-                    new MetadataRecordContext(1554, "Tilt", "Tilt speed of pan/tilt mount  (-1000 to 1000)"),
+                    new MetadataRecordContext(102, "PanServo", ""),
+                    new MetadataRecordContext(103, "TiltServo", ""),
                 }
             },
             new MetadataServerContext("Arm Board", "192.168.1.131") {
@@ -121,6 +120,9 @@ namespace RED.Configurations
             },
             new MetadataServerContext("Gimbal Board", "192.168.1.134") {
                 Commands = new[] {
+                    new MetadataRecordContext(1552, "Pan", "Pan speed of pan/tilt mount (-1000 to 1000)"),
+                    new MetadataRecordContext(1553, "Zoom", "Zoom the camera. -1000 to 1000 representing how fast to zoom in or out"),
+                    new MetadataRecordContext(1554, "Tilt", "Tilt speed of pan/tilt mount  (-1000 to 1000)"),
                     new MetadataRecordContext(1555, "Roll", "Roll of the (-1000,1000)"),
                     new MetadataRecordContext(1556, "Mast", "Mast control open loop (-1000,1000)"),
                     new MetadataRecordContext(1557, "GimbalOpenValues", "Compacted values for pan tilt roll mast and Zoom"),

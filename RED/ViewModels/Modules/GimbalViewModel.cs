@@ -11,10 +11,13 @@ namespace RED.ViewModels.Modules
     public class GimbalViewModel : PropertyChangedBase, IInputMode
     {
         private const float MaxZoomSpeed = 1000;
+        private const int SpeedLimit = 1000;
         private readonly GimbalModel _model;
         private readonly IRovecomm _rovecomm;
         private readonly IDataIdResolver _idResolver;
         private readonly ILogger _log;
+
+        private GimbalStates controlState = GimbalStates.MainGimbal;
 
         public string Name { get; }
         public string ModeType { get; }
@@ -57,6 +60,18 @@ namespace RED.ViewModels.Modules
                 NotifyOfPropertyChange(() => TiltIncrement);
             }
         }
+        public string ControlState
+        {
+            get
+            {
+                return _model.ControlState;
+            }
+            set
+            {
+                _model.ControlState = value;
+                NotifyOfPropertyChange(() => ControlState);
+            }
+        }
 
         public GimbalViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
@@ -69,15 +84,74 @@ namespace RED.ViewModels.Modules
         }
 
         public void StartMode()
-        { }
+        {
+            controlState = GimbalStates.MainGimbal;
+            ControlState = "Main Gimbal";
+        }
 
         public void SetValues(Dictionary<string, float> values)
         {
-            short pan, tilt;
-            pan = (Int16)(values["Pan"] * PanIncrement);
-            tilt = (Int16)(values["Tilt"] * TiltIncrement);
-            _rovecomm.SendCommand(_idResolver.GetId("Pan"), pan);
-            _rovecomm.SendCommand(_idResolver.GetId("Tilt"), tilt);
+            UpdateControlState(values);
+
+            if (controlState == GimbalStates.SubGimbal)
+            {
+                short pan, tilt;
+                pan = (Int16)(values["Pan"] * PanIncrement);
+                tilt = (Int16)(values["Tilt"] * TiltIncrement);
+                _rovecomm.SendCommand(_idResolver.GetId("PanServo"), pan);
+                _rovecomm.SendCommand(_idResolver.GetId("TiltServo"), tilt);
+            }
+            else
+            {
+                short pan, tilt, mast, zoom, roll;
+
+                switch (ControllerBase.JoystickDirection(values["Tilt"], values["Pan"]))
+                {
+                    case ControllerBase.JoystickDirections.Right:
+                    case ControllerBase.JoystickDirections.Left:
+                        pan = (short)(values["Pan"] * SpeedLimit);
+                        tilt = 0;
+                        break;
+                    case ControllerBase.JoystickDirections.Up:
+                    case ControllerBase.JoystickDirections.Down:
+                        tilt = (short)(values["Tilt"] * SpeedLimit);
+                        pan = 0;
+                        break;
+
+                    default:
+                        tilt = 0;
+                        pan = 0;
+                        break;
+                }
+
+                zoom = (Int16)(values["Zoom"] * MaxZoomSpeed);
+                roll = (Int16)(values["Roll"] * RollIncrement);
+                mast = (Int16)(ControllerBase.TwoButtonToggleDirection(values["GimbalMastTiltDirection"] != 0, (values["GimbalMastTiltMagnitude"])) * SpeedLimit);
+
+                short[] openVals = { pan, tilt, roll, mast, zoom };
+                byte[] data = new byte[openVals.Length * sizeof(Int16)];
+                Buffer.BlockCopy(openVals, 0, data, 0, data.Length);
+                _rovecomm.SendCommand(_idResolver.GetId("GimbalOpenValues"), data);
+            }
+        }
+
+        private void UpdateControlState(Dictionary<string, float> values)
+        {
+            if(values["MainGimbalSwitch"] == 1)
+            {
+                controlState = GimbalStates.MainGimbal;
+                ControlState = "Main Gimbal";
+            }
+            else if(values["SubGimbalSwitch"] == 1)
+            {
+                controlState = GimbalStates.SubGimbal;
+                ControlState = "Sub Gimbal";
+
+                short[] openVals = { 0, 0, 0, 0, 0 };
+                byte[] data = new byte[openVals.Length * sizeof(Int16)];
+                Buffer.BlockCopy(openVals, 0, data, 0, data.Length);
+                _rovecomm.SendCommand(_idResolver.GetId("GimbalOpenValues"), data);
+            }
         }
 
         public void StopMode()
@@ -105,6 +179,12 @@ namespace RED.ViewModels.Modules
             Stop = 0,
             Start = 1,
             Snapshot = 2
+        }
+
+        private enum GimbalStates
+        {
+            MainGimbal,
+            SubGimbal
         }
     }
 }

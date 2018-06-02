@@ -60,6 +60,8 @@ namespace RED.Configurations.Input
                 new InputChannelContext("ButtonLb", "GimbalMastTiltDirection"),
                 new InputChannelContext("JoyStick2X", "Roll"){ Parabolic = true },
                 new InputChannelContext("JoyStick2Y", "Zoom"){ Parabolic = true },
+                new InputChannelContext("DPadU", "MainGimbalSwitch"){ Parabolic = true },
+                new InputChannelContext("DPadD", "SubGimbalSwitch"){ Parabolic = true },
                 new InputChannelContext("ButtonStartDebounced", "ModeCycle") }),
             new InputMappingContext("Key Drive", "Keyboard", "Drive", 30, new[] {
                 new InputChannelContext("WS", "WheelsLeft"),
