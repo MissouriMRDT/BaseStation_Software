@@ -12,7 +12,7 @@ namespace RED.Configurations
                     new MetadataRecordContext(101, "MotorRightSpeed", "Right motor speed. Range is -1000 to 1000 (full reverse to full forward)"),
                     new MetadataRecordContext(1584, "DropBayOpen", "Commands the specified drop bay to open"),
                     new MetadataRecordContext(1585, "DropBayClose", "Commands the specified drop bay to close"),
-                    new MetadataRecordContext(104, "UnderglowColor", ""),
+                    new MetadataRecordContext(2320, "UnderglowColor", ""),
                     new MetadataRecordContext(2336, "Headlights", ""),
                     new MetadataRecordContext(102, "PanServo", ""),
                     new MetadataRecordContext(103, "TiltServo", ""),
