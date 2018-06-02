@@ -3,6 +3,7 @@ using RED.Interfaces;
 using RED.Models.Modules;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace RED.ViewModels.Modules
 {
@@ -487,6 +488,22 @@ namespace RED.ViewModels.Modules
         public void DisableBus(byte index)
         {
             _rovecomm.SendCommand(_idResolver.GetId("PowerBusDisable"), index, true);
+        }
+        public async void AllMotorPower(bool enable)
+        {
+            for (byte i = 0; i < 6; i++)
+            {
+                if (enable)
+                {
+                    EnableBus(i);
+                }
+                else
+                {
+                    DisableBus(i);
+                }
+
+                await Task.Delay(75);
+            }
         }
 
         public void SaveFileStart()

@@ -47,6 +47,7 @@
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
@@ -93,19 +94,21 @@
             <Button Grid.Row="9" Grid.Column="0" cal:Message.Attach="FanControl('True')">On</Button>
             <Button Grid.Row="9" Grid.Column="1" cal:Message.Attach="FanControl('False')">Off</Button>
             <Label Grid.Row="9" Grid.Column="2">Fans</Label>
-            <Button Grid.Row="10" Grid.Column="0" cal:Message.Attach="BuzzerControl('True')">On</Button>
+            <Button Grid.Row="10" Grid.Column="0" cal:Message.Attach="BuzzerControl('True')" Height="27" VerticalAlignment="Bottom">On</Button>
             <Button Grid.Row="10" Grid.Column="1" cal:Message.Attach="BuzzerControl('False')">Off</Button>
             <Label Grid.Row="10" Grid.Column="2">BMS Buzzer</Label>
+            <Button Grid.Row="11" Grid.Column="0" cal:Message.Attach="AllMotorPower('True')" Height="27" VerticalAlignment="Bottom">On</Button>
+            <Button Grid.Row="11" Grid.Column="1" cal:Message.Attach="AllMotorPower('False')">Off</Button>
+            <Label Grid.Row="11" Grid.Column="2">All motors</Label>
+            <Label Grid.Row="12" Grid.Column="2">Input Voltage</Label>
+            <Label Grid.Row="12" Grid.Column="3" Style="{StaticResource VoltageTelem}" x:Name="InputVoltage" />
+            <Label Grid.Row="13" Grid.Column="2">Total Pack Current</Label>
+            <Label Grid.Row="13" Grid.Column="3" Style="{StaticResource CurrentTelem}" x:Name="TotalPackCurrent" />
 
-            <Label Grid.Row="11" Grid.Column="2">Input Voltage</Label>
-            <Label Grid.Row="11" Grid.Column="3" Style="{StaticResource VoltageTelem}" x:Name="InputVoltage" />
-            <Label Grid.Row="12" Grid.Column="2">Total Pack Current</Label>
-            <Label Grid.Row="12" Grid.Column="3" Style="{StaticResource CurrentTelem}" x:Name="TotalPackCurrent" />
-
-            <Label Grid.Row="13" Grid.Column="2">BMS Temp 1</Label>
-            <Label Grid.Row="13" Grid.Column="3" Style="{StaticResource TemperatureTelem}" x:Name="BMSTemperature1" />
-            <Label Grid.Row="14" Grid.Column="2">BMS Temp 2</Label>
-            <Label Grid.Row="14" Grid.Column="3" Style="{StaticResource TemperatureTelem}" x:Name="BMSTemperature2" />
+            <Label Grid.Row="14" Grid.Column="2">BMS Temp 1</Label>
+            <Label Grid.Row="14" Grid.Column="3" Style="{StaticResource TemperatureTelem}" x:Name="BMSTemperature1" />
+            <Label Grid.Row="15" Grid.Column="2">BMS Temp 2</Label>
+            <Label Grid.Row="15" Grid.Column="3" Style="{StaticResource TemperatureTelem}" x:Name="BMSTemperature2" />
         </Grid>
         <UniformGrid Rows="1">
             <Button Grid.Row="0" Grid.Column="0" Click="RebootButton_Click">Reboot</Button>
