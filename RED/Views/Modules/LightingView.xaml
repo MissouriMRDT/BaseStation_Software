@@ -1,13 +1,14 @@
-﻿<UserControl x:Class="RED.Views.Modules.LightingView"
+﻿<UserControl
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls" x:Class="RED.Views.Modules.LightingView" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel>
-        <ToggleButton x:Name="HeadlightsEnabled">Headlights Enabled</ToggleButton>
-        <ToggleButton x:Name="Enabled">Underglow Enabled</ToggleButton>
+        <ToggleButton x:Name="HeadlightsEnabled" Content="Headlights Enabled"/>
+        <ToggleButton x:Name="Enabled" Content="Underglow Enabled"/>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition />
@@ -18,13 +19,13 @@
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Label Grid.Row="0" Grid.Column="0">Red</Label>
+            <Label Grid.Row="0" Grid.Column="0" Content="Red"/>
             <Slider Grid.Row="0" Grid.Column="1" x:Name="Red" Minimum="0" Maximum="255" />
-            <Label Grid.Row="1" Grid.Column="0">Green</Label>
-            <Slider Grid.Row="1" Grid.Column="1" x:Name="Green" Minimum="0" Maximum="255" />
-            <Label Grid.Row="2" Grid.Column="0">Blue</Label>
-            <Slider Grid.Row="2" Grid.Column="1" x:Name="Blue" Minimum="0" Maximum="255" />
+            <Label Grid.Row="1" Grid.Column="0" Content="Green"/>
+            <Slider Grid.Row="1" Grid.Column="1" x:Name="Green" Minimum="0" Maximum="255" BorderBrush="Green" mah:SliderHelper.TrackValueFillBrush="#CC00E500" mah:SliderHelper.TrackValueFillHoverBrush="#CC00E500" mah:SliderHelper.TrackValueFillPressedBrush="#CC00E500"/>
+            <Label Grid.Row="2" Grid.Column="0" Content="Blue"/>
+            <Slider Grid.Row="2" Grid.Column="1" x:Name="Blue" Minimum="0" Maximum="255" BorderBrush="Blue" mah:SliderHelper.TrackValueFillBrush="#CC0015E5" mah:SliderHelper.TrackValueFillHoverBrush="#CC0015E5" mah:SliderHelper.TrackValueFillPressedBrush="#CC0015E5"/>
         </Grid>
-        
+
     </StackPanel>
 </UserControl>
