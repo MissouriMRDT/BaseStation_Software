@@ -28,7 +28,6 @@
             <Label Content="Longitude:" />
             <TextBox x:Name="LongitudeTextBox" />
             <Button x:Name="RemoveSelectedWaypoint">Remove Selected</Button>
-            <Button x:Name="SendSelectedToAutonomy">Send to Autonomy</Button>
         </UniformGrid>
         <DataGrid ItemsSource="{Binding Waypoints}" SelectedItem="{Binding SelectedWaypoint}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" FrozenColumnCount="1" BorderThickness="1">
             <DataGrid.Columns>
