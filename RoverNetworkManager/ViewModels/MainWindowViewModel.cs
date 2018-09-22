@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using RoverNetworkManager.Models;
+using RoverNetworkManager.Networking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,8 @@ namespace RoverNetworkManager.ViewModels
         {
             base.DisplayName = "Rover Network Manager";
             _model = new MainWindowModel();
+
+            MainWindowModel.LoadMetadata();
         }
     }
 }

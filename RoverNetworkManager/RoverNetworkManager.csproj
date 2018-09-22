@@ -77,6 +77,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\MainWindowModel.cs" />
+    <Compile Include="Networking\MetadataManagerConfig.cs" />
+    <Compile Include="Networking\MetadataRecordContext.cs" />
+    <Compile Include="Networking\MetadataSaveContext.cs" />
     <Compile Include="RNMBootstrapper.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -120,5 +123,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
