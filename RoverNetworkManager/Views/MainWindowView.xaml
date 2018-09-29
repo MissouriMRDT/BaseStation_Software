@@ -13,6 +13,6 @@
             <ColumnDefinition Width="3*" />
             <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
-        <ContentControl x:Name="RoveCommCustomPacket" Grid.Column="1"></ContentControl>
+        <ContentControl x:Name="RoveCommCustomPacket" Grid.Column="0"></ContentControl>
     </Grid>
 </controls:MetroWindow>

@@ -7,8 +7,8 @@ using RoverNetworkManager.Networking;
 
 namespace RoverNetworkManager.Models
 {
-    class RoveCommCustomPacketModel
+    internal class RoveCommCustomPacketModel
     {
-        public Dictionary<string, List<MetadataRecordContext>> Commands = new Dictionary<string, List<MetadataRecordContext>>();
+        internal Dictionary<string, List<MetadataRecordContext>> Commands;
     }
 }
