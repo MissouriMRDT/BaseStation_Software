@@ -13,12 +13,25 @@ namespace RoverNetworkManager.ViewModels
     {
         private readonly MainWindowModel _model;
 
+        public RoveCommCustomPacketViewModel CustomPacket
+        {
+            get
+            {
+                return _model._customPacket;
+            }
+            set
+            {
+                _model._customPacket = value;
+                NotifyOfPropertyChange(() => CustomPacket);
+            }
+        }
+
         public MainWindowViewModel()
         {
             base.DisplayName = "Rover Network Manager";
             _model = new MainWindowModel();
 
-            MainWindowModel.LoadMetadata();
+            CustomPacket = new RoveCommCustomPacketViewModel();
         }
     }
 }

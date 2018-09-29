@@ -7,4 +7,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RoverNetworkManager.Views"
         mc:Ignorable="d" TitleCaps="False" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="3*" />
+        </Grid.ColumnDefinitions>
+        <ContentControl x:Name="RoveCommCustomPacket" Grid.Column="1"></ContentControl>
+    </Grid>
 </controls:MetroWindow>

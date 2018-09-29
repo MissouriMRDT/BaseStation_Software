@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RoverNetworkManager.Networking;
-using RoverNetworkManager.ViewModels;
 
 namespace RoverNetworkManager.Models
 {
-    internal class MainWindowModel
+    class RoveCommCustomPacketModel
     {
-        public RoveCommCustomPacketViewModel _customPacket;
+        public Dictionary<string, List<MetadataRecordContext>> Commands = new Dictionary<string, List<MetadataRecordContext>>();
     }
 }
