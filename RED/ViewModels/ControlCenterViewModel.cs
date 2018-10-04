@@ -420,7 +420,7 @@ namespace RED.ViewModels
                 new MappingViewModel[0],
                 new IInputMode[] { Drive, Arm, Gimbal, Science });
 
-            WaypointManager = new WaypointManagerViewModel(Map, GPS, Autonomy);
+            WaypointManager = new WaypointManagerViewModel(Map, GPS);
             PingTool = new PingToolViewModel(Rovecomm, ConfigManager);
             StopwatchTool = new StopwatchToolViewModel(ConfigManager);
             TelemetryLogTool = new TelemetryLogToolViewModel(NetworkManager, MetadataManager);
