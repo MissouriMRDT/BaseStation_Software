@@ -20,16 +20,33 @@
         </x:Array>
     </UserControl.Resources>
     <DockPanel>
-        <UniformGrid Rows="2" DockPanel.Dock="Top">
-            <Label Content="Latitude:" />
-            <TextBox x:Name="LatitudeTextBox" />
-            <Button x:Name="AddWaypointBtn" Click="AddWaypointBtn_Click">Add Waypoint</Button>
-            <Button x:Name="CurrentLocationToWaypoint">Save Current</Button>
-            <Label Content="Longitude:" />
-            <TextBox x:Name="LongitudeTextBox" />
-            <Button x:Name="RemoveSelectedWaypoint">Remove Selected</Button>
-            <Button x:Name="SendSelectedToAutonomy">Send to Autonomy</Button>
-        </UniformGrid>
+        <StackPanel Orientation="Vertical" DockPanel.Dock="Top">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="CurrentLocationToWaypoint" Grid.Column="0">Save Current</Button>
+                <Button x:Name="RemoveSelectedWaypoint" Grid.Column="1">Remove Selected</Button>
+            </Grid>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="1" Grid.Column="0"  Content="Lat:" />
+                <TextBox Grid.Row="1" Grid.Column="1" x:Name="LatitudeTextBox" />
+                <Button Grid.Row="1" Grid.Column="4" x:Name="AddWaypointBtn" Click="AddWaypointBtn_Click">Add Waypoint</Button>
+                <Label Grid.Row="1" Grid.Column="2" Content="Lon:" />
+                <TextBox Grid.Row="1" Grid.Column="3" x:Name="LongitudeTextBox" />
+            </Grid>
+        </StackPanel>
         <DataGrid ItemsSource="{Binding Waypoints}" SelectedItem="{Binding SelectedWaypoint}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" FrozenColumnCount="1" BorderThickness="1">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" />

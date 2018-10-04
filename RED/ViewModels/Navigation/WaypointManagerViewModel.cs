@@ -34,18 +34,6 @@ namespace RED.ViewModels.Navigation
                 NotifyOfPropertyChange(() => GPSModule);
             }
         }
-        public AutonomyViewModel AutonomyModule
-        {
-            get
-            {
-                return _model.AutonomyModule;
-            }
-            private set
-            {
-                _model.AutonomyModule = value;
-                NotifyOfPropertyChange(() => AutonomyModule);
-            }
-        }
 
         public ObservableCollection<Waypoint> Waypoints
         {
@@ -72,13 +60,12 @@ namespace RED.ViewModels.Navigation
             }
         }
 
-        public WaypointManagerViewModel(MapViewModel map, GPSViewModel gps, AutonomyViewModel autonomy)
+        public WaypointManagerViewModel(MapViewModel map, GPSViewModel gps)
         {
             _model = new WaypointManagerModel();
 
             Map = map;
             GPSModule = gps;
-            AutonomyModule = autonomy;
 
             GPSModule.PropertyChanged += GPSModule_PropertyChanged;
 
@@ -160,12 +147,6 @@ namespace RED.ViewModels.Navigation
         public void CurrentLocationToWaypoint()
         {
             AddWaypoint(Map.CurrentLocation);
-        }
-
-        public void SendSelectedToAutonomy()
-        {
-            if (SelectedWaypoint != null)
-                AutonomyModule.AddWaypoint(SelectedWaypoint);
         }
     }
 }
