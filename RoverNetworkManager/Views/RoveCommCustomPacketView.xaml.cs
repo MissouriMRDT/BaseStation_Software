@@ -10,6 +10,8 @@ namespace RoverNetworkManager.Views
     /// </summary>
     public partial class RoveCommCustomPacketView : UserControl
     {
+		private Networking.Rovecomm rc = new Networking.Rovecomm();
+
 		public RoveCommCustomPacketView() {
 			InitializeComponent();
 		}
@@ -56,7 +58,12 @@ namespace RoverNetworkManager.Views
 			string d = "";
 			foreach(byte b in data.ToArray()) { d += b.ToString() + ","; }
 			d = d.Remove(d.Length - 1, 1);
-			MessageBox.Show($"Sending command of {txtID.Text} with data of {d} to {txtIP.Text}");
+
+			ushort id;
+			if(ushort.TryParse(txtID.Text, out id)) {
+				rc.SendPacket(id, data.ToArray(), System.Net.IPAddress.Parse(txtIP.Text), 0);
+				MessageBox.Show($"Sent command {id} with data of {d} to {txtIP.Text}");
+			}
 		}
 	}
 }

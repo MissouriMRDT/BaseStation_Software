@@ -78,9 +78,12 @@
     </ApplicationDefinition>
     <Compile Include="Models\MainWindowModel.cs" />
     <Compile Include="Models\RoveCommCustomPacketModel.cs" />
+    <Compile Include="Networking\INetworkTransportProtocol.cs" />
     <Compile Include="Networking\MetadataManagerConfig.cs" />
     <Compile Include="Networking\MetadataRecordContext.cs" />
     <Compile Include="Networking\MetadataSaveContext.cs" />
+    <Compile Include="Networking\Rovecomm.cs" />
+    <Compile Include="Networking\UDPEndpoint.cs" />
     <Compile Include="RNMBootstrapper.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
