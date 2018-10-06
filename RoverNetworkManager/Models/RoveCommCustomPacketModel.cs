@@ -9,6 +9,10 @@ namespace RoverNetworkManager.Models
 {
     internal class RoveCommCustomPacketModel
     {
-        internal Dictionary<string, List<MetadataRecordContext>> Commands;
-    }
+        internal List<string> Commands = new List<string>();
+		internal List<ushort> CommandIDs = new List<ushort>();
+		internal ushort SelectedCommand;
+		internal byte Data;
+
+	}
 }

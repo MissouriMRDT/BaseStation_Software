@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Caliburn.Micro;
+using System.Windows.Controls;
 
 namespace RoverNetworkManager.ViewModels
 {
@@ -13,7 +14,7 @@ namespace RoverNetworkManager.ViewModels
     {
         private readonly RoveCommCustomPacketModel _model;
 
-        public Dictionary<string, List<MetadataRecordContext>> Commands
+        public List<string> Commands
         {
             get
             {
@@ -26,22 +27,75 @@ namespace RoverNetworkManager.ViewModels
             }
         }
 
-        public void LoadMetadata()
+		public List<ushort> CommandIDs {
+			get {
+				return _model.CommandIDs;
+			}
+			set {
+				_model.CommandIDs = value;
+				NotifyOfPropertyChange(() => CommandIDs);
+			}
+		}
+
+		public ushort SelectedCommand {
+			get {
+				return _model.SelectedCommand;
+			}
+			set {
+				_model.SelectedCommand = CommandIDs[value];
+				NotifyOfPropertyChange(() => SelectedCommand);
+			}
+		}
+
+		public byte Data {
+			get {
+				return _model.Data;
+			}
+			set {
+				_model.Data = value;
+				NotifyOfPropertyChange(() => Data);
+			}
+		}
+
+		int last = 0;
+		MetadataSaveContext meta = MetadataManagerConfig.DefaultMetadata;
+
+		public void LoadMetadata()
         {
-            MetadataSaveContext meta = MetadataManagerConfig.DefaultMetadata;
+			Commands.Add("Custom command");
+			CommandIDs.Add(0);
             
             foreach (MetadataServerContext ctx in meta.Servers)
             {
-                Commands.Add(ctx.Name, ctx.Commands.ToList());
+				Commands.Add("== " + ctx.Name + " ==");
+				Commands.AddRange(ctx.Commands.ToList().ConvertAll(i => i.ToString()));
 
-                // TODO: implement?
-                // Commands.Add(ctx.Name, ctx.Telemetry.ToList());
-            }
+				int len = Commands.Count - last;
+				System.Diagnostics.Debugger.Log(0, "", $"length is {len}\n");
+				last = Commands.Count;
+
+				CommandIDs.Add(0);
+				CommandIDs.AddRange(ctx.Commands.ToList().ConvertAll(i => i.Id));
+			}
         }
+
+		public MetadataServerContext FindContextByCommand(ushort commandID) {
+			foreach (MetadataServerContext ctx in meta.Servers) {
+				Commands.Add("== " + ctx.Name + " ==");
+				Commands.AddRange(ctx.Commands.ToList().ConvertAll(i => i.ToString()));
+				
+				foreach(MetadataRecordContext record in ctx.Commands) {
+					if (record.Id == commandID) return ctx;
+				}
+			}
+
+			return null;
+		}
 
         public RoveCommCustomPacketViewModel()
         {
             _model = new RoveCommCustomPacketModel();
-        }
-    }
+			LoadMetadata();
+		}
+	}
 }
