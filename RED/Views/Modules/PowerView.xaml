@@ -19,6 +19,14 @@
         <Style x:Key="CurrentTelem" TargetType="Label">
             <Setter Property="ContentStringFormat" Value="{}{0:00.0} A" />
             <Setter Property="HorizontalContentAlignment" Value="Right" />
+
+            <Setter Property="Background" Value="LightGreen"/>
+            <Style.Triggers>
+                <Trigger Property="ContentStringFormat" Value="{}{0:01.0} A">
+                    <Setter Property="Background" Value="LightPink"/>
+                </Trigger>
+            </Style.Triggers>
+
         </Style>
 
         <Style x:Key="VoltageTelem" TargetType="Label">
@@ -30,7 +38,6 @@
             <Setter Property="HorizontalContentAlignment" Value="Right" />
         </Style>
 
-        
     </UserControl.Resources>
     <StackPanel>
         <Grid>

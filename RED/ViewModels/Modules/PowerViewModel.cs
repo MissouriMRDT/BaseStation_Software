@@ -30,6 +30,8 @@ namespace RED.ViewModels.Modules
             }
         }
 
+        
+
         public float Motor1Current
         {
             get
