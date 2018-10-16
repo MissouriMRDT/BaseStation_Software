@@ -107,6 +107,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Addons\AmpToColorValueConverter.cs" />
     <Compile Include="Addons\BoolToValueConverter.cs" />
     <Compile Include="Addons\Navigation\GMapMarkerCollectionMultiConverter.cs" />
     <Compile Include="Addons\Navigation\GPSCoordinate.cs" />
