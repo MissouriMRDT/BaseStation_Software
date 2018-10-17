@@ -66,59 +66,80 @@
 
             <Button Grid.Row="0" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="0" />
             <Button Grid.Row="0" Grid.Column="1" Style="{StaticResource DisableBtn}" Tag="0" />
-            <Label Grid.Row="0" Grid.Column="2" Background="{Binding Path=Motor1Current, Converter={StaticResource AmpConverter}, Mode=Default}">Motor 1</Label>
+            <Label Grid.Row="0" Grid.Column="2" Background="{Binding Path=Motor1Current, 
+                   Converter={StaticResource AmpConverter}, Mode=Default}">Motor 1</Label>
             <Label Grid.Row="0" Grid.Column="3" Style="{StaticResource CurrentTelem}" x:Name="Motor1Current"
                    Background="{Binding Path=Motor1Current, Converter={StaticResource AmpConverter}, Mode=Default}"/>
 
             <Button Grid.Row="0" Grid.Column="4" Style="{StaticResource EnableBtn}" Tag="1" />
             <Button Grid.Row="0" Grid.Column="5" Style="{StaticResource DisableBtn}" Tag="1" />
-            <Label Grid.Row="0" Grid.Column="6">Motor 2</Label>
-            <Label Grid.Row="0" Grid.Column="7" Style="{StaticResource CurrentTelem}" x:Name="Motor2Current" />
+            <Label Grid.Row="0" Grid.Column="6" Background="{Binding Path=Motor2Current, 
+                    Converter={StaticResource AmpConverter}, Mode=Default}">Motor 2</Label>
+            <Label Grid.Row="0" Grid.Column="7" Style="{StaticResource CurrentTelem}" x:Name="Motor2Current" 
+                   Background="{Binding Path=Motor2Current, Converter={StaticResource AmpConverter}, Mode=Default}"/>
 
             <Button Grid.Row="1" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="2" />
             <Button Grid.Row="1" Grid.Column="1" Style="{StaticResource DisableBtn}" Tag="2" />
-            <Label Grid.Row="1" Grid.Column="2">Motor 3</Label>
-            <Label Grid.Row="1" Grid.Column="3" Style="{StaticResource CurrentTelem}" x:Name="Motor3Current" />
+            <Label Grid.Row="1" Grid.Column="2" Background="{Binding Path=Motor3Current, 
+                    Converter={StaticResource AmpConverter}, Mode=Default}">Motor 3</Label>
+            <Label Grid.Row="1" Grid.Column="3" Style="{StaticResource CurrentTelem}" x:Name="Motor3Current" 
+                   Background="{Binding Path=Motor3Current, Converter={StaticResource AmpConverter}, Mode=Default}"/>
 
             <Button Grid.Row="1" Grid.Column="4" Style="{StaticResource EnableBtn}" Tag="3" />
             <Button Grid.Row="1" Grid.Column="5" Style="{StaticResource DisableBtn}" Tag="3" />
-            <Label Grid.Row="1" Grid.Column="6">Motor 4</Label>
-            <Label Grid.Row="1" Grid.Column="7" Style="{StaticResource CurrentTelem}" x:Name="Motor4Current" />
+            <Label Grid.Row="1" Grid.Column="6" Background="{Binding Path=Motor4Current, 
+                    Converter={StaticResource AmpConverter}, Mode=Default}">Motor 4</Label>
+            <Label Grid.Row="1" Grid.Column="7" Style="{StaticResource CurrentTelem}" x:Name="Motor4Current" 
+                   Background="{Binding Path=Motor4Current, Converter={StaticResource AmpConverter}, Mode=Default}"/>
 
             <Button Grid.Row="2" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="4" />
             <Button Grid.Row="2" Grid.Column="1" Style="{StaticResource DisableBtn}" Tag="4" />
-            <Label Grid.Row="2" Grid.Column="2">Motor 5</Label>
-            <Label Grid.Row="2" Grid.Column="3" Style="{StaticResource CurrentTelem}" x:Name="Motor5Current" />
+            <Label Grid.Row="2" Grid.Column="2" Background="{Binding Path=Motor5Current, 
+                    Converter={StaticResource AmpConverter}, Mode=Default}">Motor 5</Label>
+            <Label Grid.Row="2" Grid.Column="3" Style="{StaticResource CurrentTelem}" x:Name="Motor5Current" 
+                   Background="{Binding Path=Motor5Current, Converter={StaticResource AmpConverter}, Mode=Default}"/>
 
             <Button Grid.Row="2" Grid.Column="4" Style="{StaticResource EnableBtn}" Tag="5" />
             <Button Grid.Row="2" Grid.Column="5" Style="{StaticResource DisableBtn}" Tag="5" />
-            <Label Grid.Row="2" Grid.Column="6">Motor 6</Label>
-            <Label Grid.Row="2" Grid.Column="7" Style="{StaticResource CurrentTelem}" x:Name="Motor6Current" />
+            <Label Grid.Row="2" Grid.Column="6" Background="{Binding Path=Motor6Current, 
+                    Converter={StaticResource AmpConverter}, Mode=Default}">Motor 6</Label>
+            <Label Grid.Row="2" Grid.Column="7" Style="{StaticResource CurrentTelem}" x:Name="Motor6Current" 
+                   Background="{Binding Path=Motor6Current, Converter={StaticResource AmpConverter}, Mode=Default}"/>
 
             <Button Grid.Row="3" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="6" />
             <Button Grid.Row="3" Grid.Column="1" Style="{StaticResource DisableBtn}" Tag="6" />
-            <Label Grid.Row="3" Grid.Column="2">Motor 7</Label>
-            <Label Grid.Row="3" Grid.Column="3" Style="{StaticResource CurrentTelem}" x:Name="Motor7Current" />
+            <Label Grid.Row="3" Grid.Column="2" Background="{Binding Path=Motor7Current, 
+                    Converter={StaticResource AmpConverter}, Mode=Default}">Motor 7</Label>
+            <Label Grid.Row="3" Grid.Column="3" Style="{StaticResource CurrentTelem}" x:Name="Motor7Current" 
+                   Background="{Binding Path=Motor7Current, Converter={StaticResource AmpConverter}, Mode=Default}"/>
 
             <Button Grid.Row="3" Grid.Column="4" Style="{StaticResource EnableBtn}" Tag="7" />
             <Button Grid.Row="3" Grid.Column="5" Style="{StaticResource DisableBtn}" Tag="7" />
-            <Label Grid.Row="3" Grid.Column="6">Motor 8</Label>
-            <Label Grid.Row="3" Grid.Column="7" Style="{StaticResource CurrentTelem}" x:Name="Motor8Current" />
+            <Label Grid.Row="3" Grid.Column="6" Background="{Binding Path=Motor8Current, 
+                    Converter={StaticResource AmpConverter}, Mode=Default}">Motor 8</Label>
+            <Label Grid.Row="3" Grid.Column="7" Style="{StaticResource CurrentTelem}" x:Name="Motor8Current" 
+                   Background="{Binding Path=Motor8Current, Converter={StaticResource AmpConverter}, Mode=Default}"/>
 
             <Button Grid.Row="4" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="8" />
             <Button Grid.Row="4" Grid.Column="1" Style="{StaticResource DisableBtn}" Tag="8" />
-            <Label Grid.Row="4" Grid.Column="2">Actuation</Label>
-            <Label Grid.Row="4" Grid.Column="3" Style="{StaticResource CurrentTelem}" x:Name="ActuationCurrent" />
+            <Label Grid.Row="4" Grid.Column="2" Background="{Binding Path=ActuationCurrent, 
+                    Converter={StaticResource AmpConverter}, Mode=Default}">Actuation</Label>
+            <Label Grid.Row="4" Grid.Column="3" Style="{StaticResource CurrentTelem}" x:Name="ActuationCurrent" 
+                   Background="{Binding Path=ActuationCurrent, Converter={StaticResource AmpConverter}, Mode=Default}"/>
 
             <Button Grid.Row="4" Grid.Column="4" Style="{StaticResource EnableBtn}" Tag="9" />
             <Button Grid.Row="4" Grid.Column="5" Style="{StaticResource DisableBtn}" Tag="9" />
-            <Label Grid.Row="4" Grid.Column="6">Logic</Label>
-            <Label Grid.Row="4" Grid.Column="7" Style="{StaticResource CurrentTelem}" x:Name="LogicCurrent" />
+            <Label Grid.Row="4" Grid.Column="6" Background="{Binding Path=LogicCurrent, 
+                    Converter={StaticResource AmpConverter}, Mode=Default}">Logic</Label>
+            <Label Grid.Row="4" Grid.Column="7" Style="{StaticResource CurrentTelem}" x:Name="LogicCurrent" 
+                   Background="{Binding Path=LogicCurrent, Converter={StaticResource AmpConverter}, Mode=Default}"/>
 
             <Button Grid.Row="5" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="10" />
             <Button Grid.Row="5" Grid.Column="1" Style="{StaticResource DisableBtn}" Tag="10" />
-            <Label Grid.Row="5" Grid.Column="2">Comms</Label>
-            <Label Grid.Row="5" Grid.Column="3" Style="{StaticResource CurrentTelem}" x:Name="CommunicationsCurrent" />
+            <Label Grid.Row="5" Grid.Column="2" Background="{Binding Path=CommunicationsCurrent, 
+                    Converter={StaticResource AmpConverter}, Mode=Default}">Comms</Label>
+            <Label Grid.Row="5" Grid.Column="3" Style="{StaticResource CurrentTelem}" x:Name="CommunicationsCurrent" 
+                   Background="{Binding Path=CommunicationsCurrent, Converter={StaticResource AmpConverter}, Mode=Default}"/>
 
             <Button Grid.Row="5" Grid.Column="4" cal:Message.Attach="AllMotorPower('True')" Height="27" VerticalAlignment="Bottom">On</Button>
             <Button Grid.Row="5" Grid.Column="5" cal:Message.Attach="AllMotorPower('False')">Off</Button>
@@ -135,8 +156,10 @@
             <Label Grid.Row="7" Grid.Column="2">Input Voltage</Label>
             <Label Grid.Row="7" Grid.Column="3" Style="{StaticResource VoltageTelem}" x:Name="InputVoltage" />
 
-            <Label Grid.Row="7" Grid.Column="6">Total Pack Current</Label>
-            <Label Grid.Row="7" Grid.Column="7" Style="{StaticResource CurrentTelem}" x:Name="TotalPackCurrent" />
+            <Label Grid.Row="7" Grid.Column="6" Background="{Binding Path=TotalPackCurrent, 
+                    Converter={StaticResource AmpConverter}, Mode=Default}">Total Pack Current</Label>
+            <Label Grid.Row="7" Grid.Column="7" Style="{StaticResource CurrentTelem}" x:Name="TotalPackCurrent" 
+                   Background="{Binding Path=TotalPackCurrent, Converter={StaticResource AmpConverter}, Mode=Default}"/>
 
             <Label Grid.Row="8" Grid.Column="2">BMS Temp 1</Label>
             <Label Grid.Row="8" Grid.Column="3" Style="{StaticResource TemperatureTelem}" x:Name="BMSTemperature1" />
