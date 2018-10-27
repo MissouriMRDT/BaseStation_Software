@@ -78,6 +78,7 @@
     </ApplicationDefinition>
     <Compile Include="Models\MainWindowModel.cs" />
     <Compile Include="Models\RoveCommCustomPacketModel.cs" />
+    <Compile Include="Models\NetworkMapModel.cs" />
     <Compile Include="Networking\INetworkTransportProtocol.cs" />
     <Compile Include="Networking\MetadataManagerConfig.cs" />
     <Compile Include="Networking\MetadataRecordContext.cs" />
@@ -91,6 +92,7 @@
     </Compile>
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\RoveCommCustomPacketViewModel.cs" />
+    <Compile Include="ViewModels\NetworkMapViewModel.cs" />
     <Compile Include="Views\NetworkMapView.xaml.cs">
       <DependentUpon>NetworkMapView.xaml</DependentUpon>
     </Compile>
