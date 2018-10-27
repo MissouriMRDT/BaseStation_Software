@@ -98,7 +98,7 @@
         </Polygon>
         <Polygon Points="20,20 10,0, 0,20" Stroke="Black" Fill="Black" Canvas.Left="103" Canvas.Top="348">
         </Polygon>
-        <Polygon Points="20,20 10,0, 0,20" Stroke="Black" Fill="Black" Canvas.Left="84" Canvas.Top="389">
+        <Polygon Points="20,20 10,0, 0,20" Stroke="Black" Fill="Black" Canvas.Left="80" Canvas.Top="389">
         </Polygon>
 
         <Line X1="0" Y1="3" X2="92" Y2="3" Stroke="{StaticResource WavyBrush}" 
