@@ -1,4 +1,6 @@
-﻿namespace RoverNetworkManager.Views
+﻿using System.Windows.Controls;
+
+namespace RoverNetworkManager.Views
 {
     /// <summary>
     /// Interaction logic for MainWindowView.xaml

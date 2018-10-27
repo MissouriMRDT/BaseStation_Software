@@ -1,69 +1,22 @@
-﻿<controls:MetroWindow
-    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls" 
-    x:Class="RoverNetworkManager.Views.MainWindowView"
+﻿<UserControl x:Class="RoverNetworkManager.Views.NetworkMapView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:RoverNetworkManager.Views"
-        mc:Ignorable="d" TitleCaps="False" Height="450" Width="800">
+        mc:Ignorable="d" Height="450" Width="800">
 
-    <Window.Resources>
-        <VisualBrush x:Key="WavyBrush" 
-                   Viewbox="0,.5,3,3" ViewboxUnits="Absolute" Viewport="0,1,10,5" ViewportUnits="Absolute">
-            <VisualBrush.Visual>
-                <Path
-                    Data="M 0,100 C50,0 50,200 100,100"
-                    Stroke="Red" StrokeThickness="2" 
-                >
-                </Path>
-            </VisualBrush.Visual>
-        </VisualBrush>
-    </Window.Resources>
-
-    <!-- 
-    So ^ that is just the same "u" shape pasted over and over again to create a "wavy" brush. What I could do to change
-    that is either make an inverted version of the current "u" shape, then make a 3rd element to ombine the two 
-    into an actual wave... or just steal someone else's functional code
-            
-             Data="M 0,0 Q 1,6 3,0"
-                      Stroke="Red" StrokeThickness=".2" 
-                      StrokeEndLineCap="Square" 
-                      StrokeStartLineCap="Square
-    <Path.Data>
-                        <PathGeometry>
-                            <PathGeometry.Figures>
-                                <PathFigureCollection>
-                                    <PathFigure StartPoint="10,100">
-                                        <PathSegmentCollection>
-                                            <ArcSegment 
-                                                Point="100,100"
-                                                Size="5,2.5"
-                                                SweepDirection="Clockwise"
-                                                IsLargeArc="False"
-                                                RotationAngle="0"
-                                            />
-                                        </PathSegmentCollection>
-                                    </PathFigure>
-                                </PathFigureCollection>
-                            </PathGeometry.Figures>
-                        </PathGeometry>
-                    </Path.Data>
-                </Path>
-    
-    -->
-
-    <Canvas RenderTransformOrigin="0.515,0.548" Margin="4,0,-4,0">
-        <Rectangle Canvas.Left="50" Canvas.Top="136" Name="BaseSt_Rocket1" VerticalAlignment="Center" 
+    <GroupBox Header="Ping Map">
+        <Canvas RenderTransformOrigin="0.515,0.548" Margin="4,0,-4,0">
+            <Rectangle Canvas.Left="50" Canvas.Top="136" Name="BaseSt_Rocket1" VerticalAlignment="Center" 
             HorizontalAlignment="Center" Width="20" Height="20" Fill="Red" RenderTransformOrigin="-2.235,-3.875" >
-        </Rectangle>
-        <Rectangle Canvas.Left="115" Canvas.Top="136" Name="BaseSt_Rocket2" VerticalAlignment="Center" 
+            </Rectangle>
+            <Rectangle Canvas.Left="115" Canvas.Top="136" Name="BaseSt_Rocket2" VerticalAlignment="Center" 
            HorizontalAlignment="Center" Width="20" Height="20" Fill="Red" RenderTransformOrigin="-2.235,-3.875" >
-        </Rectangle>
-        <Ellipse Canvas.Left="84" Canvas.Top="98" Name="Basestation" VerticalAlignment="Center" 
+            </Rectangle>
+            <Ellipse Canvas.Left="84" Canvas.Top="98" Name="Basestation" VerticalAlignment="Center" 
                  HorizontalAlignment="Center" Width="20" Height="20" Fill="Red" RenderTransformOrigin="2.367,-2.083">
-        </Ellipse>
-        <Line
+            </Ellipse>
+            <Line
             Canvas.Left="101" Canvas.Top="114"
             X1="0" Y1="0"
             X2="50" Y2="45"
@@ -71,8 +24,8 @@
             StrokeThickness="4" Height="22" Width="23"
             StrokeEndLineCap="Square"
             StrokeStartLineCap="Square">
-        </Line>
-        <Line
+            </Line>
+            <Line
             Canvas.Left="55" Canvas.Top="106"
             X1="0" Y1="35"
             X2="38" Y2="0"
@@ -80,44 +33,28 @@
             StrokeThickness="4" Height="30" Width="30"
             StrokeEndLineCap="Square"
             StrokeStartLineCap="Square">
-        </Line>
-        <Ellipse Canvas.Left="50" Canvas.Top="219" Name="RoverRocket1" VerticalAlignment="Center" 
+            </Line>
+            <Ellipse Canvas.Left="50" Canvas.Top="219" Name="RoverRocket1" VerticalAlignment="Center" 
                  HorizontalAlignment="Center" Width="20" Height="20" Fill="Red" RenderTransformOrigin="2.367,-2.083">
-        </Ellipse>
-        <Ellipse Canvas.Left="115" Canvas.Top="219" Name="RoverRocket2" VerticalAlignment="Center" 
+            </Ellipse>
+            <Ellipse Canvas.Left="115" Canvas.Top="219" Name="RoverRocket2" VerticalAlignment="Center" 
                  HorizontalAlignment="Center" Width="20" Height="20" Fill="Red" RenderTransformOrigin="2.367,-2.083">
-        </Ellipse>
-        <Rectangle Canvas.Left="84" Canvas.Top="273" Name="Router" VerticalAlignment="Center" 
+            </Ellipse>
+            <Rectangle Canvas.Left="84" Canvas.Top="273" Name="Router" VerticalAlignment="Center" 
            HorizontalAlignment="Center" Width="20" Height="20" Fill="Red" RenderTransformOrigin="-2.235,-3.875" >
-        </Rectangle>
-        <Polygon Points="20,20 10,0, 0,20" Stroke="Black" Fill="Black" Canvas.Left="37" Canvas.Top="309">
-        </Polygon>
-        <Polygon Points="20,20 10,0, 0,20" Stroke="Black" Fill="Black" Canvas.Left="127" Canvas.Top="309">
-        </Polygon>
-        <Polygon Points="20,20 10,0, 0,20" Stroke="Black" Fill="Black" Canvas.Left="55" Canvas.Top="348">
-        </Polygon>
-        <Polygon Points="20,20 10,0, 0,20" Stroke="Black" Fill="Black" Canvas.Left="103" Canvas.Top="348">
-        </Polygon>
-        <Polygon Points="20,20 10,0, 0,20" Stroke="Black" Fill="Black" Canvas.Left="80" Canvas.Top="389">
-        </Polygon>
+            </Rectangle>
+            <Polygon Points="20,20 10,0, 0,20" Stroke="Black" Fill="Black" Canvas.Left="37" Canvas.Top="309">
+            </Polygon>
+            <Polygon Points="20,20 10,0, 0,20" Stroke="Black" Fill="Black" Canvas.Left="127" Canvas.Top="309">
+            </Polygon>
+            <Polygon Points="20,20 10,0, 0,20" Stroke="Black" Fill="Black" Canvas.Left="55" Canvas.Top="348">
+            </Polygon>
+            <Polygon Points="20,20 10,0, 0,20" Stroke="Black" Fill="Black" Canvas.Left="103" Canvas.Top="348">
+            </Polygon>
+            <Polygon Points="20,20 10,0, 0,20" Stroke="Black" Fill="Black" Canvas.Left="80" Canvas.Top="389">
+            </Polygon>
 
-        <Line X1="0" Y1="3" X2="92" Y2="3" Stroke="{StaticResource WavyBrush}" 
-              StrokeThickness="6" Canvas.Left="49" Canvas.Top="87" Width="10" Height="6" 
-              RenderTransformOrigin="0.5,0.5">
-            <Line.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform ScaleY="-1"/>
-                    <SkewTransform/>
-                    <RotateTransform/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Line.RenderTransform>
-        </Line>
-
-        <Line X1="0" Y1="3" X2="92" Y2="3" Stroke="{StaticResource WavyBrush}" 
-              StrokeThickness="6" Canvas.Left="40" Canvas.Top="91" Width="10" Height="6" 
-              RenderTransformOrigin="0.5,0.5">
-        </Line>
-        <Canvas Name="test" />
-    </Canvas>
-</controls:MetroWindow>
+            <Canvas Name="test" />
+        </Canvas>
+    </GroupBox>
+</UserControl>
