@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" Height="450" Width="800">
+        mc:Ignorable="d">
 
-    <GroupBox Header="Ping Map">
+    <GroupBox Header="Ping Map" Margin="5">
         <Canvas RenderTransformOrigin="0.515,0.548" Margin="4,0,-4,0">
             <Rectangle Canvas.Left="50" Canvas.Top="136" Name="BaseSt_Rocket1" VerticalAlignment="Center" 
             HorizontalAlignment="Center" Width="20" Height="20" Fill="Red" RenderTransformOrigin="-2.235,-3.875" >

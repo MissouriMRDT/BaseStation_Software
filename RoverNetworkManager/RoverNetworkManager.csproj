@@ -76,21 +76,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Configurations\PingToolConfig.cs" />
+    <Compile Include="Contexts\PingToolContext.cs" />
     <Compile Include="Models\MainWindowModel.cs" />
+    <Compile Include="Models\PingToolModel.cs" />
     <Compile Include="Models\RoveCommCustomPacketModel.cs" />
     <Compile Include="Models\NetworkMapModel.cs" />
-    <Compile Include="Networking\INetworkTransportProtocol.cs" />
-    <Compile Include="Networking\MetadataManagerConfig.cs" />
-    <Compile Include="Networking\MetadataRecordContext.cs" />
-    <Compile Include="Networking\MetadataSaveContext.cs" />
-    <Compile Include="Networking\Rovecomm.cs" />
-    <Compile Include="Networking\UDPEndpoint.cs" />
     <Compile Include="RNMBootstrapper.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\PingToolViewModel.cs" />
     <Compile Include="ViewModels\RoveCommCustomPacketViewModel.cs" />
     <Compile Include="ViewModels\NetworkMapViewModel.cs" />
     <Compile Include="Views\NetworkMapView.xaml.cs">
@@ -98,6 +96,9 @@
     </Compile>
     <Compile Include="Views\MainWindowView.xaml.cs">
       <DependentUpon>MainWindowView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PingToolView.xaml.cs">
+      <DependentUpon>PingToolView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RoveCommCustomPacketView.xaml.cs">
       <DependentUpon>RoveCommCustomPacketView.xaml</DependentUpon>
@@ -139,11 +140,20 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\PingToolView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\RoveCommCustomPacketView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\RED\RED.csproj">
+      <Project>{92D9B54A-5B56-4760-AB05-1894D04C7E2E}</Project>
+      <Name>RED</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

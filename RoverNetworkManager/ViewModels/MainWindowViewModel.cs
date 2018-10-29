@@ -1,11 +1,5 @@
 ﻿using Caliburn.Micro;
 using RoverNetworkManager.Models;
-using RoverNetworkManager.Networking;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RoverNetworkManager.ViewModels
 {

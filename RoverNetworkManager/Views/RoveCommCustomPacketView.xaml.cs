@@ -10,7 +10,6 @@ namespace RoverNetworkManager.Views
     /// </summary>
     public partial class RoveCommCustomPacketView : UserControl
     {
-		private Networking.Rovecomm rc = new Networking.Rovecomm();
 
 		public RoveCommCustomPacketView() {
 			InitializeComponent();
@@ -27,8 +26,8 @@ namespace RoverNetworkManager.Views
 			// updates itself to the command's id
 			txtID.Text = vm.SelectedCommand.ToString();
 
-			Networking.MetadataServerContext ctx = vm.FindContextByCommand(vm.SelectedCommand);
-			if (ctx != null) txtIP.Text = ctx.Address;
+            //Networking.MetadataServerContext ctx = vm.FindContextByCommand(vm.SelectedCommand);
+            //if (ctx != null) txtIP.Text = ctx.Address;
 
 			// category separators and custom commands have the "id" of 0
 			if (txtID.Text == "0") {
@@ -61,7 +60,7 @@ namespace RoverNetworkManager.Views
 
 			ushort id;
 			if(ushort.TryParse(txtID.Text, out id)) {
-				rc.SendPacket(id, data.ToArray(), System.Net.IPAddress.Parse(txtIP.Text), 0);
+				//rc.SendPacket(id, data.ToArray(), System.Net.IPAddress.Parse(txtIP.Text), 0);
 				MessageBox.Show($"Sent command {id} with data of {d} to {txtIP.Text}");
 			}
 		}

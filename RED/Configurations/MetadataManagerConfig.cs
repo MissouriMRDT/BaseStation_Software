@@ -2,9 +2,9 @@
 
 namespace RED.Configurations
 {
-    internal static class MetadataManagerConfig
+    public static class MetadataManagerConfig
     {
-        internal static MetadataSaveContext DefaultMetadata = new MetadataSaveContext(new[] {
+        public static MetadataSaveContext DefaultMetadata = new MetadataSaveContext(new[] {
             new MetadataServerContext("Drive Board", "192.168.1.130") {
                 Commands = new[] {
                     new MetadataRecordContext(528, "DriveLeftRight", "Left wheels speed followed by right wheels speed"),
