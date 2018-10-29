@@ -26,12 +26,26 @@ namespace RoverNetworkManager.ViewModels
             }
         }
 
+        public NetworkMapViewModel NetworkMap
+        {
+            get
+            {
+                return _model._networkMap;
+            }
+            set
+            {
+                _model._networkMap = value;
+                NotifyOfPropertyChange(() => NetworkMap);
+            }
+        }
+
         public MainWindowViewModel()
         {
             base.DisplayName = "Rover Network Manager";
             _model = new MainWindowModel();
 
             RoveCommCustomPacket = new RoveCommCustomPacketViewModel();
+            NetworkMap = new NetworkMapViewModel();
         }
     }
 }

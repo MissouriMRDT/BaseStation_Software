@@ -13,7 +13,7 @@
             <ColumnDefinition Width="3*" />
             <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
-        <ContentControl x:Name="RoveCommCustomPacket" Grid.Column="0"></ContentControl>
-        <Path Grid.Column="1" Data="M0,100 C50,0  50,200  100,100" Stroke="Red" StrokeThickness="3"/>
+        <ContentControl x:Name="RoveCommCustomPacket" Grid.Column="0" />
+        <ContentControl x:Name="NetworkMap" Grid.Column="1" />
     </Grid>
 </controls:MetroWindow>
