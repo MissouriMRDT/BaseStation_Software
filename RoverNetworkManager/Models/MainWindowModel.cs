@@ -1,4 +1,5 @@
-﻿using RoverNetworkManager.ViewModels;
+﻿using RED.Roveprotocol;
+using RoverNetworkManager.ViewModels;
 
 namespace RoverNetworkManager.Models
 {
@@ -6,5 +7,7 @@ namespace RoverNetworkManager.Models
     {
         public RoveCommCustomPacketViewModel _customPacket;
         public NetworkMapViewModel _networkMap;
+        public PingToolViewModel _pingTool;
+        public Rovecomm _rovecomm;
     }
 }

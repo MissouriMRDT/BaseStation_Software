@@ -15,5 +15,6 @@
         </Grid.ColumnDefinitions>
         <ContentControl x:Name="RoveCommCustomPacket" Grid.Column="0" />
         <ContentControl x:Name="NetworkMap" Grid.Column="1" />
+        <ContentControl x:Name="PingTool" Grid.Column="2" />
     </Grid>
 </controls:MetroWindow>
