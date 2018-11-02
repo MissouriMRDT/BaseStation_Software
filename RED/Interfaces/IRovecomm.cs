@@ -45,13 +45,23 @@ namespace RED.Interfaces
         /// for repeated messages or commands. </param>
         void SendCommand(ushort dataId, byte[] data, bool reliable = false);
 
-        /// <summary>
-        /// request to be notified whenever a rovecomm message comes in from the network carrying the 
-        /// corresponding dataid, which is based on rovecomm metadata id's
-        /// </summary>
-        /// <param name="receiver">the receiver to be notified (the class should input itself as this)</param>
-        /// <param name="dataId">the data id of the message you want to be notified of</param>
-        void NotifyWhenMessageReceived(IRovecommReceiver receiver, ushort dataId);
+		/// <summary>
+		/// send a rovecomm message over the network. Again. Internal overload since the ip addresses are baked into the dataid, so only
+		/// certain rovecomm-system messages should call it or the network manager sends a packet with a custom ip address.
+		/// </summary>
+		/// <param name="dataId">dataid of the message to send</param>
+		/// <param name="data">data to send</param>
+		/// <param name="destIP">ip of the device to send the message to</param>
+		/// <param name="reliable">whether to send it reliably (IE with a non broadcast protocol) or not</param>
+		void SendPacket(ushort dataId, byte[] data, IPAddress destIP, bool reliable = false);
+
+		/// <summary>
+		/// request to be notified whenever a rovecomm message comes in from the network carrying the 
+		/// corresponding dataid, which is based on rovecomm metadata id's
+		/// </summary>
+		/// <param name="receiver">the receiver to be notified (the class should input itself as this)</param>
+		/// <param name="dataId">the data id of the message you want to be notified of</param>
+		void NotifyWhenMessageReceived(IRovecommReceiver receiver, ushort dataId);
 
         /// <summary>
         /// request to stop being notified of receiving all rovecomm messages you previously requested to receive

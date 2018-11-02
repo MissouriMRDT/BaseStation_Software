@@ -1,21 +1,20 @@
-﻿using RoverNetworkManager.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Caliburn.Micro;
-using System.Windows.Controls;
-using RED.Contexts;
+﻿using Caliburn.Micro;
 using RED.Configurations;
+using RED.Contexts;
+using RED.Interfaces;
+using RoverNetworkManager.Models;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 
-namespace RoverNetworkManager.ViewModels
-{
-    public class RoveCommCustomPacketViewModel : PropertyChangedBase
+namespace RoverNetworkManager.ViewModels {
+	public class RoveCommCustomPacketViewModel : PropertyChangedBase
     {
         private readonly RoveCommCustomPacketModel _model;
 
-        public List<string> Commands
+		private readonly IRovecomm _networkManager;
+
+		public List<string> Commands
         {
             get
             {
@@ -38,17 +37,27 @@ namespace RoverNetworkManager.ViewModels
 			}
 		}
 
+		public Dictionary<string, string> Addresses {
+			get {
+				return _model.Addresses;
+			}
+			set {
+				_model.Addresses = value;
+				NotifyOfPropertyChange(() => Addresses);
+			}
+		}
+
 		public ushort SelectedCommand {
 			get {
 				return _model.SelectedCommand;
 			}
 			set {
-				_model.SelectedCommand = CommandIDs[value];
+				_model.SelectedCommand = value;
 				NotifyOfPropertyChange(() => SelectedCommand);
 			}
 		}
 
-		public byte Data {
+		public string Data {
 			get {
 				return _model.Data;
 			}
@@ -58,25 +67,50 @@ namespace RoverNetworkManager.ViewModels
 			}
 		}
 
-		int last = 0;
+		public string ID {
+			get {
+				return _model.ID;
+			}
+
+			set {
+				_model.ID = value;
+				NotifyOfPropertyChange(() => ID);
+			}
+		}
+
+		public string IP {
+			get {
+				return _model.IP;
+			}
+
+			set {
+				_model.IP = value;
+				NotifyOfPropertyChange(() => IP);
+			}
+		}
+
 		MetadataSaveContext meta = MetadataManagerConfig.DefaultMetadata;
 
 		public void LoadMetadata()
         {
 			Commands.Add("Custom command");
 			CommandIDs.Add(0);
+			Addresses.Add("Custom command", "");
             
             foreach (MetadataServerContext ctx in meta.Servers)
             {
-				Commands.Add("== " + ctx.Name + " ==");
-				Commands.AddRange(ctx.Commands.ToList().ConvertAll(i => i.ToString()));
+				List<MetadataRecordContext> l = ctx.Commands.ToList();
+				List<string> strings = l.ConvertAll(i => i.ToString());
+				string sep = "== " + ctx.Name + " ==";
 
-				int len = Commands.Count - last;
-				System.Diagnostics.Debugger.Log(0, "", $"length is {len}\n");
-				last = Commands.Count;
+				Commands.Add(sep);
+				Commands.AddRange(strings);
 
 				CommandIDs.Add(0);
-				CommandIDs.AddRange(ctx.Commands.ToList().ConvertAll(i => i.Id));
+				CommandIDs.AddRange(l.ConvertAll(i => i.Id));
+
+				Addresses.Add(sep, "");
+				foreach(string s in strings) Addresses.Add(s, ctx.Address);
 			}
         }
 
@@ -93,10 +127,45 @@ namespace RoverNetworkManager.ViewModels
 			return null;
 		}
 
-        public RoveCommCustomPacketViewModel()
+		private void UpdateTextboxes() {
+			ID = CommandIDs[SelectedCommand].ToString();
+			IP = Addresses[Commands[SelectedCommand]];
+		}
+
+		internal void SendCommand() {
+			List<byte> data = new List<byte>();
+			if (Data != "") {
+				foreach (string s in Data.Split(',')) {
+					byte conv;
+					if (byte.TryParse(s, out conv)) data.Add(conv);
+				}
+			}
+			else {
+				data.Add(0);
+			}
+
+			string d = "";
+			foreach (byte b in data.ToArray()) { d += b.ToString() + ","; }
+			d = d.Remove(d.Length - 1, 1);
+
+			ushort id;
+			if (ushort.TryParse(ID, out id)) {
+				_networkManager.SendPacket(id, data.ToArray(), System.Net.IPAddress.Parse(IP), false);
+			}
+		}
+
+		public RoveCommCustomPacketViewModel(IRovecomm network, IConfigurationManager config)
         {
             _model = new RoveCommCustomPacketModel();
+			_networkManager = network;
+
 			LoadMetadata();
+			PropertyChanged += RoveCommCustomPacketViewModel_PropertyChanged;
+		}
+
+		private void RoveCommCustomPacketViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e) {
+			string n = e.PropertyName;
+			if (e.PropertyName == "SelectedCommand") UpdateTextboxes();
 		}
 	}
 }

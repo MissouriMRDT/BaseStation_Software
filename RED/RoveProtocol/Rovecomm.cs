@@ -291,14 +291,14 @@ namespace RED.Roveprotocol
         }
 
         /// <summary>
-        /// send a rovecomm message over the network. Again. Private overload since the ip addresses are baked into the dataid anyway, so only
-        /// certain rovecomm-system messages should call it.
+        /// send a rovecomm message over the network. Again. Public overload since the ip addresses are baked into the dataid anyway, so only
+        /// certain rovecomm-system messages should call it or the network manager with a custom ip address.
         /// </summary>
         /// <param name="dataId">dataid of the message to send</param>
         /// <param name="data">data to send</param>
         /// <param name="destIP">ip of the device to send the message to</param>
         /// <param name="reliable">whether to send it reliably (IE with a non broadcast protocol) or not</param>
-        private void SendPacket(ushort dataId, byte[] data, IPAddress destIP, bool reliable = false)
+        public void SendPacket(ushort dataId, byte[] data, IPAddress destIP, bool reliable = false)
         {
             ushort seqNum = sequenceNumberProvider.IncrementValue(dataId);
             SendPacket(dataId, data, destIP, seqNum, reliable);
