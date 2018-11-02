@@ -47,7 +47,7 @@ namespace RoverNetworkManager.ViewModels {
 			}
 		}
 
-		public ushort SelectedCommand {
+		public int SelectedCommand {
 			get {
 				return _model.SelectedCommand;
 			}
@@ -128,6 +128,13 @@ namespace RoverNetworkManager.ViewModels {
 		}
 
 		private void UpdateTextboxes() {
+			// clear the textboxes if no item is selected or a seperator is selected
+			if (SelectedCommand == -1 || CommandIDs[SelectedCommand] == 0) {
+				ID = "";
+				IP = "";
+				return;
+			}
+
 			ID = CommandIDs[SelectedCommand].ToString();
 			IP = Addresses[Commands[SelectedCommand]];
 		}
