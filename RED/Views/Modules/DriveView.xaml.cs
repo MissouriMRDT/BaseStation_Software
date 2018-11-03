@@ -27,7 +27,7 @@ namespace RED.Views.Modules
 			vlcPlayer.MediaPlayer.VlcLibDirectory = vlcLibDirectory;
 			vlcPlayer.MediaPlayer.VlcMediaplayerOptions = options;
 			vlcPlayer.MediaPlayer.EndInit();
-			PlayChannel(1);
+			PlayChannel(3);
 		}
 
 		public void PlayChannel(int channel) {
