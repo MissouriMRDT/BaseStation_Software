@@ -110,7 +110,7 @@ namespace RED.ViewModels.Navigation
             _model = new MapModel();
 
             CurrentLocation = new Waypoint("GPS", 0f, 0f) { Color = System.Windows.Media.Colors.Red };
-            RefreshMap();
+			RefreshMap();
         }
 
         public void SetMap(GMapControl map)

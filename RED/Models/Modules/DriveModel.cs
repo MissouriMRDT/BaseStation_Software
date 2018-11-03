@@ -7,5 +7,7 @@
 
         internal int SpeedLimit;
         internal bool UseLegacyDataIds;
+
+		internal string Channel;
     }
 }
