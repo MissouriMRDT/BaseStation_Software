@@ -9,39 +9,52 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
     </UserControl.Resources>
-   
+	
     <GroupBox Header="Ping Tool" Margin="5">
         <ItemsControl ItemsSource="{Binding PingServers}" Grid.IsSharedSizeScope="True">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
+							<ColumnDefinition Width="auto" SharedSizeGroup="Checkmark" />
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="30" SharedSizeGroup="Result" />
+							<ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" SharedSizeGroup="Result" />
                             <ColumnDefinition Width="auto" SharedSizeGroup="Button" />
-                            <ColumnDefinition Width="auto" SharedSizeGroup="Button" />
-                            <ColumnDefinition Width="auto" SharedSizeGroup="Checkmark" />
+							<ColumnDefinition Width="auto" SharedSizeGroup="Button" />
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0"
-                               Content="{Binding Name}"
-                               VerticalAlignment="Center" Padding="5 5 0 5" Margin="0"
-                               ToolTip="{Binding Address}" ToolTipService.Placement="Left" ToolTipService.InitialShowDelay="0" />
+						<CheckBox 
+							Grid.Column="0" 
+							IsChecked="{Binding AutoModeEnabled, Mode=OneWay}" />
                         <Label Grid.Column="1"
+                               Content="{Binding Name}"
+							   FontSize="13"
+                               VerticalAlignment="Center" 
+							   Padding="5" 
+							   Margin="0" />
+						<Label Grid.Column="2" 
+							   Content="{Binding Address}"
+							   Foreground="#292b33"
+							   VerticalAlignment="Center"
+							   Padding="20 5 0 5"
+							   Margin="0"/>
+                        <Label Grid.Column="3"
                                Content="{Binding Result}" ToolTip="Round-trip Time (ms)"
-                               HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Margin="0 0 2 0" />
-                        <ToggleButton Grid.Column="2"
+                               HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Margin="0 0 10 0" />
+                        <ToggleButton Grid.Column="4"
+									  Margin="2"
                                       cal:Message.Attach="RequestICMPPing()"
                                       IsChecked="{Binding IsSendingICMP, Mode=OneWay}"
                                       Visibility="{Binding SupportsICMP, Converter={StaticResource BoolToVis}}">
                             ICMP
                         </ToggleButton>
-                        <ToggleButton Grid.Column="3"
+                        <ToggleButton Grid.Column="5"
+									  Margin="2"
                                       cal:Message.Attach="RequestRoveCommPing()"
                                       IsChecked="{Binding IsSendingRoveComm, Mode=OneWay}"
                                       Visibility="{Binding SupportsRoveComm, Converter={StaticResource BoolToVis}}">
                             Rove
                         </ToggleButton>
-                        <CheckBox Grid.Column="4" IsChecked="{Binding AutoModeEnabled, Mode=OneWay}" Margin="2" ToolTip="Auto" />
                     </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
