@@ -9,8 +9,7 @@
              d:DesignHeight="500" d:DesignWidth="350">
     <UserControl.Resources>
         <addons:AmpToColorValueConverter x:Key="AmpConverter" />
-        <addons:StyleFromCodeBehind x:Key="StyleGenerator"/>
-
+        
         <Style x:Key="EnableBtn" TargetType="Button" BasedOn="{StaticResource MetroButton}">
             <Setter Property="Content" Value="On" />
             <EventSetter Event="Click" Handler="EnableButton_Click" />
@@ -34,7 +33,6 @@
             <Setter Property="HorizontalContentAlignment" Value="Right" />
         </Style>
 
-        
     </UserControl.Resources>
     <StackPanel>
         <Grid>
@@ -68,7 +66,8 @@
 
             <Button Grid.Row="0" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="0" />
             <Button Grid.Row="0" Grid.Column="1" Style="{StaticResource DisableBtn}" Tag="0" />
-            <Label Grid.Row="0" Grid.Column="2" Style="{StaticResource StyleGenerator(Motor1Current)}">Motor 1</Label>
+            <Label Grid.Row="0" Grid.Column="2" Background="{Binding Path=Motor1Current, 
+                   Converter={StaticResource AmpConverter}, Mode=Default}">Motor 1</Label>
             <Label Grid.Row="0" Grid.Column="3" Style="{StaticResource CurrentTelem}" x:Name="Motor1Current"
                    Background="{Binding Path=Motor1Current, Converter={StaticResource AmpConverter}, Mode=Default}"/>
 
