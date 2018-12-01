@@ -9,7 +9,12 @@
              d:DesignHeight="500" d:DesignWidth="350">
     <UserControl.Resources>
         <addons:AmpToColorValueConverter x:Key="AmpConverter" />
-        
+        <addons:TotalAmpToColorValueConverter x:Key="TotalAmpConverter" />
+        <addons:VoltToColorValueConverter x:Key="VoltConverter" />
+        <addons:TotalVoltToColorValueConverter x:Key="TotalVoltConverter" />
+        <addons:TempToColorValueConverter x:Key="TempConverter" />
+
+
         <Style x:Key="EnableBtn" TargetType="Button" BasedOn="{StaticResource MetroButton}">
             <Setter Property="Content" Value="On" />
             <EventSetter Event="Click" Handler="EnableButton_Click" />
@@ -151,21 +156,27 @@
 
             <Button Grid.Row="6" Grid.Column="4" cal:Message.Attach="BuzzerControl('True')" Height="27" VerticalAlignment="Bottom">On</Button>
             <Button Grid.Row="6" Grid.Column="5" cal:Message.Attach="BuzzerControl('False')">Off</Button>
-            <Label Grid.Row="6" Grid.Column="6">BMS Buzzer</Label>
-
-            <Label Grid.Row="7" Grid.Column="2">Input Voltage</Label>
-            <Label Grid.Row="7" Grid.Column="3" Style="{StaticResource VoltageTelem}" x:Name="InputVoltage" />
+            <Label Grid.Row="6" Grid.Column="6">BMS Buzzer</Label>            
+            
+            <Label Grid.Row="7" Grid.Column="2" Background="{Binding Path=InputVoltage,
+                Converter={StaticResource TotalVoltConverter}, Mode=Default}">Input Voltage</Label>
+            <Label Grid.Row="7" Grid.Column="3" Style="{StaticResource VoltageTelem}" x:Name="InputVoltage"
+                   Background="{Binding Path=InputVoltage, Converter={StaticResource TotalVoltConverter}, Mode=Default}"/>
 
             <Label Grid.Row="7" Grid.Column="6" Background="{Binding Path=TotalPackCurrent, 
                     Converter={StaticResource AmpConverter}, Mode=Default}">Total Pack Current</Label>
             <Label Grid.Row="7" Grid.Column="7" Style="{StaticResource CurrentTelem}" x:Name="TotalPackCurrent" 
-                   Background="{Binding Path=TotalPackCurrent, Converter={StaticResource AmpConverter}, Mode=Default}"/>
+                   Background="{Binding Path=TotalPackCurrent, Converter={StaticResource TotalAmpConverter}, Mode=Default}"/>
 
-            <Label Grid.Row="8" Grid.Column="2">BMS Temp 1</Label>
-            <Label Grid.Row="8" Grid.Column="3" Style="{StaticResource TemperatureTelem}" x:Name="BMSTemperature1" />
+            <Label Grid.Row="8" Grid.Column="2" Background="{Binding Path=BMSTemperature1,
+                    Converter={StaticResource TempConverter}, Mode=Default}">BMS Temp 1</Label>
+            <Label Grid.Row="8" Grid.Column="3" Style="{StaticResource TemperatureTelem}" x:Name="BMSTemperature1"
+                   Background="{Binding Path=BMSTemperature1, Converter={StaticResource TempConverter}, Mode=Default}"/>
 
-            <Label Grid.Row="8" Grid.Column="6">BMS Temp 2</Label>
-            <Label Grid.Row="8" Grid.Column="7" Style="{StaticResource TemperatureTelem}" x:Name="BMSTemperature2" />
+            <Label Grid.Row="8" Grid.Column="6" Background="{Binding Path=BMSTemperature2,
+                    Converter={StaticResource TempConverter}, Mode=Default}">BMS Temp 2</Label>
+            <Label Grid.Row="8" Grid.Column="7" Style="{StaticResource TemperatureTelem}" x:Name="BMSTemperature2" 
+                   Background="{Binding Path=BMSTemperature2, Converter={StaticResource TempConverter}, Mode=Default}"/>
         </Grid>
 
         <Grid>
@@ -184,33 +195,51 @@
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-               
-            <Label Grid.Row="0" Grid.Column="0">Cell 1</Label>
-            <Label Grid.Row="0" Grid.Column="1" Style="{StaticResource VoltageTelem}" x:Name="Cell1Voltage" />
+
+            <Label Grid.Row="0" Grid.Column="0" Background="{Binding Path=Cell1Voltage, 
+                Converter={StaticResource VoltConverter}, Mode=Default}">Cell 1</Label>
+            <Label Grid.Row="0" Grid.Column="1" Style="{StaticResource VoltageTelem}" x:Name="Cell1Voltage" 
+                   Background="{Binding Path=Cell1Voltage, Converter={StaticResource VoltConverter}, Mode=Default}"/>
             
-            <Label Grid.Row="0" Grid.Column="2">Cell 2</Label>
-            <Label Grid.Row="0" Grid.Column="3" Style="{StaticResource VoltageTelem}" x:Name="Cell2Voltage" />
-           
-            <Label Grid.Row="0" Grid.Column="4">Cell 3</Label>
-            <Label Grid.Row="0" Grid.Column="5" Style="{StaticResource VoltageTelem}" x:Name="Cell3Voltage" />
-            
-            <Label Grid.Row="0" Grid.Column="6">Cell 4</Label>
-            <Label Grid.Row="0" Grid.Column="7" Style="{StaticResource VoltageTelem}" x:Name="Cell4Voltage" />
-            
-            <Label Grid.Row="1" Grid.Column="0">Cell 5</Label>
-            <Label Grid.Row="1" Grid.Column="1" Style="{StaticResource VoltageTelem}" x:Name="Cell5Voltage" />
-            
-            <Label Grid.Row="1" Grid.Column="2">Cell 6</Label>
-            <Label Grid.Row="1" Grid.Column="3" Style="{StaticResource VoltageTelem}" x:Name="Cell6Voltage" />
-            
-            <Label Grid.Row="1" Grid.Column="4">Cell 7</Label>
-            <Label Grid.Row="1" Grid.Column="5" Style="{StaticResource VoltageTelem}" x:Name="Cell7Voltage" />
-            
-            <Label Grid.Row="1" Grid.Column="6">Cell 8</Label>
-            <Label Grid.Row="1" Grid.Column="7" Style="{StaticResource VoltageTelem}" x:Name="Cell8Voltage" />
-            
-            <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">Total Pack Voltage</Label>
-            <Label Grid.Row="2" Grid.Column="3" Style="{StaticResource VoltageTelem}" x:Name="TotalPackVoltage" />
+            <Label Grid.Row="0" Grid.Column="2" Background="{Binding Path=Cell2Voltage,
+                Converter={StaticResource VoltConverter}, Mode=Default}">Cell 2</Label>
+            <Label Grid.Row="0" Grid.Column="3" Style="{StaticResource VoltageTelem}" x:Name="Cell2Voltage" 
+                   Background="{Binding Path=Cell2Voltage, Converter={StaticResource VoltConverter}, Mode=Default}"/>
+
+            <Label Grid.Row="0" Grid.Column="4" Background="{Binding Path=Cell3Voltage, 
+                Converter={StaticResource VoltConverter}, Mode=Default}">Cell 3</Label>
+            <Label Grid.Row="0" Grid.Column="5" Style="{StaticResource VoltageTelem}" x:Name="Cell3Voltage"
+                   Background="{Binding Path=Cell3Voltage, Converter={StaticResource VoltConverter}, Mode=Default}"/>
+
+            <Label Grid.Row="0" Grid.Column="6" Background="{Binding Path=Cell4Voltage, 
+                Converter={StaticResource VoltConverter}, Mode=Default}">Cell 4</Label>
+            <Label Grid.Row="0" Grid.Column="7" Style="{StaticResource VoltageTelem}" x:Name="Cell4Voltage" 
+                   Background="{Binding Path=Cell4Voltage, Converter={StaticResource VoltConverter}, Mode=Default}"/>
+
+            <Label Grid.Row="1" Grid.Column="0" Background="{Binding Path=Cell5Voltage, 
+                Converter={StaticResource VoltConverter}, Mode=Default}">Cell 5</Label>
+            <Label Grid.Row="1" Grid.Column="1" Style="{StaticResource VoltageTelem}" x:Name="Cell5Voltage" 
+                   Background="{Binding Path=Cell5Voltage, Converter={StaticResource VoltConverter}, Mode=Default}"/>
+
+            <Label Grid.Row="1" Grid.Column="2" Background="{Binding Path=Cell6Voltage, 
+                Converter={StaticResource VoltConverter}, Mode=Default}">Cell 6</Label>
+            <Label Grid.Row="1" Grid.Column="3" Style="{StaticResource VoltageTelem}" x:Name="Cell6Voltage" 
+                   Background="{Binding Path=Cell6Voltage, Converter={StaticResource VoltConverter}, Mode=Default}"/>
+
+            <Label Grid.Row="1" Grid.Column="4" Background="{Binding Path=Cell7Voltage, 
+                Converter={StaticResource VoltConverter}, Mode=Default}">Cell 7</Label>
+            <Label Grid.Row="1" Grid.Column="5" Style="{StaticResource VoltageTelem}" x:Name="Cell7Voltage" 
+                   Background="{Binding Path=Cell7Voltage, Converter={StaticResource VoltConverter}, Mode=Default}"/>
+
+            <Label Grid.Row="1" Grid.Column="6" Background="{Binding Path=Cell8Voltage, 
+                Converter={StaticResource VoltConverter}, Mode=Default}">Cell 8</Label>
+            <Label Grid.Row="1" Grid.Column="7" Style="{StaticResource VoltageTelem}" x:Name="Cell8Voltage" 
+                   Background="{Binding Path=Cell8Voltage, Converter={StaticResource VoltConverter}, Mode=Default}"/>
+
+            <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Background="{Binding Path=TotalPackVoltage, 
+                Converter={StaticResource TotalVoltConverter}, Mode=Default}">Total Pack Voltage</Label>
+            <Label Grid.Row="2" Grid.Column="3" Style="{StaticResource VoltageTelem}" x:Name="TotalPackVoltage"
+                   Background="{Binding Path=TotalPackVoltage, Converter={StaticResource TotalVoltConverter}, Mode=Default}"/>
             
         </Grid>
         <UniformGrid Rows="1">
