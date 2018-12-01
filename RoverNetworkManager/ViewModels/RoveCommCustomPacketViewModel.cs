@@ -8,7 +8,7 @@ using System.ComponentModel;
 using System.Linq;
 
 namespace RoverNetworkManager.ViewModels {
-	public class RoveCommCustomPacketViewModel : PropertyChangedBase
+	public class RoveCommCustomPacketViewModel : PropertyChangedBase, IRovecommReceiver
     {
         private readonly RoveCommCustomPacketModel _model;
 
@@ -89,6 +89,17 @@ namespace RoverNetworkManager.ViewModels {
 			}
 		}
 
+		public string PacketLog {
+			get {
+				return _model.PacketLog;
+			}
+
+			set {
+				_model.PacketLog = value;
+				NotifyOfPropertyChange(() => PacketLog);
+			}
+		}
+
 		MetadataSaveContext meta = MetadataManagerConfig.DefaultMetadata;
 
 		public void LoadMetadata()
@@ -139,21 +150,24 @@ namespace RoverNetworkManager.ViewModels {
 			IP = Addresses[Commands[SelectedCommand]];
 		}
 
-		internal void SendCommand() {
-			List<byte> data = new List<byte>();
+		// TODO: reimplement with LINQ
+		byte[] StringToByteArray(string raw) {
+			List<byte> ret = new List<byte>();
 			if (Data != "") {
-				foreach (string s in Data.Split(',')) {
+				foreach (string s in raw.Split(',')) {
 					byte conv;
-					if (byte.TryParse(s, out conv)) data.Add(conv);
+					if (byte.TryParse(s, out conv)) ret.Add(conv);
 				}
 			}
 			else {
-				data.Add(0);
+				ret.Add(0);
 			}
 
-			string d = "";
-			foreach (byte b in data.ToArray()) { d += b.ToString() + ","; }
-			d = d.Remove(d.Length - 1, 1);
+			return ret.ToArray();
+		}
+
+		internal void SendCommand() {
+			byte[] data = StringToByteArray(Data);
 
 			ushort id;
 			if (ushort.TryParse(ID, out id)) {
@@ -166,6 +180,8 @@ namespace RoverNetworkManager.ViewModels {
             _model = new RoveCommCustomPacketModel();
 			_networkManager = network;
 
+			_networkManager.SubscribeMyPCToAllDevices();
+
 			LoadMetadata();
 			PropertyChanged += RoveCommCustomPacketViewModel_PropertyChanged;
 		}
@@ -173,6 +189,18 @@ namespace RoverNetworkManager.ViewModels {
 		private void RoveCommCustomPacketViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e) {
 			string n = e.PropertyName;
 			if (e.PropertyName == "SelectedCommand") UpdateTextboxes();
+		}
+
+		public void SubscribeID() {
+			_networkManager.NotifyWhenMessageReceived(this, ushort.Parse(ID));
+		}
+
+		public void ReceivedRovecommMessageCallback(ushort dataId, byte[] data, bool reliable) {
+			string d = "";
+			foreach (byte b in data.ToArray()) { d += b.ToString() + ","; }
+			d = d.Remove(d.Length - 1, 1);
+
+			PacketLog += $"{dataId}: {d}\r\n";
 		}
 	}
 }

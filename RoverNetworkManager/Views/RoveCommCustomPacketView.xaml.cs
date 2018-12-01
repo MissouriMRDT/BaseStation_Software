@@ -15,8 +15,11 @@ namespace RoverNetworkManager.Views
 		}
 
 		private void btnSend_Click(object sender, RoutedEventArgs e) {
-			RoveCommCustomPacketViewModel vm = (RoveCommCustomPacketViewModel)DataContext;
-			vm.SendCommand();
+			((RoveCommCustomPacketViewModel)DataContext).SendCommand();
+		}
+
+		public void btnSubscribe_Click(object sender, RoutedEventArgs e) {
+			((RoveCommCustomPacketViewModel)DataContext).SubscribeID();
 		}
 	}
 }

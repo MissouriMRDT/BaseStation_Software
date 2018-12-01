@@ -11,5 +11,6 @@ namespace RoverNetworkManager.Models
 		internal string Data;
 		internal string ID;
 		internal string IP;
+		internal string PacketLog;
 	}
 }
