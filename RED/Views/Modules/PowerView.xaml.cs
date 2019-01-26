@@ -5,6 +5,7 @@ using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 
 namespace RED.Views.Modules
 {
@@ -46,32 +47,61 @@ namespace RED.Views.Modules
 
         private async void EnableButton_Click(object sender, RoutedEventArgs e)
         {
-            byte busIndex = Byte.Parse((string)((Button)sender).Tag);
-            var result = await ShowMessage(
-                buttonText: "Enable",
-                title: "Power Bus Enable",
-                message: "This will command the Powerboard to enable Bus #" + busIndex.ToString() + ".");
-
-            if (result == MessageDialogResult.Affirmative)
+            byte busIndex = Byte.Parse((string)((ToggleButton)sender).Tag);
+            if ((bool)((ToggleButton)sender).IsChecked)
             {
-                ((PowerViewModel)DataContext).EnableBus(busIndex);
+                var result = await ShowMessage(
+                    buttonText: "Enable",
+                    title: "Power Bus Enable",
+                    message: "This will command the Powerboard to enable Bus #" + busIndex.ToString() + ".");
+
+                if (result == MessageDialogResult.Affirmative)
+                {
+                    ((PowerViewModel)DataContext).EnableBus(busIndex);
+                }
+            }
+            else
+            {
+                var result = await ShowMessage(
+                    buttonText: "Disable",
+                    title: "Power Bus Disable",
+                    message: "This will command the Powerboard to disable Bus #" + busIndex.ToString() + ". If this bus powers communications equipment, communications will be interrupted.");
+
+                if (result == MessageDialogResult.Affirmative)
+                {
+                    ((PowerViewModel)DataContext).DisableBus(busIndex);
+                }
             }
         }
 
-        private async void DisableButton_Click(object sender, RoutedEventArgs e)
+        private async void AllMotorPower(object sender, RoutedEventArgs e)
         {
-            byte busIndex = Byte.Parse((string)((Button)sender).Tag);
-            var result = await ShowMessage(
-                buttonText: "Disable",
-                title: "Power Bus Disable",
-                message: "This will command the Powerboard to disable Bus #" + busIndex.ToString() + ". If this bus powers communications equipment, communications will be interrupted.");
-
-            if (result == MessageDialogResult.Affirmative)
+            for (byte i = 0; i < 6; i++)
             {
-                ((PowerViewModel)DataContext).DisableBus(busIndex);
+                if ((bool)((ToggleButton)sender).IsChecked)
+                {
+                    ((PowerViewModel)DataContext).EnableBus(i);
+                }
+                else
+                {
+                    ((PowerViewModel)DataContext).DisableBus(i);
+                }
+
+                await Task.Delay(75);
             }
         }
-
+        private void FanPower(object sender, RoutedEventArgs e)
+        {
+            ((PowerViewModel)DataContext).FanControl((bool)((ToggleButton)sender).IsChecked);
+        }
+        private void BuzzPower(object sender, RoutedEventArgs e)
+        {
+            ((PowerViewModel)DataContext).BuzzerControl((bool)((ToggleButton)sender).IsChecked);
+        }
+        private void SaveLog(object sender, RoutedEventArgs e)
+        {
+            ((PowerViewModel)DataContext).SaveFile((bool)((ToggleButton)sender).IsChecked);
+        }
         private Task<MessageDialogResult> ShowMessage(string buttonText, string title, string message)
         {
             MetroDialogSettings settings = new MetroDialogSettings()

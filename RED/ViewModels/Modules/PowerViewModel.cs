@@ -25,7 +25,7 @@ namespace RED.ViewModels.Modules
             set
             {
                 _model.AutoStartLog = value;
-                if (AutoStartLog && LogFile == null) SaveFileStart();
+                if (AutoStartLog && LogFile == null) SaveFile(true);
                 NotifyOfPropertyChange(() => AutoStartLog);
             }
         }
@@ -491,33 +491,20 @@ namespace RED.ViewModels.Modules
         {
             _rovecomm.SendCommand(_idResolver.GetId("PowerBusDisable"), index, true);
         }
-        public async void AllMotorPower(bool enable)
-        {
-            for (byte i = 0; i < 6; i++)
-            {
-                if (enable)
-                {
-                    EnableBus(i);
-                }
-                else
-                {
-                    DisableBus(i);
-                }
 
-                await Task.Delay(75);
+        public void SaveFile(bool state)
+        {
+            if (state)
+            {
+                LogFile = File.AppendText("REDPowerData" + DateTime.Now.ToString("yyyyMMdd'T'HHmmss") + ".log");
             }
-        }
-
-        public void SaveFileStart()
-        {
-            LogFile = File.AppendText("REDPowerData" + DateTime.Now.ToString("yyyyMMdd'T'HHmmss") + ".log");
-        }
-        public void SaveFileStop()
-        {
-            if (LogFile != null)
+            else
             {
-                LogFile.Close();
-                LogFile = null;
+                if (LogFile != null)
+                {
+                    LogFile.Close();
+                    LogFile = null;
+                }
             }
         }
     }
