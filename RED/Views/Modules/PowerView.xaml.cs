@@ -98,6 +98,10 @@ namespace RED.Views.Modules
         {
             ((PowerViewModel)DataContext).BuzzerControl((bool)((ToggleButton)sender).IsChecked);
         }
+        private void SaveLog(object sender, RoutedEventArgs e)
+        {
+            ((PowerViewModel)DataContext).SaveFile((bool)((ToggleButton)sender).IsChecked);
+        }
         private Task<MessageDialogResult> ShowMessage(string buttonText, string title, string message)
         {
             MetroDialogSettings settings = new MetroDialogSettings()

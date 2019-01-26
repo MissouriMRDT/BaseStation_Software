@@ -16,25 +16,30 @@
 
 
         <Style x:Key="EnableBtn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
-            <Setter Property="Content" Value="On" />
+            <Setter Property="Content" Value="Enabled" />
             <EventSetter Event="Click" Handler="EnableButton_Click" />
         </Style>
 
-        <Style x:Key="AllMotorBtn" TargetType="ToggleButton" BasedOn="{StaticResource MetroButton}">
-            <Setter Property="Content" Value="On" />
+        <Style x:Key="AllMotorBtn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
+            <Setter Property="Content" Value="Enabled" />
             <EventSetter Event="Click" Handler="AllMotorPower" />
         </Style>
 
-        <Style x:Key="FanBtn" TargetType="ToggleButton" BasedOn="{StaticResource MetroButton}">
-            <Setter Property="Content" Value="On" />
+        <Style x:Key="FanBtn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
+            <Setter Property="Content" Value="Enabled" />
             <EventSetter Event="Click" Handler="FanPower" />
         </Style>
         
-        <Style x:Key="BuzzBtn" TargetType="ToggleButton" BasedOn="{StaticResource MetroButton}">
-            <Setter Property="Content" Value="On" />
+        <Style x:Key="BuzzBtn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
+            <Setter Property="Content" Value="Enabled" />
             <EventSetter Event="Click" Handler="BuzzPower" />
         </Style>
-      
+
+        <Style x:Key="LogBtn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
+            <Setter Property="Content" Value="Enabled" />
+            <EventSetter Event="Click" Handler="SaveLog" />
+        </Style>
+
         <Style x:Key="CurrentTelem" TargetType="Label">
             <Setter Property="ContentStringFormat" Value="{}{0:00.0} A" />
             <Setter Property="HorizontalContentAlignment" Value="Right" />
@@ -121,7 +126,7 @@
             <Label Grid.Row="6" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="Motor7Current" 
                    Background="{Binding Path=Motor7Current, Converter={StaticResource AmpConverter}, Mode=Default}"/>
 
-            <ToggleButton Grid.Row="7" Grid.Column="0" Height="27" VerticalAlignment="Bottom" Style="{StaticResource AllMotorBtn}">On</ToggleButton>
+            <ToggleButton Grid.Row="7" Grid.Column="0" Height="27" VerticalAlignment="Bottom" Style="{StaticResource AllMotorBtn}"/>
             <Label Grid.Row="7" Grid.Column="1">All motors</Label>
 
 
@@ -157,13 +162,13 @@
 
 
 
-            <ToggleButton Grid.Row="5" Grid.Column="3" Style="{StaticResource FanBtn}">On</ToggleButton>
+            <ToggleButton Grid.Row="5" Grid.Column="3" Style="{StaticResource FanBtn}"/>
             <Label Grid.Row="5" Grid.Column="4">Batt Fans</Label>
 
-            <ToggleButton Grid.Row="6" Grid.Column="3" Style="{StaticResource BuzzBtn}" Height="27" VerticalAlignment="Bottom">On</ToggleButton>
+            <ToggleButton Grid.Row="6" Grid.Column="3" Style="{StaticResource BuzzBtn}" Height="27" VerticalAlignment="Bottom"/>
             <Label Grid.Row="6" Grid.Column="4">BMS Buzzer</Label>
 
-            <Label Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="6" HorizontalAlignment="Center">
+            <Label Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="6" HorizontalAlignment="Center">
                 --------------------------------------------------</Label>
             
             
@@ -239,12 +244,9 @@
             
         </Grid>
         <UniformGrid Rows="1">
-            <Button Grid.Row="0" Grid.Column="0" Click="RebootButton_Click">Reboot</Button>
-            <Button Grid.Row="0" Grid.Column="1" Click="ShutDownButton_Click">Shut Down</Button>
-        </UniformGrid>
-        <UniformGrid Rows="1">
-            <Button x:Name="SaveFileStart">Start Log</Button>
-            <Button x:Name="SaveFileStop">Stop Log</Button>
+            <ToggleButton Grid.Row="0" Grid.Column="0" Click="RebootButton_Click">Reboot</ToggleButton>
+            <ToggleButton Grid.Row="0" Grid.Column="1" Click="ShutDownButton_Click">Shut Down</ToggleButton>
+            <ToggleButton Grid.Row="0" Grid.Column="2" Style="{StaticResource LogBtn}" >Start Log</ToggleButton>
         </UniformGrid>
     </StackPanel>
 </UserControl>

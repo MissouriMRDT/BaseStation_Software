@@ -25,7 +25,7 @@ namespace RED.ViewModels.Modules
             set
             {
                 _model.AutoStartLog = value;
-                if (AutoStartLog && LogFile == null) SaveFileStart();
+                if (AutoStartLog && LogFile == null) SaveFile(true);
                 NotifyOfPropertyChange(() => AutoStartLog);
             }
         }
@@ -492,16 +492,19 @@ namespace RED.ViewModels.Modules
             _rovecomm.SendCommand(_idResolver.GetId("PowerBusDisable"), index, true);
         }
 
-        public void SaveFileStart()
+        public void SaveFile(bool state)
         {
-            LogFile = File.AppendText("REDPowerData" + DateTime.Now.ToString("yyyyMMdd'T'HHmmss") + ".log");
-        }
-        public void SaveFileStop()
-        {
-            if (LogFile != null)
+            if (state)
             {
-                LogFile.Close();
-                LogFile = null;
+                LogFile = File.AppendText("REDPowerData" + DateTime.Now.ToString("yyyyMMdd'T'HHmmss") + ".log");
+            }
+            else
+            {
+                if (LogFile != null)
+                {
+                    LogFile.Close();
+                    LogFile = null;
+                }
             }
         }
     }
