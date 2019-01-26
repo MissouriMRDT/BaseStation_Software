@@ -14,8 +14,8 @@ namespace RED.Addons
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            int max = 100;
-            double cutoff = 15.0;
+            int max = 80;
+            double cutoff = 50.0;
 
             if((float)value > cutoff)  //a value of 0, the worst, most red scenario, should give 255, 0, 0, the most red color
             {                       //a value of 1, the "best", least great color, should give 255, 255, 255, which is white.
