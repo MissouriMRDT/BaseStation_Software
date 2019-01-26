@@ -27,12 +27,12 @@ namespace RED.Addons
             }
             else if (val > cutoff)  //a value of 0, the worst, most red scenario, should give 255, 0, 0, the most red color
             {                       //a value of 1, the "best", least great color, should give 255, 255, 255, which is white.
-                byte intensity = (byte)((255 / (cutoff - min)) * (val - min));
+                byte intensity = (byte)((255 / (max - cutoff)) * (max - val));
                 return new SolidColorBrush(Color.FromRgb(255, intensity, intensity));
             }
             else                    //a value of 0, the best, most green scenario, should give 0, 255, 0, the most green color
             {                       //a value of 1, the "worst", least great color, should give 255, 255, 255, which is white.
-                byte intensity = (byte)((255 / (max - cutoff)) * (max - val));
+                byte intensity = (byte)((255 / (cutoff - min)) * (val - min));
                 return new SolidColorBrush(Color.FromRgb(intensity, 255, intensity));
             }
         }
