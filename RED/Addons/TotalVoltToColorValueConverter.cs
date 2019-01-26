@@ -14,21 +14,30 @@ namespace RED.Addons
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            double max = 33.6, min = 20;
-            double cutoff = 25;
 
-            if ((float)value > cutoff)  //a value of 0, the worst, most red scenario, should give 255, 0, 0, the most red color
+            double max = 33.6, min = 20, cutoff = 25;
+
+            float val = (float)value;
+
+            if (val > max)
+            {
+                return new SolidColorBrush(Color.FromRgb(0, 255, 0));
+            }
+            else if (val < min)
+            {
+                return new SolidColorBrush(Color.FromRgb(255, 0, 0));
+            }
+            else if (val > cutoff)  //a value of 0, the worst, most red scenario, should give 255, 0, 0, the most red color
             {                       //a value of 1, the "best", least great color, should give 255, 255, 255, which is white.
-                byte intensity = (byte)((((float)value) - cutoff) * (255 / max));
+                byte intensity = (byte)((255 / (cutoff - min)) * (val - min));
                 return new SolidColorBrush(Color.FromRgb(intensity, 255, intensity));
             }
             else                    //a value of 0, the best, most green scenario, should give 0, 255, 0, the most green color
             {                       //a value of 1, the "worst", least great color, should give 255, 255, 255, which is white.
-
-                byte intensity = (byte)((((float)value)) * (255 / (cutoff)));
+                byte intensity = (byte)((255 / (max - cutoff)) * (max - val));
                 return new SolidColorBrush(Color.FromRgb(255, intensity, intensity));
-
             }
+            
 
         }
 
