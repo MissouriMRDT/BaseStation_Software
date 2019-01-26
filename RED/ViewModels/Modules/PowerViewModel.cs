@@ -491,22 +491,6 @@ namespace RED.ViewModels.Modules
         {
             _rovecomm.SendCommand(_idResolver.GetId("PowerBusDisable"), index, true);
         }
-        public async void AllMotorPower(bool enable)
-        {
-            for (byte i = 0; i < 6; i++)
-            {
-                if (enable)
-                {
-                    EnableBus(i);
-                }
-                else
-                {
-                    DisableBus(i);
-                }
-
-                await Task.Delay(75);
-            }
-        }
 
         public void SaveFileStart()
         {
