@@ -15,7 +15,7 @@
         <addons:TempToColorValueConverter x:Key="TempConverter" />
 
 
-        <Style x:Key="EnableBtn" TargetType="ToggleButton" BasedOn="{StaticResource MetroButton}">
+        <Style x:Key="EnableBtn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
             <Setter Property="Content" Value="On" />
             <EventSetter Event="Click" Handler="EnableButton_Click" />
         </Style>
@@ -72,10 +72,8 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
 
-                <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
@@ -165,7 +163,7 @@
             <ToggleButton Grid.Row="6" Grid.Column="3" Style="{StaticResource BuzzBtn}" Height="27" VerticalAlignment="Bottom">On</ToggleButton>
             <Label Grid.Row="6" Grid.Column="4">BMS Buzzer</Label>
 
-            <Label Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="8" HorizontalAlignment="Center">
+            <Label Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="6" HorizontalAlignment="Center">
                 --------------------------------------------------</Label>
             
             
