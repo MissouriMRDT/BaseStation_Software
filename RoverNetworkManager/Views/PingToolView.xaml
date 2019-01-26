@@ -24,10 +24,15 @@
 				<Grid.RowDefinitions>
 					<RowDefinition />
 				</Grid.RowDefinitions>
-				<TextBlock Grid.Column="0" Grid.Row="0" Text="Checkboxes" />
-				<TextBlock Grid.Column="1" Grid.Row="0" Text="Name" />
-				<TextBlock Grid.Column="2" Grid.Row="0" Text="Address" />
-				<TextBlock Grid.Column="3" Grid.Row="0" Text="Round-trip Time (ms)" />
+				<TextBlock Grid.Column="1" Grid.Row="0" TextAlignment="Center">
+					<Bold>Connection</Bold>
+				</TextBlock>
+				<TextBlock Grid.Column="2" Grid.Row="0" TextAlignment="Center">
+					<Bold>Address</Bold>
+				</TextBlock>
+				<TextBlock Grid.Column="3" Grid.Row="0" TextAlignment="Center">
+					<Bold>Round-Trip Time (ms)</Bold>
+				</TextBlock>
 			</Grid>
 			<ItemsControl ItemsSource="{Binding PingServers}" Grid.IsSharedSizeScope="True">
 				<ItemsControl.ItemTemplate>
@@ -57,17 +62,17 @@
 								   Padding="20 5 0 5"
 								   Margin="0"/>
 							<Label Grid.Column="3"
-								   Content="{Binding Result}" ToolTip="Round-trip Time (ms)"
-								   HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Margin="0 0 10 0" />
+								   Content="{Binding Result}"
+								   HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Margin="20 0 10 0" />
 							<ToggleButton Grid.Column="4"
-										  Margin="2"
+										  Margin="2 2 0 2"
 										  cal:Message.Attach="RequestICMPPing()"
 										  IsChecked="{Binding IsSendingICMP, Mode=OneWay}"
 										  Visibility="{Binding SupportsICMP, Converter={StaticResource BoolToVis}}">
 								ICMP
 							</ToggleButton>
 							<ToggleButton Grid.Column="5"
-										  Margin="2"
+										  Margin="0 2 2 2"
 										  cal:Message.Attach="RequestRoveCommPing()"
 										  IsChecked="{Binding IsSendingRoveComm, Mode=OneWay}"
 										  Visibility="{Binding SupportsRoveComm, Converter={StaticResource BoolToVis}}">
@@ -77,6 +82,7 @@
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
+			<CheckBox cal:Message.Attach="AutoPingChanged()">Auto Ping</CheckBox>
 		</StackPanel>
     </GroupBox>
 </UserControl>

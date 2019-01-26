@@ -92,6 +92,11 @@ namespace RoverNetworkManager.ViewModels
             return (time != 0) ? time : -1;
         }
 
+        public async void AutoPingChanged()
+        {
+            Console.WriteLine("auto ping toggled!");
+        }
+
         public class PingServer : PropertyChangedBase
         {
             private readonly PingToolModel.PingServerModel _model;
