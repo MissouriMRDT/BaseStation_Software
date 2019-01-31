@@ -107,9 +107,9 @@ namespace RED.Configurations
                 Telemetry = new[] {
                     new MetadataRecordContext(1312, "Heading", "The direction of the heading of the rover"),
                     new MetadataRecordContext(1313, "IMUTemperature", "IMU Data"),
-                    new MetadataRecordContext(1314, "IMUAccelerometer", "IMU Data"),
-                    new MetadataRecordContext(1315, "IMUGyroscope", "IMU Data"),
-                    new MetadataRecordContext(1316, "IMUMagnetometer", "IMU Data"),
+                    new MetadataRecordContext(1314, "NavPitch", "IMU Data"),
+                    new MetadataRecordContext(1315, "NavRoll", "IMU Data"),
+                    new MetadataRecordContext(1316, "NavTrueHeading", "IMU Data"),
                     new MetadataRecordContext(1296, "GPSQuality", "Quality of GPS signal"),
                     new MetadataRecordContext(1297, "GPSPosition", "GPS Position. Latitude followed by Longitude"),
                     new MetadataRecordContext(1298, "GPSSpeed", "Speed of GPS delta"),

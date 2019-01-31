@@ -400,7 +400,6 @@ namespace RED.ViewModels
             Power = new PowerViewModel(Rovecomm, MetadataManager, Console);
             CameraMux = new CameraViewModel(Rovecomm, MetadataManager);
             ExternalControls = new ExternalControlsViewModel(Rovecomm, MetadataManager);
-            Autonomy = new AutonomyViewModel(Rovecomm, MetadataManager, Console);
             Lighting = new LightingViewModel(Rovecomm, MetadataManager, Console);
             Map = new MapViewModel();
 
@@ -420,7 +419,8 @@ namespace RED.ViewModels
                 new MappingViewModel[0],
                 new IInputMode[] { Drive, Arm, Gimbal, Science });
 
-            WaypointManager = new WaypointManagerViewModel(Map, GPS, Autonomy);
+            WaypointManager = new WaypointManagerViewModel(Map, GPS);
+            Autonomy = new AutonomyViewModel(Rovecomm, MetadataManager, Console, WaypointManager);
             PingTool = new PingToolViewModel(Rovecomm, ConfigManager);
             StopwatchTool = new StopwatchToolViewModel(ConfigManager);
             TelemetryLogTool = new TelemetryLogToolViewModel(NetworkManager, MetadataManager);

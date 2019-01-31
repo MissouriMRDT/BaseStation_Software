@@ -17,7 +17,7 @@ namespace RED.Views.Navigation
             InitializeComponent();
         }
 
-        private void Map_DataContextChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
+		private void Map_DataContextChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
         {
             if (DataContext.GetType() == typeof(MapViewModel))
                 ((MapViewModel)(DataContext)).SetMap(Gmap);

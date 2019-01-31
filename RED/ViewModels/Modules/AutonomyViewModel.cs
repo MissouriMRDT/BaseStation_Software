@@ -12,14 +12,16 @@ namespace RED.ViewModels.Modules
         private readonly IRovecomm _rovecomm;
         private readonly IDataIdResolver _idResolver;
         private readonly ILogger _logger;
+        private readonly WaypointManagerViewModel _waypointManager;
 
-        public AutonomyViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger logger)
+        public AutonomyViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger logger, WaypointManagerViewModel waypointManager)
         {
             _model = new AutonomyModel();
 
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _logger = logger;
+            _waypointManager = waypointManager;
 
             _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("WaypointReached"));
         }
@@ -32,6 +34,11 @@ namespace RED.ViewModels.Modules
         public void DisableMode()
         {
             _rovecomm.SendCommand(_idResolver.GetId("AutonomousModeDisable"), new byte[0], true);
+        }
+
+        public void AddWaypoint()
+        {
+            AddWaypoint(_waypointManager.SelectedWaypoint);
         }
 
         public void ClearAllWaypoints()
@@ -54,7 +61,7 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public void AddWaypoint(Waypoint waypoint)
+        private void AddWaypoint(Waypoint waypoint)
         {
             byte[] msg = new byte[2 * sizeof(double)];
             Buffer.BlockCopy(BitConverter.GetBytes(waypoint.Latitude), 0, msg, 0 * sizeof(double), sizeof(double));
