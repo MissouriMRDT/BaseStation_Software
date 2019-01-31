@@ -24,112 +24,40 @@ namespace RED.ViewModels.Modules
                 NotifyOfPropertyChange(() => IMUTemperature);
             }
         }
-        public float IMUAccelerometerX
+        public float Pitch
         {
             get
             {
-                return _model.IMUAccelerometerX;
+                return _model.Pitch;
             }
             set
             {
-                _model.IMUAccelerometerX = value;
-                NotifyOfPropertyChange(() => IMUAccelerometerX);
+                _model.Pitch = value;
+                NotifyOfPropertyChange(() => Pitch);
             }
         }
-        public float IMUAccelerometerY
+        public float Roll
         {
             get
             {
-                return _model.IMUAccelerometerY;
+                return _model.Roll;
             }
             set
             {
-                _model.IMUAccelerometerY = value;
-                NotifyOfPropertyChange(() => IMUAccelerometerY);
+                _model.Roll = value;
+                NotifyOfPropertyChange(() => Roll);
             }
         }
-        public float IMUAccelerometerZ
+        public float TrueHeading
         {
             get
             {
-                return _model.IMUAccelerometerZ;
+                return _model.TrueHeading;
             }
             set
             {
-                _model.IMUAccelerometerZ = value;
-                NotifyOfPropertyChange(() => IMUAccelerometerZ);
-            }
-        }
-        public float IMUGyroscopeRoll
-        {
-            get
-            {
-                return _model.IMUGyroscopeRoll;
-            }
-            set
-            {
-                _model.IMUGyroscopeRoll = value;
-                NotifyOfPropertyChange(() => IMUGyroscopeRoll);
-            }
-        }
-        public float IMUGyroscopePitch
-        {
-            get
-            {
-                return _model.IMUGyroscopePitch;
-            }
-            set
-            {
-                _model.IMUGyroscopePitch = value;
-                NotifyOfPropertyChange(() => IMUGyroscopePitch);
-            }
-        }
-        public float IMUGyroscopeYaw
-        {
-            get
-            {
-                return _model.IMUGyroscopeYaw;
-            }
-            set
-            {
-                _model.IMUGyroscopeYaw = value;
-                NotifyOfPropertyChange(() => IMUGyroscopeYaw);
-            }
-        }
-        public float IMUMagnetometerX
-        {
-            get
-            {
-                return _model.IMUMagnetometerX;
-            }
-            set
-            {
-                _model.IMUMagnetometerX = value;
-                NotifyOfPropertyChange(() => IMUMagnetometerX);
-            }
-        }
-        public float IMUMagnetometerY
-        {
-            get
-            {
-                return _model.IMUMagnetometerY;
-            }
-            set
-            {
-                _model.IMUMagnetometerY = value;
-                NotifyOfPropertyChange(() => IMUMagnetometerY);
-            }
-        }
-        public float IMUMagnetometerZ
-        {
-            get
-            {
-                return _model.IMUMagnetometerZ;
-            }
-            set
-            {
-                _model.IMUMagnetometerZ = value;
-                NotifyOfPropertyChange(() => IMUMagnetometerZ);
+                _model.TrueHeading = value;
+                NotifyOfPropertyChange(() => TrueHeading);
             }
         }
 
@@ -141,9 +69,9 @@ namespace RED.ViewModels.Modules
             _log = log;
 
             _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("IMUTemperature"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("IMUAccelerometer"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("IMUGyroscope"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("IMUMagnetometer"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("NavPitch"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("NavRoll"));
+            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("NavTrueHeading"));
         }
 
         public void ReceivedRovecommMessageCallback(ushort dataId, byte[] data, bool reliable)
@@ -151,21 +79,9 @@ namespace RED.ViewModels.Modules
             switch (_idResolver.GetName(dataId))
             {
                 case "IMUTemperature": IMUTemperature = BitConverter.ToSingle(data, 0); break;
-                case "IMUAccelerometer":
-                    IMUAccelerometerX = BitConverter.ToSingle(data, 0 * sizeof(Single));
-                    IMUAccelerometerY = BitConverter.ToSingle(data, 1 * sizeof(Single));
-                    IMUAccelerometerZ = BitConverter.ToSingle(data, 2 * sizeof(Single));
-                    break;
-                case "IMUGyroscope":
-                    IMUGyroscopeRoll = BitConverter.ToSingle(data, 0 * sizeof(Single));
-                    IMUGyroscopePitch = BitConverter.ToSingle(data, 1 * sizeof(Single));
-                    IMUGyroscopeYaw = BitConverter.ToSingle(data, 2 * sizeof(Single));
-                    break;
-                case "IMUMagnetometer":
-                    IMUMagnetometerX = BitConverter.ToSingle(data, 0 * sizeof(Single));
-                    IMUMagnetometerY = BitConverter.ToSingle(data, 1 * sizeof(Single));
-                    IMUMagnetometerZ = BitConverter.ToSingle(data, 2 * sizeof(Single));
-                    break;
+                case "NavPitch": Pitch = BitConverter.ToSingle(data, 0); break;
+                case "NavRoll": Roll = BitConverter.ToSingle(data, 0); break;
+                case "NavTrueHeading": TrueHeading = BitConverter.ToSingle(data, 0); break;
             }
         }
     }

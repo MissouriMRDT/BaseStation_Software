@@ -68,16 +68,27 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public DriveViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver)
+		public string Channel {
+			get {
+				return _model.Channel;
+			}
+			set {
+				_model.Channel = value;
+				NotifyOfPropertyChange(() => Channel);
+			}
+		}
+
+		public DriveViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver)
         {
             _model = new DriveModel();
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             Name = "Drive";
             ModeType = "Drive";
+			Channel = "1";
         }
 
-        public void StartMode()
+		public void StartMode()
         {
             SpeedLeft = 0;
             SpeedRight = 0;

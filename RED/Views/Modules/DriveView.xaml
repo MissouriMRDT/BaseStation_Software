@@ -4,28 +4,33 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+			 xmlns:vlc="clr-namespace:Vlc.DotNet.Wpf;assembly=Vlc.DotNet.Wpf"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="42" />
-                <ColumnDefinition Width="2*" />
-            </Grid.ColumnDefinitions>
-            <Label Grid.Row="0" Grid.Column="1">Left Speed</Label>
-            <Label Grid.Row="0" Grid.Column="2" x:Name="SpeedLeft" />
-            <controls:MetroProgressBar Grid.Row="0" Grid.Column="0" Value="{Binding SpeedLeft}" Minimum="-1000" Maximum="0" Foreground="{StaticResource GrayNormalBrush}" Background="{StaticResource HighlightBrush}" />
-            <controls:MetroProgressBar Grid.Row="0" Grid.Column="3" Value="{Binding SpeedLeft}" Minimum="0" Maximum="1000" Foreground="{StaticResource HighlightBrush}" Background="{StaticResource GrayNormalBrush}" />
-            <Label Grid.Row="1" Grid.Column="1">Right Speed</Label>
-            <Label Grid.Row="1" Grid.Column="2" x:Name="SpeedRight" />
-            <controls:MetroProgressBar Grid.Row="1" Grid.Column="0" Value="{Binding SpeedRight}" Minimum="-1000" Maximum="0" Foreground="{StaticResource GrayNormalBrush}" Background="{StaticResource HighlightBrush}" />
-            <controls:MetroProgressBar Grid.Row="1" Grid.Column="3" Value="{Binding SpeedRight}" Minimum="0" Maximum="1000" Foreground="{StaticResource HighlightBrush}" Background="{StaticResource GrayNormalBrush}" />
-        </Grid>
-    </StackPanel>
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition />
+				<RowDefinition />
+				<RowDefinition />
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="auto" />
+				<ColumnDefinition Width="42" />
+				<ColumnDefinition Width="2*" />
+			</Grid.ColumnDefinitions>
+			<Label Grid.Row="0" Grid.Column="1">Left Speed</Label>
+			<Label Grid.Row="0" Grid.Column="2" x:Name="SpeedLeft" />
+			<controls:MetroProgressBar Grid.Row="0" Grid.Column="0" Value="{Binding SpeedLeft}" Minimum="-1000" Maximum="0" Foreground="{StaticResource GrayNormalBrush}" Background="{StaticResource HighlightBrush}" />
+			<controls:MetroProgressBar Grid.Row="0" Grid.Column="3" Value="{Binding SpeedLeft}" Minimum="0" Maximum="1000" Foreground="{StaticResource HighlightBrush}" Background="{StaticResource GrayNormalBrush}" />
+			<Label Grid.Row="1" Grid.Column="1">Right Speed</Label>
+			<Label Grid.Row="1" Grid.Column="2" x:Name="SpeedRight" />
+			<controls:MetroProgressBar Grid.Row="1" Grid.Column="0" Value="{Binding SpeedRight}" Minimum="-1000" Maximum="0" Foreground="{StaticResource GrayNormalBrush}" Background="{StaticResource HighlightBrush}" />
+			<controls:MetroProgressBar Grid.Row="1" Grid.Column="3" Value="{Binding SpeedRight}" Minimum="0" Maximum="1000" Foreground="{StaticResource HighlightBrush}" Background="{StaticResource GrayNormalBrush}" />
+		</Grid>
+		<StackPanel>
+			<vlc:VlcControl Margin="0 5 0 0" x:Name="vlcPlayer" Height="200" />
+		</StackPanel>
+	</StackPanel>
 </UserControl>
