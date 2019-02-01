@@ -21,5 +21,6 @@ namespace RoverNetworkManager.Models
             internal bool IsSendingRoveComm;
             internal bool AutoModeEnabled;
         }
+
     }
 }
