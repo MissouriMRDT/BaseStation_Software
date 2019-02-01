@@ -192,7 +192,7 @@ namespace RoverNetworkManager.ViewModels
                 {
                     return _model.AutoModeEnabled;
                 }
-                private set
+                set
                 {
                     _model.AutoModeEnabled = value;
                     if (AutoModeEnabled)

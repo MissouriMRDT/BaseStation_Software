@@ -48,7 +48,7 @@
 							</Grid.ColumnDefinitions>
 							<CheckBox
 								Grid.Column="0"
-								IsChecked="{Binding AutoModeEnabled, Mode=OneWay}" />
+								IsChecked="{Binding AutoModeEnabled, Mode=TwoWay}" />
 							<Label Grid.Column="1"
 								   Content="{Binding Name}"
 								   FontSize="13"

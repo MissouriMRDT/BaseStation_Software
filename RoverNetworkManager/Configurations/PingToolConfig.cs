@@ -1,6 +1,4 @@
-﻿using RED.Contexts.Tools;
-
-namespace RoverNetworkManager.Contexts
+﻿namespace RoverNetworkManager.Contexts
 {
     public static class PingToolConfig
     {
