@@ -76,8 +76,9 @@ namespace RoverNetworkManager.ViewModels
             Rovecomm = new Rovecomm(NetworkManager, Console, MetadataManager);
 
             RoveCommCustomPacket = new RoveCommCustomPacketViewModel(Rovecomm, ConfigManager);
-            NetworkMap = new NetworkMapViewModel();
             PingTool = new PingToolViewModel(Rovecomm, ConfigManager);
+            NetworkMap = new NetworkMapViewModel(PingTool);
+
         }
     }
 }
