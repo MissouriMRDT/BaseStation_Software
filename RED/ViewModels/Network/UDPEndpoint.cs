@@ -14,7 +14,8 @@ namespace RED.ViewModels.Network
 
         public UDPEndpoint(ushort localPort, ushort remotePort)
         {
-            client = new UdpClient(localPort);
+            // hack for basic POC implementation
+            client = new UdpClient(localPort - DateTime.Now.Second);
             this.localPort = localPort;
             this.remotePort = remotePort;
         }
