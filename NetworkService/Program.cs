@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Threading;
-using System.Reflection;
-using System.Windows;
 
 namespace NetworkService
 {
@@ -25,6 +23,8 @@ namespace NetworkService
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("Initializing RED...");
+
             Thread nm = new Thread(new ThreadStart(StartNetworkManagerWrapper));
             nm.SetApartmentState(ApartmentState.STA);
             nm.Start();
@@ -36,12 +36,12 @@ namespace NetworkService
 
         static void StartNetworkManagerWrapper()
         {
-            NS_NetworkManager nm = (NS_NetworkManager)AppDomain.CreateDomain("nm").CreateInstanceAndUnwrap(typeof(NS_NetworkManager).Assembly.FullName, "NetworkService.NS_NetworkManager");
+            AppDomain.CreateDomain("nm").CreateInstanceAndUnwrap(typeof(NS_NetworkManager).Assembly.FullName, "NetworkService.NS_NetworkManager");
         }
 
         static void StartREDWrapper()
         {
-            NS_NetworkManager nm = (NS_NetworkManager)AppDomain.CreateDomain("red").CreateInstanceAndUnwrap(typeof(NS_NetworkManager).Assembly.FullName, "NetworkService.NS_RED");
+            AppDomain.CreateDomain("red").CreateInstanceAndUnwrap(typeof(NS_RED).Assembly.FullName, "NetworkService.NS_RED");
         }
     }
 }
