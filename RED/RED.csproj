@@ -181,7 +181,6 @@
     <Compile Include="Interfaces\Network\IIPAddressProvider.cs" />
     <Compile Include="Interfaces\Input\IInputDevice.cs" />
     <Compile Include="Interfaces\Network\INetworkTransportProtocol.cs" />
-    <Compile Include="Interfaces\Network\ISequenceNumberProvider.cs" />
     <Compile Include="Interfaces\Network\IServerProvider.cs" />
     <Compile Include="Models\Input\InputSelectorModel.cs" />
     <Compile Include="Models\Input\MappingChannelModel.cs" />
@@ -236,7 +235,6 @@
     <Compile Include="ViewModels\Tools\PingToolViewModel.cs" />
     <Compile Include="ViewModels\Modules\ScienceViewModel.cs" />
     <Compile Include="ViewModels\Modules\SensorViewModel.cs" />
-    <Compile Include="ViewModels\Network\SequenceNumberManager.cs" />
     <Compile Include="ViewModels\ControlCenterViewModel.cs" />
     <Compile Include="ViewModels\Input\InputManagerViewModel.cs" />
     <Compile Include="ViewModels\Network\UDPEndpoint.cs" />

@@ -39,7 +39,6 @@ namespace RED.Roveprotocol
         private readonly IIPAddressProvider ipProvider;
         private readonly IDataIdResolver idResolver;
         private Dictionary<string, List<IRovecommReceiver>> registrations;
-        private ISequenceNumberProvider sequenceNumberProvider;
         private readonly ILogger log;
         private readonly NetworkManagerViewModel networkManager;
         private HashSet<PendingPing> pendingPings = new HashSet<PendingPing>();
@@ -51,8 +50,7 @@ namespace RED.Roveprotocol
             ipProvider = ipAddressProvider;
             networkManager = netManager;
             idResolver = dataIdResolver;
-
-            sequenceNumberProvider = new SequenceNumberManager();
+            
             registrations = new Dictionary<string, List<IRovecommReceiver>>();
             subscriptions = new Dictionary<IPAddress, SubscriptionRecord>();
 
@@ -86,12 +84,11 @@ namespace RED.Roveprotocol
             PendingPing ping = new PendingPing()
             {
                 Timestamp = DateTime.Now,
-                // SeqNum = sequenceNumberProvider.IncrementValue((ushort)SystemDataId.Ping),
                 Semaphore = new System.Threading.SemaphoreSlim(0)
             };
             pendingPings.Add(ping);
 
-            SendPacket(new Packet("Ping"), ip, ping.SeqNum, true, true);
+            SendPacket(new Packet("Ping"), ip, true, true);
             await ping.Semaphore.WaitAsync(timeout);
             return ping.RoundtripTime;
         }
@@ -194,14 +191,6 @@ namespace RED.Roveprotocol
 
             Packet packet = RovecommOne.DecodePacket(encodedPacket, idResolver);
 
-            /*
-            if (!sequenceNumberProvider.UpdateNewer(dataId, seqNum))
-            {
-                log.Log($"Packet recieved with invalid sequence number={seqNum} DataId={dataId}");
-                return;
-            }
-            */
-
             bool passToSubscribers = HandleSystemDataID(srcIP, packet);
 
             if (passToSubscribers)
@@ -215,9 +204,7 @@ namespace RED.Roveprotocol
         /// replying to a ping or subscription.
         /// </summary>
         /// <param name="srcIP">the ip address of the device that sent this PC the message</param>
-        /// <param name="data">the packet data</param>
-        /// <param name="dataId">the dataid in the rovecomm message we received</param>
-        /// <param name="seqNum">the sequence number in the rovecomm message we received</param>
+        /// <param name="packet">the packet</param>
         /// <returns></returns>
         private bool HandleSystemDataID(IPAddress srcIP, Packet packet)
         {
@@ -227,7 +214,7 @@ namespace RED.Roveprotocol
                     log.Log("Packet recieved with null dataId"); //likely means a) wasn't a message for rovecomm b) message was just gobblygook
                     break;
                 case "Ping":
-                    SendPacket(new Packet("PingReply", BitConverter.GetBytes(IPAddress.HostToNetworkOrder((short)0)), 1, null), srcIP, false); // 0 for sequence number
+                    SendPacket(new Packet("PingReply"), srcIP, false);
                     break;
                 case "PingReply":
                     ProcessPing(packet.Data);
@@ -270,28 +257,12 @@ namespace RED.Roveprotocol
         }
 
         /// <summary>
-        /// send a rovecomm message over the network. Again. Private overload since the ip addresses are baked into the dataid anyway, so only
-        /// certain rovecomm-system messages should call it.
-        /// </summary>
-        /// <param name="dataId">dataid of the message to send</param>
-        /// <param name="data">data to send</param>
-        /// <param name="destIP">ip of the device to send the message to</param>
-        /// <param name="reliable">whether to send it reliably (IE with a non broadcast protocol) or not</param>
-        private void SendPacket(Packet packet, IPAddress destIP, bool reliable = false)
-        {
-            //ushort seqNum = sequenceNumberProvider.IncrementValue(dataId);
-            SendPacket(packet, destIP, 0, reliable);
-        }
-
-        /// <summary>
         /// fullest implementation of send packet. Encodes the packet into Rovecomm protocol and passes it to the network layer for sending.
         /// </summary>
-        /// <param name="dataId">dataid of the message to send</param>
-        /// <param name="data">data to send</param>
+        /// <param name="packet">packet to send</param>
         /// <param name="destIP">ip of the device to send the message to</param>
-        /// <param name="seqNum">sequence number of this dataID</param>
         /// <param name="reliable">whether to send it reliably (IE with a non broadcast protocol) or not</param>
-        private void SendPacket(Packet packet, IPAddress destIP, ushort seqNum, bool reliable = false, bool getReliableResponse = false)
+        private void SendPacket(Packet packet, IPAddress destIP, bool reliable = false, bool getReliableResponse = false)
         {
             if (destIP == null)
             {
