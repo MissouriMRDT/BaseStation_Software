@@ -40,5 +40,13 @@ namespace RED.Models.Network
             Count = 1;
             DataType = typeof(int);
         }
+
+        public Packet(string name)
+        {
+            Name = name;
+            Data = new byte[] { 0 };
+            Count = 1;
+            DataType = typeof(byte);
+        }
     }
 }
