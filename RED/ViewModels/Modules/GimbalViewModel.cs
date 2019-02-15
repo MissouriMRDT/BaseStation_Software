@@ -2,6 +2,7 @@
 using RED.Interfaces;
 using RED.Interfaces.Input;
 using RED.Models.Modules;
+using RED.Models.Network;
 using RED.ViewModels.Input;
 using System;
 using System.Collections.Generic;
@@ -98,8 +99,8 @@ namespace RED.ViewModels.Modules
                 short pan, tilt;
                 pan = (Int16)(values["Pan"] * PanIncrement);
                 tilt = (Int16)(values["Tilt"] * TiltIncrement);
-                _rovecomm.SendCommand(_idResolver.GetId("PanServo"), pan);
-                _rovecomm.SendCommand(_idResolver.GetId("TiltServo"), tilt);
+                _rovecomm.SendCommand(new Packet("PanServo", pan));
+                _rovecomm.SendCommand(new Packet("TiltServo", tilt));
             }
             else
             {
@@ -131,7 +132,7 @@ namespace RED.ViewModels.Modules
                 short[] openVals = { pan, tilt, roll, mast, zoom };
                 byte[] data = new byte[openVals.Length * sizeof(Int16)];
                 Buffer.BlockCopy(openVals, 0, data, 0, data.Length);
-                _rovecomm.SendCommand(_idResolver.GetId("GimbalOpenValues"), data);
+                _rovecomm.SendCommand(new Packet("GimbalOpenValues", data, 0, null));
             }
         }
 
@@ -150,28 +151,28 @@ namespace RED.ViewModels.Modules
                 short[] openVals = { 0, 0, 0, 0, 0 };
                 byte[] data = new byte[openVals.Length * sizeof(Int16)];
                 Buffer.BlockCopy(openVals, 0, data, 0, data.Length);
-                _rovecomm.SendCommand(_idResolver.GetId("GimbalOpenValues"), data);
+                _rovecomm.SendCommand(new Packet("GimbalOpenValues", data, 0, null));
             }
         }
 
         public void StopMode()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("GimbalOpenValues"), new byte[]{ 0, 0, 0, 0, 0 }, true);
+            _rovecomm.SendCommand(new Packet("GimbalOpenValues", new byte[]{ 0, 0, 0, 0, 0 }, 0, null), true);
         }
 
         public void Snapshot()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("GimbalRecord"), (byte)GimbalRecordValues.Snapshot, true);
+            _rovecomm.SendCommand(new Packet("GimbalRecord", (byte)GimbalRecordValues.Snapshot), true);
         }
 
         public void RecordStart()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("GimbalRecord"), (byte)GimbalRecordValues.Start, true);
+            _rovecomm.SendCommand(new Packet("GimbalRecord", (byte)GimbalRecordValues.Start), true);
         }
 
         public void RecordStop()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("GimbalRecord"), (byte)GimbalRecordValues.Stop, true);
+            _rovecomm.SendCommand(new Packet("GimbalRecord", (byte)GimbalRecordValues.Stop), true);
         }
 
         private enum GimbalRecordValues

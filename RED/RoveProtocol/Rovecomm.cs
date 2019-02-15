@@ -6,6 +6,7 @@ using System.Net;
 using System.Threading.Tasks;
 using RED.Interfaces;
 using RED.Interfaces.Network;
+using RED.Models.Network;
 using RED.ViewModels.Network;
 
 namespace RED.Roveprotocol
@@ -35,54 +36,27 @@ namespace RED.Roveprotocol
 
         private IPAddress[] allDeviceIPs;
         private readonly IIPAddressProvider ipProvider;
-        private Dictionary<ushort, List<IRovecommReceiver>> registrations;
+        private readonly IDataIdResolver idResolver;
+        private Dictionary<string, List<IRovecommReceiver>> registrations;
         private ISequenceNumberProvider sequenceNumberProvider;
         private readonly ILogger log;
         private readonly NetworkManagerViewModel networkManager;
         private HashSet<PendingPing> pendingPings = new HashSet<PendingPing>();
         private Dictionary<IPAddress, SubscriptionRecord> subscriptions;
 
-        public Rovecomm(NetworkManagerViewModel netManager, ILogger logger, IIPAddressProvider ipAddressProvider)
+        public Rovecomm(NetworkManagerViewModel netManager, ILogger logger, IIPAddressProvider ipAddressProvider, IDataIdResolver dataIdResolver)
         {
             log = logger;
             ipProvider = ipAddressProvider;
             networkManager = netManager;
+            idResolver = dataIdResolver;
 
             sequenceNumberProvider = new SequenceNumberManager();
-            registrations = new Dictionary<ushort, List<IRovecommReceiver>>();
+            registrations = new Dictionary<string, List<IRovecommReceiver>>();
             subscriptions = new Dictionary<IPAddress, SubscriptionRecord>();
 
             allDeviceIPs = ipAddressProvider.GetAllIPAddresses();
             networkManager.PacketReceived += HandleReceivedPacket;
-        }
-
-
-        /// <summary>
-        /// send a rovecomm message over the network. This overload takes any object as data to send, and will 
-        /// be transformed into bytes in the process.
-        /// </summary>
-        /// <param name="dataId">the id to attach to the message, corresponding to rovecomm metadata ID's</param>
-        /// <param name="obj">the data to send over the network</param>
-        /// <param name="reliable">whether to send it via a protocol that ensures that it gets there, or to 
-        /// simply broadcast the data. The former is more useful for single one off messages, the latter 
-        /// for repeated messages or commands. </param>
-        public void SendCommand(ushort dataId, dynamic obj, bool reliable = false)
-        {
-
-            SendCommand(dataId, System.BitConverter.GetBytes(obj), reliable);
-        }
-
-        /// <summary>
-        /// send a rovecomm message over the network. This overload takes any byte as data to send
-        /// </summary>
-        /// <param name="dataId">the id to attach to the message, corresponding to rovecomm metadata ID's</param>
-        /// <param name="obj">the data to send over the network</param>
-        /// <param name="reliable">whether to send it via a protocol that ensures that it gets there, or to 
-        /// simply broadcast the data. The former is more useful for single one off messages, the latter 
-        /// for repeated messages or commands. </param>
-        public void SendCommand(ushort dataId, byte obj, bool reliable = false)
-        {
-            SendCommand(dataId, new byte[] { obj }, reliable);
         }
 
         /// <summary>
@@ -93,10 +67,11 @@ namespace RED.Roveprotocol
         /// <param name="reliable">whether to send it via a protocol that ensures that it gets there, or to 
         /// simply broadcast the data. The former is more useful for single one off messages, the latter 
         /// for repeated messages or commands. </param>
-        public void SendCommand(ushort dataId, byte[] data, bool reliable = false)
+        public void SendCommand(Packet packet, bool reliable = false)
         {
+            ushort dataId = idResolver.GetId(packet.Name);
             IPAddress destIP = ipProvider.GetIPAddress(dataId);
-            SendPacket(dataId, data, destIP, reliable);
+            SendPacket(dataId, packet.Data, destIP, reliable);
         }
 
         /// <summary>
@@ -126,17 +101,17 @@ namespace RED.Roveprotocol
         /// </summary>
         /// <param name="receiver">the receiver to be notified (the class should input itself as this)</param>
         /// <param name="dataId">the data id of the message you want to be notified of</param>
-        public void NotifyWhenMessageReceived(IRovecommReceiver receiver, ushort dataId)
+        public void NotifyWhenMessageReceived(IRovecommReceiver receiver, string dataName)
         {
-            if (dataId == 0) return;
-            if (registrations.TryGetValue(dataId, out List<IRovecommReceiver> existingRegistrations))
+            if (dataName == null) return;
+            if (registrations.TryGetValue(dataName, out List<IRovecommReceiver> existingRegistrations))
             {
                 if (!existingRegistrations.Contains(receiver))
                     existingRegistrations.Add(receiver);
             }
             else
             {
-                registrations.Add(dataId, new List<IRovecommReceiver> { receiver });
+                registrations.Add(dataName, new List<IRovecommReceiver> { receiver });
             }
         }
 
@@ -146,8 +121,8 @@ namespace RED.Roveprotocol
         /// <param name="receiver">the reciever to stop being notified (the class should input itself as this)</param>
         public void StopReceivingNotifications(IRovecommReceiver receiver)
         {
-            var registrationCopy = new Dictionary<ushort, List<IRovecommReceiver>>(registrations); //Use a copy because we may modify it while removing stuff and that breaks the foreach
-            foreach (KeyValuePair<ushort, List<IRovecommReceiver>> kvp in registrationCopy)
+            var registrationCopy = new Dictionary<string, List<IRovecommReceiver>>(registrations); //Use a copy because we may modify it while removing stuff and that breaks the foreach
+            foreach (KeyValuePair<string, List<IRovecommReceiver>> kvp in registrationCopy)
             {
                 StopReceivingNotifications(receiver, kvp.Key);
             }
@@ -159,14 +134,14 @@ namespace RED.Roveprotocol
         /// </summary>
         /// <param name="subscriber"></param>
         /// <param name="dataId"></param>
-        public void StopReceivingNotifications(IRovecommReceiver subscriber, ushort dataId)
+        public void StopReceivingNotifications(IRovecommReceiver subscriber, string dataName)
         {
-            if (registrations.TryGetValue(dataId, out List<IRovecommReceiver> existingRegistrations))
+            if (registrations.TryGetValue(dataName, out List<IRovecommReceiver> existingRegistrations))
             {
                 existingRegistrations.Remove(subscriber);
                 if (existingRegistrations.Count == 0)
                 {
-                    registrations.Remove(dataId);
+                    registrations.Remove(dataName);
                 }
             }
         }
@@ -227,7 +202,7 @@ namespace RED.Roveprotocol
 
             if (passToSubscribers)
             {
-                NotifyReceivers(dataId, data);
+                NotifyReceivers(idResolver.GetName(dataId), data);
             }
         }
 
@@ -273,19 +248,21 @@ namespace RED.Roveprotocol
         /// <param name="dataId">the dataid of the message received</param>
         /// <param name="data">the data received</param>
         /// <param name="reliable">whether or not it was sent over a 'reliable' (non broadcast or not) network protocol</param>
-        private void NotifyReceivers(ushort dataId, byte[] data, bool reliable = false)
+        private void NotifyReceivers(string dataName, byte[] data, bool reliable = false)
         {
-            if (dataId == 0) return;
-            if (registrations.TryGetValue(dataId, out List<IRovecommReceiver> registered))
+            if (dataName == null) return;
+            if (registrations.TryGetValue(dataName, out List<IRovecommReceiver> registered))
                 foreach (IRovecommReceiver subscription in registered)
                 {
+                    Packet packet = new Packet(dataName, data, 0, null);
+
                     try
                     {
-                        subscription.ReceivedRovecommMessageCallback(dataId, data, reliable);
+                        subscription.ReceivedRovecommMessageCallback(packet, reliable);
                     }
                     catch (System.Exception e)
                     {
-                        log.Log("Error parsing packet with dataid={0}{1}{2}", dataId, System.Environment.NewLine, e);
+                        log.Log("Error parsing packet with dataid={0}{1}{2}", packet.DataType, System.Environment.NewLine, e);
                     }
                 }
         }

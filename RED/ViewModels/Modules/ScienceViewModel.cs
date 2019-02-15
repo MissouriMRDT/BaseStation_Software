@@ -2,6 +2,7 @@
 using RED.Interfaces;
 using RED.Interfaces.Input;
 using RED.Models.Modules;
+using RED.Models.Network;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -218,18 +219,18 @@ namespace RED.ViewModels.Modules
             Name = "Science Controls";
             ModeType = "ScienceControls";
 
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("SciSensor0"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("SciSensor1"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("SciSensor2"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("SciSensor3"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("SciSensor4"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("SciSensor5"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("SciSensor6"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("SciSensor7"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("SciSensor8"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("SciSensor9"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Temperature"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Moisture"));
+            _rovecomm.NotifyWhenMessageReceived(this, "SciSensor0");
+            _rovecomm.NotifyWhenMessageReceived(this, "SciSensor1");
+            _rovecomm.NotifyWhenMessageReceived(this, "SciSensor2");
+            _rovecomm.NotifyWhenMessageReceived(this, "SciSensor3");
+            _rovecomm.NotifyWhenMessageReceived(this, "SciSensor4");
+            _rovecomm.NotifyWhenMessageReceived(this, "SciSensor5");
+            _rovecomm.NotifyWhenMessageReceived(this, "SciSensor6");
+            _rovecomm.NotifyWhenMessageReceived(this, "SciSensor7");
+            _rovecomm.NotifyWhenMessageReceived(this, "SciSensor8");
+            _rovecomm.NotifyWhenMessageReceived(this, "SciSensor9");
+            _rovecomm.NotifyWhenMessageReceived(this, "Temperature");
+            _rovecomm.NotifyWhenMessageReceived(this, "Moisture");
         }
 
         public void StartMode()
@@ -256,113 +257,113 @@ namespace RED.ViewModels.Modules
             float screwMovement = values["Screw"];
             float drillSpeed = values["Drill"];
             float genevaSpeed = values["GenevaLeft"] == 1 ? 1 : values["GenevaRight"] == 1 ? -1 : 0;
-            _rovecomm.SendCommand(_idResolver.GetId("Drill"), (Int16)(drillSpeed * DrillSpeedScale));
+            _rovecomm.SendCommand(new Packet("Drill", (Int16)(drillSpeed * DrillSpeedScale)));
 
             if (ControlState == "OpenLoop")
             {
-                _rovecomm.SendCommand(_idResolver.GetId("Screw"), (Int16)(screwMovement * ScrewSpeedScale));
-                _rovecomm.SendCommand(_idResolver.GetId("Geneva"), (Int16)(genevaSpeed * GenevaSpeedScale));
+                _rovecomm.SendCommand(new Packet("Screw", (Int16)(screwMovement * ScrewSpeedScale)));
+                _rovecomm.SendCommand(new Packet("Geneva", (Int16)(genevaSpeed * GenevaSpeedScale)));
             }
         }
 
         public void StopMode()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("Screw"), (Int16)(0), true);
-            _rovecomm.SendCommand(_idResolver.GetId("Drill"), (Int16)(0), true);
+            _rovecomm.SendCommand(new Packet("Screw", (Int16)(0)), true);
+            _rovecomm.SendCommand(new Packet("Drill", (Int16)(0)), true);
         }
 
         public void SensorAllOn()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.SensorAllEnable, true);
+            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.SensorAllEnable), true);
         }
         public void SensorAllOff()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.SensorAllDisable, true);
+            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.SensorAllDisable), true);
         }
         public void Sensor0On()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor0Enable, true);
+            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.Sensor0Enable), true);
         }
         public void Sensor0Off()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor0Disable, true);
+            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.Sensor0Disable), true);
         }
         public void Sensor1On()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor1Enable, true);
+            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.Sensor1Enable), true);
         }
         public void Sensor1Off()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor1Disable, true);
+            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.Sensor1Disable), true);
         }
         public void Sensor2On()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor2Enable, true);
+            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.Sensor2Enable), true);
         }
         public void Sensor2Off()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor2Disable, true);
+            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.Sensor2Disable), true);
         }
         public void Sensor3On()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor3Enable, true);
+            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.Sensor3Enable), true);
         }
         public void Sensor3Off()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor3Disable, true);
+            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.Sensor3Disable), true);
         }
         public void Sensor4On()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor4Enable, true);
+            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.Sensor4Enable), true);
         }
         public void Sensor4Off()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor4Disable, true);
+            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.Sensor4Disable), true);
         }
         public void Sensor5On()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor5Enable, true);
+            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.Sensor5Enable), true);
         }
         public void Sensor5Off()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor5Disable, true);
+            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.Sensor5Disable), true);
         }
         public void Sensor6On()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor6Enable, true);
+            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.Sensor6Enable), true);
         }
         public void Sensor6Off()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor6Disable, true);
+            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.Sensor6Disable), true);
         }
         public void Sensor7On()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ScienceArmCommand"), (ushort)ScienceRequestTypes.Sensor7Enable, true);
+            _rovecomm.SendCommand(new Packet("ScienceArmCommand", (ushort)ScienceRequestTypes.Sensor7Enable), true);
         }
         public void Sensor7Off()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ScienceArmCommand"), (ushort)ScienceRequestTypes.Sensor7Disable, true);
+            _rovecomm.SendCommand(new Packet("ScienceArmCommand", (ushort)ScienceRequestTypes.Sensor7Disable), true);
         }
         public void Sensor8On()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ScienceArmCommand"), (ushort)ScienceRequestTypes.Sensor8Enable, true);
+            _rovecomm.SendCommand(new Packet("ScienceArmCommand", (ushort)ScienceRequestTypes.Sensor8Enable), true);
         }
         public void Sensor8Off()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ScienceArmCommand"), (ushort)ScienceRequestTypes.Sensor8Disable, true);
+            _rovecomm.SendCommand(new Packet("ScienceArmCommand", (ushort)ScienceRequestTypes.Sensor8Disable), true);
         }
         public void Sensor9On()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor9Enable, true);
+            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.Sensor9Enable), true);
         }
         public void Sensor9Off()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.Sensor9Disable, true);
+            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.Sensor9Disable), true);
         }
 
         public void RequestSpectrometer()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (ushort)ScienceRequestTypes.SpectrometerRun, true);
+            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.SpectrometerRun), true);
             _log.Log("Spectrometer data requested");
         }
         public async void DownloadSpectrometer()
@@ -390,23 +391,23 @@ namespace RED.ViewModels.Modules
 
         public void RequestLaserOn()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (byte)ScienceRequestTypes.LaserOn, true);
+            _rovecomm.SendCommand(new Packet("ScienceCommand", (byte)ScienceRequestTypes.LaserOn), true);
             _log.Log("Science Laser On requested");
         }
         public void RequestLaserOff()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ScienceCommand"), (byte)ScienceRequestTypes.LaserOff, true);
+            _rovecomm.SendCommand(new Packet("ScienceCommand", (byte)ScienceRequestTypes.LaserOff), true);
             _log.Log("Science Laser Off requested");
         }
 
         public void SetGenevaPosition(byte index)
         {
-            _rovecomm.SendCommand(_idResolver.GetId("GenevaPosition"), index);
+            _rovecomm.SendCommand(new Packet("GenevaPosition", index));
         }
 
         public void SetScrewPosition(byte index)
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ScrewPosition"), index);
+            _rovecomm.SendCommand(new Packet("ScrewPosition", index));
         }
 
         public void SaveFileStart()
@@ -426,48 +427,48 @@ namespace RED.ViewModels.Modules
             await SensorDataFile.WriteAsync(data, 0, data.Length);
         }
 
-        public void ReceivedRovecommMessageCallback(ushort dataId, byte[] data, bool reliable)
+        public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
         {
-            switch (_idResolver.GetName(dataId))
+            switch (packet.Name)
             {
                 case "SciSensor0":
-                    Sensor0Value = BitConverter.ToSingle(data, 0);
+                    Sensor0Value = BitConverter.ToSingle(packet.Data, 0);
                     SaveFileWrite("Sensor00", Sensor0Value);
                     break;
                 case "Temperature":
-                    Sensor1Value = BitConverter.ToInt16(data, 0);
+                    Sensor1Value = BitConverter.ToInt16(packet.Data, 0);
                     SaveFileWrite("Sensor01", Sensor1Value);
                     break;
                 case "SciSensor2":
-                    Sensor2Value = BitConverter.ToSingle(data, 0);
+                    Sensor2Value = BitConverter.ToSingle(packet.Data, 0);
                     SaveFileWrite("Sensor02", Sensor2Value);
                     break;
                 case "Moisture":
-                    Sensor3Value = BitConverter.ToInt16(data, 0);
+                    Sensor3Value = BitConverter.ToInt16(packet.Data, 0);
                     SaveFileWrite("Sensor03", Sensor3Value);
                     break;
                 case "SciSensor4":
-                    Sensor4Value = BitConverter.ToSingle(data, 0);
+                    Sensor4Value = BitConverter.ToSingle(packet.Data, 0);
                     SaveFileWrite("Sensor04", Sensor4Value);
                     break;
                 case "SciSensor5":
-                    Sensor5Value = BitConverter.ToSingle(data, 0);
+                    Sensor5Value = BitConverter.ToSingle(packet.Data, 0);
                     SaveFileWrite("Sensor05", Sensor5Value);
                     break;
                 case "SciSensor6":
-                    Sensor6Value = BitConverter.ToSingle(data, 0);
+                    Sensor6Value = BitConverter.ToSingle(packet.Data, 0);
                     SaveFileWrite("Sensor06", Sensor6Value);
                     break;
                 case "SciSensor7":
-                    Sensor7Value = BitConverter.ToSingle(data, 0);
+                    Sensor7Value = BitConverter.ToSingle(packet.Data, 0);
                     SaveFileWrite("Sensor07", Sensor7Value);
                     break;
                 case "SciSensor8":
-                    Sensor8Value = BitConverter.ToSingle(data, 0);
+                    Sensor8Value = BitConverter.ToSingle(packet.Data, 0);
                     SaveFileWrite("Sensor08", Sensor8Value);
                     break;
                 case "SciSensor9":
-                    Sensor9Value = BitConverter.ToSingle(data, 0);
+                    Sensor9Value = BitConverter.ToSingle(packet.Data, 0);
                     SaveFileWrite("Sensor09", Sensor9Value);
                     break;
                 default:

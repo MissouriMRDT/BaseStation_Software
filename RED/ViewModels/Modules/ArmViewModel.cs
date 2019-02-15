@@ -4,6 +4,7 @@ using RED.Contexts.Modules;
 using RED.Interfaces;
 using RED.Interfaces.Input;
 using RED.Models.Modules;
+using RED.Models.Network;
 using RED.ViewModels.Input;
 using System;
 using System.Collections.Generic;
@@ -328,10 +329,10 @@ namespace RED.ViewModels.Modules
             _configManager.AddRecord(PositionsConfigName, ArmConfig.DefaultArmPositions);
             InitializePositions(_configManager.GetConfig<ArmPositionsContext>(PositionsConfigName));
 
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("ArmCurrentPosition"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("ArmFault"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("ArmCurrentMain"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("ArmCurrentXYZ"));
+            _rovecomm.NotifyWhenMessageReceived(this, "ArmCurrentPosition");
+            _rovecomm.NotifyWhenMessageReceived(this, "ArmFault");
+            _rovecomm.NotifyWhenMessageReceived(this, "ArmCurrentMain");
+            _rovecomm.NotifyWhenMessageReceived(this, "ArmCurrentXYZ");
 
             _armFaultIds = new Dictionary<int, string>();
             _armFaultIds.Add(1, "Motor 1 fault");
@@ -349,32 +350,32 @@ namespace RED.ViewModels.Modules
             _armFaultIds.Add(13, "Wrist Rotate encoder disconnected");
         }
 
-        public void ReceivedRovecommMessageCallback(ushort dataId, byte[] data, bool reliable)
+        public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
         {
-            switch (_idResolver.GetName(dataId))
+            switch (packet.Name)
             {
                 case "ArmCurrentPosition":
-                    AngleJ1 = BitConverter.ToSingle(data, 0 * sizeof(float));
-                    AngleJ2 = BitConverter.ToSingle(data, 1 * sizeof(float));
-                    AngleJ3 = BitConverter.ToSingle(data, 2 * sizeof(float));
-                    AngleJ4 = BitConverter.ToSingle(data, 3 * sizeof(float));
-                    AngleJ5 = BitConverter.ToSingle(data, 4 * sizeof(float));
-                    AngleJ6 = BitConverter.ToSingle(data, 5 * sizeof(float));
+                    AngleJ1 = BitConverter.ToSingle(packet.Data, 0 * sizeof(float));
+                    AngleJ2 = BitConverter.ToSingle(packet.Data, 1 * sizeof(float));
+                    AngleJ3 = BitConverter.ToSingle(packet.Data, 2 * sizeof(float));
+                    AngleJ4 = BitConverter.ToSingle(packet.Data, 3 * sizeof(float));
+                    AngleJ5 = BitConverter.ToSingle(packet.Data, 4 * sizeof(float));
+                    AngleJ6 = BitConverter.ToSingle(packet.Data, 5 * sizeof(float));
                     break;
                 case "ArmCurrentXYZ":
-                    CoordinateX = BitConverter.ToSingle(data, 0 * sizeof(float));
-                    CoordinateY = BitConverter.ToSingle(data, 1 * sizeof(float));
-                    CoordinateZ = BitConverter.ToSingle(data, 2 * sizeof(float));
-                    Yaw = BitConverter.ToSingle(data, 3 * sizeof(float));
-                    Pitch = BitConverter.ToSingle(data, 4 * sizeof(float));
-                    Roll = BitConverter.ToSingle(data, 5 * sizeof(float));
+                    CoordinateX = BitConverter.ToSingle(packet.Data, 0 * sizeof(float));
+                    CoordinateY = BitConverter.ToSingle(packet.Data, 1 * sizeof(float));
+                    CoordinateZ = BitConverter.ToSingle(packet.Data, 2 * sizeof(float));
+                    Yaw = BitConverter.ToSingle(packet.Data, 3 * sizeof(float));
+                    Pitch = BitConverter.ToSingle(packet.Data, 4 * sizeof(float));
+                    Roll = BitConverter.ToSingle(packet.Data, 5 * sizeof(float));
                     break;
                 case "ArmFault":
-                    _log.Log($"Arm fault: {_armFaultIds[data[0]]}");
+                    _log.Log($"Arm fault: {_armFaultIds[packet.Data[0]]}");
 
                     //Arm will automatically exit closed loop mode when it detects an encoder fault
                     //so we make sure to stop spamming closed loop messages at it, as we do in IK control states.
-                    if(ArmEncoderFaultIds.Contains(data[0]) && (myState == ArmControlState.IKRoverPOV || myState == ArmControlState.IKWristPOV))
+                    if(ArmEncoderFaultIds.Contains(packet.Data[0]) && (myState == ArmControlState.IKRoverPOV || myState == ArmControlState.IKWristPOV))
                     {
                         myState = ArmControlState.OpenLoop;
                         ControlState = "Open loop";
@@ -382,7 +383,7 @@ namespace RED.ViewModels.Modules
                     }
                     break;
                 case "ArmCurrentMain":
-                    CurrentMain = BitConverter.ToSingle(data, 0);
+                    CurrentMain = BitConverter.ToSingle(packet.Data, 0);
                     break;
             }
         }
@@ -446,11 +447,11 @@ namespace RED.ViewModels.Modules
             Int16[] sendValues = { ArmBaseTwist, ArmBaseBend, ArmElbowBend, ArmElbowTwist, ArmWristBend, ArmWristTwist, Gripper, Nipper };
             byte[] data = new byte[sendValues.Length * sizeof(Int16)];
             Buffer.BlockCopy(sendValues, 0, data, 0, data.Length);
-            _rovecomm.SendCommand(_idResolver.GetId("ArmValues"), data);
+            _rovecomm.SendCommand(new Packet("ArmValues", data, 0, null));
 
             if (values["GripperSwap"] == 1)
             {
-                _rovecomm.SendCommand(_idResolver.GetId("GripperSwap"), data);
+                _rovecomm.SendCommand(new Packet("GripperSwap", data, 0, null));
             }
         }
 
@@ -511,16 +512,16 @@ namespace RED.ViewModels.Modules
 
             if (stateToUse == ArmControlState.IKWristPOV)
             {
-                _rovecomm.SendCommand(_idResolver.GetId("IKWristIncrement"), data);
+                _rovecomm.SendCommand(new Packet("IKWristIncrement", data, 0, null));
             }
             else if (stateToUse == ArmControlState.IKRoverPOV)
             {
-                _rovecomm.SendCommand(_idResolver.GetId("IKRoverIncrement"), data);
+                _rovecomm.SendCommand(new Packet("IKRoverIncrement", data, 0, null));
             }
 
             if(values["GripperSwap"] == 1)
             {
-                _rovecomm.SendCommand(_idResolver.GetId("GripperSwap"), data);
+                _rovecomm.SendCommand(new Packet("GripperSwap", data, 0, null));
             }
         }
 
@@ -553,7 +554,7 @@ namespace RED.ViewModels.Modules
 
             if (oldState != myState)
             {
-                _rovecomm.SendCommand(_idResolver.GetId("ArmStop"), (Int16)(0));
+                _rovecomm.SendCommand(new Packet("ArmStop", new byte[]{0}, 0, null));
                 ControlState = state;
             }
         }
@@ -581,14 +582,14 @@ namespace RED.ViewModels.Modules
             {
                 if(guiControlInitialized == false)
                 {
-                    _rovecomm.SendCommand(_idResolver.GetId("ArmStop"), (Int16)(0), true);
+                    _rovecomm.SendCommand(new Packet("ArmStop", new byte[]{0}, 0, null), true);
                 }
             }
         }
 
         public void StopMode()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ArmStop"), (Int16)(0), true);
+            _rovecomm.SendCommand(new Packet("ArmStop", new byte[] { 0 }, 0, null), true);
 
             myState = ArmControlState.GuiControl;
             ControlState = "GUI control";
@@ -596,23 +597,23 @@ namespace RED.ViewModels.Modules
 
         public void EnableCommand(string bus, bool enableState)
         {
-            ushort id;
+            string name;
             switch (bus)
             {
-                case "All": id = _idResolver.GetId("ArmEnableAll"); break;
-                case "Main": id = _idResolver.GetId("ArmEnableMain"); break;
-                case "J1": id = _idResolver.GetId("ArmEnableJ1"); break;
-                case "J2": id = _idResolver.GetId("ArmEnableJ2"); break;
-                case "J3": id = _idResolver.GetId("ArmEnableJ3"); break;
-                case "J4": id = _idResolver.GetId("ArmEnableJ4"); break;
-                case "J5": id = _idResolver.GetId("ArmEnableJ5"); break;
-                case "J6": id = _idResolver.GetId("ArmEnableJ6"); break;
-                case "Endeff1": id = _idResolver.GetId("ArmEnableEndeff1"); break;
-                case "Endeff2": id = _idResolver.GetId("ArmEnableEndeff2"); break;
+                case "All": name = "ArmEnableAll"; break;
+                case "Main": name = "ArmEnableMain"; break;
+                case "J1": name = "ArmEnableJ1"; break;
+                case "J2": name = "ArmEnableJ2"; break;
+                case "J3": name = "ArmEnableJ3"; break;
+                case "J4": name = "ArmEnableJ4"; break;
+                case "J5": name = "ArmEnableJ5"; break;
+                case "J6": name = "ArmEnableJ6"; break;
+                case "Endeff1": name = "ArmEnableEndeff1"; break;
+                case "Endeff2": name = "ArmEnableEndeff2"; break;
                 default: return;
             }
 
-            _rovecomm.SendCommand(id, (enableState) ? ArmEnableCommand : ArmDisableCommand, true);
+            _rovecomm.SendCommand(new Packet(name, new byte[] { (enableState) ? ArmEnableCommand : ArmDisableCommand }, 0, null), true);
         }
 
         public void SetOpPoint()
@@ -621,31 +622,31 @@ namespace RED.ViewModels.Modules
             byte[] data = new byte[opPoints.Length * sizeof(float)];
             Buffer.BlockCopy(opPoints, 0, data, 0, data.Length);
 
-            _rovecomm.SendCommand(_idResolver.GetId("OpPoint"), data, true);
+            _rovecomm.SendCommand(new Packet("OpPoint", data, 0, null), true);
         }
 
         public void GetPosition()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ArmGetPosition"), new byte[0]);
+            _rovecomm.SendCommand(new Packet("ArmGetPosition", new byte[] { 0 }, 0, null));
         }
         public void SetPosition()
         {
             float[] angles = { AngleJ1, AngleJ2, AngleJ3, AngleJ4, AngleJ5, AngleJ6 };
             byte[] data = new byte[angles.Length * sizeof(float)];
             Buffer.BlockCopy(angles, 0, data, 0, data.Length);
-            _rovecomm.SendCommand(_idResolver.GetId("ArmAbsoluteAngle"), data, true);
+            _rovecomm.SendCommand(new Packet("ArmAbsoluteAngle", data, 0, null), true);
 
             myState = ArmControlState.GuiControl;
             guiControlInitialized = true;
         }
         public void ToggleAuto()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ToggleAutoPositionTelem"), new byte[0]);
+            _rovecomm.SendCommand(new Packet("ToggleAutoPositionTelem", new byte[] { 0 }, 0, null));
         }
 
         public void GetXYZPosition()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ArmGetXYZ"), new byte[0]);
+            _rovecomm.SendCommand(new Packet("ArmGetXYZ", new byte[] { 0 }, 0, null));
         }
 
         public void SetXYZPosition()
@@ -653,7 +654,7 @@ namespace RED.ViewModels.Modules
             float[] coordinates = { CoordinateX, CoordinateY, CoordinateZ, Yaw, Pitch, Roll };
             byte[] data = new byte[coordinates.Length * sizeof(float)];
             Buffer.BlockCopy(coordinates, 0, data, 0, data.Length);
-            _rovecomm.SendCommand(_idResolver.GetId("ArmAbsoluteXYZ"), data, true);
+            _rovecomm.SendCommand(new Packet("ArmAbsoluteXYZ", data, 0, null), true);
 
             myState = ArmControlState.GuiControl;
             guiControlInitialized = true;
@@ -661,11 +662,11 @@ namespace RED.ViewModels.Modules
 
         public void LimitSwitchOverride(byte index)
         {
-            _rovecomm.SendCommand(_idResolver.GetId("LimitSwitchOverride"), index, true);
+            _rovecomm.SendCommand(new Packet("LimitSwitchOverride", new byte[] { index }, 0, null), true);
         }
         public void LimitSwitchUnOverride(byte index)
         {
-            _rovecomm.SendCommand(_idResolver.GetId("LimitSwitchUnOverride"), index, true);
+            _rovecomm.SendCommand(new Packet("LimitSwitchUnOverride", new byte[] { index }, 0, null), true);
         }
 
         public void RecallPosition()

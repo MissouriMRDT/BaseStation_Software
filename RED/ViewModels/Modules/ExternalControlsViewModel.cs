@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using RED.Interfaces;
+using RED.Models.Network;
 
 namespace RED.ViewModels.Modules
 {
@@ -33,7 +34,7 @@ namespace RED.ViewModels.Modules
 
         public void ExternalControlsReset()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("ExternalControlsReset"), ResetCode, true);
+            _rovecomm.SendCommand(new Packet("ExternalControlsReset", ResetCode), true);
         }
     }
 }

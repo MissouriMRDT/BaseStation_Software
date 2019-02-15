@@ -2,6 +2,7 @@
 using RED.Addons.Navigation;
 using RED.Interfaces;
 using RED.Models.Modules;
+using RED.Models.Network;
 using System;
 using System.IO;
 
@@ -150,20 +151,20 @@ namespace RED.ViewModels.Modules
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
 
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("GPSQuality"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("GPSPosition"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("GPSSpeed"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("GPSSpeedAngle"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("GPSAltitude"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("GPSSatellites"));
+            _rovecomm.NotifyWhenMessageReceived(this, "GPSQuality");
+            _rovecomm.NotifyWhenMessageReceived(this, "GPSPosition");
+            _rovecomm.NotifyWhenMessageReceived(this, "GPSSpeed");
+            _rovecomm.NotifyWhenMessageReceived(this, "GPSSpeedAngle");
+            _rovecomm.NotifyWhenMessageReceived(this, "GPSAltitude");
+            _rovecomm.NotifyWhenMessageReceived(this, "GPSSatellites");
         }
 
-        public void ReceivedRovecommMessageCallback(ushort dataId, byte[] data, bool reliable)
+        public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
         {
-            switch (_idResolver.GetName(dataId))
+            switch (packet.Name)
             {
                 case "GPSData":
-                    var ms = new MemoryStream(data);
+                    var ms = new MemoryStream(packet.Data);
                     using (var br = new BinaryReader(ms))
                     {
                         FixObtained = br.ReadByte() != 0;
@@ -180,30 +181,30 @@ namespace RED.ViewModels.Modules
                     }
                     break;
                 case "Heading":
-                    Heading = BitConverter.ToSingle(data, 0);
+                    Heading = BitConverter.ToSingle(packet.Data, 0);
                     break;
                 case "GPSQuality":
-                    FixObtained = data[0] != 0;
-                    FixQuality = data[0];
+                    FixObtained = packet.Data[0] != 0;
+                    FixQuality = packet.Data[0];
                     break;
                 case "GPSPosition":
                     CurrentLocation = new GPSCoordinate()
                     {
-                        Latitude = BitConverter.ToInt32(data, 1 * sizeof(Int32)) / 10000000f,
-                        Longitude = -BitConverter.ToInt32(data, 0 * sizeof(Int32)) / 10000000f
+                        Latitude = BitConverter.ToInt32(packet.Data, 1 * sizeof(Int32)) / 10000000f,
+                        Longitude = -BitConverter.ToInt32(packet.Data, 0 * sizeof(Int32)) / 10000000f
                     };
                     break;
                 case "GPSSpeed":
-                    Speed = BitConverter.ToSingle(data, 0);
+                    Speed = BitConverter.ToSingle(packet.Data, 0);
                     break;
                 case "GPSSpeedAngle":
-                    SpeedAngle = BitConverter.ToSingle(data, 0);
+                    SpeedAngle = BitConverter.ToSingle(packet.Data, 0);
                     break;
                 case "GPSAltitude":
-                    CurrentAltitude = BitConverter.ToSingle(data, 0);
+                    CurrentAltitude = BitConverter.ToSingle(packet.Data, 0);
                     break;
                 case "GPSSatellites":
-                    NumberOfSatellites = data[0];
+                    NumberOfSatellites = packet.Data[0];
                     break;
             }
         }

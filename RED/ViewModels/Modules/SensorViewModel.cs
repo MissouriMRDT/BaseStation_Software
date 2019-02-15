@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using RED.Interfaces;
 using RED.Models.Modules;
+using RED.Models.Network;
 using System;
 
 namespace RED.ViewModels.Modules
@@ -68,20 +69,20 @@ namespace RED.ViewModels.Modules
             _idResolver = idResolver;
             _log = log;
 
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("IMUTemperature"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("NavPitch"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("NavRoll"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("NavTrueHeading"));
+            _rovecomm.NotifyWhenMessageReceived(this, "IMUTemperature");
+            _rovecomm.NotifyWhenMessageReceived(this, "NavPitch");
+            _rovecomm.NotifyWhenMessageReceived(this, "NavRoll");
+            _rovecomm.NotifyWhenMessageReceived(this, "NavTrueHeading");
         }
 
-        public void ReceivedRovecommMessageCallback(ushort dataId, byte[] data, bool reliable)
+        public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
         {
-            switch (_idResolver.GetName(dataId))
+            switch (packet.Name)
             {
-                case "IMUTemperature": IMUTemperature = BitConverter.ToSingle(data, 0); break;
-                case "NavPitch": Pitch = BitConverter.ToSingle(data, 0); break;
-                case "NavRoll": Roll = BitConverter.ToSingle(data, 0); break;
-                case "NavTrueHeading": TrueHeading = BitConverter.ToSingle(data, 0); break;
+                case "IMUTemperature": IMUTemperature = BitConverter.ToSingle(packet.Data, 0); break;
+                case "NavPitch": Pitch = BitConverter.ToSingle(packet.Data, 0); break;
+                case "NavRoll": Roll = BitConverter.ToSingle(packet.Data, 0); break;
+                case "NavTrueHeading": TrueHeading = BitConverter.ToSingle(packet.Data, 0); break;
             }
         }
     }

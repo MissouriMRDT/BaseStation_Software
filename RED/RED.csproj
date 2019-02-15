@@ -137,6 +137,7 @@
     <Compile Include="Addons\Navigation\GPSCoordinateToLongitudeConverter.cs" />
     <Compile Include="Addons\Navigation\GPSCoordinateToLatitudeConverter.cs" />
     <Compile Include="Addons\Network\Server.cs" />
+    <Compile Include="Models\Network\Packet.cs" />
     <Compile Include="RoveProtocol\SubscriptionRecord.cs" />
     <Compile Include="Addons\Tools\TimestampDisplayConverter.cs" />
     <Compile Include="Addons\Tools\TimeSpanToStringConverter.cs" />

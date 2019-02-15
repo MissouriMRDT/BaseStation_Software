@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using RED.Interfaces;
 using RED.Models.Modules;
+using RED.Models.Network;
 
 namespace RED.ViewModels.Modules
 {
@@ -98,22 +99,22 @@ namespace RED.ViewModels.Modules
         private void SendColors()
         {
             if (Enabled)
-                _rovecomm.SendCommand(_idResolver.GetId("UnderglowColor"), new byte[] { Red, Green, Blue });
+                _rovecomm.SendCommand(new Packet("UnderglowColor", new byte[] { Red, Green, Blue }, 0, null));
         }
 
         private void TurnOff()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("UnderglowColor"), new byte[] { 0, 0, 0 }, true);
+            _rovecomm.SendCommand(new Packet("UnderglowColor", new byte[] { 0, 0, 0 }, 0, null), true);
         }
 
         private void TurnOnHeadlights()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("Headlights"), new byte[] { 1 }, false);
+            _rovecomm.SendCommand(new Packet("Headlights", new byte[] { 1 }, 0, null), false);
         }
 
         private void TurnOffHeadlights()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("Headlights"), new byte[] { 0 }, false);
+            _rovecomm.SendCommand(new Packet("Headlights", new byte[] { 0 }, 0, null), false);
         }
     }
 }

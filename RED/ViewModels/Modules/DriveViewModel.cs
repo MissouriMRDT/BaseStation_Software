@@ -2,6 +2,7 @@
 using RED.Interfaces;
 using RED.Interfaces.Input;
 using RED.Models.Modules;
+using RED.Models.Network;
 using System.Collections.Generic;
 using Math = System.Math;
 
@@ -132,12 +133,12 @@ namespace RED.ViewModels.Modules
         {
             if (UseLegacyDataIds)
             {
-                _rovecomm.SendCommand(_idResolver.GetId("MotorLeftSpeed"), SpeedLeft, reliable);
-                _rovecomm.SendCommand(_idResolver.GetId("MotorRightSpeed"), SpeedRight, reliable);
+                _rovecomm.SendCommand(new Packet("MotorLeftSpeed", SpeedLeft), reliable);
+                _rovecomm.SendCommand(new Packet("MotorRightSpeed", SpeedRight), reliable);
             }
             else
             {
-                _rovecomm.SendCommand(_idResolver.GetId("DriveLeftRight"), (ushort)SpeedLeft << 16 | (ushort)SpeedRight, reliable);
+                _rovecomm.SendCommand(new Packet("DriveLeftRight", (ushort)SpeedLeft << 16 | (ushort)SpeedRight), reliable);
             }
         }
 

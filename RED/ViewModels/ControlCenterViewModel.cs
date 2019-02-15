@@ -390,7 +390,7 @@ namespace RED.ViewModels
             MetadataManager = new MetadataManager(Console, ConfigManager);
        
             NetworkManager = new NetworkManagerViewModel(Console);
-            Rovecomm = new Rovecomm(NetworkManager, Console, MetadataManager);
+            Rovecomm = new Rovecomm(NetworkManager, Console, MetadataManager, MetadataManager);
             ResubscribeAll();
 
             Science = new ScienceViewModel(Rovecomm, MetadataManager, Console);
