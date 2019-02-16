@@ -2,7 +2,7 @@
 
 namespace RED.Models.Network
 {
-    public class Packet
+    public readonly ref struct Packet
     {
         public readonly string Name;
         public readonly byte[] Data;
@@ -24,7 +24,7 @@ namespace RED.Models.Network
             Count = 1;
             DataType = typeof(Int16);
         }
-
+    
         public Packet(string name, ushort data)
         {
             Name = name;

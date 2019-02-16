@@ -42,7 +42,7 @@ namespace RED.RoveProtocol
                 rawData = br.ReadBytes(dataLength);
             }
             
-            return new Packet(resolver.GetName(rawDataId), rawData, 0, null);
+            return new Packet(resolver.GetName(rawDataId), rawData, 1, null);
         }
 
         static public byte[] EncodePacket(Packet packet, IDataIdResolver resolver)
@@ -54,7 +54,7 @@ namespace RED.RoveProtocol
                 using (var bw = new BinaryWriter(ms))
                 {
                     bw.Write(VersionNumber);
-                    bw.Write(IPAddress.HostToNetworkOrder(0)); // Sequence number
+                    bw.Write(IPAddress.HostToNetworkOrder((byte)0)); // Sequence number
                     bw.Write((byte)flags);
                     bw.Write(IPAddress.HostToNetworkOrder((short)resolver.GetId(packet.Name)));
                     bw.Write(IPAddress.HostToNetworkOrder((short)packet.Data.Length));
