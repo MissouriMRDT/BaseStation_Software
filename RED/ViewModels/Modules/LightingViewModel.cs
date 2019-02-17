@@ -2,6 +2,7 @@
 using RED.Interfaces;
 using RED.Models.Modules;
 using RED.Models.Network;
+using RED.RoveProtocol;
 
 namespace RED.ViewModels.Modules
 {
@@ -40,8 +41,6 @@ namespace RED.ViewModels.Modules
                 NotifyOfPropertyChange(() => HeadlightsEnabled);
                 if (value)
                 {
-                
-                    _log.Log("Doin our thing");
                     TurnOnHeadlights();
                 }
                 else
@@ -99,22 +98,22 @@ namespace RED.ViewModels.Modules
         private void SendColors()
         {
             if (Enabled)
-                _rovecomm.SendCommand(new Packet("UnderglowColor", new byte[] { Red, Green, Blue }, 0, null));
+                _rovecomm.SendCommand(new Packet("UnderglowColor", new byte[] { Red, Green, Blue }, 3, (byte)DataTypes.UINT8_T));
         }
 
         private void TurnOff()
         {
-            _rovecomm.SendCommand(new Packet("UnderglowColor", new byte[] { 0, 0, 0 }, 0, null), true);
+            _rovecomm.SendCommand(new Packet("UnderglowColor", new byte[] { 0, 0, 0 }, 3, (byte)DataTypes.UINT8_T), true);
         }
 
         private void TurnOnHeadlights()
         {
-            _rovecomm.SendCommand(new Packet("Headlights", new byte[] { 1 }, 0, null), false);
+            _rovecomm.SendCommand(new Packet("Headlight", (byte)1), false);
         }
 
         private void TurnOffHeadlights()
         {
-            _rovecomm.SendCommand(new Packet("Headlights", new byte[] { 0 }, 0, null), false);
+            _rovecomm.SendCommand(new Packet("Headlights", (byte)0), false);
         }
     }
 }

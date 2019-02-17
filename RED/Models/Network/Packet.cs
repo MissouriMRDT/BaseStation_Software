@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RED.RoveProtocol;
+using System;
 
 namespace RED.Models.Network
 {
@@ -7,9 +8,9 @@ namespace RED.Models.Network
         public readonly string Name;
         public readonly byte[] Data;
         public readonly int Count;
-        public readonly Type DataType;
+        public readonly byte DataType;
 
-        public Packet(string name, byte[] data, int count, Type type)
+        public Packet(string name, byte[] data, int count, byte type)
         {
             Name = name;
             Data = data;
@@ -17,28 +18,52 @@ namespace RED.Models.Network
             DataType = type;
         }
 
+        public Packet(string name, SByte data)
+        {
+            Name = name;
+            Data = BitConverter.GetBytes(data);
+            Count = 1;
+            DataType = (byte)RoveProtocol.DataTypes.INT8_T;
+        }
+
+        public Packet(string name, byte data)
+        {
+            Name = name;
+            Data = BitConverter.GetBytes(data);
+            Count = 1;
+            DataType = (byte)RoveProtocol.DataTypes.UINT8_T;
+        }
+
         public Packet(string name, Int16 data)
         {
             Name = name;
             Data = BitConverter.GetBytes(data);
             Count = 1;
-            DataType = typeof(Int16);
-        }
-    
-        public Packet(string name, ushort data)
-        {
-            Name = name;
-            Data = BitConverter.GetBytes(data);
-            Count = 1;
-            DataType = typeof(ushort);
+            DataType = (byte)RoveProtocol.DataTypes.INT16_T;
         }
 
-        public Packet(string name, int data)
+        public Packet(string name, UInt16 data)
         {
             Name = name;
             Data = BitConverter.GetBytes(data);
             Count = 1;
-            DataType = typeof(int);
+            DataType = (byte)RoveProtocol.DataTypes.UINT16_T;
+        }
+
+        public Packet(string name, Int32 data)
+        {
+            Name = name;
+            Data = BitConverter.GetBytes(data);
+            Count = 1;
+            DataType = (byte)RoveProtocol.DataTypes.INT32_T;
+        }
+
+        public Packet(string name, UInt32 data)
+        {
+            Name = name;
+            Data = BitConverter.GetBytes(data);
+            Count = 1;
+            DataType = (byte)RoveProtocol.DataTypes.UINT32_T;
         }
 
         public Packet(string name)
@@ -46,7 +71,7 @@ namespace RED.Models.Network
             Name = name;
             Data = new byte[] { 0 };
             Count = 1;
-            DataType = typeof(byte);
+            DataType = 0;
         }
     }
 }

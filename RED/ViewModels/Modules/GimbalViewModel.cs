@@ -3,6 +3,7 @@ using RED.Interfaces;
 using RED.Interfaces.Input;
 using RED.Models.Modules;
 using RED.Models.Network;
+using RED.RoveProtocol;
 using RED.ViewModels.Input;
 using System;
 using System.Collections.Generic;
@@ -132,7 +133,7 @@ namespace RED.ViewModels.Modules
                 short[] openVals = { pan, tilt, roll, mast, zoom };
                 byte[] data = new byte[openVals.Length * sizeof(Int16)];
                 Buffer.BlockCopy(openVals, 0, data, 0, data.Length);
-                _rovecomm.SendCommand(new Packet("GimbalOpenValues", data, 0, null));
+                _rovecomm.SendCommand(new Packet("GimbalOpenValues", data, 5,(byte)DataTypes.INT16_T));
             }
         }
 
@@ -151,13 +152,13 @@ namespace RED.ViewModels.Modules
                 short[] openVals = { 0, 0, 0, 0, 0 };
                 byte[] data = new byte[openVals.Length * sizeof(Int16)];
                 Buffer.BlockCopy(openVals, 0, data, 0, data.Length);
-                _rovecomm.SendCommand(new Packet("GimbalOpenValues", data, 0, null));
+                _rovecomm.SendCommand(new Packet("GimbalOpenValues", data, 5, (byte)DataTypes.INT16_T));
             }
         }
 
         public void StopMode()
         {
-            _rovecomm.SendCommand(new Packet("GimbalOpenValues", new byte[]{ 0, 0, 0, 0, 0 }, 0, null), true);
+            _rovecomm.SendCommand(new Packet("GimbalOpenValues", new byte[]{ 0, 0, 0, 0, 0 }, 5, (byte)DataTypes.UINT8_T), true);
         }
 
         public void Snapshot()

@@ -10,23 +10,20 @@ using System.Threading.Tasks;
 
 namespace RED.RoveProtocol
 {
-    class RovecommOne
-    {
-        [Flags]
-        private enum RoveCommFlags : byte
-        {
-            None = 0b000_0000,
-            ACK = 0b000_0001
-        }
+    public enum DataTypes : byte { INT8_T = 0, UINT8_T = 1, INT16_T = 2, UINT16_T = 3, INT32_T = 4, UINT32_T = 5 };
 
-        public const byte VersionNumber = 1;
+    public class RovecommTwo
+    {
+
+        public const byte VersionNumber = 2;
+        static readonly private int[] sizes = new int[] { 1, 1, 2, 2, 4, 4};
 
         static public Packet DecodePacket(byte[] encodedPacket, IDataIdResolver resolver)
         {
-            ushort rawSequenceNumber;
-            RoveCommFlags rawFlags;
             ushort rawDataId;
             byte[] rawData;
+            ushort dataSize;
+            byte dataType;
 
             using (var ms = new MemoryStream(encodedPacket))
             using (var br = new BinaryReader(ms))
@@ -35,27 +32,26 @@ namespace RED.RoveProtocol
                 if (versionNumber != VersionNumber)
                     throw new InvalidDataException("Version number of packet is not supported.");
 
-                rawSequenceNumber = (ushort)IPAddress.NetworkToHostOrder((short)br.ReadUInt16());
-                rawFlags = (RoveCommFlags)br.ReadByte();
                 rawDataId = (ushort)IPAddress.NetworkToHostOrder((short)br.ReadUInt16());
-                ushort dataLength = (ushort)IPAddress.NetworkToHostOrder((short)br.ReadUInt16());
-                rawData = br.ReadBytes(dataLength);
+                dataSize = (ushort)IPAddress.NetworkToHostOrder(br.ReadByte());
+                dataType = br.ReadByte();
+
+                // Per data type
+                rawData = br.ReadBytes(dataSize * sizes[dataType]);
             }
-            // TODO: Edit for ID context for new packet decode system
-            return new Packet(resolver.GetName(rawDataId), rawData, 1, 0);
+
+            return new Packet(resolver.GetName(rawDataId), rawData, dataSize, dataType);
         }
 
         static public byte[] EncodePacket(Packet packet, IDataIdResolver resolver)
         {
             try
             {
-                var flags = RoveCommFlags.None;
                 using (var ms = new MemoryStream())
                 using (var bw = new BinaryWriter(ms))
                 {
                     bw.Write(VersionNumber);
                     bw.Write(IPAddress.HostToNetworkOrder((byte)0)); // Sequence number
-                    bw.Write((byte)flags);
                     bw.Write(IPAddress.HostToNetworkOrder((short)resolver.GetId(packet.Name)));
                     bw.Write(IPAddress.HostToNetworkOrder((short)packet.Data.Length));
                     bw.Write(packet.Data);

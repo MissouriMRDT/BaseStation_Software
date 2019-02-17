@@ -142,6 +142,7 @@
     <Compile Include="Models\Network\Packet.cs" />
     <Compile Include="RoveProtocol\RingBuffer.cs" />
     <Compile Include="RoveProtocol\RovecommOne.cs" />
+    <Compile Include="RoveProtocol\RovecommTwo.cs" />
     <Compile Include="RoveProtocol\SubscriptionRecord.cs" />
     <Compile Include="Addons\Tools\TimestampDisplayConverter.cs" />
     <Compile Include="Addons\Tools\TimeSpanToStringConverter.cs" />

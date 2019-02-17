@@ -5,6 +5,7 @@ using RED.Interfaces;
 using RED.Interfaces.Input;
 using RED.Models.Modules;
 using RED.Models.Network;
+using RED.RoveProtocol;
 using RED.ViewModels.Input;
 using System;
 using System.Collections.Generic;
@@ -451,11 +452,11 @@ namespace RED.ViewModels.Modules
             Int16[] sendValues = { ArmBaseTwist, ArmBaseBend, ArmElbowBend, ArmElbowTwist, ArmWristBend, ArmWristTwist, Gripper, Nipper };
             byte[] data = new byte[sendValues.Length * sizeof(Int16)];
             Buffer.BlockCopy(sendValues, 0, data, 0, data.Length);
-            _rovecomm.SendCommand(new Packet("ArmValues", data, 0, null));
+            _rovecomm.SendCommand(new Packet("ArmValues", data, 8, (byte)DataTypes.INT16_T));
 
             if (values["GripperSwap"] == 1)
             {
-                _rovecomm.SendCommand(new Packet("GripperSwap", data, 0, null));
+                _rovecomm.SendCommand(new Packet("GripperSwap", data, 8, (byte)DataTypes.INT16_T));
             }
         }
 
@@ -516,16 +517,16 @@ namespace RED.ViewModels.Modules
 
             if (stateToUse == ArmControlState.IKWristPOV)
             {
-                _rovecomm.SendCommand(new Packet("IKWristIncrement", data, 0, null));
+                _rovecomm.SendCommand(new Packet("IKWristIncrement", data, 8, (byte)DataTypes.INT16_T));
             }
             else if (stateToUse == ArmControlState.IKRoverPOV)
             {
-                _rovecomm.SendCommand(new Packet("IKRoverIncrement", data, 0, null));
+                _rovecomm.SendCommand(new Packet("IKRoverIncrement", data, 8, (byte)DataTypes.INT16_T));
             }
 
             if(values["GripperSwap"] == 1)
             {
-                _rovecomm.SendCommand(new Packet("GripperSwap", data, 0, null));
+                _rovecomm.SendCommand(new Packet("GripperSwap", data, 8, (byte)DataTypes.INT16_T));
             }
         }
 
@@ -558,7 +559,7 @@ namespace RED.ViewModels.Modules
 
             if (oldState != myState)
             {
-                _rovecomm.SendCommand(new Packet("ArmStop", new byte[]{0}, 0, null));
+                _rovecomm.SendCommand(new Packet("ArmStop"));
                 ControlState = state;
             }
         }
@@ -586,14 +587,14 @@ namespace RED.ViewModels.Modules
             {
                 if(guiControlInitialized == false)
                 {
-                    _rovecomm.SendCommand(new Packet("ArmStop", new byte[]{0}, 0, null), true);
+                    _rovecomm.SendCommand(new Packet("ArmStop"), true);
                 }
             }
         }
 
         public void StopMode()
         {
-            _rovecomm.SendCommand(new Packet("ArmStop", new byte[] { 0 }, 0, null), true);
+            _rovecomm.SendCommand(new Packet("ArmStop"), true);
 
             myState = ArmControlState.GuiControl;
             ControlState = "GUI control";
@@ -617,7 +618,7 @@ namespace RED.ViewModels.Modules
                 default: return;
             }
 
-            _rovecomm.SendCommand(new Packet(name, new byte[] { (enableState) ? ArmEnableCommand : ArmDisableCommand }, 0, null), true);
+            _rovecomm.SendCommand(new Packet(name, (enableState) ? ArmEnableCommand : ArmDisableCommand), true);
         }
 
         public void SetOpPoint()
@@ -626,31 +627,31 @@ namespace RED.ViewModels.Modules
             byte[] data = new byte[opPoints.Length * sizeof(float)];
             Buffer.BlockCopy(opPoints, 0, data, 0, data.Length);
 
-            _rovecomm.SendCommand(new Packet("OpPoint", data, 0, null), true);
+            //_rovecomm.SendCommand(new Packet("OpPoint", data, 3, (byte)DataTypes.), true);
         }
 
         public void GetPosition()
         {
-            _rovecomm.SendCommand(new Packet("ArmGetPosition", new byte[] { 0 }, 0, null));
+            _rovecomm.SendCommand(new Packet("ArmGetPosition"));
         }
         public void SetPosition()
         {
             float[] angles = { AngleJ1, AngleJ2, AngleJ3, AngleJ4, AngleJ5, AngleJ6 };
             byte[] data = new byte[angles.Length * sizeof(float)];
             Buffer.BlockCopy(angles, 0, data, 0, data.Length);
-            _rovecomm.SendCommand(new Packet("ArmAbsoluteAngle", data, 0, null), true);
+            //_rovecomm.SendCommand(new Packet("ArmAbsoluteAngle", data, 0, null), true);
 
             myState = ArmControlState.GuiControl;
             guiControlInitialized = true;
         }
         public void ToggleAuto()
         {
-            _rovecomm.SendCommand(new Packet("ToggleAutoPositionTelem", new byte[] { 0 }, 0, null));
+            _rovecomm.SendCommand(new Packet("ToggleAutoPositionTelem"));
         }
 
         public void GetXYZPosition()
         {
-            _rovecomm.SendCommand(new Packet("ArmGetXYZ", new byte[] { 0 }, 0, null));
+            _rovecomm.SendCommand(new Packet("ArmGetXYZ"));
         }
 
         public void SetXYZPosition()
@@ -658,7 +659,7 @@ namespace RED.ViewModels.Modules
             float[] coordinates = { CoordinateX, CoordinateY, CoordinateZ, Yaw, Pitch, Roll };
             byte[] data = new byte[coordinates.Length * sizeof(float)];
             Buffer.BlockCopy(coordinates, 0, data, 0, data.Length);
-            _rovecomm.SendCommand(new Packet("ArmAbsoluteXYZ", data, 0, null), true);
+            //_rovecomm.SendCommand(new Packet("ArmAbsoluteXYZ", data, 0, null), true);
 
             myState = ArmControlState.GuiControl;
             guiControlInitialized = true;
@@ -666,11 +667,11 @@ namespace RED.ViewModels.Modules
 
         public void LimitSwitchOverride(byte index)
         {
-            _rovecomm.SendCommand(new Packet("LimitSwitchOverride", new byte[] { index }, 0, null), true);
+            _rovecomm.SendCommand(new Packet("LimitSwitchOverride", index), true);
         }
         public void LimitSwitchUnOverride(byte index)
         {
-            _rovecomm.SendCommand(new Packet("LimitSwitchUnOverride", new byte[] { index }, 0, null), true);
+            _rovecomm.SendCommand(new Packet("LimitSwitchUnOverride", index), true);
         }
 
         public void RecallPosition()

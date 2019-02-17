@@ -2,6 +2,7 @@
 using RED.Interfaces;
 using RED.Models.Modules;
 using RED.Models.Network;
+using RED.RoveProtocol;
 using RED.ViewModels.Navigation;
 using System;
 
@@ -29,12 +30,12 @@ namespace RED.ViewModels.Modules
 
         public void EnableMode()
         {
-            _rovecomm.SendCommand(new Packet("AutonomousModeEnable", new byte[] { 0 }, 0, null), true);
+            _rovecomm.SendCommand(new Packet("AutonomousModeEnable"), true);
         }
 
         public void DisableMode()
         {
-            _rovecomm.SendCommand(new Packet("AutonomousModeDisable", new byte[] { 0 }, 0, null), true);
+            _rovecomm.SendCommand(new Packet("AutonomousModeDisable"), true);
         }
 
         public void AddWaypoint()
@@ -44,12 +45,12 @@ namespace RED.ViewModels.Modules
 
         public void ClearAllWaypoints()
         {
-            _rovecomm.SendCommand(new Packet("WaypointsClearAll", new byte[] { 0 }, 0, null), true);
+            _rovecomm.SendCommand(new Packet("WaypointsClearAll"), true);
         }
 
         public void Calibrate()
         {
-            _rovecomm.SendCommand(new Packet("AutonomyCalibrate", new byte[] { 0 }, 0, null), true);
+            _rovecomm.SendCommand(new Packet("AutonomyCalibrate"), true);
         }
 
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
@@ -72,7 +73,8 @@ namespace RED.ViewModels.Modules
             Buffer.BlockCopy(BitConverter.GetBytes(waypoint.Latitude), 0, msg, 0 * sizeof(double), sizeof(double));
             Buffer.BlockCopy(BitConverter.GetBytes(waypoint.Longitude), 0, msg, 1 * sizeof(double), sizeof(double));
 
-            _rovecomm.SendCommand(new Packet("WaypointAdd", msg, 0, null), true);
+            // TODO: Figure this out
+            //_rovecomm.SendCommand(new Packet("WaypointAdd", msg, 2, DataTypes.), true);
         }
     }
 }
