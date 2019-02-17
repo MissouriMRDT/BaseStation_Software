@@ -188,7 +188,7 @@ namespace RED.Roveprotocol {
         /// <param name="packet">the packet data received.</param>
         private void HandleReceivedPacket(IPAddress srcIP, byte[] encodedPacket)
         {
-            Packet packet = RovecommOne.DecodePacket(encodedPacket, idResolver);
+            Packet packet = RovecommTwo.DecodePacket(encodedPacket, idResolver);
 
 			if (!HandleSystemDataID(srcIP, packet)) return;
 
@@ -275,7 +275,7 @@ namespace RED.Roveprotocol {
 
             if (reliable)
             {
-                byte[] packetData = RovecommOne.EncodePacket(packet, idResolver);
+                byte[] packetData = RovecommTwo.EncodePacket(packet, idResolver);
 
                 log.Log($"{packet.Name} packet contents:");
                 log.Log($"  Bytes: {BitConverter.ToString(packetData)}");
@@ -284,7 +284,10 @@ namespace RED.Roveprotocol {
             }
             else
             {
-                byte[] packetData = RovecommOne.EncodePacket(packet, idResolver);
+                byte[] packetData = RovecommTwo.EncodePacket(packet, idResolver);
+
+                log.Log($"{packet.Name} packet contents:");
+                log.Log($"  Bytes: {BitConverter.ToString(packetData)}");
                 networkManager.SendPacketUnreliable(destIP, packetData);
             }
         }

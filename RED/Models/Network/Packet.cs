@@ -7,10 +7,10 @@ namespace RED.Models.Network
     {
         public readonly string Name;
         public readonly byte[] Data;
-        public readonly int Count;
+        public readonly byte Count;
         public readonly byte DataType;
 
-        public Packet(string name, byte[] data, int count, byte type)
+        public Packet(string name, byte[] data, byte count, byte type)
         {
             Name = name;
             Data = data;
@@ -69,7 +69,7 @@ namespace RED.Models.Network
         public Packet(string name)
         {
             Name = name;
-            Data = new byte[] { 0 };
+            Data = new byte[] { 4 };
             Count = 1;
             DataType = 0;
         }

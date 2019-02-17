@@ -22,7 +22,7 @@ namespace RED.RoveProtocol
         {
             ushort rawDataId;
             byte[] rawData;
-            ushort dataSize;
+            byte dataSize;
             byte dataType;
 
             using (var ms = new MemoryStream(encodedPacket))
@@ -33,7 +33,7 @@ namespace RED.RoveProtocol
                     throw new InvalidDataException("Version number of packet is not supported.");
 
                 rawDataId = (ushort)IPAddress.NetworkToHostOrder((short)br.ReadUInt16());
-                dataSize = (ushort)IPAddress.NetworkToHostOrder(br.ReadByte());
+                dataSize = br.ReadByte();
                 dataType = br.ReadByte();
 
                 // Per data type
@@ -51,9 +51,9 @@ namespace RED.RoveProtocol
                 using (var bw = new BinaryWriter(ms))
                 {
                     bw.Write(VersionNumber);
-                    bw.Write(IPAddress.HostToNetworkOrder((byte)0)); // Sequence number
                     bw.Write(IPAddress.HostToNetworkOrder((short)resolver.GetId(packet.Name)));
-                    bw.Write(IPAddress.HostToNetworkOrder((short)packet.Data.Length));
+                    bw.Write(packet.Count);
+                    bw.Write(packet.DataType);
                     bw.Write(packet.Data);
                     return ms.ToArray();
                 }
