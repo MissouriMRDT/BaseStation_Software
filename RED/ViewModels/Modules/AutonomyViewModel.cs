@@ -62,7 +62,11 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        private void AddWaypoint(Waypoint waypoint)
+		public void ReceivedRovecommMessageCallback(int index, bool reliable) {
+			ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
+		}
+
+		private void AddWaypoint(Waypoint waypoint)
         {
             byte[] msg = new byte[2 * sizeof(double)];
             Buffer.BlockCopy(BitConverter.GetBytes(waypoint.Latitude), 0, msg, 0 * sizeof(double), sizeof(double));

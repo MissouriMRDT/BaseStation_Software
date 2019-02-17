@@ -464,9 +464,13 @@ namespace RED.ViewModels.Modules
                 }
                 LogFile.Flush();
             }
-        }
+		}
 
-        public void RebootRover()
+		public void ReceivedRovecommMessageCallback(int index, bool reliable) {
+			ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
+		}
+
+		public void RebootRover()
         {
             _rovecomm.SendCommand(new Packet("BMSReboot", new byte[0] { }, 0, null), true);
         }

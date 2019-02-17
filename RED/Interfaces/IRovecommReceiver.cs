@@ -19,6 +19,6 @@ namespace RED.Interfaces
         /// <param name="data">The data received</param>
         /// <param name="reliable">whether or not the message was delivered reliably -- IE with ensured protocols
         /// such as tcp -- or not -- IE with broadcast protocols such as udp.</param>
-        void ReceivedRovecommMessageCallback(Packet packet, bool reliable);
+        void ReceivedRovecommMessageCallback(int index, bool reliable);
     }
 }

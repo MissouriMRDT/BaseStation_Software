@@ -85,5 +85,9 @@ namespace RED.ViewModels.Modules
                 case "NavTrueHeading": TrueHeading = BitConverter.ToSingle(packet.Data, 0); break;
             }
         }
-    }
+
+		public void ReceivedRovecommMessageCallback(int index, bool reliable) {
+			ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
+		}
+	}
 }

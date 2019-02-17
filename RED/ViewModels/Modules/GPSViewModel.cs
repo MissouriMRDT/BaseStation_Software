@@ -209,7 +209,11 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        private void RecalculateAntennaDirection()
+		public void ReceivedRovecommMessageCallback(int index, bool reliable) {
+			ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
+		}
+
+		private void RecalculateAntennaDirection()
         {
             var thetaRad = Math.Atan2(CurrentLocation.Latitude - BaseStationLocation.Latitude, CurrentLocation.Longitude - BaseStationLocation.Longitude);
             AntennaDirectionDeg = thetaRad / Math.PI * 180;

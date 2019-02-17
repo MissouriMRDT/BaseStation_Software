@@ -476,7 +476,11 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public enum ScienceRequestTypes : ushort
+		public void ReceivedRovecommMessageCallback(int index, bool reliable) {
+			ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
+		}
+
+		public enum ScienceRequestTypes : ushort
         {
             SensorAllEnable = 0,
             SensorAllDisable = 1,

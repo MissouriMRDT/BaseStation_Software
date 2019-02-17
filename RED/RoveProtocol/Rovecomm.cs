@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using RED.Interfaces;
 using RED.Interfaces.Network;
@@ -12,12 +9,11 @@ using RED.Models.Network;
 using RED.RoveProtocol;
 using RED.ViewModels.Network;
 
-namespace RED.Roveprotocol
-{
-    /// <summary>
-    /// indicates the subscription status of a device on our network, IE if we're subscribed to it or not
-    /// </summary>
-    public enum SubscriptionStatus
+namespace RED.Roveprotocol {
+	/// <summary>
+	/// indicates the subscription status of a device on our network, IE if we're subscribed to it or not
+	/// </summary>
+	public enum SubscriptionStatus
     {
         Subscribed,
         Unsubscribed
@@ -45,6 +41,8 @@ namespace RED.Roveprotocol
         private readonly NetworkManagerViewModel networkManager;
         private HashSet<PendingPing> pendingPings = new HashSet<PendingPing>();
         private Dictionary<IPAddress, SubscriptionRecord> subscriptions;
+
+		private RingBuffer<Packet> buffer = new RingBuffer<Packet>(500);
 
         public Rovecomm(NetworkManagerViewModel netManager, ILogger logger, IIPAddressProvider ipAddressProvider, IDataIdResolver dataIdResolver)
         {
@@ -192,12 +190,9 @@ namespace RED.Roveprotocol
         {
             Packet packet = RovecommOne.DecodePacket(encodedPacket, idResolver);
 
-            bool passToSubscribers = HandleSystemDataID(srcIP, packet);
+			if (!HandleSystemDataID(srcIP, packet)) return;
 
-            if (passToSubscribers)
-            {
-                NotifyReceivers(packet);
-            }
+            NotifyReceivers(buffer.Add(packet));
         }
 
         /// <summary>
@@ -240,15 +235,17 @@ namespace RED.Roveprotocol
         /// <param name="dataId">the dataid of the message received</param>
         /// <param name="data">the data received</param>
         /// <param name="reliable">whether or not it was sent over a 'reliable' (non broadcast or not) network protocol</param>
-        private void NotifyReceivers(Packet packet, bool reliable = false)
+        private void NotifyReceivers(int index)
         {
+			Packet packet = buffer[index];
+
             if (packet.Name == null) return;
             if (registrations.TryGetValue(packet.Name, out List<IRovecommReceiver> registered))
                 foreach (IRovecommReceiver subscription in registered)
                 {
                     try
                     {
-                        subscription.ReceivedRovecommMessageCallback(packet, reliable);
+                        subscription.ReceivedRovecommMessageCallback(index, false);
                     }
                     catch (System.Exception e)
                     {
@@ -307,7 +304,11 @@ namespace RED.Roveprotocol
             ping.Semaphore.Release();
         }
 
-        [Flags]
+		public Packet GetPacketByID(int index) {
+			return buffer[index];
+		}
+
+		[Flags]
         private enum RoveCommFlags : byte
         {
             None = 0b000_0000,

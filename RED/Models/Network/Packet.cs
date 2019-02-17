@@ -2,7 +2,7 @@
 
 namespace RED.Models.Network
 {
-    public readonly ref struct Packet
+    public readonly struct Packet
     {
         public readonly string Name;
         public readonly byte[] Data;

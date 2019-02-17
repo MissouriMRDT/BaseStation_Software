@@ -388,7 +388,11 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public void StartMode()
+		public void ReceivedRovecommMessageCallback(int index, bool reliable) {
+			ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
+		}
+
+		public void StartMode()
         {
             myState = ArmControlState.OpenLoop;
             ControlState = "Open loop";
@@ -705,9 +709,7 @@ namespace RED.ViewModels.Modules
                 Positions.Add(new ArmPositionViewModel(position));
         }
 
-
-
-        public class ArmPositionViewModel : PropertyChangedBase
+		public class ArmPositionViewModel : PropertyChangedBase
         {
             private readonly ArmModel.ArmPositionModel _model;
 
