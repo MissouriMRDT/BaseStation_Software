@@ -4,7 +4,7 @@ namespace RED.Configurations
 {
     internal static class MetadataManagerConfig
     {
-        internal static MetadataSaveContext DefaultMetadata = new MetadataSaveContext(new[] {
+        internal static MetadataSaveContext RovecommOneMetadata = new MetadataSaveContext(new[] {
             new MetadataServerContext("Drive Board", "192.168.1.130") {
                 Commands = new[] {
                     new MetadataRecordContext(528, "DriveLeftRight", "Left wheels speed followed by right wheels speed"),
@@ -184,6 +184,72 @@ namespace RED.Configurations
                     new MetadataRecordContext(2833, "CameraMuxChannel2", "Selection for Camera Mux Channel 2")
                 }
             },
+        });
+
+
+
+
+
+        internal static MetadataSaveContext RovecommTwoMetadata = new MetadataSaveContext(new[] {
+            new MetadataServerContext("Drive Board", "192.168.1.134") {
+                Commands = new[] {
+                    new MetadataRecordContext(1000, "DriveLeftRight", "Left wheels speed followed by right wheels speed"),
+                    new MetadataRecordContext(1001, "SpeedRamp", "Controls the accleration limit, ms to full speed"),
+                },
+                Telemetry = new[]
+                {
+                    new MetadataRecordContext(1100, "DriveWatchdogTriggered", "")
+                }
+            },
+            new MetadataServerContext("Arm Board", "192.168.1.131") {
+            },
+
+            new MetadataServerContext("BMS Board", "192.168.1.133") {
+                Commands = new[] {
+                    new MetadataRecordContext(2000, "BMSStop", "BMS E-stop. WARNING: Kills all rover power. Cannot be reversed remotely!")
+                },
+                Telemetry = new[] {
+                    new MetadataRecordContext(2101, "BMSVoltages", "BMS"),
+                    new MetadataRecordContext(2100, "TotalPackCurrent", "BMS"),
+                    new MetadataRecordContext(2102, "BMSTemperature1", "BMS"),
+                    new MetadataRecordContext(2103, "BMSError", "BMS")
+                }
+            },
+
+            new MetadataServerContext("Power Board", "192.168.1.132") {
+                Commands = new[] {
+                    new MetadataRecordContext(3000, "PowerBusEnableDisable", "Enables or Disables power bus"),
+                },
+                Telemetry = new[] {
+                    new MetadataRecordContext(3100, "PowerCurrents", "Powerboard"),
+                    new MetadataRecordContext(3101, "PowerBusStatus", "")
+                }
+            },
+            new MetadataServerContext("NavCamera Board", "192.168.1.136") {
+                Commands = new[]
+                {
+                    new MetadataRecordContext(5000, "CalibrateIMU", "")
+                },
+                Telemetry = new[] {
+                    new MetadataRecordContext(5101, "IMUPYR", ""),
+                    //new MetadataRecordContext(1296, "GPSQuality", "Quality of GPS signal"),
+                    //new MetadataRecordContext(5100, "GPSPosition", "GPS Position. Latitude followed by Longitude"),
+                    //new MetadataRecordContext(1298, "GPSSpeed", "Speed of GPS delta"),
+                    //new MetadataRecordContext(1299, "GPSSpeedAngle", "Angle of GPS delta in degrees"),
+                    //new MetadataRecordContext(1300, "GPSAltitude", "GPS Altitude"),
+                    //new MetadataRecordContext(1301, "GPSSatellites", "Number of GPS Satellites"),
+
+                    new MetadataRecordContext(4000, "CameraMuxChannel1", "Selection for Camera Mux Channel"),
+                }
+            },
+            new MetadataServerContext("LightingGimbal Board", "192.168.1.135") {
+            },
+            new MetadataServerContext("ScienceSensors Board", "192.168.1.138") {
+            },
+            new MetadataServerContext("ScienceAcutation Board", "192.168.1.137") {
+            },
+            new MetadataServerContext("Autonomy Board", "192.168.1.139") {
+            }
         });
     }
 }

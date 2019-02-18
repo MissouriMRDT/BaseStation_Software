@@ -28,7 +28,7 @@ namespace RED.Roveprotocol
             _log = log;
             _configManager = configs;
 
-            _configManager.AddRecord(MetadataConfigName, MetadataManagerConfig.DefaultMetadata);
+            _configManager.AddRecord(MetadataConfigName, MetadataManagerConfig.RovecommTwoMetadata);
 
             Servers = new List<MetadataServerContext>();
             Commands = new List<MetadataRecordContext>();

@@ -2,8 +2,8 @@
 {
     internal class DriveModel
     {
-        internal int SpeedLeft;
-        internal int SpeedRight;
+        internal short SpeedLeft;
+        internal short SpeedRight;
 
         internal int SpeedLimit;
         internal bool UseLegacyDataIds;
