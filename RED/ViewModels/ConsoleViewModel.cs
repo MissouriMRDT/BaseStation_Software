@@ -56,6 +56,8 @@ namespace RED.ViewModels
         {
             var newText = String.Format("{0:HH:mm:ss.ff}: {1}{2}", DateTime.Now, msg, Environment.NewLine);
             ConsoleText += newText;
+
+			if (ConsoleText.Length >= 7_000) ConsoleText = String.Format("[cleared by system]{0}", Environment.NewLine);
         }
 
         public void LogToFile(string msg)
