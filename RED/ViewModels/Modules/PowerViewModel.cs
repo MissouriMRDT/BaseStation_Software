@@ -2,8 +2,11 @@
 using RED.Interfaces;
 using RED.Models.Modules;
 using RED.Models.Network;
+using RED.RoveProtocol;
 using System;
+using System.Collections;
 using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace RED.ViewModels.Modules
@@ -359,6 +362,19 @@ namespace RED.ViewModels.Modules
             }
         }
 
+        public BitArray Status
+        {
+            get
+            {
+                return _model.Status;
+            }
+            set
+            {
+                _model.Status = value;
+                NotifyOfPropertyChange(() => Status);
+            }
+        }
+
         public PowerViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
             _model = new PowerModel();
@@ -398,12 +414,56 @@ namespace RED.ViewModels.Modules
             _rovecomm.NotifyWhenMessageReceived(this, "PowerBusOverCurrentNotification");
             _rovecomm.NotifyWhenMessageReceived(this, "BMSPackOvercurrent");
             _rovecomm.NotifyWhenMessageReceived(this, "BMSPackUndervoltage");
+
+            _rovecomm.NotifyWhenMessageReceived(this, "TotalPackCurrentInt");
+            _rovecomm.NotifyWhenMessageReceived(this, "BMSTemperatureInt");
+            _rovecomm.NotifyWhenMessageReceived(this, "BMSVoltages");
+            _rovecomm.NotifyWhenMessageReceived(this, "BMSError");
+            _rovecomm.NotifyWhenMessageReceived(this, "PowerCurrents");
+            _rovecomm.NotifyWhenMessageReceived(this, "PowerBusStatus");
         }
 
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
         {
             switch (packet.Name)
             {
+                // New Id's
+                case "TotalPackCurrentInt": TotalPackCurrent = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 0)) / 1000.0); break;
+                case "BMSTemperatureInt": BMSTemperature1 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 0)) / 1000.0); break;
+                case "BMSVoltages":
+                    TotalPackVoltage = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0)) / 1000.0);
+                    Cell1Voltage = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 2)) / 1000.0);
+                    Cell2Voltage = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 4)) / 1000.0);
+                    Cell3Voltage = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 6)) / 1000.0);
+                    Cell4Voltage = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 8)) / 1000.0);
+                    Cell5Voltage = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 10)) / 1000.0);
+                    Cell6Voltage = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 12)) / 1000.0);
+                    Cell7Voltage = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 14)) / 1000.0);
+                    Cell8Voltage = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 16)) / 1000.0);
+                    break;
+                case "BMSError":
+                    _log.Log($"Recieved BMSError Report:\n  {BitConverter.ToString(packet.Data)}"); break;
+
+                case "PowerCurrents":
+                    ActuationCurrent = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0)) / 1000.0);
+                    LogicCurrent = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 2)) / 1000.0);
+                    CommunicationsCurrent = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 4)) / 1000.0);
+                    Motor1Current = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 6)) / 1000.0);
+                    Motor2Current = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 8)) / 1000.0);
+                    Motor3Current = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 10)) / 1000.0);
+                    Motor4Current = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 12)) / 1000.0);
+                    Motor5Current = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 14)) / 1000.0);
+                    Motor6Current = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 16)) / 1000.0);
+                    Motor7Current = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 18)) / 1000.0);
+                    General12V40ACurrent = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 20)) / 1000.0);
+
+                    break;
+
+                case "PowerBusStatus":
+                    Status = new BitArray(packet.Data);
+                    break;
+
+                // Old Id's
                 case "Motor1Current": Motor1Current = BitConverter.ToSingle(packet.Data, 0); break;
                 case "Motor2Current": Motor2Current = BitConverter.ToSingle(packet.Data, 0); break;
                 case "Motor3Current": Motor3Current = BitConverter.ToSingle(packet.Data, 0); break;
@@ -419,7 +479,6 @@ namespace RED.ViewModels.Modules
                 case "LogicCurrent": LogicCurrent = BitConverter.ToSingle(packet.Data, 0); break;
                 case "CommunicationsCurrent": CommunicationsCurrent = BitConverter.ToSingle(packet.Data, 0); break;
                 case "InputVoltage": InputVoltage = BitConverter.ToSingle(packet.Data, 0); break;
-
                 case "Cell1Voltage": Cell1Voltage = BitConverter.ToSingle(packet.Data, 0); break;
                 case "Cell2Voltage": Cell2Voltage = BitConverter.ToSingle(packet.Data, 0); break;
                 case "Cell3Voltage": Cell3Voltage = BitConverter.ToSingle(packet.Data, 0); break;
@@ -442,6 +501,7 @@ namespace RED.ViewModels.Modules
                 case "BMSPackUndervoltage":
                     _log.Log("Undervoltage notification from BMS");
                     break;
+                
             }
 
             if (LogFile != null)
@@ -490,11 +550,20 @@ namespace RED.ViewModels.Modules
 
         public void EnableBus(byte index)
         {
-            _rovecomm.SendCommand(new Packet("PowerBusEnable", index), true);
+
+            Status.Set(index, true);
+            byte[] bytes = new byte[2];
+            Status.CopyTo(bytes, 0);
+            _rovecomm.SendCommand(new Packet("PowerBusEnableDisable", bytes, 2, (byte)DataTypes.UINT8_T));
+            //_rovecomm.SendCommand(new Packet("PowerBusEnable", index), true);
         }
         public void DisableBus(byte index)
         {
-            _rovecomm.SendCommand(new Packet("PowerBusDisable", index), true);
+            Status.Set(index, false);
+            byte[] bytes = new byte[2];
+            Status.CopyTo(bytes, 0);
+            _rovecomm.SendCommand(new Packet("PowerBusEnableDisable", bytes, 2, (byte)DataTypes.UINT8_T));
+            //_rovecomm.SendCommand(new Packet("PowerBusDisable", index), true);
         }
 
         public void SaveFile(bool state)

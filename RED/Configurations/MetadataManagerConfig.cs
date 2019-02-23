@@ -210,8 +210,8 @@ namespace RED.Configurations
                 },
                 Telemetry = new[] {
                     new MetadataRecordContext(2101, "BMSVoltages", "BMS"),
-                    new MetadataRecordContext(2100, "TotalPackCurrent", "BMS"),
-                    new MetadataRecordContext(2102, "BMSTemperature1", "BMS"),
+                    new MetadataRecordContext(2100, "TotalPackCurrentInt", "BMS"),
+                    new MetadataRecordContext(2102, "BMSTemperatureInt", "BMS"),
                     new MetadataRecordContext(2103, "BMSError", "BMS")
                 }
             },

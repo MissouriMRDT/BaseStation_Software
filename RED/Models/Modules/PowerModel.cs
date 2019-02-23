@@ -1,4 +1,6 @@
-﻿namespace RED.Models.Modules
+﻿using System.Collections;
+
+namespace RED.Models.Modules
 {
     internal class PowerModel
     {
@@ -32,5 +34,7 @@
         internal float TotalPackVoltage;
         internal float BMSTemperature1;
         internal float BMSTemperature2;
+
+        internal BitArray Status;
     }
 }
