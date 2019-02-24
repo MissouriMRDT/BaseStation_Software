@@ -243,6 +243,11 @@ namespace RED.Configurations
                 }
             },
             new MetadataServerContext("LightingGimbal Board", "192.168.1.135") {
+                Commands = new[] {
+                    new MetadataRecordContext(6002, "MainGimbalIncrement", "pan, tilt"),
+                    new MetadataRecordContext(6004, "DriveGimbalIncrement", "pan, tilt"),
+                    new MetadataRecordContext(7001, "UnderglowColor", "rgb byte[]")
+                }
             },
             new MetadataServerContext("ScienceSensors Board", "192.168.1.138") {
             },

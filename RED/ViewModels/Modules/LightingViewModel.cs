@@ -105,7 +105,7 @@ namespace RED.ViewModels.Modules
         {
             _rovecomm.SendCommand(new Packet("UnderglowColor", new byte[] { 0, 0, 0 }, 3, (byte)DataTypes.UINT8_T), true);
         }
-
+         
         private void TurnOnHeadlights()
         {
             _rovecomm.SendCommand(new Packet("Headlight", (byte)1), false);
