@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace RED.Views.Modules
+namespace RoverAttachmentManager.Views.ArmViews
 {
     /// <summary>
     /// Interaction logic for ArmView.xaml
