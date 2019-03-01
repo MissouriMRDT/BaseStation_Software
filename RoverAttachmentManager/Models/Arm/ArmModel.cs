@@ -1,5 +1,5 @@
 ﻿using System.Collections.ObjectModel;
-using ArmPositionViewModel = RoverAttachmentManager.ViewModels.ArmViewModels.ArmViewModel.ArmPositionViewModel;
+using ArmPositionViewModel = RoverAttachmentManager.ViewModels.Arm.ArmViewModel.ArmPositionViewModel;
 
 namespace RoverAttachmentManager.Models.ArmModels
 {

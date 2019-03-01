@@ -6,7 +6,7 @@ using RED.ViewModels.Input;
 using RED.ViewModels.Input.Controllers;
 using RED.ViewModels.Network;
 using RoverAttachmentManager.Models;
-using RoverAttachmentManager.ViewModels.ArmViewModels;
+using RoverAttachmentManager.ViewModels.Arm;
 
 namespace RoverAttachmentManager.ViewModels
 {

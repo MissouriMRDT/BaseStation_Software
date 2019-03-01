@@ -2,7 +2,7 @@
 using RED.ViewModels;
 using RED.ViewModels.Input;
 using RED.ViewModels.Network;
-using RoverAttachmentManager.ViewModels.ArmViewModels;
+using RoverAttachmentManager.ViewModels.Arm;
 
 namespace RoverAttachmentManager.Models
 {

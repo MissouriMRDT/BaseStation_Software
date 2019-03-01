@@ -11,7 +11,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RoverAttachmentManager.ViewModels.ArmViewModels
+namespace RoverAttachmentManager.ViewModels.Arm
 {
     /// <summary>
     /// The main class for handling all arm-based logic, and corresponds to the Arm dropbox in the gui 
