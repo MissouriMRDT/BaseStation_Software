@@ -6,7 +6,6 @@ using RED.ViewModels.Network;
 using RED.ViewModels.Modules;
 using RED.ViewModels.Navigation;
 using RoverAttachmentManager.ViewModels.Autonomy;
-using AutonomyViewModel = RoverAttachmentManager.ViewModels.Autonomy.AutonomyViewModel;
 
 namespace RoverAttachmentManager.ViewModels
 {
@@ -28,7 +27,7 @@ namespace RoverAttachmentManager.ViewModels
             GPS = new GPSViewModel(Rovecomm, MetadataManager);
             WaypointManager = new WaypointManagerViewModel(Map, GPS);
 
-            Autonomy = new AutonomyViewModel(Rovecomm, MetadataManager, Console, WaypointManager);
+            Autonomy = new Autonomy.AutonomyViewModel(Rovecomm, MetadataManager, Console, WaypointManager);
 
             
         }
@@ -137,7 +136,7 @@ namespace RoverAttachmentManager.ViewModels
             }
         }
 
-        internal AutonomyViewModel Autonomy
+        public Autonomy.AutonomyViewModel Autonomy
         {
             get
             {

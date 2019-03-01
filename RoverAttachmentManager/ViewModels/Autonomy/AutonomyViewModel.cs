@@ -6,7 +6,7 @@ using System;
 
 namespace RoverAttachmentManager.ViewModels.Autonomy
 {
-    class AutonomyViewModel: PropertyChangedBase, IRovecommReceiver
+    public class AutonomyViewModel: PropertyChangedBase, IRovecommReceiver
     {
 
         private readonly AutonomyModel _model;
