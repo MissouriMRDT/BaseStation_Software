@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 using RED.Interfaces;
 using RED.Interfaces.Network;
@@ -33,17 +34,17 @@ namespace RED.Roveprotocol
         private static Rovecomm instance;
 
         private Rovecomm() {
-
             log = new ConsoleViewModel();
             ipProvider = new MetadataManager(log, new XMLConfigManager(log));
-            networkManager = new NetworkManagerViewModel(log);
 
             sequenceNumberProvider = new SequenceNumberManager();
             registrations = new Dictionary<ushort, List<IRovecommReceiver>>();
             subscriptions = new Dictionary<IPAddress, SubscriptionRecord>();
 
             allDeviceIPs = ipProvider.GetAllIPAddresses();
-            networkManager.PacketReceived += HandleReceivedPacket;
+
+            continuousDataSocket = new UDPEndpoint(DestinationPort, DestinationPort);
+            Listen();
         }
 
         public static Rovecomm Instance
@@ -54,10 +55,13 @@ namespace RED.Roveprotocol
                 {
                     instance = new Rovecomm();
                 }
+
                 return instance;
             }
         }
-        
+
+        private const ushort DestinationPort = 11000;
+        private const ushort DestinationReliablePort = 11001;
 
         public const byte VersionNumber = 1;
         public const byte SubscriptionDataId = 3;
@@ -68,10 +72,89 @@ namespace RED.Roveprotocol
         private Dictionary<ushort, List<IRovecommReceiver>> registrations;
         private ISequenceNumberProvider sequenceNumberProvider;
         private readonly ILogger log;
-        private readonly NetworkManagerViewModel networkManager;
         private HashSet<PendingPing> pendingPings = new HashSet<PendingPing>();
         private Dictionary<IPAddress, SubscriptionRecord> subscriptions;
 
+        private INetworkTransportProtocol continuousDataSocket;
+        private bool EnableReliablePackets = false;
+
+        private async void Listen()
+        {
+            while (true)
+            {
+                Tuple<IPAddress, byte[]> result = await continuousDataSocket.ReceiveMessage();
+                HandleReceivedPacket(result.Item1, result.Item2);
+            }
+        }
+
+        public async void SendPacketUnreliable(IPAddress destIP, byte[] packetData)
+        {
+            try
+            {
+                await continuousDataSocket.SendMessage(destIP, packetData);
+            }
+            catch
+            {
+                log.Log("No network to send msg");
+            }
+        }
+
+        public async void SendPacketReliable(IPAddress destIP, byte[] packetData, bool getResponse = false)
+        {
+            if (!EnableReliablePackets)
+            {
+                //_log.Log($"Reliable packets not enabled. Sending command for destIP={destIP} unreliably");
+                SendPacketUnreliable(destIP, packetData);
+            }
+            else
+            {
+                byte[] response;
+
+                try
+                {
+                    using (TcpClient tcpConnection = new TcpClient())
+                    {
+                        //no timeouts for now. We might want to implement something later to check to see if there's
+                        //even a connection to be had so we aren't spawning unending threads when we aren't connected
+                        //to rover. Or not.
+                        await tcpConnection.ConnectAsync(destIP, DestinationReliablePort);
+                        await Task.Delay(25); //boards can get overwhelmed and fault if done too quick.
+                        await tcpConnection.GetStream().WriteAsync(packetData, 0, packetData.Length);
+                        await Task.Delay(25);
+                        if (getResponse)
+                        {
+                            response = await ReadTcpPacket(tcpConnection);
+                            HandleReceivedPacket(destIP, response);
+                        }
+
+                        tcpConnection.Close();
+                    }
+                }
+                catch
+                {
+                    log.Log($"Attempt to send reliable packet to {destIP} failed. Sending unreliable instead");
+                    SendPacketUnreliable(destIP, packetData);
+                }
+            }
+        }
+
+        private async Task<byte[]> ReadTcpPacket(TcpClient client)
+        {
+            NetworkStream networkStream = client.GetStream();
+            byte[] readBuffer;
+
+            readBuffer = new byte[client.ReceiveBufferSize];
+            using (var writer = new MemoryStream())
+            {
+                do
+                {
+                    int numberOfBytesRead = await networkStream.ReadAsync(readBuffer, 0, readBuffer.Length);
+                    writer.Write(readBuffer, 0, numberOfBytesRead);
+                } while (networkStream.DataAvailable);
+            }
+
+            return readBuffer;
+        }
 
         /// <summary>
         /// send a rovecomm message over the network. This overload takes any object as data to send, and will 
@@ -344,12 +427,12 @@ namespace RED.Roveprotocol
             if (reliable)
             {
                 byte[] packetData = EncodePacket(dataId, data, seqNum);
-                networkManager.SendPacketReliable(destIP, packetData, getReliableResponse);
+                SendPacketReliable(destIP, packetData, getReliableResponse);
             }
             else
             {
                 byte[] packetData = EncodePacket(dataId, data, seqNum);
-                networkManager.SendPacketUnreliable(destIP, packetData);
+                SendPacketUnreliable(destIP, packetData);
             }
         }
 

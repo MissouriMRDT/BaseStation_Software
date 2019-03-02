@@ -17,7 +17,6 @@ namespace RED.Models
         internal XMLConfigManager _configManager;
         internal MetadataManager _metadataManager;
         internal Rovecomm _rovecomm;
-        internal NetworkManagerViewModel _networkManager;
         internal InputManagerViewModel _input;
         internal WaypointManagerViewModel _waypoint;
         internal PingToolViewModel _pingTool;

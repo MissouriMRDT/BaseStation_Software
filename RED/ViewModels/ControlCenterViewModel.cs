@@ -76,18 +76,6 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange((() => Rovecomm));
             }
         }
-        public NetworkManagerViewModel NetworkManager
-        {
-            get
-            {
-                return _model._networkManager;
-            }
-            set
-            {
-                _model._networkManager = value;
-                NotifyOfPropertyChange(() => NetworkManager);
-            }
-        }
         public InputManagerViewModel InputManager
         {
             get
@@ -389,8 +377,7 @@ namespace RED.ViewModels
             ConfigManager = new XMLConfigManager(Console);
             MetadataManager = new MetadataManager(Console, ConfigManager);
        
-            NetworkManager = new NetworkManagerViewModel(Console);
-            Rovecomm = new Rovecomm(NetworkManager, Console, MetadataManager);
+            Rovecomm = Rovecomm.Instance;
             ResubscribeAll();
 
             Science = new ScienceViewModel(Rovecomm, MetadataManager, Console);
@@ -423,7 +410,7 @@ namespace RED.ViewModels
             Autonomy = new AutonomyViewModel(Rovecomm, MetadataManager, Console, WaypointManager);
             PingTool = new PingToolViewModel(Rovecomm, ConfigManager);
             StopwatchTool = new StopwatchToolViewModel(ConfigManager);
-            TelemetryLogTool = new TelemetryLogToolViewModel(NetworkManager, MetadataManager);
+            TelemetryLogTool = new TelemetryLogToolViewModel(MetadataManager);
 
             SettingsManager = new SettingsManagerViewModel(ConfigManager, this);
         }

@@ -29,13 +29,12 @@ namespace RED.ViewModels.Tools
             }
         }
 
-        public TelemetryLogToolViewModel(NetworkManagerViewModel networkVM, IServerProvider serverProvider)
+        public TelemetryLogToolViewModel(IServerProvider serverProvider)
         {
             _model = new TelemetryLogToolModel();
             _serverProvider = serverProvider;
 
             TelemetryLog = new ObservableCollection<ServerLog>(_serverProvider.GetServerList().Select(x => new ServerLog(x)));
-            networkVM.PacketReceived += LogTelemetryRecieved;
         }
 
         private void LogTelemetryRecieved(IPAddress srcIP, byte[] telemetry)

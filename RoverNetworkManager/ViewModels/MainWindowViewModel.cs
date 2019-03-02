@@ -71,7 +71,6 @@ namespace RoverNetworkManager.ViewModels
             ConsoleViewModel Console = new ConsoleViewModel();
             XMLConfigManager ConfigManager = new XMLConfigManager(Console);
             MetadataManager MetadataManager = new MetadataManager(Console, ConfigManager);
-            NetworkManagerViewModel NetworkManager = new NetworkManagerViewModel(Console);
 
             Rovecomm = Rovecomm.Instance;
 

@@ -168,7 +168,6 @@ namespace RED.ViewModels
             Xbox4 = new XboxControllerInputSettingsViewModel(CurrentSettingsConfig.Xbox4, cc.XboxController4, 4);
             GPS = new GPSSettingsViewModel(CurrentSettingsConfig.GPS, cc.GPS, cc.Map);
             Power = new PowerSettingsViewModel(CurrentSettingsConfig.Power, cc.Power);
-            Network = new NetworkManagerSettingsViewModel(CurrentSettingsConfig.Network, cc.NetworkManager);
         }
 
         public void SaveSettings()
