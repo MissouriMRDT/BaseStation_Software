@@ -6,6 +6,7 @@ using System.Net;
 using System.Threading.Tasks;
 using RED.Interfaces;
 using RED.Interfaces.Network;
+using RED.ViewModels;
 using RED.ViewModels.Network;
 
 namespace RED.Roveprotocol
@@ -29,6 +30,35 @@ namespace RED.Roveprotocol
     /// </summary>
     public class Rovecomm: IRovecomm
     {
+        private static Rovecomm instance;
+
+        private Rovecomm() {
+
+            log = new ConsoleViewModel();
+            ipProvider = new MetadataManager(log, new XMLConfigManager(log));
+            networkManager = new NetworkManagerViewModel(log);
+
+            sequenceNumberProvider = new SequenceNumberManager();
+            registrations = new Dictionary<ushort, List<IRovecommReceiver>>();
+            subscriptions = new Dictionary<IPAddress, SubscriptionRecord>();
+
+            allDeviceIPs = ipProvider.GetAllIPAddresses();
+            networkManager.PacketReceived += HandleReceivedPacket;
+        }
+
+        public static Rovecomm Instance
+        {
+            get
+            {
+                if(instance == null)
+                {
+                    instance = new Rovecomm();
+                }
+                return instance;
+            }
+        }
+        
+
         public const byte VersionNumber = 1;
         public const byte SubscriptionDataId = 3;
         public const byte UnSubscribeDataId = 4;
@@ -41,20 +71,6 @@ namespace RED.Roveprotocol
         private readonly NetworkManagerViewModel networkManager;
         private HashSet<PendingPing> pendingPings = new HashSet<PendingPing>();
         private Dictionary<IPAddress, SubscriptionRecord> subscriptions;
-
-        public Rovecomm(NetworkManagerViewModel netManager, ILogger logger, IIPAddressProvider ipAddressProvider)
-        {
-            log = logger;
-            ipProvider = ipAddressProvider;
-            networkManager = netManager;
-
-            sequenceNumberProvider = new SequenceNumberManager();
-            registrations = new Dictionary<ushort, List<IRovecommReceiver>>();
-            subscriptions = new Dictionary<IPAddress, SubscriptionRecord>();
-
-            allDeviceIPs = ipAddressProvider.GetAllIPAddresses();
-            networkManager.PacketReceived += HandleReceivedPacket;
-        }
 
 
         /// <summary>

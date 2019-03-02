@@ -73,7 +73,7 @@ namespace RoverNetworkManager.ViewModels
             MetadataManager MetadataManager = new MetadataManager(Console, ConfigManager);
             NetworkManagerViewModel NetworkManager = new NetworkManagerViewModel(Console);
 
-            Rovecomm = new Rovecomm(NetworkManager, Console, MetadataManager);
+            Rovecomm = Rovecomm.Instance;
 
             RoveCommCustomPacket = new RoveCommCustomPacketViewModel(Rovecomm, ConfigManager);
             PingTool = new PingToolViewModel(Rovecomm, ConfigManager);
