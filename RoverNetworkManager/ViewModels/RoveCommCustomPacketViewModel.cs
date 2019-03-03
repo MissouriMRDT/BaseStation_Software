@@ -1,7 +1,7 @@
 ﻿using Caliburn.Micro;
-using RED.Configurations;
-using RED.Contexts;
-using RED.Interfaces;
+using Core.Configurations;
+using Core.Contexts;
+using Core.Interfaces;
 using RoverNetworkManager.Models;
 using System.Collections.Generic;
 using System.ComponentModel;

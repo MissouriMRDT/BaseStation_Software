@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace RED.Contexts
+namespace Core.Contexts
 {
     [XmlType(TypeName = "Record")]
     public class MetadataRecordContext : ConfigurationFile

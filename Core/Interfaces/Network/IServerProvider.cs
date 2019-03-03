@@ -1,7 +1,7 @@
-﻿using RED.Addons.Network;
+﻿using Core.Addons.Network;
 using System.Net;
 
-namespace RED.Interfaces.Network
+namespace Core.Interfaces.Network
 {
     public interface IServerProvider
     {

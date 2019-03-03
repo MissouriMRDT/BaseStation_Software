@@ -191,9 +191,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RED\RED.csproj">
-      <Project>{92D9B54A-5B56-4760-AB05-1894D04C7E2E}</Project>
-      <Name>RED</Name>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{2b6222de-ac5c-419a-a97a-ff3608c20023}</Project>
+      <Name>Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

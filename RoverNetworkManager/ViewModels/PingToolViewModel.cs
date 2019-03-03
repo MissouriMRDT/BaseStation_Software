@@ -1,5 +1,5 @@
 ﻿using Caliburn.Micro;
-using RED.Interfaces;
+using Core.Interfaces;
 using RoverNetworkManager.Contexts;
 using RoverNetworkManager.Models;
 using System;
@@ -92,7 +92,7 @@ namespace RoverNetworkManager.ViewModels
             return (time != 0) ? time : -1;
         }
 
-        public async void AutoPingChanged()
+        public void AutoPingChanged()
         {
             Console.WriteLine("auto ping toggled!");
         }

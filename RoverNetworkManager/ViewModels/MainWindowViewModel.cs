@@ -1,8 +1,8 @@
 ﻿using Caliburn.Micro;
-using RED.Roveprotocol;
-using RED.ViewModels;
-using RED.ViewModels.Network;
+using Core.Roveprotocol;
+using Core.Network;
 using RoverNetworkManager.Models;
+using Core.Configurations;
 
 namespace RoverNetworkManager.ViewModels
 {
@@ -67,10 +67,8 @@ namespace RoverNetworkManager.ViewModels
             base.DisplayName = "Rover Network Manager";
             _model = new MainWindowModel();
 
-
-            ConsoleViewModel Console = new ConsoleViewModel();
-            XMLConfigManager ConfigManager = new XMLConfigManager(Console);
-            MetadataManager MetadataManager = new MetadataManager(Console, ConfigManager);
+            XMLConfigManager ConfigManager = new XMLConfigManager(Core.CommonLog.Instance);
+            MetadataManager MetadataManager = new MetadataManager(Core.CommonLog.Instance, ConfigManager);
 
             Rovecomm = Rovecomm.Instance;
 

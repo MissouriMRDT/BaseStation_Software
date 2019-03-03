@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RED.Contexts
+namespace Core.Contexts
 {
     [Serializable]
     public abstract class ConfigurationFile

@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 
-namespace RED.Interfaces
+namespace Core.Interfaces
 {
     /// <summary>
     /// The rove communication protocol interface; it offers a variety of api for sending and receiving messages across the network 
     /// using the rovecomm protocol. Most devices used on rover use rovecomm, so use this to communicate with its devices. Rovecomm itself will encode 
-    /// and decode messages between RED and devices and pass it over the network.
+    /// and decode messages between Core and devices and pass it over the network.
     /// </summary>
     public interface IRovecomm
     {

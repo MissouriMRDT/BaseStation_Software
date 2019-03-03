@@ -5,12 +5,12 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using RED.Interfaces;
-using RED.Interfaces.Network;
-using RED.ViewModels;
-using RED.ViewModels.Network;
+using Core.Interfaces;
+using Core.Interfaces.Network;
+using Core.Configurations;
+using Core.Network;
 
-namespace RED.Roveprotocol
+namespace Core.Roveprotocol
 {
     /// <summary>
     /// indicates the subscription status of a device on our network, IE if we're subscribed to it or not
@@ -24,7 +24,7 @@ namespace RED.Roveprotocol
     /// <summary>
     /// The rove communication protocol class; it offers a variety of api for sending and receiving messages across the network 
     /// using the rovecomm protocol. Most devices used on rover use rovecomm, so use this to communicate with its devices. Rovecomm itself will encode 
-    /// and decode messages between RED and devices and pass it over the network.
+    /// and decode messages between Core and devices and pass it over the network.
     /// 
     /// This class works together with MetadataManager, the latter containing all of the metadata ID's that rovecomm uses when passing messages around as well 
     /// as information such as the ip addresses of the devices. As well with NetworkManagerViewModel, Rovecomm relies on it for actual network access.
@@ -33,11 +33,11 @@ namespace RED.Roveprotocol
     {
         private static Rovecomm instance;
 
+		CommonLog log = CommonLog.Instance;
+
         private Rovecomm() {
-            log = new ConsoleViewModel();
             ipProvider = new MetadataManager(log, new XMLConfigManager(log));
 
-            sequenceNumberProvider = new SequenceNumberManager();
             registrations = new Dictionary<ushort, List<IRovecommReceiver>>();
             subscriptions = new Dictionary<IPAddress, SubscriptionRecord>();
 
@@ -70,8 +70,7 @@ namespace RED.Roveprotocol
         private IPAddress[] allDeviceIPs;
         private readonly IIPAddressProvider ipProvider;
         private Dictionary<ushort, List<IRovecommReceiver>> registrations;
-        private ISequenceNumberProvider sequenceNumberProvider;
-        private readonly ILogger log;
+        // private readonly ILogger log;
         private HashSet<PendingPing> pendingPings = new HashSet<PendingPing>();
         private Dictionary<IPAddress, SubscriptionRecord> subscriptions;
 
@@ -209,7 +208,7 @@ namespace RED.Roveprotocol
             PendingPing ping = new PendingPing()
             {
                 Timestamp = DateTime.Now,
-                SeqNum = sequenceNumberProvider.IncrementValue((ushort)SystemDataId.Ping),
+                SeqNum = 0,
                 Semaphore = new System.Threading.SemaphoreSlim(0)
             };
             pendingPings.Add(ping);
@@ -316,11 +315,6 @@ namespace RED.Roveprotocol
         {
 
             byte[] data = DecodePacket(packet, out ushort dataId, out ushort seqNum);
-            if (!sequenceNumberProvider.UpdateNewer(dataId, seqNum))
-            {
-                log.Log($"Packet recieved with invalid sequence number={seqNum} DataId={dataId}");
-                return;
-            }
 
             bool passToSubscribers = HandleSystemDataID(srcIP, data, dataId, seqNum);
 
@@ -399,7 +393,7 @@ namespace RED.Roveprotocol
         /// <param name="reliable">whether to send it reliably (IE with a non broadcast protocol) or not</param>
         public void SendPacket(ushort dataId, byte[] data, IPAddress destIP, bool reliable = false)
         {
-            ushort seqNum = sequenceNumberProvider.IncrementValue(dataId);
+			ushort seqNum = 0;
             SendPacket(dataId, data, destIP, seqNum, reliable);
         }
 

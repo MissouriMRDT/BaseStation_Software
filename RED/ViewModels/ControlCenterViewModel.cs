@@ -1,17 +1,18 @@
 ﻿using Caliburn.Micro;
 using RED.Interfaces.Input;
 using RED.Models;
-using RED.Roveprotocol;
+using Core.Roveprotocol;
+using Core.Interfaces;
+using Core.Configurations;
 using RED.ViewModels.Input;
 using RED.ViewModels.Input.Controllers;
 using RED.ViewModels.Modules;
 using RED.ViewModels.Navigation;
-using RED.ViewModels.Network;
 using RED.ViewModels.Tools;
 
 namespace RED.ViewModels
 {
-    public class ControlCenterViewModel : Screen
+    public class ControlCenterViewModel : Screen, ILogger
     {
         private readonly ControlCenterModel _model;
 
@@ -426,5 +427,9 @@ namespace RED.ViewModels
         {
             Rovecomm.SubscribeMyPCToAllDevices();
         }
-    }
+
+		public void Log(string message, params object[] args) {
+			Core.CommonLog.Instance.Log(message, args);
+		}
+	}
 }

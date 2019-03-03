@@ -1,12 +1,12 @@
-﻿using RED.Contexts;
-using RED.Interfaces;
+﻿using Core.Contexts;
+using Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
-namespace RED.ViewModels
+namespace Core.Configurations
 {
     public class XMLConfigManager : IConfigurationManager
     {

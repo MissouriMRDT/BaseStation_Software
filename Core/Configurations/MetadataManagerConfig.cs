@@ -1,6 +1,6 @@
-﻿using RED.Contexts;
+﻿using Core.Contexts;
 
-namespace RED.Configurations
+namespace Core.Configurations
 {
     public static class MetadataManagerConfig
     {

@@ -1,8 +1,8 @@
 ﻿using System.Xml.Serialization;
 
-namespace RED.Contexts
+namespace Core.Contexts
 {
-    [XmlType(TypeName = "REDMetadataSaveFile")]
+    [XmlType(TypeName = "CoreMetadataSaveFile")]
     public class MetadataSaveContext : ConfigurationFile
     {
         public MetadataServerContext[] Servers;

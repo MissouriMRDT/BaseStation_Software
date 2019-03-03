@@ -1,10 +1,10 @@
-﻿using RED.Interfaces.Network;
+﻿using Core.Interfaces.Network;
 using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 
-namespace RED.ViewModels.Network
+namespace Core.Network
 {
     public class UDPEndpoint : INetworkTransportProtocol
     {

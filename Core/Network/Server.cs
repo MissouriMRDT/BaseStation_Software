@@ -1,7 +1,7 @@
-﻿using RED.Contexts;
+﻿using Core.Contexts;
 using System.Net;
 
-namespace RED.Addons.Network
+namespace Core.Addons.Network
 {
     public class Server
     {

@@ -1,4 +1,4 @@
-﻿namespace RED.Interfaces.Network
+﻿namespace Core.Interfaces.Network
 {
     public interface ISequenceNumberProvider
     {

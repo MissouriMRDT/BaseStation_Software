@@ -1,4 +1,6 @@
-﻿namespace RED.Contexts.Modules
+﻿using Core.Contexts;
+
+namespace RED.Contexts.Modules
 {
     public class GPSSettingsContext : ConfigurationFile
     {

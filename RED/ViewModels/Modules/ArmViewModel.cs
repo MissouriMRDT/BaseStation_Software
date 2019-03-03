@@ -1,7 +1,7 @@
 ﻿using Caliburn.Micro;
 using RED.Configurations.Modules;
 using RED.Contexts.Modules;
-using RED.Interfaces;
+using Core.Interfaces;
 using RED.Interfaces.Input;
 using RED.Models.Modules;
 using RED.ViewModels.Input;

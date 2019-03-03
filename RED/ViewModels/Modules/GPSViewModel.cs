@@ -1,6 +1,6 @@
 ﻿using Caliburn.Micro;
 using RED.Addons.Navigation;
-using RED.Interfaces;
+using Core.Interfaces;
 using RED.Models.Modules;
 using System;
 using System.IO;

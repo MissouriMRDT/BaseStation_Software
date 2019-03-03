@@ -1,5 +1,5 @@
 ﻿using Caliburn.Micro;
-using RED.Interfaces;
+using Core.Interfaces;
 using RED.Models.Modules;
 using System;
 

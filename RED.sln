@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RED", "RED\RED.csproj", "{9
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoverNetworkManager", "RoverNetworkManager\RoverNetworkManager.csproj", "{DD54C007-0165-449C-B091-682670174C62}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkService", "NetworkService\NetworkService.csproj", "{09E004B1-26C5-481D-B2B2-9FB0FC370C40}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{2B6222DE-AC5C-419A-A97A-FF3608C20023}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{DD54C007-0165-449C-B091-682670174C62}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD54C007-0165-449C-B091-682670174C62}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD54C007-0165-449C-B091-682670174C62}.Release|Any CPU.Build.0 = Release|Any CPU
-		{09E004B1-26C5-481D-B2B2-9FB0FC370C40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{09E004B1-26C5-481D-B2B2-9FB0FC370C40}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{09E004B1-26C5-481D-B2B2-9FB0FC370C40}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{09E004B1-26C5-481D-B2B2-9FB0FC370C40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B6222DE-AC5C-419A-A97A-FF3608C20023}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B6222DE-AC5C-419A-A97A-FF3608C20023}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B6222DE-AC5C-419A-A97A-FF3608C20023}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B6222DE-AC5C-419A-A97A-FF3608C20023}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

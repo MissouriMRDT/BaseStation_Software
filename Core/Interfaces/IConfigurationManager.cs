@@ -1,6 +1,6 @@
-﻿using RED.Contexts;
+﻿using Core.Contexts;
 
-namespace RED.Interfaces
+namespace Core.Interfaces
 {
     public interface IConfigurationManager
     {

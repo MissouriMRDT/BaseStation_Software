@@ -1,14 +1,14 @@
-﻿using RED.Addons.Network;
-using RED.Configurations;
-using RED.Contexts;
-using RED.Interfaces;
-using RED.Interfaces.Network;
+﻿using Core.Addons.Network;
+using Core.Configurations;
+using Core.Contexts;
+using Core.Interfaces;
+using Core.Interfaces.Network;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
-namespace RED.Roveprotocol
+namespace Core.Roveprotocol
 {
     public class MetadataManager : IIPAddressProvider, IDataIdResolver, IServerProvider
     {

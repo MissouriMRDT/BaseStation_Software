@@ -1,4 +1,4 @@
-﻿using RED.Roveprotocol;
+﻿using Core.Roveprotocol;
 using RoverNetworkManager.ViewModels;
 
 namespace RoverNetworkManager.Models

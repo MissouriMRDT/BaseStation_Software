@@ -1,8 +1,7 @@
-﻿using RED.ViewModels.Network;
-using System;
+﻿using System;
 using System.Net;
 
-namespace RED.Roveprotocol
+namespace Core.Roveprotocol
 {
     public class SubscriptionRecord
     {

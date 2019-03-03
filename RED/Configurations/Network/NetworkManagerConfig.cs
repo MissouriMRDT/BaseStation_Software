@@ -1,4 +1,4 @@
-﻿using RED.Contexts.Network;
+﻿using Core.Contexts.Network;
 
 namespace RED.Configurations.Network
 {

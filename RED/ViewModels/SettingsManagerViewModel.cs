@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using Core.Interfaces;
 using RED.Configurations.Input.Controllers;
 using RED.Configurations.Modules;
 using RED.Configurations.Network;

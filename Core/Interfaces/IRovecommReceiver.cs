@@ -1,4 +1,4 @@
-﻿namespace RED.Interfaces
+﻿namespace Core.Interfaces
 {
     /// <summary>
     /// This interface describes objects who want to receive rovecomm messages from the network.

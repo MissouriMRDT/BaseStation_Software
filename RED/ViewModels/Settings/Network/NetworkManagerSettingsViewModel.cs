@@ -1,6 +1,5 @@
 ﻿using Caliburn.Micro;
-using RED.Contexts.Network;
-using RED.ViewModels.Network;
+using Core.Contexts.Network;
 
 namespace RED.ViewModels.Settings.Network
 {

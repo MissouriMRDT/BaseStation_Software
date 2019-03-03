@@ -1,13 +1,13 @@
 ﻿using Caliburn.Micro;
-using RED.Addons.Network;
-using RED.Interfaces.Network;
+using Core.Network;
+using Core.Interfaces.Network;
 using RED.Models.Tools;
-using RED.ViewModels.Network;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
 using System.Windows.Threading;
+using Core.Addons.Network;
 
 namespace RED.ViewModels.Tools
 {

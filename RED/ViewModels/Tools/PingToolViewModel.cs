@@ -1,9 +1,8 @@
 ﻿using Caliburn.Micro;
+using Core.Interfaces;
 using RED.Configurations.Tools;
 using RED.Contexts.Tools;
-using RED.Interfaces;
 using RED.Models.Tools;
-using RED.ViewModels.Network;
 using System;
 using System.Collections.ObjectModel;
 using System.Net;

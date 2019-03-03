@@ -1,4 +1,4 @@
-﻿namespace RED.Contexts.Network
+﻿namespace Core.Contexts.Network
 {
     public class NetworkManagerSettingsContext : ConfigurationFile
     {

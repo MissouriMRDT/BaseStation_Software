@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace RED.Interfaces.Network
+namespace Core.Interfaces.Network
 {
     public interface IIPAddressProvider
     {

@@ -1,10 +1,10 @@
-﻿using RED.Roveprotocol;
+﻿using Core.Roveprotocol;
+using Core.Configurations;
 using RED.ViewModels;
 using RED.ViewModels.Input;
 using RED.ViewModels.Input.Controllers;
 using RED.ViewModels.Modules;
 using RED.ViewModels.Navigation;
-using RED.ViewModels.Network;
 using RED.ViewModels.Tools;
 
 namespace RED.Models
