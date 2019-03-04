@@ -15,5 +15,9 @@ namespace RoverNetworkManager
         {
             DisplayRootViewFor<MainWindowViewModel>();
         }
+
+		public void DisplayNetworkManager() {
+			OnStartup(null, null);
+		}
     }
 }

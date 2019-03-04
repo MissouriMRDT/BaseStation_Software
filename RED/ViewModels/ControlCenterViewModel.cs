@@ -16,7 +16,17 @@ namespace RED.ViewModels
     {
         private readonly ControlCenterModel _model;
 
-        public SettingsManagerViewModel SettingsManager
+		public bool NetworkManagerEnabled {
+			get {
+				return _model._networkManagerEnabled;
+			}
+			set {
+				_model._networkManagerEnabled = value;
+				NotifyOfPropertyChange(() => NetworkManagerEnabled);
+			}
+		}
+
+		public SettingsManagerViewModel SettingsManager
         {
             get
             {
@@ -379,7 +389,7 @@ namespace RED.ViewModels
             MetadataManager = new MetadataManager(Console, ConfigManager);
        
             Rovecomm = Rovecomm.Instance;
-            ResubscribeAll();
+            //ResubscribeAll();
 
             Science = new ScienceViewModel(Rovecomm, MetadataManager, Console);
             GPS = new GPSViewModel(Rovecomm, MetadataManager);
@@ -414,6 +424,8 @@ namespace RED.ViewModels
             TelemetryLogTool = new TelemetryLogToolViewModel(MetadataManager);
 
             SettingsManager = new SettingsManagerViewModel(ConfigManager, this);
+
+			NetworkManagerEnabled = true;
         }
 
         protected override void OnDeactivate(bool close)
@@ -426,7 +438,12 @@ namespace RED.ViewModels
         public void ResubscribeAll()
         {
             Rovecomm.SubscribeMyPCToAllDevices();
-        }
+		}
+
+		public void NetworkManager() {
+			new RoverNetworkManager.RNMBootstrapper().DisplayNetworkManager();
+			NetworkManagerEnabled = false;
+		}
 
 		public void Log(string message, params object[] args) {
 			Core.CommonLog.Instance.Log(message, args);

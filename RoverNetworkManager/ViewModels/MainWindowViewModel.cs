@@ -3,6 +3,7 @@ using Core.Roveprotocol;
 using Core.Network;
 using RoverNetworkManager.Models;
 using Core.Configurations;
+using System;
 
 namespace RoverNetworkManager.ViewModels
 {
@@ -10,7 +11,11 @@ namespace RoverNetworkManager.ViewModels
     {
         private readonly MainWindowModel _model;
 
-        public RoveCommCustomPacketViewModel RoveCommCustomPacket
+		public override void CanClose(Action<bool> callback) {
+			callback(false);
+		}
+
+		public RoveCommCustomPacketViewModel RoveCommCustomPacket
         {
             get
             {
