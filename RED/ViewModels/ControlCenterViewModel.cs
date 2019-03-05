@@ -111,18 +111,6 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => WaypointManager);
             }
         }
-        public PingToolViewModel PingTool
-        {
-            get
-            {
-                return _model._pingTool;
-            }
-            set
-            {
-                _model._pingTool = value;
-                NotifyOfPropertyChange(() => PingTool);
-            }
-        }
         public StopwatchToolViewModel StopwatchTool
         {
             get
@@ -135,19 +123,6 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => StopwatchTool);
             }
         }
-        public TelemetryLogToolViewModel TelemetryLogTool
-        {
-            get
-            {
-                return _model._telemetryLogTool;
-            }
-            set
-            {
-                _model._telemetryLogTool = value;
-                NotifyOfPropertyChange(() => TelemetryLogTool);
-            }
-        }
-
         public ScienceViewModel Science
         {
             get
@@ -419,9 +394,7 @@ namespace RED.ViewModels
 
             WaypointManager = new WaypointManagerViewModel(Map, GPS);
             Autonomy = new AutonomyViewModel(Rovecomm, MetadataManager, Console, WaypointManager);
-            PingTool = new PingToolViewModel(Rovecomm, ConfigManager);
             StopwatchTool = new StopwatchToolViewModel(ConfigManager);
-            TelemetryLogTool = new TelemetryLogToolViewModel(MetadataManager);
 
             SettingsManager = new SettingsManagerViewModel(ConfigManager, this);
 

@@ -96,12 +96,6 @@
                                     </DockPanel>
                                 </StackPanel>
                             </TabItem>
-                            <TabItem Header="Telemetry" controls:ControlsHelper.HeaderFontSize="12">
-                                <ContentControl x:Name="TelemetryLogTool" />
-                            </TabItem>
-                            <TabItem Header="Ping" controls:ControlsHelper.HeaderFontSize="12">
-                                <ContentControl x:Name="PingTool" />
-                            </TabItem>
                             <TabItem Header="Stopwatch" controls:ControlsHelper.HeaderFontSize="12">
                                 <ContentControl x:Name="StopwatchTool" />
                             </TabItem>

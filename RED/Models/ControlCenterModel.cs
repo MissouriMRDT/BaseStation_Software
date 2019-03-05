@@ -19,9 +19,7 @@ namespace RED.Models
         internal Rovecomm _rovecomm;
         internal InputManagerViewModel _input;
         internal WaypointManagerViewModel _waypoint;
-        internal PingToolViewModel _pingTool;
         internal StopwatchToolViewModel _stopwatchTool;
-        internal TelemetryLogToolViewModel _telemetryLogTool;
 
         internal ScienceViewModel _science;
         internal GPSViewModel _GPS;

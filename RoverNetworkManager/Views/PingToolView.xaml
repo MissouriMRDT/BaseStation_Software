@@ -31,7 +31,7 @@
 					<Bold>Address</Bold>
 				</TextBlock>
 				<TextBlock Grid.Column="3" Grid.Row="0" TextAlignment="Center">
-					<Bold>Round-Trip Time (ms)</Bold>
+					<Bold>Time (ms)</Bold>
 				</TextBlock>
 			</Grid>
 			<ItemsControl ItemsSource="{Binding PingServers}" Grid.IsSharedSizeScope="True">
@@ -42,7 +42,7 @@
 								<ColumnDefinition Width="auto" SharedSizeGroup="Checkmark" />
 								<ColumnDefinition Width="*" SharedSizeGroup="Name" />
 								<ColumnDefinition Width="*" SharedSizeGroup="Address" />
-								<ColumnDefinition Width="*" SharedSizeGroup="Result" />
+								<ColumnDefinition Width="75" SharedSizeGroup="Result" />
 								<ColumnDefinition Width="auto" SharedSizeGroup="Button" />
 								<ColumnDefinition Width="auto" SharedSizeGroup="Button" />
 							</Grid.ColumnDefinitions>
