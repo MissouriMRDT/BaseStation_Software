@@ -150,13 +150,11 @@
     <Compile Include="Configurations\Modules\PowerConfig.cs" />
     <Compile Include="Configurations\Modules\ScienceConfig.cs" />
     <Compile Include="Configurations\Network\NetworkManagerConfig.cs" />
-    <Compile Include="Configurations\Tools\PingToolConfig.cs" />
     <Compile Include="Configurations\Tools\StopwatchToolConfig.cs" />
     <Compile Include="Contexts\Modules\ArmPositionContext.cs" />
     <Compile Include="Contexts\Modules\DriveSettingsContext.cs" />
     <Compile Include="Contexts\Modules\GPSSettingsContext.cs" />
     <Compile Include="Contexts\REDSettingsContext.cs" />
-    <Compile Include="Contexts\Tools\PingToolContext.cs" />
     <Compile Include="Contexts\Modules\PowerSettingsContext.cs" />
     <Compile Include="Contexts\Input\InputMappingsContext.cs" />
     <Compile Include="Contexts\Input\InputSelectionContext.cs" />
@@ -210,9 +208,6 @@
     <Compile Include="ViewModels\Input\Controllers\KeyboardInputViewModel.cs" />
     <Compile Include="ViewModels\Modules\PowerViewModel.cs" />
     <Compile Include="ViewModels\Input\Controllers\XboxControllerInputViewModel.cs" />
-    <Compile Include="ViewModels\Tools\PingToolViewModel.cs" />
-    <Compile Include="RoveProtocol\MetadataManager.cs" />
-    <Compile Include="RoveProtocol\Rovecomm.cs" />
     <Compile Include="ViewModels\Modules\ScienceViewModel.cs" />
     <Compile Include="ViewModels\Modules\SensorViewModel.cs" />
     <Compile Include="ViewModels\ControlCenterViewModel.cs" />
@@ -225,8 +220,6 @@
     <Compile Include="ViewModels\Settings\Modules\ScienceSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Network\NetworkManagerSettingsViewModel.cs" />
     <Compile Include="ViewModels\Tools\StopwatchToolViewModel.cs" />
-    <Compile Include="ViewModels\Tools\TelemetryLogToolViewModel.cs" />
-    <Compile Include="ViewModels\XMLConfigManager.cs" />
     <Compile Include="Views\ControlCenterView.xaml.cs">
       <DependentUpon>ControlCenterView.xaml</DependentUpon>
     </Compile>
