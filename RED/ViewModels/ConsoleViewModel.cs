@@ -1,17 +1,14 @@
 ﻿using Caliburn.Micro;
-using RED.Interfaces;
+using Core.Interfaces;
 using RED.Models;
+using Core;
 using System;
-using System.IO;
 
 namespace RED.ViewModels
 {
     public class ConsoleViewModel : PropertyChangedBase, ILogger
     {
         private readonly ConsoleModel _model;
-
-        private const string LogFilePath = "REDConsole.log";
-        private StreamWriter LogFile;
 
         public string ConsoleText
         {
@@ -29,41 +26,16 @@ namespace RED.ViewModels
         public ConsoleViewModel()
         {
             _model = new ConsoleModel();
-            InitializeLogFile();
-            LogToFile("New Logging Session Started");
+			CommonLog.Instance.MessageLogged += Instance_MessageLogged;
         }
 
-        private void InitializeLogFile()
-        {
-            try
-            {
-                LogFile = new StreamWriter(LogFilePath, true);
-            }
-            catch (Exception e)
-            {
-                LogToScreen("There was a problem opening the log file: " + e.ToString());
-            }
-        }
+		private void Instance_MessageLogged(object sender, string msg) {
+			var newText = String.Format("{0:HH:mm:ss.ff}: {1}{2}", DateTime.Now, msg, Environment.NewLine);
+			ConsoleText += newText;
+		}
 
-        public void Log(string text, params object[] args)
-        {
-            var msg = String.Format(text, args);
-            LogToFile(msg);
-            LogToScreen(msg);
-        }
-
-        public void LogToScreen(string msg)
-        {
-            var newText = String.Format("{0:HH:mm:ss.ff}: {1}{2}", DateTime.Now, msg, Environment.NewLine);
-            ConsoleText += newText;
-
-			if (ConsoleText.Length >= 7_000) ConsoleText = String.Format("[cleared by system]{0}", Environment.NewLine);
-        }
-
-        public void LogToFile(string msg)
-        {
-            LogFile?.WriteLine("{0:o}: {1}", DateTime.Now, msg);
-            LogFile?.Flush();
-        }
-    }
+		public void Log(string message, params object[] args) {
+			CommonLog.Instance.Log(message, args);
+		}
+	}
 }

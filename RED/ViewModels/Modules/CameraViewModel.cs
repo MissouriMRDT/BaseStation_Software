@@ -1,6 +1,5 @@
 ﻿using Caliburn.Micro;
-using RED.Interfaces;
-using RED.Models.Network;
+using Core.Interfaces;
 
 namespace RED.ViewModels.Modules
 {

@@ -1,6 +1,6 @@
 ﻿using Caliburn.Micro;
 using RED.Contexts.Input;
-using RED.Interfaces;
+using Core.Interfaces;
 using RED.Interfaces.Input;
 using RED.Models.Input;
 using System;

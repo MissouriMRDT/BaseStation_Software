@@ -85,7 +85,8 @@
                     </Grid.RowDefinitions>
                     <DockPanel Grid.Row="0" Margin="5">
                         <Button DockPanel.Dock="Bottom" x:Name="ResubscribeAll">Resubscribe All</Button>
-                        <controls:MetroTabControl TabStripMargin="0">
+						<Button DockPanel.Dock="Bottom" x:Name="NetworkManager" IsEnabled="{Binding NetworkManagerEnabled}" Content="Open Network Manager" Margin="0 0 0 5"/>
+						<controls:MetroTabControl TabStripMargin="0">
                             <TabItem Header="State" controls:ControlsHelper.HeaderFontSize="12">
                                 <StackPanel>
                                     <DockPanel>
@@ -95,17 +96,11 @@
                                     </DockPanel>
                                 </StackPanel>
                             </TabItem>
-                            <TabItem Header="Telemetry" controls:ControlsHelper.HeaderFontSize="12">
-                                <ContentControl x:Name="TelemetryLogTool" />
-                            </TabItem>
-                            <TabItem Header="Ping" controls:ControlsHelper.HeaderFontSize="12">
-                                <ContentControl x:Name="PingTool" />
-                            </TabItem>
                             <TabItem Header="Stopwatch" controls:ControlsHelper.HeaderFontSize="12">
                                 <ContentControl x:Name="StopwatchTool" />
                             </TabItem>
                         </controls:MetroTabControl>
-                    </DockPanel>
+					</DockPanel>
                     <ContentControl Grid.Row="1" Margin="5" x:Name="Console" />
                     <ContentControl Grid.Row="2" Margin="5" x:Name="InputManager"/>
                 </Grid>

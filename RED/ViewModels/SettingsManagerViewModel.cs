@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using Core.Interfaces;
 using RED.Configurations.Input.Controllers;
 using RED.Configurations.Modules;
 using RED.Configurations.Network;
@@ -168,7 +169,6 @@ namespace RED.ViewModels
             Xbox4 = new XboxControllerInputSettingsViewModel(CurrentSettingsConfig.Xbox4, cc.XboxController4, 4);
             GPS = new GPSSettingsViewModel(CurrentSettingsConfig.GPS, cc.GPS, cc.Map);
             Power = new PowerSettingsViewModel(CurrentSettingsConfig.Power, cc.Power);
-            Network = new NetworkManagerSettingsViewModel(CurrentSettingsConfig.Network, cc.NetworkManager);
         }
 
         public void SaveSettings()

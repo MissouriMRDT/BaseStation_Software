@@ -1,10 +1,10 @@
-﻿using RED.Roveprotocol;
+﻿using Core.Roveprotocol;
+using Core.Configurations;
 using RED.ViewModels;
 using RED.ViewModels.Input;
 using RED.ViewModels.Input.Controllers;
 using RED.ViewModels.Modules;
 using RED.ViewModels.Navigation;
-using RED.ViewModels.Network;
 using RED.ViewModels.Tools;
 
 namespace RED.Models
@@ -17,12 +17,9 @@ namespace RED.Models
         internal XMLConfigManager _configManager;
         internal MetadataManager _metadataManager;
         internal Rovecomm _rovecomm;
-        internal NetworkManagerViewModel _networkManager;
         internal InputManagerViewModel _input;
         internal WaypointManagerViewModel _waypoint;
-        internal PingToolViewModel _pingTool;
         internal StopwatchToolViewModel _stopwatchTool;
-        internal TelemetryLogToolViewModel _telemetryLogTool;
 
         internal ScienceViewModel _science;
         internal GPSViewModel _GPS;
@@ -43,5 +40,7 @@ namespace RED.Models
         internal XboxControllerInputViewModel _xboxController4;
         internal FlightStickViewModel _flightStickController;
         internal KeyboardInputViewModel _keyboardController;
+
+		internal bool _networkManagerEnabled;
     }
 }

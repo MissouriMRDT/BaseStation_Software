@@ -1,11 +1,5 @@
 ﻿using Caliburn.Micro;
-using RED.Interfaces;
-using RED.Models.Network;
-
-namespace RED.ViewModels.Modules
-{
     public class DropBaysViewModel : PropertyChangedBase
-    {
         private readonly IRovecomm _rovecomm;
         private readonly IDataIdResolver _idResolver;
         private readonly ILogger _log;

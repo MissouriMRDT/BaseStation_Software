@@ -1,6 +1,7 @@
 ﻿using RED.Contexts.Input.Controllers;
 using RED.Contexts.Modules;
-using RED.Contexts.Network;
+using Core.Contexts.Network;
+using Core.Contexts;
 using System.Xml.Serialization;
 
 namespace RED.Contexts

@@ -1,21 +1,32 @@
 ﻿using Caliburn.Micro;
 using RED.Interfaces.Input;
 using RED.Models;
-using RED.Roveprotocol;
+using Core.Roveprotocol;
+using Core.Interfaces;
+using Core.Configurations;
 using RED.ViewModels.Input;
 using RED.ViewModels.Input.Controllers;
 using RED.ViewModels.Modules;
 using RED.ViewModels.Navigation;
-using RED.ViewModels.Network;
 using RED.ViewModels.Tools;
 
 namespace RED.ViewModels
 {
-    public class ControlCenterViewModel : Screen
+    public class ControlCenterViewModel : Screen, ILogger
     {
         private readonly ControlCenterModel _model;
 
-        public SettingsManagerViewModel SettingsManager
+		public bool NetworkManagerEnabled {
+			get {
+				return _model._networkManagerEnabled;
+			}
+			set {
+				_model._networkManagerEnabled = value;
+				NotifyOfPropertyChange(() => NetworkManagerEnabled);
+			}
+		}
+
+		public SettingsManagerViewModel SettingsManager
         {
             get
             {
@@ -76,18 +87,6 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange((() => Rovecomm));
             }
         }
-        public NetworkManagerViewModel NetworkManager
-        {
-            get
-            {
-                return _model._networkManager;
-            }
-            set
-            {
-                _model._networkManager = value;
-                NotifyOfPropertyChange(() => NetworkManager);
-            }
-        }
         public InputManagerViewModel InputManager
         {
             get
@@ -112,18 +111,6 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => WaypointManager);
             }
         }
-        public PingToolViewModel PingTool
-        {
-            get
-            {
-                return _model._pingTool;
-            }
-            set
-            {
-                _model._pingTool = value;
-                NotifyOfPropertyChange(() => PingTool);
-            }
-        }
         public StopwatchToolViewModel StopwatchTool
         {
             get
@@ -136,19 +123,6 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => StopwatchTool);
             }
         }
-        public TelemetryLogToolViewModel TelemetryLogTool
-        {
-            get
-            {
-                return _model._telemetryLogTool;
-            }
-            set
-            {
-                _model._telemetryLogTool = value;
-                NotifyOfPropertyChange(() => TelemetryLogTool);
-            }
-        }
-
         public ScienceViewModel Science
         {
             get
@@ -389,9 +363,8 @@ namespace RED.ViewModels
             ConfigManager = new XMLConfigManager(Console);
             MetadataManager = new MetadataManager(Console, ConfigManager);
        
-            NetworkManager = new NetworkManagerViewModel(Console);
-            Rovecomm = new Rovecomm(NetworkManager, Console, MetadataManager, MetadataManager);
-            ResubscribeAll();
+            Rovecomm = Rovecomm.Instance;
+            //ResubscribeAll();
 
             Science = new ScienceViewModel(Rovecomm, MetadataManager, Console);
             GPS = new GPSViewModel(Rovecomm, MetadataManager);
@@ -421,11 +394,11 @@ namespace RED.ViewModels
 
             WaypointManager = new WaypointManagerViewModel(Map, GPS);
             Autonomy = new AutonomyViewModel(Rovecomm, MetadataManager, Console, WaypointManager);
-            PingTool = new PingToolViewModel(Rovecomm, ConfigManager);
             StopwatchTool = new StopwatchToolViewModel(ConfigManager);
-            TelemetryLogTool = new TelemetryLogToolViewModel(NetworkManager, MetadataManager);
 
             SettingsManager = new SettingsManagerViewModel(ConfigManager, this);
+
+			NetworkManagerEnabled = true;
         }
 
         protected override void OnDeactivate(bool close)
@@ -438,6 +411,15 @@ namespace RED.ViewModels
         public void ResubscribeAll()
         {
             Rovecomm.SubscribeMyPCToAllDevices();
-        }
-    }
+		}
+
+		public void NetworkManager() {
+			new RoverNetworkManager.RNMBootstrapper().DisplayNetworkManager();
+			NetworkManagerEnabled = false;
+		}
+
+		public void Log(string message, params object[] args) {
+			Core.CommonLog.Instance.Log(message, args);
+		}
+	}
 }
