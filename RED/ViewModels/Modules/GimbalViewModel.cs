@@ -1,10 +1,9 @@
 ﻿using Caliburn.Micro;
 using Core.Interfaces;
+using Core.Models;
+using Core.RoveProtocol;
 using RED.Interfaces.Input;
 using RED.Models.Modules;
-using RED.Models.Network;
-using RED.RoveProtocol;
-using RED.ViewModels.Input;
 using System;
 using System.Collections.Generic;
 

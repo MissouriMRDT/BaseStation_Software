@@ -1,8 +1,8 @@
 ﻿using Caliburn.Micro;
 using Core.Interfaces;
+using Core.Models;
 using RED.Interfaces.Input;
 using RED.Models.Modules;
-using RED.Models.Network;
 using System;
 using System.Collections.Generic;
 using System.IO;

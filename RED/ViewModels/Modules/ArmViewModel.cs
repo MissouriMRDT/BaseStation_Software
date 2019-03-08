@@ -5,13 +5,14 @@ using Core.Interfaces;
 using RED.Interfaces.Input;
 using RED.Models.Modules;
 using RED.Models.Network;
-using RED.RoveProtocol;
 using RED.ViewModels.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Core.Models;
+using Core.RoveProtocol;
 
 namespace RED.ViewModels.Modules
 {
@@ -335,20 +336,22 @@ namespace RED.ViewModels.Modules
             _rovecomm.NotifyWhenMessageReceived(this, "ArmCurrentMain");
             _rovecomm.NotifyWhenMessageReceived(this, "ArmCurrentXYZ");
 
-            _armFaultIds = new Dictionary<int, string>();
-            _armFaultIds.Add(1, "Motor 1 fault");
-            _armFaultIds.Add(2, "Motor 2 fault");
-            _armFaultIds.Add(3, "Motor 3 fault");
-            _armFaultIds.Add(4, "Motor 4 fault");
-            _armFaultIds.Add(5, "Motor 5 fault");
-            _armFaultIds.Add(6, "Motor 6 fault");
-            _armFaultIds.Add(7, "Arm Master Overcurrent");
-            _armFaultIds.Add(8, "Base Rotate encoder disconnected");
-            _armFaultIds.Add(9, "Base Tilt encoder disconnected");
-            _armFaultIds.Add(10, "Elbow Tilt encoder disconnected");
-            _armFaultIds.Add(11, "Elbow Rotate encoder disconnected");
-            _armFaultIds.Add(12, "Wrist Tilt encoder disconnected");
-            _armFaultIds.Add(13, "Wrist Rotate encoder disconnected");
+            _armFaultIds = new Dictionary<int, string>
+            {
+                { 1, "Motor 1 fault" },
+                { 2, "Motor 2 fault" },
+                { 3, "Motor 3 fault" },
+                { 4, "Motor 4 fault" },
+                { 5, "Motor 5 fault" },
+                { 6, "Motor 6 fault" },
+                { 7, "Arm Master Overcurrent" },
+                { 8, "Base Rotate encoder disconnected" },
+                { 9, "Base Tilt encoder disconnected" },
+                { 10, "Elbow Tilt encoder disconnected" },
+                { 11, "Elbow Rotate encoder disconnected" },
+                { 12, "Wrist Tilt encoder disconnected" },
+                { 13, "Wrist Rotate encoder disconnected" }
+            };
         }
 
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)

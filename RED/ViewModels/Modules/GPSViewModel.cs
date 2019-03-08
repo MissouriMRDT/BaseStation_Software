@@ -2,9 +2,9 @@
 using RED.Addons.Navigation;
 using Core.Interfaces;
 using RED.Models.Modules;
-using RED.Models.Network;
 using System;
 using System.IO;
+using Core.Models;
 
 namespace RED.ViewModels.Modules
 {

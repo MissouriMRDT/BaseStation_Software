@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
-namespace Core.Roveprotocol
+namespace Core.RoveProtocol
 {
     public class MetadataManager : IIPAddressProvider, IDataIdResolver, IServerProvider
     {

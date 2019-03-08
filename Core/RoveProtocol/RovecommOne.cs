@@ -1,5 +1,5 @@
-﻿using RED.Interfaces;
-using RED.Models.Network;
+﻿using Core.Interfaces;
+using Core.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +8,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RED.RoveProtocol
+namespace Core.RoveProtocol
 {
     class RovecommOne
     {

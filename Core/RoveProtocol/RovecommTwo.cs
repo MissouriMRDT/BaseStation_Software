@@ -1,5 +1,5 @@
-﻿using RED.Interfaces;
-using RED.Models.Network;
+﻿using Core.Interfaces;
+using Core.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +8,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RED.RoveProtocol
+namespace Core.RoveProtocol
 {
     public enum DataTypes : byte { INT8_T = 0, UINT8_T = 1, INT16_T = 2, UINT16_T = 3, INT32_T = 4, UINT32_T = 5 };
 

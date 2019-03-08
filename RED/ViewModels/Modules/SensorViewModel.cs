@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using Core.Interfaces;
+using Core.Models;
 using RED.Models.Modules;
 using RED.Models.Network;
 using System;

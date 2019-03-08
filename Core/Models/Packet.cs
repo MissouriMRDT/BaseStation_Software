@@ -1,7 +1,7 @@
-﻿using RED.RoveProtocol;
-using System;
+﻿using System;
+using Core.RoveProtocol;
 
-namespace RED.Models.Network
+namespace Core.Models
 {
     public readonly struct Packet
     {

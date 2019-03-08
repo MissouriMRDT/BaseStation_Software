@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace RED.RoveProtocol {
+namespace Core.RoveProtocol {
 	/// <summary>
 	/// Represents a fixted length ring buffer to store a specified maximal count of items within.
 	/// </summary>
@@ -28,10 +28,10 @@ namespace RED.RoveProtocol {
 			_buffer = new T[capacity];
 		}
 
-		/// <summary>
-		/// the internal buffer
-		/// </summary>
-		T[] _buffer;
+        /// <summary>
+        /// the internal buffer
+        /// </summary>
+        readonly T[] _buffer;
 		/// <summary>
 		/// The all-over position within the ring buffer. The position 
 		/// increases continously by adding new items to the buffer. This 
@@ -100,7 +100,7 @@ namespace RED.RoveProtocol {
 		/// </summary>
 		public void Clear() {
 			for (int i = 0; i < Count; i++)
-				_buffer[i] = default(T);
+				_buffer[i] = default;
 			_position = 0;
 			Count = 0;
 			_version++;
@@ -260,7 +260,7 @@ namespace RED.RoveProtocol {
 			// get the relative position of the last item, which becomes empty
 			// after deletion and set the item as empty
 			int last = (_position - 1) % Capacity;
-			_buffer[last] = default(T);
+			_buffer[last] = default;
 			// adjust storage information
 			_position--;
 			Count--;

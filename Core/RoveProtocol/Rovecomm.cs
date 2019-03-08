@@ -8,8 +8,10 @@ using Core.Interfaces;
 using Core.Interfaces.Network;
 using Core.Configurations;
 using Core.Network;
+using System.IO;
+using Core.Models;
 
-namespace Core.Roveprotocol
+namespace Core.RoveProtocol
 {
     /// <summary>
     /// indicates the subscription status of a device on our network, IE if we're subscribed to it or not
@@ -35,12 +37,12 @@ namespace Core.Roveprotocol
 		CommonLog log = CommonLog.Instance;
 
         private Rovecomm() {
-            ipProvider = new MetadataManager(log, new XMLConfigManager(log));
+            metadataManager = new MetadataManager(log, new XMLConfigManager(log));
 
-            registrations = new Dictionary<ushort, List<IRovecommReceiver>>();
+            registrations = new Dictionary<string, List<IRovecommReceiver>>();
             subscriptions = new Dictionary<IPAddress, SubscriptionRecord>();
 
-            allDeviceIPs = ipProvider.GetAllIPAddresses();
+            allDeviceIPs = metadataManager.GetAllIPAddresses();
 
             continuousDataSocket = new UDPEndpoint(DestinationPort, DestinationPort);
             Listen();
@@ -66,15 +68,17 @@ namespace Core.Roveprotocol
         public const byte SubscriptionDataId = 3;
         public const byte UnSubscribeDataId = 4;
 
-        private IPAddress[] allDeviceIPs;
-        private readonly IIPAddressProvider ipProvider;
-        private Dictionary<ushort, List<IRovecommReceiver>> registrations;
+        private readonly IPAddress[] allDeviceIPs;
+        private readonly MetadataManager metadataManager;
+        private Dictionary<string, List<IRovecommReceiver>> registrations;
         // private readonly ILogger log;
         private HashSet<PendingPing> pendingPings = new HashSet<PendingPing>();
         private Dictionary<IPAddress, SubscriptionRecord> subscriptions;
 
         private INetworkTransportProtocol continuousDataSocket;
-        private bool EnableReliablePackets = false;
+        private readonly bool EnableReliablePackets = false;
+
+        private RingBuffer<Packet> buffer = new RingBuffer<Packet>(500);
 
         private async void Listen()
         {
@@ -155,34 +159,6 @@ namespace Core.Roveprotocol
         }
 
         /// <summary>
-        /// send a rovecomm message over the network. This overload takes any object as data to send, and will 
-        /// be transformed into bytes in the process.
-        /// </summary>
-        /// <param name="dataId">the id to attach to the message, corresponding to rovecomm metadata ID's</param>
-        /// <param name="obj">the data to send over the network</param>
-        /// <param name="reliable">whether to send it via a protocol that ensures that it gets there, or to 
-        /// simply broadcast the data. The former is more useful for single one off messages, the latter 
-        /// for repeated messages or commands. </param>
-        public void SendCommand(ushort dataId, dynamic obj, bool reliable = false)
-        {
-
-            SendCommand(dataId, System.BitConverter.GetBytes(obj), reliable);
-        }
-
-        /// <summary>
-        /// send a rovecomm message over the network. This overload takes any byte as data to send
-        /// </summary>
-        /// <param name="dataId">the id to attach to the message, corresponding to rovecomm metadata ID's</param>
-        /// <param name="obj">the data to send over the network</param>
-        /// <param name="reliable">whether to send it via a protocol that ensures that it gets there, or to 
-        /// simply broadcast the data. The former is more useful for single one off messages, the latter 
-        /// for repeated messages or commands. </param>
-        public void SendCommand(ushort dataId, byte obj, bool reliable = false)
-        {
-            SendCommand(dataId, new byte[] { obj }, reliable);
-        }
-
-        /// <summary>
         /// send a rovecomm message over the network. This overload takes a series of bytes to send.
         /// </summary>
         /// <param name="dataId">the id to attach to the message, corresponding to rovecomm metadata ID's</param>
@@ -192,8 +168,8 @@ namespace Core.Roveprotocol
         /// for repeated messages or commands. </param>
         public void SendCommand(Packet packet, bool reliable = false)
         {
-            ushort dataId = idResolver.GetId(packet.Name);
-            IPAddress destIP = ipProvider.GetIPAddress(dataId);
+            ushort dataId = metadataManager.GetId(packet.Name);
+            IPAddress destIP = metadataManager.GetIPAddress(dataId);
             SendPacket(packet, destIP, reliable);
         }
 
@@ -313,11 +289,9 @@ namespace Core.Roveprotocol
         /// <param name="packet">the packet data received.</param>
         private void HandleReceivedPacket(IPAddress srcIP, byte[] encodedPacket)
         {
-            Packet packet = RovecommTwo.DecodePacket(encodedPacket, idResolver);
+            Packet packet = RovecommTwo.DecodePacket(encodedPacket, metadataManager);
 
-            byte[] data = DecodePacket(packet, out ushort dataId, out ushort seqNum);
-
-            bool passToSubscribers = HandleSystemDataID(srcIP, data, dataId, seqNum);
+            bool passToSubscribers = HandleSystemDataID(srcIP, packet);
 
             NotifyReceivers(buffer.Add(packet));
         }
@@ -382,26 +356,12 @@ namespace Core.Roveprotocol
         }
 
         /// <summary>
-        /// send a rovecomm message over the network. Again. Public overload since the ip addresses are baked into the dataid anyway, so only
-        /// certain rovecomm-system messages should call it or the network manager with a custom ip address.
-        /// </summary>
-        /// <param name="dataId">dataid of the message to send</param>
-        /// <param name="data">data to send</param>
-        /// <param name="destIP">ip of the device to send the message to</param>
-        /// <param name="reliable">whether to send it reliably (IE with a non broadcast protocol) or not</param>
-        public void SendPacket(ushort dataId, byte[] data, IPAddress destIP, bool reliable = false)
-        {
-			ushort seqNum = 0;
-            SendPacket(dataId, data, destIP, seqNum, reliable);
-        }
-
-        /// <summary>
         /// fullest implementation of send packet. Encodes the packet into Rovecomm protocol and passes it to the network layer for sending.
         /// </summary>
         /// <param name="packet">packet to send</param>
         /// <param name="destIP">ip of the device to send the message to</param>
         /// <param name="reliable">whether to send it reliably (IE with a non broadcast protocol) or not</param>
-        private void SendPacket(Packet packet, IPAddress destIP, bool reliable = false, bool getReliableResponse = false)
+        public void SendPacket(Packet packet, IPAddress destIP, bool reliable = false, bool getReliableResponse = false)
         {
             if (destIP == null)
             {
@@ -416,19 +376,13 @@ namespace Core.Roveprotocol
 
             if (reliable)
             {
-                byte[] packetData = EncodePacket(dataId, data, seqNum);
+                byte[] packetData = RovecommTwo.EncodePacket(packet, metadataManager);
                 SendPacketReliable(destIP, packetData, getReliableResponse);
             }
             else
             {
-                byte[] packetData = EncodePacket(dataId, data, seqNum);
+                byte[] packetData = RovecommTwo.EncodePacket(packet, metadataManager);
                 SendPacketUnreliable(destIP, packetData);
-            }
-        }
-
-                log.Log($"{packet.Name} packet contents:");
-                log.Log($"  Bytes: {BitConverter.ToString(packetData)}");
-                networkManager.SendPacketUnreliable(destIP, packetData);
             }
         }
 

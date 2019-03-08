@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace Core.Roveprotocol
+namespace Core.RoveProtocol
 {
     public class SubscriptionRecord
     {

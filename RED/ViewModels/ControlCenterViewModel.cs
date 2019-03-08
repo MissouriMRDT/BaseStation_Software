@@ -1,7 +1,7 @@
 ﻿using Caliburn.Micro;
 using RED.Interfaces.Input;
 using RED.Models;
-using Core.Roveprotocol;
+using Core.RoveProtocol;
 using Core.Interfaces;
 using Core.Configurations;
 using RED.ViewModels.Input;

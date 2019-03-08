@@ -1,13 +1,12 @@
 ﻿using Caliburn.Micro;
 using Core.Interfaces;
+using Core.Models;
+using Core.RoveProtocol;
 using RED.Models.Modules;
-using RED.Models.Network;
-using RED.RoveProtocol;
 using System;
 using System.Collections;
 using System.IO;
 using System.Net;
-using System.Threading.Tasks;
 
 namespace RED.ViewModels.Modules
 {
