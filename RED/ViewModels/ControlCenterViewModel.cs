@@ -1,14 +1,14 @@
 ﻿using Caliburn.Micro;
-using RED.Interfaces.Input;
 using RED.Models;
 using Core.RoveProtocol;
 using Core.Interfaces;
 using Core.Configurations;
-using RED.ViewModels.Input;
-using RED.ViewModels.Input.Controllers;
 using RED.ViewModels.Modules;
 using RED.ViewModels.Navigation;
 using RED.ViewModels.Tools;
+using Core.ViewModels.Input;
+using Core.ViewModels.Input.Controllers;
+using Core.Interfaces.Input;
 
 namespace RED.ViewModels
 {
@@ -257,18 +257,6 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => Drive);
             }
         }
-        public ArmViewModel Arm
-        {
-            get
-            {
-                return _model._arm;
-            }
-            set
-            {
-                _model._arm = value;
-                NotifyOfPropertyChange(() => Arm);
-            }
-        }
         public GimbalViewModel Gimbal
         {
             get
@@ -377,7 +365,6 @@ namespace RED.ViewModels
             Map = new MapViewModel();
 
             Drive = new DriveViewModel(Rovecomm, MetadataManager);
-            Arm = new ArmViewModel(Rovecomm, MetadataManager, Console, ConfigManager);
             Gimbal = new GimbalViewModel(Rovecomm, MetadataManager, Console);
             XboxController1 = new XboxControllerInputViewModel(1);
             XboxController2 = new XboxControllerInputViewModel(2);
@@ -390,7 +377,7 @@ namespace RED.ViewModels
             InputManager = new InputManagerViewModel(Console, ConfigManager,
                 new IInputDevice[] { XboxController1, XboxController2, XboxController3, XboxController4, FlightStickController, KeyboardController },
                 new MappingViewModel[0],
-                new IInputMode[] { Drive, Arm, Gimbal, Science });
+                new IInputMode[] { Drive, Gimbal, Science });
 
             WaypointManager = new WaypointManagerViewModel(Map, GPS);
             Autonomy = new AutonomyViewModel(Rovecomm, MetadataManager, Console, WaypointManager);
@@ -404,7 +391,6 @@ namespace RED.ViewModels
         protected override void OnDeactivate(bool close)
         {
             InputManager.SaveConfigurations();
-            Arm.SaveConfigurations();
             base.OnDeactivate(close);
         }
 

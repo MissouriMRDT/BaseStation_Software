@@ -15,5 +15,10 @@ namespace RoverAttachmentManager
         {
             DisplayRootViewFor<MainWindowViewModel>();
         }
+
+        public void DisplayNetworkManager()
+        {
+            OnStartup(null, null);
+        }
     }
 }

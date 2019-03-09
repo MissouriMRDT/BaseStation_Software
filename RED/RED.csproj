@@ -144,35 +144,21 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Configurations\Input\Controllers\XboxControllerInputConfig.cs" />
-    <Compile Include="Configurations\Input\InputManagerConfig.cs" />
-    <Compile Include="Configurations\Modules\ArmConfig.cs" />
     <Compile Include="Configurations\Modules\DriveConfig.cs" />
     <Compile Include="Configurations\Modules\GPSConfig.cs" />
     <Compile Include="Configurations\Modules\PowerConfig.cs" />
     <Compile Include="Configurations\Modules\ScienceConfig.cs" />
     <Compile Include="Configurations\Network\NetworkManagerConfig.cs" />
     <Compile Include="Configurations\Tools\StopwatchToolConfig.cs" />
-    <Compile Include="Contexts\Modules\ArmPositionContext.cs" />
     <Compile Include="Contexts\Modules\DriveSettingsContext.cs" />
     <Compile Include="Contexts\Modules\GPSSettingsContext.cs" />
     <Compile Include="Contexts\REDSettingsContext.cs" />
     <Compile Include="Contexts\Modules\PowerSettingsContext.cs" />
-    <Compile Include="Contexts\Input\InputMappingsContext.cs" />
-    <Compile Include="Contexts\Input\InputSelectionContext.cs" />
     <Compile Include="Contexts\Modules\ScienceSettingsContext.cs" />
     <Compile Include="Contexts\Tools\StopwatchScheduleContext.cs" />
-    <Compile Include="Contexts\Input\Controllers\XboxControllerSettingsContext.cs" />
     <Compile Include="Images\ModernUIIcons.cs" />
-    <Compile Include="Interfaces\Input\IInputMode.cs" />
-    <Compile Include="Interfaces\Input\IInputDevice.cs" />
-    <Compile Include="Models\Input\InputSelectorModel.cs" />
-    <Compile Include="Models\Input\MappingChannelModel.cs" />
-    <Compile Include="Models\Input\MappingModel.cs" />
-    <Compile Include="Models\Modules\ArmModel.cs" />
     <Compile Include="Models\Modules\AutonomyModel.cs" />
     <Compile Include="Models\Modules\GimbalModel.cs" />
-    <Compile Include="Models\Input\InputManagerModel.cs" />
     <Compile Include="Models\Modules\DriveModel.cs" />
     <Compile Include="Models\Modules\LightingModel.cs" />
     <Compile Include="Models\Navigation\MapModel.cs" />
@@ -184,16 +170,8 @@
     <Compile Include="Models\Modules\GPSModel.cs" />
     <Compile Include="Models\Modules\SensorModel.cs" />
     <Compile Include="Models\SettingsModel.cs" />
-    <Compile Include="Models\Input\Controllers\KeyboardInputModel.cs" />
     <Compile Include="Models\Tools\StopwatchToolModel.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="Models\Input\Controllers\XboxControllerInputModel.cs" />
-    <Compile Include="ViewModels\Input\ControllerBase.cs" />
-    <Compile Include="ViewModels\Input\Controllers\FlightStickViewModel.cs" />
-    <Compile Include="ViewModels\Input\InputSelectorViewModel.cs" />
-    <Compile Include="ViewModels\Input\MappingViewModel.cs" />
-    <Compile Include="ViewModels\Input\MappingChannelViewModel.cs" />
-    <Compile Include="ViewModels\Modules\ArmViewModel.cs" />
     <Compile Include="ViewModels\Modules\AutonomyViewModel.cs" />
     <Compile Include="ViewModels\Modules\CameraViewModel.cs" />
     <Compile Include="ViewModels\Modules\ExternalControlsViewModel.cs" />
@@ -207,15 +185,11 @@
     <Compile Include="RedBootstrapper.cs" />
     <Compile Include="ViewModels\Modules\DriveViewModel.cs" />
     <Compile Include="ViewModels\Modules\GPSViewModel.cs" />
-    <Compile Include="ViewModels\Input\Controllers\KeyboardInputViewModel.cs" />
     <Compile Include="ViewModels\Modules\PowerViewModel.cs" />
-    <Compile Include="ViewModels\Input\Controllers\XboxControllerInputViewModel.cs" />
     <Compile Include="ViewModels\Modules\ScienceViewModel.cs" />
     <Compile Include="ViewModels\Modules\SensorViewModel.cs" />
     <Compile Include="ViewModels\ControlCenterViewModel.cs" />
-    <Compile Include="ViewModels\Input\InputManagerViewModel.cs" />
     <Compile Include="ViewModels\SettingsManagerViewModel.cs" />
-    <Compile Include="ViewModels\Settings\Input\Controllers\XboxControllerInputSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Modules\DriveSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Modules\GPSSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Modules\PowerSettingsViewModel.cs" />
@@ -224,15 +198,6 @@
     <Compile Include="ViewModels\Tools\StopwatchToolViewModel.cs" />
     <Compile Include="Views\ControlCenterView.xaml.cs">
       <DependentUpon>ControlCenterView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Input\InputManagerView.xaml.cs">
-      <DependentUpon>InputManagerView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Input\InputSelectorView.xaml.cs">
-      <DependentUpon>InputSelectorView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Modules\ArmView.xaml.cs">
-      <DependentUpon>ArmView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\AutonomyView.xaml.cs">
       <DependentUpon>AutonomyView.xaml</DependentUpon>
@@ -298,18 +263,6 @@
       <DependentUpon>StopwatchToolView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\ControlCenterView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Input\InputManagerView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Input\InputSelectorView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Modules\ArmView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

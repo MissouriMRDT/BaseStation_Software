@@ -1,4 +1,4 @@
-﻿using RED.ViewModels.Settings.Input.Controllers;
+﻿using Core.ViewModels.Input.Controllers;
 using RED.ViewModels.Settings.Modules;
 using RED.ViewModels.Settings.Network;
 

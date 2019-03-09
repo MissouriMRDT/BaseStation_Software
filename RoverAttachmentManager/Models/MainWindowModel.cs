@@ -1,7 +1,7 @@
-﻿using RED.Roveprotocol;
-using RED.ViewModels;
-using RED.ViewModels.Input;
-using RED.ViewModels.Network;
+﻿using Core;
+using Core.Configurations;
+using Core.RoveProtocol;
+using Core.ViewModels.Input;
 using RoverAttachmentManager.ViewModels.Arm;
 
 namespace RoverAttachmentManager.Models
@@ -12,9 +12,8 @@ namespace RoverAttachmentManager.Models
         internal InputManagerViewModel _input;
         
         internal ArmViewModel _arm;
-        internal ConsoleViewModel _console;
+        internal CommonLog _console;
         internal MetadataManager _metadataManager;
         internal XMLConfigManager _configManager;
-        internal NetworkManagerViewModel _networkManager;
     }
 }

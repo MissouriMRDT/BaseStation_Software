@@ -2,7 +2,6 @@
 using Core.Interfaces;
 using Core.Models;
 using Core.RoveProtocol;
-using RED.Interfaces.Input;
 using RED.Models.Modules;
 using System;
 using System.Collections.Generic;

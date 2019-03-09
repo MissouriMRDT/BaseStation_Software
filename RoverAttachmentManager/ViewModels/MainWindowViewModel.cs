@@ -1,12 +1,14 @@
 ﻿using Caliburn.Micro;
-using RED.Interfaces.Input;
-using RED.Roveprotocol;
-using RED.ViewModels;
-using RED.ViewModels.Input;
-using RED.ViewModels.Input.Controllers;
-using RED.ViewModels.Network;
+using Core;
+using Core.Configurations;
+using Core.Interfaces;
+using Core.Interfaces.Input;
+using Core.RoveProtocol;
+using Core.ViewModels.Input;
+using Core.ViewModels.Input.Controllers;
 using RoverAttachmentManager.Models;
 using RoverAttachmentManager.ViewModels.Arm;
+using System;
 
 namespace RoverAttachmentManager.ViewModels
 {
@@ -19,6 +21,11 @@ namespace RoverAttachmentManager.ViewModels
         private XboxControllerInputViewModel XboxController4;
         private FlightStickViewModel FlightStickController;
         private KeyboardInputViewModel KeyboardController;
+
+        public override void CanClose(Action<bool> callback)
+        {
+            callback(false);
+        }
 
         public ArmViewModel Arm
         {
@@ -46,7 +53,7 @@ namespace RoverAttachmentManager.ViewModels
             }
         }
 
-        public ConsoleViewModel Console
+        public CommonLog Console
         {
             get
             {
@@ -96,29 +103,16 @@ namespace RoverAttachmentManager.ViewModels
                 NotifyOfPropertyChange(() => InputManager);
             }
         }
-        public NetworkManagerViewModel NetworkManager
-        {
-            get
-            {
-                return _model._networkManager;
-            }
-            set
-            {
-                _model._networkManager = value;
-                NotifyOfPropertyChange(() => NetworkManager);
-            }
-        }
         public MainWindowViewModel()
         {
             base.DisplayName = "Rover Attachment Manager";
             _model = new MainWindowModel();
 
-            Console = new ConsoleViewModel();
+            Console = CommonLog.Instance;
             ConfigManager = new XMLConfigManager(Console);
             MetadataManager = new MetadataManager(Console, ConfigManager);
-
-            NetworkManager = new NetworkManagerViewModel(Console);
-            Rovecomm = new Rovecomm(NetworkManager, Console, MetadataManager);
+            
+            Rovecomm = Rovecomm.Instance;
             ResubscribeAll();
 
             XboxController1 = new XboxControllerInputViewModel(1);

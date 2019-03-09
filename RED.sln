@@ -4,18 +4,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.28010.2003
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RED", "RED\RED.csproj", "{92D9B54A-5B56-4760-AB05-1894D04C7E2E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{283076DC-705C-44E9-90F9-3991238995C0} = {283076DC-705C-44E9-90F9-3991238995C0}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoverNetworkManager", "RoverNetworkManager\RoverNetworkManager.csproj", "{DD54C007-0165-449C-B091-682670174C62}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{2B6222DE-AC5C-419A-A97A-FF3608C20023}"
-VisualStudioVersion = 15.0.28307.168
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RED", "RED\RED.csproj", "{92D9B54A-5B56-4760-AB05-1894D04C7E2E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoverAttachmentManager", "RoverAttachmentManager\RoverAttachmentManager.csproj", "{283076DC-705C-44E9-90F9-3991238995C0}"
-	ProjectSection(ProjectDependencies) = postProject
-		{92D9B54A-5B56-4760-AB05-1894D04C7E2E} = {92D9B54A-5B56-4760-AB05-1894D04C7E2E}
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,7 +41,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {4A419DB1-06C7-4649-912C-71A5F49F17CD}
 		SolutionGuid = {B7CA9D02-B906-4878-B65C-A257E6BA68B8}
 	EndGlobalSection
 EndGlobal
