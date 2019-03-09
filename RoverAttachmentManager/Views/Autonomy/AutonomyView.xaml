@@ -28,7 +28,7 @@
                 <Button x:Name="StateNavigate" Margin="4" Padding="10">Navigate</Button>
                 <Button x:Name="StateSearch" Margin="4" Padding="10">Search</Button>
                 <Button x:Name="StateApproachingMarker" Margin="4" Padding="10">Approaching Marker</Button>
-                <Button x:Name="Shutdown" Margin="4" Padding="10">Shutdown</Button>
+                <Button x:Name="StateShutdown" Margin="4" Padding="10">Shutdown</Button>
             </StackPanel>
         </GroupBox>
 
