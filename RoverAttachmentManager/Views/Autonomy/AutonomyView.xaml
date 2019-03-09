@@ -15,16 +15,20 @@
 
         <GroupBox Header="Controls" Margin="5" Grid.Column="0">
             <StackPanel>
-                <Button x:Name="Enable">Enable</Button>
-                <Button x:Name="AddWaypoint">Add Selected Waypoint</Button>
-                <Button x:Name="ClearAllWaypoints">Clear All Waypoints</Button>
-                <Button Click="Calibrate_Click">Calibrate</Button>
+                <Button x:Name="Enable" Margin="4" Padding="10">Enable</Button>
+                <Button x:Name="AddWaypoint" Margin="4" Padding="10">Add Selected Waypoint</Button>
+                <Button x:Name="ClearAllWaypoints" Margin="4" Padding="10">Clear All Waypoints</Button>
+                <Button Click="Calibrate_Click" Margin="4" Padding="10">Calibrate</Button>
             </StackPanel>
         </GroupBox>
 
         <GroupBox Header="State" Margin="5" Grid.Column="1">
             <StackPanel>
-                
+                <Button x:Name="StateIdle" Margin="4" Padding="10">Idle</Button>
+                <Button x:Name="StateNavigate" Margin="4" Padding="10">Navigate</Button>
+                <Button x:Name="StateSearch" Margin="4" Padding="10">Search</Button>
+                <Button x:Name="StateApproachingMarker" Margin="4" Padding="10">Approaching Marker</Button>
+                <Button x:Name="Shutdown" Margin="4" Padding="10">Shutdown</Button>
             </StackPanel>
         </GroupBox>
 
