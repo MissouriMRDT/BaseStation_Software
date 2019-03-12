@@ -15,12 +15,6 @@ namespace RoverAttachmentManager.ViewModels
     public class MainWindowViewModel : Screen
     {
         private readonly MainWindowModel _model;
-        private XboxControllerInputViewModel XboxController1;
-        private XboxControllerInputViewModel XboxController2;
-        private XboxControllerInputViewModel XboxController3;
-        private XboxControllerInputViewModel XboxController4;
-        private FlightStickViewModel FlightStickController;
-        private KeyboardInputViewModel KeyboardController;
 
         public override void CanClose(Action<bool> callback)
         {
@@ -65,7 +59,18 @@ namespace RoverAttachmentManager.ViewModels
                 NotifyOfPropertyChange();
             }
         }
-
+        public InputManagerViewModel InputManager
+        {
+            get
+            {
+                return _model._input;
+            }
+            set
+            {
+                _model._input = value;
+                NotifyOfPropertyChange(() => InputManager);
+            }
+        }
         public MetadataManager MetadataManager
         {
             get
@@ -91,16 +96,16 @@ namespace RoverAttachmentManager.ViewModels
                 NotifyOfPropertyChange();
             }
         }
-        public InputManagerViewModel InputManager
+        public XboxControllerInputViewModel XboxController
         {
             get
             {
-                return _model._input;
+                return _model._xboxController;
             }
             set
             {
-                _model._input = value;
-                NotifyOfPropertyChange(() => InputManager);
+                _model._xboxController = value;
+                NotifyOfPropertyChange(() => XboxController);
             }
         }
         public MainWindowViewModel()
@@ -115,20 +120,15 @@ namespace RoverAttachmentManager.ViewModels
             Rovecomm = Rovecomm.Instance;
             ResubscribeAll();
 
-            XboxController1 = new XboxControllerInputViewModel(1);
-            XboxController2 = new XboxControllerInputViewModel(2);
-            XboxController3 = new XboxControllerInputViewModel(3);
-            XboxController4 = new XboxControllerInputViewModel(4);
-            FlightStickController = new FlightStickViewModel();
-            KeyboardController = new KeyboardInputViewModel();
-
             Arm = new ArmViewModel(Rovecomm, MetadataManager, Console, ConfigManager);
 
-            InputManager = new InputManagerViewModel(Console, ConfigManager,
-                new IInputDevice[] { XboxController1, XboxController2, XboxController3, XboxController4, FlightStickController, KeyboardController },
-                new MappingViewModel[0],
-                new IInputMode[] {Arm});
+            XboxController = new XboxControllerInputViewModel(1);
 
+            // Programatic instanciation of InputManager view, vs static like everything else in a xaml 
+            InputManager = new InputManagerViewModel(Console, ConfigManager,
+                new IInputDevice[] { XboxController },
+                new MappingViewModel[0],
+                new IInputMode[] { Arm });
 
 
         }

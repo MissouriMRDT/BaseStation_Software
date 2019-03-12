@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Core.Views.Input
+namespace RoverAttachmentManager.Views
 {
     /// <summary>
     /// Interaction logic for InputSelectorView.xaml

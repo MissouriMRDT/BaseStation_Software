@@ -54,8 +54,8 @@ namespace Core.ViewModels.Input.Controllers
             _vm = vm;
             Index = index;
 
-            _vm.AutoDeadzone = true;
-            _vm.ManualDeadzone = 5;
+            _vm.AutoDeadzone = false;
+            _vm.ManualDeadzone = 5000;
         }
     }
 }

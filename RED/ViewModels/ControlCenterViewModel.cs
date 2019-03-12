@@ -26,7 +26,20 @@ namespace RED.ViewModels
 			}
 		}
 
-		public SettingsManagerViewModel SettingsManager
+        public bool AttachmentManagerEnabled
+        {
+            get
+            {
+                return _model._attachmentManagerEnabled;
+            }
+            set
+            {
+                _model._attachmentManagerEnabled = value;
+                NotifyOfPropertyChange(() => AttachmentManagerEnabled);
+            }
+        }
+
+        public SettingsManagerViewModel SettingsManager
         {
             get
             {
@@ -293,30 +306,6 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => XboxController2);
             }
         }
-        public XboxControllerInputViewModel XboxController3
-        {
-            get
-            {
-                return _model._xboxController3;
-            }
-            set
-            {
-                _model._xboxController3 = value;
-                NotifyOfPropertyChange(() => XboxController3);
-            }
-        }
-        public XboxControllerInputViewModel XboxController4
-        {
-            get
-            {
-                return _model._xboxController4;
-            }
-            set
-            {
-                _model._xboxController4 = value;
-                NotifyOfPropertyChange(() => XboxController4);
-            }
-        }
         public FlightStickViewModel FlightStickController
         {
             get
@@ -368,14 +357,12 @@ namespace RED.ViewModels
             Gimbal = new GimbalViewModel(Rovecomm, MetadataManager, Console);
             XboxController1 = new XboxControllerInputViewModel(1);
             XboxController2 = new XboxControllerInputViewModel(2);
-            XboxController3 = new XboxControllerInputViewModel(3);
-            XboxController4 = new XboxControllerInputViewModel(4);
             FlightStickController = new FlightStickViewModel();
             KeyboardController = new KeyboardInputViewModel();
 
             // Programatic instanciation of InputManager view, vs static like everything else in a xaml 
             InputManager = new InputManagerViewModel(Console, ConfigManager,
-                new IInputDevice[] { XboxController1, XboxController2, XboxController3, XboxController4, FlightStickController, KeyboardController },
+                new IInputDevice[] { XboxController1, XboxController2, FlightStickController, KeyboardController },
                 new MappingViewModel[0],
                 new IInputMode[] { Drive, Gimbal, Science });
 
@@ -386,6 +373,7 @@ namespace RED.ViewModels
             SettingsManager = new SettingsManagerViewModel(ConfigManager, this);
 
 			NetworkManagerEnabled = true;
+            AttachmentManagerEnabled = true;
         }
 
         protected override void OnDeactivate(bool close)
@@ -404,7 +392,13 @@ namespace RED.ViewModels
 			NetworkManagerEnabled = false;
 		}
 
-		public void Log(string message, params object[] args) {
+        public void AttachmentManager()
+        {
+            new RoverAttachmentManager.RAMBootstrapper().DisplayNetworkManager();
+            AttachmentManagerEnabled = false;
+        }
+
+        public void Log(string message, params object[] args) {
 			Core.CommonLog.Instance.Log(message, args);
 		}
 	}

@@ -2,14 +2,15 @@
 using Core.Contexts.Input;
 using Core.Interfaces;
 using Core.Interfaces.Input;
-using Core.Models.Input;
+using Core.ViewModels.Input;
+using RoverAttachmentManager.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Core.ViewModels.Input
+namespace RoverAttachmentManager.ViewModels
 {
     public class InputSelectorViewModel : PropertyChangedBase
     {

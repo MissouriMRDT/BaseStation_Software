@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Data;
 
-namespace RED.Addons
+namespace Core.Addons
 {
     public class BoolToValueConverter<T> : IValueConverter
     {

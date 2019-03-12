@@ -2,9 +2,9 @@
 
 namespace Core.Configurations.Input
 {
-    internal static class InputManagerConfig
+    public static class InputManagerConfig
     {
-        internal static InputMappingsContext DefaultInputMappings = new InputMappingsContext(new[] {
+        public static InputMappingsContext DefaultInputMappings = new InputMappingsContext(new[] {
             new InputMappingContext("Tank Drive (Traditional)", "Xbox", "Drive", 30, new[] {
                 new InputChannelContext("JoyStick1Y", "WheelsLeft"){ Parabolic = true },
                 new InputChannelContext("JoyStick2Y", "WheelsRight"){ Parabolic = true },
@@ -75,7 +75,7 @@ namespace Core.Configurations.Input
                 new InputChannelContext("RDebounced", "ModeCycle") }),
         });
 
-        internal static InputSelectionsContext DefaultInputSelections = new InputSelectionsContext(new[] {
+        public static InputSelectionsContext DefaultInputSelections = new InputSelectionsContext(new[] {
             new InputSelectionContext("Drive", "Xbox 1", "Tank Drive (Traditional)", true),
             new InputSelectionContext("Arm", "Xbox 1", "Arm (Traditional)", false),
             new InputSelectionContext("Main Gimbal", "Xbox 1", "Xbox Gimbal",false),

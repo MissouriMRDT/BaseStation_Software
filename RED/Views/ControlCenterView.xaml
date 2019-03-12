@@ -86,6 +86,7 @@
                     <DockPanel Grid.Row="0" Margin="5">
                         <Button DockPanel.Dock="Bottom" x:Name="ResubscribeAll">Resubscribe All</Button>
 						<Button DockPanel.Dock="Bottom" x:Name="NetworkManager" IsEnabled="{Binding NetworkManagerEnabled}" Content="Open Network Manager" Margin="0 0 0 5"/>
+                        <Button DockPanel.Dock="Bottom" x:Name="AttachmentManager" IsEnabled="{Binding AttachmentManagerEnabled}" Content="Open Attachment Manager" Margin="0 0 0 5"/>
 						<controls:MetroTabControl TabStripMargin="0">
                             <TabItem Header="State" controls:ControlsHelper.HeaderFontSize="12">
                                 <StackPanel>

@@ -133,7 +133,6 @@
     <Compile Include="Addons\TotalVoltToColorValueConverter.cs" />
     <Compile Include="Addons\VoltToColorValueConverter.cs" />
     <Compile Include="Addons\MotorAmpToColorValueConverter.cs" />
-    <Compile Include="Addons\BoolToValueConverter.cs" />
     <Compile Include="Addons\Navigation\GMapMarkerCollectionMultiConverter.cs" />
     <Compile Include="Addons\Navigation\GPSCoordinate.cs" />
     <Compile Include="Addons\Navigation\GPSCoordinateToLongitudeConverter.cs" />
@@ -157,6 +156,8 @@
     <Compile Include="Contexts\Modules\ScienceSettingsContext.cs" />
     <Compile Include="Contexts\Tools\StopwatchScheduleContext.cs" />
     <Compile Include="Images\ModernUIIcons.cs" />
+    <Compile Include="Models\InputManagerModel.cs" />
+    <Compile Include="Models\InputSelectorModel.cs" />
     <Compile Include="Models\Modules\AutonomyModel.cs" />
     <Compile Include="Models\Modules\GimbalModel.cs" />
     <Compile Include="Models\Modules\DriveModel.cs" />
@@ -172,6 +173,8 @@
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Models\Tools\StopwatchToolModel.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="ViewModels\InputManagerViewModel.cs" />
+    <Compile Include="ViewModels\InputSelectorViewModel.cs" />
     <Compile Include="ViewModels\Modules\AutonomyViewModel.cs" />
     <Compile Include="ViewModels\Modules\CameraViewModel.cs" />
     <Compile Include="ViewModels\Modules\ExternalControlsViewModel.cs" />
@@ -198,6 +201,12 @@
     <Compile Include="ViewModels\Tools\StopwatchToolViewModel.cs" />
     <Compile Include="Views\ControlCenterView.xaml.cs">
       <DependentUpon>ControlCenterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\InputManagerView.xaml.cs">
+      <DependentUpon>InputManagerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\InputSelectorView.xaml.cs">
+      <DependentUpon>InputSelectorView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\AutonomyView.xaml.cs">
       <DependentUpon>AutonomyView.xaml</DependentUpon>
@@ -265,6 +274,14 @@
     <Page Include="Views\ControlCenterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\InputManagerView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\InputSelectorView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Modules\AutonomyView.xaml">
       <SubType>Designer</SubType>
@@ -396,6 +413,10 @@
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{2b6222de-ac5c-419a-a97a-ff3608c20023}</Project>
       <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RoverAttachmentManager\RoverAttachmentManager.csproj">
+      <Project>{283076dc-705c-44e9-90f9-3991238995c0}</Project>
+      <Name>RoverAttachmentManager</Name>
     </ProjectReference>
     <ProjectReference Include="..\RoverNetworkManager\RoverNetworkManager.csproj">
       <Project>{dd54c007-0165-449c-b091-682670174c62}</Project>

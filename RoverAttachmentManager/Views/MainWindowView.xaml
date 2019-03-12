@@ -16,8 +16,8 @@
         <behaviours:BorderlessWindowBehavior />
     </i:Interaction.Behaviors>
 
-    <Grid>
+    <StackPanel>
         <ContentControl x:Name="Arm" />
-
-    </Grid>
+        <ContentControl x:Name="InputManager" />
+    </StackPanel>
 </controls:MetroWindow>

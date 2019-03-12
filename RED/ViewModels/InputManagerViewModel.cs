@@ -3,11 +3,12 @@ using Core.Configurations.Input;
 using Core.Contexts.Input;
 using Core.Interfaces;
 using Core.Interfaces.Input;
-using Core.Models.Input;
+using Core.ViewModels.Input;
+using RED.Models;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace Core.ViewModels.Input
+namespace RED.ViewModels
 {
     public class InputManagerViewModel : PropertyChangedBase
     {

@@ -79,6 +79,7 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Addons\BoolToValueConverter.cs" />
     <Compile Include="Configurations\Input\Controllers\XboxControllerInputConfig.cs" />
     <Compile Include="Configurations\Input\InputManagerConfig.cs" />
     <Compile Include="Configurations\MetadataManagerConfig.cs" />
@@ -104,8 +105,6 @@
     <Compile Include="CommonLog.cs" />
     <Compile Include="Models\Input\Controllers\KeyboardInputModel.cs" />
     <Compile Include="Models\Input\Controllers\XboxControllerInputModel.cs" />
-    <Compile Include="Models\Input\InputManagerModel.cs" />
-    <Compile Include="Models\Input\InputSelectorModel.cs" />
     <Compile Include="Models\Input\MappingChannelModel.cs" />
     <Compile Include="Models\Input\MappingModel.cs" />
     <Compile Include="Models\Packet.cs" />
@@ -122,24 +121,12 @@
     <Compile Include="ViewModels\Input\Controllers\FlightStickViewModel.cs" />
     <Compile Include="ViewModels\Input\Controllers\KeyboardInputViewModel.cs" />
     <Compile Include="ViewModels\Input\Controllers\XboxControllerInputViewModel.cs" />
-    <Compile Include="ViewModels\Input\InputManagerViewModel.cs" />
-    <Compile Include="ViewModels\Input\InputSelectorViewModel.cs" />
     <Compile Include="ViewModels\Input\MappingChannelViewModel.cs" />
     <Compile Include="ViewModels\Input\MappingViewModel.cs" />
     <Compile Include="ViewModels\Input\XboxControllerInputSettingsViewModel.cs" />
-    <Compile Include="Views\Input\InputManagerView.xaml.cs">
-      <DependentUpon>InputManagerView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Input\InputSelectorView.xaml.cs">
-      <DependentUpon>InputSelectorView.xaml</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Views\Input\InputSelectorView.xaml" />
-    <Page Include="Views\Input\InputManagerView.xaml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -202,6 +202,10 @@ namespace Core.Configurations
                 }
             },
             new MetadataServerContext("Arm Board", "192.168.1.131") {
+                Commands = new[]
+                {
+                    new MetadataRecordContext(8004, "ArmValues", "All values for the arm together. Armj1-j6, then primary then secondary gripper.")
+                }
             },
 
             new MetadataServerContext("BMS Board", "192.168.1.133") {

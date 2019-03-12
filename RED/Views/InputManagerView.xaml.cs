@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Core.Views.Input
+namespace RED.Views
 {
     /// <summary>
     /// Interaction logic for InputManagerView.xaml
