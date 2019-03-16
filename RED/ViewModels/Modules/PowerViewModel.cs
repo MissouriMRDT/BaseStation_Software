@@ -531,11 +531,11 @@ namespace RED.ViewModels.Modules
 
 		public void RebootRover()
         {
-            _rovecomm.SendCommand(new Packet("BMSReboot"), true);
+            _rovecomm.SendCommand(new Packet("BMSStop", (byte)10), true);
         }
         public void EStopRover()
         {
-            _rovecomm.SendCommand(new Packet("BMSStop"), true);
+            _rovecomm.SendCommand(new Packet("BMSStop", (byte)0), true);
         }
 
         public void FanControl(bool state)
