@@ -451,9 +451,11 @@ namespace RoverAttachmentManager.ViewModels.Arm
             Gripper = (Int16)(ControllerBase.TwoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0) * GripperRangeFactor);
             Nipper = (Int16)(ControllerBase.TwoButtonTransform(values["NipperClose"] > 0, values["NipperOpen"] > 0, values["NipperClose"], -values["NipperOpen"], 0) * GripperRangeFactor);
 
-            Int16[] sendValues = { ArmBaseBend, ArmBaseTwist, ArmElbowBend, ArmElbowTwist, ArmWristBend, ArmWristTwist, Gripper, Nipper };
+            //Int16[] sendValues = { ArmBaseBend, ArmBaseTwist, ArmElbowBend, ArmElbowTwist, ArmWristBend, ArmWristTwist, Gripper, Nipper };
+            Int16[] sendValues = { Nipper, Gripper, ArmWristTwist, ArmWristBend, ArmElbowTwist, ArmElbowBend, ArmBaseTwist, ArmBaseBend };
             byte[] data = new byte[sendValues.Length * sizeof(Int16)];
             Buffer.BlockCopy(sendValues, 0, data, 0, data.Length);
+            Array.Reverse(data);
             _rovecomm.SendCommand(new Packet("ArmValues", data, 8, (byte)DataTypes.INT16_T));
 
             if (values["GripperSwap"] == 1)
