@@ -257,7 +257,17 @@ namespace Core.Configurations
             },
             new MetadataServerContext("ScienceAcutation Board", "192.168.1.137") {
             },
-            new MetadataServerContext("Autonomy Board", "192.168.1.139") {
+            new MetadataServerContext("Autonomy Board", "192.168.1.140") {
+                Commands = new[] {
+                    new MetadataRecordContext(11100, "AutonomousModeEnable", ""),
+                    new MetadataRecordContext(11101, "AutonomousModeDisable", ""),
+                    new MetadataRecordContext(11102, "WaypointAdd", ""),
+                    new MetadataRecordContext(11103, "WaypointsClearAll", ""),
+                    new MetadataRecordContext(11104, "AutonomyCalibrate", "")
+                },
+                Telemetry = new[] {
+                    new MetadataRecordContext(2580, "WaypointReached", "")
+                }
             }
         });
     }

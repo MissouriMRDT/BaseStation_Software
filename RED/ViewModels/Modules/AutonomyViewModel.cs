@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using Core.Interfaces;
 using Core.Models;
+using Core.RoveProtocol;
 using RED.Models.Modules;
 using RED.ViewModels.Navigation;
 using System;
@@ -68,12 +69,18 @@ namespace RED.ViewModels.Modules
 
 		private void AddWaypoint(Waypoint waypoint)
         {
-            byte[] msg = new byte[2 * sizeof(double)];
-            Buffer.BlockCopy(BitConverter.GetBytes(waypoint.Latitude), 0, msg, 0 * sizeof(double), sizeof(double));
-            Buffer.BlockCopy(BitConverter.GetBytes(waypoint.Longitude), 0, msg, 1 * sizeof(double), sizeof(double));
+            byte[] msg = new byte[2 * sizeof(Int64)];
+            _logger.Log(waypoint.Latitude.ToString());
+            Int64 lat = (Int64.Parse((waypoint.Latitude * 10E7).ToString()));
+            Int64 lon = (Int64.Parse((waypoint.Longitude * 10E7).ToString()));
+            _logger.Log(lat.ToString());
+
+
+            Buffer.BlockCopy(BitConverter.GetBytes(lat), 0, msg, 0 * sizeof(Int64), sizeof(Int64));
+            Buffer.BlockCopy(BitConverter.GetBytes(lon), 0, msg, 1 * sizeof(Int64), sizeof(Int64));
 
             // TODO: Figure this out
-            //_rovecomm.SendCommand(new Packet("WaypointAdd", msg, 2, DataTypes.), true);
+            _rovecomm.SendCommand(new Packet("WaypointAdd", msg, 2, (byte)DataTypes.INT64_T), true);
         }
     }
 }
