@@ -9,6 +9,12 @@ using Core.ViewModels.Input.Controllers;
 using RoverAttachmentManager.Models;
 using RoverAttachmentManager.ViewModels.Arm;
 using System;
+using RED.Roveprotocol;
+using RED.ViewModels;
+using RED.ViewModels.Network;
+using RED.ViewModels.Modules;
+using RED.ViewModels.Navigation;
+using RoverAttachmentManager.ViewModels.Autonomy;
 
 namespace RoverAttachmentManager.ViewModels
 {
@@ -135,6 +141,123 @@ namespace RoverAttachmentManager.ViewModels
         public void ResubscribeAll()
         {
             Rovecomm.SubscribeMyPCToAllDevices();
+        }
+
+        public ConsoleViewModel Console
+        {
+            get
+            {
+                return _model._console;
+            }
+            set
+            {
+                _model._console = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        public NetworkManagerViewModel NetworkManager
+        {
+            get
+            {
+                return _model._networkManager;
+            }
+            set
+            {
+                _model._networkManager = value;
+                NotifyOfPropertyChange(() => NetworkManager);
+            }
+        }
+
+        public XMLConfigManager ConfigManager
+        {
+            get
+            {
+                return _model._configManager;
+            }
+            set
+            {
+                _model._configManager = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        public MetadataManager MetadataManager
+        {
+            get
+            {
+                return _model._metadataManager;
+            }
+            set
+            {
+                _model._metadataManager = value;
+                NotifyOfPropertyChange(() => MetadataManager);
+            }
+        }
+
+        public Rovecomm Rovecomm
+        {
+            get
+            {
+                return _model._rovecomm;
+            }
+            set
+            {
+                _model._rovecomm = value;
+                NotifyOfPropertyChange((() => Rovecomm));
+            }
+        }
+
+        public GPSViewModel GPS
+        {
+            get
+            {
+                return _model._GPS;
+            }
+            set
+            {
+                _model._GPS = value;
+                NotifyOfPropertyChange(() => GPS);
+            }
+        }
+
+        public MapViewModel Map
+        {
+            get
+            {
+                return _model._map;
+            }
+            set
+            {
+                _model._map = value;
+                NotifyOfPropertyChange(() => Map);
+            }
+        }
+
+        public WaypointManagerViewModel WaypointManager
+        {
+            get
+            {
+                return _model._waypoint;
+            }
+            set
+            {
+                _model._waypoint = value;
+                NotifyOfPropertyChange(() => WaypointManager);
+            }
+        }
+
+        public Autonomy.AutonomyViewModel Autonomy
+        {
+            get
+            {
+                return _model._autonomy;
+            }
+            set
+            {
+                _model._autonomy = value;
+                NotifyOfPropertyChange(() => Autonomy);
+            }
         }
     }
 }

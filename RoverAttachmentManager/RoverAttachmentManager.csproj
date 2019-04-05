@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>RoverAttachmentManager</RootNamespace>
     <AssemblyName>RoverAttachmentManager</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -67,7 +67,7 @@
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\ControlzEx.dll</HintPath>
     </Reference>
     <Reference Include="MahApps.Metro, Version=1.6.5.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.1.6.5\lib\net46\MahApps.Metro.dll</HintPath>
+      <HintPath>..\packages\MahApps.Metro.1.6.5\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -125,6 +125,12 @@
     <Page Include="Views\InputSelectorView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    <Compile Include="Models\Autonomy\AutonomyModel.cs" />
+    <Compile Include="Models\MainWindowModel.cs" />
+    <Compile Include="RAMBootstrapper.cs" />
+    <Page Include="Views\Autonomy\AutonomyView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainWindowView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -146,6 +152,10 @@
     </Compile>
     <Compile Include="Views\InputSelectorView.xaml.cs">
       <DependentUpon>InputSelectorView.xaml</DependentUpon>
+    <Compile Include="ViewModels\Autonomy\AutonomyViewModel.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="Views\Autonomy\AutonomyView.xaml.cs">
+      <DependentUpon>AutonomyView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainWindowView.xaml.cs">
       <DependentUpon>MainWindowView.xaml</DependentUpon>
@@ -197,6 +207,7 @@
       <Name>Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
