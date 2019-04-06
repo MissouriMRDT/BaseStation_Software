@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>RoverAttachmentManager</RootNamespace>
     <AssemblyName>RoverAttachmentManager</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -125,9 +125,8 @@
     <Page Include="Views\InputSelectorView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
     <Compile Include="Models\Autonomy\AutonomyModel.cs" />
-    <Compile Include="Models\MainWindowModel.cs" />
-    <Compile Include="RAMBootstrapper.cs" />
     <Page Include="Views\Autonomy\AutonomyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -143,7 +142,6 @@
     <Compile Include="ViewModels\Arm\ArmViewModel.cs" />
     <Compile Include="ViewModels\InputManagerViewModel.cs" />
     <Compile Include="ViewModels\InputSelectorViewModel.cs" />
-    <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\Arm\ArmView.xaml.cs">
       <DependentUpon>ArmView.xaml</DependentUpon>
     </Compile>
@@ -152,6 +150,7 @@
     </Compile>
     <Compile Include="Views\InputSelectorView.xaml.cs">
       <DependentUpon>InputSelectorView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\Autonomy\AutonomyViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\Autonomy\AutonomyView.xaml.cs">

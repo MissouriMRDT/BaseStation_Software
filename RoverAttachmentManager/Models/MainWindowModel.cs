@@ -5,6 +5,7 @@ using Core.ViewModels.Input;
 using Core.ViewModels.Input.Controllers;
 using RoverAttachmentManager.ViewModels;
 using RoverAttachmentManager.ViewModels.Arm;
+using RoverAttachmentManager.ViewModels.Autonomy;
 
 namespace RoverAttachmentManager.Models
 {
@@ -19,10 +20,6 @@ namespace RoverAttachmentManager.Models
         internal CommonLog _console;
         internal MetadataManager _metadataManager;
         internal XMLConfigManager _configManager;
-        internal NetworkManagerViewModel _networkManager;
-        internal GPSViewModel _GPS;
-        internal MapViewModel _map;
-        internal WaypointManagerViewModel _waypoint;
         internal AutonomyViewModel _autonomy;
     }
 }

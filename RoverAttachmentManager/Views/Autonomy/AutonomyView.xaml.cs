@@ -1,6 +1,6 @@
 ﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
-using RED.ViewModels.Modules;
+using RoverAttachmentManager.ViewModels.Autonomy;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
