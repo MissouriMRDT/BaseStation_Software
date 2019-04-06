@@ -17,7 +17,25 @@
     </i:Interaction.Behaviors>
 
     <StackPanel>
-        <ContentControl x:Name="Arm" />
+
+        <controls:MetroTabControl Name="MainTabs">
+
+            <TabItem Header="Arm" Name="ArmTab">
+                <ContentControl x:Name="Arm" />
+            </TabItem>
+
+            <TabItem Header="Science" Name="ScienceTab">
+                <ContentControl x:Name="Science" />
+            </TabItem>
+
+            <TabItem Header="Autonomy" Name="AutonomyTab">
+                <ContentControl x:Name="Autonomy" />
+            </TabItem>
+
+        </controls:MetroTabControl>
+
         <ContentControl x:Name="InputManager" />
+
     </StackPanel>
+
 </controls:MetroWindow>

@@ -136,18 +136,6 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => StopwatchTool);
             }
         }
-        public ScienceViewModel Science
-        {
-            get
-            {
-                return _model._science;
-            }
-            set
-            {
-                _model._science = value;
-                NotifyOfPropertyChange(() => Science);
-            }
-        }
         public GPSViewModel GPS
         {
             get
@@ -342,8 +330,7 @@ namespace RED.ViewModels
        
             Rovecomm = Rovecomm.Instance;
             //ResubscribeAll();
-
-            Science = new ScienceViewModel(Rovecomm, MetadataManager, Console);
+            
             GPS = new GPSViewModel(Rovecomm, MetadataManager);
             Sensor = new SensorViewModel(Rovecomm, MetadataManager, Console);
             DropBays = new DropBaysViewModel(Rovecomm, MetadataManager, Console);
@@ -364,7 +351,7 @@ namespace RED.ViewModels
             InputManager = new InputManagerViewModel(Console, ConfigManager,
                 new IInputDevice[] { XboxController1, XboxController2, FlightStickController, KeyboardController },
                 new MappingViewModel[0],
-                new IInputMode[] { Drive, Gimbal, Science });
+                new IInputMode[] { Drive, Gimbal });
 
             WaypointManager = new WaypointManagerViewModel(Map, GPS);
             Autonomy = new AutonomyViewModel(Rovecomm, MetadataManager, Console, WaypointManager);

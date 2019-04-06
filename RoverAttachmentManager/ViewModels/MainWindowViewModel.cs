@@ -10,6 +10,7 @@ using RoverAttachmentManager.Models;
 using RoverAttachmentManager.ViewModels.Arm;
 using System;
 using RoverAttachmentManager.ViewModels.Autonomy;
+using RoverAttachmentManager.ViewModels.Science;
 
 namespace RoverAttachmentManager.ViewModels
 {
@@ -122,6 +123,8 @@ namespace RoverAttachmentManager.ViewModels
             ResubscribeAll();
 
             Arm = new ArmViewModel(Rovecomm, MetadataManager, Console, ConfigManager);
+            Autonomy = new AutonomyViewModel(Rovecomm, MetadataManager, Console);
+            Science = new ScienceViewModel(Rovecomm, MetadataManager, Console);
 
             XboxController = new XboxControllerInputViewModel(1);
 
@@ -148,6 +151,19 @@ namespace RoverAttachmentManager.ViewModels
             {
                 _model._autonomy = value;
                 NotifyOfPropertyChange(() => Autonomy);
+            }
+        }
+
+        public ScienceViewModel Science
+        {
+            get
+            {
+                return _model._science;
+            }
+            set
+            {
+                _model._science = value;
+                NotifyOfPropertyChange(() => Science);
             }
         }
     }

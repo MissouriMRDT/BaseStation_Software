@@ -113,7 +113,16 @@
     <Compile Include="Models\InputManagerModel.cs" />
     <Compile Include="Models\InputSelectorModel.cs" />
     <Compile Include="Models\MainWindowModel.cs" />
+    <Compile Include="Models\Science\ScienceModel.cs" />
+    <Compile Include="ViewModels\Science\ScienceViewModel.cs" />
+    <Compile Include="Views\Science\ScienceView.xaml.cs">
+      <DependentUpon>ScienceView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RAMBootstrapper.cs" />
+    <Page Include="Views\Science\ScienceView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\Arm\ArmView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

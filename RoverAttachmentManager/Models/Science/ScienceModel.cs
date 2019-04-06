@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace RED.Models.Modules
+namespace RoverAttachmentManager.Models.Science
 {
     internal class ScienceModel
     {

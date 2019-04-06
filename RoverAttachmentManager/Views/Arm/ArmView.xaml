@@ -14,7 +14,7 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Column="0" Margin="5">
-            <vlc:VlcControl  x:Name="vlcPlayer" Height="600" />
+            <vlc:VlcControl  x:Name="vlcPlayer" Height="500" />
             <DockPanel>
                 <Label DockPanel.Dock="Left">Control State:</Label>
                 <Label DockPanel.Dock="Right" x:Name ="ControlState" HorizontalContentAlignment="Left" />
@@ -83,7 +83,7 @@
                     </UniformGrid>
                     <UniformGrid Rows="1"/>
                     <Border BorderThickness="1" BorderBrush="Gray">
-                        <ListBox x:Name="Positions" SelectedItem="{Binding SelectedPosition}" Height="100">
+                        <ListBox x:Name="Positions" SelectedItem="{Binding SelectedPosition}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Name}" />
@@ -127,8 +127,8 @@
                         <TextBox Grid.Row="2" Grid.Column="4" Text="{Binding Roll, StringFormat=0.##}" />
                     </Grid>
                     <UniformGrid Rows="1">
-                        <Button x:Name="SetXYZPosition" Content="Set absolute position" Height="29" HorizontalAlignment="Center" />
-                        <Button x:Name="GetXYZPosition" Content="Get Absolute Position" Height="29" HorizontalAlignment="Center" />
+                        <Button x:Name="SetXYZPosition" Content="Set absolute position" HorizontalAlignment="Center" />
+                        <Button x:Name="GetXYZPosition" Content="Get Absolute Position" HorizontalAlignment="Center" />
                     </UniformGrid>
                     <Grid Margin="0 10 0 10">
                         <Grid.RowDefinitions>

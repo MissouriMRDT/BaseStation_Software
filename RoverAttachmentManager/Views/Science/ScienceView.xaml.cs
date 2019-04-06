@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace RED.Views.Modules
+namespace RoverAttachmentManager.Views.Science
 {
     /// <summary>
     /// Interaction logic for ScienceView.xaml

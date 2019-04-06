@@ -6,6 +6,7 @@ using Core.ViewModels.Input.Controllers;
 using RoverAttachmentManager.ViewModels;
 using RoverAttachmentManager.ViewModels.Arm;
 using RoverAttachmentManager.ViewModels.Autonomy;
+using RoverAttachmentManager.ViewModels.Science;
 
 namespace RoverAttachmentManager.Models
 {
@@ -21,5 +22,6 @@ namespace RoverAttachmentManager.Models
         internal MetadataManager _metadataManager;
         internal XMLConfigManager _configManager;
         internal AutonomyViewModel _autonomy;
+        internal ScienceViewModel _science;
     }
 }

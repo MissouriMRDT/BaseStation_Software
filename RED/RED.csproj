@@ -168,7 +168,6 @@
     <Compile Include="Models\Navigation\WaypointManagerModel.cs" />
     <Compile Include="Models\Network\NetworkManagerModel.cs" />
     <Compile Include="Models\Modules\PowerModel.cs" />
-    <Compile Include="Models\Modules\ScienceModel.cs" />
     <Compile Include="Models\Modules\GPSModel.cs" />
     <Compile Include="Models\Modules\SensorModel.cs" />
     <Compile Include="Models\SettingsModel.cs" />
@@ -190,7 +189,6 @@
     <Compile Include="ViewModels\Modules\DriveViewModel.cs" />
     <Compile Include="ViewModels\Modules\GPSViewModel.cs" />
     <Compile Include="ViewModels\Modules\PowerViewModel.cs" />
-    <Compile Include="ViewModels\Modules\ScienceViewModel.cs" />
     <Compile Include="ViewModels\Modules\SensorViewModel.cs" />
     <Compile Include="ViewModels\ControlCenterViewModel.cs" />
     <Compile Include="ViewModels\SettingsManagerViewModel.cs" />
@@ -232,9 +230,6 @@
     </Compile>
     <Compile Include="Views\Modules\PowerView.xaml.cs">
       <DependentUpon>PowerView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Modules\ScienceView.xaml.cs">
-      <DependentUpon>ScienceView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\GPSView.xaml.cs">
       <DependentUpon>GPSView.xaml</DependentUpon>
@@ -330,10 +325,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Modules\PowerView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Modules\ScienceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,14 +1,14 @@
 ﻿using Caliburn.Micro;
 using Core.Interfaces;
 using Core.Models;
-using RED.Models.Modules;
+using RoverAttachmentManager.Models.Science;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
 
-namespace RED.ViewModels.Modules
+namespace RoverAttachmentManager.ViewModels.Science
 {
     public class ScienceViewModel : PropertyChangedBase, IRovecommReceiver, IInputMode
     {

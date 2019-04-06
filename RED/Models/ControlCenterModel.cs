@@ -20,8 +20,7 @@ namespace RED.Models
         internal InputManagerViewModel _input;
         internal WaypointManagerViewModel _waypoint;
         internal StopwatchToolViewModel _stopwatchTool;
-
-        internal ScienceViewModel _science;
+        
         internal GPSViewModel _GPS;
         internal SensorViewModel _sensor;
         internal DropBaysViewModel _dropBays;
