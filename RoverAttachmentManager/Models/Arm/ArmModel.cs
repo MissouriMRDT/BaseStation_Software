@@ -13,6 +13,7 @@ namespace RoverAttachmentManager.Models.ArmModels
         internal float AngleJ6;
         internal float CurrentMain;
         internal int EndeffectorSpeedLimit = 500;
+        internal int MotorRangeFactor = 1000;
         internal ObservableCollection<ArmPositionViewModel> Positions = new ObservableCollection<ArmPositionViewModel>();
         internal ArmPositionViewModel SelectedPosition;
         internal float CoordinateX;

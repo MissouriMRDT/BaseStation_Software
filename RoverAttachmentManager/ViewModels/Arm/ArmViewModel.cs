@@ -49,7 +49,6 @@ namespace RoverAttachmentManager.ViewModels.Arm
 
         private const byte ArmDisableCommand = 0x00;
         private const byte ArmEnableCommand = 0x01;
-        private const short MotorRangeFactor = 1000;
         private const short GripperRangeFactor = 500;
 
         private readonly byte[] ArmEncoderFaultIds = { 8, 9, 10, 11, 12, 13 };
@@ -74,6 +73,19 @@ namespace RoverAttachmentManager.ViewModels.Arm
         //RED will keep sending empty commands to the arm to keep it alive until the user sends it a gui command and 
         //puts it into closed loop mode as well
         private bool guiControlInitialized;
+
+        public int MotorRangeFactor
+        {
+            get
+            {
+                return _model.MotorRangeFactor;
+            }
+            set
+            {
+                _model.MotorRangeFactor = value;
+                NotifyOfPropertyChange(() => MotorRangeFactor);
+            }
+        }
 
         public float AngleJ1
         {
