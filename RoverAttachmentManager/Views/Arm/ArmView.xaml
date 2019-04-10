@@ -13,42 +13,47 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="0" Margin="5">
-            <vlc:VlcControl  x:Name="vlcPlayer" Height="500" />
-            <DockPanel>
-                <Label DockPanel.Dock="Left">Control State:</Label>
-                <Label DockPanel.Dock="Right" x:Name ="ControlState" HorizontalContentAlignment="Left" />
-            </DockPanel>
-            <UniformGrid Rows="1">
-                <Label>On</Label>
-                <Button FontSize="10" cal:Message.Attach="EnableCommand('All', 'True')">All</Button>
-                <Button FontSize="8" cal:Message.Attach="EnableCommand('Main', 'True')">Main</Button>
-                <Button FontSize="10" cal:Message.Attach="EnableCommand('J1', 'True')">J1</Button>
-                <Button FontSize="10" cal:Message.Attach="EnableCommand('J2', 'True')">J2</Button>
-                <Button FontSize="10" cal:Message.Attach="EnableCommand('J3', 'True')">J3</Button>
-                <Button FontSize="10" cal:Message.Attach="EnableCommand('J4', 'True')">J4</Button>
-                <Button FontSize="10" cal:Message.Attach="EnableCommand('J5', 'True')">J5</Button>
-                <Button FontSize="10" cal:Message.Attach="EnableCommand('J6', 'True')">J6</Button>
-                <Button FontSize="8" cal:Message.Attach="EnableCommand('Endeff1', 'True')">End1</Button>
-                <Button FontSize="8" cal:Message.Attach="EnableCommand('Endeff2', 'True')">End2</Button>
-            </UniformGrid>
-            <UniformGrid Rows="1">
-                <Label>Off</Label>
-                <Button FontSize="10" cal:Message.Attach="EnableCommand('All', 'False')">All</Button>
-                <Button FontSize="8" cal:Message.Attach="EnableCommand('Main', 'False')">Main</Button>
-                <Button FontSize="10" cal:Message.Attach="EnableCommand('J1', 'False')">J1</Button>
-                <Button FontSize="10" cal:Message.Attach="EnableCommand('J2', 'False')">J2</Button>
-                <Button FontSize="10" cal:Message.Attach="EnableCommand('J3', 'False')">J3</Button>
-                <Button FontSize="10" cal:Message.Attach="EnableCommand('J4', 'False')">J4</Button>
-                <Button FontSize="10" cal:Message.Attach="EnableCommand('J5', 'False')">J5</Button>
-                <Button FontSize="10" cal:Message.Attach="EnableCommand('J6', 'False')">J6</Button>
-                <Button FontSize="8" cal:Message.Attach="EnableCommand('Endeff1', 'False')">End1</Button>
-                <Button FontSize="8" cal:Message.Attach="EnableCommand('Endeff2', 'False')">End2</Button>
-            </UniformGrid>
+        <StackPanel Grid.Column="0" Grid.Row="0" Margin="2.5">
+            <vlc:VlcControl  x:Name="vlcPlayer" Height="500" Margin="2.5"/>
+            <Expander Header="Control State" IsExpanded="True" Margin="2.5">
+                <StackPanel>
+                    <DockPanel>
+                        <Label DockPanel.Dock="Left">Current Control State:</Label>
+                        <Label DockPanel.Dock="Right" x:Name ="ControlState" HorizontalContentAlignment="Left" />
+                    </DockPanel>
+                    
+                    <UniformGrid Rows="1">
+                        <Label>On</Label>
+                        <Button FontSize="10" cal:Message.Attach="EnableCommand('All', 'True')">All</Button>
+                        <Button FontSize="8" cal:Message.Attach="EnableCommand('Main', 'True')">Main</Button>
+                        <Button FontSize="10" cal:Message.Attach="EnableCommand('J1', 'True')">J1</Button>
+                        <Button FontSize="10" cal:Message.Attach="EnableCommand('J2', 'True')">J2</Button>
+                        <Button FontSize="10" cal:Message.Attach="EnableCommand('J3', 'True')">J3</Button>
+                        <Button FontSize="10" cal:Message.Attach="EnableCommand('J4', 'True')">J4</Button>
+                        <Button FontSize="10" cal:Message.Attach="EnableCommand('J5', 'True')">J5</Button>
+                        <Button FontSize="10" cal:Message.Attach="EnableCommand('J6', 'True')">J6</Button>
+                        <Button FontSize="8" cal:Message.Attach="EnableCommand('Endeff1', 'True')">End1</Button>
+                        <Button FontSize="8" cal:Message.Attach="EnableCommand('Endeff2', 'True')">End2</Button>
+                    </UniformGrid>
+                    <UniformGrid Rows="1">
+                        <Label>Off</Label>
+                        <Button FontSize="10" cal:Message.Attach="EnableCommand('All', 'False')">All</Button>
+                        <Button FontSize="8" cal:Message.Attach="EnableCommand('Main', 'False')">Main</Button>
+                        <Button FontSize="10" cal:Message.Attach="EnableCommand('J1', 'False')">J1</Button>
+                        <Button FontSize="10" cal:Message.Attach="EnableCommand('J2', 'False')">J2</Button>
+                        <Button FontSize="10" cal:Message.Attach="EnableCommand('J3', 'False')">J3</Button>
+                        <Button FontSize="10" cal:Message.Attach="EnableCommand('J4', 'False')">J4</Button>
+                        <Button FontSize="10" cal:Message.Attach="EnableCommand('J5', 'False')">J5</Button>
+                        <Button FontSize="10" cal:Message.Attach="EnableCommand('J6', 'False')">J6</Button>
+                        <Button FontSize="8" cal:Message.Attach="EnableCommand('Endeff1', 'False')">End1</Button>
+                        <Button FontSize="8" cal:Message.Attach="EnableCommand('Endeff2', 'False')">End2</Button>
+                    </UniformGrid>
+                </StackPanel>
+            </Expander>
         </StackPanel>
 
-        <StackPanel Grid.Column="1" Margin="5">
-            <Expander Header="Angular Control" IsExpanded="True">
+        <StackPanel Grid.Column="1" Margin="2.5">
+            <Expander Header="Angular Control" IsExpanded="True" Margin="2.5">
                 <StackPanel>
                     <Grid Margin="0 10 0 10">
                         <Grid.RowDefinitions>
@@ -62,19 +67,21 @@
                             <ColumnDefinition Width="112*" />
                             <ColumnDefinition Width="38*" />
                             <ColumnDefinition Width="112*" />
+                            <ColumnDefinition Width="38*" />
+                            <ColumnDefinition Width="112*" />
                         </Grid.ColumnDefinitions>
                         <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">J1</Label>
                         <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding AngleJ1, StringFormat=0.##}" />
                         <Label Grid.Row="0" Grid.Column="3">J2</Label>
                         <TextBox Grid.Row="0" Grid.Column="4" Text="{Binding AngleJ2, StringFormat=0.##}" />
-                        <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">J3</Label>
-                        <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding AngleJ3, StringFormat=0.##}" />
-                        <Label Grid.Row="1" Grid.Column="3">J4</Label>
-                        <TextBox Grid.Row="1" Grid.Column="4" Text="{Binding AngleJ4, StringFormat=0.##}" />
-                        <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">J5</Label>
-                        <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding AngleJ5, StringFormat=0.##}" />
-                        <Label Grid.Row="2" Grid.Column="3">J6</Label>
-                        <TextBox Grid.Row="2" Grid.Column="4" Text="{Binding AngleJ6, StringFormat=0.##}" />
+                        <Label Grid.Row="0" Grid.Column="5">J3</Label>
+                        <TextBox Grid.Row="0" Grid.Column="6" Text="{Binding AngleJ3, StringFormat=0.##}" />
+                        <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">J4</Label>
+                        <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding AngleJ4, StringFormat=0.##}" />
+                        <Label Grid.Row="1" Grid.Column="3" >J5</Label>
+                        <TextBox Grid.Row="1" Grid.Column="4" Text="{Binding AngleJ5, StringFormat=0.##}" />
+                        <Label Grid.Row="1" Grid.Column="5">J6</Label>
+                        <TextBox Grid.Row="1" Grid.Column="6" Text="{Binding AngleJ6, StringFormat=0.##}" />
                     </Grid>
                     <UniformGrid Rows="1">
                         <Button x:Name="GetPosition">Get Position</Button>
@@ -98,7 +105,7 @@
                     </UniformGrid>
                 </StackPanel>
             </Expander>
-            <Expander Header="IK Control" IsExpanded="True">
+            <Expander Header="IK Control" IsExpanded="True" Margin="2.5">
                 <StackPanel>
                     <Grid Margin="0 10 0 10">
                         <Grid.RowDefinitions>
@@ -153,48 +160,49 @@
                     <Button Width="100" Content="Set Op point" x:Name="SetOpPoint"/>
                 </StackPanel>
             </Expander>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Label Grid.Row="0" Grid.Column="1">Main Current</Label>
-                <Label Grid.Row="0" Grid.Column="1" x:Name="CurrentMain" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
-            </Grid>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" Grid.Row="0">Limit Override</Label>
-                <UniformGrid Rows="1" Grid.Column="1" Grid.Row="0">
-                    <Button cal:Message.Attach="LimitSwitchOverride(1)">J1</Button>
-                    <Button cal:Message.Attach="LimitSwitchOverride(2)">J2</Button>
-                    <Button cal:Message.Attach="LimitSwitchOverride(3)">J3</Button>
-                </UniformGrid>
-                <Label Grid.Column="0" Grid.Row="1">Limit Un-Override</Label>
-                <UniformGrid Rows="1" Grid.Column="1" Grid.Row="1">
-                    <Button cal:Message.Attach="LimitSwitchUnOverride(1)">J1</Button>
-                    <Button cal:Message.Attach="LimitSwitchUnOverride(2)">J2</Button>
-                    <Button cal:Message.Attach="LimitSwitchUnOverride(3)">J3</Button>
-                </UniformGrid>
-                <Label Grid.Column="0" Grid.Row="2"></Label>
-                <Label Grid.Column="0" Grid.Row="3">Arm Control Multiplier: </Label>
-                <Label Grid.Column="1" Grid.Row="3" x:Name="MotorRangeFactor"></Label>
-                <Slider Grid.Row="4" Width="300" Maximum="1000" Minimum="0" Value="{Binding MotorRangeFactor}"></Slider>
-            </Grid>
+            <Expander Header="Control Features" IsExpanded="True" Margin="2.5">
+                <StackPanel>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Row="0" Grid.Column="1">Main Current</Label>
+                        <Label Grid.Row="0" Grid.Column="1" x:Name="CurrentMain" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
+                    </Grid>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Grid.Row="0">Limit Override</Label>
+                        <UniformGrid Rows="1" Grid.Column="1" Grid.Row="0">
+                            <Button cal:Message.Attach="LimitSwitchOverride(1)">J1</Button>
+                            <Button cal:Message.Attach="LimitSwitchOverride(2)">J2</Button>
+                            <Button cal:Message.Attach="LimitSwitchOverride(3)">J3</Button>
+                        </UniformGrid>
+                        <Label Grid.Column="0" Grid.Row="1">Limit Un-Override</Label>
+                        <UniformGrid Rows="1" Grid.Column="1" Grid.Row="1">
+                            <Button cal:Message.Attach="LimitSwitchUnOverride(1)">J1</Button>
+                            <Button cal:Message.Attach="LimitSwitchUnOverride(2)">J2</Button>
+                            <Button cal:Message.Attach="LimitSwitchUnOverride(3)">J3</Button>
+                        </UniformGrid>
+                        <Label Grid.Column="0" Grid.Row="3">Arm Control Multiplier:</Label>
+                        <Label Grid.Column="1" Grid.Row="3" x:Name="MotorRangeFactor"></Label>
+                        <Slider Grid.Row="4" Width="300" Maximum="1000" Minimum="0" Value="{Binding MotorRangeFactor}"></Slider>
+                    </Grid>
+                </StackPanel>
+            </Expander>
         </StackPanel>
-        
-
     </Grid>
 </UserControl>
