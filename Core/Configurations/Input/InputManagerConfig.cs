@@ -5,15 +5,15 @@ namespace Core.Configurations.Input
     public static class InputManagerConfig
     {
         public static InputMappingsContext DefaultInputMappings = new InputMappingsContext(new[] {
-            new InputMappingContext("Tank Drive (Traditional)", "Xbox", "Drive", 30, new[] {
+            new InputMappingContext("Tank Drive (Traditional)", "Xbox", "Drive", 100, new[] {
                 new InputChannelContext("JoyStick1Y", "WheelsLeft"){ Parabolic = true },
                 new InputChannelContext("JoyStick2Y", "WheelsRight"){ Parabolic = true },
                 new InputChannelContext("ButtonStartDebounced", "ModeCycle") }),
-            new InputMappingContext("Diagonal Drive", "FlightStick", "Drive", 30, new[] {
+            new InputMappingContext("Diagonal Drive", "FlightStick", "Drive", 100, new[] {
                 new InputChannelContext("X", "WheelsLeft"){ Parabolic = true },
                 new InputChannelContext("Y", "WheelsRight"){ Parabolic = true },
                 new InputChannelContext("Button7Debounced", "ModeCycle") }),
-            new InputMappingContext("Vector Drive", "FlightStick", "Drive", 30, new[] {
+            new InputMappingContext("Vector Drive", "FlightStick", "Drive", 100, new[] {
                 new InputChannelContext("X", "VectorX"),
                 new InputChannelContext("Y", "VectorY"),
                 new InputChannelContext("Slider0", "Throttle"),
@@ -63,11 +63,11 @@ namespace Core.Configurations.Input
                 new InputChannelContext("DPadU", "MainGimbalSwitch"){ Parabolic = true },
                 new InputChannelContext("DPadD", "DriveGimbalSwitch"){ Parabolic = true },
                 new InputChannelContext("ButtonStartDebounced", "ModeCycle") }),
-            new InputMappingContext("Key Drive", "Keyboard", "Drive", 30, new[] {
+            new InputMappingContext("Key Drive", "Keyboard", "Drive", 100, new[] {
                 new InputChannelContext("WS", "WheelsLeft"),
                 new InputChannelContext("IK", "WheelsRight"),
                 new InputChannelContext("RDebounced", "ModeCycle") }),
-            new InputMappingContext("Key Gimbal", "Keyboard", "Gimbal", 30, new[] {
+            new InputMappingContext("Key Gimbal", "Keyboard", "Gimbal", 100, new[] {
                 new InputChannelContext("AD", "Pan"),
                 new InputChannelContext("WS", "Tilt"),
                 new InputChannelContext("I", "ZoomIn"),
