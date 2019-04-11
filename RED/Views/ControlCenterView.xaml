@@ -51,12 +51,6 @@
                                 <ContentControl x:Name="Gimbal" />
                             </StackPanel>
                         </Expander>
-                        <Expander Header="Arm">
-                            <ContentControl x:Name="Arm" />
-                        </Expander>
-                        <Expander Header="Science">
-                            <ContentControl x:Name="Science" />
-                        </Expander>
                         <Expander Header="Autonomy">
                             <ContentControl x:Name="Autonomy" />
                         </Expander>
@@ -68,9 +62,6 @@
                         </Expander>
                         <Expander Header="Power and BMS">
                             <ContentControl x:Name="Power" />
-                        </Expander>
-                        <Expander Header="Drop Bays">
-                            <ContentControl x:Name="DropBays" />
                         </Expander>
                         <Expander Header="Lighting">
                             <ContentControl x:Name="Lighting" />

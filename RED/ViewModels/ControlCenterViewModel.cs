@@ -160,19 +160,6 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => Sensor);
             }
         }
-        public DropBaysViewModel DropBays
-        {
-            get
-            {
-                return _model._dropBays;
-            }
-            set
-            {
-                _model._dropBays = value;
-                NotifyOfPropertyChange(() => DropBays);
-
-            }
-        }
         public PowerViewModel Power
         {
             get
@@ -195,18 +182,6 @@ namespace RED.ViewModels
             {
                 _model._cameraMux = value;
                 NotifyOfPropertyChange(() => CameraMux);
-            }
-        }
-        public ExternalControlsViewModel ExternalControls
-        {
-            get
-            {
-                return _model._externalControls;
-            }
-            set
-            {
-                _model._externalControls = value;
-                NotifyOfPropertyChange(() => ExternalControls);
             }
         }
         public AutonomyViewModel Autonomy
@@ -333,10 +308,8 @@ namespace RED.ViewModels
             
             GPS = new GPSViewModel(Rovecomm, MetadataManager);
             Sensor = new SensorViewModel(Rovecomm, MetadataManager, Console);
-            DropBays = new DropBaysViewModel(Rovecomm, MetadataManager, Console);
             Power = new PowerViewModel(Rovecomm, MetadataManager, Console);
             CameraMux = new CameraViewModel(Rovecomm, MetadataManager);
-            ExternalControls = new ExternalControlsViewModel(Rovecomm, MetadataManager);
             Lighting = new LightingViewModel(Rovecomm, MetadataManager, Console);
             Map = new MapViewModel();
 

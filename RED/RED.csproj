@@ -177,9 +177,7 @@
     <Compile Include="ViewModels\InputSelectorViewModel.cs" />
     <Compile Include="ViewModels\Modules\AutonomyViewModel.cs" />
     <Compile Include="ViewModels\Modules\CameraViewModel.cs" />
-    <Compile Include="ViewModels\Modules\ExternalControlsViewModel.cs" />
     <Compile Include="ViewModels\Modules\GimbalViewModel.cs" />
-    <Compile Include="ViewModels\Modules\DropBaysViewModel.cs" />
     <Compile Include="ViewModels\Modules\LightingViewModel.cs" />
     <Compile Include="ViewModels\Navigation\MapViewModel.cs" />
     <Compile Include="ViewModels\Navigation\Waypoint.cs" />
@@ -216,14 +214,8 @@
     <Compile Include="Views\Modules\DriveView.xaml.cs">
       <DependentUpon>DriveView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\ExternalControlsView.xaml.cs">
-      <DependentUpon>ExternalControlsView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Modules\GimbalView.xaml.cs">
       <DependentUpon>GimbalView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Modules\DropBaysView.xaml.cs">
-      <DependentUpon>DropBaysView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\LightingView.xaml.cs">
       <DependentUpon>LightingView.xaml</DependentUpon>
@@ -291,15 +283,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Modules\ExternalControlsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Modules\GimbalView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Modules\DropBaysView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -415,9 +399,7 @@
       <Name>RoverNetworkManager</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModels\Network\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\VideoLAN.LibVLC.Windows.3.0.4\build\VideoLAN.LibVLC.Windows.targets" Condition="Exists('..\packages\VideoLAN.LibVLC.Windows.3.0.4\build\VideoLAN.LibVLC.Windows.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

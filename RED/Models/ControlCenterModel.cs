@@ -23,10 +23,8 @@ namespace RED.Models
         
         internal GPSViewModel _GPS;
         internal SensorViewModel _sensor;
-        internal DropBaysViewModel _dropBays;
         internal PowerViewModel _power;
         internal CameraViewModel _cameraMux;
-        internal ExternalControlsViewModel _externalControls;
         internal AutonomyViewModel _autonomy;
         internal LightingViewModel _lighting;
         internal MapViewModel _map;
