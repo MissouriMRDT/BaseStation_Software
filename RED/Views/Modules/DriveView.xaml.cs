@@ -19,9 +19,12 @@ namespace RED.Views.Modules
 
 			var options = new string[]
 			{
-				":network-caching=0",
+                // the network caching value is a milliseconds value that determines the amount of video data to store and decode
+                // if this value is too low, the buffer will not contain enough video data to allow the underlying video library to decode and display
+                //     *anything* (not even corrupt frames).
+                // in order to tune this value, slowly de-increment this value until messages about the picture being late stop being logged.
+				":network-caching=300",
 				"--rtsp-caching=0"
-				 //"--file-logging", "-vvv", "--extraintf=logger", "--logfile=vlc.log"
 			};
 
 			vlcPlayer.MediaPlayer.VlcLibDirectory = vlcLibDirectory;

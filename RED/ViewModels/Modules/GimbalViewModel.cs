@@ -94,9 +94,10 @@ namespace RED.ViewModels.Modules
             UpdateControlState(values);
             
             // Pan, Tilt
-            short[] openVals = { (Int16)(values["Pan"] * PanIncrement), (Int16)(values["Tilt"] * TiltIncrement) };
+            short[] openVals = { (Int16)(values["Tilt"] * TiltIncrement), (Int16)(values["Pan"] * PanIncrement)};
             byte[] data = new byte[4];
             Buffer.BlockCopy(openVals, 0, data, 0, data.Length);
+            Array.Reverse(data);
 
             if (controlState == GimbalStates.DriveGimbal)
             {
