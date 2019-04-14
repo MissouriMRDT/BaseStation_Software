@@ -8,39 +8,104 @@
 
     <Grid Margin="5">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*"></ColumnDefinition>
-            <ColumnDefinition Width="3*"></ColumnDefinition>
-            <ColumnDefinition Width="3*"></ColumnDefinition>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <GroupBox Header="Controls" Margin="5" Grid.Column="0">
-            <StackPanel>
-                <Button x:Name="Enable" Margin="4" Padding="10">Enable</Button>
-                <Button x:Name="AddWaypoint" Margin="4" Padding="10">Add Selected Waypoint</Button>
-                <Button x:Name="ClearAllWaypoints" Margin="4" Padding="10">Clear All Waypoints</Button>
-                <Button Click="Calibrate_Click" Margin="4" Padding="10">Calibrate</Button>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="3*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <GroupBox Header="State" Margin="5" Grid.RowSpan="2" Grid.Column="0">
+            <StackPanel Margin="16">
+
+                <Expander x:Name="StateIdle" Background="White" Margin="0 0 0 10" BorderThickness="0 0 0 2">
+                    <Expander.Header>
+                        <Border Background="White" Cursor="Hand">
+                            <TextBlock Foreground="Black" Background="White" FontSize="20" Margin="4 0 0 2">Idle</TextBlock>
+                        </Border>
+                    </Expander.Header>
+                    <StackPanel Margin="10 20 10 40">
+                        <Button>Action</Button>
+                        <Button>Action</Button>
+                    </StackPanel>
+                </Expander>
+
+                <Expander x:Name="StateNavigate" Background="White" Margin="0 0 0 10" BorderThickness="0 0 0 2">
+                    <Expander.Header>
+                        <Border Background="White" Cursor="Hand">
+                            <TextBlock Foreground="Black" Background="White" FontSize="20" Margin="4 0 0 2">Navigate</TextBlock>
+                        </Border>
+                    </Expander.Header>
+                    <StackPanel Margin="10 20 10 40">
+                        <Button>Action</Button>
+                        <Button>Action</Button>
+                    </StackPanel>
+                </Expander>
+
+                <Expander x:Name="StateSearch" Background="White" Margin="0 0 0 10" BorderThickness="0 0 0 2">
+                    <Expander.Header>
+                        <Border Background="White" Cursor="Hand">
+                            <TextBlock Foreground="Black" Background="White" FontSize="20" Margin="4 0 0 2">Search</TextBlock>
+                        </Border>
+                    </Expander.Header>
+                    <StackPanel Margin="10 20 10 40">
+                        <Button>Action</Button>
+                        <Button>Action</Button>
+                    </StackPanel>
+                </Expander>
+
+                <Expander x:Name="StateApproachingMarker" Background="White" Margin="0 0 0 10" BorderThickness="0 0 0 2">
+                    <Expander.Header>
+                        <Border Background="White" Cursor="Hand">
+                            <TextBlock Foreground="Black" Background="White" FontSize="20" Margin="4 0 0 2">Approaching Marker</TextBlock>
+                        </Border>
+                    </Expander.Header>
+                    <StackPanel Margin="10 20 10 40">
+                        <Button>Action</Button>
+                        <Button>Action</Button>
+                    </StackPanel>
+                </Expander>
+
+                <Expander x:Name="StateShutdown" Background="White" Margin="0 0 0 10" BorderThickness="0 0 0 2">
+                    <Expander.Header>
+                        <Border Background="White" Cursor="Hand">
+                            <TextBlock Foreground="Black" Background="White" FontSize="20" Margin="4 0 0 2">Shutdown</TextBlock>
+                        </Border>
+                    </Expander.Header>
+                    <StackPanel Margin="10 20 10 40">
+                        <Button>Action</Button>
+                        <Button>Action</Button>
+                    </StackPanel>
+                </Expander>
             </StackPanel>
         </GroupBox>
 
-        <GroupBox Header="State" Margin="5" Grid.Column="1">
-            <StackPanel>
-                <Button x:Name="StateIdle" Margin="4" Padding="10">Idle</Button>
-                <Button x:Name="StateNavigate" Margin="4" Padding="10">Navigate</Button>
-                <Button x:Name="StateSearch" Margin="4" Padding="10">Search</Button>
-                <Button x:Name="StateApproachingMarker" Margin="4" Padding="10">Approaching Marker</Button>
-                <Button x:Name="StateShutdown" Margin="4" Padding="10">Shutdown</Button>
-            </StackPanel>
+        <GroupBox Header="Controls" Margin="5" Grid.Row="0" Grid.Column="1">
+            <Grid HorizontalAlignment="Stretch" Margin="20 0 20 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="Enable" Grid.Column="0" Margin="4" Padding="10" MaxHeight="60px" Cursor="Hand">Start</Button>
+                <Button x:Name="AddWaypoint" Grid.Column="1" Margin="4" Padding="10" MaxHeight="60px" Cursor="Hand">Add Waypoint</Button>
+                <Button x:Name="ClearAllWaypoints" Grid.Column="2" Margin="4" Padding="10" MaxHeight="60px" Cursor="Hand">Clear Waypoints</Button>
+                <Button Click="Calibrate_Click" Grid.Column="3" Margin="4" Padding="10" MaxHeight="60px" Cursor="Hand">Calibrate</Button>
+            </Grid>
         </GroupBox>
 
-        <GroupBox Header="Map" Margin="5" Grid.Column="2">
+        <GroupBox Header="Map" Margin="5" Grid.Row="1" Grid.Column="1">
             <StackPanel>
-           
+
             </StackPanel>
         </GroupBox>
 
     </Grid>
-    
-    
-    
-    
+
+
+
+
 </UserControl>
