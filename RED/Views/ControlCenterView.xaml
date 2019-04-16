@@ -51,9 +51,6 @@
                                 <ContentControl x:Name="Gimbal" />
                             </StackPanel>
                         </Expander>
-                        <Expander Header="Autonomy">
-                            <ContentControl x:Name="Autonomy" />
-                        </Expander>
                         <Expander Header="Sensors">
                             <ContentControl x:Name="Sensor" />
                         </Expander>

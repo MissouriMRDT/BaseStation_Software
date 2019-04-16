@@ -159,7 +159,6 @@
     <Compile Include="Images\ModernUIIcons.cs" />
     <Compile Include="Models\InputManagerModel.cs" />
     <Compile Include="Models\InputSelectorModel.cs" />
-    <Compile Include="Models\Modules\AutonomyModel.cs" />
     <Compile Include="Models\Modules\GimbalModel.cs" />
     <Compile Include="Models\Modules\DriveModel.cs" />
     <Compile Include="Models\Modules\LightingModel.cs" />
@@ -175,7 +174,6 @@
     <Compile Include="Settings.cs" />
     <Compile Include="ViewModels\InputManagerViewModel.cs" />
     <Compile Include="ViewModels\InputSelectorViewModel.cs" />
-    <Compile Include="ViewModels\Modules\AutonomyViewModel.cs" />
     <Compile Include="ViewModels\Modules\CameraViewModel.cs" />
     <Compile Include="ViewModels\Modules\GimbalViewModel.cs" />
     <Compile Include="ViewModels\Modules\LightingViewModel.cs" />
@@ -204,9 +202,6 @@
     </Compile>
     <Compile Include="Views\InputSelectorView.xaml.cs">
       <DependentUpon>InputSelectorView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Modules\AutonomyView.xaml.cs">
-      <DependentUpon>AutonomyView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CameraView.xaml.cs">
       <DependentUpon>CameraView.xaml</DependentUpon>
@@ -270,10 +265,6 @@
     <Page Include="Views\InputSelectorView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\Modules\AutonomyView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Modules\CameraView.xaml">
       <SubType>Designer</SubType>

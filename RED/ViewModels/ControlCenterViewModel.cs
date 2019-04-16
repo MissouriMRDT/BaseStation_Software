@@ -184,18 +184,6 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => CameraMux);
             }
         }
-        public AutonomyViewModel Autonomy
-        {
-            get
-            {
-                return _model._autonomy;
-            }
-            set
-            {
-                _model._autonomy = value;
-                NotifyOfPropertyChange(() => Autonomy);
-            }
-        }
         public LightingViewModel Lighting
         {
             get
@@ -327,7 +315,6 @@ namespace RED.ViewModels
                 new IInputMode[] { Drive, Gimbal });
 
             WaypointManager = new WaypointManagerViewModel(Map, GPS);
-            Autonomy = new AutonomyViewModel(Rovecomm, MetadataManager, Console, WaypointManager);
             StopwatchTool = new StopwatchToolViewModel(ConfigManager);
 
             SettingsManager = new SettingsManagerViewModel(ConfigManager, this);

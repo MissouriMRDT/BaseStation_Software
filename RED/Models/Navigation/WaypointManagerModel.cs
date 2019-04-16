@@ -8,7 +8,6 @@ namespace RED.Models.Navigation
     {
         internal MapViewModel Map;
         internal GPSViewModel GPSModule;
-        internal AutonomyViewModel AutonomyModule;
 
         internal ObservableCollection<Waypoint> Waypoints;
         internal Waypoint SelectedWaypoint;
