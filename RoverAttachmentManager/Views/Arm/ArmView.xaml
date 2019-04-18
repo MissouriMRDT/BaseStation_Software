@@ -199,7 +199,7 @@
                         </UniformGrid>
                         <Label Grid.Column="0" Grid.Row="3">Arm Control Multiplier:</Label>
                         <Label Grid.Column="1" Grid.Row="3" x:Name="MotorRangeFactor"></Label>
-                        <Slider Grid.Row="4" Width="300" Maximum="1000" Minimum="0" Value="{Binding MotorRangeFactor}"></Slider>
+                        <Slider Grid.Row="4" Width="300" Maximum="1000" Minimum="0" IsMoveToPointEnabled="True" Value="{Binding MotorRangeFactor}"></Slider>
                     </Grid>
                 </StackPanel>
             </Expander>
