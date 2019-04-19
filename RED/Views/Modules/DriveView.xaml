@@ -30,7 +30,7 @@
 			<controls:MetroProgressBar Grid.Row="1" Grid.Column="3" Value="{Binding SpeedRight}" Minimum="0" Maximum="1000" Foreground="{StaticResource HighlightBrush}" Background="{StaticResource GrayNormalBrush}" />
 		</Grid>
 		<StackPanel>
-			<vlc:VlcControl Margin="0 5 0 0" x:Name="vlcPlayer" Height="200" />
+			<vlc:VlcControl Margin="0 5 0 0" x:Name="vlcPlayer" Height="250" />
 		</StackPanel>
 	</StackPanel>
 </UserControl>
