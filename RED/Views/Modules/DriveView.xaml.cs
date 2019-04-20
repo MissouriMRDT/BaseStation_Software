@@ -24,13 +24,13 @@ namespace RED.Views.Modules
                 //     *anything* (not even corrupt frames).
                 // in order to tune this value, slowly de-increment this value until messages about the picture being late stop being logged.
 				":network-caching=300",
-				"--rtsp-caching=0"
+				":realrtsp-caching=100"
 			};
 
 			vlcPlayer.MediaPlayer.VlcLibDirectory = vlcLibDirectory;
 			vlcPlayer.MediaPlayer.VlcMediaplayerOptions = options;
 			vlcPlayer.MediaPlayer.EndInit();
-			PlayChannel(2);
+			PlayChannel(1);
 		}
 
 		public void PlayChannel(int channel) {
