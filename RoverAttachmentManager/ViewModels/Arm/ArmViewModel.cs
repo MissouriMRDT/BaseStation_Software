@@ -325,6 +325,18 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 NotifyOfPropertyChange(() => OpZ);
             }
         }
+        public byte SelectedTool
+        {
+            get
+            {
+                return _model.SelectedTool;
+            }
+            set
+            {
+                _model.SelectedTool = value;
+                NotifyOfPropertyChange(() => SelectedTool);
+            }
+        }
 
         public ArmViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log, IConfigurationManager configs)
         {
@@ -473,6 +485,15 @@ namespace RoverAttachmentManager.ViewModels.Arm
             if (values["GripperSwap"] == 1)
             {
                 _rovecomm.SendCommand(new Packet("GripperSwap", data, 8, (byte)DataTypes.INT16_T));
+            }
+
+            if (values["SwitchTool"] == 1)
+            {
+                if(++SelectedTool > 2)
+                {
+                    SelectedTool = 0;
+                }
+                _rovecomm.SendCommand(new Packet("ToolSelection", SelectedTool));
             }
         }
 

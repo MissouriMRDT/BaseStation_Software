@@ -26,6 +26,7 @@ namespace RoverAttachmentManager.Models.ArmModels
         internal float OpX;
         internal float OpY;
         internal float OpZ;
+        internal byte SelectedTool;
 
         internal class ArmPositionModel
         {

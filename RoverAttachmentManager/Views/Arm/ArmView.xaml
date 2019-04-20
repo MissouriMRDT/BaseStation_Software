@@ -180,6 +180,7 @@
                             <RowDefinition />
                             <RowDefinition />
                             <RowDefinition />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto" />
@@ -200,6 +201,7 @@
                         <Label Grid.Column="0" Grid.Row="3">Arm Control Multiplier:</Label>
                         <Label Grid.Column="1" Grid.Row="3" x:Name="MotorRangeFactor"></Label>
                         <Slider Grid.Row="4" Width="300" Maximum="1000" Minimum="0" Value="{Binding MotorRangeFactor}"></Slider>
+                        <Label Grid.Row="5" x:Name="SelectedTool"/>
                     </Grid>
                 </StackPanel>
             </Expander>

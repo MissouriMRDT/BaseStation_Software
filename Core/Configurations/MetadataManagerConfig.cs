@@ -204,7 +204,8 @@ namespace Core.Configurations
             new MetadataServerContext("Arm Board", "192.168.1.131") {
                 Commands = new[]
                 {
-                    new MetadataRecordContext(8004, "ArmValues", "All values for the arm together. Armj1-j6, then primary then secondary gripper.")
+                    new MetadataRecordContext(8004, "ArmValues", "All values for the arm together. Armj1-j6, then primary then secondary gripper."),
+                    new MetadataRecordContext(8010, "ToolSelection", "Change the selected tool, 0 1 & 2")
                 }
             },
 

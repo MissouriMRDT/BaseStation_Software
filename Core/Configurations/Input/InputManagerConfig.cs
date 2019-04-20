@@ -43,6 +43,7 @@ namespace Core.Configurations.Input
                 new InputChannelContext("ButtonLb", "BaseBendDirection"),
                 new InputChannelContext("ButtonB", "GripperOpen"),
                 new InputChannelContext("ButtonX", "GripperClose"),
+                new InputChannelContext("ButtonA", "SwitchTool"),
                 new InputChannelContext("ButtonBackDebounced", "GripperSwap"),
                 new InputChannelContext("ButtonStartDebounced", "ModeCycle") }),
             new InputMappingContext("Xbox Science Controls", "Xbox", "ScienceControls", 100, new[] {
