@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace RoverAttachmentManager.ViewModels.Arm
@@ -357,6 +358,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
             _rovecomm.NotifyWhenMessageReceived(this, "ArmFault");
             _rovecomm.NotifyWhenMessageReceived(this, "ArmCurrentMain");
             _rovecomm.NotifyWhenMessageReceived(this, "ArmCurrentXYZ");
+            _rovecomm.NotifyWhenMessageReceived(this, "ArmAngles");
 
             _armFaultIds = new Dictionary<int, string>
             {
@@ -385,13 +387,14 @@ namespace RoverAttachmentManager.ViewModels.Arm
         {
             switch (packet.Name)
             {
-                case "ArmCurrentPosition":
-                    AngleJ1 = BitConverter.ToSingle(packet.Data, 0 * sizeof(float));
-                    AngleJ2 = BitConverter.ToSingle(packet.Data, 1 * sizeof(float));
-                    AngleJ3 = BitConverter.ToSingle(packet.Data, 2 * sizeof(float));
-                    AngleJ4 = BitConverter.ToSingle(packet.Data, 3 * sizeof(float));
-                    AngleJ5 = BitConverter.ToSingle(packet.Data, 4 * sizeof(float));
-                    AngleJ6 = BitConverter.ToSingle(packet.Data, 5 * sizeof(float));
+                case "ArmAngles":
+                    //Array.Reverse(packet.Data);
+                    AngleJ1 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 0)) / 1000.0);
+                    AngleJ2 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 4)) / 1000.0);
+                    AngleJ3 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 8)) / 1000.0);
+                    AngleJ4 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 12)) / 1000.0);
+                    AngleJ5 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 16)) / 1000.0);
+                    AngleJ6 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 20)) / 1000.0);
                     break;
                 case "ArmCurrentXYZ":
                     CoordinateX = BitConverter.ToSingle(packet.Data, 0 * sizeof(float));
@@ -475,8 +478,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
             Gripper = (Int16)(ControllerBase.TwoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0) * GripperRangeFactor);
             Nipper = (Int16)(ControllerBase.TwoButtonTransform(values["NipperClose"] > 0, values["NipperOpen"] > 0, values["NipperClose"], -values["NipperOpen"], 0) * GripperRangeFactor);
 
-            //Int16[] sendValues = { ArmBaseBend, ArmBaseTwist, ArmElbowBend, ArmElbowTwist, ArmWristBend, ArmWristTwist, Gripper, Nipper };
-            Int16[] sendValues = { Nipper, Gripper, ArmWristTwist, ArmWristBend, ArmElbowTwist, ArmElbowBend, ArmBaseTwist, ArmBaseBend };
+            Int16[] sendValues = { Nipper, Gripper, ArmWristTwist, ArmWristBend, ArmElbowTwist, ArmElbowBend, ArmBaseTwist, ArmBaseBend }; //order before we reverse
             byte[] data = new byte[sendValues.Length * sizeof(Int16)];
             Buffer.BlockCopy(sendValues, 0, data, 0, data.Length);
             Array.Reverse(data);
@@ -670,7 +672,10 @@ namespace RoverAttachmentManager.ViewModels.Arm
 
         public void GetPosition()
         {
-            _rovecomm.SendCommand(new Packet("ArmGetPosition"));
+            byte[] data = new byte[2];
+            data[0] = 0;
+            data[1] = 1;
+            _rovecomm.SendCommand(new Packet("ArmCommands", data, 2, (byte)DataTypes.UINT8_T));
         }
         public void SetPosition()
         {
