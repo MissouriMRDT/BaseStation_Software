@@ -241,9 +241,9 @@ namespace Core.Configurations
                     new MetadataRecordContext(5000, "CalibrateIMU", "")
                 },
                 Telemetry = new[] {
-                    new MetadataRecordContext(5101, "IMUPYR", ""),
+                    new MetadataRecordContext(5100, "GPSPosition", "GPS Position. Latitude followed by Longitude"),
+                    new MetadataRecordContext(5101, "NavTrueHeading", ""),
                     //new MetadataRecordContext(1296, "GPSQuality", "Quality of GPS signal"),
-                    //new MetadataRecordContext(5100, "GPSPosition", "GPS Position. Latitude followed by Longitude"),
                     //new MetadataRecordContext(1298, "GPSSpeed", "Speed of GPS delta"),
                     //new MetadataRecordContext(1299, "GPSSpeedAngle", "Angle of GPS delta in degrees"),
                     //new MetadataRecordContext(1300, "GPSAltitude", "GPS Altitude"),

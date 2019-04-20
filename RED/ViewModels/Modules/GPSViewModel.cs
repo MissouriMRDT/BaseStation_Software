@@ -5,6 +5,7 @@ using RED.Models.Modules;
 using System;
 using System.IO;
 using Core.Models;
+using System.Net;
 
 namespace RED.ViewModels.Modules
 {
@@ -157,6 +158,8 @@ namespace RED.ViewModels.Modules
             _rovecomm.NotifyWhenMessageReceived(this, "GPSSpeedAngle");
             _rovecomm.NotifyWhenMessageReceived(this, "GPSAltitude");
             _rovecomm.NotifyWhenMessageReceived(this, "GPSSatellites");
+
+            FixObtained = true;
         }
 
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
@@ -190,9 +193,10 @@ namespace RED.ViewModels.Modules
                 case "GPSPosition":
                     CurrentLocation = new GPSCoordinate()
                     {
-                        Latitude = BitConverter.ToInt32(packet.Data, 1 * sizeof(Int32)) / 10000000f,
-                        Longitude = -BitConverter.ToInt32(packet.Data, 0 * sizeof(Int32)) / 10000000f
+                        Latitude = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 1 * sizeof(Int32))) / 10000000f,
+                        Longitude = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 0 * sizeof(Int32))) / 10000000f
                     };
+                    
                     break;
                 case "GPSSpeed":
                     Speed = BitConverter.ToSingle(packet.Data, 0);

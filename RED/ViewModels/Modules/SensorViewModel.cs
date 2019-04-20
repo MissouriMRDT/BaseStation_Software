@@ -4,6 +4,7 @@ using Core.Models;
 using RED.Models.Modules;
 using RED.Models.Network;
 using System;
+using System.Net;
 
 namespace RED.ViewModels.Modules
 {
@@ -83,7 +84,10 @@ namespace RED.ViewModels.Modules
                 case "IMUTemperature": IMUTemperature = BitConverter.ToSingle(packet.Data, 0); break;
                 case "NavPitch": Pitch = BitConverter.ToSingle(packet.Data, 0); break;
                 case "NavRoll": Roll = BitConverter.ToSingle(packet.Data, 0); break;
-                case "NavTrueHeading": TrueHeading = BitConverter.ToSingle(packet.Data, 0); break;
+                case "NavTrueHeading":
+                    TrueHeading = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0));
+     
+                    break;
             }
         }
 
