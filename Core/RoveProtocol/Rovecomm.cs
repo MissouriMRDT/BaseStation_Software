@@ -382,8 +382,6 @@ namespace Core.RoveProtocol
             else
             {
                 byte[] packetData = RovecommTwo.EncodePacket(packet, metadataManager);
-
-                log.Log(BitConverter.ToString(packetData));
                 SendPacketUnreliable(destIP, packetData);
             }
         }
