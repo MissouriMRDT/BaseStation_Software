@@ -50,7 +50,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
 
         private const byte ArmDisableCommand = 0x00;
         private const byte ArmEnableCommand = 0x01;
-        private const short GripperRangeFactor = 500;
+        private const short GripperRangeFactor = 1000;
 
         private readonly byte[] ArmEncoderFaultIds = { 8, 9, 10, 11, 12, 13 };
         private readonly ArmModel _model;
@@ -679,12 +679,13 @@ namespace RoverAttachmentManager.ViewModels.Arm
         }
         public void SetPosition()
         {
-            float[] angles = { AngleJ1, AngleJ2, AngleJ3, AngleJ4, AngleJ5, AngleJ6 };
-            byte[] data = new byte[angles.Length * sizeof(float)];
+            UInt32[] angles = { (UInt32)(AngleJ1*1000), (UInt32)(AngleJ2*1000), (UInt32)(AngleJ3*1000), (UInt32)(AngleJ4*1000), (UInt32)(AngleJ5*1000), (UInt32)(AngleJ6*1000) };
+            Array.Reverse(angles);
+            byte[] data = new byte[angles.Length * sizeof(UInt32)];
             Buffer.BlockCopy(angles, 0, data, 0, data.Length);
-
-            // TODO: Determine floats for this
-            //_rovecomm.SendCommand(_idResolver.GetId("ArmAbsoluteAngle"), data, true);
+            Array.Reverse(data);
+            //TODO: Determine floats for this
+            _rovecomm.SendCommand(new Packet("ArmToAngle", data, 6, (byte)DataTypes.UINT32_T));
 
             myState = ArmControlState.GuiControl;
             guiControlInitialized = true;
