@@ -175,8 +175,8 @@ namespace RED.ViewModels.Modules
                         NumberOfSatellites = br.ReadByte();
                         CurrentLocation = new GPSCoordinate()
                         {
-                            Latitude = br.ReadInt32() / 10000000f,
-                            Longitude = br.ReadInt32() / 10000000f
+                            Latitude = br.ReadInt32() / 10000000d,
+                            Longitude = br.ReadInt32() / 10000000d
                         };
                         CurrentAltitude = br.ReadSingle();
                         Speed = br.ReadSingle();
@@ -193,8 +193,8 @@ namespace RED.ViewModels.Modules
                 case "GPSPosition":
                     CurrentLocation = new GPSCoordinate()
                     {
-                        Latitude = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 1 * sizeof(Int32))) / 10000000f,
-                        Longitude = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 0 * sizeof(Int32))) / 10000000f
+                        Latitude = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 1 * sizeof(Int32))) / 10000000d,
+                        Longitude = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 0 * sizeof(Int32))) / 10000000d
                     };
                     
                     break;
