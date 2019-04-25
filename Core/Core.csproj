@@ -111,6 +111,7 @@
     <Compile Include="Models\Input\MappingChannelModel.cs" />
     <Compile Include="Models\Input\MappingModel.cs" />
     <Compile Include="Models\Packet.cs" />
+    <Compile Include="Models\WaypointModel.cs" />
     <Compile Include="Network\Server.cs" />
     <Compile Include="Network\UDPEndpoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -127,6 +128,8 @@
     <Compile Include="ViewModels\Input\MappingChannelViewModel.cs" />
     <Compile Include="ViewModels\Input\MappingViewModel.cs" />
     <Compile Include="ViewModels\Input\XboxControllerInputSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Waypoint.cs" />
+    <Compile Include="WaypointManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

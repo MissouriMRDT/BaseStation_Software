@@ -1,8 +1,8 @@
 ﻿using Caliburn.Micro;
-using RED.Models.Navigation;
+using Core.Models;
 using System.Windows.Media;
 
-namespace RED.ViewModels.Navigation
+namespace Core.ViewModels
 {
     public class Waypoint : PropertyChangedBase
     {

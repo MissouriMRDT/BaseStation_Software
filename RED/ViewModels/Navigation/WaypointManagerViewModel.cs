@@ -1,4 +1,7 @@
 ﻿using Caliburn.Micro;
+using Core;
+using Core.Models;
+using Core.ViewModels;
 using RED.Models.Navigation;
 using RED.ViewModels.Modules;
 using System;
@@ -39,11 +42,11 @@ namespace RED.ViewModels.Navigation
         {
             get
             {
-                return _model.Waypoints;
+                return _model.Manager.Waypoints;
             }
             private set
             {
-                _model.Waypoints = value;
+                _model.Manager.Waypoints = value;
                 NotifyOfPropertyChange(() => Waypoints);
             }
         }
@@ -51,25 +54,37 @@ namespace RED.ViewModels.Navigation
         {
             get
             {
-                return _model.SelectedWaypoint;
+                return _model.Manager.SelectedWaypoint;
             }
             set
             {
-                _model.SelectedWaypoint = value;
+                _model.Manager.SelectedWaypoint = value;
                 NotifyOfPropertyChange(() => SelectedWaypoint);
+            }
+        }
+
+        public WaypointManager Manager
+        {
+            get
+            {
+                return _model.Manager;
+            }
+            set
+            {
+                _model.Manager = value;
+                NotifyOfPropertyChange(() => Manager);
             }
         }
 
         public WaypointManagerViewModel(MapViewModel map, GPSViewModel gps)
         {
             _model = new WaypointManagerModel();
+            Manager = WaypointManager.Instance;
 
             Map = map;
             GPSModule = gps;
 
             GPSModule.PropertyChanged += GPSModule_PropertyChanged;
-
-            Waypoints = new ObservableCollection<Waypoint>();
 
             AddWaypoint(new Waypoint("SDELC", 37.951631, -91.777713));
             AddWaypoint(new Waypoint("Fugitive Beach", 37.850025, -91.701845));
@@ -133,15 +148,13 @@ namespace RED.ViewModels.Navigation
         public void AddWaypoint(Waypoint waypoint)
         {
             Waypoints.Add(waypoint);
-            Map.Waypoints.Add(waypoint);
             Map.RefreshMap();
         }
 
         public void RemoveSelectedWaypoint()
         {
-            Map.Waypoints.Remove(SelectedWaypoint);
-            Map.RefreshMap();
             Waypoints.Remove(SelectedWaypoint);
+            Map.RefreshMap();
         }
 
         public void CurrentLocationToWaypoint()

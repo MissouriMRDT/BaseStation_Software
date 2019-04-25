@@ -1,6 +1,6 @@
 ﻿using System.Windows.Media;
 
-namespace RED.Models.Navigation
+namespace Core.Models
 {
     internal class WaypointModel
     {

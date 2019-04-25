@@ -163,7 +163,6 @@
     <Compile Include="Models\Modules\DriveModel.cs" />
     <Compile Include="Models\Modules\LightingModel.cs" />
     <Compile Include="Models\Navigation\MapModel.cs" />
-    <Compile Include="Models\Navigation\WaypointModel.cs" />
     <Compile Include="Models\Navigation\WaypointManagerModel.cs" />
     <Compile Include="Models\Network\NetworkManagerModel.cs" />
     <Compile Include="Models\Modules\PowerModel.cs" />
@@ -178,7 +177,6 @@
     <Compile Include="ViewModels\Modules\GimbalViewModel.cs" />
     <Compile Include="ViewModels\Modules\LightingViewModel.cs" />
     <Compile Include="ViewModels\Navigation\MapViewModel.cs" />
-    <Compile Include="ViewModels\Navigation\Waypoint.cs" />
     <Compile Include="ViewModels\Navigation\WaypointManagerViewModel.cs" />
     <Compile Include="Models\ControlCenterModel.cs" />
     <Compile Include="RedBootstrapper.cs" />

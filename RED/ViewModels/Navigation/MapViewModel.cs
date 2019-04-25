@@ -1,4 +1,7 @@
 ﻿using Caliburn.Micro;
+using Core;
+using Core.Models;
+using Core.ViewModels;
 using GMap.NET;
 using GMap.NET.MapProviders;
 using GMap.NET.WindowsPresentation;
@@ -32,12 +35,20 @@ namespace RED.ViewModels.Navigation
         {
             get
             {
-                return _model.Waypoints;
+                return _model.Manager.Waypoints;
+            }
+        }
+
+        public WaypointManager Manager
+        {
+            get
+            {
+                return _model.Manager;
             }
             private set
             {
-                _model.Waypoints = value;
-                NotifyOfPropertyChange(() => Waypoints);
+                _model.Manager = value;
+                NotifyOfPropertyChange(() => Manager);
             }
         }
 
@@ -108,6 +119,7 @@ namespace RED.ViewModels.Navigation
         public MapViewModel()
         {
             _model = new MapModel();
+            Manager = WaypointManager.Instance;
 
             CurrentLocation = new Waypoint("GPS", 0f, 0f) { Color = System.Windows.Media.Colors.Red };
 			RefreshMap();
