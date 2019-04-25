@@ -1,7 +1,9 @@
 ﻿using Caliburn.Micro;
+using Core;
 using Core.Interfaces;
 using Core.Models;
 using Core.RoveProtocol;
+using Core.ViewModels;
 using RoverAttachmentManager.Models.Autonomy;
 using System;
 
@@ -14,7 +16,7 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
         private readonly IRovecomm _rovecomm;
         private readonly IDataIdResolver _idResolver;
         private readonly ILogger _logger;
-        //private readonly WaypointManagerViewModel _waypointManager;
+        private readonly WaypointManager _waypointManager;
 
         public AutonomyViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger logger)
         {
@@ -22,7 +24,7 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _logger = logger;
-            //_waypointManager = waypointManager;
+            _waypointManager = WaypointManager.Instance;
 
             _rovecomm.NotifyWhenMessageReceived(this, "WaypointReached");
         }
@@ -31,7 +33,7 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
 
         public void DisableMode() => _rovecomm.SendCommand(new Packet("AutonomousModeDisable"), true);
 
-        public void AddWaypoint() => AddWaypoint(0);
+        public void AddWaypoint() => AddWaypoint(_waypointManager.SelectedWaypoint);
 
         public void ClearAllWaypoints() => _rovecomm.SendCommand(new Packet("WaypointsClearAll"), true);
 
@@ -47,12 +49,11 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
             }
         }
 
-        private void AddWaypoint(int val)
+        private void AddWaypoint(Waypoint waypoint)
         {
-            // TODO add waypoint to this
             byte[] msg = new byte[2 * sizeof(double)];
-            Buffer.BlockCopy(BitConverter.GetBytes(val), 0, msg, 0 * sizeof(double), sizeof(double));
-            Buffer.BlockCopy(BitConverter.GetBytes(val), 0, msg, 1 * sizeof(double), sizeof(double));
+            Buffer.BlockCopy(BitConverter.GetBytes(waypoint.Latitude), 0, msg, 0 * sizeof(double), sizeof(double));
+            Buffer.BlockCopy(BitConverter.GetBytes(waypoint.Longitude), 0, msg, 1 * sizeof(double), sizeof(double));
 
             _rovecomm.SendCommand(new Packet("WaypointAdd", msg, 2, (byte)DataTypes.INT16_T), true);
         }
