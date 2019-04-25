@@ -75,18 +75,23 @@ namespace RED.ViewModels.Modules
             _rovecomm.NotifyWhenMessageReceived(this, "NavPitch");
             _rovecomm.NotifyWhenMessageReceived(this, "NavRoll");
             _rovecomm.NotifyWhenMessageReceived(this, "NavTrueHeading");
+            _rovecomm.NotifyWhenMessageReceived(this, "PitchHeadingRoll");
         }
 
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
         {
             switch (packet.Name)
             {
+
                 case "IMUTemperature": IMUTemperature = BitConverter.ToSingle(packet.Data, 0); break;
                 case "NavPitch": Pitch = BitConverter.ToSingle(packet.Data, 0); break;
                 case "NavRoll": Roll = BitConverter.ToSingle(packet.Data, 0); break;
                 case "NavTrueHeading":
-                    TrueHeading = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0));
-     
+                    TrueHeading = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0)); break;
+                case "PitchHeadingRoll":
+                    Pitch = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0));
+                    TrueHeading = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 2));
+                    Roll = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 4));
                     break;
             }
         }
