@@ -13,5 +13,6 @@ namespace RED.Models.Navigation
         internal GPSViewModel GPSModule;
 
         internal WaypointManager Manager;
+        internal Waypoint NewPoint;
     }
 }

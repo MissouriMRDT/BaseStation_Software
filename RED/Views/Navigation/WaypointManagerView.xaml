@@ -25,26 +25,46 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button x:Name="CurrentLocationToWaypoint" Grid.Column="0">Save Current</Button>
-                <Button x:Name="RemoveSelectedWaypoint" Grid.Column="1">Remove Selected</Button>
-            </Grid>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="3*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="3*" />
-                    <ColumnDefinition Width="2*" />
-                </Grid.ColumnDefinitions>
-                <Label Grid.Row="1" Grid.Column="0"  Content="Lat:" />
-                <TextBox Grid.Row="1" Grid.Column="1" x:Name="LatitudeTextBox" />
-                <Button Grid.Row="1" Grid.Column="4" x:Name="AddWaypointBtn" Click="AddWaypointBtn_Click">Add Waypoint</Button>
-                <Label Grid.Row="1" Grid.Column="2" Content="Lon:" />
-                <TextBox Grid.Row="1" Grid.Column="3" x:Name="LongitudeTextBox" />
+                <Button Grid.Column="0" ContextMenuService.IsEnabled="False" Content="Add Waypoint" Click="AddMenu_Click">
+                    <Button.ContextMenu>
+                        <ContextMenu>
+                            <ContextMenu.Template>
+                                <ControlTemplate>
+                                    <Border Background="White">
+                                        <GroupBox Header="Add Waypoint" Margin="0">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="50"/>
+                                                    <ColumnDefinition Width="150"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+
+                                                <Label Grid.Row="0" Grid.Column="0" Content="Name:" />
+                                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="NameTextBox" Text="{Binding NewPoint.Name}"/>
+                                                <Label Grid.Row="1" Grid.Column="0"  Content="Lat:" />
+                                                <TextBox Grid.Row="1" Grid.Column="1" x:Name="LatitudeTextBox" Text="{Binding NewPoint.Latitude}" />
+                                                <Label Grid.Row="2" Grid.Column="0" Content="Lon:" />
+                                                <TextBox Grid.Row="2" Grid.Column="1" x:Name="LongitudeTextBox" Text="{Binding NewPoint.Longitude}"/>
+
+                                                <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" x:Name="AddWaypointBtn" Click="AddWaypointBtn_Click">Add</Button>
+
+                                            </Grid>
+                                        </GroupBox>
+                                    </Border>
+                                </ControlTemplate>
+                            </ContextMenu.Template>
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
+                <Button x:Name="CurrentLocationToWaypoint" Grid.Column="1">Save Current</Button>
+                <Button x:Name="RemoveSelectedWaypoint" Grid.Column="2">Remove Selected</Button>
             </Grid>
         </StackPanel>
         <DataGrid ItemsSource="{Binding Waypoints}" SelectedItem="{Binding SelectedWaypoint}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" FrozenColumnCount="1" BorderThickness="1">

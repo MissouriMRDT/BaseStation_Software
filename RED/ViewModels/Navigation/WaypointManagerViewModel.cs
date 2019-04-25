@@ -76,10 +76,24 @@ namespace RED.ViewModels.Navigation
             }
         }
 
+        public Waypoint NewPoint
+        {
+            get
+            {
+                return _model.NewPoint;
+            }
+            set
+            {
+                _model.NewPoint = value;
+                NotifyOfPropertyChange(() => NewPoint);
+            }
+        }
+
         public WaypointManagerViewModel(MapViewModel map, GPSViewModel gps)
         {
             _model = new WaypointManagerModel();
             Manager = WaypointManager.Instance;
+            NewPoint = new Waypoint(0, 0);
 
             Map = map;
             GPSModule = gps;
@@ -145,6 +159,19 @@ namespace RED.ViewModels.Navigation
             }
         }
 
+        public bool AddWaypoint(string name, double latitude, double longitude)
+        {
+            try
+            {
+                AddWaypoint(new Waypoint(name, latitude, longitude));
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public void AddWaypoint(Waypoint waypoint)
         {
             Waypoints.Add(waypoint);
@@ -159,7 +186,7 @@ namespace RED.ViewModels.Navigation
 
         public void CurrentLocationToWaypoint()
         {
-            AddWaypoint(Map.CurrentLocation);
+            AddWaypoint(Map.CurrentLocation.Name, Map.CurrentLocation.Latitude, Map.CurrentLocation.Longitude);
         }
     }
 }

@@ -16,24 +16,21 @@ namespace RED.Views.Navigation
             InitializeComponent();
         }
 
+        private void AddMenu_Click(object sender, RoutedEventArgs e)
+        {
+            var btn = (Button)sender;
+            btn.ContextMenu.IsEnabled = true;
+            btn.ContextMenu.PlacementTarget = btn;
+            btn.ContextMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
+            btn.ContextMenu.IsOpen = true;
+        }
+
         private void AddWaypointBtn_Click(object sender, RoutedEventArgs e)
         {
             var vm = (WaypointManagerViewModel)DataContext;
-            if (!vm.AddWaypoint("Untitled Waypoint", LatitudeTextBox.Text, LongitudeTextBox.Text))
-            {
-                MetroDialogSettings settings = new MetroDialogSettings()
-                {
-                    AffirmativeButtonText = "OK",
-                    NegativeButtonText = "Cancel",
-                    AnimateShow = false,
-                    AnimateHide = false,
-                };
-                ((MetroWindow)MetroWindow.GetWindow(this)).ShowMessageAsync(
-                    title: "Waypoint Management",
-                    message: "Invalid Longitude or Latitude. Must be a floating point number.",
-                    style: MessageDialogStyle.Affirmative,
-                    settings: settings);
-            }
+
+            vm.AddWaypoint(vm.NewPoint.Name, vm.NewPoint.Latitude, vm.NewPoint.Longitude);
+            
         }
     }
 }
