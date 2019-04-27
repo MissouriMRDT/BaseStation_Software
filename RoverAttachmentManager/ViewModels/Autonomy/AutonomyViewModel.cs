@@ -6,6 +6,7 @@ using Core.RoveProtocol;
 using Core.ViewModels;
 using RoverAttachmentManager.Models.Autonomy;
 using System;
+using System.Net;
 
 namespace RoverAttachmentManager.ViewModels.Autonomy
 {
@@ -29,11 +30,9 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
             _rovecomm.NotifyWhenMessageReceived(this, "WaypointReached");
         }
 
-        public void EnableMode() => _rovecomm.SendCommand(new Packet("AutonomousModeEnable"), true);
+        public void Enable() => _rovecomm.SendCommand(new Packet("AutonomousModeEnable"), true);
 
-        public void DisableMode() => _rovecomm.SendCommand(new Packet("AutonomousModeDisable"), true);
-
-        public void AddWaypoint() => AddWaypoint(_waypointManager.SelectedWaypoint);
+        public void Disable() => _rovecomm.SendCommand(new Packet("AutonomousModeDisable"), true);
 
         public void ClearAllWaypoints() => _rovecomm.SendCommand(new Packet("WaypointsClearAll"), true);
 
@@ -49,13 +48,15 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
             }
         }
 
-        private void AddWaypoint(Waypoint waypoint)
+        public void AddWaypoint()
         {
+            Waypoint waypoint = _waypointManager.SelectedWaypoint;
             byte[] msg = new byte[2 * sizeof(double)];
-            Buffer.BlockCopy(BitConverter.GetBytes(waypoint.Latitude), 0, msg, 0 * sizeof(double), sizeof(double));
-            Buffer.BlockCopy(BitConverter.GetBytes(waypoint.Longitude), 0, msg, 1 * sizeof(double), sizeof(double));
+            Buffer.BlockCopy(BitConverter.GetBytes(waypoint.Longitude), 0, msg, 0 * sizeof(double), sizeof(double));
+            Buffer.BlockCopy(BitConverter.GetBytes(waypoint.Latitude), 0, msg, 1 * sizeof(double), sizeof(double));
+            Array.Reverse(msg);
 
-            _rovecomm.SendCommand(new Packet("WaypointAdd", msg, 2, (byte)DataTypes.INT16_T), true);
+            _rovecomm.SendCommand(new Packet("WaypointAdd", msg, 2, (byte)7), true);
         }
 
         public void ReceivedRovecommMessageCallback(int index, bool reliable)
