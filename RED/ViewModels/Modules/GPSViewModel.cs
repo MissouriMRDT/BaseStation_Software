@@ -194,7 +194,7 @@ namespace RED.ViewModels.Modules
                     CurrentLocation = new GPSCoordinate()
                     {
                         Latitude = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 1 * sizeof(Int32))) / 10000000d,
-                        Longitude = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 0 * sizeof(Int32))) / 10000000d
+                        Longitude = -IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 0 * sizeof(Int32))) / 10000000d
                     };
                     
                     break;
