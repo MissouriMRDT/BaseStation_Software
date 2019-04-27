@@ -549,17 +549,17 @@ namespace RED.ViewModels.Modules
 
         public void EnableBus(byte index)
         {
-
-            //Status.Set(index, true);
-            //byte[] bytes = new byte[2];
-            //Status.CopyTo(bytes, 0);
-            //_rovecomm.SendCommand(new Packet("PowerBusEnableDisable", bytes, 2, (byte)DataTypes.UINT8_T));
-            //_rovecomm.SendCommand(new Packet("PowerBusEnable", index), true);
-
-            BitArray bits = new BitArray(8);
+            
+            BitArray bits = new BitArray(16);
             bits.Set(index, true);
+            byte[] thebits = new byte[2];
+
+            bits.CopyTo(thebits, 0);
+            Array.Reverse(thebits);
+
             byte[] bytes = new byte[3];
-            bits.CopyTo(bytes, 0);
+            thebits.CopyTo(bytes, 0);
+
             bytes[2] = 1;
 
             _rovecomm.SendCommand(new Packet("PowerBusEnableDisable", bytes, 3, (byte)DataTypes.UINT8_T));
@@ -567,16 +567,17 @@ namespace RED.ViewModels.Modules
         }
         public void DisableBus(byte index)
         {
-            //Status.Set(index, false);
-            //byte[] bytes = new byte[2];
-            //Status.CopyTo(bytes, 0);
-            //_rovecomm.SendCommand(new Packet("PowerBusEnableDisable", bytes, 2, (byte)DataTypes.UINT8_T));
-            //_rovecomm.SendCommand(new Packet("PowerBusDisable", index), true);
 
-            BitArray bits = new BitArray(8);
+            BitArray bits = new BitArray(16);
             bits.Set(index, true);
+            byte[] thebits = new byte[2];
+
+            bits.CopyTo(thebits, 0);
+            Array.Reverse(thebits);
+
             byte[] bytes = new byte[3];
-            bits.CopyTo(bytes, 0);
+            thebits.CopyTo(bytes, 0);
+
             bytes[2] = 0;
 
             _rovecomm.SendCommand(new Packet("PowerBusEnableDisable", bytes, 3, (byte)DataTypes.UINT8_T));
