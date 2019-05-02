@@ -50,7 +50,6 @@ namespace RoverAttachmentManager.ViewModels.Arm
 
         private const byte ArmDisableCommand = 0x00;
         private const byte ArmEnableCommand = 0x01;
-        private const short GripperRangeFactor = 1000;
 
         private readonly byte[] ArmEncoderFaultIds = { 8, 9, 10, 11, 12, 13 };
         private readonly ArmModel _model;
@@ -75,19 +74,66 @@ namespace RoverAttachmentManager.ViewModels.Arm
         //puts it into closed loop mode as well
         private bool guiControlInitialized;
 
-        public int MotorRangeFactor
+        public int IKRangeFactor
         {
             get
             {
-                return _model.MotorRangeFactor;
+                return _model.IKRangeFactor;
             }
             set
             {
-                _model.MotorRangeFactor = value;
-                NotifyOfPropertyChange(() => MotorRangeFactor);
+                _model.IKRangeFactor = value;
+                NotifyOfPropertyChange(() => IKRangeFactor);
             }
         }
-
+        public int BaseRangeFactor
+        {
+            get
+            {
+                return _model.BaseRangeFactor;
+            }
+            set
+            {
+                _model.BaseRangeFactor = value;
+                NotifyOfPropertyChange(() => BaseRangeFactor);
+            }
+        }
+        public int ElbowRangeFactor
+        {
+            get
+            {
+                return _model.ElbowRangeFactor;
+            }
+            set
+            {
+                _model.ElbowRangeFactor = value;
+                NotifyOfPropertyChange(() => ElbowRangeFactor);
+            }
+        }
+        public int WristRangeFactor
+        {
+            get
+            {
+                return _model.WristRangeFactor;
+            }
+            set
+            {
+                _model.WristRangeFactor = value;
+                NotifyOfPropertyChange(() => WristRangeFactor);
+            }
+        }
+        public int GripperRangeFactor
+        {
+            get
+            {
+                return _model.GripperRangeFactor;
+            }
+            set
+            {
+                _model.GripperRangeFactor = value;
+                NotifyOfPropertyChange(() => GripperRangeFactor);
+            }
+        }
         public float AngleJ1
         {
             get
@@ -445,8 +491,8 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 case ControllerBase.JoystickDirections.Left:
                 case ControllerBase.JoystickDirections.Up:
                 case ControllerBase.JoystickDirections.Down:
-                    ArmWristBend = (Int16)(values["WristBend"] * MotorRangeFactor);
-                    ArmWristTwist = (Int16)(values["WristTwist"] * MotorRangeFactor);
+                    ArmWristBend = (Int16)(values["WristBend"] * WristRangeFactor);
+                    ArmWristTwist = (Int16)(values["WristTwist"] * WristRangeFactor);
                     break;
                 case ControllerBase.JoystickDirections.None:
                     ArmWristTwist = 0;
@@ -459,11 +505,11 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 case ControllerBase.JoystickDirections.Up:
                 case ControllerBase.JoystickDirections.Down:
                     ArmElbowTwist = 0;
-                    ArmElbowBend = (Int16)(values["ElbowBend"] * MotorRangeFactor);
+                    ArmElbowBend = (Int16)(values["ElbowBend"] * ElbowRangeFactor);
                     break;
                 case ControllerBase.JoystickDirections.Right:
                 case ControllerBase.JoystickDirections.Left:
-                    ArmElbowTwist = (Int16)(values["ElbowTwist"] * MotorRangeFactor);
+                    ArmElbowTwist = (Int16)(values["ElbowTwist"] * ElbowRangeFactor);
                     ArmElbowBend = 0;
                     break;
                 case ControllerBase.JoystickDirections.None:
@@ -473,8 +519,8 @@ namespace RoverAttachmentManager.ViewModels.Arm
             }
 
 
-            ArmBaseTwist = (Int16)(ControllerBase.TwoButtonToggleDirection(values["BaseTwistDirection"] != 0, (values["BaseTwistMagnitude"])) * MotorRangeFactor);
-            ArmBaseBend = (Int16)(ControllerBase.TwoButtonToggleDirection(values["BaseBendDirection"] != 0, (values["BaseBendMagnitude"])) * MotorRangeFactor);
+            ArmBaseTwist = (Int16)(ControllerBase.TwoButtonToggleDirection(values["BaseTwistDirection"] != 0, (values["BaseTwistMagnitude"])) * BaseRangeFactor);
+            ArmBaseBend = (Int16)(ControllerBase.TwoButtonToggleDirection(values["BaseBendDirection"] != 0, (values["BaseBendMagnitude"])) * BaseRangeFactor);
             Gripper = (Int16)(ControllerBase.TwoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0) * GripperRangeFactor);
             Nipper = (Int16)(ControllerBase.TwoButtonTransform(values["NipperClose"] > 0, values["NipperOpen"] > 0, values["NipperClose"], -values["NipperOpen"], 0) * GripperRangeFactor);
 
@@ -516,8 +562,8 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 case ControllerBase.JoystickDirections.Left:
                 case ControllerBase.JoystickDirections.Up:
                 case ControllerBase.JoystickDirections.Down:
-                    Yaw = (Int16)(values["IKYawIncrement"] * MotorRangeFactor);
-                    Pitch = (Int16)(values["IKPitchIncrement"] * MotorRangeFactor);
+                    Yaw = (Int16)(values["IKYawIncrement"] * IKRangeFactor);
+                    Pitch = (Int16)(values["IKPitchIncrement"] * IKRangeFactor);
                     break;
                 case ControllerBase.JoystickDirections.None:
                     Yaw = 0;
@@ -530,11 +576,11 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 case ControllerBase.JoystickDirections.Up:
                 case ControllerBase.JoystickDirections.Down:
                     Y = 0;
-                    X = (Int16)(values["IKXIncrement"] * MotorRangeFactor);
+                    X = (Int16)(values["IKXIncrement"] * IKRangeFactor);
                     break;
                 case ControllerBase.JoystickDirections.Right:
                 case ControllerBase.JoystickDirections.Left:
-                    Y = (Int16)(values["IKYIncrement"] * MotorRangeFactor);
+                    Y = (Int16)(values["IKYIncrement"] * IKRangeFactor);
                     X = 0;
                     break;
                 case ControllerBase.JoystickDirections.None:
@@ -544,8 +590,8 @@ namespace RoverAttachmentManager.ViewModels.Arm
             }
 
 
-            Z = (Int16)(ControllerBase.TwoButtonToggleDirection(values["IKZDirection"] != 0, (values["IKZMagnitude"])) * MotorRangeFactor);
-            Roll = (Int16)(ControllerBase.TwoButtonToggleDirection(values["IKRollDirection"] != 0, (values["IKRollMagnitude"])) * MotorRangeFactor);
+            Z = (Int16)(ControllerBase.TwoButtonToggleDirection(values["IKZDirection"] != 0, (values["IKZMagnitude"])) * IKRangeFactor);
+            Roll = (Int16)(ControllerBase.TwoButtonToggleDirection(values["IKRollDirection"] != 0, (values["IKRollMagnitude"])) * IKRangeFactor);
             Gripper = (Int16)(ControllerBase.TwoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0) * GripperRangeFactor);
             Nipper = (Int16)(ControllerBase.TwoButtonTransform(values["NipperClose"] > 0, values["NipperOpen"] > 0, values["NipperClose"], -values["NipperOpen"], 0) * GripperRangeFactor);
 

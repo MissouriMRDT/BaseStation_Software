@@ -7,7 +7,13 @@
              xmlns:vlc="clr-namespace:Vlc.DotNet.Wpf;assembly=Vlc.DotNet.Wpf"
              mc:Ignorable="d" 
              d:DesignHeight="911.6" d:DesignWidth="607.2">
-	<Grid Margin="5">
+    <UserControl.Resources>
+        <Style x:Key="OverrideBtn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
+            <Setter Property="Content" Value="Enabled" />
+            <EventSetter Event="Click" Handler="OverrideButton_Click" />
+        </Style>
+    </UserControl.Resources>
+    <Grid Margin="5">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="2*" />
 			<ColumnDefinition Width="*" />
@@ -15,41 +21,34 @@
 
 		<StackPanel Grid.Column="0" Grid.Row="0" Margin="2.5">
 			<vlc:VlcControl  x:Name="vlcPlayer" Height="500" Margin="2.5"/>
-			<Expander Header="Control State" IsExpanded="True" Margin="2.5">
-				<StackPanel>
-					<DockPanel>
-						<Label DockPanel.Dock="Left">Current Control State:</Label>
-						<Label DockPanel.Dock="Right" x:Name ="ControlState" HorizontalContentAlignment="Left" />
-					</DockPanel>
-
-					<UniformGrid Rows="1">
-						<Label>On</Label>
-						<Button FontSize="10" cal:Message.Attach="EnableCommand('All', 'True')">All</Button>
-						<Button FontSize="8" cal:Message.Attach="EnableCommand('Main', 'True')">Main</Button>
-						<Button FontSize="10" cal:Message.Attach="EnableCommand('J1', 'True')">J1</Button>
-						<Button FontSize="10" cal:Message.Attach="EnableCommand('J2', 'True')">J2</Button>
-						<Button FontSize="10" cal:Message.Attach="EnableCommand('J3', 'True')">J3</Button>
-						<Button FontSize="10" cal:Message.Attach="EnableCommand('J4', 'True')">J4</Button>
-						<Button FontSize="10" cal:Message.Attach="EnableCommand('J5', 'True')">J5</Button>
-						<Button FontSize="10" cal:Message.Attach="EnableCommand('J6', 'True')">J6</Button>
-						<Button FontSize="8" cal:Message.Attach="EnableCommand('Endeff1', 'True')">End1</Button>
-						<Button FontSize="8" cal:Message.Attach="EnableCommand('Endeff2', 'True')">End2</Button>
-					</UniformGrid>
-					<UniformGrid Rows="1">
-						<Label>Off</Label>
-						<Button FontSize="10" cal:Message.Attach="EnableCommand('All', 'False')">All</Button>
-						<Button FontSize="8" cal:Message.Attach="EnableCommand('Main', 'False')">Main</Button>
-						<Button FontSize="10" cal:Message.Attach="EnableCommand('J1', 'False')">J1</Button>
-						<Button FontSize="10" cal:Message.Attach="EnableCommand('J2', 'False')">J2</Button>
-						<Button FontSize="10" cal:Message.Attach="EnableCommand('J3', 'False')">J3</Button>
-						<Button FontSize="10" cal:Message.Attach="EnableCommand('J4', 'False')">J4</Button>
-						<Button FontSize="10" cal:Message.Attach="EnableCommand('J5', 'False')">J5</Button>
-						<Button FontSize="10" cal:Message.Attach="EnableCommand('J6', 'False')">J6</Button>
-						<Button FontSize="8" cal:Message.Attach="EnableCommand('Endeff1', 'False')">End1</Button>
-						<Button FontSize="8" cal:Message.Attach="EnableCommand('Endeff2', 'False')">End2</Button>
-					</UniformGrid>
-				</StackPanel>
-			</Expander>
+            <Expander Header="Control Multipliers" IsExpanded="True" Margin="2.5">
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Column="0" Grid.Row="1">Base Control Multiplier:</Label>
+                    <Label Grid.Column="1" Grid.Row="1" x:Name="BaseRangeFactor"></Label>
+                    <Slider Grid.Column="2" Grid.Row="1" Width="300" Maximum="1000" Minimum="0" IsMoveToPointEnabled="True" Value="{Binding BaseRangeFactor}"></Slider>
+                    <Label Grid.Column="0" Grid.Row="2">Elbow Control Multiplier:</Label>
+                    <Label Grid.Column="1" Grid.Row="2" x:Name="ElbowRangeFactor"></Label>
+                    <Slider Grid.Column="2" Grid.Row="2" Width="300" Maximum="1000" Minimum="0" IsMoveToPointEnabled="True" Value="{Binding ElbowRangeFactor}"></Slider>
+                    <Label Grid.Column="0" Grid.Row="3">Wrist Control Multiplier:</Label>
+                    <Label Grid.Column="1" Grid.Row="3" x:Name="WristRangeFactor"></Label>
+                    <Slider Grid.Column="2" Grid.Row="3" Width="300" Maximum="1000" Minimum="0" IsMoveToPointEnabled="True" Value="{Binding WristRangeFactor}"></Slider>
+                    <Label Grid.Column="0" Grid.Row="4">Gripper Control Multiplier:</Label>
+                    <Label Grid.Column="1" Grid.Row="4" x:Name="GripperRangeFactor"></Label>
+                    <Slider Grid.Column="2" Grid.Row="4" Width="300" Maximum="500" Minimum="0" IsMoveToPointEnabled="True" Value="{Binding GripperRangeFactor}"></Slider>
+                </Grid>
+            </Expander>
 		</StackPanel>
 
 		<StackPanel Grid.Column="1" Margin="2.5">
@@ -72,17 +71,15 @@
 						</Grid.ColumnDefinitions>
 						<Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">J1</Label>
 						<TextBox Grid.Row="0" Grid.Column="2" Text="{Binding AngleJ1, StringFormat=0.##}" />
-						<Label Grid.Row="0" Grid.Column="3">J2</Label>
-						<TextBox Grid.Row="0" Grid.Column="4" Text="{Binding AngleJ2, StringFormat=0.##}" />
-						<Label Grid.Row="0" Grid.Column="5">J3</Label>
-						<TextBox Grid.Row="0" Grid.Column="6" Text="{Binding AngleJ3, StringFormat=0.##}" />
-						<Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">J4</Label>
-						<TextBox Grid.Row="1" Grid.Column="2" Text="{Binding AngleJ4, StringFormat=0.##}" />
-						<Label Grid.Row="1" Grid.Column="3" >J5</Label>
-						<TextBox Grid.Row="1" Grid.Column="4" Text="{Binding AngleJ5, StringFormat=0.##}" />
-						<Label Grid.Row="1" Grid.Column="5">J6</Label>
-						<TextBox Grid.Row="1" Grid.Column="6" Text="{Binding AngleJ6, StringFormat=0.##}" />
-					</Grid>
+                        <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">J2</Label>
+                        <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding AngleJ2, StringFormat=0.##}" />
+                        <Label Grid.Row="0" Grid.Column="3">J3</Label>
+                        <TextBox Grid.Row="0" Grid.Column="4" Text="{Binding AngleJ3, StringFormat=0.##}" />
+                        <Label Grid.Row="1" Grid.Column="3">J4</Label>
+                        <TextBox Grid.Row="1" Grid.Column="4" Text="{Binding AngleJ4, StringFormat=0.##}" />
+                        <Label Grid.Row="0" Grid.Column="5" >J5</Label>
+                        <TextBox Grid.Row="0" Grid.Column="6" Text="{Binding AngleJ5, StringFormat=0.##}" />
+                    </Grid>
 					<UniformGrid Rows="1">
 						<Button x:Name="GetPosition">Get Position</Button>
 						<Button x:Name="SetPosition">Set Position</Button>
@@ -122,17 +119,15 @@
 						</Grid.ColumnDefinitions>
 						<Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">X</Label>
 						<TextBox Grid.Row="0" Grid.Column="2" Text="{Binding CoordinateX, StringFormat=0.##}" />
-						<Label Grid.Row="0" Grid.Column="3">Y</Label>
-						<TextBox Grid.Row="0" Grid.Column="4" Text="{Binding CoordinateY, StringFormat=0.##}" />
-						<Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">Z</Label>
-						<TextBox Grid.Row="1" Grid.Column="2" Text="{Binding CoordinateZ, StringFormat=0.##}" />
-						<Label Grid.Row="1" Grid.Column="3">Yaw</Label>
-						<TextBox Grid.Row="1" Grid.Column="4" Text="{Binding Yaw, StringFormat=0.##}" />
-						<Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">Pitch</Label>
-						<TextBox Grid.Row="2" Grid.Column="2" Text="{Binding Pitch, StringFormat=0.##}" />
-						<Label Grid.Row="2" Grid.Column="3">Roll</Label>
-						<TextBox Grid.Row="2" Grid.Column="4" Text="{Binding Roll, StringFormat=0.##}" />
-					</Grid>
+                        <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">Y</Label>
+                        <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding CoordinateY, StringFormat=0.##}" />
+                        <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">Z</Label>
+                        <TextBox Grid.Row="3" Grid.Column="2" Text="{Binding CoordinateZ, StringFormat=0.##}" />
+                        <Label Grid.Row="0" Grid.Column="3">Yaw</Label>
+                        <TextBox Grid.Row="0" Grid.Column="4" Text="{Binding Yaw, StringFormat=0.##}" />
+                        <Label Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2">Pitch</Label>
+                        <TextBox Grid.Row="1" Grid.Column="4" Text="{Binding Pitch, StringFormat=0.##}" />
+                    </Grid>
 					<UniformGrid Rows="1">
 						<Button x:Name="SetXYZPosition" Content="Set absolute position" HorizontalAlignment="Center" />
 						<Button x:Name="GetXYZPosition" Content="Get Absolute Position" HorizontalAlignment="Center" />
@@ -188,19 +183,11 @@
 						</Grid.ColumnDefinitions>
 						<Label Grid.Column="0" Grid.Row="0">Limit Override</Label>
 						<UniformGrid Rows="1" Grid.Column="1" Grid.Row="0">
-							<Button cal:Message.Attach="LimitSwitchOverride(1)">J1</Button>
-							<Button cal:Message.Attach="LimitSwitchOverride(2)">J2</Button>
-							<Button cal:Message.Attach="LimitSwitchOverride(3)">J3</Button>
-						</UniformGrid>
-						<Label Grid.Column="0" Grid.Row="1">Limit Un-Override</Label>
-						<UniformGrid Rows="1" Grid.Column="1" Grid.Row="1">
-							<Button cal:Message.Attach="LimitSwitchUnOverride(1)">J1</Button>
-							<Button cal:Message.Attach="LimitSwitchUnOverride(2)">J2</Button>
-							<Button cal:Message.Attach="LimitSwitchUnOverride(3)">J3</Button>
-						</UniformGrid>
-						<Label Grid.Column="0" Grid.Row="3">Arm Control Multiplier:</Label>
-						<Label Grid.Column="1" Grid.Row="3" x:Name="MotorRangeFactor"></Label>
-						<Slider Grid.Row="4" Width="300" Maximum="1000" Minimum="0" Value="{Binding MotorRangeFactor}"></Slider>
+                            <ToggleButton Style="{StaticResource OverrideBtn}" Tag="1">Base</ToggleButton>
+                            <ToggleButton Style="{StaticResource OverrideBtn}" Tag="3">Elbow</ToggleButton>
+                            <ToggleButton Style="{StaticResource OverrideBtn}" Tag="5">Wrist</ToggleButton>
+                        </UniformGrid>
+						
 						<Label Grid.Column="0" Grid.Row="5">Tool:</Label>
 						<Label Grid.Column="1" Grid.Row="5" x:Name="SelectedTool"/>
 					</Grid>
