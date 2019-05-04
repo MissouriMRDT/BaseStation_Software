@@ -81,7 +81,14 @@
                         </Border>
                     </Expander.Header>
                     <StackPanel Margin="10 10 10 40">
-                        <Label>Drive Power</Label>
+
+                        <Label ToolTip="Maximum radius for being close enough to a marker">Marker Distance Threshold</Label>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Width="200px"></TextBox>
+                            <Button>Send</Button>
+                        </StackPanel>
+
+                        <Label Margin="0 10 0 0">Drive Power</Label>
                         <StackPanel Orientation="Horizontal">
                             <TextBox Width="200px"></TextBox>
                             <Button>Send</Button>
