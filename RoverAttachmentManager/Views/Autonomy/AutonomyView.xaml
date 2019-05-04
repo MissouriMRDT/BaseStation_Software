@@ -13,8 +13,8 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*"></RowDefinition>
-            <RowDefinition Height="3*"></RowDefinition>
+            <RowDefinition Height="125px" MaxHeight="125px"></RowDefinition>
+            <RowDefinition Height="*" MinHeight="350px"></RowDefinition>
         </Grid.RowDefinitions>
 
         <GroupBox Header="State" Margin="5" Grid.RowSpan="2" Grid.Column="0">
@@ -26,7 +26,7 @@
                             <TextBlock Foreground="Black" Background="White" FontSize="20" Margin="4 0 0 2">Idle</TextBlock>
                         </Border>
                     </Expander.Header>
-                    <StackPanel Margin="10 20 10 40">
+                    <StackPanel Margin="10 10 10 40">
                         <Button>Action</Button>
                         <Button>Action</Button>
                     </StackPanel>
@@ -59,7 +59,7 @@
                             <TextBlock Foreground="Black" Background="White" FontSize="20" Margin="4 0 0 2">Search</TextBlock>
                         </Border>
                     </Expander.Header>
-                    <StackPanel Margin="10 20 10 40">
+                    <StackPanel Margin="10 10 10 40">
                         <Label ToolTip="Search Distance">Search Distance</Label>
                         <StackPanel Orientation="Horizontal">
                             <TextBox Width="200px"></TextBox>
@@ -80,9 +80,12 @@
                             <TextBlock Foreground="Black" Background="White" FontSize="20" Margin="4 0 0 2">Approaching Marker</TextBlock>
                         </Border>
                     </Expander.Header>
-                    <StackPanel Margin="10 20 10 40">
-                        <Button>Action</Button>
-                        <Button>Action</Button>
+                    <StackPanel Margin="10 10 10 40">
+                        <Label>Drive Power</Label>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Width="200px"></TextBox>
+                            <Button>Send</Button>
+                        </StackPanel>
                     </StackPanel>
                 </Expander>
 
@@ -92,7 +95,7 @@
                             <TextBlock Foreground="Black" Background="White" FontSize="20" Margin="4 0 0 2">Shutdown</TextBlock>
                         </Border>
                     </Expander.Header>
-                    <StackPanel Margin="10 20 10 40">
+                    <StackPanel Margin="10 10 10 40">
                         <Button>Action</Button>
                         <Button>Action</Button>
                     </StackPanel>
