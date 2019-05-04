@@ -38,9 +38,18 @@
                             <TextBlock Foreground="Black" Background="White" FontSize="20" Margin="4 0 0 2">Navigate</TextBlock>
                         </Border>
                     </Expander.Header>
-                    <StackPanel Margin="10 20 10 40">
-                        <Button>Action</Button>
-                        <Button>Action</Button>
+                    <StackPanel Margin="10 10 10 40">
+                        <Label ToolTip="Maximum radius for being close enough to a waypoint">Waypoint Distance Threshold</Label>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Width="200px"></TextBox>
+                            <Button>Send</Button>
+                        </StackPanel>
+
+                        <Label Margin="0 10 0 0">Drive Power</Label>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Width="200px"></TextBox>
+                            <Button>Send</Button>
+                        </StackPanel>
                     </StackPanel>
                 </Expander>
 
@@ -51,8 +60,17 @@
                         </Border>
                     </Expander.Header>
                     <StackPanel Margin="10 20 10 40">
-                        <Button>Action</Button>
-                        <Button>Action</Button>
+                        <Label ToolTip="Search Distance">Search Distance</Label>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Width="200px"></TextBox>
+                            <Button>Send</Button>
+                        </StackPanel>
+
+                        <Label ToolTip="Controls the angle change for each spiral iteration" Margin="0 10 0 0">Delta Theta</Label>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Width="200px"></TextBox>
+                            <Button>Send</Button>
+                        </StackPanel>
                     </StackPanel>
                 </Expander>
 
