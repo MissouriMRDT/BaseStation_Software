@@ -190,9 +190,15 @@
 						
 						<Label Grid.Column="0" Grid.Row="5">Tool:</Label>
 						<Label Grid.Column="1" Grid.Row="5" x:Name="SelectedTool"/>
-					</Grid>
-				</StackPanel>
-			</Expander>
-		</StackPanel>
-	</Grid>
+                        <Label Grid.Column="0" Grid.Row="1">Limit Un-Override</Label>
+                        <UniformGrid Rows="1" Grid.Column="1" Grid.Row="1">
+                            <Button cal:Message.Attach="LimitSwitchUnOverride(1)">J1</Button>
+                            <Button cal:Message.Attach="LimitSwitchUnOverride(2)">J2</Button>
+                            <Button cal:Message.Attach="LimitSwitchUnOverride(3)">J3</Button>
+                        </UniformGrid>
+                    </Grid>
+                </StackPanel>
+            </Expander>
+        </StackPanel>
+    </Grid>
 </UserControl>
