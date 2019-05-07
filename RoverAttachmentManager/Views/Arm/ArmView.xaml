@@ -79,6 +79,8 @@
                         <TextBox Grid.Row="1" Grid.Column="4" Text="{Binding AngleJ4, StringFormat=0.##}" />
                         <Label Grid.Row="0" Grid.Column="5" >J5</Label>
                         <TextBox Grid.Row="0" Grid.Column="6" Text="{Binding AngleJ5, StringFormat=0.##}" />
+                        <Label Grid.Row="1" Grid.Column="5" >J6</Label>
+                        <TextBox Grid.Row="1" Grid.Column="6" Text="{Binding AngleJ6, StringFormat=0.##}" />
                     </Grid>
 					<UniformGrid Rows="1">
 						<Button x:Name="GetPosition">Get Position</Button>
