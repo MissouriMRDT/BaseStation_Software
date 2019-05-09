@@ -35,19 +35,6 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public int RollIncrement
-        {
-            get
-            {
-                return _model.RollIncrement;
-            }
-            set
-            {
-                _model.RollIncrement = value;
-                NotifyOfPropertyChange(() => RollIncrement);
-            }
-        }
-
         public int TiltIncrement
         {
             get
@@ -94,7 +81,7 @@ namespace RED.ViewModels.Modules
             UpdateControlState(values);
             
             // Pan, Tilt
-            short[] openVals = { (Int16)(values["Tilt"] * TiltIncrement), (Int16)(values["Pan"] * PanIncrement)};
+            short[] openVals = { (Int16)(values["Tilt"] * 50), (Int16)(values["Pan"] * 50)};
             byte[] data = new byte[4];
             Buffer.BlockCopy(openVals, 0, data, 0, data.Length);
             Array.Reverse(data);
@@ -125,30 +112,7 @@ namespace RED.ViewModels.Modules
 
         public void StopMode()
         {
-            //_rovecomm.SendCommand(new Packet("GimbalOpenValues", new byte[]{ 0, 0, 0, 0, 0 }, 5, (byte)DataTypes.UINT8_T), true);
             _rovecomm.SendCommand(new Packet("MainGimbalIncrement", new byte[] { 0, 0, 0, 0 }, 2, (byte)DataTypes.INT16_T));
-        }
-
-        public void Snapshot()
-        {
-           // _rovecomm.SendCommand(new Packet("GimbalRecord", (byte)GimbalRecordValues.Snapshot), true);
-        }
-
-        public void RecordStart()
-        {
-           // _rovecomm.SendCommand(new Packet("GimbalRecord", (byte)GimbalRecordValues.Start), true);
-        }
-
-        public void RecordStop()
-        {
-           // _rovecomm.SendCommand(new Packet("GimbalRecord", (byte)GimbalRecordValues.Stop), true);
-        }
-
-        private enum GimbalRecordValues
-        {
-            Stop = 0,
-            Start = 1,
-            Snapshot = 2
         }
 
         private enum GimbalStates
