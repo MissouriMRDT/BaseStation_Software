@@ -27,13 +27,12 @@
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition />
-                <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="50" />
                 <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="50" />
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
@@ -43,33 +42,17 @@
             <Label Grid.Row="1" Grid.Column="1">
                 <TextBlock Grid.Row="1" Grid.Column="1" x:Name="FixQuality" Style="{DynamicResource MaybeStale}" />
             </Label>
-            <Label Grid.Row="2" Grid.Column="0">Satellite Count</Label>
-            <Label Grid.Row="2" Grid.Column="1">
+            <Label Grid.Row="0" Grid.Column="2">Satellite Count</Label>
+            <Label Grid.Row="0" Grid.Column="3">
                 <TextBlock x:Name="NumberOfSatellites" Style="{DynamicResource MaybeStale}" />
             </Label>
-            <Label Grid.Row="0" Grid.Column="2">Current Lat</Label>
-            <Label Grid.Row="0" Grid.Column="3">
+            <Label Grid.Row="0" Grid.Column="4">Current Lat</Label>
+            <Label Grid.Row="0" Grid.Column="5">
                 <TextBlock Text="{Binding CurrentLocation, Converter={StaticResource LatitudeConverter}}" Style="{DynamicResource MaybeStale}" />
             </Label>
-            <Label Grid.Row="1" Grid.Column="2">Current Lon</Label>
-            <Label Grid.Row="1" Grid.Column="3">
-                <TextBlock Text="{Binding CurrentLocation, Converter={StaticResource LongitudeConverter}}" Style="{DynamicResource MaybeStale}" />
-            </Label>
-            <Label Grid.Row="2" Grid.Column="2">Altitude</Label>
-            <Label Grid.Row="2" Grid.Column="3">
-                <TextBlock x:Name="CurrentAltitude" Style="{DynamicResource MaybeStale}" />
-            </Label>
-            <Label Grid.Row="0" Grid.Column="4">Speed</Label>
-            <Label Grid.Row="0" Grid.Column="5">
-                <TextBlock x:Name="Speed" Style="{DynamicResource MaybeStale}" />
-            </Label>
-            <Label Grid.Row="1" Grid.Column="4">Speed Angle</Label>
+            <Label Grid.Row="1" Grid.Column="4">Current Lon</Label>
             <Label Grid.Row="1" Grid.Column="5">
-                <TextBlock x:Name="SpeedAngle" Style="{DynamicResource MaybeStale}" />
-            </Label>
-            <Label Grid.Row="2" Grid.Column="4">Antenna Angle</Label>
-            <Label Grid.Row="2" Grid.Column="5">
-                <TextBlock Text="{Binding AntennaDirectionDeg, StringFormat={}{0:#0}&#x00B0;}" Style="{DynamicResource MaybeStale}" />
+                <TextBlock Text="{Binding CurrentLocation, Converter={StaticResource LongitudeConverter}}" Style="{DynamicResource MaybeStale}" />
             </Label>
         </Grid>
     </StackPanel>

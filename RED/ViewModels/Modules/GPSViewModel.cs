@@ -63,42 +63,6 @@ namespace RED.ViewModels.Modules
                 NotifyOfPropertyChange(() => CurrentLocation);
             }
         }
-        public float CurrentAltitude
-        {
-            get
-            {
-                return _model.CurrentAltitude;
-            }
-            set
-            {
-                _model.CurrentAltitude = value;
-                NotifyOfPropertyChange(() => CurrentAltitude);
-            }
-        }
-        public float Speed
-        {
-            get
-            {
-                return _model.Speed;
-            }
-            set
-            {
-                _model.Speed = value;
-                NotifyOfPropertyChange(() => Speed);
-            }
-        }
-        public float SpeedAngle
-        {
-            get
-            {
-                return _model.SpeedAngle;
-            }
-            set
-            {
-                _model.SpeedAngle = value;
-                NotifyOfPropertyChange(() => SpeedAngle);
-            }
-        }
         public GPSCoordinate BaseStationLocation
         {
             get
@@ -178,9 +142,9 @@ namespace RED.ViewModels.Modules
                             Latitude = br.ReadInt32() / 10000000d,
                             Longitude = br.ReadInt32() / 10000000d
                         };
-                        CurrentAltitude = br.ReadSingle();
-                        Speed = br.ReadSingle();
-                        SpeedAngle = br.ReadSingle();
+                        //CurrentAltitude = br.ReadSingle();
+                        //Speed = br.ReadSingle();
+                        //SpeedAngle = br.ReadSingle();
                     }
                     break;
                 case "Heading":
@@ -197,15 +161,6 @@ namespace RED.ViewModels.Modules
                         Longitude = -IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 0 * sizeof(Int32))) / 10000000d
                     };
                     
-                    break;
-                case "GPSSpeed":
-                    Speed = BitConverter.ToSingle(packet.Data, 0);
-                    break;
-                case "GPSSpeedAngle":
-                    SpeedAngle = BitConverter.ToSingle(packet.Data, 0);
-                    break;
-                case "GPSAltitude":
-                    CurrentAltitude = BitConverter.ToSingle(packet.Data, 0);
                     break;
                 case "GPSSatellites":
                     NumberOfSatellites = packet.Data[0];
