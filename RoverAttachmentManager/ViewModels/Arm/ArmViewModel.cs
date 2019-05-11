@@ -508,11 +508,11 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 case ControllerBase.JoystickDirections.Up:
                 case ControllerBase.JoystickDirections.Down:
                     ArmElbowTwist = 0;
-                    ArmElbowBend = (Int16)(values["ElbowBend"] * ElbowRangeFactor);
+                    ArmElbowBend = (Int16)(-values["ElbowBend"] * ElbowRangeFactor);
                     break;
                 case ControllerBase.JoystickDirections.Right:
                 case ControllerBase.JoystickDirections.Left:
-                    ArmElbowTwist = (Int16)(values["ElbowTwist"] * ElbowRangeFactor);
+                    ArmElbowTwist = (Int16)(-values["ElbowTwist"] * ElbowRangeFactor);
                     ArmElbowBend = 0;
                     break;
                 case ControllerBase.JoystickDirections.None:
