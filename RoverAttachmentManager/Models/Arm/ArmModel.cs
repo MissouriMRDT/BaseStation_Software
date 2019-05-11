@@ -14,8 +14,8 @@ namespace RoverAttachmentManager.Models.ArmModels
         internal float CurrentMain;
         internal int EndeffectorSpeedLimit = 500;
         internal int IKRangeFactor = 1000;
-        internal int BaseRangeFactor = 1000;
-        internal int ElbowRangeFactor = 1000;
+        internal int BaseRangeFactor = 500;
+        internal int ElbowRangeFactor = 500;
         internal int WristRangeFactor = 1000;
         internal int GripperRangeFactor = 500;
         internal ObservableCollection<ArmPositionViewModel> Positions = new ObservableCollection<ArmPositionViewModel>();

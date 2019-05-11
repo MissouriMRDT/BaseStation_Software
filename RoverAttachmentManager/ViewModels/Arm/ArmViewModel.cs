@@ -522,8 +522,8 @@ namespace RoverAttachmentManager.ViewModels.Arm
             }
 
 
-            ArmBaseTwist = (Int16)(ControllerBase.TwoButtonToggleDirection(values["BaseTwistDirection"] != 0, (values["BaseTwistMagnitude"])) * BaseRangeFactor);
-            ArmBaseBend = (Int16)(ControllerBase.TwoButtonToggleDirection(values["BaseBendDirection"] != 0, (values["BaseBendMagnitude"])) * BaseRangeFactor);
+            ArmBaseTwist = (Int16)(-ControllerBase.TwoButtonToggleDirection(values["BaseTwistDirection"] != 0, (values["BaseTwistMagnitude"])) * BaseRangeFactor);
+            ArmBaseBend = (Int16)(-ControllerBase.TwoButtonToggleDirection(values["BaseBendDirection"] != 0, (values["BaseBendMagnitude"])) * BaseRangeFactor);
             Gripper = (Int16)(ControllerBase.TwoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0) * GripperRangeFactor);
             Nipper = (Int16)values["Nipper"];
 
