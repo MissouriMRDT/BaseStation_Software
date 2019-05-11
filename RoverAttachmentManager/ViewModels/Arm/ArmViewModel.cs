@@ -385,6 +385,8 @@ namespace RoverAttachmentManager.ViewModels.Arm
             }
         }
 
+        byte previousTool;
+
         public ArmViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log, IConfigurationManager configs)
         {
             _model = new ArmModel();
@@ -396,6 +398,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
             ModeType = "Arm";
             myState = ArmControlState.GuiControl;
             ControlState = "GUI control";
+            previousTool = 0;
 
             _configManager.AddRecord(PositionsConfigName, ArmConfig.DefaultArmPositions);
             InitializePositions(_configManager.GetConfig<ArmPositionsContext>(PositionsConfigName));
@@ -535,13 +538,16 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 _rovecomm.SendCommand(new Packet("GripperSwap", data, 8, (byte)DataTypes.INT16_T));
             }
 
-            if (values["SwitchTool"] == 1)
+            if (values["SwitchTool"] == 1 && previousTool == SelectedTool)
             {
                 if(++SelectedTool > 2)
                 {
                     SelectedTool = 0;
                 }
                 _rovecomm.SendCommand(new Packet("ToolSelection", SelectedTool));
+            }
+            else if (values["SwitchTool"] == 0){
+                previousTool = SelectedTool;
             }
         }
 
