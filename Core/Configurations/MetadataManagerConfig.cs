@@ -205,9 +205,13 @@ namespace Core.Configurations
                 Commands = new[]
                 {
                     new MetadataRecordContext(8000, "ArmToAngle", "All values for the arm together. Armj1-j6."),
+                    new MetadataRecordContext(8002, "IKRoverIncrement", "Incremental values for rover ik."),
+                    new MetadataRecordContext(8003, "IKGripperIncrement", "Incremental values for gripper ik."),
                     new MetadataRecordContext(8004, "ArmValues", "All values for the arm together. Armj1-j6, then primary then secondary gripper."),
                     new MetadataRecordContext(8007, "ArmCommands", "Swap Gripper, Get Position 0, 1"),
-                    new MetadataRecordContext(8013, "ToolSelection", "Change the selected tool, 0 1 & 2")
+                    new MetadataRecordContext(8013, "ToolSelection", "Change the selected tool, 0 1 & 2"),
+                    new MetadataRecordContext(8014, "Laser", "Toggle the laser")
+
                 },
                  Telemetry = new[]
                 {

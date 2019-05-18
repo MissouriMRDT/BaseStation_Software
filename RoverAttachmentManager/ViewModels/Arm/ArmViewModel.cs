@@ -385,7 +385,11 @@ namespace RoverAttachmentManager.ViewModels.Arm
             }
         }
 
+
         byte previousTool;
+        bool laser = false;
+
+
 
         public ArmViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log, IConfigurationManager configs)
         {
@@ -527,7 +531,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
             Gripper = (Int16)(ControllerBase.TwoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0) * GripperRangeFactor);
             Nipper = (Int16)values["Nipper"];
 
-            Int16[] sendValues = { Nipper, Gripper, ArmWristTwist, ArmWristBend, ArmElbowTwist, ArmElbowBend, ArmBaseTwist, ArmBaseBend }; //order before we reverse
+            Int16[] sendValues = { Nipper, Gripper, ArmWristTwist, ArmWristBend, ArmElbowTwist, ArmElbowBend, ArmBaseBend, ArmBaseTwist }; //order before we reverse
             byte[] data = new byte[sendValues.Length * sizeof(Int16)];
             Buffer.BlockCopy(sendValues, 0, data, 0, data.Length);
             Array.Reverse(data);
@@ -548,6 +552,11 @@ namespace RoverAttachmentManager.ViewModels.Arm
             }
             else if (values["SwitchTool"] == 0){
                 previousTool = SelectedTool;
+            }
+            if (values["LaserToggle"] == 1)
+            {
+                laser = !laser;
+                _rovecomm.SendCommand(new Packet("Laser", Convert.ToByte(laser)));
             }
         }
 
@@ -599,12 +608,12 @@ namespace RoverAttachmentManager.ViewModels.Arm
             Z = (Int16)(ControllerBase.TwoButtonToggleDirection(values["IKZDirection"] != 0, (values["IKZMagnitude"])) * IKRangeFactor);
             Roll = (Int16)(ControllerBase.TwoButtonToggleDirection(values["IKRollDirection"] != 0, (values["IKRollMagnitude"])) * IKRangeFactor);
             Gripper = (Int16)(ControllerBase.TwoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0) * GripperRangeFactor);
-            Nipper = (Int16)(ControllerBase.TwoButtonTransform(values["NipperClose"] > 0, values["NipperOpen"] > 0, values["NipperClose"], -values["NipperOpen"], 0) * GripperRangeFactor);
+            Nipper = (Int16)values["Nipper"];
 
-
-            Int16[] sendValues = { X, Y, Z, Yaw, Pitch, Roll, Gripper, Nipper };
+            Int16[] sendValues = { Nipper, Gripper, Roll, Pitch, Yaw, Z, Y, X};
             byte[] data = new byte[sendValues.Length * sizeof(Int16)];
             Buffer.BlockCopy(sendValues, 0, data, 0, data.Length);
+            Array.Reverse(data);
 
             if (stateToUse == ArmControlState.IKWristPOV)
             {
@@ -614,10 +623,29 @@ namespace RoverAttachmentManager.ViewModels.Arm
             {
                 _rovecomm.SendCommand(new Packet("IKRoverIncrement", data, 8, (byte)DataTypes.INT16_T));
             }
-
+            
             if(values["GripperSwap"] == 1)
             {
                 _rovecomm.SendCommand(new Packet("GripperSwap", data, 8, (byte)DataTypes.INT16_T));
+            }
+
+            if (values["SwitchTool"] == 1 && previousTool == SelectedTool)
+            {
+                if (++SelectedTool > 2)
+                {
+                    SelectedTool = 0;
+                }
+                _rovecomm.SendCommand(new Packet("ToolSelection", SelectedTool));
+            }
+            else if (values["SwitchTool"] == 0)
+            {
+                previousTool = SelectedTool;
+            }
+
+            if (values["LaserToggle"] == 1)
+            {
+                laser = !laser;
+                _rovecomm.SendCommand(new Packet("Laser", Convert.ToByte(laser)));
             }
         }
 
