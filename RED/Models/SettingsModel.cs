@@ -7,7 +7,6 @@ namespace RED.Models
     internal class SettingsManagerModel
     {
         internal DriveSettingsViewModel Drive;
-        internal ScienceSettingsViewModel Science;
         internal XboxControllerInputSettingsViewModel Xbox1;
         internal XboxControllerInputSettingsViewModel Xbox2;
         internal XboxControllerInputSettingsViewModel Xbox3;

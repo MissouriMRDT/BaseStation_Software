@@ -1,10 +1,12 @@
 ﻿using Caliburn.Micro;
 using Core.Interfaces;
 using Core.Models;
+using Core.RoveProtocol;
 using RoverAttachmentManager.Models.Science;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
@@ -18,26 +20,14 @@ namespace RoverAttachmentManager.ViewModels.Science
         private readonly ILogger _log;
 
         private const int ScrewSpeedScale = 1000;
-        private const int DrillSpeedScale = 1000;
-        private const int GenevaSpeedScale = 666;
+        private const int XYSpeedScale = 1000;
+        private bool screwIncrementPressed = false;
 
         public string Name { get; }
         public string ModeType { get; }
 
         private readonly ScienceModel _model;
-
-        public string ControlState
-        {
-            get
-            {
-                return _model.ControlState;
-            }
-            set
-            {
-                _model.ControlState = value;
-                NotifyOfPropertyChange(() => ControlState);
-            }
-        }
+        
         public float Sensor0Value
         {
             get
@@ -50,7 +40,7 @@ namespace RoverAttachmentManager.ViewModels.Science
                 NotifyOfPropertyChange(() => Sensor0Value);
             }
         }
-        public int Sensor1Value
+        public float Sensor1Value
         {
             get
             {
@@ -74,7 +64,7 @@ namespace RoverAttachmentManager.ViewModels.Science
                 NotifyOfPropertyChange(() => Sensor2Value);
             }
         }
-        public int Sensor3Value
+        public float Sensor3Value
         {
             get
             {
@@ -98,66 +88,20 @@ namespace RoverAttachmentManager.ViewModels.Science
                 NotifyOfPropertyChange(() => Sensor4Value);
             }
         }
-        public float Sensor5Value
+
+        public int ScrewPosition
         {
             get
             {
-                return _model.Sensor5Value;
+                return _model.ScrewPosition;
             }
             set
             {
-                _model.Sensor5Value = value;
-                NotifyOfPropertyChange(() => Sensor5Value);
+                _model.ScrewPosition = value;
+                NotifyOfPropertyChange(() => ScrewPosition);
             }
         }
-        public float Sensor6Value
-        {
-            get
-            {
-                return _model.Sensor6Value;
-            }
-            set
-            {
-                _model.Sensor6Value = value;
-                NotifyOfPropertyChange(() => Sensor6Value);
-            }
-        }
-        public float Sensor7Value
-        {
-            get
-            {
-                return _model.Sensor7Value;
-            }
-            set
-            {
-                _model.Sensor7Value = value;
-                NotifyOfPropertyChange(() => Sensor7Value);
-            }
-        }
-        public float Sensor8Value
-        {
-            get
-            {
-                return _model.Sensor8Value;
-            }
-            set
-            {
-                _model.Sensor8Value = value;
-                NotifyOfPropertyChange(() => Sensor8Value);
-            }
-        }
-        public float Sensor9Value
-        {
-            get
-            {
-                return _model.Sensor9Value;
-            }
-            set
-            {
-                _model.Sensor9Value = value;
-                NotifyOfPropertyChange(() => Sensor9Value);
-            }
-        }
+        
         public System.Net.IPAddress SpectrometerIPAddress
         {
             get
@@ -218,151 +162,53 @@ namespace RoverAttachmentManager.ViewModels.Science
             Name = "Science Controls";
             ModeType = "ScienceControls";
 
-            _rovecomm.NotifyWhenMessageReceived(this, "SciSensor0");
-            _rovecomm.NotifyWhenMessageReceived(this, "SciSensor1");
-            _rovecomm.NotifyWhenMessageReceived(this, "SciSensor2");
-            _rovecomm.NotifyWhenMessageReceived(this, "SciSensor3");
-            _rovecomm.NotifyWhenMessageReceived(this, "SciSensor4");
-            _rovecomm.NotifyWhenMessageReceived(this, "SciSensor5");
-            _rovecomm.NotifyWhenMessageReceived(this, "SciSensor6");
-            _rovecomm.NotifyWhenMessageReceived(this, "SciSensor7");
-            _rovecomm.NotifyWhenMessageReceived(this, "SciSensor8");
-            _rovecomm.NotifyWhenMessageReceived(this, "SciSensor9");
-            _rovecomm.NotifyWhenMessageReceived(this, "Temperature");
-            _rovecomm.NotifyWhenMessageReceived(this, "Moisture");
-        }
+            SpectrometerIPAddress = IPAddress.Parse("192.168.1.138");
 
-        public void StartMode()
-        {
-            ControlState = "OpenLoop";
-        }
-
-        public void UpdateControlState(Dictionary<string, float> values)
-        {
-            if(values["ClosedLoop"] == 1)
-            {
-                ControlState = "ClosedLoop";
-            }
-            else if(values["OpenLoop"] == 1)
-            {
-                ControlState = "OpenLoop";
-            }
+            _rovecomm.NotifyWhenMessageReceived(this, "ScienceSensors");
+            _rovecomm.NotifyWhenMessageReceived(this, "ScrewAtPos");
         }
 
         public void SetValues(Dictionary<string, float> values)
         {
-            UpdateControlState(values);
+            if ((values["ScrewPosUp"] == 1 || values["ScrewPosDown"] == 1) && !screwIncrementPressed)
+            {
+                byte screwPosIncrement = (byte)(values["ScrewPosUp"] == 1 ? 1 : values["ScrewPosDown"] == 1 ? -1 : 0);
+                _rovecomm.SendCommand(new Packet("ScrewRelativeSetPosition", screwPosIncrement));
+                screwIncrementPressed = true;
+            }
+            else if (values["ScrewPosUp"] == 0 && values["ScrewPosDown"] == 0)
+            {
+                screwIncrementPressed = false;
+            }
 
             float screwMovement = values["Screw"];
-            float drillSpeed = values["Drill"];
-            float genevaSpeed = values["GenevaLeft"] == 1 ? 1 : values["GenevaRight"] == 1 ? -1 : 0;
-            _rovecomm.SendCommand(new Packet("Drill", (Int16)(drillSpeed * DrillSpeedScale)));
+            _rovecomm.SendCommand(new Packet("Screw", (Int16)(screwMovement * ScrewSpeedScale)));
 
-            if (ControlState == "OpenLoop")
-            {
-                _rovecomm.SendCommand(new Packet("Screw", (Int16)(screwMovement * ScrewSpeedScale)));
-                _rovecomm.SendCommand(new Packet("Geneva", (Int16)(genevaSpeed * GenevaSpeedScale)));
-            }
+            Int16 xMovement = (Int16)(values["XActuation"] * XYSpeedScale);
+            Int16 yMovement = (Int16)(values["YActuation"] * XYSpeedScale);
+     
+            Int16[] sendValues = {yMovement, xMovement }; //order before we reverse
+            byte[] data = new byte[sendValues.Length * sizeof(Int16)];
+            Buffer.BlockCopy(sendValues, 0, data, 0, data.Length);
+            Array.Reverse(data);
+            _rovecomm.SendCommand(new Packet("XYActuation", data, 2, (byte)DataTypes.INT16_T));
+            
         }
 
         public void StopMode()
         {
             _rovecomm.SendCommand(new Packet("Screw", (Int16)(0)), true);
-            _rovecomm.SendCommand(new Packet("Drill", (Int16)(0)), true);
-        }
 
-        public void SensorAllOn()
-        {
-            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.SensorAllEnable), true);
+            Int16[] sendValues = { 0, 0 };
+            byte[] data = new byte[sendValues.Length * sizeof(Int16)];
+            Buffer.BlockCopy(sendValues, 0, data, 0, data.Length);
+            Array.Reverse(data);
+            _rovecomm.SendCommand(new Packet("XYActuation", data, 2, (byte)DataTypes.INT16_T));
         }
-        public void SensorAllOff()
-        {
-            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.SensorAllDisable), true);
-        }
-        public void Sensor0On()
-        {
-            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.Sensor0Enable), true);
-        }
-        public void Sensor0Off()
-        {
-            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.Sensor0Disable), true);
-        }
-        public void Sensor1On()
-        {
-            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.Sensor1Enable), true);
-        }
-        public void Sensor1Off()
-        {
-            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.Sensor1Disable), true);
-        }
-        public void Sensor2On()
-        {
-            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.Sensor2Enable), true);
-        }
-        public void Sensor2Off()
-        {
-            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.Sensor2Disable), true);
-        }
-        public void Sensor3On()
-        {
-            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.Sensor3Enable), true);
-        }
-        public void Sensor3Off()
-        {
-            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.Sensor3Disable), true);
-        }
-        public void Sensor4On()
-        {
-            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.Sensor4Enable), true);
-        }
-        public void Sensor4Off()
-        {
-            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.Sensor4Disable), true);
-        }
-        public void Sensor5On()
-        {
-            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.Sensor5Enable), true);
-        }
-        public void Sensor5Off()
-        {
-            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.Sensor5Disable), true);
-        }
-        public void Sensor6On()
-        {
-            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.Sensor6Enable), true);
-        }
-        public void Sensor6Off()
-        {
-            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.Sensor6Disable), true);
-        }
-        public void Sensor7On()
-        {
-            _rovecomm.SendCommand(new Packet("ScienceArmCommand", (ushort)ScienceRequestTypes.Sensor7Enable), true);
-        }
-        public void Sensor7Off()
-        {
-            _rovecomm.SendCommand(new Packet("ScienceArmCommand", (ushort)ScienceRequestTypes.Sensor7Disable), true);
-        }
-        public void Sensor8On()
-        {
-            _rovecomm.SendCommand(new Packet("ScienceArmCommand", (ushort)ScienceRequestTypes.Sensor8Enable), true);
-        }
-        public void Sensor8Off()
-        {
-            _rovecomm.SendCommand(new Packet("ScienceArmCommand", (ushort)ScienceRequestTypes.Sensor8Disable), true);
-        }
-        public void Sensor9On()
-        {
-            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.Sensor9Enable), true);
-        }
-        public void Sensor9Off()
-        {
-            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.Sensor9Disable), true);
-        }
-
+        
         public void RequestSpectrometer()
         {
-            _rovecomm.SendCommand(new Packet("ScienceCommand", (ushort)ScienceRequestTypes.SpectrometerRun), true);
+            _rovecomm.SendCommand(new Packet("RunSpectrometer"), true);
             _log.Log("Spectrometer data requested");
         }
         public async void DownloadSpectrometer()
@@ -390,23 +236,18 @@ namespace RoverAttachmentManager.ViewModels.Science
 
         public void RequestLaserOn()
         {
-            _rovecomm.SendCommand(new Packet("ScienceCommand", (byte)ScienceRequestTypes.LaserOn), true);
+            //_rovecomm.SendCommand(new Packet("ScienceCommand", (byte)ScienceRequestTypes.LaserOn), true);
             _log.Log("Science Laser On requested");
         }
         public void RequestLaserOff()
         {
-            _rovecomm.SendCommand(new Packet("ScienceCommand", (byte)ScienceRequestTypes.LaserOff), true);
+            //_rovecomm.SendCommand(new Packet("ScienceCommand", (byte)ScienceRequestTypes.LaserOff), true);
             _log.Log("Science Laser Off requested");
-        }
-
-        public void SetGenevaPosition(byte index)
-        {
-            _rovecomm.SendCommand(new Packet("GenevaPosition", index));
         }
 
         public void SetScrewPosition(byte index)
         {
-            _rovecomm.SendCommand(new Packet("ScrewPosition", index));
+            _rovecomm.SendCommand(new Packet("ScrewAbsoluteSetPosition", index));
         }
 
         public void SaveFileStart()
@@ -430,45 +271,22 @@ namespace RoverAttachmentManager.ViewModels.Science
         {
             switch (packet.Name)
             {
-                case "SciSensor0":
-                    Sensor0Value = BitConverter.ToSingle(packet.Data, 0);
-                    SaveFileWrite("Sensor00", Sensor0Value);
+                case "ScienceSensors":
+                    Sensor0Value = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0)) / 100.0);
+                    Sensor1Value = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 2)) / 100.0);
+                    Sensor2Value = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 4)) / 100.0);
+                    Sensor3Value = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 6)) / 100.0);
+                    Sensor4Value = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 8)));
+
+                    SaveFileWrite("Sensor0", Sensor0Value);
+                    SaveFileWrite("Sensor1", Sensor1Value);
+                    SaveFileWrite("Sensor2", Sensor2Value);
+                    SaveFileWrite("Sensor3", Sensor3Value);
+                    SaveFileWrite("Sensor4", Sensor4Value);
                     break;
-                case "Temperature":
-                    Sensor1Value = BitConverter.ToInt16(packet.Data, 0);
-                    SaveFileWrite("Sensor01", Sensor1Value);
-                    break;
-                case "SciSensor2":
-                    Sensor2Value = BitConverter.ToSingle(packet.Data, 0);
-                    SaveFileWrite("Sensor02", Sensor2Value);
-                    break;
-                case "Moisture":
-                    Sensor3Value = BitConverter.ToInt16(packet.Data, 0);
-                    SaveFileWrite("Sensor03", Sensor3Value);
-                    break;
-                case "SciSensor4":
-                    Sensor4Value = BitConverter.ToSingle(packet.Data, 0);
-                    SaveFileWrite("Sensor04", Sensor4Value);
-                    break;
-                case "SciSensor5":
-                    Sensor5Value = BitConverter.ToSingle(packet.Data, 0);
-                    SaveFileWrite("Sensor05", Sensor5Value);
-                    break;
-                case "SciSensor6":
-                    Sensor6Value = BitConverter.ToSingle(packet.Data, 0);
-                    SaveFileWrite("Sensor06", Sensor6Value);
-                    break;
-                case "SciSensor7":
-                    Sensor7Value = BitConverter.ToSingle(packet.Data, 0);
-                    SaveFileWrite("Sensor07", Sensor7Value);
-                    break;
-                case "SciSensor8":
-                    Sensor8Value = BitConverter.ToSingle(packet.Data, 0);
-                    SaveFileWrite("Sensor08", Sensor8Value);
-                    break;
-                case "SciSensor9":
-                    Sensor9Value = BitConverter.ToSingle(packet.Data, 0);
-                    SaveFileWrite("Sensor09", Sensor9Value);
+
+                case "ScrewAtPos":
+                    ScrewPosition = packet.Data[0];
                     break;
                 default:
                     break;
@@ -479,33 +297,6 @@ namespace RoverAttachmentManager.ViewModels.Science
 			ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
 		}
 
-		public enum ScienceRequestTypes : ushort
-        {
-            SensorAllEnable = 0,
-            SensorAllDisable = 1,
-            LaserOn = 2,
-            LaserOff = 3,
-            SpectrometerRun = 6,
-            Sensor0Enable = 16,
-            Sensor0Disable = 17,
-            Sensor1Enable = 18,
-            Sensor1Disable = 19,
-            Sensor2Enable = 20,
-            Sensor2Disable = 21,
-            Sensor3Enable = 22,
-            Sensor3Disable = 23,
-            Sensor4Enable = 24,
-            Sensor4Disable = 25,
-            Sensor5Enable = 26,
-            Sensor5Disable = 27,
-            Sensor6Enable = 28,
-            Sensor6Disable = 29,
-            Sensor7Enable = 30,
-            Sensor7Disable = 31,
-            Sensor8Enable = 32,
-            Sensor8Disable = 33,
-            Sensor9Enable = 34,
-            Sensor9Disable = 35
-        }
+        public void StartMode() {}
     }
 }

@@ -265,8 +265,24 @@ namespace Core.Configurations
                 }
             },
             new MetadataServerContext("ScienceSensors Board", "192.168.1.138") {
+                Commands = new[] {
+                    new MetadataRecordContext(10000, "RunSpectrometer", "Sends command to begin the spectrometer sequence."),
+                },
+                Telemetry = new[] {
+                    new MetadataRecordContext(10100, "ScienceSensors", "Sensor data [AirT, AirM, SoilT, SoilM, Methane]"),
+                }
             },
             new MetadataServerContext("ScienceAcutation Board", "192.168.1.137") {
+                Commands = new[] {
+                    new MetadataRecordContext(9000, "Screw", "-1000 to 1000 open loop for screw control"),
+                    new MetadataRecordContext(9001, "ScrewAbsoluteSetPosition", ""),
+                    new MetadataRecordContext(9002, "ScrewRelativeSetPosition", ""),
+                    new MetadataRecordContext(9002, "XYActuation", "[x][y]")
+                },
+                Telemetry = new[]
+                {
+                    new MetadataRecordContext(9100, "ScrewAtPos", "byte"),
+                }
             },
             new MetadataServerContext("Autonomy Board", "192.168.1.139") {
                 Commands = new[] {

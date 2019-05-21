@@ -147,14 +147,12 @@
     <Compile Include="Configurations\Modules\DriveConfig.cs" />
     <Compile Include="Configurations\Modules\GPSConfig.cs" />
     <Compile Include="Configurations\Modules\PowerConfig.cs" />
-    <Compile Include="Configurations\Modules\ScienceConfig.cs" />
     <Compile Include="Configurations\Network\NetworkManagerConfig.cs" />
     <Compile Include="Configurations\Tools\StopwatchToolConfig.cs" />
     <Compile Include="Contexts\Modules\DriveSettingsContext.cs" />
     <Compile Include="Contexts\Modules\GPSSettingsContext.cs" />
     <Compile Include="Contexts\REDSettingsContext.cs" />
     <Compile Include="Contexts\Modules\PowerSettingsContext.cs" />
-    <Compile Include="Contexts\Modules\ScienceSettingsContext.cs" />
     <Compile Include="Contexts\Tools\StopwatchScheduleContext.cs" />
     <Compile Include="Images\ModernUIIcons.cs" />
     <Compile Include="Models\InputManagerModel.cs" />
@@ -189,7 +187,6 @@
     <Compile Include="ViewModels\Settings\Modules\DriveSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Modules\GPSSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Modules\PowerSettingsViewModel.cs" />
-    <Compile Include="ViewModels\Settings\Modules\ScienceSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Network\NetworkManagerSettingsViewModel.cs" />
     <Compile Include="ViewModels\Tools\StopwatchToolViewModel.cs" />
     <Compile Include="Views\ControlCenterView.xaml.cs">
@@ -245,9 +242,6 @@
     </Compile>
     <Compile Include="Views\Settings\Modules\PowerSettingsView.xaml.cs">
       <DependentUpon>PowerSettingsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Settings\Modules\ScienceSettingsView.xaml.cs">
-      <DependentUpon>ScienceSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Tools\StopwatchToolView.xaml.cs">
       <DependentUpon>StopwatchToolView.xaml</DependentUpon>
@@ -335,10 +329,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Settings\Modules\GPSSettingsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Settings\Modules\ScienceSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -49,11 +49,10 @@ namespace Core.Configurations.Input
 
             new InputMappingContext("Xbox Science Controls", "Xbox", "ScienceControls", 100, new[] {
                 new InputChannelContext("JoyStick1Y", "Screw"){ Parabolic = true },
-                new InputChannelContext("JoyStick2Y", "Drill"){ Parabolic = true },
-                new InputChannelContext("DPadL", "GenevaLeft"){ Parabolic = true },
-                new InputChannelContext("DPadR", "GenevaRight"){ Parabolic = true },
-                new InputChannelContext("DPadU", "OpenLoop"){ Parabolic = true },
-                new InputChannelContext("DPadD", "ClosedLoop"){ Parabolic = true },
+                new InputChannelContext("JoyStick2X", "XActuation"){ Parabolic = true },
+                new InputChannelContext("JoyStick2Y", "YActuation"){ Parabolic = true },
+                new InputChannelContext("DPadU", "ScrewPosUp"),
+                new InputChannelContext("DPadD", "ScrewPosDown"),
                 new InputChannelContext("ButtonStartDebounced", "ModeCycle") }),
             new InputMappingContext("Xbox Gimbal", "Xbox", "Gimbal", 100, new[] {
                 new InputChannelContext("JoyStick1X", "Pan"){ Parabolic = true },

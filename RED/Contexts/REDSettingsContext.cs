@@ -15,7 +15,6 @@ namespace RED.Contexts
         public XboxControllerSettingsContext Xbox3;
         public XboxControllerSettingsContext Xbox4;
         public GPSSettingsContext GPS;
-        public ScienceSettingsContext Science;
         public PowerSettingsContext Power;
         public NetworkManagerSettingsContext Network;
     }
