@@ -257,6 +257,18 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => XboxController2);
             }
         }
+        public XboxControllerInputViewModel XboxController3
+        {
+            get
+            {
+                return _model._xboxController3;
+            }
+            set
+            {
+                _model._xboxController3 = value;
+                NotifyOfPropertyChange(() => XboxController3);
+            }
+        }
         public FlightStickViewModel FlightStickController
         {
             get
@@ -305,12 +317,13 @@ namespace RED.ViewModels
             Gimbal = new GimbalViewModel(Rovecomm, MetadataManager, Console);
             XboxController1 = new XboxControllerInputViewModel(1);
             XboxController2 = new XboxControllerInputViewModel(2);
+            XboxController3 = new XboxControllerInputViewModel(3);
             FlightStickController = new FlightStickViewModel();
             KeyboardController = new KeyboardInputViewModel();
 
             // Programatic instanciation of InputManager view, vs static like everything else in a xaml 
             InputManager = new InputManagerViewModel(Console, ConfigManager,
-                new IInputDevice[] { XboxController1, XboxController2, FlightStickController, KeyboardController },
+                new IInputDevice[] { XboxController1, XboxController2, XboxController3, FlightStickController, KeyboardController },
                 new MappingViewModel[0],
                 new IInputMode[] { Drive, Gimbal });
 

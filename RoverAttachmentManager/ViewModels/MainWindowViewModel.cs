@@ -98,16 +98,40 @@ namespace RoverAttachmentManager.ViewModels
                 NotifyOfPropertyChange();
             }
         }
-        public XboxControllerInputViewModel XboxController
+        public XboxControllerInputViewModel XboxController1
         {
             get
             {
-                return _model._xboxController;
+                return _model._xboxController1;
             }
             set
             {
-                _model._xboxController = value;
-                NotifyOfPropertyChange(() => XboxController);
+                _model._xboxController1 = value;
+                NotifyOfPropertyChange(() => XboxController1);
+            }
+        }
+        public XboxControllerInputViewModel XboxController2
+        {
+            get
+            {
+                return _model._xboxController2;
+            }
+            set
+            {
+                _model._xboxController2 = value;
+                NotifyOfPropertyChange(() => XboxController2);
+            }
+        }
+        public XboxControllerInputViewModel XboxController3
+        {
+            get
+            {
+                return _model._xboxController3;
+            }
+            set
+            {
+                _model._xboxController3 = value;
+                NotifyOfPropertyChange(() => XboxController3);
             }
         }
         public MainWindowViewModel()
@@ -126,11 +150,13 @@ namespace RoverAttachmentManager.ViewModels
             Autonomy = new AutonomyViewModel(Rovecomm, MetadataManager, Console);
             Science = new ScienceViewModel(Rovecomm, MetadataManager, Console);
 
-            XboxController = new XboxControllerInputViewModel(1);
+            XboxController1 = new XboxControllerInputViewModel(1);
+            XboxController2 = new XboxControllerInputViewModel(2);
+            XboxController3 = new XboxControllerInputViewModel(3);
 
             // Programatic instanciation of InputManager view, vs static like everything else in a xaml 
             InputManager = new InputManagerViewModel(Console, ConfigManager,
-                new IInputDevice[] { XboxController },
+                new IInputDevice[] { XboxController1, XboxController2, XboxController3 },
                 new MappingViewModel[0],
                 new IInputMode[] { Arm });
 

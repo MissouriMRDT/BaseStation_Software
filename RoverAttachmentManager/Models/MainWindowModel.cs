@@ -15,7 +15,9 @@ namespace RoverAttachmentManager.Models
         internal Rovecomm _rovecomm;
 
         internal InputManagerViewModel _input;
-        internal XboxControllerInputViewModel _xboxController;
+        internal XboxControllerInputViewModel _xboxController1;
+        internal XboxControllerInputViewModel _xboxController2;
+        internal XboxControllerInputViewModel _xboxController3;
 
         internal ArmViewModel _arm;
         internal CommonLog _console;
