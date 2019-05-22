@@ -6,7 +6,7 @@ namespace RED.Configurations.Modules
     {
         internal static DriveSettingsContext DefaultConfig = new DriveSettingsContext()
         {
-            SpeedLimit = 1000,
+            SpeedLimit = 500,
             UseLegacyDataIds = false
         };
     }
