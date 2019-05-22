@@ -54,9 +54,6 @@
                         <Expander Header="Sensors">
                             <ContentControl x:Name="Sensor" />
                         </Expander>
-                        <Expander Header="Cameras">
-                            <ContentControl x:Name="CameraMux" />
-                        </Expander>
                         <Expander Header="Power and BMS">
                             <ContentControl x:Name="Power" />
                         </Expander>
