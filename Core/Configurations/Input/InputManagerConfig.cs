@@ -44,7 +44,6 @@ namespace Core.Configurations.Input
                 new InputChannelContext("ButtonX", "GripperClose"),
                 new InputChannelContext("ButtonA", "SwitchTool"),
                 new InputChannelContext("ButtonBackDebounced", "GripperSwap"),
-                new InputChannelContext("ButtonStartDebounced", "ModeCycle"),
                 new InputChannelContext("ButtonStartDebounced", "LaserToggle") }),
 
             new InputMappingContext("Xbox Science Controls", "Xbox", "ScienceControls", 100, new[] {
