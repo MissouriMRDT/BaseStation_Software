@@ -122,8 +122,7 @@ namespace RED.ViewModels.Modules
             _rovecomm.NotifyWhenMessageReceived(this, "GPSSpeedAngle");
             _rovecomm.NotifyWhenMessageReceived(this, "GPSAltitude");
             _rovecomm.NotifyWhenMessageReceived(this, "GPSSatellites");
-
-            FixObtained = true;
+            _rovecomm.NotifyWhenMessageReceived(this, "GPSTelem");
         }
 
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
@@ -161,6 +160,12 @@ namespace RED.ViewModels.Modules
                         Longitude = -IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 0 * sizeof(Int32))) / 10000000d
                     };
                     
+                    break;
+
+                case "GPSTelem":
+                    FixObtained = packet.Data[0] != 0;
+                    FixQuality = packet.Data[0];
+                    NumberOfSatellites = packet.Data[1];
                     break;
                 case "GPSSatellites":
                     NumberOfSatellites = packet.Data[0];
