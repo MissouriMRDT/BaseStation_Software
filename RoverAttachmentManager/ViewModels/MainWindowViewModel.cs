@@ -158,7 +158,7 @@ namespace RoverAttachmentManager.ViewModels
             InputManager = new InputManagerViewModel(Console, ConfigManager,
                 new IInputDevice[] { XboxController1, XboxController2, XboxController3 },
                 new MappingViewModel[0],
-                new IInputMode[] { Arm });
+                new IInputMode[] { Arm, Science });
 
         }
 
