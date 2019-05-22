@@ -2,7 +2,7 @@
 {
     internal class SensorModel
     {
-        internal float IMUTemperature;
+        internal float Lidar;
         internal float Pitch;
         internal float Roll;
         internal float TrueHeading;

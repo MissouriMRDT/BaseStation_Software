@@ -248,6 +248,7 @@ namespace Core.Configurations
                 Telemetry = new[] {
                     new MetadataRecordContext(5100, "GPSPosition", "GPS Position. Latitude followed by Longitude"),
                     new MetadataRecordContext(5101, "PitchHeadingRoll", ""),
+                    new MetadataRecordContext(5102, "Lidar", ""),
                     new MetadataRecordContext(5103, "GPSTelem", ""),
                     //new MetadataRecordContext(1296, "GPSQuality", "Quality of GPS signal"),
                     //new MetadataRecordContext(1298, "GPSSpeed", "Speed of GPS delta"),

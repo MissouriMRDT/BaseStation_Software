@@ -15,16 +15,16 @@ namespace RED.ViewModels.Modules
         private readonly IDataIdResolver _idResolver;
         private readonly ILogger _log;
 
-        public float IMUTemperature
+        public float Lidar
         {
             get
             {
-                return _model.IMUTemperature;
+                return _model.Lidar;
             }
             set
             {
-                _model.IMUTemperature = value;
-                NotifyOfPropertyChange(() => IMUTemperature);
+                _model.Lidar = value;
+                NotifyOfPropertyChange(() => Lidar);
             }
         }
         public float Pitch
@@ -71,7 +71,7 @@ namespace RED.ViewModels.Modules
             _idResolver = idResolver;
             _log = log;
 
-            _rovecomm.NotifyWhenMessageReceived(this, "IMUTemperature");
+            _rovecomm.NotifyWhenMessageReceived(this, "Lidar");
             _rovecomm.NotifyWhenMessageReceived(this, "NavPitch");
             _rovecomm.NotifyWhenMessageReceived(this, "NavRoll");
             _rovecomm.NotifyWhenMessageReceived(this, "NavTrueHeading");
@@ -83,7 +83,12 @@ namespace RED.ViewModels.Modules
             switch (packet.Name)
             {
 
-                case "IMUTemperature": IMUTemperature = BitConverter.ToSingle(packet.Data, 0); break;
+                case "Lidar":
+                    if(packet.Data[1] != 5)
+                    {
+                        Lidar = (float)(packet.Data[0] / 10.0);
+                    }
+                    break;
                 case "NavPitch": Pitch = BitConverter.ToSingle(packet.Data, 0); break;
                 case "NavRoll": Roll = BitConverter.ToSingle(packet.Data, 0); break;
                 case "NavTrueHeading":

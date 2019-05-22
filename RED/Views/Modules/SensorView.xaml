@@ -47,8 +47,8 @@
                 <ColumnDefinition Width="auto" SharedSizeGroup="Label" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Label Grid.Row="0" Grid.Column="0">Temperature</Label>
-            <Label Grid.Row="0" Grid.Column="1" x:Name="IMUTemperature" ContentStringFormat="{}{0:0.00}" />
+            <Label Grid.Row="0" Grid.Column="0">Lidar</Label>
+            <Label Grid.Row="0" Grid.Column="1" x:Name="Lidar" ContentStringFormat="{}{0:0.00}" />
         </Grid>
     </WrapPanel>
 </UserControl>
