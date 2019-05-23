@@ -158,19 +158,8 @@
 				</StackPanel>
 			</Expander>
 			<Expander Header="Control Features" IsExpanded="True" Margin="2.5">
-				<StackPanel>
-					<Grid>
-						<Grid.RowDefinitions>
-							<RowDefinition />
-						</Grid.RowDefinitions>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="auto" />
-							<ColumnDefinition Width="*" />
-						</Grid.ColumnDefinitions>
-						<Label Grid.Row="0" Grid.Column="1">Main Current</Label>
-						<Label Grid.Row="0" Grid.Column="1" x:Name="CurrentMain" ContentStringFormat="{}{0:00.00} A" HorizontalContentAlignment="Right" />
-					</Grid>
-					<Grid>
+                <StackPanel>
+                    <Grid>
 						<Grid.RowDefinitions>
 							<RowDefinition />
 							<RowDefinition />

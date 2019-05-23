@@ -299,19 +299,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 NotifyOfPropertyChange(() => Roll);
             }
         }
-
-        public float CurrentMain
-        {
-            get
-            {
-                return _model.CurrentMain;
-            }
-            set
-            {
-                _model.CurrentMain = value;
-                NotifyOfPropertyChange(() => CurrentMain);
-            }
-        }
+        
         public ObservableCollection<ArmPositionViewModel> Positions
         {
             get
@@ -409,7 +397,6 @@ namespace RoverAttachmentManager.ViewModels.Arm
 
             _rovecomm.NotifyWhenMessageReceived(this, "ArmCurrentPosition");
             _rovecomm.NotifyWhenMessageReceived(this, "ArmFault");
-            _rovecomm.NotifyWhenMessageReceived(this, "ArmCurrentMain");
             _rovecomm.NotifyWhenMessageReceived(this, "ArmCurrentXYZ");
             _rovecomm.NotifyWhenMessageReceived(this, "ArmAngles");
 
@@ -468,9 +455,6 @@ namespace RoverAttachmentManager.ViewModels.Arm
                         ControlState = "Open loop";
                         freezeArm = true;
                     }
-                    break;
-                case "ArmCurrentMain":
-                    CurrentMain = BitConverter.ToSingle(packet.Data, 0);
                     break;
             }
         }

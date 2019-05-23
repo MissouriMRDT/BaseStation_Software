@@ -11,7 +11,6 @@ namespace RoverAttachmentManager.Models.ArmModels
         internal float AngleJ4;
         internal float AngleJ5;
         internal float AngleJ6;
-        internal float CurrentMain;
         internal int EndeffectorSpeedLimit = 500;
         internal int IKRangeFactor = 1000;
         internal int BaseRangeFactor = 500;
