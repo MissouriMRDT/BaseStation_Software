@@ -551,11 +551,10 @@ namespace RED.ViewModels.Modules
         {
             
             BitArray bits = new BitArray(16);
-            bits.Set(index, true);
+            bits.Set(index + 1, true);
             byte[] thebits = new byte[2];
 
             bits.CopyTo(thebits, 0);
-            Array.Reverse(thebits);
 
             byte[] bytes = new byte[3];
             thebits.CopyTo(bytes, 0);
@@ -569,17 +568,30 @@ namespace RED.ViewModels.Modules
         {
 
             BitArray bits = new BitArray(16);
-            bits.Set(index, true);
+            bits.Set(index + 1, true);
             byte[] thebits = new byte[2];
 
             bits.CopyTo(thebits, 0);
-            Array.Reverse(thebits);
 
             byte[] bytes = new byte[3];
             thebits.CopyTo(bytes, 0);
 
             bytes[2] = 0;
 
+            _rovecomm.SendCommand(new Packet("PowerBusEnableDisable", bytes, 3, (byte)DataTypes.UINT8_T));
+        }
+
+        public void MotorBusses(bool state)
+        {
+            BitArray bits = new BitArray(16);
+            bits.Set(9, true);
+            bits.Set(10, true);
+            bits.Set(11, true);
+
+            byte[] bytes = new byte[3];
+            bits.CopyTo(bytes, 0);
+
+            bytes[2] = (state) ? (byte)1 : (byte)0;
             _rovecomm.SendCommand(new Packet("PowerBusEnableDisable", bytes, 3, (byte)DataTypes.UINT8_T));
         }
 
