@@ -334,6 +334,8 @@ namespace RED.ViewModels
 
 			NetworkManagerEnabled = true;
             AttachmentManagerEnabled = true;
+
+            KeyboardController.Connected = true;
         }
 
         protected override void OnDeactivate(bool close)
