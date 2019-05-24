@@ -45,6 +45,9 @@ namespace Core.RoveProtocol
             allDeviceIPs = metadataManager.GetAllIPAddresses();
 
             continuousDataSocket = new UDPEndpoint(DestinationPort, DestinationPort);
+
+            sendToBlackbox = true;
+
             Listen();
         }
 
@@ -67,6 +70,9 @@ namespace Core.RoveProtocol
         public const byte VersionNumber = 1;
         public const byte SubscriptionDataId = 3;
         public const byte UnSubscribeDataId = 4;
+
+        private bool sendToBlackbox;
+        private IPAddress blackBoxIP = IPAddress.Parse("192.168.1.140");
 
         private readonly IPAddress[] allDeviceIPs;
         private readonly MetadataManager metadataManager;
@@ -171,6 +177,11 @@ namespace Core.RoveProtocol
             ushort dataId = metadataManager.GetId(packet.Name);
             IPAddress destIP = metadataManager.GetIPAddress(dataId);
             SendPacket(packet, destIP, reliable);
+
+            if (sendToBlackbox)
+            {
+                SendPacket(packet, blackBoxIP, reliable);
+            }
         }
 
         /// <summary>
@@ -384,6 +395,11 @@ namespace Core.RoveProtocol
                 byte[] packetData = RovecommTwo.EncodePacket(packet, metadataManager);
                 SendPacketUnreliable(destIP, packetData);
             }
+        }
+
+        public void SetBlackBox(bool setting)
+        {
+            sendToBlackbox = setting;
         }
 
         /// <summary>
