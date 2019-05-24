@@ -39,6 +39,10 @@
                                 <Button x:Name="RequestSpectrometer">Request</Button>
                                 <Button x:Name="DownloadSpectrometer">Download</Button>
                             </UniformGrid>
+                            <UniformGrid>
+                                <Button cal:Message.Attach="SetUVLed(1)">Turn UV On</Button>
+                                <Button cal:Message.Attach="SetUVLed(0)">Turn UV Off</Button>
+                            </UniformGrid>
                         </StackPanel>
                     </Expander>
                     <Expander Grid.Row="2" Header="Sensors" IsExpanded="True" Margin="2.5">

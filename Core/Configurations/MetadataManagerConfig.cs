@@ -269,6 +269,7 @@ namespace Core.Configurations
             new MetadataServerContext("ScienceSensors Board", "192.168.1.138") {
                 Commands = new[] {
                     new MetadataRecordContext(10000, "RunSpectrometer", "Sends command to begin the spectrometer sequence."),
+                    new MetadataRecordContext(10001, "UVLedControl", "Control of light source."),
                 },
                 Telemetry = new[] {
                     new MetadataRecordContext(10100, "ScienceSensors", "Sensor data [AirT, AirM, SoilT, SoilM, Methane]"),

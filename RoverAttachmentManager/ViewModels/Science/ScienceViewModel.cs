@@ -297,6 +297,11 @@ namespace RoverAttachmentManager.ViewModels.Science
 			ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
 		}
 
+        public void SetUVLed(byte val)
+        {
+            _rovecomm.SendCommand(new Packet("UVLedControl", val));
+        }
+
         public void StartMode() {}
     }
 }
