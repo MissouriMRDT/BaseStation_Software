@@ -63,6 +63,32 @@ namespace RED.ViewModels.Modules
                 NotifyOfPropertyChange(() => CurrentLocation);
             }
         }
+        public GPSCoordinate RawLocation
+        {
+            get
+            {
+                return _model.RawLocation;
+            }
+            set
+            {
+                _model.RawLocation = value;
+                CurrentLocation = new GPSCoordinate(RawLocation.Latitude + Offset.Latitude, 
+                    RawLocation.Longitude + Offset.Longitude);
+                NotifyOfPropertyChange(() => RawLocation);
+            }
+        }
+        public GPSCoordinate Offset
+        {
+            get
+            {
+                return _model.Offset;
+            }
+            set
+            {
+                _model.Offset = value;
+                NotifyOfPropertyChange(() => Offset);
+            }
+        }
         public GPSCoordinate BaseStationLocation
         {
             get
@@ -136,7 +162,7 @@ namespace RED.ViewModels.Modules
                         FixObtained = br.ReadByte() != 0;
                         FixQuality = br.ReadByte();
                         NumberOfSatellites = br.ReadByte();
-                        CurrentLocation = new GPSCoordinate()
+                        RawLocation = new GPSCoordinate()
                         {
                             Latitude = br.ReadInt32() / 10000000d,
                             Longitude = br.ReadInt32() / 10000000d
@@ -154,7 +180,7 @@ namespace RED.ViewModels.Modules
                     FixQuality = packet.Data[0];
                     break;
                 case "GPSPosition":
-                    CurrentLocation = new GPSCoordinate()
+                    RawLocation = new GPSCoordinate()
                     {
                         Latitude = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 1 * sizeof(Int32))) / 10000000d,
                         Longitude = -IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 0 * sizeof(Int32))) / 10000000d

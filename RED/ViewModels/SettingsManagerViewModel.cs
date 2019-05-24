@@ -150,7 +150,7 @@ namespace RED.ViewModels
             Drive = new DriveSettingsViewModel(CurrentSettingsConfig.Drive, cc.Drive);
             Xbox1 = new XboxControllerInputSettingsViewModel(CurrentSettingsConfig.Xbox1, cc.XboxController1, 1);
             Xbox2 = new XboxControllerInputSettingsViewModel(CurrentSettingsConfig.Xbox2, cc.XboxController2, 2);
-            GPS = new GPSSettingsViewModel(CurrentSettingsConfig.GPS, cc.GPS, cc.Map);
+            GPS = new GPSSettingsViewModel(CurrentSettingsConfig.GPS, cc.GPS, cc.Map, cc.WaypointManager);
             Power = new PowerSettingsViewModel(CurrentSettingsConfig.Power, cc.Power);
         }
 

@@ -8,6 +8,8 @@ namespace RED.Models.Modules
         internal byte FixQuality = 255;
         internal byte NumberOfSatellites = 255;
         internal GPSCoordinate CurrentLocation = new GPSCoordinate(0, 0);
+        internal GPSCoordinate RawLocation = new GPSCoordinate(0, 0);
+        internal GPSCoordinate Offset = new GPSCoordinate(0, 0);
         internal GPSCoordinate BaseStationLocation = new GPSCoordinate(0, 0);
         internal double AntennaDirectionDeg = 0;
         internal float Heading = 0;
