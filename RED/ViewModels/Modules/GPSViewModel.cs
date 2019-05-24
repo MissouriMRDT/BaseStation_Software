@@ -149,6 +149,7 @@ namespace RED.ViewModels.Modules
             _rovecomm.NotifyWhenMessageReceived(this, "GPSAltitude");
             _rovecomm.NotifyWhenMessageReceived(this, "GPSSatellites");
             _rovecomm.NotifyWhenMessageReceived(this, "GPSTelem");
+            _rovecomm.NotifyWhenMessageReceived(this, "PitchHeadingRoll");
         }
 
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
@@ -174,6 +175,9 @@ namespace RED.ViewModels.Modules
                     break;
                 case "Heading":
                     Heading = BitConverter.ToSingle(packet.Data, 0);
+                    break;
+                case "PitchHeadingRoll":
+                    Heading = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 2));
                     break;
                 case "GPSQuality":
                     FixObtained = packet.Data[0] != 0;

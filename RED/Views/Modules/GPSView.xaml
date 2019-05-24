@@ -16,10 +16,10 @@
         </Style>
     </UserControl.Resources>
     <StackPanel Orientation="Horizontal">
-        <Canvas Width="32" Height="32" Margin="16">
-            <Path Fill="{StaticResource AccentColorBrush}" Data="M 8,32 16,0 24,32 16,28 8,32" Width="32" Height="32">
+        <Canvas Width="44" Height="44" Margin="4">
+            <Path Fill="{StaticResource AccentColorBrush}" Data="M 10,44 22,0 34,44 22,35 10,44" Width="44" Height="44">
                 <Path.LayoutTransform>
-                    <RotateTransform Angle="{Binding HeadingDeg}" />
+                    <RotateTransform Angle="{Binding Heading}" />
                 </Path.LayoutTransform>
             </Path>
         </Canvas>
