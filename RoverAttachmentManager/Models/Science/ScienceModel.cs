@@ -15,7 +15,7 @@ namespace RoverAttachmentManager.Models.Science
 
         internal System.Net.IPAddress SpectrometerIPAddress;
         internal ushort SpectrometerPortNumber = 11001;
-        internal string SpectrometerFilePath = Environment.CurrentDirectory;
+        internal string SpectrometerFilePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Science Files";
 
         internal Stream SensorDataFile;
     }

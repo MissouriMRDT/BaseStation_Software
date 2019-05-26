@@ -228,7 +228,7 @@ namespace RoverAttachmentManager.ViewModels.Science
         public async void DownloadSpectrometer()
         {
             _log.Log("Spectrometer data download started");
-            string filename = Path.Combine(SpectrometerFilePath, "REDSpectrometerData" + DateTime.Now.ToString("yyyyMMdd'T'HHmmss") + ".dat");
+            string filename = Path.Combine(SpectrometerFilePath, "REDSpectrometerData-" + DateTime.Now.ToString("yyyyMMdd'-'HHmmss") + ".csv");
             try
             {
                 using (var client = new TcpClient())
@@ -266,7 +266,7 @@ namespace RoverAttachmentManager.ViewModels.Science
 
         public void SaveFileStart()
         {
-            SensorDataFile = new FileStream("REDSensorData" + DateTime.Now.ToString("yyyyMMdd'T'HHmmss") + ".dat", FileMode.Create);
+            SensorDataFile = new FileStream(SpectrometerFilePath + "\\REDSensorData-" + DateTime.Now.ToString("yyyyMMdd'-'HHmmss") + ".csv", FileMode.Create);
         }
         public void SaveFileStop()
         {
