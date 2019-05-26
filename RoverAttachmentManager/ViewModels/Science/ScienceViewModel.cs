@@ -191,15 +191,18 @@ namespace RoverAttachmentManager.ViewModels.Science
             {
                 screwIncrementPressed = false;
             }
-
-            float screwMovement = values["Screw"];
-            _rovecomm.SendCommand(new Packet("Screw", (Int16)(screwMovement * ScrewSpeedScale)));
+            
+            Int16[] screwValue = { (Int16)(values["Screw"] * ScrewSpeedScale) }; //order before we reverse
+            byte[] data = new byte[screwValue.Length * sizeof(Int16)];
+            Buffer.BlockCopy(screwValue, 0, data, 0, data.Length);
+            Array.Reverse(data);
+            _rovecomm.SendCommand(new Packet("Screw", data, 1, (byte)DataTypes.INT16_T));
 
             Int16 xMovement = (Int16)(values["XActuation"] * XYSpeedScale);
             Int16 yMovement = (Int16)(values["YActuation"] * XYSpeedScale);
      
             Int16[] sendValues = {yMovement, xMovement }; //order before we reverse
-            byte[] data = new byte[sendValues.Length * sizeof(Int16)];
+            data = new byte[sendValues.Length * sizeof(Int16)];
             Buffer.BlockCopy(sendValues, 0, data, 0, data.Length);
             Array.Reverse(data);
             _rovecomm.SendCommand(new Packet("XYActuation", data, 2, (byte)DataTypes.INT16_T));
