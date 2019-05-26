@@ -11,6 +11,7 @@ namespace RoverAttachmentManager.Models.Science
         internal float Sensor3Value;
         internal float Sensor4Value;
         internal int ScrewPosition;
+        internal int RunCount = 100;
 
         internal System.Net.IPAddress SpectrometerIPAddress;
         internal ushort SpectrometerPortNumber = 11001;

@@ -101,7 +101,18 @@ namespace RoverAttachmentManager.ViewModels.Science
                 NotifyOfPropertyChange(() => ScrewPosition);
             }
         }
-        
+        public int RunCount
+        {
+            get
+            {
+                return _model.RunCount;
+            }
+            set
+            {
+                _model.RunCount = value;
+                NotifyOfPropertyChange(() => RunCount);
+            }
+        }
         public System.Net.IPAddress SpectrometerIPAddress
         {
             get
@@ -208,7 +219,7 @@ namespace RoverAttachmentManager.ViewModels.Science
         
         public void RequestSpectrometer()
         {
-            _rovecomm.SendCommand(new Packet("RunSpectrometer"), true);
+            _rovecomm.SendCommand(new Packet("RunSpectrometer", (byte)RunCount), true);
             _log.Log("Spectrometer data requested");
         }
         public async void DownloadSpectrometer()
