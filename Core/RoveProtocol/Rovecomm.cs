@@ -84,7 +84,7 @@ namespace Core.RoveProtocol
         private INetworkTransportProtocol continuousDataSocket;
         private readonly bool EnableReliablePackets = false;
 
-        private RingBuffer<Packet> buffer = new RingBuffer<Packet>(100000);
+        private RingBuffer<Packet> buffer = new RingBuffer<Packet>(1000000);
 
         private async void Listen()
         {
