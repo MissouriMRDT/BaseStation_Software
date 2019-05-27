@@ -69,15 +69,15 @@
 
                                 <Label Grid.Row="1" Grid.Column="0">Air Humidity</Label>
                                 <Label Grid.Row="1" Grid.Column="1" x:Name="Sensor1Value" ContentStringFormat="{}{0:0.\%;}" />
-
-                                <Label Grid.Row="2" Grid.Column="0">Moisture</Label>
-                                <Label Grid.Row="2" Grid.Column="1" x:Name="Sensor2Value" ContentStringFormat="{}{0:0.\%;}" />
-
+                                
+                                <Label Grid.Row="2" Grid.Column="0">Air Methane</Label>
+                                <Label Grid.Row="2" Grid.Column="1" x:Name="Sensor4Value" ContentStringFormat="{}{0:0.00;}" />
+                                
                                 <Label Grid.Row="3" Grid.Column="0">Soil Temperature</Label>
                                 <Label Grid.Row="3" Grid.Column="1" x:Name="Sensor3Value" ContentStringFormat="{}{0:0.#&#176;}" />
 
-                                <Label Grid.Row="4" Grid.Column="0">Methane</Label>
-                                <Label Grid.Row="4" Grid.Column="1" x:Name="Sensor4Value" ContentStringFormat="{}{0:0.00;}" />
+                                <Label Grid.Row="4" Grid.Column="0">Soil Moisture</Label>
+                                <Label Grid.Row="4" Grid.Column="1" x:Name="Sensor2Value" ContentStringFormat="{}{0:0.\%;}" />
                             </Grid>
 
                             <UniformGrid Rows="1">

@@ -277,7 +277,7 @@ namespace RoverAttachmentManager.ViewModels.Science
         private async void SaveFileWrite(string sensorName, object value)
         {
             if (SensorDataFile == null || !SensorDataFile.CanWrite) return;
-            var data = Encoding.UTF8.GetBytes(String.Format("{0:s} {1} {2}{3}", DateTime.Now, sensorName, value.ToString(), Environment.NewLine));
+            var data = Encoding.UTF8.GetBytes(String.Format("{0:s}, {1}, {2}{3}", DateTime.Now, sensorName, value.ToString(), Environment.NewLine));
             await SensorDataFile.WriteAsync(data, 0, data.Length);
         }
 
@@ -292,11 +292,11 @@ namespace RoverAttachmentManager.ViewModels.Science
                     Sensor3Value = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 6)) / 100.0);
                     Sensor4Value = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 8)));
 
-                    SaveFileWrite("Sensor0", Sensor0Value);
-                    SaveFileWrite("Sensor1", Sensor1Value);
-                    SaveFileWrite("Sensor2", Sensor2Value);
-                    SaveFileWrite("Sensor3", Sensor3Value);
-                    SaveFileWrite("Sensor4", Sensor4Value);
+                    SaveFileWrite("Air Temperature", Sensor0Value);
+                    SaveFileWrite("Air Humidity", Sensor1Value);
+                    SaveFileWrite("Soil Moisture", Sensor2Value);
+                    SaveFileWrite("Soil Temperature", Sensor3Value);
+                    SaveFileWrite("Air Methane", Sensor4Value);
                     break;
 
                 case "ScrewAtPos":
