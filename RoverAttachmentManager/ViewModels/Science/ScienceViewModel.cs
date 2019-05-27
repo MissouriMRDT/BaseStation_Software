@@ -220,21 +220,21 @@ namespace RoverAttachmentManager.ViewModels.Science
             _rovecomm.SendCommand(new Packet("XYActuation", data, 2, (byte)DataTypes.INT16_T));
         }
         
-        public void RequestSpectrometer()
-        {
-            _rovecomm.SendCommand(new Packet("RunSpectrometer", (byte)RunCount), true);
-            _log.Log("Spectrometer data requested");
-        }
         public async void DownloadSpectrometer()
         {
-            _log.Log("Spectrometer data download started");
             string filename = Path.Combine(SpectrometerFilePath, "REDSpectrometerData-" + DateTime.Now.ToString("yyyyMMdd'-'HHmmss") + ".csv");
             try
             {
                 using (var client = new TcpClient())
                 {
+                    _log.Log("Connecting to Spectrometer...");
                     await client.ConnectAsync(SpectrometerIPAddress, SpectrometerPortNumber);
                     _log.Log("Spectrometer connection established");
+                    
+                    // Request the data
+                    _rovecomm.SendCommand(new Packet("RunSpectrometer", (byte)RunCount), true);
+
+                    _log.Log("Awaiting data...");
                     using (var file = File.Create(filename))
                     {
                         await client.GetStream().CopyToAsync(file);

@@ -36,13 +36,10 @@
                     <Expander Grid.Row="1" Header="Spectrometer" IsExpanded="True" Margin="2.5">
                         <StackPanel>
                             <UniformGrid Rows="1">
-                                <Label>Number of Runs: </Label>
+                                <Label>Number of Runs:</Label>
                                 <TextBox x:Name="RunCount"/>
                             </UniformGrid>
-                            <UniformGrid Rows="1">
-                                <Button x:Name="RequestSpectrometer">Request</Button>
-                                <Button x:Name="DownloadSpectrometer">Download</Button>
-                            </UniformGrid>
+                            <Button x:Name="DownloadSpectrometer">Run and Download</Button>
                             <UniformGrid>
                                 <Button cal:Message.Attach="SetUVLed(1)">Turn UV On</Button>
                                 <Button cal:Message.Attach="SetUVLed(0)">Turn UV Off</Button>
