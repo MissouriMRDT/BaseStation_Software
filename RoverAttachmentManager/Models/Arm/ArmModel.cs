@@ -16,7 +16,7 @@ namespace RoverAttachmentManager.Models.ArmModels
         internal int BaseRangeFactor = 500;
         internal int ElbowRangeFactor = 500;
         internal int WristRangeFactor = 1000;
-        internal int GripperRangeFactor = 500;
+        internal int GripperRangeFactor = 1000;
         internal ObservableCollection<ArmPositionViewModel> Positions = new ObservableCollection<ArmPositionViewModel>();
         internal ArmPositionViewModel SelectedPosition;
         internal float CoordinateX;
