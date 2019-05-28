@@ -2,6 +2,8 @@
 using Core.Interfaces;
 using Core.Models;
 using Core.RoveProtocol;
+using OxyPlot;
+using OxyPlot.Series;
 using RoverAttachmentManager.Models.Science;
 using System;
 using System.Collections.Generic;
@@ -163,6 +165,8 @@ namespace RoverAttachmentManager.ViewModels.Science
             }
         }
 
+        public PlotModel MyModel { set; private get; }
+
         public ScienceViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
             _model = new ScienceModel();
@@ -177,6 +181,9 @@ namespace RoverAttachmentManager.ViewModels.Science
 
             _rovecomm.NotifyWhenMessageReceived(this, "ScienceSensors");
             _rovecomm.NotifyWhenMessageReceived(this, "ScrewAtPos");
+
+            MyModel = new PlotModel { Title = "Hello World" };
+            MyModel.Series.Add(new FunctionSeries(Math.Cos, 0, 10, 0.1, "cos(x)"));
         }
 
         public void SetValues(Dictionary<string, float> values)
