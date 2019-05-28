@@ -10,6 +10,7 @@ using RED.Models.Navigation;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Timers;
 using System.Windows;
 using System.Windows.Media;
 
@@ -133,6 +134,8 @@ namespace RED.ViewModels.Navigation
             CachePrefetchStopZoom = MainMap.MaxZoom;
         }
 
+        public List<PointLatLng> RoverPath;
+
         private void InitializeMapControl()
         {
             MainMap.Margin = new Thickness(-5);
@@ -153,6 +156,38 @@ namespace RED.ViewModels.Navigation
 
             MainMap.IgnoreMarkerOnMouseWheel = true;
             MainMap.MouseWheelZoomType = MouseWheelZoomType.MousePositionWithoutCenter;
+
+            RoverPath = new List<PointLatLng>();
+
+            Timer checkForTime = new Timer(1000);
+            checkForTime.Elapsed += new ElapsedEventHandler(UpdateRoverPath);
+            checkForTime.Enabled = true;
+
+        }
+
+        void UpdateRoverPath(object sender, ElapsedEventArgs e)
+        {
+            if (CurrentLocation.Longitude == 0 && CurrentLocation.Latitude == 0) {
+                return;
+            }
+
+            PointLatLng curr = new PointLatLng(CurrentLocation.Latitude, CurrentLocation.Longitude);
+            
+            if(RoverPath.Count > 0 && RoverPath[RoverPath.Count - 1].Equals(curr))
+            {
+                RoverPath.Add(curr);
+            }
+            else if(RoverPath.Count == 0)
+            {
+                RoverPath.Add(curr);
+            }
+            RefreshMap();
+        }
+
+        void ClearRoverPath()
+        {
+            RoverPath.Clear();
+            RefreshMap();
         }
 
         public void CacheImport()
@@ -200,6 +235,9 @@ namespace RED.ViewModels.Navigation
             var newdata = (IEnumerable<GMapMarker>)converter.Convert(new object[] { CurrentLocation, Waypoints.Where(x => x.IsOnMap) }, typeof(System.Collections.ObjectModel.ObservableCollection<GMapMarker>), null, System.Globalization.CultureInfo.DefaultThreadCurrentUICulture);
             foreach (var marker in newdata)
                 MainMap.Markers.Add(marker);
+
+            var routeMarker = new GMapRoute(RoverPath);
+            MainMap.Markers.Add(routeMarker);
         }
     }
 }

@@ -20,6 +20,7 @@
 		<gmap:GMapControl Grid.Row="0" Name="Gmap" DataContextChanged="Map_DataContextChanged"/>
         <StackPanel Grid.Row="2" Orientation="Horizontal">
             <Button x:Name="RefreshMap">Refresh</Button>
+            <Button x:Name="ClearRoverPath">Clear Rover Path</Button>
             <Button Content="Cache Control" ContextMenuService.IsEnabled="False" Click="CacheControl_Click">
                 <Button.ContextMenu>
                     <ContextMenu>
