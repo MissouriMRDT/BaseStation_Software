@@ -165,7 +165,8 @@ namespace RoverAttachmentManager.ViewModels.Science
             }
         }
 
-        public PlotModel MyModel { set; private get; }
+        public PlotModel SpectrometerPlotModel { set; private get; }
+        public LineSeries SpectrometerSeries;
 
         public ScienceViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
@@ -182,8 +183,9 @@ namespace RoverAttachmentManager.ViewModels.Science
             _rovecomm.NotifyWhenMessageReceived(this, "ScienceSensors");
             _rovecomm.NotifyWhenMessageReceived(this, "ScrewAtPos");
 
-            MyModel = new PlotModel { Title = "Hello World" };
-            MyModel.Series.Add(new FunctionSeries(Math.Cos, 0, 10, 0.1, "cos(x)"));
+            SpectrometerPlotModel = new PlotModel { Title = "Spectrometer Data" };
+            SpectrometerSeries = new LineSeries();
+            SpectrometerPlotModel.Series.Add(SpectrometerSeries);
         }
 
         public void SetValues(Dictionary<string, float> values)
@@ -248,11 +250,29 @@ namespace RoverAttachmentManager.ViewModels.Science
                     }
                 }
                 _log.Log($"Spectrometer data downloaded into {filename}");
+                GraphSpectrometerData(filename);
             }
             catch (Exception e)
             {
                 _log.Log("There was an error downloading the spectrometer data:{0}{1}", Environment.NewLine, e);
             }
+        }
+
+        public void GraphSpectrometerData(string filename)
+        {
+            SpectrometerSeries.Points.Clear();
+
+            using (var reader = new StreamReader(filename))
+            {
+                while (!reader.EndOfStream)
+                {
+                    var line = reader.ReadLine();
+                    var values = line.Split(',');
+
+                    SpectrometerSeries.Points.Add(new DataPoint(Int16.Parse(values[0]), Double.Parse(values[1])));
+                }
+            }
+            SpectrometerPlotModel.InvalidatePlot(true);
         }
 
         public void RequestLaserOn()
