@@ -259,11 +259,10 @@ namespace Core.Configurations
                     new MetadataRecordContext(4000, "CameraMuxChannel1", "Selection for Camera Mux Channel"),
                 }
             },
-            new MetadataServerContext("LightingGimbal Board", "192.168.1.135") {
+            new MetadataServerContext("Gimbal Board", "192.168.1.135") {
                 Commands = new[] {
                     new MetadataRecordContext(6002, "MainGimbalIncrement", "pan, tilt"),
-                    new MetadataRecordContext(6004, "DriveGimbalIncrement", "pan, tilt"),
-                    new MetadataRecordContext(7001, "UnderglowColor", "rgb byte[]")
+                    new MetadataRecordContext(6004, "DriveGimbalIncrement", "pan, tilt")
                 }
             },
             new MetadataServerContext("ScienceSensors Board", "192.168.1.138") {
@@ -298,7 +297,14 @@ namespace Core.Configurations
                 Telemetry = new[] {
                     new MetadataRecordContext(2580, "WaypointReached", "")
                 }
-            }
+            },
+            new MetadataServerContext("Lighting Board", "192.168.1.142") {
+                Commands = new[] {
+                    new MetadataRecordContext(7000, "Headlights", "Headlights for the front of rover"),
+                    new MetadataRecordContext(7001, "UnderglowColor", "rgb byte[]"),
+                    new MetadataRecordContext(7002, "CycleLightingMode", "byte mode")
+                }
+            },
         });
     }
 }

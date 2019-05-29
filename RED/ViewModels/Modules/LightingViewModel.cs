@@ -87,6 +87,8 @@ namespace RED.ViewModels.Modules
             }
         }
 
+        int CurrentMode = 0;
+
         public LightingViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
             _model = new LightingModel();
@@ -108,12 +110,19 @@ namespace RED.ViewModels.Modules
          
         private void TurnOnHeadlights()
         {
-            _rovecomm.SendCommand(new Packet("Headlight", (byte)1), false);
+            _rovecomm.SendCommand(new Packet("Headlights", (byte)30), false);
         }
 
         private void TurnOffHeadlights()
         {
             _rovecomm.SendCommand(new Packet("Headlights", (byte)0), false);
+        }
+
+        public void CycleInternalLighting()
+        {
+            CurrentMode++;
+            CurrentMode %= 4;
+            _rovecomm.SendCommand(new Packet("CycleLightingMode", (byte)CurrentMode), false);
         }
     }
 }

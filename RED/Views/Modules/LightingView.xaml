@@ -20,12 +20,12 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Label Grid.Row="0" Grid.Column="0" Content="Red"/>
-            <Slider Grid.Row="0" Grid.Column="1" x:Name="Red" Minimum="0" Maximum="255" />
+            <Slider Grid.Row="0" Grid.Column="1" x:Name="Red" Minimum="0" Maximum="255" IsMoveToPointEnabled="True"/>
             <Label Grid.Row="1" Grid.Column="0" Content="Green"/>
-            <Slider Grid.Row="1" Grid.Column="1" x:Name="Green" Minimum="0" Maximum="255" BorderBrush="Green" mah:SliderHelper.TrackValueFillBrush="#CC00E500" mah:SliderHelper.TrackValueFillHoverBrush="#CC00E500" mah:SliderHelper.TrackValueFillPressedBrush="#CC00E500"/>
+            <Slider Grid.Row="1" Grid.Column="1" x:Name="Green" Minimum="0" Maximum="255" IsMoveToPointEnabled="True" BorderBrush="Green" mah:SliderHelper.TrackValueFillBrush="#CC00E500" mah:SliderHelper.TrackValueFillHoverBrush="#CC00E500" mah:SliderHelper.TrackValueFillPressedBrush="#CC00E500"/>
             <Label Grid.Row="2" Grid.Column="0" Content="Blue"/>
-            <Slider Grid.Row="2" Grid.Column="1" x:Name="Blue" Minimum="0" Maximum="255" BorderBrush="Blue" mah:SliderHelper.TrackValueFillBrush="#CC0015E5" mah:SliderHelper.TrackValueFillHoverBrush="#CC0015E5" mah:SliderHelper.TrackValueFillPressedBrush="#CC0015E5"/>
+            <Slider Grid.Row="2" Grid.Column="1" x:Name="Blue" Minimum="0" Maximum="255" IsMoveToPointEnabled="True" BorderBrush="Blue" mah:SliderHelper.TrackValueFillBrush="#CC0015E5" mah:SliderHelper.TrackValueFillHoverBrush="#CC0015E5" mah:SliderHelper.TrackValueFillPressedBrush="#CC0015E5"/>
         </Grid>
-
+        <Button Name="CycleInternalLighting">Cycle Lighting Mode</Button>
     </StackPanel>
 </UserControl>
