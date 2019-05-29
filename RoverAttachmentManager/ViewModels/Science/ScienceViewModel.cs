@@ -3,6 +3,7 @@ using Core.Interfaces;
 using Core.Models;
 using Core.RoveProtocol;
 using OxyPlot;
+using OxyPlot.Axes;
 using OxyPlot.Series;
 using RoverAttachmentManager.Models.Science;
 using System;
@@ -166,7 +167,13 @@ namespace RoverAttachmentManager.ViewModels.Science
         }
 
         public PlotModel SpectrometerPlotModel { set; private get; }
+        public PlotModel SensorPlotModel { set; private get; }
         public LineSeries SpectrometerSeries;
+        public LineSeries Sensor0Series;
+        public LineSeries Sensor1Series;
+        public LineSeries Sensor2Series;
+        public LineSeries Sensor3Series;
+        public LineSeries Sensor4Series;
 
         public ScienceViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
@@ -186,6 +193,18 @@ namespace RoverAttachmentManager.ViewModels.Science
             SpectrometerPlotModel = new PlotModel { Title = "Spectrometer Data" };
             SpectrometerSeries = new LineSeries();
             SpectrometerPlotModel.Series.Add(SpectrometerSeries);
+
+            SensorPlotModel = new PlotModel { Title = "Sensor Data" };
+            Sensor0Series = new LineSeries();
+            Sensor1Series = new LineSeries();
+            Sensor2Series = new LineSeries();
+            Sensor3Series = new LineSeries();
+            Sensor4Series = new LineSeries();
+            SpectrometerPlotModel.Series.Add(Sensor0Series);
+            SpectrometerPlotModel.Series.Add(Sensor1Series);
+            SpectrometerPlotModel.Series.Add(Sensor2Series);
+            SpectrometerPlotModel.Series.Add(Sensor3Series);
+            SpectrometerPlotModel.Series.Add(Sensor4Series);
         }
 
         public void SetValues(Dictionary<string, float> values)
@@ -308,6 +327,29 @@ namespace RoverAttachmentManager.ViewModels.Science
             await SensorDataFile.WriteAsync(data, 0, data.Length);
         }
 
+        public void UpdateSensorGraph()
+        {
+            DateTime now = DateTime.UtcNow;
+            Sensor0Series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(now), Sensor0Value));
+            Sensor1Series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(now), Sensor1Value));
+            Sensor2Series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(now), Sensor2Value));
+            Sensor3Series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(now), Sensor3Value));
+            Sensor4Series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(now), Sensor4Value));
+
+            SpectrometerPlotModel.InvalidatePlot(true);
+        }
+
+        public void ClearSensorGraph()
+        {
+            Sensor0Series.Points.Clear();
+            Sensor1Series.Points.Clear();
+            Sensor2Series.Points.Clear();
+            Sensor3Series.Points.Clear();
+            Sensor4Series.Points.Clear();
+
+            SpectrometerPlotModel.InvalidatePlot(true);
+        }
+
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
         {
             switch (packet.Name)
@@ -324,6 +366,8 @@ namespace RoverAttachmentManager.ViewModels.Science
                     SaveFileWrite("Soil Moisture", Sensor2Value);
                     SaveFileWrite("Soil Temperature", Sensor3Value);
                     SaveFileWrite("Air Methane", Sensor4Value);
+
+                    UpdateSensorGraph();
                     break;
 
                 case "ScrewAtPos":

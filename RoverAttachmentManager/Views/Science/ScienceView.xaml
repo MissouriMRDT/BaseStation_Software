@@ -83,13 +83,15 @@
                                 <Button x:Name="SaveFileStart">Start</Button>
                                 <Button x:Name="SaveFileStop">Stop</Button>
                             </UniformGrid>
+                            <Button x:Name="ClearSensorGraph">Clear Sensor Graph</Button>
                         </StackPanel>
                     </Expander>
                 </Grid>
                 
             </StackPanel>
             <StackPanel Grid.Column="1">
-                <oxy:PlotView Margin="5" Height="200" Name="Plot" Model="{Binding SpectrometerPlotModel}"/>
+                <oxy:PlotView Margin="5" Height="150" Name="Plot" Model="{Binding SpectrometerPlotModel}"/>
+                <oxy:PlotView Margin="5" Height="150" Name="Plot2" Model="{Binding SensorPlotModel}"/>
             </StackPanel>
         </Grid>
     </StackPanel>
