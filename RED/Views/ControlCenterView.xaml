@@ -46,7 +46,7 @@
                         <Expander Header="Drive" IsExpanded="True">
                             <ContentControl x:Name="Drive" />
                         </Expander>
-                        <Expander Header="Gimbal" IsExpanded="True">
+                        <Expander Header="Gimbal" IsExpanded="False">
                             <StackPanel>
                                 <ContentControl x:Name="Gimbal" />
                             </StackPanel>

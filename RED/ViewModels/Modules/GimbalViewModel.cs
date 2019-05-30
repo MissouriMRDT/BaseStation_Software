@@ -17,8 +17,6 @@ namespace RED.ViewModels.Modules
         private readonly IDataIdResolver _idResolver;
         private readonly ILogger _log;
 
-        private GimbalStates controlState = GimbalStates.MainGimbal;
-
         public string Name { get; }
         public string ModeType { get; }
         
@@ -66,59 +64,38 @@ namespace RED.ViewModels.Modules
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _log = log;
-            Name = "Main Gimbal";
+            Name = "Gimbal";
             ModeType = "Gimbal";
         }
 
         public void StartMode()
         {
-            controlState = GimbalStates.MainGimbal;
-            ControlState = "Main Gimbal";
         }
 
         public void SetValues(Dictionary<string, float> values)
         {
-            UpdateControlState(values);
             
             // Pan, Tilt
-            short[] openVals = { (Int16)(values["Tilt"] * 50), (Int16)(values["Pan"] * 50)};
+            short[] openVals = { (Int16)(values["DriveTilt"] * 50), (Int16)(values["DrivePan"] * 50)};
             byte[] data = new byte[4];
             Buffer.BlockCopy(openVals, 0, data, 0, data.Length);
             Array.Reverse(data);
+            
+            _rovecomm.SendCommand(new Packet("DriveGimbalIncrement", data, 2, (byte)DataTypes.INT16_T));
 
-            if (controlState == GimbalStates.DriveGimbal)
-            {
-                _rovecomm.SendCommand(new Packet("DriveGimbalIncrement", data, 2, (byte)DataTypes.INT16_T));
-            }
-            else
-            {
-                _rovecomm.SendCommand(new Packet("MainGimbalIncrement", data, 2,(byte)DataTypes.INT16_T));
-            }
-        }
+            short[] openVals2 = { (Int16)(values["MainTilt"] * 50), (Int16)(values["MainPan"] * 50) };
+            data = new byte[4];
+            Buffer.BlockCopy(openVals2, 0, data, 0, data.Length);
+            Array.Reverse(data);
 
-        private void UpdateControlState(Dictionary<string, float> values)
-        {
-            if(values["MainGimbalSwitch"] == 1)
-            {
-                controlState = GimbalStates.MainGimbal;
-                ControlState = "Main Gimbal";
-            }
-            else if(values["DriveGimbalSwitch"] == 1)
-            {
-                controlState = GimbalStates.DriveGimbal;
-                ControlState = "Drive Gimbal";
-            }
+            _rovecomm.SendCommand(new Packet("MainGimbalIncrement", data, 2,(byte)DataTypes.INT16_T));
+            
         }
 
         public void StopMode()
         {
             _rovecomm.SendCommand(new Packet("MainGimbalIncrement", new byte[] { 0, 0, 0, 0 }, 2, (byte)DataTypes.INT16_T));
-        }
-
-        private enum GimbalStates
-        {
-            MainGimbal,
-            DriveGimbal
+            _rovecomm.SendCommand(new Packet("DriveGimbalIncrement", new byte[] { 0, 0, 0, 0 }, 2, (byte)DataTypes.INT16_T));
         }
     }
 }
