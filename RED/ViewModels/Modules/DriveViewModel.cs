@@ -17,6 +17,7 @@ namespace RED.ViewModels.Modules
         private readonly DriveModel _model;
         private readonly IRovecomm _rovecomm;
         private readonly IDataIdResolver _idResolver;
+        private readonly ILogger _log;
 
         public short SpeedLeft
         {
@@ -81,11 +82,12 @@ namespace RED.ViewModels.Modules
 			}
 		}
 
-		public DriveViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver)
+		public DriveViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
             _model = new DriveModel();
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
+            _log = log;
             Name = "Drive";
             ModeType = "Drive";
 			Channel = "1";
@@ -127,6 +129,20 @@ namespace RED.ViewModels.Modules
 
             SpeedLeft = newSpeedLeft;
             SpeedRight = newSpeedRight;
+
+            if (values.ContainsKey("ForwardBump"))
+            {
+                if (values["ForwardBump"] > 0)
+                {
+                    SpeedLeft = 50;
+                    SpeedRight = 50;
+                }
+                else if (values["BackwardBump"] > 0)
+                {
+                    SpeedLeft = -50;
+                    SpeedRight = -50;
+                }
+            }
 
             SendSpeeds(false);
         }

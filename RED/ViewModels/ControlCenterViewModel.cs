@@ -313,7 +313,7 @@ namespace RED.ViewModels
             Lighting = new LightingViewModel(Rovecomm, MetadataManager, Console);
             Map = new MapViewModel(Console);
 
-            Drive = new DriveViewModel(Rovecomm, MetadataManager);
+            Drive = new DriveViewModel(Rovecomm, MetadataManager, Console);
             Gimbal = new GimbalViewModel(Rovecomm, MetadataManager, Console);
             XboxController1 = new XboxControllerInputViewModel(1);
             XboxController2 = new XboxControllerInputViewModel(2);

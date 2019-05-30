@@ -16,6 +16,8 @@ namespace Core.Configurations.Input
             new InputMappingContext("Vector Drive", "FlightStick", "Drive", 100, new[] {
                 new InputChannelContext("X", "VectorX"),
                 new InputChannelContext("Y", "VectorY"),
+                new InputChannelContext("Button8", "ForwardBump"),
+                new InputChannelContext("Button10", "BackwardBump"),
                 new InputChannelContext("Slider0", "Throttle"),
                 new InputChannelContext("Button7Debounced", "ModeCycle") }),
             new InputMappingContext("Arm (Traditional)", "Xbox", "Arm", 100, new[] {
