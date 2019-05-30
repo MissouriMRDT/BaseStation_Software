@@ -56,10 +56,14 @@ namespace Core.Configurations.Input
                 new InputChannelContext("DPadD", "ScrewPosDown"),
                 new InputChannelContext("ButtonStartDebounced", "ModeCycle") }),
             new InputMappingContext("Xbox Gimbal", "Xbox", "Gimbal", 100, new[] {
-                new InputChannelContext("JoyStick1X", "MainPan"){ Parabolic = true },
-                new InputChannelContext("JoyStick1Y", "MainTilt"){ Parabolic = true },
-                new InputChannelContext("JoyStick2X", "DriveRoll"){ Parabolic = true },
-                new InputChannelContext("JoyStick2Y", "DriveZoom"){ Parabolic = true },
+                new InputChannelContext("JoyStick1X", "Pan"){ Parabolic = true },
+                new InputChannelContext("JoyStick1Y", "Tilt"){ Parabolic = true },
+                new InputChannelContext("LeftTrigger", "GimbalMastTiltMagnitude"){ Parabolic = true },
+                new InputChannelContext("ButtonLb", "GimbalMastTiltDirection"),
+                new InputChannelContext("JoyStick2X", "Roll"){ Parabolic = true },
+                new InputChannelContext("JoyStick2Y", "Zoom"){ Parabolic = true },
+                new InputChannelContext("DPadU", "MainGimbalSwitch"){ Parabolic = true },
+                new InputChannelContext("DPadD", "DriveGimbalSwitch"){ Parabolic = true },
                 new InputChannelContext("ButtonStartDebounced", "ModeCycle") }),
             new InputMappingContext("Key Drive", "Keyboard", "Drive", 100, new[] {
                 new InputChannelContext("WS", "WheelsLeft"),
