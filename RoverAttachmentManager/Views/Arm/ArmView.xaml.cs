@@ -19,17 +19,13 @@ namespace RoverAttachmentManager.Views.Arm
 
         private async void OverrideButton_Click(object sender, RoutedEventArgs e)
         {
-            byte busIndex1 = Byte.Parse((string)((ToggleButton)sender).Tag);
-            byte busIndex2 = Byte.Parse((string)((ToggleButton)sender).Tag + 1);
             if ((bool)((ToggleButton)sender).IsChecked)
             {
-                ((ArmViewModel)DataContext).LimitSwitchOverride(busIndex1);
-                ((ArmViewModel)DataContext).LimitSwitchOverride(busIndex2);
+                ((ArmViewModel)DataContext).LimitSwitchOverride();
             }
             else
             {
-                ((ArmViewModel)DataContext).LimitSwitchUnOverride(busIndex1);
-                ((ArmViewModel)DataContext).LimitSwitchUnOverride(busIndex2);
+                ((ArmViewModel)DataContext).LimitSwitchUnOverride();
             }
         }
     }

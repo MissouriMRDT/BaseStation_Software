@@ -777,13 +777,13 @@ namespace RoverAttachmentManager.ViewModels.Arm
             guiControlInitialized = true;
         }
 
-        public void LimitSwitchOverride(byte index)
+        public void LimitSwitchOverride()
         {
-            _rovecomm.SendCommand(new Packet("LimitSwitchOverride", index), true);
+            _rovecomm.SendCommand(new Packet("LimitSwitchOverride", (byte)1), true);
         }
-        public void LimitSwitchUnOverride(byte index)
+        public void LimitSwitchUnOverride()
         {
-            _rovecomm.SendCommand(new Packet("LimitSwitchUnOverride", index), true);
+            _rovecomm.SendCommand(new Packet("LimitSwitchOverride", (byte)0), true);
         }
 
         public void RecallPosition()
