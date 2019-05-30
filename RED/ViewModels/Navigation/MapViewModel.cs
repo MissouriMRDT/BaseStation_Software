@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using Core;
+using Core.Interfaces;
 using Core.Models;
 using Core.ViewModels;
 using GMap.NET;
@@ -19,6 +20,7 @@ namespace RED.ViewModels.Navigation
     public class MapViewModel : PropertyChangedBase
     {
         private readonly MapModel _model;
+        private readonly ILogger _log;
 
         public Waypoint CurrentLocation
         {
@@ -117,9 +119,10 @@ namespace RED.ViewModels.Navigation
             }
         }
 
-        public MapViewModel()
+        public MapViewModel(ILogger log)
         {
             _model = new MapModel();
+            _log = log;
             Manager = WaypointManager.Instance;
 
             CurrentLocation = new Waypoint("GPS", 0f, 0f) { Color = System.Windows.Media.Colors.Red };
@@ -176,10 +179,12 @@ namespace RED.ViewModels.Navigation
             if(RoverPath.Count > 0 && RoverPath[RoverPath.Count - 1].Equals(curr))
             {
                 RoverPath.Add(curr);
+                _log.Log("Added point!");
             }
             else if(RoverPath.Count == 0)
             {
                 RoverPath.Add(curr);
+                _log.Log("Added point!");
             }
             RefreshMap();
         }

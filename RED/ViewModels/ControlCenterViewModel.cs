@@ -311,7 +311,7 @@ namespace RED.ViewModels
             Power = new PowerViewModel(Rovecomm, MetadataManager, Console);
             CameraMux = new CameraViewModel(Rovecomm, MetadataManager);
             Lighting = new LightingViewModel(Rovecomm, MetadataManager, Console);
-            Map = new MapViewModel();
+            Map = new MapViewModel(Console);
 
             Drive = new DriveViewModel(Rovecomm, MetadataManager);
             Gimbal = new GimbalViewModel(Rovecomm, MetadataManager, Console);
