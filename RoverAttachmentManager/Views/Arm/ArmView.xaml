@@ -19,8 +19,7 @@
 			<ColumnDefinition Width="*" />
 		</Grid.ColumnDefinitions>
 
-		<StackPanel Grid.Column="0" Grid.Row="0" Margin="2.5">
-			<vlc:VlcControl  x:Name="vlcPlayer" Height="500" Margin="2.5"/>
+        <StackPanel Grid.Column="0" Grid.Row="0" Margin="2.5">
             <Expander Header="Control Multipliers" IsExpanded="True" Margin="2.5">
                 <Grid Margin="5">
                     <Grid.ColumnDefinitions>
