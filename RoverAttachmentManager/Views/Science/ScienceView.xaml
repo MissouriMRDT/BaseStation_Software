@@ -33,6 +33,7 @@
                                 <Label DockPanel.Dock="Left">Control State:</Label>
                                 <Label DockPanel.Dock="Right" x:Name ="ControlState" HorizontalContentAlignment="Center" />
                             </DockPanel>
+                            <Button Name="CenterX">Center X</Button>
                         </StackPanel>
                     </Expander>
                     <Expander Grid.Row="1" Header="Spectrometer" IsExpanded="True" Margin="2.5">

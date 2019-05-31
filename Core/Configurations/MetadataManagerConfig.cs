@@ -280,7 +280,8 @@ namespace Core.Configurations
                     new MetadataRecordContext(9000, "Screw", "-1000 to 1000 open loop for screw control"),
                     new MetadataRecordContext(9001, "ScrewAbsoluteSetPosition", ""),
                     new MetadataRecordContext(9002, "ScrewRelativeSetPosition", ""),
-                    new MetadataRecordContext(9002, "XYActuation", "[x][y]")
+                    new MetadataRecordContext(9002, "XYActuation", "[x][y]"),
+                    new MetadataRecordContext(9004, "CenterX", "")
                 },
                 Telemetry = new[]
                 {

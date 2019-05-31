@@ -311,17 +311,7 @@ namespace RoverAttachmentManager.ViewModels.Science
                 }
             }
             SpectrometerPlotModel.InvalidatePlot(true);
-        }
-
-        public void RequestLaserOn()
-        {
-            //_rovecomm.SendCommand(new Packet("ScienceCommand", (byte)ScienceRequestTypes.LaserOn), true);
-            _log.Log("Science Laser On requested");
-        }
-        public void RequestLaserOff()
-        {
-            //_rovecomm.SendCommand(new Packet("ScienceCommand", (byte)ScienceRequestTypes.LaserOff), true);
-            _log.Log("Science Laser Off requested");
+            ExportGraph(SpectrometerPlotModel, SpectrometerFilePath + "\\SpectrometerGraph-Site" + SiteNumber + ".png", 400);
         }
 
         public void SetScrewPosition(byte index)
@@ -359,8 +349,8 @@ namespace RoverAttachmentManager.ViewModels.Science
             SensorPlotModel.InvalidatePlot(true);
             MethanePlotModel.InvalidatePlot(true);
 
-            ExportGraph(MethanePlotModel, SpectrometerFilePath + "\\methane.png");
-            ExportGraph(SensorPlotModel, SpectrometerFilePath + "\\temphum.png");
+            ExportGraph(MethanePlotModel, SpectrometerFilePath + "\\methane.png", 400);
+            ExportGraph(SensorPlotModel, SpectrometerFilePath + "\\temphum.png", 400);
         }
 
         public void AddSiteAnnotation(double x, string text)
@@ -387,9 +377,9 @@ namespace RoverAttachmentManager.ViewModels.Science
             MethanePlotModel.InvalidatePlot(true);
         }
 
-        public void ExportGraph(PlotModel model,string filename)
+        public void ExportGraph(PlotModel model,string filename, int height)
         {
-            var pngExporter = new PngExporter { Width = 600, Height = 400, Background = OxyColors.White };
+            var pngExporter = new PngExporter { Width = 600, Height = height, Background = OxyColors.White };
             pngExporter.ExportToFile(model, filename);
         }
 
@@ -428,19 +418,90 @@ namespace RoverAttachmentManager.ViewModels.Science
             _rovecomm.SendCommand(new Packet("UVLedControl", val));
         }
 
+        public void CenterX()
+        {
+            _rovecomm.SendCommand(new Packet("CenterX"));
+        }
+
+        public void CreateSiteAnnotation()
+        {
+            SensorPlotModel.Annotations.Add(new OxyPlot.Annotations.RectangleAnnotation
+            {
+                MinimumX = SiteTimes[SiteNumber * 2],
+                MaximumX = SiteTimes[(SiteNumber * 2) + 1],
+                Text = "Site " + SiteNumber,
+                Fill = OxyColor.FromAColor(50, OxyColors.DarkOrange),
+
+            });
+            MethanePlotModel.Annotations.Add(new OxyPlot.Annotations.RectangleAnnotation
+            {
+                MinimumX = SiteTimes[SiteNumber * 2],
+                MaximumX = SiteTimes[(SiteNumber * 2) + 1],
+                Text = "Site " + SiteNumber,
+                Fill = OxyColor.FromAColor(50, OxyColors.DarkOrange),
+                
+            });
+        }
+
         public void ReachedSite()
         {
             double siteTime = OxyPlot.Axes.DateTimeAxis.ToDouble(GetTimeDiff());
-            SiteTimes[SiteNumber] = siteTime;
-            AddSiteAnnotation(siteTime, "Reached Site " + SiteNumber.ToString());
+            SiteTimes[SiteNumber * 2] = siteTime;
+        }
+
+        private async void WriteSiteData(double temp, double humidity, double methane)
+        {
+            FileStream file = new FileStream(SpectrometerFilePath + "\\REDSensorData-Site" + SiteNumber + ".csv", FileMode.Create);
+            if (!file.CanWrite) return;
+
+            var data = Encoding.UTF8.GetBytes(String.Format("Temperature, {0}, Humidity, {1}, Methane, {2}{3}", temp, humidity, methane, Environment.NewLine));
+            await file.WriteAsync(data, 0, data.Length);
+
+            if (file.CanWrite)
+            {
+                file.Close();
+            }
         }
 
         public void LeftSite()
         {
             double siteTime = OxyPlot.Axes.DateTimeAxis.ToDouble(GetTimeDiff());
-            SiteTimes[SiteNumber + 1] = siteTime;
-            AddSiteAnnotation(siteTime, "Left Site " + SiteNumber.ToString());
+            SiteTimes[(SiteNumber * 2) + 1] = siteTime;
+
+            double methaneAvg = AverageValueForSeries(Sensor4Series, SpectrometerFilePath + "\\Methane-Site" + SiteNumber + ".png");
+            double tempAvg = AverageValueForSeries(Sensor0Series, SpectrometerFilePath + "\\Temperature-Site" + SiteNumber + ".png");
+            double humidityAvg = AverageValueForSeries(Sensor1Series, SpectrometerFilePath + "\\Humidity-Site" + SiteNumber + ".png");
+
+            WriteSiteData(tempAvg, humidityAvg, methaneAvg);
+            
+            CreateSiteAnnotation();
             SiteNumber++;
+        }
+
+        public double AverageValueForSeries(OxyPlot.Series.LineSeries series, string filename)
+        {
+            List<DataPoint> points = series.Points;
+
+            Predicate<DataPoint> isInRange = dataPoint => dataPoint.X >= SiteTimes[SiteNumber * 2] && dataPoint.X <= SiteTimes[(SiteNumber * 2) + 1];
+
+            points = points.FindAll(isInRange);
+
+            PlotModel tempModel = new PlotModel();
+            OxyPlot.Series.LineSeries tempSeries = new OxyPlot.Series.LineSeries();
+            tempModel.Series.Add(tempSeries);
+            tempModel.Axes.Add(new OxyPlot.Axes.DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "mm:ss" });
+
+            tempSeries.Points.AddRange(points);
+
+            ExportGraph(tempModel, filename, 100);
+
+            double tally = 0;
+            foreach(DataPoint dataPoint in points)
+            {
+                tally += dataPoint.Y;
+            }
+
+            return tally / points.Count;
         }
 
         private DateTime GetTimeDiff()
