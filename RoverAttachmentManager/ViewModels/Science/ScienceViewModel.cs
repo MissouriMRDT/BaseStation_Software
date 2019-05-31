@@ -208,9 +208,11 @@ namespace RoverAttachmentManager.ViewModels.Science
             _rovecomm.NotifyWhenMessageReceived(this, "ScienceSensors");
             _rovecomm.NotifyWhenMessageReceived(this, "ScrewAtPos");
 
-            SpectrometerPlotModel = new PlotModel { Title = "Spectrometer Data" };
+            SpectrometerPlotModel = new PlotModel { Title = "Spectrometer Results" };
             SpectrometerSeries = new OxyPlot.Series.LineSeries();
             SpectrometerPlotModel.Series.Add(SpectrometerSeries);
+            SpectrometerPlotModel.Axes.Add(new OxyPlot.Axes.LinearAxis { Position = AxisPosition.Left, Title = "Intensity" });
+            SpectrometerPlotModel.Axes.Add(new OxyPlot.Axes.LinearAxis { Position = AxisPosition.Bottom, Title = "Wavelength (nanometers)" });
 
             MethanePlotModel = new PlotModel { Title = "Methane Data" };
             Sensor4Series = new OxyPlot.Series.LineSeries();
@@ -228,6 +230,7 @@ namespace RoverAttachmentManager.ViewModels.Science
 
         public void SetValues(Dictionary<string, float> values)
         {
+
             if ((values["ScrewPosUp"] == 1 || values["ScrewPosDown"] == 1) && !screwIncrementPressed)
             {
                 byte screwPosIncrement = (byte)(values["ScrewPosUp"] == 1 ? 1 : values["ScrewPosDown"] == 1 ? -1 : 0);
@@ -307,7 +310,7 @@ namespace RoverAttachmentManager.ViewModels.Science
                     var line = reader.ReadLine();
                     var values = line.Split(',');
 
-                    SpectrometerSeries.Points.Add(new DataPoint(Int16.Parse(values[0]), Double.Parse(values[1])));
+                    SpectrometerSeries.Points.Add(new DataPoint((Int16.Parse(values[0]) / 10.0) + 389, Double.Parse(values[1])));
                 }
             }
             SpectrometerPlotModel.InvalidatePlot(true);
@@ -468,9 +471,9 @@ namespace RoverAttachmentManager.ViewModels.Science
             double siteTime = OxyPlot.Axes.DateTimeAxis.ToDouble(GetTimeDiff());
             SiteTimes[(SiteNumber * 2) + 1] = siteTime;
 
-            double methaneAvg = AverageValueForSeries(Sensor4Series, SpectrometerFilePath + "\\Methane-Site" + SiteNumber + ".png");
-            double tempAvg = AverageValueForSeries(Sensor0Series, SpectrometerFilePath + "\\Temperature-Site" + SiteNumber + ".png");
-            double humidityAvg = AverageValueForSeries(Sensor1Series, SpectrometerFilePath + "\\Humidity-Site" + SiteNumber + ".png");
+            double methaneAvg = AverageValueForSeries(Sensor4Series, "Methane vs Time", "Methane (parts per billion)", 2000, SpectrometerFilePath + "\\Methane-Site" + SiteNumber + ".png");
+            double tempAvg = AverageValueForSeries(Sensor0Series, "Temperature vs Time", "Temperature (Celsius)", 50, SpectrometerFilePath + "\\Temperature-Site" + SiteNumber + ".png");
+            double humidityAvg = AverageValueForSeries(Sensor1Series, "Humidity vs Time", "Humidity (%)", 100, SpectrometerFilePath + "\\Humidity-Site" + SiteNumber + ".png");
 
             WriteSiteData(tempAvg, humidityAvg, methaneAvg);
             
@@ -478,7 +481,7 @@ namespace RoverAttachmentManager.ViewModels.Science
             SiteNumber++;
         }
 
-        public double AverageValueForSeries(OxyPlot.Series.LineSeries series, string filename)
+        public double AverageValueForSeries(OxyPlot.Series.LineSeries series, string plotTitle, string unitsTitle, int plotMax, string filename)
         {
             List<DataPoint> points = series.Points;
 
@@ -486,14 +489,15 @@ namespace RoverAttachmentManager.ViewModels.Science
 
             points = points.FindAll(isInRange);
 
-            PlotModel tempModel = new PlotModel();
+            PlotModel tempModel = new PlotModel { Title = plotTitle };
             OxyPlot.Series.LineSeries tempSeries = new OxyPlot.Series.LineSeries();
             tempModel.Series.Add(tempSeries);
-            tempModel.Axes.Add(new OxyPlot.Axes.DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "mm:ss" });
+            tempModel.Axes.Add(new OxyPlot.Axes.DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "mm:ss", Title = "Time since task start (minutes:seconds)" });
+            tempModel.Axes.Add(new OxyPlot.Axes.LinearAxis { Position = AxisPosition.Left, Title = unitsTitle, Minimum = 0, Maximum = plotMax });
 
             tempSeries.Points.AddRange(points);
 
-            ExportGraph(tempModel, filename, 100);
+            ExportGraph(tempModel, filename, 300);
 
             double tally = 0;
             foreach(DataPoint dataPoint in points)
