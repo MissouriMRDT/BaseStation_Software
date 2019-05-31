@@ -134,6 +134,18 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 NotifyOfPropertyChange(() => GripperRangeFactor);
             }
         }
+        public int Gripper2RangeFactor
+        {
+            get
+            {
+                return _model.Gripper2RangeFactor;
+            }
+            set
+            {
+                _model.Gripper2RangeFactor = value;
+                NotifyOfPropertyChange(() => Gripper2RangeFactor);
+            }
+        }
         public float AngleJ1
         {
             get
@@ -474,6 +486,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
             Int16 ArmBaseTwist = 0;
             Int16 ArmBaseBend = 0;
             Int16 Gripper = 0;
+            Int16 Gripper2 = 0;
             Int16 Nipper = 0;
 
             switch (ControllerBase.JoystickDirection(values["WristBend"], values["WristTwist"]))
@@ -512,14 +525,23 @@ namespace RoverAttachmentManager.ViewModels.Arm
 
             ArmBaseTwist = (Int16)(-ControllerBase.TwoButtonToggleDirection(values["BaseTwistDirection"] != 0, (values["BaseTwistMagnitude"])) * BaseRangeFactor);
             ArmBaseBend = (Int16)(-ControllerBase.TwoButtonToggleDirection(values["BaseBendDirection"] != 0, (values["BaseBendMagnitude"])) * BaseRangeFactor);
-            Gripper = (Int16)(ControllerBase.TwoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0) * GripperRangeFactor);
+
+            float gripperAmmount = ControllerBase.TwoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0);
+            if (SelectedTool == 0)
+            {
+                Gripper = (Int16)(gripperAmmount * GripperRangeFactor);
+            }else if (SelectedTool == 1)
+            {
+                Gripper2 = (Int16)(gripperAmmount * Gripper2RangeFactor);
+            }
+
             Nipper = (Int16)values["Nipper"];
 
-            Int16[] sendValues = { Nipper, Gripper, ArmWristTwist, ArmWristBend, ArmElbowTwist, ArmElbowBend, ArmBaseBend, ArmBaseTwist }; //order before we reverse
+            Int16[] sendValues = { Gripper2, Nipper, Gripper, ArmWristTwist, ArmWristBend, ArmElbowTwist, ArmElbowBend, ArmBaseBend, ArmBaseTwist }; //order before we reverse
             byte[] data = new byte[sendValues.Length * sizeof(Int16)];
             Buffer.BlockCopy(sendValues, 0, data, 0, data.Length);
             Array.Reverse(data);
-            _rovecomm.SendCommand(new Packet("ArmValues", data, 8, (byte)DataTypes.INT16_T));
+            _rovecomm.SendCommand(new Packet("ArmValues", data, 9, (byte)DataTypes.INT16_T));
 
             if (values["GripperSwap"] == 1)
             {
@@ -528,11 +550,11 @@ namespace RoverAttachmentManager.ViewModels.Arm
 
             if (values["SwitchTool"] == 1 && previousTool == SelectedTool)
             {
-                if(++SelectedTool > 2)
+                if(++SelectedTool > 1)
                 {
                     SelectedTool = 0;
                 }
-                _rovecomm.SendCommand(new Packet("ToolSelection", SelectedTool));
+                //_rovecomm.SendCommand(new Packet("ToolSelection", SelectedTool));
             }
             else if (values["SwitchTool"] == 0){
                 previousTool = SelectedTool;
