@@ -3,8 +3,10 @@ using Core.Interfaces;
 using Core.Models;
 using Core.RoveProtocol;
 using OxyPlot;
+using OxyPlot.Annotations;
 using OxyPlot.Axes;
 using OxyPlot.Series;
+using OxyPlot.Wpf;
 using RoverAttachmentManager.Models.Science;
 using System;
 using System.Collections.Generic;
@@ -116,6 +118,18 @@ namespace RoverAttachmentManager.ViewModels.Science
                 NotifyOfPropertyChange(() => RunCount);
             }
         }
+        public int SiteNumber
+        {
+            get
+            {
+                return _model.SiteNumber;
+            }
+            set
+            {
+                _model.SiteNumber = value;
+                NotifyOfPropertyChange(() => SiteNumber);
+            }
+        }
         public System.Net.IPAddress SpectrometerIPAddress
         {
             get
@@ -168,12 +182,16 @@ namespace RoverAttachmentManager.ViewModels.Science
 
         public PlotModel SpectrometerPlotModel { set; private get; }
         public PlotModel SensorPlotModel { set; private get; }
-        public LineSeries SpectrometerSeries;
-        public LineSeries Sensor0Series;
-        public LineSeries Sensor1Series;
-        public LineSeries Sensor2Series;
-        public LineSeries Sensor3Series;
-        public LineSeries Sensor4Series;
+        public PlotModel MethanePlotModel { set; private get; }
+        public OxyPlot.Series.LineSeries SpectrometerSeries;
+        public OxyPlot.Series.LineSeries Sensor0Series;
+        public OxyPlot.Series.LineSeries Sensor1Series;
+        public OxyPlot.Series.LineSeries Sensor4Series;
+
+        public DateTime StartTime;
+        public bool Graphing = false;
+
+        public double[] SiteTimes = new double[12];
 
         public ScienceViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
@@ -191,20 +209,21 @@ namespace RoverAttachmentManager.ViewModels.Science
             _rovecomm.NotifyWhenMessageReceived(this, "ScrewAtPos");
 
             SpectrometerPlotModel = new PlotModel { Title = "Spectrometer Data" };
-            SpectrometerSeries = new LineSeries();
+            SpectrometerSeries = new OxyPlot.Series.LineSeries();
             SpectrometerPlotModel.Series.Add(SpectrometerSeries);
 
-            SensorPlotModel = new PlotModel { Title = "Sensor Data" };
-            Sensor0Series = new LineSeries();
-            Sensor1Series = new LineSeries();
-            Sensor2Series = new LineSeries();
-            Sensor3Series = new LineSeries();
-            Sensor4Series = new LineSeries();
-            SpectrometerPlotModel.Series.Add(Sensor0Series);
-            SpectrometerPlotModel.Series.Add(Sensor1Series);
-            SpectrometerPlotModel.Series.Add(Sensor2Series);
-            SpectrometerPlotModel.Series.Add(Sensor3Series);
-            SpectrometerPlotModel.Series.Add(Sensor4Series);
+            MethanePlotModel = new PlotModel { Title = "Methane Data" };
+            Sensor4Series = new OxyPlot.Series.LineSeries();
+            MethanePlotModel.Series.Add(Sensor4Series);
+            MethanePlotModel.Axes.Add(new OxyPlot.Axes.DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "mm:ss" });
+
+            SensorPlotModel = new PlotModel { Title = "Temperature & Humidity Data" };
+            Sensor0Series = new OxyPlot.Series.LineSeries();
+            Sensor1Series = new OxyPlot.Series.LineSeries();
+            SensorPlotModel.Series.Add(Sensor0Series);
+            SensorPlotModel.Series.Add(Sensor1Series);
+            SensorPlotModel.Axes.Add(new OxyPlot.Axes.DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "mm:ss" });
+
         }
 
         public void SetValues(Dictionary<string, float> values)
@@ -327,27 +346,51 @@ namespace RoverAttachmentManager.ViewModels.Science
             await SensorDataFile.WriteAsync(data, 0, data.Length);
         }
 
-        public void UpdateSensorGraph()
+        public void UpdateSensorGraphs()
         {
-            DateTime now = DateTime.UtcNow;
-            Sensor0Series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(now), Sensor0Value));
-            Sensor1Series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(now), Sensor1Value));
-            Sensor2Series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(now), Sensor2Value));
-            Sensor3Series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(now), Sensor3Value));
-            Sensor4Series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(now), Sensor4Value));
+            if (!Graphing) { return; }
 
-            SpectrometerPlotModel.InvalidatePlot(true);
+            TimeSpan nowSpan = DateTime.UtcNow.Subtract(StartTime);
+            DateTime now = new DateTime(nowSpan.Ticks);
+
+            Sensor0Series.Points.Add(new DataPoint(OxyPlot.Axes.DateTimeAxis.ToDouble(now), Sensor0Value));
+            Sensor1Series.Points.Add(new DataPoint(OxyPlot.Axes.DateTimeAxis.ToDouble(now), Sensor1Value));
+            Sensor4Series.Points.Add(new DataPoint(OxyPlot.Axes.DateTimeAxis.ToDouble(now), Sensor4Value));
+            SensorPlotModel.InvalidatePlot(true);
+            MethanePlotModel.InvalidatePlot(true);
+
+            ExportGraph(MethanePlotModel, SpectrometerFilePath + "\\methane.png");
+            ExportGraph(SensorPlotModel, SpectrometerFilePath + "\\temphum.png");
         }
 
-        public void ClearSensorGraph()
+        public void AddSiteAnnotation(double x, string text)
+        {
+            SensorPlotModel.Annotations.Add(new OxyPlot.Annotations.LineAnnotation { Type = LineAnnotationType.Vertical, X = x, Color = OxyColors.Green, Text = text });
+            MethanePlotModel.Annotations.Add(new OxyPlot.Annotations.LineAnnotation { Type = LineAnnotationType.Vertical, X = x, Color = OxyColors.Green, Text = text });
+
+        }
+
+        public void StartSensorGraphs()
+        {
+            StartTime = DateTime.UtcNow;
+            Graphing = true;
+            ClearSensorGraphs();
+        }
+
+        public void ClearSensorGraphs()
         {
             Sensor0Series.Points.Clear();
             Sensor1Series.Points.Clear();
-            Sensor2Series.Points.Clear();
-            Sensor3Series.Points.Clear();
             Sensor4Series.Points.Clear();
 
-            SpectrometerPlotModel.InvalidatePlot(true);
+            SensorPlotModel.InvalidatePlot(true);
+            MethanePlotModel.InvalidatePlot(true);
+        }
+
+        public void ExportGraph(PlotModel model,string filename)
+        {
+            var pngExporter = new PngExporter { Width = 600, Height = 400, Background = OxyColors.White };
+            pngExporter.ExportToFile(model, filename);
         }
 
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
@@ -363,11 +406,9 @@ namespace RoverAttachmentManager.ViewModels.Science
 
                     SaveFileWrite("Air Temperature", Sensor0Value);
                     SaveFileWrite("Air Humidity", Sensor1Value);
-                    SaveFileWrite("Soil Moisture", Sensor2Value);
-                    SaveFileWrite("Soil Temperature", Sensor3Value);
                     SaveFileWrite("Air Methane", Sensor4Value);
 
-                    UpdateSensorGraph();
+                    UpdateSensorGraphs();
                     break;
 
                 case "ScrewAtPos":
@@ -387,6 +428,28 @@ namespace RoverAttachmentManager.ViewModels.Science
             _rovecomm.SendCommand(new Packet("UVLedControl", val));
         }
 
+        public void ReachedSite()
+        {
+            double siteTime = OxyPlot.Axes.DateTimeAxis.ToDouble(GetTimeDiff());
+            SiteTimes[SiteNumber] = siteTime;
+            AddSiteAnnotation(siteTime, "Reached Site " + SiteNumber.ToString());
+        }
+
+        public void LeftSite()
+        {
+            double siteTime = OxyPlot.Axes.DateTimeAxis.ToDouble(GetTimeDiff());
+            SiteTimes[SiteNumber + 1] = siteTime;
+            AddSiteAnnotation(siteTime, "Left Site " + SiteNumber.ToString());
+            SiteNumber++;
+        }
+
+        private DateTime GetTimeDiff()
+        {
+            TimeSpan nowSpan = DateTime.UtcNow.Subtract(StartTime);
+            return new DateTime(nowSpan.Ticks);
+        }
+
         public void StartMode() {}
+        
     }
 }

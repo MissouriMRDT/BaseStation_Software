@@ -19,6 +19,7 @@
                         <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
                     <Expander Grid.Row="0" Header="Actuation" IsExpanded="True" Margin="2.5">
                         <StackPanel>
@@ -41,7 +42,7 @@
                                 <TextBox x:Name="RunCount"/>
                             </UniformGrid>
                             <Button x:Name="DownloadSpectrometer">Run and Download</Button>
-                            <UniformGrid>
+                            <UniformGrid Rows="1">
                                 <Button cal:Message.Attach="SetUVLed(1)">Turn UV On</Button>
                                 <Button cal:Message.Attach="SetUVLed(0)">Turn UV Off</Button>
                             </UniformGrid>
@@ -51,8 +52,6 @@
                         <StackPanel>
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
                                     <RowDefinition />
                                     <RowDefinition />
                                     <RowDefinition />
@@ -71,11 +70,6 @@
                                 <Label Grid.Row="2" Grid.Column="0">Air Methane</Label>
                                 <Label Grid.Row="2" Grid.Column="1" x:Name="Sensor4Value" ContentStringFormat="{}{0:0.00;}" />
                                 
-                                <Label Grid.Row="3" Grid.Column="0">Soil Temperature</Label>
-                                <Label Grid.Row="3" Grid.Column="1" x:Name="Sensor3Value" ContentStringFormat="{}{0:0.#&#176;}" />
-
-                                <Label Grid.Row="4" Grid.Column="0">Soil Moisture</Label>
-                                <Label Grid.Row="4" Grid.Column="1" x:Name="Sensor2Value" ContentStringFormat="{}{0:0.\%;}" />
                             </Grid>
 
                             <UniformGrid Rows="1">
@@ -83,7 +77,20 @@
                                 <Button x:Name="SaveFileStart">Start</Button>
                                 <Button x:Name="SaveFileStop">Stop</Button>
                             </UniformGrid>
-                            <Button x:Name="ClearSensorGraph">Clear Sensor Graph</Button>
+                            <Button x:Name="StartSensorGraphs">Start Sensor Graphs</Button>
+                            <Button x:Name="UpdateSensorGraphs">Update Sensor Graphs</Button>
+                        </StackPanel>
+                    </Expander>
+                    <Expander Grid.Row="3" Header="Site Management" IsExpanded="True" Margin="2.5">
+                        <StackPanel>
+                            <UniformGrid Rows="1">
+                                <Label>Site Number:</Label>
+                                <TextBox x:Name="SiteNumber"/>
+                            </UniformGrid>
+                            <UniformGrid Rows="1">
+                                <Button Name="ReachedSite">Reached Site</Button>
+                                <Button Name="LeftSite">Left Site</Button>
+                            </UniformGrid>
                         </StackPanel>
                     </Expander>
                 </Grid>
@@ -92,6 +99,7 @@
             <StackPanel Grid.Column="1">
                 <oxy:PlotView Margin="5" Height="150" Name="Plot" Model="{Binding SpectrometerPlotModel}"/>
                 <oxy:PlotView Margin="5" Height="150" Name="Plot2" Model="{Binding SensorPlotModel}"/>
+                <oxy:PlotView Margin="5" Height="150" Name="Plot3" Model="{Binding MethanePlotModel}"/>
             </StackPanel>
         </Grid>
     </StackPanel>
