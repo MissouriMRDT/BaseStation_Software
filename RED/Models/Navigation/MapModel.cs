@@ -1,6 +1,7 @@
-﻿using GMap.NET.WindowsPresentation;
+﻿using Core;
+using Core.ViewModels;
+using GMap.NET.WindowsPresentation;
 using RED.Addons.Navigation;
-using RED.ViewModels.Navigation;
 using System.Collections.ObjectModel;
 
 namespace RED.Models.Navigation
@@ -8,7 +9,8 @@ namespace RED.Models.Navigation
     internal class MapModel
     {
         internal Waypoint CurrentLocation = new Waypoint(0, 0);
-        internal ObservableCollection<Waypoint> Waypoints = new ObservableCollection<Waypoint>();
+
+        internal WaypointManager Manager;
 
         internal GPSCoordinate StartPosition;
         internal bool ShowEmptyTiles;

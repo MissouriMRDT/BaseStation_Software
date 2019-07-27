@@ -48,5 +48,7 @@
             </StackPanel>
         </Grid>
         <CheckBox x:Name="MapShowEmptyTiles">Show Empty Tiles on Map</CheckBox>
+        <Button x:Name="SetGPSOffset" Width="350" HorizontalAlignment="Left">Set GPS Offset (From Selected)</Button>
+        <Button x:Name="ClearGPSOffset" Width="350" HorizontalAlignment="Left">Clear GPS Offset</Button>
     </StackPanel>
 </UserControl>

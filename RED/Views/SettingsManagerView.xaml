@@ -21,9 +21,6 @@
         <controls:MetroTabItem Header="GPS">
             <ContentControl x:Name="GPS" />
         </controls:MetroTabItem>
-        <controls:MetroTabItem Header="Science">
-            <ContentControl x:Name="Science" />
-        </controls:MetroTabItem>
         <controls:MetroTabItem Header="Power">
             <ContentControl x:Name="Power" />
         </controls:MetroTabItem>

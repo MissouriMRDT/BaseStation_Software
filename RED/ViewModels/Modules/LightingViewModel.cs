@@ -1,5 +1,7 @@
 ﻿using Caliburn.Micro;
 using Core.Interfaces;
+using Core.Models;
+using Core.RoveProtocol;
 using RED.Models.Modules;
 
 namespace RED.ViewModels.Modules
@@ -39,8 +41,6 @@ namespace RED.ViewModels.Modules
                 NotifyOfPropertyChange(() => HeadlightsEnabled);
                 if (value)
                 {
-                
-                    _log.Log("Doin our thing");
                     TurnOnHeadlights();
                 }
                 else
@@ -87,6 +87,8 @@ namespace RED.ViewModels.Modules
             }
         }
 
+        int CurrentMode = 0;
+
         public LightingViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
             _model = new LightingModel();
@@ -98,22 +100,29 @@ namespace RED.ViewModels.Modules
         private void SendColors()
         {
             if (Enabled)
-                _rovecomm.SendCommand(_idResolver.GetId("UnderglowColor"), new byte[] { Red, Green, Blue });
+                _rovecomm.SendCommand(new Packet("UnderglowColor", new byte[] { Red, Green, Blue }, 3, (byte)DataTypes.UINT8_T));
         }
 
         private void TurnOff()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("UnderglowColor"), new byte[] { 0, 0, 0 }, true);
+            _rovecomm.SendCommand(new Packet("UnderglowColor", new byte[] { 0, 0, 0 }, 3, (byte)DataTypes.UINT8_T), true);
         }
-
+         
         private void TurnOnHeadlights()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("Headlights"), new byte[] { 1 }, false);
+            _rovecomm.SendCommand(new Packet("Headlights", (byte)30), false);
         }
 
         private void TurnOffHeadlights()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("Headlights"), new byte[] { 0 }, false);
+            _rovecomm.SendCommand(new Packet("Headlights", (byte)0), false);
+        }
+
+        public void CycleInternalLighting()
+        {
+            CurrentMode++;
+            CurrentMode %= 4;
+            _rovecomm.SendCommand(new Packet("CycleLightingMode", (byte)CurrentMode), false);
         }
     }
 }

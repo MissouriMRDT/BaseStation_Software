@@ -1,12 +1,10 @@
 ﻿using Caliburn.Micro;
 using Core.Interfaces;
-using RED.Configurations.Input.Controllers;
+using Core.ViewModels.Input.Controllers;
 using RED.Configurations.Modules;
 using RED.Configurations.Network;
 using RED.Contexts;
-using RED.Interfaces;
 using RED.Models;
-using RED.ViewModels.Settings.Input.Controllers;
 using RED.ViewModels.Settings.Modules;
 using RED.ViewModels.Settings.Network;
 
@@ -43,18 +41,6 @@ namespace RED.ViewModels
             {
                 _model.Drive = value;
                 NotifyOfPropertyChange(() => Drive);
-            }
-        }
-        public ScienceSettingsViewModel Science
-        {
-            get
-            {
-                return _model.Science;
-            }
-            set
-            {
-                _model.Science = value;
-                NotifyOfPropertyChange(() => Science);
             }
         }
         public XboxControllerInputSettingsViewModel Xbox1
@@ -162,12 +148,9 @@ namespace RED.ViewModels
             CurrentSettingsConfig = _configManager.GetConfig<REDSettingsContext>(SettingsConfigName);
 
             Drive = new DriveSettingsViewModel(CurrentSettingsConfig.Drive, cc.Drive);
-            Science = new ScienceSettingsViewModel(CurrentSettingsConfig.Science, cc.Science);
             Xbox1 = new XboxControllerInputSettingsViewModel(CurrentSettingsConfig.Xbox1, cc.XboxController1, 1);
             Xbox2 = new XboxControllerInputSettingsViewModel(CurrentSettingsConfig.Xbox2, cc.XboxController2, 2);
-            Xbox3 = new XboxControllerInputSettingsViewModel(CurrentSettingsConfig.Xbox3, cc.XboxController3, 3);
-            Xbox4 = new XboxControllerInputSettingsViewModel(CurrentSettingsConfig.Xbox4, cc.XboxController4, 4);
-            GPS = new GPSSettingsViewModel(CurrentSettingsConfig.GPS, cc.GPS, cc.Map);
+            GPS = new GPSSettingsViewModel(CurrentSettingsConfig.GPS, cc.GPS, cc.Map, cc.WaypointManager);
             Power = new PowerSettingsViewModel(CurrentSettingsConfig.Power, cc.Power);
         }
 
@@ -181,12 +164,7 @@ namespace RED.ViewModels
             return new REDSettingsContext()
             {
                 Drive = DriveConfig.DefaultConfig,
-                Xbox1 = XboxControllerInputConfig.DefaultConfig,
-                Xbox2 = XboxControllerInputConfig.DefaultConfig,
-                Xbox3 = XboxControllerInputConfig.DefaultConfig,
-                Xbox4 = XboxControllerInputConfig.DefaultConfig,
                 GPS = GPSConfig.DefaultConfig,
-                Science = ScienceConfig.DefaultConfig,
                 Power = PowerConfig.DefaultConfig,
                 Network = NetworkManagerConfig.DefaultConfig
             };

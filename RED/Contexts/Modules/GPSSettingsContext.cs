@@ -1,4 +1,5 @@
 ﻿using Core.Contexts;
+using RED.Addons.Navigation;
 
 namespace RED.Contexts.Modules
 {
@@ -9,5 +10,6 @@ namespace RED.Contexts.Modules
         public double StartLocationLatitude;
         public double StartLocationLongitude;
         public bool MapShowEmptyTiles;
+        public GPSCoordinate Offset;
     }
 }

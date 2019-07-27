@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
-namespace Core.Roveprotocol
+namespace Core.RoveProtocol
 {
     public class MetadataManager : IIPAddressProvider, IDataIdResolver, IServerProvider
     {
@@ -28,7 +28,7 @@ namespace Core.Roveprotocol
             _log = log;
             _configManager = configs;
 
-            _configManager.AddRecord(MetadataConfigName, MetadataManagerConfig.DefaultMetadata);
+            _configManager.AddRecord(MetadataConfigName, MetadataManagerConfig.RovecommTwoMetadata);
 
             Servers = new List<MetadataServerContext>();
             Commands = new List<MetadataRecordContext>();
@@ -72,15 +72,27 @@ namespace Core.Roveprotocol
             var data = GetMetadata(name);
             if (data == null)
             {
-                _log.Log($"DataId for \"{name}\" not found");
-                return (ushort)0;
+                switch (name)
+                {
+                    case "Ping":
+                        return (ushort)1;
+                    case "PingReply":
+                        return (ushort)2;
+                    case "Subscribe":
+                        return (ushort)3;
+                    case "Unsubscribe":
+                        return (ushort)4;
+                    default: // Not found
+                        _log.Log($"DataId for \"{name}\" not found");
+                        return (ushort)0;
+                }
             }
             return data.Id;
         }
         public string GetName(ushort DataId)
         {
             var data = GetMetadata(DataId);
-            return data?.Name ?? String.Empty;
+            return data?.Name ?? DataId.ToString();
         }
         public string GetServerAddress(ushort DataId)
         {

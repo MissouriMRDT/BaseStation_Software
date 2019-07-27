@@ -1,14 +1,14 @@
 ﻿using Caliburn.Micro;
-using RED.Interfaces.Input;
 using RED.Models;
-using Core.Roveprotocol;
+using Core.RoveProtocol;
 using Core.Interfaces;
 using Core.Configurations;
-using RED.ViewModels.Input;
-using RED.ViewModels.Input.Controllers;
 using RED.ViewModels.Modules;
 using RED.ViewModels.Navigation;
 using RED.ViewModels.Tools;
+using Core.ViewModels.Input;
+using Core.ViewModels.Input.Controllers;
+using Core.Interfaces.Input;
 
 namespace RED.ViewModels
 {
@@ -26,7 +26,20 @@ namespace RED.ViewModels
 			}
 		}
 
-		public SettingsManagerViewModel SettingsManager
+        public bool AttachmentManagerEnabled
+        {
+            get
+            {
+                return _model._attachmentManagerEnabled;
+            }
+            set
+            {
+                _model._attachmentManagerEnabled = value;
+                NotifyOfPropertyChange(() => AttachmentManagerEnabled);
+            }
+        }
+
+        public SettingsManagerViewModel SettingsManager
         {
             get
             {
@@ -123,18 +136,6 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => StopwatchTool);
             }
         }
-        public ScienceViewModel Science
-        {
-            get
-            {
-                return _model._science;
-            }
-            set
-            {
-                _model._science = value;
-                NotifyOfPropertyChange(() => Science);
-            }
-        }
         public GPSViewModel GPS
         {
             get
@@ -159,19 +160,6 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => Sensor);
             }
         }
-        public DropBaysViewModel DropBays
-        {
-            get
-            {
-                return _model._dropBays;
-            }
-            set
-            {
-                _model._dropBays = value;
-                NotifyOfPropertyChange(() => DropBays);
-
-            }
-        }
         public PowerViewModel Power
         {
             get
@@ -194,30 +182,6 @@ namespace RED.ViewModels
             {
                 _model._cameraMux = value;
                 NotifyOfPropertyChange(() => CameraMux);
-            }
-        }
-        public ExternalControlsViewModel ExternalControls
-        {
-            get
-            {
-                return _model._externalControls;
-            }
-            set
-            {
-                _model._externalControls = value;
-                NotifyOfPropertyChange(() => ExternalControls);
-            }
-        }
-        public AutonomyViewModel Autonomy
-        {
-            get
-            {
-                return _model._autonomy;
-            }
-            set
-            {
-                _model._autonomy = value;
-                NotifyOfPropertyChange(() => Autonomy);
             }
         }
         public LightingViewModel Lighting
@@ -255,18 +219,6 @@ namespace RED.ViewModels
             {
                 _model._drive = value;
                 NotifyOfPropertyChange(() => Drive);
-            }
-        }
-        public ArmViewModel Arm
-        {
-            get
-            {
-                return _model._arm;
-            }
-            set
-            {
-                _model._arm = value;
-                NotifyOfPropertyChange(() => Arm);
             }
         }
         public GimbalViewModel Gimbal
@@ -317,18 +269,6 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => XboxController3);
             }
         }
-        public XboxControllerInputViewModel XboxController4
-        {
-            get
-            {
-                return _model._xboxController4;
-            }
-            set
-            {
-                _model._xboxController4 = value;
-                NotifyOfPropertyChange(() => XboxController4);
-            }
-        }
         public FlightStickViewModel FlightStickController
         {
             get
@@ -365,46 +305,42 @@ namespace RED.ViewModels
        
             Rovecomm = Rovecomm.Instance;
             //ResubscribeAll();
-
-            Science = new ScienceViewModel(Rovecomm, MetadataManager, Console);
+            
             GPS = new GPSViewModel(Rovecomm, MetadataManager);
             Sensor = new SensorViewModel(Rovecomm, MetadataManager, Console);
-            DropBays = new DropBaysViewModel(Rovecomm, MetadataManager, Console);
             Power = new PowerViewModel(Rovecomm, MetadataManager, Console);
             CameraMux = new CameraViewModel(Rovecomm, MetadataManager);
-            ExternalControls = new ExternalControlsViewModel(Rovecomm, MetadataManager);
             Lighting = new LightingViewModel(Rovecomm, MetadataManager, Console);
-            Map = new MapViewModel();
+            Map = new MapViewModel(Console);
 
-            Drive = new DriveViewModel(Rovecomm, MetadataManager);
-            Arm = new ArmViewModel(Rovecomm, MetadataManager, Console, ConfigManager);
+            Drive = new DriveViewModel(Rovecomm, MetadataManager, Console);
             Gimbal = new GimbalViewModel(Rovecomm, MetadataManager, Console);
             XboxController1 = new XboxControllerInputViewModel(1);
             XboxController2 = new XboxControllerInputViewModel(2);
             XboxController3 = new XboxControllerInputViewModel(3);
-            XboxController4 = new XboxControllerInputViewModel(4);
             FlightStickController = new FlightStickViewModel();
             KeyboardController = new KeyboardInputViewModel();
 
             // Programatic instanciation of InputManager view, vs static like everything else in a xaml 
             InputManager = new InputManagerViewModel(Console, ConfigManager,
-                new IInputDevice[] { XboxController1, XboxController2, XboxController3, XboxController4, FlightStickController, KeyboardController },
+                new IInputDevice[] { XboxController1, XboxController2, XboxController3, FlightStickController, KeyboardController },
                 new MappingViewModel[0],
-                new IInputMode[] { Drive, Arm, Gimbal, Science });
+                new IInputMode[] { Drive, Gimbal });
 
             WaypointManager = new WaypointManagerViewModel(Map, GPS);
-            Autonomy = new AutonomyViewModel(Rovecomm, MetadataManager, Console, WaypointManager);
             StopwatchTool = new StopwatchToolViewModel(ConfigManager);
 
             SettingsManager = new SettingsManagerViewModel(ConfigManager, this);
 
 			NetworkManagerEnabled = true;
+            AttachmentManagerEnabled = true;
+
+            KeyboardController.Connected = true;
         }
 
         protected override void OnDeactivate(bool close)
         {
             InputManager.SaveConfigurations();
-            Arm.SaveConfigurations();
             base.OnDeactivate(close);
         }
 
@@ -418,7 +354,13 @@ namespace RED.ViewModels
 			NetworkManagerEnabled = false;
 		}
 
-		public void Log(string message, params object[] args) {
+        public void AttachmentManager()
+        {
+            new RoverAttachmentManager.RAMBootstrapper().DisplayNetworkManager();
+            AttachmentManagerEnabled = false;
+        }
+
+        public void Log(string message, params object[] args) {
 			Core.CommonLog.Instance.Log(message, args);
 		}
 	}

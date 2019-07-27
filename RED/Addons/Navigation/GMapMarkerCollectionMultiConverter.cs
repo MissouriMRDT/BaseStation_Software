@@ -1,4 +1,6 @@
-﻿using GMap.NET;
+﻿using Core.Models;
+using Core.ViewModels;
+using GMap.NET;
 using GMap.NET.WindowsPresentation;
 using RED.Images;
 using RED.ViewModels.Navigation;

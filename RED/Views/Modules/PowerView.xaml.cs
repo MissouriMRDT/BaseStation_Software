@@ -45,7 +45,20 @@ namespace RED.Views.Modules
             }
         }
 
-        private async void EnableButton_Click(object sender, RoutedEventArgs e)
+        private void EnableButton_Click(object sender, RoutedEventArgs e)
+        {
+            byte busIndex = Byte.Parse((string)((ToggleButton)sender).Tag);
+            if ((bool)((ToggleButton)sender).IsChecked)
+            {
+                ((PowerViewModel)DataContext).EnableBus(busIndex); 
+            }
+            else
+            {
+                ((PowerViewModel)DataContext).DisableBus(busIndex);
+            }
+        }
+
+        private async void EnableNotifyButton_Click(object sender, RoutedEventArgs e)
         {
             byte busIndex = Byte.Parse((string)((ToggleButton)sender).Tag);
             if ((bool)((ToggleButton)sender).IsChecked)
@@ -53,7 +66,7 @@ namespace RED.Views.Modules
                 var result = await ShowMessage(
                     buttonText: "Enable",
                     title: "Power Bus Enable",
-                    message: "This will command the Powerboard to enable Bus #" + busIndex.ToString() + ".");
+                    message: "Are you sure?");
 
                 if (result == MessageDialogResult.Affirmative)
                 {
@@ -65,7 +78,7 @@ namespace RED.Views.Modules
                 var result = await ShowMessage(
                     buttonText: "Disable",
                     title: "Power Bus Disable",
-                    message: "This will command the Powerboard to disable Bus #" + busIndex.ToString() + ". If this bus powers communications equipment, communications will be interrupted.");
+                    message: "If this bus powers communications equipment, communications will be interrupted. \nAre you sure?");
 
                 if (result == MessageDialogResult.Affirmative)
                 {
@@ -74,21 +87,9 @@ namespace RED.Views.Modules
             }
         }
 
-        private async void AllMotorPower(object sender, RoutedEventArgs e)
+        private void AllMotorPower(object sender, RoutedEventArgs e)
         {
-            for (byte i = 0; i < 6; i++)
-            {
-                if ((bool)((ToggleButton)sender).IsChecked)
-                {
-                    ((PowerViewModel)DataContext).EnableBus(i);
-                }
-                else
-                {
-                    ((PowerViewModel)DataContext).DisableBus(i);
-                }
-
-                await Task.Delay(75);
-            }
+            ((PowerViewModel)DataContext).MotorBusses((bool)((ToggleButton)sender).IsChecked);
         }
         private void FanPower(object sender, RoutedEventArgs e)
         {

@@ -20,24 +20,29 @@
             <EventSetter Event="Click" Handler="EnableButton_Click" />
         </Style>
 
+        <Style x:Key="EnableNotifyBtn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
+            <Setter Property="Content" Value="Enabled" />
+            <EventSetter Event="Click" Handler="EnableNotifyButton_Click" />
+        </Style>
+
         <Style x:Key="AllMotorBtn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
             <Setter Property="Content" Value="Enabled" />
             <EventSetter Event="Click" Handler="AllMotorPower" />
         </Style>
 
-        <Style x:Key="FanBtn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
-            <Setter Property="Content" Value="Enabled" />
-            <EventSetter Event="Click" Handler="FanPower" />
-        </Style>
-        
-        <Style x:Key="BuzzBtn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
-            <Setter Property="Content" Value="Enabled" />
-            <EventSetter Event="Click" Handler="BuzzPower" />
-        </Style>
-
         <Style x:Key="LogBtn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
             <Setter Property="Content" Value="Enabled" />
             <EventSetter Event="Click" Handler="SaveLog" />
+        </Style>
+
+        <Style x:Key="Reboot" TargetType="Button" BasedOn="{StaticResource MetroButton}">
+            <Setter Property="Content" Value="Enabled" />
+            <EventSetter Event="Click" Handler="RebootButton_Click" />
+        </Style>
+
+        <Style x:Key="Shutdown" TargetType="Button" BasedOn="{StaticResource MetroButton}">
+            <Setter Property="Content" Value="Enabled" />
+            <EventSetter Event="Click" Handler="ShutDownButton_Click" />
         </Style>
 
         <Style x:Key="CurrentTelem" TargetType="Label">
@@ -84,43 +89,43 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <ToggleButton Grid.Row="0" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="0" />
+            <ToggleButton Grid.Row="0" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="8" IsChecked="{Binding Path=Status[8]}"/>
             <Label Grid.Row="0" Grid.Column="1" Background="{Binding Path=Motor1Current, 
                    Converter={StaticResource AmpConverter}, Mode=Default}">Motor LF</Label>
             <Label Grid.Row="0" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="Motor1Current"
                    Background="{Binding Path=Motor1Current, Converter={StaticResource AmpConverter}, Mode=Default}"/>
 
-            <ToggleButton Grid.Row="1" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="1" />
+            <ToggleButton Grid.Row="1" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="9" IsChecked="{Binding Path=Status[9]}"/>
             <Label Grid.Row="1" Grid.Column="1" Background="{Binding Path=Motor2Current, 
                     Converter={StaticResource AmpConverter}, Mode=Default}">Motor LM</Label>
             <Label Grid.Row="1" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="Motor2Current" 
                    Background="{Binding Path=Motor2Current, Converter={StaticResource AmpConverter}, Mode=Default}"/>
 
-            <ToggleButton Grid.Row="2" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="2" />
+            <ToggleButton Grid.Row="2" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="10" IsChecked="{Binding Path=Status[10]}"/>
             <Label Grid.Row="2" Grid.Column="1" Background="{Binding Path=Motor3Current, 
                     Converter={StaticResource AmpConverter}, Mode=Default}">Motor LB</Label>
             <Label Grid.Row="2" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="Motor3Current" 
                    Background="{Binding Path=Motor3Current, Converter={StaticResource AmpConverter}, Mode=Default}"/>
 
-            <ToggleButton Grid.Row="3" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="3" />
+            <ToggleButton Grid.Row="3" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="8" IsChecked="{Binding Path=Status[8]}"/>
             <Label Grid.Row="3" Grid.Column="1" Background="{Binding Path=Motor4Current, 
                     Converter={StaticResource AmpConverter}, Mode=Default}">Motor RF</Label>
             <Label Grid.Row="3" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="Motor4Current" 
                    Background="{Binding Path=Motor4Current, Converter={StaticResource AmpConverter}, Mode=Default}"/>
 
-            <ToggleButton Grid.Row="4" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="4" />
+            <ToggleButton Grid.Row="4" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="9" IsChecked="{Binding Path=Status[9]}"/>
             <Label Grid.Row="4" Grid.Column="1" Background="{Binding Path=Motor5Current, 
                     Converter={StaticResource AmpConverter}, Mode=Default}">Motor RM</Label>
             <Label Grid.Row="4" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="Motor5Current" 
                    Background="{Binding Path=Motor5Current, Converter={StaticResource AmpConverter}, Mode=Default}"/>
 
-            <ToggleButton Grid.Row="5" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="5" />
+            <ToggleButton Grid.Row="5" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="10" IsChecked="{Binding Path=Status[10]}"/>
             <Label Grid.Row="5" Grid.Column="1" Background="{Binding Path=Motor6Current, 
                     Converter={StaticResource AmpConverter}, Mode=Default}">Motor RB</Label>
             <Label Grid.Row="5" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="Motor6Current" 
                    Background="{Binding Path=Motor6Current, Converter={StaticResource AmpConverter}, Mode=Default}"/>
 
-            <ToggleButton Grid.Row="6" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="6" />
+            <ToggleButton Grid.Row="6" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="11" IsChecked="{Binding Path=Status[11]}"/>
             <Label Grid.Row="6" Grid.Column="1" Background="{Binding Path=Motor7Current, 
                     Converter={StaticResource AmpConverter}, Mode=Default}">Motor Extra</Label>
             <Label Grid.Row="6" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="Motor7Current" 
@@ -130,25 +135,25 @@
             <Label Grid.Row="7" Grid.Column="1">All motors</Label>
 
 
-            <ToggleButton Grid.Row="0" Grid.Column="3" Style="{StaticResource EnableBtn}" Tag="7" />
+            <ToggleButton Grid.Row="0" Grid.Column="3" Style="{StaticResource EnableBtn}" Tag="14" IsChecked="{Binding Path=Status[14]}"/>
             <Label Grid.Row="0" Grid.Column="4" Background="{Binding Path=Motor8Current, 
                     Converter={StaticResource AmpConverter}, Mode=Default}">Auxiliary</Label>
             <Label Grid.Row="0" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="Motor8Current" 
                    Background="{Binding Path=Motor8Current, Converter={StaticResource AmpConverter}, Mode=Default}"/>
 
-            <ToggleButton Grid.Row="1" Grid.Column="3" Style="{StaticResource EnableBtn}" Tag="10" />
+            <ToggleButton Grid.Row="1" Grid.Column="3" Style="{StaticResource EnableNotifyBtn}" Tag="2" IsChecked="{Binding Path=Status[2]}"/>
             <Label Grid.Row="1" Grid.Column="4" Background="{Binding Path=CommunicationsCurrent, 
                     Converter={StaticResource AmpConverter}, Mode=Default}">Comms</Label>
             <Label Grid.Row="1" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="CommunicationsCurrent" 
                    Background="{Binding Path=CommunicationsCurrent, Converter={StaticResource AmpConverter}, Mode=Default}"/>
 
-            <ToggleButton Grid.Row="2" Grid.Column="3" Style="{StaticResource EnableBtn}" Tag="9" />
+            <ToggleButton Grid.Row="2" Grid.Column="3" Style="{StaticResource EnableNotifyBtn}" Tag="1" IsChecked="{Binding Path=Status[1]}"/>
             <Label Grid.Row="2" Grid.Column="4" Background="{Binding Path=LogicCurrent, 
                     Converter={StaticResource AmpConverter}, Mode=Default}">Logic</Label>
             <Label Grid.Row="2" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="LogicCurrent" 
                    Background="{Binding Path=LogicCurrent, Converter={StaticResource AmpConverter}, Mode=Default}"/>
 
-            <ToggleButton Grid.Row="3" Grid.Column="3" Style="{StaticResource EnableBtn}" Tag="8" />
+            <ToggleButton Grid.Row="3" Grid.Column="3" Style="{StaticResource EnableBtn}" Tag="0" IsChecked="{Binding Path=Status[0]}"/>
             <Label Grid.Row="3" Grid.Column="4" Background="{Binding Path=ActuationCurrent, 
                     Converter={StaticResource AmpConverter}, Mode=Default}">Actuation</Label>
             <Label Grid.Row="3" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="ActuationCurrent" 
@@ -159,14 +164,9 @@
             <Label Grid.Row="4" Grid.Column="5" Style="{StaticResource TemperatureTelem}" x:Name="BMSTemperature1"
                    Background="{Binding Path=BMSTemperature1, Converter={StaticResource TempConverter}, Mode=Default}"/>
 
-
-
-
-            <ToggleButton Grid.Row="5" Grid.Column="3" Style="{StaticResource FanBtn}"/>
-            <Label Grid.Row="5" Grid.Column="4">Batt Fans</Label>
-
-            <ToggleButton Grid.Row="6" Grid.Column="3" Style="{StaticResource BuzzBtn}" Height="27" VerticalAlignment="Bottom"/>
-            <Label Grid.Row="6" Grid.Column="4">BMS Buzzer</Label>
+            <Button Grid.Row="5" Grid.Column="4" Click="RebootButton_Click" Style="{StaticResource Reboot}">Reboot</Button>
+            <Button Grid.Row="6" Grid.Column="4" Click="ShutDownButton_Click" Style="{StaticResource Shutdown}">Shut Down</Button>
+            <ToggleButton Grid.Row="7" Grid.Column="4" Style="{StaticResource LogBtn}" >START LOG</ToggleButton>
 
             <Label Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="6" HorizontalAlignment="Center">
                 --------------------------------------------------</Label>
@@ -243,10 +243,6 @@
 
             
         </Grid>
-        <UniformGrid Rows="1">
-            <ToggleButton Grid.Row="0" Grid.Column="0" Click="RebootButton_Click">Reboot</ToggleButton>
-            <ToggleButton Grid.Row="0" Grid.Column="1" Click="ShutDownButton_Click">Shut Down</ToggleButton>
-            <ToggleButton Grid.Row="0" Grid.Column="2" Style="{StaticResource LogBtn}" >Start Log</ToggleButton>
-        </UniformGrid>
+        
     </StackPanel>
 </UserControl>

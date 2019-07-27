@@ -11,6 +11,7 @@ namespace RED.ViewModels.Settings.Modules
         private readonly GPSSettingsContext _settings;
         private readonly GPSViewModel _gpsvm;
         private readonly MapViewModel _mapvm;
+        private readonly WaypointManagerViewModel _wayvm;
 
         public double BaseStationLocationLatitude
         {
@@ -68,6 +69,20 @@ namespace RED.ViewModels.Settings.Modules
             }
         }
 
+        public GPSCoordinate Offset
+        {
+            get
+            {
+                return _settings.Offset;
+            }
+            set
+            {
+                _settings.Offset = value;
+                _gpsvm.Offset = _settings.Offset;
+                NotifyOfPropertyChange(() => Offset);
+            }
+        }
+
         public bool MapShowEmptyTiles
         {
             get
@@ -82,11 +97,12 @@ namespace RED.ViewModels.Settings.Modules
             }
         }
 
-        public GPSSettingsViewModel(GPSSettingsContext settings, GPSViewModel GpsVM, MapViewModel MapVM)
+        public GPSSettingsViewModel(GPSSettingsContext settings, GPSViewModel GpsVM, MapViewModel MapVM, WaypointManagerViewModel WayVM)
         {
             _settings = settings;
             _gpsvm = GpsVM;
             _mapvm = MapVM;
+            _wayvm = WayVM;
 
             _gpsvm.BaseStationLocation = new GPSCoordinate(_settings.BaseStationLocationLatitude, _settings.BaseStationLocationLongitude);
             _mapvm.StartPosition = new GPSCoordinate(StartLocationLatitude, StartLocationLongitude);
@@ -118,6 +134,18 @@ namespace RED.ViewModels.Settings.Modules
                     StartLocationLongitude = 20.462027;
                     break;
             }
+        }
+
+        public void SetGPSOffset()
+        {
+            Offset = new GPSCoordinate(_wayvm.SelectedWaypoint.Latitude - _gpsvm.RawLocation.Latitude, 
+                    _wayvm.SelectedWaypoint.Longitude - _gpsvm.RawLocation.Longitude);
+
+        }
+
+        public void ClearGPSOffset()
+        {
+            Offset = new GPSCoordinate(0, 0);
         }
     }
 }

@@ -1,9 +1,12 @@
 ﻿using Caliburn.Micro;
 using Core.Interfaces;
+using Core.Models;
+using Core.RoveProtocol;
 using RED.Models.Modules;
 using System;
+using System.Collections;
 using System.IO;
-using System.Threading.Tasks;
+using System.Net;
 
 namespace RED.ViewModels.Modules
 {
@@ -358,6 +361,19 @@ namespace RED.ViewModels.Modules
             }
         }
 
+        public BitArray Status
+        {
+            get
+            {
+                return _model.Status;
+            }
+            set
+            {
+                _model.Status = value;
+                NotifyOfPropertyChange(() => Status);
+            }
+        }
+
         public PowerViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
             _model = new PowerModel();
@@ -365,75 +381,118 @@ namespace RED.ViewModels.Modules
             _idResolver = idResolver;
             _log = log;
 
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Motor1Current"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Motor2Current"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Motor3Current"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Motor4Current"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Motor5Current"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Motor6Current"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Motor7Current"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Motor8Current"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Bus5VCurrent"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Bus12VCurrent"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("General12V40A"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("ActuationCurrent"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("LogicCurrent"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("CommunicationsCurrent"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("InputVoltage"));
+            _rovecomm.NotifyWhenMessageReceived(this, "Motor1Current");
+            _rovecomm.NotifyWhenMessageReceived(this, "Motor2Current");
+            _rovecomm.NotifyWhenMessageReceived(this, "Motor3Current");
+            _rovecomm.NotifyWhenMessageReceived(this, "Motor4Current");
+            _rovecomm.NotifyWhenMessageReceived(this, "Motor5Current");
+            _rovecomm.NotifyWhenMessageReceived(this, "Motor6Current");
+            _rovecomm.NotifyWhenMessageReceived(this, "Motor7Current");
+            _rovecomm.NotifyWhenMessageReceived(this, "Motor8Current");
+            _rovecomm.NotifyWhenMessageReceived(this, "Bus5VCurrent");
+            _rovecomm.NotifyWhenMessageReceived(this, "Bus12VCurrent");
+            _rovecomm.NotifyWhenMessageReceived(this, "General12V40A");
+            _rovecomm.NotifyWhenMessageReceived(this, "ActuationCurrent");
+            _rovecomm.NotifyWhenMessageReceived(this, "LogicCurrent");
+            _rovecomm.NotifyWhenMessageReceived(this, "CommunicationsCurrent");
+            _rovecomm.NotifyWhenMessageReceived(this, "InputVoltage");
 
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Cell1Voltage"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Cell2Voltage"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Cell3Voltage"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Cell4Voltage"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Cell5Voltage"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Cell6Voltage"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Cell7Voltage"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("Cell8Voltage"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("TotalPackCurrent"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("TotalPackVoltage"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("BMSTemperature1"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("BMSTemperature2"));
+            _rovecomm.NotifyWhenMessageReceived(this, "Cell1Voltage");
+            _rovecomm.NotifyWhenMessageReceived(this, "Cell2Voltage");
+            _rovecomm.NotifyWhenMessageReceived(this, "Cell3Voltage");
+            _rovecomm.NotifyWhenMessageReceived(this, "Cell4Voltage");
+            _rovecomm.NotifyWhenMessageReceived(this, "Cell5Voltage");
+            _rovecomm.NotifyWhenMessageReceived(this, "Cell6Voltage");
+            _rovecomm.NotifyWhenMessageReceived(this, "Cell7Voltage");
+            _rovecomm.NotifyWhenMessageReceived(this, "Cell8Voltage");
+            _rovecomm.NotifyWhenMessageReceived(this, "TotalPackCurrent");
+            _rovecomm.NotifyWhenMessageReceived(this, "TotalPackVoltage");
+            _rovecomm.NotifyWhenMessageReceived(this, "BMSTemperature1");
+            _rovecomm.NotifyWhenMessageReceived(this, "BMSTemperature2");
 
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("PowerBusOverCurrentNotification"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("BMSPackOvercurrent"));
-            _rovecomm.NotifyWhenMessageReceived(this, _idResolver.GetId("BMSPackUndervoltage"));
+            _rovecomm.NotifyWhenMessageReceived(this, "PowerBusOverCurrentNotification");
+            _rovecomm.NotifyWhenMessageReceived(this, "BMSPackOvercurrent");
+            _rovecomm.NotifyWhenMessageReceived(this, "BMSPackUndervoltage");
+
+            _rovecomm.NotifyWhenMessageReceived(this, "TotalPackCurrentInt");
+            _rovecomm.NotifyWhenMessageReceived(this, "BMSTemperatureInt");
+            _rovecomm.NotifyWhenMessageReceived(this, "BMSVoltages");
+            _rovecomm.NotifyWhenMessageReceived(this, "BMSError");
+            _rovecomm.NotifyWhenMessageReceived(this, "PowerCurrents");
+            _rovecomm.NotifyWhenMessageReceived(this, "PowerBusStatus");
         }
 
-        public void ReceivedRovecommMessageCallback(ushort dataId, byte[] data, bool reliable)
+        public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
         {
-            switch (_idResolver.GetName(dataId))
+            switch (packet.Name)
             {
-                case "Motor1Current": Motor1Current = BitConverter.ToSingle(data, 0); break;
-                case "Motor2Current": Motor2Current = BitConverter.ToSingle(data, 0); break;
-                case "Motor3Current": Motor3Current = BitConverter.ToSingle(data, 0); break;
-                case "Motor4Current": Motor4Current = BitConverter.ToSingle(data, 0); break;
-                case "Motor5Current": Motor5Current = BitConverter.ToSingle(data, 0); break;
-                case "Motor6Current": Motor6Current = BitConverter.ToSingle(data, 0); break;
-                case "Motor7Current": Motor7Current = BitConverter.ToSingle(data, 0); break;
-                case "Motor8Current": Motor8Current = BitConverter.ToSingle(data, 0); break;
-                case "Bus5VCurrent": Bus5VCurrent = BitConverter.ToSingle(data, 0); break;
-                case "Bus12VCurrent": Bus12VCurrent = BitConverter.ToSingle(data, 0); break;
-                case "General12V40ACurrent": General12V40ACurrent = BitConverter.ToSingle(data, 0); break;
-                case "ActuationCurrent": ActuationCurrent = BitConverter.ToSingle(data, 0); break;
-                case "LogicCurrent": LogicCurrent = BitConverter.ToSingle(data, 0); break;
-                case "CommunicationsCurrent": CommunicationsCurrent = BitConverter.ToSingle(data, 0); break;
-                case "InputVoltage": InputVoltage = BitConverter.ToSingle(data, 0); break;
+                // New Id's
+                case "TotalPackCurrentInt": TotalPackCurrent = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 0)) / 1000.0); break;
+                case "BMSTemperatureInt": BMSTemperature1 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 0)) / 1000.0); break;
+                case "BMSVoltages":
+                    TotalPackVoltage = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0)) / 1000.0);
+                    Cell1Voltage = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 2)) / 1000.0);
+                    Cell2Voltage = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 4)) / 1000.0);
+                    Cell3Voltage = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 6)) / 1000.0);
+                    Cell4Voltage = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 8)) / 1000.0);
+                    Cell5Voltage = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 10)) / 1000.0);
+                    Cell6Voltage = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 12)) / 1000.0);
+                    Cell7Voltage = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 14)) / 1000.0);
+                    Cell8Voltage = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 16)) / 1000.0);
+                    break;
+                case "BMSError":
+                    _log.Log($"Recieved BMSError Report:\n  {BitConverter.ToString(packet.Data)}"); break;
 
-                case "Cell1Voltage": Cell1Voltage = BitConverter.ToSingle(data, 0); break;
-                case "Cell2Voltage": Cell2Voltage = BitConverter.ToSingle(data, 0); break;
-                case "Cell3Voltage": Cell3Voltage = BitConverter.ToSingle(data, 0); break;
-                case "Cell4Voltage": Cell4Voltage = BitConverter.ToSingle(data, 0); break;
-                case "Cell5Voltage": Cell5Voltage = BitConverter.ToSingle(data, 0); break;
-                case "Cell6Voltage": Cell6Voltage = BitConverter.ToSingle(data, 0); break;
-                case "Cell7Voltage": Cell7Voltage = BitConverter.ToSingle(data, 0); break;
-                case "Cell8Voltage": Cell8Voltage = BitConverter.ToSingle(data, 0); break;
-                case "TotalPackCurrent": TotalPackCurrent = BitConverter.ToSingle(data, 0); break;
-                case "TotalPackVoltage": TotalPackVoltage = BitConverter.ToSingle(data, 0); break;
-                case "BMSTemperature1": BMSTemperature1 = BitConverter.ToSingle(data, 0); break;
-                case "BMSTemperature2": BMSTemperature2 = BitConverter.ToSingle(data, 0); break;
+                case "PowerCurrents":
+                    ActuationCurrent = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0)) / 1000.0);
+                    LogicCurrent = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 2)) / 1000.0);
+                    CommunicationsCurrent = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 4)) / 1000.0);
+                    Motor1Current = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 6)) / 1000.0);
+                    Motor2Current = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 8)) / 1000.0);
+                    Motor3Current = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 10)) / 1000.0);
+                    Motor4Current = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 12)) / 1000.0);
+                    Motor5Current = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 14)) / 1000.0);
+                    Motor6Current = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 16)) / 1000.0);
+                    Motor7Current = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 18)) / 1000.0);
+                    General12V40ACurrent = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 20)) / 1000.0);
+
+                    break;
+
+                case "PowerBusStatus":
+                    Status = new BitArray(packet.Data);
+                    break;
+
+                // Old Id's
+                case "Motor1Current": Motor1Current = BitConverter.ToSingle(packet.Data, 0); break;
+                case "Motor2Current": Motor2Current = BitConverter.ToSingle(packet.Data, 0); break;
+                case "Motor3Current": Motor3Current = BitConverter.ToSingle(packet.Data, 0); break;
+                case "Motor4Current": Motor4Current = BitConverter.ToSingle(packet.Data, 0); break;
+                case "Motor5Current": Motor5Current = BitConverter.ToSingle(packet.Data, 0); break;
+                case "Motor6Current": Motor6Current = BitConverter.ToSingle(packet.Data, 0); break;
+                case "Motor7Current": Motor7Current = BitConverter.ToSingle(packet.Data, 0); break;
+                case "Motor8Current": Motor8Current = BitConverter.ToSingle(packet.Data, 0); break;
+                case "Bus5VCurrent": Bus5VCurrent = BitConverter.ToSingle(packet.Data, 0); break;
+                case "Bus12VCurrent": Bus12VCurrent = BitConverter.ToSingle(packet.Data, 0); break;
+                case "General12V40ACurrent": General12V40ACurrent = BitConverter.ToSingle(packet.Data, 0); break;
+                case "ActuationCurrent": ActuationCurrent = BitConverter.ToSingle(packet.Data, 0); break;
+                case "LogicCurrent": LogicCurrent = BitConverter.ToSingle(packet.Data, 0); break;
+                case "CommunicationsCurrent": CommunicationsCurrent = BitConverter.ToSingle(packet.Data, 0); break;
+                case "InputVoltage": InputVoltage = BitConverter.ToSingle(packet.Data, 0); break;
+                case "Cell1Voltage": Cell1Voltage = BitConverter.ToSingle(packet.Data, 0); break;
+                case "Cell2Voltage": Cell2Voltage = BitConverter.ToSingle(packet.Data, 0); break;
+                case "Cell3Voltage": Cell3Voltage = BitConverter.ToSingle(packet.Data, 0); break;
+                case "Cell4Voltage": Cell4Voltage = BitConverter.ToSingle(packet.Data, 0); break;
+                case "Cell5Voltage": Cell5Voltage = BitConverter.ToSingle(packet.Data, 0); break;
+                case "Cell6Voltage": Cell6Voltage = BitConverter.ToSingle(packet.Data, 0); break;
+                case "Cell7Voltage": Cell7Voltage = BitConverter.ToSingle(packet.Data, 0); break;
+                case "Cell8Voltage": Cell8Voltage = BitConverter.ToSingle(packet.Data, 0); break;
+                case "TotalPackCurrent": TotalPackCurrent = BitConverter.ToSingle(packet.Data, 0); break;
+                case "TotalPackVoltage": TotalPackVoltage = BitConverter.ToSingle(packet.Data, 0); break;
+                case "BMSTemperature1": BMSTemperature1 = BitConverter.ToSingle(packet.Data, 0); break;
+                case "BMSTemperature2": BMSTemperature2 = BitConverter.ToSingle(packet.Data, 0); break;
 
                 case "PowerBusOverCurrentNotification":
-                    _log.Log($"Overcurrent notification from Powerboard from Bus Index {data[0]}");
+                    _log.Log($"Overcurrent notification from Powerboard from Bus Index {packet.Data[0]}");
                     break;
                 case "BMSPackOvercurrent":
                     _log.Log("Overcurrent notification from BMS");
@@ -441,55 +500,99 @@ namespace RED.ViewModels.Modules
                 case "BMSPackUndervoltage":
                     _log.Log("Undervoltage notification from BMS");
                     break;
+                
             }
 
             if (LogFile != null)
             {
-                switch (_idResolver.GetName(dataId))
+                switch (packet.Name)
                 {
                     case "PowerBusOverCurrentNotification":
-                        LogFile.WriteLine("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, Power Overcurrent: Bus {2}", DateTime.Now, dataId, data[0]);
+                        LogFile.WriteLine("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, Power Overcurrent: Bus {2}", DateTime.Now, packet.Name, packet.Data[0]);
                         break;
                     case "BMSPackOvercurrent":
-                        LogFile.WriteLine("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, BMS Overcurrent", DateTime.Now, dataId);
+                        LogFile.WriteLine("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, BMS Overcurrent", DateTime.Now, packet.Name);
                         break;
                     case "BMSPackUndervoltage":
-                        LogFile.WriteLine("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, BMS Undervoltage", DateTime.Now, dataId);
+                        LogFile.WriteLine("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, BMS Undervoltage", DateTime.Now, packet.Name);
                         break;
                     default:
-                        if (data.Length != 4) break;
-                        LogFile.WriteLine("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, {2}", DateTime.Now, dataId, BitConverter.ToSingle(data, 0));
+                        if (packet.Data.Length != 4) break;
+                        LogFile.WriteLine("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, {2}", DateTime.Now, packet.Name, BitConverter.ToSingle(packet.Data, 0));
                         break;
                 }
                 LogFile.Flush();
             }
-        }
+		}
 
-        public void RebootRover()
+		public void ReceivedRovecommMessageCallback(int index, bool reliable) {
+			ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
+		}
+
+		public void RebootRover()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("BMSReboot"), new byte[0], true);
+            _rovecomm.SendCommand(new Packet("BMSStop", (byte)10), true);
         }
         public void EStopRover()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("BMSStop"), new byte[0], true);
+            _rovecomm.SendCommand(new Packet("BMSStop", (byte)0), true);
         }
 
         public void FanControl(bool state)
         {
-            _rovecomm.SendCommand(_idResolver.GetId("BMSFanControl"), state ? 0 : 1, true);
+            _rovecomm.SendCommand(new Packet("BMSFanControl", state ? 0 : 1), true);
         }
         public void BuzzerControl(bool state)
         {
-            _rovecomm.SendCommand(_idResolver.GetId("BMSBuzzerControl"), state ? 0 : 1, true);
+            _rovecomm.SendCommand(new Packet("BMSBuzzerControl", state ? 0 : 1), true);
         }
 
         public void EnableBus(byte index)
         {
-            _rovecomm.SendCommand(_idResolver.GetId("PowerBusEnable"), index, true);
+            
+            BitArray bits = new BitArray(16);
+            bits.Set(index + 1, true);
+            byte[] thebits = new byte[2];
+
+            bits.CopyTo(thebits, 0);
+
+            byte[] bytes = new byte[3];
+            thebits.CopyTo(bytes, 0);
+
+            bytes[2] = 1;
+
+            _rovecomm.SendCommand(new Packet("PowerBusEnableDisable", bytes, 3, (byte)DataTypes.UINT8_T));
+
         }
         public void DisableBus(byte index)
         {
-            _rovecomm.SendCommand(_idResolver.GetId("PowerBusDisable"), index, true);
+
+            BitArray bits = new BitArray(16);
+            bits.Set(index + 1, true);
+            byte[] thebits = new byte[2];
+
+            bits.CopyTo(thebits, 0);
+
+            byte[] bytes = new byte[3];
+            thebits.CopyTo(bytes, 0);
+
+            bytes[2] = 0;
+
+            _rovecomm.SendCommand(new Packet("PowerBusEnableDisable", bytes, 3, (byte)DataTypes.UINT8_T));
+        }
+
+        public void MotorBusses(bool state)
+        {
+            BitArray bits = new BitArray(16);
+            bits.Set(9, true);
+            bits.Set(10, true);
+            bits.Set(11, true);
+
+            byte[] bytes = new byte[3];
+            bits.CopyTo(bytes, 0);
+
+            bytes[2] = (state) ? (byte)1 : (byte)0;
+            _rovecomm.SendCommand(new Packet("PowerBusEnableDisable", bytes, 3, (byte)DataTypes.UINT8_T));
         }
 
         public void SaveFile(bool state)

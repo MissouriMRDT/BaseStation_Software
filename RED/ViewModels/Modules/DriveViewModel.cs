@@ -1,8 +1,11 @@
 ﻿using Caliburn.Micro;
 using Core.Interfaces;
-using RED.Interfaces.Input;
+using Core.Models;
+using Core.RoveProtocol;
 using RED.Models.Modules;
+using System;
 using System.Collections.Generic;
+using System.Net;
 using Math = System.Math;
 
 namespace RED.ViewModels.Modules
@@ -14,8 +17,9 @@ namespace RED.ViewModels.Modules
         private readonly DriveModel _model;
         private readonly IRovecomm _rovecomm;
         private readonly IDataIdResolver _idResolver;
+        private readonly ILogger _log;
 
-        public int SpeedLeft
+        public short SpeedLeft
         {
             get
             {
@@ -27,7 +31,7 @@ namespace RED.ViewModels.Modules
                 NotifyOfPropertyChange(() => SpeedLeft);
             }
         }
-        public int SpeedRight
+        public short SpeedRight
         {
             get
             {
@@ -78,11 +82,12 @@ namespace RED.ViewModels.Modules
 			}
 		}
 
-		public DriveViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver)
+		public DriveViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
             _model = new DriveModel();
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
+            _log = log;
             Name = "Drive";
             ModeType = "Drive";
 			Channel = "1";
@@ -119,11 +124,25 @@ namespace RED.ViewModels.Modules
             if (speedLimitFactor > 1F) speedLimitFactor = 1F;
             if (speedLimitFactor < 0F) speedLimitFactor = 0F;
 
-            int newSpeedLeft = (int)(commandLeft * speedLimitFactor * motorRangeFactor);
-            int newSpeedRight = (int)(commandRight * speedLimitFactor * motorRangeFactor);
+            short newSpeedLeft = (short)(commandLeft * speedLimitFactor * motorRangeFactor);
+            short newSpeedRight = (short)(commandRight * speedLimitFactor * motorRangeFactor);
 
             SpeedLeft = newSpeedLeft;
             SpeedRight = newSpeedRight;
+
+            if (values.ContainsKey("ForwardBump"))
+            {
+                if (values["ForwardBump"] > 0)
+                {
+                    SpeedLeft = 50;
+                    SpeedRight = 50;
+                }
+                else if (values["BackwardBump"] > 0)
+                {
+                    SpeedLeft = -50;
+                    SpeedRight = -50;
+                }
+            }
 
             SendSpeeds(false);
         }
@@ -132,12 +151,15 @@ namespace RED.ViewModels.Modules
         {
             if (UseLegacyDataIds)
             {
-                _rovecomm.SendCommand(_idResolver.GetId("MotorLeftSpeed"), SpeedLeft, reliable);
-                _rovecomm.SendCommand(_idResolver.GetId("MotorRightSpeed"), SpeedRight, reliable);
+                _rovecomm.SendCommand(new Packet("MotorLeftSpeed", SpeedLeft), reliable);
+                _rovecomm.SendCommand(new Packet("MotorRightSpeed", SpeedRight), reliable);
             }
             else
             {
-                _rovecomm.SendCommand(_idResolver.GetId("DriveLeftRight"), (ushort)SpeedLeft << 16 | (ushort)SpeedRight, reliable);
+                short[] sendValues = { IPAddress.HostToNetworkOrder(SpeedLeft), IPAddress.HostToNetworkOrder(SpeedRight) };
+                byte[] data = new byte[sendValues.Length * sizeof(short)];
+                Buffer.BlockCopy(sendValues, 0, data, 0, data.Length);
+                _rovecomm.SendCommand(new Packet("DriveLeftRight", data, 2, (byte)DataTypes.INT16_T), reliable);
             }
         }
 

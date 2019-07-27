@@ -1,8 +1,8 @@
 ﻿using Caliburn.Micro;
 using Core.Interfaces;
-using RED.Interfaces.Input;
+using Core.Models;
+using Core.RoveProtocol;
 using RED.Models.Modules;
-using RED.ViewModels.Input;
 using System;
 using System.Collections.Generic;
 
@@ -32,19 +32,6 @@ namespace RED.ViewModels.Modules
             {
                 _model.PanIncrement = value;
                 NotifyOfPropertyChange(() => PanIncrement);
-            }
-        }
-
-        public int RollIncrement
-        {
-            get
-            {
-                return _model.RollIncrement;
-            }
-            set
-            {
-                _model.RollIncrement = value;
-                NotifyOfPropertyChange(() => RollIncrement);
             }
         }
 
@@ -92,46 +79,20 @@ namespace RED.ViewModels.Modules
         public void SetValues(Dictionary<string, float> values)
         {
             UpdateControlState(values);
+            
+            // Pan, Tilt
+            short[] openVals = { (Int16)(values["Tilt"] * 50), (Int16)(values["Pan"] * 50)};
+            byte[] data = new byte[4];
+            Buffer.BlockCopy(openVals, 0, data, 0, data.Length);
+            Array.Reverse(data);
 
-            if (controlState == GimbalStates.SubGimbal)
+            if (controlState == GimbalStates.DriveGimbal)
             {
-                short pan, tilt;
-                pan = (Int16)(values["Pan"] * PanIncrement);
-                tilt = (Int16)(values["Tilt"] * TiltIncrement);
-                _rovecomm.SendCommand(_idResolver.GetId("PanServo"), pan);
-                _rovecomm.SendCommand(_idResolver.GetId("TiltServo"), tilt);
+                _rovecomm.SendCommand(new Packet("DriveGimbalIncrement", data, 2, (byte)DataTypes.INT16_T));
             }
             else
             {
-                short pan, tilt, mast, zoom, roll;
-
-                switch (ControllerBase.JoystickDirection(values["Tilt"], values["Pan"]))
-                {
-                    case ControllerBase.JoystickDirections.Right:
-                    case ControllerBase.JoystickDirections.Left:
-                        pan = (short)(values["Pan"] * SpeedLimit);
-                        tilt = 0;
-                        break;
-                    case ControllerBase.JoystickDirections.Up:
-                    case ControllerBase.JoystickDirections.Down:
-                        tilt = (short)(values["Tilt"] * SpeedLimit);
-                        pan = 0;
-                        break;
-
-                    default:
-                        tilt = 0;
-                        pan = 0;
-                        break;
-                }
-
-                zoom = (Int16)(values["Zoom"] * MaxZoomSpeed);
-                roll = (Int16)(values["Roll"] * RollIncrement);
-                mast = (Int16)(ControllerBase.TwoButtonToggleDirection(values["GimbalMastTiltDirection"] != 0, (values["GimbalMastTiltMagnitude"])) * SpeedLimit);
-
-                short[] openVals = { pan, tilt, roll, mast, zoom };
-                byte[] data = new byte[openVals.Length * sizeof(Int16)];
-                Buffer.BlockCopy(openVals, 0, data, 0, data.Length);
-                _rovecomm.SendCommand(_idResolver.GetId("GimbalOpenValues"), data);
+                _rovecomm.SendCommand(new Packet("MainGimbalIncrement", data, 2,(byte)DataTypes.INT16_T));
             }
         }
 
@@ -142,49 +103,22 @@ namespace RED.ViewModels.Modules
                 controlState = GimbalStates.MainGimbal;
                 ControlState = "Main Gimbal";
             }
-            else if(values["SubGimbalSwitch"] == 1)
+            else if(values["DriveGimbalSwitch"] == 1)
             {
-                controlState = GimbalStates.SubGimbal;
-                ControlState = "Sub Gimbal";
-
-                short[] openVals = { 0, 0, 0, 0, 0 };
-                byte[] data = new byte[openVals.Length * sizeof(Int16)];
-                Buffer.BlockCopy(openVals, 0, data, 0, data.Length);
-                _rovecomm.SendCommand(_idResolver.GetId("GimbalOpenValues"), data);
+                controlState = GimbalStates.DriveGimbal;
+                ControlState = "Drive Gimbal";
             }
         }
 
         public void StopMode()
         {
-            _rovecomm.SendCommand(_idResolver.GetId("GimbalOpenValues"), new byte[]{ 0, 0, 0, 0, 0 }, true);
-        }
-
-        public void Snapshot()
-        {
-            _rovecomm.SendCommand(_idResolver.GetId("GimbalRecord"), (byte)GimbalRecordValues.Snapshot, true);
-        }
-
-        public void RecordStart()
-        {
-            _rovecomm.SendCommand(_idResolver.GetId("GimbalRecord"), (byte)GimbalRecordValues.Start, true);
-        }
-
-        public void RecordStop()
-        {
-            _rovecomm.SendCommand(_idResolver.GetId("GimbalRecord"), (byte)GimbalRecordValues.Stop, true);
-        }
-
-        private enum GimbalRecordValues
-        {
-            Stop = 0,
-            Start = 1,
-            Snapshot = 2
+            _rovecomm.SendCommand(new Packet("MainGimbalIncrement", new byte[] { 0, 0, 0, 0 }, 2, (byte)DataTypes.INT16_T));
         }
 
         private enum GimbalStates
         {
             MainGimbal,
-            SubGimbal
+            DriveGimbal
         }
     }
 }

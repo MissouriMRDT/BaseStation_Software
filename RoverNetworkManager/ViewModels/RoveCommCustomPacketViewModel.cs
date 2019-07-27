@@ -2,6 +2,7 @@
 using Core.Configurations;
 using Core.Contexts;
 using Core.Interfaces;
+using Core.Models;
 using RoverNetworkManager.Models;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -100,14 +101,14 @@ namespace RoverNetworkManager.ViewModels {
 			}
 		}
 
-		MetadataSaveContext meta = MetadataManagerConfig.DefaultMetadata;
+		//MetadataSaveContext meta = MetadataManagerConfig.Rovecomm2Metadata;
 
 		public void LoadMetadata()
         {
 			Commands.Add("Custom command");
 			CommandIDs.Add(0);
 			Addresses.Add("Custom command", "");
-            
+            /*
             foreach (MetadataServerContext ctx in meta.Servers)
             {
 				List<MetadataRecordContext> l = ctx.Commands.ToList();
@@ -123,9 +124,11 @@ namespace RoverNetworkManager.ViewModels {
 				Addresses.Add(sep, "");
 				foreach(string s in strings) Addresses.Add(s, ctx.Address);
 			}
+            */
         }
 
 		public MetadataServerContext FindContextByCommand(ushort commandID) {
+            /*
 			foreach (MetadataServerContext ctx in meta.Servers) {
 				Commands.Add("== " + ctx.Name + " ==");
 				Commands.AddRange(ctx.Commands.ToList().ConvertAll(i => i.ToString()));
@@ -134,6 +137,8 @@ namespace RoverNetworkManager.ViewModels {
 					if (record.Id == commandID) return ctx;
 				}
 			}
+
+            */
 
 			return null;
 		}
@@ -169,10 +174,12 @@ namespace RoverNetworkManager.ViewModels {
 		internal void SendCommand() {
 			byte[] data = StringToByteArray(Data);
 
+            /*
 			ushort id;
 			if (ushort.TryParse(ID, out id)) {
-				_networkManager.SendPacket(id, data.ToArray(), System.Net.IPAddress.Parse(IP), false);
+				_networkManager.SendPacket(new Packet(id, data.ToArray()), System.Net.IPAddress.Parse(IP), false);
 			}
+            */
 		}
 
 		public RoveCommCustomPacketViewModel(IRovecomm network, IConfigurationManager config)
@@ -192,15 +199,20 @@ namespace RoverNetworkManager.ViewModels {
 		}
 
 		public void SubscribeID() {
-			_networkManager.NotifyWhenMessageReceived(this, ushort.Parse(ID));
+			_networkManager.NotifyWhenMessageReceived(this, ID);
 		}
 
-		public void ReceivedRovecommMessageCallback(ushort dataId, byte[] data, bool reliable) {
+		public void ReceivedRovecommMessageCallback(Packet packet, bool reliable) {
 			string d = "";
-			foreach (byte b in data.ToArray()) { d += b.ToString() + ","; }
+			foreach (byte b in packet.Data.ToArray()) { d += b.ToString() + ","; }
 			d = d.Remove(d.Length - 1, 1);
 
-			PacketLog += $"{dataId}: {d}\r\n";
+			PacketLog += $"{packet.Name}: {d}\r\n";
 		}
-	}
+
+        public void ReceivedRovecommMessageCallback(int index, bool reliable)
+        {
+            ReceivedRovecommMessageCallback(_networkManager.GetPacketByID(index), false);
+        }
+    }
 }

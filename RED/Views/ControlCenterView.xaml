@@ -51,26 +51,8 @@
                                 <ContentControl x:Name="Gimbal" />
                             </StackPanel>
                         </Expander>
-                        <Expander Header="Arm">
-                            <ContentControl x:Name="Arm" />
-                        </Expander>
-                        <Expander Header="Science">
-                            <ContentControl x:Name="Science" />
-                        </Expander>
-                        <Expander Header="Autonomy">
-                            <ContentControl x:Name="Autonomy" />
-                        </Expander>
-                        <Expander Header="Sensors">
-                            <ContentControl x:Name="Sensor" />
-                        </Expander>
-                        <Expander Header="Cameras">
-                            <ContentControl x:Name="CameraMux" />
-                        </Expander>
                         <Expander Header="Power and BMS">
                             <ContentControl x:Name="Power" />
-                        </Expander>
-                        <Expander Header="Drop Bays">
-                            <ContentControl x:Name="DropBays" />
                         </Expander>
                         <Expander Header="Lighting">
                             <ContentControl x:Name="Lighting" />
@@ -79,30 +61,22 @@
                 </ScrollViewer>
                 <Grid Grid.Column="2">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
                         <RowDefinition Height="*" />
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
-                    <DockPanel Grid.Row="0" Margin="5">
+
+                    <Expander Grid.Row="0" Header="Sensors">
+                        <ContentControl x:Name="Sensor" />
+                    </Expander>
+                    <StackPanel Grid.Row="1" Margin="5">
                         <Button DockPanel.Dock="Bottom" x:Name="ResubscribeAll">Resubscribe All</Button>
 						<Button DockPanel.Dock="Bottom" x:Name="NetworkManager" IsEnabled="{Binding NetworkManagerEnabled}" Content="Open Network Manager" Margin="0 0 0 5"/>
-						<controls:MetroTabControl TabStripMargin="0">
-                            <TabItem Header="State" controls:ControlsHelper.HeaderFontSize="12">
-                                <StackPanel>
-                                    <DockPanel>
-                                        <Label DockPanel.Dock="Left">Keyboard Speed</Label>
-                                        <ToggleButton DockPanel.Dock="Right" IsChecked="{Binding KeyboardController.Connected}">Connected</ToggleButton>
-                                        <Label Content="{Binding KeyboardController.SpeedMultiplier}" ContentStringFormat="{}{0:##%}" HorizontalContentAlignment="Right" />
-                                    </DockPanel>
-                                </StackPanel>
-                            </TabItem>
-                            <TabItem Header="Stopwatch" controls:ControlsHelper.HeaderFontSize="12">
-                                <ContentControl x:Name="StopwatchTool" />
-                            </TabItem>
-                        </controls:MetroTabControl>
-					</DockPanel>
-                    <ContentControl Grid.Row="1" Margin="5" x:Name="Console" />
-                    <ContentControl Grid.Row="2" Margin="5" x:Name="InputManager"/>
+                        <Button DockPanel.Dock="Bottom" x:Name="AttachmentManager" IsEnabled="{Binding AttachmentManagerEnabled}" Content="Open Attachment Manager" Margin="0 0 0 5"/>
+                    </StackPanel>
+                    <ContentControl Grid.Row="2" Margin="5" x:Name="Console" />
+                    <ContentControl Grid.Row="3" Margin="5" x:Name="InputManager"/>
                 </Grid>
             </Grid>
         </TabItem>

@@ -1,8 +1,8 @@
-﻿using RED.Contexts.Input.Controllers;
-using RED.Contexts.Modules;
+﻿using RED.Contexts.Modules;
 using Core.Contexts.Network;
 using Core.Contexts;
 using System.Xml.Serialization;
+using Core.Contexts.Input.Controllers;
 
 namespace RED.Contexts
 {
@@ -15,7 +15,6 @@ namespace RED.Contexts
         public XboxControllerSettingsContext Xbox3;
         public XboxControllerSettingsContext Xbox4;
         public GPSSettingsContext GPS;
-        public ScienceSettingsContext Science;
         public PowerSettingsContext Power;
         public NetworkManagerSettingsContext Network;
     }

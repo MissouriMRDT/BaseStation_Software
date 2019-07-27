@@ -7,26 +7,6 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel>
         <DockPanel>
-            <Label x:Name="TiltIncrement" Width="40px" DockPanel.Dock="Right" HorizontalContentAlignment="Right" />
-            <Label HorizontalAlignment="Left" Content="Tilt Increment" FontSize="10"/>
-            <Slider Minimum="0" Maximum="1000" Value="{Binding TiltIncrement}" Margin="3px" />
-        </DockPanel>
-        <DockPanel>
-            <Label x:Name="RollIncrement" Width="40px" DockPanel.Dock="Right" HorizontalContentAlignment="Right" />
-            <Label HorizontalAlignment="Left" Content="Roll Increment" FontSize="10"/>
-            <Slider Minimum="0" Maximum="180" Value="{Binding RollIncrement}" Margin="3px" />
-        </DockPanel>
-        <DockPanel>
-            <Label x:Name="PanIncrement" Width="40px" DockPanel.Dock="Right" HorizontalContentAlignment="Right" />
-            <Label HorizontalAlignment="Left" Content="Pan Increment" FontSize="10"/>
-            <Slider Minimum="0" Maximum="180" Value="{Binding PanIncrement}" Margin="3px" />
-        </DockPanel>
-        <UniformGrid Rows="1">
-            <Button Content="Snapshot" x:Name="Snapshot" />
-            <Button Content="Record On" x:Name="RecordStart" />
-            <Button Content="Record Off" x:Name="RecordStop" />
-        </UniformGrid>
-        <DockPanel>
             <Label DockPanel.Dock="Left">Control State:</Label>
             <Label DockPanel.Dock="Right" x:Name ="ControlState" HorizontalContentAlignment="Center" />
         </DockPanel>

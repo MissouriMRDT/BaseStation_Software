@@ -1,4 +1,8 @@
 ﻿using Caliburn.Micro;
+using Core;
+using Core.Interfaces;
+using Core.Models;
+using Core.ViewModels;
 using GMap.NET;
 using GMap.NET.MapProviders;
 using GMap.NET.WindowsPresentation;
@@ -7,6 +11,7 @@ using RED.Models.Navigation;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Timers;
 using System.Windows;
 using System.Windows.Media;
 
@@ -15,6 +20,7 @@ namespace RED.ViewModels.Navigation
     public class MapViewModel : PropertyChangedBase
     {
         private readonly MapModel _model;
+        private readonly ILogger _log;
 
         public Waypoint CurrentLocation
         {
@@ -32,12 +38,20 @@ namespace RED.ViewModels.Navigation
         {
             get
             {
-                return _model.Waypoints;
+                return _model.Manager.Waypoints;
+            }
+        }
+
+        public WaypointManager Manager
+        {
+            get
+            {
+                return _model.Manager;
             }
             private set
             {
-                _model.Waypoints = value;
-                NotifyOfPropertyChange(() => Waypoints);
+                _model.Manager = value;
+                NotifyOfPropertyChange(() => Manager);
             }
         }
 
@@ -105,9 +119,11 @@ namespace RED.ViewModels.Navigation
             }
         }
 
-        public MapViewModel()
+        public MapViewModel(ILogger log)
         {
             _model = new MapModel();
+            _log = log;
+            Manager = WaypointManager.Instance;
 
             CurrentLocation = new Waypoint("GPS", 0f, 0f) { Color = System.Windows.Media.Colors.Red };
 			RefreshMap();
@@ -120,6 +136,8 @@ namespace RED.ViewModels.Navigation
             CachePrefetchStartZoom = MainMap.MinZoom;
             CachePrefetchStopZoom = MainMap.MaxZoom;
         }
+
+        public List<PointLatLng> RoverPath;
 
         private void InitializeMapControl()
         {
@@ -141,6 +159,40 @@ namespace RED.ViewModels.Navigation
 
             MainMap.IgnoreMarkerOnMouseWheel = true;
             MainMap.MouseWheelZoomType = MouseWheelZoomType.MousePositionWithoutCenter;
+
+            RoverPath = new List<PointLatLng>();
+
+            Timer checkForTime = new Timer(1000);
+            checkForTime.Elapsed += new ElapsedEventHandler(UpdateRoverPath);
+            checkForTime.Enabled = true;
+
+        }
+
+        void UpdateRoverPath(object sender, ElapsedEventArgs e)
+        {
+            if (CurrentLocation.Longitude == 0 && CurrentLocation.Latitude == 0) {
+                return;
+            }
+
+            PointLatLng curr = new PointLatLng(CurrentLocation.Latitude, CurrentLocation.Longitude);
+            
+            if(RoverPath.Count > 0 && RoverPath[RoverPath.Count - 1].Equals(curr))
+            {
+                RoverPath.Add(curr);
+                _log.Log("Added point!");
+            }
+            else if(RoverPath.Count == 0)
+            {
+                RoverPath.Add(curr);
+                _log.Log("Added point!");
+            }
+            RefreshMap();
+        }
+
+        void ClearRoverPath()
+        {
+            RoverPath.Clear();
+            RefreshMap();
         }
 
         public void CacheImport()
@@ -188,6 +240,9 @@ namespace RED.ViewModels.Navigation
             var newdata = (IEnumerable<GMapMarker>)converter.Convert(new object[] { CurrentLocation, Waypoints.Where(x => x.IsOnMap) }, typeof(System.Collections.ObjectModel.ObservableCollection<GMapMarker>), null, System.Globalization.CultureInfo.DefaultThreadCurrentUICulture);
             foreach (var marker in newdata)
                 MainMap.Markers.Add(marker);
+
+            var routeMarker = new GMapRoute(RoverPath);
+            MainMap.Markers.Add(routeMarker);
         }
     }
 }

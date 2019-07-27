@@ -1,5 +1,5 @@
 ﻿using Caliburn.Micro;
-using Core.Roveprotocol;
+using Core.RoveProtocol;
 using Core.Network;
 using RoverNetworkManager.Models;
 using Core.Configurations;
