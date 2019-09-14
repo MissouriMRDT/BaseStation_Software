@@ -103,8 +103,6 @@
                         </Border>
                     </Expander.Header>
                     <StackPanel Margin="10 10 10 40">
-                        <Button>Action</Button>
-                        <Button>Action</Button>
                     </StackPanel>
                 </Expander>
             </StackPanel>
