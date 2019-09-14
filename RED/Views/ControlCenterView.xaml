@@ -41,7 +41,8 @@
                     </StackPanel>
                     
                 </Grid>
-                <ScrollViewer Grid.Column="1">
+                
+               <StackPanel Grid.Column="1">
                     <StackPanel>
                         <Expander Header="Drive" IsExpanded="True">
                             <ContentControl x:Name="Drive" />
@@ -58,7 +59,7 @@
                             <ContentControl x:Name="Lighting" />
                         </Expander>
                     </StackPanel>
-                </ScrollViewer>
+                </StackPanel>
                 <Grid Grid.Column="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
