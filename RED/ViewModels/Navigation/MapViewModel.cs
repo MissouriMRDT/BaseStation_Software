@@ -146,7 +146,7 @@ namespace RED.ViewModels.Navigation
             MainMap.FillEmptyTiles = !ShowEmptyTiles;
 
             MainMap.Manager.Mode = AccessMode.CacheOnly;
-            MainMap.MapProvider = GMapProviders.OpenStreetMapQuestHybrid;
+            MainMap.MapProvider = GMapProviders.GoogleTerrainMap;
 
             MainMap.Position = new PointLatLng(StartPosition.Latitude, StartPosition.Longitude);
             MainMap.MinZoom = 1;
