@@ -135,6 +135,18 @@ namespace RED.ViewModels.Modules
                 return (float)(Heading * 180d / Math.PI);
             }
         }
+        public float RoverDistanceTravelled
+        {
+            get
+            {
+                return _model.RoverDistanceTravelled;
+            }
+            set
+            {
+                _model.RoverDistanceTravelled = value;
+                NotifyOfPropertyChange(() => RoverDistanceTravelled);
+            }
+        }
 
         public GPSViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver)
         {
