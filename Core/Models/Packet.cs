@@ -1,14 +1,16 @@
 ﻿using System;
+using System.Net.Sockets;
+using System.Threading.Tasks;
 using Core.RoveProtocol;
 
 namespace Core.Models
 {
-    public readonly struct Packet
+    public struct Packet
     {
-        public readonly string Name;
-        public readonly byte[] Data;
-        public readonly byte Count;
-        public readonly byte DataType;
+        public string Name;
+        public byte[] Data;
+        public byte Count;
+        public byte DataType;
 
         public Packet(string name, byte[] data, byte count, byte type)
         {
@@ -72,6 +74,14 @@ namespace Core.Models
             Data = new byte[] { 4 };
             Count = 1;
             DataType = 0;
+        }
+
+        public void Set(string name, byte[] data, byte count, byte type)
+        {
+            Name = name;
+            Data = data;
+            Count = count;
+            DataType = type;
         }
     }
 }

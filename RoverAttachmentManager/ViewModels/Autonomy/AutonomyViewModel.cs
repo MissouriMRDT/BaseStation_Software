@@ -38,7 +38,7 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
 
         public void Calibrate() => _rovecomm.SendCommand(new Packet("AutonomyCalibrate"), true);
         
-        public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
+        public void ReceivedRovecommMessageCallback(ref Packet packet, bool reliable)
         {
             switch (packet.Name)
             {
@@ -57,11 +57,6 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
             Array.Reverse(msg);
 
             _rovecomm.SendCommand(new Packet("WaypointAdd", msg, 2, (byte)7), true);
-        }
-
-        public void ReceivedRovecommMessageCallback(int index, bool reliable)
-        {
-            ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
         }
     }
 }

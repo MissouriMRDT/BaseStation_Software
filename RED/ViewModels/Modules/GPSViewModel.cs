@@ -152,7 +152,7 @@ namespace RED.ViewModels.Modules
             _rovecomm.NotifyWhenMessageReceived(this, "PitchHeadingRoll");
         }
 
-        public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
+        public void ReceivedRovecommMessageCallback(ref Packet packet, bool reliable)
         {
             switch (packet.Name)
             {
@@ -202,10 +202,6 @@ namespace RED.ViewModels.Modules
                     break;
             }
         }
-
-		public void ReceivedRovecommMessageCallback(int index, bool reliable) {
-			ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
-		}
 
 		private void RecalculateAntennaDirection()
         {

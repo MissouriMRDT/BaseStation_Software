@@ -430,12 +430,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
             };
         }
 
-        public void ReceivedRovecommMessageCallback(int index, bool reliable)
-        {
-            ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
-        }
-
-        public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
+        public void ReceivedRovecommMessageCallback(ref Packet packet, bool reliable)
         {
             switch (packet.Name)
             {

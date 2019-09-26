@@ -386,7 +386,7 @@ namespace RoverAttachmentManager.ViewModels.Science
             pngExporter.ExportToFile(model, filename);
         }
 
-        public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
+        public void ReceivedRovecommMessageCallback(ref Packet packet, bool reliable)
         {
             switch (packet.Name)
             {
@@ -411,10 +411,6 @@ namespace RoverAttachmentManager.ViewModels.Science
                     break;
             }
         }
-
-		public void ReceivedRovecommMessageCallback(int index, bool reliable) {
-			ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
-		}
 
         public void SetUVLed(byte val)
         {

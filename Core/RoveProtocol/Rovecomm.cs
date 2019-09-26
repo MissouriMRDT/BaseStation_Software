@@ -74,6 +74,8 @@ namespace Core.RoveProtocol
         private bool sendToBlackbox;
         private IPAddress blackBoxIP = IPAddress.Parse("192.168.1.140");
 
+        private Packet _packet;
+
         private readonly IPAddress[] allDeviceIPs;
         private readonly MetadataManager metadataManager;
         private Dictionary<string, List<IRovecommReceiver>> registrations;
@@ -83,8 +85,6 @@ namespace Core.RoveProtocol
 
         private INetworkTransportProtocol continuousDataSocket;
         private readonly bool EnableReliablePackets = false;
-
-        private RingBuffer<Packet> buffer = new RingBuffer<Packet>(1000000);
 
         private async void Listen()
         {
@@ -300,11 +300,11 @@ namespace Core.RoveProtocol
         /// <param name="packet">the packet data received.</param>
         private void HandleReceivedPacket(IPAddress srcIP, byte[] encodedPacket)
         {
-            Packet packet = RovecommTwo.DecodePacket(encodedPacket, metadataManager);
+            RovecommTwo.DecodePacket(encodedPacket, metadataManager, ref _packet);
 
-            bool passToSubscribers = HandleSystemDataID(srcIP, packet);
+            bool passToSubscribers = HandleSystemDataID(srcIP, ref _packet);
 
-            NotifyReceivers(buffer.Add(packet));
+            NotifyReceivers(ref _packet);
         }
 
         /// <summary>
@@ -314,7 +314,7 @@ namespace Core.RoveProtocol
         /// <param name="srcIP">the ip address of the device that sent this PC the message</param>
         /// <param name="packet">the packet</param>
         /// <returns></returns>
-        private bool HandleSystemDataID(IPAddress srcIP, Packet packet)
+        private bool HandleSystemDataID(IPAddress srcIP, ref Packet packet)
         {
             switch (packet.Name)
             {
@@ -347,9 +347,8 @@ namespace Core.RoveProtocol
         /// <param name="dataId">the dataid of the message received</param>
         /// <param name="data">the data received</param>
         /// <param name="reliable">whether or not it was sent over a 'reliable' (non broadcast or not) network protocol</param>
-        private void NotifyReceivers(int index)
+        private void NotifyReceivers(ref Packet packet)
         {
-			Packet packet = buffer[index];
 
             if (packet.Name == null) return;
             if (registrations.TryGetValue(packet.Name, out List<IRovecommReceiver> registered))
@@ -357,7 +356,7 @@ namespace Core.RoveProtocol
                 {
                     try
                     {
-                        subscription.ReceivedRovecommMessageCallback(index, false);
+                        subscription.ReceivedRovecommMessageCallback(ref packet, false);
                     }
                     catch (System.Exception e)
                     {
@@ -416,10 +415,6 @@ namespace Core.RoveProtocol
             ping.RoundtripTime = now - ping.Timestamp;
             ping.Semaphore.Release();
         }
-
-		public Packet GetPacketByID(int index) {
-			return buffer[index];
-		}
 
 		[Flags]
         private enum RoveCommFlags : byte

@@ -78,12 +78,5 @@ namespace Core.Interfaces
         /// <param name="timeout">how many milliseconds to wait before timing out</param>
         /// <returns>how long it took to reply to the ping</returns>
         Task<TimeSpan> SendPing(IPAddress ip, TimeSpan timeout);
-
-        /// <summary>
-		/// return a packet with the given index
-		/// </summary>
-		/// <param name="index">index of the packet to get</param>
-		/// <returns></returns>
-		Packet GetPacketByID(int index);
     }
 }

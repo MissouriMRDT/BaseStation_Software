@@ -202,17 +202,12 @@ namespace RoverNetworkManager.ViewModels {
 			_networkManager.NotifyWhenMessageReceived(this, ID);
 		}
 
-		public void ReceivedRovecommMessageCallback(Packet packet, bool reliable) {
+		public void ReceivedRovecommMessageCallback(ref Packet packet, bool reliable) {
 			string d = "";
 			foreach (byte b in packet.Data.ToArray()) { d += b.ToString() + ","; }
 			d = d.Remove(d.Length - 1, 1);
 
 			PacketLog += $"{packet.Name}: {d}\r\n";
 		}
-
-        public void ReceivedRovecommMessageCallback(int index, bool reliable)
-        {
-            ReceivedRovecommMessageCallback(_networkManager.GetPacketByID(index), false);
-        }
     }
 }

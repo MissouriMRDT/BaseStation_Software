@@ -1,4 +1,6 @@
-﻿namespace Core.Interfaces
+﻿using Core.Models;
+
+namespace Core.Interfaces
 {
     /// <summary>
     /// This interface describes objects who want to receive rovecomm messages from the network.
@@ -17,6 +19,6 @@
         /// <param name="data">The data received</param>
         /// <param name="reliable">whether or not the message was delivered reliably -- IE with ensured protocols
         /// such as tcp -- or not -- IE with broadcast protocols such as udp.</param>
-        void ReceivedRovecommMessageCallback(int index, bool reliable);
+        void ReceivedRovecommMessageCallback(ref Packet packet, bool reliable);
     }
 }
