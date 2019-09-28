@@ -38,7 +38,7 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
 
         public void Calibrate() => _rovecomm.SendCommand(new Packet("AutonomyCalibrate"), true);
         
-        public void ReceivedRovecommMessageCallback(ref Packet packet, bool reliable)
+        public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
         {
             switch (packet.Name)
             {

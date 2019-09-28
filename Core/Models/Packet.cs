@@ -5,7 +5,7 @@ using Core.RoveProtocol;
 
 namespace Core.Models
 {
-    public struct Packet
+    public class Packet
     {
         public string Name;
         public byte[] Data;

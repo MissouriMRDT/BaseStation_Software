@@ -300,7 +300,7 @@ namespace Core.RoveProtocol
         /// <param name="packet">the packet data received.</param>
         private void HandleReceivedPacket(IPAddress srcIP, byte[] encodedPacket)
         {
-            RovecommTwo.DecodePacket(encodedPacket, metadataManager, ref _packet);
+            RovecommTwo.DecodePacket(encodedPacket, metadataManager, _packet);
 
             switch (_packet.Name)
             {
@@ -330,7 +330,7 @@ namespace Core.RoveProtocol
                         {
                             try
                             {
-                                subscription.ReceivedRovecommMessageCallback(ref _packet, false);
+                                subscription.ReceivedRovecommMessageCallback(_packet, false);
                             }
                             catch (System.Exception e)
                             {

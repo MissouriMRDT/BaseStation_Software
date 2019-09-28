@@ -18,7 +18,7 @@ namespace Core.RoveProtocol
         public const byte VersionNumber = 2;
         static readonly private int[] sizes = new int[] { 1, 1, 2, 2, 4, 4, 8};
 
-        static public void DecodePacket(byte[] encodedPacket, IDataIdResolver resolver, ref Packet packet)
+        static public void DecodePacket(byte[] encodedPacket, IDataIdResolver resolver, Packet packet)
         {
             ushort rawDataId;
             byte[] rawData;

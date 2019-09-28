@@ -386,7 +386,7 @@ namespace RoverAttachmentManager.ViewModels.Science
             pngExporter.ExportToFile(model, filename);
         }
 
-        public void ReceivedRovecommMessageCallback(ref Packet packet, bool reliable)
+        public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
         {
             switch (packet.Name)
             {

@@ -202,7 +202,7 @@ namespace RoverNetworkManager.ViewModels {
 			_networkManager.NotifyWhenMessageReceived(this, ID);
 		}
 
-		public void ReceivedRovecommMessageCallback(ref Packet packet, bool reliable) {
+		public void ReceivedRovecommMessageCallback(Packet packet, bool reliable) {
 			string d = "";
 			foreach (byte b in packet.Data.ToArray()) { d += b.ToString() + ","; }
 			d = d.Remove(d.Length - 1, 1);
