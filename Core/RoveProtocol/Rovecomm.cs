@@ -302,67 +302,44 @@ namespace Core.RoveProtocol
         {
             RovecommTwo.DecodePacket(encodedPacket, metadataManager, ref _packet);
 
-            bool passToSubscribers = HandleSystemDataID(srcIP, ref _packet);
-
-            NotifyReceivers(ref _packet);
-        }
-
-        /// <summary>
-        /// checks to see if a received message has a rovecomm system data id, IE if the protocol itself is supposed to do anything here such as
-        /// replying to a ping or subscription.
-        /// </summary>
-        /// <param name="srcIP">the ip address of the device that sent this PC the message</param>
-        /// <param name="packet">the packet</param>
-        /// <returns></returns>
-        private bool HandleSystemDataID(IPAddress srcIP, ref Packet packet)
-        {
-            switch (packet.Name)
+            switch (_packet.Name)
             {
                 case "Null":
                     log.Log("Packet recieved with null dataId"); //likely means a) wasn't a message for rovecomm b) message was just gobblygook
+                    break;
+                case null:
+                    log.Log("Packet recieved with null name");
                     break;
                 case "Ping":
                     SendPacket(new Packet("PingReply"), srcIP, false);
                     break;
                 case "PingReply":
-                    ProcessPing(packet.Data);
+                    ProcessPing(_packet.Data);
                     break;
                 case "Subscribe":
-                    log.Log($"Packet recieved requesting subscription to dataId={packet.Name}");
+                    log.Log($"Packet recieved requesting subscription to dataId={_packet.Name}");
                     break;
                 case "Unsubscribe":
-                    log.Log($"Packet recieved requesting unsubscription from dataId={packet.Name}");
+                    log.Log($"Packet recieved requesting unsubscription from dataId={_packet.Name}");
                     break;
                 default: //Regular DataId
-                    return true;
+
+                    if (registrations.TryGetValue(_packet.Name, out List<IRovecommReceiver> registered))
+                    {
+                        foreach (IRovecommReceiver subscription in registered)
+                        {
+                            try
+                            {
+                                subscription.ReceivedRovecommMessageCallback(ref _packet, false);
+                            }
+                            catch (System.Exception e)
+                            {
+                                log.Log("Error parsing packet with dataid={0}{1}{2}", _packet.DataType, System.Environment.NewLine, e);
+                            }
+                        }
+                    }
+                    break;
             }
-
-            return false;
-        }
-
-        /// <summary>
-        /// send the received rovecomm message to any objects in this program that requested to be notified when a rovecomm message came in with a certain dataID, 
-        /// if the message's dataID corresponds to their request.
-        /// </summary>
-        /// <param name="dataId">the dataid of the message received</param>
-        /// <param name="data">the data received</param>
-        /// <param name="reliable">whether or not it was sent over a 'reliable' (non broadcast or not) network protocol</param>
-        private void NotifyReceivers(ref Packet packet)
-        {
-
-            if (packet.Name == null) return;
-            if (registrations.TryGetValue(packet.Name, out List<IRovecommReceiver> registered))
-                foreach (IRovecommReceiver subscription in registered)
-                {
-                    try
-                    {
-                        subscription.ReceivedRovecommMessageCallback(ref packet, false);
-                    }
-                    catch (System.Exception e)
-                    {
-                        log.Log("Error parsing packet with dataid={0}{1}{2}", packet.DataType, System.Environment.NewLine, e);
-                    }
-                }
         }
 
         /// <summary>
