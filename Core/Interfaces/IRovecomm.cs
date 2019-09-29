@@ -70,13 +70,5 @@ namespace Core.Interfaces
         /// </summary>
         /// <param name="deviceIP">the ip address of the device to request</param>
         void SubscribeMyPCToAllDevices();
-
-        /// <summary>
-        /// attempt to ping a device on the network using rovecomm.
-        /// </summary>
-        /// <param name="ip">ip of the device to ping</param>
-        /// <param name="timeout">how many milliseconds to wait before timing out</param>
-        /// <returns>how long it took to reply to the ping</returns>
-        Task<TimeSpan> SendPing(IPAddress ip, TimeSpan timeout);
     }
 }

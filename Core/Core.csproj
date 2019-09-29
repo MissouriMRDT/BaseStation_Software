@@ -116,6 +116,7 @@
     <Compile Include="Network\UDPEndpoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoveProtocol\MetadataManager.cs" />
+    <Compile Include="RoveProtocol\PingManager.cs" />
     <Compile Include="RoveProtocol\Rovecomm.cs" />
     <Compile Include="RoveProtocol\RovecommOne.cs" />
     <Compile Include="RoveProtocol\RovecommTwo.cs" />

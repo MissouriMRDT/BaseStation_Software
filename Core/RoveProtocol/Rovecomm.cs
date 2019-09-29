@@ -46,6 +46,8 @@ namespace Core.RoveProtocol
 
             continuousDataSocket = new UDPEndpoint(DestinationPort, DestinationPort);
 
+            _packet = new Packet("Empty");
+
             Listen();
         }
 
@@ -75,7 +77,6 @@ namespace Core.RoveProtocol
         private readonly MetadataManager metadataManager;
         private Dictionary<string, List<IRovecommReceiver>> registrations;
         // private readonly ILogger log;
-        private HashSet<PendingPing> pendingPings = new HashSet<PendingPing>();
         private Dictionary<IPAddress, SubscriptionRecord> subscriptions;
 
         private INetworkTransportProtocol continuousDataSocket;
@@ -172,27 +173,6 @@ namespace Core.RoveProtocol
             ushort dataId = metadataManager.GetId(packet.Name);
             IPAddress destIP = metadataManager.GetIPAddress(dataId);
             SendPacket(packet, destIP, reliable);
-        }
-
-        /// <summary>
-        /// attempt to ping a device on the network using rovecomm.
-        /// </summary>
-        /// <param name="ip">ip of the device to ping</param>
-        /// <param name="timeout">how many milliseconds to wait before timing out</param>
-        /// <returns>how long it took to reply to the ping</returns>
-        public async Task<TimeSpan> SendPing(IPAddress ip, TimeSpan timeout)
-        {
-            PendingPing ping = new PendingPing()
-            {
-                Timestamp = DateTime.Now,
-                SeqNum = 0,
-                Semaphore = new System.Threading.SemaphoreSlim(0)
-            };
-            pendingPings.Add(ping);
-
-            SendPacket(new Packet("Ping"), ip, true, true);
-            await ping.Semaphore.WaitAsync(timeout);
-            return ping.RoundtripTime;
         }
 
         /// <summary>
@@ -303,9 +283,6 @@ namespace Core.RoveProtocol
                 case "Ping":
                     SendPacket(new Packet("PingReply"), srcIP, false);
                     break;
-                case "PingReply":
-                    ProcessPing(_packet.Data);
-                    break;
                 case "Subscribe":
                     log.Log($"Packet recieved requesting subscription to dataId={_packet.Name}");
                     break;
@@ -363,34 +340,11 @@ namespace Core.RoveProtocol
             }
         }
 
-        /// <summary>
-        /// processes a received ping by computing how much time it took and releasing it from wait state.
-        /// </summary>
-        /// <param name="data"></param>
-        private void ProcessPing(byte[] data)
-        {
-            DateTime now = DateTime.Now;
-            ushort responseSeqNum = BitConverter.ToUInt16(data, 0);
-            PendingPing ping = pendingPings.FirstOrDefault(x => x.SeqNum == responseSeqNum);
-            if (ping == null) return;
-            
-            ping.RoundtripTime = now - ping.Timestamp;
-            ping.Semaphore.Release();
-        }
-
 		[Flags]
         private enum RoveCommFlags : byte
         {
             None = 0b000_0000,
             ACK = 0b000_0001
-        }
-
-        private class PendingPing
-        {
-            public ushort SeqNum;
-            public DateTime Timestamp;
-            public System.Threading.SemaphoreSlim Semaphore;
-            public TimeSpan RoundtripTime;
         }
     }
 }
