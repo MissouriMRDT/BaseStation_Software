@@ -339,12 +339,5 @@ namespace Core.RoveProtocol
                 SendPacketUnreliable(destIP, packetData);
             }
         }
-
-		[Flags]
-        private enum RoveCommFlags : byte
-        {
-            None = 0b000_0000,
-            ACK = 0b000_0001
-        }
     }
 }
