@@ -62,13 +62,13 @@ namespace Core.Interfaces
         /// messages. This must be called before any rovecomm streams can be received by this computer.
         /// </summary>
         /// <param name="deviceIP">the ip address of the device to request</param>
-        void SubscribeMyPCToDevice(IPAddress deviceIP);
+        void SubscribeTo(IPAddress deviceIP);
 
         /// <summary>
         /// request to subscribe this computer to all devices on the network so that they will send this pc rovecomm
         /// messages. This must be called before any rovecomm streams can be received by this computer.
         /// </summary>
         /// <param name="deviceIP">the ip address of the device to request</param>
-        void SubscribeMyPCToAllDevices();
+        void SubscribeToAll();
     }
 }

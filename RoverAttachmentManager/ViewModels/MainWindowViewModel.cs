@@ -164,7 +164,7 @@ namespace RoverAttachmentManager.ViewModels
 
         public void ResubscribeAll()
         {
-            Rovecomm.SubscribeMyPCToAllDevices();
+            Rovecomm.SubscribeToAll();
         }
 
         public AutonomyViewModel Autonomy

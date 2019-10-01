@@ -231,7 +231,7 @@ namespace Core.RoveProtocol
         /// messages. This must be called before any rovecomm streams can be received by this computer.
         /// </summary>
         /// <param name="deviceIP">the ip address of the device to request</param>
-        public void SubscribeMyPCToDevice(IPAddress deviceIP)
+        public void SubscribeTo(IPAddress deviceIP)
         {
             SendPacket(new Packet("Subscribe"), deviceIP, true);
 
@@ -251,11 +251,11 @@ namespace Core.RoveProtocol
         /// messages. This must be called before any rovecomm streams can be received by this computer.
         /// </summary>
         /// <param name="deviceIP">the ip address of the device to request</param>
-        public void SubscribeMyPCToAllDevices()
+        public void SubscribeToAll()
         {
             foreach(IPAddress deviceIP in allDeviceIPs)
             {
-                SubscribeMyPCToDevice(deviceIP);
+                SubscribeTo(deviceIP);
             }
 
             log.Log("Telemetry Subscriptions Sent");

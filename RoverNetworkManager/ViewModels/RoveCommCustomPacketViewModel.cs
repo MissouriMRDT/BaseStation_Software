@@ -187,7 +187,7 @@ namespace RoverNetworkManager.ViewModels {
             _model = new RoveCommCustomPacketModel();
 			_networkManager = network;
 
-			_networkManager.SubscribeMyPCToAllDevices();
+			_networkManager.SubscribeToAll();
 
 			LoadMetadata();
 			PropertyChanged += RoveCommCustomPacketViewModel_PropertyChanged;
