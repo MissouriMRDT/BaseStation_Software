@@ -15,15 +15,6 @@ namespace Core.Interfaces
     /// </summary>
     public interface IRovecomm
     {
-        /// <summary>
-        /// send a rovecomm message over the network. This overload takes any object as data to send, and will 
-        /// be transformed into bytes in the process.
-        /// </summary>
-        /// <param name="packet">the packet</param>
-        /// <param name="reliable">whether to send it via a protocol that ensures that it gets there, or to 
-        /// simply broadcast the data. The former is more useful for single one off messages, the latter 
-        /// for repeated messages or commands. </param>
-        void SendCommand(Packet packet, bool reliable = false);
 
 		/// <summary>
 		/// send a rovecomm message over the network. Again. Internal overload since the ip addresses are baked into the dataid, so only
@@ -33,7 +24,7 @@ namespace Core.Interfaces
 		/// <param name="data">data to send</param>
 		/// <param name="destIP">ip of the device to send the message to</param>
 		/// <param name="reliable">whether to send it reliably (IE with a non broadcast protocol) or not</param>
-		void SendPacket(Packet packet, IPAddress destIP, bool reliable = false, bool getReliableResponse = false);
+		void SendCommand(Packet packet, bool reliable = false, IPAddress destIP = null);
 
 		/// <summary>
 		/// request to be notified whenever a rovecomm message comes in from the network carrying the 

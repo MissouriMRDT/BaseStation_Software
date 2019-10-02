@@ -44,7 +44,7 @@ namespace Core.RoveProtocol
             };
             pendingPings.Add(ping);
 
-            _rovecomm.SendPacket(new Packet("Ping"), ip, true, true);
+            _rovecomm.SendCommand(new Packet("Ping"), true, ip);
             await ping.Semaphore.WaitAsync(timeout);
             return ping.RoundtripTime;
         }

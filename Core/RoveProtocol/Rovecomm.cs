@@ -67,10 +67,6 @@ namespace Core.RoveProtocol
         private const ushort DestinationPort = 11000;
         private const ushort DestinationReliablePort = 11001;
 
-        public const byte VersionNumber = 1;
-        public const byte SubscriptionDataId = 3;
-        public const byte UnSubscribeDataId = 4;
-
         private Packet _packet;
 
         private readonly IPAddress[] allDeviceIPs;
@@ -103,7 +99,7 @@ namespace Core.RoveProtocol
             }
         }
 
-        public async void SendPacketReliable(IPAddress destIP, byte[] packetData, bool getResponse = false)
+        public async void SendPacketReliable(IPAddress destIP, byte[] packetData)
         {
             if (!EnableReliablePackets)
             {
@@ -112,8 +108,6 @@ namespace Core.RoveProtocol
             }
             else
             {
-                byte[] response;
-
                 try
                 {
                     using (TcpClient tcpConnection = new TcpClient())
@@ -124,12 +118,6 @@ namespace Core.RoveProtocol
                         await tcpConnection.ConnectAsync(destIP, DestinationReliablePort);
                         await Task.Delay(25); //boards can get overwhelmed and fault if done too quick.
                         await tcpConnection.GetStream().WriteAsync(packetData, 0, packetData.Length);
-                        await Task.Delay(25);
-                        if (getResponse)
-                        {
-                            response = await ReadTcpPacket(tcpConnection);
-                            HandleReceivedPacket(destIP, response);
-                        }
 
                         tcpConnection.Close();
                     }
@@ -158,21 +146,6 @@ namespace Core.RoveProtocol
             }
 
             return readBuffer;
-        }
-
-        /// <summary>
-        /// send a rovecomm message over the network. This overload takes a series of bytes to send.
-        /// </summary>
-        /// <param name="dataId">the id to attach to the message, corresponding to rovecomm metadata ID's</param>
-        /// <param name="obj">the data to send over the network</param>
-        /// <param name="reliable">whether to send it via a protocol that ensures that it gets there, or to 
-        /// simply broadcast the data. The former is more useful for single one off messages, the latter 
-        /// for repeated messages or commands. </param>
-        public void SendCommand(Packet packet, bool reliable = false)
-        {
-            ushort dataId = metadataManager.GetId(packet.Name);
-            IPAddress destIP = metadataManager.GetIPAddress(dataId);
-            SendPacket(packet, destIP, reliable);
         }
 
         /// <summary>
@@ -233,7 +206,7 @@ namespace Core.RoveProtocol
         /// <param name="deviceIP">the ip address of the device to request</param>
         public void SubscribeTo(IPAddress deviceIP)
         {
-            SendPacket(new Packet("Subscribe"), deviceIP, true);
+            SendCommand(new Packet("Subscribe"), true, deviceIP);
 
             if (subscriptions.ContainsKey(deviceIP))
             {
@@ -281,7 +254,7 @@ namespace Core.RoveProtocol
                     log.Log("Packet recieved with null name");
                     break;
                 case "Ping":
-                    SendPacket(new Packet("PingReply"), srcIP, false);
+                    SendCommand(new Packet("PingReply"), false, srcIP);
                     break;
                 case "Subscribe":
                     log.Log($"Packet recieved requesting subscription to dataId={_packet.Name}");
@@ -315,23 +288,27 @@ namespace Core.RoveProtocol
         /// <param name="packet">packet to send</param>
         /// <param name="destIP">ip of the device to send the message to</param>
         /// <param name="reliable">whether to send it reliably (IE with a non broadcast protocol) or not</param>
-        public void SendPacket(Packet packet, IPAddress destIP, bool reliable = false, bool getReliableResponse = false)
+        public void SendCommand(Packet packet, bool reliable = false, IPAddress destIP = null)
         {
-            if (destIP == null)
+            if(destIP == null)
             {
-                log.Log($"Attempted to send packet with unknown IP address. DataId={packet.Name}");
-                return;
+                destIP = metadataManager.GetIPAddress(metadataManager.GetId(packet.Name));
+                if(destIP == null)
+                {
+                    log.Log($"Attempted to send packet with unknown IP address. DataId={packet.Name}");
+                    return;
+                }
             }
-            if (destIP.Equals(IPAddress.None))
+            if(destIP.Equals(IPAddress.None))
             {
                 log.Log($"Attempted to send packet with invalid IP address. DataId={packet.Name} IP={destIP}");
                 return;
             }
 
-            if (reliable)
+            if(reliable)
             {
                 byte[] packetData = RovecommTwo.EncodePacket(packet, metadataManager);
-                SendPacketReliable(destIP, packetData, getReliableResponse);
+                SendPacketReliable(destIP, packetData);
             }
             else
             {
