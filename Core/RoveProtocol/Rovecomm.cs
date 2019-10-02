@@ -150,6 +150,7 @@ namespace Core.RoveProtocol
         public void NotifyWhenMessageReceived(IRovecommReceiver receiver, string dataName)
         {
             if (dataName == null) return;
+
             if (registrations.TryGetValue(dataName, out List<IRovecommReceiver> existingRegistrations))
             {
                 if (!existingRegistrations.Contains(receiver))
@@ -158,37 +159,6 @@ namespace Core.RoveProtocol
             else
             {
                 registrations.Add(dataName, new List<IRovecommReceiver> { receiver });
-            }
-        }
-
-        /// <summary>
-        /// request to stop being notified of receiving all rovecomm messages you previously requested to receive
-        /// </summary>
-        /// <param name="receiver">the reciever to stop being notified (the class should input itself as this)</param>
-        public void StopReceivingNotifications(IRovecommReceiver receiver)
-        {
-            var registrationCopy = new Dictionary<string, List<IRovecommReceiver>>(registrations); //Use a copy because we may modify it while removing stuff and that breaks the foreach
-            foreach (KeyValuePair<string, List<IRovecommReceiver>> kvp in registrationCopy)
-            {
-                StopReceivingNotifications(receiver, kvp.Key);
-            }
-        }
-
-        /// <summary>
-        /// request to stop being notified of receiving rovecomm messages that correspond to the dataid, which is 
-        /// based on rovecomm metadata id's
-        /// </summary>
-        /// <param name="subscriber"></param>
-        /// <param name="dataId"></param>
-        public void StopReceivingNotifications(IRovecommReceiver subscriber, string dataName)
-        {
-            if (registrations.TryGetValue(dataName, out List<IRovecommReceiver> existingRegistrations))
-            {
-                existingRegistrations.Remove(subscriber);
-                if (existingRegistrations.Count == 0)
-                {
-                    registrations.Remove(dataName);
-                }
             }
         }
 

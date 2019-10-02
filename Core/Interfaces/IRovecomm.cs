@@ -35,20 +35,6 @@ namespace Core.Interfaces
 		void NotifyWhenMessageReceived(IRovecommReceiver receiver, string dataName);
 
         /// <summary>
-        /// request to stop being notified of receiving all rovecomm messages you previously requested to receive
-        /// </summary>
-        /// <param name="receiver">the reciever to stop being notified (the class should input itself as this)</param>
-        void StopReceivingNotifications(IRovecommReceiver receiver);
-
-        /// <summary>
-        /// request to stop being notified of receiving rovecomm messages that correspond to the dataid, which is 
-        /// based on rovecomm metadata id's
-        /// </summary>
-        /// <param name="subscriber"></param>
-        /// <param name="dataId"></param>
-        void StopReceivingNotifications(IRovecommReceiver subscriber, string dataName);
-
-        /// <summary>
         /// request to subscribe this computer to a device on the network so that it will send this pc rovecomm
         /// messages. This must be called before any rovecomm streams can be received by this computer.
         /// </summary>
