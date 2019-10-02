@@ -101,33 +101,26 @@ namespace Core.RoveProtocol
 
         public async void SendPacketReliable(IPAddress destIP, byte[] packetData)
         {
-            if (!EnableReliablePackets)
+            try
             {
-                //_log.Log($"Reliable packets not enabled. Sending command for destIP={destIP} unreliably");
+                using (TcpClient tcpConnection = new TcpClient())
+                {
+                    //no timeouts for now. We might want to implement something later to check to see if there's
+                    //even a connection to be had so we aren't spawning unending threads when we aren't connected
+                    //to rover. Or not.
+                    await tcpConnection.ConnectAsync(destIP, DestinationReliablePort);
+                    await Task.Delay(25); //boards can get overwhelmed and fault if done too quick.
+                    await tcpConnection.GetStream().WriteAsync(packetData, 0, packetData.Length);
+
+                    tcpConnection.Close();
+                }
+            }
+            catch
+            {
+                log.Log($"Attempt to send reliable packet to {destIP} failed. Sending unreliable instead");
                 SendPacketUnreliable(destIP, packetData);
             }
-            else
-            {
-                try
-                {
-                    using (TcpClient tcpConnection = new TcpClient())
-                    {
-                        //no timeouts for now. We might want to implement something later to check to see if there's
-                        //even a connection to be had so we aren't spawning unending threads when we aren't connected
-                        //to rover. Or not.
-                        await tcpConnection.ConnectAsync(destIP, DestinationReliablePort);
-                        await Task.Delay(25); //boards can get overwhelmed and fault if done too quick.
-                        await tcpConnection.GetStream().WriteAsync(packetData, 0, packetData.Length);
-
-                        tcpConnection.Close();
-                    }
-                }
-                catch
-                {
-                    log.Log($"Attempt to send reliable packet to {destIP} failed. Sending unreliable instead");
-                    SendPacketUnreliable(destIP, packetData);
-                }
-            }
+            
         }
 
         private async Task<byte[]> ReadTcpPacket(TcpClient client)
@@ -305,14 +298,14 @@ namespace Core.RoveProtocol
                 return;
             }
 
-            if(reliable)
+            byte[] packetData = RovecommTwo.EncodePacket(packet, metadataManager);
+
+            if (reliable && EnableReliablePackets)
             {
-                byte[] packetData = RovecommTwo.EncodePacket(packet, metadataManager);
                 SendPacketReliable(destIP, packetData);
             }
             else
             {
-                byte[] packetData = RovecommTwo.EncodePacket(packet, metadataManager);
                 SendPacketUnreliable(destIP, packetData);
             }
         }
