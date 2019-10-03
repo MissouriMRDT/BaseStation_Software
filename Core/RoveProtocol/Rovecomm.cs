@@ -52,7 +52,7 @@ namespace Core.RoveProtocol
 
             // Listen for packets from the network
             UDPListen();
-            TCPListen();
+            //TCPListen();
         }
 
         public static Rovecomm Instance

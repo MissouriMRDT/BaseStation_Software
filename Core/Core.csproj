@@ -103,7 +103,6 @@
     <Compile Include="Interfaces\IRovecommReceiver.cs" />
     <Compile Include="Interfaces\Network\IIPAddressProvider.cs" />
     <Compile Include="Interfaces\Network\INetworkTransportProtocol.cs" />
-    <Compile Include="Interfaces\Network\ISequenceNumberProvider.cs" />
     <Compile Include="Interfaces\Network\IServerProvider.cs" />
     <Compile Include="CommonLog.cs" />
     <Compile Include="Models\Input\Controllers\KeyboardInputModel.cs" />
@@ -113,6 +112,7 @@
     <Compile Include="Models\Packet.cs" />
     <Compile Include="Models\WaypointModel.cs" />
     <Compile Include="Network\Server.cs" />
+    <Compile Include="Network\TCPEndpoint.cs" />
     <Compile Include="Network\UDPEndpoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoveProtocol\MetadataManager.cs" />
