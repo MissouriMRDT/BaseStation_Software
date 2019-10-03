@@ -44,11 +44,13 @@ namespace Core.RoveProtocol
 
             allDeviceIPs = metadataManager.GetAllIPAddresses();
 
-            continuousDataSocket = new UDPEndpoint(DestinationPort, DestinationPort);
+            networkClientUDP = new UDPEndpoint(DestinationPort, DestinationPort);
+            networkClientTCP = new TCPEndpoint(DestinationPort, DestinationPort);
 
             _packet = new Packet("Empty");
 
-            Listen();
+            UDPListen();
+            TCPListen();
         }
 
         public static Rovecomm Instance
@@ -75,23 +77,34 @@ namespace Core.RoveProtocol
         // private readonly ILogger log;
         private Dictionary<IPAddress, SubscriptionRecord> subscriptions;
 
-        private INetworkTransportProtocol continuousDataSocket;
+        private INetworkTransportProtocol networkClientUDP;
+        private INetworkTransportProtocol networkClientTCP;
         private readonly bool EnableReliablePackets = false;
 
-        private async void Listen()
+        private async void UDPListen()
         {
             while (true)
             {
-                Tuple<IPAddress, byte[]> result = await continuousDataSocket.ReceiveMessage();
+                Tuple<IPAddress, byte[]> result = await networkClientUDP.ReceiveMessage();
                 HandleReceivedPacket(result.Item1, result.Item2);
             }
         }
+
+        private async void TCPListen()
+        {
+            while (true)
+            {
+                Tuple<IPAddress, byte[]> result = await networkClientTCP.ReceiveMessage();
+                HandleReceivedPacket(result.Item1, result.Item2);
+            }
+        }
+
 
         public async void SendPacketUnreliable(IPAddress destIP, byte[] packetData)
         {
             try
             {
-                await continuousDataSocket.SendMessage(destIP, packetData);
+                await networkClientUDP.SendMessage(destIP, packetData);
             }
             catch
             {
@@ -103,17 +116,7 @@ namespace Core.RoveProtocol
         {
             try
             {
-                using (TcpClient tcpConnection = new TcpClient())
-                {
-                    //no timeouts for now. We might want to implement something later to check to see if there's
-                    //even a connection to be had so we aren't spawning unending threads when we aren't connected
-                    //to rover. Or not.
-                    await tcpConnection.ConnectAsync(destIP, DestinationReliablePort);
-                    await Task.Delay(25); //boards can get overwhelmed and fault if done too quick.
-                    await tcpConnection.GetStream().WriteAsync(packetData, 0, packetData.Length);
-
-                    tcpConnection.Close();
-                }
+                await networkClientTCP.SendMessage(destIP, packetData);
             }
             catch
             {
@@ -121,24 +124,6 @@ namespace Core.RoveProtocol
                 SendPacketUnreliable(destIP, packetData);
             }
             
-        }
-
-        private async Task<byte[]> ReadTcpPacket(TcpClient client)
-        {
-            NetworkStream networkStream = client.GetStream();
-            byte[] readBuffer;
-
-            readBuffer = new byte[client.ReceiveBufferSize];
-            using (var writer = new MemoryStream())
-            {
-                do
-                {
-                    int numberOfBytesRead = await networkStream.ReadAsync(readBuffer, 0, readBuffer.Length);
-                    writer.Write(readBuffer, 0, numberOfBytesRead);
-                } while (networkStream.DataAvailable);
-            }
-
-            return readBuffer;
         }
 
         /// <summary>
