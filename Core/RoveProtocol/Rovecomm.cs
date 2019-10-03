@@ -45,9 +45,7 @@ namespace Core.RoveProtocol
             allDeviceIPs = metadataManager.GetAllIPAddresses();
 
             networkClientUDP = new UDPEndpoint(DestinationPort, DestinationPort);
-            networkClientTCP = new TCPEndpoint(DestinationPort, DestinationPort);
-
-            _packet = new Packet("Empty");
+            networkClientTCP = new TCPEndpoint(DestinationReliablePort, DestinationReliablePort);
 
             UDPListen();
             TCPListen();
@@ -68,8 +66,6 @@ namespace Core.RoveProtocol
 
         private const ushort DestinationPort = 11000;
         private const ushort DestinationReliablePort = 11001;
-
-        private Packet _packet;
 
         private readonly IPAddress[] allDeviceIPs;
         private readonly MetadataManager metadataManager;
@@ -191,9 +187,9 @@ namespace Core.RoveProtocol
         /// <param name="packet">the packet data received.</param>
         private void HandleReceivedPacket(IPAddress srcIP, byte[] encodedPacket)
         {
-            RovecommTwo.DecodePacket(encodedPacket, metadataManager, _packet);
+            Packet packet = RovecommTwo.DecodePacket(encodedPacket, metadataManager);
 
-            switch (_packet.Name)
+            switch (packet.Name)
             {
                 case "Null":
                     log.Log("Packet recieved with null dataId"); //likely means a) wasn't a message for rovecomm b) message was just gobblygook
@@ -205,24 +201,24 @@ namespace Core.RoveProtocol
                     SendCommand(new Packet("PingReply"), false, srcIP);
                     break;
                 case "Subscribe":
-                    log.Log($"Packet recieved requesting subscription to dataId={_packet.Name}");
+                    log.Log($"Packet recieved requesting subscription to dataId={packet.Name}");
                     break;
                 case "Unsubscribe":
-                    log.Log($"Packet recieved requesting unsubscription from dataId={_packet.Name}");
+                    log.Log($"Packet recieved requesting unsubscription from dataId={packet.Name}");
                     break;
                 default: //Regular DataId
 
-                    if (registrations.TryGetValue(_packet.Name, out List<IRovecommReceiver> registered))
+                    if (registrations.TryGetValue(packet.Name, out List<IRovecommReceiver> registered))
                     {
                         foreach (IRovecommReceiver subscription in registered)
                         {
                             try
                             {
-                                subscription.ReceivedRovecommMessageCallback(_packet, false);
+                                subscription.ReceivedRovecommMessageCallback(packet, false);
                             }
                             catch (System.Exception e)
                             {
-                                log.Log("Error parsing packet with dataid={0}{1}{2}", _packet.DataType, System.Environment.NewLine, e);
+                                log.Log("Error parsing packet with dataid={0}{1}{2}", packet.DataType, System.Environment.NewLine, e);
                             }
                         }
                     }
