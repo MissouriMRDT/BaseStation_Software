@@ -184,27 +184,71 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 }
                 LogFile.Flush();
             }
-            public void ReceivedRovecommMessageCallback(int index, bool reliable)
-            {
-                ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
-            }
-            //have a question about this part in PowerViewModel (like are these the enable buttons?)
-            public void SaveFile(bool state)
+        }
+        public void EnableBus(byte index)
+        {
 
+            BitArray bits = new BitArray(16);
+            bits.Set(index + 1, true);
+            byte[] thebits = new byte[2];
+
+            bits.CopyTo(thebits, 0);
+
+            byte[] bytes = new byte[3];
+            thebits.CopyTo(bytes, 0);
+
+            bytes[2] = 1;
+
+            _rovecomm.SendCommand(new Packet("ArmPowerBusEnableDisable", bytes, 3, (byte)DataTypes.UINT8_T));
+
+        }
+        public void DisableBus(byte index)
+        {
+
+            BitArray bits = new BitArray(16);
+            bits.Set(index + 1, true);
+            byte[] thebits = new byte[2];
+
+            bits.CopyTo(thebits, 0);
+
+            byte[] bytes = new byte[3];
+            thebits.CopyTo(bytes, 0);
+
+            bytes[2] = 0;
+
+            _rovecomm.SendCommand(new Packet("ArmPowerBusEnableDisable", bytes, 3, (byte)DataTypes.UINT8_T));
+        }
+
+        public void MotorBusses(bool state)
+        {
+            BitArray bits = new BitArray(16);
+            bits.Set(9, true);
+            bits.Set(10, true);
+            bits.Set(11, true);
+
+            byte[] bytes = new byte[3];
+            bits.CopyTo(bytes, 0);
+
+            bytes[2] = (state) ? (byte)1 : (byte)0;
+            _rovecomm.SendCommand(new Packet("ArmPowerBusEnableDisable", bytes, 3, (byte)DataTypes.UINT8_T));
+        }
+
+        public void SaveFile(bool state)
+
+        {
+            if (state)
             {
-                if (state)
+                 LogFile = File.AppendText("REDArmPowerData" + DateTime.Now.ToString("yyyyMMdd'T'HHmmss") + ".log");
+            }
+            else
+            {
+                if (LogFile != null)
                 {
-                    LogFile = File.AppendText("REDArmPowerData" + DateTime.Now.ToString("yyyyMMdd'T'HHmmss") + ".log");
-                }
-                else
-                {
-                    if (LogFile != null)
-                    {
-                        LogFile.Close();
-                        LogFile = null;
-                    }
+                    LogFile.Close();
+                    LogFile = null;
                 }
             }
+        }
         }
         
     }
