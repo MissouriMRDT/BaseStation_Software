@@ -7,6 +7,89 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
+        <UserControl.Resources>
+            <addons:MotorAmpToColorValueConverter x:Key="AmpConverter" />
+            <addons:TotalAmpToColorValueConverter x:Key="TotalAmpConverter" />
             
+
+            <Style x:Key="EnableBtn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
+                <Setter Property="Content" Value="Enabled" />
+                <EventSetter Event="Click" Handler="EnableButton_Click" />
+            </Style>
+
+
+            <Style x:Key="CurrentTelem" TargetType="Label">
+                <Setter Property="ContentStringFormat" Value="{}{0:00.0} A" />
+                <Setter Property="HorizontalContentAlignment" Value="Right" />
+            </Style>
+            
+        </UserControl.Resources>
+        <StackPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <ToggleButton Grid.Row="0" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="8" IsChecked="{Binding Path=Status[8]}"/>
+                <Label Grid.Row="0" Grid.Column="1" Background="{Binding Path= ArmBaseCurrent1, 
+                   Converter={StaticResource AmpConverter}, Mode=Default}">ArmBaseCurrent1</Label>
+                <Label Grid.Row="0" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="ArmBaseCurrent1"
+                   Background="{Binding Path=ArmBaseCurrent1, Converter={StaticResource AmpConverter}, Mode=Default}"/>
+
+                <ToggleButton Grid.Row="1" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="9" IsChecked="{Binding Path=Status[9]}"/>
+                <Label Grid.Row="1" Grid.Column="1" Background="{Binding Path=ArmBaseCurrent2, 
+                    Converter={StaticResource AmpConverter}, Mode=Default}">ArmBaseCurrent2</Label>
+                <Label Grid.Row="1" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="ArmBaseCurrent2" 
+                   Background="{Binding Path=ArmBaseCurrent2, Converter={StaticResource AmpConverter}, Mode=Default}"/>
+
+                <ToggleButton Grid.Row="2" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="10" IsChecked="{Binding Path=Status[10]}"/>
+                <Label Grid.Row="2" Grid.Column="1" Background="{Binding Path=ElbowCurrent1, 
+                    Converter={StaticResource AmpConverter}, Mode=Default}">ElbowCurrent1</Label>
+                <Label Grid.Row="2" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="ElbowCurrent1" 
+                   Background="{Binding Path=ElbowCurrent1, Converter={StaticResource AmpConverter}, Mode=Default}"/>
+
+                <ToggleButton Grid.Row="3" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="8" IsChecked="{Binding Path=Status[8]}"/>
+                <Label Grid.Row="3" Grid.Column="1" Background="{Binding Path=ElbowCurrent2, 
+                    Converter={StaticResource AmpConverter}, Mode=Default}">ElbowCurrent2</Label>
+                <Label Grid.Row="3" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="ElbowCurrent2" 
+                   Background="{Binding Path=ElbowCurrent2, Converter={StaticResource AmpConverter}, Mode=Default}"/>
+
+                <ToggleButton Grid.Row="4" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="9" IsChecked="{Binding Path=Status[9]}"/>
+                <Label Grid.Row="4" Grid.Column="1" Background="{Binding Path=WristCurrent1, 
+                    Converter={StaticResource AmpConverter}, Mode=Default}">WristCurrent1</Label>
+                <Label Grid.Row="4" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="WristCurrent1" 
+                   Background="{Binding Path=WristCurrent1, Converter={StaticResource AmpConverter}, Mode=Default}"/>
+
+                <ToggleButton Grid.Row="5" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="10" IsChecked="{Binding Path=Status[10]}"/>
+                <Label Grid.Row="5" Grid.Column="1" Background="{Binding Path= WristCurrent2, 
+                    Converter={StaticResource AmpConverter}, Mode=Default}">WristCurrent2</Label>
+                <Label Grid.Row="5" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="WristCurrent2" 
+                   Background="{Binding Path=WristCurrent2, Converter={StaticResource AmpConverter}, Mode=Default}"/>
+
+                <ToggleButton Grid.Row="6" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="11" IsChecked="{Binding Path=Status[11]}"/>
+                <Label Grid.Row="6" Grid.Column="1" Background="{Binding Path=GripperCurrent, 
+                    Converter={StaticResource AmpConverter}, Mode=Default}">GripperCurrent</Label>
+                <Label Grid.Row="6" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="GripperCurrent" 
+                   Background="{Binding Path=GripperCurrent, Converter={StaticResource AmpConverter}, Mode=Default}"/>
+
+                <ToggleButton Grid.Row="7" Grid.Column="0" Height="27" VerticalAlignment="Bottom" Style="{StaticResource AllMotorBtn}"/>
+                <Label Grid.Row="6" Grid.Column="1">All motors</Label>
+
+            </Grid>
+
+        </StackPanel>
     </Grid>
 </UserControl>
