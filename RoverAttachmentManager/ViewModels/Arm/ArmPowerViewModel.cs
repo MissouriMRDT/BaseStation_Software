@@ -1,15 +1,12 @@
 ﻿using Caliburn.Micro;
 using Core.Interfaces;
 using Core.Models;
+using Core.RoveProtocol;
 using RoverAttachmentManager.Models.Arm;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RoverAttachmentManager.ViewModels.Arm
 {
@@ -139,6 +136,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
 
             
         }
+
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
         {
             switch (packet.Name)
@@ -185,6 +183,11 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 LogFile.Flush();
             }
         }
+        public void ReceivedRovecommMessageCallback(int index, bool reliable)
+        {
+            ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
+        }
+
         public void EnableBus(byte index)
         {
 
@@ -249,7 +252,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 }
             }
         }
-        }
+        
         
     }
 }
