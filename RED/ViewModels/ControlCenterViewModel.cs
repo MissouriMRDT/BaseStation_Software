@@ -306,7 +306,7 @@ namespace RED.ViewModels
             Rovecomm = Rovecomm.Instance;
             //ResubscribeAll();
             
-            GPS = new GPSViewModel(Rovecomm, MetadataManager);
+            GPS = new GPSViewModel(Rovecomm, MetadataManager, Console);
             Sensor = new SensorViewModel(Rovecomm, MetadataManager, Console);
             Power = new PowerViewModel(Rovecomm, MetadataManager, Console);
             CameraMux = new CameraViewModel(Rovecomm, MetadataManager);
