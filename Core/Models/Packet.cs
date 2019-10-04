@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Net.Sockets;
-using System.Threading.Tasks;
 using Core.RoveProtocol;
 
 namespace Core.Models
@@ -12,7 +10,7 @@ namespace Core.Models
         public byte Count;
         public byte DataType;
 
-        private Packet(string name, byte[] data, byte count, byte type)
+        public Packet(string name, byte[] data, byte count, byte type)
         {
             Name = name;
             Data = data;
@@ -28,9 +26,57 @@ namespace Core.Models
             DataType = 0;
         }
 
+        public Packet(string name, SByte data)
+        {
+            Name = name;
+            Data = BitConverter.GetBytes(data);
+            Count = 1;
+            DataType = (byte)RoveProtocol.DataTypes.INT8_T;
+        }
+
+        public Packet(string name, byte data)
+        {
+            Name = name;
+            Data = BitConverter.GetBytes(data);
+            Count = 1;
+            DataType = (byte)RoveProtocol.DataTypes.UINT8_T;
+        }
+
+        public Packet(string name, Int16 data)
+        {
+            Name = name;
+            Data = BitConverter.GetBytes(data);
+            Count = 1;
+            DataType = (byte)RoveProtocol.DataTypes.INT16_T;
+        }
+
+        public Packet(string name, UInt16 data)
+        {
+            Name = name;
+            Data = BitConverter.GetBytes(data);
+            Count = 1;
+            DataType = (byte)RoveProtocol.DataTypes.UINT16_T;
+        }
+
+        public Packet(string name, Int32 data)
+        {
+            Name = name;
+            Data = BitConverter.GetBytes(data);
+            Count = 1;
+            DataType = (byte)RoveProtocol.DataTypes.INT32_T;
+        }
+
+        public Packet(string name, UInt32 data)
+        {
+            Name = name;
+            Data = BitConverter.GetBytes(data);
+            Count = 1;
+            DataType = (byte)RoveProtocol.DataTypes.UINT32_T;
+        }
+
         public static Packet Create<T>(string name, T[] data)
         {   
-            return new Packet(name, MapData(data), (byte)data.Length, MapDataType(typeof(T));
+            return new Packet(name, MapData(data), (byte)data.Length, MapDataType(typeof(T)));
         }
 
         public static Packet Create<T>(string name, T data)
@@ -119,6 +165,40 @@ namespace Core.Models
 
         public T GetData<T>()
         {
+            Type type = typeof(T);
+            if (Count != 1)
+            {
+                return default;
+            }
+            else if(type == typeof(SByte))
+            {
+                return (T)(object)Data;
+            }
+            else if (type == typeof(Byte))
+            {
+                return (T)(object)Data[0];
+            }
+            else if (type == typeof(Int16))
+            {
+                return (T)(object)BitConverter.ToInt16(Data, 0);
+            }
+            else if (type == typeof(UInt16))
+            {
+                return (T)(object)BitConverter.ToUInt16(Data, 0);
+            }
+            else if (type == typeof(Int32))
+            {
+                return (T)(object)BitConverter.ToInt32(Data, 0);
+            }
+            else if (type == typeof(UInt32))
+            {
+                return (T)(object)BitConverter.ToUInt32(Data, 0);
+            }
+            else if (type == typeof(Int64))
+            {
+                return (T)(object)BitConverter.ToInt64(Data, 0);
+            }
+
             return default;
         }
     }
