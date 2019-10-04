@@ -34,6 +34,10 @@
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="50" />
                 <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Label Grid.Row="0" Grid.Column="0">Fix Obtained</Label>
@@ -54,6 +58,14 @@
             <Label Grid.Row="1" Grid.Column="5">
                 <TextBlock Text="{Binding CurrentLocation, Converter={StaticResource LongitudeConverter}}" Style="{DynamicResource MaybeStale}" />
             </Label>
+            <Label Grid.Row="0" Grid.Column="6">Pitch</Label>
+            <Label Grid.Row="0" Grid.Column="7" x:Name="Pitch" ContentStringFormat="{}{0:0.00}" />
+            <Label Grid.Row="1" Grid.Column="6">Roll</Label>
+            <Label Grid.Row="1" Grid.Column="7" x:Name="Roll" ContentStringFormat="{}{0:0.00}" />
+            <Label Grid.Row="0" Grid.Column="8">Heading</Label>
+            <Label Grid.Row="0" Grid.Column="9" x:Name="TrueHeading" ContentStringFormat="{}{0:0.00}" />           
+            <Label Grid.Row="1" Grid.Column="8">Lidar</Label>
+            <Label Grid.Row="1" Grid.Column="9" x:Name="Lidar" ContentStringFormat="{}{0:0.00}" />
         </Grid>
     </StackPanel>
 </UserControl>
