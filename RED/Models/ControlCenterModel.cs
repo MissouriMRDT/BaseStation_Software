@@ -22,7 +22,6 @@ namespace RED.Models
         internal StopwatchToolViewModel _stopwatchTool;
         
         internal GPSViewModel _GPS;
-        internal SensorViewModel _sensor;
         internal PowerViewModel _power;
         internal CameraViewModel _cameraMux;
         internal LightingViewModel _lighting;
