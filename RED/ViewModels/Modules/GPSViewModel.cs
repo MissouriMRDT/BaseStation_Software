@@ -135,7 +135,19 @@ namespace RED.ViewModels.Modules
                 return (float)(Heading * 180d / Math.PI);
             }
         }
-        public float RoverDistanceTravelled
+        public float RoverDistanceStart
+        {
+            get
+            {
+                return _model.RoverDistanceStart;
+            }
+            set
+            {
+                _model.RoverDistanceStart = value;
+                NotifyOfPropertyChange(() => RoverDistanceStart);
+            }
+        }
+        public static float RoverDistanceTravelled
         {
             get
             {
@@ -147,12 +159,12 @@ namespace RED.ViewModels.Modules
                 NotifyOfPropertyChange(() => RoverDistanceTravelled);
             }
         }
-
         public GPSViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver)
         {
             _model = new GPSModel();
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
+            RoverDistanceTravelled = RoverDistanceStart;
 
             _rovecomm.NotifyWhenMessageReceived(this, "GPSQuality");
             _rovecomm.NotifyWhenMessageReceived(this, "GPSPosition");
@@ -162,6 +174,7 @@ namespace RED.ViewModels.Modules
             _rovecomm.NotifyWhenMessageReceived(this, "GPSSatellites");
             _rovecomm.NotifyWhenMessageReceived(this, "GPSTelem");
             _rovecomm.NotifyWhenMessageReceived(this, "PitchHeadingRoll");
+            _rovecomm.NotifyWhenMessageReceived(this, "RoverDistanceSession");
         }
 
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
@@ -211,6 +224,9 @@ namespace RED.ViewModels.Modules
                     break;
                 case "GPSSatellites":
                     NumberOfSatellites = packet.Data[0];
+                    break;
+                case "RoverDistanceSession":
+                    RoverDistanceTravelled = RoverDistanceStart + packet.Data[0];
                     break;
             }
         }

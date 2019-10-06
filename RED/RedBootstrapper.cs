@@ -2,6 +2,7 @@
 using RED.ViewModels;
 using System;
 using System.Windows;
+using RED.Models.Modules;
 
 namespace RED
 {
@@ -19,7 +20,7 @@ namespace RED
 
         protected override void OnExit(object sender, EventArgs e)
         {
-            System.IO.File.WriteAllText(System.IO.Path.GetFullPath("RoverMetrics.txt"), "end");
+            System.IO.File.WriteAllText(System.IO.Path.GetFullPath("RoverMetrics.txt"), GPSModel.RoverDistanceTravelled.ToString());
         }
     }
 }

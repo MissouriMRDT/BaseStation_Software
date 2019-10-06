@@ -13,6 +13,9 @@ namespace RED.Models.Modules
         internal GPSCoordinate BaseStationLocation = new GPSCoordinate(0, 0);
         internal double AntennaDirectionDeg = 0;
         internal float Heading = 0;
-        internal float RoverDistanceTravelled = float.Parse(System.IO.File.ReadAllText(System.IO.Path.GetFullPath("RoverMetrics.txt")));
+        internal float RoverDistanceStart = float.Parse(System.IO.File.ReadAllText(System.IO.Path.GetFullPath("RoverMetrics.txt")));
+        internal float RoverDistanceSession = 0;
+        internal static float RoverDistanceTravelled = 0;
+
     }
 }
