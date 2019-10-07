@@ -165,13 +165,6 @@ namespace Core.Models
             return null;
         }
 
-        private static byte[] GetBytes<T>(T[] data, int dataSize)
-        {
-            byte[] byteData = new byte[data.Length * dataSize];
-            Buffer.BlockCopy(data, 0, byteData, 0, data.Length);
-            return byteData;
-        }
-
         public T[] GetDataArray<T>()
         {
             return null;
