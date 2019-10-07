@@ -122,31 +122,45 @@ namespace Core.Models
             Type type = typeof(T);
             if (type == typeof(SByte))
             {
-                return GetBytes(data, sizeof(SByte));
+                byte[] result = new byte[data.Length * sizeof(SByte)];
+                Buffer.BlockCopy((SByte[])(object)data, 0, result, 0, ((SByte[])(object)data).Length * sizeof(SByte));
+                return result;
             }
             else if (type == typeof(Byte))
             {
-                return GetBytes(data, sizeof(Byte));
+                byte[] result = new byte[data.Length * sizeof(Byte)];
+                Buffer.BlockCopy((Byte[])(object)data, 0, result, 0, ((Byte[])(object)data).Length * sizeof(Byte));
+                return result;
             }
             else if (type == typeof(Int16))
             {
-                return GetBytes(data, sizeof(Int16));
+                byte[] result = new byte[data.Length * sizeof(Int16)];
+                Buffer.BlockCopy((Int16[])(object)data, 0, result, 0, ((Int16[])(object)data).Length * sizeof(Int16));
+                return result;
             }
             else if (type == typeof(UInt16))
             {
-                return GetBytes(data, sizeof(UInt16));
+                byte[] result = new byte[data.Length * sizeof(UInt16)];
+                Buffer.BlockCopy((UInt16[])(object)data, 0, result, 0, ((UInt16[])(object)data).Length * sizeof(UInt16));
+                return result;
             }
             else if (type == typeof(Int32))
             {
-                return GetBytes(data, sizeof(Int32));
+                byte[] result = new byte[data.Length * sizeof(Int32)];
+                Buffer.BlockCopy((Int32[])(object)data, 0, result, 0, ((Int32[])(object)data).Length * sizeof(Int32));
+                return result;
             }
             else if (type == typeof(UInt32))
             {
-                return GetBytes(data, sizeof(UInt32));
+                byte[] result = new byte[data.Length * sizeof(UInt32)];
+                Buffer.BlockCopy((UInt32[])(object)data, 0, result, 0, ((UInt32[])(object)data).Length * sizeof(UInt32));
+                return result;
             }
             else if (type == typeof(Int64))
             {
-                return GetBytes(data, sizeof(Int64));
+                byte[] result = new byte[data.Length * sizeof(Int64)];
+                Buffer.BlockCopy((Int64[])(object)data, 0, result, 0, ((Int64[])(object)data).Length * sizeof(Int64));
+                return result;
             }
             return null;
         }
@@ -172,7 +186,7 @@ namespace Core.Models
             }
             else if(type == typeof(SByte))
             {
-                return (T)(object)Data;
+                return (T)(object)unchecked((sbyte)Data[0]);
             }
             else if (type == typeof(Byte))
             {
