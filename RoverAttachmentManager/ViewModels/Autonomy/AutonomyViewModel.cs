@@ -46,7 +46,14 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
 
         public void Disable() => _rovecomm.SendCommand(new Packet("AutonomousModeDisable"), true);
 
-        public void ClearAllWaypoints() => _rovecomm.SendCommand(new Packet("WaypointsClearAll"), true);
+        public void ClearAllWaypoints()
+        {
+            _rovecomm.SendCommand(new Packet("WaypointsClearAll"), true);
+            string wpclear = "--cleared--\n";
+            SentWaypointsText += wpclear;
+        }
+      
+
 
         public void Calibrate() => _rovecomm.SendCommand(new Packet("AutonomyCalibrate"), true);
         
@@ -68,6 +75,8 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
             Buffer.BlockCopy(BitConverter.GetBytes(waypoint.Latitude), 0, msg, 1 * sizeof(double), sizeof(double));
             Array.Reverse(msg);
 
+            string tempstring = waypoint.Name + " | Longitude: " + waypoint.Longitude.ToString() + " | Latitude: " + waypoint.Latitude.ToString() + "\n";
+            SentWaypointsText += tempstring;
             _rovecomm.SendCommand(new Packet("WaypointAdd", msg, 2, (byte)7), true);
         }
 
