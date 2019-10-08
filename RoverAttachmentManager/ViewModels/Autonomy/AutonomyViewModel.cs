@@ -19,6 +19,18 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
         private readonly ILogger _logger;
         private readonly WaypointManager _waypointManager;
 
+        public string SentWaypointsText
+        {
+            get
+            {
+                return _model._waypointsText;
+            }
+            set
+            {
+                _model._waypointsText = value;
+                NotifyOfPropertyChange();
+            }
+        }
         public AutonomyViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger logger)
         {
             _model = new AutonomyModel();

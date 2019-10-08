@@ -106,7 +106,12 @@
             </StackPanel>
         </GroupBox>
 
-        <GroupBox Header="Controls" Margin="5" Grid.Row="0" Grid.Column="1">
+        <GroupBox Header="Sent Waypoints" Grid.Column="0" Grid.Row="1" Height="200" Margin="5">
+            <TextBox Name="SentWaypointsTextBox" Grid.Row="1" Grid.Column="1" IsHitTestVisible="True"
+                     Text="{Binding SentWaypointsText}" IsReadOnly="True" TextChanged="SentWaypointsText_Changed"
+                     BorderThickness="0" VerticalScrollBarVisibility="Visible"/>
+        </GroupBox>
+
             <UniformGrid Rows="1" Columns="5" HorizontalAlignment="Stretch">
                 <Button x:Name="Enable" MaxHeight="60px">Start</Button>
                 <Button x:Name="AddWaypoint" MaxHeight="60px">Add Waypoint</Button>
