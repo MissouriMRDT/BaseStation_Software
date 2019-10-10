@@ -8,8 +8,10 @@ namespace RED
 {
     public class RedBootstrapper : BootstrapperBase
     {
+        private readonly GPSModel _model;
         public RedBootstrapper()
         {
+            _model = new GPSModel();
             Initialize();
         }
 
@@ -20,7 +22,8 @@ namespace RED
 
         protected override void OnExit(object sender, EventArgs e)
         {
-            System.IO.File.WriteAllText(System.IO.Path.GetFullPath("RoverMetrics.txt"), GPSModel.RoverDistanceTravelled.ToString());
+           
+            System.IO.File.WriteAllText(System.IO.Path.GetFullPath("RoverMetrics.txt"), _model.RoverDistanceTravelled.ToString());
         }
     }
 }

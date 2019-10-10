@@ -14,6 +14,8 @@ namespace RED.ViewModels.Modules
         private readonly GPSModel _model;
         private readonly IDataIdResolver _idResolver;
         private readonly IRovecomm _rovecomm;
+        
+
 
         public bool FixObtained
         {
@@ -147,8 +149,9 @@ namespace RED.ViewModels.Modules
                 NotifyOfPropertyChange(() => RoverDistanceStart);
             }
         }
-        public static float RoverDistanceTravelled
+        public float RoverDistanceTravelled
         {
+            
             get
             {
                 return _model.RoverDistanceTravelled;
