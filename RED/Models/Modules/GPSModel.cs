@@ -15,7 +15,7 @@ namespace RED.Models.Modules
         internal float Heading = 0;
         internal float RoverDistanceStart = float.Parse(System.IO.File.ReadAllText(System.IO.Path.GetFullPath("RoverMetrics.txt")));
         internal float RoverDistanceSession = 0;
-        internal float RoverDistanceTravelled = float.Parse(System.IO.File.ReadAllText(System.IO.Path.GetFullPath("RoverMetrics.txt")));
+        internal float RoverDistanceTraveled = float.Parse(System.IO.File.ReadAllText(System.IO.Path.GetFullPath("RoverMetrics.txt")));
 
     }
 }

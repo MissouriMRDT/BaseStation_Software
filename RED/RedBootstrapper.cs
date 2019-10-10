@@ -23,7 +23,7 @@ namespace RED
         protected override void OnExit(object sender, EventArgs e)
         {
            
-            System.IO.File.WriteAllText(System.IO.Path.GetFullPath("RoverMetrics.txt"), _model.RoverDistanceTravelled.ToString());
+            System.IO.File.WriteAllText(System.IO.Path.GetFullPath("RoverMetrics.txt"), _model.RoverDistanceTraveled.ToString());
         }
     }
 }

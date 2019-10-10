@@ -41,7 +41,7 @@
 
             <Label Grid.Row="1" Grid.Column="2">Odometer (Miles)</Label>
             <Label Grid.Row="1" Grid.Column="3">
-                <TextBlock Grid.Row="2" Grid.Column="1" x:Name="RoverDistanceTravelled" />
+                <TextBlock Grid.Row="2" Grid.Column="1" x:Name="RoverDistanceTraveled" />
             </Label>
 
             <Label Grid.Row="1" Grid.Column="0">Fix Quality</Label>

@@ -149,17 +149,17 @@ namespace RED.ViewModels.Modules
                 NotifyOfPropertyChange(() => RoverDistanceStart);
             }
         }
-        public float RoverDistanceTravelled
+        public float RoverDistanceTraveled
         {
             
             get
             {
-                return _model.RoverDistanceTravelled;
+                return _model.RoverDistanceTraveled;
             }
             set
             {
-                _model.RoverDistanceTravelled = value;
-                NotifyOfPropertyChange(() => RoverDistanceTravelled);
+                _model.RoverDistanceTraveled = value;
+                NotifyOfPropertyChange(() => RoverDistanceTraveled);
             }
         }
         public GPSViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver)
@@ -167,7 +167,7 @@ namespace RED.ViewModels.Modules
             _model = new GPSModel();
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
-            RoverDistanceTravelled = RoverDistanceStart;
+            RoverDistanceTraveled = RoverDistanceStart;
 
             _rovecomm.NotifyWhenMessageReceived(this, "GPSQuality");
             _rovecomm.NotifyWhenMessageReceived(this, "GPSPosition");
@@ -229,7 +229,7 @@ namespace RED.ViewModels.Modules
                     NumberOfSatellites = packet.Data[0];
                     break;
                 case "RoverDistanceSession":
-                    RoverDistanceTravelled = RoverDistanceStart + packet.Data[0];
+                    RoverDistanceTraveled = RoverDistanceStart + packet.Data[0];
                     break;
             }
         }
