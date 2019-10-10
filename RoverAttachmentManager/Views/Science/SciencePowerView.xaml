@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <Style x:Key="EnableBtn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
+        <Style x:Key="EnableBtn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}"> 
         <Setter Property="Content" Value="Enabled" />
     </Style>
 
@@ -24,15 +24,16 @@
     <Grid>
         <Grid>
             <StackPanel>
+                
                 <Grid>
-                    <Grid.RowDefinitions>
+                    <Grid.RowDefinitions>    <!-- creates four rows -->
                         <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
                     </Grid.RowDefinitions>
 
-                    <Grid.ColumnDefinitions>
+                    <Grid.ColumnDefinitions> <!-- creates 6 columns -->
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="*" />
@@ -42,7 +43,8 @@
                         <ColumnDefinition Width="*" />
 
                     </Grid.ColumnDefinitions>
-
+                    
+                    <!-- What goes in each column (7 motor names and current readings, 8 enable buttons including one for all of the motors -->
                     <ToggleButton Grid.Row="0" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="8" IsChecked="{Binding Path=Status[8]}"/>
                     <Label Grid.Row="0" Grid.Column="1">WOActuation1</Label>
                     <Label Grid.Row="0" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="WOActuationCurrent1"/>
@@ -76,6 +78,7 @@
 
                 </Grid>
             </StackPanel>
+            
         </Grid>
     </Grid>
 </UserControl>

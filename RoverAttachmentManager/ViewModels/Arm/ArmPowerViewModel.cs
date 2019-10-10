@@ -12,13 +12,15 @@ namespace RoverAttachmentManager.ViewModels.Arm
 {
     public class ArmPowerViewModel : PropertyChangedBase, IRovecommReceiver
     {
-        private readonly ArmPowerModel _model;
-        private readonly IRovecomm _rovecomm;
+        private readonly ArmPowerModel _model; // reads the model for ArmPower, containing all of the variables needed for this function
+        private readonly IRovecomm _rovecomm; 
         private readonly IDataIdResolver _idResolver;
         private readonly ILogger _log;
 
         private TextWriter LogFile;
-        public bool AutoStartLog
+        
+        // logs the values if the current is over or underdrawn
+        public bool AutoStartLog   
         {
             get
             {
@@ -31,6 +33,8 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 NotifyOfPropertyChange(() => AutoStartLog);
             }
         }
+
+        //auto updates the variables (so we can get the current the motor is right now)
         public float ArmBaseCurrent1
         {
             get
@@ -42,7 +46,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 _model.ArmBaseCurrent1 = value;
                 NotifyOfPropertyChange(() => ArmBaseCurrent1);
             }
-        }
+        }    
         public float ArmBaseCurrent2
         {
             get
@@ -115,6 +119,8 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 NotifyOfPropertyChange(() => GripperCurrent);
             }
         }
+
+        //updates the information within the array so that the table is the most updated it can be
         public BitArray Status
         {
             get
@@ -127,16 +133,17 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 NotifyOfPropertyChange(() => Status);
             }
         }
+        //creating the method of ArmPowerViewModel using the inputs inside the parenthesis
         public ArmPowerViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
             _model = new ArmPowerModel();
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
-            _log = log;
-
-            
+            _log = log; 
         }
+        
 
+        //sending the packets (in a bit array) to the rover and getting it back  
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
         {
             switch (packet.Name)
@@ -163,7 +170,8 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 case "WristCurrent1": WristCurrent1 = BitConverter.ToSingle(packet.Data, 0); break;
                 case "WristCurrent2": WristCurrent2 = BitConverter.ToSingle(packet.Data, 0); break;
                 case "GripperCurrent": GripperCurrent = BitConverter.ToSingle(packet.Data, 0); break;
-
+                
+                //Overcurrent --> logged 
                 case "ArmPowerBusOverCurrentNotification":
                     _log.Log($"Overcurrent notification from ArmPowerboard from Bus Index {packet.Data[0]}");
                     break;
@@ -172,6 +180,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
             {
                 switch (packet.Name)
                 {
+                    //Overcurrent --> saved in a file.
                     case "ArmPowerBusOverCurrentNotification":
                         LogFile.WriteLine("{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff}, {1}, Power Overcurrent: Bus {2}", DateTime.Now, packet.Name, packet.Data[0]);
                         break;
@@ -183,11 +192,14 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 LogFile.Flush();
             }
         }
+        
+        //making sure the rover got the message 
         public void ReceivedRovecommMessageCallback(int index, bool reliable)
         {
             ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
         }
 
+        // making the bit array so that the rover can receive the information in the correct amount of bytes/bits 
         public void EnableBus(byte index)
         {
 
@@ -205,6 +217,8 @@ namespace RoverAttachmentManager.ViewModels.Arm
             _rovecomm.SendCommand(new Packet("ArmPowerBusEnableDisable", bytes, 3, (byte)DataTypes.UINT8_T));
 
         }
+
+        // I don't get this sorry
         public void DisableBus(byte index)
         {
 
@@ -222,6 +236,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
             _rovecomm.SendCommand(new Packet("ArmPowerBusEnableDisable", bytes, 3, (byte)DataTypes.UINT8_T));
         }
 
+        //if a motor is enabled or disabled, it goes through here
         public void MotorBusses(bool state)
         {
             BitArray bits = new BitArray(16);
@@ -236,6 +251,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
             _rovecomm.SendCommand(new Packet("ArmPowerBusEnableDisable", bytes, 3, (byte)DataTypes.UINT8_T));
         }
 
+        //saves the data about the ArmPowerData
         public void SaveFile(bool state)
 
         {

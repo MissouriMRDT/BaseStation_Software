@@ -8,7 +8,6 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
 
-        
         <Style x:Key="EnableBtn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
             <Setter Property="Content" Value="Enabled" />
         </Style>
@@ -24,16 +23,18 @@
 
     </UserControl.Resources>
     <Grid>
+        <!-- makes the table collapsable -->
         <StackPanel>
             <Grid>
+                <!-- creates four rows -->
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
-                    
                 </Grid.RowDefinitions>
-                
+
+                <!-- creates six columns -->
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="auto" />
@@ -42,10 +43,11 @@
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="*" />
-                    
-                    
+
+
                 </Grid.ColumnDefinitions>
 
+                <!-- What goes in each column (7 motor names and current readings, 8 enable buttons including one for all of the motors -->
                 <ToggleButton Grid.Row="0" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="8" IsChecked="{Binding Path=Status[8]}"/>
                 <Label Grid.Row="0" Grid.Column="1">ArmBaseCurrent1</Label>
                 <Label Grid.Row="0" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="ArmBaseCurrent1"/>
@@ -76,9 +78,7 @@
 
                 <ToggleButton Grid.Row="3" Grid.Column="3" Height="27" VerticalAlignment="Bottom" Style="{StaticResource AllMotorBtn}"/>
                 <Label Grid.Row="3" Grid.Column="4">All motors</Label>
-
             </Grid>
-
         </StackPanel>
     </Grid>
 </UserControl>
