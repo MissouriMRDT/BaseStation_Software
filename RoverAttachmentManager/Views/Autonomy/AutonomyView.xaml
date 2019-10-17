@@ -113,7 +113,13 @@
                      BorderThickness="0" VerticalScrollBarVisibility="Visible"/>
         </GroupBox>
 
-        <GroupBox Header="Controls" Margin="5" Grid.Row="0" Grid.Column="2">
+        <GroupBox Header="Map" Margin="5" Grid.Row="0" Grid.Column="2">
+            <StackPanel>
+
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Header="Controls" Margin="5" Grid.Row="1" Grid.Column="2">
             <UniformGrid Rows="1" Columns="5" HorizontalAlignment="Stretch">
                 <Button x:Name="Enable" MaxHeight="60px">Start</Button>
                 <Button x:Name="AddWaypoint" MaxHeight="60px">Add Waypoint</Button>
@@ -121,12 +127,6 @@
                 <Button Click="Calibrate_Click" MaxHeight="60px">Calibrate</Button>
                 <Button x:Name="Disable"  MaxHeight="60px">Stop</Button>
             </UniformGrid>
-        </GroupBox>
-
-        <GroupBox Header="Map" Margin="5" Grid.Row="1" Grid.Column="2" Grid.RowSpan="2">
-            <StackPanel>
-
-            </StackPanel>
         </GroupBox>
 
     </Grid>
