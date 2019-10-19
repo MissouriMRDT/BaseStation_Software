@@ -26,6 +26,23 @@ namespace UnitTests
             Assert.AreEqual(data, packet.GetData<T>(), "Data Incorrect");
         }
 
+        private void CheckPacketArray<T>(Packet packet, string name, int count, byte type, string raw, T[] data)
+        {
+            Assert.AreEqual(name, packet.Name, "Name Incorrect");
+            Assert.AreEqual(count, packet.Count, "Count Incorrect");
+            Assert.AreEqual(raw, BitConverter.ToString(packet.Data), "Raw Data Incorrect");
+            Assert.AreEqual(type, packet.DataType, "DataType Incorrect");
+
+            T[] result = packet.GetDataArray<T>();
+
+            Assert.IsNotNull(result, "Data result is null");
+
+            for (int i = 0; i < packet.Count; i++)
+            {
+                Assert.AreEqual(data[i], result[i], "Data index " + i + " is incorrect");
+            }
+        }
+
         [TestMethod]
         public void Data_Null()
         {
@@ -97,5 +114,60 @@ namespace UnitTests
             CheckPacket<Int64>(packet, "Hi", 1, 6, "88-1F-FE-FF-FF-FF-FF-FF", data);
         }
 
+        [TestMethod]
+        public void Data_SByte_Array()
+        {
+            SByte[] data = { -3, -4, -5};
+            Packet packet = Packet.Create("Hi", data);
+            CheckPacketArray<SByte>(packet, "Hi", 3, 0, "FD-FC-FB", data);
+        }
+
+        [TestMethod]
+        public void Data_Byte_Array()
+        {
+            Byte[] data = { 3, 4, 5 };
+            Packet packet = Packet.Create("Hi", data);
+            CheckPacketArray<Byte>(packet, "Hi", 3, 1, "03-04-05", data);
+        }
+
+        [TestMethod]
+        public void Data_Int16_Array()
+        {
+            Int16[] data = { 300, 400, 500 };
+            Packet packet = Packet.Create("Hi", data);
+            CheckPacketArray<Int16>(packet, "Hi", 3, 2, "2C-01-90-01-F4-01", data);
+        }
+
+        [TestMethod]
+        public void Data_UInt16_Array()
+        {
+            UInt16[] data = { 300, 400, 500 };
+            Packet packet = Packet.Create("Hi", data);
+            CheckPacketArray<UInt16>(packet, "Hi", 3, 3, "2C-01-90-01-F4-01", data);
+        }
+
+        [TestMethod]
+        public void Data_Int32_Array()
+        {
+            UInt32[] data = { 300, 400, 500 };
+            Packet packet = Packet.Create("Hi", data);
+            CheckPacketArray<UInt32>(packet, "Hi", 3, 4, "2C-01-90-01-F4-01", data);
+        }
+
+        [TestMethod]
+        public void Data_UInt32_Array()
+        {
+            UInt32[] data = { 300, 400, 500 };
+            Packet packet = Packet.Create("Hi", data);
+            CheckPacketArray<UInt32>(packet, "Hi", 3, 5, "2C-01-90-01-F4-01", data);
+        }
+
+        [TestMethod]
+        public void Data_Int64_Array()
+        {
+            Int64[] data = { 300, 400, 500 };
+            Packet packet = Packet.Create("Hi", data);
+            CheckPacketArray<Int64>(packet, "Hi", 3, 5, "2C-01-90-01-F4-01", data);
+        }
     }
 }

@@ -167,6 +167,72 @@ namespace Core.Models
 
         public T[] GetDataArray<T>()
         {
+
+            Type type = typeof(T);
+            if (type == typeof(SByte))
+            {
+                SByte[] result = new SByte[Count];
+                for(int i = 0; i < Count; i++)
+                {
+                    result[i] = (sbyte)Data[i];
+                }
+                return (T[])(object)result;
+            }
+            else if (type == typeof(Byte))
+            {
+                Byte[] result = new Byte[Count];
+                for (int i = 0; i < Count; i++)
+                {
+                    result[i] = Data[i];
+                }
+                return (T[])(object)result;
+            }
+            else if (type == typeof(Int16))
+            {
+                Int16[] result = new Int16[Count];
+                for (int i = 0; i < Count; i++)
+                {
+                    result[i] = BitConverter.ToInt16(Data, i * sizeof(Int16));
+                }
+                return (T[])(object)result;
+            }
+            else if (type == typeof(UInt16))
+            {
+                UInt16[] result = new UInt16[Count];
+                for (int i = 0; i < Count; i++)
+                {
+                    result[i] = BitConverter.ToUInt16(Data, i * sizeof(UInt16));
+                }
+                return (T[])(object)result;
+            }
+            else if (type == typeof(Int32))
+            {
+                Int32[] result = new Int32[Count];
+                for (int i = 0; i < Count; i++)
+                {
+                    result[i] = BitConverter.ToInt32(Data, i * sizeof(Int32));
+                }
+                return (T[])(object)result;
+            }
+            else if (type == typeof(UInt32))
+            {
+                UInt32[] result = new UInt32[Count];
+                for (int i = 0; i < Count; i++)
+                {
+                    result[i] = BitConverter.ToUInt32(Data, i * sizeof(UInt32));
+                }
+                return (T[])(object)result;
+            }
+            else if (type == typeof(Int64))
+            {
+                Int64[] result = new Int64[Count];
+                for (int i = 0; i < Count; i++)
+                {
+                    result[i] = BitConverter.ToInt64(Data, i * sizeof(Int64));
+                }
+                return (T[])(object)result;
+            }
+
             return null;
         }
 
