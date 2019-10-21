@@ -5,6 +5,7 @@ using Core.Models;
 
 namespace UnitTests
 {
+    // All tests are run with assumption of little-endian byte order
     [TestClass]
     public class PacketTest
     {
@@ -46,9 +47,7 @@ namespace UnitTests
         [TestMethod]
         public void Data_Null()
         {
-
             Packet packet = new Packet("Hi");
-
             CheckPacket<byte>(packet, "Hi", 1, 0, 4);
         }
 
@@ -65,7 +64,6 @@ namespace UnitTests
         {
             Byte data = 3;
             Packet packet = Packet.Create("Hi", data);
-
             CheckPacket<Byte>(packet, "Hi", 1, 1, "03", data);
         }
 
@@ -74,7 +72,6 @@ namespace UnitTests
         {
             Int16 data = -200;
             Packet packet = Packet.Create("Hi", data);
-
             CheckPacket<Int16>(packet, "Hi", 1, 2, "38-FF", data);
         }
 
@@ -83,7 +80,6 @@ namespace UnitTests
         {
             UInt16 data = 200;
             Packet packet = Packet.Create("Hi", data);
-
             CheckPacket<UInt16>(packet, "Hi", 1, 3, "C8-00", data);
         }
 
@@ -92,7 +88,6 @@ namespace UnitTests
         {
             Int32 data = -123000;
             Packet packet = Packet.Create("Hi", data);
-
             CheckPacket<Int32>(packet, "Hi", 1, 4, "88-1F-FE-FF", data);
         }
 
@@ -101,7 +96,6 @@ namespace UnitTests
         {
             UInt32 data = 123000;
             Packet packet = Packet.Create("Hi", data);
-
             CheckPacket<UInt32>(packet, "Hi", 1, 5, "78-E0-01-00", data);
         }
 
@@ -110,64 +104,63 @@ namespace UnitTests
         {
             Int64 data = -123000;
             Packet packet = Packet.Create("Hi", data);
-
             CheckPacket<Int64>(packet, "Hi", 1, 6, "88-1F-FE-FF-FF-FF-FF-FF", data);
         }
 
         [TestMethod]
         public void Data_SByte_Array()
         {
-            SByte[] data = { -3, -4, -5};
+            SByte[] data = { SByte.MinValue, SByte.MaxValue, 0};
             Packet packet = Packet.Create("Hi", data);
-            CheckPacketArray<SByte>(packet, "Hi", 3, 0, "FD-FC-FB", data);
+            CheckPacketArray<SByte>(packet, "Hi", data.Length, 0, "80-7F-00", data);
         }
 
         [TestMethod]
         public void Data_Byte_Array()
         {
-            Byte[] data = { 3, 4, 5 };
+            Byte[] data = { Byte.MinValue, Byte.MaxValue, 10 };
             Packet packet = Packet.Create("Hi", data);
-            CheckPacketArray<Byte>(packet, "Hi", 3, 1, "03-04-05", data);
+            CheckPacketArray<Byte>(packet, "Hi", data.Length, 1, "00-FF-0A", data);
         }
 
         [TestMethod]
         public void Data_Int16_Array()
         {
-            Int16[] data = { 300, 400, 500 };
+            Int16[] data = { Int16.MinValue, Int16.MaxValue, -1000 };
             Packet packet = Packet.Create("Hi", data);
-            CheckPacketArray<Int16>(packet, "Hi", 3, 2, "2C-01-90-01-F4-01", data);
+            CheckPacketArray<Int16>(packet, "Hi", data.Length, 2, "00-80-FF-7F-18-FC", data);
         }
 
         [TestMethod]
         public void Data_UInt16_Array()
         {
-            UInt16[] data = { 300, 400, 500 };
+            UInt16[] data = { UInt16.MinValue, UInt16.MaxValue, 1000 };
             Packet packet = Packet.Create("Hi", data);
-            CheckPacketArray<UInt16>(packet, "Hi", 3, 3, "2C-01-90-01-F4-01", data);
+            CheckPacketArray<UInt16>(packet, "Hi", data.Length, 3, "00-00-FF-FF-E8-03", data);
         }
 
         [TestMethod]
         public void Data_Int32_Array()
         {
-            UInt32[] data = { 300, 400, 500 };
+            Int32[] data = { Int32.MinValue, Int32.MaxValue, 0 };
             Packet packet = Packet.Create("Hi", data);
-            CheckPacketArray<UInt32>(packet, "Hi", 3, 4, "2C-01-90-01-F4-01", data);
+            CheckPacketArray<Int32>(packet, "Hi", data.Length, 4, "00-00-00-80-FF-FF-FF-7F-00-00-00-00", data);
         }
 
         [TestMethod]
         public void Data_UInt32_Array()
         {
-            UInt32[] data = { 300, 400, 500 };
+            UInt32[] data = { UInt32.MinValue, UInt32.MaxValue, 1000 };
             Packet packet = Packet.Create("Hi", data);
-            CheckPacketArray<UInt32>(packet, "Hi", 3, 5, "2C-01-90-01-F4-01", data);
+            CheckPacketArray<UInt32>(packet, "Hi", data.Length, 5, "00-00-00-00-FF-FF-FF-FF-E8-03-00-00", data);
         }
 
         [TestMethod]
         public void Data_Int64_Array()
         {
-            Int64[] data = { 300, 400, 500 };
+            Int64[] data = { Int64.MinValue, Int64.MaxValue, 1000 };
             Packet packet = Packet.Create("Hi", data);
-            CheckPacketArray<Int64>(packet, "Hi", 3, 5, "2C-01-90-01-F4-01", data);
+            CheckPacketArray<Int64>(packet, "Hi", data.Length, 6, "00-00-00-00-00-00-00-80-FF-FF-FF-FF-FF-FF-FF-7F-E8-03-00-00-00-00-00-00", data);
         }
     }
 }
