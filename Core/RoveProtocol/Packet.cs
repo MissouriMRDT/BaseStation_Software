@@ -1,7 +1,7 @@
 ﻿using System;
 using Core.RoveProtocol;
 
-namespace Core.Models
+namespace Core.RoveProtocol
 {
     public class Packet
     {

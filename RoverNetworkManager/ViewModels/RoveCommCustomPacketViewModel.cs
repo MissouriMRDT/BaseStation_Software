@@ -2,7 +2,7 @@
 using Core.Configurations;
 using Core.Contexts;
 using Core.Interfaces;
-using Core.Models;
+using Core.RoveProtocol;
 using RoverNetworkManager.Models;
 using System.Collections.Generic;
 using System.ComponentModel;

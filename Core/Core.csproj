@@ -109,7 +109,7 @@
     <Compile Include="Models\Input\Controllers\XboxControllerInputModel.cs" />
     <Compile Include="Models\Input\MappingChannelModel.cs" />
     <Compile Include="Models\Input\MappingModel.cs" />
-    <Compile Include="Models\Packet.cs" />
+    <Compile Include="RoveProtocol\Packet.cs" />
     <Compile Include="Models\WaypointModel.cs" />
     <Compile Include="Network\Server.cs" />
     <Compile Include="Network\TCPEndpoint.cs" />

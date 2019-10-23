@@ -4,7 +4,7 @@ using Core.Interfaces;
 using RED.Models.Modules;
 using System;
 using System.IO;
-using Core.Models;
+using Core.RoveProtocol;
 using System.Net;
 
 namespace RED.ViewModels.Modules

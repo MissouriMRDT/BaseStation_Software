@@ -1,4 +1,4 @@
-﻿using Core.Models;
+﻿using Core.RoveProtocol;
 
 namespace Core.Interfaces
 {
