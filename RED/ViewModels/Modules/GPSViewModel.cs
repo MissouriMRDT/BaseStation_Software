@@ -172,9 +172,10 @@ namespace RED.ViewModels.Modules
             _idResolver = idResolver;
             if (File.Exists(System.IO.Path.GetFullPath("RoverMetrics.txt")))
             {
+                //RoverMetrics.txt should be found in RED/Bin/Debug
                 RoverDistanceStart = float.Parse(System.IO.File.ReadAllText(System.IO.Path.GetFullPath("RoverMetrics.txt")));
             }
-            
+            RoverDistanceTraveled = RoverDistanceStart;
 
             _rovecomm.NotifyWhenMessageReceived(this, "GPSQuality");
             _rovecomm.NotifyWhenMessageReceived(this, "GPSPosition");
