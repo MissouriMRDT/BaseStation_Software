@@ -139,6 +139,7 @@ namespace RED.ViewModels.Modules
         }
         public float RoverDistanceStart
         {
+
             get
             {
                 return _model.RoverDistanceStart;
@@ -147,6 +148,7 @@ namespace RED.ViewModels.Modules
             {
                 _model.RoverDistanceStart = value;
                 NotifyOfPropertyChange(() => RoverDistanceStart);
+
             }
         }
         public float RoverDistanceTraveled
@@ -160,6 +162,7 @@ namespace RED.ViewModels.Modules
             {
                 _model.RoverDistanceTraveled = value;
                 NotifyOfPropertyChange(() => RoverDistanceTraveled);
+
             }
         }
         public GPSViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver)
@@ -167,7 +170,11 @@ namespace RED.ViewModels.Modules
             _model = new GPSModel();
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
-            RoverDistanceTraveled = RoverDistanceStart;
+            if (File.Exists(System.IO.Path.GetFullPath("RoverMetrics.txt")))
+            {
+                RoverDistanceStart = float.Parse(System.IO.File.ReadAllText(System.IO.Path.GetFullPath("RoverMetrics.txt")));
+            }
+            
 
             _rovecomm.NotifyWhenMessageReceived(this, "GPSQuality");
             _rovecomm.NotifyWhenMessageReceived(this, "GPSPosition");
@@ -229,7 +236,8 @@ namespace RED.ViewModels.Modules
                     NumberOfSatellites = packet.Data[0];
                     break;
                 case "RoverDistanceSession":
-                    RoverDistanceTraveled = RoverDistanceStart + packet.Data[0];
+                    RoverDistanceTraveled = RoverDistanceStart + IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0))/1000.0f;
+                    System.IO.File.WriteAllText(System.IO.Path.GetFullPath("RoverMetrics.txt"), RoverDistanceTraveled.ToString());
                     break;
             }
         }
