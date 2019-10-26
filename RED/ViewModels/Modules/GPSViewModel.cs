@@ -237,6 +237,7 @@ namespace RED.ViewModels.Modules
                     NumberOfSatellites = packet.Data[0];
                     break;
                 case "RoverDistanceSession":
+                    //RoverMetrics.txt should be found in RED/Bin/Debug
                     RoverDistanceTraveled = RoverDistanceStart + IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0))/1000.0f;
                     System.IO.File.WriteAllText(System.IO.Path.GetFullPath("RoverMetrics.txt"), RoverDistanceTraveled.ToString());
                     break;
