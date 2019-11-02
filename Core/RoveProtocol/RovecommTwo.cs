@@ -40,6 +40,15 @@ namespace Core.RoveProtocol
                 rawData = br.ReadBytes(dataSize * sizes[dataType]);
             }
 
+            
+            if(!BitConverter.IsLittleEndian)
+            {
+                for(int d = 0; d < dataSize; d++)
+                {
+                    Array.Reverse(rawData, d * sizes[dataType], sizes[dataType]);
+                }
+            }
+
             return new Packet(resolver.GetName(rawDataId), rawData, dataSize, dataType);
         }
 

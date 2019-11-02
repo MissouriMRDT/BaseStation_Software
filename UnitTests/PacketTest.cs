@@ -1,7 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Core;
 using System;
-using Core.Models;
+using Core.RoveProtocol;
 
 namespace UnitTests
 {
