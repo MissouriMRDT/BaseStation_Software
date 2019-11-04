@@ -21,6 +21,7 @@
 
         <StackPanel Grid.Column="0" Grid.Row="0" Margin="2.5">
             <Expander Header="Control Multipliers" IsExpanded="True" Margin="2.5">
+                <ContentControl x:Name="ControlMultipliers"/>
             </Expander>
 		</StackPanel>
 

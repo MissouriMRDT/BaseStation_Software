@@ -5,6 +5,7 @@ using Core.RoveProtocol;
 using Core.ViewModels.Input;
 using RoverAttachmentManager.Configurations.Modules;
 using RoverAttachmentManager.Contexts;
+using RoverAttachmentManager.Models.Arm;
 using RoverAttachmentManager.Models.ArmModels;
 using System;
 using System.Collections.Generic;
@@ -325,6 +326,18 @@ namespace RoverAttachmentManager.ViewModels.Arm
             }
         }
 
+        public ControlMultipliersViewModel ControlMultipliers
+        {
+            get
+            {
+                return _model._controlMultipliers;
+            }
+            set
+            {
+                _model._controlMultipliers = value;
+                NotifyOfPropertyChange(() => ControlMultipliers);
+            }
+        }
 
         byte previousTool;
         bool laser = false;
@@ -334,6 +347,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
         public ArmViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log, IConfigurationManager configs)
         {
             _model = new ArmModel();
+            ControlMultipliers = new ControlMultipliersViewModel();
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _log = log;

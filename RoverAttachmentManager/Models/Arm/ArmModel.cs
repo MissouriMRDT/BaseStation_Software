@@ -1,10 +1,13 @@
 ﻿using System.Collections.ObjectModel;
+﻿using RoverAttachmentManager.ViewModels.Arm;
 using ArmPositionViewModel = RoverAttachmentManager.ViewModels.Arm.ArmViewModel.ArmPositionViewModel;
 
 namespace RoverAttachmentManager.Models.ArmModels
 {
     internal class ArmModel
     {
+        internal ControlMultipliersViewModel _controlMultipliers;
+
         internal float AngleJ1;
         internal float AngleJ2;
         internal float AngleJ3;
