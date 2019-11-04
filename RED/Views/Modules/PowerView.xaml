@@ -16,18 +16,153 @@
 
 
         <Style x:Key="EnableBtn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
-            <Setter Property="Content" Value="Enabled" />
+            <Setter Property="Content" Value="Disabled" />
             <EventSetter Event="Click" Handler="EnableButton_Click" />
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Content" Value="Enabled"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        <Style x:Key="EnableBus15Btn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
+            <Setter Property="Content" Value="Bus 15 Disabled" />
+            <EventSetter Event="Click" Handler="EnableButton_Click" />
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Content" Value="Bus 15 Enabled"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="EnableBus16Btn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
+            <Setter Property="Content" Value="Bus 16 Disabled" />
+            <EventSetter Event="Click" Handler="EnableButton_Click" />
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Content" Value="Bus 16 Enabled"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="EnableBus17Btn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
+            <Setter Property="Content" Value="Bus 17 Disabled" />
+            <EventSetter Event="Click" Handler="EnableButton_Click" />
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Content" Value="Bus 17 Enabled"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="EnableBus18Btn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
+            <Setter Property="Content" Value="Bus 18 Disabled" />
+            <EventSetter Event="Click" Handler="EnableButton_Click" />
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Content" Value="Bus 18 Enabled"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="EnableBus19Btn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
+            <Setter Property="Content" Value="Bus 19 Disabled" />
+            <EventSetter Event="Click" Handler="EnableButton_Click" />
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Content" Value="Bus 19 Enabled"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="EnableBus20Btn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
+            <Setter Property="Content" Value="Bus 20 Disabled" />
+            <EventSetter Event="Click" Handler="EnableButton_Click" />
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Content" Value="Bus 20 Enabled"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="EnableBus21Btn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
+            <Setter Property="Content" Value="Bus 21 Disabled" />
+            <EventSetter Event="Click" Handler="EnableButton_Click" />
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Content" Value="Bus 21 Enabled"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="EnableBus22Btn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
+            <Setter Property="Content" Value="Bus 22 Disabled" />
+            <EventSetter Event="Click" Handler="EnableButton_Click" />
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Content" Value="Bus 22 Enabled"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="EnableBus23Btn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
+            <Setter Property="Content" Value="Bus 23 Disabled" />
+            <EventSetter Event="Click" Handler="EnableButton_Click" />
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Content" Value="Bus 23 Enabled"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="EnableBus24Btn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
+            <Setter Property="Content" Value="Bus 24 Disabled" />
+            <EventSetter Event="Click" Handler="EnableButton_Click" />
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Content" Value="Bus 24 Enabled"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="EnableBus25Btn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
+            <Setter Property="Content" Value="Bus 25 Disabled" />
+            <EventSetter Event="Click" Handler="EnableButton_Click" />
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Content" Value="Bus 25 Enabled"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="EnableBus26Btn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
+            <Setter Property="Content" Value="Bus 26 Disabled" />
+            <EventSetter Event="Click" Handler="EnableButton_Click" />
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Content" Value="Bus 26 Enabled"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
         <Style x:Key="EnableNotifyBtn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
-            <Setter Property="Content" Value="Enabled" />
+            <Setter Property="Content" Value="Disabled" />
             <EventSetter Event="Click" Handler="EnableNotifyButton_Click" />
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Content" Value="Enabled"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
         <Style x:Key="AllMotorBtn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
-            <Setter Property="Content" Value="Enabled" />
+            <Setter Property="Content" Value="All Motors Disabled" />
             <EventSetter Event="Click" Handler="AllMotorPower" />
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Content" Value="All Motors Enabled"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
         <Style x:Key="LogBtn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
@@ -70,8 +205,7 @@
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
+                <RowDefinition Height="27" />
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
@@ -125,27 +259,18 @@
             <Label Grid.Row="5" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="Motor6Current" 
                    Background="{Binding Path=Motor6Current, Converter={StaticResource AmpConverter}, Mode=Default}"/>
 
-            <ToggleButton Grid.Row="6" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="11" IsChecked="{Binding Path=Status[11]}"/>
-            <Label Grid.Row="6" Grid.Column="1" Background="{Binding Path=Motor7Current, 
+            <ToggleButton Grid.Row="0" Grid.Column="3" Style="{StaticResource EnableBtn}" Tag="11" IsChecked="{Binding Path=Status[11]}"/>
+            <Label Grid.Row="0" Grid.Column="4" Background="{Binding Path=Motor7Current, 
                     Converter={StaticResource AmpConverter}, Mode=Default}">Motor Extra</Label>
-            <Label Grid.Row="6" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="Motor7Current" 
+            <Label Grid.Row="0" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="Motor7Current" 
                    Background="{Binding Path=Motor7Current, Converter={StaticResource AmpConverter}, Mode=Default}"/>
 
-            <ToggleButton Grid.Row="7" Grid.Column="0" Height="27" VerticalAlignment="Bottom" Style="{StaticResource AllMotorBtn}"/>
-            <Label Grid.Row="7" Grid.Column="1">All motors</Label>
 
-
-            <ToggleButton Grid.Row="0" Grid.Column="3" Style="{StaticResource EnableBtn}" Tag="14" IsChecked="{Binding Path=Status[14]}"/>
-            <Label Grid.Row="0" Grid.Column="4" Background="{Binding Path=Motor8Current, 
+            <ToggleButton Grid.Row="1" Grid.Column="3" Style="{StaticResource EnableBtn}" Tag="14" IsChecked="{Binding Path=Status[14]}"/>
+            <Label Grid.Row="1" Grid.Column="4" Background="{Binding Path=Motor8Current, 
                     Converter={StaticResource AmpConverter}, Mode=Default}">Auxiliary</Label>
-            <Label Grid.Row="0" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="Motor8Current" 
+            <Label Grid.Row="1" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="Motor8Current" 
                    Background="{Binding Path=Motor8Current, Converter={StaticResource AmpConverter}, Mode=Default}"/>
-
-            <ToggleButton Grid.Row="1" Grid.Column="3" Style="{StaticResource EnableNotifyBtn}" Tag="2" IsChecked="{Binding Path=Status[2]}"/>
-            <Label Grid.Row="1" Grid.Column="4" Background="{Binding Path=CommunicationsCurrent, 
-                    Converter={StaticResource AmpConverter}, Mode=Default}">Comms</Label>
-            <Label Grid.Row="1" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="CommunicationsCurrent" 
-                   Background="{Binding Path=CommunicationsCurrent, Converter={StaticResource AmpConverter}, Mode=Default}"/>
 
             <ToggleButton Grid.Row="2" Grid.Column="3" Style="{StaticResource EnableNotifyBtn}" Tag="1" IsChecked="{Binding Path=Status[1]}"/>
             <Label Grid.Row="2" Grid.Column="4" Background="{Binding Path=LogicCurrent, 
@@ -163,23 +288,69 @@
                     Converter={StaticResource TempConverter}, Mode=Default}">Batt Temp</Label>
             <Label Grid.Row="4" Grid.Column="5" Style="{StaticResource TemperatureTelem}" x:Name="BMSTemperature1"
                    Background="{Binding Path=BMSTemperature1, Converter={StaticResource TempConverter}, Mode=Default}"/>
+            <Grid Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="8" HorizontalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ToggleButton Grid.Row="0" Grid.Column="0" Height="27" VerticalAlignment="Bottom" Style="{StaticResource AllMotorBtn}"/>
+                <Button Grid.Row="0" Grid.Column="1" Click="RebootButton_Click" Style="{StaticResource Reboot}">Reboot</Button>
+                <Button Grid.Row="0" Grid.Column="2" Click="ShutDownButton_Click" Style="{StaticResource Shutdown}">Shut Down</Button>
+                <ToggleButton Grid.Row="0" Grid.Column="3" Style="{StaticResource LogBtn}" >START LOG</ToggleButton>
+            </Grid>
 
-            <Button Grid.Row="5" Grid.Column="4" Click="RebootButton_Click" Style="{StaticResource Reboot}">Reboot</Button>
-            <Button Grid.Row="6" Grid.Column="4" Click="ShutDownButton_Click" Style="{StaticResource Shutdown}">Shut Down</Button>
-            <ToggleButton Grid.Row="7" Grid.Column="4" Style="{StaticResource LogBtn}" >START LOG</ToggleButton>
-
-            <Label Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="6" HorizontalAlignment="Center">
+            <Grid Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="8" HorizontalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <ToggleButton Grid.Row="0" Grid.Column="0" Style="{StaticResource EnableBus15Btn}" Tag="15" IsChecked="{Binding Path=Status[15]}"/>
+                <ToggleButton Grid.Row="0" Grid.Column="1" Style="{StaticResource EnableBus16Btn}" Tag="16" IsChecked="{Binding Path=Status[16]}"/>
+                <ToggleButton Grid.Row="0" Grid.Column="2" Style="{StaticResource EnableBus17Btn}" Tag="17" IsChecked="{Binding Path=Status[17]}"/>
+                <ToggleButton Grid.Row="0" Grid.Column="3" Style="{StaticResource EnableBus18Btn}" Tag="18" IsChecked="{Binding Path=Status[18]}"/>
+                <ToggleButton Grid.Row="1" Grid.Column="0" Style="{StaticResource EnableBus19Btn}" Tag="19" IsChecked="{Binding Path=Status[19]}"/>
+                <ToggleButton Grid.Row="1" Grid.Column="1" Style="{StaticResource EnableBus20Btn}" Tag="20" IsChecked="{Binding Path=Status[20]}"/>
+                <ToggleButton Grid.Row="1" Grid.Column="2" Style="{StaticResource EnableBus21Btn}" Tag="21" IsChecked="{Binding Path=Status[21]}"/>
+                <ToggleButton Grid.Row="1" Grid.Column="3" Style="{StaticResource EnableBus22Btn}" Tag="22" IsChecked="{Binding Path=Status[22]}"/>
+                <ToggleButton Grid.Row="2" Grid.Column="0" Style="{StaticResource EnableBus23Btn}" Tag="23" IsChecked="{Binding Path=Status[23]}"/>
+                <ToggleButton Grid.Row="2" Grid.Column="1" Style="{StaticResource EnableBus24Btn}" Tag="24" IsChecked="{Binding Path=Status[24]}"/>
+                <ToggleButton Grid.Row="2" Grid.Column="2" Style="{StaticResource EnableBus25Btn}" Tag="25" IsChecked="{Binding Path=Status[25]}"/>
+                <ToggleButton Grid.Row="2" Grid.Column="3" Style="{StaticResource EnableBus26Btn}" Tag="26" IsChecked="{Binding Path=Status[26]}"/>
+            </Grid>
+            <Label Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="6" HorizontalAlignment="Center">
                 --------------------------------------------------</Label>
             
             
-            <Label Grid.Row="9" Grid.Column="1" Background="{Binding Path=TotalPackVoltage, 
+            <Label Grid.Row="11" Grid.Column="1" Background="{Binding Path=TotalPackVoltage, 
                 Converter={StaticResource TotalVoltConverter}, Mode=Default}">Total Pack Voltage</Label>
-            <Label Grid.Row="9" Grid.Column="2" Style="{StaticResource VoltageTelem}" x:Name="TotalPackVoltage"
+            <Label Grid.Row="11" Grid.Column="2" Style="{StaticResource VoltageTelem}" x:Name="TotalPackVoltage"
                    Background="{Binding Path=TotalPackVoltage, Converter={StaticResource TotalVoltConverter}, Mode=Default}"/>
 
-            <Label Grid.Row="9" Grid.Column="4" Background="{Binding Path=TotalPackCurrent, 
+            <Label Grid.Row="11" Grid.Column="4" Background="{Binding Path=TotalPackCurrent, 
                     Converter={StaticResource TotalAmpConverter}, Mode=Default}">Total Pack Current</Label>
-            <Label Grid.Row="9" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="TotalPackCurrent" 
+            <Label Grid.Row="11" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="TotalPackCurrent" 
                    Background="{Binding Path=TotalPackCurrent, Converter={StaticResource TotalAmpConverter}, Mode=Default}"/>
 
         </Grid>
