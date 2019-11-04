@@ -86,66 +86,6 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 NotifyOfPropertyChange(() => IKRangeFactor);
             }
         }
-        public int BaseRangeFactor
-        {
-            get
-            {
-                return _model.BaseRangeFactor;
-            }
-            set
-            {
-                _model.BaseRangeFactor = value;
-                NotifyOfPropertyChange(() => BaseRangeFactor);
-            }
-        }
-        public int ElbowRangeFactor
-        {
-            get
-            {
-                return _model.ElbowRangeFactor;
-            }
-            set
-            {
-                _model.ElbowRangeFactor = value;
-                NotifyOfPropertyChange(() => ElbowRangeFactor);
-            }
-        }
-        public int WristRangeFactor
-        {
-            get
-            {
-                return _model.WristRangeFactor;
-            }
-            set
-            {
-                _model.WristRangeFactor = value;
-                NotifyOfPropertyChange(() => WristRangeFactor);
-            }
-        }
-        public int GripperRangeFactor
-        {
-            get
-            {
-                return _model.GripperRangeFactor;
-            }
-            set
-            {
-                _model.GripperRangeFactor = value;
-                NotifyOfPropertyChange(() => GripperRangeFactor);
-            }
-        }
-        public int Gripper2RangeFactor
-        {
-            get
-            {
-                return _model.Gripper2RangeFactor;
-            }
-            set
-            {
-                _model.Gripper2RangeFactor = value;
-                NotifyOfPropertyChange(() => Gripper2RangeFactor);
-            }
-        }
         public float AngleJ1
         {
             get
