@@ -11,6 +11,8 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Windows.Media.Animation;
+
 
 namespace RED.Addons.Navigation
 {
@@ -32,8 +34,9 @@ namespace RED.Addons.Navigation
                     Height = 32,
                     Stretch = Stretch.Uniform,
                     Fill = new SolidColorBrush(currPos.Color),
-                    Data = Geometry.Parse(ModernUIIcons.AppbarLocationCircle32),
+                    Data = Geometry.Parse(ModernUIIcons.AppbarLocationArrowUp32),
                     ToolTip = currPos.Name
+                    
                 },
                 Offset = new System.Windows.Point(-16, -16),
                 ZIndex = Int32.MaxValue
