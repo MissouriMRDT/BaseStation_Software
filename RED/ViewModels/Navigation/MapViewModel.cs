@@ -8,19 +8,23 @@ using GMap.NET.MapProviders;
 using GMap.NET.WindowsPresentation;
 using RED.Addons.Navigation;
 using RED.Models.Navigation;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net;
 using System.Timers;
 using System.Windows;
 using System.Windows.Media;
 
+
 namespace RED.ViewModels.Navigation
 {
-    public class MapViewModel : PropertyChangedBase
+    public class MapViewModel : PropertyChangedBase, IRovecommReceiver
     {
         private readonly MapModel _model;
         private readonly ILogger _log;
+        private readonly IRovecomm _rovecomm;
 
         public Waypoint CurrentLocation
         {
@@ -118,15 +122,51 @@ namespace RED.ViewModels.Navigation
                 NotifyOfPropertyChange(() => MainMap);
             }
         }
+        public float Heading
+        {
+            get
+            {
+                return _model.Heading;
+            }
+            set
+            {
+                _model.Heading = value;
+                NotifyOfPropertyChange(() => Heading);
+                NotifyOfPropertyChange(() => HeadingDeg);
+            }
+        }
+        public float HeadingDeg
+        {
+            get
+            {
+                return (float)(Heading * 180d / Math.PI);
+            }
+        }
 
-        public MapViewModel(ILogger log)
+        public MapViewModel(IRovecomm networkMessenger, ILogger log)
         {
             _model = new MapModel();
             _log = log;
             Manager = WaypointManager.Instance;
+            _rovecomm = networkMessenger;
 
-            CurrentLocation = new Waypoint("GPS", 0f, 0f) { Color = System.Windows.Media.Colors.Red };
+            CurrentLocation = new Waypoint("GPS", 0f, 0f) {Color = System.Windows.Media.Colors.Red}; 
 			RefreshMap();
+
+            _rovecomm.NotifyWhenMessageReceived(this, "NavTrueHeading");
+            _rovecomm.NotifyWhenMessageReceived(this, "PitchHeadingRoll");
+        }
+
+        public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
+        {
+            switch (packet.Name)
+            {
+                case "NavTrueHeading":
+                    Heading = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0)); break;
+                case "PitchHeadingRoll":
+                    Heading = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 2)); break;
+            }
+
         }
 
         public void SetMap(GMapControl map)
@@ -165,7 +205,6 @@ namespace RED.ViewModels.Navigation
             Timer checkForTime = new Timer(1000);
             checkForTime.Elapsed += new ElapsedEventHandler(UpdateRoverPath);
             checkForTime.Enabled = true;
-
         }
 
         void UpdateRoverPath(object sender, ElapsedEventArgs e)
@@ -238,11 +277,26 @@ namespace RED.ViewModels.Navigation
 
             var converter = new GMapMarkerCollectionMultiConverter();
             var newdata = (IEnumerable<GMapMarker>)converter.Convert(new object[] { CurrentLocation, Waypoints.Where(x => x.IsOnMap) }, typeof(System.Collections.ObjectModel.ObservableCollection<GMapMarker>), null, System.Globalization.CultureInfo.DefaultThreadCurrentUICulture);
+
+            int i = 0;
             foreach (var marker in newdata)
+            {
+                if (i == 0)
+                {
+                    RotateTransform Rotation = new RotateTransform(HeadingDeg);
+                    marker.Shape.RenderTransform = Rotation;
+                }
+                i++;
                 MainMap.Markers.Add(marker);
+
+            }
 
             var routeMarker = new GMapRoute(RoverPath);
             MainMap.Markers.Add(routeMarker);
+        }
+        public void ReceivedRovecommMessageCallback(int index, bool reliable)
+        {
+            ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
         }
     }
 }
