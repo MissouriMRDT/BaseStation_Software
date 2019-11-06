@@ -21,28 +21,31 @@
     </UserControl.Resources>
     <DockPanel>
         <StackPanel Orientation="Vertical" DockPanel.Dock="Top">
-            <Grid>
-                <Grid.ColumnDefinitions>
+			<Grid>
+				<Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/> 
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" ContextMenuService.IsEnabled="False" Content="Add Waypoint" Click="AddMenu_Click">
+                <Button x:Name ="AddWaypoint" Grid.Column="0" ContextMenuService.IsEnabled="False" Content="Add Waypoint" Click="AddMenu_Click">
                     <Button.ContextMenu>
                         <ContextMenu>
                             <ContextMenu.Template>
                                 <ControlTemplate>
                                     <Border Background="White">
                                         <GroupBox Header="Add Waypoint" Margin="0">
-                                            <Grid>
+                                            <Grid x:Name="AddWaypointGrid" Initialized="AddWaypointGrid_Initialized">
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="50"/>
-                                                    <ColumnDefinition Width="150"/>
+                                                    <ColumnDefinition x:Name ="ColumnLabels" Width="50" />
+                                                    <ColumnDefinition x:Name="ColumnDegrees" Width="150" />
+													<ColumnDefinition x:Name="ColumnMinutes" Width="50"/>
+													<ColumnDefinition x:Name="ColumnSeconds" Width="50"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Grid.RowDefinitions>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition x:Name="RowLabels" Height="*"/>
+                                                    <RowDefinition x:Name ="RowLatitude" Height="*"/>
+                                                    <RowDefinition x:Name="RowLongitude" Height="*"/>
                                                     <RowDefinition Height="*"/>
                                                 </Grid.RowDefinitions>
 
@@ -63,16 +66,23 @@
                         </ContextMenu>
                     </Button.ContextMenu>
                 </Button>
-                <Button x:Name="CurrentLocationToWaypoint" Grid.Column="1">Save Current</Button>
-                <Button x:Name="RemoveSelectedWaypoint" Grid.Column="2">Remove Selected</Button>
+				<ComboBox x:Name="DMSSelector" Grid.Column="1" SelectedItem="Degrees" SelectionChanged="DMSSelector_Selected">
+					<ComboBoxItem x:Name="Degrees" Content = "Deg"/>
+					<ComboBoxItem x:Name = "DMS" Content = "DMS"/>
+				</ComboBox>
+				<Button x:Name="CurrentLocationToWaypoint" Grid.Column="2">Save Current</Button>
+                <Button x:Name="RemoveSelectedWaypoint" Grid.Column="3">Remove Selected</Button>
             </Grid>
         </StackPanel>
-        <DataGrid ItemsSource="{Binding Waypoints}" SelectedItem="{Binding SelectedWaypoint}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" FrozenColumnCount="1" BorderThickness="1">
+        <DataGrid ItemsSource="{Binding Waypoints}" SelectedItem="{Binding SelectedWaypoint}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" FrozenColumnCount="1" BorderThickness="1" SelectionChanged="DataGrid_SelectionChanged">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
-                <DataGridTextColumn Header="Longitude" Binding="{Binding Longitude}" />
-                <DataGridTextColumn Header="Latitude" Binding="{Binding Latitude}" />
-                <DataGridTemplateColumn Header="Color">
+                <DataGridTextColumn x:Name="colLong" Header="Longitude" Binding="{Binding Longitude}" />
+                <DataGridTextColumn x:Name="colLat" Header="Latitude" Binding="{Binding Latitude}" />
+				<DataGridTextColumn x:Name="colDeg" Header="Deg" Binding="{Binding Deg}" />
+				<DataGridTextColumn x:Name="colMin" Header="Min" Binding="{Binding Min}" />
+				<DataGridTextColumn x:Name="colSec" Header="Sec" Binding="{Binding Sec}" />
+				<DataGridTemplateColumn Header="Color">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ComboBox ItemsSource="{Binding Source={StaticResource Colors}}" SelectedItem="{Binding Color, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -92,5 +102,5 @@
                 <DataGridCheckBoxColumn Header="Map" Binding="{Binding IsOnMap}" />
             </DataGrid.Columns>
         </DataGrid>
-    </DockPanel>
+ </DockPanel>
 </UserControl>

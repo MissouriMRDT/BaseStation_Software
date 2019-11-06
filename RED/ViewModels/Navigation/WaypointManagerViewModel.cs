@@ -143,6 +143,7 @@ namespace RED.ViewModels.Navigation
                     throw new ArgumentException();
             }
         }
+								
 
         public bool AddWaypoint(string name, string latitude, string longitude)
         {
