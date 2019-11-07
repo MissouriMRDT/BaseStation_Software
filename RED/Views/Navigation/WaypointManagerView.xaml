@@ -67,7 +67,7 @@
                     </Button.ContextMenu>
                 </Button>
 				<ComboBox x:Name="DMSSelector" Grid.Column="1" SelectedItem="Degrees" SelectionChanged="DMSSelector_Selected">
-					<ComboBoxItem x:Name="Degrees" Content = "Deg"/>
+					<ComboBoxItem x:Name="LonLat" Content = "Lon/Lat"/>
 					<ComboBoxItem x:Name = "DMS" Content = "DMS"/>
 				</ComboBox>
 				<Button x:Name="CurrentLocationToWaypoint" Grid.Column="2">Save Current</Button>
@@ -77,7 +77,7 @@
         <DataGrid ItemsSource="{Binding Waypoints}" SelectedItem="{Binding SelectedWaypoint}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" FrozenColumnCount="1" BorderThickness="1" SelectionChanged="DataGrid_SelectionChanged">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
-                <DataGridTextColumn x:Name="colLong" Header="Longitude" Binding="{Binding Longitude}" />
+                <DataGridTextColumn x:Name="colLon" Header="Longitude" Binding="{Binding Longitude}" />
                 <DataGridTextColumn x:Name="colLat" Header="Latitude" Binding="{Binding Latitude}" />
 				<DataGridTextColumn x:Name="colDeg" Header="Deg" Binding="{Binding Deg}" />
 				<DataGridTextColumn x:Name="colMin" Header="Min" Binding="{Binding Min}" />

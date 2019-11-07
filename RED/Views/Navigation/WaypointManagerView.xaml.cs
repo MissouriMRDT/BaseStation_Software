@@ -14,6 +14,8 @@ namespace RED.Views.Navigation
         public WaypointManagerView()
         {
             InitializeComponent();
+			InitSelector();
+
 		}
 
         private void AddMenu_Click(object sender, RoutedEventArgs e)
@@ -37,29 +39,23 @@ namespace RED.Views.Navigation
 			
 			var selector = (ComboBox)sender;
 			var selected = selector.SelectedItem;
-			System.Console.WriteLine("You Selected" + selected);
-			if (selected.Equals(Degrees))
+			if (selected.Equals(LonLat))
 			{
-				
+				colDeg.Visibility = Visibility.Collapsed;
+				colMin.Visibility = Visibility.Collapsed;
+				colSec.Visibility = Visibility.Collapsed;
+				colLon.Visibility = Visibility.Visible;
+				colLat.Visibility = Visibility.Visible;
 			}
 			else
 			{
-				
-	        }
-
-		}
-
-		private void DMSSelector_Update(object comboBox, bool isDegrees)
-		{
-			//IsDegrees determines if the display is updated to show degrees or DMS
-			if (isDegrees)
-			{
-                
+				colDeg.Visibility = Visibility.Visible;
+				colMin.Visibility = Visibility.Visible;
+				colSec.Visibility = Visibility.Visible;
+				colLon.Visibility = Visibility.Collapsed;
+				colLat.Visibility = Visibility.Collapsed;
 			}
-			else
-			{
-				
-			}
+
 		}
 
 		private void AddWaypointGrid_Initialized(object sender, System.EventArgs e)
@@ -71,6 +67,16 @@ namespace RED.Views.Navigation
 	private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
 	{
 
+	}
+
+	private void InitSelector()
+	{
+	  DMSSelector.SelectedIndex = 0;
+	  colDeg.Visibility = Visibility.Collapsed;
+	  colMin.Visibility = Visibility.Collapsed;
+	  colSec.Visibility = Visibility.Collapsed;
+	  colLon.Visibility = Visibility.Visible;
+	  colLat.Visibility = Visibility.Visible;
 	}
   }
 }
