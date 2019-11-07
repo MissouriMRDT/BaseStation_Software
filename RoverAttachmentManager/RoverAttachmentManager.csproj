@@ -116,15 +116,23 @@
     <Compile Include="Configurations\ArmConfigurations\ArmConfig.cs" />
     <Compile Include="Contexts\ArmPositionsContext.cs" />
     <Compile Include="Models\Arm\ArmModel.cs" />
+    <Compile Include="Models\Arm\ControlMultipliersModel.cs" />
     <Compile Include="Models\InputManagerModel.cs" />
     <Compile Include="Models\InputSelectorModel.cs" />
     <Compile Include="Models\MainWindowModel.cs" />
     <Compile Include="Models\Science\ScienceModel.cs" />
+    <Compile Include="ViewModels\Arm\ControlMultipliersViewModel.cs" />
     <Compile Include="ViewModels\Science\ScienceViewModel.cs" />
+    <Compile Include="Views\Arm\ControlMultipliersView.xaml.cs">
+      <DependentUpon>ControlMultipliersView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Science\ScienceView.xaml.cs">
       <DependentUpon>ScienceView.xaml</DependentUpon>
     </Compile>
     <Compile Include="RAMBootstrapper.cs" />
+    <Page Include="Views\Arm\ControlMultipliersView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Science\ScienceView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
