@@ -1,4 +1,5 @@
 ﻿using Core.ViewModels.Input.Controllers;
+using RED.ViewModels.Modules;
 using RED.ViewModels.Settings.Modules;
 using RED.ViewModels.Settings.Network;
 
@@ -14,5 +15,6 @@ namespace RED.Models
         internal GPSSettingsViewModel GPS;
         internal PowerSettingsViewModel Power;
         internal NetworkManagerSettingsViewModel Network;
+        internal LightingSettingsViewModel Lighting;
     }
 }

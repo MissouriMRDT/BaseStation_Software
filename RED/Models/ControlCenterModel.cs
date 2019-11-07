@@ -25,7 +25,6 @@ namespace RED.Models
         internal SensorViewModel _sensor;
         internal PowerViewModel _power;
         internal CameraViewModel _cameraMux;
-        internal LightingViewModel _lighting;
         internal MapViewModel _map;
         internal DriveViewModel _drive;
         internal GimbalViewModel _gimbal;

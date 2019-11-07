@@ -184,18 +184,7 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => CameraMux);
             }
         }
-        public LightingViewModel Lighting
-        {
-            get
-            {
-                return _model._lighting;
-            }
-            set
-            {
-                _model._lighting = value;
-                NotifyOfPropertyChange(() => Lighting);
-            }
-        }
+
         public MapViewModel Map
         {
             get
@@ -310,7 +299,6 @@ namespace RED.ViewModels
             Sensor = new SensorViewModel(Rovecomm, MetadataManager, Console);
             Power = new PowerViewModel(Rovecomm, MetadataManager, Console);
             CameraMux = new CameraViewModel(Rovecomm, MetadataManager);
-            Lighting = new LightingViewModel(Rovecomm, MetadataManager, Console);
             Map = new MapViewModel(Console);
 
             Drive = new DriveViewModel(Rovecomm, MetadataManager, Console);

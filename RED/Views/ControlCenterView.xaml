@@ -55,9 +55,6 @@
                         <Expander Header="Power and BMS">
                             <ContentControl x:Name="Power" />
                         </Expander>
-                        <Expander Header="Lighting">
-                            <ContentControl x:Name="Lighting" />
-                        </Expander>
                     </StackPanel>
                 </StackPanel>
                 <Grid Grid.Column="2">

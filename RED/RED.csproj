@@ -186,6 +186,7 @@
     <Compile Include="ViewModels\SettingsManagerViewModel.cs" />
     <Compile Include="ViewModels\Settings\Modules\DriveSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Modules\GPSSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Settings\Modules\LightingSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Modules\PowerSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Network\NetworkManagerSettingsViewModel.cs" />
     <Compile Include="ViewModels\Tools\StopwatchToolViewModel.cs" />
@@ -236,6 +237,9 @@
     </Compile>
     <Compile Include="Views\Settings\Modules\GPSSettingsView.xaml.cs">
       <DependentUpon>GPSSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Settings\Modules\LightingSettingsView.xaml.cs">
+      <DependentUpon>LightingSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Settings\Network\NetworkManagerSettingsView.xaml.cs">
       <DependentUpon>NetworkManagerSettingsView.xaml</DependentUpon>
@@ -308,6 +312,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Settings\Input\Controllers\XboxControllerInputSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Settings\Modules\LightingSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
