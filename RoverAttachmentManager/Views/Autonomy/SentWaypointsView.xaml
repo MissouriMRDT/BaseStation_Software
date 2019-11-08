@@ -1,12 +1,11 @@
-﻿<Window x:Class="RoverAttachmentManager.Views.Autonomy.Window1"
+﻿<Window x:Class="RoverAttachmentManager.Views.Autonomy.SentWaypointsView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RoverAttachmentManager.Views.Autonomy"
-        mc:Ignorable="d"
-        Title="Window1" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        mc:Ignorable="d">
+        <TextBox Name="SentWaypointsTextBox" Grid.Row="1" Grid.Column="1" IsHitTestVisible="True"
+                     Text="{Binding SentWaypointsText}" IsReadOnly="True" TextChanged="SentWaypointsText_Changed"
+                     BorderThickness="0" VerticalScrollBarVisibility="Visible"/>
 </Window>

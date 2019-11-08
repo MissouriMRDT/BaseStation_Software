@@ -19,18 +19,6 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
         private readonly ILogger _logger;
         private readonly WaypointManager _waypointManager;
 
-        public string SentWaypointsText
-        {
-            get
-            {
-                return _model._waypointsText;
-            }
-            set
-            {
-                _model._waypointsText = value;
-                NotifyOfPropertyChange();
-            }
-        }
         public AutonomyViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger logger)
         {
             _model = new AutonomyModel();
@@ -49,8 +37,6 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
         public void ClearAllWaypoints()
         {
             _rovecomm.SendCommand(new Packet("WaypointsClearAll"), true);
-            string wpclear = "--cleared--\n";
-            SentWaypointsText += wpclear;
         }
       
 
@@ -75,8 +61,6 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
             Buffer.BlockCopy(BitConverter.GetBytes(waypoint.Latitude), 0, msg, 1 * sizeof(double), sizeof(double));
             Array.Reverse(msg);
 
-            string tempstring = waypoint.Name + " | Longitude: " + waypoint.Longitude.ToString() + " | Latitude: " + waypoint.Latitude.ToString() + "\n";
-            SentWaypointsText += tempstring;
             _rovecomm.SendCommand(new Packet("WaypointAdd", msg, 2, (byte)7), true);
         }
 

@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace RoverAttachmentManager.Models.Autonomy
 {
-    class Class1
+    class SentWaypointsModel
     {
+        internal string _waypointsText = String.Empty;
     }
 }
