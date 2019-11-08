@@ -48,6 +48,30 @@ namespace Core.Configurations.Input
                 new InputChannelContext("ButtonBackDebounced", "GripperSwap"),
                 new InputChannelContext("ButtonStartDebounced", "LaserToggle") }),
 
+            new InputMappingContext("Arm (PR)", "Xbox", "Arm", 100, new[] {
+                new InputChannelContext("JoyStick1Y", "IKYIncrement"){ Parabolic = true },
+                new InputChannelContext("JoyStick1Y", "ElbowBend"){},
+                new InputChannelContext("JoyStick1X", "IKXIncrement"){ Parabolic = true },
+                new InputChannelContext("JoyStick1X", "ElbowTwist"){},
+                new InputChannelContext("JoyStick2Y", "IKPitchIncrement"){ Parabolic = true },
+                new InputChannelContext("JoyStick2Y", "WristBend"){},
+                new InputChannelContext("JoyStick2X", "IKYawIncrement"){ Parabolic = true },
+                new InputChannelContext("JoyStick2X", "WristTwist"){},
+                new InputChannelContext("ButtonY", "Nipper"),
+                new InputChannelContext("LeftTrigger", "IKZMagnitude"),
+                new InputChannelContext("RightTrigger", "BaseBendMagnitude"),
+                new InputChannelContext("RightTrigger", "IKRollMagnitude"),
+                new InputChannelContext("LeftTrigger", "BaseTwistMagnitude"),
+                new InputChannelContext("ButtonRb", "IKRollDirection"),
+                new InputChannelContext("ButtonLb", "BaseTwistDirection"),
+                new InputChannelContext("ButtonLb", "IKZDirection"),
+                new InputChannelContext("ButtonRb", "BaseBendDirection"),
+                new InputChannelContext("ButtonB", "GripperOpen"),
+                new InputChannelContext("ButtonX", "GripperClose"),
+                new InputChannelContext("ButtonA", "SwitchTool"),
+                new InputChannelContext("ButtonBackDebounced", "GripperSwap"),
+                new InputChannelContext("ButtonStartDebounced", "LaserToggle") }),
+
             new InputMappingContext("Xbox Science Controls", "Xbox", "ScienceControls", 100, new[] {
                 new InputChannelContext("JoyStick1Y", "Screw"){ Parabolic = true },
                 new InputChannelContext("JoyStick2X", "XActuation"){ Parabolic = true },
@@ -80,6 +104,7 @@ namespace Core.Configurations.Input
         public static InputSelectionsContext DefaultInputSelections = new InputSelectionsContext(new[] {
             new InputSelectionContext("Drive", "Xbox 1", "Tank Drive (Traditional)", true),
             new InputSelectionContext("Arm", "Xbox 1", "Arm (Traditional)", false),
+            new InputSelectionContext("Arm", "Xbox 1", "Arm (PR)", false),
             new InputSelectionContext("Main Gimbal", "Xbox 1", "Xbox Gimbal",false),
             new InputSelectionContext("Science Controls", "Xbox 1", "Xbox Science Controls", false)
         });

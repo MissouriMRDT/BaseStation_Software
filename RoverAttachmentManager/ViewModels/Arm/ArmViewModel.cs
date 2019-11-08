@@ -59,8 +59,8 @@ namespace RoverAttachmentManager.ViewModels.Arm
         private readonly IConfigurationManager _configManager;
         private readonly Dictionary<int, string> _armFaultIds;
 
-        //flag that gets set when the arm detects and error and forces a change state, we want the user to have to wait a second 
-        //before commands can be sent again so they can register the fact taht said error occurred
+        //flag that gets set when the arm detects an error and forces a change state, we want the user to have to wait a second 
+        //before commands can be sent again so they can register the fact that said error occurred
         private bool freezeArm = false; 
 
         public string Name { get; }
@@ -695,7 +695,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
 
             if(freezeArm)
             {
-                //let user realzie an error has occurred before allowing commands to be sent again.
+                //let user realize an error has occurred before allowing commands to be sent again.
                 Task.Delay(500);
                 freezeArm = false;
             }
