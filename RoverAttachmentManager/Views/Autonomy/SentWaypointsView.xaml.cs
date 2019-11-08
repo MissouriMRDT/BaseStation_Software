@@ -23,5 +23,9 @@ namespace RoverAttachmentManager.Views.Autonomy
         {
             InitializeComponent();
         }
+        private void SentWaypointsText_Changed(object sender, TextChangedEventArgs e)
+        {
+            SentWaypointsTextBox.ScrollToEnd();
+        }
     }
 }
