@@ -427,18 +427,19 @@ namespace RED.ViewModels.Modules
             switch (packet.Name)
             {
                 // New Id's
-                case "TotalPackCurrentInt": TotalPackCurrent = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 0)) / 1000.0); break;
+                case "TotalPackCurrentInt": TotalPackCurrent = (float)(packet.GetData<Int32>() / 1000.0); break;
                 case "BMSTemperatureInt": BMSTemperature1 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 0)) / 1000.0); break;
                 case "BMSVoltages":
-                    TotalPackVoltage = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0)) / 1000.0);
-                    Cell1Voltage = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 2)) / 1000.0);
-                    Cell2Voltage = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 4)) / 1000.0);
-                    Cell3Voltage = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 6)) / 1000.0);
-                    Cell4Voltage = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 8)) / 1000.0);
-                    Cell5Voltage = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 10)) / 1000.0);
-                    Cell6Voltage = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 12)) / 1000.0);
-                    Cell7Voltage = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 14)) / 1000.0);
-                    Cell8Voltage = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 16)) / 1000.0);
+                    Int16[] values = packet.GetDataArray<Int16>();
+                    TotalPackVoltage = (float)(values[0] / 1000.0);
+                    Cell1Voltage = (float)(values[1] / 1000.0);
+                    Cell2Voltage = (float)(values[2] / 1000.0);
+                    Cell3Voltage = (float)(values[3] / 1000.0);
+                    Cell4Voltage = (float)(values[4] / 1000.0);
+                    Cell5Voltage = (float)(values[5] / 1000.0);
+                    Cell6Voltage = (float)(values[6] / 1000.0);
+                    Cell7Voltage = (float)(values[7] / 1000.0);
+                    Cell8Voltage = (float)(values[8] / 1000.0);
                     break;
                 case "BMSError":
                     _log.Log($"Recieved BMSError Report:\n  {BitConverter.ToString(packet.Data)}"); break;
