@@ -51,39 +51,39 @@
 
                 <!-- What goes in each column (7 motor names and current readings, 8 enable buttons including one for all of the motors -->
                 <ToggleButton Grid.Row="0" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="8" IsChecked="{Binding Path=Status[8]}"/>
-                <Label Grid.Row="0" Grid.Column="1" Background="{Binding Path= ArmBaseCurrent1, 
-                   Converter={StaticResource AmpConverter}, Mode=Default}">Base1</Label>
-                <Label Grid.Row="0" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="ArmBaseCurrent1" Background="{Binding Path=ArmBaseCurrent1,
+                <Label Grid.Row="0" Grid.Column="1" Background="{Binding Path= BaseTwistCurrent, 
+                   Converter={StaticResource AmpConverter}, Mode=Default}">Base Twist</Label>
+                <Label Grid.Row="0" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="BaseTwistCurrent" Background="{Binding Path=BaseTwistCurrent,
                     Converter={StaticResource AmpConverter}, Mode=Default}"/>
                 
                 <ToggleButton Grid.Row="1" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="9" IsChecked="{Binding Path=Status[9]}"/>
-                <Label Grid.Row="1" Grid.Column="1" Background="{Binding Path= ArmBaseCurrent2, 
-                   Converter={StaticResource AmpConverter}, Mode=Default}">Base2</Label>
-                <Label Grid.Row="1" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="ArmBaseCurrent2" Background="{Binding Path=ArmBaseCurrent2,
+                <Label Grid.Row="1" Grid.Column="1" Background="{Binding Path= BaseTiltCurrent, 
+                   Converter={StaticResource AmpConverter}, Mode=Default}">Base Tilt</Label>
+                <Label Grid.Row="1" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="BaseTiltCurrent" Background="{Binding Path=BaseTiltCurrent,
                     Converter={StaticResource AmpConverter}, Mode=Default}"/>
 
                 <ToggleButton Grid.Row="2" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="10" IsChecked="{Binding Path=Status[10]}"/>
-                <Label Grid.Row="2" Grid.Column="1" Background="{Binding Path= ElbowCurrent1, 
-                   Converter={StaticResource AmpConverter}, Mode=Default}">Elbow1</Label>
-                <Label Grid.Row="2" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="ElbowCurrent1" Background="{Binding Path=ElbowCurrent1,
+                <Label Grid.Row="2" Grid.Column="1" Background="{Binding Path= ElbowTiltCurrent, 
+                   Converter={StaticResource AmpConverter}, Mode=Default}">Elbow Tilt</Label>
+                <Label Grid.Row="2" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="ElbowTiltCurrent" Background="{Binding Path=ElbowTiltCurrent,
                     Converter={StaticResource AmpConverter},Mode=Default}"/>
 
                 <ToggleButton Grid.Row="3" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="8" IsChecked="{Binding Path=Status[8]}"/>
-                <Label Grid.Row="3" Grid.Column="1" Background="{Binding Path= ElbowCurrent2, 
-                   Converter={StaticResource AmpConverter}, Mode=Default}">Elbow2</Label>
-                <Label Grid.Row="3" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="ElbowCurrent2" Background="{Binding Path=ElbowCurrent2,
+                <Label Grid.Row="3" Grid.Column="1" Background="{Binding Path= ElbowTwistCurrent, 
+                   Converter={StaticResource AmpConverter}, Mode=Default}">Elbow Twist</Label>
+                <Label Grid.Row="3" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="ElbowTwistCurrent" Background="{Binding Path=ElbowTwistCurrent,
                     Converter={StaticResource AmpConverter},Mode=Default}"/>
 
                 <ToggleButton Grid.Row="0" Grid.Column="3" Style="{StaticResource EnableBtn}" Tag="9" IsChecked="{Binding Path=Status[9]}"/>
-                <Label Grid.Row="0" Grid.Column="4" Background="{Binding Path= WristCurrent1, 
-                   Converter={StaticResource AmpConverter}, Mode=Default}">Wrist1</Label>
-                <Label Grid.Row="0" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="WristCurrent1" Background="{Binding Path=WristCurrent1,
+                <Label Grid.Row="0" Grid.Column="4" Background="{Binding Path= WristTiltCurrent, 
+                   Converter={StaticResource AmpConverter}, Mode=Default}">Wrist Tilt</Label>
+                <Label Grid.Row="0" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="WristTiltCurrent" Background="{Binding Path=WristTiltCurrent,
                     Converter={StaticResource AmpConverter},Mode=Default}"/>
 
                 <ToggleButton Grid.Row="1" Grid.Column="3" Style="{StaticResource EnableBtn}" Tag="10" IsChecked="{Binding Path=Status[10]}"/>
-                <Label Grid.Row="1" Grid.Column="4" Background="{Binding Path= WristCurrent2, 
-                   Converter={StaticResource AmpConverter}, Mode=Default}">Wrist2</Label>
-                <Label Grid.Row="1" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="WristCurrent2" Background="{Binding Path=WristCurrent2,
+                <Label Grid.Row="1" Grid.Column="4" Background="{Binding Path= WristTwistCurrent, 
+                   Converter={StaticResource AmpConverter}, Mode=Default}">Wrist Twist</Label>
+                <Label Grid.Row="1" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="WristTwistCurrent" Background="{Binding Path=WristTwistCurrent,
                     Converter={StaticResource AmpConverter},Mode=Default}"/>
 
                 <ToggleButton Grid.Row="2" Grid.Column="3" Style="{StaticResource EnableBtn}" Tag="11" IsChecked="{Binding Path=Status[11]}"/>

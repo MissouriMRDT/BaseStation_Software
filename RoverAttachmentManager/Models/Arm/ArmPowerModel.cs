@@ -11,12 +11,12 @@ namespace RoverAttachmentManager.Models.Arm
     {
         internal bool AutoStartLog;
 
-        internal float ArmBaseCurrent1;
-        internal float ArmBaseCurrent2;
-        internal float ElbowCurrent1;
-        internal float ElbowCurrent2;
-        internal float WristCurrent1;
-        internal float WristCurrent2;
+        internal float BaseTwistCurrent;
+        internal float BaseTiltCurrent;
+        internal float ElbowTiltCurrent;
+        internal float ElbowTwistCurrent;
+        internal float WristTiltCurrent;
+        internal float WristTwistCurrent;
         internal float GripperCurrent;
 
         internal BitArray Status;

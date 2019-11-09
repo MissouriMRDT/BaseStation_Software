@@ -35,76 +35,76 @@ namespace RoverAttachmentManager.ViewModels.Arm
         }
 
         //auto updates the variables (so we can get the current the motor is right now)
-        public float ArmBaseCurrent1
+        public float BaseTwistCurrent
         {
             get
             {
-                return _model.ArmBaseCurrent1;
+                return _model.BaseTwistCurrent;
             }
             set
             {
-                _model.ArmBaseCurrent1 = value;
-                NotifyOfPropertyChange(() => ArmBaseCurrent1);
+                _model.BaseTwistCurrent = value;
+                NotifyOfPropertyChange(() => BaseTwistCurrent);
             }
         }    
-        public float ArmBaseCurrent2
+        public float BaseTiltCurrent
         {
             get
             {
-                return _model.ArmBaseCurrent2;
+                return _model.BaseTiltCurrent;
             }
             set
             {
-                _model.ArmBaseCurrent2 = value;
-                NotifyOfPropertyChange(() => ArmBaseCurrent2);
+                _model.BaseTiltCurrent = value;
+                NotifyOfPropertyChange(() => BaseTiltCurrent);
             }
         }
-        public float ElbowCurrent1
+        public float ElbowTiltCurrent
         {
             get
             {
-                return _model.ElbowCurrent1;
+                return _model.ElbowTiltCurrent;
             }
             set
             {
-                _model.ElbowCurrent1 = value;
-                NotifyOfPropertyChange(() => ElbowCurrent1);
+                _model.ElbowTiltCurrent = value;
+                NotifyOfPropertyChange(() => ElbowTiltCurrent);
             }
         }
-        public float ElbowCurrent2
+        public float ElbowTwistCurrent
         {
             get
             {
-                return _model.ElbowCurrent2;
+                return _model.ElbowTwistCurrent;
             }
             set
             {
-                _model.ElbowCurrent2 = value;
-                NotifyOfPropertyChange(() => ElbowCurrent2);
+                _model.ElbowTwistCurrent = value;
+                NotifyOfPropertyChange(() => ElbowTwistCurrent);
             }
         }
-        public float WristCurrent1
+        public float WristTiltCurrent
         {
             get
             {
-                return _model.WristCurrent1;
+                return _model.WristTiltCurrent;
             }
             set
             {
-                _model.WristCurrent1 = value;
-                NotifyOfPropertyChange(() => WristCurrent1);
+                _model.WristTiltCurrent = value;
+                NotifyOfPropertyChange(() => WristTiltCurrent);
             }
         }
-        public float WristCurrent2
+        public float WristTwistCurrent
         {
             get
             {
-                return _model.WristCurrent2;
+                return _model.WristTwistCurrent;
             }
             set
             {
-                _model.WristCurrent2 = value;
-                NotifyOfPropertyChange(() => WristCurrent2);
+                _model.WristTwistCurrent = value;
+                NotifyOfPropertyChange(() => WristTwistCurrent);
             }
         }
         public float GripperCurrent
@@ -149,12 +149,12 @@ namespace RoverAttachmentManager.ViewModels.Arm
             switch (packet.Name)
             {
                 case "ArmPowerCurrents":
-                    ArmBaseCurrent1 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 6)) / 1000.0);
-                    ArmBaseCurrent2 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 8)) / 1000.0);
-                    ElbowCurrent1 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 10)) / 1000.0);
-                    ElbowCurrent2 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 12)) / 1000.0);
-                    WristCurrent1 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 14)) / 1000.0);
-                    WristCurrent2 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 16)) / 1000.0);
+                    BaseTwistCurrent = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 6)) / 1000.0);
+                    BaseTiltCurrent = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 8)) / 1000.0);
+                    ElbowTiltCurrent = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 10)) / 1000.0);
+                    ElbowTwistCurrent = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 12)) / 1000.0);
+                    WristTiltCurrent = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 14)) / 1000.0);
+                    WristTwistCurrent = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 16)) / 1000.0);
                     GripperCurrent = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 18)) / 1000.0);
                     break;
 
@@ -163,12 +163,12 @@ namespace RoverAttachmentManager.ViewModels.Arm
                     break;
 
 
-                case "ArmBaseCurrent1": ArmBaseCurrent1 = BitConverter.ToSingle(packet.Data, 0); break;
-                case "ArmBaseCurrent2": ArmBaseCurrent2 = BitConverter.ToSingle(packet.Data, 0); break;
-                case "ElbowCurrent1": ElbowCurrent1 = BitConverter.ToSingle(packet.Data, 0); break;
-                case "ElbowCurrent2": ElbowCurrent2 = BitConverter.ToSingle(packet.Data, 0); break;
-                case "WristCurrent1": WristCurrent1 = BitConverter.ToSingle(packet.Data, 0); break;
-                case "WristCurrent2": WristCurrent2 = BitConverter.ToSingle(packet.Data, 0); break;
+                case "BaseTwistCurrent": BaseTwistCurrent = BitConverter.ToSingle(packet.Data, 0); break;
+                case "BaseTiltCurrent": BaseTiltCurrent = BitConverter.ToSingle(packet.Data, 0); break;
+                case "ElbowTiltCurrent": ElbowTiltCurrent = BitConverter.ToSingle(packet.Data, 0); break;
+                case "ElbowTwistCurrent": ElbowTwistCurrent = BitConverter.ToSingle(packet.Data, 0); break;
+                case "WristTiltCurrent": WristTiltCurrent = BitConverter.ToSingle(packet.Data, 0); break;
+                case "WristTwistCurrent": WristTwistCurrent = BitConverter.ToSingle(packet.Data, 0); break;
                 case "GripperCurrent": GripperCurrent = BitConverter.ToSingle(packet.Data, 0); break;
                 
                 //Overcurrent --> logged 

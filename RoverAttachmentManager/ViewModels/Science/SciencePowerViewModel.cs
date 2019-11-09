@@ -156,12 +156,12 @@ namespace RoverAttachmentManager.ViewModels.Science
                     break;
 
 
-                case "ArmBaseCurrent1": WOActuationCurrent1 = BitConverter.ToSingle(packet.Data, 0); break;
-                case "ArmBaseCurrent2": WOActuationCurrent2 = BitConverter.ToSingle(packet.Data, 0); break;
-                case "ElbowCurrent1": GenevaCurrent = BitConverter.ToSingle(packet.Data, 0); break;
-                case "ElbowCurrent2": VacuumCurrent = BitConverter.ToSingle(packet.Data, 0); break;
-                case "WristCurrent1": FluidPumpCurrent1 = BitConverter.ToSingle(packet.Data, 0); break;
-                case "WristCurrent2": FluidPumpCurrent2 = BitConverter.ToSingle(packet.Data, 0); break;
+                case "BaseTwistCurrent": WOActuationCurrent1 = BitConverter.ToSingle(packet.Data, 0); break;
+                case "BaseTiltCurrent": WOActuationCurrent2 = BitConverter.ToSingle(packet.Data, 0); break;
+                case "ElbowTiltCurrent": GenevaCurrent = BitConverter.ToSingle(packet.Data, 0); break;
+                case "ElbowTwistCurrent": VacuumCurrent = BitConverter.ToSingle(packet.Data, 0); break;
+                case "WristTiltCurrent": FluidPumpCurrent1 = BitConverter.ToSingle(packet.Data, 0); break;
+                case "WristTwistCurrent": FluidPumpCurrent2 = BitConverter.ToSingle(packet.Data, 0); break;
                 case "GripperCurrent": FluidPumpCurrent3 = BitConverter.ToSingle(packet.Data, 0); break;
 
                 case "SciencePowerBusOverCurrentNotification":
