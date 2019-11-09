@@ -16,19 +16,19 @@
             <RowDefinition Height="125px" MaxHeight="125px"></RowDefinition>
             <RowDefinition Height="*" MinHeight="350px"></RowDefinition>
         </Grid.RowDefinitions>
+        
+        <GroupBox Header="Controls" Margin="5" Grid.Row="0" Grid.Column="0">
+            <UniformGrid Rows="1" Columns="5" HorizontalAlignment="Stretch">
+                <Button x:Name="Enable" MaxHeight="60px">Start</Button>
+                <Button x:Name="AddWaypoint" MaxHeight="60px">Add Waypoint</Button>
+                <Button x:Name="ClearAllWaypoints" MaxHeight="60px">Clear Waypoints</Button>
+                <Button Click="Calibrate_Click" MaxHeight="60px">Calibrate</Button>
+                <Button x:Name="Disable"  MaxHeight="60px">Stop</Button>
+            </UniformGrid>
+        </GroupBox>
 
-        <GroupBox Header="State" Margin="5" Grid.RowSpan="2" Grid.Column="0">
+        <GroupBox Header="State" Margin="5" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1">
             <StackPanel Margin="16">
-
-                <Expander x:Name="StateIdle" Background="White" Margin="0 0 0 10" BorderThickness="0 0 0 2">
-                    <Expander.Header>
-                        <Border Background="White" Cursor="Hand">
-                            <TextBlock Foreground="Black" Background="White" FontSize="20" Margin="4 0 0 2">Idle</TextBlock>
-                        </Border>
-                    </Expander.Header>
-                    <StackPanel Margin="10 10 10 40">
-                    </StackPanel>
-                </Expander>
 
                 <Expander x:Name="StateNavigate" Background="White" Margin="0 0 0 10" BorderThickness="0 0 0 2">
                     <Expander.Header>
@@ -93,33 +93,16 @@
                         </StackPanel>
                     </StackPanel>
                 </Expander>
-
-                <Expander x:Name="StateShutdown" Background="White" Margin="0 0 0 10" BorderThickness="0 0 0 2">
-                    <Expander.Header>
-                        <Border Background="White" Cursor="Hand">
-                            <TextBlock Foreground="Black" Background="White" FontSize="20" Margin="4 0 0 2">Shutdown</TextBlock>
-                        </Border>
-                    </Expander.Header>
-                    <StackPanel Margin="10 10 10 40">
-                    </StackPanel>
-                </Expander>
             </StackPanel>
         </GroupBox>
 
-        <GroupBox Header="Controls" Margin="5" Grid.Row="0" Grid.Column="1">
-            <UniformGrid Rows="1" Columns="5" HorizontalAlignment="Stretch">
-                <Button x:Name="Enable" MaxHeight="60px">Start</Button>
-                <Button x:Name="AddWaypoint" MaxHeight="60px">Add Waypoint</Button>
-                <Button x:Name="ClearAllWaypoints" MaxHeight="60px">Clear Waypoints</Button>
-                <Button Click="Calibrate_Click" MaxHeight="60px">Calibrate</Button>
-                <Button x:Name="Disable"  MaxHeight="60px">Stop</Button>
-            </UniformGrid>
+        <GroupBox Header="Sent Waypoints" Margin="5" Grid.Row="1" Grid.RowSpan="2" Grid.Column="0">
+            <StackPanel Margin="16">
+            </StackPanel>
         </GroupBox>
 
-        <GroupBox Header="Map" Margin="5" Grid.Row="1" Grid.Column="1">
-            <StackPanel>
 
-            </StackPanel>
+        <GroupBox Header="Control Scheme" Margin="5" Grid.Row="0" Grid.Column="1">
         </GroupBox>
 
     </Grid>
