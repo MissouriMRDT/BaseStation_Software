@@ -34,7 +34,6 @@
 
         </controls:MetroTabControl>
 
-        <ContentControl x:Name="InputManager" />
 
     </StackPanel>
 

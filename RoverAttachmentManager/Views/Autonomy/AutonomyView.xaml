@@ -102,9 +102,6 @@
         </GroupBox>
 
 
-        <GroupBox Header="Control Scheme" Margin="5" Grid.Row="0" Grid.Column="1">
-        </GroupBox>
-
     </Grid>
 
 </UserControl>
