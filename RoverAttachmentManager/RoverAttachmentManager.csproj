@@ -118,6 +118,7 @@
     <Compile Include="Contexts\ArmPositionsContext.cs" />
     <Compile Include="Models\Arm\ArmModel.cs" />
     <Compile Include="Models\Arm\ArmPowerModel.cs" />
+    <Compile Include="Models\Arm\ControlMultipliersModel.cs" />
     <Compile Include="Models\InputManagerModel.cs" />
     <Compile Include="Models\InputSelectorModel.cs" />
     <Compile Include="Models\MainWindowModel.cs" />
@@ -131,6 +132,9 @@
     </Compile>
     <Compile Include="Views\Science\SciencePowerView.xaml.cs">
       <DependentUpon>SciencePowerView.xaml</DependentUpon>
+    <Compile Include="ViewModels\Arm\ControlMultipliersViewModel.cs" />
+    <Compile Include="Views\Arm\ControlMultipliersView.xaml.cs">
+      <DependentUpon>ControlMultipliersView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Science\ScienceView.xaml.cs">
       <DependentUpon>ScienceView.xaml</DependentUpon>
@@ -142,6 +146,8 @@
     </Page>
     <Page Include="Views\Science\SciencePowerView.xaml">
       <SubType>Designer</SubType>
+
+    <Page Include="Views\Arm\ControlMultipliersView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Science\ScienceView.xaml">

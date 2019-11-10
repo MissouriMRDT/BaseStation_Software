@@ -1,11 +1,14 @@
-﻿using RoverAttachmentManager.ViewModels.Arm;
+
 using System.Collections.ObjectModel;
+using RoverAttachmentManager.ViewModels.Arm;
 using ArmPositionViewModel = RoverAttachmentManager.ViewModels.Arm.ArmViewModel.ArmPositionViewModel;
 
 namespace RoverAttachmentManager.Models.ArmModels
 {
     internal class ArmModel
     {
+        internal ControlMultipliersViewModel _controlMultipliers;
+
         internal float AngleJ1;
         internal float AngleJ2;
         internal float AngleJ3;
@@ -14,11 +17,6 @@ namespace RoverAttachmentManager.Models.ArmModels
         internal float AngleJ6;
         internal int EndeffectorSpeedLimit = 500;
         internal int IKRangeFactor = 1000;
-        internal int BaseRangeFactor = 500;
-        internal int ElbowRangeFactor = 500;
-        internal int WristRangeFactor = 1000;
-        internal int GripperRangeFactor = 1000;
-        internal int Gripper2RangeFactor = 1000;
         internal ObservableCollection<ArmPositionViewModel> Positions = new ObservableCollection<ArmPositionViewModel>();
         internal ArmPositionViewModel SelectedPosition;
         internal float CoordinateX;

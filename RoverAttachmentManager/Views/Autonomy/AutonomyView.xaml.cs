@@ -21,6 +21,12 @@ namespace RoverAttachmentManager.Views.Autonomy
         {
             await PromptCalibrate();
         }
+
+        private void SentWaypointsText_Changed(object sender, TextChangedEventArgs e)
+        {
+            SentWaypointsTextBox.ScrollToEnd();
+        }
+
         private async Task PromptCalibrate()
         {
             MetroDialogSettings settings = new MetroDialogSettings()
