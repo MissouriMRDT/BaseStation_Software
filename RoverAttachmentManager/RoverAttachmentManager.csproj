@@ -132,6 +132,7 @@
     </Compile>
     <Compile Include="Views\Science\SciencePowerView.xaml.cs">
       <DependentUpon>SciencePowerView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\Arm\ControlMultipliersViewModel.cs" />
     <Compile Include="Views\Arm\ControlMultipliersView.xaml.cs">
       <DependentUpon>ControlMultipliersView.xaml</DependentUpon>
@@ -146,7 +147,7 @@
     </Page>
     <Page Include="Views\Science\SciencePowerView.xaml">
       <SubType>Designer</SubType>
-
+    </Page>
     <Page Include="Views\Arm\ControlMultipliersView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
