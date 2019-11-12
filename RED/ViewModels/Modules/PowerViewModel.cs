@@ -559,7 +559,7 @@ namespace RED.ViewModels.Modules
             byte[] bytes = new byte[5];
             thebits.CopyTo(bytes, 0);
 
-            bytes[2] = 1;
+            bytes[4] = 1;
 
             _rovecomm.SendCommand(new Packet("PowerBusEnableDisable", bytes, 5, (byte)DataTypes.UINT8_T));
 
@@ -576,7 +576,7 @@ namespace RED.ViewModels.Modules
             byte[] bytes = new byte[5];
             thebits.CopyTo(bytes, 0);
 
-            bytes[2] = 0;
+            bytes[4] = 0;
 
             _rovecomm.SendCommand(new Packet("PowerBusEnableDisable", bytes, 5, (byte)DataTypes.UINT8_T));
         }
