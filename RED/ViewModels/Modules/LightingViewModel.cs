@@ -100,29 +100,29 @@ namespace RED.ViewModels.Modules
         private void SendColors()
         {
             if (Enabled)
-                _rovecomm.SendCommand(new Packet("UnderglowColor", new byte[] { Red, Green, Blue }, 3, (byte)DataTypes.UINT8_T));
+                _rovecomm.SendCommand(Packet.Create("UnderglowColor", new byte[] { Red, Green, Blue }));
         }
 
         private void TurnOff()
         {
-            _rovecomm.SendCommand(new Packet("UnderglowColor", new byte[] { 0, 0, 0 }, 3, (byte)DataTypes.UINT8_T), true);
+            _rovecomm.SendCommand(Packet.Create("UnderglowColor", new byte[] { 0, 0, 0 }), true);
         }
          
         private void TurnOnHeadlights()
         {
-            _rovecomm.SendCommand(new Packet("Headlights", (byte)30), false);
+            _rovecomm.SendCommand(Packet.Create("Headlights", (byte)30), false);
         }
 
         private void TurnOffHeadlights()
         {
-            _rovecomm.SendCommand(new Packet("Headlights", (byte)0), false);
+            _rovecomm.SendCommand(Packet.Create("Headlights", (byte)0), false);
         }
 
         public void CycleInternalLighting()
         {
             CurrentMode++;
             CurrentMode %= 4;
-            _rovecomm.SendCommand(new Packet("CycleLightingMode", (byte)CurrentMode), false);
+            _rovecomm.SendCommand(Packet.Create("CycleLightingMode", (byte)CurrentMode), false);
         }
     }
 }

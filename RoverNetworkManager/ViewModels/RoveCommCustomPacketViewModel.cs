@@ -173,13 +173,7 @@ namespace RoverNetworkManager.ViewModels {
 
 		internal void SendCommand() {
 			byte[] data = StringToByteArray(Data);
-
-            /*
-			ushort id;
-			if (ushort.TryParse(ID, out id)) {
-				_networkManager.SendPacket(new Packet(id, data.ToArray()), System.Net.IPAddress.Parse(IP), false);
-			}
-            */
+            
 		}
 
 		public RoveCommCustomPacketViewModel(IRovecomm network, IConfigurationManager config)

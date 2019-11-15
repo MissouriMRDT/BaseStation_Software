@@ -528,20 +528,20 @@ namespace RED.ViewModels.Modules
 
 		public void RebootRover()
         {
-            _rovecomm.SendCommand(new Packet("BMSStop", (byte)10), true);
+            _rovecomm.SendCommand(Packet.Create("BMSStop", (byte)10), true);
         }
         public void EStopRover()
         {
-            _rovecomm.SendCommand(new Packet("BMSStop", (byte)0), true);
+            _rovecomm.SendCommand(Packet.Create("BMSStop", (byte)0), true);
         }
 
         public void FanControl(bool state)
         {
-            _rovecomm.SendCommand(new Packet("BMSFanControl", state ? 0 : 1), true);
+            _rovecomm.SendCommand(Packet.Create("BMSFanControl", state ? 0 : 1), true);
         }
         public void BuzzerControl(bool state)
         {
-            _rovecomm.SendCommand(new Packet("BMSBuzzerControl", state ? 0 : 1), true);
+            _rovecomm.SendCommand(Packet.Create("BMSBuzzerControl", state ? 0 : 1), true);
         }
 
         public void EnableBus(byte index)
@@ -554,11 +554,11 @@ namespace RED.ViewModels.Modules
             bits.CopyTo(thebits, 0);
 
             byte[] bytes = new byte[3];
-            thebits.CopyTo(bytes, 0);
+            thebits.CopyTo(bytes, 1);
 
-            bytes[2] = 1;
+            bytes[0] = 1;
 
-            _rovecomm.SendCommand(new Packet("PowerBusEnableDisable", bytes, 3, (byte)DataTypes.UINT8_T));
+            _rovecomm.SendCommand(Packet.Create("PowerBusEnableDisable", bytes));
 
         }
         public void DisableBus(byte index)
@@ -571,11 +571,11 @@ namespace RED.ViewModels.Modules
             bits.CopyTo(thebits, 0);
 
             byte[] bytes = new byte[3];
-            thebits.CopyTo(bytes, 0);
+            thebits.CopyTo(bytes, 1);
 
-            bytes[2] = 0;
+            bytes[0] = 0;
 
-            _rovecomm.SendCommand(new Packet("PowerBusEnableDisable", bytes, 3, (byte)DataTypes.UINT8_T));
+            _rovecomm.SendCommand(Packet.Create("PowerBusEnableDisable", bytes));
         }
 
         public void MotorBusses(bool state)
@@ -586,10 +586,10 @@ namespace RED.ViewModels.Modules
             bits.Set(11, true);
 
             byte[] bytes = new byte[3];
-            bits.CopyTo(bytes, 0);
+            bits.CopyTo(bytes, 1);
 
-            bytes[2] = (state) ? (byte)1 : (byte)0;
-            _rovecomm.SendCommand(new Packet("PowerBusEnableDisable", bytes, 3, (byte)DataTypes.UINT8_T));
+            bytes[0] = (state) ? (byte)1 : (byte)0;
+            _rovecomm.SendCommand(Packet.Create("PowerBusEnableDisable", bytes));
         }
 
         public void SaveFile(bool state)

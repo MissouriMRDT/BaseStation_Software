@@ -532,15 +532,12 @@ namespace RoverAttachmentManager.ViewModels.Arm
 
             Nipper = (Int16)values["Nipper"];
 
-            Int16[] sendValues = { Gripper2, Nipper, Gripper, ArmWristTwist, ArmWristBend, ArmElbowTwist, ArmElbowBend, ArmBaseBend, ArmBaseTwist }; //order before we reverse
-            byte[] data = new byte[sendValues.Length * sizeof(Int16)];
-            Buffer.BlockCopy(sendValues, 0, data, 0, data.Length);
-            Array.Reverse(data);
-            _rovecomm.SendCommand(new Packet("ArmValues", data, 9, (byte)DataTypes.INT16_T));
+            Int16[] sendValues = { ArmBaseTwist, ArmBaseBend, ArmElbowBend, ArmElbowTwist, ArmWristBend, ArmWristTwist, Gripper, Nipper, Gripper2 };
+            _rovecomm.SendCommand(Packet.Create("ArmValues", sendValues));
 
             if (values["GripperSwap"] == 1)
             {
-                _rovecomm.SendCommand(new Packet("GripperSwap", data, 8, (byte)DataTypes.INT16_T));
+                _rovecomm.SendCommand(Packet.Create("GripperSwap", sendValues));
             }
 
             if (values["SwitchTool"] == 1 && previousTool == SelectedTool)
@@ -549,7 +546,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 {
                     SelectedTool = 0;
                 }
-                //_rovecomm.SendCommand(new Packet("ToolSelection", SelectedTool));
+                //_rovecomm.SendCommand(Packet.Create("ToolSelection", SelectedTool));
             }
             else if (values["SwitchTool"] == 0){
                 previousTool = SelectedTool;
@@ -557,7 +554,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
             if (values["LaserToggle"] == 1)
             {
                 laser = !laser;
-                _rovecomm.SendCommand(new Packet("Laser", Convert.ToByte(laser)));
+                _rovecomm.SendCommand(Packet.Create("Laser", Convert.ToByte(laser)));
             }
         }
 
@@ -612,22 +609,19 @@ namespace RoverAttachmentManager.ViewModels.Arm
             Nipper = (Int16)values["Nipper"];
 
             Int16[] sendValues = { Nipper, Gripper, Roll, Pitch, Yaw, Z, Y, X};
-            byte[] data = new byte[sendValues.Length * sizeof(Int16)];
-            Buffer.BlockCopy(sendValues, 0, data, 0, data.Length);
-            Array.Reverse(data);
 
             if (stateToUse == ArmControlState.IKWristPOV)
             {
-                _rovecomm.SendCommand(new Packet("IKWristIncrement", data, 8, (byte)DataTypes.INT16_T));
+                _rovecomm.SendCommand(Packet.Create("IKWristIncrement", sendValues));
             }
             else if (stateToUse == ArmControlState.IKRoverPOV)
             {
-                _rovecomm.SendCommand(new Packet("IKRoverIncrement", data, 8, (byte)DataTypes.INT16_T));
+                _rovecomm.SendCommand(Packet.Create("IKRoverIncrement", sendValues));
             }
             
             if(values["GripperSwap"] == 1)
             {
-                _rovecomm.SendCommand(new Packet("GripperSwap", data, 8, (byte)DataTypes.INT16_T));
+                _rovecomm.SendCommand(Packet.Create("GripperSwap", sendValues));
             }
 
             if (values["SwitchTool"] == 1 && previousTool == SelectedTool)
@@ -636,7 +630,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 {
                     SelectedTool = 0;
                 }
-                _rovecomm.SendCommand(new Packet("ToolSelection", SelectedTool));
+                _rovecomm.SendCommand(Packet.Create("ToolSelection", SelectedTool));
             }
             else if (values["SwitchTool"] == 0)
             {
@@ -646,7 +640,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
             if (values["LaserToggle"] == 1)
             {
                 laser = !laser;
-                _rovecomm.SendCommand(new Packet("Laser", Convert.ToByte(laser)));
+                _rovecomm.SendCommand(Packet.Create("Laser", Convert.ToByte(laser)));
             }
         }
 
@@ -738,7 +732,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 default: return;
             }
 
-            _rovecomm.SendCommand(new Packet(name, (enableState) ? ArmEnableCommand : ArmDisableCommand), true);
+            _rovecomm.SendCommand(Packet.Create(name, (enableState) ? ArmEnableCommand : ArmDisableCommand), true);
         }
 
         public void SetOpPoint()
@@ -756,17 +750,13 @@ namespace RoverAttachmentManager.ViewModels.Arm
             byte[] data = new byte[2];
             data[0] = 0;
             data[1] = 1;
-            _rovecomm.SendCommand(new Packet("ArmCommands", data, 2, (byte)DataTypes.UINT8_T));
+            _rovecomm.SendCommand(Packet.Create("ArmCommands", data));
         }
         public void SetPosition()
         {
             UInt32[] angles = { (UInt32)(AngleJ1*1000), (UInt32)(AngleJ2*1000), (UInt32)(AngleJ3*1000), (UInt32)(AngleJ4*1000), (UInt32)(AngleJ5*1000), (UInt32)(AngleJ6*1000) };
-            Array.Reverse(angles);
-            byte[] data = new byte[angles.Length * sizeof(UInt32)];
-            Buffer.BlockCopy(angles, 0, data, 0, data.Length);
-            Array.Reverse(data);
             //TODO: Determine floats for this
-            _rovecomm.SendCommand(new Packet("ArmToAngle", data, 6, (byte)DataTypes.UINT32_T));
+            _rovecomm.SendCommand(Packet.Create("ArmToAngle", angles));
 
             myState = ArmControlState.GuiControl;
             guiControlInitialized = true;
@@ -796,11 +786,11 @@ namespace RoverAttachmentManager.ViewModels.Arm
 
         public void LimitSwitchOverride()
         {
-            _rovecomm.SendCommand(new Packet("LimitSwitchOverride", (byte)1), true);
+            _rovecomm.SendCommand(Packet.Create("LimitSwitchOverride", (byte)1), true);
         }
         public void LimitSwitchUnOverride()
         {
-            _rovecomm.SendCommand(new Packet("LimitSwitchOverride", (byte)0), true);
+            _rovecomm.SendCommand(Packet.Create("LimitSwitchOverride", (byte)0), true);
         }
 
         public void RecallPosition()

@@ -17,12 +17,12 @@ namespace RED.ViewModels.Modules
 
         public void SetMux1(byte index)
         {
-            _rovecomm.SendCommand(new Packet("CameraMuxChannel1", index), true);
+            _rovecomm.SendCommand(Packet.Create("CameraMuxChannel1", index), true);
         }
 
         public void SetMux2(byte index)
         {
-            _rovecomm.SendCommand(new Packet("CameraMuxChannel2", index), true);
+            _rovecomm.SendCommand(Packet.Create("CameraMuxChannel2", index), true);
         }
     }
 }
