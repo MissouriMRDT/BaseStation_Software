@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="RoverAttachmentManager.Views.Autonomy.ControlsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RoverAttachmentManager.Views.Autonomy"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <UniformGrid Rows="1" Columns="5" HorizontalAlignment="Stretch">
+            <Button x:Name="Enable" MaxHeight="60px">Start</Button>
+            <Button x:Name="AddWaypoint" MaxHeight="60px">Add Waypoint</Button>
+            <Button x:Name="ClearAllWaypoints" MaxHeight="60px">Clear Waypoints</Button>
+            <Button Click="Calibrate_Click" MaxHeight="60px">Calibrate</Button>
+            <Button x:Name="Disable"  MaxHeight="60px">Stop</Button>
+        </UniformGrid>
+    </Grid>
+</UserControl>
