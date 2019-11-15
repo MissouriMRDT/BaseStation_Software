@@ -30,13 +30,13 @@
         <GroupBox Header="State" Margin="5" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1">
             <StackPanel Margin="16">
 
-                <Expander x:Name="StateNavigate" Background="White" Margin="0 0 0 10" BorderThickness="0 0 0 2">
-                    <Expander.Header>
+                <GroupBox x:Name="StateNavigate" Background="White" Margin="0 0 0 10" BorderThickness="0 0 0 2">
+                    <GroupBox.Header>
                         <Border Background="White" Cursor="Hand">
                             <TextBlock Foreground="Black" Background="White" FontSize="20" Margin="4 0 0 2">Navigate</TextBlock>
                         </Border>
-                    </Expander.Header>
-                    <StackPanel Margin="10 10 10 40">
+                    </GroupBox.Header>
+                    <StackPanel Margin="10 1 10 10">
                         <Label ToolTip="Maximum radius for being close enough to a waypoint">Waypoint Distance Threshold</Label>
                         <StackPanel Orientation="Horizontal">
                             <TextBox Width="200px"></TextBox>
@@ -49,15 +49,15 @@
                             <Button>Send</Button>
                         </StackPanel>
                     </StackPanel>
-                </Expander>
+                </GroupBox>
 
-                <Expander x:Name="StateSearch" Background="White" Margin="0 0 0 10" BorderThickness="0 0 0 2">
-                    <Expander.Header>
+                <GroupBox x:Name="StateSearch" Background="White" Margin="0 0 0 10" BorderThickness="0 0 0 2">
+                    <GroupBox.Header>
                         <Border Background="White" Cursor="Hand">
                             <TextBlock Foreground="Black" Background="White" FontSize="20" Margin="4 0 0 2">Search</TextBlock>
                         </Border>
-                    </Expander.Header>
-                    <StackPanel Margin="10 10 10 40">
+                    </GroupBox.Header>
+                    <StackPanel Margin="10 1 10 10">
                         <Label ToolTip="Search Distance">Search Distance</Label>
                         <StackPanel Orientation="Horizontal">
                             <TextBox Width="200px"></TextBox>
@@ -70,15 +70,15 @@
                             <Button>Send</Button>
                         </StackPanel>
                     </StackPanel>
-                </Expander>
+                </GroupBox>
 
-                <Expander x:Name="StateApproachingMarker" Background="White" Margin="0 0 0 10" BorderThickness="0 0 0 2">
-                    <Expander.Header>
+                <GroupBox x:Name="StateApproachingMarker" Background="White" Margin="0 0 0 10" BorderThickness="0 0 0 2">
+                    <GroupBox.Header>
                         <Border Background="White" Cursor="Hand">
                             <TextBlock Foreground="Black" Background="White" FontSize="20" Margin="4 0 0 2">Approaching Marker</TextBlock>
                         </Border>
-                    </Expander.Header>
-                    <StackPanel Margin="10 10 10 40">
+                    </GroupBox.Header>
+                    <StackPanel Margin="10 1 10 10">
 
                         <Label ToolTip="Maximum radius for being close enough to a marker">Marker Distance Threshold</Label>
                         <StackPanel Orientation="Horizontal">
@@ -92,7 +92,7 @@
                             <Button>Send</Button>
                         </StackPanel>
                     </StackPanel>
-                </Expander>
+                </GroupBox>
             </StackPanel>
         </GroupBox>
 
