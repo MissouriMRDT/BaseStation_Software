@@ -1,21 +1,28 @@
-﻿using RED.ViewModels;
+﻿using Core;
+using RED.ViewModels;
 using System.Windows.Controls;
-using System.Windows.Media.Imaging;
-using Core;
 
-namespace RED.Views
-{
-    public partial class ControlCenterView
+namespace RED.Views {
+	public partial class ControlCenterView
     {
+		Camera camera = null;
+
         public ControlCenterView()
         {
             InitializeComponent();
             MainTabs.SelectionChanged += MainTabs_SelectionChanged;
 
-			Camera first = new Camera(1, new System.EventHandler<BitmapImage>(UpdateCameraFeed));
+			CameraTest.MouseDown += CameraTest_MouseDown;
+
+			camera = new Camera(1, CameraTest);
 		}
 
-        private void MainTabs_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		private void CameraTest_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+			if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed) camera.Close();
+			if (e.RightButton == System.Windows.Input.MouseButtonState.Pressed) camera.Open();
+		}
+
+		private void MainTabs_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.OriginalSource == MainTabs && e.RemovedItems.Count > 0)
             {
@@ -28,8 +35,6 @@ namespace RED.Views
             }
         }
 
-		private void UpdateCameraFeed(object sender, BitmapImage img) {
-			CameraTest.Source = img;
-		}
+		
     }
 }
