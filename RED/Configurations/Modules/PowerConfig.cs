@@ -6,7 +6,8 @@ namespace RED.Configurations.Modules
     {
         internal static PowerSettingsContext DefaultConfig = new PowerSettingsContext()
         {
-            AutoStartLog = false
+            AutoStartLog = false,
+            RebootTime = 1
         };
     }
 }
