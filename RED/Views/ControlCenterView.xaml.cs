@@ -1,5 +1,7 @@
 ﻿using RED.ViewModels;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
+using Core;
 
 namespace RED.Views
 {
@@ -9,7 +11,9 @@ namespace RED.Views
         {
             InitializeComponent();
             MainTabs.SelectionChanged += MainTabs_SelectionChanged;
-        }
+
+			Camera first = new Camera(1, new System.EventHandler<BitmapImage>(UpdateCameraFeed));
+		}
 
         private void MainTabs_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -23,5 +27,9 @@ namespace RED.Views
                 }
             }
         }
+
+		private void UpdateCameraFeed(object sender, BitmapImage img) {
+			CameraTest.Source = img;
+		}
     }
 }

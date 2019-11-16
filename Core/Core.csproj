@@ -52,6 +52,9 @@
     <Reference Include="MahApps.Metro, Version=1.6.1.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.6.1\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
+    <Reference Include="MjpegProcessor, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MJPEG-Decoder.1.2\lib\net35\MjpegProcessor.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="SharpDX, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
@@ -65,6 +68,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Design" />
     <Reference Include="System.Net" />
     <Reference Include="System.Net.Http" />
@@ -83,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Addons\BoolToValueConverter.cs" />
+    <Compile Include="Camera.cs" />
     <Compile Include="Configurations\Input\Controllers\XboxControllerInputConfig.cs" />
     <Compile Include="Configurations\Input\InputManagerConfig.cs" />
     <Compile Include="Configurations\MetadataManagerConfig.cs" />
