@@ -59,6 +59,7 @@
                         </Expander>
 						<Image x:Name="CameraTest" Height="200px" Width="300px"/>
 						<Image x:Name="SecondCamera" Height="200px" Width="300px"/>
+						<Image x:Name="ThirdCamera" Height="200px" Width="300px"/>
 					</StackPanel>
                 </ScrollViewer>
                 <Grid Grid.Column="2">

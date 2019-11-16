@@ -88,6 +88,7 @@
   <ItemGroup>
     <Compile Include="Addons\BoolToValueConverter.cs" />
     <Compile Include="Camera.cs" />
+    <Compile Include="CameraMultiplexer.cs" />
     <Compile Include="Configurations\Input\Controllers\XboxControllerInputConfig.cs" />
     <Compile Include="Configurations\Input\InputManagerConfig.cs" />
     <Compile Include="Configurations\MetadataManagerConfig.cs" />

@@ -14,8 +14,10 @@ namespace RED.Views {
 
 			CameraTest.MouseDown += CameraTest_MouseDown;
 
-			camera = new Camera(1, CameraTest);
-			new Camera(2, SecondCamera);
+			CameraMultiplexer.Initialize();
+			CameraMultiplexer.AddSurface(1, CameraTest);
+			CameraMultiplexer.AddSurface(2, SecondCamera);
+			CameraMultiplexer.AddSurface(3, ThirdCamera);
 		}
 
 		private void CameraTest_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) {
