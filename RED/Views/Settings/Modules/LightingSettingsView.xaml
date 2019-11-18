@@ -15,15 +15,25 @@
                     <Style.Triggers>
                         <Trigger Property="IsChecked" Value="True">
                             <Setter Property="Content" Value="Headlights Enabled"/>
-                            <Setter Property="Foreground" Value="Red"/>
                         </Trigger>
                     </Style.Triggers>
                 </Style>
             </ToggleButton.Style>
         </ToggleButton>
-        
-            <ToggleButton x:Name="Enabled" Content="Underglow Enabled"/>
-            <Grid>
+
+        <ToggleButton x:Name="Enabled">
+            <ToggleButton.Style>
+                <Style TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
+                    <Setter Property="Content" Value="Underglow Disabled"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Content" Value="Underglow Enabled"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ToggleButton.Style>
+        </ToggleButton>
+        <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
