@@ -2,6 +2,7 @@
 using Core.Interfaces;
 using Core.Models;
 using Core.ViewModels;
+using RoverAttachmentManager.Models.Autonomy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,8 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
     {
         private readonly IRovecomm _rovecomm;
 
+        private readonly ControlsModel _model;
+
         private readonly WaypointManager _waypointManager;
 
         public void Enable() => _rovecomm.SendCommand(new Packet("AutonomousModeEnable"), true);
@@ -23,6 +26,13 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
         public void ClearAllWaypoints() => _rovecomm.SendCommand(new Packet("WaypointsClearAll"), true);
 
         public void Calibrate() => _rovecomm.SendCommand(new Packet("AutonomyCalibrate"), true);
+
+        public ControlsViewModel(IRovecomm networkMessenger)
+        {
+            _model = new ControlsModel();
+            _rovecomm = networkMessenger;
+            _waypointManager = WaypointManager.Instance;
+        }
 
         public void AddWaypoint()
         {

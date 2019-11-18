@@ -1,4 +1,7 @@
-﻿using System;
+﻿using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
+using RoverAttachmentManager.ViewModels.Autonomy;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,9 +33,25 @@ namespace RoverAttachmentManager.Views.Autonomy
             await PromptCalibrate();
         }
 
-        private Task PromptCalibrate()
+        private async Task PromptCalibrate()
         {
-            throw new NotImplementedException();
+            MetroDialogSettings settings = new MetroDialogSettings()
+            {
+                AffirmativeButtonText = "Calibrate",
+                NegativeButtonText = "Cancel",
+                AnimateShow = false,
+                AnimateHide = false
+            };
+            var result = await ((MetroWindow)MetroWindow.GetWindow(this)).ShowMessageAsync(
+                title: "Calibrate Autonomy System",
+                message: "This will command the autonomy board to begin the automatic calibration process. The rover should be pointed due north before starting.",
+                style: MessageDialogStyle.AffirmativeAndNegative,
+                settings: settings);
+
+            if (result == MessageDialogResult.Affirmative)
+            {
+                ((ControlsViewModel)DataContext).Calibrate();
+            }
         }
     }
 }

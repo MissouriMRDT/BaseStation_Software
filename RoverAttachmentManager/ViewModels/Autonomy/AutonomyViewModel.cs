@@ -36,7 +36,7 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
         public AutonomyViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger logger)
         {
             _model = new AutonomyModel();
-            Controls = new ControlsViewModel();
+            Controls = new ControlsViewModel(networkMessenger);
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _logger = logger;
