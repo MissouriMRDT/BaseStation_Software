@@ -154,6 +154,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Autonomy\ControlsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Autonomy\StateControlView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
