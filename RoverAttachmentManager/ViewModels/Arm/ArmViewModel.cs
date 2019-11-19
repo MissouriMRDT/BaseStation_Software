@@ -57,7 +57,6 @@ namespace RoverAttachmentManager.ViewModels.Arm
         private readonly IDataIdResolver _idResolver;
         private readonly ILogger _log;
         private readonly IConfigurationManager _configManager;
-        private readonly Dictionary<int, string> _armFaultIds;
 
         //flag that gets set when the arm detects and error and forces a change state, we want the user to have to wait a second 
         //before commands can be sent again so they can register the fact taht said error occurred
@@ -407,27 +406,8 @@ namespace RoverAttachmentManager.ViewModels.Arm
             _configManager.AddRecord(PositionsConfigName, ArmConfig.DefaultArmPositions);
             InitializePositions(_configManager.GetConfig<ArmPositionsContext>(PositionsConfigName));
 
-            _rovecomm.NotifyWhenMessageReceived(this, "ArmCurrentPosition");
-            _rovecomm.NotifyWhenMessageReceived(this, "ArmFault");
-            _rovecomm.NotifyWhenMessageReceived(this, "ArmCurrentXYZ");
             _rovecomm.NotifyWhenMessageReceived(this, "ArmAngles");
-
-            _armFaultIds = new Dictionary<int, string>
-            {
-                { 1, "Motor 1 fault" },
-                { 2, "Motor 2 fault" },
-                { 3, "Motor 3 fault" },
-                { 4, "Motor 4 fault" },
-                { 5, "Motor 5 fault" },
-                { 6, "Motor 6 fault" },
-                { 7, "Arm Master Overcurrent" },
-                { 8, "Base Rotate encoder disconnected" },
-                { 9, "Base Tilt encoder disconnected" },
-                { 10, "Elbow Tilt encoder disconnected" },
-                { 11, "Elbow Rotate encoder disconnected" },
-                { 12, "Wrist Tilt encoder disconnected" },
-                { 13, "Wrist Rotate encoder disconnected" }
-            };
+            
         }
 
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
@@ -435,33 +415,13 @@ namespace RoverAttachmentManager.ViewModels.Arm
             switch (packet.Name)
             {
                 case "ArmAngles":
-                    //Array.Reverse(packet.Data);
-                    AngleJ1 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 0)) / 1000.0);
-                    AngleJ2 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 4)) / 1000.0);
-                    AngleJ3 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 8)) / 1000.0);
-                    AngleJ4 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 12)) / 1000.0);
-                    AngleJ5 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 16)) / 1000.0);
-                    AngleJ6 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 20)) / 1000.0);
-                    break;
-                case "ArmCurrentXYZ":
-                    CoordinateX = BitConverter.ToSingle(packet.Data, 0 * sizeof(float));
-                    CoordinateY = BitConverter.ToSingle(packet.Data, 1 * sizeof(float));
-                    CoordinateZ = BitConverter.ToSingle(packet.Data, 2 * sizeof(float));
-                    Yaw = BitConverter.ToSingle(packet.Data, 3 * sizeof(float));
-                    Pitch = BitConverter.ToSingle(packet.Data, 4 * sizeof(float));
-                    Roll = BitConverter.ToSingle(packet.Data, 5 * sizeof(float));
-                    break;
-                case "ArmFault":
-                    _log.Log($"Arm fault: {_armFaultIds[packet.Data[0]]}");
-
-                    //Arm will automatically exit closed loop mode when it detects an encoder fault
-                    //so we make sure to stop spamming closed loop messages at it, as we do in IK control states.
-                    if (ArmEncoderFaultIds.Contains(packet.Data[0]) && (myState == ArmControlState.IKRoverPOV || myState == ArmControlState.IKWristPOV))
-                    {
-                        myState = ArmControlState.OpenLoop;
-                        ControlState = "Open loop";
-                        freezeArm = true;
-                    }
+                    Int32[] data = packet.GetDataArray<Int32>();
+                    AngleJ1 = (float)(data[0] / 1000.0);
+                    AngleJ2 = (float)(data[1] / 1000.0);
+                    AngleJ3 = (float)(data[2] / 1000.0);
+                    AngleJ4 = (float)(data[3] / 1000.0);
+                    AngleJ5 = (float)(data[4] / 1000.0);
+                    AngleJ6 = (float)(data[5] / 1000.0);
                     break;
             }
         }

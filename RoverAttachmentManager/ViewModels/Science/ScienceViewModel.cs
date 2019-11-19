@@ -206,7 +206,6 @@ namespace RoverAttachmentManager.ViewModels.Science
             SpectrometerIPAddress = IPAddress.Parse("192.168.1.138");
 
             _rovecomm.NotifyWhenMessageReceived(this, "ScienceSensors");
-            _rovecomm.NotifyWhenMessageReceived(this, "ScrewAtPos");
 
             SpectrometerPlotModel = new PlotModel { Title = "Spectrometer Results" };
             SpectrometerSeries = new OxyPlot.Series.LineSeries();
@@ -234,7 +233,7 @@ namespace RoverAttachmentManager.ViewModels.Science
             if ((values["ScrewPosUp"] == 1 || values["ScrewPosDown"] == 1) && !screwIncrementPressed)
             {
                 byte screwPosIncrement = (byte)(values["ScrewPosUp"] == 1 ? 1 : values["ScrewPosDown"] == 1 ? -1 : 0);
-                _rovecomm.SendCommand(new Packet("ScrewRelativeSetPosition", screwPosIncrement));
+                _rovecomm.SendCommand(Packet.Create("ScrewRelativeSetPosition", screwPosIncrement));
                 screwIncrementPressed = true;
             }
             else if (values["ScrewPosUp"] == 0 && values["ScrewPosDown"] == 0)
@@ -242,32 +241,23 @@ namespace RoverAttachmentManager.ViewModels.Science
                 screwIncrementPressed = false;
             }
             
-            Int16[] screwValue = { (Int16)(values["Screw"] * ScrewSpeedScale) }; //order before we reverse
-            byte[] data = new byte[screwValue.Length * sizeof(Int16)];
-            Buffer.BlockCopy(screwValue, 0, data, 0, data.Length);
-            Array.Reverse(data);
-            _rovecomm.SendCommand(new Packet("Screw", data, 1, (byte)DataTypes.INT16_T));
+            Int16[] screwValue = { (Int16)(values["Screw"] * ScrewSpeedScale) };
+            _rovecomm.SendCommand(Packet.Create("Screw", screwValue));
 
             Int16 xMovement = (Int16)(values["XActuation"] * XYSpeedScale);
             Int16 yMovement = (Int16)(values["YActuation"] * XYSpeedScale);
      
-            Int16[] sendValues = {yMovement, xMovement }; //order before we reverse
-            data = new byte[sendValues.Length * sizeof(Int16)];
-            Buffer.BlockCopy(sendValues, 0, data, 0, data.Length);
-            Array.Reverse(data);
-            _rovecomm.SendCommand(new Packet("XYActuation", data, 2, (byte)DataTypes.INT16_T));
+            Int16[] sendValues = {xMovement, yMovement};
+            _rovecomm.SendCommand(Packet.Create("XYActuation", sendValues));
             
         }
 
         public void StopMode()
         {
-            _rovecomm.SendCommand(new Packet("Screw", (Int16)(0)), true);
+            _rovecomm.SendCommand(Packet.Create("Screw", (Int16)(0)), true);
 
             Int16[] sendValues = { 0, 0 };
-            byte[] data = new byte[sendValues.Length * sizeof(Int16)];
-            Buffer.BlockCopy(sendValues, 0, data, 0, data.Length);
-            Array.Reverse(data);
-            _rovecomm.SendCommand(new Packet("XYActuation", data, 2, (byte)DataTypes.INT16_T));
+            _rovecomm.SendCommand(Packet.Create("XYActuation", sendValues));
         }
         
         public async void DownloadSpectrometer()
@@ -282,7 +272,7 @@ namespace RoverAttachmentManager.ViewModels.Science
                     _log.Log("Spectrometer connection established");
                     
                     // Request the data
-                    _rovecomm.SendCommand(new Packet("RunSpectrometer", (byte)RunCount), true);
+                    _rovecomm.SendCommand(Packet.Create("RunSpectrometer", (byte)RunCount), true);
 
                     _log.Log("Awaiting data...");
                     using (var file = File.Create(filename))
@@ -319,7 +309,7 @@ namespace RoverAttachmentManager.ViewModels.Science
 
         public void SetScrewPosition(byte index)
         {
-            _rovecomm.SendCommand(new Packet("ScrewAbsoluteSetPosition", index));
+            _rovecomm.SendCommand(Packet.Create("ScrewAbsoluteSetPosition", index));
         }
 
         public void SaveFileStart()
@@ -391,11 +381,12 @@ namespace RoverAttachmentManager.ViewModels.Science
             switch (packet.Name)
             {
                 case "ScienceSensors":
-                    Sensor0Value = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0)) / 100.0);
-                    Sensor1Value = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 2)) / 100.0);
-                    Sensor2Value = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 4)) / 100.0);
-                    Sensor3Value = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 6)) / 100.0);
-                    Sensor4Value = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 8)));
+                    Int16[] data = packet.GetDataArray<Int16>();
+                    Sensor0Value = (float)(data[0] / 100.0);
+                    Sensor1Value = (float)(data[1] / 100.0);
+                    Sensor2Value = (float)(data[2] / 100.0);
+                    Sensor3Value = (float)(data[3] / 100.0);
+                    Sensor4Value = data[4];
 
                     SaveFileWrite("Air Temperature", Sensor0Value);
                     SaveFileWrite("Air Humidity", Sensor1Value);
@@ -403,18 +394,12 @@ namespace RoverAttachmentManager.ViewModels.Science
 
                     UpdateSensorGraphs();
                     break;
-
-                case "ScrewAtPos":
-                    ScrewPosition = packet.Data[0];
-                    break;
-                default:
-                    break;
             }
         }
 
         public void SetUVLed(byte val)
         {
-            _rovecomm.SendCommand(new Packet("UVLedControl", val));
+            _rovecomm.SendCommand(Packet.Create("UVLedControl", val));
         }
 
         public void CenterX()

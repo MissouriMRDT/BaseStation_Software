@@ -141,13 +141,8 @@ namespace RED.ViewModels.Modules
             _model = new GPSModel();
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
-
-            _rovecomm.NotifyWhenMessageReceived(this, "GPSQuality");
+            
             _rovecomm.NotifyWhenMessageReceived(this, "GPSPosition");
-            _rovecomm.NotifyWhenMessageReceived(this, "GPSSpeed");
-            _rovecomm.NotifyWhenMessageReceived(this, "GPSSpeedAngle");
-            _rovecomm.NotifyWhenMessageReceived(this, "GPSAltitude");
-            _rovecomm.NotifyWhenMessageReceived(this, "GPSSatellites");
             _rovecomm.NotifyWhenMessageReceived(this, "GPSTelem");
             _rovecomm.NotifyWhenMessageReceived(this, "PitchHeadingRoll");
         }
@@ -156,49 +151,23 @@ namespace RED.ViewModels.Modules
         {
             switch (packet.Name)
             {
-                case "GPSData":
-                    var ms = new MemoryStream(packet.Data);
-                    using (var br = new BinaryReader(ms))
-                    {
-                        FixObtained = br.ReadByte() != 0;
-                        FixQuality = br.ReadByte();
-                        NumberOfSatellites = br.ReadByte();
-                        RawLocation = new GPSCoordinate()
-                        {
-                            Latitude = br.ReadInt32() / 10000000d,
-                            Longitude = br.ReadInt32() / 10000000d
-                        };
-                        //CurrentAltitude = br.ReadSingle();
-                        //Speed = br.ReadSingle();
-                        //SpeedAngle = br.ReadSingle();
-                    }
-                    break;
-                case "Heading":
-                    Heading = BitConverter.ToSingle(packet.Data, 0);
-                    break;
+                
                 case "PitchHeadingRoll":
-                    Heading = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 2));
-                    break;
-                case "GPSQuality":
-                    FixObtained = packet.Data[0] != 0;
-                    FixQuality = packet.Data[0];
+                    Heading = packet.GetDataArray<Int16>()[1];
                     break;
                 case "GPSPosition":
                     RawLocation = new GPSCoordinate()
                     {
-                        Latitude = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 1 * sizeof(Int32))) / 10000000d,
-                        Longitude = -IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 0 * sizeof(Int32))) / 10000000d
+                        Latitude = packet.GetDataArray<Int32>()[0] / 10000000d,
+                        Longitude = packet.GetDataArray<Int32>()[1] / 10000000d
                     };
                     
                     break;
-
                 case "GPSTelem":
-                    FixObtained = packet.Data[0] != 0;
-                    FixQuality = packet.Data[0];
-                    NumberOfSatellites = packet.Data[1];
-                    break;
-                case "GPSSatellites":
-                    NumberOfSatellites = packet.Data[0];
+                    Byte[] data = packet.GetDataArray<Byte>();
+                    FixObtained = data[0] != 0;
+                    FixQuality = data[0];
+                    NumberOfSatellites = data[1];
                     break;
             }
         }

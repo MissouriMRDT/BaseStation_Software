@@ -72,9 +72,6 @@ namespace RED.ViewModels.Modules
             _log = log;
 
             _rovecomm.NotifyWhenMessageReceived(this, "Lidar");
-            _rovecomm.NotifyWhenMessageReceived(this, "NavPitch");
-            _rovecomm.NotifyWhenMessageReceived(this, "NavRoll");
-            _rovecomm.NotifyWhenMessageReceived(this, "NavTrueHeading");
             _rovecomm.NotifyWhenMessageReceived(this, "PitchHeadingRoll");
         }
 
@@ -84,19 +81,18 @@ namespace RED.ViewModels.Modules
             {
 
                 case "Lidar":
-                    if(packet.Data[1] != 5)
+                    Byte[] data = packet.GetDataArray<Byte>();
+                    if(data[1] != 5)
                     {
-                        Lidar = (float)(packet.Data[0] / 10.0);
+                        Lidar = (float)(data[0] / 10.0);
                     }
                     break;
-                case "NavPitch": Pitch = BitConverter.ToSingle(packet.Data, 0); break;
-                case "NavRoll": Roll = BitConverter.ToSingle(packet.Data, 0); break;
-                case "NavTrueHeading":
-                    TrueHeading = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0)); break;
+
                 case "PitchHeadingRoll":
-                    Pitch = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0));
-                    TrueHeading = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 2));
-                    Roll = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 4));
+                    Int16[] d = packet.GetDataArray<Int16>();
+                    Pitch = d[0];
+                    TrueHeading = d[1];
+                    Roll = d[2];
                     break;
             }
         }
