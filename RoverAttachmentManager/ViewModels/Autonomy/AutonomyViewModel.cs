@@ -5,6 +5,7 @@ using Core.Models;
 using Core.RoveProtocol;
 using Core.ViewModels;
 using RoverAttachmentManager.Models.Autonomy;
+using RoverAttachmentManager.ViewModels.Autonomy;
 using System;
 using System.Net;
 
@@ -31,11 +32,23 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
                 NotifyOfPropertyChange(() => Controls);
             }
         }
-
+        public StateControlViewModel StateControl
+        {
+            get
+            {
+                return _model._stateControl;
+            }
+            set
+            {
+                _model._stateControl = value;
+                NotifyOfPropertyChange(() => StateControl);
+            }
+        }
 
         public AutonomyViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger logger)
         {
             _model = new AutonomyModel();
+            StateControl = new StateControlViewModel();
             Controls = new ControlsViewModel(networkMessenger);
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
@@ -52,7 +65,7 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
         public void ClearAllWaypoints() => _rovecomm.SendCommand(new Packet("WaypointsClearAll"), true);
 
         public void Calibrate() => _rovecomm.SendCommand(new Packet("AutonomyCalibrate"), true);
-        
+
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
         {
             switch (packet.Name)
