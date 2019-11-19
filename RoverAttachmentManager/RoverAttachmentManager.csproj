@@ -120,12 +120,19 @@
     <Compile Include="Models\InputManagerModel.cs" />
     <Compile Include="Models\InputSelectorModel.cs" />
     <Compile Include="Models\MainWindowModel.cs" />
+    <Compile Include="Models\Science\ScienceGraphsModel.cs" />
     <Compile Include="Models\Science\ScienceModel.cs" />
     <Compile Include="ViewModels\Arm\ControlMultipliersViewModel.cs" />
     <Compile Include="ViewModels\Science\ScienceViewModel.cs" />
     <Compile Include="Views\Arm\ControlMultipliersView.xaml.cs">
       <DependentUpon>ControlMultipliersView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\Science\ScienceGraphsViewModel.cs" />
+    <Compile Include="ViewModels\Science\ScienceViewModel.cs" />
+    <Page Include="Views\Science\ScienceGraphsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Compile Include="Views\Science\ScienceView.xaml.cs">
       <DependentUpon>ScienceView.xaml</DependentUpon>
     </Compile>
