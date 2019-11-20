@@ -18,7 +18,7 @@ namespace Core.RoveProtocol
             DataType = type;
         }
 
-        public Packet(string name)
+        private Packet(string name)
         {
             Name = name;
             Data = new byte[] { 4 };
@@ -26,52 +26,9 @@ namespace Core.RoveProtocol
             DataType = 0;
         }
 
-        public Packet(string name, SByte data)
+        public static Packet Create(string name)
         {
-            Name = name;
-            Data = BitConverter.GetBytes(data);
-            Count = 1;
-            DataType = (byte)RoveProtocol.DataTypes.INT8_T;
-        }
-
-        public Packet(string name, byte data)
-        {
-            Name = name;
-            Data = BitConverter.GetBytes(data);
-            Count = 1;
-            DataType = (byte)RoveProtocol.DataTypes.UINT8_T;
-        }
-
-        public Packet(string name, Int16 data)
-        {
-            Name = name;
-            Data = BitConverter.GetBytes(data);
-            Count = 1;
-            DataType = (byte)RoveProtocol.DataTypes.INT16_T;
-        }
-
-        public Packet(string name, UInt16 data)
-        {
-            Name = name;
-            Data = BitConverter.GetBytes(data);
-            Count = 1;
-            DataType = (byte)RoveProtocol.DataTypes.UINT16_T;
-        }
-
-        public Packet(string name, Int32 data)
-        {
-            Name = name;
-            Data = BitConverter.GetBytes(data);
-            Count = 1;
-            DataType = (byte)RoveProtocol.DataTypes.INT32_T;
-        }
-
-        public Packet(string name, UInt32 data)
-        {
-            Name = name;
-            Data = BitConverter.GetBytes(data);
-            Count = 1;
-            DataType = (byte)RoveProtocol.DataTypes.UINT32_T;
+            return new Packet(name);
         }
 
         public static Packet Create<T>(string name, T[] data)

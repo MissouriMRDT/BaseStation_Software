@@ -30,13 +30,13 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
             _rovecomm.NotifyWhenMessageReceived(this, "WaypointReached");
         }
 
-        public void Enable() => _rovecomm.SendCommand(new Packet("AutonomousModeEnable"), true);
+        public void Enable() => _rovecomm.SendCommand(Packet.Create("AutonomousModeEnable"), true);
 
-        public void Disable() => _rovecomm.SendCommand(new Packet("AutonomousModeDisable"), true);
+        public void Disable() => _rovecomm.SendCommand(Packet.Create("AutonomousModeDisable"), true);
 
-        public void ClearAllWaypoints() => _rovecomm.SendCommand(new Packet("WaypointsClearAll"), true);
+        public void ClearAllWaypoints() => _rovecomm.SendCommand(Packet.Create("WaypointsClearAll"), true);
 
-        public void Calibrate() => _rovecomm.SendCommand(new Packet("AutonomyCalibrate"), true);
+        public void Calibrate() => _rovecomm.SendCommand(Packet.Create("AutonomyCalibrate"), true);
         
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
         {

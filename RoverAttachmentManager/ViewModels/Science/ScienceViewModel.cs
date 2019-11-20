@@ -404,7 +404,7 @@ namespace RoverAttachmentManager.ViewModels.Science
 
         public void CenterX()
         {
-            _rovecomm.SendCommand(new Packet("CenterX"));
+            _rovecomm.SendCommand(Packet.Create("CenterX"));
         }
 
         public void CreateSiteAnnotation()

@@ -633,7 +633,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
 
             if (oldState != myState)
             {
-                _rovecomm.SendCommand(new Packet("ArmStop"));
+                _rovecomm.SendCommand(Packet.Create("ArmStop"));
                 ControlState = state;
             }
         }
@@ -661,14 +661,14 @@ namespace RoverAttachmentManager.ViewModels.Arm
             {
                 if(guiControlInitialized == false)
                 {
-                    _rovecomm.SendCommand(new Packet("ArmStop"));
+                    _rovecomm.SendCommand(Packet.Create("ArmStop"));
                 }
             }
         }
 
         public void StopMode()
         {
-            _rovecomm.SendCommand(new Packet("ArmStop"));
+            _rovecomm.SendCommand(Packet.Create("ArmStop"));
 
             myState = ArmControlState.GuiControl;
             ControlState = "GUI control";
@@ -723,12 +723,12 @@ namespace RoverAttachmentManager.ViewModels.Arm
         }
         public void ToggleAuto()
         {
-            _rovecomm.SendCommand(new Packet("ToggleAutoPositionTelem"));
+            _rovecomm.SendCommand(Packet.Create("ToggleAutoPositionTelem"));
         }
 
         public void GetXYZPosition()
         {
-            _rovecomm.SendCommand(new Packet("ArmGetXYZ"));
+            _rovecomm.SendCommand(Packet.Create("ArmGetXYZ"));
         }
 
         public void SetXYZPosition()

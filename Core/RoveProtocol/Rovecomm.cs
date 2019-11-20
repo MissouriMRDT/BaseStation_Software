@@ -129,7 +129,7 @@ namespace Core.RoveProtocol
         /// <param name="deviceIP">The ip address of the device to request</param>
         public void SubscribeTo(IPAddress deviceIP)
         {
-            SendCommand(new Packet("Subscribe"), true, deviceIP);
+            SendCommand(Packet.Create("Subscribe"), true, deviceIP);
 
             if (subscriptions.ContainsKey(deviceIP))
             {
@@ -180,7 +180,7 @@ namespace Core.RoveProtocol
                     log.Log("Packet recieved with null name");
                     break;
                 case "Ping":
-                    SendCommand(new Packet("PingReply"), false, srcIP);
+                    SendCommand(Packet.Create("PingReply"), false, srcIP);
                     break;
                 case "Subscribe":
                     log.Log($"Packet recieved requesting subscription to dataId={packet.Name}");

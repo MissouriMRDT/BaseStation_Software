@@ -47,7 +47,7 @@ namespace UnitTests
         [TestMethod]
         public void Data_Null()
         {
-            Packet packet = new Packet("Hi");
+            Packet packet = Packet.Create("Hi");
             CheckPacket<byte>(packet, "Hi", 1, 0, 4);
         }
 
