@@ -4,9 +4,58 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:RoverAttachmentManager.Views.Arm"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
+             mc:Ignorable="d">
+    <Expander Header="IK Control" IsExpanded="True" Margin="2.5">
+        <StackPanel>
+            <Grid Margin="0 10 0 10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="35*"/>
+                    <ColumnDefinition Width="112*" />
+                    <ColumnDefinition Width="38*" />
+                    <ColumnDefinition Width="112*" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">X</Label>
+                <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding CoordinateX, StringFormat=0.##}" />
+                <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">Y</Label>
+                <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding CoordinateY, StringFormat=0.##}" />
+                <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">Z</Label>
+                <TextBox Grid.Row="3" Grid.Column="2" Text="{Binding CoordinateZ, StringFormat=0.##}" />
+                <Label Grid.Row="0" Grid.Column="3">Yaw</Label>
+                <TextBox Grid.Row="0" Grid.Column="4" Text="{Binding Yaw, StringFormat=0.##}" />
+                <Label Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2">Pitch</Label>
+                <TextBox Grid.Row="1" Grid.Column="4" Text="{Binding Pitch, StringFormat=0.##}" />
+            </Grid>
+            <UniformGrid Rows="1">
+                <Button x:Name="SetXYZPosition" Content="Set absolute position" HorizontalAlignment="Center" />
+                <Button x:Name="GetXYZPosition" Content="Get Absolute Position" HorizontalAlignment="Center" />
+            </UniformGrid>
+            <Grid Margin="0 10 0 10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="20*"/>
+                    <ColumnDefinition Width="40*" />
+                    <ColumnDefinition Width="20*" />
+                    <ColumnDefinition Width="40*" />
+                    <ColumnDefinition Width="20*" />
+                    <ColumnDefinition Width="40*" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">OpX</Label>
+                <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding OpX, StringFormat=0.##}" />
+                <Label Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2">OpY</Label>
+                <TextBox Grid.Row="0" Grid.Column="4" Text="{Binding OpY, StringFormat=0.##}" />
+                <Label Grid.Row="0" Grid.Column="5" Grid.ColumnSpan="2">OpZ</Label>
+                <TextBox Grid.Row="0" Grid.Column="6" Text="{Binding OpZ, StringFormat=0.##}" />
+            </Grid>
+            <Button Width="100" Content="Set Op point" x:Name="SetOpPoint"/>
+        </StackPanel>
+    </Expander>
 </UserControl>

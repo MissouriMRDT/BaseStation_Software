@@ -75,31 +75,6 @@ namespace RoverAttachmentManager.ViewModels.Arm
         //puts it into closed loop mode as well
         private bool guiControlInitialized;
 
-        public int IKRangeFactor
-        {
-            get
-            {
-                return _model.IKRangeFactor;
-            }
-            set
-            {
-                _model.IKRangeFactor = value;
-                NotifyOfPropertyChange(() => IKRangeFactor);
-            }
-        }
-        public float AngleJ1
-        {
-            get
-            {
-                return _model.AngleJ1;
-            }
-            set
-            {
-                _model.AngleJ1 = value;
-                NotifyOfPropertyChange(() => AngleJ1);
-            }
-        }
-
         public string ControlState
         {
             get
@@ -174,85 +149,6 @@ namespace RoverAttachmentManager.ViewModels.Arm
             }
         }
 
-
-        public float CoordinateX
-        {
-            get
-            {
-                return _model.CoordinateX;
-            }
-            set
-            {
-                _model.CoordinateX = value;
-                NotifyOfPropertyChange(() => CoordinateX);
-            }
-        }
-
-        public float CoordinateY
-        {
-            get
-            {
-                return _model.CoordinateY;
-            }
-            set
-            {
-                _model.CoordinateY = value;
-                NotifyOfPropertyChange(() => CoordinateY);
-            }
-        }
-
-        public float CoordinateZ
-        {
-            get
-            {
-                return _model.CoordinateZ;
-            }
-            set
-            {
-                _model.CoordinateZ = value;
-                NotifyOfPropertyChange(() => CoordinateZ);
-            }
-        }
-
-        public float Yaw
-        {
-            get
-            {
-                return _model.Yaw;
-            }
-            set
-            {
-                _model.Yaw = value;
-                NotifyOfPropertyChange(() => Yaw);
-            }
-        }
-
-        public float Pitch
-        {
-            get
-            {
-                return _model.Pitch;
-            }
-            set
-            {
-                _model.Pitch = value;
-                NotifyOfPropertyChange(() => Pitch);
-            }
-        }
-
-        public float Roll
-        {
-            get
-            {
-                return _model.Roll;
-            }
-            set
-            {
-                _model.Roll = value;
-                NotifyOfPropertyChange(() => Roll);
-            }
-        }
-        
         public ObservableCollection<ArmPositionViewModel> Positions
         {
             get
@@ -275,42 +171,6 @@ namespace RoverAttachmentManager.ViewModels.Arm
             {
                 _model.SelectedPosition = value;
                 NotifyOfPropertyChange(() => SelectedPosition);
-            }
-        }
-        public float OpX
-        {
-            get
-            {
-                return _model.OpX;
-            }
-            set
-            {
-                _model.OpX = value;
-                NotifyOfPropertyChange(() => OpX);
-            }
-        }
-        public float OpY
-        {
-            get
-            {
-                return _model.OpY;
-            }
-            set
-            {
-                _model.OpY = value;
-                NotifyOfPropertyChange(() => OpY);
-            }
-        }
-        public float OpZ
-        {
-            get
-            {
-                return _model.OpZ;
-            }
-            set
-            {
-                _model.OpZ = value;
-                NotifyOfPropertyChange(() => OpZ);
             }
         }
         public byte SelectedTool
@@ -498,7 +358,8 @@ namespace RoverAttachmentManager.ViewModels.Arm
             if (SelectedTool == 0)
             {
                 Gripper = (Int16)(gripperAmmount * ControlMultipliers.GripperRangeFactor);
-            }else if (SelectedTool == 1)
+            }
+            else if (SelectedTool == 1)
             {
                 Gripper2 = (Int16)(gripperAmmount * ControlMultipliers.Gripper2RangeFactor);
             }
@@ -518,104 +379,16 @@ namespace RoverAttachmentManager.ViewModels.Arm
 
             if (values["SwitchTool"] == 1 && previousTool == SelectedTool)
             {
-                if(++SelectedTool > 1)
+                if (++SelectedTool > 1)
                 {
                     SelectedTool = 0;
                 }
                 //_rovecomm.SendCommand(new Packet("ToolSelection", SelectedTool));
             }
-            else if (values["SwitchTool"] == 0){
-                previousTool = SelectedTool;
-            }
-            if (values["LaserToggle"] == 1)
-            {
-                laser = !laser;
-                _rovecomm.SendCommand(new Packet("Laser", Convert.ToByte(laser)));
-            }
-        }
-
-        private void SetIKValues(Dictionary<string, float> values, ArmControlState stateToUse)
-        {
-            Int16 X = 0;
-            Int16 Y = 0;
-            Int16 Z = 0;
-            Int16 Yaw = 0;
-            Int16 Pitch = 0;
-            Int16 Roll = 0;
-            Int16 Gripper = 0;
-            Int16 Nipper = 0;
-
-            switch (ControllerBase.JoystickDirection(values["IKYawIncrement"], values["IKPitchIncrement"]))
-            {
-                case ControllerBase.JoystickDirections.Right:
-                case ControllerBase.JoystickDirections.Left:
-                case ControllerBase.JoystickDirections.Up:
-                case ControllerBase.JoystickDirections.Down:
-                    Yaw = (Int16)(values["IKYawIncrement"] * IKRangeFactor);
-                    Pitch = (Int16)(values["IKPitchIncrement"] * IKRangeFactor);
-                    break;
-                case ControllerBase.JoystickDirections.None:
-                    Yaw = 0;
-                    Pitch = 0;
-                    break;
-            }
-
-            switch (ControllerBase.JoystickDirection(values["IKXIncrement"], values["IKYIncrement"]))
-            {
-                case ControllerBase.JoystickDirections.Up:
-                case ControllerBase.JoystickDirections.Down:
-                    Y = 0;
-                    X = (Int16)(values["IKXIncrement"] * IKRangeFactor);
-                    break;
-                case ControllerBase.JoystickDirections.Right:
-                case ControllerBase.JoystickDirections.Left:
-                    Y = (Int16)(values["IKYIncrement"] * IKRangeFactor);
-                    X = 0;
-                    break;
-                case ControllerBase.JoystickDirections.None:
-                    Y = 0;
-                    X = 0;
-                    break;
-            }
-
-
-            Z = (Int16)(ControllerBase.TwoButtonToggleDirection(values["IKZDirection"] != 0, (values["IKZMagnitude"])) * IKRangeFactor);
-            Roll = (Int16)(ControllerBase.TwoButtonToggleDirection(values["IKRollDirection"] != 0, (values["IKRollMagnitude"])) * IKRangeFactor);
-            Gripper = (Int16)(ControllerBase.TwoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0) * ControlMultipliers.GripperRangeFactor);
-            Nipper = (Int16)values["Nipper"];
-
-            Int16[] sendValues = { Nipper, Gripper, Roll, Pitch, Yaw, Z, Y, X};
-            byte[] data = new byte[sendValues.Length * sizeof(Int16)];
-            Buffer.BlockCopy(sendValues, 0, data, 0, data.Length);
-            Array.Reverse(data);
-
-            if (stateToUse == ArmControlState.IKWristPOV)
-            {
-                _rovecomm.SendCommand(new Packet("IKWristIncrement", data, 8, (byte)DataTypes.INT16_T));
-            }
-            else if (stateToUse == ArmControlState.IKRoverPOV)
-            {
-                _rovecomm.SendCommand(new Packet("IKRoverIncrement", data, 8, (byte)DataTypes.INT16_T));
-            }
-            
-            if(values["GripperSwap"] == 1)
-            {
-                _rovecomm.SendCommand(new Packet("GripperSwap", data, 8, (byte)DataTypes.INT16_T));
-            }
-
-            if (values["SwitchTool"] == 1 && previousTool == SelectedTool)
-            {
-                if (++SelectedTool > 2)
-                {
-                    SelectedTool = 0;
-                }
-                _rovecomm.SendCommand(new Packet("ToolSelection", SelectedTool));
-            }
             else if (values["SwitchTool"] == 0)
             {
                 previousTool = SelectedTool;
             }
-
             if (values["LaserToggle"] == 1)
             {
                 laser = !laser;
