@@ -1,4 +1,6 @@
 ﻿// Code originally from https://github.com/arndre/MjpegDecoder
+// This code is MIT licensed
+
 using System;
 using System.IO;
 using System.Net;
@@ -35,58 +37,45 @@ namespace Core.Cameras {
 		* Alex Faustmann
 		*/
 
-		// magic 2 byte for JPEG images
-		private readonly byte[] JpegSOI = new byte[] { 0xff, 0xd8 }; // start of image bytes
-		private readonly byte[] JpegEOI = new byte[] { 0xff, 0xd9 }; // end of image bytes
+		// magic bytes for JPEG images
+		private readonly byte[] JpegSOI = new byte[] { 0xff, 0xd8 };
+		private readonly byte[] JpegEOI = new byte[] { 0xff, 0xd9 };
 
 		private int ChunkSize = 1024;
 
 		// used to cancel reading the stream
 		public bool _streamActive;
 
-		public int ProcessEveryXthFrame { get; set; }
-
-		public int fps;
-
 		// current encoded JPEG image
 		public byte[] CurrentFrame { get; private set; }
 
-
 		// 10 MB
-		public const int MAX_BUFFER_SIZE = 1024 * 1024 * 10;
+		public const int MAX_BUFFER_SIZE = 10 * 1024 * 1024;
 
 		public SynchronizationContext _context;
 		WebRequest request;
 
-		// event to get the buffer above handed to you
 		public event EventHandler<FrameReadyEventArgs> FrameReady;
 		public event EventHandler<ErrorEventArgs> Error;
-
-		Uri uri;
 
 		public Guid UUID { get; private set; }
 
 		public MjpegDecoder(int buffer_time = 0) {
 			_context = SynchronizationContext.Current;
 
-			ProcessEveryXthFrame = 0;
 			UUID = Guid.NewGuid();
 		}
-
-
+		
 		public void ParseStream(Uri uri) {
-			this.uri = uri;
-
 			ServicePointManager.DefaultConnectionLimit = 15;
 			request = (HttpWebRequest)HttpWebRequest.Create(uri);
 			request.Timeout = 5000;
 
 			_streamActive = true;
 
-			// asynchronously get a response
 			request.BeginGetResponse(OnGetResponse, request);
-
 		}
+
 		public void StopStream() {
 			_streamActive = false;
 			request.Abort();
@@ -113,7 +102,6 @@ namespace Core.Cameras {
 					if (buffer.Length < currentPosition + currentChunk.Length) {
 						if (buffer.Length < MAX_BUFFER_SIZE) {
 							// resize buffer to new needed size
-							// Console.WriteLine("RESIZE BUFFER " + buffer.Length + " < " + (currentPosition + currentChunk.Length));
 							Array.Resize(ref buffer, currentPosition + currentChunk.Length);
 						}
 						else {
@@ -121,8 +109,6 @@ namespace Core.Cameras {
 							currentPosition = 0;
 
 							Array.Resize(ref buffer, ChunkSize);
-
-							// log.Debug("Buffer was reset.");
 						}
 					}
 
@@ -173,7 +159,6 @@ namespace Core.Cameras {
 								// 2018-03-08, Alex
 								// Something went wrong. We should skip this frame and move on.
 								// @Arno: Maybe find the reason for soi < eoi
-								//  log.Debug($"eoi ({eoi}) <= sio ({soi}) error");
 
 								eoi = -1;
 								soi = -1;
@@ -182,15 +167,9 @@ namespace Core.Cameras {
 					}
 				}
 
-				//   log.Debug("Loop-Exit.");
-
 				response.Close();
-
-				// log.Debug("Response closed.");
 			}
 			catch (Exception ex) {
-				// log.Error("OnGetResponse-Exception.", ex);
-
 				if (Error != null) {
 					_context.Post(delegate { Error(this, new ErrorEventArgs() { Message = ex.Message }); }, null);
 				}
@@ -199,44 +178,33 @@ namespace Core.Cameras {
 			}
 		}
 
-
-		//DateTime dtLastFrame = DateTime.Now;
-		//int counter = 0;
-
 		private void ProcessFrame(byte[] frame) {
 			CurrentFrame = frame;
 
 			// 2018-03-07, Alex
 			// Check if code is executed in application context (wpf)
 			_context.Post(delegate {
-				//added try/catch because sometimes jpeg images are corrupted
 				try {
-				FrameReadyEventArgs args = new FrameReadyEventArgs();
-				using(MemoryStream ms = new MemoryStream(CurrentFrame, 0, CurrentFrame.Length)) {
-					BitmapImage img = new BitmapImage();
+					FrameReadyEventArgs args = new FrameReadyEventArgs();
+					using(MemoryStream ms = new MemoryStream(CurrentFrame, 0, CurrentFrame.Length)) {
+						BitmapImage img = new BitmapImage();
 
-					img.BeginInit();
-					img.CacheOption = BitmapCacheOption.OnLoad;
-					img.StreamSource = ms;
-					img.EndInit();
+						img.BeginInit();
+						img.CacheOption = BitmapCacheOption.OnLoad;
+						img.StreamSource = ms;
+						img.EndInit();
 
-					args.BitmapImage = img;
-				}
+						args.BitmapImage = img;
+					}
 				
-				FrameReady?.Invoke(this, args);
+					FrameReady?.Invoke(this, args);
 				}
 				catch (Exception ex) {
 					CommonLog.Instance.Log("MjpegDecoder: error converting image: {0}. Uri: {1}. Trace: {2}", ex.Message, request.RequestUri, ex.StackTrace);
 				}
 			}, null);
-
-			// 2018-03-07, Alex
-			// Check if code is executed without any context (owin self-host)
-
 		}
 	}
-
-	#region extensions
 
 	static class Extensions {
 		public static int Find(this byte[] buff, byte[] pattern, int limit = int.MaxValue, int startAt = 0) {
@@ -264,10 +232,6 @@ namespace Core.Cameras {
 
 	}
 
-	#endregion
-
-	#region event args
-
 	public class FrameReadyEventArgs : EventArgs {
 		public BitmapImage BitmapImage;
 	}
@@ -276,6 +240,4 @@ namespace Core.Cameras {
 		public string Message { get; set; }
 		public int ErrorCode { get; set; }
 	}
-
-	#endregion
 }

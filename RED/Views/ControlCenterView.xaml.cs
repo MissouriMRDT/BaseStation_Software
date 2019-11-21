@@ -1,7 +1,5 @@
 ﻿using Core.Cameras;
 using RED.ViewModels;
-using System;
-using System.Drawing;
 using System.Windows.Controls;
 
 namespace RED.Views {
