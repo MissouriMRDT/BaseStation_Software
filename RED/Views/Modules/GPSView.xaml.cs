@@ -11,6 +11,7 @@ namespace RED.Views.Modules
         public GPSView()
         {
             InitializeComponent();
+            Create3DViewPort();
         }
         private void Create3DViewPort()
         {
@@ -19,7 +20,6 @@ namespace RED.Views.Modules
             var teaPot = new Teapot();
             hVp3D.Children.Add(lights);
             hVp3D.Children.Add(teaPot);
-            AddChild(hVp3D);
         }
     }
 }
