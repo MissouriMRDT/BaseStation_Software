@@ -11,15 +11,15 @@
 
         <StackPanel>
             <Label Content="Pre-defined commands:" HorizontalAlignment="Center"/>
-            <ComboBox x:Name="cbxBoard" Width="200" Height="33" Margin="0,0,0,0" HorizontalAlignment="Center" ItemsSource="{Binding Commands}" SelectedIndex="{Binding SelectedCommand, Mode=OneWayToSource}"/>
+            <ComboBox x:Name="cbxBoard" Width="500" Height="33" Margin="0,0,0,0" HorizontalAlignment="Center" ItemsSource="{Binding Commands}" SelectedIndex="{Binding SelectedCommand, Mode=OneWayToSource}"/>
 			<Label Content="IP Address:" HorizontalAlignment="Center" Margin="0,5,0,3"/>
-            <TextBox x:Name="txtIP" Height="23" Width="200" Margin="0" TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding IP}"/>
+            <TextBox x:Name="txtIP" Height="23" Width="500" Margin="0" TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding IP}"/>
             <Label Content="ID:" HorizontalAlignment="Center" Margin="0,5,0,0"/>
-            <TextBox x:Name="txtID" Height="23" Width="200" Margin="0" TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding ID}"/>
+            <TextBox x:Name="txtID" Height="23" Width="500" Margin="0" TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding ID}"/>
             <Label Content="Data:" HorizontalAlignment="Center" Margin="0,5,0,0"/>
-            <TextBox x:Name="txtData" Height="23" Width="200" Margin="0" TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding Data}"/>
-            <Button x:Name="btnSend" Content="Send" HorizontalAlignment="Center" Margin="285,5,357.8,0" Click="btnSend_Click"/>
-            <Button x:Name="btnSubscribe" Content="Subscribe" HorizontalAlignment="Center" Margin="402,-27,321.8,0" Click="btnSubscribe_Click"/>
+            <TextBox x:Name="txtData" Height="23" Width="500" Margin="0" TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding Data}"/>
+            <Button x:Name="btnSend" Content="Send" Margin="-70, 20, 20, 0" HorizontalAlignment="Center" Click="btnSend_Click"/>
+            <Button x:Name="btnSubscribe" Content="Subscribe" Margin="70, -28, 20, 0" HorizontalAlignment="Center" Click="btnSubscribe_Click"/>
             
         </StackPanel>
     </GroupBox>
