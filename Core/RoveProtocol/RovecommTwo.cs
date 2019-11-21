@@ -39,9 +39,8 @@ namespace Core.RoveProtocol
                 // Per data type
                 rawData = br.ReadBytes(dataSize * sizes[dataType]);
             }
-
-            //CommonLog.Instance.Log("Recived Array: " + BitConverter.ToString(rawData));
             
+            // Convert recieved array from BigEndian to LittleEndian, per each chunk of data
             if(BitConverter.IsLittleEndian)
             {
                 for(int d = 0; d < dataSize; d++)
@@ -49,14 +48,23 @@ namespace Core.RoveProtocol
                     Array.Reverse(rawData, d * sizes[dataType], sizes[dataType]);
                 }
             }
-            
-            //CommonLog.Instance.Log("Reversed Array: " + BitConverter.ToString(rawData));
 
             return new Packet(resolver.GetName(rawDataId), rawData, dataSize, dataType);
         }
 
         static public byte[] EncodePacket(Packet packet, IDataIdResolver resolver)
         {
+            byte[] rawData = packet.Data;
+
+            // Convert internal array from LittleEndian to BigEndian, per each chunk of data
+            if (BitConverter.IsLittleEndian)
+            {
+                for (int d = 0; d < packet.Count; d++)
+                {
+                    Array.Reverse(rawData, d * sizes[packet.DataType], sizes[packet.DataType]);
+                }
+            }
+
             try
             {
                 using (var ms = new MemoryStream())
@@ -66,7 +74,7 @@ namespace Core.RoveProtocol
                     bw.Write(IPAddress.HostToNetworkOrder((short)resolver.GetId(packet.Name)));
                     bw.Write(packet.Count);
                     bw.Write(packet.DataType);
-                    bw.Write(packet.Data);
+                    bw.Write(rawData);
                     return ms.ToArray();
                 }
             }
