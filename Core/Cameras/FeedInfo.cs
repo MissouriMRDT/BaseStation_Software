@@ -7,12 +7,17 @@ namespace Core.Cameras {
 		/// <summary>
 		/// MjpegDecoder object for this stream
 		/// </summary>
-		public NewMjpegDecoder Decoder { get; set; }
+		public MjpegDecoder Decoder { get; set; }
 
 		/// <summary>
 		/// URI for the camera feed
 		/// </summary>
 		public Uri URI { get; set; }
+
+		/// <summary>
+		/// Motion camera stream index
+		/// </summary>
+		public int Index { get; internal set; }
 
 		/// <summary>
 		/// Destination rendering surfaces to send decoded images to
@@ -27,6 +32,6 @@ namespace Core.Cameras {
 		/// <summary>
 		/// Last received frame from this feed
 		/// </summary>
-		public System.Drawing.Bitmap LastFrame { get; set; }
+		public System.Windows.Media.Imaging.BitmapImage LastFrame { get; set; }
 	}
 }

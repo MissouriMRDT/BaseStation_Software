@@ -6,7 +6,15 @@ using System.Threading;
 using System.Windows.Media.Imaging;
 
 namespace Core.Cameras {
-	public class NewMjpegDecoder {
+	public class MjpegDecoder {
+		/* 2019-11-18
+		 * Added support for BitmapImage
+		 * Added timeout to initial request
+		 * Added Guid to uniquely identify this decoder instance
+		 * 
+		 * Matt Montgomery
+		 */
+
 		/* 2018-07-16
 		 * Bugfixes
 		 * Fixed bug in Find Extension
@@ -56,10 +64,13 @@ namespace Core.Cameras {
 
 		Uri uri;
 
-		public NewMjpegDecoder(int buffer_time = 0) {
+		public Guid UUID { get; private set; }
+
+		public MjpegDecoder(int buffer_time = 0) {
 			_context = SynchronizationContext.Current;
 
 			ProcessEveryXthFrame = 0;
+			UUID = Guid.NewGuid();
 		}
 
 
@@ -68,6 +79,7 @@ namespace Core.Cameras {
 
 			ServicePointManager.DefaultConnectionLimit = 15;
 			request = (HttpWebRequest)HttpWebRequest.Create(uri);
+			request.Timeout = 5000;
 
 			_streamActive = true;
 
@@ -199,14 +211,22 @@ namespace Core.Cameras {
 			_context.Post(delegate {
 				//added try/catch because sometimes jpeg images are corrupted
 				try {
-					FrameReadyEventArgs args = new FrameReadyEventArgs();
-					args.BitmapImage.StreamSource = new MemoryStream(CurrentFrame, 0, CurrentFrame.Length);
-					args.Bitmap = Extensions.ConvertBitmapImageToBitmap(args.BitmapImage);
+				FrameReadyEventArgs args = new FrameReadyEventArgs();
+				using(MemoryStream ms = new MemoryStream(CurrentFrame, 0, CurrentFrame.Length)) {
+					BitmapImage img = new BitmapImage();
 
-					FrameReady?.Invoke(this, args);
+					img.BeginInit();
+					img.CacheOption = BitmapCacheOption.OnLoad;
+					img.StreamSource = ms;
+					img.EndInit();
+
+					args.BitmapImage = img;
+				}
+				
+				FrameReady?.Invoke(this, args);
 				}
 				catch (Exception ex) {
-					CommonLog.Instance.Log("MjpegDecoder: error converting image: {0}. Uri: {1}", ex.Message, request.RequestUri);
+					CommonLog.Instance.Log("MjpegDecoder: error converting image: {0}. Uri: {1}. Trace: {2}", ex.Message, request.RequestUri, ex.StackTrace);
 				}
 			}, null);
 
@@ -242,17 +262,6 @@ namespace Core.Cameras {
 			}
 		}
 
-		public static System.Drawing.Bitmap ConvertBitmapImageToBitmap(BitmapImage bitmapImage) {
-			using (MemoryStream outStream = new MemoryStream()) {
-				BitmapEncoder enc = new BmpBitmapEncoder();
-				enc.Frames.Add(BitmapFrame.Create(bitmapImage));
-				enc.Save(outStream);
-				System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(outStream);
-
-				return new System.Drawing.Bitmap(bitmap);
-			}
-		}
-
 	}
 
 	#endregion
@@ -261,7 +270,6 @@ namespace Core.Cameras {
 
 	public class FrameReadyEventArgs : EventArgs {
 		public BitmapImage BitmapImage;
-		public System.Drawing.Bitmap Bitmap;
 	}
 
 	public sealed class ErrorEventArgs : EventArgs {
