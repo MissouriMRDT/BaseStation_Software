@@ -13,6 +13,7 @@ namespace Core.Cameras {
 		private static bool initialized = false;
 		static List<FeedInfo> feeds = new List<FeedInfo>();
 		static Timer watchdog = new Timer();
+		static int watchdogSkip = 0;
 
 		/// <summary>
 		/// Returns the total number of connected cameras.
@@ -91,7 +92,20 @@ namespace Core.Cameras {
 		/// <returns>Bitmap image of the feed</returns>
 		public static System.Drawing.Bitmap Screenshot(int index) {
 			if (index > feeds.Count) throw new ArgumentOutOfRangeException("Passed camera index is not valid");
-			return ConvertBitmapImageToBitmap(feeds[index - 1].LastFrame);
+			System.Drawing.Bitmap img = ConvertBitmapImageToBitmap(feeds[index - 1].LastFrame);
+
+			DateTime now = DateTime.Now;
+			string fn = $"camera{index}-{now.Year}-{now.Month}-{now.Day}-{now.Hour}-{now.Minute}-{now.Second}.jpg";
+
+			string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Rover Screenshots");
+			Directory.CreateDirectory(path);
+			path = Path.Combine(path, fn);
+			
+			img.Save(path, System.Drawing.Imaging.ImageFormat.Jpeg);
+
+			CommonLog.Instance.Log("Screenshot of camera stream {0} saved to {1}", index, path);
+
+			return img;
 		}
 
 		/// <summary>
@@ -111,6 +125,9 @@ namespace Core.Cameras {
 		}
 
 		private static void Watchdog_Elapsed(object sender, ElapsedEventArgs e) {
+			// ensures the watchdog doesn't stop a pending reconnection
+			if (watchdogSkip > 0) { watchdogSkip--; return; }
+
 			DateTime now = DateTime.Now;
 
 			for(int i = 0; i < feeds.Count; i++) {
@@ -118,10 +135,11 @@ namespace Core.Cameras {
 				
 				double downTime = new TimeSpan(now.Ticks - fi.LastFrameTime.Ticks).TotalMilliseconds;
 
-				if (downTime >= 2500) {
+				if (downTime >= 2000) {
 					CommonLog.Instance.Log("Camera feed {0} has been unavailable for {1} milliseconds, reopening feed.", i + 1, downTime);
 					fi.Decoder.StopStream();
 					fi.Decoder.ParseStream(fi.URI);
+					watchdogSkip = 3;
 				}
 			}
 		}
