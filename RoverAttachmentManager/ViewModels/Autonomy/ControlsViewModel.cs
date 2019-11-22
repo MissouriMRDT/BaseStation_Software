@@ -25,8 +25,6 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
 
         public void ClearAllWaypoints() => _rovecomm.SendCommand(new Packet("WaypointsClearAll"), true);
 
-        public void Calibrate() => _rovecomm.SendCommand(new Packet("AutonomyCalibrate"), true);
-
         public ControlsViewModel(IRovecomm networkMessenger)
         {
             _model = new ControlsModel();

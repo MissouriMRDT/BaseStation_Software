@@ -11,7 +11,6 @@
             <Button x:Name="Enable" MaxHeight="60px">Start</Button>
             <Button x:Name="AddWaypoint" MaxHeight="60px">Add Waypoint</Button>
             <Button x:Name="ClearAllWaypoints" MaxHeight="60px">Clear Waypoints</Button>
-            <Button Click="Calibrate_Click" MaxHeight="60px">Calibrate</Button>
             <Button x:Name="Disable"  MaxHeight="60px">Stop</Button>
         </UniformGrid>
     </Grid>
