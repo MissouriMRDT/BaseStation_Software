@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <UniformGrid Rows="1" Columns="5" HorizontalAlignment="Stretch">
+        <UniformGrid Rows="1" Columns="4" HorizontalAlignment="Stretch">
             <Button x:Name="Enable" MaxHeight="60px">Start</Button>
             <Button x:Name="AddWaypoint" MaxHeight="60px">Add Waypoint</Button>
             <Button x:Name="ClearAllWaypoints" MaxHeight="60px">Clear Waypoints</Button>
