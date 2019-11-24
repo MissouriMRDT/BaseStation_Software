@@ -8,7 +8,7 @@ using System.IO;
 
 namespace Core.Cameras {
 	public static class CameraMultiplexer {
-		private static readonly string BASE_ADDRESS = "131.151.19.185";
+		private static readonly string BASE_ADDRESS = "192.168.1.50";
 
 		private static bool initialized = false;
 		static List<FeedInfo> feeds = new List<FeedInfo>();
