@@ -11,7 +11,8 @@ namespace RED.Views.Navigation
     /// </summary>
     public partial class WaypointManagerView : UserControl
     {
-        public WaypointManagerView()
+
+	public WaypointManagerView()
         {
             InitializeComponent();
 			InitSelector();
@@ -39,21 +40,14 @@ namespace RED.Views.Navigation
 			
 			var selector = (ComboBox)sender;
 			var selected = selector.SelectedItem;
-			if (selected.Equals(LonLat))
+	        
+			if (selected == )
 			{
-				colDeg.Visibility = Visibility.Collapsed;
-				colMin.Visibility = Visibility.Collapsed;
-				colSec.Visibility = Visibility.Collapsed;
-				colLon.Visibility = Visibility.Visible;
-				colLat.Visibility = Visibility.Visible;
+				 
 			}
 			else
 			{
-				colDeg.Visibility = Visibility.Visible;
-				colMin.Visibility = Visibility.Visible;
-				colSec.Visibility = Visibility.Visible;
-				colLon.Visibility = Visibility.Collapsed;
-				colLat.Visibility = Visibility.Collapsed;
+				
 			}
 
 		}
@@ -64,19 +58,9 @@ namespace RED.Views.Navigation
 			
 		}
 
-	private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-	{
-
+		private void InitSelector()
+		{
+		  DMSSelector.SelectedIndex = 0;
+		}
 	}
-
-	private void InitSelector()
-	{
-	  DMSSelector.SelectedIndex = 0;
-	  colDeg.Visibility = Visibility.Collapsed;
-	  colMin.Visibility = Visibility.Collapsed;
-	  colSec.Visibility = Visibility.Collapsed;
-	  colLon.Visibility = Visibility.Visible;
-	  colLat.Visibility = Visibility.Visible;
-	}
-  }
 }

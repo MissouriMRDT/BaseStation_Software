@@ -46,6 +46,8 @@
                                                     <RowDefinition x:Name="RowLabels" Height="*"/>
                                                     <RowDefinition x:Name ="RowLatitude" Height="*"/>
                                                     <RowDefinition x:Name="RowLongitude" Height="*"/>
+													<RowDefinition x:Name ="RowLatitudeDMS" Height="*"/>
+                                                    <RowDefinition x:Name="RowLongitudeDMS" Height="*"/>
                                                     <RowDefinition Height="*"/>
                                                 </Grid.RowDefinitions>
 
@@ -55,6 +57,11 @@
                                                 <TextBox Grid.Row="1" Grid.Column="1" x:Name="LatitudeTextBox" Text="{Binding NewPoint.Latitude}" />
                                                 <Label Grid.Row="2" Grid.Column="0" Content="Lon:" />
                                                 <TextBox Grid.Row="2" Grid.Column="1" x:Name="LongitudeTextBox" Text="{Binding NewPoint.Longitude}"/>
+												<Label Grid.Row="3" Grid.Column="0" Content="LatDMS:" />
+                                                <TextBox Grid.Row="3" Grid.Column="1" x:Name="LatitudeDMSTextBox" />
+												<Label Grid.Row="4" Grid.Column="0" Content="LonDMS:" />
+                                                <TextBox Grid.Row="4" Grid.Column="1" x:Name="LongitudeDMSTextBox" />
+											  
 
                                                 <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" x:Name="AddWaypointBtn" Click="AddWaypointBtn_Click">Add</Button>
 
@@ -74,14 +81,11 @@
                 <Button x:Name="RemoveSelectedWaypoint" Grid.Column="3">Remove Selected</Button>
             </Grid>
         </StackPanel>
-        <DataGrid ItemsSource="{Binding Waypoints}" SelectedItem="{Binding SelectedWaypoint}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" FrozenColumnCount="1" BorderThickness="1" SelectionChanged="DataGrid_SelectionChanged">
+        <DataGrid ItemsSource="{Binding Waypoints}" SelectedItem="{Binding SelectedWaypoint}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" FrozenColumnCount="1" BorderThickness="1">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
                 <DataGridTextColumn x:Name="colLon" Header="Longitude" Binding="{Binding Longitude}" />
                 <DataGridTextColumn x:Name="colLat" Header="Latitude" Binding="{Binding Latitude}" />
-				<DataGridTextColumn x:Name="colDeg" Header="Deg" Binding="{Binding Deg}" />
-				<DataGridTextColumn x:Name="colMin" Header="Min" Binding="{Binding Min}" />
-				<DataGridTextColumn x:Name="colSec" Header="Sec" Binding="{Binding Sec}" />
 				<DataGridTemplateColumn Header="Color">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
