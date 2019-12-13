@@ -98,9 +98,7 @@
                 
             </StackPanel>
             <StackPanel Grid.Column="1">
-                <oxy:PlotView Margin="5" Height="150" Name="Plot" Model="{Binding SpectrometerPlotModel}"/>
-                <oxy:PlotView Margin="5" Height="150" Name="Plot2" Model="{Binding SensorPlotModel}"/>
-                <oxy:PlotView Margin="5" Height="150" Name="Plot3" Model="{Binding MethanePlotModel}"/>
+                <ContentControl x:Name="ScienceGraph"/>
             </StackPanel>
         </Grid>
     </StackPanel>
