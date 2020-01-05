@@ -201,7 +201,7 @@ namespace RED.ViewModels.Modules
         }
         public float RoverDistanceTraveled
         {
-            
+
             get
             {
                 return _model.RoverDistanceTraveled;
@@ -210,6 +210,8 @@ namespace RED.ViewModels.Modules
             {
                 _model.RoverDistanceTraveled = value;
                 NotifyOfPropertyChange(() => RoverDistanceTraveled);
+            }
+        }
 
         public GPSViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
