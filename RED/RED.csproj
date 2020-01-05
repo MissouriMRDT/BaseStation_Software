@@ -159,7 +159,7 @@
     <Compile Include="Models\InputSelectorModel.cs" />
     <Compile Include="Models\Modules\GimbalModel.cs" />
     <Compile Include="Models\Modules\DriveModel.cs" />
-    <Compile Include="Models\Modules\LightingModel.cs" />
+    <Compile Include="Models\Modules\LightingSettingsModel.cs" />
     <Compile Include="Models\Navigation\MapModel.cs" />
     <Compile Include="Models\Navigation\WaypointManagerModel.cs" />
     <Compile Include="Models\Network\NetworkManagerModel.cs" />
@@ -207,9 +207,6 @@
     </Compile>
     <Compile Include="Views\Modules\GimbalView.xaml.cs">
       <DependentUpon>GimbalView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Modules\LightingView.xaml.cs">
-      <DependentUpon>LightingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\PowerView.xaml.cs">
       <DependentUpon>PowerView.xaml</DependentUpon>
@@ -291,10 +288,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>-->
-    <Page Include="Views\Modules\LightingView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Modules\PowerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
