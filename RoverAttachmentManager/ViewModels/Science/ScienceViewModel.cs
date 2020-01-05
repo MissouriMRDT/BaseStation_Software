@@ -179,6 +179,18 @@ namespace RoverAttachmentManager.ViewModels.Science
                 NotifyOfPropertyChange(() => SensorDataFile);
             }
         }
+        public SciencePowerViewModel SciencePower
+        {
+            get
+            {
+                return _model.SciencePower;
+            }
+            set
+            {
+                _model.SciencePower = value;
+                NotifyOfPropertyChange(() => SciencePower);
+            }
+        }
 
         public PlotModel SpectrometerPlotModel { set; private get; }
         public PlotModel SensorPlotModel { set; private get; }
@@ -204,6 +216,7 @@ namespace RoverAttachmentManager.ViewModels.Science
             ModeType = "ScienceControls";
 
             SpectrometerIPAddress = IPAddress.Parse("192.168.1.138");
+            SciencePower = new SciencePowerViewModel(_rovecomm, _idResolver, _log);
 
             _rovecomm.NotifyWhenMessageReceived(this, "ScienceSensors");
             _rovecomm.NotifyWhenMessageReceived(this, "ScrewAtPos");

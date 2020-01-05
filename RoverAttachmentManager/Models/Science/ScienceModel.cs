@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RoverAttachmentManager.ViewModels.Science;
+using System;
 using System.IO;
 
 namespace RoverAttachmentManager.Models.Science
@@ -13,6 +14,7 @@ namespace RoverAttachmentManager.Models.Science
         internal int ScrewPosition;
         internal int RunCount = 100;
         internal int SiteNumber = 1;
+        internal SciencePowerViewModel SciencePower;
 
         internal System.Net.IPAddress SpectrometerIPAddress;
         internal ushort SpectrometerPortNumber = 11001;

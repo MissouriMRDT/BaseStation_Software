@@ -65,7 +65,6 @@ namespace RED.ViewModels.Modules
             }
         }
 
-
         public bool FixObtained
         {
             get
@@ -186,6 +185,31 @@ namespace RED.ViewModels.Modules
                 return (float)(Heading * 180d / Math.PI);
             }
         }
+        public float RoverDistanceStart
+        {
+
+            get
+            {
+                return _model.RoverDistanceStart;
+            }
+            set
+            {
+                _model.RoverDistanceStart = value;
+                NotifyOfPropertyChange(() => RoverDistanceStart);
+
+            }
+        }
+        public float RoverDistanceTraveled
+        {
+            
+            get
+            {
+                return _model.RoverDistanceTraveled;
+            }
+            set
+            {
+                _model.RoverDistanceTraveled = value;
+                NotifyOfPropertyChange(() => RoverDistanceTraveled);
 
         public GPSViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
@@ -193,6 +217,12 @@ namespace RED.ViewModels.Modules
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _log = log;
+            if (File.Exists(System.IO.Path.GetFullPath("RoverMetrics.txt")))
+            {
+                //RoverMetrics.txt should be found in RED/Bin/Debug
+                RoverDistanceStart = float.Parse(System.IO.File.ReadAllText(System.IO.Path.GetFullPath("RoverMetrics.txt")));
+            }
+            RoverDistanceTraveled = RoverDistanceStart;
 
             _rovecomm.NotifyWhenMessageReceived(this, "Lidar");
             _rovecomm.NotifyWhenMessageReceived(this, "NavPitch");
@@ -207,6 +237,7 @@ namespace RED.ViewModels.Modules
             _rovecomm.NotifyWhenMessageReceived(this, "GPSSatellites");
             _rovecomm.NotifyWhenMessageReceived(this, "GPSTelem");
             _rovecomm.NotifyWhenMessageReceived(this, "PitchHeadingRoll");
+            _rovecomm.NotifyWhenMessageReceived(this, "RoverDistanceSession");
         }
 
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
@@ -271,6 +302,11 @@ namespace RED.ViewModels.Modules
                     break;
                 case "GPSSatellites":
                     NumberOfSatellites = packet.Data[0];
+                    break;
+                case "RoverDistanceSession":
+                    //RoverMetrics.txt should be found in RED/Bin/Debug
+                    RoverDistanceTraveled = RoverDistanceStart + IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0))/1000.0f;
+                    System.IO.File.WriteAllText(System.IO.Path.GetFullPath("RoverMetrics.txt"), RoverDistanceTraveled.ToString());
                     break;
             }
         }

@@ -20,6 +20,7 @@
                         <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
                     <Expander Grid.Row="0" Header="Actuation" IsExpanded="True" Margin="2.5">
                         <StackPanel>
@@ -93,6 +94,9 @@
                                 <Button Name="LeftSite">Left Site</Button>
                             </UniformGrid>
                         </StackPanel>
+                    </Expander>
+                    <Expander Grid.Row="4"  Header="Science Motor Power" IsExpanded="True" Margin="2.5">
+                        <ContentControl x:Name="SciencePower" />
                     </Expander>
                 </Grid>
                 

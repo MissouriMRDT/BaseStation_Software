@@ -8,16 +8,17 @@
 
     <Grid Margin="5">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"></ColumnDefinition>
-            <ColumnDefinition Width="2*"></ColumnDefinition>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="125px" MaxHeight="125px"></RowDefinition>
-            <RowDefinition Height="*" MinHeight="350px"></RowDefinition>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <GroupBox Header="State" Margin="5" Grid.RowSpan="2" Grid.Column="0">
+        <GroupBox Header="State" Margin="5" Grid.Column="0" Grid.Row="0">
             <StackPanel Margin="16">
 
                 <Expander x:Name="StateIdle" Background="White" Margin="0 0 0 10" BorderThickness="0 0 0 2">
@@ -27,8 +28,6 @@
                         </Border>
                     </Expander.Header>
                     <StackPanel Margin="10 10 10 40">
-                        <Button>Action</Button>
-                        <Button>Action</Button>
                     </StackPanel>
                 </Expander>
 
@@ -103,27 +102,31 @@
                         </Border>
                     </Expander.Header>
                     <StackPanel Margin="10 10 10 40">
-                        <Button>Action</Button>
-                        <Button>Action</Button>
                     </StackPanel>
                 </Expander>
             </StackPanel>
         </GroupBox>
 
-        <GroupBox Header="Controls" Margin="5" Grid.Row="0" Grid.Column="1">
-            <UniformGrid Rows="2" Columns="4" HorizontalAlignment="Stretch">
+        <GroupBox Header="Sent Waypoints" Grid.Column="0" Grid.Row="1" Height="200" Margin="5">
+            <TextBox Name="SentWaypointsTextBox" Grid.Row="1" Grid.Column="1" IsHitTestVisible="True"
+                     Text="{Binding SentWaypointsText}" IsReadOnly="True" TextChanged="SentWaypointsText_Changed"
+                     BorderThickness="0" VerticalScrollBarVisibility="Visible"/>
+        </GroupBox>
+
+        <GroupBox Header="Map" Margin="5" Grid.Row="0" Grid.Column="2">
+            <StackPanel>
+
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Header="Controls" Margin="5" Grid.Row="1" Grid.Column="2">
+            <UniformGrid Rows="1" Columns="5" HorizontalAlignment="Stretch">
                 <Button x:Name="Enable" MaxHeight="60px">Start</Button>
                 <Button x:Name="AddWaypoint" MaxHeight="60px">Add Waypoint</Button>
                 <Button x:Name="ClearAllWaypoints" MaxHeight="60px">Clear Waypoints</Button>
                 <Button Click="Calibrate_Click" MaxHeight="60px">Calibrate</Button>
-                <Button x:Name="Disable" Grid.ColumnSpan="4" MaxHeight="60px">Stop</Button>
+                <Button x:Name="Disable"  MaxHeight="60px">Stop</Button>
             </UniformGrid>
-        </GroupBox>
-
-        <GroupBox Header="Map" Margin="5" Grid.Row="1" Grid.Column="1">
-            <StackPanel>
-
-            </StackPanel>
         </GroupBox>
 
     </Grid>

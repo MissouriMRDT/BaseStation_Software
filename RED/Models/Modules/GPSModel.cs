@@ -17,5 +17,7 @@ namespace RED.Models.Modules
         internal float Lidar = 0;
         internal float Roll = 0;
         internal float Pitch = 0;
+        internal float RoverDistanceStart = 0;
+        internal float RoverDistanceTraveled = 0;
     }
 }
