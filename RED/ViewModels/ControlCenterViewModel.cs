@@ -148,18 +148,6 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => GPS);
             }
         }
-        public SensorViewModel Sensor
-        {
-            get
-            {
-                return _model._sensor;
-            }
-            set
-            {
-                _model._sensor = value;
-                NotifyOfPropertyChange(() => Sensor);
-            }
-        }
         public PowerViewModel Power
         {
             get
@@ -306,9 +294,7 @@ namespace RED.ViewModels
             Rovecomm = Rovecomm.Instance;
             //ResubscribeAll();
             
-
-            GPS = new GPSViewModel(Rovecomm, MetadataManager);
-            Sensor = new SensorViewModel(Rovecomm, MetadataManager, Console);
+            GPS = new GPSViewModel(Rovecomm, MetadataManager, Console);
             Power = new PowerViewModel(Rovecomm, MetadataManager, Console);
             CameraMux = new CameraViewModel(Rovecomm, MetadataManager);
             Lighting = new LightingViewModel(Rovecomm, MetadataManager, Console);
