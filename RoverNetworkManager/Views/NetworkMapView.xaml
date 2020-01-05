@@ -7,7 +7,7 @@
              mc:Ignorable="d">
     <UserControl.Resources>
 
-        <addons:PingColorValueConverter x:Key="PingConverter" />
+        <addons:ValueToColorConverter x:Key="ColorConverter" />
     </UserControl.Resources>
 
     <GroupBox Header="Ping Map" Margin="5">
@@ -158,24 +158,24 @@
 
             <Rectangle Canvas.Left="185" Canvas.Top="76" Name="BaseSt_Rocket1" VerticalAlignment="Center" 
 			HorizontalAlignment="Center" Width="20" Height="20" RenderTransformOrigin="-2.235,-3.875" Stroke="Black"
-                       Fill="{Binding Path=PingTool.PingServers[1].Result, Converter={StaticResource PingConverter}}">
+                       Fill="{Binding Path=PingTool.PingServers[1].Result, Converter={StaticResource ColorConverter}, ConverterParameter='15-0-5-0'}">
             </Rectangle>
             <Rectangle Canvas.Left="255" Canvas.Top="76" Name="BaseSt_Rocket2" VerticalAlignment="Center" 
 		    HorizontalAlignment="Center" Width="20" Height="20" RenderTransformOrigin="-2.235,-3.875" Stroke="Black"
-                       Fill="{Binding Path=PingTool.PingServers[3].Result, Converter={StaticResource PingConverter}}">
+                       Fill="{Binding Path=PingTool.PingServers[3].Result, Converter={StaticResource ColorConverter}, ConverterParameter='15-0-5-0'}">
             </Rectangle>
 
             <Ellipse Canvas.Left="185" Canvas.Top="193" Name="RoverRocket1" VerticalAlignment="Center" 
                  HorizontalAlignment="Center" Width="20" Height="20" RenderTransformOrigin="2.367,-2.083" Stroke="Black"
-                       Fill="{Binding Path=PingTool.PingServers[2].Result, Converter={StaticResource PingConverter}}">
+                       Fill="{Binding Path=PingTool.PingServers[2].Result, Converter={StaticResource ColorConverter}, ConverterParameter='15-0-5-0'}">
             </Ellipse>
             <Ellipse Canvas.Left="251" Canvas.Top="193" Name="RoverRocket2" VerticalAlignment="Center" 
                  HorizontalAlignment="Center" Width="20" Height="20" RenderTransformOrigin="2.367,-2.083" Stroke="Black"
-                       Fill="{Binding Path=PingTool.PingServers[4].Result, Converter={StaticResource PingConverter}}">
+                       Fill="{Binding Path=PingTool.PingServers[4].Result, Converter={StaticResource ColorConverter}, ConverterParameter='15-0-5-0'}">
             </Ellipse>
             <Ellipse Canvas.Left="218" Canvas.Top="28" x:Name="Basestation" VerticalAlignment="Center" 
                  HorizontalAlignment="Center" Width="25" Height="25" RenderTransformOrigin="2.367,-2.083" Stroke="Black"
-                       Fill="{Binding Path=PingTool.PingServers[0].Result, Converter={StaticResource PingConverter}}">
+                       Fill="{Binding Path=PingTool.PingServers[0].Result, Converter={StaticResource ColorConverter}, ConverterParameter='15-0-5-0'}">
             </Ellipse>
             
             <Rectangle Canvas.Left="214" Canvas.Top="236" Name="Router" VerticalAlignment="Center" 
@@ -183,37 +183,37 @@
                        Fill="GreenYellow">
             </Rectangle>
             <Polygon Points="20,20 10,0, 0,20" Stroke="Black" Canvas.Left="97" Canvas.Top="232"
-                       Fill="{Binding Path=PingTool.PingServers[5].Result, Converter={StaticResource PingConverter}}">
+                       Fill="{Binding Path=PingTool.PingServers[5].Result, Converter={StaticResource ColorConverter}, ConverterParameter='15-0-5-0'}">
             </Polygon>
             <Polygon Points="20,20 10,0, 0,20" Stroke="Black" Canvas.Left="338" Canvas.Top="232"
-                       Fill="{Binding Path=PingTool.PingServers[14].Result, Converter={StaticResource PingConverter}}">
+                       Fill="{Binding Path=PingTool.PingServers[14].Result, Converter={StaticResource ColorConverter}, ConverterParameter='15-0-5-0'}">
             </Polygon>
             <Polygon Points="20,20 10,0, 0,20" Stroke="Black" Canvas.Left="82" Canvas.Top="267"
-                       Fill="{Binding Path=PingTool.PingServers[6].Result, Converter={StaticResource PingConverter}}">
+                       Fill="{Binding Path=PingTool.PingServers[6].Result, Converter={StaticResource ColorConverter}, ConverterParameter='15-0-5-0'}">
             </Polygon>
             <Polygon Points="20,20 10,0, 0,20" Stroke="Black" Canvas.Left="108" Canvas.Top="305"
-                       Fill="{Binding Path=PingTool.PingServers[7].Result, Converter={StaticResource PingConverter}}">
+                       Fill="{Binding Path=PingTool.PingServers[7].Result, Converter={StaticResource ColorConverter}, ConverterParameter='15-0-5-0'}">
             </Polygon>
             <Polygon Points="20,20 10,0, 0,20" Stroke="Black" Canvas.Left="322" Canvas.Top="305"
-                       Fill="{Binding Path=PingTool.PingServers[13].Result, Converter={StaticResource PingConverter}}">
+                       Fill="{Binding Path=PingTool.PingServers[13].Result, Converter={StaticResource ColorConverter}, ConverterParameter='15-0-5-0'}">
             </Polygon>
             <Polygon Points="20,20 10,0, 0,20" Stroke="Black" Canvas.Left="353" Canvas.Top="267"
-                       Fill="{Binding Path=PingTool.PingServers[14].Result, Converter={StaticResource PingConverter}}">
+                       Fill="{Binding Path=PingTool.PingServers[14].Result, Converter={StaticResource ColorConverter}, ConverterParameter='15-0-5-0'}">
             </Polygon>
             <Polygon Points="20,20 10,0, 0,20" Stroke="Black" Canvas.Left="131" Canvas.Top="340"
-                       Fill="{Binding Path=PingTool.PingServers[8].Result, Converter={StaticResource PingConverter}}">
+                       Fill="{Binding Path=PingTool.PingServers[8].Result, Converter={StaticResource ColorConverter}, ConverterParameter='15-0-5-0'}">
             </Polygon>
             <Polygon Points="20,20 10,0, 0,20" Stroke="Black" Canvas.Left="302" Canvas.Top="340"
-                       Fill="{Binding Path=PingTool.PingServers[12].Result, Converter={StaticResource PingConverter}}">
+                       Fill="{Binding Path=PingTool.PingServers[12].Result, Converter={StaticResource ColorConverter}, ConverterParameter='15-0-5-0'}">
             </Polygon>
             <Polygon Points="20,20 10,0, 0,20" Stroke="Black" Canvas.Left="166" Canvas.Top="367"
-                       Fill="{Binding Path=PingTool.PingServers[9].Result, Converter={StaticResource PingConverter}}">
+                       Fill="{Binding Path=PingTool.PingServers[9].Result, Converter={StaticResource ColorConverter}, ConverterParameter='15-0-5-0'}">
             </Polygon>
             <Polygon Points="20,20 10,0, 0,20" Stroke="Black" Canvas.Left="272" Canvas.Top="367"
-                       Fill="{Binding Path=PingTool.PingServers[11].Result, Converter={StaticResource PingConverter}}">
+                       Fill="{Binding Path=PingTool.PingServers[11].Result, Converter={StaticResource ColorConverter}, ConverterParameter='15-0-5-0'}">
             </Polygon>
             <Polygon Points="20,20 10,0, 0,20" Stroke="Black" Canvas.Left="221" Canvas.Top="377"
-                       Fill="{Binding Path=PingTool.PingServers[10].Result, Converter={StaticResource PingConverter}}">
+                       Fill="{Binding Path=PingTool.PingServers[10].Result, Converter={StaticResource ColorConverter}, ConverterParameter='15-0-5-0'}">
             </Polygon>
 
             <Label 
