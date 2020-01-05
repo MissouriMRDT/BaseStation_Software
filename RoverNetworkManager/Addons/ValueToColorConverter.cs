@@ -24,30 +24,50 @@ namespace RoverNetworkManager.Addons
          */
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            String param = (String)parameter;
-            String[] seperator = {"-"};
-            Int32 count = 4;
+            //In order to pass in several numbers as a parameter, the best way is to pass in a string
+            //and to parse out the numbers. So, our numbers will be formated max-min-cutoff-down.
 
+            String param = (String)parameter;   //So cast the parameter as a string
+            String[] seperator = {"-"};         //Noting the seperator to be a -
+            Int32 count = 4;                    //And that 4 numbers will be recieved
+
+            //The next line will split the string at the - up to 4 times, and will return a list of the resulting strings
             String[] bounds = param.Split(seperator, count, StringSplitOptions.RemoveEmptyEntries);
 
-            List<double> bound = bounds.Select(x => double.Parse(x)).ToList();
+            //We then convert each of those strings into a double, and assign them to an appropriate variable
+            double max = double.Parse(bounds[0]), min = double.Parse(bounds[1]), cutoff = double.Parse(bounds[2]), down = double.Parse(bounds[3]);
 
-            double max = bound[0], min = bound[1], cutoff = bound[2], down = bound[3];
+            //This is the value coming in that the color should be based off of
+            //THIS IS SLIGHTLY DIFFERENT BECAUSE PING IS A DIFFERENT DATA TYPE
             int val = ToInt32(value);
 
+            //Intensity is the color value (out of 255) that is changing
             byte intensity;
             
+
+            //If we are above the maximum and that is our "good" value,
+            //or if we are below the minimum and that is our "good" value,
+            //return Green
             if (val > max && down == 1 || val < min && down == 0)
             {
                 return new SolidColorBrush(Color.FromRgb(0, 255, 0));
             }
+            //Similarly, if we are below the minimum and max is our good value,
+            //or if we are above the maximum and min is our good value,
+            //return Red
             else if (val < min && down == 1 || val > min && down == 0)
             {
                 return new SolidColorBrush(Color.FromRgb(255, 0, 0));
             }
-            else if (val > cutoff && down == 1 || val < cutoff && down == 0)  //a value of 0, the worst, most red scenario, should give 255, 0, 0, the most red color
-            {                       //a value of 1, the "best", least great color, should give 255, 255, 255, which is white.
-                //Debug.WriteLine("condition 1");
+            //If we are in between
+            //and we are above the cutoff and the max is our good value,
+            //or we are below the cutoff and the min is our good value,
+            //then we want to be somewhere in the Green zone
+            else if (val > cutoff && down == 1 || val < cutoff && down == 0)
+            {                    
+                //These formulas will return 255 when at the cutoff, and 0 when at the min or max
+                //(at max if max is good and at min if min is good)
+                //255 will make white, and 0 will make green
                 if (down == 0)
                 {
                     intensity = (byte)((255 / (cutoff - min)) * (val - min));
@@ -57,11 +77,15 @@ namespace RoverNetworkManager.Addons
                     intensity = (byte)((255 / (max - cutoff)) * (max - val));
                 }
                 return new SolidColorBrush(Color.FromRgb(intensity, 255, intensity));
-                //return new SolidColorBrush(Color.FromRgb(255, 255, 255));
             }
-            else                    //a value of 0, the best, most green scenario, should give 0, 255, 0, the most green color
-            {                       //a value of 1, the "worst", least great color, should give 255, 255, 255, which is white.
-                //Debug.WriteLine("condition 2");
+            //Otherwise, that means we are below the cutoff and max is the good,
+            //or we are above the cutoff and min is good,
+            //and either way we are in the Red zone
+            else
+            {
+                //Again, these formulas will return 255 when at the cutoff, and 0 when at the min or max
+                //(at min if max is good and at max if min is good)
+                //255 will make white, and 0 will make red
                 if (down == 0)
                 {
                     intensity = (byte)((255 / (max - cutoff)) * (max - val));
@@ -71,8 +95,6 @@ namespace RoverNetworkManager.Addons
                     intensity = (byte)((255 / (cutoff - min)) * (val - min));
                 }
                 return new SolidColorBrush(Color.FromRgb(255, intensity, intensity));
-                //return new SolidColorBrush(Color.FromRgb(0, 0, 0));
-
             }
         }
 
