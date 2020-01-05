@@ -113,7 +113,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Addons\MotorAmpToColorValueConverter.cs" />
+    <Compile Include="Addons\ValueToColorConverter.cs" />
     <Compile Include="Configurations\ArmConfigurations\ArmConfig.cs" />
     <Compile Include="Contexts\ArmPositionsContext.cs" />
     <Compile Include="Models\Arm\ArmModel.cs" />

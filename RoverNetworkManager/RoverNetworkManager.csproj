@@ -122,7 +122,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Addons\PingColorValueConverter.cs" />
+    <Compile Include="Addons\ValueToColorConverter.cs" />
     <Compile Include="Configurations\PingToolConfig.cs" />
     <Compile Include="Contexts\PingToolContext.cs" />
     <Compile Include="Models\MainWindowModel.cs" />
