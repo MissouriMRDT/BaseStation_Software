@@ -1,6 +1,6 @@
 ﻿namespace RED.Models.Modules
 {
-    internal class LightingModel
+    internal class LightingSettingsModel
     {
         internal bool Enabled = false;
         internal bool HeadlightsEnabled = false;

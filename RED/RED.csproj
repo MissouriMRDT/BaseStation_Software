@@ -159,7 +159,7 @@
     <Compile Include="Models\InputSelectorModel.cs" />
     <Compile Include="Models\Modules\GimbalModel.cs" />
     <Compile Include="Models\Modules\DriveModel.cs" />
-    <Compile Include="Models\Modules\LightingModel.cs" />
+    <Compile Include="Models\Modules\LightingSettingsModel.cs" />
     <Compile Include="Models\Navigation\MapModel.cs" />
     <Compile Include="Models\Navigation\WaypointManagerModel.cs" />
     <Compile Include="Models\Network\NetworkManagerModel.cs" />
@@ -184,6 +184,7 @@
     <Compile Include="ViewModels\SettingsManagerViewModel.cs" />
     <Compile Include="ViewModels\Settings\Modules\DriveSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Modules\GPSSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Settings\Modules\LightingSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Modules\PowerSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Network\NetworkManagerSettingsViewModel.cs" />
     <Compile Include="ViewModels\Tools\StopwatchToolViewModel.cs" />
@@ -204,9 +205,6 @@
     </Compile>
     <Compile Include="Views\Modules\GimbalView.xaml.cs">
       <DependentUpon>GimbalView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Modules\LightingView.xaml.cs">
-      <DependentUpon>LightingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\PowerView.xaml.cs">
       <DependentUpon>PowerView.xaml</DependentUpon>
@@ -231,6 +229,9 @@
     </Compile>
     <Compile Include="Views\Settings\Modules\GPSSettingsView.xaml.cs">
       <DependentUpon>GPSSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Settings\Modules\LightingSettingsView.xaml.cs">
+      <DependentUpon>LightingSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Settings\Network\NetworkManagerSettingsView.xaml.cs">
       <DependentUpon>NetworkManagerSettingsView.xaml</DependentUpon>
@@ -282,10 +283,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>-->
-    <Page Include="Views\Modules\LightingView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Modules\PowerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -299,6 +296,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Settings\Input\Controllers\XboxControllerInputSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Settings\Modules\LightingSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
