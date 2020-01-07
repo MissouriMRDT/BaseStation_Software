@@ -1,4 +1,5 @@
 ﻿using Core;
+using RoverAttachmentManager.ViewModels;
 using System;
 
 namespace RoverAttachmentManager.Models.Autonomy

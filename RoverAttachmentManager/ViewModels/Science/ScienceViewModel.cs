@@ -191,7 +191,18 @@ namespace RoverAttachmentManager.ViewModels.Science
                 NotifyOfPropertyChange(() => SciencePower);
             }
         }
-
+        public InputManagerViewModel InputManager
+        {
+            get
+            {
+                return _model.InputManager;
+            }
+            set
+            {
+                _model.InputManager = value;
+                NotifyOfPropertyChange(() => InputManager);
+            }
+        }
         public PlotModel SpectrometerPlotModel { set; private get; }
         public PlotModel SensorPlotModel { set; private get; }
         public PlotModel MethanePlotModel { set; private get; }
@@ -205,12 +216,13 @@ namespace RoverAttachmentManager.ViewModels.Science
 
         public double[] SiteTimes = new double[12];
 
-        public ScienceViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
+        public ScienceViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log, MainWindowViewModel parent)
         {
             _model = new ScienceModel();
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _log = log;
+            InputManager = parent.InputManager;
 
             Name = "Science Controls";
             ModeType = "ScienceControls";

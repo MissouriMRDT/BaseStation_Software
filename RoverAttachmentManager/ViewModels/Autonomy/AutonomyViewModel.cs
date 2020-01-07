@@ -31,13 +31,26 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
                 NotifyOfPropertyChange();
             }
         }
-        public AutonomyViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger logger)
+        public InputManagerViewModel InputManager
+        {
+            get
+            {
+                return _model.InputManager;
+            }
+            set
+            {
+                _model.InputManager = value;
+                NotifyOfPropertyChange(() => InputManager);
+            }
+        }
+        public AutonomyViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger logger, MainWindowViewModel parent)
         {
             _model = new AutonomyModel();
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _logger = logger;
             _waypointManager = WaypointManager.Instance;
+            InputManager = parent.InputManager;
 
             _rovecomm.NotifyWhenMessageReceived(this, "WaypointReached");
         }

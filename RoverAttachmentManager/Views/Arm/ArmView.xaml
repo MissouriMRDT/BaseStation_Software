@@ -161,6 +161,7 @@
                     <ContentControl x:Name="ArmPower" />
                 </StackPanel>
             </Expander>
+            <ContentControl x:Name="InputManager" />
         </StackPanel>
     </Grid>
 </UserControl>

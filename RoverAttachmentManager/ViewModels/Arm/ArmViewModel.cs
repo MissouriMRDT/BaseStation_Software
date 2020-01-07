@@ -349,13 +349,25 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 NotifyOfPropertyChange(() => ControlMultipliers);
             }
         }
+        public InputManagerViewModel InputManager
+        {
+            get
+            {
+                return _model.InputManager;
+            }
+            set
+            {
+                _model.InputManager = value;
+                NotifyOfPropertyChange(() => InputManager);
+            }
+        }
 
         byte previousTool;
         bool laser = false;
 
 
 
-        public ArmViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log, IConfigurationManager configs)
+        public ArmViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log, IConfigurationManager configs, MainWindowViewModel parent)
         {
             _model = new ArmModel();
             ControlMultipliers = new ControlMultipliersViewModel();
@@ -363,6 +375,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
             _idResolver = idResolver;
             _log = log;
             _configManager = configs;
+            InputManager = parent.InputManager;
 
             ArmPower = new ArmPowerViewModel(_rovecomm, _idResolver, _log);
 
