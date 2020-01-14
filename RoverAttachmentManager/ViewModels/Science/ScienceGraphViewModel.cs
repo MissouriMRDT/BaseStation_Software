@@ -30,47 +30,9 @@ namespace RoverAttachmentManager.ViewModels.Science
         private readonly ScienceGraphModel _model;
 
 
-
-
-        public PlotModel SpectrometerPlotModel
-        {
-            get
-            {
-                return _model.SpectrometerPlotModel;
-            }
-            set
-            {
-
-                _model.SpectrometerPlotModel = value;
-                NotifyOfPropertyChange(() => SpectrometerPlotModel);
-            }
-        }
-        public PlotModel SensorPlotModel
-        {
-            get
-            {
-                return _model.SensorPlotModel;
-            }
-            set
-            {
-
-                _model.SensorPlotModel = value;
-                NotifyOfPropertyChange(() => SensorPlotModel);
-            }
-        }
-        public PlotModel MethanePlotModel
-        {
-            get
-            {
-                return _model.MethanePlotModel;
-            }
-            set
-            {
-
-                _model.MethanePlotModel = value;
-                NotifyOfPropertyChange(() => MethanePlotModel);
-            }
-        }
+        public PlotModel SpectrometerPlotModel { set; private get; }
+        public PlotModel SensorPlotModel { set; private get; }
+        public PlotModel MethanePlotModel { set; private get; }
         public OxyPlot.Series.LineSeries SpectrometerSeries;
         public OxyPlot.Series.LineSeries Sensor0Series;
         public OxyPlot.Series.LineSeries Sensor1Series;
@@ -229,6 +191,32 @@ namespace RoverAttachmentManager.ViewModels.Science
 
         }
 
+
+
+
+
+
+        public void CreateSiteAnnotation()
+        {
+            SensorPlotModel.Annotations.Add(new OxyPlot.Annotations.RectangleAnnotation
+            {
+                MinimumX = SiteTimes[SiteNumber * 2],
+                MaximumX = SiteTimes[(SiteNumber * 2) + 1],
+                Text = "Site " + SiteNumber,
+                Fill = OxyColor.FromAColor(50, OxyColors.DarkOrange),
+
+            });
+            MethanePlotModel.Annotations.Add(new OxyPlot.Annotations.RectangleAnnotation
+            {
+                MinimumX = SiteTimes[SiteNumber * 2],
+                MaximumX = SiteTimes[(SiteNumber * 2) + 1],
+                Text = "Site " + SiteNumber,
+                Fill = OxyColor.FromAColor(50, OxyColors.DarkOrange),
+
+            });
+        }
+
+
         public async void DownloadSpectrometer()
         {
             string filename = Path.Combine(SpectrometerFilePath, "REDSpectrometerData-" + DateTime.Now.ToString("yyyyMMdd'-'HHmmss") + ".csv");
@@ -374,6 +362,9 @@ namespace RoverAttachmentManager.ViewModels.Science
                     Sensor4Value = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 8)));
 
                     UpdateSensorGraphs();
+                    break;
+
+                default:
                     break;
 
             }

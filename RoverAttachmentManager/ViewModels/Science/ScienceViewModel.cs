@@ -33,67 +33,7 @@ namespace RoverAttachmentManager.ViewModels.Science
 
         private readonly ScienceModel _model;
         
-        public float Sensor0Value
-        {
-            get
-            {
-                return _model.Sensor0Value;
-            }
-            set
-            {
-                _model.Sensor0Value = value;
-                NotifyOfPropertyChange(() => Sensor0Value);
-            }
-        }
-        public float Sensor1Value
-        {
-            get
-            {
-                return _model.Sensor1Value;
-            }
-            set
-            {
-                _model.Sensor1Value = value;
-                NotifyOfPropertyChange(() => Sensor1Value);
-            }
-        }
-
-        public float Sensor2Value
-        {
-            get
-            {
-                return _model.Sensor2Value;
-            }
-            set
-            {
-                _model.Sensor2Value = value;
-                NotifyOfPropertyChange(() => Sensor2Value);
-            }
-        }
-        public float Sensor3Value
-        {
-            get
-            {
-                return _model.Sensor3Value;
-            }
-            set
-            {
-                _model.Sensor3Value = value;
-                NotifyOfPropertyChange(() => Sensor3Value);
-            }
-        }
-        public float Sensor4Value
-        {
-            get
-            {
-                return _model.Sensor4Value;
-            }
-            set
-            {
-                _model.Sensor4Value = value;
-                NotifyOfPropertyChange(() => Sensor4Value);
-            }
-        }
+        
 
         public int ScrewPosition
         {
@@ -131,42 +71,7 @@ namespace RoverAttachmentManager.ViewModels.Science
                 NotifyOfPropertyChange(() => SiteNumber);
             }
         }
-        public System.Net.IPAddress SpectrometerIPAddress
-        {
-            get
-            {
-                return _model.SpectrometerIPAddress;
-            }
-            set
-            {
-                _model.SpectrometerIPAddress = value;
-                NotifyOfPropertyChange(() => SpectrometerIPAddress);
-            }
-        }
-        public ushort SpectrometerPortNumber
-        {
-            get
-            {
-                return _model.SpectrometerPortNumber;
-            }
-            set
-            {
-                _model.SpectrometerPortNumber = value;
-                NotifyOfPropertyChange(() => SpectrometerPortNumber);
-            }
-        }
-        public string SpectrometerFilePath
-        {
-            get
-            {
-                return _model.SpectrometerFilePath;
-            }
-            set
-            {
-                _model.SpectrometerFilePath = value;
-                NotifyOfPropertyChange(() => SpectrometerFilePath);
-            }
-        }
+ 
         private DateTime GetTimeDiff()
         {
             TimeSpan nowSpan = DateTime.UtcNow.Subtract(ScienceGraph.StartTime);
@@ -185,7 +90,18 @@ namespace RoverAttachmentManager.ViewModels.Science
                 NotifyOfPropertyChange(() => SensorDataFile);
             }
         }
-
+        public string SpectrometerFilePath
+        {
+            get
+            {
+                return _model.SpectrometerFilePath;
+            }
+            set
+            {
+                _model.SpectrometerFilePath = value;
+                NotifyOfPropertyChange(() => SpectrometerFilePath);
+            }
+        }
         public ScienceGraphViewModel ScienceGraph
         {
             get
@@ -210,7 +126,7 @@ namespace RoverAttachmentManager.ViewModels.Science
             Name = "Science Controls";
             ModeType = "ScienceControls";
 
-            SpectrometerIPAddress = IPAddress.Parse("192.168.1.138");
+
 
             _rovecomm.NotifyWhenMessageReceived(this, "ScienceSensors");
             _rovecomm.NotifyWhenMessageReceived(this, "ScrewAtPos");
@@ -247,19 +163,7 @@ namespace RoverAttachmentManager.ViewModels.Science
         {
             switch (packet.Name)
             {
-                case "ScienceSensors":
-                    Sensor0Value = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0)) / 100.0);
-                    Sensor1Value = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 2)) / 100.0);
-                    Sensor2Value = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 4)) / 100.0);
-                    Sensor3Value = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 6)) / 100.0);
-                    Sensor4Value = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 8)));
 
-                    SaveFileWrite("Air Temperature", Sensor0Value);
-                    SaveFileWrite("Air Humidity", Sensor1Value);
-                    SaveFileWrite("Air Methane", Sensor4Value);
-
-                    ScienceGraph.UpdateSensorGraphs();
-                    break;
 
                 case "ScrewAtPos":
                     ScrewPosition = packet.Data[0];
@@ -283,25 +187,6 @@ namespace RoverAttachmentManager.ViewModels.Science
             _rovecomm.SendCommand(new Packet("CenterX"));
         }
 
-        public void CreateSiteAnnotation()
-        {
-            ScienceGraph.SensorPlotModel.Annotations.Add(new OxyPlot.Annotations.RectangleAnnotation
-            {
-                MinimumX = ScienceGraph.SiteTimes[SiteNumber * 2],
-                MaximumX = ScienceGraph.SiteTimes[(SiteNumber * 2) + 1],
-                Text = "Site " + SiteNumber,
-                Fill = OxyColor.FromAColor(50, OxyColors.DarkOrange),
-
-            });
-            ScienceGraph.MethanePlotModel.Annotations.Add(new OxyPlot.Annotations.RectangleAnnotation
-            {
-                MinimumX = ScienceGraph.SiteTimes[SiteNumber * 2],
-                MaximumX = ScienceGraph.SiteTimes[(SiteNumber * 2) + 1],
-                Text = "Site " + SiteNumber,
-                Fill = OxyColor.FromAColor(50, OxyColors.DarkOrange),
-                
-            });
-        }
 
         public void ReachedSite()
         {
@@ -335,7 +220,7 @@ namespace RoverAttachmentManager.ViewModels.Science
 
             WriteSiteData(tempAvg, humidityAvg, methaneAvg);
             
-            CreateSiteAnnotation();
+            ScienceGraph.CreateSiteAnnotation();
             SiteNumber++;
         }
 
