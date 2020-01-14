@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using RoverAttachmentManager.ViewModels.Arm;
 using ArmPositionViewModel = RoverAttachmentManager.ViewModels.Arm.ArmViewModel.ArmPositionViewModel;
 using RoverAttachmentManager.ViewModels;
+using Core.ViewModels.Input.Controllers;
 
 namespace RoverAttachmentManager.Models.ArmModels
 {
@@ -10,7 +11,9 @@ namespace RoverAttachmentManager.Models.ArmModels
     {
         internal ControlMultipliersViewModel _controlMultipliers;
         internal InputManagerViewModel InputManager;
-
+        internal XboxControllerInputViewModel _xboxController1;
+        internal XboxControllerInputViewModel _xboxController2;
+        internal XboxControllerInputViewModel _xboxController3;
         internal float AngleJ1;
         internal float AngleJ2;
         internal float AngleJ3;

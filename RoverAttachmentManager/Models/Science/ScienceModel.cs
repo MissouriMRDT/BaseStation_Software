@@ -2,6 +2,7 @@
 ﻿using RoverAttachmentManager.ViewModels;
 using System;
 using System.IO;
+using Core.ViewModels.Input.Controllers;
 
 namespace RoverAttachmentManager.Models.Science
 {
@@ -17,7 +18,9 @@ namespace RoverAttachmentManager.Models.Science
         internal int SiteNumber = 1;
         internal SciencePowerViewModel SciencePower;
         internal InputManagerViewModel InputManager;
-
+        internal XboxControllerInputViewModel _xboxController1;
+        internal XboxControllerInputViewModel _xboxController2;
+        internal XboxControllerInputViewModel _xboxController3;
         internal System.Net.IPAddress SpectrometerIPAddress;
         internal ushort SpectrometerPortNumber = 11001;
         internal string SpectrometerFilePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Science Files";

@@ -1,8 +1,10 @@
 ﻿using Caliburn.Micro;
 using Core.Interfaces;
+using Core.Interfaces.Input;
 using Core.Models;
 using Core.RoveProtocol;
 using Core.ViewModels.Input;
+using Core.ViewModels.Input.Controllers;
 using RoverAttachmentManager.Configurations.Modules;
 using RoverAttachmentManager.Contexts;
 using RoverAttachmentManager.Models.Arm;
@@ -361,13 +363,49 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 NotifyOfPropertyChange(() => InputManager);
             }
         }
+        public XboxControllerInputViewModel XboxController1
+        {
+            get
+            {
+                return _model._xboxController1;
+            }
+            set
+            {
+                _model._xboxController1 = value;
+                NotifyOfPropertyChange(() => XboxController1);
+            }
+        }
+        public XboxControllerInputViewModel XboxController2
+        {
+            get
+            {
+                return _model._xboxController2;
+            }
+            set
+            {
+                _model._xboxController2 = value;
+                NotifyOfPropertyChange(() => XboxController2);
+            }
+        }
+        public XboxControllerInputViewModel XboxController3
+        {
+            get
+            {
+                return _model._xboxController3;
+            }
+            set
+            {
+                _model._xboxController3 = value;
+                NotifyOfPropertyChange(() => XboxController3);
+            }
+        }
 
         byte previousTool;
         bool laser = false;
 
 
 
-        public ArmViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log, IConfigurationManager configs, MainWindowViewModel parent)
+        public ArmViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log, IConfigurationManager configs)
         {
             _model = new ArmModel();
             ControlMultipliers = new ControlMultipliersViewModel();
@@ -375,7 +413,16 @@ namespace RoverAttachmentManager.ViewModels.Arm
             _idResolver = idResolver;
             _log = log;
             _configManager = configs;
-            InputManager = parent.InputManager;
+
+            XboxController1 = new XboxControllerInputViewModel(1);
+            XboxController2 = new XboxControllerInputViewModel(2);
+            XboxController3 = new XboxControllerInputViewModel(3);
+
+            // Programatic instanciation of InputManager view, vs static like everything else in a xaml 
+            InputManager = new InputManagerViewModel(log, configs,
+                new IInputDevice[] { XboxController1, XboxController2, XboxController3 },
+                new MappingViewModel[0],
+                new IInputMode[] { this });
 
             ArmPower = new ArmPowerViewModel(_rovecomm, _idResolver, _log);
 

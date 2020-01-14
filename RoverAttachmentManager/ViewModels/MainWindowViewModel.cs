@@ -145,21 +145,11 @@ namespace RoverAttachmentManager.ViewModels
             
             Rovecomm = Rovecomm.Instance;
             ResubscribeAll();
+          
 
-
-            XboxController1 = new XboxControllerInputViewModel(1);
-            XboxController2 = new XboxControllerInputViewModel(2);
-            XboxController3 = new XboxControllerInputViewModel(3);
-
-            // Programatic instanciation of InputManager view, vs static like everything else in a xaml 
-            InputManager = new InputManagerViewModel(Console, ConfigManager,
-                new IInputDevice[] { XboxController1, XboxController2, XboxController3 },
-                new MappingViewModel[0],
-                new IInputMode[] { Arm, Science });
-
-            Arm = new ArmViewModel(Rovecomm, MetadataManager, Console, ConfigManager, this);
-            Autonomy = new AutonomyViewModel(Rovecomm, MetadataManager, Console, this);
-            Science = new ScienceViewModel(Rovecomm, MetadataManager, Console, this);
+            Arm = new ArmViewModel(Rovecomm, MetadataManager, Console, ConfigManager);
+            Autonomy = new AutonomyViewModel(Rovecomm, MetadataManager, Console);
+            Science = new ScienceViewModel(Rovecomm, MetadataManager, Console, ConfigManager);
 
         }
 
