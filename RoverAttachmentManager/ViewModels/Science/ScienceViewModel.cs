@@ -284,7 +284,7 @@ namespace RoverAttachmentManager.ViewModels.Science
             // Programatic instanciation of InputManager view, vs static like everything else in a xaml 
             InputManager = new InputManagerViewModel(log, ConfigManager,
                 new IInputDevice[] { XboxController1, XboxController2, XboxController3 },
-                new MappingViewModel[1],
+                new MappingViewModel[0],
                 new IInputMode[] { this });
 
             Name = "Science Controls";
