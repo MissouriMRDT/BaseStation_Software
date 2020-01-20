@@ -1,12 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using OxyPlot;
+using RoverAttachmentManager.ViewModels.Science;
 
 namespace RoverAttachmentManager.Models.Science
 {
-    class ScienceSensorsModel
+    internal class ScienceSensorsModel
     {
+        internal float Sensor0Value;
+        internal float Sensor1Value;
+        internal float Sensor2Value;
+        internal float Sensor3Value;
+        internal float Sensor4Value;
+
+        public PlotModel SensorPlotModel;
+        public PlotModel MethanePlotModel;
     }
 }

@@ -25,37 +25,7 @@
                     </Expander>
 
                     <Expander Grid.Row="1" Header="Sensors" IsExpanded="True" Margin="2.5">
-                        <StackPanel>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-
-                                <Label Grid.Row="0" Grid.Column="0">Air Temperature</Label>
-                                <Label Grid.Row="0" Grid.Column="1" x:Name="Sensor0Value" ContentStringFormat="{}{0:0.#&#176;}" />
-
-                                <Label Grid.Row="1" Grid.Column="0">Air Humidity</Label>
-                                <Label Grid.Row="1" Grid.Column="1" x:Name="Sensor1Value" ContentStringFormat="{}{0:0.\%;}" />
-                                
-                                <Label Grid.Row="2" Grid.Column="0">Air Methane</Label>
-                                <Label Grid.Row="2" Grid.Column="1" x:Name="Sensor4Value" ContentStringFormat="{}{0:0.00;}" />
-                                
-                            </Grid>
-
-                            <UniformGrid Rows="1">
-                                <Label>Save Data</Label>
-                                <Button x:Name="SaveFileStart">Start</Button>
-                                <Button x:Name="SaveFileStop">Stop</Button>
-                            </UniformGrid>
-                            <Button x:Name="StartSensorGraphs">Start Sensor Graphs</Button>
-                            <Button x:Name="UpdateSensorGraphs">Update Sensor Graphs</Button>
-                        </StackPanel>
+                      <ContentControl x:Name="ScienceSensors"/>
                     </Expander>
                     <Expander Grid.Row="2" Header="Site Management" IsExpanded="True" Margin="2.5">
                         <ContentControl x:Name="SiteManagment"/>

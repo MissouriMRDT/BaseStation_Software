@@ -9,11 +9,7 @@ namespace RoverAttachmentManager.Models.Science
     {
         internal ScienceGraphViewModel _scienceGraph;
         internal SiteManagmentViewModel _siteManagment;
-        internal float Sensor0Value;
-        internal float Sensor1Value;
-        internal float Sensor2Value;
-        internal float Sensor3Value;
-        internal float Sensor4Value;
+        internal ScienceSensorViewModel _scienceSensor;
         internal int ScrewPosition;
         internal ScienceActuationViewModel _scienceActuation;
         internal SpectrometerViewModel _spectrometer;

@@ -181,10 +181,6 @@ namespace RoverAttachmentManager.ViewModels.Science
         }
 
 
-
-
-
-
         public void CreateSiteAnnotation()
         {
             SensorPlotModel.Annotations.Add(new OxyPlot.Annotations.RectangleAnnotation
