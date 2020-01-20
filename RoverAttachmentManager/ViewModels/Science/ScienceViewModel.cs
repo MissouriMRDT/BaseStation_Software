@@ -107,6 +107,7 @@ namespace RoverAttachmentManager.ViewModels.Science
         {
             _model = new ScienceModel();
             ScienceGraph = new ScienceGraphViewModel(networkMessenger, idResolver, log);
+            ScienceActuation = new ScienceActuationViewModel(networkMessenger, idResolver, log);
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _log = log;
