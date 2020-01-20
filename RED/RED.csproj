@@ -126,7 +126,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Addons\ValueToColorConverter.cs" />
     <Compile Include="Addons\Navigation\GMapMarkerCollectionMultiConverter.cs" />
     <Compile Include="Addons\Navigation\GPSCoordinate.cs" />
     <Compile Include="Addons\Navigation\GPSCoordinateToLongitudeConverter.cs" />

@@ -8,7 +8,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Diagnostics;
 
-namespace RED.Addons
+namespace Core.Addons
 {
     public class ValueToColorConverter : IValueConverter
     {
@@ -38,7 +38,16 @@ namespace RED.Addons
             double max = double.Parse(bounds[0]), min = double.Parse(bounds[1]), cutoff = double.Parse(bounds[2]), down = double.Parse(bounds[3]);
 
             //This is the value coming in that the color should be based off of
-            float val = (float)value;
+            //The try/catch is because currently the ping cannot be cast as a float
+            float val;
+            try
+            {
+                val = (float)value;
+            }
+            catch
+            {
+                val = ToInt32(value);
+            }
 
             //Intensity is the color value (out of 255) that is changing
             byte intensity;
@@ -100,6 +109,11 @@ namespace RED.Addons
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
+        }
+
+        private int ToInt32(object value)
+        {
+            return value == null ? 0 : ((IConvertible)value).ToInt32(null);
         }
     }
 }
