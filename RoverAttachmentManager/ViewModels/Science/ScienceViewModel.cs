@@ -24,22 +24,11 @@ namespace RoverAttachmentManager.ViewModels.Science
         private readonly IDataIdResolver _idResolver;
         private readonly ILogger _log;
 
-        private const int ScrewSpeedScale = 1000;
-        private const int XYSpeedScale = 1000;
-        private bool screwIncrementPressed = false;
-
         public string Name { get; }
         public string ModeType { get; }
 
         private readonly ScienceModel _model;   
  
-        private DateTime GetTimeDiff()
-        {
-            TimeSpan nowSpan = DateTime.UtcNow.Subtract(ScienceGraph.StartTime);
-            return new DateTime(nowSpan.Ticks);
-        }
-
-
         public ScienceGraphViewModel ScienceGraph
         {
             get
@@ -52,7 +41,6 @@ namespace RoverAttachmentManager.ViewModels.Science
                 NotifyOfPropertyChange(() => ScienceGraph);
             }
         }
-
         public SiteManagmentViewModel SiteManagment
         {
             get
@@ -65,7 +53,6 @@ namespace RoverAttachmentManager.ViewModels.Science
                 NotifyOfPropertyChange(() => SiteManagment);
             }
         }
-
         public ScienceActuationViewModel ScienceActuation
         {
             get
@@ -102,19 +89,6 @@ namespace RoverAttachmentManager.ViewModels.Science
                 NotifyOfPropertyChange(() => ScienceSensors);
             }
         }
-        public string SpectrometerFilePath
-        {
-            get
-            {
-                return _model.SpectrometerFilePath;
-            }
-            set
-            {
-                _model.SpectrometerFilePath = value;
-                NotifyOfPropertyChange(() => SpectrometerFilePath);
-            }
-        }
-
 
         public ScienceViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
@@ -133,13 +107,12 @@ namespace RoverAttachmentManager.ViewModels.Science
             ModeType = "ScienceControls";
         }
 
-
-        public void SetUVLed(byte val)
+        private DateTime GetTimeDiff()
         {
-            _rovecomm.SendCommand(new Packet("UVLedControl", val));
+            TimeSpan nowSpan = DateTime.UtcNow.Subtract(ScienceGraph.StartTime);
+            return new DateTime(nowSpan.Ticks);
         }
-
-
+        
         public void ReachedSite()
         {
             double siteTime = OxyPlot.Axes.DateTimeAxis.ToDouble(GetTimeDiff());
@@ -148,7 +121,7 @@ namespace RoverAttachmentManager.ViewModels.Science
 
         private async void WriteSiteData(double temp, double humidity, double methane)
         {
-            FileStream file = new FileStream(SpectrometerFilePath + "\\REDSensorData-Site" + SiteManagment.SiteNumber + ".csv", FileMode.Create);
+            FileStream file = new FileStream(Spectrometer.SpectrometerFilePath + "\\REDSensorData-Site" + SiteManagment.SiteNumber + ".csv", FileMode.Create);
             if (!file.CanWrite) return;
 
             var data = Encoding.UTF8.GetBytes(String.Format("Temperature, {0}, Humidity, {1}, Methane, {2}{3}", temp, humidity, methane, Environment.NewLine));
@@ -166,9 +139,9 @@ namespace RoverAttachmentManager.ViewModels.Science
             double siteTime = OxyPlot.Axes.DateTimeAxis.ToDouble(GetTimeDiff());
             ScienceGraph.SiteTimes[(SiteManagment.SiteNumber * 2) + 1] = siteTime;
 
-            double methaneAvg = ScienceGraph.AverageValueForSeries(ScienceGraph.Sensor4Series, "Methane vs Time", "Methane (parts per billion)", 2000, SpectrometerFilePath + "\\Methane-Site" + SiteManagment.SiteNumber + ".png");
-            double tempAvg = ScienceGraph.AverageValueForSeries(ScienceGraph.Sensor0Series, "Temperature vs Time", "Temperature (Celsius)", 50, SpectrometerFilePath + "\\Temperature-Site" + SiteManagment.SiteNumber + ".png");
-            double humidityAvg = ScienceGraph.AverageValueForSeries(ScienceGraph.Sensor1Series, "Humidity vs Time", "Humidity (%)", 100, SpectrometerFilePath + "\\Humidity-Site" + SiteManagment.SiteNumber + ".png");
+            double methaneAvg = ScienceGraph.AverageValueForSeries(ScienceGraph.Sensor4Series, "Methane vs Time", "Methane (parts per billion)", 2000, Spectrometer.SpectrometerFilePath + "\\Methane-Site" + SiteManagment.SiteNumber + ".png");
+            double tempAvg = ScienceGraph.AverageValueForSeries(ScienceGraph.Sensor0Series, "Temperature vs Time", "Temperature (Celsius)", 50, Spectrometer.SpectrometerFilePath + "\\Temperature-Site" + SiteManagment.SiteNumber + ".png");
+            double humidityAvg = ScienceGraph.AverageValueForSeries(ScienceGraph.Sensor1Series, "Humidity vs Time", "Humidity (%)", 100, Spectrometer.SpectrometerFilePath + "\\Humidity-Site" + SiteManagment.SiteNumber + ".png");
 
             WriteSiteData(tempAvg, humidityAvg, methaneAvg);
 
@@ -177,6 +150,7 @@ namespace RoverAttachmentManager.ViewModels.Science
         }
 
         public void StartMode() {}
+
 
         public void SetValues(Dictionary<string, float> values)
         {
@@ -208,7 +182,6 @@ namespace RoverAttachmentManager.ViewModels.Science
             _rovecomm.SendCommand(new Packet("XYActuation", data, 2, (byte)DataTypes.INT16_T));
 
         }
-
 
         public void StopMode()
         {

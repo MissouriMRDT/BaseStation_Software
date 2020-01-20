@@ -147,6 +147,10 @@ namespace RoverAttachmentManager.ViewModels.Science
             }
         }
 
+        public void SetUVLed(byte val)
+        {
+            _rovecomm.SendCommand(new Packet("UVLedControl", val));
+        }
 
         public void GraphSpectrometerData(string filename)
         {
@@ -205,6 +209,7 @@ namespace RoverAttachmentManager.ViewModels.Science
 
             });
         }
+
         public void AddSiteAnnotation(double x, string text)
         {
             SensorPlotModel.Annotations.Add(new OxyPlot.Annotations.LineAnnotation { Type = LineAnnotationType.Vertical, X = x, Color = OxyColors.Green, Text = text });

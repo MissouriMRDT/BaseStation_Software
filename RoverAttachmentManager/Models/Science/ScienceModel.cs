@@ -13,8 +13,5 @@ namespace RoverAttachmentManager.Models.Science
         internal ScienceActuationViewModel _scienceActuation;
         internal SpectrometerViewModel _spectrometer;
 
-        internal ushort SpectrometerPortNumber = 11001;
-        internal string SpectrometerFilePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Science Files";
-
     }
 }

@@ -26,6 +26,7 @@ namespace RoverAttachmentManager.ViewModels.Science
 
         private const int ScrewSpeedScale = 1000;
         private const int XYSpeedScale = 1000;
+        private bool screwIncrementPressed = false;
 
         private readonly ScienceActuationModel _model;
 
