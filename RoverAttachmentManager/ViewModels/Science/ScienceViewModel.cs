@@ -91,6 +91,18 @@ namespace RoverAttachmentManager.ViewModels.Science
                 NotifyOfPropertyChange(() => ScienceGraph);
             }
         }
+        public ScienceActuationViewModel ScienceActuation
+        {
+            get
+            {
+                return _model._scienceActuation;
+            }
+            set
+            {
+                _model._scienceActuation = value;
+                NotifyOfPropertyChange(() => ScienceActuation);
+            }
+        }
         public string SpectrometerFilePath
         {
             get
