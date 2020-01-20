@@ -90,18 +90,7 @@ namespace RoverAttachmentManager.ViewModels.Science
                 NotifyOfPropertyChange(() => SensorDataFile);
             }
         }
-        public string SpectrometerFilePath
-        {
-            get
-            {
-                return _model.SpectrometerFilePath;
-            }
-            set
-            {
-                _model.SpectrometerFilePath = value;
-                NotifyOfPropertyChange(() => SpectrometerFilePath);
-            }
-        }
+
         public ScienceGraphViewModel ScienceGraph
         {
             get
@@ -114,6 +103,19 @@ namespace RoverAttachmentManager.ViewModels.Science
                 NotifyOfPropertyChange(() => ScienceGraph);
             }
         }
+        public string SpectrometerFilePath
+        {
+            get
+            {
+                return _model.SpectrometerFilePath;
+            }
+            set
+            {
+                _model.SpectrometerFilePath = value;
+                NotifyOfPropertyChange(() => SpectrometerFilePath);
+            }
+        }
+
 
         public ScienceViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
@@ -143,6 +145,8 @@ namespace RoverAttachmentManager.ViewModels.Science
         {
             SensorDataFile = new FileStream(SpectrometerFilePath + "\\REDSensorData-" + DateTime.Now.ToString("yyyyMMdd'-'HHmmss") + ".csv", FileMode.Create);
         }
+
+
         public void SaveFileStop()
         {
             if (SensorDataFile.CanWrite)
@@ -163,8 +167,6 @@ namespace RoverAttachmentManager.ViewModels.Science
         {
             switch (packet.Name)
             {
-
-
                 case "ScrewAtPos":
                     ScrewPosition = packet.Data[0];
                     break;
