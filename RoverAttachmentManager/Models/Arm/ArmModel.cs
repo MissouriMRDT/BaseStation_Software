@@ -4,6 +4,7 @@ using RoverAttachmentManager.ViewModels.Arm;
 using ArmPositionViewModel = RoverAttachmentManager.ViewModels.Arm.ArmViewModel.ArmPositionViewModel;
 using RoverAttachmentManager.ViewModels;
 using Core.ViewModels.Input.Controllers;
+using Core.Configurations;
 
 namespace RoverAttachmentManager.Models.ArmModels
 {
@@ -11,6 +12,7 @@ namespace RoverAttachmentManager.Models.ArmModels
     {
         internal ControlMultipliersViewModel _controlMultipliers;
         internal InputManagerViewModel InputManager;
+        internal XMLConfigManager _configManager;
         internal XboxControllerInputViewModel _xboxController1;
         internal XboxControllerInputViewModel _xboxController2;
         internal XboxControllerInputViewModel _xboxController3;

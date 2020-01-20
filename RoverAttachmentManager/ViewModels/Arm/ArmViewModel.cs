@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using Core.Configurations;
 using Core.Interfaces;
 using Core.Interfaces.Input;
 using Core.Models;
@@ -363,6 +364,19 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 NotifyOfPropertyChange(() => InputManager);
             }
         }
+
+        public XMLConfigManager ConfigManager
+        {
+            get
+            {
+                return _model._configManager;
+            }
+            set
+            {
+                _model._configManager = value;
+                NotifyOfPropertyChange();
+            }
+        }
         public XboxControllerInputViewModel XboxController1
         {
             get
@@ -405,21 +419,21 @@ namespace RoverAttachmentManager.ViewModels.Arm
 
 
 
-        public ArmViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log, IConfigurationManager configs)
+        public ArmViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
             _model = new ArmModel();
             ControlMultipliers = new ControlMultipliersViewModel();
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _log = log;
-            _configManager = configs;
+            ConfigManager = new XMLConfigManager(log);
 
             XboxController1 = new XboxControllerInputViewModel(1);
             XboxController2 = new XboxControllerInputViewModel(2);
             XboxController3 = new XboxControllerInputViewModel(3);
 
             // Programatic instanciation of InputManager view, vs static like everything else in a xaml 
-            InputManager = new InputManagerViewModel(log, configs,
+            InputManager = new InputManagerViewModel(log, ConfigManager,
                 new IInputDevice[] { XboxController1, XboxController2, XboxController3 },
                 new MappingViewModel[0],
                 new IInputMode[] { this });
@@ -432,8 +446,8 @@ namespace RoverAttachmentManager.ViewModels.Arm
             ControlState = "GUI control";
             previousTool = 0;
 
-            _configManager.AddRecord(PositionsConfigName, ArmConfig.DefaultArmPositions);
-            InitializePositions(_configManager.GetConfig<ArmPositionsContext>(PositionsConfigName));
+            ConfigManager.AddRecord(PositionsConfigName, ArmConfig.DefaultArmPositions);
+            InitializePositions(ConfigManager.GetConfig<ArmPositionsContext>(PositionsConfigName));
 
             _rovecomm.NotifyWhenMessageReceived(this, "ArmCurrentPosition");
             _rovecomm.NotifyWhenMessageReceived(this, "ArmFault");

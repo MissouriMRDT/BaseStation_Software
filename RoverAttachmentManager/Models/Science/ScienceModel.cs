@@ -3,6 +3,7 @@
 using System;
 using System.IO;
 using Core.ViewModels.Input.Controllers;
+using Core.Configurations;
 
 namespace RoverAttachmentManager.Models.Science
 {
@@ -18,6 +19,7 @@ namespace RoverAttachmentManager.Models.Science
         internal int SiteNumber = 1;
         internal SciencePowerViewModel SciencePower;
         internal InputManagerViewModel InputManager;
+        internal XMLConfigManager _configManager;
         internal XboxControllerInputViewModel _xboxController1;
         internal XboxControllerInputViewModel _xboxController2;
         internal XboxControllerInputViewModel _xboxController3;

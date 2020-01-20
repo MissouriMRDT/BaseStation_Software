@@ -147,9 +147,9 @@ namespace RoverAttachmentManager.ViewModels
             ResubscribeAll();
           
 
-            Arm = new ArmViewModel(Rovecomm, MetadataManager, Console, ConfigManager);
+            Arm = new ArmViewModel(Rovecomm, MetadataManager, Console);
             Autonomy = new AutonomyViewModel(Rovecomm, MetadataManager, Console);
-            Science = new ScienceViewModel(Rovecomm, MetadataManager, Console, ConfigManager);
+            Science = new ScienceViewModel(Rovecomm, MetadataManager, Console);
 
         }
 

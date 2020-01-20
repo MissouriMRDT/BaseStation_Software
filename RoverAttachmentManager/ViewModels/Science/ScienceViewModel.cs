@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using Core.Configurations;
 using Core.Interfaces;
 using Core.Interfaces.Input;
 using Core.Models;
@@ -206,6 +207,19 @@ namespace RoverAttachmentManager.ViewModels.Science
                 NotifyOfPropertyChange(() => InputManager);
             }
         }
+
+        public XMLConfigManager ConfigManager
+        {
+            get
+            {
+                return _model._configManager;
+            }
+            set
+            {
+                _model._configManager = value;
+                NotifyOfPropertyChange();
+            }
+        }
         public XboxControllerInputViewModel XboxController1
         {
             get
@@ -255,19 +269,20 @@ namespace RoverAttachmentManager.ViewModels.Science
 
         public double[] SiteTimes = new double[12];
 
-        public ScienceViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log, IConfigurationManager configs)
+        public ScienceViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
             _model = new ScienceModel();
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _log = log;
+            ConfigManager = new XMLConfigManager(log);
 
             XboxController1 = new XboxControllerInputViewModel(1);
             XboxController2 = new XboxControllerInputViewModel(2);
             XboxController3 = new XboxControllerInputViewModel(3);
 
             // Programatic instanciation of InputManager view, vs static like everything else in a xaml 
-            InputManager = new InputManagerViewModel(log, configs,
+            InputManager = new InputManagerViewModel(log, ConfigManager,
                 new IInputDevice[] { XboxController1, XboxController2, XboxController3 },
                 new MappingViewModel[1],
                 new IInputMode[] { this });
