@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace RoverAttachmentManager.Views.Science
 {
     /// <summary>
-    /// Interaction logic for Page1.xaml
+    /// Interaction logic for SpectrometerView.xaml
     /// </summary>
-    public partial class Page1 : Page
+    public partial class SpectrometerView : UserControl
     {
-        public Page1()
+        public SpectrometerView()
         {
             InitializeComponent();
         }

@@ -137,20 +137,16 @@
     <Compile Include="Views\Science\SiteManagmentView.xaml.cs">
       <DependentUpon>SiteManagmentView.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\Science\ScienceActuationView.xaml"/>
-    <Page Include="Views\Science\SpectrometerView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
+    <Compile Include="Views\Science\SpectrometerView.xaml.cs">
+      <DependentUpon>SpectrometerView.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Views\Science\ScienceActuationView.xaml" />
     <Page Include="Views\Science\ScienceGraphView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Compile Include="Views\Science\ScienceActuationView.xaml.cs">
       <DependentUpon>ScienceActuationView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Science\SpectrometerView.xaml.cs">
-      <DependentUpon>SpectrometerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Science\ScienceGraphView.xaml.cs">
       <DependentUpon>ScienceGraphView.xaml</DependentUpon>
@@ -213,6 +209,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\Science\SiteManagmentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Science\SpectrometerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

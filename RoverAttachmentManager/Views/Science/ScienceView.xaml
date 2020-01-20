@@ -19,25 +19,12 @@
                         <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
-                        <RowDefinition />
                     </Grid.RowDefinitions>
                     <Expander Grid.Row="0" Header="Actuation" IsExpanded="True" Margin="2.5">
                         <ContentControl x:Name="ScienceActuation"/>
                     </Expander>
-                    <Expander Grid.Row="1" Header="Spectrometer" IsExpanded="True" Margin="2.5">
-                        <StackPanel>
-                            <UniformGrid Rows="1">
-                                <Label>Number of Runs:</Label>
-                                <TextBox x:Name="RunCount"/>
-                            </UniformGrid>
-                            <Button x:Name="DownloadSpectrometer">Run and Download</Button>
-                            <UniformGrid Rows="1">
-                                <Button cal:Message.Attach="SetUVLed(1)">Turn UV On</Button>
-                                <Button cal:Message.Attach="SetUVLed(0)">Turn UV Off</Button>
-                            </UniformGrid>
-                        </StackPanel>
-                    </Expander>
-                    <Expander Grid.Row="2" Header="Sensors" IsExpanded="True" Margin="2.5">
+
+                    <Expander Grid.Row="1" Header="Sensors" IsExpanded="True" Margin="2.5">
                         <StackPanel>
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -70,13 +57,17 @@
                             <Button x:Name="UpdateSensorGraphs">Update Sensor Graphs</Button>
                         </StackPanel>
                     </Expander>
-                    <Expander Grid.Row="3" Header="Site Management" IsExpanded="True" Margin="2.5">
+                    <Expander Grid.Row="2" Header="Site Management" IsExpanded="True" Margin="2.5">
                         <ContentControl x:Name="SiteManagment"/>
                     </Expander>
                 </Grid>
                 
             </StackPanel>
+            
             <StackPanel Grid.Column="1">
+                <Expander Header="Spectrometer" IsExpanded="True" Margin="2.5">
+                    <ContentControl x:Name="Spectrometer"/>
+                </Expander>
                 <ContentControl x:Name="ScienceGraph"/>
             </StackPanel>
         </Grid>

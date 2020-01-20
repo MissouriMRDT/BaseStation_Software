@@ -100,6 +100,7 @@ namespace RoverAttachmentManager.ViewModels.Science
             }
         }
 
+
         public SpectrometerViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log, ScienceViewModel parent)
         {
             _model = new SpectrometerModel();
