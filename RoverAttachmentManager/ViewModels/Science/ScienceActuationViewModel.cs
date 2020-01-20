@@ -24,10 +24,6 @@ namespace RoverAttachmentManager.ViewModels.Science
         private readonly IDataIdResolver _idResolver;
         private readonly ILogger _log;
 
-        private const int ScrewSpeedScale = 1000;
-        private const int XYSpeedScale = 1000;
-        private bool screwIncrementPressed = false;
-
         private readonly ScienceActuationModel _model;
 
         public int ScrewPosition
