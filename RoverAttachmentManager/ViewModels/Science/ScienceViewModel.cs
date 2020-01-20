@@ -59,25 +59,8 @@ namespace RoverAttachmentManager.ViewModels.Science
                 NotifyOfPropertyChange(() => RunCount);
             }
         }
-        public int SiteNumber
-        {
-            get
-            {
-                return _model.SiteNumber;
-            }
-            set
-            {
-                _model.SiteNumber = value;
-                NotifyOfPropertyChange(() => SiteNumber);
-            }
-        }
+       
  
-        private DateTime GetTimeDiff()
-        {
-            TimeSpan nowSpan = DateTime.UtcNow.Subtract(ScienceGraph.StartTime);
-            return new DateTime(nowSpan.Ticks);
-        }
-
         public Stream SensorDataFile
         {
             get
@@ -90,18 +73,7 @@ namespace RoverAttachmentManager.ViewModels.Science
                 NotifyOfPropertyChange(() => SensorDataFile);
             }
         }
-        public string SpectrometerFilePath
-        {
-            get
-            {
-                return _model.SpectrometerFilePath;
-            }
-            set
-            {
-                _model.SpectrometerFilePath = value;
-                NotifyOfPropertyChange(() => SpectrometerFilePath);
-            }
-        }
+        
         public ScienceGraphViewModel ScienceGraph
         {
             get
@@ -115,10 +87,37 @@ namespace RoverAttachmentManager.ViewModels.Science
             }
         }
 
+        public string SpectrometerFilePath
+        {
+            get
+            {
+                return _model.SpectrometerFilePath;
+            }
+            set
+            {
+                _model.SpectrometerFilePath = value;
+                NotifyOfPropertyChange(() => SpectrometerFilePath);
+            }
+        }
+
+        public SiteManagmentViewModel SiteManagment
+        {
+            get
+            {
+                return _model._siteManagment;
+            }
+            set
+            {
+                _model._siteManagment = value;
+                NotifyOfPropertyChange(() => SiteManagment);
+            }
+        }
+
         public ScienceViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
             _model = new ScienceModel();
             ScienceGraph = new ScienceGraphViewModel(networkMessenger, idResolver, log);
+            SiteManagment = new SiteManagmentViewModel(networkMessenger, idResolver, log, this);
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _log = log;
@@ -185,43 +184,6 @@ namespace RoverAttachmentManager.ViewModels.Science
         public void CenterX()
         {
             _rovecomm.SendCommand(new Packet("CenterX"));
-        }
-
-
-        public void ReachedSite()
-        {
-            double siteTime = OxyPlot.Axes.DateTimeAxis.ToDouble(GetTimeDiff());
-            ScienceGraph.SiteTimes[SiteNumber * 2] = siteTime;
-        }
-
-        private async void WriteSiteData(double temp, double humidity, double methane)
-        {
-            FileStream file = new FileStream(SpectrometerFilePath + "\\REDSensorData-Site" + SiteNumber + ".csv", FileMode.Create);
-            if (!file.CanWrite) return;
-
-            var data = Encoding.UTF8.GetBytes(String.Format("Temperature, {0}, Humidity, {1}, Methane, {2}{3}", temp, humidity, methane, Environment.NewLine));
-            await file.WriteAsync(data, 0, data.Length);
-
-            if (file.CanWrite)
-            {
-                file.Close();
-            }
-        }
-
-
-        public void LeftSite()
-        {
-            double siteTime = OxyPlot.Axes.DateTimeAxis.ToDouble(GetTimeDiff());
-            ScienceGraph.SiteTimes[(SiteNumber * 2) + 1] = siteTime;
-
-            double methaneAvg = ScienceGraph.AverageValueForSeries(ScienceGraph.Sensor4Series, "Methane vs Time", "Methane (parts per billion)", 2000, SpectrometerFilePath + "\\Methane-Site" + SiteNumber + ".png");
-            double tempAvg = ScienceGraph.AverageValueForSeries(ScienceGraph.Sensor0Series, "Temperature vs Time", "Temperature (Celsius)", 50, SpectrometerFilePath + "\\Temperature-Site" + SiteNumber + ".png");
-            double humidityAvg = ScienceGraph.AverageValueForSeries(ScienceGraph.Sensor1Series, "Humidity vs Time", "Humidity (%)", 100, SpectrometerFilePath + "\\Humidity-Site" + SiteNumber + ".png");
-
-            WriteSiteData(tempAvg, humidityAvg, methaneAvg);
-            
-            ScienceGraph.CreateSiteAnnotation();
-            SiteNumber++;
         }
 
         public void StartMode() {}

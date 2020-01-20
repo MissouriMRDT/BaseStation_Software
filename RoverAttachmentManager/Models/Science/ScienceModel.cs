@@ -8,6 +8,7 @@ namespace RoverAttachmentManager.Models.Science
     internal class ScienceModel
     {
         internal ScienceGraphViewModel _scienceGraph;
+        internal SiteManagmentViewModel _siteManagment;
         internal float Sensor0Value;
         internal float Sensor1Value;
         internal float Sensor2Value;
@@ -15,7 +16,6 @@ namespace RoverAttachmentManager.Models.Science
         internal float Sensor4Value;
         internal int ScrewPosition;
         internal int RunCount = 100;
-        internal int SiteNumber = 1;
 
         internal System.Net.IPAddress SpectrometerIPAddress;
         internal ushort SpectrometerPortNumber = 11001;

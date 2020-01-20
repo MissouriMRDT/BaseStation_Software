@@ -122,11 +122,16 @@
     <Compile Include="Models\MainWindowModel.cs" />
     <Compile Include="Models\Science\ScienceGraphModel.cs" />
     <Compile Include="Models\Science\ScienceModel.cs" />
+    <Compile Include="Models\Science\SiteManagmentModel.cs" />
     <Compile Include="ViewModels\Arm\ControlMultipliersViewModel.cs" />
     <Compile Include="ViewModels\Science\ScienceGraphViewModel.cs" />
     <Compile Include="ViewModels\Science\ScienceViewModel.cs" />
+    <Compile Include="ViewModels\Science\SiteManagmentViewModel.cs" />
     <Compile Include="Views\Arm\ControlMultipliersView.xaml.cs">
       <DependentUpon>ControlMultipliersView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Science\SiteManagmentView.xaml.cs">
+      <DependentUpon>SiteManagmentView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\Science\ScienceGraphView.xaml">
       <SubType>Designer</SubType>
@@ -192,6 +197,10 @@
       <DependentUpon>MainWindowView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\Science\SiteManagmentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

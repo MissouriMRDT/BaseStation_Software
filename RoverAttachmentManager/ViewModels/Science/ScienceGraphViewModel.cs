@@ -151,24 +151,13 @@ namespace RoverAttachmentManager.ViewModels.Science
                 NotifyOfPropertyChange(() => SpectrometerIPAddress);
             }
         }
-        public int SiteNumber
-        {
-            get
-            {
-                return _model.SiteNumber;
-            }
-            set
-            {
-                _model.SiteNumber = value;
-                NotifyOfPropertyChange(() => SiteNumber);
-            }
-        }
+ 
         public ScienceGraphViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
+            _model = new ScienceGraphModel();
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _log = log;
-
             _rovecomm.NotifyWhenMessageReceived(this, "ScienceSensors");
 
             SpectrometerPlotModel = new PlotModel { Title = "Spectrometer Results" };
@@ -200,22 +189,35 @@ namespace RoverAttachmentManager.ViewModels.Science
         {
             SensorPlotModel.Annotations.Add(new OxyPlot.Annotations.RectangleAnnotation
             {
-                MinimumX = SiteTimes[SiteNumber * 2],
-                MaximumX = SiteTimes[(SiteNumber * 2) + 1],
-                Text = "Site " + SiteNumber,
+                MinimumX = SiteTimes[SiteManagment.SiteNumber * 2],
+                MaximumX = SiteTimes[(SiteManagment.SiteNumber * 2) + 1],
+                Text = "Site " + SiteManagment.SiteNumber,
                 Fill = OxyColor.FromAColor(50, OxyColors.DarkOrange),
 
             });
             MethanePlotModel.Annotations.Add(new OxyPlot.Annotations.RectangleAnnotation
             {
-                MinimumX = SiteTimes[SiteNumber * 2],
-                MaximumX = SiteTimes[(SiteNumber * 2) + 1],
-                Text = "Site " + SiteNumber,
+                MinimumX = SiteTimes[SiteManagment.SiteNumber * 2],
+                MaximumX = SiteTimes[(SiteManagment.SiteNumber * 2) + 1],
+                Text = "Site " + SiteManagment.SiteNumber,
                 Fill = OxyColor.FromAColor(50, OxyColors.DarkOrange),
 
             });
         }
 
+
+        public SiteManagmentViewModel SiteManagment
+        {
+            get
+            {
+                return _model._siteManagment;
+            }
+            set
+            {
+                _model._siteManagment = value;
+                NotifyOfPropertyChange(() => SiteManagment);
+            }
+        }
 
         public async void DownloadSpectrometer()
         {
@@ -262,7 +264,7 @@ namespace RoverAttachmentManager.ViewModels.Science
                 }
             }
             SpectrometerPlotModel.InvalidatePlot(true);
-            ExportGraph(SpectrometerPlotModel, SpectrometerFilePath + "\\SpectrometerGraph-Site" + SiteNumber + ".png", 400);
+            ExportGraph(SpectrometerPlotModel, SpectrometerFilePath + "\\SpectrometerGraph-Site" + SiteManagment.SiteNumber + ".png", 400);
         }
 
 
@@ -321,7 +323,7 @@ namespace RoverAttachmentManager.ViewModels.Science
         {
             List<DataPoint> points = series.Points;
 
-            Predicate<DataPoint> isInRange = dataPoint => dataPoint.X >= SiteTimes[SiteNumber * 2] && dataPoint.X <= SiteTimes[(SiteNumber * 2) + 1];
+            Predicate<DataPoint> isInRange = dataPoint => dataPoint.X >= SiteTimes[SiteManagment.SiteNumber * 2] && dataPoint.X <= SiteTimes[(SiteManagment.SiteNumber * 2) + 1];
 
             points = points.FindAll(isInRange);
 

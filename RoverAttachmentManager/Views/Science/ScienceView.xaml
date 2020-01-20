@@ -83,16 +83,7 @@
                         </StackPanel>
                     </Expander>
                     <Expander Grid.Row="3" Header="Site Management" IsExpanded="True" Margin="2.5">
-                        <StackPanel>
-                            <UniformGrid Rows="1">
-                                <Label>Site Number:</Label>
-                                <TextBox x:Name="SiteNumber"/>
-                            </UniformGrid>
-                            <UniformGrid Rows="1">
-                                <Button Name="ReachedSite">Reached Site</Button>
-                                <Button Name="LeftSite">Left Site</Button>
-                            </UniformGrid>
-                        </StackPanel>
+                        <ContentControl x:Name="SiteManagment"/>
                     </Expander>
                 </Grid>
                 
