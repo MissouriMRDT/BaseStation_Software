@@ -31,38 +31,8 @@ namespace RoverAttachmentManager.ViewModels.Science
         public string Name { get; }
         public string ModeType { get; }
 
-        private readonly ScienceModel _model;
-
-
-
-        public int RunCount
-        {
-            get
-            {
-                return _model.RunCount;
-            }
-            set
-            {
-                _model.RunCount = value;
-                NotifyOfPropertyChange(() => RunCount);
-            }
-        }
-       
+        private readonly ScienceModel _model;   
  
-        public Stream SensorDataFile
-        {
-            get
-            {
-                return _model.SensorDataFile;
-            }
-            set
-            {
-                _model.SensorDataFile = value;
-                NotifyOfPropertyChange(() => SensorDataFile);
-            }
-        }
-
-
         private DateTime GetTimeDiff()
         {
             TimeSpan nowSpan = DateTime.UtcNow.Subtract(ScienceGraph.StartTime);
@@ -120,6 +90,18 @@ namespace RoverAttachmentManager.ViewModels.Science
                 NotifyOfPropertyChange(() => Spectrometer);
             }
         }
+        public ScienceSensorsViewModel ScienceSensors
+        {
+            get
+            {
+                return _model._scienceSensors;
+            }
+            set
+            {
+                _model._scienceSensors = value;
+                NotifyOfPropertyChange(() => ScienceSensors);
+            }
+        }
         public string SpectrometerFilePath
         {
             get
@@ -141,6 +123,7 @@ namespace RoverAttachmentManager.ViewModels.Science
             ScienceGraph = new ScienceGraphViewModel(networkMessenger, idResolver, log);
             ScienceActuation = new ScienceActuationViewModel(networkMessenger, idResolver, log);
             Spectrometer = new SpectrometerViewModel(networkMessenger, idResolver, log, this);
+            ScienceSensors = new ScienceSensorsViewModel(networkMessenger, idResolver, log, this);
 
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
@@ -150,24 +133,6 @@ namespace RoverAttachmentManager.ViewModels.Science
             ModeType = "ScienceControls";
         }
 
-        public void SaveFileStart()
-        {
-            SensorDataFile = new FileStream(SpectrometerFilePath + "\\REDSensorData-" + DateTime.Now.ToString("yyyyMMdd'-'HHmmss") + ".csv", FileMode.Create);
-        }
-
-
-        public void SaveFileStop()
-        {
-            if (SensorDataFile.CanWrite)
-                SensorDataFile.Close();
-        }
-
-        private async void SaveFileWrite(string sensorName, object value)
-        {
-            if (SensorDataFile == null || !SensorDataFile.CanWrite) return;
-            var data = Encoding.UTF8.GetBytes(String.Format("{0:s}, {1}, {2}{3}", DateTime.Now, sensorName, value.ToString(), Environment.NewLine));
-            await SensorDataFile.WriteAsync(data, 0, data.Length);
-        }
 
         public void SetUVLed(byte val)
         {

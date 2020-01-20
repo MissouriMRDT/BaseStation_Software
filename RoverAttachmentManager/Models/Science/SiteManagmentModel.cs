@@ -8,8 +8,5 @@ namespace RoverAttachmentManager.Models.Science
     {
         internal ScienceGraphViewModel _scienceGraph;
         internal int SiteNumber = 1;
-
-        internal System.Net.IPAddress SpectrometerIPAddress;
-
     }
 }

@@ -13,10 +13,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RoverAttachmentManager.Models.Science;
+using System.IO;
+using System.Net;
 
 namespace RoverAttachmentManager.ViewModels.Science
 {
-    class ScienceSensorsViewModel : PropertyChangedBase, IRovecommReceiver
+    public class ScienceSensorsViewModel : PropertyChangedBase, IRovecommReceiver
     {
         private readonly IRovecomm _rovecomm;
         private readonly IDataIdResolver _idResolver;
@@ -104,14 +106,27 @@ namespace RoverAttachmentManager.ViewModels.Science
                 NotifyOfPropertyChange(() => SensorDataFile);
             }
         }
-
-        public ScienceSensorsViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
+        public ScienceGraphViewModel ScienceGraph
         {
-            _model = new ScienceGraphModel();
+            get
+            {
+                return _model._scienceGraph;
+            }
+            set
+            {
+                _model._scienceGraph = value;
+                NotifyOfPropertyChange(() => ScienceGraph);
+            }
+        }
+
+        public ScienceSensorsViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log, ScienceViewModel parent)
+        {
+            _model = new ScienceSensorsModel();
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _log = log;
             _rovecomm.NotifyWhenMessageReceived(this, "ScienceSensors");
+            ScienceGraph = parent.ScienceGraph;
 
             MethanePlotModel = new PlotModel { Title = "Methane Data" };
             Sensor4Series = new OxyPlot.Series.LineSeries();
@@ -129,9 +144,9 @@ namespace RoverAttachmentManager.ViewModels.Science
 
         public void UpdateSensorGraphs()
         {
-            if (!Graphing) { return; }
+            if (!ScienceGraph.Graphing) { return; }
 
-            TimeSpan nowSpan = DateTime.UtcNow.Subtract(StartTime);
+            TimeSpan nowSpan = DateTime.UtcNow.Subtract(ScienceGraph.StartTime);
             DateTime now = new DateTime(nowSpan.Ticks);
 
             Sensor0Series.Points.Add(new DataPoint(OxyPlot.Axes.DateTimeAxis.ToDouble(now), Sensor0Value));
@@ -149,8 +164,8 @@ namespace RoverAttachmentManager.ViewModels.Science
 
         public void StartSensorGraphs()
         {
-            StartTime = DateTime.UtcNow;
-            Graphing = true;
+            ScienceGraph.StartTime = DateTime.UtcNow;
+            ScienceGraph.Graphing = true;
             ClearSensorGraphs();
         }
 
@@ -180,6 +195,25 @@ namespace RoverAttachmentManager.ViewModels.Science
                     break;
 
             }
+        }
+
+        public void SaveFileStart()
+        {
+            SensorDataFile = new FileStream(ScienceGraph.SpectrometerFilePath + "\\REDSensorData-" + DateTime.Now.ToString("yyyyMMdd'-'HHmmss") + ".csv", FileMode.Create);
+        }
+
+
+        public void SaveFileStop()
+        {
+            if (SensorDataFile.CanWrite)
+                SensorDataFile.Close();
+        }
+
+        private async void SaveFileWrite(string sensorName, object value)
+        {
+            if (SensorDataFile == null || !SensorDataFile.CanWrite) return;
+            var data = Encoding.UTF8.GetBytes(String.Format("{0:s}, {1}, {2}{3}", DateTime.Now, sensorName, value.ToString(), Environment.NewLine));
+            await SensorDataFile.WriteAsync(data, 0, data.Length);
         }
     }
 }

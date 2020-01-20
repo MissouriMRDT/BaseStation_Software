@@ -7,6 +7,7 @@ namespace RoverAttachmentManager.Models.Science
 {
     internal class ScienceSensorsModel
     {
+        internal ScienceGraphViewModel _scienceGraph;
         internal float Sensor0Value;
         internal float Sensor1Value;
         internal float Sensor2Value;
@@ -15,5 +16,7 @@ namespace RoverAttachmentManager.Models.Science
 
         public PlotModel SensorPlotModel;
         public PlotModel MethanePlotModel;
+
+        internal Stream SensorDataFile;
     }
 }

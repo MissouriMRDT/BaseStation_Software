@@ -123,16 +123,21 @@
     <Compile Include="Models\Science\ScienceActuationModel.cs" />
     <Compile Include="Models\Science\ScienceGraphModel.cs" />
     <Compile Include="Models\Science\ScienceModel.cs" />
+    <Compile Include="Models\Science\ScienceSensorsModel.cs" />
     <Compile Include="Models\Science\SiteManagmentModel.cs" />
     <Compile Include="Models\Science\SpectrometerModel.cs" />
     <Compile Include="ViewModels\Arm\ControlMultipliersViewModel.cs" />
     <Compile Include="ViewModels\Science\ScienceActuationViewModel.cs" />
+    <Compile Include="ViewModels\Science\ScienceSensorsViewModel.cs" />
     <Compile Include="ViewModels\Science\SpectrometerViewModel.cs" />
     <Compile Include="ViewModels\Science\ScienceGraphViewModel.cs" />
     <Compile Include="ViewModels\Science\ScienceViewModel.cs" />
     <Compile Include="ViewModels\Science\SiteManagmentViewModel.cs" />
     <Compile Include="Views\Arm\ControlMultipliersView.xaml.cs">
       <DependentUpon>ControlMultipliersView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Science\ScienceSensorsView.xaml.cs">
+      <DependentUpon>ScienceSensorsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Science\SiteManagmentView.xaml.cs">
       <DependentUpon>SiteManagmentView.xaml</DependentUpon>
@@ -157,6 +162,10 @@
     <Compile Include="RAMBootstrapper.cs" />
     <Page Include="Views\Arm\ControlMultipliersView.xaml">
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Science\ScienceSensorsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Science\ScienceView.xaml">
       <Generator>MSBuild:Compile</Generator>
