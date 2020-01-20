@@ -120,10 +120,14 @@
     <Compile Include="Models\InputManagerModel.cs" />
     <Compile Include="Models\InputSelectorModel.cs" />
     <Compile Include="Models\MainWindowModel.cs" />
+    <Compile Include="Models\Science\ScienceActuationModel.cs" />
     <Compile Include="Models\Science\ScienceGraphModel.cs" />
     <Compile Include="Models\Science\ScienceModel.cs" />
     <Compile Include="Models\Science\SiteManagmentModel.cs" />
+    <Compile Include="Models\Science\SpectrometerModel.cs" />
     <Compile Include="ViewModels\Arm\ControlMultipliersViewModel.cs" />
+    <Compile Include="ViewModels\Science\ScienceActuationViewModel.cs" />
+    <Compile Include="ViewModels\Science\SpectrometerViewModel.cs" />
     <Compile Include="ViewModels\Science\ScienceGraphViewModel.cs" />
     <Compile Include="ViewModels\Science\ScienceViewModel.cs" />
     <Compile Include="ViewModels\Science\SiteManagmentViewModel.cs" />
@@ -133,10 +137,21 @@
     <Compile Include="Views\Science\SiteManagmentView.xaml.cs">
       <DependentUpon>SiteManagmentView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\Science\ScienceActuationView.xaml"/>
+    <Page Include="Views\Science\SpectrometerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Science\ScienceGraphView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Compile Include="Views\Science\ScienceActuationView.xaml.cs">
+      <DependentUpon>ScienceActuationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Science\SpectrometerView.xaml.cs">
+      <DependentUpon>SpectrometerView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Science\ScienceGraphView.xaml.cs">
       <DependentUpon>ScienceGraphView.xaml</DependentUpon>
     </Compile>
@@ -247,7 +262,6 @@
       <Name>Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

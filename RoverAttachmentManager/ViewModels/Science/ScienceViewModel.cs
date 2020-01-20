@@ -17,7 +17,7 @@ using System.Text;
 
 namespace RoverAttachmentManager.ViewModels.Science
 {
-    public class ScienceViewModel : PropertyChangedBase, IRovecommReceiver, IInputMode
+    public class ScienceViewModel : PropertyChangedBase, IInputMode
     {
 
         private readonly IRovecomm _rovecomm;
@@ -32,21 +32,9 @@ namespace RoverAttachmentManager.ViewModels.Science
         public string ModeType { get; }
 
         private readonly ScienceModel _model;
-        
-        
 
-        public int ScrewPosition
-        {
-            get
-            {
-                return _model.ScrewPosition;
-            }
-            set
-            {
-                _model.ScrewPosition = value;
-                NotifyOfPropertyChange(() => ScrewPosition);
-            }
-        }
+
+
         public int RunCount
         {
             get
@@ -73,7 +61,15 @@ namespace RoverAttachmentManager.ViewModels.Science
                 NotifyOfPropertyChange(() => SensorDataFile);
             }
         }
-        
+
+
+        private DateTime GetTimeDiff()
+        {
+            TimeSpan nowSpan = DateTime.UtcNow.Subtract(ScienceGraph.StartTime);
+            return new DateTime(nowSpan.Ticks);
+        }
+
+
         public ScienceGraphViewModel ScienceGraph
         {
             get
@@ -84,19 +80,6 @@ namespace RoverAttachmentManager.ViewModels.Science
             {
                 _model._scienceGraph = value;
                 NotifyOfPropertyChange(() => ScienceGraph);
-            }
-        }
-
-        public string SpectrometerFilePath
-        {
-            get
-            {
-                return _model.SpectrometerFilePath;
-            }
-            set
-            {
-                _model.SpectrometerFilePath = value;
-                NotifyOfPropertyChange(() => SpectrometerFilePath);
             }
         }
 
@@ -113,35 +96,66 @@ namespace RoverAttachmentManager.ViewModels.Science
             }
         }
 
+        public ScienceActuationViewModel ScienceActuation
+        {
+            get
+            {
+                return _model._scienceActuation;
+            }
+            set
+            {
+                _model._scienceActuation = value;
+                NotifyOfPropertyChange(() => ScienceActuation);
+            }
+        }
+        public SpectrometerViewModel Spectrometer
+        {
+            get
+            {
+                return _model._spectrometer;
+            }
+            set
+            {
+                _model._spectrometer = value;
+                NotifyOfPropertyChange(() => Spectrometer);
+            }
+        }
+        public string SpectrometerFilePath
+        {
+            get
+            {
+                return _model.SpectrometerFilePath;
+            }
+            set
+            {
+                _model.SpectrometerFilePath = value;
+                NotifyOfPropertyChange(() => SpectrometerFilePath);
+            }
+        }
+
+
         public ScienceViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
             _model = new ScienceModel();
-            ScienceGraph = new ScienceGraphViewModel(networkMessenger, idResolver, log);
             SiteManagment = new SiteManagmentViewModel(networkMessenger, idResolver, log, this);
+            ScienceGraph = new ScienceGraphViewModel(networkMessenger, idResolver, log);
+            ScienceActuation = new ScienceActuationViewModel(networkMessenger, idResolver, log);
+            Spectrometer = new SpectrometerViewModel(networkMessenger, idResolver, log, this);
+
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _log = log;
 
             Name = "Science Controls";
             ModeType = "ScienceControls";
-
-
-
-            _rovecomm.NotifyWhenMessageReceived(this, "ScienceSensors");
-            _rovecomm.NotifyWhenMessageReceived(this, "ScrewAtPos");
-
-
-        }
-
-        public void SetScrewPosition(byte index)
-        {
-            _rovecomm.SendCommand(new Packet("ScrewAbsoluteSetPosition", index));
         }
 
         public void SaveFileStart()
         {
             SensorDataFile = new FileStream(SpectrometerFilePath + "\\REDSensorData-" + DateTime.Now.ToString("yyyyMMdd'-'HHmmss") + ".csv", FileMode.Create);
         }
+
+
         public void SaveFileStop()
         {
             if (SensorDataFile.CanWrite)
@@ -155,35 +169,46 @@ namespace RoverAttachmentManager.ViewModels.Science
             await SensorDataFile.WriteAsync(data, 0, data.Length);
         }
 
-
-
-
-        public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
-        {
-            switch (packet.Name)
-            {
-
-
-                case "ScrewAtPos":
-                    ScrewPosition = packet.Data[0];
-                    break;
-                default:
-                    break;
-            }
-        }
-
-		public void ReceivedRovecommMessageCallback(int index, bool reliable) {
-			ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
-		}
-
         public void SetUVLed(byte val)
         {
             _rovecomm.SendCommand(new Packet("UVLedControl", val));
         }
 
-        public void CenterX()
+
+        public void ReachedSite()
         {
-            _rovecomm.SendCommand(new Packet("CenterX"));
+            double siteTime = OxyPlot.Axes.DateTimeAxis.ToDouble(GetTimeDiff());
+            ScienceGraph.SiteTimes[SiteManagment.SiteNumber * 2] = siteTime;
+        }
+
+        private async void WriteSiteData(double temp, double humidity, double methane)
+        {
+            FileStream file = new FileStream(SpectrometerFilePath + "\\REDSensorData-Site" + SiteManagment.SiteNumber + ".csv", FileMode.Create);
+            if (!file.CanWrite) return;
+
+            var data = Encoding.UTF8.GetBytes(String.Format("Temperature, {0}, Humidity, {1}, Methane, {2}{3}", temp, humidity, methane, Environment.NewLine));
+            await file.WriteAsync(data, 0, data.Length);
+
+            if (file.CanWrite)
+            {
+                file.Close();
+            }
+        }
+
+
+        public void LeftSite()
+        {
+            double siteTime = OxyPlot.Axes.DateTimeAxis.ToDouble(GetTimeDiff());
+            ScienceGraph.SiteTimes[(SiteManagment.SiteNumber * 2) + 1] = siteTime;
+
+            double methaneAvg = ScienceGraph.AverageValueForSeries(ScienceGraph.Sensor4Series, "Methane vs Time", "Methane (parts per billion)", 2000, SpectrometerFilePath + "\\Methane-Site" + SiteManagment.SiteNumber + ".png");
+            double tempAvg = ScienceGraph.AverageValueForSeries(ScienceGraph.Sensor0Series, "Temperature vs Time", "Temperature (Celsius)", 50, SpectrometerFilePath + "\\Temperature-Site" + SiteManagment.SiteNumber + ".png");
+            double humidityAvg = ScienceGraph.AverageValueForSeries(ScienceGraph.Sensor1Series, "Humidity vs Time", "Humidity (%)", 100, SpectrometerFilePath + "\\Humidity-Site" + SiteManagment.SiteNumber + ".png");
+
+            WriteSiteData(tempAvg, humidityAvg, methaneAvg);
+
+            ScienceGraph.CreateSiteAnnotation();
+            SiteManagment.SiteNumber++;
         }
 
         public void StartMode() {}

@@ -103,18 +103,6 @@ namespace RoverAttachmentManager.ViewModels.Science
                 NotifyOfPropertyChange(() => Sensor4Value);
             }
         }
-        public string SpectrometerFilePath
-        {
-            get
-            {
-                return _model.SpectrometerFilePath;
-            }
-            set
-            {
-                _model.SpectrometerFilePath = value;
-                NotifyOfPropertyChange(() => SpectrometerFilePath);
-            }
-        }
         public int RunCount
         {
             get
@@ -137,6 +125,18 @@ namespace RoverAttachmentManager.ViewModels.Science
             {
                 _model.SpectrometerPortNumber = value;
                 NotifyOfPropertyChange(() => SpectrometerPortNumber);
+            }
+        }
+        public string SpectrometerFilePath
+        {
+            get
+            {
+                return _model.SpectrometerFilePath;
+            }
+            set
+            {
+                _model.SpectrometerFilePath = value;
+                NotifyOfPropertyChange(() => SpectrometerFilePath);
             }
         }
         public System.Net.IPAddress SpectrometerIPAddress
@@ -219,55 +219,6 @@ namespace RoverAttachmentManager.ViewModels.Science
             }
         }
 
-        public async void DownloadSpectrometer()
-        {
-            string filename = Path.Combine(SpectrometerFilePath, "REDSpectrometerData-" + DateTime.Now.ToString("yyyyMMdd'-'HHmmss") + ".csv");
-            try
-            {
-                using (var client = new TcpClient())
-                {
-                    _log.Log("Connecting to Spectrometer...");
-                    await client.ConnectAsync(SpectrometerIPAddress, SpectrometerPortNumber);
-                    _log.Log("Spectrometer connection established");
-
-                    // Request the data
-                    _rovecomm.SendCommand(new Packet("RunSpectrometer", (byte)RunCount), true);
-
-                    _log.Log("Awaiting data...");
-                    using (var file = File.Create(filename))
-                    {
-                        await client.GetStream().CopyToAsync(file);
-                    }
-                }
-                _log.Log($"Spectrometer data downloaded into {filename}");
-                GraphSpectrometerData(filename);
-            }
-            catch (Exception e)
-            {
-                _log.Log("There was an error downloading the spectrometer data:{0}{1}", Environment.NewLine, e);
-            }
-        }
-
-
-        public void GraphSpectrometerData(string filename)
-        {
-            SpectrometerSeries.Points.Clear();
-
-            using (var reader = new StreamReader(filename))
-            {
-                while (!reader.EndOfStream)
-                {
-                    var line = reader.ReadLine();
-                    var values = line.Split(',');
-
-                    SpectrometerSeries.Points.Add(new DataPoint((Int16.Parse(values[0]) / 10.0) + 389, Double.Parse(values[1])));
-                }
-            }
-            SpectrometerPlotModel.InvalidatePlot(true);
-            ExportGraph(SpectrometerPlotModel, SpectrometerFilePath + "\\SpectrometerGraph-Site" + SiteManagment.SiteNumber + ".png", 400);
-        }
-
-
         public void UpdateSensorGraphs()
         {
             if (!Graphing) { return; }
@@ -281,8 +232,7 @@ namespace RoverAttachmentManager.ViewModels.Science
             SensorPlotModel.InvalidatePlot(true);
             MethanePlotModel.InvalidatePlot(true);
 
-            ExportGraph(MethanePlotModel, SpectrometerFilePath + "\\methane.png", 400);
-            ExportGraph(SensorPlotModel, SpectrometerFilePath + "\\temphum.png", 400);
+
         }
 
 
@@ -307,9 +257,6 @@ namespace RoverAttachmentManager.ViewModels.Science
             Sensor0Series.Points.Clear();
             Sensor1Series.Points.Clear();
             Sensor4Series.Points.Clear();
-
-            SensorPlotModel.InvalidatePlot(true);
-            MethanePlotModel.InvalidatePlot(true);
         }
 
         public void ExportGraph(PlotModel model, string filename, int height)
@@ -381,7 +328,6 @@ namespace RoverAttachmentManager.ViewModels.Science
 
         public void SetValues(Dictionary<string, float> values)
         {
-
             if ((values["ScrewPosUp"] == 1 || values["ScrewPosDown"] == 1) && !screwIncrementPressed)
             {
                 byte screwPosIncrement = (byte)(values["ScrewPosUp"] == 1 ? 1 : values["ScrewPosDown"] == 1 ? -1 : 0);
