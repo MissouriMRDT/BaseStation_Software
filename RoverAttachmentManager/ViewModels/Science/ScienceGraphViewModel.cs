@@ -165,6 +165,7 @@ namespace RoverAttachmentManager.ViewModels.Science
         }
         public ScienceGraphViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
+            _model = new ScienceGraphModel();
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _log = log;

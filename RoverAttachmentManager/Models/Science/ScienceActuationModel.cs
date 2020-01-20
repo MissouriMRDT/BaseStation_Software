@@ -8,5 +8,6 @@ namespace RoverAttachmentManager.Models.Science
 {
     internal class ScienceActuationModel
     {
+        internal int ScrewPosition;
     }
 }

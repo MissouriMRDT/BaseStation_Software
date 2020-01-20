@@ -14,6 +14,7 @@ namespace RoverAttachmentManager.Models.Science
         internal float Sensor3Value;
         internal float Sensor4Value;
         internal int ScrewPosition;
+        internal ScienceActuationViewModel _scienceActuation;
         internal int RunCount = 100;
         internal int SiteNumber = 1;
 

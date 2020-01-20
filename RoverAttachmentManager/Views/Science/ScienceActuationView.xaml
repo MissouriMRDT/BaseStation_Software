@@ -8,5 +8,18 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
+        <StackPanel>
+            <Label Grid.Row="2" Grid.Column="0">Rack Position</Label>
+            <UniformGrid Grid.Row="2" Grid.Column="1" Rows="1">
+                <Button cal:Message.Attach="SetScrewPosition(2)">Top</Button>
+                <Button cal:Message.Attach="SetScrewPosition(3)">Mid</Button>
+                <Button cal:Message.Attach="SetScrewPosition(4)">Ground</Button>
+            </UniformGrid>
+            <DockPanel>
+                <Label DockPanel.Dock="Left">Control State:</Label>
+                <Label DockPanel.Dock="Right" x:Name ="ControlState" HorizontalContentAlignment="Center" />
+            </DockPanel>
+            <Button Name="CenterX">Center X</Button>
+        </StackPanel>
     </Grid>
 </UserControl>

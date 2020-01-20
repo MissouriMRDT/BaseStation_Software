@@ -17,7 +17,7 @@ using System.Text;
 
 namespace RoverAttachmentManager.ViewModels.Science
 {
-    public class ScienceViewModel : PropertyChangedBase, IRovecommReceiver, IInputMode
+    public class ScienceViewModel : PropertyChangedBase, IInputMode
     {
 
         private readonly IRovecomm _rovecomm;
@@ -35,18 +35,6 @@ namespace RoverAttachmentManager.ViewModels.Science
         
         
 
-        public int ScrewPosition
-        {
-            get
-            {
-                return _model.ScrewPosition;
-            }
-            set
-            {
-                _model.ScrewPosition = value;
-                NotifyOfPropertyChange(() => ScrewPosition);
-            }
-        }
         public int RunCount
         {
             get
@@ -125,18 +113,6 @@ namespace RoverAttachmentManager.ViewModels.Science
 
             Name = "Science Controls";
             ModeType = "ScienceControls";
-
-
-
-            _rovecomm.NotifyWhenMessageReceived(this, "ScienceSensors");
-            _rovecomm.NotifyWhenMessageReceived(this, "ScrewAtPos");
-
-
-        }
-
-        public void SetScrewPosition(byte index)
-        {
-            _rovecomm.SendCommand(new Packet("ScrewAbsoluteSetPosition", index));
         }
 
         public void SaveFileStart()
@@ -156,37 +132,10 @@ namespace RoverAttachmentManager.ViewModels.Science
             await SensorDataFile.WriteAsync(data, 0, data.Length);
         }
 
-
-
-
-        public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
-        {
-            switch (packet.Name)
-            {
-
-
-                case "ScrewAtPos":
-                    ScrewPosition = packet.Data[0];
-                    break;
-                default:
-                    break;
-            }
-        }
-
-		public void ReceivedRovecommMessageCallback(int index, bool reliable) {
-			ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
-		}
-
         public void SetUVLed(byte val)
         {
             _rovecomm.SendCommand(new Packet("UVLedControl", val));
         }
-
-        public void CenterX()
-        {
-            _rovecomm.SendCommand(new Packet("CenterX"));
-        }
-
 
         public void ReachedSite()
         {
