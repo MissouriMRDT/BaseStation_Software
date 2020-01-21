@@ -11,6 +11,7 @@ namespace RoverAttachmentManager.Models.Arm
 {
     class IKControlModel
     {
+        internal ArmViewModel _arm;
         internal ControlMultipliersViewModel _controlMultipliers;
         internal float AngleJ1;
         internal float AngleJ2;
@@ -30,7 +31,6 @@ namespace RoverAttachmentManager.Models.Arm
         internal float OpY;
         internal float OpZ;
         internal byte SelectedTool;
-        internal string ControlState;
 
     }
 }

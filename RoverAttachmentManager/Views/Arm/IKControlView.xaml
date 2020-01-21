@@ -30,6 +30,8 @@
                 <TextBox Grid.Row="0" Grid.Column="4" Text="{Binding Yaw, StringFormat=0.##}" />
                 <Label Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2">Pitch</Label>
                 <TextBox Grid.Row="1" Grid.Column="4" Text="{Binding Pitch, StringFormat=0.##}" />
+                <Label Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="2">Roll</Label>
+                <TextBox Grid.Row="2" Grid.Column="4" Text="{Binding Roll, StringFormat=0.##}" />
             </Grid>
             <UniformGrid Rows="1">
                 <Button x:Name="SetXYZPosition" Content="Set absolute position" HorizontalAlignment="Center" />

@@ -37,7 +37,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
     /// </summary>
     public class ArmViewModel : PropertyChangedBase, IInputMode, IRovecommReceiver
     {
-        private enum ArmControlState
+        public enum ArmControlState
         {
             OpenLoop,
             IKRoverPOV, //point of view
@@ -45,7 +45,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
             GuiControl
         };
 
-        ArmControlState myState;
+        public ArmControlState myState;
 
         private const string PositionsConfigName = "ArmPositions";
 
@@ -61,7 +61,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
         private readonly Dictionary<int, string> _armFaultIds;
 
         //flag that gets set when the arm detects and error and forces a change state, we want the user to have to wait a second 
-        //before commands can be sent again so they can register the fact taht said error occurred
+        //before commands can be sent again so they can register the fact that said error occurred
         private bool freezeArm = false; 
 
         public string Name { get; }
@@ -341,8 +341,8 @@ namespace RoverAttachmentManager.ViewModels.Arm
             }
         }
 
-        byte previousTool;
-        bool laser = false;
+        public byte previousTool;
+        public bool laser = false;
 
 
 
@@ -706,16 +706,6 @@ namespace RoverAttachmentManager.ViewModels.Arm
             _rovecomm.SendCommand(new Packet(name, (enableState) ? ArmEnableCommand : ArmDisableCommand), true);
         }
 
-        public void SetOpPoint()
-        {
-            float[] opPoints = { OpX, OpY, OpZ };
-            byte[] data = new byte[opPoints.Length * sizeof(float)];
-            Buffer.BlockCopy(opPoints, 0, data, 0, data.Length);
-
-            // TODO: Determine floats for this
-            //_rovecomm.SendCommand(_idResolver.GetId("OpPoint"), data, true);
-        }
-
         public void GetPosition()
         {
             byte[] data = new byte[2];
@@ -739,24 +729,6 @@ namespace RoverAttachmentManager.ViewModels.Arm
         public void ToggleAuto()
         {
             _rovecomm.SendCommand(new Packet("ToggleAutoPositionTelem"));
-        }
-
-        public void GetXYZPosition()
-        {
-            _rovecomm.SendCommand(new Packet("ArmGetXYZ"));
-        }
-
-        public void SetXYZPosition()
-        {
-            float[] coordinates = { CoordinateX, CoordinateY, CoordinateZ, Yaw, Pitch, Roll };
-            byte[] data = new byte[coordinates.Length * sizeof(float)];
-            Buffer.BlockCopy(coordinates, 0, data, 0, data.Length);
-
-            // TODO: floats
-            //_rovecomm.SendCommand(_idResolver.GetId("ArmAbsoluteXYZ"), data, true);
-
-            myState = ArmControlState.GuiControl;
-            guiControlInitialized = true;
         }
 
         public void LimitSwitchOverride()
