@@ -26,6 +26,7 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
             {
                 return _model.Controls;
             }
+
             set
             {
                 _model.Controls = value;
@@ -44,12 +45,25 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
                 NotifyOfPropertyChange(() => StateControl);
             }
         }
+        public SentWaypointsViewModel SentWaypoints
+        {
+            get
+            {
+                return _model._sentWaypoints;
+            }
+            set
+            {
+                _model._sentWaypoints = value;
+                NotifyOfPropertyChange(() => SentWaypoints);
+            }
+        }
 
         public AutonomyViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger logger)
         {
             _model = new AutonomyModel();
             StateControl = new StateControlViewModel();
             Controls = new ControlsViewModel(networkMessenger);
+            SentWaypoints = new SentWaypointsViewModel();
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _logger = logger;
@@ -62,7 +76,13 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
 
         public void Disable() => _rovecomm.SendCommand(new Packet("AutonomousModeDisable"), true);
 
-        public void ClearAllWaypoints() => _rovecomm.SendCommand(new Packet("WaypointsClearAll"), true);
+
+        public void ClearAllWaypoints()
+        {
+            SentWaypoints.ClearSentWaypoints();
+            _rovecomm.SendCommand(new Packet("WaypointsClearAll"), true);
+        }
+      
 
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
         {
@@ -73,7 +93,6 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
                     break;
             }
         }
-
 
         public void ReceivedRovecommMessageCallback(int index, bool reliable)
         {
