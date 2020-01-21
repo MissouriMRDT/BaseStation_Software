@@ -1,5 +1,6 @@
-﻿using System.Collections.ObjectModel;
-﻿using RoverAttachmentManager.ViewModels.Arm;
+
+using System.Collections.ObjectModel;
+using RoverAttachmentManager.ViewModels.Arm;
 using ArmPositionViewModel = RoverAttachmentManager.ViewModels.Arm.ArmViewModel.ArmPositionViewModel;
 
 namespace RoverAttachmentManager.Models.ArmModels
@@ -29,6 +30,7 @@ namespace RoverAttachmentManager.Models.ArmModels
         internal float OpY;
         internal float OpZ;
         internal byte SelectedTool;
+        internal ArmPowerViewModel ArmPower;
 
         internal class ArmPositionModel
         {

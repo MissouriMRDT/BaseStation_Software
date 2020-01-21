@@ -1,0 +1,101 @@
+﻿<UserControl x:Class="RoverAttachmentManager.Views.Science.SciencePowerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RoverAttachmentManager.Views.Science"
+             xmlns:addons="clr-namespace:RoverAttachmentManager.Addons"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <addons:MotorAmpToColorValueConverter x:Key="AmpConverter" />
+        
+        <Style x:Key="EnableBtn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}"> 
+        <Setter Property="Content" Value="Enabled" />
+    </Style>
+
+    <Style x:Key="AllMotorBtn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
+        <Setter Property="Content" Value="Enabled" />
+    </Style>
+
+    <Style x:Key="CurrentTelem" TargetType="Label">
+        <Setter Property="ContentStringFormat" Value="{}{0:00.0} A" />
+        <Setter Property="HorizontalContentAlignment" Value="Right" />
+    </Style>
+
+    </UserControl.Resources>
+    <Grid>
+        <Grid>
+            <StackPanel>
+                
+                <Grid>
+                    <Grid.RowDefinitions>    <!-- creates four rows -->
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions> <!-- creates 6 columns -->
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                        
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+
+                    </Grid.ColumnDefinitions>
+                    
+                    <!-- What goes in each column (7 motor names and current readings, 8 enable buttons including one for all of the motors -->
+                    <ToggleButton Grid.Row="0" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="8" IsChecked="{Binding Path=Status[8]}"/>
+                    <Label Grid.Row="0" Grid.Column="1" Background="{Binding Path= WOActuationCurrent1, 
+                   Converter={StaticResource AmpConverter}, Mode=Default}">Actuation1</Label>
+                    <Label Grid.Row="0" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="WOActuationCurrent1" Background="{Binding Path=WOActuationCurrent1,
+                    Converter={StaticResource AmpConverter}, Mode=Default}"/>
+
+                    <ToggleButton Grid.Row="1" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="9" IsChecked="{Binding Path=Status[9]}"/>
+                    <Label Grid.Row="1" Grid.Column="1" Background="{Binding Path= WOActuationCurrent2, 
+                   Converter={StaticResource AmpConverter}, Mode=Default}">Actuation2</Label>
+                    <Label Grid.Row="1" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="WOActuationCurrent2" Background="{Binding Path=WOActuationCurrent2,
+                    Converter={StaticResource AmpConverter}, Mode=Default}"/>
+
+                    <ToggleButton Grid.Row="2" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="10" IsChecked="{Binding Path=Status[10]}"/>
+                    <Label Grid.Row="2" Grid.Column="1" Background="{Binding Path= GenevaCurrent, 
+                   Converter={StaticResource AmpConverter}, Mode=Default}">Geneva</Label>
+                    <Label Grid.Row="2" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="GenevaCurrent" Background="{Binding Path=GenevaCurrent,
+                    Converter={StaticResource AmpConverter}, Mode=Default}"/>
+
+                    <ToggleButton Grid.Row="3" Grid.Column="3" Style="{StaticResource EnableBtn}" Tag="8" IsChecked="{Binding Path=Status[8]}"/>
+                    <Label Grid.Row="3" Grid.Column="4" Background="{Binding Path= VacuumCurrent, 
+                   Converter={StaticResource AmpConverter}, Mode=Default}">Vacuum</Label>
+                    <Label Grid.Row="3" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="VacuumCurrent" Background="{Binding Path=VacuumCurrent,
+                    Converter={StaticResource AmpConverter}, Mode=Default}"/>
+
+                    <ToggleButton Grid.Row="0" Grid.Column="3" Style="{StaticResource EnableBtn}" Tag="9" IsChecked="{Binding Path=Status[9]}"/>
+                    <Label Grid.Row="0" Grid.Column="4" Background="{Binding Path= FluidPumpCurrent1, 
+                   Converter={StaticResource AmpConverter}, Mode=Default}">Pump1</Label>
+                    <Label Grid.Row="0" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="FluidPumpCurrent1" Background="{Binding Path=FluidPumpCurrent1,
+                    Converter={StaticResource AmpConverter}, Mode=Default}"/>
+
+                    <ToggleButton Grid.Row="1" Grid.Column="3" Style="{StaticResource EnableBtn}" Tag="10" IsChecked="{Binding Path=Status[10]}"/>
+                    <Label Grid.Row="1" Grid.Column="4" Background="{Binding Path= FluidPumpCurrent2, 
+                   Converter={StaticResource AmpConverter}, Mode=Default}">Pump2</Label>
+                    <Label Grid.Row="1" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="FluidPumpCurrent2" Background="{Binding Path=FluidPumpCurrent2,
+                    Converter={StaticResource AmpConverter}, Mode=Default}"/>
+
+                    <ToggleButton Grid.Row="2" Grid.Column="3" Style="{StaticResource EnableBtn}" Tag="11" IsChecked="{Binding Path=Status[11]}"/>
+                    <Label Grid.Row="2" Grid.Column="4" Background="{Binding Path= FluidPumpCurrent3, 
+                   Converter={StaticResource AmpConverter}, Mode=Default}">Pump3</Label>
+                    <Label Grid.Row="2" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="FluidPumpCurrent3" Background="{Binding Path=FluidPumpCurrent3,
+                    Converter={StaticResource AmpConverter}, Mode=Default}"/>
+
+                    <ToggleButton Grid.Row="3" Grid.Column="0" Height="27" VerticalAlignment="Bottom" Style="{StaticResource AllMotorBtn}"/>
+                    <Label Grid.Row="3" Grid.Column="1">All motors</Label>
+
+                </Grid>
+            </StackPanel>
+            
+        </Grid>
+    </Grid>
+</UserControl>
