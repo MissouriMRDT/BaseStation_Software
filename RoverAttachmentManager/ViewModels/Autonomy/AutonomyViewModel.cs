@@ -5,6 +5,7 @@ using Core.Models;
 using Core.RoveProtocol;
 using Core.ViewModels;
 using RoverAttachmentManager.Models.Autonomy;
+using RoverAttachmentManager.ViewModels.Autonomy;
 using System;
 using System.Net;
 
@@ -19,21 +20,24 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
         private readonly ILogger _logger;
         private readonly WaypointManager _waypointManager;
 
-        public string SentWaypointsText
+        public SentWaypointsViewModel SentWaypoints
         {
             get
             {
-                return _model._waypointsText;
+                return _model._sentWaypoints;
             }
+
             set
             {
-                _model._waypointsText = value;
-                NotifyOfPropertyChange();
+                _model._sentWaypoints = value;
+                NotifyOfPropertyChange(() => SentWaypoints);
             }
         }
+
         public AutonomyViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger logger)
         {
             _model = new AutonomyModel();
+            SentWaypoints = new SentWaypointsViewModel();
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _logger = logger;
@@ -48,9 +52,8 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
 
         public void ClearAllWaypoints()
         {
+            SentWaypoints.ClearSentWaypoints();
             _rovecomm.SendCommand(new Packet("WaypointsClearAll"), true);
-            string wpclear = "--cleared--\n";
-            SentWaypointsText += wpclear;
         }
       
 
@@ -75,8 +78,8 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
             Buffer.BlockCopy(BitConverter.GetBytes(waypoint.Latitude), 0, msg, 1 * sizeof(double), sizeof(double));
             Array.Reverse(msg);
 
-            string tempstring = waypoint.Name + " | Longitude: " + waypoint.Longitude.ToString() + " | Latitude: " + waypoint.Latitude.ToString() + "\n";
-            SentWaypointsText += tempstring;
+            SentWaypoints.SentWaypoints(waypoint);
+
             _rovecomm.SendCommand(new Packet("WaypointAdd", msg, 2, (byte)7), true);
         }
 

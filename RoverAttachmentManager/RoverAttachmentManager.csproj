@@ -77,6 +77,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Design" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -117,6 +118,7 @@
     <Compile Include="Configurations\ArmConfigurations\ArmConfig.cs" />
     <Compile Include="Contexts\ArmPositionsContext.cs" />
     <Compile Include="Models\Arm\ArmModel.cs" />
+    <Compile Include="Models\Autonomy\SentWaypointsModel.cs" />
     <Compile Include="Models\Arm\ArmPowerModel.cs" />
     <Compile Include="Models\Arm\ControlMultipliersModel.cs" />
     <Compile Include="Models\InputManagerModel.cs" />
@@ -125,6 +127,9 @@
     <Compile Include="Models\Science\ScienceActuationModel.cs" />
     <Compile Include="Models\Science\ScienceGraphModel.cs" />
     <Compile Include="Models\Science\ScienceModel.cs" />
+    <Compile Include="ViewModels\Autonomy\SentWaypointsViewModel.cs" />
+    <Compile Include="Views\Autonomy\SentWaypointsView.xaml.cs">
+      <DependentUpon>SentWaypointsView.xaml</DependentUpon>
     <Compile Include="Models\Science\ScienceSensorsModel.cs" />
     <Compile Include="Models\Science\SiteManagmentModel.cs" />
     <Compile Include="Models\Science\SpectrometerModel.cs" />
@@ -171,6 +176,10 @@
       <DependentUpon>ScienceView.xaml</DependentUpon>
     </Compile>
     <Compile Include="RAMBootstrapper.cs" />
+    <Page Include="Views\Autonomy\SentWaypointsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Arm\ArmPowerView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
