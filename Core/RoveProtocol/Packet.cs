@@ -67,6 +67,10 @@ namespace Core.RoveProtocol
             {
                 return (byte)DataTypes.UINT32_T;
             }
+            else if (type == typeof(float))
+            {
+                return (byte)DataTypes.FLOAT_T;
+            }
             return 10;
         }
 
@@ -107,6 +111,12 @@ namespace Core.RoveProtocol
             {
                 byte[] result = new byte[data.Length * sizeof(UInt32)];
                 Buffer.BlockCopy((UInt32[])(object)data, 0, result, 0, ((UInt32[])(object)data).Length * sizeof(UInt32));
+                return result;
+            }
+            else if (type == typeof(float))
+            {
+                byte[] result = new byte[data.Length * sizeof(float)];
+                Buffer.BlockCopy((float[])(object)data, 0, result, 0, ((float[])(object)data).Length * sizeof(float));
                 return result;
             }
             return null;
@@ -170,6 +180,15 @@ namespace Core.RoveProtocol
                 }
                 return (T[])(object)result;
             }
+            else if (type == typeof(float))
+            {
+                float[] result = new float[Count];
+                for (int i = 0; i < Count; i++)
+                {
+                    result[i] = BitConverter.ToSingle(Data, i * sizeof(float));
+                }
+                return (T[])(object)result;
+            }
 
             return null;
         }
@@ -204,6 +223,10 @@ namespace Core.RoveProtocol
             else if (type == typeof(UInt32))
             {
                 return (T)(object)BitConverter.ToUInt32(Data, 0);
+            }
+            else if (type == typeof(float))
+            {
+                return (T)(object)BitConverter.ToSingle(Data, 0);
             }
 
             return default;
