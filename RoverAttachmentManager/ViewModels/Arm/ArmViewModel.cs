@@ -377,25 +377,8 @@ namespace RoverAttachmentManager.ViewModels.Arm
             previousTool = 0;
 
             _rovecomm.NotifyWhenMessageReceived(this, "ArmCurrentPosition");
-            _rovecomm.NotifyWhenMessageReceived(this, "ArmFault");
             _rovecomm.NotifyWhenMessageReceived(this, "ArmCurrentXYZ");
 
-            _armFaultIds = new Dictionary<int, string>
-            {
-                { 1, "Motor 1 fault" },
-                { 2, "Motor 2 fault" },
-                { 3, "Motor 3 fault" },
-                { 4, "Motor 4 fault" },
-                { 5, "Motor 5 fault" },
-                { 6, "Motor 6 fault" },
-                { 7, "Arm Master Overcurrent" },
-                { 8, "Base Rotate encoder disconnected" },
-                { 9, "Base Tilt encoder disconnected" },
-                { 10, "Elbow Tilt encoder disconnected" },
-                { 11, "Elbow Rotate encoder disconnected" },
-                { 12, "Wrist Tilt encoder disconnected" },
-                { 13, "Wrist Rotate encoder disconnected" }
-            };
         }
 
         public void ReceivedRovecommMessageCallback(int index, bool reliable)
@@ -423,18 +406,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
                     Pitch = BitConverter.ToSingle(packet.Data, 4 * sizeof(float));
                     Roll = BitConverter.ToSingle(packet.Data, 5 * sizeof(float));
                     break;
-                case "ArmFault":
-                    _log.Log($"Arm fault: {_armFaultIds[packet.Data[0]]}");
-
-                    //Arm will automatically exit closed loop mode when it detects an encoder fault
-                    //so we make sure to stop spamming closed loop messages at it, as we do in IK control states.
-                    if (ArmEncoderFaultIds.Contains(packet.Data[0]) && (myState == ArmControlState.IKRoverPOV || myState == ArmControlState.IKWristPOV))
-                    {
-                        myState = ArmControlState.OpenLoop;
-                        ControlState = "Open loop";
-                        freezeArm = true;
-                    }
-                    break;
+                
             }
         }
         public void StartMode()
@@ -532,6 +504,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 _rovecomm.SendCommand(new Packet("Laser", Convert.ToByte(laser)));
             }
         }
+
         private void UpdateControlState(Dictionary<string, float> values)
         {
             ArmControlState oldState = myState;
