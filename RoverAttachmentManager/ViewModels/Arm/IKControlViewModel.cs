@@ -13,10 +13,11 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using static RoverAttachmentManager.ViewModels.Arm.ArmViewModel;
 
 namespace RoverAttachmentManager.ViewModels.Arm
 {
-    class IKControlViewModel : PropertyChangedBase
+    class IKControlViewModel : PropertyChangedBase, IRovecommReceiver
     {
 
         private bool guiControlInitialized;
@@ -37,14 +38,25 @@ namespace RoverAttachmentManager.ViewModels.Arm
         private const byte ArmEnableCommand = 0x01;
 
         private readonly byte[] ArmEncoderFaultIds = { 8, 9, 10, 11, 12, 13 };
-        private readonly ArmModel _model;
+        private readonly IKControlModel _model;
         private readonly IRovecomm _rovecomm;
         private readonly IDataIdResolver _idResolver;
         private readonly ILogger _log;
         private readonly IConfigurationManager _configManager;
         private readonly Dictionary<int, string> _armFaultIds;
 
-        
+        public string ControlState
+        {
+            get
+            {
+                return _model.ControlState;
+            }
+            set
+            {
+                _model.ControlState = value;
+                NotifyOfPropertyChange(() => ControlState);
+            }
+        }
         public int IKRangeFactor
         {
             get
@@ -141,7 +153,6 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 NotifyOfPropertyChange(() => CoordinateX);
             }
         }
-
         public float CoordinateY
         {
             get
@@ -238,7 +249,6 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 NotifyOfPropertyChange(() => OpZ);
             }
         }
-
         public byte SelectedTool
         {
             get
@@ -251,10 +261,108 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 NotifyOfPropertyChange(() => SelectedTool);
             }
         }
+        public ControlMultipliersViewModel ControlMultipliers
+        {
+            get
+            {
+                return _model._controlMultipliers;
+            }
+            set
+            {
+                _model._controlMultipliers = value;
+                NotifyOfPropertyChange(() => ControlMultipliers);
+            }
+        }
+        public ObservableCollection<ArmPositionViewModel> Positions
+        {
+            get
+            {
+                return _model.Positions;
+            }
+            private set
+            {
+                _model.Positions = value;
+                NotifyOfPropertyChange(() => Positions);
+            }
+        }
 
         byte previousTool;
         bool laser = false;
 
+        //flag that gets set when the arm detects and error and forces a change state, we want the user to have to wait a second 
+        //before commands can be sent again so they can register the fact taht said error occurred
+        private bool freezeArm = false;
+
+        public IKControlViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log, IConfigurationManager configs, ArmViewModel parent)
+        {
+            _model = new IKControlModel();
+            _rovecomm = networkMessenger;
+            _idResolver = idResolver;
+            _log = log;
+            _configManager = configs;
+
+            ControlMultipliers = parent.ControlMultipliers;
+
+            myState = ArmControlState.GuiControl;
+            ControlState = "GUI control";
+            previousTool = 0;
+
+            _configManager.AddRecord(PositionsConfigName, ArmConfig.DefaultArmPositions);
+            InitializePositions(_configManager.GetConfig<ArmPositionsContext>(PositionsConfigName));
+
+            _rovecomm.NotifyWhenMessageReceived(this, "ArmCurrentPosition");
+            _rovecomm.NotifyWhenMessageReceived(this, "ArmFault");
+            _rovecomm.NotifyWhenMessageReceived(this, "ArmCurrentXYZ");
+            _rovecomm.NotifyWhenMessageReceived(this, "ArmAngles");
+
+            _armFaultIds = new Dictionary<int, string>
+            {
+                { 1, "Motor 1 fault" },
+                { 2, "Motor 2 fault" },
+                { 3, "Motor 3 fault" },
+                { 4, "Motor 4 fault" },
+                { 5, "Motor 5 fault" },
+                { 6, "Motor 6 fault" },
+                { 7, "Arm Master Overcurrent" },
+                { 8, "Base Rotate encoder disconnected" },
+                { 9, "Base Tilt encoder disconnected" },
+                { 10, "Elbow Tilt encoder disconnected" },
+                { 11, "Elbow Rotate encoder disconnected" },
+                { 12, "Wrist Tilt encoder disconnected" },
+                { 13, "Wrist Rotate encoder disconnected" }
+            };
+        }
+        public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
+        {
+            switch (packet.Name)
+            {
+
+                case "ArmCurrentXYZ":
+                    CoordinateX = BitConverter.ToSingle(packet.Data, 0 * sizeof(float));
+                    CoordinateY = BitConverter.ToSingle(packet.Data, 1 * sizeof(float));
+                    CoordinateZ = BitConverter.ToSingle(packet.Data, 2 * sizeof(float));
+                    Yaw = BitConverter.ToSingle(packet.Data, 3 * sizeof(float));
+                    Pitch = BitConverter.ToSingle(packet.Data, 4 * sizeof(float));
+                    Roll = BitConverter.ToSingle(packet.Data, 5 * sizeof(float));
+                    break;
+                case "ArmFault":
+                    _log.Log($"Arm fault: {_armFaultIds[packet.Data[0]]}");
+
+                    //Arm will automatically exit closed loop mode when it detects an encoder fault
+                    //so we make sure to stop spamming closed loop messages at it, as we do in IK control states.
+                    if (ArmEncoderFaultIds.Contains(packet.Data[0]) && (myState == ArmControlState.IKRoverPOV || myState == ArmControlState.IKWristPOV))
+                    {
+                        myState = ArmControlState.OpenLoop;
+                        ControlState = "Open loop";
+                        freezeArm = true;
+                    }
+                    break;
+            }
+        }
+        public void ReceivedRovecommMessageCallback(int index, bool reliable)
+        {
+            ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
+        }
         private void SetIKValues(Dictionary<string, float> values, ArmControlState stateToUse)
         {
             Int16 X = 0;
@@ -377,7 +485,11 @@ namespace RoverAttachmentManager.ViewModels.Arm
         {
             _rovecomm.SendCommand(new Packet("ToggleAutoPositionTelem"));
         }
-
+        public void InitializePositions(ArmPositionsContext config)
+        {
+            foreach (var position in config.Positions)
+                Positions.Add(new ArmPositionViewModel(position));
+        }
         public void GetXYZPosition()
         {
             _rovecomm.SendCommand(new Packet("ArmGetXYZ"));

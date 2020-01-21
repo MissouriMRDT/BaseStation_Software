@@ -86,5 +86,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
         {
             _model = new ControlMultipliersModel();
         }
+
+
     }
 }
