@@ -9,6 +9,7 @@ namespace RoverAttachmentManager.Models.ArmModels
     {
         internal ControlMultipliersViewModel _controlMultipliers;
         internal ControlFeaturesViewModel _controlFeatures;
+        internal AngularControlViewModel _angularControl;
         internal float AngleJ1;
         internal float AngleJ2;
         internal float AngleJ3;

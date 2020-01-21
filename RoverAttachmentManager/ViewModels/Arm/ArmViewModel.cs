@@ -47,8 +47,6 @@ namespace RoverAttachmentManager.ViewModels.Arm
 
         public ArmControlState myState;
 
-        private const string PositionsConfigName = "ArmPositions";
-
         private const byte ArmDisableCommand = 0x00;
         private const byte ArmEnableCommand = 0x01;
 
@@ -59,6 +57,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
         private readonly ILogger _log;
         private readonly IConfigurationManager _configManager;
         private readonly Dictionary<int, string> _armFaultIds;
+        private const string PositionsConfigName = "ArmPositions";
 
         //flag that gets set when the arm detects and error and forces a change state, we want the user to have to wait a second 
         //before commands can be sent again so they can register the fact that said error occurred
@@ -73,7 +72,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
         //remain in open loop mode and thus keep resetting itself, making sending it commands harrowing. So when in gui ctl, 
         //RED will keep sending empty commands to the arm to keep it alive until the user sends it a gui command and 
         //puts it into closed loop mode as well
-        private bool guiControlInitialized;
+        public bool guiControlInitialized;
 
         public string ControlState
         {
@@ -220,6 +219,18 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 NotifyOfPropertyChange(() => ControlFeatures);
             }
         }
+        public AngularControlViewModel AngularControl
+        {
+            get
+            {
+                return _model._angularControl;
+            }
+            set
+            {
+                _model._angularControl = value;
+                NotifyOfPropertyChange(() => AngularControl);
+            }
+        }
         public float CoordinateX
         {
             get
@@ -351,6 +362,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
             _model = new ArmModel();
             ControlMultipliers = new ControlMultipliersViewModel();
             ControlFeatures = new ControlFeaturesViewModel(networkMessenger, idResolver, log, configs);
+            AngularControl = new AngularControlViewModel(networkMessenger, idResolver, log, configs, this);
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _log = log;
@@ -364,13 +376,9 @@ namespace RoverAttachmentManager.ViewModels.Arm
             ControlState = "GUI control";
             previousTool = 0;
 
-            _configManager.AddRecord(PositionsConfigName, ArmConfig.DefaultArmPositions);
-            InitializePositions(_configManager.GetConfig<ArmPositionsContext>(PositionsConfigName));
-
             _rovecomm.NotifyWhenMessageReceived(this, "ArmCurrentPosition");
             _rovecomm.NotifyWhenMessageReceived(this, "ArmFault");
             _rovecomm.NotifyWhenMessageReceived(this, "ArmCurrentXYZ");
-            _rovecomm.NotifyWhenMessageReceived(this, "ArmAngles");
 
             _armFaultIds = new Dictionary<int, string>
             {
@@ -394,7 +402,6 @@ namespace RoverAttachmentManager.ViewModels.Arm
         {
             ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
         }
-
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
         {
             switch (packet.Name)
@@ -430,13 +437,11 @@ namespace RoverAttachmentManager.ViewModels.Arm
                     break;
             }
         }
-
         public void StartMode()
         {
             myState = ArmControlState.OpenLoop;
             ControlState = "Open loop";
         }
-
         private void SetOpenLoopValues(Dictionary<string, float> values)
         {
             Int16 ArmWristBend = 0;
@@ -527,7 +532,6 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 _rovecomm.SendCommand(new Packet("Laser", Convert.ToByte(laser)));
             }
         }
-
         private void UpdateControlState(Dictionary<string, float> values)
         {
             ArmControlState oldState = myState;
@@ -561,7 +565,6 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 ControlState = state;
             }
         }
-
         public void SetValues(Dictionary<string, float> values)
         {
             UpdateControlState(values);
@@ -677,7 +680,6 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 _rovecomm.SendCommand(new Packet("Laser", Convert.ToByte(laser)));
             }
         }
-
         public void StopMode()
         {
             _rovecomm.SendCommand(new Packet("ArmStop"));
@@ -685,7 +687,6 @@ namespace RoverAttachmentManager.ViewModels.Arm
             myState = ArmControlState.GuiControl;
             ControlState = "GUI control";
         }
-
         public void EnableCommand(string bus, bool enableState)
         {
             string name;
@@ -706,71 +707,10 @@ namespace RoverAttachmentManager.ViewModels.Arm
 
             _rovecomm.SendCommand(new Packet(name, (enableState) ? ArmEnableCommand : ArmDisableCommand), true);
         }
-
-        public void GetPosition()
-        {
-            byte[] data = new byte[2];
-            data[0] = 0;
-            data[1] = 1;
-            _rovecomm.SendCommand(new Packet("ArmCommands", data, 2, (byte)DataTypes.UINT8_T));
-        }
-        public void SetPosition()
-        {
-            UInt32[] angles = { (UInt32)(AngleJ1*1000), (UInt32)(AngleJ2*1000), (UInt32)(AngleJ3*1000), (UInt32)(AngleJ4*1000), (UInt32)(AngleJ5*1000), (UInt32)(AngleJ6*1000) };
-            Array.Reverse(angles);
-            byte[] data = new byte[angles.Length * sizeof(UInt32)];
-            Buffer.BlockCopy(angles, 0, data, 0, data.Length);
-            Array.Reverse(data);
-            //TODO: Determine floats for this
-            _rovecomm.SendCommand(new Packet("ArmToAngle", data, 6, (byte)DataTypes.UINT32_T));
-
-            myState = ArmControlState.GuiControl;
-            guiControlInitialized = true;
-        }
-        public void ToggleAuto()
-        {
-            _rovecomm.SendCommand(new Packet("ToggleAutoPositionTelem"));
-        }
-
-
-
-        public void RecallPosition()
-        {
-            AngleJ1 = SelectedPosition.J1;
-            AngleJ2 = SelectedPosition.J2;
-            AngleJ3 = SelectedPosition.J3;
-            AngleJ4 = SelectedPosition.J4;
-            AngleJ5 = SelectedPosition.J5;
-            AngleJ6 = SelectedPosition.J6;
-        }
-        public void StorePosition()
-        {
-            Positions.Add(new ArmPositionViewModel()
-            {
-                Name = "Unnamed Position",
-                J1 = AngleJ1,
-                J2 = AngleJ2,
-                J3 = AngleJ3,
-                J4 = AngleJ4,
-                J5 = AngleJ5,
-                J6 = AngleJ6
-            });
-        }
-        public void DeletePosition()
-        {
-            Positions.Remove(SelectedPosition);
-        }
         public void SaveConfigurations()
         {
             _configManager.SetConfig(PositionsConfigName, new ArmPositionsContext(Positions.Select(x => x.GetContext()).ToArray()));
         }
-        public void InitializePositions(ArmPositionsContext config)
-        {
-            foreach (var position in config.Positions)
-                Positions.Add(new ArmPositionViewModel(position));
-        }
-
-
 
         public class ArmPositionViewModel : PropertyChangedBase
         {
