@@ -100,14 +100,6 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void Data_Int64()
-        {
-            Int64 data = -123000;
-            Packet packet = Packet.Create("Hi", data);
-            CheckPacket<Int64>(packet, "Hi", 1, 6, "88-1F-FE-FF-FF-FF-FF-FF", data);
-        }
-
-        [TestMethod]
         public void Data_SByte_Array()
         {
             SByte[] data = { SByte.MinValue, SByte.MaxValue, 0};
@@ -153,14 +145,6 @@ namespace UnitTests
             UInt32[] data = { UInt32.MinValue, UInt32.MaxValue, 1000 };
             Packet packet = Packet.Create("Hi", data);
             CheckPacketArray<UInt32>(packet, "Hi", data.Length, 5, "00-00-00-00-FF-FF-FF-FF-E8-03-00-00", data);
-        }
-
-        [TestMethod]
-        public void Data_Int64_Array()
-        {
-            Int64[] data = { Int64.MinValue, Int64.MaxValue, 1000 };
-            Packet packet = Packet.Create("Hi", data);
-            CheckPacketArray<Int64>(packet, "Hi", data.Length, 6, "00-00-00-00-00-00-00-80-FF-FF-FF-FF-FF-FF-FF-7F-E8-03-00-00-00-00-00-00", data);
         }
     }
 }

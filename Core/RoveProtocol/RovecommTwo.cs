@@ -10,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace Core.RoveProtocol
 {
-    public enum DataTypes : byte { INT8_T = 0, UINT8_T = 1, INT16_T = 2, UINT16_T = 3, INT32_T = 4, UINT32_T = 5, INT64_T = 6 };
+    public enum DataTypes : byte { INT8_T = 0, UINT8_T = 1, INT16_T = 2, UINT16_T = 3, INT32_T = 4, UINT32_T = 5 };
 
     public class RovecommTwo
     {
 
         public const byte VersionNumber = 2;
-        static readonly private int[] sizes = new int[] { 1, 1, 2, 2, 4, 4, 8};
+        static readonly private int[] sizes = new int[] { 1, 1, 2, 2, 4, 4};
 
         static public Packet DecodePacket(byte[] encodedPacket, IDataIdResolver resolver)
         {

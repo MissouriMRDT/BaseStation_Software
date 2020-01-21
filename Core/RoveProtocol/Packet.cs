@@ -67,10 +67,6 @@ namespace Core.RoveProtocol
             {
                 return (byte)DataTypes.UINT32_T;
             }
-            else if(type == typeof(Int64))
-            {
-                return (byte)DataTypes.INT64_T;
-            }
             return 10;
         }
 
@@ -111,12 +107,6 @@ namespace Core.RoveProtocol
             {
                 byte[] result = new byte[data.Length * sizeof(UInt32)];
                 Buffer.BlockCopy((UInt32[])(object)data, 0, result, 0, ((UInt32[])(object)data).Length * sizeof(UInt32));
-                return result;
-            }
-            else if (type == typeof(Int64))
-            {
-                byte[] result = new byte[data.Length * sizeof(Int64)];
-                Buffer.BlockCopy((Int64[])(object)data, 0, result, 0, ((Int64[])(object)data).Length * sizeof(Int64));
                 return result;
             }
             return null;
@@ -180,15 +170,6 @@ namespace Core.RoveProtocol
                 }
                 return (T[])(object)result;
             }
-            else if (type == typeof(Int64))
-            {
-                Int64[] result = new Int64[Count];
-                for (int i = 0; i < Count; i++)
-                {
-                    result[i] = BitConverter.ToInt64(Data, i * sizeof(Int64));
-                }
-                return (T[])(object)result;
-            }
 
             return null;
         }
@@ -223,10 +204,6 @@ namespace Core.RoveProtocol
             else if (type == typeof(UInt32))
             {
                 return (T)(object)BitConverter.ToUInt32(Data, 0);
-            }
-            else if (type == typeof(Int64))
-            {
-                return (T)(object)BitConverter.ToInt64(Data, 0);
             }
 
             return default;
