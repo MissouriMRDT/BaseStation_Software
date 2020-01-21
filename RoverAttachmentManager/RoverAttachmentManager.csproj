@@ -144,7 +144,6 @@
     <Compile Include="Views\Science\SciencePowerView.xaml.cs">
       <DependentUpon>SciencePowerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\Arm\ControlMultipliersViewModel.cs" />
     <Compile Include="Views\Arm\ControlMultipliersView.xaml.cs">
       <DependentUpon>ControlMultipliersView.xaml</DependentUpon>
     </Compile>
