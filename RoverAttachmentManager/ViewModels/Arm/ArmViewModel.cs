@@ -35,7 +35,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
     /// 
     /// This class is designed to be constructed in the main view model class (usually ControlCenterViewModel).
     /// </summary>
-    public class ArmViewModel : PropertyChangedBase, IInputMode, IRovecommReceiver
+    public class ArmViewModel : PropertyChangedBase, IInputMode
     {
         public enum ArmControlState
         {
@@ -376,44 +376,14 @@ namespace RoverAttachmentManager.ViewModels.Arm
             ControlState = "GUI control";
             previousTool = 0;
 
-            _rovecomm.NotifyWhenMessageReceived(this, "ArmCurrentPosition");
-            _rovecomm.NotifyWhenMessageReceived(this, "ArmCurrentXYZ");
-
         }
 
-        public void ReceivedRovecommMessageCallback(int index, bool reliable)
-        {
-            ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
-        }
-        public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
-        {
-            switch (packet.Name)
-            {
-                case "ArmAngles":
-                    //Array.Reverse(packet.Data);
-                    AngleJ1 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 0)) / 1000.0);
-                    AngleJ2 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 4)) / 1000.0);
-                    AngleJ3 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 8)) / 1000.0);
-                    AngleJ4 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 12)) / 1000.0);
-                    AngleJ5 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 16)) / 1000.0);
-                    AngleJ6 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 20)) / 1000.0);
-                    break;
-                case "ArmCurrentXYZ":
-                    CoordinateX = BitConverter.ToSingle(packet.Data, 0 * sizeof(float));
-                    CoordinateY = BitConverter.ToSingle(packet.Data, 1 * sizeof(float));
-                    CoordinateZ = BitConverter.ToSingle(packet.Data, 2 * sizeof(float));
-                    Yaw = BitConverter.ToSingle(packet.Data, 3 * sizeof(float));
-                    Pitch = BitConverter.ToSingle(packet.Data, 4 * sizeof(float));
-                    Roll = BitConverter.ToSingle(packet.Data, 5 * sizeof(float));
-                    break;
-                
-            }
-        }
         public void StartMode()
         {
             myState = ArmControlState.OpenLoop;
             ControlState = "Open loop";
         }
+
         private void SetOpenLoopValues(Dictionary<string, float> values)
         {
             Int16 ArmWristBend = 0;
