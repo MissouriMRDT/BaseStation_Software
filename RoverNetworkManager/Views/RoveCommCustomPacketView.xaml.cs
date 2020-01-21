@@ -21,5 +21,5 @@ namespace RoverNetworkManager.Views
 		public void btnSubscribe_Click(object sender, RoutedEventArgs e) {
 			((RoveCommCustomPacketViewModel)DataContext).SubscribeID();
 		}
-    }
+	}
 }

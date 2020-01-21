@@ -6,6 +6,7 @@
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
     
+    
         <Grid Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"></ColumnDefinition>
@@ -26,10 +27,8 @@
             </GroupBox>
 
             <GroupBox Header="Sent Waypoints" Margin="5" Grid.Row="1" Grid.RowSpan="2" Grid.Column="0">
-              <TextBox Name="SentWaypointsTextBox" Grid.Row="1" Grid.Column="1" IsHitTestVisible="True"
-                       Text="{Binding SentWaypointsText}" IsReadOnly="True" TextChanged="SentWaypointsText_Changed"
-                       BorderThickness="0" VerticalScrollBarVisibility="Visible"/>
+                <StackPanel Margin="16">
+                </StackPanel>
             </GroupBox>
         </Grid>
-
 </UserControl>

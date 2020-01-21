@@ -8,7 +8,7 @@ namespace RED.ViewModels.Modules
 {
     public class LightingViewModel : PropertyChangedBase
     {
-        private readonly LightingSettingsModel _model;
+        private readonly LightingModel _model;
         private readonly IRovecomm _rovecomm;
         private readonly IDataIdResolver _idResolver;
         private readonly ILogger _log;
@@ -91,7 +91,7 @@ namespace RED.ViewModels.Modules
 
         public LightingViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
-            _model = new LightingSettingsModel();
+            _model = new LightingModel();
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _log = log;

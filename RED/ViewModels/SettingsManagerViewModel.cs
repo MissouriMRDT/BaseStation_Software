@@ -5,7 +5,6 @@ using RED.Configurations.Modules;
 using RED.Configurations.Network;
 using RED.Contexts;
 using RED.Models;
-using RED.ViewModels.Modules;
 using RED.ViewModels.Settings.Modules;
 using RED.ViewModels.Settings.Network;
 
@@ -128,18 +127,6 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => Network);
             }
         }
-        public LightingSettingsViewModel Lighting
-        {
-            get
-            {
-                return _model.Lighting;
-            }
-            set
-            {
-                _model.Lighting = value;
-                NotifyOfPropertyChange(() => Lighting);
-            }
-        }
 
         /// <summary>
         /// Default constructor. For every element in the control center view that corresponds to a settings section,
@@ -165,7 +152,6 @@ namespace RED.ViewModels
             Xbox2 = new XboxControllerInputSettingsViewModel(CurrentSettingsConfig.Xbox2, cc.XboxController2, 2);
             GPS = new GPSSettingsViewModel(CurrentSettingsConfig.GPS, cc.GPS, cc.Map, cc.WaypointManager);
             Power = new PowerSettingsViewModel(CurrentSettingsConfig.Power, cc.Power);
-            Lighting = new LightingSettingsViewModel(cc.Rovecomm, cc.MetadataManager, cc.Console);
         }
 
         public void SaveSettings()

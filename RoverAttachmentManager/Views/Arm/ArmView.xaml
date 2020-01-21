@@ -156,11 +156,6 @@
                     </Grid>
                 </StackPanel>
             </Expander>
-            <Expander Header="Arm Motor Power" IsExpanded="True" Margin="2.5">
-                <StackPanel>
-                    <ContentControl x:Name="ArmPower" />
-                </StackPanel>
-            </Expander>
         </StackPanel>
     </Grid>
 </UserControl>

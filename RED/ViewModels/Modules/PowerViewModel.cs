@@ -32,19 +32,7 @@ namespace RED.ViewModels.Modules
                 NotifyOfPropertyChange(() => AutoStartLog);
             }
         }
-        
-        public byte RebootTime
-        {
-            get
-            {
-                return _model.RebootTime;
-            }
-            set
-            {
-                _model.RebootTime = value;
-                NotifyOfPropertyChange(() => RebootTime);
-            }
-        }
+
         
 
         public float Motor1Current
@@ -543,7 +531,7 @@ namespace RED.ViewModels.Modules
 
 		public void RebootRover()
         {
-            _rovecomm.SendCommand(new Packet("BMSStop", RebootTime), true);
+            _rovecomm.SendCommand(new Packet("BMSStop", (byte)10), true);
         }
         public void EStopRover()
         {

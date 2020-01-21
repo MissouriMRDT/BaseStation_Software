@@ -34,7 +34,6 @@ namespace RED.Models.Modules
         internal float TotalPackVoltage;
         internal float BMSTemperature1;
         internal float BMSTemperature2;
-        internal byte RebootTime;
 
         internal BitArray Status;
     }

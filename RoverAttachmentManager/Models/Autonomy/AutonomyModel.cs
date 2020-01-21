@@ -2,7 +2,6 @@
 using System;
 using RoverAttachmentManager.ViewModels.Autonomy;
 
-
 namespace RoverAttachmentManager.Models.Autonomy
 {
     internal class AutonomyModel

@@ -325,18 +325,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 NotifyOfPropertyChange(() => SelectedTool);
             }
         }
-        public ArmPowerViewModel ArmPower
-        {
-            get
-            {
-                return _model.ArmPower;
-            }
-            set
-            {
-                _model.ArmPower = value;
-                NotifyOfPropertyChange(() => ArmPower);
-            }
-        }
+
         public ControlMultipliersViewModel ControlMultipliers
         {
             get
@@ -363,9 +352,6 @@ namespace RoverAttachmentManager.ViewModels.Arm
             _idResolver = idResolver;
             _log = log;
             _configManager = configs;
-
-            ArmPower = new ArmPowerViewModel(_rovecomm, _idResolver, _log);
-
             Name = "Arm";
             ModeType = "Arm";
             myState = ArmControlState.GuiControl;

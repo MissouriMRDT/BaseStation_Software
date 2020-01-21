@@ -23,27 +23,12 @@ namespace RED.ViewModels.Settings.Modules
             }
         }
 
-        public byte RebootTime
-        {
-            get
-            {
-                return _vm.RebootTime;
-            }
-            set
-            {
-                _vm.RebootTime = value;
-                _settings.RebootTime = value;
-                NotifyOfPropertyChange(() => RebootTime);
-            }
-        }
-
         public PowerSettingsViewModel(PowerSettingsContext settings, PowerViewModel vm)
         {
             _settings = settings;
             _vm = vm;
 
             _vm.AutoStartLog = settings.AutoStartLog;
-            _vm.RebootTime = settings.RebootTime;
         }
     }
 }

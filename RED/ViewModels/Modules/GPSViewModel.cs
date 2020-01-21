@@ -14,56 +14,8 @@ namespace RED.ViewModels.Modules
         private readonly GPSModel _model;
         private readonly IDataIdResolver _idResolver;
         private readonly IRovecomm _rovecomm;
-        private readonly ILogger _log;
+        
 
-        public float Lidar
-        {
-            get
-            {
-                return _model.Lidar;
-            }
-            set
-            {
-                _model.Lidar = value;
-                NotifyOfPropertyChange(() => Lidar);
-            }
-        }
-        public float Pitch
-        {
-            get
-            {
-                return _model.Pitch;
-            }
-            set
-            {
-                _model.Pitch = value;
-                NotifyOfPropertyChange(() => Pitch);
-            }
-        }
-        public float Roll
-        {
-            get
-            {
-                return _model.Roll;
-            }
-            set
-            {
-                _model.Roll = value;
-                NotifyOfPropertyChange(() => Roll);
-            }
-        }
-        public float TrueHeading
-        {
-            get
-            {
-                return _model.TrueHeading;
-            }
-            set
-            {
-                _model.TrueHeading = value;
-                NotifyOfPropertyChange(() => TrueHeading);
-            }
-        }
 
         public bool FixObtained
         {
@@ -201,7 +153,7 @@ namespace RED.ViewModels.Modules
         }
         public float RoverDistanceTraveled
         {
-
+            
             get
             {
                 return _model.RoverDistanceTraveled;
@@ -210,15 +162,14 @@ namespace RED.ViewModels.Modules
             {
                 _model.RoverDistanceTraveled = value;
                 NotifyOfPropertyChange(() => RoverDistanceTraveled);
+
             }
         }
-
-        public GPSViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
+        public GPSViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver)
         {
             _model = new GPSModel();
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
-            _log = log;
             if (File.Exists(System.IO.Path.GetFullPath("RoverMetrics.txt")))
             {
                 //RoverMetrics.txt should be found in RED/Bin/Debug
@@ -226,11 +177,6 @@ namespace RED.ViewModels.Modules
             }
             RoverDistanceTraveled = RoverDistanceStart;
 
-            _rovecomm.NotifyWhenMessageReceived(this, "Lidar");
-            _rovecomm.NotifyWhenMessageReceived(this, "NavPitch");
-            _rovecomm.NotifyWhenMessageReceived(this, "NavRoll");
-            _rovecomm.NotifyWhenMessageReceived(this, "NavTrueHeading");
-            _rovecomm.NotifyWhenMessageReceived(this, "PitchHeadingRoll");
             _rovecomm.NotifyWhenMessageReceived(this, "GPSQuality");
             _rovecomm.NotifyWhenMessageReceived(this, "GPSPosition");
             _rovecomm.NotifyWhenMessageReceived(this, "GPSSpeed");
@@ -246,23 +192,6 @@ namespace RED.ViewModels.Modules
         {
             switch (packet.Name)
             {
-                case "Lidar":
-                    if (packet.Data[1] == 5) //we want to output the data only when the lidar is functioning and has cycled
-                    {                          //Data[1] is 5 when it has cycled, and decrements when it has not
-                        Lidar = (float)(packet.Data[0] / 10.0);
-                    }
-                    break;
-                case "NavPitch": Pitch = BitConverter.ToSingle(packet.Data, 0); break;
-                case "NavRoll": Roll = BitConverter.ToSingle(packet.Data, 0); break;
-                case "NavTrueHeading":
-                    TrueHeading = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0)); break;
-                case "PitchHeadingRoll":
-                    Pitch = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0));
-                    TrueHeading = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 2));
-                    Heading = TrueHeading;
-                    Roll = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 4));
-                    break;
-
                 case "GPSData":
                     var ms = new MemoryStream(packet.Data);
                     using (var br = new BinaryReader(ms))
@@ -283,7 +212,9 @@ namespace RED.ViewModels.Modules
                 case "Heading":
                     Heading = BitConverter.ToSingle(packet.Data, 0);
                     break;
-                
+                case "PitchHeadingRoll":
+                    Heading = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 2));
+                    break;
                 case "GPSQuality":
                     FixObtained = packet.Data[0] != 0;
                     FixQuality = packet.Data[0];

@@ -7,21 +7,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RoverNetworkManager.Views"
         mc:Ignorable="d" TitleCaps="False" Height="450" Width="800">
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <Grid Margin="5">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width="2*" />
-            </Grid.ColumnDefinitions>
-		    <Grid.RowDefinitions>
-			    <RowDefinition Height="575" />
-			    <RowDefinition Height="575" />
-			    <RowDefinition Height="575" />
-	        </Grid.RowDefinitions>
-		    <ContentControl x:Name="RoveCommCustomPacket" Grid.Column="1" Grid.Row="2"/>
-            <ContentControl x:Name="NetworkMap" Grid.Column="0" Grid.Row="1" />
-            <ContentControl x:Name="PingTool" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" />
-        </Grid>
-    </ScrollViewer>
-
+    <Grid Margin="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="3*" />
+        </Grid.ColumnDefinitions>
+        <ContentControl x:Name="RoveCommCustomPacket" Grid.Column="0" />
+        <ContentControl x:Name="NetworkMap" Grid.Column="1" />
+        <ContentControl x:Name="PingTool" Grid.Column="2" />
+    </Grid>
 </controls:MetroWindow>
