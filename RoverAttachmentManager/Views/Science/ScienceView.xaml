@@ -30,6 +30,9 @@
                     <Expander Grid.Row="2" Header="Site Management" IsExpanded="True" Margin="2.5">
                         <ContentControl x:Name="SiteManagment"/>
                     </Expander>
+                    <Expander Grid.Row="4"  Header="Science Motor Power" IsExpanded="True" Margin="2.5">
+                        <ContentControl x:Name="SciencePower" />
+                    </Expander>
                 </Grid>
                 
             </StackPanel>

@@ -1,0 +1,100 @@
+﻿<UserControl x:Class="RoverAttachmentManager.Views.Arm.ArmPowerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RoverAttachmentManager.Views.Arm"
+             xmlns:addons="clr-namespace:RoverAttachmentManager.Addons"           
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <addons:MotorAmpToColorValueConverter x:Key="AmpConverter" />
+
+        <Style x:Key="EnableBtn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
+            <Setter Property="Content" Value="Enabled" />
+        </Style>
+
+        <Style x:Key="AllMotorBtn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
+            <Setter Property="Content" Value="Enabled" />
+        </Style>
+
+        <Style x:Key="CurrentTelem" TargetType="Label">
+            <Setter Property="ContentStringFormat" Value="{}{0:00.0} A" />
+            <Setter Property="HorizontalContentAlignment" Value="Right" />
+        </Style>
+
+    </UserControl.Resources>
+    <Grid>
+        <!-- makes the table collapsable -->
+        <StackPanel>
+            <Grid>
+                <!-- creates four rows -->
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <!-- creates six columns -->
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+
+
+                </Grid.ColumnDefinitions>
+
+                <!-- What goes in each column (7 motor names and current readings, 8 enable buttons including one for all of the motors -->
+                <ToggleButton Grid.Row="0" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="8" IsChecked="{Binding Path=Status[8]}"/>
+                <Label Grid.Row="0" Grid.Column="1" Background="{Binding Path= BaseTwistCurrent, 
+                   Converter={StaticResource AmpConverter}, Mode=Default}">Base Twist</Label>
+                <Label Grid.Row="0" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="BaseTwistCurrent" Background="{Binding Path=BaseTwistCurrent,
+                    Converter={StaticResource AmpConverter}, Mode=Default}"/>
+                
+                <ToggleButton Grid.Row="1" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="9" IsChecked="{Binding Path=Status[9]}"/>
+                <Label Grid.Row="1" Grid.Column="1" Background="{Binding Path= BaseTiltCurrent, 
+                   Converter={StaticResource AmpConverter}, Mode=Default}">Base Tilt</Label>
+                <Label Grid.Row="1" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="BaseTiltCurrent" Background="{Binding Path=BaseTiltCurrent,
+                    Converter={StaticResource AmpConverter}, Mode=Default}"/>
+
+                <ToggleButton Grid.Row="2" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="10" IsChecked="{Binding Path=Status[10]}"/>
+                <Label Grid.Row="2" Grid.Column="1" Background="{Binding Path= ElbowTiltCurrent, 
+                   Converter={StaticResource AmpConverter}, Mode=Default}">Elbow Tilt</Label>
+                <Label Grid.Row="2" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="ElbowTiltCurrent" Background="{Binding Path=ElbowTiltCurrent,
+                    Converter={StaticResource AmpConverter},Mode=Default}"/>
+
+                <ToggleButton Grid.Row="3" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="8" IsChecked="{Binding Path=Status[8]}"/>
+                <Label Grid.Row="3" Grid.Column="1" Background="{Binding Path= ElbowTwistCurrent, 
+                   Converter={StaticResource AmpConverter}, Mode=Default}">Elbow Twist</Label>
+                <Label Grid.Row="3" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="ElbowTwistCurrent" Background="{Binding Path=ElbowTwistCurrent,
+                    Converter={StaticResource AmpConverter},Mode=Default}"/>
+
+                <ToggleButton Grid.Row="0" Grid.Column="3" Style="{StaticResource EnableBtn}" Tag="9" IsChecked="{Binding Path=Status[9]}"/>
+                <Label Grid.Row="0" Grid.Column="4" Background="{Binding Path= WristTiltCurrent, 
+                   Converter={StaticResource AmpConverter}, Mode=Default}">Wrist Tilt</Label>
+                <Label Grid.Row="0" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="WristTiltCurrent" Background="{Binding Path=WristTiltCurrent,
+                    Converter={StaticResource AmpConverter},Mode=Default}"/>
+
+                <ToggleButton Grid.Row="1" Grid.Column="3" Style="{StaticResource EnableBtn}" Tag="10" IsChecked="{Binding Path=Status[10]}"/>
+                <Label Grid.Row="1" Grid.Column="4" Background="{Binding Path= WristTwistCurrent, 
+                   Converter={StaticResource AmpConverter}, Mode=Default}">Wrist Twist</Label>
+                <Label Grid.Row="1" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="WristTwistCurrent" Background="{Binding Path=WristTwistCurrent,
+                    Converter={StaticResource AmpConverter},Mode=Default}"/>
+
+                <ToggleButton Grid.Row="2" Grid.Column="3" Style="{StaticResource EnableBtn}" Tag="11" IsChecked="{Binding Path=Status[11]}"/>
+                <Label Grid.Row="2" Grid.Column="4" Background="{Binding Path= GripperCurrent, 
+                   Converter={StaticResource AmpConverter}, Mode=Default}">Gripper</Label>
+                <Label Grid.Row="2" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="GripperCurrent" Background="{Binding Path=GripperCurrent,
+                    Converter={StaticResource AmpConverter},Mode=Default}"/>
+
+                <ToggleButton Grid.Row="3" Grid.Column="3" Height="27" VerticalAlignment="Bottom" Style="{StaticResource AllMotorBtn}"/>
+                <Label Grid.Row="3" Grid.Column="4">All motors</Label>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</UserControl>

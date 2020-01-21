@@ -4,9 +4,9 @@ using Core.Models;
 using Core.RoveProtocol;
 using RED.Models.Modules;
 
-namespace RED.ViewModels.Modules
+namespace RED.ViewModels.Settings.Modules
 {
-    public class LightingViewModel : PropertyChangedBase
+    public class LightingSettingsViewModel : PropertyChangedBase
     {
         private readonly LightingSettingsModel _model;
         private readonly IRovecomm _rovecomm;
@@ -89,7 +89,7 @@ namespace RED.ViewModels.Modules
 
         int CurrentMode = 0;
 
-        public LightingViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
+        public LightingSettingsViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
             _model = new LightingSettingsModel();
             _rovecomm = networkMessenger;
@@ -107,7 +107,7 @@ namespace RED.ViewModels.Modules
         {
             _rovecomm.SendCommand(new Packet("UnderglowColor", new byte[] { 0, 0, 0 }, 3, (byte)DataTypes.UINT8_T), true);
         }
-         
+
         private void TurnOnHeadlights()
         {
             _rovecomm.SendCommand(new Packet("Headlights", (byte)30), false);

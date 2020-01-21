@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RoverAttachmentManager.ViewModels.Science;
+using System;
 using System.IO;
 using RoverAttachmentManager.ViewModels.Science;
 
@@ -12,6 +13,5 @@ namespace RoverAttachmentManager.Models.Science
         internal ScienceSensorsViewModel _scienceSensors;
         internal ScienceActuationViewModel _scienceActuation;
         internal SpectrometerViewModel _spectrometer;
-
     }
 }
