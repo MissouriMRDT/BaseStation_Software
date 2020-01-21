@@ -7,12 +7,6 @@
              xmlns:vlc="clr-namespace:Vlc.DotNet.Wpf;assembly=Vlc.DotNet.Wpf"
              mc:Ignorable="d" 
              d:DesignHeight="911.6" d:DesignWidth="607.2">
-    <UserControl.Resources>
-        <Style x:Key="OverrideBtn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
-            <Setter Property="Content" Value="Enabled" />
-            <EventSetter Event="Click" Handler="OverrideButton_Click" />
-        </Style>
-    </UserControl.Resources>
     <Grid Margin="5">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="2*" />
@@ -79,29 +73,7 @@
                 </StackPanel>
             </Expander>
             <Expander Header="Control Features" IsExpanded="True" Margin="2.5">
-                <StackPanel>
-                    <Grid>
-						<Grid.RowDefinitions>
-							<RowDefinition />
-							<RowDefinition />
-							<RowDefinition />
-							<RowDefinition />
-							<RowDefinition />
-							<RowDefinition />
-						</Grid.RowDefinitions>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="auto" />
-							<ColumnDefinition Width="*" />
-						</Grid.ColumnDefinitions>
-						<Label Grid.Column="0" Grid.Row="0">Limit Override</Label>
-						<UniformGrid Rows="1" Grid.Column="1" Grid.Row="0">
-                            <ToggleButton Style="{StaticResource OverrideBtn}">All Joints</ToggleButton>
-                        </UniformGrid>
-						
-						<Label Grid.Column="0" Grid.Row="5">Tool:</Label>
-                        <Label Grid.Column="1" Grid.Row="5" x:Name="SelectedTool"/>
-                    </Grid>
-                </StackPanel>
+                <ContentControl x:Name="ControlFeatures"/>
             </Expander>
             <Expander Header="Arm Motor Power" IsExpanded="True" Margin="2.5">
                 <StackPanel>

@@ -184,18 +184,6 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 NotifyOfPropertyChange(() => SelectedPosition);
             }
         }
-        public byte SelectedTool
-        {
-            get
-            {
-                return _model.SelectedTool;
-            }
-            set
-            {
-                _model.SelectedTool = value;
-                NotifyOfPropertyChange(() => SelectedTool);
-            }
-        }
         public ArmPowerViewModel ArmPower
         {
             get
@@ -218,6 +206,18 @@ namespace RoverAttachmentManager.ViewModels.Arm
             {
                 _model._controlMultipliers = value;
                 NotifyOfPropertyChange(() => ControlMultipliers);
+            }
+        }
+        public ControlFeaturesViewModel ControlFeatures
+        {
+            get
+            {
+                return _model._controlFeatures;
+            }
+            set
+            {
+                _model._controlFeatures = value;
+                NotifyOfPropertyChange(() => ControlFeatures);
             }
         }
         public float CoordinateX
@@ -350,6 +350,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
         {
             _model = new ArmModel();
             ControlMultipliers = new ControlMultipliersViewModel();
+            ControlFeatures = new ControlFeaturesViewModel(networkMessenger, idResolver, log, configs);
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _log = log;
@@ -486,11 +487,11 @@ namespace RoverAttachmentManager.ViewModels.Arm
             ArmBaseBend = (Int16)(-ControllerBase.TwoButtonToggleDirection(values["BaseBendDirection"] != 0, (values["BaseBendMagnitude"])) * ControlMultipliers.BaseRangeFactor);
 
             float gripperAmmount = ControllerBase.TwoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0);
-            if (SelectedTool == 0)
+            if (ControlFeatures.SelectedTool == 0)
             {
                 Gripper = (Int16)(gripperAmmount * ControlMultipliers.GripperRangeFactor);
             }
-            else if (SelectedTool == 1)
+            else if (ControlFeatures.SelectedTool == 1)
             {
                 Gripper2 = (Int16)(gripperAmmount * ControlMultipliers.Gripper2RangeFactor);
             }
@@ -508,17 +509,17 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 _rovecomm.SendCommand(new Packet("GripperSwap", data, 8, (byte)DataTypes.INT16_T));
             }
 
-            if (values["SwitchTool"] == 1 && previousTool == SelectedTool)
+            if (values["SwitchTool"] == 1 && previousTool == ControlFeatures.SelectedTool)
             {
-                if (++SelectedTool > 1)
+                if (++ControlFeatures.SelectedTool > 1)
                 {
-                    SelectedTool = 0;
+                    ControlFeatures.SelectedTool = 0;
                 }
                 //_rovecomm.SendCommand(new Packet("ToolSelection", SelectedTool));
             }
             else if (values["SwitchTool"] == 0)
             {
-                previousTool = SelectedTool;
+                previousTool = ControlFeatures.SelectedTool;
             }
             if (values["LaserToggle"] == 1)
             {
@@ -657,17 +658,17 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 _rovecomm.SendCommand(new Packet("GripperSwap", data, 8, (byte)DataTypes.INT16_T));
             }
 
-            if (values["SwitchTool"] == 1 && previousTool == SelectedTool)
+            if (values["SwitchTool"] == 1 && previousTool == ControlFeatures.SelectedTool)
             {
-                if (++SelectedTool > 2)
+                if (++ControlFeatures.SelectedTool > 2)
                 {
-                    SelectedTool = 0;
+                    ControlFeatures.SelectedTool = 0;
                 }
-                _rovecomm.SendCommand(new Packet("ToolSelection", SelectedTool));
+                _rovecomm.SendCommand(new Packet("ToolSelection", ControlFeatures.SelectedTool));
             }
             else if (values["SwitchTool"] == 0)
             {
-                previousTool = SelectedTool;
+                previousTool = ControlFeatures.SelectedTool;
             }
 
             if (values["LaserToggle"] == 1)
@@ -731,14 +732,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
             _rovecomm.SendCommand(new Packet("ToggleAutoPositionTelem"));
         }
 
-        public void LimitSwitchOverride()
-        {
-            _rovecomm.SendCommand(new Packet("LimitSwitchOverride", (byte)1), true);
-        }
-        public void LimitSwitchUnOverride()
-        {
-            _rovecomm.SendCommand(new Packet("LimitSwitchOverride", (byte)0), true);
-        }
+
 
         public void RecallPosition()
         {

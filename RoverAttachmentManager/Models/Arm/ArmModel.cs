@@ -8,7 +8,7 @@ namespace RoverAttachmentManager.Models.ArmModels
     internal class ArmModel
     {
         internal ControlMultipliersViewModel _controlMultipliers;
-
+        internal ControlFeaturesViewModel _controlFeatures;
         internal float AngleJ1;
         internal float AngleJ2;
         internal float AngleJ3;
@@ -29,7 +29,6 @@ namespace RoverAttachmentManager.Models.ArmModels
         internal float OpX;
         internal float OpY;
         internal float OpZ;
-        internal byte SelectedTool;
         internal ArmPowerViewModel ArmPower;
 
         internal class ArmPositionModel
