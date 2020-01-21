@@ -5,32 +5,30 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
+    
+    
+        <Grid Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
 
-    <Grid Margin="5">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"></ColumnDefinition>
-            <ColumnDefinition Width="2*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="125px"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="125px" MaxHeight="125px"></RowDefinition>
-            <RowDefinition Height="*" MinHeight="350px"></RowDefinition>
-        </Grid.RowDefinitions>
+            <GroupBox Header="Controls" Margin="5" Grid.Row="0" Grid.Column="0">
+                <ContentControl x:Name="Controls"/>
+            </GroupBox>
 
-        <GroupBox Header="Controls" Margin="5" Grid.Row="0" Grid.Column="0">
-            <ContentControl x:Name="Controls"/>
-        </GroupBox>
+            <GroupBox Header="State" Margin="5" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1">
+                <ContentControl x:Name="StateControl"/>
+            </GroupBox>
 
-        <GroupBox Header="State" Margin="5" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1">
-            <ContentControl x:Name="StateControl"/>
-        </GroupBox>
-
-        <GroupBox Header="Sent Waypoints" Margin="5" Grid.Row="1" Grid.RowSpan="2" Grid.Column="0">
-            <StackPanel Margin="16">
-            </StackPanel>
-        </GroupBox>
-
-
-    </Grid>
-
+            <GroupBox Header="Sent Waypoints" Margin="5" Grid.Row="1" Grid.RowSpan="2" Grid.Column="0">
+                <StackPanel Margin="16">
+                </StackPanel>
+            </GroupBox>
+        </Grid>
 </UserControl>
