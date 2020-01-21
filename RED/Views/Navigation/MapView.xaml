@@ -60,7 +60,7 @@
             </Button>
             <Label>Zoom:</Label>
             <Label Content="{Binding MainMap.Zoom}" Width="25" />
-            <Slider Value="{Binding MainMap.Zoom}" Minimum="1" Maximum="18" Width="100" Interval="1" IsSnapToTickEnabled="True" />
+            <Slider Value="{Binding MainMap.Zoom}" Minimum="1" Maximum="20" Width="150" Interval="1" IsSnapToTickEnabled="True" />
         </StackPanel>
     </Grid>
 

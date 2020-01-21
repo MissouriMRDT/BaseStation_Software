@@ -251,6 +251,7 @@ namespace Core.Configurations
                     new MetadataRecordContext(5101, "PitchHeadingRoll", ""),
                     new MetadataRecordContext(5102, "Lidar", ""),
                     new MetadataRecordContext(5103, "GPSTelem", ""),
+                    new MetadataRecordContext(5104, "RoverDistanceSession", "Distance in Miles the rover has traveled in the current session"),
                     //new MetadataRecordContext(1296, "GPSQuality", "Quality of GPS signal"),
                     //new MetadataRecordContext(1298, "GPSSpeed", "Speed of GPS delta"),
                     //new MetadataRecordContext(1299, "GPSSpeedAngle", "Angle of GPS delta in degrees"),
