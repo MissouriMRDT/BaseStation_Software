@@ -1,5 +1,6 @@
 ﻿using Core;
 using System;
+
 using RoverAttachmentManager.ViewModels.Autonomy;
 
 namespace RoverAttachmentManager.Models.Autonomy
@@ -9,6 +10,6 @@ namespace RoverAttachmentManager.Models.Autonomy
         internal WaypointManager Manager;
         internal ControlsViewModel Controls;
         internal StateControlViewModel _stateControl;
-        internal string _waypointsText = String.Empty;
+        internal SentWaypointsViewModel _sentWaypoints;
     }
 }

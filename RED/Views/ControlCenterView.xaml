@@ -55,34 +55,23 @@
                         <Expander Header="Power and BMS">
                             <ContentControl x:Name="Power" />
                         </Expander>
-                        <Expander Header="Lighting">
-                            <ContentControl x:Name="Lighting" />
-                        </Expander>
                     </StackPanel>
                 </StackPanel>
                 <Grid Grid.Column="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
                         <RowDefinition Height="*" />
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
 
-                    <Expander Grid.Row="0" Header="Sensors">
-                        <ContentControl x:Name="Sensor" />
-                    </Expander>
-                    <Expander Grid.Row="1" Header ="TaskTimer">
-                        <ContentControl x:Name="StopwatchTool"/>
-                    </Expander>
-                              
-                    <StackPanel Grid.Row="2" Margin="5">
-						<Button DockPanel.Dock="Bottom" x:Name="ResubscribeAll" Margin="0 0 0 5" >Resubscribe All</Button>
+                    <StackPanel Grid.Row="0" Margin="5">
+                        <Button DockPanel.Dock="Bottom" x:Name="ResubscribeAll">Resubscribe All</Button>
 						<Button DockPanel.Dock="Bottom" x:Name="NetworkManager" IsEnabled="{Binding NetworkManagerEnabled}" Content="Open Network Manager" Margin="0 0 0 5"/>
                         <Button DockPanel.Dock="Bottom" x:Name="AttachmentManager" IsEnabled="{Binding AttachmentManagerEnabled}" Content="Open Attachment Manager" Margin="0 0 0 5"/>
                     </StackPanel>
-                    <ContentControl Grid.Row="3" Margin="5" x:Name="Console" />
-                    <ContentControl Grid.Row="4" Margin="5" x:Name="InputManager"/>
+                    <ContentControl Grid.Row="1" Margin="5" x:Name="Console" />
+                    <ContentControl Grid.Row="2" Margin="5" x:Name="InputManager"/>
+
                 </Grid>
             </Grid>
         </TabItem>
