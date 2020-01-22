@@ -121,15 +121,23 @@
     <Compile Include="Models\Autonomy\SentWaypointsModel.cs" />
     <Compile Include="Models\Arm\ArmPowerModel.cs" />
     <Compile Include="Models\Arm\ControlMultipliersModel.cs" />
+    <Compile Include="Models\Autonomy\ControlsModel.cs" />
+    <Compile Include="Models\Autonomy\StateControlModel.cs" />
     <Compile Include="Models\InputManagerModel.cs" />
     <Compile Include="Models\InputSelectorModel.cs" />
     <Compile Include="Models\MainWindowModel.cs" />
     <Compile Include="Models\Science\ScienceActuationModel.cs" />
     <Compile Include="Models\Science\ScienceGraphModel.cs" />
     <Compile Include="Models\Science\ScienceModel.cs" />
+    <Compile Include="ViewModels\Autonomy\StateControlViewModel.cs" />
+    <Compile Include="Views\Autonomy\StateControlView.xaml.cs">
+      <DependentUpon>StateControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\Autonomy\ControlsViewModel.cs" />
     <Compile Include="ViewModels\Autonomy\SentWaypointsViewModel.cs" />
     <Compile Include="Views\Autonomy\SentWaypointsView.xaml.cs">
       <DependentUpon>SentWaypointsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\Science\ScienceSensorsModel.cs" />
     <Compile Include="Models\Science\SiteManagmentModel.cs" />
     <Compile Include="Models\Science\SpectrometerModel.cs" />
@@ -151,6 +159,9 @@
     </Compile>
     <Compile Include="Views\Arm\ControlMultipliersView.xaml.cs">
       <DependentUpon>ControlMultipliersView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Autonomy\ControlsView.xaml.cs">
+      <DependentUpon>ControlsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Science\ScienceSensorsView.xaml.cs">
       <DependentUpon>ScienceSensorsView.xaml</DependentUpon>
@@ -186,8 +197,16 @@
     </Page>
     <Page Include="Views\Science\SciencePowerView.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Arm\ControlMultipliersView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Autonomy\ControlsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Autonomy\StateControlView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Science\ScienceSensorsView.xaml">

@@ -23,7 +23,7 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
             set
             {
                 _model._waypointsText = value;
-                NotifyOfPropertyChange();
+                NotifyOfPropertyChange(()=>SentWaypointsText);
             }
         }
 
@@ -38,7 +38,7 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
             SentWaypointsText += tempstring;
         }
 
-        public void ClearSentWaypoints()
+        public void ClearAllWaypoints()
         {
             string wpclear = "--cleared--\n";
             SentWaypointsText += wpclear;
