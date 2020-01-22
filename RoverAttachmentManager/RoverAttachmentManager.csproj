@@ -133,6 +133,7 @@
     <Compile Include="ViewModels\Autonomy\SentWaypointsViewModel.cs" />
     <Compile Include="Views\Autonomy\SentWaypointsView.xaml.cs">
       <DependentUpon>SentWaypointsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\Science\ScienceSensorsModel.cs" />
     <Compile Include="Models\Science\SiteManagmentModel.cs" />
     <Compile Include="Models\Science\SpectrometerModel.cs" />
@@ -151,6 +152,8 @@
     </Compile>
     <Compile Include="RAMBootstrapper.cs" />
     <Page Include="Views\Arm\ControlMultipliersView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Autonomy\SentWaypointsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
