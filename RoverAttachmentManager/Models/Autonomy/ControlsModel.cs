@@ -11,5 +11,6 @@ namespace RoverAttachmentManager.Models.Autonomy
     class ControlsModel
     {
         internal WaypointManager Manager;
+        internal SentWaypointsViewModel SentWaypoints;
     }
 }

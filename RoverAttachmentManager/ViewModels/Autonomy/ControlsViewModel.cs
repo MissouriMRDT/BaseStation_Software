@@ -19,13 +19,23 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
 
         private readonly WaypointManager _waypointManager;
 
+        public SentWaypointsViewModel SentWaypoints
+        {
+          get
+          {
+            return _model.SentWaypoints;
+          }
+          set
+          {
+            _model.SentWaypoints = value;
+          }
+        }
+
         public void Enable() => _rovecomm.SendCommand(new Packet("AutonomousModeEnable"), true);
 
         public void Disable() => _rovecomm.SendCommand(new Packet("AutonomousModeDisable"), true);
 
-        public void ClearAllWaypoints() => _rovecomm.SendCommand(new Packet("WaypointsClearAll"), true);
-
-        public ControlsViewModel(IRovecomm networkMessenger)
+        public ControlsViewModel(IRovecomm networkMessenger, AutonomyViewModel parent)
         {
             _model = new ControlsModel();
             _rovecomm = networkMessenger;
@@ -40,7 +50,15 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
             Buffer.BlockCopy(BitConverter.GetBytes(waypoint.Latitude), 0, msg, 1 * sizeof(double), sizeof(double));
             Array.Reverse(msg);
 
+            SentWaypoints.SentWaypoints(waypoint);
+
             _rovecomm.SendCommand(new Packet("WaypointAdd", msg, 2, (byte)7), true);
+        }
+
+        public void ClearAllWaypoints()
+        {
+          _rovecomm.SendCommand(new Packet("WaypointsClearAll"), true);
+          SentWaypoints.ClearAllWaypoints();
         }
     }
 }

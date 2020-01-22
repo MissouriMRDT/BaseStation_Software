@@ -133,11 +133,11 @@
     <Compile Include="Views\Autonomy\StateControlView.xaml.cs">
       <DependentUpon>StateControlView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\Arm\ControlMultipliersViewModel.cs" />
     <Compile Include="ViewModels\Autonomy\ControlsViewModel.cs" />
     <Compile Include="ViewModels\Autonomy\SentWaypointsViewModel.cs" />
     <Compile Include="Views\Autonomy\SentWaypointsView.xaml.cs">
       <DependentUpon>SentWaypointsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\Science\ScienceSensorsModel.cs" />
     <Compile Include="Models\Science\SiteManagmentModel.cs" />
     <Compile Include="Models\Science\SpectrometerModel.cs" />
@@ -162,6 +162,7 @@
     </Compile>
     <Compile Include="Views\Autonomy\ControlsView.xaml.cs">
       <DependentUpon>ControlsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Science\ScienceSensorsView.xaml.cs">
       <DependentUpon>ScienceSensorsView.xaml</DependentUpon>
     </Compile>
@@ -196,6 +197,7 @@
     </Page>
     <Page Include="Views\Science\SciencePowerView.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Arm\ControlMultipliersView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -205,8 +207,8 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Autonomy\StateControlView.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Science\ScienceSensorsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
