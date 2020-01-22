@@ -16,7 +16,7 @@ namespace RoverNetworkManager.Models
             internal IPAddress Address;
             internal bool SupportsICMP;
             internal bool SupportsRoveComm;
-            internal long Result;
+            internal float Result;
             internal bool IsSendingICMP;
             internal bool IsSendingRoveComm;
             internal bool AutoModeEnabled;

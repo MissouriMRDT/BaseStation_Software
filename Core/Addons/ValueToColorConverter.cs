@@ -12,15 +12,11 @@ namespace Core.Addons
 {
     public class ValueToColorConverter : IValueConverter
     {
-        /*Actuation Motor: 20-0-15-0
-         *Auxiliary Motor: 15-0-10-0
-         *Logic/Comms: 5-0-3-0
-         *General Motor: 15-0-7-0
-         *Battery Temp: 75-22-38-0
-         *Pack Current: 80-0-50-0
-         *Pack Voltage: 33.6-20-25-1
-         *Cell Voltage: 4.2-2.5-3.1-1
-         *Boolean: 1-0-0.5- (0 if 0 should be green or 1 if 0 should be red)
+        /*To use this, you'll want something like
+         *Background="{Binding Path=Motor2Current, Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}"
+         *The converter parameter used here was the general accepted current range for a motor in 2018-2019
+         *This converter can also be used with the following parameters to convert booleans to red or green if desired
+         *Boolean: 1-0-0.5-(0 if 0 should be green or 1 if 0 should be red)
          */
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -39,15 +35,7 @@ namespace Core.Addons
 
             //This is the value coming in that the color should be based off of
             //The try/catch is because currently the ping cannot be cast as a float
-            float val;
-            try
-            {
-                val = (float)value;
-            }
-            catch
-            {
-                val = ToInt32(value);
-            }
+            float val = (float)value;
 
             //Intensity is the color value (out of 255) that is changing
             byte intensity;
@@ -111,9 +99,5 @@ namespace Core.Addons
             throw new NotImplementedException();
         }
 
-        private int ToInt32(object value)
-        {
-            return value == null ? 0 : ((IConvertible)value).ToInt32(null);
-        }
     }
 }

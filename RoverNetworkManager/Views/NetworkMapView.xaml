@@ -6,7 +6,6 @@
              xmlns:addons="clr-namespace:Core.Addons;assembly=Core"
              mc:Ignorable="d">
     <UserControl.Resources>
-
         <addons:ValueToColorConverter x:Key="ColorConverter" />
     </UserControl.Resources>
 
