@@ -102,7 +102,6 @@
     <Compile Include="Interfaces\IRovecomm.cs" />
     <Compile Include="Interfaces\IRovecommReceiver.cs" />
     <Compile Include="Interfaces\Network\IIPAddressProvider.cs" />
-    <Compile Include="Interfaces\Network\INetworkTransportProtocol.cs" />
     <Compile Include="Interfaces\Network\IServerProvider.cs" />
     <Compile Include="CommonLog.cs" />
     <Compile Include="Models\Input\Controllers\KeyboardInputModel.cs" />

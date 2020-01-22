@@ -48,11 +48,11 @@ namespace Core.RoveProtocol
             allDeviceIPs = metadataManager.GetAllIPAddresses();
 
             networkClientUDP = new UDPEndpoint(DestinationPort, DestinationPort);
-            networkClientTCP = new TCPEndpoint(DestinationReliablePort, DestinationReliablePort);
+            networkTCPClients = new List<TCPEndpoint>();
 
             // Listen for packets from the network
             UDPListen();
-            //TCPListen();
+            TCPListen();
         }
 
         public static Rovecomm Instance
@@ -77,8 +77,8 @@ namespace Core.RoveProtocol
         private Dictionary<string, List<IRovecommReceiver>> registrations;
         private Dictionary<IPAddress, SubscriptionRecord> subscriptions;
 
-        private INetworkTransportProtocol networkClientUDP;
-        private INetworkTransportProtocol networkClientTCP;
+        private UDPEndpoint networkClientUDP;
+        private List<TCPEndpoint> networkTCPClients;
         private const bool EnableReliablePackets = false;
 
         private async void UDPListen()
@@ -94,8 +94,16 @@ namespace Core.RoveProtocol
         {
             while (true)
             {
-                Tuple<IPAddress, byte[]> result = await networkClientTCP.ReceiveMessage();
-                HandleReceivedPacket(result.Item1, result.Item2);
+                foreach(TCPEndpoint client in networkTCPClients)
+                {
+                    if(client.PacketWaiting())
+                    {
+                        Tuple<IPAddress, byte[]> result = await client.ReceiveMessage();
+                        HandleReceivedPacket(result.Item1, result.Item2);
+                    }
+                }
+
+                await Task.Delay(10);
             }
         }
 
@@ -267,7 +275,16 @@ namespace Core.RoveProtocol
         {
             try
             {
-                await networkClientTCP.SendMessage(destIP, packetData);
+                foreach(TCPEndpoint client in networkTCPClients)
+                {
+                    if(client.serverIP.Equals(destIP))
+                    {
+                        await client.SendMessage(packetData);
+                        return;
+                    }
+                }
+
+                throw new Exception();
             }
             catch
             {

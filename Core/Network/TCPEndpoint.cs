@@ -10,26 +10,29 @@ using System.Threading.Tasks;
 
 namespace Core.Network
 {
-    public class TCPEndpoint : INetworkTransportProtocol
+    public class TCPEndpoint
     {
         private TcpClient client;
-        private ushort remotePort;
-        private ushort localPort;
+        private readonly ushort port;
+        public readonly IPAddress serverIP;
 
-        public TCPEndpoint(ushort localPort, ushort remotePort)
+        public TCPEndpoint(IPAddress serverIP, ushort port)
         {
             // hack for basic POC implementation
             client = new TcpClient();
-            this.localPort = localPort;
-            this.remotePort = remotePort;
+            this.port = port;
+            this.serverIP = serverIP;
+            client.ConnectAsync(this.serverIP, this.port);
         }
 
-        public async Task SendMessage(IPAddress destIP, byte[] data)
+        public async Task SendMessage(byte[] data)
         {
-            // you can probably rejse the connection
-            await client.ConnectAsync(destIP, remotePort);
-            await Task.Delay(25); //boards can get overwhelmed and fault if done too quick.
             await client.GetStream().WriteAsync(data, 0, data.Length);
+        }
+
+        public bool PacketWaiting()
+        {
+            return client.Available > 0;
         }
 
         public async Task<Tuple<IPAddress, byte[]>> ReceiveMessage()
