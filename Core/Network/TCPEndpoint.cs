@@ -35,6 +35,11 @@ namespace Core.Network
             return client.Available > 0;
         }
 
+        public bool IsConnected()
+        {
+            return client.Connected;
+        }
+
         public async Task<Tuple<IPAddress, byte[]>> ReceiveMessage()
         {
             NetworkStream networkStream = client.GetStream();

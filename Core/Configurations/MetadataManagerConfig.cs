@@ -5,7 +5,7 @@ namespace Core.Configurations
     public static class MetadataManagerConfig
     {
         internal static MetadataSaveContext RovecommTwoMetadata = new MetadataSaveContext(new[] {
-            new MetadataServerContext("Drive Board", "192.168.1.134", "01") {
+            new MetadataServerContext("Drive Board", "192.168.1.134", "11001") {
                 Commands = new[] {
                     new MetadataRecordContext(1000, "DriveLeftRight", "Left wheels speed followed by right wheels speed"),
                     new MetadataRecordContext(1001, "SpeedRamp", "Controls the accleration limit, ms to full speed"),
@@ -15,7 +15,7 @@ namespace Core.Configurations
                     new MetadataRecordContext(1100, "DriveWatchdogTriggered", "")
                 }
             },
-            new MetadataServerContext("Arm Board", "192.168.1.131", "08") {
+            new MetadataServerContext("Arm Board", "192.168.1.131", "11008") {
                 Commands = new[]
                 {
                     new MetadataRecordContext(8000, "ArmToAngle", "All values for the arm together. Armj1-j6."),
@@ -34,7 +34,7 @@ namespace Core.Configurations
                 }
             },
 
-            new MetadataServerContext("BMS Board", "192.168.1.133", "02") {
+            new MetadataServerContext("BMS Board", "192.168.1.133", "11002") {
                 Commands = new[] {
                     new MetadataRecordContext(2000, "BMSStop", "BMS E-stop. WARNING: Kills all rover power. Cannot be reversed remotely!")
                 },
@@ -46,7 +46,7 @@ namespace Core.Configurations
                 }
             },
 
-            new MetadataServerContext("Power Board", "192.168.1.132", "03") {
+            new MetadataServerContext("Power Board", "192.168.1.132", "11003") {
                 Commands = new[] {
                     new MetadataRecordContext(3000, "PowerBusEnableDisable", "Enables or Disables power bus"),
                 },
@@ -55,7 +55,7 @@ namespace Core.Configurations
                     new MetadataRecordContext(3101, "PowerBusStatus", "")
                 }
             },
-            new MetadataServerContext("NavCamera Board", "192.168.1.136", "05") {
+            new MetadataServerContext("NavCamera Board", "192.168.1.136", "11005") {
                 Commands = new[]
                 {
                     new MetadataRecordContext(5000, "CalibrateIMU", "")
@@ -74,13 +74,13 @@ namespace Core.Configurations
                     new MetadataRecordContext(4000, "CameraMuxChannel1", "Selection for Camera Mux Channel"),
                 }
             },
-            new MetadataServerContext("Gimbal Board", "192.168.1.135", "06") {
+            new MetadataServerContext("Gimbal Board", "192.168.1.135", "11006") {
                 Commands = new[] {
                     new MetadataRecordContext(6002, "MainGimbalIncrement", "pan, tilt"),
                     new MetadataRecordContext(6004, "DriveGimbalIncrement", "pan, tilt")
                 }
             },
-            new MetadataServerContext("ScienceSensors Board", "192.168.1.138", "10") {
+            new MetadataServerContext("ScienceSensors Board", "192.168.1.138", "11010") {
                 Commands = new[] {
                     new MetadataRecordContext(10000, "RunSpectrometer", "Sends command to begin the spectrometer sequence."),
                     new MetadataRecordContext(10001, "UVLedControl", "Control of light source."),
@@ -89,7 +89,7 @@ namespace Core.Configurations
                     new MetadataRecordContext(10100, "ScienceSensors", "Sensor data [AirT, AirM, SoilT, SoilM, Methane]"),
                 }
             },
-            new MetadataServerContext("ScienceAcutation Board", "192.168.1.137", "09") {
+            new MetadataServerContext("ScienceAcutation Board", "192.168.1.137", "11009") {
                 Commands = new[] {
                     new MetadataRecordContext(9000, "Screw", "-1000 to 1000 open loop for screw control"),
                     new MetadataRecordContext(9001, "ScrewAbsoluteSetPosition", ""),
@@ -102,7 +102,7 @@ namespace Core.Configurations
                     new MetadataRecordContext(9100, "ScrewAtPos", "byte"),
                 }
             },
-            new MetadataServerContext("Autonomy Board", "192.168.1.139", "11") {
+            new MetadataServerContext("Autonomy Board", "192.168.1.139", "11011") {
                 Commands = new[] {
                     new MetadataRecordContext(11100, "AutonomousModeEnable", ""),
                     new MetadataRecordContext(11101, "AutonomousModeDisable", ""),
@@ -114,7 +114,7 @@ namespace Core.Configurations
                     new MetadataRecordContext(2580, "WaypointReached", "")
                 }
             },
-            new MetadataServerContext("Lighting Board", "192.168.1.142", "07") {
+            new MetadataServerContext("Lighting Board", "192.168.1.142", "11007") {
                 Commands = new[] {
                     new MetadataRecordContext(7000, "Headlights", "Headlights for the front of rover"),
                     new MetadataRecordContext(7001, "UnderglowColor", "rgb byte[]"),

@@ -70,7 +70,6 @@ namespace Core.RoveProtocol
         }
 
         private const ushort DestinationPort = 11000;
-        private const ushort DestinationReliablePort = 11001;
 
         private readonly Server[] allDevices;
         private readonly MetadataManager metadataManager;
@@ -138,7 +137,7 @@ namespace Core.RoveProtocol
         /// <param name="deviceIP">The ip address of the device to request</param>
         public void SubscribeTo(IPAddress deviceIP)
         {
-            SendCommand(Packet.Create("Subscribe"), true, deviceIP);
+            SendCommand(Packet.Create("Subscribe"), false, deviceIP);
 
             if (subscriptions.ContainsKey(deviceIP))
             {
@@ -162,6 +161,7 @@ namespace Core.RoveProtocol
             foreach (Server device in allDevices)
             {
                 SubscribeTo(device.Address);
+                log.Log($"TCP to { device.Address } with { device.TCPPort}");
                 networkTCPClients.Add(new TCPEndpoint(device.Address, device.TCPPort));
             }
             
@@ -253,7 +253,7 @@ namespace Core.RoveProtocol
 
             byte[] packetData = RovecommTwo.EncodePacket(packet, metadataManager);
 
-            if (reliable && EnableReliablePackets)
+            if (reliable)
             {
                 SendPacketReliable(destIP, packetData);
             }
@@ -281,7 +281,7 @@ namespace Core.RoveProtocol
             {
                 foreach(TCPEndpoint client in networkTCPClients)
                 {
-                    if(client.serverIP.Equals(destIP))
+                    if(client.serverIP.Equals(destIP) && client.IsConnected())
                     {
                         await client.SendMessage(packetData);
                         return;
