@@ -117,7 +117,6 @@
     <Compile Include="RoveProtocol\MetadataManager.cs" />
     <Compile Include="RoveProtocol\PingManager.cs" />
     <Compile Include="RoveProtocol\Rovecomm.cs" />
-    <Compile Include="RoveProtocol\RovecommOne.cs" />
     <Compile Include="RoveProtocol\RovecommTwo.cs" />
     <Compile Include="RoveProtocol\SubscriptionRecord.cs" />
     <Compile Include="ViewModels\Input\ControllerBase.cs" />
