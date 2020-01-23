@@ -19,14 +19,15 @@ namespace RED.Views {
 		}
 
 		private void CameraTest_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+            Image camera = (Image)sender;
+            index = (int)camera.Tag;
+
 			if (e.RightButton == System.Windows.Input.MouseButtonState.Pressed) {
 				CameraMultiplexer.Screenshot(index);
 			}
 
 			else if(e.LeftButton == System.Windows.Input.MouseButtonState.Pressed) {
 				CameraMultiplexer.RemoveAllSurfaces(index);
-				if (++index > CameraMultiplexer.TotalCameraFeeds) { index = 1; }
-
 				CameraMultiplexer.AddSurface(index, CameraTest);
 			}
 		}
