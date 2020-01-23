@@ -10,6 +10,7 @@ using Core.Configurations;
 using Core.Network;
 using System.IO;
 using Core.Models;
+using Core.Addons.Network;
 
 namespace Core.RoveProtocol
 {
@@ -45,7 +46,7 @@ namespace Core.RoveProtocol
             registrations = new Dictionary<string, List<IRovecommReceiver>>();
             subscriptions = new Dictionary<IPAddress, SubscriptionRecord>();
 
-            allDeviceIPs = metadataManager.GetAllIPAddresses();
+            allDevices = metadataManager.GetServerList();
 
             networkClientUDP = new UDPEndpoint(DestinationPort, DestinationPort);
             networkTCPClients = new List<TCPEndpoint>();
@@ -71,7 +72,7 @@ namespace Core.RoveProtocol
         private const ushort DestinationPort = 11000;
         private const ushort DestinationReliablePort = 11001;
 
-        private readonly IPAddress[] allDeviceIPs;
+        private readonly Server[] allDevices;
         private readonly MetadataManager metadataManager;
         private readonly CommonLog log = CommonLog.Instance;
         private Dictionary<string, List<IRovecommReceiver>> registrations;
@@ -156,11 +157,14 @@ namespace Core.RoveProtocol
         /// </summary>
         public void SubscribeToAll()
         {
-            foreach(IPAddress deviceIP in allDeviceIPs)
-            {
-                SubscribeTo(deviceIP);
-            }
+            networkTCPClients.RemoveRange(0, networkTCPClients.Count);
 
+            foreach (Server device in allDevices)
+            {
+                SubscribeTo(device.Address);
+                networkTCPClients.Add(new TCPEndpoint(device.Address, device.TCPPort));
+            }
+            
             log.Log("Telemetry Subscriptions Sent");
         }
 
