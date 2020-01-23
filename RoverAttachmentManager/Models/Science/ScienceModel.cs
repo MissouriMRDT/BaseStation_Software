@@ -13,5 +13,6 @@ namespace RoverAttachmentManager.Models.Science
         internal ScienceSensorsViewModel _scienceSensors;
         internal ScienceActuationViewModel _scienceActuation;
         internal SpectrometerViewModel _spectrometer;
+        internal SciencePowerViewModel _sciencePower;
     }
 }

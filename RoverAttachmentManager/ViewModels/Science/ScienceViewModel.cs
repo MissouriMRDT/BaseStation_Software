@@ -92,6 +92,18 @@ namespace RoverAttachmentManager.ViewModels.Science
                 NotifyOfPropertyChange(() => ScienceSensors);
             }
         }
+        public SciencePowerViewModel SciencePower
+        {
+            get
+            {
+                return _model._sciencePower;
+            }
+            set
+            {
+                _model._sciencePower = value;
+                NotifyOfPropertyChange(() => SciencePower);
+            }
+        }
 
         public ScienceViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
@@ -101,6 +113,7 @@ namespace RoverAttachmentManager.ViewModels.Science
             ScienceActuation = new ScienceActuationViewModel(networkMessenger, idResolver, log);
             Spectrometer = new SpectrometerViewModel(networkMessenger, idResolver, log, this);
             ScienceSensors = new ScienceSensorsViewModel(networkMessenger, idResolver, log, this);
+            SciencePower = new SciencePowerViewModel(networkMessenger, idResolver, log);
 
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
