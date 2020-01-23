@@ -1,6 +1,7 @@
 ﻿using Core.Cameras;
 using RED.ViewModels;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace RED.Views {
 	public partial class ControlCenterView {
@@ -30,6 +31,10 @@ namespace RED.Views {
 				CameraMultiplexer.RemoveAllSurfaces(index);
 				CameraMultiplexer.AddSurface(index, CameraTest);
 			}
+
+            else if(e.MiddleButton == System.Windows.Input.MouseButtonState.Pressed) {
+                camera.RenderTransform = new RotateTransform(90);
+            }
 		}
 
 		private void MainTabs_SelectionChanged(object sender, SelectionChangedEventArgs e)
