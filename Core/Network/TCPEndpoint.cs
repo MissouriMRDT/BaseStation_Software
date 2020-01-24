@@ -32,7 +32,7 @@ namespace Core.Network
 
         public bool PacketWaiting()
         {
-            return client.Available > 0;
+            return IsConnected() && client.GetStream().DataAvailable;
         }
 
         public bool IsConnected()
@@ -55,7 +55,7 @@ namespace Core.Network
                 } while (networkStream.DataAvailable);
             }
 
-            return Tuple.Create(IPAddress.Parse(client.Client.RemoteEndPoint.ToString()), readBuffer);
+            return Tuple.Create(serverIP, readBuffer);
         }
     }
 }
