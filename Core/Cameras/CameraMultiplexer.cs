@@ -80,9 +80,11 @@ namespace Core.Cameras {
 			feeds[index - 1].RenderSurfaces.Add(surface);
 		}
 
-		public static void RemoveAllSurfaces(int index) {
-			if (index > feeds.Count) throw new ArgumentOutOfRangeException("Passed camera index is not valid");
-			feeds[index - 1].RenderSurfaces.Clear();
+		public static void RemoveSurface(Image surface) {
+			for(int i = 0; i <= TotalCameraFeeds - 1; i++) {
+				Image match = feeds[i].RenderSurfaces.Find(new Predicate<Image>(x => x.Name == surface.Name));
+				if(match != null) feeds[i].RenderSurfaces.Remove(match);
+			}
 		}
 
 		/// <summary>
