@@ -18,7 +18,7 @@ namespace Core.Cameras {
 		/// <summary>
 		/// Returns the total number of connected cameras.
 		/// </summary>
-		public static int TotalCameraFeeds { get; private set; } = 3;
+		public static int TotalCameraFeeds { get; private set; } = 4;
 
 		/// <summary>
 		/// Initialize the multiplexer. Must be called before any feeds are accessed.
