@@ -13,7 +13,7 @@ namespace RED.Views.Tools
             InitializeComponent();
         }
 
-        private void FixTime_Click(object sender, RoutedEventArgs e)
+    /*    private void FixTime_Click(object sender, RoutedEventArgs e)
         {
             FixContextMenu.IsEnabled = true;
             FixContextMenu.PlacementTarget = (Button)sender;
@@ -24,7 +24,7 @@ namespace RED.Views.Tools
         private void SetTime_Click(object sender, RoutedEventArgs e)
         {
             FixContextMenu.IsOpen = false;
-        }
+        }*/
 
         private void EditTime_Click(object sender, RoutedEventArgs e)
         {
@@ -33,5 +33,7 @@ namespace RED.Views.Tools
             EditContextMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
             EditContextMenu.IsOpen = true;
         }
-    }
+
+		
+	}
 }
