@@ -83,13 +83,22 @@ namespace Core.Cameras {
 		}
 
 		/// <summary>
-		/// Adds a rendering surface to display the output from a camera.
+		/// Adds a rendering surface to display the output from a camera. This function is provided for backwards compatibility and will be removed in a future release.
 		/// </summary>
-		/// <param name="index">Index of the camera feed to display.</param>
-		/// <param name="surface">Name of an Image to display on.</param>
-		public static void AddSurface(int index, Image surface) {
+		[Obsolete]
+		public static void AddSurface(int index, Image surface)
+		{
 			if (index > feeds.Count) throw new ArgumentOutOfRangeException("Passed camera index is not valid");
 			feeds[index - 1].RenderSurfaces.Add(surface);
+		}
+
+		/// <summary>
+		/// Adds a rendering surface to display the output from a camera.
+		/// </summary>
+		/// <param name="camera">Camera feed to display.</param>
+		/// <param name="surface">Name of an Image to display on.</param>
+		public static void AddSurface(Camera camera, Image surface) {
+			AddSurface((int)camera, surface);
 		}
 
 		public static void RemoveSurface(Image surface) {
@@ -100,10 +109,21 @@ namespace Core.Cameras {
 		}
 
 		/// <summary>
-		/// Gets the last displayed frame from a camera.
+		/// Saves and returns the last displayed frame from a camera.
 		/// </summary>
-		/// <param name="index">Index of the camera feed to screenshot</param>
+		/// <param name="camera">Camera stream to screenshot</param>
 		/// <returns>Bitmap image of the feed</returns>
+		public static System.Drawing.Bitmap Screenshot(Camera camera)
+		{
+			return Screenshot((int)camera);
+		}
+
+		/// <summary>
+		/// Saves and returns the last displayed frame from a camera. This function is provided for backwards compatibility and will be removed in a future release.
+		/// </summary>
+		/// <param name="index"></param>
+		/// <returns></returns>
+		[Obsolete]
 		public static System.Drawing.Bitmap Screenshot(int index) {
 			if (index > feeds.Count) throw new ArgumentOutOfRangeException("Passed camera index is not valid");
 			System.Drawing.Bitmap img = ConvertBitmapImageToBitmap(feeds[index - 1].LastFrame);
@@ -175,5 +195,19 @@ namespace Core.Cameras {
 			feeds[index - 1].LastFrame = e.BitmapImage;
 			feeds[index - 1].LastFrameTime = DateTime.Now;
 		}
+	}
+
+	public enum Camera
+	{
+		LeftGimbal = 1,
+		RightGimbal,
+		LeftSuspension,
+		RightSuspension,
+		LeftEndEffector,
+		RightEndEffector,
+		Elbow,
+		Actuation,
+		SensorBox,
+		Carousel
 	}
 }
