@@ -8,7 +8,11 @@ using System.IO;
 
 namespace Core.Cameras {
 	public static class CameraMultiplexer {
-		private static readonly string BASE_ADDRESS = "192.168.1.50";
+		private static readonly List<string> BASE_ADDRESSES = new List<string>()
+		{
+			"192.168.1.50",
+			"192.168.1.51"
+		};
 
 		private static bool initialized = false;
 		static List<FeedInfo> feeds = new List<FeedInfo>();
@@ -30,7 +34,7 @@ namespace Core.Cameras {
 			}
 			
 			for(int i = 1; i <= TotalCameraFeeds; i++) {
-				Uri uri = new Uri($"http://{BASE_ADDRESS}:8080/{i}/stream");
+				Uri uri = ConstructAddress(i);
 
 				MjpegDecoder add = new MjpegDecoder();
 				add.ParseStream(uri);
@@ -52,6 +56,14 @@ namespace Core.Cameras {
 			watchdog.Start();
 
 			initialized = true;
+		}
+
+		private static Uri ConstructAddress(int camera)
+		{
+			int index = (camera <= 4) ? 0 : 1;
+			string addr = BASE_ADDRESSES[index];
+
+			return new Uri($"http://{addr}:8080/{camera}/stream");
 		}
 
 		/// <summary>
@@ -97,7 +109,7 @@ namespace Core.Cameras {
 			System.Drawing.Bitmap img = ConvertBitmapImageToBitmap(feeds[index - 1].LastFrame);
 
 			DateTime now = DateTime.Now;
-			string fn = $"camera{index}-{now.Year}-{now.Month}-{now.Day}-{now.Hour}-{now.Minute}-{now.Second}.jpg";
+			string fn = $"camera{Pad(index)}-{Pad(now.Year)}-{Pad(now.Month)}-{Pad(now.Day)}_{Pad(now.Hour)}-{Pad(now.Minute)}-{Pad(now.Second)}.jpg";
 
 			string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Rover Screenshots");
 			Directory.CreateDirectory(path);
@@ -108,6 +120,11 @@ namespace Core.Cameras {
 			CommonLog.Instance.Log("Screenshot of camera stream {0} saved to {1}", index, path);
 
 			return img;
+		}
+
+		public static string Pad(int raw)
+		{
+			return raw.ToString().PadLeft(2, '0');
 		}
 
 		/// <summary>
