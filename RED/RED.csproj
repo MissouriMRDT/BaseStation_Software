@@ -126,14 +126,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Addons\AuxiliaryAmpToColorValueConverter.cs" />
-    <Compile Include="Addons\ActuationMotorAmpToColorValueConverter.cs" />
-    <Compile Include="Addons\LogicCommsAmpToColorValueConverter.cs" />
-    <Compile Include="Addons\TempToColorValueConverter.cs" />
-    <Compile Include="Addons\TotalAmpToColorValueConverter.cs" />
-    <Compile Include="Addons\TotalVoltToColorValueConverter.cs" />
-    <Compile Include="Addons\VoltToColorValueConverter.cs" />
-    <Compile Include="Addons\MotorAmpToColorValueConverter.cs" />
     <Compile Include="Addons\Navigation\GMapMarkerCollectionMultiConverter.cs" />
     <Compile Include="Addons\Navigation\GPSCoordinate.cs" />
     <Compile Include="Addons\Navigation\GPSCoordinateToLongitudeConverter.cs" />

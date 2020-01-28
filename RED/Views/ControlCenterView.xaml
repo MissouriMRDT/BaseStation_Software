@@ -65,7 +65,7 @@
                     </Grid.RowDefinitions>
 
                     <StackPanel Grid.Row="0" Margin="5">
-                        <Button DockPanel.Dock="Bottom" x:Name="ResubscribeAll">Resubscribe All</Button>
+                        <Button DockPanel.Dock="Bottom" x:Name="ResubscribeAll" Margin="0 0 0 5">Resubscribe All</Button>
 						<Button DockPanel.Dock="Bottom" x:Name="NetworkManager" IsEnabled="{Binding NetworkManagerEnabled}" Content="Open Network Manager" Margin="0 0 0 5"/>
                         <Button DockPanel.Dock="Bottom" x:Name="AttachmentManager" IsEnabled="{Binding AttachmentManagerEnabled}" Content="Open Attachment Manager" Margin="0 0 0 5"/>
                     </StackPanel>

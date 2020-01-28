@@ -1,5 +1,5 @@
 ﻿<UserControl x:Class="RED.Views.Modules.PowerView"
-             xmlns:addons="clr-namespace:RED.Addons"
+             xmlns:addons="clr-namespace:Core.Addons;assembly=Core"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -8,11 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="350">
     <UserControl.Resources>
-        <addons:MotorAmpToColorValueConverter x:Key="AmpConverter" />
-        <addons:TotalAmpToColorValueConverter x:Key="TotalAmpConverter" />
-        <addons:VoltToColorValueConverter x:Key="VoltConverter" />
-        <addons:TotalVoltToColorValueConverter x:Key="TotalVoltConverter" />
-        <addons:TempToColorValueConverter x:Key="TempConverter" />
+        <addons:ValueToColorConverter x:Key="ColorConverter" />
 
 
         <Style x:Key="EnableBtn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
@@ -91,45 +87,45 @@
 
             <ToggleButton Grid.Row="0" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="8" IsChecked="{Binding Path=Status[8]}"/>
             <Label Grid.Row="0" Grid.Column="1" Background="{Binding Path=Motor1Current, 
-                   Converter={StaticResource AmpConverter}, Mode=Default}">Motor LF</Label>
+                   Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}">Motor LF</Label>
             <Label Grid.Row="0" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="Motor1Current"
-                   Background="{Binding Path=Motor1Current, Converter={StaticResource AmpConverter}, Mode=Default}"/>
+                   Background="{Binding Path=Motor1Current, Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}"/>
 
             <ToggleButton Grid.Row="1" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="9" IsChecked="{Binding Path=Status[9]}"/>
             <Label Grid.Row="1" Grid.Column="1" Background="{Binding Path=Motor2Current, 
-                    Converter={StaticResource AmpConverter}, Mode=Default}">Motor LM</Label>
+                    Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}">Motor LM</Label>
             <Label Grid.Row="1" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="Motor2Current" 
-                   Background="{Binding Path=Motor2Current, Converter={StaticResource AmpConverter}, Mode=Default}"/>
+                   Background="{Binding Path=Motor2Current, Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}"/>
 
             <ToggleButton Grid.Row="2" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="10" IsChecked="{Binding Path=Status[10]}"/>
             <Label Grid.Row="2" Grid.Column="1" Background="{Binding Path=Motor3Current, 
-                    Converter={StaticResource AmpConverter}, Mode=Default}">Motor LB</Label>
+                    Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}">Motor LB</Label>
             <Label Grid.Row="2" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="Motor3Current" 
-                   Background="{Binding Path=Motor3Current, Converter={StaticResource AmpConverter}, Mode=Default}"/>
+                   Background="{Binding Path=Motor3Current, Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}"/>
 
             <ToggleButton Grid.Row="3" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="8" IsChecked="{Binding Path=Status[8]}"/>
             <Label Grid.Row="3" Grid.Column="1" Background="{Binding Path=Motor4Current, 
-                    Converter={StaticResource AmpConverter}, Mode=Default}">Motor RF</Label>
+                    Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}">Motor RF</Label>
             <Label Grid.Row="3" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="Motor4Current" 
-                   Background="{Binding Path=Motor4Current, Converter={StaticResource AmpConverter}, Mode=Default}"/>
+                   Background="{Binding Path=Motor4Current, Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}"/>
 
             <ToggleButton Grid.Row="4" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="9" IsChecked="{Binding Path=Status[9]}"/>
             <Label Grid.Row="4" Grid.Column="1" Background="{Binding Path=Motor5Current, 
-                    Converter={StaticResource AmpConverter}, Mode=Default}">Motor RM</Label>
+                    Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}">Motor RM</Label>
             <Label Grid.Row="4" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="Motor5Current" 
-                   Background="{Binding Path=Motor5Current, Converter={StaticResource AmpConverter}, Mode=Default}"/>
+                   Background="{Binding Path=Motor5Current, Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}"/>
 
             <ToggleButton Grid.Row="5" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="10" IsChecked="{Binding Path=Status[10]}"/>
             <Label Grid.Row="5" Grid.Column="1" Background="{Binding Path=Motor6Current, 
-                    Converter={StaticResource AmpConverter}, Mode=Default}">Motor RB</Label>
+                    Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}">Motor RB</Label>
             <Label Grid.Row="5" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="Motor6Current" 
-                   Background="{Binding Path=Motor6Current, Converter={StaticResource AmpConverter}, Mode=Default}"/>
+                   Background="{Binding Path=Motor6Current, Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}"/>
 
             <ToggleButton Grid.Row="6" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="11" IsChecked="{Binding Path=Status[11]}"/>
             <Label Grid.Row="6" Grid.Column="1" Background="{Binding Path=Motor7Current, 
-                    Converter={StaticResource AmpConverter}, Mode=Default}">Motor Extra</Label>
+                    Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}">Motor Extra</Label>
             <Label Grid.Row="6" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="Motor7Current" 
-                   Background="{Binding Path=Motor7Current, Converter={StaticResource AmpConverter}, Mode=Default}"/>
+                   Background="{Binding Path=Motor7Current, Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}"/>
 
             <ToggleButton Grid.Row="7" Grid.Column="0" Height="27" VerticalAlignment="Bottom" Style="{StaticResource AllMotorBtn}"/>
             <Label Grid.Row="7" Grid.Column="1">All motors</Label>
@@ -137,32 +133,32 @@
 
             <ToggleButton Grid.Row="0" Grid.Column="3" Style="{StaticResource EnableBtn}" Tag="14" IsChecked="{Binding Path=Status[14]}"/>
             <Label Grid.Row="0" Grid.Column="4" Background="{Binding Path=Motor8Current, 
-                    Converter={StaticResource AmpConverter}, Mode=Default}">Auxiliary</Label>
+                    Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}">Auxiliary</Label>
             <Label Grid.Row="0" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="Motor8Current" 
-                   Background="{Binding Path=Motor8Current, Converter={StaticResource AmpConverter}, Mode=Default}"/>
+                   Background="{Binding Path=Motor8Current, Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}"/>
 
             <ToggleButton Grid.Row="1" Grid.Column="3" Style="{StaticResource EnableNotifyBtn}" Tag="2" IsChecked="{Binding Path=Status[2]}"/>
             <Label Grid.Row="1" Grid.Column="4" Background="{Binding Path=CommunicationsCurrent, 
-                    Converter={StaticResource AmpConverter}, Mode=Default}">Comms</Label>
+                    Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}">Comms</Label>
             <Label Grid.Row="1" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="CommunicationsCurrent" 
-                   Background="{Binding Path=CommunicationsCurrent, Converter={StaticResource AmpConverter}, Mode=Default}"/>
+                   Background="{Binding Path=CommunicationsCurrent, Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}"/>
 
             <ToggleButton Grid.Row="2" Grid.Column="3" Style="{StaticResource EnableNotifyBtn}" Tag="1" IsChecked="{Binding Path=Status[1]}"/>
             <Label Grid.Row="2" Grid.Column="4" Background="{Binding Path=LogicCurrent, 
-                    Converter={StaticResource AmpConverter}, Mode=Default}">Logic</Label>
+                    Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}">Logic</Label>
             <Label Grid.Row="2" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="LogicCurrent" 
-                   Background="{Binding Path=LogicCurrent, Converter={StaticResource AmpConverter}, Mode=Default}"/>
+                   Background="{Binding Path=LogicCurrent, Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}"/>
 
             <ToggleButton Grid.Row="3" Grid.Column="3" Style="{StaticResource EnableBtn}" Tag="0" IsChecked="{Binding Path=Status[0]}"/>
             <Label Grid.Row="3" Grid.Column="4" Background="{Binding Path=ActuationCurrent, 
-                    Converter={StaticResource AmpConverter}, Mode=Default}">Actuation</Label>
+                    Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}">Actuation</Label>
             <Label Grid.Row="3" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="ActuationCurrent" 
-                   Background="{Binding Path=ActuationCurrent, Converter={StaticResource AmpConverter}, Mode=Default}"/>
+                   Background="{Binding Path=ActuationCurrent, Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}"/>
 
             <Label Grid.Row="4" Grid.Column="4" Background="{Binding Path=BMSTemperature1,
-                    Converter={StaticResource TempConverter}, Mode=Default}">Batt Temp</Label>
+                    Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='75-22-38-0'}">Batt Temp</Label>
             <Label Grid.Row="4" Grid.Column="5" Style="{StaticResource TemperatureTelem}" x:Name="BMSTemperature1"
-                   Background="{Binding Path=BMSTemperature1, Converter={StaticResource TempConverter}, Mode=Default}"/>
+                   Background="{Binding Path=BMSTemperature1, Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='75-22-38-0'}"/>
 
             <Button Grid.Row="5" Grid.Column="4" Click="RebootButton_Click" Style="{StaticResource Reboot}">Reboot</Button>
             <Button Grid.Row="6" Grid.Column="4" Click="ShutDownButton_Click" Style="{StaticResource Shutdown}">Shut Down</Button>
@@ -173,14 +169,14 @@
             
             
             <Label Grid.Row="9" Grid.Column="1" Background="{Binding Path=TotalPackVoltage, 
-                Converter={StaticResource TotalVoltConverter}, Mode=Default}">Total Pack Voltage</Label>
+                Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='33.6-20-25-1'}">Total Pack Voltage</Label>
             <Label Grid.Row="9" Grid.Column="2" Style="{StaticResource VoltageTelem}" x:Name="TotalPackVoltage"
-                   Background="{Binding Path=TotalPackVoltage, Converter={StaticResource TotalVoltConverter}, Mode=Default}"/>
+                   Background="{Binding Path=TotalPackVoltage, Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='33.6-20-25-1'}"/>
 
             <Label Grid.Row="9" Grid.Column="4" Background="{Binding Path=TotalPackCurrent, 
-                    Converter={StaticResource TotalAmpConverter}, Mode=Default}">Total Pack Current</Label>
+                    Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='80-0-50-0'}">Total Pack Current</Label>
             <Label Grid.Row="9" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="TotalPackCurrent" 
-                   Background="{Binding Path=TotalPackCurrent, Converter={StaticResource TotalAmpConverter}, Mode=Default}"/>
+                   Background="{Binding Path=TotalPackCurrent, Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='80-0-50-0'}"/>
 
         </Grid>
 
@@ -202,44 +198,44 @@
             </Grid.ColumnDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0" Background="{Binding Path=Cell1Voltage, 
-                Converter={StaticResource VoltConverter}, Mode=Default}">Cell 1</Label>
+                Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='4.2-2.5-3.1-1'}">Cell 1</Label>
             <Label Grid.Row="0" Grid.Column="1" Style="{StaticResource VoltageTelem}" x:Name="Cell1Voltage" 
-                   Background="{Binding Path=Cell1Voltage, Converter={StaticResource VoltConverter}, Mode=Default}"/>
+                   Background="{Binding Path=Cell1Voltage, Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='4.2-2.5-3.1-1'}"/>
             
             <Label Grid.Row="0" Grid.Column="2" Background="{Binding Path=Cell2Voltage,
-                Converter={StaticResource VoltConverter}, Mode=Default}">Cell 2</Label>
+                Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='4.2-2.5-3.1-1'}">Cell 2</Label>
             <Label Grid.Row="0" Grid.Column="3" Style="{StaticResource VoltageTelem}" x:Name="Cell2Voltage" 
-                   Background="{Binding Path=Cell2Voltage, Converter={StaticResource VoltConverter}, Mode=Default}"/>
+                   Background="{Binding Path=Cell2Voltage, Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='4.2-2.5-3.1-1'}"/>
 
             <Label Grid.Row="0" Grid.Column="4" Background="{Binding Path=Cell3Voltage, 
-                Converter={StaticResource VoltConverter}, Mode=Default}">Cell 3</Label>
+                Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='4.2-2.5-3.1-1'}">Cell 3</Label>
             <Label Grid.Row="0" Grid.Column="5" Style="{StaticResource VoltageTelem}" x:Name="Cell3Voltage"
-                   Background="{Binding Path=Cell3Voltage, Converter={StaticResource VoltConverter}, Mode=Default}"/>
+                   Background="{Binding Path=Cell3Voltage, Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='4.2-2.5-3.1-1'}"/>
 
             <Label Grid.Row="0" Grid.Column="6" Background="{Binding Path=Cell4Voltage, 
-                Converter={StaticResource VoltConverter}, Mode=Default}">Cell 4</Label>
+                Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='4.2-2.5-3.1-1'}">Cell 4</Label>
             <Label Grid.Row="0" Grid.Column="7" Style="{StaticResource VoltageTelem}" x:Name="Cell4Voltage" 
-                   Background="{Binding Path=Cell4Voltage, Converter={StaticResource VoltConverter}, Mode=Default}"/>
+                   Background="{Binding Path=Cell4Voltage, Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='4.2-2.5-3.1-1'}"/>
 
             <Label Grid.Row="1" Grid.Column="0" Background="{Binding Path=Cell5Voltage, 
-                Converter={StaticResource VoltConverter}, Mode=Default}">Cell 5</Label>
+                Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='4.2-2.5-3.1-1'}">Cell 5</Label>
             <Label Grid.Row="1" Grid.Column="1" Style="{StaticResource VoltageTelem}" x:Name="Cell5Voltage" 
-                   Background="{Binding Path=Cell5Voltage, Converter={StaticResource VoltConverter}, Mode=Default}"/>
+                   Background="{Binding Path=Cell5Voltage, Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='4.2-2.5-3.1-1'}"/>
 
             <Label Grid.Row="1" Grid.Column="2" Background="{Binding Path=Cell6Voltage, 
-                Converter={StaticResource VoltConverter}, Mode=Default}">Cell 6</Label>
+                Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='4.2-2.5-3.1-1'}">Cell 6</Label>
             <Label Grid.Row="1" Grid.Column="3" Style="{StaticResource VoltageTelem}" x:Name="Cell6Voltage" 
-                   Background="{Binding Path=Cell6Voltage, Converter={StaticResource VoltConverter}, Mode=Default}"/>
+                   Background="{Binding Path=Cell6Voltage, Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='4.2-2.5-3.1-1'}"/>
 
             <Label Grid.Row="1" Grid.Column="4" Background="{Binding Path=Cell7Voltage, 
-                Converter={StaticResource VoltConverter}, Mode=Default}">Cell 7</Label>
+                Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='4.2-2.5-3.1-1'}">Cell 7</Label>
             <Label Grid.Row="1" Grid.Column="5" Style="{StaticResource VoltageTelem}" x:Name="Cell7Voltage" 
-                   Background="{Binding Path=Cell7Voltage, Converter={StaticResource VoltConverter}, Mode=Default}"/>
+                   Background="{Binding Path=Cell7Voltage, Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='4.2-2.5-3.1-1'}"/>
 
             <Label Grid.Row="1" Grid.Column="6" Background="{Binding Path=Cell8Voltage, 
-                Converter={StaticResource VoltConverter}, Mode=Default}">Cell 8</Label>
+                Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='4.2-2.5-3.1-1'}">Cell 8</Label>
             <Label Grid.Row="1" Grid.Column="7" Style="{StaticResource VoltageTelem}" x:Name="Cell8Voltage" 
-                   Background="{Binding Path=Cell8Voltage, Converter={StaticResource VoltConverter}, Mode=Default}"/>
+                   Background="{Binding Path=Cell8Voltage, Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='4.2-2.5-3.1-1'}"/>
 
             
         </Grid>
