@@ -1,8 +1,11 @@
 ﻿using Caliburn.Micro;
+using Core.Configurations;
 using Core.Interfaces;
+using Core.Interfaces.Input;
 using Core.Models;
 using Core.RoveProtocol;
 using Core.ViewModels.Input;
+using Core.ViewModels.Input.Controllers;
 using RoverAttachmentManager.Configurations.Modules;
 using RoverAttachmentManager.Contexts;
 using RoverAttachmentManager.Models.Arm;
@@ -349,20 +352,91 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 NotifyOfPropertyChange(() => ControlMultipliers);
             }
         }
+        public InputManagerViewModel InputManager
+        {
+            get
+            {
+                return _model.InputManager;
+            }
+            set
+            {
+                _model.InputManager = value;
+                NotifyOfPropertyChange(() => InputManager);
+            }
+        }
+
+        public XMLConfigManager ConfigManager
+        {
+            get
+            {
+                return _model._configManager;
+            }
+            set
+            {
+                _model._configManager = value;
+                NotifyOfPropertyChange();
+            }
+        }
+        public XboxControllerInputViewModel XboxController1
+        {
+            get
+            {
+                return _model._xboxController1;
+            }
+            set
+            {
+                _model._xboxController1 = value;
+                NotifyOfPropertyChange(() => XboxController1);
+            }
+        }
+        public XboxControllerInputViewModel XboxController2
+        {
+            get
+            {
+                return _model._xboxController2;
+            }
+            set
+            {
+                _model._xboxController2 = value;
+                NotifyOfPropertyChange(() => XboxController2);
+            }
+        }
+        public XboxControllerInputViewModel XboxController3
+        {
+            get
+            {
+                return _model._xboxController3;
+            }
+            set
+            {
+                _model._xboxController3 = value;
+                NotifyOfPropertyChange(() => XboxController3);
+            }
+        }
 
         byte previousTool;
         bool laser = false;
 
 
 
-        public ArmViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log, IConfigurationManager configs)
+        public ArmViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
             _model = new ArmModel();
             ControlMultipliers = new ControlMultipliersViewModel();
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _log = log;
-            _configManager = configs;
+            ConfigManager = new XMLConfigManager(log);
+
+            XboxController1 = new XboxControllerInputViewModel(1);
+            XboxController2 = new XboxControllerInputViewModel(2);
+            XboxController3 = new XboxControllerInputViewModel(3);
+
+            // Programatic instanciation of InputManager view, vs static like everything else in a xaml 
+            InputManager = new InputManagerViewModel(log, ConfigManager,
+                new IInputDevice[] { XboxController1, XboxController2, XboxController3 },
+                new MappingViewModel[0],
+                new IInputMode[] { this });
 
             ArmPower = new ArmPowerViewModel(_rovecomm, _idResolver, _log);
 
@@ -372,8 +446,8 @@ namespace RoverAttachmentManager.ViewModels.Arm
             ControlState = "GUI control";
             previousTool = 0;
 
-            _configManager.AddRecord(PositionsConfigName, ArmConfig.DefaultArmPositions);
-            InitializePositions(_configManager.GetConfig<ArmPositionsContext>(PositionsConfigName));
+            ConfigManager.AddRecord(PositionsConfigName, ArmConfig.DefaultArmPositions);
+            InitializePositions(ConfigManager.GetConfig<ArmPositionsContext>(PositionsConfigName));
 
             _rovecomm.NotifyWhenMessageReceived(this, "ArmCurrentPosition");
             _rovecomm.NotifyWhenMessageReceived(this, "ArmFault");
