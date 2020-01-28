@@ -107,6 +107,6 @@
                 <oxy:PlotView Margin="5" Height="150" Name="Plot3" Model="{Binding MethanePlotModel}"/>
             </StackPanel>
         </Grid>
-        <ContentControl x:Name="InputManager" />
+        <ContentControl x:Name="InputManager" Margin="2.5" />
     </StackPanel>
 </UserControl>
