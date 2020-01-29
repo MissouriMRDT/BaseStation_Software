@@ -16,26 +16,24 @@
         <behaviours:BorderlessWindowBehavior />
     </i:Interaction.Behaviors>
 
-    <StackPanel>
+        <ScrollViewer VerticalScrollBarVisibility="Visible">
+            <StackPanel>
+                <controls:MetroTabControl Name="MainTabs">
 
-        <controls:MetroTabControl Name="MainTabs">
+                    <TabItem Header="Arm" Name="ArmTab">
+                        <ContentControl x:Name="Arm" />
+                    </TabItem>
 
-            <TabItem Header="Arm" Name="ArmTab">
-                <ContentControl x:Name="Arm" />
-            </TabItem>
+                    <TabItem Header="Science" Name="ScienceTab">
+                        <ContentControl x:Name="Science" />
+                    </TabItem>
 
-            <TabItem Header="Science" Name="ScienceTab">
-                <ContentControl x:Name="Science" />
-            </TabItem>
+                    <TabItem Header="Autonomy" Name="AutonomyTab">
+                        <ContentControl x:Name="Autonomy" />
+                    </TabItem>
 
-            <TabItem Header="Autonomy" Name="AutonomyTab">
-                <ContentControl x:Name="Autonomy" />
-            </TabItem>
-
-        </controls:MetroTabControl>
-
-        <ContentControl x:Name="InputManager" />
-
-    </StackPanel>
+                </controls:MetroTabControl>
+            </StackPanel>
+        </ScrollViewer>
 
 </controls:MetroWindow>

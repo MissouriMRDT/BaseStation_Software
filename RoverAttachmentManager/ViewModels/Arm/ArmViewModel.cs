@@ -1,8 +1,14 @@
 ﻿using Caliburn.Micro;
+using Core.Configurations;
 using Core.Interfaces;
+using Core.Interfaces.Input;
 using Core.Models;
 using Core.RoveProtocol;
 using Core.ViewModels.Input;
+using Core.ViewModels.Input.Controllers;
+using RoverAttachmentManager.Configurations.Modules;
+using RoverAttachmentManager.Contexts;
+using RoverAttachmentManager.Models.Arm;
 using RoverAttachmentManager.Models.ArmModels;
 using System;
 using System.Collections.Generic;
@@ -44,7 +50,6 @@ namespace RoverAttachmentManager.ViewModels.Arm
         private readonly IRovecomm _rovecomm;
         private readonly IDataIdResolver _idResolver;
         private readonly ILogger _log;
-        private readonly IConfigurationManager _configManager;
         private const string PositionsConfigName = "ArmPositions";
 
         public string Name { get; }
@@ -131,6 +136,67 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 NotifyOfPropertyChange(() => IKRangeFactor);
             }
         }
+        public InputManagerViewModel InputManager
+        {
+            get
+            {
+                return _model.InputManager;
+            }
+            set
+            {
+                _model.InputManager = value;
+                NotifyOfPropertyChange(() => InputManager);
+            }
+        }
+
+        public XMLConfigManager ConfigManager
+        {
+            get
+            {
+                return _model._configManager;
+            }
+            set
+            {
+                _model._configManager = value;
+                NotifyOfPropertyChange();
+            }
+        }
+        public XboxControllerInputViewModel XboxController1
+        {
+            get
+            {
+                return _model._xboxController1;
+            }
+            set
+            {
+                _model._xboxController1 = value;
+                NotifyOfPropertyChange(() => XboxController1);
+            }
+        }
+        public XboxControllerInputViewModel XboxController2
+        {
+            get
+            {
+                return _model._xboxController2;
+            }
+            set
+            {
+                _model._xboxController2 = value;
+                NotifyOfPropertyChange(() => XboxController2);
+            }
+        }
+        public XboxControllerInputViewModel XboxController3
+        {
+            get
+            {
+                return _model._xboxController3;
+            }
+            set
+            {
+                _model._xboxController3 = value;
+                NotifyOfPropertyChange(() => XboxController3);
+            }
+        }
 
         public byte previousTool;
         public bool laser = false;
@@ -141,12 +207,22 @@ namespace RoverAttachmentManager.ViewModels.Arm
         {
             _model = new ArmModel();
             ControlMultipliers = new ControlMultipliersViewModel();
-            ControlFeatures = new ControlFeaturesViewModel(networkMessenger, idResolver, log, configs);
+            ControlFeatures = new ControlFeaturesViewModel(networkMessenger, idResolver, log);
             AngularControl = new AngularControlViewModel(networkMessenger, idResolver, log, configs, this);
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _log = log;
-            _configManager = configs;
+            ConfigManager = new XMLConfigManager(log);
+
+            XboxController1 = new XboxControllerInputViewModel(1);
+            XboxController2 = new XboxControllerInputViewModel(2);
+            XboxController3 = new XboxControllerInputViewModel(3);
+
+            // Programatic instanciation of InputManager view, vs static like everything else in a xaml 
+            InputManager = new InputManagerViewModel(log, ConfigManager,
+                new IInputDevice[] { XboxController1, XboxController2, XboxController3 },
+                new MappingViewModel[0],
+                new IInputMode[] { this });
 
             ArmPower = new ArmPowerViewModel(_rovecomm, _idResolver, _log);
 

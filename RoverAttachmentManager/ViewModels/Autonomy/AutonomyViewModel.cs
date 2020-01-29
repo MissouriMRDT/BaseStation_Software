@@ -5,6 +5,7 @@ using Core.Models;
 using Core.RoveProtocol;
 using Core.ViewModels;
 using RoverAttachmentManager.Models.Autonomy;
+using RoverAttachmentManager.ViewModels.Autonomy;
 using System;
 using System.Net;
 
@@ -19,21 +20,51 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
         private readonly ILogger _logger;
         private readonly WaypointManager _waypointManager;
 
-        public string SentWaypointsText
+        public ControlsViewModel Controls
         {
             get
             {
-                return _model._waypointsText;
+                return _model.Controls;
             }
             set
             {
-                _model._waypointsText = value;
-                NotifyOfPropertyChange();
+                _model.Controls = value;
+                NotifyOfPropertyChange(() => Controls);
             }
         }
+        public StateControlViewModel StateControl
+        {
+            get
+            {
+                return _model._stateControl;
+            }
+            set
+            {
+                _model._stateControl = value;
+                NotifyOfPropertyChange(() => StateControl);
+            }
+        }
+        public SentWaypointsViewModel SentWaypoints
+        {
+            get
+            {
+                return _model._sentWaypoints;
+            }
+
+            set
+            {
+                _model._sentWaypoints = value;
+                NotifyOfPropertyChange(() => SentWaypoints);
+            }
+        }
+
         public AutonomyViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger logger)
         {
             _model = new AutonomyModel();
+            StateControl = new StateControlViewModel();
+            Controls = new ControlsViewModel(networkMessenger, this);
+            SentWaypoints = new SentWaypointsViewModel();
+
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _logger = logger;
@@ -46,17 +77,6 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
 
         public void Disable() => _rovecomm.SendCommand(new Packet("AutonomousModeDisable"), true);
 
-        public void ClearAllWaypoints()
-        {
-            _rovecomm.SendCommand(new Packet("WaypointsClearAll"), true);
-            string wpclear = "--cleared--\n";
-            SentWaypointsText += wpclear;
-        }
-      
-
-
-        public void Calibrate() => _rovecomm.SendCommand(new Packet("AutonomyCalibrate"), true);
-        
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
         {
             switch (packet.Name)
@@ -65,19 +85,6 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
                     _logger.Log("Waypoint Reached");
                     break;
             }
-        }
-
-        public void AddWaypoint()
-        {
-            Waypoint waypoint = _waypointManager.SelectedWaypoint;
-            byte[] msg = new byte[2 * sizeof(double)];
-            Buffer.BlockCopy(BitConverter.GetBytes(waypoint.Longitude), 0, msg, 0 * sizeof(double), sizeof(double));
-            Buffer.BlockCopy(BitConverter.GetBytes(waypoint.Latitude), 0, msg, 1 * sizeof(double), sizeof(double));
-            Array.Reverse(msg);
-
-            string tempstring = waypoint.Name + " | Longitude: " + waypoint.Longitude.ToString() + " | Latitude: " + waypoint.Latitude.ToString() + "\n";
-            SentWaypointsText += tempstring;
-            _rovecomm.SendCommand(new Packet("WaypointAdd", msg, 2, (byte)7), true);
         }
 
         public void ReceivedRovecommMessageCallback(int index, bool reliable)

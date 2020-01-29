@@ -27,5 +27,8 @@
         <controls:MetroTabItem Header="Network">
             <ContentControl x:Name="Network" />
         </controls:MetroTabItem>
+        <controls:MetroTabItem Header="Lighting">
+            <ContentControl x:Name="Lighting" />
+        </controls:MetroTabItem>
     </controls:MetroAnimatedTabControl>
 </UserControl>
