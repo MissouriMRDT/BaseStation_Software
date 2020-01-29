@@ -4,7 +4,6 @@ using System;
 using System.IO;
 using Core.ViewModels.Input.Controllers;
 using Core.Configurations;
-using RoverAttachmentManager.ViewModels.Science;
 
 
 namespace RoverAttachmentManager.Models.Science
