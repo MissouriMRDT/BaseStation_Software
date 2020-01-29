@@ -1,11 +1,6 @@
 ﻿using RoverAttachmentManager.ViewModels.Arm;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static RoverAttachmentManager.ViewModels.Arm.ArmViewModel;
+using static RoverAttachmentManager.ViewModels.Arm.AngularControlViewModel;
 
 namespace RoverAttachmentManager.Models.Arm
 {
@@ -21,5 +16,15 @@ namespace RoverAttachmentManager.Models.Arm
         internal ArmPositionViewModel SelectedPosition;
         internal ArmViewModel Arm;
 
+        internal class ArmPositionModel
+        {
+            internal string Name;
+            internal float J1;
+            internal float J2;
+            internal float J3;
+            internal float J4;
+            internal float J5;
+            internal float J6;
+        }
     }
 }

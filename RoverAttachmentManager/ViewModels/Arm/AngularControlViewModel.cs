@@ -6,12 +6,9 @@ using RoverAttachmentManager.Configurations.Modules;
 using RoverAttachmentManager.Contexts;
 using RoverAttachmentManager.Models.Arm;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using static RoverAttachmentManager.ViewModels.Arm.ArmViewModel;
 
 namespace RoverAttachmentManager.ViewModels.Arm
@@ -203,6 +200,12 @@ namespace RoverAttachmentManager.ViewModels.Arm
         {
             Positions.Remove(SelectedPosition);
         }
+
+        public void SaveConfigurations()
+        {
+            _configManager.SetConfig(PositionsConfigName, new ArmPositionsContext(Positions.Select(x => x.GetContext()).ToArray()));
+        }
+
         public void InitializePositions(ArmPositionsContext config)
         {
             foreach (var position in config.Positions)
@@ -228,6 +231,118 @@ namespace RoverAttachmentManager.ViewModels.Arm
                     AngleJ6 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 20)) / 1000.0);
                     break;
 
+            }
+        }
+
+        public class ArmPositionViewModel : PropertyChangedBase
+        {
+            private readonly AngularControlModel.ArmPositionModel _model;
+
+            public string Name
+            {
+                get
+                {
+                    return _model.Name;
+                }
+                set
+                {
+                    _model.Name = value; NotifyOfPropertyChange(() => Name);
+                }
+
+            }
+            public float J1
+            {
+                get
+                {
+                    return _model.J1;
+                }
+                set
+                {
+                    _model.J1 = value; NotifyOfPropertyChange(() => J1);
+                }
+
+            }
+            public float J2
+            {
+                get
+                {
+                    return _model.J2;
+                }
+                set
+                {
+                    _model.J2 = value; NotifyOfPropertyChange(() => J2);
+                }
+
+            }
+            public float J3
+            {
+                get
+                {
+                    return _model.J3;
+                }
+                set
+                {
+                    _model.J3 = value; NotifyOfPropertyChange(() => J3);
+                }
+
+            }
+            public float J4
+            {
+                get
+                {
+                    return _model.J4;
+                }
+                set
+                {
+                    _model.J4 = value; NotifyOfPropertyChange(() => J4);
+                }
+
+            }
+            public float J5
+            {
+                get
+                {
+                    return _model.J5;
+                }
+                set
+                {
+                    _model.J5 = value; NotifyOfPropertyChange(() => J5);
+                }
+
+            }
+            public float J6
+            {
+                get
+                {
+                    return _model.J6;
+                }
+                set
+                {
+                    _model.J6 = value; NotifyOfPropertyChange(() => J6);
+                }
+
+            }
+
+            public ArmPositionViewModel()
+            {
+                _model = new AngularControlModel.ArmPositionModel();
+            }
+
+            public ArmPositionViewModel(ArmPositionContext ctx)
+                : this()
+            {
+                Name = ctx.Name;
+                J1 = ctx.J1;
+                J2 = ctx.J2;
+                J3 = ctx.J3;
+                J4 = ctx.J4;
+                J5 = ctx.J5;
+                J6 = ctx.J6;
+            }
+
+            public ArmPositionContext GetContext()
+            {
+                return new ArmPositionContext(Name, J1, J2, J3, J4, J5, J6);
             }
         }
     }
