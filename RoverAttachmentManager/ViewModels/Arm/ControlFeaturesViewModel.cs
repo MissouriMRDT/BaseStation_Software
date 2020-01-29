@@ -16,7 +16,6 @@ namespace RoverAttachmentManager.ViewModels.Arm
         private readonly IRovecomm _rovecomm;
         private readonly IDataIdResolver _idResolver;
         private readonly ILogger _log;
-        private readonly IConfigurationManager _configManager;
 
         public byte SelectedTool
         {
@@ -31,13 +30,12 @@ namespace RoverAttachmentManager.ViewModels.Arm
             }
         }
 
-        public ControlFeaturesViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log, IConfigurationManager configs)
+        public ControlFeaturesViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
             _model = new ControlFeaturesModel();
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _log = log;
-            _configManager = configs;
 
         }
 

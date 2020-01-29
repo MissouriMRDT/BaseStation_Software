@@ -148,13 +148,10 @@
     <Compile Include="ViewModels\Arm\ArmPowerViewModel.cs" />
     <Compile Include="ViewModels\Arm\ControlFeaturesViewModel.cs" />
     <Compile Include="ViewModels\Arm\IKControlViewModel.cs" />
-    <Compile Include="ViewModels\Science\SciencePowerViewModel.cs" />
-    <Compile Include="ViewModels\Science\ScienceViewModel.cs" />
     <Compile Include="Views\Arm\AngularControlView.xaml.cs">
       <DependentUpon>AngularControlView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Arm\ControlMultipliersViewModel.cs" />
-    <Compile Include="ViewModels\Arm\ArmPowerViewModel.cs" />
     <Compile Include="ViewModels\Science\ScienceActuationViewModel.cs" />
     <Compile Include="ViewModels\Science\ScienceSensorsViewModel.cs" />
     <Compile Include="ViewModels\Science\SpectrometerViewModel.cs" />
@@ -205,6 +202,9 @@
     </Compile>
     <Compile Include="RAMBootstrapper.cs" />
     <Page Include="Views\Arm\AngularControlView.xaml">
+    <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Autonomy\SentWaypointsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
