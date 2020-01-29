@@ -53,7 +53,7 @@ namespace Core.RoveProtocol
 
             // Listen for packets from the network
             UDPListen();
-            TCPListen();
+            //TCPListen();
         }
 
         public static Rovecomm Instance
@@ -156,13 +156,13 @@ namespace Core.RoveProtocol
         /// </summary>
         public void SubscribeToAll()
         {
-            networkTCPClients.RemoveRange(0, networkTCPClients.Count);
+            //networkTCPClients.RemoveRange(0, networkTCPClients.Count);
 
             foreach (Server device in allDevices)
             {
                 SubscribeTo(device.Address);
-                log.Log($"TCP to { device.Address } with { device.TCPPort}");
-                networkTCPClients.Add(new TCPEndpoint(device.Address, device.TCPPort));
+                //log.Log($"TCP to { device.Address } with { device.TCPPort}");
+                //networkTCPClients.Add(new TCPEndpoint(device.Address, device.TCPPort));
             }
             
             log.Log("Telemetry Subscriptions Sent");
