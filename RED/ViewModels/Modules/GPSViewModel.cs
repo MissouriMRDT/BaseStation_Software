@@ -6,6 +6,8 @@ using System;
 using System.IO;
 using Core.Models;
 using System.Net;
+using System.Windows.Media.Media3D;
+using HelixToolkit.Wpf;
 
 namespace RED.ViewModels.Modules
 {
@@ -128,6 +130,18 @@ namespace RED.ViewModels.Modules
                 NotifyOfPropertyChange(() => HeadingDeg);
             }
         }
+        public Model3D our_Model
+        {
+            get
+            {
+                return _model.our_Model;
+            }
+            set
+            {
+                _model.our_Model = value;
+                NotifyOfPropertyChange(() => our_Model);
+            }
+        }
         public float HeadingDeg
         {
             get
@@ -141,6 +155,9 @@ namespace RED.ViewModels.Modules
             _model = new GPSModel();
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
+
+            ModelImporter importer = new ModelImporter();
+            our_Model = importer.Load(@"../../Addons/Rover.stl");
 
             _rovecomm.NotifyWhenMessageReceived(this, "GPSQuality");
             _rovecomm.NotifyWhenMessageReceived(this, "GPSPosition");

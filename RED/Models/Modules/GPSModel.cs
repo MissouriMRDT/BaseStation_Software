@@ -1,4 +1,5 @@
 ﻿using RED.Addons.Navigation;
+using System.Windows.Media.Media3D;
 
 namespace RED.Models.Modules
 {
@@ -13,5 +14,7 @@ namespace RED.Models.Modules
         internal GPSCoordinate BaseStationLocation = new GPSCoordinate(0, 0);
         internal double AntennaDirectionDeg = 0;
         internal float Heading = 0;
+
+        internal Model3D our_Model;
     }
 }

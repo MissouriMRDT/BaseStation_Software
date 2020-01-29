@@ -344,6 +344,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Addons\Rover.stl" />
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
