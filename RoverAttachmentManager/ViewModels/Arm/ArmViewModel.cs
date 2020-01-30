@@ -1,17 +1,17 @@
 ﻿using Caliburn.Micro;
+using Core.Configurations;
 using Core.Interfaces;
+using Core.Interfaces.Input;
 using Core.Models;
 using Core.RoveProtocol;
 using Core.ViewModels.Input;
+using Core.ViewModels.Input.Controllers;
 using RoverAttachmentManager.Configurations.Modules;
 using RoverAttachmentManager.Contexts;
+using RoverAttachmentManager.Models.Arm;
 using RoverAttachmentManager.Models.ArmModels;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 
 namespace RoverAttachmentManager.ViewModels.Arm
 {
@@ -34,9 +34,9 @@ namespace RoverAttachmentManager.ViewModels.Arm
     /// 
     /// This class is designed to be constructed in the main view model class (usually ControlCenterViewModel).
     /// </summary>
-    public class ArmViewModel : PropertyChangedBase, IInputMode, IRovecommReceiver
+    public class ArmViewModel : PropertyChangedBase, IInputMode
     {
-        private enum ArmControlState
+        public enum ArmControlState
         {
             OpenLoop,
             IKRoverPOV, //point of view
@@ -44,23 +44,13 @@ namespace RoverAttachmentManager.ViewModels.Arm
             GuiControl
         };
 
-        ArmControlState myState;
-
-        private const string PositionsConfigName = "ArmPositions";
-
-        private const byte ArmDisableCommand = 0x00;
-        private const byte ArmEnableCommand = 0x01;
-
-        private readonly byte[] ArmEncoderFaultIds = { 8, 9, 10, 11, 12, 13 };
+        public ArmControlState myState;
+        
         private readonly ArmModel _model;
         private readonly IRovecomm _rovecomm;
         private readonly IDataIdResolver _idResolver;
         private readonly ILogger _log;
-        private readonly IConfigurationManager _configManager;
-
-        //flag that gets set when the arm detects and error and forces a change state, we want the user to have to wait a second 
-        //before commands can be sent again so they can register the fact taht said error occurred
-        private bool freezeArm = false; 
+        private const string PositionsConfigName = "ArmPositions";
 
         public string Name { get; }
         public string ModeType { get; }
@@ -71,92 +61,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
         //remain in open loop mode and thus keep resetting itself, making sending it commands harrowing. So when in gui ctl, 
         //RED will keep sending empty commands to the arm to keep it alive until the user sends it a gui command and 
         //puts it into closed loop mode as well
-        private bool guiControlInitialized;
-
-        public int IKRangeFactor
-        {
-            get
-            {
-                return _model.IKRangeFactor;
-            }
-            set
-            {
-                _model.IKRangeFactor = value;
-                NotifyOfPropertyChange(() => IKRangeFactor);
-            }
-        }
-        public int BaseRangeFactor
-        {
-            get
-            {
-                return _model.BaseRangeFactor;
-            }
-            set
-            {
-                _model.BaseRangeFactor = value;
-                NotifyOfPropertyChange(() => BaseRangeFactor);
-            }
-        }
-        public int ElbowRangeFactor
-        {
-            get
-            {
-                return _model.ElbowRangeFactor;
-            }
-            set
-            {
-                _model.ElbowRangeFactor = value;
-                NotifyOfPropertyChange(() => ElbowRangeFactor);
-            }
-        }
-        public int WristRangeFactor
-        {
-            get
-            {
-                return _model.WristRangeFactor;
-            }
-            set
-            {
-                _model.WristRangeFactor = value;
-                NotifyOfPropertyChange(() => WristRangeFactor);
-            }
-        }
-        public int GripperRangeFactor
-        {
-            get
-            {
-                return _model.GripperRangeFactor;
-            }
-            set
-            {
-                _model.GripperRangeFactor = value;
-                NotifyOfPropertyChange(() => GripperRangeFactor);
-            }
-        }
-        public int Gripper2RangeFactor
-        {
-            get
-            {
-                return _model.Gripper2RangeFactor;
-            }
-            set
-            {
-                _model.Gripper2RangeFactor = value;
-                NotifyOfPropertyChange(() => Gripper2RangeFactor);
-            }
-        }
-        public float AngleJ1
-        {
-            get
-            {
-                return _model.AngleJ1;
-            }
-            set
-            {
-                _model.AngleJ1 = value;
-                NotifyOfPropertyChange(() => AngleJ1);
-            }
-        }
+        public bool guiControlInitialized;
 
         public string ControlState
         {
@@ -170,260 +75,163 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 NotifyOfPropertyChange(() => ControlState);
             }
         }
-
-        public float AngleJ2
+        public ArmPowerViewModel ArmPower
         {
             get
             {
-                return _model.AngleJ2;
+                return _model.ArmPower;
             }
             set
             {
-                _model.AngleJ2 = value;
-                NotifyOfPropertyChange(() => AngleJ2);
+                _model.ArmPower = value;
+                NotifyOfPropertyChange(() => ArmPower);
             }
         }
-        public float AngleJ3
+        public ControlMultipliersViewModel ControlMultipliers
         {
             get
             {
-                return _model.AngleJ3;
+                return _model._controlMultipliers;
             }
             set
             {
-                _model.AngleJ3 = value;
-                NotifyOfPropertyChange(() => AngleJ3);
+                _model._controlMultipliers = value;
+                NotifyOfPropertyChange(() => ControlMultipliers);
             }
         }
-        public float AngleJ4
+        public ControlFeaturesViewModel ControlFeatures
         {
             get
             {
-                return _model.AngleJ4;
+                return _model._controlFeatures;
             }
             set
             {
-                _model.AngleJ4 = value;
-                NotifyOfPropertyChange(() => AngleJ4);
+                _model._controlFeatures = value;
+                NotifyOfPropertyChange(() => ControlFeatures);
             }
         }
-        public float AngleJ5
+        public AngularControlViewModel AngularControl
         {
             get
             {
-                return _model.AngleJ5;
+                return _model._angularControl;
             }
             set
             {
-                _model.AngleJ5 = value;
-                NotifyOfPropertyChange(() => AngleJ5);
-            }
-        }
-        public float AngleJ6
-        {
-            get
-            {
-                return _model.AngleJ6;
-            }
-            set
-            {
-                _model.AngleJ6 = value;
-                NotifyOfPropertyChange(() => AngleJ6);
-            }
-        }
-
-
-        public float CoordinateX
-        {
-            get
-            {
-                return _model.CoordinateX;
-            }
-            set
-            {
-                _model.CoordinateX = value;
-                NotifyOfPropertyChange(() => CoordinateX);
-            }
-        }
-
-        public float CoordinateY
-        {
-            get
-            {
-                return _model.CoordinateY;
-            }
-            set
-            {
-                _model.CoordinateY = value;
-                NotifyOfPropertyChange(() => CoordinateY);
-            }
-        }
-
-        public float CoordinateZ
-        {
-            get
-            {
-                return _model.CoordinateZ;
-            }
-            set
-            {
-                _model.CoordinateZ = value;
-                NotifyOfPropertyChange(() => CoordinateZ);
-            }
-        }
-
-        public float Yaw
-        {
-            get
-            {
-                return _model.Yaw;
-            }
-            set
-            {
-                _model.Yaw = value;
-                NotifyOfPropertyChange(() => Yaw);
-            }
-        }
-
-        public float Pitch
-        {
-            get
-            {
-                return _model.Pitch;
-            }
-            set
-            {
-                _model.Pitch = value;
-                NotifyOfPropertyChange(() => Pitch);
-            }
-        }
-
-        public float Roll
-        {
-            get
-            {
-                return _model.Roll;
-            }
-            set
-            {
-                _model.Roll = value;
-                NotifyOfPropertyChange(() => Roll);
+                _model._angularControl = value;
+                NotifyOfPropertyChange(() => AngularControl);
             }
         }
         
-        public ObservableCollection<ArmPositionViewModel> Positions
+        public int IKRangeFactor
         {
             get
             {
-                return _model.Positions;
-            }
-            private set
-            {
-                _model.Positions = value;
-                NotifyOfPropertyChange(() => Positions);
-            }
-        }
-        public ArmPositionViewModel SelectedPosition
-        {
-            get
-            {
-                return _model.SelectedPosition;
+                return _model.IKRangeFactor;
             }
             set
             {
-                _model.SelectedPosition = value;
-                NotifyOfPropertyChange(() => SelectedPosition);
+                _model.IKRangeFactor = value;
+                NotifyOfPropertyChange(() => IKRangeFactor);
             }
         }
-        public float OpX
+        public InputManagerViewModel InputManager
         {
             get
             {
-                return _model.OpX;
+                return _model.InputManager;
             }
             set
             {
-                _model.OpX = value;
-                NotifyOfPropertyChange(() => OpX);
-            }
-        }
-        public float OpY
-        {
-            get
-            {
-                return _model.OpY;
-            }
-            set
-            {
-                _model.OpY = value;
-                NotifyOfPropertyChange(() => OpY);
-            }
-        }
-        public float OpZ
-        {
-            get
-            {
-                return _model.OpZ;
-            }
-            set
-            {
-                _model.OpZ = value;
-                NotifyOfPropertyChange(() => OpZ);
-            }
-        }
-        public byte SelectedTool
-        {
-            get
-            {
-                return _model.SelectedTool;
-            }
-            set
-            {
-                _model.SelectedTool = value;
-                NotifyOfPropertyChange(() => SelectedTool);
+                _model.InputManager = value;
+                NotifyOfPropertyChange(() => InputManager);
             }
         }
 
+        public XMLConfigManager ConfigManager
+        {
+            get
+            {
+                return _model._configManager;
+            }
+            set
+            {
+                _model._configManager = value;
+                NotifyOfPropertyChange();
+            }
+        }
+        public XboxControllerInputViewModel XboxController1
+        {
+            get
+            {
+                return _model._xboxController1;
+            }
+            set
+            {
+                _model._xboxController1 = value;
+                NotifyOfPropertyChange(() => XboxController1);
+            }
+        }
+        public XboxControllerInputViewModel XboxController2
+        {
+            get
+            {
+                return _model._xboxController2;
+            }
+            set
+            {
+                _model._xboxController2 = value;
+                NotifyOfPropertyChange(() => XboxController2);
+            }
+        }
+        public XboxControllerInputViewModel XboxController3
+        {
+            get
+            {
+                return _model._xboxController3;
+            }
+            set
+            {
+                _model._xboxController3 = value;
+                NotifyOfPropertyChange(() => XboxController3);
+            }
+        }
 
-        byte previousTool;
-        bool laser = false;
+        public byte previousTool;
+        public bool laser = false;
 
 
 
         public ArmViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log, IConfigurationManager configs)
         {
             _model = new ArmModel();
+            ControlMultipliers = new ControlMultipliersViewModel();
+            ControlFeatures = new ControlFeaturesViewModel(networkMessenger, idResolver, log);
+            AngularControl = new AngularControlViewModel(networkMessenger, idResolver, log, configs, this);
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _log = log;
-            _configManager = configs;
+            ConfigManager = new XMLConfigManager(log);
+
+            XboxController1 = new XboxControllerInputViewModel(1);
+            XboxController2 = new XboxControllerInputViewModel(2);
+            XboxController3 = new XboxControllerInputViewModel(3);
+
+            // Programatic instanciation of InputManager view, vs static like everything else in a xaml 
+            InputManager = new InputManagerViewModel(log, ConfigManager,
+                new IInputDevice[] { XboxController1, XboxController2, XboxController3 },
+                new MappingViewModel[0],
+                new IInputMode[] { this });
+
+            ArmPower = new ArmPowerViewModel(_rovecomm, _idResolver, _log);
+
             Name = "Arm";
             ModeType = "Arm";
             myState = ArmControlState.GuiControl;
             ControlState = "GUI control";
             previousTool = 0;
 
-            _configManager.AddRecord(PositionsConfigName, ArmConfig.DefaultArmPositions);
-            InitializePositions(_configManager.GetConfig<ArmPositionsContext>(PositionsConfigName));
-
-            _rovecomm.NotifyWhenMessageReceived(this, "ArmAngles");
-            
-        }
-
-        public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
-        {
-            switch (packet.Name)
-            {
-                case "ArmAngles":
-                    Int32[] data = packet.GetDataArray<Int32>();
-                    AngleJ1 = (float)(data[0] / 1000.0);
-                    AngleJ2 = (float)(data[1] / 1000.0);
-                    AngleJ3 = (float)(data[2] / 1000.0);
-                    AngleJ4 = (float)(data[3] / 1000.0);
-                    AngleJ5 = (float)(data[4] / 1000.0);
-                    AngleJ6 = (float)(data[5] / 1000.0);
-                    break;
-            }
         }
 
         public void StartMode()
@@ -450,8 +258,8 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 case ControllerBase.JoystickDirections.Left:
                 case ControllerBase.JoystickDirections.Up:
                 case ControllerBase.JoystickDirections.Down:
-                    ArmWristBend = (Int16)(values["WristBend"] * WristRangeFactor);
-                    ArmWristTwist = (Int16)(values["WristTwist"] * WristRangeFactor);
+                    ArmWristBend = (Int16)(values["WristBend"] * ControlMultipliers.WristRangeFactor);
+                    ArmWristTwist = (Int16)(values["WristTwist"] * ControlMultipliers.WristRangeFactor);
                     break;
                 case ControllerBase.JoystickDirections.None:
                     ArmWristTwist = 0;
@@ -464,11 +272,11 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 case ControllerBase.JoystickDirections.Up:
                 case ControllerBase.JoystickDirections.Down:
                     ArmElbowTwist = 0;
-                    ArmElbowBend = (Int16)(-values["ElbowBend"] * ElbowRangeFactor);
+                    ArmElbowBend = (Int16)(-values["ElbowBend"] * ControlMultipliers.ElbowRangeFactor);
                     break;
                 case ControllerBase.JoystickDirections.Right:
                 case ControllerBase.JoystickDirections.Left:
-                    ArmElbowTwist = (Int16)(-values["ElbowTwist"] * ElbowRangeFactor);
+                    ArmElbowTwist = (Int16)(-values["ElbowTwist"] * ControlMultipliers.ElbowRangeFactor);
                     ArmElbowBend = 0;
                     break;
                 case ControllerBase.JoystickDirections.None:
@@ -478,16 +286,17 @@ namespace RoverAttachmentManager.ViewModels.Arm
             }
 
 
-            ArmBaseTwist = (Int16)(-ControllerBase.TwoButtonToggleDirection(values["BaseTwistDirection"] != 0, (values["BaseTwistMagnitude"])) * BaseRangeFactor);
-            ArmBaseBend = (Int16)(-ControllerBase.TwoButtonToggleDirection(values["BaseBendDirection"] != 0, (values["BaseBendMagnitude"])) * BaseRangeFactor);
+            ArmBaseTwist = (Int16)(-ControllerBase.TwoButtonToggleDirection(values["BaseTwistDirection"] != 0, (values["BaseTwistMagnitude"])) * ControlMultipliers.BaseRangeFactor);
+            ArmBaseBend = (Int16)(-ControllerBase.TwoButtonToggleDirection(values["BaseBendDirection"] != 0, (values["BaseBendMagnitude"])) * ControlMultipliers.BaseRangeFactor);
 
             float gripperAmmount = ControllerBase.TwoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0);
-            if (SelectedTool == 0)
+            if (ControlFeatures.SelectedTool == 0)
             {
-                Gripper = (Int16)(gripperAmmount * GripperRangeFactor);
-            }else if (SelectedTool == 1)
+                Gripper = (Int16)(gripperAmmount * ControlMultipliers.GripperRangeFactor);
+            }
+            else if (ControlFeatures.SelectedTool == 1)
             {
-                Gripper2 = (Int16)(gripperAmmount * Gripper2RangeFactor);
+                Gripper2 = (Int16)(gripperAmmount * ControlMultipliers.Gripper2RangeFactor);
             }
 
             Nipper = (Int16)values["Nipper"];
@@ -500,16 +309,17 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 _rovecomm.SendCommand(Packet.Create("GripperSwap", sendValues));
             }
 
-            if (values["SwitchTool"] == 1 && previousTool == SelectedTool)
+            if (values["SwitchTool"] == 1 && previousTool == ControlFeatures.SelectedTool)
             {
-                if(++SelectedTool > 1)
+                if (++ControlFeatures.SelectedTool > 1)
                 {
-                    SelectedTool = 0;
+                    ControlFeatures.SelectedTool = 0;
                 }
                 //_rovecomm.SendCommand(Packet.Create("ToolSelection", SelectedTool));
             }
-            else if (values["SwitchTool"] == 0){
-                previousTool = SelectedTool;
+            else if (values["SwitchTool"] == 0)
+            {
+                previousTool = ControlFeatures.SelectedTool;
             }
             if (values["LaserToggle"] == 1)
             {
@@ -565,7 +375,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
 
             Z = (Int16)(ControllerBase.TwoButtonToggleDirection(values["IKZDirection"] != 0, (values["IKZMagnitude"])) * IKRangeFactor);
             Roll = (Int16)(ControllerBase.TwoButtonToggleDirection(values["IKRollDirection"] != 0, (values["IKRollMagnitude"])) * IKRangeFactor);
-            Gripper = (Int16)(ControllerBase.TwoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0) * GripperRangeFactor);
+            Gripper = (Int16)(ControllerBase.TwoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0) * ControlMultipliers.GripperRangeFactor);
             Nipper = (Int16)values["Nipper"];
 
             Int16[] sendValues = { Nipper, Gripper, Roll, Pitch, Yaw, Z, Y, X};
@@ -578,23 +388,23 @@ namespace RoverAttachmentManager.ViewModels.Arm
             {
                 _rovecomm.SendCommand(Packet.Create("IKRoverIncrement", sendValues));
             }
-            
-            if(values["GripperSwap"] == 1)
+
+            if (values["GripperSwap"] == 1)
             {
                 _rovecomm.SendCommand(Packet.Create("GripperSwap", sendValues));
             }
 
-            if (values["SwitchTool"] == 1 && previousTool == SelectedTool)
+            if (values["SwitchTool"] == 1 && previousTool == ControlFeatures.SelectedTool)
             {
-                if (++SelectedTool > 2)
+                if (++ControlFeatures.SelectedTool > 2)
                 {
-                    SelectedTool = 0;
+                    ControlFeatures.SelectedTool = 0;
                 }
-                _rovecomm.SendCommand(Packet.Create("ToolSelection", SelectedTool));
+                _rovecomm.SendCommand(Packet.Create("ToolSelection", ControlFeatures.SelectedTool));
             }
             else if (values["SwitchTool"] == 0)
             {
-                previousTool = SelectedTool;
+                previousTool = ControlFeatures.SelectedTool;
             }
 
             if (values["LaserToggle"] == 1)
@@ -642,13 +452,6 @@ namespace RoverAttachmentManager.ViewModels.Arm
         {
             UpdateControlState(values);
 
-            if(freezeArm)
-            {
-                //let user realzie an error has occurred before allowing commands to be sent again.
-                Task.Delay(500);
-                freezeArm = false;
-            }
-
             if (myState == ArmControlState.OpenLoop)
             {
                 SetOpenLoopValues(values);
@@ -672,235 +475,6 @@ namespace RoverAttachmentManager.ViewModels.Arm
 
             myState = ArmControlState.GuiControl;
             ControlState = "GUI control";
-        }
-
-        public void EnableCommand(string bus, bool enableState)
-        {
-            string name;
-            switch (bus)
-            {
-                case "All": name = "ArmEnableAll"; break;
-                case "Main": name = "ArmEnableMain"; break;
-                case "J1": name = "ArmEnableJ1"; break;
-                case "J2": name = "ArmEnableJ2"; break;
-                case "J3": name = "ArmEnableJ3"; break;
-                case "J4": name = "ArmEnableJ4"; break;
-                case "J5": name = "ArmEnableJ5"; break;
-                case "J6": name = "ArmEnableJ6"; break;
-                case "Endeff1": name = "ArmEnableEndeff1"; break;
-                case "Endeff2": name = "ArmEnableEndeff2"; break;
-                default: return;
-            }
-
-            _rovecomm.SendCommand(Packet.Create(name, (enableState) ? ArmEnableCommand : ArmDisableCommand), true);
-        }
-
-        public void SetOpPoint()
-        {
-            float[] opPoints = { OpX, OpY, OpZ };
-            byte[] data = new byte[opPoints.Length * sizeof(float)];
-            Buffer.BlockCopy(opPoints, 0, data, 0, data.Length);
-
-            // TODO: Determine floats for this
-            //_rovecomm.SendCommand(_idResolver.GetId("OpPoint"), data, true);
-        }
-
-        public void GetPosition()
-        {
-            byte[] data = new byte[2];
-            data[0] = 0;
-            data[1] = 1;
-            _rovecomm.SendCommand(Packet.Create("ArmCommands", data));
-        }
-        public void SetPosition()
-        {
-            UInt32[] angles = { (UInt32)(AngleJ1*1000), (UInt32)(AngleJ2*1000), (UInt32)(AngleJ3*1000), (UInt32)(AngleJ4*1000), (UInt32)(AngleJ5*1000), (UInt32)(AngleJ6*1000) };
-            //TODO: Determine floats for this
-            _rovecomm.SendCommand(Packet.Create("ArmToAngle", angles));
-
-            myState = ArmControlState.GuiControl;
-            guiControlInitialized = true;
-        }
-        public void ToggleAuto()
-        {
-            _rovecomm.SendCommand(Packet.Create("ToggleAutoPositionTelem"));
-        }
-
-        public void GetXYZPosition()
-        {
-            _rovecomm.SendCommand(Packet.Create("ArmGetXYZ"));
-        }
-
-        public void SetXYZPosition()
-        {
-            float[] coordinates = { CoordinateX, CoordinateY, CoordinateZ, Yaw, Pitch, Roll };
-            byte[] data = new byte[coordinates.Length * sizeof(float)];
-            Buffer.BlockCopy(coordinates, 0, data, 0, data.Length);
-
-            // TODO: floats
-            //_rovecomm.SendCommand(_idResolver.GetId("ArmAbsoluteXYZ"), data, true);
-
-            myState = ArmControlState.GuiControl;
-            guiControlInitialized = true;
-        }
-
-        public void LimitSwitchOverride()
-        {
-            _rovecomm.SendCommand(Packet.Create("LimitSwitchOverride", (byte)1), true);
-        }
-        public void LimitSwitchUnOverride()
-        {
-            _rovecomm.SendCommand(Packet.Create("LimitSwitchOverride", (byte)0), true);
-        }
-
-        public void RecallPosition()
-        {
-            AngleJ1 = SelectedPosition.J1;
-            AngleJ2 = SelectedPosition.J2;
-            AngleJ3 = SelectedPosition.J3;
-            AngleJ4 = SelectedPosition.J4;
-            AngleJ5 = SelectedPosition.J5;
-            AngleJ6 = SelectedPosition.J6;
-        }
-        public void StorePosition()
-        {
-            Positions.Add(new ArmPositionViewModel()
-            {
-                Name = "Unnamed Position",
-                J1 = AngleJ1,
-                J2 = AngleJ2,
-                J3 = AngleJ3,
-                J4 = AngleJ4,
-                J5 = AngleJ5,
-                J6 = AngleJ6
-            });
-        }
-        public void DeletePosition()
-        {
-            Positions.Remove(SelectedPosition);
-        }
-        public void SaveConfigurations()
-        {
-            _configManager.SetConfig(PositionsConfigName, new ArmPositionsContext(Positions.Select(x => x.GetContext()).ToArray()));
-        }
-        public void InitializePositions(ArmPositionsContext config)
-        {
-            foreach (var position in config.Positions)
-                Positions.Add(new ArmPositionViewModel(position));
-        }
-
-
-
-        public class ArmPositionViewModel : PropertyChangedBase
-        {
-            private readonly ArmModel.ArmPositionModel _model;
-
-            public string Name
-            {
-                get
-                {
-                    return _model.Name;
-                }
-                set
-                {
-                    _model.Name = value; NotifyOfPropertyChange(() => Name);
-                }
-
-            }
-            public float J1
-            {
-                get
-                {
-                    return _model.J1;
-                }
-                set
-                {
-                    _model.J1 = value; NotifyOfPropertyChange(() => J1);
-                }
-
-            }
-            public float J2
-            {
-                get
-                {
-                    return _model.J2;
-                }
-                set
-                {
-                    _model.J2 = value; NotifyOfPropertyChange(() => J2);
-                }
-
-            }
-            public float J3
-            {
-                get
-                {
-                    return _model.J3;
-                }
-                set
-                {
-                    _model.J3 = value; NotifyOfPropertyChange(() => J3);
-                }
-
-            }
-            public float J4
-            {
-                get
-                {
-                    return _model.J4;
-                }
-                set
-                {
-                    _model.J4 = value; NotifyOfPropertyChange(() => J4);
-                }
-
-            }
-            public float J5
-            {
-                get
-                {
-                    return _model.J5;
-                }
-                set
-                {
-                    _model.J5 = value; NotifyOfPropertyChange(() => J5);
-                }
-
-            }
-            public float J6
-            {
-                get
-                {
-                    return _model.J6;
-                }
-                set
-                {
-                    _model.J6 = value; NotifyOfPropertyChange(() => J6);
-                }
-
-            }
-
-            public ArmPositionViewModel()
-            {
-                _model = new ArmModel.ArmPositionModel();
-            }
-
-            public ArmPositionViewModel(ArmPositionContext ctx)
-                : this()
-            {
-                Name = ctx.Name;
-                J1 = ctx.J1;
-                J2 = ctx.J2;
-                J3 = ctx.J3;
-                J4 = ctx.J4;
-                J5 = ctx.J5;
-                J6 = ctx.J6;
-            }
-
-            public ArmPositionContext GetContext()
-            {
-                return new ArmPositionContext(Name, J1, J2, J3, J4, J5, J6);
-            }
         }
     }
 }

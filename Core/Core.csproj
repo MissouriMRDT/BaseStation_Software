@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Addons\BoolToValueConverter.cs" />
+    <Compile Include="Addons\ValueToColorConverter.cs" />
     <Compile Include="Configurations\Input\Controllers\XboxControllerInputConfig.cs" />
     <Compile Include="Configurations\Input\InputManagerConfig.cs" />
     <Compile Include="Configurations\MetadataManagerConfig.cs" />

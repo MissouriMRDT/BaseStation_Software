@@ -19,89 +19,31 @@
                         <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
-                        <RowDefinition />
                     </Grid.RowDefinitions>
                     <Expander Grid.Row="0" Header="Actuation" IsExpanded="True" Margin="2.5">
-                        <StackPanel>
-                            <Label Grid.Row="2" Grid.Column="0">Rack Position</Label>
-                            <UniformGrid Grid.Row="2" Grid.Column="1" Rows="1">
-                                <Button cal:Message.Attach="SetScrewPosition(2)">Top</Button>
-                                <Button cal:Message.Attach="SetScrewPosition(3)">Mid</Button>
-                                <Button cal:Message.Attach="SetScrewPosition(4)">Ground</Button>
-                            </UniformGrid>
-                            <DockPanel>
-                                <Label DockPanel.Dock="Left">Control State:</Label>
-                                <Label DockPanel.Dock="Right" x:Name ="ControlState" HorizontalContentAlignment="Center" />
-                            </DockPanel>
-                            <Button Name="CenterX">Center X</Button>
-                        </StackPanel>
+                        <ContentControl x:Name="ScienceActuation"/>
                     </Expander>
-                    <Expander Grid.Row="1" Header="Spectrometer" IsExpanded="True" Margin="2.5">
-                        <StackPanel>
-                            <UniformGrid Rows="1">
-                                <Label>Number of Runs:</Label>
-                                <TextBox x:Name="RunCount"/>
-                            </UniformGrid>
-                            <Button x:Name="DownloadSpectrometer">Run and Download</Button>
-                            <UniformGrid Rows="1">
-                                <Button cal:Message.Attach="SetUVLed(1)">Turn UV On</Button>
-                                <Button cal:Message.Attach="SetUVLed(0)">Turn UV Off</Button>
-                            </UniformGrid>
-                        </StackPanel>
+
+                    <Expander Grid.Row="1" Header="Sensors" IsExpanded="True" Margin="2.5">
+                      <ContentControl x:Name="ScienceSensors"/>
                     </Expander>
-                    <Expander Grid.Row="2" Header="Sensors" IsExpanded="True" Margin="2.5">
-                        <StackPanel>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-
-                                <Label Grid.Row="0" Grid.Column="0">Air Temperature</Label>
-                                <Label Grid.Row="0" Grid.Column="1" x:Name="Sensor0Value" ContentStringFormat="{}{0:0.#&#176;}" />
-
-                                <Label Grid.Row="1" Grid.Column="0">Air Humidity</Label>
-                                <Label Grid.Row="1" Grid.Column="1" x:Name="Sensor1Value" ContentStringFormat="{}{0:0.\%;}" />
-                                
-                                <Label Grid.Row="2" Grid.Column="0">Air Methane</Label>
-                                <Label Grid.Row="2" Grid.Column="1" x:Name="Sensor4Value" ContentStringFormat="{}{0:0.00;}" />
-                                
-                            </Grid>
-
-                            <UniformGrid Rows="1">
-                                <Label>Save Data</Label>
-                                <Button x:Name="SaveFileStart">Start</Button>
-                                <Button x:Name="SaveFileStop">Stop</Button>
-                            </UniformGrid>
-                            <Button x:Name="StartSensorGraphs">Start Sensor Graphs</Button>
-                            <Button x:Name="UpdateSensorGraphs">Update Sensor Graphs</Button>
-                        </StackPanel>
+                    <Expander Grid.Row="2" Header="Site Management" IsExpanded="True" Margin="2.5">
+                        <ContentControl x:Name="SiteManagment"/>
                     </Expander>
-                    <Expander Grid.Row="3" Header="Site Management" IsExpanded="True" Margin="2.5">
-                        <StackPanel>
-                            <UniformGrid Rows="1">
-                                <Label>Site Number:</Label>
-                                <TextBox x:Name="SiteNumber"/>
-                            </UniformGrid>
-                            <UniformGrid Rows="1">
-                                <Button Name="ReachedSite">Reached Site</Button>
-                                <Button Name="LeftSite">Left Site</Button>
-                            </UniformGrid>
-                        </StackPanel>
+                    <Expander Grid.Row="4"  Header="Science Motor Power" IsExpanded="True" Margin="2.5">
+                        <ContentControl x:Name="SciencePower" />
                     </Expander>
                 </Grid>
                 
             </StackPanel>
+            
             <StackPanel Grid.Column="1">
-                <oxy:PlotView Margin="5" Height="150" Name="Plot" Model="{Binding SpectrometerPlotModel}"/>
-                <oxy:PlotView Margin="5" Height="150" Name="Plot2" Model="{Binding SensorPlotModel}"/>
-                <oxy:PlotView Margin="5" Height="150" Name="Plot3" Model="{Binding MethanePlotModel}"/>
+                <Expander Header="Spectrometer" IsExpanded="True" Margin="2.5">
+                    <ContentControl x:Name="Spectrometer"/>
+                </Expander>
+                <ContentControl x:Name="ScienceGraph"/>
             </StackPanel>
         </Grid>
+        <ContentControl x:Name="InputManager" Margin="2.5" />
     </StackPanel>
 </UserControl>

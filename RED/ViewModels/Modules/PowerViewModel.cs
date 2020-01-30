@@ -32,7 +32,19 @@ namespace RED.ViewModels.Modules
                 NotifyOfPropertyChange(() => AutoStartLog);
             }
         }
-
+        
+        public byte RebootTime
+        {
+            get
+            {
+                return _model.RebootTime;
+            }
+            set
+            {
+                _model.RebootTime = value;
+                NotifyOfPropertyChange(() => RebootTime);
+            }
+        }
         
 
         public float Motor1Current
