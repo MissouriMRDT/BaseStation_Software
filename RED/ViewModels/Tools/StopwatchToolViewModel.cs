@@ -147,7 +147,7 @@ namespace RED.ViewModels.Tools
         {
             get
             {
-                return SelectedSchedule.PhaseAtTime(ScheduleElapsedTime);
+                return SelectedSchedule.PhaseAtTime(TaskCount);
             }
         }
         public TimeSpan ScheduleElapsedTime
@@ -168,31 +168,54 @@ namespace RED.ViewModels.Tools
         {
             get
             {
-                return (double)ScheduleElapsedTime.Ticks / SelectedSchedule.Duration.Ticks;
+                return (double)ScheduleElapsedTime.Ticks / SelectedSchedule.Duration.Ticks * 100;
             }
         }
         public TimeSpan PhaseElapsedTime
         {
             get
             {
-                return SelectedSchedule.ElapsedTimeInPhase(ScheduleElapsedTime);
+                return SelectedSchedule.ElapsedTimeInPhase(ScheduleElapsedTime, SkipTime, TaskCount);
             }
         }
         public TimeSpan PhaseRemainingTime
         {
             get
             {
-                return SelectedSchedule.RemainingTimeInPhase(ScheduleElapsedTime);
+                return SelectedSchedule.RemainingTimeInPhase(ScheduleElapsedTime, SkipTime, TaskCount);
             }
         }
         public double PhaseElapsedPercent
         {
             get
             {
-                return (double)PhaseElapsedTime.Ticks / SelectedSchedule.PhaseAtTime(ScheduleElapsedTime).Duration.Ticks;
+                return (double)PhaseElapsedTime.Ticks / SelectedSchedule.PhaseAtTime(TaskCount).Duration.Ticks * 100;
             }
         }
-
+        public TimeSpan SkipTime
+        {
+            get
+            {
+                return _model.SkipTime;
+            }
+            set
+            {
+                _model.SkipTime = value;
+                NotifyOfPropertyChange(() => SkipTime);
+            }
+        }
+        public int TaskCount
+        {
+            get
+            {
+                return _model.TaskCount;
+            }
+            set
+            {
+                _model.TaskCount = value;
+                NotifyOfPropertyChange(() => TaskCount);
+            }
+        }
         public StopwatchToolViewModel(IConfigurationManager configs)
         {
             _model = new StopwatchToolModel();
@@ -208,6 +231,8 @@ namespace RED.ViewModels.Tools
                 Schedules.Add(new ScheduleViewModel(schedule));
 
             SelectedSchedule = Schedules.FirstOrDefault();
+            SkipTime = TimeSpan.Zero;
+            TaskCount = 0;
 
             Timer = new DispatcherTimer();
             Timer.Tick += Timer_Tick;
@@ -238,12 +263,19 @@ namespace RED.ViewModels.Tools
         {
             if (IsRunning) Stop();
             ElapsedTime = TimeSpan.Zero;
+            SkipTime = TimeSpan.Zero;
+            TaskCount = 0;
         }
         public void SetTime()
         {
             ElapsedTime = FixTime;
             if (IsRunning)
                 Start();
+        }
+        public void SkipTask()
+        {
+            SkipTime += PhaseRemainingTime;
+            TaskCount += 1;
         }
 
         private void Timer_Tick(object sender, EventArgs e)
@@ -311,7 +343,6 @@ namespace RED.ViewModels.Tools
                     NotifyOfPropertyChange(() => Duration);
                 }
             }
-
             public TimeSpan Duration
             {
                 get
@@ -346,38 +377,24 @@ namespace RED.ViewModels.Tools
                 return new StopwatchScheduleContext(Name, Phases.Select(x => x.ToContext()).ToArray());
             }
 
-            public SchedulePhaseViewModel PhaseAtTime(TimeSpan time)
+            public SchedulePhaseViewModel PhaseAtTime(int PhaseCount)
             {
-                TimeSpan sum = TimeSpan.Zero;
-                foreach (var phase in Phases)
-                {
-                    sum += phase.Duration;
-                    if (sum > time)
-                        return phase;
-                }
-                return Phases.LastOrDefault();
+                return Phases[PhaseCount];
             }
-            public TimeSpan ElapsedTimeInPhase(TimeSpan time)
+
+            public TimeSpan ElapsedTimeInPhase(TimeSpan time, TimeSpan Skipped, int PhaseCount)
             {
                 TimeSpan sum = TimeSpan.Zero;
-                foreach (var phase in Phases)
+                for(int i = 0; i<PhaseCount; i++)
                 {
-                    if (sum + phase.Duration > time)
-                        return time - sum;
-                    sum += phase.Duration;
+                    sum += Phases[i].Duration;
                 }
-                return Phases.Last().Duration;
+                return time + Skipped - sum;
+                //return Phases.Last().Duration;
             }
-            public TimeSpan RemainingTimeInPhase(TimeSpan time)
+            public TimeSpan RemainingTimeInPhase(TimeSpan time, TimeSpan Skipped, int PhaseCount)
             {
-                TimeSpan sum = TimeSpan.Zero;
-                foreach (var phase in Phases)
-                {
-                    sum += phase.Duration;
-                    if (sum > time)
-                        return sum - time;
-                }
-                return time - Duration;
+                return Phases[PhaseCount].Duration - ElapsedTimeInPhase(time, Skipped, PhaseCount);
             }
 
             private void Phases_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

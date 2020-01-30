@@ -14,7 +14,8 @@
 	<UserControl.Resources>
 		<addons:BoolToStringConverter x:Key="StartStopButton" TrueValue="Pause" FalseValue="Play" />
 		<addonsTools:TimeSpanToStringConverter x:Key="TimeSpanView" />
-	</UserControl.Resources>
+        <addons:ValueToColorConverter x:Key="ColorConverter" />
+    </UserControl.Resources>
 	<Border BorderBrush="{StaticResource AccentColorBrush}" BorderThickness="1">
 		<!-- Style of the outer edge-->
 		<Grid Height="auto" Margin="0.2,0.2,0.4,0" VerticalAlignment="Top">
@@ -84,9 +85,9 @@
 			<ProgressBar Name="BIG_task_bar" Grid.ColumnSpan="8" HorizontalAlignment="Left" Height="20" Margin="0,0.8,0,0" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Top" Width="491"	Background="Red" 
 						 Minimum="0" 
 						Maximum="100" 
-						Value="{Binding InsertBindingHere}" 
+						Value="{Binding ScheduleElapsedPercent, Mode=OneWay}" 
 						  />
-			<TextBlock Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="2" Grid.RowSpan="2" Foreground="White" FontSize="12" FontWeight="Bold" Text="{Binding ElementName=BIG_task_bar, Path=Value, StringFormat={}{0:0}%}" 
+            <TextBlock Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="2" Grid.RowSpan="2" Foreground="White" FontSize="12" FontWeight="Bold" Text="{Binding ScheduleElapsedPercent, Mode=OneWay, StringFormat={}{0:0}%}" 
            HorizontalAlignment="Center" 
            VerticalAlignment="Center" />
 
@@ -122,9 +123,9 @@
 			<ProgressBar Grid.Column="0"  Grid.ColumnSpan="8" HorizontalAlignment="Left" Height="37" Background="Red" Margin="0,33.4,0,0" Grid.Row="7" VerticalAlignment="Top" Width="491" Grid.RowSpan="2" 
 						Minimum="0" 
 						Maximum="100" 
-						Value="{Binding InsertBindingHere}" 
+						Value="{Binding PhaseElapsedPercent, Mode=OneWay}" 
 						Name="pbStatus"  />
-			<TextBlock Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="8" Foreground="White" FontSize="20" FontWeight="Bold" Text="{Binding ElementName=pbStatus, Path=Value, StringFormat={}{0:0}%}" 
+            <TextBlock Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="8" Foreground="White" FontSize="20" FontWeight="Bold" Text="{Binding PhaseElapsedPercent, Mode=OneWay, StringFormat={}{0:0}%}" 
            HorizontalAlignment="Center" 
            VerticalAlignment="Center" />
 
@@ -137,64 +138,16 @@
 				 The background will go red. Finially, if the user is ahead, it'll show the number of seconds gained. If the user is late
 				 It'll show number of seconds lost.
 				 There is a case when there will be no gain or loss, so the background will go gray.-->
-			<TextBlock Grid.Row="0" Grid.RowSpan="3" Grid.Column="9" Grid.ColumnSpan="1" Background="Gray"/>
-			
-			
-			<!--	<Button Grid.Row="0" Grid.RowSpan="4" Grid.Column="9" Grid.ColumnSpan="1" ContextMenuService.IsEnabled="False" Click="FixTime_Click" Content="Fix Time" Height="86" VerticalAlignment="Top">
-			-->
-			<!--Button used to fix the time as desired-->
-			<!--<Button.ContextMenu>
-				<ContextMenu Name="FixContextMenu">
-					<ContextMenu.Template>
-						<ControlTemplate>
-							<Border Background="White">
-								<GroupBox Header="Fix Time Elapsed" Margin="0">
-									<DockPanel Width="100">
-										<Button DockPanel.Dock="Left" cal:Message.Attach="SetTime()" Width="25" Click="SetTime_Click">&gt;</Button>
-										<TextBox Text="{Binding FixTime}" />
-									</DockPanel>
-								</GroupBox>
-							</Border>
-						</ControlTemplate>
-					</ContextMenu.Template>
-				</ContextMenu>
-			</Button.ContextMenu>
-			</Button> -->
-
+            <Viewbox Grid.Row="0" Grid.RowSpan="3" Grid.Column="9" Grid.ColumnSpan="1">
+                <TextBlock Background="White" Foreground="{StaticResource AccentColorBrush}" Text="{Binding SkipTime, Mode=OneWay, Converter={StaticResource TimeSpanView}}"/>
+            </Viewbox>
 			<!--Button for moving to the next task-->
-			<Button Grid.Row="5" Grid.RowSpan="4" Grid.Column="8" Grid.ColumnSpan="1" >
+			<Button Grid.Row="5" Grid.RowSpan="4" Grid.Column="8" Grid.ColumnSpan="1" cal:Message.Attach="SkipTask()">
 				<TextBlock TextAlignment="Center" >NEXT<LineBreak/>SUB-TASK</TextBlock>
 			</Button>
-			<!--<Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="30" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Viewbox Grid.Row="0" Grid.Column="0" Stretch="Uniform">
-                    <TextBlock Foreground="{StaticResource AccentColorBrush}" Text="{Binding ScheduleElapsedTime, Mode=OneWay, Converter={StaticResource TimeSpanView}}" />
-                </Viewbox>
-                <TextBlock Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding ScheduleElapsedPercent, StringFormat={}{0:0%}, Mode=OneWay}" />
-                <Viewbox Grid.Row="0" Grid.Column="2" Stretch="Uniform">
-                    <TextBlock Foreground="{StaticResource AccentColorBrush}" Text="{Binding ScheduleRemainingTime, Mode=OneWay, Converter={StaticResource TimeSpanView}}" />
-                </Viewbox>
-                <Viewbox Grid.Row="1" Grid.Column="0" Stretch="Uniform">
-                    <TextBlock Foreground="{StaticResource AccentColorBrush}" Text="{Binding PhaseElapsedTime, Mode=OneWay, Converter={StaticResource TimeSpanView}}" />
-                </Viewbox>
-                <TextBlock Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding PhaseElapsedPercent, StringFormat={}{0:0%}, Mode=OneWay}" />
-                <Viewbox Grid.Row="1" Grid.Column="2" Stretch="Uniform">
-                    <TextBlock Foreground="{StaticResource AccentColorBrush}" Text="{Binding PhaseRemainingTime, Mode=OneWay, Converter={StaticResource TimeSpanView}}" />
-                </Viewbox>
-            </Grid>-->
+
 			<Button Grid.Row="7" Grid.RowSpan="2" Grid.Column="9" Grid.ColumnSpan="1" x:Name="Reset">Reset</Button>
-			<!--<TextBlock Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Run Text="{Binding CurrentPhase.Name, Mode=OneWay}" />
-                <Run Foreground="{StaticResource GrayNormalBrush}" Text="{Binding CurrentPhase.Duration, StringFormat=\({0}\), Converter={StaticResource TimeSpanView}, Mode=OneWay}" />
-            </TextBlock>-->
+
 			<Button Grid.Row="3" Grid.RowSpan="4" Grid.Column="9" Grid.ColumnSpan="1" ContextMenuService.IsEnabled="False" Click="EditTime_Click" Content="Edit Tasks">
 				<Button.ContextMenu>
 					<ContextMenu Name="EditContextMenu">
