@@ -51,12 +51,12 @@ namespace RoverAttachmentManager.ViewModels.Science
 
         public void SetScrewPosition(byte index)
         {
-            _rovecomm.SendCommand(new Packet("ScrewAbsoluteSetPosition", index));
+            _rovecomm.SendCommand(Packet.Create("ScrewAbsoluteSetPosition", index));
         }
 
         public void CenterX()
         {
-            _rovecomm.SendCommand(new Packet("CenterX"));
+            _rovecomm.SendCommand(Packet.Create("CenterX"));
         }
 
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
@@ -69,11 +69,6 @@ namespace RoverAttachmentManager.ViewModels.Science
                 default:
                     break;
             }
-        }
-
-        public void ReceivedRovecommMessageCallback(int index, bool reliable)
-        {
-            ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
         }
     }
 }

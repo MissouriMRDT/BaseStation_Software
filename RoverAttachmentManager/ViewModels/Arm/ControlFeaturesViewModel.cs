@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using Core.Interfaces;
 using Core.Models;
+using Core.RoveProtocol;
 using RoverAttachmentManager.Models.Arm;
 using System;
 using System.Collections.Generic;
@@ -41,11 +42,11 @@ namespace RoverAttachmentManager.ViewModels.Arm
 
         public void LimitSwitchOverride()
         {
-            _rovecomm.SendCommand(new Packet("LimitSwitchOverride", (byte)1), true);
+            _rovecomm.SendCommand(Packet.Create("LimitSwitchOverride", (byte)1), true);
         }
         public void LimitSwitchUnOverride()
         {
-            _rovecomm.SendCommand(new Packet("LimitSwitchOverride", (byte)0), true);
+            _rovecomm.SendCommand(Packet.Create("LimitSwitchOverride", (byte)0), true);
         }
 
     }

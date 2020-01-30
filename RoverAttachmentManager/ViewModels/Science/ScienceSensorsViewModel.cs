@@ -156,11 +156,6 @@ namespace RoverAttachmentManager.ViewModels.Science
             MethanePlotModel.InvalidatePlot(true);
         }
 
-        public void ReceivedRovecommMessageCallback(int index, bool reliable)
-        {
-            ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
-        }
-
 
         public void StartSensorGraphs()
         {

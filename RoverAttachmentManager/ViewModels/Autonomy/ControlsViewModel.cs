@@ -1,6 +1,7 @@
 ﻿using Core;
 using Core.Interfaces;
 using Core.Models;
+using Core.RoveProtocol;
 using Core.ViewModels;
 using RoverAttachmentManager.Models.Autonomy;
 using System;
@@ -31,9 +32,9 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
           }
         }
 
-        public void Enable() => _rovecomm.SendCommand(new Packet("AutonomousModeEnable"), true);
+        public void Enable() => _rovecomm.SendCommand(Packet.Create("AutonomousModeEnable"), true);
 
-        public void Disable() => _rovecomm.SendCommand(new Packet("AutonomousModeDisable"), true);
+        public void Disable() => _rovecomm.SendCommand(Packet.Create("AutonomousModeDisable"), true);
 
         public ControlsViewModel(IRovecomm networkMessenger, AutonomyViewModel parent)
         {
@@ -57,7 +58,7 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
 
         public void ClearAllWaypoints()
         {
-          _rovecomm.SendCommand(new Packet("WaypointsClearAll"), true);
+          _rovecomm.SendCommand(Packet.Create("WaypointsClearAll"), true);
           SentWaypoints.ClearAllWaypoints();
         }
     }
