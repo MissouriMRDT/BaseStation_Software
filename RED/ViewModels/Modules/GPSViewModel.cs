@@ -149,6 +149,47 @@ namespace RED.ViewModels.Modules
                 return (float)(Heading * 180d / Math.PI);
             }
         }
+        public float Roll
+        {
+            get
+            {
+                return _model.Roll;
+            }
+            set
+            {
+                roll(value);
+                _model.Roll = value;
+                NotifyOfPropertyChange(() => Roll);
+            }
+        }
+
+        public float Pitch
+        {
+            get
+            {
+                return _model.Pitch;
+            }
+            set
+            {
+                pitch(value);
+                _model.Pitch = value;
+                NotifyOfPropertyChange(() => Pitch);
+            }
+        }
+
+        public float Yaw
+        {
+            get
+            {
+                return _model.Yaw;
+            }
+            set
+            {
+                yaw(value);
+                _model.Yaw = value;
+                NotifyOfPropertyChange(() => Yaw);
+            }
+        }
 
         public GPSViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver)
         {
@@ -158,8 +199,11 @@ namespace RED.ViewModels.Modules
 
             ModelImporter importer = new ModelImporter();
             RoverModel = importer.Load(@"../../Addons/Rover.stl");
-            RoverModel.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1 ,0, 0), 135));
-
+            RotateTransform3D myRotateTransform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), 0));
+            myRotateTransform.CenterX = 0;
+            myRotateTransform.CenterY = 0;
+            myRotateTransform.CenterZ = 0;
+            RoverModel.Transform = myRotateTransform;
 
             _rovecomm.NotifyWhenMessageReceived(this, "GPSQuality");
             _rovecomm.NotifyWhenMessageReceived(this, "GPSPosition");
@@ -169,6 +213,39 @@ namespace RED.ViewModels.Modules
             _rovecomm.NotifyWhenMessageReceived(this, "GPSSatellites");
             _rovecomm.NotifyWhenMessageReceived(this, "GPSTelem");
             _rovecomm.NotifyWhenMessageReceived(this, "PitchHeadingRoll");
+        }
+
+        void roll(double angle)
+        {
+
+            //rotate the object by "angle", the vector describes the axis
+            RotateTransform3D RollTransform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), angle));
+
+            //apply transformation
+            RoverModel.Transform = RollTransform;
+
+            
+        }
+
+        void pitch(double angle)
+        {
+
+            //rotate the object by "angle", the vector describes the axis
+            RotateTransform3D PitchTransform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), angle));
+
+            //apply transformation
+            RoverModel.Transform = PitchTransform;
+
+
+        }
+
+        void yaw(double angle)
+        {
+
+            RotateTransform3D YawTransform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), angle));
+
+            RoverModel.Transform = YawTransform;
+
         }
 
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)

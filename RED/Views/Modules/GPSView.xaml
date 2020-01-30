@@ -8,6 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              xmlns:h="http://helix-toolkit.org/wpf">
+
     <UserControl.Resources>
         <addonsNav:GPSCoordinateToLatitudeConverter x:Key="LatitudeConverter" />
         <addonsNav:GPSCoordinateToLongitudeConverter x:Key="LongitudeConverter" />
@@ -56,8 +57,12 @@
             <Label Grid.Row="1" Grid.Column="5">
                 <TextBlock Text="{Binding CurrentLocation, Converter={StaticResource LongitudeConverter}}" Style="{DynamicResource MaybeStale}" />
             </Label>
+            <Slider Value="{Binding Pitch}" Maximum="180" Minimum="-180" Height="29" VerticalAlignment="Top" />
+            <Slider Value="{Binding Roll}" Maximum="180" Minimum="-180" Height="29" VerticalAlignment="Top" Margin="0,30,0,0"/>
+            <Slider Value="{Binding Yaw}" Maximum="180" Minimum="-180" Height="29" VerticalAlignment="Top" Margin="0,60,0,0"/>
+
             <h:HelixViewport3D ZoomExtentsWhenLoaded="True" ShowViewCube="False" Grid.Column="6" Width="300" Height="300">
-                <h:SunLight/>
+                <h:DirectionalHeadLight/>
                 <ModelVisual3D Content="{Binding RoverModel}"/>
             </h:HelixViewport3D>
         </Grid>

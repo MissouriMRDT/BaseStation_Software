@@ -14,6 +14,9 @@ namespace RED.Models.Modules
         internal GPSCoordinate BaseStationLocation = new GPSCoordinate(0, 0);
         internal double AntennaDirectionDeg = 0;
         internal float Heading = 0;
+        internal float Roll = 0;
+        internal float Pitch = 0;
+        internal float Yaw = 0;
 
         internal Model3D RoverModel;
     }
