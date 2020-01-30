@@ -15,6 +15,6 @@ namespace RED.Models.Modules
         internal double AntennaDirectionDeg = 0;
         internal float Heading = 0;
 
-        internal Model3D our_Model;
+        internal Model3D RoverModel;
     }
 }

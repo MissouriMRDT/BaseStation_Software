@@ -130,16 +130,16 @@ namespace RED.ViewModels.Modules
                 NotifyOfPropertyChange(() => HeadingDeg);
             }
         }
-        public Model3D our_Model
+        public Model3D RoverModel
         {
             get
             {
-                return _model.our_Model;
+                return _model.RoverModel;
             }
             set
             {
-                _model.our_Model = value;
-                NotifyOfPropertyChange(() => our_Model);
+                _model.RoverModel = value;
+                NotifyOfPropertyChange(() => RoverModel);
             }
         }
         public float HeadingDeg
@@ -157,7 +157,9 @@ namespace RED.ViewModels.Modules
             _idResolver = idResolver;
 
             ModelImporter importer = new ModelImporter();
-            our_Model = importer.Load(@"../../Addons/Rover.stl");
+            RoverModel = importer.Load(@"../../Addons/Rover.stl");
+            RoverModel.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1 ,0, 0), 135));
+
 
             _rovecomm.NotifyWhenMessageReceived(this, "GPSQuality");
             _rovecomm.NotifyWhenMessageReceived(this, "GPSPosition");

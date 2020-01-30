@@ -56,9 +56,9 @@
             <Label Grid.Row="1" Grid.Column="5">
                 <TextBlock Text="{Binding CurrentLocation, Converter={StaticResource LongitudeConverter}}" Style="{DynamicResource MaybeStale}" />
             </Label>
-            <h:HelixViewport3D Grid.Column="6" >
+            <h:HelixViewport3D ZoomExtentsWhenLoaded="True" ShowViewCube="False" Grid.Column="6" Width="300" Height="300">
                 <h:SunLight/>
-                <ModelVisual3D Content="{Binding our_Model}"/>
+                <ModelVisual3D Content="{Binding RoverModel}"/>
             </h:HelixViewport3D>
         </Grid>
     </StackPanel>
