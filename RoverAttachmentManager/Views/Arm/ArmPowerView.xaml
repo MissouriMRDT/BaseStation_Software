@@ -36,20 +36,20 @@
 
                 <!-- creates twelve columns -->
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="49" />
-                    <ColumnDefinition Width="70" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="*" />
 
-                    <ColumnDefinition Width="49" />
-                    <ColumnDefinition Width="70" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="*" />
 
-                    <ColumnDefinition Width="49" />
-                    <ColumnDefinition Width="70" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="*" />
 
-                    <ColumnDefinition Width="49" />
-                    <ColumnDefinition Width="70" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
