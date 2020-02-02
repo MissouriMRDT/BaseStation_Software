@@ -123,7 +123,20 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 NotifyOfPropertyChange(() => AngularControl);
             }
         }
-        
+
+        public IKControlViewModel IKControl
+        {
+            get
+            {
+                return _model._ikControl;
+            }
+            set
+            {
+                _model._ikControl = value;
+                NotifyOfPropertyChange(() => IKControl);
+            }
+        }
+
         public int IKRangeFactor
         {
             get
@@ -209,6 +222,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
             ControlMultipliers = new ControlMultipliersViewModel();
             ControlFeatures = new ControlFeaturesViewModel(networkMessenger, idResolver, log);
             AngularControl = new AngularControlViewModel(networkMessenger, idResolver, log, configs, this);
+            IKControl = new IKControlViewModel(networkMessenger, idResolver, log, this);
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _log = log;
