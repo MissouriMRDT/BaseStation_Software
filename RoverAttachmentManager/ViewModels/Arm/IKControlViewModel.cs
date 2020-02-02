@@ -17,7 +17,7 @@ using static RoverAttachmentManager.ViewModels.Arm.ArmViewModel;
 
 namespace RoverAttachmentManager.ViewModels.Arm
 {
-    class IKControlViewModel : PropertyChangedBase, IRovecommReceiver
+    public class IKControlViewModel : PropertyChangedBase, IRovecommReceiver
     {
         
         private readonly IKControlModel _model;
