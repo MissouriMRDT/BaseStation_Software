@@ -9,16 +9,16 @@ namespace RED.Views {
 		{
 			InitializeComponent();
 			MainTabs.SelectionChanged += MainTabs_SelectionChanged;
-			CameraTest.MouseDown += CameraTest_MouseDown;
-			SecondCamera.MouseDown += CameraTest_MouseDown;
-			ThirdCamera.MouseDown += CameraTest_MouseDown;
-			FourthCamera.MouseDown += CameraTest_MouseDown;
+			Camera1.MouseDown += CameraTest_MouseDown;
+			Camera2.MouseDown += CameraTest_MouseDown;
+			Camera3.MouseDown += CameraTest_MouseDown;
+			Camera4.MouseDown += CameraTest_MouseDown;
 
 			CameraMultiplexer.Initialize();
-			CameraMultiplexer.AddSurface(1, CameraTest);
-			CameraMultiplexer.AddSurface(2, SecondCamera);
-			CameraMultiplexer.AddSurface(3, ThirdCamera);
-			CameraMultiplexer.AddSurface(4, FourthCamera);
+			CameraMultiplexer.AddSurface(1, Camera1);
+			CameraMultiplexer.AddSurface(2, Camera2);
+			CameraMultiplexer.AddSurface(3, Camera3);
+			CameraMultiplexer.AddSurface(4, Camera4);
 		}
 
 		private void CameraTest_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)

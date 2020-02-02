@@ -31,11 +31,18 @@
             <TabItem Header="Autonomy" Name="AutonomyTab">
                 <ContentControl x:Name="Autonomy" />
             </TabItem>
+			
+			
 
         </controls:MetroTabControl>
 
         <ContentControl x:Name="InputManager" />
 
-    </StackPanel>
+		<Image x:Name="Camera5" Tag="4" Height="200px" Width="300px"/>
+		<Image x:Name="Camera6" Tag="4" Height="200px" Width="300px"/>
+		<Image x:Name="Camera7" Tag="4" Height="200px" Width="300px"/>
+		<Image x:Name="Camera8" Tag="4" Height="200px" Width="300px"/>
+
+	</StackPanel>
 
 </controls:MetroWindow>
