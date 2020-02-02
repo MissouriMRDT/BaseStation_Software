@@ -1,4 +1,6 @@
-﻿namespace Core.Interfaces
+﻿using Core.RoveProtocol;
+
+namespace Core.Interfaces
 {
     /// <summary>
     /// This interface describes objects who want to receive rovecomm messages from the network.
@@ -13,10 +15,8 @@
         /// asked to be notified about. Rovecomm will call this function and give it the dataid and data that 
         /// was in the message it received.
         /// </summary>
-        /// <param name="dataId">The id of the message received, corresponding to rovecomm metadata ID's</param>
-        /// <param name="data">The data received</param>
-        /// <param name="reliable">whether or not the message was delivered reliably -- IE with ensured protocols
-        /// such as tcp -- or not -- IE with broadcast protocols such as udp.</param>
-        void ReceivedRovecommMessageCallback(int index, bool reliable);
+        /// <param name="packet">The message received</param>
+        /// <param name="reliable">Whether to send it reliably (TCP) or not (UDP)</param>
+        void ReceivedRovecommMessageCallback(Packet packet, bool reliable);
     }
 }

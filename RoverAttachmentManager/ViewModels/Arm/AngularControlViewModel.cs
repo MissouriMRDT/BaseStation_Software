@@ -171,7 +171,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
 
         public void ToggleAuto()
         {
-            _rovecomm.SendCommand(new Packet("ToggleAutoPositionTelem"));
+            _rovecomm.SendCommand(Packet.Create("ToggleAutoPositionTelem"));
         }
 
         public void StorePosition()
@@ -210,11 +210,6 @@ namespace RoverAttachmentManager.ViewModels.Arm
         {
             foreach (var position in config.Positions)
                 Positions.Add(new ArmPositionViewModel(position));
-        }
-
-        public void ReceivedRovecommMessageCallback(int index, bool reliable)
-        {
-            ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
         }
 
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)

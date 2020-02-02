@@ -167,7 +167,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
         }
         public void ToggleAuto()
         {
-            _rovecomm.SendCommand(new Packet("ToggleAutoPositionTelem"));
+            _rovecomm.SendCommand(Packet.Create("ToggleAutoPositionTelem"));
         }
 
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
@@ -185,10 +185,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
                     break;
             }
         }
-        public void ReceivedRovecommMessageCallback(int index, bool reliable)
-        {
-            ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
-        }
+
         public void SetOpPoint()
         {
             float[] opPoints = { OpX, OpY, OpZ };
@@ -200,7 +197,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
         }
         public void GetXYZPosition()
         {
-            _rovecomm.SendCommand(new Packet("ArmGetXYZ"));
+            _rovecomm.SendCommand(Packet.Create("ArmGetXYZ"));
         }
         public void SetXYZPosition()
         {

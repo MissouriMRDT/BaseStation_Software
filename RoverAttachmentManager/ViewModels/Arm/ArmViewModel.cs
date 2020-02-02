@@ -301,15 +301,12 @@ namespace RoverAttachmentManager.ViewModels.Arm
 
             Nipper = (Int16)values["Nipper"];
 
-            Int16[] sendValues = { Gripper2, Nipper, Gripper, ArmWristTwist, ArmWristBend, ArmElbowTwist, ArmElbowBend, ArmBaseBend, ArmBaseTwist }; //order before we reverse
-            byte[] data = new byte[sendValues.Length * sizeof(Int16)];
-            Buffer.BlockCopy(sendValues, 0, data, 0, data.Length);
-            Array.Reverse(data);
-            _rovecomm.SendCommand(new Packet("ArmValues", data, 9, (byte)DataTypes.INT16_T));
+            Int16[] sendValues = { ArmBaseTwist, ArmBaseBend, ArmElbowBend, ArmElbowTwist, ArmWristBend, ArmWristTwist, Gripper, Nipper, Gripper2 };
+            _rovecomm.SendCommand(Packet.Create("ArmValues", sendValues));
 
             if (values["GripperSwap"] == 1)
             {
-                _rovecomm.SendCommand(new Packet("GripperSwap", data, 8, (byte)DataTypes.INT16_T));
+                _rovecomm.SendCommand(Packet.Create("GripperSwap", sendValues));
             }
 
             if (values["SwitchTool"] == 1 && previousTool == ControlFeatures.SelectedTool)
@@ -318,7 +315,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 {
                     ControlFeatures.SelectedTool = 0;
                 }
-                //_rovecomm.SendCommand(new Packet("ToolSelection", SelectedTool));
+                //_rovecomm.SendCommand(Packet.Create("ToolSelection", SelectedTool));
             }
             else if (values["SwitchTool"] == 0)
             {
@@ -327,63 +324,10 @@ namespace RoverAttachmentManager.ViewModels.Arm
             if (values["LaserToggle"] == 1)
             {
                 laser = !laser;
-                _rovecomm.SendCommand(new Packet("Laser", Convert.ToByte(laser)));
+                _rovecomm.SendCommand(Packet.Create("Laser", Convert.ToByte(laser)));
             }
         }
 
-        private void UpdateControlState(Dictionary<string, float> values)
-        {
-            ArmControlState oldState = myState;
-            string state = "";
-
-            if (values["UseAngular"] != 0)
-            {
-                myState = ArmControlState.GuiControl;
-                state = "GUI control";
-                guiControlInitialized = false;
-            }
-            else if (values["UseOpenLoop"] != 0)
-            {
-                myState = ArmControlState.OpenLoop;
-                state = "Open loop";
-            }
-            else if (values["UseRoverPerspectiveIK"] != 0)
-            {
-                myState = ArmControlState.IKRoverPOV;
-                state = "Rover perspective IK";
-            }
-            else if (values["UseWristPerspectiveIK"] != 0)
-            {
-                myState = ArmControlState.IKWristPOV;
-                state = "Wrist perspective IK";
-            }
-
-            if (oldState != myState)
-            {
-                _rovecomm.SendCommand(new Packet("ArmStop"));
-                ControlState = state;
-            }
-        }
-        public void SetValues(Dictionary<string, float> values)
-        {
-            UpdateControlState(values);
-
-            if (myState == ArmControlState.OpenLoop)
-            {
-                SetOpenLoopValues(values);
-            }
-            else if (myState == ArmControlState.IKRoverPOV || myState == ArmControlState.IKWristPOV)
-            {
-                SetIKValues(values, myState);
-            }
-            else if(myState == ArmControlState.GuiControl)
-            {
-                if(guiControlInitialized == false)
-                {
-                    _rovecomm.SendCommand(new Packet("ArmStop"));
-                }
-            }
-        }
         private void SetIKValues(Dictionary<string, float> values, ArmControlState stateToUse)
         {
             Int16 X = 0;
@@ -434,23 +378,20 @@ namespace RoverAttachmentManager.ViewModels.Arm
             Gripper = (Int16)(ControllerBase.TwoButtonTransform(values["GripperClose"] > 0, values["GripperOpen"] > 0, values["GripperClose"], -values["GripperOpen"], 0) * ControlMultipliers.GripperRangeFactor);
             Nipper = (Int16)values["Nipper"];
 
-            Int16[] sendValues = { Nipper, Gripper, Roll, Pitch, Yaw, Z, Y, X };
-            byte[] data = new byte[sendValues.Length * sizeof(Int16)];
-            Buffer.BlockCopy(sendValues, 0, data, 0, data.Length);
-            Array.Reverse(data);
+            Int16[] sendValues = { Nipper, Gripper, Roll, Pitch, Yaw, Z, Y, X};
 
             if (stateToUse == ArmControlState.IKWristPOV)
             {
-                _rovecomm.SendCommand(new Packet("IKWristIncrement", data, 8, (byte)DataTypes.INT16_T));
+                _rovecomm.SendCommand(Packet.Create("IKWristIncrement", sendValues));
             }
             else if (stateToUse == ArmControlState.IKRoverPOV)
             {
-                _rovecomm.SendCommand(new Packet("IKRoverIncrement", data, 8, (byte)DataTypes.INT16_T));
+                _rovecomm.SendCommand(Packet.Create("IKRoverIncrement", sendValues));
             }
 
             if (values["GripperSwap"] == 1)
             {
-                _rovecomm.SendCommand(new Packet("GripperSwap", data, 8, (byte)DataTypes.INT16_T));
+                _rovecomm.SendCommand(Packet.Create("GripperSwap", sendValues));
             }
 
             if (values["SwitchTool"] == 1 && previousTool == ControlFeatures.SelectedTool)
@@ -459,7 +400,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 {
                     ControlFeatures.SelectedTool = 0;
                 }
-                _rovecomm.SendCommand(new Packet("ToolSelection", ControlFeatures.SelectedTool));
+                _rovecomm.SendCommand(Packet.Create("ToolSelection", ControlFeatures.SelectedTool));
             }
             else if (values["SwitchTool"] == 0)
             {
@@ -469,12 +410,68 @@ namespace RoverAttachmentManager.ViewModels.Arm
             if (values["LaserToggle"] == 1)
             {
                 laser = !laser;
-                _rovecomm.SendCommand(new Packet("Laser", Convert.ToByte(laser)));
+                _rovecomm.SendCommand(Packet.Create("Laser", Convert.ToByte(laser)));
             }
         }
+
+        private void UpdateControlState(Dictionary<string, float> values)
+        {
+            ArmControlState oldState = myState;
+            string state = "";
+
+            if (values["UseAngular"] != 0)
+            {
+                myState = ArmControlState.GuiControl;
+                state = "GUI control";
+                guiControlInitialized = false;
+            }
+            else if (values["UseOpenLoop"] != 0)
+            {
+                myState = ArmControlState.OpenLoop;
+                state = "Open loop";
+            }
+            else if (values["UseRoverPerspectiveIK"] != 0)
+            {
+                myState = ArmControlState.IKRoverPOV;
+                state = "Rover perspective IK";
+            }
+            else if (values["UseWristPerspectiveIK"] != 0)
+            {
+                myState = ArmControlState.IKWristPOV;
+                state = "Wrist perspective IK";
+            }
+
+            if (oldState != myState)
+            {
+                _rovecomm.SendCommand(Packet.Create("ArmStop"));
+                ControlState = state;
+            }
+        }
+
+        public void SetValues(Dictionary<string, float> values)
+        {
+            UpdateControlState(values);
+
+            if (myState == ArmControlState.OpenLoop)
+            {
+                SetOpenLoopValues(values);
+            }
+            else if (myState == ArmControlState.IKRoverPOV || myState == ArmControlState.IKWristPOV)
+            {
+                SetIKValues(values, myState);
+            }
+            else if(myState == ArmControlState.GuiControl)
+            {
+                if(guiControlInitialized == false)
+                {
+                    _rovecomm.SendCommand(Packet.Create("ArmStop"));
+                }
+            }
+        }
+
         public void StopMode()
         {
-            _rovecomm.SendCommand(new Packet("ArmStop"));
+            _rovecomm.SendCommand(Packet.Create("ArmStop"));
 
             myState = ArmControlState.GuiControl;
             ControlState = "GUI control";

@@ -73,9 +73,9 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
             _rovecomm.NotifyWhenMessageReceived(this, "WaypointReached");
         }
 
-        public void Enable() => _rovecomm.SendCommand(new Packet("AutonomousModeEnable"), true);
+        public void Enable() => _rovecomm.SendCommand(Packet.Create("AutonomousModeEnable"), true);
 
-        public void Disable() => _rovecomm.SendCommand(new Packet("AutonomousModeDisable"), true);
+        public void Disable() => _rovecomm.SendCommand(Packet.Create("AutonomousModeDisable"), true);
 
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
         {
@@ -87,9 +87,15 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
             }
         }
 
-        public void ReceivedRovecommMessageCallback(int index, bool reliable)
+        public void AddWaypoint()
         {
-            ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
+            Waypoint waypoint = _waypointManager.SelectedWaypoint;
+            byte[] msg = new byte[2 * sizeof(double)];
+            Buffer.BlockCopy(BitConverter.GetBytes(waypoint.Longitude), 0, msg, 0 * sizeof(double), sizeof(double));
+            Buffer.BlockCopy(BitConverter.GetBytes(waypoint.Latitude), 0, msg, 1 * sizeof(double), sizeof(double));
+            Array.Reverse(msg);
+
+            _rovecomm.SendCommand(new Packet("WaypointAdd", msg, 2, (byte)7), true);
         }
     }
 }

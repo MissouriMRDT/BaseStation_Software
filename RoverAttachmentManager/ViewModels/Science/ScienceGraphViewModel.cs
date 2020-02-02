@@ -313,12 +313,7 @@ namespace RoverAttachmentManager.ViewModels.Science
                     break;
 
             }
-        }
-
-        public void ReceivedRovecommMessageCallback(int index, bool reliable)
-        {
-            ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
-        }        
+        }       
 
     }
 }

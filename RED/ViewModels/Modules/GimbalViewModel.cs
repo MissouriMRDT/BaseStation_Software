@@ -81,18 +81,15 @@ namespace RED.ViewModels.Modules
             UpdateControlState(values);
             
             // Pan, Tilt
-            short[] openVals = { (Int16)(values["Tilt"] * 50), (Int16)(values["Pan"] * 50)};
-            byte[] data = new byte[4];
-            Buffer.BlockCopy(openVals, 0, data, 0, data.Length);
-            Array.Reverse(data);
+            short[] openVals = { (Int16)(values["Pan"] * 50), (Int16)(values["Tilt"] * 50)};
 
             if (controlState == GimbalStates.DriveGimbal)
             {
-                _rovecomm.SendCommand(new Packet("DriveGimbalIncrement", data, 2, (byte)DataTypes.INT16_T));
+                _rovecomm.SendCommand(Packet.Create("DriveGimbalIncrement", openVals));
             }
             else
             {
-                _rovecomm.SendCommand(new Packet("MainGimbalIncrement", data, 2,(byte)DataTypes.INT16_T));
+                _rovecomm.SendCommand(Packet.Create("MainGimbalIncrement", openVals));
             }
         }
 
@@ -112,7 +109,7 @@ namespace RED.ViewModels.Modules
 
         public void StopMode()
         {
-            _rovecomm.SendCommand(new Packet("MainGimbalIncrement", new byte[] { 0, 0, 0, 0 }, 2, (byte)DataTypes.INT16_T));
+            _rovecomm.SendCommand(Packet.Create("MainGimbalIncrement", new Int16[] { 0, 0 }));
         }
 
         private enum GimbalStates
