@@ -79,6 +79,7 @@ namespace RED.ViewModels.Modules
                 NotifyOfPropertyChange(() => RawLocation);
             }
         }
+        
         public GPSCoordinate Offset
         {
             get
@@ -199,11 +200,9 @@ namespace RED.ViewModels.Modules
 
             ModelImporter importer = new ModelImporter();
             RoverModel = importer.Load(@"../../Addons/Rover.stl");
-            RotateTransform3D myRotateTransform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), 0));
-            myRotateTransform.CenterX = 0;
-            myRotateTransform.CenterY = 0;
-            myRotateTransform.CenterZ = 0;
+            RotateTransform3D myRotateTransform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), 135));
             RoverModel.Transform = myRotateTransform;
+
 
             _rovecomm.NotifyWhenMessageReceived(this, "GPSQuality");
             _rovecomm.NotifyWhenMessageReceived(this, "GPSPosition");
@@ -218,24 +217,27 @@ namespace RED.ViewModels.Modules
         void roll(double angle)
         {
 
-            //rotate the object by "angle", the vector describes the axis
-            RotateTransform3D RollTransform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), angle));
+            RotateTransform3D RollTransform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), angle))
+            {
+                CenterX = 12,
+                CenterY = 0,
+                CenterZ = 0
+            };
 
-            //apply transformation
             RoverModel.Transform = RollTransform;
-
             
         }
 
         void pitch(double angle)
         {
 
-            //rotate the object by "angle", the vector describes the axis
             RotateTransform3D PitchTransform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), angle));
 
-            //apply transformation
-            RoverModel.Transform = PitchTransform;
+            PitchTransform.CenterX = 0;
+            PitchTransform.CenterY = 0;
+            PitchTransform.CenterZ = 0;
 
+            RoverModel.Transform = PitchTransform;
 
         }
 
@@ -243,6 +245,10 @@ namespace RED.ViewModels.Modules
         {
 
             RotateTransform3D YawTransform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), angle));
+
+            YawTransform.CenterX = 12;
+            YawTransform.CenterY = 0;
+            YawTransform.CenterZ = 0;
 
             RoverModel.Transform = YawTransform;
 

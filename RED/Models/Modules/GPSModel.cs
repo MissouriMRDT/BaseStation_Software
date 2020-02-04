@@ -1,4 +1,5 @@
-﻿using RED.Addons.Navigation;
+﻿using HelixToolkit.Wpf;
+using RED.Addons.Navigation;
 using System.Windows.Media.Media3D;
 
 namespace RED.Models.Modules
@@ -17,6 +18,7 @@ namespace RED.Models.Modules
         internal float Roll = 0;
         internal float Pitch = 0;
         internal float Yaw = 0;
+
 
         internal Model3D RoverModel;
     }
