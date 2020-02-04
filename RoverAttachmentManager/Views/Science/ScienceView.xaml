@@ -37,6 +37,9 @@
             <GroupBox Grid.Column="1" Grid.Row="3" Header="Site Management" Margin="2.5">
                 <ContentControl x:Name="SiteManagment"/>
             </GroupBox>
+            <GroupBox Grid.Column="2" Grid.Row="2" Header="Science Geneva" Margin="2.5">
+                <ContentControl x:Name="ScienceGeneva"/>
+            </GroupBox>
             <GroupBox Grid.Column="2" Grid.Row="3" Header="Actuation"  Margin="2.5">
                 <ContentControl x:Name="ScienceActuation"/>
             </GroupBox>
