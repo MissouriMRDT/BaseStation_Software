@@ -8,16 +8,35 @@
              xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style x:Key="EnableBtn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
+            <Setter Property="Content" Value="Enabled" />
+            <EventSetter Event="Click" Handler="EnableButton_Click" />
+        </Style>
+    </UserControl.Resources>
+
+
     <StackPanel>
-        <oxy:PlotView Margin="5" Height="150" Name="Plot" Model="{Binding SpectrometerPlotModel}"/>
-        <UniformGrid Rows="1">
-            <Label>Number of Runs:</Label>
-            <TextBox x:Name="RunCount"/>
-        </UniformGrid>
-        <Button x:Name="DownloadSpectrometer">Run and Download</Button>
-        <UniformGrid Rows="1">
-            <Button cal:Message.Attach="SetUVLed(1)">Turn UV On</Button>
-            <Button cal:Message.Attach="SetUVLed(0)">Turn UV Off</Button>
-        </UniformGrid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="25"/>
+            </Grid.RowDefinitions>
+
+            <oxy:PlotView Margin="5" Grid.Row="0" Grid.ColumnSpan="5" Grid.RowSpan="2" Height="300" Name="Plot" Model="{Binding SpectrometerPlotModel}"/>
+            <Label Grid.Row="0" Grid.Column="0">Number of Runs:</Label>
+            <TextBox Grid.Row="0" Grid.Column="1" x:Name="RunCount"/>
+            <Button Grid.Row="0" Grid.Column="3" x:Name="DownloadSpectrometer">Run and Download</Button>
+            <ToggleButton Grid.Row="0" Grid.Column="4" Style="{StaticResource EnableBtn}" >Turn UV On</ToggleButton>
+        </Grid>
+        
+
     </StackPanel>
 </UserControl>
