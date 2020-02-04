@@ -282,15 +282,24 @@ namespace RED.ViewModels.Tools
         }
         public void SkipTask()
         {
-            SkipTime += PhaseRemainingTime;
-            TaskCount += 1;
+            if (TaskCount+1 == SelectedSchedule.Phases.Count)
+            {
+                Reset();
+                Reset();
+                SkipTime = TimeSpan.Zero;
+                TaskCount = 0;
+            }
+            else
+            {
+                SkipTime += PhaseRemainingTime;
+                TaskCount += 1;
+            }
         }
 
         private void Timer_Tick(object sender, EventArgs e)
         {
             ElapsedTime = DateTime.Now - StartTime;
             Timer.Interval = TimeSpan.FromSeconds(1);
-            if (ElapsedTime >= SelectedSchedule.Duration) Stop();
         }
 
         public void EditAddSchedule()
@@ -314,8 +323,14 @@ namespace RED.ViewModels.Tools
         }
         public void EditSwitch()
         {
+            TaskCount = 0;
+            SkipTime = TimeSpan.Zero;
             if (SelectedEditSchedule != null)
+            {
                 SelectedSchedule = SelectedEditSchedule;
+                SkipTime = TimeSpan.Zero;
+                TaskCount = 0;
+            }
         }
         public void EditSave()
         {
