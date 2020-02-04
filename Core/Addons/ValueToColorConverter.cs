@@ -24,7 +24,7 @@ namespace Core.Addons
             //and to parse out the numbers. So, our numbers will be formated max-min-cutoff-down.
 
             String param = (String)parameter;   //So cast the parameter as a string
-            String[] seperator = {"-"};         //Noting the seperator to be a -
+            String[] seperator = {"/"};         //Noting the seperator to be a -
             Int32 count = 4;                    //And that 4 numbers will be recieved
 
             //The next line will split the string at the - up to 4 times, and will return a list of the resulting strings
@@ -51,7 +51,7 @@ namespace Core.Addons
             //Similarly, if we are below the minimum and max is our good value,
             //or if we are above the maximum and min is our good value,
             //return Red
-            else if (val < min && down == 1 || val > min && down == 0)
+            else if (val < min && down == 1 || val > max && down == 0)
             {
                 return new SolidColorBrush(Color.FromRgb(255, 0, 0));
             }

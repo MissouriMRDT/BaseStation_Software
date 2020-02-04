@@ -164,11 +164,11 @@ namespace RED.ViewModels.Tools
                 return SelectedSchedule.Duration - ScheduleElapsedTime;
             }
         }
-        public double ScheduleElapsedPercent
+        public float ScheduleElapsedPercent
         {
             get
             {
-                return (double)ScheduleElapsedTime.Ticks / SelectedSchedule.Duration.Ticks * 100;
+                return (float)((double)ScheduleElapsedTime.Ticks / SelectedSchedule.Duration.Ticks * 100);
             }
         }
         public TimeSpan PhaseElapsedTime
@@ -185,11 +185,11 @@ namespace RED.ViewModels.Tools
                 return SelectedSchedule.RemainingTimeInPhase(ScheduleElapsedTime, SkipTime, TaskCount);
             }
         }
-        public double PhaseElapsedPercent
+        public float PhaseElapsedPercent
         {
             get
             {
-                return (double)PhaseElapsedTime.Ticks / SelectedSchedule.PhaseAtTime(TaskCount).Duration.Ticks * 100;
+                return (float)((double)PhaseElapsedTime.Ticks / SelectedSchedule.PhaseAtTime(TaskCount).Duration.Ticks * 100);
             }
         }
         public TimeSpan SkipTime
@@ -202,6 +202,14 @@ namespace RED.ViewModels.Tools
             {
                 _model.SkipTime = value;
                 NotifyOfPropertyChange(() => SkipTime);
+                NotifyOfPropertyChange(() => SkipSeconds);
+            }
+        }
+        public float SkipSeconds
+        {
+            get
+            {
+                return _model.SkipTime.Minutes*60 + _model.SkipTime.Seconds;
             }
         }
         public int TaskCount

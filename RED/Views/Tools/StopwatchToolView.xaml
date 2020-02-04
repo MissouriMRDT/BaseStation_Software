@@ -76,14 +76,25 @@
 			<Viewbox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Stretch="Uniform">
 				<TextBlock Foreground="{StaticResource AccentColorBrush}" Text="{Binding ScheduleElapsedTime, Mode=OneWay, Converter={StaticResource TimeSpanView}}" />
 			</Viewbox>
-
-			<!-- Time that counts down for the MAIN-TASK on the right of the row 2-->
+            <!-- This will be the DELTA T which shows how much time the user is late or ahead of the deadline for the task
+				 When the user is ahead and has an extra time that he gained on the previous task, the background will be green
+				 When the user is behind and has less time to complete the task because he spent too much time on the previous one,
+				 The background will go red. Finially, if the user is ahead, it'll show the number of seconds gained. If the user is late
+				 It'll show number of seconds lost.
+				 There is a case when there will be no gain or loss, so the background will go gray.-->
+            <Border BorderBrush="Red" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2" BorderThickness="4" Background="DarkRed">
+                <Viewbox>
+                    <TextBlock Foreground="{Binding SkipSeconds, Mode=OneWay, Converter={StaticResource ColorConverter}, ConverterParameter='60/-60/0/1'}" Text="{Binding SkipTime, Mode=OneWay, Converter={StaticResource TimeSpanView}}"/>
+                </Viewbox>
+            </Border>
+            <!-- Time that counts down for the MAIN-TASK on the right of the row 2-->
 			<Viewbox Grid.Row="1" Grid.Column="6" Grid.ColumnSpan="2" Stretch="Uniform">
 				<TextBlock Foreground="{StaticResource AccentColorBrush}" Text="{Binding ScheduleRemainingTime, Mode=OneWay, Converter={StaticResource TimeSpanView}}" />
 			</Viewbox>
 			<!-- Progress bar that visaly represents the time left for the BIG-TASK-->
-			<ProgressBar Name="BIG_task_bar" Grid.ColumnSpan="8" HorizontalAlignment="Left" Height="20" Margin="0,0.8,0,0" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Top" Width="491"	Background="Red" 
-						 Minimum="0" 
+			<ProgressBar Name="BIG_task_bar" Grid.ColumnSpan="8" HorizontalAlignment="Left" Height="20" Margin="0,0.8,0,0" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Top" Width="491"
+                        Background="Red" 
+						Minimum="0" 
 						Maximum="100" 
 						Value="{Binding ScheduleElapsedPercent, Mode=OneWay}" 
 						  />
@@ -132,23 +143,15 @@
 
 			<Button Grid.Row="0" Grid.RowSpan="5" Grid.Column="8" Grid.ColumnSpan="1" x:Name="Toggle" Content="{Binding IsRunning, Converter={StaticResource StartStopButton}}" />
 			
-			<!-- This will be the DELTA T which shows how much time the user is late or ahead of the deadline for the task
-				 When the user is ahead and has an extra time that he gained on the previous task, the background will be green
-				 When the user is behind and has less time to complete the task because he spent too much time on the previous one,
-				 The background will go red. Finially, if the user is ahead, it'll show the number of seconds gained. If the user is late
-				 It'll show number of seconds lost.
-				 There is a case when there will be no gain or loss, so the background will go gray.-->
-            <Viewbox Grid.Row="0" Grid.RowSpan="3" Grid.Column="9" Grid.ColumnSpan="1">
-                <TextBlock Background="White" Foreground="{StaticResource AccentColorBrush}" Text="{Binding SkipTime, Mode=OneWay, Converter={StaticResource TimeSpanView}}"/>
-            </Viewbox>
+
 			<!--Button for moving to the next task-->
 			<Button Grid.Row="5" Grid.RowSpan="4" Grid.Column="8" Grid.ColumnSpan="1" cal:Message.Attach="SkipTask()">
 				<TextBlock TextAlignment="Center" >NEXT<LineBreak/>SUB-TASK</TextBlock>
 			</Button>
 
-			<Button Grid.Row="7" Grid.RowSpan="2" Grid.Column="9" Grid.ColumnSpan="1" x:Name="Reset">Reset</Button>
+			<Button Grid.Row="0" Grid.RowSpan="5" Grid.Column="9" Grid.ColumnSpan="1" x:Name="Reset">Reset</Button>
 
-			<Button Grid.Row="3" Grid.RowSpan="4" Grid.Column="9" Grid.ColumnSpan="1" ContextMenuService.IsEnabled="False" Click="EditTime_Click" Content="Edit Tasks">
+			<Button Grid.Row="5" Grid.RowSpan="4" Grid.Column="9" Grid.ColumnSpan="1" ContextMenuService.IsEnabled="False" Click="EditTime_Click" Content="Edit Tasks">
 				<Button.ContextMenu>
 					<ContextMenu Name="EditContextMenu">
 						<ContextMenu.Template>
