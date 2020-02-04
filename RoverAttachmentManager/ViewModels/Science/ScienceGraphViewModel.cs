@@ -222,7 +222,7 @@ namespace RoverAttachmentManager.ViewModels.Science
 
 
             Plots = new ObservableCollection<PlotModel>(){MethanePlotModel, SensorPlotModel};
-
+            SelectedPlots = MethanePlotModel;
         }
 
 
@@ -349,7 +349,7 @@ namespace RoverAttachmentManager.ViewModels.Science
         public void ReceivedRovecommMessageCallback(int index, bool reliable)
         {
             ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
-        }        
+        }
 
     }
 }
