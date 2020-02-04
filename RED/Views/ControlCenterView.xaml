@@ -9,7 +9,6 @@
         WindowTransitionsEnabled="True" WindowStartupLocation="CenterScreen">
     <controls:MetroWindow.Resources>
         <Style TargetType="GroupBox" BasedOn="{StaticResource {x:Type GroupBox}}">
-            <Setter Property="controls:ControlsHelper.ContentCharacterCasing" Value="Normal" />
             <Setter Property="Margin" Value="5"/>
         </Style>
     </controls:MetroWindow.Resources>
