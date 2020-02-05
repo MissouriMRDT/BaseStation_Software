@@ -24,7 +24,20 @@ namespace RoverAttachmentManager.ViewModels.Science
         private readonly ILogger _log;
 
         private readonly ScienceGenevaModel _model;
-      
+
+        public int TestTube
+        {
+            get
+            {
+                return _model.TestTube;
+            }
+            set
+            {
+                _model.TestTube = value;
+                NotifyOfPropertyChange(() => TestTube);
+            }
+        }
+
         public ScienceGenevaViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
             _model = new ScienceGenevaModel();
@@ -37,13 +50,13 @@ namespace RoverAttachmentManager.ViewModels.Science
 
         public void RotateLeft()
         {
-
+            TestTube++;
 
         }
 
         public void RotateRight()
         {
-
+            TestTube--;
 
         }
     }
