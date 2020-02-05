@@ -58,19 +58,19 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     
-                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" >
+                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Margin="0 -42 0 0" >
                         <ContentControl  x:Name="Map" />
                     </StackPanel>
 
-                    <GroupBox Grid.Row="2" Grid.Column="0" Grid.RowSpan="2" Header="Camera (Placeholder)">
+                    <GroupBox Grid.Row="2" Grid.Column="0" Grid.RowSpan="2" Header="Camera (Placeholder)" Margin="5 -20 5 5">
                         
                     </GroupBox>
 
-                    <GroupBox Grid.Row="4" Grid.Column="0" Grid.RowSpan="2" Header="Camera (Placeholder)">
+                    <GroupBox Grid.Row="4" Grid.Column="0" Grid.RowSpan="2" Header="Camera (Placeholder)" Margin="5 0 5 5">
 
                     </GroupBox>
 
-                    <GroupBox Grid.Row="6" Grid.Column="0" Grid.RowSpan="2" Header="Camera (Placeholder)">
+                    <GroupBox Grid.Row="6" Grid.Column="0" Grid.RowSpan="2" Header="Camera (Placeholder)" Margin="5 0 5 5">
 
                     </GroupBox>
                 </Grid>
