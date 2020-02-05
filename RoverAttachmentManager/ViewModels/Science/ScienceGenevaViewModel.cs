@@ -50,13 +50,13 @@ namespace RoverAttachmentManager.ViewModels.Science
 
         public void RotateLeft()
         {
-            TestTube++;
+            TestTube--;
 
         }
 
         public void RotateRight()
         {
-            TestTube--;
+            TestTube++;
 
         }
     }
