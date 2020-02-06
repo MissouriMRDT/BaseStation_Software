@@ -7,8 +7,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel>
         <DockPanel>
-            <Label DockPanel.Dock="Left">Control State:</Label>
-            <Image Source="{Binding Path=ControlState }"/>
+            <Image Height="50" Source="{Binding Path=ControlState }"/>
         </DockPanel>
     </StackPanel>
 </UserControl>

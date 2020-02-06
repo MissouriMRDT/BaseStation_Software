@@ -89,7 +89,7 @@
 
                 <ContentControl x:Name="InputManager" Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2"/>
 
-                <GroupBox Header="Gimbal" Grid.Column="2" Grid.Row="6">
+                <GroupBox Header="Gimbal" Grid.Column="2" Grid.Row="6" Height="90">
                     <ContentControl x:Name="Gimbal" />
                 </GroupBox>
 
