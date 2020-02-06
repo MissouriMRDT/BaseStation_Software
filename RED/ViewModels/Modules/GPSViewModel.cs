@@ -249,7 +249,9 @@ namespace RED.ViewModels.Modules
             switch (packet.Name)
             {
                 case "PitchHeadingRoll":
+                    Pitch = packet.GetDataArray<Int16>()[0];
                     Heading = packet.GetDataArray<Int16>()[1];
+                    Roll = packet.GetDataArray<Int16>()[2];
                     break;
 
                 case "GPSPosition":

@@ -221,7 +221,7 @@ namespace RoverAttachmentManager.ViewModels.Science
             SensorPlotModel.Axes.Add(new OxyPlot.Axes.DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "mm:ss" });
 
 
-            Plots = new ObservableCollection<PlotModel>(){MethanePlotModel, SensorPlotModel};
+            Plots = new ObservableCollection<PlotModel>() { MethanePlotModel, SensorPlotModel };
             SelectedPlots = MethanePlotModel;
         }
 
@@ -345,8 +345,6 @@ namespace RoverAttachmentManager.ViewModels.Science
 
             }
         }
-
-        }       
 
     }
 }

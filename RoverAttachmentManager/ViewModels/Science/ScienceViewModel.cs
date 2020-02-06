@@ -118,6 +118,8 @@ namespace RoverAttachmentManager.ViewModels.Science
             {
                 _model._sciencePower = value;
                 NotifyOfPropertyChange(() => SciencePower);
+            }
+        }
         public InputManagerViewModel InputManager
         {
             get

@@ -8,6 +8,7 @@ using Core.Models;
 using System.Net;
 using System.Windows.Media.Media3D;
 using HelixToolkit.Wpf;
+using Core.RoveProtocol;
 
 namespace RED.ViewModels.Modules
 {
@@ -80,6 +81,8 @@ namespace RED.ViewModels.Modules
             ModelImporter importer = new ModelImporter();
             RoverModel = importer.Load(@"../../Addons/Rover.stl");
             Rotate(0, 0, 0);
+
+            _rovecomm.NotifyWhenMessageReceived(this, "PitchHeadingRoll");
         }
 
         void Rotate(double p, double y, double r)
@@ -120,8 +123,8 @@ namespace RED.ViewModels.Modules
             {
                       
                 case "PitchHeadingRoll":
-                    Pitch = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0));
-                    Roll = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 4));
+                    Pitch = packet.GetDataArray<Int16>()[0];
+                    Roll = packet.GetDataArray<Int16>()[2];
                     break;
 
                 default:           
@@ -129,9 +132,5 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public void ReceivedRovecommMessageCallback(int index, bool reliable)
-        {
-            ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
-        }
     }
 }
