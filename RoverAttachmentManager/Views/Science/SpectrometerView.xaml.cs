@@ -1,10 +1,12 @@
-﻿using System;
+﻿using RoverAttachmentManager.ViewModels.Science;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -23,6 +25,11 @@ namespace RoverAttachmentManager.Views.Science
         public SpectrometerView()
         {
             InitializeComponent();
+        }
+
+        private void EnableButton_Click(object sender, RoutedEventArgs e)
+        {
+            ((SpectrometerViewModel)DataContext).SetUVLed((bool)((ToggleButton)sender).IsChecked ? (byte)1 : (byte)0);
         }
     }
 }

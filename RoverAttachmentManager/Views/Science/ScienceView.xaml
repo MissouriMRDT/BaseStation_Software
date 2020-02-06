@@ -11,38 +11,38 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <Expander Grid.Row="0" Header="Actuation" IsExpanded="True" Margin="2.5">
-                        <ContentControl x:Name="ScienceActuation"/>
-                    </Expander>
-
-                    <Expander Grid.Row="1" Header="Sensors" IsExpanded="True" Margin="2.5">
-                      <ContentControl x:Name="ScienceSensors"/>
-                    </Expander>
-                    <Expander Grid.Row="2" Header="Site Management" IsExpanded="True" Margin="2.5">
-                        <ContentControl x:Name="SiteManagment"/>
-                    </Expander>
-                    <Expander Grid.Row="4"  Header="Science Motor Power" IsExpanded="True" Margin="2.5">
-                        <ContentControl x:Name="SciencePower" />
-                    </Expander>
-                </Grid>
-                
-            </StackPanel>
-            
-            <StackPanel Grid.Column="1">
-                <Expander Header="Spectrometer" IsExpanded="True" Margin="2.5">
-                    <ContentControl x:Name="Spectrometer"/>
-                </Expander>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <GroupBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Header="Spectrometer"  Margin="2.5">
+                <ContentControl x:Name="Spectrometer"/>
+            </GroupBox>
+            <GroupBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Header="Graphs" Margin="2.5">
                 <ContentControl x:Name="ScienceGraph"/>
-            </StackPanel>
+            </GroupBox>
+            <GroupBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"  Header="Science Motor Power" Margin="2.5">
+                <ContentControl x:Name="SciencePower" />
+            </GroupBox>
+            <GroupBox Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="2"  Header="Sensors"  Margin="2.5">
+                <ContentControl x:Name="ScienceSensors"/>
+            </GroupBox>
+            <GroupBox Grid.Column="1" Grid.Row="3" Header="Site Management" Margin="2.5">
+                <ContentControl x:Name="SiteManagment"/>
+            </GroupBox>
+            <GroupBox Grid.Column="0" Grid.Row="3" Header="Geneva Pos." Margin="2.5">
+                <ContentControl x:Name="ScienceGeneva"/>
+            </GroupBox>
+            <GroupBox Grid.Column="2" Grid.Row="3" Header="Actuation"  Margin="2.5">
+                <ContentControl x:Name="ScienceActuation"/>
+            </GroupBox>
         </Grid>
         <ContentControl x:Name="InputManager" Margin="2.5" />
     </StackPanel>

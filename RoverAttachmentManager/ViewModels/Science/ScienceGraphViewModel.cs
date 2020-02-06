@@ -9,6 +9,7 @@ using OxyPlot.Wpf;
 using RoverAttachmentManager.Models.Science;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -151,7 +152,47 @@ namespace RoverAttachmentManager.ViewModels.Science
                 NotifyOfPropertyChange(() => SpectrometerIPAddress);
             }
         }
- 
+
+        public SiteManagmentViewModel SiteManagment
+        {
+            get
+            {
+                return _model._siteManagment;
+            }
+            set
+            {
+                _model._siteManagment = value;
+                NotifyOfPropertyChange(() => SiteManagment);
+            }
+        }
+
+        public ObservableCollection<PlotModel> Plots
+        {
+            get
+            {
+                return _model.Plots;
+
+            }
+            set
+            {
+                _model.Plots = value;
+                NotifyOfPropertyChange(() => Plots);
+            }
+        }
+
+        public PlotModel SelectedPlots
+        {
+            get
+            {
+                return _model.SelectedPlot;
+            }
+            set
+            {
+                _model.SelectedPlot = value;
+                NotifyOfPropertyChange(() => SelectedPlots);
+            }
+        }
+
         public ScienceGraphViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
             _model = new ScienceGraphModel();
@@ -159,6 +200,7 @@ namespace RoverAttachmentManager.ViewModels.Science
             _idResolver = idResolver;
             _log = log;
             _rovecomm.NotifyWhenMessageReceived(this, "ScienceSensors");
+
 
             SpectrometerPlotModel = new PlotModel { Title = "Spectrometer Results" };
             SpectrometerSeries = new OxyPlot.Series.LineSeries();
@@ -178,6 +220,9 @@ namespace RoverAttachmentManager.ViewModels.Science
             SensorPlotModel.Series.Add(Sensor1Series);
             SensorPlotModel.Axes.Add(new OxyPlot.Axes.DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "mm:ss" });
 
+
+            Plots = new ObservableCollection<PlotModel>() { MethanePlotModel, SensorPlotModel };
+            SelectedPlots = MethanePlotModel;
         }
 
 
@@ -199,20 +244,6 @@ namespace RoverAttachmentManager.ViewModels.Science
                 Fill = OxyColor.FromAColor(50, OxyColors.DarkOrange),
 
             });
-        }
-
-
-        public SiteManagmentViewModel SiteManagment
-        {
-            get
-            {
-                return _model._siteManagment;
-            }
-            set
-            {
-                _model._siteManagment = value;
-                NotifyOfPropertyChange(() => SiteManagment);
-            }
         }
 
         public void UpdateSensorGraphs()
@@ -313,7 +344,7 @@ namespace RoverAttachmentManager.ViewModels.Science
                     break;
 
             }
-        }       
+        }
 
     }
 }

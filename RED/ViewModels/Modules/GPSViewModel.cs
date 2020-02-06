@@ -6,6 +6,8 @@ using System;
 using System.IO;
 using Core.RoveProtocol;
 using System.Net;
+using System.Windows.Media.Media3D;
+using HelixToolkit.Wpf;
 
 namespace RED.ViewModels.Modules
 {
@@ -127,6 +129,7 @@ namespace RED.ViewModels.Modules
                 NotifyOfPropertyChange(() => RawLocation);
             }
         }
+        
         public GPSCoordinate Offset
         {
             get
@@ -178,6 +181,7 @@ namespace RED.ViewModels.Modules
                 NotifyOfPropertyChange(() => HeadingDeg);
             }
         }
+     
         public float HeadingDeg
         {
             get
@@ -185,6 +189,7 @@ namespace RED.ViewModels.Modules
                 return (float)(Heading * 180d / Math.PI);
             }
         }
+
         public float RoverDistanceStart
         {
 
@@ -226,6 +231,10 @@ namespace RED.ViewModels.Modules
             }
             RoverDistanceTraveled = RoverDistanceStart;
 
+            _rovecomm.NotifyWhenMessageReceived(this, "Lidar");
+            _rovecomm.NotifyWhenMessageReceived(this, "NavPitch");
+            _rovecomm.NotifyWhenMessageReceived(this, "NavRoll");
+            _rovecomm.NotifyWhenMessageReceived(this, "NavTrueHeading");
             _rovecomm.NotifyWhenMessageReceived(this, "PitchHeadingRoll");
             _rovecomm.NotifyWhenMessageReceived(this, "GPSPosition");
             _rovecomm.NotifyWhenMessageReceived(this, "GPSTelem");
@@ -233,12 +242,16 @@ namespace RED.ViewModels.Modules
             _rovecomm.NotifyWhenMessageReceived(this, "RoverDistanceSession");
         }
 
+        
+
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
         {
             switch (packet.Name)
             {
                 case "PitchHeadingRoll":
+                    Pitch = packet.GetDataArray<Int16>()[0];
                     Heading = packet.GetDataArray<Int16>()[1];
+                    Roll = packet.GetDataArray<Int16>()[2];
                     break;
 
                 case "GPSPosition":

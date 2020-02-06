@@ -129,9 +129,11 @@
     <Compile Include="Models\InputSelectorModel.cs" />
     <Compile Include="Models\MainWindowModel.cs" />
     <Compile Include="Models\Science\ScienceActuationModel.cs" />
+    <Compile Include="Models\Science\ScienceGenevaModel.cs" />
     <Compile Include="Models\Science\ScienceGraphModel.cs" />
     <Compile Include="Models\Science\ScienceModel.cs" />
     <Compile Include="ViewModels\Autonomy\StateControlViewModel.cs" />
+    <Compile Include="ViewModels\Science\ScienceGenevaViewModel.cs" />
     <Compile Include="Views\Autonomy\StateControlView.xaml.cs">
       <DependentUpon>StateControlView.xaml</DependentUpon>
     </Compile>
@@ -162,6 +164,9 @@
     <Compile Include="Views\Arm\ArmPowerView.xaml.cs">
       <DependentUpon>ArmPowerView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Science\ScienceGenevaView.xaml.cs">
+      <DependentUpon>ScienceGenevaView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Arm\ControlFeaturesView.xaml.cs">
       <DependentUpon>ControlFeaturesView.xaml</DependentUpon>
     </Compile>
@@ -187,6 +192,10 @@
       <DependentUpon>SpectrometerView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\Science\ScienceActuationView.xaml" />
+    <Page Include="Views\Science\ScienceGenevaView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Science\ScienceGraphView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

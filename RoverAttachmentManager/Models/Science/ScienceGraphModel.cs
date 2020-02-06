@@ -2,13 +2,15 @@
 using System.IO;
 using OxyPlot;
 using RoverAttachmentManager.ViewModels.Science;
+using System.Collections.ObjectModel;
+using Core.Interfaces;
 
 namespace RoverAttachmentManager.Models.Science
 {
     internal class ScienceGraphModel
     {
         internal SiteManagmentViewModel _siteManagment;
-
+        internal IInputMode Mode;
 
         internal float Sensor0Value;
         internal float Sensor1Value;
@@ -18,6 +20,8 @@ namespace RoverAttachmentManager.Models.Science
         internal int RunCount = 100;
         internal ushort SpectrometerPortNumber = 11001;
 
+        internal ObservableCollection<PlotModel> Plots;
+        internal PlotModel SelectedPlot;
 
         public PlotModel SpectrometerPlotModel;
         public PlotModel SensorPlotModel;

@@ -60,6 +60,18 @@ namespace RoverAttachmentManager.ViewModels.Science
                 NotifyOfPropertyChange(() => SiteManagment);
             }
         }
+        public ScienceGenevaViewModel ScienceGeneva
+        {
+            get
+            {
+                return _model._scienceGeneva;
+            }
+            set
+            {
+                _model._scienceGeneva = value;
+                NotifyOfPropertyChange(() => ScienceGeneva);
+            }
+        }
         public ScienceActuationViewModel ScienceActuation
         {
             get
@@ -94,6 +106,18 @@ namespace RoverAttachmentManager.ViewModels.Science
             {
                 _model._scienceSensors = value;
                 NotifyOfPropertyChange(() => ScienceSensors);
+            }
+        }
+        public SciencePowerViewModel SciencePower
+        {
+            get
+            {
+                return _model._sciencePower;
+            }
+            set
+            {
+                _model._sciencePower = value;
+                NotifyOfPropertyChange(() => SciencePower);
             }
         }
         public InputManagerViewModel InputManager
@@ -161,10 +185,12 @@ namespace RoverAttachmentManager.ViewModels.Science
         {
             _model = new ScienceModel();
             SiteManagment = new SiteManagmentViewModel(networkMessenger, idResolver, log, this);
+            ScienceGeneva = new ScienceGenevaViewModel(networkMessenger, idResolver, log);
             ScienceGraph = new ScienceGraphViewModel(networkMessenger, idResolver, log);
             ScienceActuation = new ScienceActuationViewModel(networkMessenger, idResolver, log);
             Spectrometer = new SpectrometerViewModel(networkMessenger, idResolver, log, this);
             ScienceSensors = new ScienceSensorsViewModel(networkMessenger, idResolver, log, this);
+            SciencePower = new SciencePowerViewModel(networkMessenger, idResolver, log);
 
             _rovecomm = networkMessenger;
             _idResolver = idResolver;

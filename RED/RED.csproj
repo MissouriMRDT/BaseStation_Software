@@ -81,6 +81,12 @@
     <Reference Include="GMap.NET.WindowsPresentation, Version=1.7.5.0, Culture=neutral, PublicKeyToken=b85b9027b614afef, processorArchitecture=MSIL">
       <HintPath>..\packages\GMap.NET.Presentation.1.7.5\lib\net40\GMap.NET.WindowsPresentation.dll</HintPath>
     </Reference>
+    <Reference Include="HelixToolkit, Version=2.10.0.0, Culture=neutral, PublicKeyToken=52aa3500039caf0d, processorArchitecture=MSIL">
+      <HintPath>..\packages\HelixToolkit.2.10.0\lib\netstandard1.1\HelixToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="HelixToolkit.Wpf, Version=2.10.0.0, Culture=neutral, PublicKeyToken=52aa3500039caf0d, processorArchitecture=MSIL">
+      <HintPath>..\packages\HelixToolkit.Wpf.2.10.0\lib\net45\HelixToolkit.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=1.6.1.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.6.1\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
@@ -149,6 +155,7 @@
     <Compile Include="Images\ModernUIIcons.cs" />
     <Compile Include="Models\InputManagerModel.cs" />
     <Compile Include="Models\InputSelectorModel.cs" />
+    <Compile Include="Models\Modules\Rover3DModel.cs" />
     <Compile Include="Models\Modules\GimbalModel.cs" />
     <Compile Include="Models\Modules\DriveModel.cs" />
     <Compile Include="Models\Modules\LightingSettingsModel.cs" />
@@ -162,6 +169,7 @@
     <Compile Include="Settings.cs" />
     <Compile Include="ViewModels\InputManagerViewModel.cs" />
     <Compile Include="ViewModels\InputSelectorViewModel.cs" />
+    <Compile Include="ViewModels\Modules\Rover3DViewModel.cs" />
     <Compile Include="ViewModels\Modules\CameraViewModel.cs" />
     <Compile Include="ViewModels\Modules\GimbalViewModel.cs" />
     <Compile Include="ViewModels\Modules\LightingViewModel.cs" />
@@ -188,6 +196,9 @@
     </Compile>
     <Compile Include="Views\InputSelectorView.xaml.cs">
       <DependentUpon>InputSelectorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Rover3DView.xaml.cs">
+      <DependentUpon>Rover3DView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CameraView.xaml.cs">
       <DependentUpon>CameraView.xaml</DependentUpon>
@@ -245,6 +256,10 @@
     <Page Include="Views\InputSelectorView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Modules\Rover3DView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Modules\CameraView.xaml">
       <SubType>Designer</SubType>
@@ -322,6 +337,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Addons\Rover.stl" />
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>

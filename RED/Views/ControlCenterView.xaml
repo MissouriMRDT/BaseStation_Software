@@ -23,13 +23,13 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="408" />
                 </Grid.ColumnDefinitions>
               
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="*" />
@@ -61,7 +61,6 @@
                     <StackPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Margin="0 -43 0 5" >
                         <ContentControl  x:Name="Map" />
                     </StackPanel>
-
                     <GroupBox Grid.Row="2" Grid.Column="0" Grid.RowSpan="2" Header="Camera (Placeholder)" Margin="5 0 5 5">
                         
                     </GroupBox>
@@ -94,6 +93,7 @@
                 </GroupBox>
 
                 <GroupBox Grid.Column="2" Grid.Row="1" Header="3D Model">
+                    <ContentControl x:Name="RoverModel"/>
                 </GroupBox>
 
 

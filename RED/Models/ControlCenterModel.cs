@@ -6,6 +6,7 @@ using RED.ViewModels.Navigation;
 using RED.ViewModels.Tools;
 using Core.ViewModels.Input;
 using Core.ViewModels.Input.Controllers;
+using RED.Models.Modules;
 
 namespace RED.Models
 {
@@ -20,7 +21,8 @@ namespace RED.Models
         internal InputManagerViewModel _input;
         internal WaypointManagerViewModel _waypoint;
         internal StopwatchToolViewModel _stopwatchTool;
-        
+
+        internal Rover3DViewModel _RoverModel; 
         internal GPSViewModel _GPS;
         internal PowerViewModel _power;
         internal CameraViewModel _cameraMux;
