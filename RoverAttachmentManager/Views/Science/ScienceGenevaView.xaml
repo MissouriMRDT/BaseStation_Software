@@ -7,9 +7,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <StackPanel>
-        <UniformGrid Rows="1">
+        <UniformGrid Rows="1" >
             <Label>Test Tube:</Label>
-            <TextBox x:Name="TestTube"/>
+            <TextBox x:Name="TestTube" IsEnabled="False"/>
         </UniformGrid>
         <UniformGrid Rows="1">
             <Button Name="RotateLeft">Rotate Left</Button>
