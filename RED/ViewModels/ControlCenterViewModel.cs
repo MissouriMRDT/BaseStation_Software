@@ -161,18 +161,6 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => GPS);
             }
         }
-        public SensorViewModel Sensor
-        {
-            get
-            {
-                return _model._sensor;
-            }
-            set
-            {
-                _model._sensor = value;
-                NotifyOfPropertyChange(() => Sensor);
-            }
-        }
         public PowerViewModel Power
         {
             get
@@ -197,18 +185,7 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => CameraMux);
             }
         }
-        public LightingViewModel Lighting
-        {
-            get
-            {
-                return _model._lighting;
-            }
-            set
-            {
-                _model._lighting = value;
-                NotifyOfPropertyChange(() => Lighting);
-            }
-        }
+
         public MapViewModel Map
         {
             get
@@ -320,11 +297,9 @@ namespace RED.ViewModels
             //ResubscribeAll();
 
             RoverModel = new Rover3DViewModel(Rovecomm, MetadataManager);
-            GPS = new GPSViewModel(Rovecomm, MetadataManager);
-            Sensor = new SensorViewModel(Rovecomm, MetadataManager, Console);
+            GPS = new GPSViewModel(Rovecomm, MetadataManager, Console);
             Power = new PowerViewModel(Rovecomm, MetadataManager, Console);
             CameraMux = new CameraViewModel(Rovecomm, MetadataManager);
-            Lighting = new LightingViewModel(Rovecomm, MetadataManager, Console);
             Map = new MapViewModel(Console);
 
             Drive = new DriveViewModel(Rovecomm, MetadataManager, Console);

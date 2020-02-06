@@ -150,7 +150,7 @@ namespace RoverNetworkManager.ViewModels
                     NotifyOfPropertyChange(() => SupportsRoveComm);
                 }
             }
-            public long Result
+            public float Result
             {
                 get
                 {

@@ -24,10 +24,8 @@ namespace RED.Models
 
         internal Rover3DViewModel _RoverModel; 
         internal GPSViewModel _GPS;
-        internal SensorViewModel _sensor;
         internal PowerViewModel _power;
         internal CameraViewModel _cameraMux;
-        internal LightingViewModel _lighting;
         internal MapViewModel _map;
         internal DriveViewModel _drive;
         internal GimbalViewModel _gimbal;
