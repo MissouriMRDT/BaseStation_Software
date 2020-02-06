@@ -69,7 +69,7 @@ namespace RED.ViewModels.Modules
             _log = log;
             Name = "Main Gimbal";
             ModeType = "Gimbal";
-            ControlState = System.IO.Path.GetFullPath("../../Images/UpArrow.png");
+            ControlState = System.IO.Path.GetFullPath("../../Images/NotConnected.png");
         }
 
         public void StartMode()
