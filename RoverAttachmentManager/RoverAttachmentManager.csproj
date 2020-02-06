@@ -118,6 +118,7 @@
     <Compile Include="Contexts\ArmPositionsContext.cs" />
     <Compile Include="Models\Arm\AngularControlModel.cs" />
     <Compile Include="Models\Arm\ArmModel.cs" />
+    <Compile Include="Models\Autonomy\AutonomyTelemetryModel.cs" />
     <Compile Include="Models\Autonomy\SentWaypointsModel.cs" />
     <Compile Include="Models\Arm\ArmPowerModel.cs" />
     <Compile Include="Models\Arm\ControlFeaturesModel.cs" />
@@ -131,7 +132,11 @@
     <Compile Include="Models\Science\ScienceActuationModel.cs" />
     <Compile Include="Models\Science\ScienceGraphModel.cs" />
     <Compile Include="Models\Science\ScienceModel.cs" />
+    <Compile Include="ViewModels\Autonomy\AutonomyTelemetryViewModel.cs" />
     <Compile Include="ViewModels\Autonomy\StateControlViewModel.cs" />
+    <Compile Include="Views\Autonomy\AutonomyTelemetryView.xaml.cs">
+      <DependentUpon>AutonomyTelemetryView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Autonomy\StateControlView.xaml.cs">
       <DependentUpon>StateControlView.xaml</DependentUpon>
     </Compile>
@@ -186,6 +191,10 @@
     <Compile Include="Views\Science\SpectrometerView.xaml.cs">
       <DependentUpon>SpectrometerView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\Autonomy\AutonomyTelemetryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Science\ScienceActuationView.xaml" />
     <Page Include="Views\Science\ScienceGraphView.xaml">
       <SubType>Designer</SubType>
@@ -202,7 +211,7 @@
     </Compile>
     <Compile Include="RAMBootstrapper.cs" />
     <Page Include="Views\Arm\AngularControlView.xaml">
-    <SubType>Designer</SubType>
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Autonomy\SentWaypointsView.xaml">
