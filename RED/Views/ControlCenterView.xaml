@@ -35,6 +35,9 @@
                         <Expander Header="GPS" IsExpanded="True">
                             <ContentControl x:Name="GPS" />
                         </Expander>
+                        <Expander Header="3D Model" IsExpanded="True">
+                            <ContentControl x:Name="RoverModel"/>
+                        </Expander>
                         <Expander Header="Waypoints" IsExpanded="True">
                             <ContentControl x:Name="WaypointManager" />
                         </Expander>
