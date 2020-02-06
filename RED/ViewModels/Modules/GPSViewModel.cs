@@ -6,6 +6,8 @@ using System;
 using System.IO;
 using Core.Models;
 using System.Net;
+using System.Windows.Media.Media3D;
+using HelixToolkit.Wpf;
 
 namespace RED.ViewModels.Modules
 {
@@ -127,6 +129,7 @@ namespace RED.ViewModels.Modules
                 NotifyOfPropertyChange(() => RawLocation);
             }
         }
+        
         public GPSCoordinate Offset
         {
             get
@@ -178,6 +181,7 @@ namespace RED.ViewModels.Modules
                 NotifyOfPropertyChange(() => HeadingDeg);
             }
         }
+     
         public float HeadingDeg
         {
             get
@@ -185,6 +189,7 @@ namespace RED.ViewModels.Modules
                 return (float)(Heading * 180d / Math.PI);
             }
         }
+
         public float RoverDistanceStart
         {
 
@@ -226,6 +231,7 @@ namespace RED.ViewModels.Modules
             }
             RoverDistanceTraveled = RoverDistanceStart;
 
+
             _rovecomm.NotifyWhenMessageReceived(this, "Lidar");
             _rovecomm.NotifyWhenMessageReceived(this, "NavPitch");
             _rovecomm.NotifyWhenMessageReceived(this, "NavRoll");
@@ -241,6 +247,8 @@ namespace RED.ViewModels.Modules
             _rovecomm.NotifyWhenMessageReceived(this, "PitchHeadingRoll");
             _rovecomm.NotifyWhenMessageReceived(this, "RoverDistanceSession");
         }
+
+        
 
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
         {

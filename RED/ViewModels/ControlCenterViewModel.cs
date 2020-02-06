@@ -9,6 +9,7 @@ using RED.ViewModels.Tools;
 using Core.ViewModels.Input;
 using Core.ViewModels.Input.Controllers;
 using Core.Interfaces.Input;
+using RED.Models.Modules;
 
 namespace RED.ViewModels
 {
@@ -134,6 +135,18 @@ namespace RED.ViewModels
             {
                 _model._stopwatchTool = value;
                 NotifyOfPropertyChange(() => StopwatchTool);
+            }
+        }
+        public Rover3DViewModel RoverModel
+        {
+            get
+            {
+                return _model._RoverModel;
+            }
+            set
+            {
+                _model._RoverModel = value;
+                NotifyOfPropertyChange(() => RoverModel);
             }
         }
         public GPSViewModel GPS
@@ -282,7 +295,8 @@ namespace RED.ViewModels
        
             Rovecomm = Rovecomm.Instance;
             //ResubscribeAll();
-            
+
+            RoverModel = new Rover3DViewModel(Rovecomm, MetadataManager);
             GPS = new GPSViewModel(Rovecomm, MetadataManager, Console);
             Power = new PowerViewModel(Rovecomm, MetadataManager, Console);
             CameraMux = new CameraViewModel(Rovecomm, MetadataManager);
