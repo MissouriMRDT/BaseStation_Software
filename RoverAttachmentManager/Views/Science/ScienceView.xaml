@@ -44,5 +44,6 @@
                 <ContentControl x:Name="ScienceActuation"/>
             </GroupBox>
         </Grid>
+        <ContentControl x:Name="InputManager" Margin="2.5" />
     </StackPanel>
 </UserControl>

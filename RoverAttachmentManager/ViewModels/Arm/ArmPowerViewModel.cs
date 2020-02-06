@@ -192,12 +192,6 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 LogFile.Flush();
             }
         }
-        
-        //making sure the rover got the message 
-        public void ReceivedRovecommMessageCallback(int index, bool reliable)
-        {
-            ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
-        }
 
         // making the bit array so that the rover can receive the information in the correct amount of bytes/bits 
         public void EnableBus(byte index)

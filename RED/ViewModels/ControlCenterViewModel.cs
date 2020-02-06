@@ -335,7 +335,7 @@ namespace RED.ViewModels
 
         public void ResubscribeAll()
         {
-            Rovecomm.SubscribeMyPCToAllDevices();
+            Rovecomm.SubscribeToAll();
 		}
 
 		public void NetworkManager() {

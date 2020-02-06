@@ -130,7 +130,7 @@ namespace RoverAttachmentManager.ViewModels.Science
                     _log.Log("Spectrometer connection established");
 
                     // Request the data
-                    _rovecomm.SendCommand(new Packet("RunSpectrometer", (byte)RunCount), true);
+                    _rovecomm.SendCommand(Packet.Create("RunSpectrometer", (byte)RunCount), true);
 
                     _log.Log("Awaiting data...");
                     using (var file = File.Create(filename))
@@ -149,7 +149,7 @@ namespace RoverAttachmentManager.ViewModels.Science
 
         public void SetUVLed(byte val)
         {
-            _rovecomm.SendCommand(new Packet("UVLedControl", val));
+            _rovecomm.SendCommand(Packet.Create("UVLedControl", val));
         }
 
         public void GraphSpectrometerData(string filename)

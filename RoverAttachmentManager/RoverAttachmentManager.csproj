@@ -116,9 +116,12 @@
     </ApplicationDefinition>
     <Compile Include="Configurations\ArmConfigurations\ArmConfig.cs" />
     <Compile Include="Contexts\ArmPositionsContext.cs" />
+    <Compile Include="Models\Arm\AngularControlModel.cs" />
     <Compile Include="Models\Arm\ArmModel.cs" />
     <Compile Include="Models\Autonomy\SentWaypointsModel.cs" />
     <Compile Include="Models\Arm\ArmPowerModel.cs" />
+    <Compile Include="Models\Arm\ControlFeaturesModel.cs" />
+    <Compile Include="Models\Arm\IKControlModel.cs" />
     <Compile Include="Models\Arm\ControlMultipliersModel.cs" />
     <Compile Include="Models\Autonomy\ControlsModel.cs" />
     <Compile Include="Models\Autonomy\StateControlModel.cs" />
@@ -143,8 +146,14 @@
     <Compile Include="Models\Science\SiteManagmentModel.cs" />
     <Compile Include="Models\Science\SpectrometerModel.cs" />
     <Compile Include="Models\Science\SciencePowerModel.cs" />
-    <Compile Include="ViewModels\Arm\ControlMultipliersViewModel.cs" />
+    <Compile Include="ViewModels\Arm\AngularControlViewModel.cs" />
     <Compile Include="ViewModels\Arm\ArmPowerViewModel.cs" />
+    <Compile Include="ViewModels\Arm\ControlFeaturesViewModel.cs" />
+    <Compile Include="ViewModels\Arm\IKControlViewModel.cs" />
+    <Compile Include="Views\Arm\AngularControlView.xaml.cs">
+      <DependentUpon>AngularControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\Arm\ControlMultipliersViewModel.cs" />
     <Compile Include="ViewModels\Science\ScienceActuationViewModel.cs" />
     <Compile Include="ViewModels\Science\ScienceSensorsViewModel.cs" />
     <Compile Include="ViewModels\Science\SpectrometerViewModel.cs" />
@@ -157,6 +166,12 @@
     </Compile>
     <Compile Include="Views\Science\ScienceGenevaView.xaml.cs">
       <DependentUpon>ScienceGenevaView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Arm\ControlFeaturesView.xaml.cs">
+      <DependentUpon>ControlFeaturesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Arm\IKControlView.xaml.cs">
+      <DependentUpon>IKControlView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Science\SciencePowerView.xaml.cs">
       <DependentUpon>SciencePowerView.xaml</DependentUpon>
@@ -195,6 +210,10 @@
       <DependentUpon>ScienceView.xaml</DependentUpon>
     </Compile>
     <Compile Include="RAMBootstrapper.cs" />
+    <Page Include="Views\Arm\AngularControlView.xaml">
+    <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Autonomy\SentWaypointsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -202,6 +221,14 @@
     <Page Include="Views\Arm\ArmPowerView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Arm\ControlFeaturesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Arm\IKControlView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Science\SciencePowerView.xaml">
       <SubType>Designer</SubType>

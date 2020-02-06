@@ -183,10 +183,6 @@ namespace RoverAttachmentManager.ViewModels.Science
                 LogFile.Flush();
             }
         }
-        public void ReceivedRovecommMessageCallback(int index, bool reliable)
-        {
-            ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
-        }
 
         public void EnableBus(byte index)
         {

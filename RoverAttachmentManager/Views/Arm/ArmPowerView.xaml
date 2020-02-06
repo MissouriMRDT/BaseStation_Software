@@ -28,15 +28,13 @@
         <!-- makes the table collapsable -->
         <StackPanel>
             <Grid>
-                <!-- creates four rows -->
+                <!-- creates two rows -->
                 <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
-                <!-- creates six columns -->
+                <!-- creates twelve columns -->
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="auto" />
@@ -46,54 +44,60 @@
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="*" />
 
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
 
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <!-- What goes in each column (7 motor names and current readings, 8 enable buttons including one for all of the motors -->
-                <ToggleButton Grid.Row="0" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="8" IsChecked="{Binding Path=Status[8]}"/>
-                <Label Grid.Row="0" Grid.Column="1" Background="{Binding Path= BaseTwistCurrent, 
-                   Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}">Base Twist</Label>
-                <Label Grid.Row="0" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="BaseTwistCurrent" Background="{Binding Path=BaseTwistCurrent,
+                <ToggleButton Grid.Row="0" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="9" IsChecked="{Binding Path=Status[9]}"/>
+                <Label Grid.Row="0" Grid.Column="1" Background="{Binding Path= BaseTiltCurrent, 
+                   Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}">Base Tilt</Label>
+                <Label Grid.Row="0" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="BaseTiltCurrent" Background="{Binding Path=BaseTiltCurrent,
                     Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}"/>
                 
-                <ToggleButton Grid.Row="1" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="9" IsChecked="{Binding Path=Status[9]}"/>
-                <Label Grid.Row="1" Grid.Column="1" Background="{Binding Path= BaseTiltCurrent, 
-                   Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}">Base Tilt</Label>
-                <Label Grid.Row="1" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="BaseTiltCurrent" Background="{Binding Path=BaseTiltCurrent,
+                <ToggleButton Grid.Row="1" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="8" IsChecked="{Binding Path=Status[8]}"/>
+                <Label Grid.Row="1" Grid.Column="1" Background="{Binding Path= BaseTwistCurrent, 
+                   Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}">Base Twist</Label>
+                <Label Grid.Row="1" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="BaseTwistCurrent" Background="{Binding Path=BaseTwistCurrent,
                     Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}"/>
 
-                <ToggleButton Grid.Row="2" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="10" IsChecked="{Binding Path=Status[10]}"/>
-                <Label Grid.Row="2" Grid.Column="1" Background="{Binding Path= ElbowTiltCurrent, 
+                <ToggleButton Grid.Row="0" Grid.Column="3" Style="{StaticResource EnableBtn}" Tag="10" IsChecked="{Binding Path=Status[10]}"/>
+                <Label Grid.Row="0" Grid.Column="4" Background="{Binding Path= ElbowTiltCurrent, 
                    Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}">Elbow Tilt</Label>
-                <Label Grid.Row="2" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="ElbowTiltCurrent" Background="{Binding Path=ElbowTiltCurrent,
+                <Label Grid.Row="0" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="ElbowTiltCurrent" Background="{Binding Path=ElbowTiltCurrent,
                     Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}"/>
 
-                <ToggleButton Grid.Row="3" Grid.Column="0" Style="{StaticResource EnableBtn}" Tag="8" IsChecked="{Binding Path=Status[8]}"/>
-                <Label Grid.Row="3" Grid.Column="1" Background="{Binding Path= ElbowTwistCurrent, 
+                <ToggleButton Grid.Row="1" Grid.Column="3" Style="{StaticResource EnableBtn}" Tag="8" IsChecked="{Binding Path=Status[8]}"/>
+                <Label Grid.Row="1" Grid.Column="4" Background="{Binding Path= ElbowTwistCurrent, 
                    Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}">Elbow Twist</Label>
-                <Label Grid.Row="3" Grid.Column="2" Style="{StaticResource CurrentTelem}" x:Name="ElbowTwistCurrent" Background="{Binding Path=ElbowTwistCurrent,
+                <Label Grid.Row="1" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="ElbowTwistCurrent" Background="{Binding Path=ElbowTwistCurrent,
                     Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}"/>
 
-                <ToggleButton Grid.Row="0" Grid.Column="3" Style="{StaticResource EnableBtn}" Tag="9" IsChecked="{Binding Path=Status[9]}"/>
-                <Label Grid.Row="0" Grid.Column="4" Background="{Binding Path= WristTiltCurrent, 
+                <ToggleButton Grid.Row="0" Grid.Column="6" Style="{StaticResource EnableBtn}" Tag="9" IsChecked="{Binding Path=Status[9]}"/>
+                <Label Grid.Row="0" Grid.Column="7" Background="{Binding Path= WristTiltCurrent, 
                    Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}">Wrist Tilt</Label>
-                <Label Grid.Row="0" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="WristTiltCurrent" Background="{Binding Path=WristTiltCurrent,
+                <Label Grid.Row="0" Grid.Column="8" Style="{StaticResource CurrentTelem}" x:Name="WristTiltCurrent" Background="{Binding Path=WristTiltCurrent,
                     Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}"/>
 
-                <ToggleButton Grid.Row="1" Grid.Column="3" Style="{StaticResource EnableBtn}" Tag="10" IsChecked="{Binding Path=Status[10]}"/>
-                <Label Grid.Row="1" Grid.Column="4" Background="{Binding Path= WristTwistCurrent, 
+                <ToggleButton Grid.Row="1" Grid.Column="6" Style="{StaticResource EnableBtn}" Tag="10" IsChecked="{Binding Path=Status[10]}"/>
+                <Label Grid.Row="1" Grid.Column="7" Background="{Binding Path= WristTwistCurrent, 
                    Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}">Wrist Twist</Label>
-                <Label Grid.Row="1" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="WristTwistCurrent" Background="{Binding Path=WristTwistCurrent,
+                <Label Grid.Row="1" Grid.Column="8" Style="{StaticResource CurrentTelem}" x:Name="WristTwistCurrent" Background="{Binding Path=WristTwistCurrent,
                     Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}"/>
 
-                <ToggleButton Grid.Row="2" Grid.Column="3" Style="{StaticResource EnableBtn}" Tag="11" IsChecked="{Binding Path=Status[11]}"/>
-                <Label Grid.Row="2" Grid.Column="4" Background="{Binding Path= GripperCurrent, 
+                <ToggleButton Grid.Row="0" Grid.Column="9" Style="{StaticResource EnableBtn}" Tag="11" IsChecked="{Binding Path=Status[11]}"/>
+                <Label Grid.Row="0" Grid.Column="10" Background="{Binding Path= GripperCurrent, 
                    Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}">Gripper</Label>
-                <Label Grid.Row="2" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="GripperCurrent" Background="{Binding Path=GripperCurrent,
+                <Label Grid.Row="0" Grid.Column="11" Style="{StaticResource CurrentTelem}" x:Name="GripperCurrent" Background="{Binding Path=GripperCurrent,
                     Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}"/>
 
-                <ToggleButton Grid.Row="3" Grid.Column="3" Height="27" VerticalAlignment="Bottom" Style="{StaticResource AllMotorBtn}"/>
-                <Label Grid.Row="3" Grid.Column="4">All motors</Label>
+                <ToggleButton Grid.Row="1" Grid.Column="9" Height="27" VerticalAlignment="Bottom" Style="{StaticResource AllMotorBtn}"/>
+                <Label Grid.Row="1" Grid.Column="10">All motors</Label>
             </Grid>
         </StackPanel>
     </Grid>

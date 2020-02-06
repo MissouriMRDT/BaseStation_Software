@@ -1,7 +1,11 @@
 ﻿using Caliburn.Micro;
+using Core.Configurations;
 using Core.Interfaces;
+using Core.Interfaces.Input;
 using Core.Models;
 using Core.RoveProtocol;
+using Core.ViewModels.Input;
+using Core.ViewModels.Input.Controllers;
 using OxyPlot;
 using OxyPlot.Annotations;
 using OxyPlot.Axes;
@@ -114,6 +118,64 @@ namespace RoverAttachmentManager.ViewModels.Science
             {
                 _model._sciencePower = value;
                 NotifyOfPropertyChange(() => SciencePower);
+        public InputManagerViewModel InputManager
+        {
+            get
+            {
+                return _model.InputManager;
+            }
+            set
+            {
+                _model.InputManager = value;
+                NotifyOfPropertyChange(() => InputManager);
+            }
+        }
+        public XMLConfigManager ConfigManager
+        {
+            get
+            {
+                return _model._configManager;
+            }
+            set
+            {
+                _model._configManager = value;
+                NotifyOfPropertyChange();
+            }
+        }
+        public XboxControllerInputViewModel XboxController1
+        {
+            get
+            {
+                return _model._xboxController1;
+            }
+            set
+            {
+                _model._xboxController1 = value;
+                NotifyOfPropertyChange(() => XboxController1);
+            }
+        }
+        public XboxControllerInputViewModel XboxController2
+        {
+            get
+            {
+                return _model._xboxController2;
+            }
+            set
+            {
+                _model._xboxController2 = value;
+                NotifyOfPropertyChange(() => XboxController2);
+            }
+        }
+        public XboxControllerInputViewModel XboxController3
+        {
+            get
+            {
+                return _model._xboxController3;
+            }
+            set
+            {
+                _model._xboxController3 = value;
+                NotifyOfPropertyChange(() => XboxController3);
             }
         }
 
@@ -131,6 +193,17 @@ namespace RoverAttachmentManager.ViewModels.Science
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _log = log;
+            ConfigManager = new XMLConfigManager(log);
+
+            XboxController1 = new XboxControllerInputViewModel(1);
+            XboxController2 = new XboxControllerInputViewModel(2);
+            XboxController3 = new XboxControllerInputViewModel(3);
+
+            // Programatic instanciation of InputManager view, vs static like everything else in a xaml 
+            InputManager = new InputManagerViewModel(log, ConfigManager,
+                new IInputDevice[] { XboxController1, XboxController2, XboxController3 },
+                new MappingViewModel[0],
+                new IInputMode[] { this });
 
             Name = "Science Controls";
             ModeType = "ScienceControls";
@@ -143,39 +216,31 @@ namespace RoverAttachmentManager.ViewModels.Science
             if ((values["ScrewPosUp"] == 1 || values["ScrewPosDown"] == 1) && !screwIncrementPressed)
             {
                 byte screwPosIncrement = (byte)(values["ScrewPosUp"] == 1 ? 1 : values["ScrewPosDown"] == 1 ? -1 : 0);
-                _rovecomm.SendCommand(new Packet("ScrewRelativeSetPosition", screwPosIncrement));
+                _rovecomm.SendCommand(Packet.Create("ScrewRelativeSetPosition", screwPosIncrement));
                 screwIncrementPressed = true;
             }
             else if (values["ScrewPosUp"] == 0 && values["ScrewPosDown"] == 0)
             {
                 screwIncrementPressed = false;
             }
-
-            Int16[] screwValue = { (Int16)(values["Screw"] * ScrewSpeedScale) }; //order before we reverse
-            byte[] data = new byte[screwValue.Length * sizeof(Int16)];
-            Buffer.BlockCopy(screwValue, 0, data, 0, data.Length);
-            Array.Reverse(data);
-            _rovecomm.SendCommand(new Packet("Screw", data, 1, (byte)DataTypes.INT16_T));
+            
+            Int16[] screwValue = { (Int16)(values["Screw"] * ScrewSpeedScale) };
+            _rovecomm.SendCommand(Packet.Create("Screw", screwValue));
 
             Int16 xMovement = (Int16)(values["XActuation"] * XYSpeedScale);
             Int16 yMovement = (Int16)(values["YActuation"] * XYSpeedScale);
-
-            Int16[] sendValues = { yMovement, xMovement }; //order before we reverse
-            data = new byte[sendValues.Length * sizeof(Int16)];
-            Buffer.BlockCopy(sendValues, 0, data, 0, data.Length);
-            Array.Reverse(data);
-            _rovecomm.SendCommand(new Packet("XYActuation", data, 2, (byte)DataTypes.INT16_T));
-
+     
+            Int16[] sendValues = {xMovement, yMovement};
+            _rovecomm.SendCommand(Packet.Create("XYActuation", sendValues));
+            
         }
+
         public void StopMode()
         {
-            _rovecomm.SendCommand(new Packet("Screw", (Int16)(0)), true);
+            _rovecomm.SendCommand(Packet.Create("Screw", (Int16)(0)), true);
 
             Int16[] sendValues = { 0, 0 };
-            byte[] data = new byte[sendValues.Length * sizeof(Int16)];
-            Buffer.BlockCopy(sendValues, 0, data, 0, data.Length);
-            Array.Reverse(data);
-            _rovecomm.SendCommand(new Packet("XYActuation", data, 2, (byte)DataTypes.INT16_T));
+            _rovecomm.SendCommand(Packet.Create("XYActuation", sendValues));
         }
 
     }

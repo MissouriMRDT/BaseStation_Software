@@ -346,10 +346,7 @@ namespace RoverAttachmentManager.ViewModels.Science
             }
         }
 
-        public void ReceivedRovecommMessageCallback(int index, bool reliable)
-        {
-            ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
-        }
+        }       
 
     }
 }

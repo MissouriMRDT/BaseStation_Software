@@ -110,19 +110,19 @@ namespace RED.ViewModels.Settings.Modules
 
         private void TurnOnHeadlights()
         {
-            _rovecomm.SendCommand(new Packet("Headlights", (byte)30), false);
+            _rovecomm.SendCommand(Packet.Create("Headlights", (byte)30), false);
         }
 
         private void TurnOffHeadlights()
         {
-            _rovecomm.SendCommand(new Packet("Headlights", (byte)0), false);
+            _rovecomm.SendCommand(Packet.Create("Headlights", (byte)0), false);
         }
 
         public void CycleInternalLighting()
         {
             CurrentMode++;
             CurrentMode %= 4;
-            _rovecomm.SendCommand(new Packet("CycleLightingMode", (byte)CurrentMode), false);
+            _rovecomm.SendCommand(Packet.Create("CycleLightingMode", (byte)CurrentMode), false);
         }
     }
 }

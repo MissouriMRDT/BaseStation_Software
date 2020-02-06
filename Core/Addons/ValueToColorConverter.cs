@@ -51,7 +51,7 @@ namespace Core.Addons
             //Similarly, if we are below the minimum and max is our good value,
             //or if we are above the maximum and min is our good value,
             //return Red
-            else if (val < min && down == 1 || val > min && down == 0)
+            else if (val < min && down == 1 || val > max && down == 0)
             {
                 return new SolidColorBrush(Color.FromRgb(255, 0, 0));
             }

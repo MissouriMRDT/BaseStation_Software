@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoverAttachmentManager", "RoverAttachmentManager\RoverAttachmentManager.csproj", "{283076DC-705C-44E9-90F9-3991238995C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{5FD7A187-CF19-4A4C-A97A-B6EEDE122119}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +38,10 @@ Global
 		{283076DC-705C-44E9-90F9-3991238995C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{283076DC-705C-44E9-90F9-3991238995C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{283076DC-705C-44E9-90F9-3991238995C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FD7A187-CF19-4A4C-A97A-B6EEDE122119}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FD7A187-CF19-4A4C-A97A-B6EEDE122119}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FD7A187-CF19-4A4C-A97A-B6EEDE122119}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FD7A187-CF19-4A4C-A97A-B6EEDE122119}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

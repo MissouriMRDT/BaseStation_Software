@@ -10,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace Core.RoveProtocol
 {
-    public enum DataTypes : byte { INT8_T = 0, UINT8_T = 1, INT16_T = 2, UINT16_T = 3, INT32_T = 4, UINT32_T = 5, INT64_T = 6 };
+    public enum DataTypes : byte { INT8_T = 0, UINT8_T = 1, INT16_T = 2, UINT16_T = 3, INT32_T = 4, UINT32_T = 5, FLOAT_T = 6 };
 
     public class RovecommTwo
     {
 
         public const byte VersionNumber = 2;
-        static readonly private int[] sizes = new int[] { 1, 1, 2, 2, 4, 4, 8};
+        static readonly private int[] sizes = new int[] { 1, 1, 2, 2, 4, 4, 4};
 
         static public Packet DecodePacket(byte[] encodedPacket, IDataIdResolver resolver)
         {
@@ -39,12 +39,32 @@ namespace Core.RoveProtocol
                 // Per data type
                 rawData = br.ReadBytes(dataSize * sizes[dataType]);
             }
+            
+            // Convert recieved array from BigEndian to LittleEndian, per each chunk of data
+            if(BitConverter.IsLittleEndian)
+            {
+                for(int d = 0; d < dataSize; d++)
+                {
+                    Array.Reverse(rawData, d * sizes[dataType], sizes[dataType]);
+                }
+            }
 
             return new Packet(resolver.GetName(rawDataId), rawData, dataSize, dataType);
         }
 
         static public byte[] EncodePacket(Packet packet, IDataIdResolver resolver)
         {
+            byte[] rawData = packet.Data;
+
+            // Convert internal array from LittleEndian to BigEndian, per each chunk of data
+            if (BitConverter.IsLittleEndian)
+            {
+                for (int d = 0; d < packet.Count; d++)
+                {
+                    Array.Reverse(rawData, d * sizes[packet.DataType], sizes[packet.DataType]);
+                }
+            }
+
             try
             {
                 using (var ms = new MemoryStream())
@@ -54,7 +74,7 @@ namespace Core.RoveProtocol
                     bw.Write(IPAddress.HostToNetworkOrder((short)resolver.GetId(packet.Name)));
                     bw.Write(packet.Count);
                     bw.Write(packet.DataType);
-                    bw.Write(packet.Data);
+                    bw.Write(rawData);
                     return ms.ToArray();
                 }
             }

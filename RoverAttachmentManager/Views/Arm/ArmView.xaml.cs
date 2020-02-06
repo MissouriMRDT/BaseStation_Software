@@ -16,17 +16,5 @@ namespace RoverAttachmentManager.Views.Arm
         {
             InitializeComponent();
         }
-
-        private async void OverrideButton_Click(object sender, RoutedEventArgs e)
-        {
-            if ((bool)((ToggleButton)sender).IsChecked)
-            {
-                ((ArmViewModel)DataContext).LimitSwitchOverride();
-            }
-            else
-            {
-                ((ArmViewModel)DataContext).LimitSwitchUnOverride();
-            }
-        }
     }
 }
