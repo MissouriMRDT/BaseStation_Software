@@ -8,7 +8,7 @@
     <StackPanel>
         <DockPanel>
             <Label DockPanel.Dock="Left">Control State:</Label>
-            <Label DockPanel.Dock="Right" x:Name ="ControlState" HorizontalContentAlignment="Center" />
+            <Image Source="{Binding Path=ControlState }"/>
         </DockPanel>
     </StackPanel>
 </UserControl>

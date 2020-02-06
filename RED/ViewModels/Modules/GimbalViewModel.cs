@@ -8,6 +8,7 @@ using System.Collections.Generic;
 
 namespace RED.ViewModels.Modules
 {
+
     public class GimbalViewModel : PropertyChangedBase, IInputMode
     {
         private const float MaxZoomSpeed = 1000;
@@ -68,6 +69,7 @@ namespace RED.ViewModels.Modules
             _log = log;
             Name = "Main Gimbal";
             ModeType = "Gimbal";
+            ControlState = "../Images/UpArrow.png";
         }
 
         public void StartMode()
@@ -101,7 +103,7 @@ namespace RED.ViewModels.Modules
             if(values["MainGimbalSwitch"] == 1)
             {
                 controlState = GimbalStates.MainGimbal;
-                ControlState = "Main Gimbal";
+                ControlState = "../Images/UpArrow.png";
             }
             else if(values["DriveGimbalSwitch"] == 1)
             {
