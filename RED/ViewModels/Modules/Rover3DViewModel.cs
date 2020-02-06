@@ -37,7 +37,7 @@ namespace RED.ViewModels.Modules
             }
             set
             {
-                rotate(Pitch, Yaw, value);
+                Rotate(Pitch, Yaw, value);
                 _model.Roll = value;
                 NotifyOfPropertyChange(() => Roll);
             }
@@ -51,7 +51,7 @@ namespace RED.ViewModels.Modules
             }
             set
             {
-                rotate(value, Yaw, Roll);
+                Rotate(value, Yaw, Roll);
                 _model.Pitch = value;
                 NotifyOfPropertyChange(() => Pitch);
             }
@@ -65,7 +65,7 @@ namespace RED.ViewModels.Modules
             }
             set
             {
-                rotate(Pitch, value, Roll);
+                Rotate(Pitch, value, Roll);
                 _model.Yaw = value;
                 NotifyOfPropertyChange(() => Yaw);
             }
@@ -79,10 +79,10 @@ namespace RED.ViewModels.Modules
 
             ModelImporter importer = new ModelImporter();
             RoverModel = importer.Load(@"../../Addons/Rover.stl");
-            rotate(0, 0, 0);
+            Rotate(0, 0, 0);
         }
 
-        void rotate(double p, double y, double r)
+        void Rotate(double p, double y, double r)
         {
             Transform3DGroup myTransform3DGroup = new Transform3DGroup();
 
@@ -120,15 +120,12 @@ namespace RED.ViewModels.Modules
             {
                       
                 case "PitchHeadingRoll":
-                    Pitch = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 2));
-                    Roll = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 2));
+                    Pitch = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0));
+                    Roll = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 4));
                     break;
 
-                default:
-                   
+                default:           
                     break;
-
-                
             }
         }
 

@@ -8,19 +8,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              xmlns:h="http://helix-toolkit.org/wpf">
-    <Grid>
-        <h:HelixViewport3D ZoomExtentsWhenLoaded="True" ShowViewCube="False" Grid.Column="3" Grid.ColumnSpan="4" Width="300" Height="300" >
+    <StackPanel>
+        <h:HelixViewport3D ZoomExtentsWhenLoaded="True" ShowViewCube="False" Width="300" Height="300" >
 
             <h:DirectionalHeadLight/>
             <ModelVisual3D Content="{Binding RoverModel}"/>
 
         </h:HelixViewport3D>
-
-        <Label Content="{Binding Pitch}" Margin="100,0,0,0"/>
-        <Label Content="{Binding Roll}" Margin="100,30,0,0"/>
-        <Label Content="{Binding Yaw}" Margin="100,60,0,0"/>
-        <Slider Value="{Binding Pitch}" Maximum="180" Minimum="-180" Height="29" VerticalAlignment="Top" />
-        <Slider Value="{Binding Roll}" Maximum="180" Minimum="-180" Height="29" VerticalAlignment="Top" Margin="0,30,0,0"/>
-        <Slider Value="{Binding Yaw}" Maximum="180" Minimum="-180" Height="29" VerticalAlignment="Top" Margin="0,60,0,0"/>
-    </Grid>
+    </StackPanel>
 </UserControl>
