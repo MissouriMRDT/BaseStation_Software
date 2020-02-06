@@ -82,9 +82,9 @@
 				 The background will go red. Finially, if the user is ahead, it'll show the number of seconds gained. If the user is late
 				 It'll show number of seconds lost.
 				 There is a case when there will be no gain or loss, so the background will go gray.-->
-            <Border BorderBrush="Red" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2" BorderThickness="4" Background="DarkRed">
+            <Border BorderBrush="{Binding SkipSeconds, Mode=OneWay, Converter={StaticResource ColorConverter}, ConverterParameter='60/-60/0/1'}" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2" BorderThickness="4" Background="{Binding SkipSeconds, Mode=OneWay, Converter={StaticResource ColorConverter}, ConverterParameter='60/-60/0/1'}">
                 <Viewbox>
-                    <TextBlock Foreground="{Binding SkipSeconds, Mode=OneWay, Converter={StaticResource ColorConverter}, ConverterParameter='60/-60/0/1'}" Text="{Binding SkipTime, Mode=OneWay, Converter={StaticResource TimeSpanView}}"/>
+                    <TextBlock Foreground="Black" Background="{Binding SkipSeconds, Mode=OneWay, Converter={StaticResource ColorConverter}, ConverterParameter='60/-60/0/1'}" Text="{Binding SkipTime, Mode=OneWay, Converter={StaticResource TimeSpanView}}"/>
                 </Viewbox>
             </Border>
             <!-- Time that counts down for the MAIN-TASK on the right of the row 2-->
@@ -93,7 +93,7 @@
 			</Viewbox>
 			<!-- Progress bar that visaly represents the time left for the BIG-TASK-->
 			<ProgressBar Name="BIG_task_bar" Grid.ColumnSpan="8" HorizontalAlignment="Left" Height="20" Margin="0,0.8,0,0" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Top" Width="491"
-                        Background="Red" 
+                        Background="Gray" 
 						Minimum="0" 
 						Maximum="100" 
 						Value="{Binding ScheduleElapsedPercent, Mode=OneWay}" 
@@ -131,7 +131,7 @@
 
 			<!--</Border>-->
 			<!--Progress bar that shows how much of the BIG-TASK time is left-->
-			<ProgressBar Grid.Column="0"  Grid.ColumnSpan="8" HorizontalAlignment="Left" Height="37" Background="Red" Margin="0,33.4,0,0" Grid.Row="7" VerticalAlignment="Top" Width="491" Grid.RowSpan="2" 
+			<ProgressBar Grid.Column="0"  Grid.ColumnSpan="8" HorizontalAlignment="Left" Height="37" Background="Gray" Margin="0,33.4,0,0" Grid.Row="7" VerticalAlignment="Top" Width="491" Grid.RowSpan="2" 
 						Minimum="0" 
 						Maximum="100" 
 						Value="{Binding PhaseElapsedPercent, Mode=OneWay}" 
