@@ -75,7 +75,7 @@ namespace RED.ViewModels.Modules
         public void StartMode()
         {
             controlState = GimbalStates.MainGimbal;
-            ControlState = "Main Gimbal";
+            ControlState = System.IO.Path.GetFullPath("../../Images/NotConnected.png");
         }
 
         public void SetValues(Dictionary<string, float> values)
