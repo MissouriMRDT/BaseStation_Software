@@ -8,6 +8,7 @@ using System.Collections.Generic;
 
 namespace RED.ViewModels.Modules
 {
+
     public class GimbalViewModel : PropertyChangedBase, IInputMode
     {
         private const float MaxZoomSpeed = 1000;
@@ -68,12 +69,13 @@ namespace RED.ViewModels.Modules
             _log = log;
             Name = "Main Gimbal";
             ModeType = "Gimbal";
+            ControlState = System.IO.Path.GetFullPath("../../Images/NotConnected.png");
         }
 
         public void StartMode()
         {
             controlState = GimbalStates.MainGimbal;
-            ControlState = "Main Gimbal";
+            ControlState = System.IO.Path.GetFullPath("../../Images/NotConnected.png");
         }
 
         public void SetValues(Dictionary<string, float> values)
@@ -95,15 +97,15 @@ namespace RED.ViewModels.Modules
 
         private void UpdateControlState(Dictionary<string, float> values)
         {
-            if(values["MainGimbalSwitch"] == 1)
+            if (values["MainGimbalSwitch"] == 1)
             {
                 controlState = GimbalStates.MainGimbal;
-                ControlState = "Main Gimbal";
+                ControlState = System.IO.Path.GetFullPath("../../Images/UpArrow.png");
             }
-            else if(values["DriveGimbalSwitch"] == 1)
+            else if (values["DriveGimbalSwitch"] == 1)
             {
                 controlState = GimbalStates.DriveGimbal;
-                ControlState = "Drive Gimbal";
+                ControlState = System.IO.Path.GetFullPath("../../Images/DownArrow.png");
             }
         }
 
