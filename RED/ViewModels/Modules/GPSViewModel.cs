@@ -158,7 +158,7 @@ namespace RED.ViewModels.Modules
             }
             set
             {
-                roll(value);
+                rotate(Pitch, Yaw, value);
                 _model.Roll = value;
                 NotifyOfPropertyChange(() => Roll);
             }
@@ -172,7 +172,7 @@ namespace RED.ViewModels.Modules
             }
             set
             {
-                pitch(value);
+                rotate(value, Yaw, Roll);
                 _model.Pitch = value;
                 NotifyOfPropertyChange(() => Pitch);
             }
@@ -186,7 +186,7 @@ namespace RED.ViewModels.Modules
             }
             set
             {
-                yaw(value);
+                rotate(Pitch, value, Roll);
                 _model.Yaw = value;
                 NotifyOfPropertyChange(() => Yaw);
             }
@@ -200,9 +200,7 @@ namespace RED.ViewModels.Modules
 
             ModelImporter importer = new ModelImporter();
             RoverModel = importer.Load(@"../../Addons/Rover.stl");
-            RotateTransform3D myRotateTransform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), 135));
-            RoverModel.Transform = myRotateTransform;
-
+            rotate(0, 0, 0);
 
             _rovecomm.NotifyWhenMessageReceived(this, "GPSQuality");
             _rovecomm.NotifyWhenMessageReceived(this, "GPSPosition");
@@ -214,44 +212,36 @@ namespace RED.ViewModels.Modules
             _rovecomm.NotifyWhenMessageReceived(this, "PitchHeadingRoll");
         }
 
-        void roll(double angle)
+        void rotate(double p, double y, double r)
         {
+            Transform3DGroup myTransform3DGroup = new Transform3DGroup();
 
-            RotateTransform3D RollTransform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), angle))
+            RotateTransform3D RollTransform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), r+172))
             {
                 CenterX = 12,
                 CenterY = 0,
                 CenterZ = 0
             };
+            myTransform3DGroup.Children.Add(RollTransform);
 
-            RoverModel.Transform = RollTransform;
-            
-        }
 
-        void pitch(double angle)
-        {
+            RotateTransform3D PitchTransform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), p-39))
+            {
+                CenterX = 0,
+                CenterY = 0,
+                CenterZ = 0
+            };
+            myTransform3DGroup.Children.Add(PitchTransform);
 
-            RotateTransform3D PitchTransform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), angle));
+            RotateTransform3D YawTransform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), y+5))
+            {
+                CenterX = 12,
+                CenterY = 0,
+                CenterZ = 0
+            };
+            myTransform3DGroup.Children.Add(YawTransform);
 
-            PitchTransform.CenterX = 0;
-            PitchTransform.CenterY = 0;
-            PitchTransform.CenterZ = 0;
-
-            RoverModel.Transform = PitchTransform;
-
-        }
-
-        void yaw(double angle)
-        {
-
-            RotateTransform3D YawTransform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), angle));
-
-            YawTransform.CenterX = 12;
-            YawTransform.CenterY = 0;
-            YawTransform.CenterZ = 0;
-
-            RoverModel.Transform = YawTransform;
-
+            RoverModel.Transform = myTransform3DGroup;
         }
 
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
