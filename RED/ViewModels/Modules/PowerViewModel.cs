@@ -498,13 +498,13 @@ namespace RED.ViewModels.Modules
         public void EnableBus(byte index)
         {
             
-            BitArray bits = new BitArray(16);
+            BitArray bits = new BitArray(32);
             bits.Set(index + 1, true);
-            byte[] thebits = new byte[2];
+            byte[] thebits = new byte[4];
 
             bits.CopyTo(thebits, 0);
 
-            byte[] bytes = new byte[3];
+            byte[] bytes = new byte[5];
             thebits.CopyTo(bytes, 1);
 
             bytes[0] = 1;
@@ -515,13 +515,13 @@ namespace RED.ViewModels.Modules
         public void DisableBus(byte index)
         {
 
-            BitArray bits = new BitArray(16);
+            BitArray bits = new BitArray(32);
             bits.Set(index + 1, true);
-            byte[] thebits = new byte[2];
+            byte[] thebits = new byte[4];
 
             bits.CopyTo(thebits, 0);
 
-            byte[] bytes = new byte[3];
+            byte[] bytes = new byte[5];
             thebits.CopyTo(bytes, 1);
 
             bytes[0] = 0;
