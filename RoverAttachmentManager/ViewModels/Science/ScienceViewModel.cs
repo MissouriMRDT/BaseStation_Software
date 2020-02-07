@@ -207,7 +207,10 @@ namespace RoverAttachmentManager.ViewModels.Science
                 new MappingViewModel[0],
                 new IInputMode[] { this });
 
-            Name = "Science Controls";
+            Name = "Science/Controls";
+
+            Name = Name.Replace("/", System.Environment.NewLine);
+
             ModeType = "ScienceControls";
         }
 

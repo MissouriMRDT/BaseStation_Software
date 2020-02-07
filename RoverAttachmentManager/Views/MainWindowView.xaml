@@ -16,7 +16,7 @@
         <behaviours:BorderlessWindowBehavior />
     </i:Interaction.Behaviors>
 
-        <ScrollViewer VerticalScrollBarVisibility="Visible">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel>
                 <controls:MetroTabControl Name="MainTabs">
 
