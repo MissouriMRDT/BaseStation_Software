@@ -258,7 +258,7 @@ namespace RED.ViewModels.Modules
                     RawLocation = new GPSCoordinate()
                     {
                         Latitude = packet.GetDataArray<Int32>()[0] / 10000000d,
-                        Longitude = packet.GetDataArray<Int32>()[1] / 10000000d
+                        Longitude = packet.GetDataArray<Int32>()[1] / -10000000d
                     };
                     break;
 
