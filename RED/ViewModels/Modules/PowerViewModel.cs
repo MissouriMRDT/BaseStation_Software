@@ -394,12 +394,9 @@ namespace RED.ViewModels.Modules
             _log = log;
 
             _rovecomm.NotifyWhenMessageReceived(this, "TotalPackCurrentInt");
+            _rovecomm.NotifyWhenMessageReceived(this, "TotalPackVoltageInt");
+            _rovecomm.NotifyWhenMessageReceived(this, "CellCurrentInts");
             _rovecomm.NotifyWhenMessageReceived(this, "BMSTemperatureInt");
-            _rovecomm.NotifyWhenMessageReceived(this, "BMSVoltages");
-            _rovecomm.NotifyWhenMessageReceived(this, "BMSError");
-
-            _rovecomm.NotifyWhenMessageReceived(this, "PowerCurrents");
-            _rovecomm.NotifyWhenMessageReceived(this, "PowerBusStatus");
         }
 
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
@@ -415,24 +412,23 @@ namespace RED.ViewModels.Modules
                     BMSTemperature1 = (float)(packet.GetData<Int32>() / 1000.0);
                     break;
 
-                case "BMSVoltages":
+                case "CellCurrentInts":
                     Int16[] values = packet.GetDataArray<Int16>();
-                    TotalPackVoltage = (float)(values[0] / 1000.0);
-                    Cell1Voltage = (float)(values[1] / 1000.0);
-                    Cell2Voltage = (float)(values[2] / 1000.0);
-                    Cell3Voltage = (float)(values[3] / 1000.0);
-                    Cell4Voltage = (float)(values[4] / 1000.0);
-                    Cell5Voltage = (float)(values[5] / 1000.0);
-                    Cell6Voltage = (float)(values[6] / 1000.0);
-                    Cell7Voltage = (float)(values[7] / 1000.0);
-                    Cell8Voltage = (float)(values[8] / 1000.0);
+                    Cell1Voltage = (float)(values[0] / 1000.0);
+                    Cell2Voltage = (float)(values[1] / 1000.0);
+                    Cell3Voltage = (float)(values[2] / 1000.0);
+                    Cell4Voltage = (float)(values[3] / 1000.0);
+                    Cell5Voltage = (float)(values[4] / 1000.0);
+                    Cell6Voltage = (float)(values[5] / 1000.0);
+                    Cell7Voltage = (float)(values[6] / 1000.0);
+                    Cell8Voltage = (float)(values[7] / 1000.0);
                     break;
 
-                case "BMSError":
-                    _log.Log($"Recieved BMSError Report:\n  {BitConverter.ToString(packet.Data)}");
+                case "TotalPackVoltageInt":
+                    TotalPackVoltage = (float)((packet.GetData<Int32>() / 1000.0);
                     break;
 
-                case "PowerCurrents":
+                case "PowerCurrents": //TODO
                     Int16[] data = packet.GetDataArray<Int16>();
                     ActuationCurrent = (float)(data[0] / 1000.0);
                     LogicCurrent = (float)(data[1] / 1000.0);
@@ -445,10 +441,6 @@ namespace RED.ViewModels.Modules
                     Motor6Current = (float)(data[8] / 1000.0);
                     Motor7Current = (float)(data[9] / 1000.0);
                     General12V40ACurrent = (float)(data[10] / 1000.0);
-                    break;
-
-                case "PowerBusStatus":
-                    Status = new BitArray(packet.Data);
                     break;
             }
 

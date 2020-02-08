@@ -8,48 +8,56 @@ namespace Core.Configurations
             new MetadataServerContext("Drive Board", "192.168.1.131", "11001") {
                 Commands = new[] {
                     new MetadataRecordContext(1000, "DriveLeftRight", "Left wheels speed followed by right wheels speed"),
-                    new MetadataRecordContext(1001, "DriveIndividual", "Controls each wheel individiually"),
-                    new MetadataRecordContext(1002, "WatchdogOverride", "TODO")
+                    //Drive
+                    new MetadataRecordContext(1000, "DriveLeftRight", "Left wheels speed followed by right wheels speed"), //same as last year
+                    new MetadataRecordContext(1001, "DriveIndividual", "Controls each wheel individiually"), //not implemented
+                    new MetadataRecordContext(1002, "WatchdogOverride", ""), //not implemented
+
+                    //Lighting
+                    new MetadataRecordContext(14000, "Headlights", "Headlight intensity for the front of rover"), //same as last year
+                    new MetadataRecordContext(14001, "UnderglowColor", "rgb byte[]"), //same as last year
+                    new MetadataRecordContext(14002, "CycleLightingMode", ""), //same as last year
+                    new MetadataRecordContext(14003, "StateDisplay", "enum blue,red,green") //not implemented
                 },
                 Telemetry = new[]
                 {
-                    new MetadataRecordContext(1100, "DriveSpeeds", "The drive speed of each motor, counterclockwise")
+                    new MetadataRecordContext(1100, "DriveSpeeds", "The drive speed of each motor, counterclockwise") //not implemented
                 }
             },
 
             new MetadataServerContext("BMS Board", "192.168.1.132", "11002") {
                 Commands = new[] {
-                    new MetadataRecordContext(2000, "BMSStop", "BMS E-stop. WARNING: Kills all rover power. Cannot be reversed remotely!"),
-                    new MetadataRecordContext(2001, "SoftwareEStop", "Restarts the system in x seconds"),
-                    new MetadataRecordContext(2002, "WirelessEStopEnable", "Enables/disables the wireless estop"),
-                    new MetadataRecordContext(2003, "WirelessEstop", "Like BMS E-stop, but a wireless button")
+                    new MetadataRecordContext(2000, "BMSStop", "BMS E-stop. WARNING: Kills all rover power. Cannot be reversed remotely!"), //same as last year
+                    new MetadataRecordContext(2001, "SoftwareEStop", "Restarts the system in x seconds"), //updated, used to be in Estop
+                    new MetadataRecordContext(2002, "WirelessEStopEnable", "Enables/disables the wireless estop"), //not implemented
+                    new MetadataRecordContext(2003, "WirelessEstop", "Like BMS E-stop, but a wireless button") //not implemented
                 },
                 Telemetry = new[] {
-                    new MetadataRecordContext(2100, "TotalPackCurrentInt", "BMS"),
-                    new MetadataRecordContext(2101, "TotalPackVoltageInt", "BMS"),
-                    new MetadataRecordContext(2102, "CellCurrentInts", "BMS"),
-                    new MetadataRecordContext(2103, "BMSTemperatureInt", "BMS")
+                    new MetadataRecordContext(2100, "TotalPackCurrentInt", "BMS"), //same as last year
+                    new MetadataRecordContext(2101, "TotalPackVoltageInt", "BMS"), //seperated from cell currents
+                    new MetadataRecordContext(2102, "CellCurrentInts", "BMS"), //name updated, indexs updated
+                    new MetadataRecordContext(2103, "BMSTemperatureInt", "BMS") //same as last year
                 }
             },
 
             new MetadataServerContext("Power Board", "192.168.1.133", "11003") {
                 Commands = new[] {
-                    new MetadataRecordContext(3000, "PowerBusEnableDisable", "Enables or Disables power bus"),
-                    new MetadataRecordContext(3001, "12VBusEnableDisable" , "Enables or Disables 12V bus"),
-                    new MetadataRecordContext(3002, "30VBusEnableDisable", "Enables or Disables 30V bus"),
-                    new MetadataRecordContext(3003, "VacuumEnableDisable", "Enables or Disables vaccum bus"),
-                    new MetadataRecordContext(3004, "PatchPanelEnableDisable", "Enables or Disables path panel")
+                    new MetadataRecordContext(3000, "PowerBusEnableDisable", "Enables or Disables power bus"), //not implemented
+                    new MetadataRecordContext(3001, "12VBusEnableDisable" , "Enables or Disables 12V bus"), //not implemented
+                    new MetadataRecordContext(3002, "30VBusEnableDisable", "Enables or Disables 30V bus"), //not implemented
+                    new MetadataRecordContext(3003, "VacuumEnableDisable", "Enables or Disables vaccum bus"), //not implemented
+                    new MetadataRecordContext(3004, "PatchPanelEnableDisable", "Enables or Disables path panel") //not implemented
                 },
                 Telemetry = new[] {
-                    new MetadataRecordContext(3100, "MotorBudEnabled", "Which motors are enabled"),
-                    new MetadataRecordContext(3101, "12VEnabled", "Which 12V busses are enabled"),
-                    new MetadataRecordContext(3102, "30VEnabled", "Which 30V busses are enabled"),
-                    new MetadataRecordContext(3103, "VaccumEnabled", "Is or isn't the vacuum enabled"),
-                    new MetadataRecordContext(3104, "PatchPanelEnabled", "Which panels are enabled"),
-                    new MetadataRecordContext(3105, "MotorBusCurrent", "Each main motor current"),
-                    new MetadataRecordContext(3106, "12VBusCurrent", "12V current draws"),
-                    new MetadataRecordContext(3107, "30VBusCurrent", "30V current draws"),
-                    new MetadataRecordContext(3108, "VacuumCurrent", "Vacuum current draw")
+                    new MetadataRecordContext(3100, "MotorBusEnabled", "Which motors are enabled"), //not implemented
+                    new MetadataRecordContext(3101, "12VEnabled", "Which 12V busses are enabled"), //not implemented
+                    new MetadataRecordContext(3102, "30VEnabled", "Which 30V busses are enabled"), //not implemented
+                    new MetadataRecordContext(3103, "VaccumEnabled", "Is or isn't the vacuum enabled"), //not implemented
+                    new MetadataRecordContext(3104, "PatchPanelEnabled", "Which panels are enabled"), //not implemented
+                    new MetadataRecordContext(3105, "MotorBusCurrent", "Each main motor current"), //updated/split from last year
+                    new MetadataRecordContext(3106, "12VBusCurrent", "12V current draws"), //updated/split from last year
+                    new MetadataRecordContext(3107, "30VBusCurrent", "30V current draws"), //not implemented
+                    new MetadataRecordContext(3108, "VacuumCurrent", "Vacuum current draw") //not implemented
                 }
             },
 
@@ -69,7 +77,7 @@ namespace Core.Configurations
                     new MetadataRecordContext(6007, "RightMainAbsolute", "pan, tilt")
                 },
                 Telemetry = new[] {
-                    new MetadataRecordContext(6100, "ServoPosition", "Array of 8 servo positions")
+                    new MetadataRecordContext(6100, "ServoPosition", "Array of 8 servo positions") //not implemented
                 }
             },
 
@@ -131,24 +139,12 @@ namespace Core.Configurations
                 }
             },
 
-            new MetadataServerContext("Wireless Estop", "192.168.1.140", "11010") { },
-
-            new MetadataServerContext("PR Controller", "192.168.1.141", "11011") { },
-
             new MetadataServerContext("BSMS", "192.168.1.142", "11012") { },
 
             new MetadataServerContext("Blackbox", "192.168.1.143", "11013") { },
 
-            new MetadataServerContext("Autonomy Board", "192.168.1.144", "11015") { },
+            new MetadataServerContext("Autonomy Board", "192.168.1.144", "11015") { }
 
-            new MetadataServerContext("Lighting Board", "192.168.1.131", "11001") {
-                Commands = new[] {
-                    new MetadataRecordContext(14000, "Headlights", "Headlight intensity for the front of rover"),
-                    new MetadataRecordContext(14001, "LEDRGB", "rgb byte[]"),
-                    new MetadataRecordContext(14002, "LEDFunction", ""),
-                    new MetadataRecordContext(14003, "StateDisplay", "enum blue,red,green")
-                }
-            }
         });
     }
 }
