@@ -337,7 +337,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Addons\Rover.stl" />
+    <Content Include="Addons\Rover.stl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>

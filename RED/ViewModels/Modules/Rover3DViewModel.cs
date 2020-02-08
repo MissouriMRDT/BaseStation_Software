@@ -79,7 +79,7 @@ namespace RED.ViewModels.Modules
             _idResolver = idResolver;
 
             ModelImporter importer = new ModelImporter();
-            RoverModel = importer.Load(@"../../Addons/Rover.stl");
+            RoverModel = importer.Load(System.IO.Path.GetFullPath(@"Addons\Rover.stl"));
             Rotate(0, 0, 0);
 
             _rovecomm.NotifyWhenMessageReceived(this, "PitchHeadingRoll");
