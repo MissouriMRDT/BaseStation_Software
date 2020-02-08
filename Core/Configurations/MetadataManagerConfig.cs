@@ -7,7 +7,6 @@ namespace Core.Configurations
         internal static MetadataSaveContext RovecommTwoMetadata = new MetadataSaveContext(new[] {
             new MetadataServerContext("Drive Board", "192.168.1.131", "11001") {
                 Commands = new[] {
-                    new MetadataRecordContext(1000, "DriveLeftRight", "Left wheels speed followed by right wheels speed"),
                     //Drive
                     new MetadataRecordContext(1000, "DriveLeftRight", "Left wheels speed followed by right wheels speed"), //same as last year
                     new MetadataRecordContext(1001, "DriveIndividual", "Controls each wheel individiually"), //not implemented
