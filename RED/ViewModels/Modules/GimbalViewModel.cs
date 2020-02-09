@@ -81,17 +81,21 @@ namespace RED.ViewModels.Modules
         public void SetValues(Dictionary<string, float> values)
         {
             UpdateControlState(values);
-            
+
+            //increments
             // Pan, Tilt
-            short[] openVals = { (Int16)(values["Pan"] * 50), (Int16)(values["Tilt"] * 50)};
+            short[] openValsLeft = { (Int16)(values["PanLeft"] * 50), (Int16)(values["TiltLeft"] * 50) };
+            short[] openValsRight = { (Int16)(values["PanRight"] * 50), (Int16)(values["TiltRight"] * 50) };
 
             if (controlState == GimbalStates.DriveGimbal)
             {
-                _rovecomm.SendCommand(Packet.Create("DriveGimbalIncrement", openVals));
+                _rovecomm.SendCommand(Packet.Create("LeftDriveGimbal", openValsLeft));
+                _rovecomm.SendCommand(Packet.Create("RightDriveGimbal", openValsRight));
             }
             else
             {
-                _rovecomm.SendCommand(Packet.Create("MainGimbalIncrement", openVals));
+                _rovecomm.SendCommand(Packet.Create("LeftMainGimbal", openValsLeft));
+                _rovecomm.SendCommand(Packet.Create("RightMainGimbal", openValsRight));
             }
         }
 
@@ -111,7 +115,11 @@ namespace RED.ViewModels.Modules
 
         public void StopMode()
         {
-            _rovecomm.SendCommand(Packet.Create("MainGimbalIncrement", new Int16[] { 0, 0 }));
+            short[] zero = { 0, 0 };
+            _rovecomm.SendCommand(Packet.Create("LeftDriveGimbal", zero));
+            _rovecomm.SendCommand(Packet.Create("RightDriveGimbal", zero));
+            _rovecomm.SendCommand(Packet.Create("LeftMainGimbal", zero));
+            _rovecomm.SendCommand(Packet.Create("RightMainGimbal", zero));
         }
 
         private enum GimbalStates

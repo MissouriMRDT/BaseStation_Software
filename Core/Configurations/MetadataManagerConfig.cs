@@ -78,16 +78,16 @@ namespace Core.Configurations
 
             new MetadataServerContext("Nav Board", "192.168.1.135", "11005") { },
 
-            new MetadataServerContext("Gimbal Board", "192.168.1.136", "11006") { //non of this is implemented properly since everything changed
+            new MetadataServerContext("Gimbal Board", "192.168.1.136", "11006") {
                 Commands = new[] {
-                    new MetadataRecordContext(6000, "LeftDriveGimbal", "pan, tilt"),
-                    new MetadataRecordContext(6001, "RightDriveGimbal", "pan, tilt"),
-                    new MetadataRecordContext(6002, "LeftMainGimbal", "pan, tilt"),
-                    new MetadataRecordContext(6003, "RightMainGimbal", "pan, tilt"),
-                    new MetadataRecordContext(6004, "LeftDriveAbsolute", "pan, tilt"),
-                    new MetadataRecordContext(6005, "RightDriveAbsolute", "pan, tilt"),
-                    new MetadataRecordContext(6006, "LeftMainAbsolute", "pan, tilt"),
-                    new MetadataRecordContext(6007, "RightMainAbsolute", "pan, tilt")
+                    new MetadataRecordContext(6000, "LeftDriveGimbal", "pan, tilt"), //updated
+                    new MetadataRecordContext(6001, "RightDriveGimbal", "pan, tilt"), //updated
+                    new MetadataRecordContext(6002, "LeftMainGimbal", "pan, tilt"), //updated
+                    new MetadataRecordContext(6003, "RightMainGimbal", "pan, tilt"), //updated
+                    new MetadataRecordContext(6004, "LeftDriveAbsolute", "pan, tilt"), //not implemented
+                    new MetadataRecordContext(6005, "RightDriveAbsolute", "pan, tilt"), //not implemented
+                    new MetadataRecordContext(6006, "LeftMainAbsolute", "pan, tilt"), //not implemented
+                    new MetadataRecordContext(6007, "RightMainAbsolute", "pan, tilt") //not implemented
                 },
                 Telemetry = new[] {
                     new MetadataRecordContext(6100, "ServoPosition", "Array of 8 servo positions") //not implemented
