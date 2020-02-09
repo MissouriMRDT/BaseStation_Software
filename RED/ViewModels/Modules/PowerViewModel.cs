@@ -393,42 +393,58 @@ namespace RED.ViewModels.Modules
             _idResolver = idResolver;
             _log = log;
 
+            //2019 BMS
+            _rovecomm.NotifyWhenMessageReceived(this, "TotalPackCurrentInt");
+            _rovecomm.NotifyWhenMessageReceived(this, "BMSTemperatureInt");
+            _rovecomm.NotifyWhenMessageReceived(this, "BMSVoltages");
+            _rovecomm.NotifyWhenMessageReceived(this, "BMSError");
+
+            /* 2020 BMS support
+            //From BMS board
             _rovecomm.NotifyWhenMessageReceived(this, "TotalPackCurrentInt");
             _rovecomm.NotifyWhenMessageReceived(this, "TotalPackVoltageInt");
             _rovecomm.NotifyWhenMessageReceived(this, "CellCurrentInts");
             _rovecomm.NotifyWhenMessageReceived(this, "BMSTemperatureInt");
+            //From Power board
+            _rovecomm.NotifyWhenMessageReceived(this, "MotorBusEnabled");
+            _rovecomm.NotifyWhenMessageReceived(this, "12VEnabled");
+            _rovecomm.NotifyWhenMessageReceived(this, "30VEnabled");
+            _rovecomm.NotifyWhenMessageReceived(this, "VacuumEnabled");
+            _rovecomm.NotifyWhenMessageReceived(this, "PatchPanelEnabled");
+            _rovecomm.NotifyWhenMessageReceived(this, "MotorBusCurrent");
+            _rovecomm.NotifyWhenMessageReceived(this, "12VBusCurrent");
+            _rovecomm.NotifyWhenMessageReceived(this, "30VBusCurrent");
+            _rovecomm.NotifyWhenMessageReceived(this, "VacuumCurrent");
+            */
         }
 
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
         {
             switch (packet.Name)
             {
-                // New Id's
-                case "TotalPackCurrentInt":
-                    TotalPackCurrent = (float)(packet.GetData<Int32>() / 1000.0);
-                    break;
-
-                case "BMSTemperatureInt":
-                    BMSTemperature1 = (float)(packet.GetData<Int32>() / 1000.0);
-                    break;
-
-                case "CellCurrentInts":
+                //2019 BMS
+                case "BMSVoltages":
                     Int16[] values = packet.GetDataArray<Int16>();
-                    Cell1Voltage = (float)(values[0] / 1000.0);
-                    Cell2Voltage = (float)(values[1] / 1000.0);
-                    Cell3Voltage = (float)(values[2] / 1000.0);
-                    Cell4Voltage = (float)(values[3] / 1000.0);
-                    Cell5Voltage = (float)(values[4] / 1000.0);
-                    Cell6Voltage = (float)(values[5] / 1000.0);
-                    Cell7Voltage = (float)(values[6] / 1000.0);
-                    Cell8Voltage = (float)(values[7] / 1000.0);
+                    TotalPackVoltage = (float)(values[0] / 1000.0);
+                    Cell1Voltage = (float)(values[1] / 1000.0);
+                    Cell2Voltage = (float)(values[2] / 1000.0);
+                    Cell3Voltage = (float)(values[3] / 1000.0);
+                    Cell4Voltage = (float)(values[4] / 1000.0);
+                    Cell5Voltage = (float)(values[5] / 1000.0);
+                    Cell6Voltage = (float)(values[6] / 1000.0);
+                    Cell7Voltage = (float)(values[7] / 1000.0);
+                    Cell8Voltage = (float)(values[8] / 1000.0);
                     break;
 
-                case "TotalPackVoltageInt":
-                    TotalPackVoltage = (float)((packet.GetData<Int32>() / 1000.0);
+                case "BMSError":
+                    _log.Log($"Recieved BMSError Report:\n  {BitConverter.ToString(packet.Data)}");
                     break;
 
-                case "PowerCurrents": //TODO
+                case "PowerBusStatus":
+                    Status = new BitArray(packet.Data);
+                    break;
+
+                case "PowerCurrents":
                     Int16[] data = packet.GetDataArray<Int16>();
                     ActuationCurrent = (float)(data[0] / 1000.0);
                     LogicCurrent = (float)(data[1] / 1000.0);
@@ -442,6 +458,80 @@ namespace RED.ViewModels.Modules
                     Motor7Current = (float)(data[9] / 1000.0);
                     General12V40ACurrent = (float)(data[10] / 1000.0);
                     break;
+
+                /*
+                // 2020 Id's
+                case "TotalPackCurrentInt":
+                    TotalPackCurrent = (float)(packet.GetData<Int32>() / 1000.0);
+                    break;
+
+                case "BMSTemperatureInt":
+                    BMSTemperature1 = (float)(packet.GetData<Int32>() / 1000.0);
+                    break;
+
+                case "CellCurrentInts":
+                    Int16[] cellVoltages = packet.GetDataArray<Int16>();
+                    Cell1Voltage = (float)(cellVoltages[0] / 1000.0);
+                    Cell2Voltage = (float)(cellVoltages[1] / 1000.0);
+                    Cell3Voltage = (float)(cellVoltages[2] / 1000.0);
+                    Cell4Voltage = (float)(cellVoltages[3] / 1000.0);
+                    Cell5Voltage = (float)(cellVoltages[4] / 1000.0);
+                    Cell6Voltage = (float)(cellVoltages[5] / 1000.0);
+                    Cell7Voltage = (float)(cellVoltages[6] / 1000.0);
+                    Cell8Voltage = (float)(cellVoltages[7] / 1000.0);
+                    break;
+
+                case "TotalPackVoltageInt":
+                    TotalPackVoltage = (float)(packet.GetData<Int32>() / 1000.0);
+                    break;
+
+                case "MotorBusEnabled":
+                    //Not implemented
+                    break;
+
+                case "12VEnabled":
+                    //Not implemented
+                    break;
+
+                case "30VEnabled":
+                    //Not implemented
+                    break;
+
+                case "VacuumEnabled":
+                    //Not implemented
+                    break;
+
+                case "PatchPanelEnabled":
+                    //Not implemented
+                    break;
+
+                case "MotorBusCurrent":
+                    Int16[] motorCurrents = packet.GetDataArray<Int16>();
+                    Motor1Current = (float)(motorCurrents[0] / 1000.0);
+                    Motor2Current = (float)(motorCurrents[1] / 1000.0);
+                    Motor3Current = (float)(motorCurrents[2] / 1000.0);
+                    Motor4Current = (float)(motorCurrents[3] / 1000.0);
+                    Motor5Current = (float)(motorCurrents[4] / 1000.0);
+                    Motor6Current = (float)(motorCurrents[5] / 1000.0);
+                    break;
+
+                case "12VBusCurrent":
+                    Int16[] twelveVCurrents = packet.GetDataArray<Int16>();
+                    ActuationCurrent = (float)(twelveVCurrents[0] / 1000.0);
+                    LogicCurrent = (float)(twelveVCurrents[1] / 1000.0);
+                    break;
+
+                case "30VBusCurrent":
+                    //Not implemented
+                    break;
+
+                case "VacuumCurrent":
+                    //Not implemented
+                    break;
+                */
+                default:
+                    break;
+
             }
 
             
@@ -471,25 +561,15 @@ namespace RED.ViewModels.Modules
 
         public void RebootRover()
         {
-            _rovecomm.SendCommand(Packet.Create("BMSStop", (byte)10), true);
+            _rovecomm.SendCommand(Packet.Create("SoftwareEStop", (byte)RebootTime), true);
         }
         public void EStopRover()
         {
             _rovecomm.SendCommand(Packet.Create("BMSStop", (byte)0), true);
         }
 
-        public void FanControl(bool state)
+        public void EnableBus(byte index) //not updated
         {
-            _rovecomm.SendCommand(Packet.Create("BMSFanControl", state ? 0 : 1), true);
-        }
-        public void BuzzerControl(bool state)
-        {
-            _rovecomm.SendCommand(Packet.Create("BMSBuzzerControl", state ? 0 : 1), true);
-        }
-
-        public void EnableBus(byte index)
-        {
-            
             BitArray bits = new BitArray(32);
             bits.Set(index + 1, true);
             byte[] thebits = new byte[4];
@@ -502,11 +582,10 @@ namespace RED.ViewModels.Modules
             bytes[0] = 1;
 
             _rovecomm.SendCommand(Packet.Create("PowerBusEnableDisable", bytes));
-
         }
-        public void DisableBus(byte index)
-        {
 
+        public void DisableBus(byte index) //not updated
+        {
             BitArray bits = new BitArray(32);
             bits.Set(index + 1, true);
             byte[] thebits = new byte[4];
@@ -521,7 +600,7 @@ namespace RED.ViewModels.Modules
             _rovecomm.SendCommand(Packet.Create("PowerBusEnableDisable", bytes));
         }
 
-        public void MotorBusses(bool state)
+        public void MotorBusses(bool state) //not updated
         {
             BitArray bits = new BitArray(16);
             bits.Set(9, true);

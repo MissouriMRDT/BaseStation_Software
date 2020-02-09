@@ -335,6 +335,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
             {
                 previousTool = ControlFeatures.SelectedTool;
             }
+
             if (values["LaserToggle"] == 1)
             {
                 laser = !laser;
@@ -457,7 +458,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
 
             if (oldState != myState)
             {
-                _rovecomm.SendCommand(Packet.Create("ArmStop"));
+                //_rovecomm.SendCommand(Packet.Create("ArmStop"));
                 ControlState = state;
             }
         }
@@ -478,14 +479,14 @@ namespace RoverAttachmentManager.ViewModels.Arm
             {
                 if(guiControlInitialized == false)
                 {
-                    _rovecomm.SendCommand(Packet.Create("ArmStop"));
+                    //_rovecomm.SendCommand(Packet.Create("ArmStop"));
                 }
             }
         }
 
         public void StopMode()
         {
-            _rovecomm.SendCommand(Packet.Create("ArmStop"));
+            //_rovecomm.SendCommand(Packet.Create("ArmStop"));
 
             myState = ArmControlState.GuiControl;
             ControlState = "GUI control";

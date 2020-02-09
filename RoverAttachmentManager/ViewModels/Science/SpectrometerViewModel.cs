@@ -120,6 +120,7 @@ namespace RoverAttachmentManager.ViewModels.Science
 
         public async void DownloadSpectrometer()
         {
+            //this likely will change a lot with official tcp implementations
             string filename = Path.Combine(SpectrometerFilePath, "REDSpectrometerData-" + DateTime.Now.ToString("yyyyMMdd'-'HHmmss") + ".csv");
             try
             {

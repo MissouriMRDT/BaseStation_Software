@@ -78,7 +78,7 @@ namespace Core.Configurations
 
             new MetadataServerContext("Nav Board", "192.168.1.135", "11005") { },
 
-            new MetadataServerContext("Gimbal Board", "192.168.1.136", "11006") {
+            new MetadataServerContext("Gimbal Board", "192.168.1.136", "11006") { //non of this is implemented properly since everything changed
                 Commands = new[] {
                     new MetadataRecordContext(6000, "LeftDriveGimbal", "pan, tilt"),
                     new MetadataRecordContext(6001, "RightDriveGimbal", "pan, tilt"),
@@ -96,60 +96,62 @@ namespace Core.Configurations
 
             new MetadataServerContext("Arm Board", "192.168.1.137", "11007") {
                 Commands = new[]
-                {
-                    new MetadataRecordContext(7000, "ArmToAngle", "All values for the arm together. Armj1-j6."),
-                    new MetadataRecordContext(7001, "ArmToIK", "All values for the arm together. X,Y,Z,P,Y,R."),
-                    new MetadataRecordContext(7002, "IKRoverIncrement", "Incremental values for rover ik."),
-                    new MetadataRecordContext(7003, "IKWristIncrement", "Incremental values for wrist ik."),
-                    new MetadataRecordContext(7004, "MoveOpenLoop", "All values for the arm together. Armj1-j6, gripper1, nipper, gripper2."),
-                    new MetadataRecordContext(7005, "EndEffectorActuation", "enable/disable solenoid"),
-                    new MetadataRecordContext(7006, "GripperOpenLoop", "-1000,1000"),
-                    new MetadataRecordContext(7007, "ArmCommands", ""),
-                    new MetadataRecordContext(7008, "?????", ""),
-                    new MetadataRecordContext(7009, "ForearmMotors", "j5,j6,gripper1,nipper,gripper2"),
-                    new MetadataRecordContext(7010, "BicepMotors", "j1,j2,j3,j4"),
-                    new MetadataRecordContext(7011, "ForearmAngles", "j5,j6,gripper1,nipper,gripper2"),
-                    new MetadataRecordContext(7012, "BicepAngles", "j1,j2,j3,j4"),
-                    new MetadataRecordContext(7013, "ToolSelection", "Change the selected tool, 0 1 & 2"),
-                    new MetadataRecordContext(7014, "Laser", "Toggle the laser"),
-                    new MetadataRecordContext(7015, "LimitSwitchOverride", "Toggle the laser")
+                { //GripperSwap? ToolSelection? ArmStop? ArmBusEnableDisable? ToggleAutoPositionTelem? ArmGetXYZ
+                    new MetadataRecordContext(7000, "ArmToAngle", "All values for the arm together. Armj1-j6."), //same as last year
+                    new MetadataRecordContext(7001, "ArmToIK", "All values for the arm together. X,Y,Z,P,Y,R."), //updated/implemented
+                    new MetadataRecordContext(7002, "IKRoverIncrement", "Incremental values for rover ik."), //same as last year
+                    new MetadataRecordContext(7003, "IKWristIncrement", "Incremental values for wrist ik."), //same as last year
+                    new MetadataRecordContext(7004, "ArmValues", "All values for the arm together. Armj1-j6, gripper1, nipper, gripper2."), //same as last year
+                    new MetadataRecordContext(7005, "EndEffectorActuation", "enable/disable solenoid"), //not implemented
+                    new MetadataRecordContext(7006, "GripperOpenLoop", "-1000,1000"), //not implemented
+                    new MetadataRecordContext(7007, "ArmCommands", ""), //same as last year
+                    new MetadataRecordContext(7008, "?????", ""), //manifest doesn't explain what this is
+                    new MetadataRecordContext(7009, "ForearmMotors", "j5,j6,gripper1,nipper,gripper2"), //not implemented
+                    new MetadataRecordContext(7010, "BicepMotors", "j1,j2,j3,j4"), //not implemented
+                    new MetadataRecordContext(7011, "ForearmAngles", "j5,j6,gripper1,nipper,gripper2"), //not implemented
+                    new MetadataRecordContext(7012, "BicepAngles", "j1,j2,j3,j4"), //not implemented
+                    new MetadataRecordContext(7013, "ToolSelection", "Change the selected tool, 0 1 & 2"), //same as last year
+                    new MetadataRecordContext(7014, "Laser", "Toggle the laser"), //same as last year
+                    new MetadataRecordContext(7015, "LimitSwitchOverride", "") //same as last year
 
                 },
                 Telemetry = new[]
-                {
-                    new MetadataRecordContext(7100, "ArmCurrents", "Currents for the arm motors m1-8"),
-                    new MetadataRecordContext(7101, "ArmAngles", "Angles for the arm joints m1-6?"),
-                    new MetadataRecordContext(7102, "BicepAngles", "Angles for the arm joints m1-8?"),
-                    new MetadataRecordContext(7103, "ForearmAngles", "Angles for the arm joints m1-8?"),
-                    new MetadataRecordContext(7104, "LimitSwitchValues", "mc1,mc2"),
-                    new MetadataRecordContext(7105, "IKValue", "XYZPYR")
+                { 
+                    new MetadataRecordContext(7100, "ArmCurrents", "Currents for the arm motors m1-8"), //arm power only accounts for 7 motors
+                    new MetadataRecordContext(7101, "ArmAngles", "Angles for the arm joints m1-6"), //same as last year
+                    new MetadataRecordContext(7102, "BicepAngles", "Angles for the arm joints m1-8?"), //not implemented
+                    new MetadataRecordContext(7103, "ForearmAngles", "Angles for the arm joints m1-8?"), //not implemented
+                    new MetadataRecordContext(7104, "LimitSwitchValues", "mc1,mc2"), //not implemented
+                    new MetadataRecordContext(7105, "IKValue", "XYZPYR") //updated. Used to be XYZYPR
                 }
             },
 
             new MetadataServerContext("ScienceAcutation Board", "192.168.1.138", "11008") {
                 Commands = new[] {
-                    new MetadataRecordContext(8000, "ZActuation", "-1000 to 1000 open loop for Z axis control"),
-                    new MetadataRecordContext(8001, "GenevaOpenLoop", "-1000 to 1000 open loop for Geneva control"),
-                    new MetadataRecordContext(8002, "Chemicals", "Array to control all 3 chemicals"),
-                    new MetadataRecordContext(8002, "GenevaToPosition", "Set Geneva absolute position"),
-                    new MetadataRecordContext(8004, "GenevaIncrementPosition", "Increment Geneva position by x"),
-                    new MetadataRecordContext(8005, "Vaccum", "Vacuum off/on"),
-                    new MetadataRecordContext(8006, "LimitSwitchOverride", "0-off/1-on, [Ztop, Zbottom, GenevaSet, GenevaHome]")
+                    new MetadataRecordContext(8000, "ZActuation", "-1000 to 1000 open loop for Z axis control"), //NOT UPDATED: still screw stuff
+                    new MetadataRecordContext(8001, "GenevaOpenLoop", "-1000 to 1000 open loop for Geneva control"), //not implemented
+                    new MetadataRecordContext(8002, "Chemicals", "Array to control all 3 chemicals"), //not implemented
+                    new MetadataRecordContext(8002, "GenevaToPosition", "Set Geneva absolute position"), //not implemented
+                    new MetadataRecordContext(8004, "GenevaIncrementPosition", "Increment Geneva position by x"), //not implemented
+                    new MetadataRecordContext(8005, "Vaccum", "Vacuum off/on"), //not implemented
+                    new MetadataRecordContext(8006, "LimitSwitchOverride", "0-off/1-on, [Ztop, Zbottom, GenevaSet, GenevaHome]") //not implemented
                 },
                 Telemetry = new[]
                 {
-                    new MetadataRecordContext(8100, "GenevaCurrentPosition", ""),
-                    new MetadataRecordContext(8101, "LimitSwitchTriggered", "[Ztop, Zbottom, GenevaSet, GenevaHome]")
+                    new MetadataRecordContext(8100, "GenevaCurrentPosition", ""), //not implemented
+                    new MetadataRecordContext(8101, "LimitSwitchTriggered", "[Ztop, Zbottom, GenevaSet, GenevaHome]") //not implemented
                 }
             },
 
             new MetadataServerContext("ScienceSensors Board", "192.168.1.139", "11009") {
                 Commands = new[] {
-                    new MetadataRecordContext(9000, "UVLedControl", "Control of light source."),
-                    new MetadataRecordContext(9001, "RunSpectrometer", "Sends command to begin the spectrometer sequence."),
-                    new MetadataRecordContext(9002, "ScienceLight", ""),
-                    new MetadataRecordContext(9003, "MPPC", "num of readings")
+                    new MetadataRecordContext(9000, "UVLedControl", "Control of light source."), //same as last year
+                    new MetadataRecordContext(9001, "RunSpectrometer", "Sends command to begin the spectrometer sequence."), //same as last year
+                    new MetadataRecordContext(9002, "ScienceLight", ""), //not implemented
+                    new MetadataRecordContext(9003, "MPPC", "num of readings") //not implemented
                 }
+
+                //no telemetry, so a lot of legacy code
             },
 
             new MetadataServerContext("BSMS", "192.168.1.142", "11012") { },

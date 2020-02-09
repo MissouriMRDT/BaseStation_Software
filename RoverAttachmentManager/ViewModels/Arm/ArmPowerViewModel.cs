@@ -139,16 +139,17 @@ namespace RoverAttachmentManager.ViewModels.Arm
             _model = new ArmPowerModel();
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
-            _log = log; 
+            _log = log;
+            _rovecomm.NotifyWhenMessageReceived(this, "ArmCurrents");
         }
-        
+
 
         //sending the packets (in a bit array) to the rover and getting it back  
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
         {
             switch (packet.Name)
             {
-                case "ArmPowerCurrents":
+                case "ArmCurrents":
                     BaseTwistCurrent = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 6)) / 1000.0);
                     BaseTiltCurrent = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 8)) / 1000.0);
                     ElbowTiltCurrent = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 10)) / 1000.0);
@@ -158,24 +159,17 @@ namespace RoverAttachmentManager.ViewModels.Arm
                     GripperCurrent = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 18)) / 1000.0);
                     break;
 
-                case "ArmPowerBusStatus":
-                    Status = new BitArray(packet.Data);
-                    break;
-
-
-                case "BaseTwistCurrent": BaseTwistCurrent = BitConverter.ToSingle(packet.Data, 0); break;
-                case "BaseTiltCurrent": BaseTiltCurrent = BitConverter.ToSingle(packet.Data, 0); break;
-                case "ElbowTiltCurrent": ElbowTiltCurrent = BitConverter.ToSingle(packet.Data, 0); break;
-                case "ElbowTwistCurrent": ElbowTwistCurrent = BitConverter.ToSingle(packet.Data, 0); break;
-                case "WristTiltCurrent": WristTiltCurrent = BitConverter.ToSingle(packet.Data, 0); break;
-                case "WristTwistCurrent": WristTwistCurrent = BitConverter.ToSingle(packet.Data, 0); break;
-                case "GripperCurrent": GripperCurrent = BitConverter.ToSingle(packet.Data, 0); break;
-                
+                /*New error system not implemented
                 //Overcurrent --> logged 
                 case "ArmPowerBusOverCurrentNotification":
                     _log.Log($"Overcurrent notification from ArmPowerboard from Bus Index {packet.Data[0]}");
                     break;
+                */
+
+                default:
+                    break;
             }
+            /* new error system not implemented
             if (LogFile != null)
             {
                 switch (packet.Name)
@@ -191,6 +185,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 }
                 LogFile.Flush();
             }
+            */
         }
 
         // making the bit array so that the rover can receive the information in the correct amount of bytes/bits 
@@ -208,7 +203,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
 
             bytes[2] = 1;
 
-            _rovecomm.SendCommand(new Packet("ArmPowerBusEnableDisable", bytes, 3, (byte)DataTypes.UINT8_T));
+            //_rovecomm.SendCommand(new Packet("ArmPowerBusEnableDisable", bytes, 3, (byte)DataTypes.UINT8_T));
 
         }
 
@@ -227,7 +222,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
 
             bytes[2] = 0;
 
-            _rovecomm.SendCommand(new Packet("ArmPowerBusEnableDisable", bytes, 3, (byte)DataTypes.UINT8_T));
+            //_rovecomm.SendCommand(new Packet("ArmPowerBusEnableDisable", bytes, 3, (byte)DataTypes.UINT8_T));
         }
 
         //if a motor is enabled or disabled, it goes through here
@@ -242,7 +237,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
             bits.CopyTo(bytes, 0);
 
             bytes[2] = (state) ? (byte)1 : (byte)0;
-            _rovecomm.SendCommand(new Packet("ArmPowerBusEnableDisable", bytes, 3, (byte)DataTypes.UINT8_T));
+            //_rovecomm.SendCommand(new Packet("ArmPowerBusEnableDisable", bytes, 3, (byte)DataTypes.UINT8_T));
         }
 
         //saves the data about the ArmPowerData

@@ -45,27 +45,22 @@ namespace RoverAttachmentManager.ViewModels.Science
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _log = log;
-
-            _rovecomm.NotifyWhenMessageReceived(this, "ScrewAtPos");
         }
 
         public void SetScrewPosition(byte index)
         {
-            _rovecomm.SendCommand(Packet.Create("ScrewAbsoluteSetPosition", index));
-        }
-
-        public void CenterX()
-        {
-            _rovecomm.SendCommand(Packet.Create("CenterX"));
+            //_rovecomm.SendCommand(Packet.Create("ScrewAbsoluteSetPosition", index));
         }
 
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
         {
             switch (packet.Name)
             {
+                /*
                 case "ScrewAtPos":
                     ScrewPosition = packet.Data[0];
                     break;
+                */
                 default:
                     break;
             }

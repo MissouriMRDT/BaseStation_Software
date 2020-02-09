@@ -217,7 +217,7 @@ namespace RoverAttachmentManager.ViewModels.Science
         public void StartMode() { }
         public void SetValues(Dictionary<string, float> values)
         {
-
+            /* needs to be updated from screw pos to Zactuation
             if ((values["ScrewPosUp"] == 1 || values["ScrewPosDown"] == 1) && !screwIncrementPressed)
             {
                 byte screwPosIncrement = (byte)(values["ScrewPosUp"] == 1 ? 1 : values["ScrewPosDown"] == 1 ? -1 : 0);
@@ -231,21 +231,12 @@ namespace RoverAttachmentManager.ViewModels.Science
             
             Int16[] screwValue = { (Int16)(values["Screw"] * ScrewSpeedScale) };
             _rovecomm.SendCommand(Packet.Create("Screw", screwValue));
-
-            Int16 xMovement = (Int16)(values["XActuation"] * XYSpeedScale);
-            Int16 yMovement = (Int16)(values["YActuation"] * XYSpeedScale);
-     
-            Int16[] sendValues = {xMovement, yMovement};
-            _rovecomm.SendCommand(Packet.Create("XYActuation", sendValues));
-            
+            */            
         }
 
         public void StopMode()
         {
-            _rovecomm.SendCommand(Packet.Create("Screw", (Int16)(0)), true);
-
-            Int16[] sendValues = { 0, 0 };
-            _rovecomm.SendCommand(Packet.Create("XYActuation", sendValues));
+            //_rovecomm.SendCommand(Packet.Create("Screw", (Int16)(0)), true);
         }
 
     }

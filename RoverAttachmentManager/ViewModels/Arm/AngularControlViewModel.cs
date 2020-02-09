@@ -171,7 +171,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
 
         public void ToggleAuto()
         {
-            _rovecomm.SendCommand(Packet.Create("ToggleAutoPositionTelem"));
+            //_rovecomm.SendCommand(Packet.Create("ToggleAutoPositionTelem"));
         }
 
         public void StorePosition()

@@ -139,6 +139,7 @@ namespace RoverAttachmentManager.ViewModels.Science
 
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
         {
+            /* no telemetry currently defined
             switch (packet.Name)
             {
                 case "SciencePowerCurrents":
@@ -154,15 +155,6 @@ namespace RoverAttachmentManager.ViewModels.Science
                 case "SciencePowerBusStatus":
                     Status = new BitArray(packet.Data);
                     break;
-
-
-                case "BaseTwistCurrent": WOActuationCurrent1 = BitConverter.ToSingle(packet.Data, 0); break;
-                case "BaseTiltCurrent": WOActuationCurrent2 = BitConverter.ToSingle(packet.Data, 0); break;
-                case "ElbowTiltCurrent": GenevaCurrent = BitConverter.ToSingle(packet.Data, 0); break;
-                case "ElbowTwistCurrent": VacuumCurrent = BitConverter.ToSingle(packet.Data, 0); break;
-                case "WristTiltCurrent": FluidPumpCurrent1 = BitConverter.ToSingle(packet.Data, 0); break;
-                case "WristTwistCurrent": FluidPumpCurrent2 = BitConverter.ToSingle(packet.Data, 0); break;
-                case "GripperCurrent": FluidPumpCurrent3 = BitConverter.ToSingle(packet.Data, 0); break;
 
                 case "SciencePowerBusOverCurrentNotification":
                     _log.Log($"Overcurrent notification from SciencePowerboard from Bus Index {packet.Data[0]}");
@@ -182,6 +174,7 @@ namespace RoverAttachmentManager.ViewModels.Science
                 }
                 LogFile.Flush();
             }
+            */
         }
 
         public void EnableBus(byte index)
@@ -198,7 +191,7 @@ namespace RoverAttachmentManager.ViewModels.Science
 
             bytes[2] = 1;
 
-            _rovecomm.SendCommand(new Packet("SciencePowerBusEnableDisable", bytes, 3, (byte)DataTypes.UINT8_T));
+            //_rovecomm.SendCommand(new Packet("SciencePowerBusEnableDisable", bytes, 3, (byte)DataTypes.UINT8_T));
 
         }
         public void DisableBus(byte index)
@@ -215,7 +208,7 @@ namespace RoverAttachmentManager.ViewModels.Science
 
             bytes[2] = 0;
 
-            _rovecomm.SendCommand(new Packet("SciencePowerBusEnableDisable", bytes, 3, (byte)DataTypes.UINT8_T));
+            //_rovecomm.SendCommand(new Packet("SciencePowerBusEnableDisable", bytes, 3, (byte)DataTypes.UINT8_T));
         }
 
         public void MotorBusses(bool state)
@@ -229,7 +222,7 @@ namespace RoverAttachmentManager.ViewModels.Science
             bits.CopyTo(bytes, 0);
 
             bytes[2] = (state) ? (byte)1 : (byte)0;
-            _rovecomm.SendCommand(new Packet("SciencePowerBusEnableDisable", bytes, 3, (byte)DataTypes.UINT8_T));
+            //_rovecomm.SendCommand(new Packet("SciencePowerBusEnableDisable", bytes, 3, (byte)DataTypes.UINT8_T));
         }
 
         public void SaveFile(bool state)
