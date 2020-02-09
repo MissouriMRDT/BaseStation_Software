@@ -24,22 +24,7 @@ namespace Core.Configurations
                 }
             },
 
-            new MetadataServerContext("BMS Board", "192.168.1.132", "11002") {
-                Commands = new[] {
-                    new MetadataRecordContext(2000, "BMSStop", "BMS E-stop. WARNING: Kills all rover power. Cannot be reversed remotely!"), //same as last year
-                    new MetadataRecordContext(2001, "SoftwareEStop", "Restarts the system in x seconds"), //updated, used to be in Estop
-                    new MetadataRecordContext(2002, "WirelessEStopEnable", "Enables/disables the wireless estop"), //not implemented
-                    new MetadataRecordContext(2003, "WirelessEstop", "Like BMS E-stop, but a wireless button") //not implemented
-                },
-                Telemetry = new[] {
-                    new MetadataRecordContext(2100, "TotalPackCurrentInt", "BMS"), //same as last year
-                    new MetadataRecordContext(2101, "TotalPackVoltageInt", "BMS"), //seperated from cell currents
-                    new MetadataRecordContext(2102, "CellCurrentInts", "BMS"), //name updated, indexs updated
-                    new MetadataRecordContext(2103, "BMSTemperatureInt", "BMS") //same as last year
-                }
-            },
-
-            new MetadataServerContext("Power Board", "192.168.1.133", "11003") {
+            new MetadataServerContext("Power Board", "192.168.1.132", "11003") {
                 Commands = new[] {
                     new MetadataRecordContext(3000, "PowerBusEnableDisable", "Enables or Disables power bus"), //not implemented
                     new MetadataRecordContext(3001, "12VBusEnableDisable" , "Enables or Disables 12V bus"), //not implemented
@@ -57,6 +42,35 @@ namespace Core.Configurations
                     new MetadataRecordContext(3106, "12VBusCurrent", "12V current draws"), //updated/split from last year
                     new MetadataRecordContext(3107, "30VBusCurrent", "30V current draws"), //not implemented
                     new MetadataRecordContext(3108, "VacuumCurrent", "Vacuum current draw") //not implemented
+                }
+            },
+
+            /*New rovecomm ids, but we will be using the old board for a little while
+            new MetadataServerContext("BMS Board", "192.168.1.133", "11002") {
+                Commands = new[] {
+                    new MetadataRecordContext(2000, "BMSStop", "BMS E-stop. WARNING: Kills all rover power. Cannot be reversed remotely!"), //same as last year
+                    new MetadataRecordContext(2001, "SoftwareEStop", "Restarts the system in x seconds"), //updated, used to be in Estop
+                    new MetadataRecordContext(2002, "WirelessEStopEnable", "Enables/disables the wireless estop"), //not implemented
+                    new MetadataRecordContext(2003, "WirelessEstop", "Like BMS E-stop, but a wireless button") //not implemented
+                },
+                Telemetry = new[] {
+                    new MetadataRecordContext(2100, "TotalPackCurrentInt", "BMS"), //same as last year
+                    new MetadataRecordContext(2101, "TotalPackVoltageInt", "BMS"), //seperated from cell currents
+                    new MetadataRecordContext(2102, "CellCurrentInts", "BMS"), //name updated, indexs updated
+                    new MetadataRecordContext(2103, "BMSTemperatureInt", "BMS") //same as last year
+                }
+            },
+            */
+            //2019 BMS
+            new MetadataServerContext("BMS Board", "192.168.1.133", "11002") {
+                Commands = new[] {
+                    new MetadataRecordContext(2000, "BMSStop", "BMS E-stop. WARNING: Kills all rover power. Cannot be reversed remotely!")
+                },
+                Telemetry = new[] {
+                    new MetadataRecordContext(2101, "BMSVoltages", "BMS"),
+                    new MetadataRecordContext(2100, "TotalPackCurrentInt", "BMS"),
+                    new MetadataRecordContext(2102, "BMSTemperatureInt", "BMS"),
+                    new MetadataRecordContext(2103, "BMSError", "BMS")
                 }
             },
 
