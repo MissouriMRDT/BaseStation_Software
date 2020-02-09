@@ -93,11 +93,11 @@ namespace RoverAttachmentManager.ViewModels.Science
             double siteTime = OxyPlot.Axes.DateTimeAxis.ToDouble(GetTimeDiff());
             ScienceGraph.SiteTimes[(SiteNumber * 2) + 1] = siteTime;
 
-            double methaneAvg = ScienceGraph.AverageValueForSeries(ScienceGraph.Sensor4Series, "Methane vs Time", "Methane (parts per billion)", 2000, ScienceGraph.SpectrometerFilePath + "\\Methane-Site" + SiteNumber + ".png");
-            double tempAvg = ScienceGraph.AverageValueForSeries(ScienceGraph.Sensor0Series, "Temperature vs Time", "Temperature (Celsius)", 50, ScienceGraph.SpectrometerFilePath + "\\Temperature-Site" + SiteNumber + ".png");
-            double humidityAvg = ScienceGraph.AverageValueForSeries(ScienceGraph.Sensor1Series, "Humidity vs Time", "Humidity (%)", 100, ScienceGraph.SpectrometerFilePath + "\\Humidity-Site" + SiteNumber + ".png");
+            double methaneAvg = ScienceGraph.AverageValueForSeries(ScienceGraph.MethaneConcentrationSeries, "Methane vs Time", "Methane (parts per million)", 50, ScienceGraph.SpectrometerFilePath + "\\Methane-Site" + SiteNumber + ".png");
+            double CO2Avg = ScienceGraph.AverageValueForSeries(ScienceGraph.CO2ConcentrationSeries, "CO2 vs Time", "CO2 (parts per million)", 100, ScienceGraph.SpectrometerFilePath + "\\CO2-Site" + SiteNumber + ".png");
+            double O2Avg = ScienceGraph.AverageValueForSeries(ScienceGraph.O2ConcentrationSeries, "O2 vs Time", "O2 (parts per million)", 2000, ScienceGraph.SpectrometerFilePath + "\\O2-Site" + SiteNumber + ".png");
 
-            WriteSiteData(tempAvg, humidityAvg, methaneAvg);
+            WriteSiteData(methaneAvg, CO2Avg, O2Avg);
 
             ScienceGraph.CreateSiteAnnotation();
             SiteNumber++;

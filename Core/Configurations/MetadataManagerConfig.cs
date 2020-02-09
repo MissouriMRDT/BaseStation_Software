@@ -154,9 +154,14 @@ namespace Core.Configurations
                     new MetadataRecordContext(9001, "RunSpectrometer", "Sends command to begin the spectrometer sequence."), //same as last year
                     new MetadataRecordContext(9002, "ScienceLight", ""), //not implemented
                     new MetadataRecordContext(9003, "MPPC", "num of readings") //not implemented
+                },
+                Telemetry = new[] { //from google sheet, not confirmed
+                    new MetadataRecordContext(9100, "SpectrometerData", ""),
+                    new MetadataRecordContext(9101, "MPPCData", ""),
+                    new MetadataRecordContext(9103, "Methane", "gas concentration (%), temperature"), //updated
+                    new MetadataRecordContext(9104, "CO2", "gas concentration (ppm)"), //updated
+                    new MetadataRecordContext(9105, "O2", "martial pressure (mBar), tempartature (C), concentration (%), barometric pressure (mBar)") //updated
                 }
-
-                //no telemetry, so a lot of legacy code
             },
 
             new MetadataServerContext("BSMS", "192.168.1.142", "11012") { },

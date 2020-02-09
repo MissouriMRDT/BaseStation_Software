@@ -25,75 +25,90 @@ namespace RoverAttachmentManager.ViewModels.Science
         private readonly ILogger _log;
         private readonly ScienceSensorsModel _model;
 
-
-        public PlotModel SensorPlotModel { set; private get; }
-        public PlotModel MethanePlotModel { set; private get; }
-        public OxyPlot.Series.LineSeries Sensor0Series;
-        public OxyPlot.Series.LineSeries Sensor1Series;
-        public OxyPlot.Series.LineSeries Sensor4Series;
-
-
-        public float Sensor0Value
+        public float MethaneConcentration
         {
             get
             {
-                return _model.Sensor0Value;
+                return _model.MethaneConcentration;
             }
             set
             {
-                _model.Sensor0Value = value;
-                NotifyOfPropertyChange(() => Sensor0Value);
+                _model.MethaneConcentration = value;
+                NotifyOfPropertyChange(() => MethaneConcentration);
             }
         }
-        public float Sensor1Value
+        public float MethaneTemperature
         {
             get
             {
-                return _model.Sensor1Value;
+                return _model.MethaneTemperature;
             }
             set
             {
-                _model.Sensor1Value = value;
-                NotifyOfPropertyChange(() => Sensor1Value);
+                _model.MethaneTemperature = value;
+                NotifyOfPropertyChange(() => MethaneTemperature);
             }
         }
-        public float Sensor2Value
+        public float CO2Concentration
         {
             get
             {
-                return _model.Sensor2Value;
+                return _model.CO2Concentration;
             }
             set
             {
-                _model.Sensor2Value = value;
-                NotifyOfPropertyChange(() => Sensor2Value);
+                _model.CO2Concentration = value;
+                NotifyOfPropertyChange(() => CO2Concentration);
             }
         }
-        public float Sensor3Value
+        public float O2MartialPressure
         {
             get
             {
-                return _model.Sensor3Value;
+                return _model.O2MartialPressure;
             }
             set
             {
-                _model.Sensor3Value = value;
-                NotifyOfPropertyChange(() => Sensor3Value);
+                _model.O2MartialPressure = value;
+                NotifyOfPropertyChange(() => O2MartialPressure);
             }
         }
-        public float Sensor4Value
+        public float O2Temperature
         {
             get
             {
-                return _model.Sensor4Value;
+                return _model.O2Temperature;
             }
             set
             {
-                _model.Sensor4Value = value;
-                NotifyOfPropertyChange(() => Sensor4Value);
+                _model.O2Temperature = value;
+                NotifyOfPropertyChange(() => O2Temperature);
             }
         }
-
+        public float O2Concentration
+        {
+            get
+            {
+                return _model.O2Concentration;
+            }
+            set
+            {
+                _model.O2Concentration = value;
+                NotifyOfPropertyChange(() => O2Concentration);
+            }
+        }
+        public float O2BarometricPressure
+        {
+            get
+            {
+                return _model.O2BarometricPressure;
+            }
+            set
+            {
+                _model.O2BarometricPressure = value;
+                NotifyOfPropertyChange(() => O2BarometricPressure);
+            }
+        }
         public Stream SensorDataFile
         {
             get
@@ -125,65 +140,27 @@ namespace RoverAttachmentManager.ViewModels.Science
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _log = log;
-            _rovecomm.NotifyWhenMessageReceived(this, "ScienceSensors");
-            ScienceGraph = parent.ScienceGraph;
-
-            MethanePlotModel = new PlotModel { Title = "Methane Data" };
-            Sensor4Series = new OxyPlot.Series.LineSeries();
-            MethanePlotModel.Series.Add(Sensor4Series);
-            MethanePlotModel.Axes.Add(new OxyPlot.Axes.DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "mm:ss" });
-
-            SensorPlotModel = new PlotModel { Title = "Temperature & Humidity Data" };
-            Sensor0Series = new OxyPlot.Series.LineSeries();
-            Sensor1Series = new OxyPlot.Series.LineSeries();
-            SensorPlotModel.Series.Add(Sensor0Series);
-            SensorPlotModel.Series.Add(Sensor1Series);
-            SensorPlotModel.Axes.Add(new OxyPlot.Axes.DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "mm:ss" });
         }
 
-
-        public void UpdateSensorGraphs()
-        {
-            if (!ScienceGraph.Graphing) { return; }
-
-            TimeSpan nowSpan = DateTime.UtcNow.Subtract(ScienceGraph.StartTime);
-            DateTime now = new DateTime(nowSpan.Ticks);
-
-            Sensor0Series.Points.Add(new DataPoint(OxyPlot.Axes.DateTimeAxis.ToDouble(now), Sensor0Value));
-            Sensor1Series.Points.Add(new DataPoint(OxyPlot.Axes.DateTimeAxis.ToDouble(now), Sensor1Value));
-            Sensor4Series.Points.Add(new DataPoint(OxyPlot.Axes.DateTimeAxis.ToDouble(now), Sensor4Value));
-            SensorPlotModel.InvalidatePlot(true);
-            MethanePlotModel.InvalidatePlot(true);
-        }
-
-
-        public void StartSensorGraphs()
-        {
-            ScienceGraph.StartTime = DateTime.UtcNow;
-            ScienceGraph.Graphing = true;
-            ClearSensorGraphs();
-        }
-
-
-        public void ClearSensorGraphs()
-        {
-            Sensor0Series.Points.Clear();
-            Sensor1Series.Points.Clear();
-            Sensor4Series.Points.Clear();
-        }
 
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
         {
             switch (packet.Name)
             {
-                case "ScienceSensors":
-                    Sensor0Value = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0)) / 100.0);
-                    Sensor1Value = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 2)) / 100.0);
-                    Sensor2Value = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 4)) / 100.0);
-                    Sensor3Value = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 6)) / 100.0);
-                    Sensor4Value = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 8)));
+                case "Methane":
+                    MethaneConcentration = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0)));
+                    MethaneTemperature = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 2)));
+                    break;
 
-                    UpdateSensorGraphs();
+                case "CO2":
+                    CO2Concentration = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0)));
+                    break;
+
+                case "O2":
+                    O2MartialPressure = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0)));
+                    O2Temperature = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 2)));
+                    O2Concentration = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 4)));
+                    O2BarometricPressure = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 6)));
                     break;
 
                 default:
