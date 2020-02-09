@@ -14,11 +14,8 @@ namespace RED.Models.Modules
         internal GPSCoordinate Offset = new GPSCoordinate(0, 0);
         internal GPSCoordinate BaseStationLocation = new GPSCoordinate(0, 0);
         internal double AntennaDirectionDeg = 0;
-        internal float Heading = 0;
         internal float TrueHeading = 0;
         internal float Lidar = 0;
-        internal float Roll = 0;
-        internal float Pitch = 0;
         internal float RoverDistanceStart = 0;
         internal float RoverDistanceTraveled = 0;
     }

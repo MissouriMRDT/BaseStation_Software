@@ -124,6 +124,7 @@ namespace RED.ViewModels.Modules
                       
                 case "PitchHeadingRoll":
                     Pitch = packet.GetDataArray<Int16>()[0];
+                    Yaw = packet.GetDataArray<Int16>()[1];
                     Roll = packet.GetDataArray<Int16>()[2];
                     break;
 
