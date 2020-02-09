@@ -76,7 +76,12 @@ namespace Core.Configurations
 
             new MetadataServerContext("Camera Board", "192.168.1.134", "11004") { },
 
-            new MetadataServerContext("Nav Board", "192.168.1.135", "11005") { },
+            new MetadataServerContext("Nav Board", "192.168.1.135", "11005") {
+                Telemetry = new[] {
+                    new MetadataRecordContext(5100, "GPSLatLong", "lat,long"),
+                    new MetadataRecordContext(5101, "PitchHeadingRoll", "pitch, heading, roll")
+                }
+            },
 
             new MetadataServerContext("Gimbal Board", "192.168.1.136", "11006") {
                 Commands = new[] {

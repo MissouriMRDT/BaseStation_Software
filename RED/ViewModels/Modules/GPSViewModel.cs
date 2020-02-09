@@ -231,15 +231,8 @@ namespace RED.ViewModels.Modules
             }
             RoverDistanceTraveled = RoverDistanceStart;
 
-            _rovecomm.NotifyWhenMessageReceived(this, "Lidar");
-            _rovecomm.NotifyWhenMessageReceived(this, "NavPitch");
-            _rovecomm.NotifyWhenMessageReceived(this, "NavRoll");
-            _rovecomm.NotifyWhenMessageReceived(this, "NavTrueHeading");
-            _rovecomm.NotifyWhenMessageReceived(this, "PitchHeadingRoll");
             _rovecomm.NotifyWhenMessageReceived(this, "GPSPosition");
-            _rovecomm.NotifyWhenMessageReceived(this, "GPSTelem");
             _rovecomm.NotifyWhenMessageReceived(this, "PitchHeadingRoll");
-            _rovecomm.NotifyWhenMessageReceived(this, "RoverDistanceSession");
         }
 
         
@@ -248,12 +241,6 @@ namespace RED.ViewModels.Modules
         {
             switch (packet.Name)
             {
-                case "PitchHeadingRoll":
-                    Pitch = packet.GetDataArray<Int16>()[0];
-                    Heading = packet.GetDataArray<Int16>()[1];
-                    Roll = packet.GetDataArray<Int16>()[2];
-                    break;
-
                 case "GPSPosition":
                     RawLocation = new GPSCoordinate()
                     {
@@ -262,17 +249,19 @@ namespace RED.ViewModels.Modules
                     };
                     break;
 
-                case "GPSTelem":
-                    Byte[] data = packet.GetDataArray<Byte>();
-                    FixObtained = data[0] != 0;
-                    FixQuality = data[0];
-                    NumberOfSatellites = data[1];
+                case "PitchHeadingRoll":
+                    Pitch = packet.GetDataArray<Int16>()[0];
+                    Heading = packet.GetDataArray<Int16>()[1];
+                    Roll = packet.GetDataArray<Int16>()[2];
                     break;
+
+                /* not actually possible from n3?
                 case "RoverDistanceSession":
                     //RoverMetrics.txt should be found in RED/Bin/Debug
                     RoverDistanceTraveled = RoverDistanceStart + IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0))/1000.0f;
                     System.IO.File.WriteAllText(System.IO.Path.GetFullPath("RoverMetrics.txt"), RoverDistanceTraveled.ToString());
                     break;
+                */
             }
         }
 
