@@ -436,6 +436,14 @@ namespace RED.ViewModels.Modules
                     Cell8Voltage = (float)(values[8] / 1000.0);
                     break;
 
+                case "TotalPackCurrentInt":
+                    TotalPackCurrent = (float)(packet.GetData<Int32>() / 1000.0);
+                    break;
+
+                case "BMSTemperatureInt":
+                    BMSTemperature1 = (float)(packet.GetData<Int32>() / 1000.0);
+                    break;
+
                 case "BMSError":
                     _log.Log($"Recieved BMSError Report:\n  {BitConverter.ToString(packet.Data)}");
                     break;
