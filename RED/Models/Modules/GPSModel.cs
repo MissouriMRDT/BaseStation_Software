@@ -1,4 +1,6 @@
-﻿using RED.Addons.Navigation;
+﻿using HelixToolkit.Wpf;
+using RED.Addons.Navigation;
+using System.Windows.Media.Media3D;
 
 namespace RED.Models.Modules
 {
@@ -13,5 +15,11 @@ namespace RED.Models.Modules
         internal GPSCoordinate BaseStationLocation = new GPSCoordinate(0, 0);
         internal double AntennaDirectionDeg = 0;
         internal float Heading = 0;
+        internal float TrueHeading = 0;
+        internal float Lidar = 0;
+        internal float Roll = 0;
+        internal float Pitch = 0;
+        internal float RoverDistanceStart = 0;
+        internal float RoverDistanceTraveled = 0;
     }
 }

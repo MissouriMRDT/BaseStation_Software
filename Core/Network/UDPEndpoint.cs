@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Core.Network
 {
-    public class UDPEndpoint : INetworkTransportProtocol
+    public class UDPEndpoint
     {
         private UdpClient client;
         private ushort remotePort;

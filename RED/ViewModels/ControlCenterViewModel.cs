@@ -9,6 +9,7 @@ using RED.ViewModels.Tools;
 using Core.ViewModels.Input;
 using Core.ViewModels.Input.Controllers;
 using Core.Interfaces.Input;
+using RED.Models.Modules;
 
 namespace RED.ViewModels
 {
@@ -136,6 +137,18 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => StopwatchTool);
             }
         }
+        public Rover3DViewModel RoverModel
+        {
+            get
+            {
+                return _model._RoverModel;
+            }
+            set
+            {
+                _model._RoverModel = value;
+                NotifyOfPropertyChange(() => RoverModel);
+            }
+        }
         public GPSViewModel GPS
         {
             get
@@ -146,18 +159,6 @@ namespace RED.ViewModels
             {
                 _model._GPS = value;
                 NotifyOfPropertyChange(() => GPS);
-            }
-        }
-        public SensorViewModel Sensor
-        {
-            get
-            {
-                return _model._sensor;
-            }
-            set
-            {
-                _model._sensor = value;
-                NotifyOfPropertyChange(() => Sensor);
             }
         }
         public PowerViewModel Power
@@ -184,18 +185,7 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => CameraMux);
             }
         }
-        public LightingViewModel Lighting
-        {
-            get
-            {
-                return _model._lighting;
-            }
-            set
-            {
-                _model._lighting = value;
-                NotifyOfPropertyChange(() => Lighting);
-            }
-        }
+
         public MapViewModel Map
         {
             get
@@ -305,12 +295,11 @@ namespace RED.ViewModels
        
             Rovecomm = Rovecomm.Instance;
             //ResubscribeAll();
-            
-            GPS = new GPSViewModel(Rovecomm, MetadataManager);
-            Sensor = new SensorViewModel(Rovecomm, MetadataManager, Console);
+
+            RoverModel = new Rover3DViewModel(Rovecomm, MetadataManager);
+            GPS = new GPSViewModel(Rovecomm, MetadataManager, Console);
             Power = new PowerViewModel(Rovecomm, MetadataManager, Console);
             CameraMux = new CameraViewModel(Rovecomm, MetadataManager);
-            Lighting = new LightingViewModel(Rovecomm, MetadataManager, Console);
             Map = new MapViewModel(Console);
 
             Drive = new DriveViewModel(Rovecomm, MetadataManager, Console);
@@ -346,7 +335,7 @@ namespace RED.ViewModels
 
         public void ResubscribeAll()
         {
-            Rovecomm.SubscribeMyPCToAllDevices();
+            Rovecomm.SubscribeToAll();
 		}
 
 		public void NetworkManager() {
