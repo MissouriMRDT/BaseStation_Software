@@ -103,7 +103,7 @@
                     </GroupBox>
 
                     <GroupBox Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="3" Header="Timer">
-                         <ContentControl x:Name="Timer"/>
+                        <ContentControl x:Name="StopwatchTool"/>
                     </GroupBox>
 
                     <StackPanel HorizontalAlignment="Center" Grid.Row="7" Grid.ColumnSpan="3" Orientation="Horizontal">
