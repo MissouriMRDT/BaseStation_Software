@@ -231,7 +231,15 @@ namespace RoverAttachmentManager.ViewModels.Science
             
             Int16[] screwValue = { (Int16)(values["Screw"] * ScrewSpeedScale) };
             _rovecomm.SendCommand(Packet.Create("Screw", screwValue));
-            */            
+            */           
+            
+            if (values["VacuumPulse"] == 1)
+            {
+                _rovecomm.SendCommand(Packet.Create("Vacuum", (byte)1));
+            }else if(values["ValuePulse"] == 0)
+            {
+                _rovecomm.SendCommand(Packet.Create("Vacuum", (byte)0));
+            }
         }
 
         public void StopMode()
