@@ -7,114 +7,180 @@
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:addons="clr-namespace:Core.Addons;assembly=Core"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <UserControl.Resources>
-        <addons:BoolToStringConverter x:Key="StartStopButton" TrueValue="Pause" FalseValue="Play" />
-        <addonsTools:TimeSpanToStringConverter x:Key="TimeSpanView" />
-    </UserControl.Resources>
-    <Border BorderBrush="{StaticResource AccentColorBrush}" BorderThickness="1">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="32" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="32" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="32" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="32" />
-            </Grid.ColumnDefinitions>
-            <Button Grid.Row="0" Grid.Column="0" x:Name="Toggle" Content="{Binding IsRunning, Converter={StaticResource StartStopButton}}" />
-            <TextBlock Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Run Text="{Binding SelectedSchedule.Name, Mode=OneWay}" />
-                <Run Foreground="{StaticResource GrayNormalBrush}" Text="{Binding SelectedSchedule.Duration, StringFormat=\({0}\), Converter={StaticResource TimeSpanView},  Mode=OneWay}" />
-            </TextBlock>
-            <Button Grid.Row="0" Grid.Column="2" ContextMenuService.IsEnabled="False" Click="FixTime_Click" Content="Set">
-                <Button.ContextMenu>
-                    <ContextMenu Name="FixContextMenu">
-                        <ContextMenu.Template>
-                            <ControlTemplate>
-                                <Border Background="White">
-                                    <GroupBox Header="Fix Time" Margin="0">
-                                        <DockPanel Width="100">
-                                            <Button DockPanel.Dock="Right" cal:Message.Attach="SetTime()" Width="25" Click="SetTime_Click">&gt;</Button>
-                                            <TextBox Text="{Binding FixTime}" />
-                                        </DockPanel>
-                                    </GroupBox>
-                                </Border>
-                            </ControlTemplate>
-                        </ContextMenu.Template>
-                    </ContextMenu>
-                </Button.ContextMenu>
-            </Button>
+             d:DesignHeight="233" d:DesignWidth="635">
+	<!-- Height and Width of the outer edges -->
 
-            <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="30" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Viewbox Grid.Row="0" Grid.Column="0" Stretch="Uniform">
-                    <TextBlock Foreground="{StaticResource AccentColorBrush}" Text="{Binding ScheduleElapsedTime, Mode=OneWay, Converter={StaticResource TimeSpanView}}" />
+	<!--Definition of the PLAY/PAUSE button-->
+	<UserControl.Resources>
+		<addons:BoolToStringConverter x:Key="StartStopButton" TrueValue="Pause" FalseValue="Play" />
+		<addonsTools:TimeSpanToStringConverter x:Key="TimeSpanView" />
+        <addons:ValueToColorConverter x:Key="ColorConverter" />
+    </UserControl.Resources>
+	<Border BorderBrush="{StaticResource AccentColorBrush}" BorderThickness="1">
+		<!-- Style of the outer edge-->
+		<Grid Height="auto" VerticalAlignment="Top">
+			<Grid.RowDefinitions>
+				<!--Need to have 9 rows-->
+
+				<!-- Height of the row 1 where is the name of the MAIN TASK-->
+
+				<RowDefinition Height="20" />
+
+				<!-- Height of the row 2 where is a time that counts up on the left side
+					 and time that counts down on the right side regarding to MAIN TASK-->
+
+				<RowDefinition Height="55" />
+
+				<!-- Height of the row 3 and 4 where is the progress bar that shows the percentage 
+					 of the time remainding for the whole MAIN TASK-->
+				<RowDefinition Height="11" />
+				<RowDefinition Height="11" />
+
+				<!-- Height of the row 5 and 6where is the name of the SUB-TASK -->
+				<RowDefinition Height="15" />
+				<RowDefinition Height="15" />
+
+				<!-- Height of the row 7 and 8 where is time that counts up on the left side
+					 and the time that counts down on left side regarding SUB-TASK-->
+				<RowDefinition Height="34" />
+				<RowDefinition Height="34" />
+
+				<!-- Height of the row 9 that consists of a progress bar that shows the percentage
+					 of the time remaining for the SUB-TASK to be executed-->
+				<RowDefinition Height="37" />
+
+
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<!--Used more columns in order to have ability to take different amount of width for different features-->
+				<ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+
+			</Grid.ColumnDefinitions>
+
+			<!--Name of the BIG task on the top of the clock-->
+			<TextBlock FontSize="15" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="8" HorizontalAlignment="Center" VerticalAlignment="Center">      
+					 <Run Text="{Binding SelectedSchedule.Name, Mode=OneWay}" />
+					 <Run Foreground="{StaticResource GrayNormalBrush}" Text="{Binding SelectedSchedule.Duration, StringFormat=\({0}\), Converter={StaticResource TimeSpanView},  Mode=OneWay}" />
+			</TextBlock>
+
+			<!-- Time that counts up for the MAIN-TASK on the left of the row 2-->
+			<Viewbox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Stretch="Uniform">
+				<TextBlock Foreground="{StaticResource AccentColorBrush}" Text="{Binding ScheduleElapsedTime, Mode=OneWay, Converter={StaticResource TimeSpanView}}" />
+			</Viewbox>
+            <!-- This will be the DELTA T which shows how much time the user is late or ahead of the deadline for the task
+				 When the user is ahead and has an extra time that he gained on the previous task, the background will be green
+				 When the user is behind and has less time to complete the task because he spent too much time on the previous one,
+				 The background will go red. Finially, if the user is ahead, it'll show the number of seconds gained. If the user is late
+				 It'll show number of seconds lost.
+				 There is a case when there will be no gain or loss, so the background will go gray.-->
+            <Border Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2" 
+                    BorderBrush="{Binding SkipSeconds, Mode=OneWay, Converter={StaticResource ColorConverter}, ConverterParameter='60/-60/0/1'}" BorderThickness="4" 
+                    Background="{Binding SkipSeconds, Mode=OneWay, Converter={StaticResource ColorConverter}, ConverterParameter='60/-60/0/1'}">
+                <Viewbox>
+                    <TextBlock Foreground="Black" Background="{Binding SkipSeconds, Mode=OneWay, Converter={StaticResource ColorConverter}, ConverterParameter='60/-60/0/1'}" 
+                               Text="{Binding SkipTime, Mode=OneWay, Converter={StaticResource TimeSpanView}}"/>
                 </Viewbox>
-                <TextBlock Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding ScheduleElapsedPercent, StringFormat={}{0:0%}, Mode=OneWay}" />
-                <Viewbox Grid.Row="0" Grid.Column="2" Stretch="Uniform">
-                    <TextBlock Foreground="{StaticResource AccentColorBrush}" Text="{Binding ScheduleRemainingTime, Mode=OneWay, Converter={StaticResource TimeSpanView}}" />
-                </Viewbox>
-                <Viewbox Grid.Row="1" Grid.Column="0" Stretch="Uniform">
-                    <TextBlock Foreground="{StaticResource AccentColorBrush}" Text="{Binding PhaseElapsedTime, Mode=OneWay, Converter={StaticResource TimeSpanView}}" />
-                </Viewbox>
-                <TextBlock Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding PhaseElapsedPercent, StringFormat={}{0:0%}, Mode=OneWay}" />
-                <Viewbox Grid.Row="1" Grid.Column="2" Stretch="Uniform">
-                    <TextBlock Foreground="{StaticResource AccentColorBrush}" Text="{Binding PhaseRemainingTime, Mode=OneWay, Converter={StaticResource TimeSpanView}}" />
-                </Viewbox>
-            </Grid>
-            <Button Grid.Row="2" Grid.Column="0" x:Name="Reset">Reset</Button>
-            <TextBlock Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            </Border>
+            <!-- Time that counts down for the MAIN-TASK on the right of the row 2-->
+			<Viewbox Grid.Row="1" Grid.Column="6" Grid.ColumnSpan="2" Stretch="Uniform">
+				<TextBlock Foreground="{StaticResource AccentColorBrush}" Text="{Binding ScheduleRemainingTime, Mode=OneWay, Converter={StaticResource TimeSpanView}}" />
+			</Viewbox>
+			<!-- Progress bar that visaly represents the time left for the BIG-TASK-->
+            <ProgressBar Grid.ColumnSpan="8" Grid.Row="2" Grid.RowSpan="2" Name="BIG_task_bar" Height="20" VerticalAlignment="Top"
+                            Background="Gray" 
+						    Minimum="0" 
+						    Maximum="100" 
+						    Value="{Binding ScheduleElapsedPercent, Mode=OneWay}" 
+                        />
+            <TextBlock Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="2" Grid.RowSpan="2" Foreground="White" FontSize="12" FontWeight="Bold" 
+                       Text="{Binding ScheduleElapsedPercent, Mode=OneWay, StringFormat={}{0:0}%}" 
+                        HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+			<!--Name of the SUB-TASK that is being executed at the moment-->
+			<TextBlock FontSize="30" Grid.Row="4" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="8" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Run Text="{Binding CurrentPhase.Name, Mode=OneWay}" />
-                <Run Foreground="{StaticResource GrayNormalBrush}" Text="{Binding CurrentPhase.Duration, StringFormat=\({0}\), Converter={StaticResource TimeSpanView}, Mode=OneWay}" />
-            </TextBlock>
-            <Button Grid.Row="2" Grid.Column="2" ContextMenuService.IsEnabled="False" Click="EditTime_Click" Content="Edit">
-                <Button.ContextMenu>
-                    <ContextMenu Name="EditContextMenu">
-                        <ContextMenu.Template>
-                            <ControlTemplate>
-                                <Border Background="White">
-                                    <GroupBox Header="Edit Schedules" Margin="0">
-                                        <DockPanel Width="300" Height="250">
-                                            <DockPanel DockPanel.Dock="Top">
-                                                <Button DockPanel.Dock="Left" MinWidth="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" cal:Message.Attach="EditAddSchedule()" ToolTip="Add Schedule">+</Button>
-                                                <Button DockPanel.Dock="Left" MinWidth="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" cal:Message.Attach="EditRemoveSchedule()" ToolTip="Remove Schedule">&#x2212;</Button>
-                                                <Button DockPanel.Dock="Left" MinWidth="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" cal:Message.Attach="EditSwitch()" ToolTip="Switch To Schedule">&#x2194;</Button>
-                                                <Button DockPanel.Dock="Right" MinWidth="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" cal:Message.Attach="EditRemovePhase()" ToolTip="Remove Phase">&#x2212;</Button>
-                                                <Button DockPanel.Dock="Right" MinWidth="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" cal:Message.Attach="EditAddPhase()" ToolTip="Add Phase">+</Button>
-                                                <Button MaxWidth="75" cal:Message.Attach="EditSave()">Save</Button>
-                                            </DockPanel>
-                                            <ListBox DockPanel.Dock="Left" Width="100" ItemsSource="{Binding Schedules}" SelectedItem="{Binding SelectedEditSchedule}">
-                                                <ListBox.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <TextBlock Text="{Binding Name}" />
-                                                    </DataTemplate>
-                                                </ListBox.ItemTemplate>
-                                            </ListBox>
-                                            <DataGrid ItemsSource="{Binding SelectedEditSchedule.Phases}" SelectedItem="{Binding SelectedEditPhase}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" FrozenColumnCount="1" BorderThickness="1">
-                                                <DataGrid.Columns>
-                                                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
-                                                    <DataGridTextColumn Header="Duration" Binding="{Binding Duration}" />
-                                                </DataGrid.Columns>
-                                            </DataGrid>
-                                        </DockPanel>
-                                    </GroupBox>
-                                </Border>
-                            </ControlTemplate>
-                        </ContextMenu.Template>
-                    </ContextMenu>
-                </Button.ContextMenu>
-            </Button>
-        </Grid>
-    </Border>
+                <Run Foreground="{StaticResource GrayNormalBrush}" Text="{Binding CurrentPhase.Duration, StringFormat=\({0}\),  Converter={StaticResource TimeSpanView}, Mode=OneWay}" />
+			</TextBlock>
+
+			<!-- Time that counts up for the SUB-TASK on the left of the row 4. It is bigger than the BIG-TASK time beacuse it is more important at the moment-->
+			<Viewbox Grid.Row="6" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Stretch="Uniform" StretchDirection="DownOnly">
+				<TextBlock Name="subTaskTime" VerticalAlignment="Stretch" FontStretch="UltraExpanded" FontSize="80" Foreground="{StaticResource AccentColorBrush}" 
+                           Text="{Binding PhaseElapsedTime, Mode=OneWay, Converter={StaticResource TimeSpanView}}" ClipToBounds="True" />
+			</Viewbox>
+
+			<!-- Time that counts down for the SUB-TASK on the right of the row 4. It is bigger than the BIG-TASK time beacuse it is more important at the moment-->
+			<Viewbox Grid.Row="6" Grid.RowSpan="2" Grid.Column="5" Grid.ColumnSpan="3" HorizontalAlignment="Center" Stretch="Uniform" >
+				<TextBlock Foreground="{StaticResource AccentColorBrush}" Text="{Binding PhaseRemainingTime, Mode=OneWay, Converter={StaticResource TimeSpanView}}" />
+			</Viewbox>
+
+			<!--Progress bar that shows how much of the BIG-TASK time is left-->
+            <ProgressBar Grid.Column="0" Grid.ColumnSpan="8" Grid.Row="8" Grid.RowSpan="2" Height="37" Background="Gray" VerticalAlignment="Top"  
+						Minimum="0" 
+						Maximum="100" 
+						Value="{Binding PhaseElapsedPercent, Mode=OneWay}" 
+						Name="pbStatus"  />
+            <TextBlock Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="8" Foreground="White" FontSize="20" FontWeight="Bold" 
+                       Text="{Binding PhaseElapsedPercent, Mode=OneWay, StringFormat={}{0:0}%}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+
+			<Button Grid.Row="0" Grid.RowSpan="5" Grid.Column="8" Grid.ColumnSpan="1" x:Name="Toggle" Content="{Binding IsRunning, Converter={StaticResource StartStopButton}}" />
+			
+			<!--Button for moving to the next task-->
+			<Button Grid.Row="5" Grid.RowSpan="4" Grid.Column="8" Grid.ColumnSpan="1" cal:Message.Attach="SkipTask()">
+				<TextBlock TextAlignment="Center" TextWrapping="Wrap">NEXT<LineBreak/>SUB-TASK</TextBlock>
+			</Button>
+
+			<Button Grid.Row="0" Grid.RowSpan="5" Grid.Column="9" Grid.ColumnSpan="1" x:Name="Reset">Reset</Button>
+
+			<Button Grid.Row="5" Grid.RowSpan="4" Grid.Column="9" Grid.ColumnSpan="1" ContextMenuService.IsEnabled="False" Click="EditTime_Click">
+                <TextBlock TextAlignment="Center" TextWrapping="Wrap">EDIT TASKS</TextBlock>
+				<Button.ContextMenu>
+					<ContextMenu Name="EditContextMenu">
+						<ContextMenu.Template>
+							<ControlTemplate>
+								<Border Background="White">
+									<GroupBox Header="Edit Schedules">
+										<DockPanel Width="300" Height="250">
+											<DockPanel DockPanel.Dock="Top">
+												<Button DockPanel.Dock="Left" MinWidth="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" cal:Message.Attach="EditAddSchedule()" ToolTip="Add Schedule">+</Button>
+												<Button DockPanel.Dock="Left" MinWidth="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" cal:Message.Attach="EditRemoveSchedule()" ToolTip="Remove Schedule">&#x2212;</Button>
+												<Button DockPanel.Dock="Left" MinWidth="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" cal:Message.Attach="EditSwitch()" ToolTip="Switch To Schedule">&#x2194;</Button>
+												<Button DockPanel.Dock="Right" MinWidth="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" cal:Message.Attach="EditRemovePhase()" ToolTip="Remove Phase">&#x2212;</Button>
+												<Button DockPanel.Dock="Right" MinWidth="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" cal:Message.Attach="EditAddPhase()" ToolTip="Add Phase">+</Button>
+												<Button MaxWidth="75" cal:Message.Attach="EditSave()">Save</Button>
+											</DockPanel>
+											<ListBox DockPanel.Dock="Left" Width="100" ItemsSource="{Binding Schedules}" SelectedItem="{Binding SelectedEditSchedule}">
+												<ListBox.ItemTemplate>
+													<DataTemplate>
+														<TextBlock Text="{Binding Name}" />
+													</DataTemplate>
+												</ListBox.ItemTemplate>
+											</ListBox>
+											<DataGrid ItemsSource="{Binding SelectedEditSchedule.Phases}" SelectedItem="{Binding SelectedEditPhase}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" FrozenColumnCount="1" BorderThickness="1">
+												<DataGrid.Columns>
+													<DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+													<DataGridTextColumn Header="Duration" Binding="{Binding Duration}" />
+												</DataGrid.Columns>
+											</DataGrid>
+										</DockPanel>
+									</GroupBox>
+								</Border>
+							</ControlTemplate>
+						</ContextMenu.Template>
+					</ContextMenu>
+				</Button.ContextMenu>
+			</Button>
+
+
+		</Grid>
+	</Border>
 </UserControl>

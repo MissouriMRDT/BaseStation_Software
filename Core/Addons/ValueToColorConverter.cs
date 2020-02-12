@@ -24,7 +24,9 @@ namespace Core.Addons
             //and to parse out the numbers. So, our numbers will be formated max-min-cutoff-down.
 
             String param = (String)parameter;   //So cast the parameter as a string
+
             String[] seperator = {"/"};         //Noting the seperator to be a /
+
             Int32 count = 4;                    //And that 4 numbers will be recieved
 
             //The next line will split the string at the - up to 4 times, and will return a list of the resulting strings
