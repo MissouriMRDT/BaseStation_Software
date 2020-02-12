@@ -24,7 +24,6 @@ namespace RED.Models
         internal GPSViewModel _GPS;
         internal SensorViewModel _sensor;
         internal PowerViewModel _power;
-        internal CameraViewModel _cameraMux;
         internal LightingViewModel _lighting;
         internal MapViewModel _map;
         internal DriveViewModel _drive;
@@ -35,7 +34,10 @@ namespace RED.Models
         internal FlightStickViewModel _flightStickController;
         internal KeyboardInputViewModel _keyboardController;
 
-		internal bool _networkManagerEnabled;
+        internal CameraViewModel _camera1;
+        internal CameraViewModel _camera2;
+
+        internal bool _networkManagerEnabled;
         internal bool _attachmentManagerEnabled;
     }
 }

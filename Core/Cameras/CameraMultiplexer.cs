@@ -175,7 +175,6 @@ namespace Core.Cameras {
 				double downTime = new TimeSpan(now.Ticks - fi.LastFrameTime.Ticks).TotalMilliseconds;
 
 				if (downTime >= 2000) {
-					CommonLog.Instance.Log("Camera feed {0} has been unavailable for {1} milliseconds, reopening feed.", i + 1, downTime);
 					fi.Decoder.StopStream();
 					fi.Decoder.ParseStream(fi.URI);
 					watchdogSkip = 3;
@@ -185,7 +184,6 @@ namespace Core.Cameras {
 
 		private static void Decoder_Error(object sender, ErrorEventArgs e) {
 			int index = DecoderToIndex((MjpegDecoder)sender);
-			CommonLog.Instance.Log("Camera feed {0} error: {1}", index, e.Message);
 		}
 
 		private static void Decoder_FrameReady(object sender, FrameReadyEventArgs e) {

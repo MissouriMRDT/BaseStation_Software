@@ -57,10 +57,9 @@
                         <Expander Header="Lighting">
                             <ContentControl x:Name="Lighting" />
                         </Expander>
-						<Image x:Name="Camera1" Tag="1" Height="200px" Width="300px"/>
-						<Image x:Name="Camera2" Tag ="2" Height="200px" Width="300px"/>
-						<Image x:Name="Camera3" Tag="3" Height="200px" Width="300px"/>
-						<Image x:Name="Camera4" Tag="4" Height="200px" Width="300px"/>
+						
+						<ContentControl x:Name="Camera1" Width="300px"></ContentControl>
+						<ContentControl x:Name="Camera2" Width="300px"></ContentControl>
 					</StackPanel>
                 </ScrollViewer>
                 <Grid Grid.Column="2">

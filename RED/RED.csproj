@@ -95,6 +95,7 @@
       <HintPath>..\packages\SharpDX.XInput.4.0.1\lib\net45\SharpDX.XInput.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Design" />
     <Reference Include="System.Windows.Forms" />
@@ -146,6 +147,7 @@
     <Compile Include="Images\ModernUIIcons.cs" />
     <Compile Include="Models\InputManagerModel.cs" />
     <Compile Include="Models\InputSelectorModel.cs" />
+    <Compile Include="Models\CameraModel.cs" />
     <Compile Include="Models\Modules\GimbalModel.cs" />
     <Compile Include="Models\Modules\DriveModel.cs" />
     <Compile Include="Models\Modules\LightingModel.cs" />
@@ -160,7 +162,7 @@
     <Compile Include="Settings.cs" />
     <Compile Include="ViewModels\InputManagerViewModel.cs" />
     <Compile Include="ViewModels\InputSelectorViewModel.cs" />
-    <Compile Include="ViewModels\Modules\CameraViewModel.cs" />
+    <Compile Include="ViewModels\CameraViewModel.cs" />
     <Compile Include="ViewModels\Modules\GimbalViewModel.cs" />
     <Compile Include="ViewModels\Modules\LightingViewModel.cs" />
     <Compile Include="ViewModels\Navigation\MapViewModel.cs" />
@@ -178,6 +180,9 @@
     <Compile Include="ViewModels\Settings\Modules\PowerSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Network\NetworkManagerSettingsViewModel.cs" />
     <Compile Include="ViewModels\Tools\StopwatchToolViewModel.cs" />
+    <Compile Include="Views\CameraView.xaml.cs">
+      <DependentUpon>CameraView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ControlCenterView.xaml.cs">
       <DependentUpon>ControlCenterView.xaml</DependentUpon>
     </Compile>
@@ -186,9 +191,6 @@
     </Compile>
     <Compile Include="Views\InputSelectorView.xaml.cs">
       <DependentUpon>InputSelectorView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Modules\CameraView.xaml.cs">
-      <DependentUpon>CameraView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DriveView.xaml.cs">
       <DependentUpon>DriveView.xaml</DependentUpon>
@@ -235,6 +237,10 @@
     <Compile Include="Views\Tools\StopwatchToolView.xaml.cs">
       <DependentUpon>StopwatchToolView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\CameraView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ControlCenterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -246,10 +252,6 @@
     <Page Include="Views\InputSelectorView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\Modules\CameraView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Modules\DriveView.xaml">
       <SubType>Designer</SubType>

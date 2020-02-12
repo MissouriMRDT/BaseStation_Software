@@ -172,18 +172,6 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => Power);
             }
         }
-        public CameraViewModel CameraMux
-        {
-            get
-            {
-                return _model._cameraMux;
-            }
-            set
-            {
-                _model._cameraMux = value;
-                NotifyOfPropertyChange(() => CameraMux);
-            }
-        }
         public LightingViewModel Lighting
         {
             get
@@ -294,6 +282,32 @@ namespace RED.ViewModels
             }
         }
 
+        public CameraViewModel Camera1
+        {
+            get
+            {
+                return _model._camera1;
+            }
+            set
+            {
+                _model._camera1 = value;
+                NotifyOfPropertyChange(() => Camera1);
+            }
+        }
+
+        public CameraViewModel Camera2
+        {
+            get
+            {
+                return _model._camera2;
+            }
+            set
+            {
+                _model._camera2 = value;
+                NotifyOfPropertyChange(() => Camera2);
+            }
+        }
+
         public ControlCenterViewModel()
         {
             base.DisplayName = "Rover Engagement Display";
@@ -309,7 +323,6 @@ namespace RED.ViewModels
             GPS = new GPSViewModel(Rovecomm, MetadataManager);
             Sensor = new SensorViewModel(Rovecomm, MetadataManager, Console);
             Power = new PowerViewModel(Rovecomm, MetadataManager, Console);
-            CameraMux = new CameraViewModel(Rovecomm, MetadataManager);
             Lighting = new LightingViewModel(Rovecomm, MetadataManager, Console);
             Map = new MapViewModel(Console);
 
@@ -320,6 +333,9 @@ namespace RED.ViewModels
             XboxController3 = new XboxControllerInputViewModel(3);
             FlightStickController = new FlightStickViewModel();
             KeyboardController = new KeyboardInputViewModel();
+
+            Camera1 = new CameraViewModel(Core.CommonLog.Instance);
+            Camera2 = new CameraViewModel(Core.CommonLog.Instance);
 
             // Programatic instanciation of InputManager view, vs static like everything else in a xaml 
             InputManager = new InputManagerViewModel(Console, ConfigManager,
