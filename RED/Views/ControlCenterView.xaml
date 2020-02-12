@@ -34,7 +34,7 @@
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
+                        <RowDefinition Height="300" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
@@ -93,7 +93,7 @@
                         <ContentControl x:Name="Gimbal" />
                     </GroupBox>
 
-                    <GroupBox Grid.Column="2" Grid.Row="1" Header="3D Model">
+                    <GroupBox Grid.Column="2" Grid.Row="1" Header="3D Model" Width="200">
                         <ContentControl x:Name="RoverModel"/>
                     </GroupBox>
 

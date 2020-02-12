@@ -9,11 +9,35 @@
              d:DesignHeight="300" d:DesignWidth="300"
              xmlns:h="http://helix-toolkit.org/wpf">
     <StackPanel>
-        <h:HelixViewport3D ZoomExtentsWhenLoaded="True" ShowViewCube="False" Width="150" Height="150" >
+        
+        <h:HelixViewport3D ZoomExtentsWhenLoaded="True" ShowViewCube="False" Width="150" Height="150" IsMoveEnabled="False" IsRotationEnabled="False">
 
             <h:DirectionalHeadLight/>
             <ModelVisual3D Content="{Binding RoverModel}"/>
 
         </h:HelixViewport3D>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+
+            </Grid.ColumnDefinitions>
+            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            
+            
+            <Label HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0">Pitch</Label>
+            <Label HorizontalAlignment="Center" Grid.Row="1" Grid.Column="0" x:Name="Pitch" ContentStringFormat="{}{0:0.00}" />
+            <Label HorizontalAlignment="Center" Grid.Row="0" Grid.Column="2">Roll</Label>
+            <Label HorizontalAlignment="Center" Grid.Row="1" Grid.Column="2" x:Name="Roll" ContentStringFormat="{}{0:0.00}" />
+            <Label HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1">Heading</Label>
+            <Label HorizontalAlignment="Center" Grid.Row="1" Grid.Column="1" x:Name="Yaw" ContentStringFormat="{}{0:0.00}" />
+        </Grid>
     </StackPanel>
+    
+    
 </UserControl>
