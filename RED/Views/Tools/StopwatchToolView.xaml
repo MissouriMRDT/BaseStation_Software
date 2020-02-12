@@ -18,7 +18,7 @@
     </UserControl.Resources>
 	<Border BorderBrush="{StaticResource AccentColorBrush}" BorderThickness="1">
 		<!-- Style of the outer edge-->
-		<Grid Height="auto" Margin="0.2,0.2,0.4,0" VerticalAlignment="Top">
+		<Grid Height="auto" VerticalAlignment="Top">
 			<Grid.RowDefinitions>
 				<!--Need to have 9 rows-->
 
@@ -53,21 +53,21 @@
 			</Grid.RowDefinitions>
 			<Grid.ColumnDefinitions>
 				<!--Used more columns in order to have ability to take different amount of width for different features-->
-				<ColumnDefinition Width="62" />
-				<ColumnDefinition Width="62" />
-				<ColumnDefinition Width="62" />
-				<ColumnDefinition Width="62" />
-				<ColumnDefinition Width="62" />
-				<ColumnDefinition Width="62" />
-				<ColumnDefinition Width="62" />
-				<ColumnDefinition Width="62" />
-				<ColumnDefinition Width="69.5" />
-				<ColumnDefinition Width="69.5" />
+				<ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
 
 			</Grid.ColumnDefinitions>
 
 			<!--Name of the BIG task on the top of the clock-->
-			<TextBlock FontSize="15" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="8" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0">      
+			<TextBlock FontSize="15" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="8" HorizontalAlignment="Center" VerticalAlignment="Center">      
 					 <Run Text="{Binding SelectedSchedule.Name, Mode=OneWay}" />
 					 <Run Foreground="{StaticResource GrayNormalBrush}" Text="{Binding SelectedSchedule.Duration, StringFormat=\({0}\), Converter={StaticResource TimeSpanView},  Mode=OneWay}" />
 			</TextBlock>
@@ -82,9 +82,12 @@
 				 The background will go red. Finially, if the user is ahead, it'll show the number of seconds gained. If the user is late
 				 It'll show number of seconds lost.
 				 There is a case when there will be no gain or loss, so the background will go gray.-->
-            <Border BorderBrush="{Binding SkipSeconds, Mode=OneWay, Converter={StaticResource ColorConverter}, ConverterParameter='60/-60/0/1'}" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2" BorderThickness="4" Background="{Binding SkipSeconds, Mode=OneWay, Converter={StaticResource ColorConverter}, ConverterParameter='60/-60/0/1'}">
+            <Border Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2" 
+                    BorderBrush="{Binding SkipSeconds, Mode=OneWay, Converter={StaticResource ColorConverter}, ConverterParameter='60/-60/0/1'}" BorderThickness="4" 
+                    Background="{Binding SkipSeconds, Mode=OneWay, Converter={StaticResource ColorConverter}, ConverterParameter='60/-60/0/1'}">
                 <Viewbox>
-                    <TextBlock Foreground="Black" Background="{Binding SkipSeconds, Mode=OneWay, Converter={StaticResource ColorConverter}, ConverterParameter='60/-60/0/1'}" Text="{Binding SkipTime, Mode=OneWay, Converter={StaticResource TimeSpanView}}"/>
+                    <TextBlock Foreground="Black" Background="{Binding SkipSeconds, Mode=OneWay, Converter={StaticResource ColorConverter}, ConverterParameter='60/-60/0/1'}" 
+                               Text="{Binding SkipTime, Mode=OneWay, Converter={StaticResource TimeSpanView}}"/>
                 </Viewbox>
             </Border>
             <!-- Time that counts down for the MAIN-TASK on the right of the row 2-->
@@ -92,72 +95,60 @@
 				<TextBlock Foreground="{StaticResource AccentColorBrush}" Text="{Binding ScheduleRemainingTime, Mode=OneWay, Converter={StaticResource TimeSpanView}}" />
 			</Viewbox>
 			<!-- Progress bar that visaly represents the time left for the BIG-TASK-->
-			<ProgressBar Name="BIG_task_bar" Grid.ColumnSpan="8" HorizontalAlignment="Left" Height="20" Margin="0,0.8,0,0" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Top" Width="491"
-                        Background="Gray" 
-						Minimum="0" 
-						Maximum="100" 
-						Value="{Binding ScheduleElapsedPercent, Mode=OneWay}" 
-						  />
-            <TextBlock Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="2" Grid.RowSpan="2" Foreground="White" FontSize="12" FontWeight="Bold" Text="{Binding ScheduleElapsedPercent, Mode=OneWay, StringFormat={}{0:0}%}" 
-           HorizontalAlignment="Center" 
-           VerticalAlignment="Center" />
+            <ProgressBar Grid.ColumnSpan="8" Grid.Row="2" Grid.RowSpan="2" Name="BIG_task_bar" Height="20" VerticalAlignment="Top"
+                            Background="Gray" 
+						    Minimum="0" 
+						    Maximum="100" 
+						    Value="{Binding ScheduleElapsedPercent, Mode=OneWay}" 
+                        />
+            <TextBlock Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="2" Grid.RowSpan="2" Foreground="White" FontSize="12" FontWeight="Bold" 
+                       Text="{Binding ScheduleElapsedPercent, Mode=OneWay, StringFormat={}{0:0}%}" 
+                        HorizontalAlignment="Center" VerticalAlignment="Center" />
 
 			<!--Name of the SUB-TASK that is being executed at the moment-->
-			<TextBlock FontSize="30" Grid.Row="4" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="8" HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="0,5,0,0">
+			<TextBlock FontSize="30" Grid.Row="4" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="8" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Run Text="{Binding CurrentPhase.Name, Mode=OneWay}" />
                 <Run Foreground="{StaticResource GrayNormalBrush}" Text="{Binding CurrentPhase.Duration, StringFormat=\({0}\),  Converter={StaticResource TimeSpanView}, Mode=OneWay}" />
 			</TextBlock>
 
 			<!-- Time that counts up for the SUB-TASK on the left of the row 4. It is bigger than the BIG-TASK time beacuse it is more important at the moment-->
-			<Viewbox Grid.Row="6" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center"  Margin="0,0,10,0" Stretch="Uniform" StretchDirection="DownOnly">
-				<TextBlock Name="subTaskTime" VerticalAlignment="Stretch" FontStretch="UltraExpanded" FontSize="80" Foreground="{StaticResource AccentColorBrush}" Text="{Binding PhaseElapsedTime, Mode=OneWay, Converter={StaticResource TimeSpanView}}" ClipToBounds="True" />
+			<Viewbox Grid.Row="6" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Stretch="Uniform" StretchDirection="DownOnly">
+				<TextBlock Name="subTaskTime" VerticalAlignment="Stretch" FontStretch="UltraExpanded" FontSize="80" Foreground="{StaticResource AccentColorBrush}" 
+                           Text="{Binding PhaseElapsedTime, Mode=OneWay, Converter={StaticResource TimeSpanView}}" ClipToBounds="True" />
 			</Viewbox>
 
 			<!-- Time that counts down for the SUB-TASK on the right of the row 4. It is bigger than the BIG-TASK time beacuse it is more important at the moment-->
-			<!--<Border 
-					Grid.Column="3"
-					Grid.ColumnSpan="3"
-					Grid.Row="4"
-					BorderThickness="5"  
-				    BorderBrush="Yellow"  				    
-				    HorizontalAlignment="Left"  
-				    VerticalAlignment="Top"  
-				    Width="150"  
-				    Height="105" >
-				-->
-			<Viewbox Grid.Row="6" Grid.RowSpan="2" Grid.Column="5" Grid.ColumnSpan="3" HorizontalAlignment="Center"  Margin="10,0,0,0" Stretch="Uniform" >
+			<Viewbox Grid.Row="6" Grid.RowSpan="2" Grid.Column="5" Grid.ColumnSpan="3" HorizontalAlignment="Center" Stretch="Uniform" >
 				<TextBlock Foreground="{StaticResource AccentColorBrush}" Text="{Binding PhaseRemainingTime, Mode=OneWay, Converter={StaticResource TimeSpanView}}" />
 			</Viewbox>
 
-			<!--</Border>-->
 			<!--Progress bar that shows how much of the BIG-TASK time is left-->
-			<ProgressBar Grid.Column="0"  Grid.ColumnSpan="8" HorizontalAlignment="Left" Height="37" Background="Gray" Margin="0,33.4,0,0" Grid.Row="7" VerticalAlignment="Top" Width="491" Grid.RowSpan="2" 
+            <ProgressBar Grid.Column="0" Grid.ColumnSpan="8" Grid.Row="8" Grid.RowSpan="2" Height="37" Background="Gray" VerticalAlignment="Top"  
 						Minimum="0" 
 						Maximum="100" 
 						Value="{Binding PhaseElapsedPercent, Mode=OneWay}" 
 						Name="pbStatus"  />
-            <TextBlock Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="8" Foreground="White" FontSize="20" FontWeight="Bold" Text="{Binding PhaseElapsedPercent, Mode=OneWay, StringFormat={}{0:0}%}" 
-           HorizontalAlignment="Center" 
-           VerticalAlignment="Center" />
+            <TextBlock Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="8" Foreground="White" FontSize="20" FontWeight="Bold" 
+                       Text="{Binding PhaseElapsedPercent, Mode=OneWay, StringFormat={}{0:0}%}" HorizontalAlignment="Center" VerticalAlignment="Center" />
 
 
 			<Button Grid.Row="0" Grid.RowSpan="5" Grid.Column="8" Grid.ColumnSpan="1" x:Name="Toggle" Content="{Binding IsRunning, Converter={StaticResource StartStopButton}}" />
 			
-
 			<!--Button for moving to the next task-->
 			<Button Grid.Row="5" Grid.RowSpan="4" Grid.Column="8" Grid.ColumnSpan="1" cal:Message.Attach="SkipTask()">
-				<TextBlock TextAlignment="Center" >NEXT<LineBreak/>SUB-TASK</TextBlock>
+				<TextBlock TextAlignment="Center" TextWrapping="Wrap">NEXT<LineBreak/>SUB-TASK</TextBlock>
 			</Button>
 
 			<Button Grid.Row="0" Grid.RowSpan="5" Grid.Column="9" Grid.ColumnSpan="1" x:Name="Reset">Reset</Button>
 
-			<Button Grid.Row="5" Grid.RowSpan="4" Grid.Column="9" Grid.ColumnSpan="1" ContextMenuService.IsEnabled="False" Click="EditTime_Click" Content="Edit Tasks">
+			<Button Grid.Row="5" Grid.RowSpan="4" Grid.Column="9" Grid.ColumnSpan="1" ContextMenuService.IsEnabled="False" Click="EditTime_Click">
+                <TextBlock TextAlignment="Center" TextWrapping="Wrap">EDIT TASKS</TextBlock>
 				<Button.ContextMenu>
 					<ContextMenu Name="EditContextMenu">
 						<ContextMenu.Template>
 							<ControlTemplate>
 								<Border Background="White">
-									<GroupBox Header="Edit Schedules" Margin="0">
+									<GroupBox Header="Edit Schedules">
 										<DockPanel Width="300" Height="250">
 											<DockPanel DockPanel.Dock="Top">
 												<Button DockPanel.Dock="Left" MinWidth="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" cal:Message.Attach="EditAddSchedule()" ToolTip="Add Schedule">+</Button>
