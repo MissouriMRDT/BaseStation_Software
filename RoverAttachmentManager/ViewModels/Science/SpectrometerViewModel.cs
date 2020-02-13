@@ -185,8 +185,8 @@ namespace RoverAttachmentManager.ViewModels.Science
             MPPCPlotModel = new PlotModel { Title = "MPPC Results" };
             MPPCSeries = new OxyPlot.Series.LineSeries();
             MPPCPlotModel.Series.Add(MPPCSeries);
-            MPPCPlotModel.Axes.Add(new OxyPlot.Axes.LinearAxis { Position = AxisPosition.Left, Title = "-----" });
-            MPPCPlotModel.Axes.Add(new OxyPlot.Axes.LinearAxis { Position = AxisPosition.Bottom, Title = "-----" });
+            MPPCPlotModel.Axes.Add(new OxyPlot.Axes.LinearAxis { Position = AxisPosition.Left, Title = "Photons" });
+            MPPCPlotModel.Axes.Add(new OxyPlot.Axes.DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "mm:ss", Title = "Time" });
 
             Plots = new ObservableCollection<PlotModel>() { SpectrometerPlotModel, MPPCPlotModel };
             SelectedPlots = SpectrometerPlotModel;
@@ -223,11 +223,6 @@ namespace RoverAttachmentManager.ViewModels.Science
             }
         }
 
-        public void SetUVLed(byte val)
-        {
-            _rovecomm.SendCommand(Packet.Create("UVLedControl", val));
-        }
-
         public void GraphSpectrometerData(string filename)
         {
             SpectrometerSeries.Points.Clear();
@@ -246,11 +241,7 @@ namespace RoverAttachmentManager.ViewModels.Science
             ExportGraph(SpectrometerPlotModel, SpectrometerFilePath + "\\SpectrometerGraph-Site" + SiteManagment.SiteNumber + ".png", 400);
         }
 
-        public void ExportGraph(PlotModel model, string filename, int height)
-        {
-            var pngExporter = new PngExporter { Width = 600, Height = height, Background = OxyColors.White };
-            pngExporter.ExportToFile(model, filename);
-        }
+
 
 
 
@@ -266,7 +257,7 @@ namespace RoverAttachmentManager.ViewModels.Science
                 using (var client = new TcpClient())
                 {
                     _log.Log("Connecting to MPPC...");
-                    await client.ConnectAsync(SpectrometerIPAddress, SpectrometerPortNumber);
+                    await client.ConnectAsync(MPPCIPAddress, MPPCPortNumber);
                     _log.Log("Spectrometer connection established");
 
                     // Request the data
@@ -279,7 +270,7 @@ namespace RoverAttachmentManager.ViewModels.Science
                     }
                 }
                 _log.Log($"MPPC data downloaded into {filename}");
-                GraphSpectrometerData(filename);
+                GraphMPPCData(filename);
             }
             catch (Exception e)
             {
@@ -306,5 +297,26 @@ namespace RoverAttachmentManager.ViewModels.Science
             ExportGraph(MPPCPlotModel, MPPCFilePath + "\\MPPCGraph-Site" + SiteManagment.SiteNumber + ".png", 400);
         }
 
+
+
+
+
+        public void SetUVLed(byte val)
+        {
+            if (SelectedPlots == SpectrometerPlotModel)
+            {
+                _rovecomm.SendCommand(Packet.Create("UVLedControl", val));
+            }
+            else
+            {
+                _rovecomm.SendCommand(Packet.Create("", val));
+            }
+        }
+
+        public void ExportGraph(PlotModel model, string filename, int height)
+        {
+            var pngExporter = new PngExporter { Width = 600, Height = height, Background = OxyColors.White };
+            pngExporter.ExportToFile(model, filename);
+        }
     }
 }
