@@ -30,9 +30,6 @@ namespace RoverAttachmentManager.ViewModels.Science
 
         public string Name { get; }
         public string ModeType { get; }
-        private const int ScrewSpeedScale = 1000;
-        private const int XYSpeedScale = 1000;
-        private bool screwIncrementPressed = false;
         private byte ChemOne = 0;
         private byte ChemTwo = 0;
         private byte ChemThree = 0;
@@ -219,22 +216,9 @@ namespace RoverAttachmentManager.ViewModels.Science
 
         public void StartMode() { }
         public void SetValues(Dictionary<string, float> values)
-        {
-            /* needs to be updated from screw pos to Zactuation
-            if ((values["ScrewPosUp"] == 1 || values["ScrewPosDown"] == 1) && !screwIncrementPressed)
-            {
-                byte screwPosIncrement = (byte)(values["ScrewPosUp"] == 1 ? 1 : values["ScrewPosDown"] == 1 ? -1 : 0);
-                _rovecomm.SendCommand(Packet.Create("ScrewRelativeSetPosition", screwPosIncrement));
-                screwIncrementPressed = true;
-            }
-            else if (values["ScrewPosUp"] == 0 && values["ScrewPosDown"] == 0)
-            {
-                screwIncrementPressed = false;
-            }
-            
-            Int16[] screwValue = { (Int16)(values["Screw"] * ScrewSpeedScale) };
-            _rovecomm.SendCommand(Packet.Create("Screw", screwValue));
-            */
+        {           
+            Int16[] zValue = { (Int16)(values["ZActuation"]) };
+            _rovecomm.SendCommand(Packet.Create("Zactuation", zValue));
 
             
             if (values["VacuumPulse"] == 1)

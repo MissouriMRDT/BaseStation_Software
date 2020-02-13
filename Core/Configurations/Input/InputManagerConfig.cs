@@ -49,9 +49,7 @@ namespace Core.Configurations.Input
                 new InputChannelContext("ButtonStartDebounced", "LaserToggle") }),
 
             new InputMappingContext("Xbox Science Controls", "Xbox", "ScienceControls", 100, new[] {
-                new InputChannelContext("JoyStick1Y", "Screw"){ Parabolic = true },
-                new InputChannelContext("DPadU", "ScrewPosUp"),
-                new InputChannelContext("DPadD", "ScrewPosDown"),
+                new InputChannelContext("JoyStick1Y", "ZActuation"){ Parabolic = true },
                 new InputChannelContext("ButtonA","VacuumPulse"),
                 new InputChannelContext("ButtonX", "Chem1"),
                 new InputChannelContext("ButtonY", "Chem2"),
