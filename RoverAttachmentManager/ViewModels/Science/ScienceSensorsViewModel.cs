@@ -148,19 +148,21 @@ namespace RoverAttachmentManager.ViewModels.Science
             switch (packet.Name)
             {
                 case "Methane":
-                    MethaneConcentration = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0)));
-                    MethaneTemperature = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 2)));
+                    Int16[] MethaneData = packet.GetDataArray<Int16>();
+                    MethaneConcentration = (float)(MethaneData[0] / 1000.0);
+                    MethaneTemperature = (float)(MethaneData[1] / 1000.0);
                     break;
 
                 case "CO2":
-                    CO2Concentration = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0)));
+                    CO2Concentration = (float)(packet.GetData<Int32>() / 1000.0);
                     break;
 
                 case "O2":
-                    O2MartialPressure = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0)));
-                    O2Temperature = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 2)));
-                    O2Concentration = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 4)));
-                    O2BarometricPressure = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 6)));
+                    Int16[] O2Data = packet.GetDataArray<Int16>();
+                    O2MartialPressure = (float)(O2Data[0] / 1000.0);
+                    O2Temperature = (float)(O2Data[1] / 1000.0);
+                    O2Concentration = (float)(O2Data[2] / 1000.0);
+                    O2BarometricPressure = (float)(O2Data[3] / 1000.0);
                     break;
 
                 default:
