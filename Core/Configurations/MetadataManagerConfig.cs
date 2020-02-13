@@ -39,9 +39,9 @@ namespace Core.Configurations
                     new MetadataRecordContext(3103, "VaccumEnabled", "Is or isn't the vacuum enabled"), //not implemented
                     new MetadataRecordContext(3104, "PatchPanelEnabled", "Which panels are enabled"), //not implemented
                     new MetadataRecordContext(3105, "MotorBusCurrent", "Each main motor current"), //updated/split from last year
-                    new MetadataRecordContext(3106, "12VBusCurrent", "12V current draws"), //updated/split from last year
-                    new MetadataRecordContext(3107, "30VBusCurrent", "30V current draws"), //not implemented
-                    new MetadataRecordContext(3108, "VacuumCurrent", "Vacuum current draw") //not implemented
+                    new MetadataRecordContext(3106, "12VBusCurrent", "actuation, logic"), //updated/split from last year
+                    new MetadataRecordContext(3107, "30VBusCurrent", "12V bus, rockets, aux"), //partially implemented
+                    new MetadataRecordContext(3108, "VacuumCurrent", "Vacuum current draw") //updated from guess earlier
                 }
             },
 

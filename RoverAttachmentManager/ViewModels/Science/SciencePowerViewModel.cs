@@ -134,22 +134,26 @@ namespace RoverAttachmentManager.ViewModels.Science
             _idResolver = idResolver;
             _log = log;
 
-
+            _rovecomm.NotifyWhenMessageReceived(this, "VacuumCurrent");
         }
 
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
         {
-            /* no telemetry currently defined
             switch (packet.Name)
             {
+                case "VacuumCurrent":
+                    VacuumCurrent = (float)(packet.GetData<Int16>() / 1000.0);
+                    break;
+
+                /*
                 case "SciencePowerCurrents":
-                    WOActuationCurrent1 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 6)) / 1000.0);
-                    WOActuationCurrent2 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 8)) / 1000.0);
-                    GenevaCurrent = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 10)) / 1000.0);
-                    VacuumCurrent = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 12)) / 1000.0);
-                    FluidPumpCurrent1 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 14)) / 1000.0);
-                    FluidPumpCurrent2 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 16)) / 1000.0);
-                    FluidPumpCurrent3 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 18)) / 1000.0);
+                    Int16[] currents = packet.GetDataArray<Int16>();
+                    WOActuationCurrent1 = (float)(currents[0] / 1000.0);
+                    WOActuationCurrent2 = (float)(currents[1] / 1000.0);
+                    GenevaCurrent = (float)(currents[2] / 1000.0);
+                    FluidPumpCurrent1 = (float)(currents[3] / 1000.0);
+                    FluidPumpCurrent2 = (float)(currents[4] / 1000.0);
+                    FluidPumpCurrent3 = (float)(currents[5] / 1000.0);
                     break;
 
                 case "SciencePowerBusStatus":
@@ -159,7 +163,9 @@ namespace RoverAttachmentManager.ViewModels.Science
                 case "SciencePowerBusOverCurrentNotification":
                     _log.Log($"Overcurrent notification from SciencePowerboard from Bus Index {packet.Data[0]}");
                     break;
+                    */
             }
+            /*
             if (LogFile != null)
             {
                 switch (packet.Name)
