@@ -127,6 +127,7 @@ namespace RED.ViewModels.Modules
                 CurrentLocation = new GPSCoordinate(RawLocation.Latitude + Offset.Latitude, 
                     RawLocation.Longitude + Offset.Longitude);
                 NotifyOfPropertyChange(() => RawLocation);
+                NotifyOfPropertyChange(() => CurrentLocation);
             }
         }
         

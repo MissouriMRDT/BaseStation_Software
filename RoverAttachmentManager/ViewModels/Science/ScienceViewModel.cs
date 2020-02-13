@@ -33,6 +33,7 @@ namespace RoverAttachmentManager.ViewModels.Science
         private byte ChemOne = 0;
         private byte ChemTwo = 0;
         private byte ChemThree = 0;
+        private int ZMultiplier = 1000;
 
         private readonly ScienceModel _model;   
  
@@ -204,14 +205,14 @@ namespace RoverAttachmentManager.ViewModels.Science
         public void StartMode() { }
         public void SetValues(Dictionary<string, float> values)
         {           
-            Int16[] zValue = { (Int16)(values["ZActuation"]) };
-            _rovecomm.SendCommand(Packet.Create("Zactuation", zValue));
+            Int16[] zValue = { (Int16)(values["ZActuation"] * ZMultiplier) };
+            _rovecomm.SendCommand(Packet.Create("ZActuation", zValue));
 
             
             if (values["VacuumPulse"] == 1)
             {
                 _rovecomm.SendCommand(Packet.Create("Vacuum", (byte)1));
-            }else if(values["ValuePulse"] == 0)
+            }else if(values["VacuumPulse"] == 0)
             {
                 _rovecomm.SendCommand(Packet.Create("Vacuum", (byte)0));
             }

@@ -8,14 +8,14 @@ namespace Core.Configurations
             new MetadataServerContext("Drive Board", "192.168.1.131", "11001") {
                 Commands = new[] {
                     //Drive
-                    new MetadataRecordContext(1000, "DriveLeftRight", "Left wheels speed followed by right wheels speed"), //same as last year
+                    new MetadataRecordContext(1000, "DriveLeftRight", "Left wheels speed followed by right wheels speed"), //same as last year, confirmed on rover
                     new MetadataRecordContext(1001, "DriveIndividual", "Controls each wheel individiually"), //not implemented
                     new MetadataRecordContext(1002, "WatchdogOverride", ""), //not implemented
 
                     //Lighting
-                    new MetadataRecordContext(14000, "Headlights", "Headlight intensity for the front of rover"), //same as last year
-                    new MetadataRecordContext(14001, "UnderglowColor", "rgb byte[]"), //same as last year
-                    new MetadataRecordContext(14002, "CycleLightingMode", ""), //same as last year
+                    new MetadataRecordContext(14000, "Headlights", "Headlight intensity for the front of rover"), //same as last year, confirmed on tester
+                    new MetadataRecordContext(14001, "UnderglowColor", "rgb byte[]"), //same as last year, confirmed on tester
+                    new MetadataRecordContext(14002, "CycleLightingMode", ""), //same as last year, confirmed on tester
                     new MetadataRecordContext(14003, "StateDisplay", "enum blue,red,green") //not implemented
                 },
                 Telemetry = new[]
@@ -29,19 +29,19 @@ namespace Core.Configurations
                     new MetadataRecordContext(3000, "PowerBusEnableDisable", "Enables or Disables power bus"), //not implemented
                     new MetadataRecordContext(3001, "12VBusEnableDisable" , "Enables or Disables 12V bus"), //not implemented
                     new MetadataRecordContext(3002, "30VBusEnableDisable", "Enables or Disables 30V bus"), //not implemented
-                    new MetadataRecordContext(3003, "VacuumEnableDisable", "Enables or Disables vaccum bus"), //not implemented
+                    new MetadataRecordContext(3003, "VacuumEnableDisable", "Enables or Disables vacuum bus"), //not implemented
                     new MetadataRecordContext(3004, "PatchPanelEnableDisable", "Enables or Disables path panel") //not implemented
                 },
                 Telemetry = new[] {
                     new MetadataRecordContext(3100, "MotorBusEnabled", "Which motors are enabled"), //not implemented
                     new MetadataRecordContext(3101, "12VEnabled", "Which 12V busses are enabled"), //not implemented
                     new MetadataRecordContext(3102, "30VEnabled", "Which 30V busses are enabled"), //not implemented
-                    new MetadataRecordContext(3103, "VaccumEnabled", "Is or isn't the vacuum enabled"), //not implemented
+                    new MetadataRecordContext(3103, "VacuumEnabled", "Is or isn't the vacuum enabled"), //not implemented
                     new MetadataRecordContext(3104, "PatchPanelEnabled", "Which panels are enabled"), //not implemented
-                    new MetadataRecordContext(3105, "MotorBusCurrent", "Each main motor current"), //updated/split from last year
-                    new MetadataRecordContext(3106, "12VBusCurrent", "actuation, logic"), //updated/split from last year
-                    new MetadataRecordContext(3107, "30VBusCurrent", "12V bus, rockets, aux"), //partially implemented
-                    new MetadataRecordContext(3108, "VacuumCurrent", "Vacuum current draw") //updated from guess earlier
+                    new MetadataRecordContext(3105, "MotorBusCurrent", "Each main motor current"), //updated/split from last year, confirmed with tester
+                    new MetadataRecordContext(3106, "12VBusCurrent", "actuation, logic"), //updated/split from last year, confirmed with tester
+                    new MetadataRecordContext(3107, "30VBusCurrent", "12V bus, rockets, aux"), //added, confirmed with tester
+                    new MetadataRecordContext(3108, "VacuumCurrent", "Vacuum current draw") //updated from guess earlier, confirmed with tester
                 }
             },
 
@@ -78,17 +78,17 @@ namespace Core.Configurations
 
             new MetadataServerContext("Nav Board", "192.168.1.135", "11005") {
                 Telemetry = new[] {
-                    new MetadataRecordContext(5100, "GPSLatLong", "lat,long"),
+                    new MetadataRecordContext(5100, "GPSPosition", "lat,long"),
                     new MetadataRecordContext(5101, "PitchHeadingRoll", "pitch, heading, roll")
                 }
             },
 
             new MetadataServerContext("Gimbal Board", "192.168.1.136", "11006") {
                 Commands = new[] {
-                    new MetadataRecordContext(6000, "LeftDriveGimbal", "pan, tilt"), //updated
-                    new MetadataRecordContext(6001, "RightDriveGimbal", "pan, tilt"), //updated
-                    new MetadataRecordContext(6002, "LeftMainGimbal", "pan, tilt"), //updated
-                    new MetadataRecordContext(6003, "RightMainGimbal", "pan, tilt"), //updated
+                    new MetadataRecordContext(6000, "LeftDriveGimbal", "pan, tilt"), //updated, confirmed with tester
+                    new MetadataRecordContext(6001, "RightDriveGimbal", "pan, tilt"), //updated, confirmed with tester
+                    new MetadataRecordContext(6002, "LeftMainGimbal", "pan, tilt"), //updated, confirmed with tester
+                    new MetadataRecordContext(6003, "RightMainGimbal", "pan, tilt"), //updated, confirmed with tester
                     new MetadataRecordContext(6004, "LeftDriveAbsolute", "pan, tilt"), //not implemented
                     new MetadataRecordContext(6005, "RightDriveAbsolute", "pan, tilt"), //not implemented
                     new MetadataRecordContext(6006, "LeftMainAbsolute", "pan, tilt"), //not implemented
@@ -133,12 +133,12 @@ namespace Core.Configurations
 
             new MetadataServerContext("ScienceAcutation Board", "192.168.1.138", "11008") {
                 Commands = new[] {
-                    new MetadataRecordContext(8000, "ZActuation", "-1000 to 1000 open loop for Z axis control"), //NOT UPDATED: still screw stuff
+                    new MetadataRecordContext(8000, "ZActuation", "-1000 to 1000 open loop for Z axis control"), //updated from screw, confirmed with tester
                     new MetadataRecordContext(8001, "GenevaOpenLoop", "-1000 to 1000 open loop for Geneva control"), //not implemented
-                    new MetadataRecordContext(8002, "Chemicals", "Array to control all 3 chemicals"), //not implemented
+                    new MetadataRecordContext(8002, "Chemicals", "Array to control all 3 chemicals"), //added, confirmed with tester
                     new MetadataRecordContext(8002, "GenevaToPosition", "Set Geneva absolute position"), //not implemented
-                    new MetadataRecordContext(8004, "GenevaIncrementPosition", "Increment Geneva position by x"), //not implemented
-                    new MetadataRecordContext(8005, "Vaccum", "Vacuum off/on"), //not implemented
+                    new MetadataRecordContext(8004, "GenevaIncrementPosition", "Increment Geneva position by x"), //added, confirmed with tester
+                    new MetadataRecordContext(8005, "Vacuum", "Vacuum off/on"), //added, confirmed with tester
                     new MetadataRecordContext(8006, "LimitSwitchOverride", "0-off/1-on, [Ztop, Zbottom, GenevaSet, GenevaHome]") //not implemented
                 },
                 Telemetry = new[]
@@ -150,8 +150,8 @@ namespace Core.Configurations
 
             new MetadataServerContext("ScienceSensors Board", "192.168.1.139", "11009") {
                 Commands = new[] {
-                    new MetadataRecordContext(9000, "UVLedControl", "Control of light source."), //same as last year
-                    new MetadataRecordContext(9001, "RunSpectrometer", "Sends command to begin the spectrometer sequence."), //same as last year
+                    new MetadataRecordContext(9000, "UVLedControl", "Control of light source."), //same as last year, confirmed with tester
+                    new MetadataRecordContext(9001, "RunSpectrometer", "Sends command to begin the spectrometer sequence."), //same as last year, confirmed with tester
                     new MetadataRecordContext(9002, "ScienceLight", ""), //not implemented
                     new MetadataRecordContext(9003, "MPPC", "num of readings") //not implemented
                 },
