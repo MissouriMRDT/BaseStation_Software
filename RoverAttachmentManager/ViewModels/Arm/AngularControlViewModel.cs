@@ -217,13 +217,13 @@ namespace RoverAttachmentManager.ViewModels.Arm
             switch (packet.Name)
             {
                 case "ArmAngles":
-                    //Array.Reverse(packet.Data);
-                    AngleJ1 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 0)) / 1000.0);
-                    AngleJ2 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 4)) / 1000.0);
-                    AngleJ3 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 8)) / 1000.0);
-                    AngleJ4 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 12)) / 1000.0);
-                    AngleJ5 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 16)) / 1000.0);
-                    AngleJ6 = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt32(packet.Data, 20)) / 1000.0);
+                    float[] angles = packet.GetDataArray<float>();
+                    AngleJ1 = (float)(angles[0]);
+                    AngleJ2 = (float)(angles[1]);
+                    AngleJ3 = (float)(angles[2]);
+                    AngleJ4 = (float)(angles[3]);
+                    AngleJ5 = (float)(angles[4]);
+                    AngleJ6 = (float)(angles[5]);
                     break;
 
             }

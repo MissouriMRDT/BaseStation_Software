@@ -142,7 +142,7 @@ namespace RoverAttachmentManager.ViewModels.Science
             switch (packet.Name)
             {
                 case "VacuumCurrent":
-                    VacuumCurrent = (float)(packet.GetData<Int16>() / 1000.0);
+                    VacuumCurrent = (float)(packet.GetData<float>());
                     break;
 
                 /*

@@ -148,21 +148,21 @@ namespace RoverAttachmentManager.ViewModels.Science
             switch (packet.Name)
             {
                 case "Methane":
-                    Int16[] MethaneData = packet.GetDataArray<Int16>();
-                    MethaneConcentration = (float)(MethaneData[0] / 1000.0);
-                    MethaneTemperature = (float)(MethaneData[1] / 1000.0);
+                    float[] MethaneData = packet.GetDataArray<float>();
+                    MethaneConcentration = (float)(MethaneData[0]);
+                    MethaneTemperature = (float)(MethaneData[1]);
                     break;
 
                 case "CO2":
-                    CO2Concentration = (float)(packet.GetData<Int32>() / 1000.0);
+                    CO2Concentration = (float)(packet.GetData<float>());
                     break;
 
                 case "O2":
-                    Int16[] O2Data = packet.GetDataArray<Int16>();
-                    O2MartialPressure = (float)(O2Data[0] / 1000.0);
-                    O2Temperature = (float)(O2Data[1] / 1000.0);
-                    O2Concentration = (float)(O2Data[2] / 1000.0);
-                    O2BarometricPressure = (float)(O2Data[3] / 1000.0);
+                    float[] O2Data = packet.GetDataArray<float>();
+                    O2MartialPressure = (float)(O2Data[0]);
+                    O2Temperature = (float)(O2Data[1]);
+                    O2Concentration = (float)(O2Data[2]);
+                    O2BarometricPressure = (float)(O2Data[3]);
                     break;
 
                 default:

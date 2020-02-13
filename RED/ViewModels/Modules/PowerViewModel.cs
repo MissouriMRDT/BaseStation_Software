@@ -424,49 +424,30 @@ namespace RED.ViewModels.Modules
             {
                 //2019 BMS
                 case "BMSVoltages":
-                    Int16[] values = packet.GetDataArray<Int16>();
-                    TotalPackVoltage = (float)(values[0] / 1000.0);
-                    Cell1Voltage = (float)(values[1] / 1000.0);
-                    Cell2Voltage = (float)(values[2] / 1000.0);
-                    Cell3Voltage = (float)(values[3] / 1000.0);
-                    Cell4Voltage = (float)(values[4] / 1000.0);
-                    Cell5Voltage = (float)(values[5] / 1000.0);
-                    Cell6Voltage = (float)(values[6] / 1000.0);
-                    Cell7Voltage = (float)(values[7] / 1000.0);
-                    Cell8Voltage = (float)(values[8] / 1000.0);
+                    float[] values = packet.GetDataArray<float>();
+                    TotalPackVoltage = (float)(values[0]);
+                    Cell1Voltage = (float)(values[1]);
+                    Cell2Voltage = (float)(values[2]);
+                    Cell3Voltage = (float)(values[3]);
+                    Cell4Voltage = (float)(values[4]);
+                    Cell5Voltage = (float)(values[5]);
+                    Cell6Voltage = (float)(values[6]);
+                    Cell7Voltage = (float)(values[7]);
+                    Cell8Voltage = (float)(values[8]);
                     break;
 
                 case "TotalPackCurrentInt":
-                    TotalPackCurrent = (float)(packet.GetData<Int32>() / 1000.0);
+                    TotalPackCurrent = (float)(packet.GetData<Int32>());
                     break;
 
                 case "BMSTemperatureInt":
-                    BMSTemperature1 = (float)(packet.GetData<Int32>() / 1000.0);
+                    BMSTemperature1 = (float)(packet.GetData<Int32>());
                     break;
 
                 case "BMSError":
                     _log.Log($"Recieved BMSError Report:\n  {BitConverter.ToString(packet.Data)}");
                     break;
-
-                case "PowerBusStatus":
-                    Status = new BitArray(packet.Data);
-                    break;
-
-                case "PowerCurrents":
-                    Int16[] data = packet.GetDataArray<Int16>();
-                    ActuationCurrent = (float)(data[0] / 1000.0);
-                    LogicCurrent = (float)(data[1] / 1000.0);
-                    CommunicationsCurrent = (float)(data[2] / 1000.0);
-                    Motor1Current = (float)(data[3] / 1000.0);
-                    Motor2Current = (float)(data[4] / 1000.0);
-                    Motor3Current = (float)(data[5] / 1000.0);
-                    Motor4Current = (float)(data[6] / 1000.0);
-                    Motor5Current = (float)(data[7] / 1000.0);
-                    Motor6Current = (float)(data[8] / 1000.0);
-                    Motor7Current = (float)(data[9] / 1000.0);
-                    General12V40ACurrent = (float)(data[10] / 1000.0);
-                    break;
-
+ 
                 /*
                 // 2020 Id's
                 case "TotalPackCurrentInt":
@@ -514,25 +495,25 @@ namespace RED.ViewModels.Modules
                     break;
 
                 case "MotorBusCurrent":
-                    Int16[] motorCurrents = packet.GetDataArray<Int16>();
-                    Motor1Current = (float)(motorCurrents[0] / 1000.0);
-                    Motor2Current = (float)(motorCurrents[1] / 1000.0);
-                    Motor3Current = (float)(motorCurrents[2] / 1000.0);
-                    Motor4Current = (float)(motorCurrents[3] / 1000.0);
-                    Motor5Current = (float)(motorCurrents[4] / 1000.0);
-                    Motor6Current = (float)(motorCurrents[5] / 1000.0);
+                    float[] motorCurrents = packet.GetDataArray<float>();
+                    Motor1Current = (float)(motorCurrents[0]);
+                    Motor2Current = (float)(motorCurrents[1]);
+                    Motor3Current = (float)(motorCurrents[2]);
+                    Motor4Current = (float)(motorCurrents[3]);
+                    Motor5Current = (float)(motorCurrents[4]);
+                    Motor6Current = (float)(motorCurrents[5]);
                     break;
 
                 case "12VBusCurrent":
-                    Int16[] twelveVCurrents = packet.GetDataArray<Int16>();
-                    ActuationCurrent = (float)(twelveVCurrents[0] / 1000.0);
-                    LogicCurrent = (float)(twelveVCurrents[1] / 1000.0);
+                    float[] twelveVCurrents = packet.GetDataArray<float>();
+                    ActuationCurrent = (float)(twelveVCurrents[0]);
+                    LogicCurrent = (float)(twelveVCurrents[1]);
                     break;
 
                 case "30VBusCurrent":
                     //Not implemented
-                    Int16[] thirtyVCurrents = packet.GetDataArray<Int16>();
-                    CommunicationsCurrent = (float)(thirtyVCurrents[1] / 1000.0);
+                    float[] thirtyVCurrents = packet.GetDataArray<float>();
+                    CommunicationsCurrent = (float)(thirtyVCurrents[1]);
                     //Aux?
                     break;
                 

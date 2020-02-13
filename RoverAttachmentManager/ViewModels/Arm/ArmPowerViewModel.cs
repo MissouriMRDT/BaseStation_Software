@@ -150,13 +150,14 @@ namespace RoverAttachmentManager.ViewModels.Arm
             switch (packet.Name)
             {
                 case "ArmCurrents":
-                    BaseTwistCurrent = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 6)) / 1000.0);
-                    BaseTiltCurrent = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 8)) / 1000.0);
-                    ElbowTiltCurrent = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 10)) / 1000.0);
-                    ElbowTwistCurrent = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 12)) / 1000.0);
-                    WristTiltCurrent = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 14)) / 1000.0);
-                    WristTwistCurrent = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 16)) / 1000.0);
-                    GripperCurrent = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 18)) / 1000.0);
+                    float[] armCurrents = packet.GetDataArray<float>();
+                    BaseTwistCurrent = (float)(armCurrents[0]);
+                    BaseTiltCurrent = (float)(armCurrents[1]);
+                    ElbowTiltCurrent = (float)(armCurrents[2]);
+                    ElbowTwistCurrent = (float)(armCurrents[3]);
+                    WristTiltCurrent = (float)(armCurrents[4]);
+                    WristTwistCurrent = (float)(armCurrents[5]);
+                    GripperCurrent = (float)(armCurrents[6]);
                     break;
 
                 /*New error system not implemented
