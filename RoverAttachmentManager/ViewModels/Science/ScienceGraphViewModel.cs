@@ -27,6 +27,9 @@ namespace RoverAttachmentManager.ViewModels.Science
 
         public PlotModel SpectrometerPlotModel { set; private get; }
         public PlotModel SensorPlotModel { set; private get; }
+        public PlotModel MethanePlotModel { set; private get; }
+        public PlotModel CO2PlotModel { set; private get; }
+        public PlotModel O2PlotModel { set; private get; }
         public OxyPlot.Series.LineSeries SpectrometerSeries;
         public OxyPlot.Series.LineSeries MethaneConcentrationSeries;
         public OxyPlot.Series.LineSeries CO2ConcentrationSeries;
@@ -234,10 +237,28 @@ namespace RoverAttachmentManager.ViewModels.Science
             SensorPlotModel.Series.Add(MethaneConcentrationSeries);
             SensorPlotModel.Series.Add(CO2ConcentrationSeries);
             SensorPlotModel.Series.Add(O2ConcentrationSeries);
-            SensorPlotModel.Axes.Add(new OxyPlot.Axes.DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "mm:ss" });
+            SensorPlotModel.Axes.Add(new OxyPlot.Axes.DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "mm:ss", Title = "Time" });
+            SensorPlotModel.Axes.Add(new OxyPlot.Axes.LinearAxis { Position = AxisPosition.Left, Title = "Parts Per Million" });
 
+            MethanePlotModel = new PlotModel { Title = "Methane" };
+            MethaneConcentrationSeries = new OxyPlot.Series.LineSeries();
+            MethanePlotModel.Series.Add(MethaneConcentrationSeries);
+            MethanePlotModel.Axes.Add(new OxyPlot.Axes.DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "mm:ss", Title = "Time" });
+            MethanePlotModel.Axes.Add(new OxyPlot.Axes.LinearAxis { Position = AxisPosition.Left, Title = "Parts Per Million" });
 
-            Plots = new ObservableCollection<PlotModel>() { SensorPlotModel };
+            CO2PlotModel = new PlotModel { Title = "CO2" };
+            CO2ConcentrationSeries = new OxyPlot.Series.LineSeries();
+            CO2PlotModel.Series.Add(CO2ConcentrationSeries);
+            CO2PlotModel.Axes.Add(new OxyPlot.Axes.DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "mm:ss", Title = "Time" });
+            CO2PlotModel.Axes.Add(new OxyPlot.Axes.LinearAxis { Position = AxisPosition.Left, Title = "Parts Per Million" });
+
+            O2PlotModel = new PlotModel { Title = "O2" };
+            O2ConcentrationSeries = new OxyPlot.Series.LineSeries();
+            O2PlotModel.Series.Add(O2ConcentrationSeries);
+            O2PlotModel.Axes.Add(new OxyPlot.Axes.DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "mm:ss", Title = "Time" });
+            O2PlotModel.Axes.Add(new OxyPlot.Axes.LinearAxis { Position = AxisPosition.Left, Title = "Parts Per Million" });
+
+            Plots = new ObservableCollection<PlotModel>() { SensorPlotModel, MethanePlotModel, CO2PlotModel, O2PlotModel };
             SelectedPlots = SensorPlotModel;
         }
 
