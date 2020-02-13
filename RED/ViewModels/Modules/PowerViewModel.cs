@@ -405,6 +405,7 @@ namespace RED.ViewModels.Modules
             _rovecomm.NotifyWhenMessageReceived(this, "TotalPackVoltageInt");
             _rovecomm.NotifyWhenMessageReceived(this, "CellCurrentInts");
             _rovecomm.NotifyWhenMessageReceived(this, "BMSTemperatureInt");
+            */
             //From Power board
             _rovecomm.NotifyWhenMessageReceived(this, "MotorBusEnabled");
             _rovecomm.NotifyWhenMessageReceived(this, "12VEnabled");
@@ -414,8 +415,7 @@ namespace RED.ViewModels.Modules
             _rovecomm.NotifyWhenMessageReceived(this, "MotorBusCurrent");
             _rovecomm.NotifyWhenMessageReceived(this, "12VBusCurrent");
             _rovecomm.NotifyWhenMessageReceived(this, "30VBusCurrent");
-            _rovecomm.NotifyWhenMessageReceived(this, "VacuumCurrent");
-            */
+            
         }
 
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
@@ -492,7 +492,7 @@ namespace RED.ViewModels.Modules
                 case "TotalPackVoltageInt":
                     TotalPackVoltage = (float)(packet.GetData<Int32>() / 1000.0);
                     break;
-
+                */
                 case "MotorBusEnabled":
                     //Not implemented
                     break;
@@ -531,12 +531,11 @@ namespace RED.ViewModels.Modules
 
                 case "30VBusCurrent":
                     //Not implemented
+                    Int16[] thirtyVCurrents = packet.GetDataArray<Int16>();
+                    CommunicationsCurrent = (float)(thirtyVCurrents[1] / 1000.0);
+                    //Aux?
                     break;
-
-                case "VacuumCurrent":
-                    //Not implemented
-                    break;
-                */
+                
                 default:
                     break;
 
