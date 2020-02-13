@@ -22,8 +22,10 @@ namespace RED.Views
 		private void CameraView_DataContextChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
 		{
 			if (DataContext.GetType() != typeof(CameraViewModel)) return;
-			
-			((CameraViewModel)(DataContext)).CameraFeed = CameraFeed;
+
+			CameraViewModel cameraViewModel = ((CameraViewModel)(DataContext));
+			cameraViewModel.CameraFeed = CameraFeed;
+			cameraViewModel.SetCamera(1);
 		}
 	}
 }

@@ -13,21 +13,35 @@
 				<RowDefinition />
 			</Grid.RowDefinitions>
 
-			<Image x:Name="CameraFeed" Grid.Row="0" Height="200" MinWidth="200"></Image>
-			<StackPanel Grid.Row="1" Orientation="Horizontal">
-				<Button x:Name="Camera1" Width="26" Margin="0 0 0 0">1</Button>
-				<Button x:Name="Camera2" Width="26" Margin="5 0 0 0">2</Button>
-				<Button x:Name="Camera3" Width="26" Margin="5 0 0 0">3</Button>
-				<Button x:Name="Camera4" Width="26" Margin="5 0 0 0">4</Button>
-				<Button x:Name="Camera5" Width="26" Margin="5 0 0 0">5</Button>
-				<Button x:Name="Camera6" Width="26" Margin="5 0 0 0">6</Button>
-				<Button x:Name="Camera7" Width="26" Margin="5 0 0 0">7</Button>
-				<Button x:Name="Camera8" Width="26" Margin="5 0 0 0">8</Button>
-			</StackPanel>
-			<StackPanel Grid.Row="2" Orientation="Horizontal">
-				<Button x:Name="RotateCW" Width="120" Margin="0 0 0 0">Rotate Clockwise</Button>
-				<Button x:Name="Screenshot" Width="120" Margin="5 0 0 0">Screenshot</Button>
-			</StackPanel>
+			<Image x:Name="CameraFeed" Grid.Row="0"></Image>
+			<Grid Grid.Row="1">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition/>
+					<ColumnDefinition/>
+					<ColumnDefinition/>
+					<ColumnDefinition/>
+					<ColumnDefinition/>
+					<ColumnDefinition/>
+					<ColumnDefinition/>
+					<ColumnDefinition/>
+				</Grid.ColumnDefinitions>
+				<Button x:Name="Camera1" Grid.Column="0">1</Button>
+				<Button x:Name="Camera2" Grid.Column="1">2</Button>
+				<Button x:Name="Camera3" Grid.Column="2">3</Button>
+				<Button x:Name="Camera4" Grid.Column="3">4</Button>
+				<Button x:Name="Camera5" Grid.Column="4">5</Button>
+				<Button x:Name="Camera6" Grid.Column="5">6</Button>
+				<Button x:Name="Camera7" Grid.Column="6">7</Button>
+				<Button x:Name="Camera8" Grid.Column="7">8</Button>
+			</Grid>
+			<Grid Grid.Row="2">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition/>
+					<ColumnDefinition/>
+				</Grid.ColumnDefinitions>
+				<Button x:Name="RotateCW" Grid.Column="0">Rotate Clockwise</Button>
+				<Button x:Name="Screenshot" Grid.Column="1">Screenshot</Button>
+			</Grid>
 		</Grid>
 	</StackPanel>
 </UserControl>

@@ -44,13 +44,19 @@ namespace RED.ViewModels
             CameraMultiplexer.RemoveSurface(CameraFeed);
             CameraMultiplexer.AddSurface(camera, CameraFeed);
 
+            SetRotation(0);
+
             _model.DisplayedCamera = camera;
         }
 
         public void RotateCW()
         {
             int rotate = (Rotation + 90) % 360;
+            SetRotation(rotate);
+        }
 
+        private void SetRotation(int rotate)
+        {
             CameraFeed.RenderTransform = new RotateTransform(rotate, CameraFeed.ActualWidth / 2, CameraFeed.ActualHeight / 2);
 
             _model.Rotation = rotate;

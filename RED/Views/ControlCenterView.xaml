@@ -58,8 +58,8 @@
                             <ContentControl x:Name="Lighting" />
                         </Expander>
 						
-						<ContentControl x:Name="Camera1" Width="300px"></ContentControl>
-						<ContentControl x:Name="Camera2" Width="300px"></ContentControl>
+						<ContentControl x:Name="Camera1"></ContentControl>
+						<ContentControl x:Name="Camera2"></ContentControl>
 					</StackPanel>
                 </ScrollViewer>
                 <Grid Grid.Column="2">

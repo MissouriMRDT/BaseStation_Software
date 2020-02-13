@@ -10,8 +10,8 @@ namespace Core.Cameras {
 	public static class CameraMultiplexer {
 		private static readonly List<string> BASE_ADDRESSES = new List<string>()
 		{
-			"192.168.1.50",
-			"192.168.1.51"
+			"http://192.168.1.50:8080",
+			"http://192.168.1.51:8080"
 		};
 
 		private static bool initialized = false;
@@ -35,6 +35,7 @@ namespace Core.Cameras {
 			
 			for(int i = 1; i <= TotalCameraFeeds; i++) {
 				Uri uri = ConstructAddress(i);
+				//CommonLog.Instance.Log("Created URL {0}", uri);
 
 				MjpegDecoder add = new MjpegDecoder();
 				add.ParseStream(uri);
@@ -60,10 +61,16 @@ namespace Core.Cameras {
 
 		private static Uri ConstructAddress(int camera)
 		{
-			int index = (camera <= 4) ? 0 : 1;
+			int index = 0;
+
+			if (camera > 4 && camera <= 8) {
+				index = 1;
+				camera -= 4;
+			}
+
 			string addr = BASE_ADDRESSES[index];
 
-			return new Uri($"http://{addr}:8080/{camera}/stream");
+			return new Uri($"{addr}/{camera}/stream");
 		}
 
 		/// <summary>
