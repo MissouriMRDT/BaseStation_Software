@@ -53,6 +53,9 @@ namespace Core.Configurations.Input
                 new InputChannelContext("DPadU", "ScrewPosUp"),
                 new InputChannelContext("DPadD", "ScrewPosDown"),
                 new InputChannelContext("ButtonA","VacuumPulse"),
+                new InputChannelContext("ButtonX", "Chem1"),
+                new InputChannelContext("ButtonY", "Chem2"),
+                new InputChannelContext("ButtonB", "Chem3"),
                 new InputChannelContext("ButtonStartDebounced", "ModeCycle") }),
             new InputMappingContext("Xbox Gimbal", "Xbox", "Gimbal", 100, new[] {
                 new InputChannelContext("JoyStick1X", "Pan"){ Parabolic = true },
