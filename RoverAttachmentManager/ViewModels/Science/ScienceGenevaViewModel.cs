@@ -56,6 +56,7 @@ namespace RoverAttachmentManager.ViewModels.Science
             {
                 TestTube = 8;
             }
+            _rovecomm.SendCommand(Packet.Create("GenevaIncrementPosition", unchecked((byte)-1)));
         }
 
         public void RotateRight()
@@ -65,6 +66,8 @@ namespace RoverAttachmentManager.ViewModels.Science
             {
                 TestTube = 1;
             }
+            _rovecomm.SendCommand(Packet.Create("GenevaIncrementPosition", (byte)1));
+
         }
     }
 }
