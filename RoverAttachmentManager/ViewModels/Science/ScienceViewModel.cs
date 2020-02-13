@@ -72,18 +72,6 @@ namespace RoverAttachmentManager.ViewModels.Science
                 NotifyOfPropertyChange(() => ScienceGeneva);
             }
         }
-        public ScienceActuationViewModel ScienceActuation
-        {
-            get
-            {
-                return _model._scienceActuation;
-            }
-            set
-            {
-                _model._scienceActuation = value;
-                NotifyOfPropertyChange(() => ScienceActuation);
-            }
-        }
         public SpectrometerViewModel Spectrometer
         {
             get
@@ -187,7 +175,6 @@ namespace RoverAttachmentManager.ViewModels.Science
             SiteManagment = new SiteManagmentViewModel(networkMessenger, idResolver, log, this);
             ScienceGeneva = new ScienceGenevaViewModel(networkMessenger, idResolver, log);
             ScienceGraph = new ScienceGraphViewModel(networkMessenger, idResolver, log);
-            ScienceActuation = new ScienceActuationViewModel(networkMessenger, idResolver, log);
             Spectrometer = new SpectrometerViewModel(networkMessenger, idResolver, log, this);
             ScienceSensors = new ScienceSensorsViewModel(networkMessenger, idResolver, log, this);
             SciencePower = new SciencePowerViewModel(networkMessenger, idResolver, log);

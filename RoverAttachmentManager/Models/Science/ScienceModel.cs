@@ -14,7 +14,6 @@ namespace RoverAttachmentManager.Models.Science
         internal SiteManagmentViewModel _siteManagment;
         internal ScienceGenevaViewModel _scienceGeneva;
         internal ScienceSensorsViewModel _scienceSensors;
-        internal ScienceActuationViewModel _scienceActuation;
         internal SpectrometerViewModel _spectrometer;
         internal SciencePowerViewModel _sciencePower;
         internal InputManagerViewModel InputManager;
