@@ -202,7 +202,7 @@ namespace RoverAttachmentManager.ViewModels.Science
                 using (var client = new TcpClient())
                 {
                     _log.Log("Connecting to Spectrometer...");
-                    await client.ConnectAsync(SpectrometerIPAddress, SpectrometerPortNumber);
+                    // client.ConnectAsync(SpectrometerIPAddress, SpectrometerPortNumber);
                     _log.Log("Spectrometer connection established");
 
                     // Request the data
@@ -257,7 +257,7 @@ namespace RoverAttachmentManager.ViewModels.Science
                 using (var client = new TcpClient())
                 {
                     _log.Log("Connecting to MPPC...");
-                    await client.ConnectAsync(MPPCIPAddress, MPPCPortNumber);
+                    //await client.ConnectAsync(MPPCIPAddress, MPPCPortNumber);
                     _log.Log("Spectrometer connection established");
 
                     // Request the data
