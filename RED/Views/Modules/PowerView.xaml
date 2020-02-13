@@ -263,10 +263,10 @@
 
 
             <ToggleButton Grid.Row="0" Grid.Column="3" Style="{StaticResource EnableBtn}" Tag="6" IsChecked="{Binding Path=Status[14]}"/>
-            <Label Grid.Row="0" Grid.Column="4" Background="{Binding Path=Motor8Current, 
+            <Label Grid.Row="0" Grid.Column="4" Background="{Binding Path=AuxiliaryCurrent, 
                     Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}">Auxiliary</Label>
-            <Label Grid.Row="0" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="Motor8Current" 
-                   Background="{Binding Path=Motor8Current, Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}"/>
+            <Label Grid.Row="0" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="AuxiliaryCurrent" 
+                   Background="{Binding Path=AuxiliaryCurrent, Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}"/>
 
             <ToggleButton Grid.Row="1" Grid.Column="3" Style="{StaticResource EnableNotifyBtn}" Tag="9" IsChecked="{Binding Path=Status[2]}"/>
             <Label Grid.Row="1" Grid.Column="4" Background="{Binding Path=CommunicationsCurrent, 
@@ -287,9 +287,15 @@
             <Label Grid.Row="3" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="ActuationCurrent" 
                    Background="{Binding Path=ActuationCurrent, Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}"/>
 
-            <Label Grid.Row="4" Grid.Column="4" Background="{Binding Path=BMSTemperature1,
+            <ToggleButton Grid.Row="4" Grid.Column="3" Style="{StaticResource EnableBtn}" Tag="7" IsChecked="{Binding Path=Status[0]}"/>
+            <Label Grid.Row="4" Grid.Column="4" Background="{Binding Path=TwelveVoltCurrent, 
+                    Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}">Twelve V Board</Label>
+            <Label Grid.Row="4" Grid.Column="5" Style="{StaticResource CurrentTelem}" x:Name="TwelveVoltCurrent" 
+                   Background="{Binding Path=TwelveVoltCurrent, Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}"/>
+
+            <Label Grid.Row="5" Grid.Column="4" Background="{Binding Path=BMSTemperature1,
                     Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='75-22-38-0'}">Batt Temp</Label>
-            <Label Grid.Row="4" Grid.Column="5" Style="{StaticResource TemperatureTelem}" x:Name="BMSTemperature1"
+            <Label Grid.Row="5" Grid.Column="5" Style="{StaticResource TemperatureTelem}" x:Name="BMSTemperature1"
                    Background="{Binding Path=BMSTemperature1, Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='75-22-38-0'}"/>
 
 

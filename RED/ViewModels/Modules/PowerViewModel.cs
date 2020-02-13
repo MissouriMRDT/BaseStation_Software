@@ -372,7 +372,30 @@ namespace RED.ViewModels.Modules
                 NotifyOfPropertyChange(() => BMSTemperature2);
             }
         }
-
+        public float TwelveVoltCurrent 
+        {
+            get
+            {
+                return _model.TwelveVoltCurrent;
+            }
+            set
+            {
+                _model.TwelveVoltCurrent = value;
+                NotifyOfPropertyChange(() => TwelveVoltCurrent);
+            }
+        }
+        public float AuxiliaryCurrent
+        {
+            get
+            {
+                return _model.AuxiliaryCurrent;
+            }
+            set
+            {
+                _model.AuxiliaryCurrent = value;
+                NotifyOfPropertyChange(() => AuxiliaryCurrent);
+            }
+        }
         public BitArray Status
         {
             get
@@ -513,7 +536,9 @@ namespace RED.ViewModels.Modules
                 case "30VBusCurrent":
                     //Not implemented
                     float[] thirtyVCurrents = packet.GetDataArray<float>();
+                    TwelveVoltCurrent = (float)(thirtyVCurrents[0]);
                     CommunicationsCurrent = (float)(thirtyVCurrents[1]);
+                    AuxiliaryCurrent = (float)(thirtyVCurrents[2]);
                     //Aux?
                     break;
                 
