@@ -40,9 +40,6 @@
             <GroupBox Grid.Column="0" Grid.Row="3" Header="Geneva Pos." Margin="2.5">
                 <ContentControl x:Name="ScienceGeneva"/>
             </GroupBox>
-            <GroupBox Grid.Column="2" Grid.Row="3" Header="Actuation"  Margin="2.5">
-                <ContentControl x:Name="ScienceActuation"/>
-            </GroupBox>
             <ContentControl Grid.Column="3" Grid.Row="3" x:Name="InputManager" Margin="2.5" />
         </Grid>
     </StackPanel>
