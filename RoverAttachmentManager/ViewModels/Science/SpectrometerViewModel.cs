@@ -9,6 +9,7 @@ using OxyPlot.Wpf;
 using RoverAttachmentManager.Models.Science;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
@@ -30,8 +31,8 @@ namespace RoverAttachmentManager.ViewModels.Science
         public PlotModel SpectrometerPlotModel { set; private get; }
         public OxyPlot.Series.LineSeries SpectrometerSeries;
 
-        public PlotModel SensorPlotModel { set; private get; }
-        public PlotModel MethanePlotModel { set; private get; }
+        public PlotModel MPPCPlotModel { set; private get; }
+        public OxyPlot.Series.LineSeries MPPCSeries;
 
         public DateTime StartTime;
         public bool Graphing = false;
@@ -100,6 +101,73 @@ namespace RoverAttachmentManager.ViewModels.Science
         }
 
 
+
+
+        public string MPPCFilePath
+        {
+            get
+            {
+                return _model.MPPCFilePath;
+            }
+            set
+            {
+                _model.MPPCFilePath = value;
+                NotifyOfPropertyChange(() => MPPCFilePath);
+            }
+        }
+        public ushort MPPCPortNumber
+        {
+            get
+            {
+                return _model.MPPCPortNumber;
+            }
+            set
+            {
+                _model.MPPCPortNumber = value;
+                NotifyOfPropertyChange(() => MPPCPortNumber);
+            }
+        }
+        public System.Net.IPAddress MPPCIPAddress
+        {
+            get
+            {
+                return _model.MPPCIPAddress;
+            }
+            set
+            {
+                _model.MPPCIPAddress = value;
+                NotifyOfPropertyChange(() => MPPCIPAddress);
+            }
+        }
+
+        public ObservableCollection<PlotModel> Plots
+        {
+            get
+            {
+                return _model.Plots;
+
+            }
+            set
+            {
+                _model.Plots = value;
+                NotifyOfPropertyChange(() => Plots);
+            }
+        }
+
+        public PlotModel SelectedPlots
+        {
+            get
+            {
+                return _model.SelectedPlot;
+            }
+            set
+            {
+                _model.SelectedPlot = value;
+                NotifyOfPropertyChange(() => SelectedPlots);
+            }
+        }
+
+
         public SpectrometerViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log, ScienceViewModel parent)
         {
             _model = new SpectrometerModel();
@@ -114,9 +182,16 @@ namespace RoverAttachmentManager.ViewModels.Science
             SpectrometerPlotModel.Axes.Add(new OxyPlot.Axes.LinearAxis { Position = AxisPosition.Left, Title = "Intensity" });
             SpectrometerPlotModel.Axes.Add(new OxyPlot.Axes.LinearAxis { Position = AxisPosition.Bottom, Title = "Wavelength (nanometers)" });
 
+            MPPCPlotModel = new PlotModel { Title = "MPPC Results" };
+            MPPCSeries = new OxyPlot.Series.LineSeries();
+            MPPCPlotModel.Series.Add(MPPCSeries);
+            MPPCPlotModel.Axes.Add(new OxyPlot.Axes.LinearAxis { Position = AxisPosition.Left, Title = "-----" });
+            MPPCPlotModel.Axes.Add(new OxyPlot.Axes.LinearAxis { Position = AxisPosition.Bottom, Title = "-----" });
+
+            Plots = new ObservableCollection<PlotModel>() { SpectrometerPlotModel, MPPCPlotModel };
+            SelectedPlots = SpectrometerPlotModel;
+
         }
-
-
 
         public async void DownloadSpectrometer()
         {
@@ -171,64 +246,64 @@ namespace RoverAttachmentManager.ViewModels.Science
             ExportGraph(SpectrometerPlotModel, SpectrometerFilePath + "\\SpectrometerGraph-Site" + SiteManagment.SiteNumber + ".png", 400);
         }
 
-        public void UpdateSensorGraphs()
-        {
-            if (!Graphing) { return; }
-
-            TimeSpan nowSpan = DateTime.UtcNow.Subtract(StartTime);
-            DateTime now = new DateTime(nowSpan.Ticks);
-
-            SensorPlotModel.InvalidatePlot(true);
-            MethanePlotModel.InvalidatePlot(true);
-
-            ExportGraph(MethanePlotModel, SpectrometerFilePath + "\\methane.png", 400);
-            ExportGraph(SensorPlotModel, SpectrometerFilePath + "\\temphum.png", 400);
-        }
-
         public void ExportGraph(PlotModel model, string filename, int height)
         {
             var pngExporter = new PngExporter { Width = 600, Height = height, Background = OxyColors.White };
             pngExporter.ExportToFile(model, filename);
         }
 
-        public void CreateSiteAnnotation()
+
+
+
+
+
+        public async void DownloadMPPC()
         {
-            SensorPlotModel.Annotations.Add(new OxyPlot.Annotations.RectangleAnnotation
+            //this likely will change a lot with official tcp implementations
+            string filename = Path.Combine(MPPCFilePath, "REDSMPPCData-" + DateTime.Now.ToString("yyyyMMdd'-'HHmmss") + ".csv");
+            try
             {
-                MinimumX = SiteTimes[SiteManagment.SiteNumber * 2],
-                MaximumX = SiteTimes[(SiteManagment.SiteNumber * 2) + 1],
-                Text = "Site " + SiteManagment.SiteNumber,
-                Fill = OxyColor.FromAColor(50, OxyColors.DarkOrange),
+                using (var client = new TcpClient())
+                {
+                    _log.Log("Connecting to MPPC...");
+                    await client.ConnectAsync(SpectrometerIPAddress, SpectrometerPortNumber);
+                    _log.Log("Spectrometer connection established");
 
-            });
-            MethanePlotModel.Annotations.Add(new OxyPlot.Annotations.RectangleAnnotation
+                    // Request the data
+                    _rovecomm.SendCommand(Packet.Create("RunMPPC", (byte)RunCount), true);
+
+                    _log.Log("Awaiting data...");
+                    using (var file = File.Create(filename))
+                    {
+                        await client.GetStream().CopyToAsync(file);
+                    }
+                }
+                _log.Log($"MPPC data downloaded into {filename}");
+                GraphSpectrometerData(filename);
+            }
+            catch (Exception e)
             {
-                MinimumX = SiteTimes[SiteManagment.SiteNumber * 2],
-                MaximumX = SiteTimes[(SiteManagment.SiteNumber * 2) + 1],
-                Text = "Site " + SiteManagment.SiteNumber,
-                Fill = OxyColor.FromAColor(50, OxyColors.DarkOrange),
-
-            });
+                _log.Log("There was an error downloading the MPPC data:{0}{1}", Environment.NewLine, e);
+            }
         }
 
-        public void AddSiteAnnotation(double x, string text)
-        {
-            SensorPlotModel.Annotations.Add(new OxyPlot.Annotations.LineAnnotation { Type = LineAnnotationType.Vertical, X = x, Color = OxyColors.Green, Text = text });
-            MethanePlotModel.Annotations.Add(new OxyPlot.Annotations.LineAnnotation { Type = LineAnnotationType.Vertical, X = x, Color = OxyColors.Green, Text = text });
 
-        }
-
-        public void ClearSensorGraphs()
+        public void GraphMPPCData(string filename)
         {
-            SensorPlotModel.InvalidatePlot(true);
-            MethanePlotModel.InvalidatePlot(true);
-        }
+            MPPCSeries.Points.Clear();
 
-        public void StartSensorGraphs()
-        {
-            StartTime = DateTime.UtcNow;
-            Graphing = true;
-            ClearSensorGraphs();
+            using (var reader = new StreamReader(filename))
+            {
+                while (!reader.EndOfStream)
+                {
+                    var line = reader.ReadLine();
+                    var values = line.Split(',');
+
+                    MPPCSeries.Points.Add(new DataPoint((Int16.Parse(values[0]) / 10.0) + 389, Double.Parse(values[1])));
+                }
+            }
+            MPPCPlotModel.InvalidatePlot(true);
+            ExportGraph(MPPCPlotModel, MPPCFilePath + "\\MPPCGraph-Site" + SiteManagment.SiteNumber + ".png", 400);
         }
 
     }

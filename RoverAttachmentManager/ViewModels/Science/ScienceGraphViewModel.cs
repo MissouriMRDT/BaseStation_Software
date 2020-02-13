@@ -224,12 +224,6 @@ namespace RoverAttachmentManager.ViewModels.Science
             _rovecomm.NotifyWhenMessageReceived(this, "CO2");
             _rovecomm.NotifyWhenMessageReceived(this, "O2");
 
-            SpectrometerPlotModel = new PlotModel { Title = "Spectrometer Results" };
-            SpectrometerSeries = new OxyPlot.Series.LineSeries();
-            SpectrometerPlotModel.Series.Add(SpectrometerSeries);
-            SpectrometerPlotModel.Axes.Add(new OxyPlot.Axes.LinearAxis { Position = AxisPosition.Left, Title = "Intensity" });
-            SpectrometerPlotModel.Axes.Add(new OxyPlot.Axes.LinearAxis { Position = AxisPosition.Bottom, Title = "Wavelength (nanometers)" });
-
             SensorPlotModel = new PlotModel { Title = "Methane, CO2, and O2 Data" };
             MethaneConcentrationSeries = new OxyPlot.Series.LineSeries();
             CO2ConcentrationSeries = new OxyPlot.Series.LineSeries();
