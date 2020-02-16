@@ -174,18 +174,6 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => Power);
             }
         }
-        public CameraViewModel CameraMux
-        {
-            get
-            {
-                return _model._cameraMux;
-            }
-            set
-            {
-                _model._cameraMux = value;
-                NotifyOfPropertyChange(() => CameraMux);
-            }
-        }
         public MapViewModel Map
         {
             get
