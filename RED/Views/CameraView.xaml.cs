@@ -1,8 +1,8 @@
-﻿using Core.Cameras;
+﻿using RED.ViewModels;
 using System;
 using System.Windows.Controls;
 
-namespace Core.Cameras
+namespace RED.Views
 {
 	/// <summary>
 	/// Interaction logic for CameraView.xaml

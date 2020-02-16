@@ -3,7 +3,6 @@ using RoverAttachmentManager.ViewModels.Arm;
 using RoverAttachmentManager.ViewModels;
 using Core.ViewModels.Input.Controllers;
 using Core.Configurations;
-using Core.Cameras;
 
 namespace RoverAttachmentManager.Models.ArmModels
 {

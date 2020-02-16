@@ -84,12 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Addons\BoolToValueConverter.cs" />
-    <Compile Include="Cameras\CameraModel.cs" />
     <Compile Include="Cameras\CameraMultiplexer.cs" />
-    <Compile Include="Cameras\CameraView.xaml.cs">
-      <DependentUpon>CameraView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Cameras\CameraViewModel.cs" />
     <Compile Include="Cameras\FeedInfo.cs" />
     <Compile Include="Cameras\MjpegDecoder.cs" />
     <Compile Include="Addons\ValueToColorConverter.cs" />
@@ -141,12 +136,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Cameras\CameraView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -1,10 +1,11 @@
 ﻿using Caliburn.Micro;
 using Core.Cameras;
 using Core.Interfaces;
+using RED.Models;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace Core.Cameras
+namespace RED.ViewModels
 {
     public class CameraViewModel : PropertyChangedBase
     {
