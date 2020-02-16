@@ -65,6 +65,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Design" />
     <Reference Include="System.Net" />
     <Reference Include="System.Net.Http" />
@@ -83,6 +84,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Addons\BoolToValueConverter.cs" />
+    <Compile Include="Cameras\CameraMultiplexer.cs" />
+    <Compile Include="Cameras\FeedInfo.cs" />
+    <Compile Include="Cameras\MjpegDecoder.cs" />
     <Compile Include="Addons\ValueToColorConverter.cs" />
     <Compile Include="Configurations\Input\Controllers\XboxControllerInputConfig.cs" />
     <Compile Include="Configurations\Input\InputManagerConfig.cs" />

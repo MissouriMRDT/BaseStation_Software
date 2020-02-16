@@ -1,4 +1,5 @@
-﻿using MahApps.Metro.Controls;
+﻿using Core.Cameras;
+using MahApps.Metro.Controls;
 
 namespace RoverAttachmentManager.Views
 {
