@@ -11,11 +11,6 @@ namespace RoverAttachmentManager.Views
         public MainWindowView()
         {
             InitializeComponent();
-
-            CameraMultiplexer.AddSurface(5, Camera5);
-            CameraMultiplexer.AddSurface(6, Camera6);
-            CameraMultiplexer.AddSurface(7, Camera7);
-            CameraMultiplexer.AddSurface(8, Camera8);
         }
     }
 }

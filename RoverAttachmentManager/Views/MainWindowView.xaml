@@ -38,11 +38,6 @@
 
         <ContentControl x:Name="InputManager" />
 
-		<Image x:Name="Camera5" Tag="4" Height="200px" Width="300px"/>
-		<Image x:Name="Camera6" Tag="4" Height="200px" Width="300px"/>
-		<Image x:Name="Camera7" Tag="4" Height="200px" Width="300px"/>
-		<Image x:Name="Camera8" Tag="4" Height="200px" Width="300px"/>
-
-	</StackPanel>
+    </StackPanel>
 
 </controls:MetroWindow>
