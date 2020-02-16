@@ -3,6 +3,7 @@ using RoverAttachmentManager.ViewModels.Arm;
 using RoverAttachmentManager.ViewModels;
 using Core.ViewModels.Input.Controllers;
 using Core.Configurations;
+using Core.Cameras;
 
 namespace RoverAttachmentManager.Models.ArmModels
 {
@@ -20,6 +21,8 @@ namespace RoverAttachmentManager.Models.ArmModels
         internal int IKRangeFactor = 1000;
         internal string ControlState;
         internal ArmPowerViewModel ArmPower;
-        
+
+        internal CameraViewModel _camera1;
+        internal CameraViewModel _camera2;
     }
 }

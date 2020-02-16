@@ -7,6 +7,7 @@ using RED.ViewModels.Tools;
 using Core.ViewModels.Input;
 using Core.ViewModels.Input.Controllers;
 using RED.Models.Modules;
+using Core.Cameras;
 
 namespace RED.Models
 {

@@ -17,6 +17,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="2*" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Column="0" Margin="2.5">
@@ -52,6 +53,14 @@
         <StackPanel Grid.Column="1" Grid.Row="4" Margin="5">
             <ContentControl x:Name="InputManager"/>
         </StackPanel>
+
+        <GroupBox Grid.Column="0" Grid.Row="5" Margin="5" Header="Camera 1">
+            <ContentControl x:Name="Camera1"></ContentControl>
+        </GroupBox>
+        <GroupBox Grid.Column="1" Grid.Row="5" Margin="5" Header="Camera 2">
+            <ContentControl x:Name="Camera2"></ContentControl>
+        </GroupBox>
+
     </Grid>
 
 </UserControl>
