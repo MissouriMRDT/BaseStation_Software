@@ -39,5 +39,6 @@ namespace RED.Models.Modules
         internal byte RebootTime;
 
         internal BitArray Status;
+        internal BitArray MotorBusStatus;
     }
 }
