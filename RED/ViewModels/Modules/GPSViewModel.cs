@@ -30,42 +30,6 @@ namespace RED.ViewModels.Modules
                 NotifyOfPropertyChange(() => Lidar);
             }
         }
-        public float Pitch
-        {
-            get
-            {
-                return _model.Pitch;
-            }
-            set
-            {
-                _model.Pitch = value;
-                NotifyOfPropertyChange(() => Pitch);
-            }
-        }
-        public float Roll
-        {
-            get
-            {
-                return _model.Roll;
-            }
-            set
-            {
-                _model.Roll = value;
-                NotifyOfPropertyChange(() => Roll);
-            }
-        }
-        public float TrueHeading
-        {
-            get
-            {
-                return _model.TrueHeading;
-            }
-            set
-            {
-                _model.TrueHeading = value;
-                NotifyOfPropertyChange(() => TrueHeading);
-            }
-        }
 
         public bool FixObtained
         {
@@ -124,13 +88,13 @@ namespace RED.ViewModels.Modules
             set
             {
                 _model.RawLocation = value;
-                CurrentLocation = new GPSCoordinate(RawLocation.Latitude + Offset.Latitude, 
+                CurrentLocation = new GPSCoordinate(RawLocation.Latitude + Offset.Latitude,
                     RawLocation.Longitude + Offset.Longitude);
                 NotifyOfPropertyChange(() => RawLocation);
                 NotifyOfPropertyChange(() => CurrentLocation);
             }
         }
-        
+
         public GPSCoordinate Offset
         {
             get
@@ -169,27 +133,6 @@ namespace RED.ViewModels.Modules
             }
         }
 
-        public float Heading
-        {
-            get
-            {
-                return _model.Heading;
-            }
-            set
-            {
-                _model.Heading = value;
-                NotifyOfPropertyChange(() => Heading);
-                NotifyOfPropertyChange(() => HeadingDeg);
-            }
-        }
-     
-        public float HeadingDeg
-        {
-            get
-            {
-                return (float)(Heading * 180d / Math.PI);
-            }
-        }
 
         public float RoverDistanceStart
         {
@@ -232,11 +175,14 @@ namespace RED.ViewModels.Modules
             }
             RoverDistanceTraveled = RoverDistanceStart;
 
+
+            _rovecomm.NotifyWhenMessageReceived(this, "Lidar");
             _rovecomm.NotifyWhenMessageReceived(this, "GPSPosition");
-            _rovecomm.NotifyWhenMessageReceived(this, "PitchHeadingRoll");
+            _rovecomm.NotifyWhenMessageReceived(this, "GPSTelem");
+            _rovecomm.NotifyWhenMessageReceived(this, "RoverDistanceSession");
         }
 
-        
+
 
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
         {

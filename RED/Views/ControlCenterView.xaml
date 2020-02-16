@@ -4,7 +4,7 @@
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:behaviours="clr-namespace:MahApps.Metro.Behaviours;assembly=MahApps.Metro"
-        MinHeight="640" MinWidth="1024" Height="640" Width="1024" 
+        MinHeight="640" MinWidth="1040" Height="640" Width="1240" 
         EnableDWMDropShadow="True" ResizeMode="CanResize" TitleCaps="False"
         WindowTransitionsEnabled="True" WindowStartupLocation="CenterScreen">
     <controls:MetroWindow.Resources>
@@ -34,7 +34,7 @@
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
+                        <RowDefinition Height="300" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
@@ -93,7 +93,7 @@
                         <ContentControl x:Name="Gimbal" />
                     </GroupBox>
 
-                    <GroupBox Grid.Column="2" Grid.Row="1" Header="3D Model">
+                    <GroupBox Grid.Column="2" Grid.Row="1" Header="3D Model" Width="200">
                         <ContentControl x:Name="RoverModel"/>
                     </GroupBox>
 
@@ -103,7 +103,7 @@
                     </GroupBox>
 
                     <GroupBox Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="3" Header="Timer">
-
+                        <ContentControl x:Name="StopwatchTool"/>
                     </GroupBox>
 
                     <StackPanel HorizontalAlignment="Center" Grid.Row="7" Grid.ColumnSpan="3" Orientation="Horizontal">

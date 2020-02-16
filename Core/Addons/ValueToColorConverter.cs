@@ -13,10 +13,10 @@ namespace Core.Addons
     public class ValueToColorConverter : IValueConverter
     {
         /*To use this, you'll want something like
-         *Background="{Binding Path=Motor2Current, Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15-0-7-0'}"
+         *Background="{Binding Path=Motor2Current, Converter={StaticResource ColorConverter}, Mode=Default, ConverterParameter='15/0/7/0'}"
          *The converter parameter used here was the general accepted current range for a motor in 2018-2019
          *This converter can also be used with the following parameters to convert booleans to red or green if desired
-         *Boolean: 1-0-0.5-(0 if 0 should be green or 1 if 0 should be red)
+         *Boolean: 1/0/0.5/(0 if 0 should be green or 1 if 0 should be red)
          */
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -24,7 +24,9 @@ namespace Core.Addons
             //and to parse out the numbers. So, our numbers will be formated max-min-cutoff-down.
 
             String param = (String)parameter;   //So cast the parameter as a string
-            String[] seperator = {"-"};         //Noting the seperator to be a -
+
+            String[] seperator = {"/"};         //Noting the seperator to be a /
+
             Int32 count = 4;                    //And that 4 numbers will be recieved
 
             //The next line will split the string at the - up to 4 times, and will return a list of the resulting strings
