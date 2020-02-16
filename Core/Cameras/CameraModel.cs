@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Controls;
 
-namespace RED.Models
+namespace Core.Cameras
 {
     internal class CameraModel
     {

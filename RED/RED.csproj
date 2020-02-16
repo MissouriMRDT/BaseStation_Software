@@ -145,7 +145,6 @@
     <Compile Include="Images\ModernUIIcons.cs" />
     <Compile Include="Models\InputManagerModel.cs" />
     <Compile Include="Models\InputSelectorModel.cs" />
-    <Compile Include="Models\CameraModel.cs" />
     <Compile Include="Models\Modules\Rover3DModel.cs" />
     <Compile Include="Models\Modules\GimbalModel.cs" />
     <Compile Include="Models\Modules\DriveModel.cs" />
@@ -160,9 +159,7 @@
     <Compile Include="Settings.cs" />
     <Compile Include="ViewModels\InputManagerViewModel.cs" />
     <Compile Include="ViewModels\InputSelectorViewModel.cs" />
-    <Compile Include="ViewModels\CameraViewModel.cs" />
     <Compile Include="ViewModels\Modules\Rover3DViewModel.cs" />
-    <Compile Include="ViewModels\Modules\CameraViewModel.cs" />
     <Compile Include="ViewModels\Modules\GimbalViewModel.cs" />
     <Compile Include="ViewModels\Modules\LightingViewModel.cs" />
     <Compile Include="ViewModels\Navigation\MapViewModel.cs" />
@@ -180,9 +177,6 @@
     <Compile Include="ViewModels\Settings\Modules\PowerSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\Network\NetworkManagerSettingsViewModel.cs" />
     <Compile Include="ViewModels\Tools\StopwatchToolViewModel.cs" />
-    <Compile Include="Views\CameraView.xaml.cs">
-      <DependentUpon>CameraView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\ControlCenterView.xaml.cs">
       <DependentUpon>ControlCenterView.xaml</DependentUpon>
     </Compile>
@@ -194,9 +188,6 @@
     </Compile>
     <Compile Include="Views\Modules\Rover3DView.xaml.cs">
       <DependentUpon>Rover3DView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Modules\CameraView.xaml.cs">
-      <DependentUpon>CameraView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DriveView.xaml.cs">
       <DependentUpon>DriveView.xaml</DependentUpon>
@@ -240,10 +231,6 @@
     <Compile Include="Views\Tools\StopwatchToolView.xaml.cs">
       <DependentUpon>StopwatchToolView.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\CameraView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\ControlCenterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -257,10 +244,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Modules\Rover3DView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Modules\CameraView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
