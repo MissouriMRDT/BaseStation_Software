@@ -61,12 +61,13 @@ namespace Core.Cameras {
 
 		private static Uri ConstructAddress(int camera)
 		{
-			int index = 0;
+            //cameras 1-4 should be index 0, cameras 5-8 should be index 2, etc.
+            //subtracting 1, dividing by 4, and truncating the decimal achieves this
+            int index = (camera-1) / 4;
 
-			if (camera > 4 && camera <= 8) {
-				index = 1;
-				camera -= 4;
-			}
+            //Then camera should be a number between 1 and 4. This weird equation is the result of
+            //numbering 1-4 instead of 0-3. But 4-1=3, 3%4=3, 3+1 = 4 and 5-1=4, 4%4 = 0, 0+1 = 1
+            camera = ((camera-1) % 4)+1;
 
 			string addr = BASE_ADDRESSES[index];
 
