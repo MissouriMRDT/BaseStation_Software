@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using Core.ViewModels.Input.Controllers;
 using Core.Configurations;
-
+using Core.Cameras;
 
 namespace RoverAttachmentManager.Models.Science
 {
@@ -21,5 +21,7 @@ namespace RoverAttachmentManager.Models.Science
         internal XboxControllerInputViewModel _xboxController1;
         internal XboxControllerInputViewModel _xboxController2;
         internal XboxControllerInputViewModel _xboxController3;
+        internal CameraViewModel _camera1;
+        internal CameraViewModel _camera2;
     }
 }

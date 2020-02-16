@@ -92,18 +92,6 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="Vlc.DotNet.Core, Version=2.2.1.0, Culture=neutral, PublicKeyToken=84529da31f4eb963, processorArchitecture=MSIL">
-      <HintPath>..\packages\Vlc.DotNet.Core.2.2.1\lib\net45\Vlc.DotNet.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Vlc.DotNet.Core.Interops, Version=2.2.1.0, Culture=neutral, PublicKeyToken=84529da31f4eb963, processorArchitecture=MSIL">
-      <HintPath>..\packages\Vlc.DotNet.Core.Interops.2.2.1\lib\net45\Vlc.DotNet.Core.Interops.dll</HintPath>
-    </Reference>
-    <Reference Include="Vlc.DotNet.Forms, Version=2.2.1.0, Culture=neutral, PublicKeyToken=84529da31f4eb963, processorArchitecture=MSIL">
-      <HintPath>..\packages\Vlc.DotNet.Forms.2.2.1\lib\net45\Vlc.DotNet.Forms.dll</HintPath>
-    </Reference>
-    <Reference Include="Vlc.DotNet.Wpf, Version=2.2.1.0, Culture=neutral, PublicKeyToken=84529da31f4eb963, processorArchitecture=MSIL">
-      <HintPath>..\packages\Vlc.DotNet.Wpf.2.2.1\lib\net45\Vlc.DotNet.Wpf.dll</HintPath>
-    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -125,6 +113,7 @@
     <Compile Include="Models\Arm\ControlMultipliersModel.cs" />
     <Compile Include="Models\Autonomy\ControlsModel.cs" />
     <Compile Include="Models\Autonomy\StateControlModel.cs" />
+    <Compile Include="Models\CameraModel.cs" />
     <Compile Include="Models\InputManagerModel.cs" />
     <Compile Include="Models\InputSelectorModel.cs" />
     <Compile Include="Models\MainWindowModel.cs" />
@@ -132,6 +121,7 @@
     <Compile Include="Models\Science\ScienceGraphModel.cs" />
     <Compile Include="Models\Science\ScienceModel.cs" />
     <Compile Include="ViewModels\Autonomy\StateControlViewModel.cs" />
+    <Compile Include="ViewModels\CameraViewModel.cs" />
     <Compile Include="ViewModels\Science\ScienceGenevaViewModel.cs" />
     <Compile Include="Views\Autonomy\StateControlView.xaml.cs">
       <DependentUpon>StateControlView.xaml</DependentUpon>
@@ -162,6 +152,9 @@
     <Compile Include="Views\Arm\ArmPowerView.xaml.cs">
       <DependentUpon>ArmPowerView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\CameraView.xaml.cs">
+      <DependentUpon>CameraView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Science\ScienceGenevaView.xaml.cs">
       <DependentUpon>ScienceGenevaView.xaml</DependentUpon>
     </Compile>
@@ -189,6 +182,10 @@
     <Compile Include="Views\Science\SpectrometerView.xaml.cs">
       <DependentUpon>SpectrometerView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\CameraView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\Science\ScienceGenevaView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
