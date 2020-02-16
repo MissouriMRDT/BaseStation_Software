@@ -8,7 +8,7 @@ namespace RED.ViewModels.Modules
 {
     public class LightingViewModel : PropertyChangedBase
     {
-        private readonly LightingModel _model;
+        private readonly LightingSettingsModel _model;
         private readonly IRovecomm _rovecomm;
         private readonly IDataIdResolver _idResolver;
         private readonly ILogger _log;
@@ -91,7 +91,7 @@ namespace RED.ViewModels.Modules
 
         public LightingViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
-            _model = new LightingModel();
+            _model = new LightingSettingsModel();
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _log = log;
@@ -100,29 +100,29 @@ namespace RED.ViewModels.Modules
         private void SendColors()
         {
             if (Enabled)
-                _rovecomm.SendCommand(new Packet("UnderglowColor", new byte[] { Red, Green, Blue }, 3, (byte)DataTypes.UINT8_T));
+                _rovecomm.SendCommand(Packet.Create("UnderglowColor", new byte[] { Red, Green, Blue }));
         }
 
         private void TurnOff()
         {
-            _rovecomm.SendCommand(new Packet("UnderglowColor", new byte[] { 0, 0, 0 }, 3, (byte)DataTypes.UINT8_T), true);
+            _rovecomm.SendCommand(Packet.Create("UnderglowColor", new byte[] { 0, 0, 0 }), true);
         }
          
         private void TurnOnHeadlights()
         {
-            _rovecomm.SendCommand(new Packet("Headlights", (byte)30), false);
+            _rovecomm.SendCommand(Packet.Create("Headlights", (byte)30), false);
         }
 
         private void TurnOffHeadlights()
         {
-            _rovecomm.SendCommand(new Packet("Headlights", (byte)0), false);
+            _rovecomm.SendCommand(Packet.Create("Headlights", (byte)0), false);
         }
 
         public void CycleInternalLighting()
         {
             CurrentMode++;
             CurrentMode %= 4;
-            _rovecomm.SendCommand(new Packet("CycleLightingMode", (byte)CurrentMode), false);
+            _rovecomm.SendCommand(Packet.Create("CycleLightingMode", (byte)CurrentMode), false);
         }
     }
 }

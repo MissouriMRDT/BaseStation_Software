@@ -5,6 +5,7 @@ using Core.Models;
 using Core.RoveProtocol;
 using Core.ViewModels;
 using RoverAttachmentManager.Models.Autonomy;
+using RoverAttachmentManager.ViewModels.Autonomy;
 using System;
 using System.Net;
 
@@ -19,9 +20,51 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
         private readonly ILogger _logger;
         private readonly WaypointManager _waypointManager;
 
+        public ControlsViewModel Controls
+        {
+            get
+            {
+                return _model.Controls;
+            }
+            set
+            {
+                _model.Controls = value;
+                NotifyOfPropertyChange(() => Controls);
+            }
+        }
+        public StateControlViewModel StateControl
+        {
+            get
+            {
+                return _model._stateControl;
+            }
+            set
+            {
+                _model._stateControl = value;
+                NotifyOfPropertyChange(() => StateControl);
+            }
+        }
+        public SentWaypointsViewModel SentWaypoints
+        {
+            get
+            {
+                return _model._sentWaypoints;
+            }
+
+            set
+            {
+                _model._sentWaypoints = value;
+                NotifyOfPropertyChange(() => SentWaypoints);
+            }
+        }
+
         public AutonomyViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger logger)
         {
             _model = new AutonomyModel();
+            StateControl = new StateControlViewModel();
+            Controls = new ControlsViewModel(networkMessenger, this);
+            SentWaypoints = new SentWaypointsViewModel();
+
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _logger = logger;
@@ -30,14 +73,10 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
             _rovecomm.NotifyWhenMessageReceived(this, "WaypointReached");
         }
 
-        public void Enable() => _rovecomm.SendCommand(new Packet("AutonomousModeEnable"), true);
+        public void Enable() => _rovecomm.SendCommand(Packet.Create("AutonomousModeEnable"), true);
 
-        public void Disable() => _rovecomm.SendCommand(new Packet("AutonomousModeDisable"), true);
+        public void Disable() => _rovecomm.SendCommand(Packet.Create("AutonomousModeDisable"), true);
 
-        public void ClearAllWaypoints() => _rovecomm.SendCommand(new Packet("WaypointsClearAll"), true);
-
-        public void Calibrate() => _rovecomm.SendCommand(new Packet("AutonomyCalibrate"), true);
-        
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
         {
             switch (packet.Name)
@@ -57,11 +96,6 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
             Array.Reverse(msg);
 
             _rovecomm.SendCommand(new Packet("WaypointAdd", msg, 2, (byte)7), true);
-        }
-
-        public void ReceivedRovecommMessageCallback(int index, bool reliable)
-        {
-            ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
         }
     }
 }

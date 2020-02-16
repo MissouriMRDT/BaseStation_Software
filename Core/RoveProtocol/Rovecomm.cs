@@ -10,6 +10,7 @@ using Core.Configurations;
 using Core.Network;
 using System.IO;
 using Core.Models;
+using Core.Addons.Network;
 
 namespace Core.RoveProtocol
 {
@@ -23,18 +24,21 @@ namespace Core.RoveProtocol
     }
 
     /// <summary>
-    /// The rove communication protocol class; it offers a variety of api for sending and receiving messages across the network 
-    /// using the rovecomm protocol. Most devices used on rover use rovecomm, so use this to communicate with its devices. Rovecomm itself will encode 
-    /// and decode messages between Core and devices and pass it over the network.
+    /// The rove communication protocol class; it offers the api for sending and receiving messages
+    /// across the network using the rovecomm protocol. Most devices used on rover use rovecomm, so 
+    /// use this to communicate with its devices. Rovecomm itself will encode and decode messages 
+    /// and pass it over the network.
     /// 
-    /// This class works together with MetadataManager, the latter containing all of the metadata ID's that rovecomm uses when passing messages around as well 
-    /// as information such as the ip addresses of the devices. As well with NetworkManagerViewModel, Rovecomm relies on it for actual network access.
+    /// This class works together with MetadataManager, the latter containing all of the metadata 
+    /// ID's that rovecomm uses when passing messages around as well as information such as the ip 
+    /// addresses of the devices.
+    /// 
+    /// This implementation uses RovecommTwo to encode/decode packets internaly, and the two 
+    /// endpoint classes to deliver and recieve the raw packets.
     /// </summary>
     public class Rovecomm: IRovecomm
     {
         private static Rovecomm instance;
-
-		CommonLog log = CommonLog.Instance;
 
         private Rovecomm() {
             metadataManager = new MetadataManager(log, new XMLConfigManager(log));
@@ -42,13 +46,14 @@ namespace Core.RoveProtocol
             registrations = new Dictionary<string, List<IRovecommReceiver>>();
             subscriptions = new Dictionary<IPAddress, SubscriptionRecord>();
 
-            allDeviceIPs = metadataManager.GetAllIPAddresses();
+            allDevices = metadataManager.GetServerList();
 
-            continuousDataSocket = new UDPEndpoint(DestinationPort, DestinationPort);
+            networkClientUDP = new UDPEndpoint(DestinationPort, DestinationPort);
+            networkTCPClients = new List<TCPEndpoint>();
 
-            sendToBlackbox = true;
-
-            Listen();
+            // Listen for packets from the network
+            UDPListen();
+            //TCPListen();
         }
 
         public static Rovecomm Instance
@@ -65,155 +70,54 @@ namespace Core.RoveProtocol
         }
 
         private const ushort DestinationPort = 11000;
-        private const ushort DestinationReliablePort = 11001;
 
-        public const byte VersionNumber = 1;
-        public const byte SubscriptionDataId = 3;
-        public const byte UnSubscribeDataId = 4;
-
-        private bool sendToBlackbox;
-        private IPAddress blackBoxIP = IPAddress.Parse("192.168.1.140");
-
-        private readonly IPAddress[] allDeviceIPs;
+        private readonly Server[] allDevices;
         private readonly MetadataManager metadataManager;
+        private readonly CommonLog log = CommonLog.Instance;
         private Dictionary<string, List<IRovecommReceiver>> registrations;
-        // private readonly ILogger log;
-        private HashSet<PendingPing> pendingPings = new HashSet<PendingPing>();
         private Dictionary<IPAddress, SubscriptionRecord> subscriptions;
 
-        private INetworkTransportProtocol continuousDataSocket;
-        private readonly bool EnableReliablePackets = false;
+        private UDPEndpoint networkClientUDP;
+        private List<TCPEndpoint> networkTCPClients;
+        private const bool EnableReliablePackets = false;
 
-        private RingBuffer<Packet> buffer = new RingBuffer<Packet>(1000000);
-
-        private async void Listen()
+        private async void UDPListen()
         {
             while (true)
             {
-                Tuple<IPAddress, byte[]> result = await continuousDataSocket.ReceiveMessage();
+                Tuple<IPAddress, byte[]> result = await networkClientUDP.ReceiveMessage();
                 HandleReceivedPacket(result.Item1, result.Item2);
             }
         }
 
-        public async void SendPacketUnreliable(IPAddress destIP, byte[] packetData)
+        private async void TCPListen()
         {
-            try
+            while (true)
             {
-                await continuousDataSocket.SendMessage(destIP, packetData);
-            }
-            catch
-            {
-                log.Log("No network to send msg");
-            }
-        }
-
-        public async void SendPacketReliable(IPAddress destIP, byte[] packetData, bool getResponse = false)
-        {
-            if (!EnableReliablePackets)
-            {
-                //_log.Log($"Reliable packets not enabled. Sending command for destIP={destIP} unreliably");
-                SendPacketUnreliable(destIP, packetData);
-            }
-            else
-            {
-                byte[] response;
-
-                try
+                foreach(TCPEndpoint client in networkTCPClients)
                 {
-                    using (TcpClient tcpConnection = new TcpClient())
+                    if(client.PacketWaiting())
                     {
-                        //no timeouts for now. We might want to implement something later to check to see if there's
-                        //even a connection to be had so we aren't spawning unending threads when we aren't connected
-                        //to rover. Or not.
-                        await tcpConnection.ConnectAsync(destIP, DestinationReliablePort);
-                        await Task.Delay(25); //boards can get overwhelmed and fault if done too quick.
-                        await tcpConnection.GetStream().WriteAsync(packetData, 0, packetData.Length);
-                        await Task.Delay(25);
-                        if (getResponse)
-                        {
-                            response = await ReadTcpPacket(tcpConnection);
-                            HandleReceivedPacket(destIP, response);
-                        }
-
-                        tcpConnection.Close();
+                        Tuple<IPAddress, byte[]> result = await client.ReceiveMessage();
+                        HandleReceivedPacket(result.Item1, result.Item2);
                     }
                 }
-                catch
-                {
-                    log.Log($"Attempt to send reliable packet to {destIP} failed. Sending unreliable instead");
-                    SendPacketUnreliable(destIP, packetData);
-                }
-            }
-        }
 
-        private async Task<byte[]> ReadTcpPacket(TcpClient client)
-        {
-            NetworkStream networkStream = client.GetStream();
-            byte[] readBuffer;
-
-            readBuffer = new byte[client.ReceiveBufferSize];
-            using (var writer = new MemoryStream())
-            {
-                do
-                {
-                    int numberOfBytesRead = await networkStream.ReadAsync(readBuffer, 0, readBuffer.Length);
-                    writer.Write(readBuffer, 0, numberOfBytesRead);
-                } while (networkStream.DataAvailable);
-            }
-
-            return readBuffer;
-        }
-
-        /// <summary>
-        /// send a rovecomm message over the network. This overload takes a series of bytes to send.
-        /// </summary>
-        /// <param name="dataId">the id to attach to the message, corresponding to rovecomm metadata ID's</param>
-        /// <param name="obj">the data to send over the network</param>
-        /// <param name="reliable">whether to send it via a protocol that ensures that it gets there, or to 
-        /// simply broadcast the data. The former is more useful for single one off messages, the latter 
-        /// for repeated messages or commands. </param>
-        public void SendCommand(Packet packet, bool reliable = false)
-        {
-            ushort dataId = metadataManager.GetId(packet.Name);
-            IPAddress destIP = metadataManager.GetIPAddress(dataId);
-            SendPacket(packet, destIP, reliable);
-
-            if (sendToBlackbox)
-            {
-                SendPacket(packet, blackBoxIP, reliable);
+                await Task.Delay(10);
             }
         }
 
         /// <summary>
-        /// attempt to ping a device on the network using rovecomm.
+        /// Method for ViewModels to request to be notified whenever a rovecomm message comes in
+        /// from the network carrying the corresponding dataName (dataId)
         /// </summary>
-        /// <param name="ip">ip of the device to ping</param>
-        /// <param name="timeout">how many milliseconds to wait before timing out</param>
-        /// <returns>how long it took to reply to the ping</returns>
-        public async Task<TimeSpan> SendPing(IPAddress ip, TimeSpan timeout)
-        {
-            PendingPing ping = new PendingPing()
-            {
-                Timestamp = DateTime.Now,
-                SeqNum = 0,
-                Semaphore = new System.Threading.SemaphoreSlim(0)
-            };
-            pendingPings.Add(ping);
-
-            SendPacket(new Packet("Ping"), ip, true, true);
-            await ping.Semaphore.WaitAsync(timeout);
-            return ping.RoundtripTime;
-        }
-
-        /// <summary>
-        /// request to be notified whenever a rovecomm message comes in from the network carrying the 
-        /// corresponding dataid, which is based on rovecomm metadata id's
-        /// </summary>
-        /// <param name="receiver">the receiver to be notified (the class should input itself as this)</param>
-        /// <param name="dataId">the data id of the message you want to be notified of</param>
+        /// <param name="receiver">The receiver to be notified (typically, "this")</param>
+        /// <param name="dataName">The dataName of the message to be notified of</param>
         public void NotifyWhenMessageReceived(IRovecommReceiver receiver, string dataName)
         {
+            // Verify it isn't an empty string
             if (dataName == null) return;
+
             if (registrations.TryGetValue(dataName, out List<IRovecommReceiver> existingRegistrations))
             {
                 if (!existingRegistrations.Contains(receiver))
@@ -226,44 +130,14 @@ namespace Core.RoveProtocol
         }
 
         /// <summary>
-        /// request to stop being notified of receiving all rovecomm messages you previously requested to receive
+        /// Request to subscribe this computer to a device on the network so that it will send this
+        /// pc rovecomm messages. This must be called before any rovecomm streams can be received 
+        /// by this computer.
         /// </summary>
-        /// <param name="receiver">the reciever to stop being notified (the class should input itself as this)</param>
-        public void StopReceivingNotifications(IRovecommReceiver receiver)
+        /// <param name="deviceIP">The ip address of the device to request</param>
+        public void SubscribeTo(IPAddress deviceIP)
         {
-            var registrationCopy = new Dictionary<string, List<IRovecommReceiver>>(registrations); //Use a copy because we may modify it while removing stuff and that breaks the foreach
-            foreach (KeyValuePair<string, List<IRovecommReceiver>> kvp in registrationCopy)
-            {
-                StopReceivingNotifications(receiver, kvp.Key);
-            }
-        }
-
-        /// <summary>
-        /// request to stop being notified of receiving rovecomm messages that correspond to the dataid, which is 
-        /// based on rovecomm metadata id's
-        /// </summary>
-        /// <param name="subscriber"></param>
-        /// <param name="dataId"></param>
-        public void StopReceivingNotifications(IRovecommReceiver subscriber, string dataName)
-        {
-            if (registrations.TryGetValue(dataName, out List<IRovecommReceiver> existingRegistrations))
-            {
-                existingRegistrations.Remove(subscriber);
-                if (existingRegistrations.Count == 0)
-                {
-                    registrations.Remove(dataName);
-                }
-            }
-        }
-
-        /// <summary>
-        /// request to subscribe this computer to a device on the network so that it will send this pc rovecomm
-        /// messages. This must be called before any rovecomm streams can be received by this computer.
-        /// </summary>
-        /// <param name="deviceIP">the ip address of the device to request</param>
-        public void SubscribeMyPCToDevice(IPAddress deviceIP)
-        {
-            SendPacket(new Packet("Subscribe"), deviceIP, true);
+            SendCommand(Packet.Create("Subscribe"), false, deviceIP);
 
             if (subscriptions.ContainsKey(deviceIP))
             {
@@ -277,55 +151,48 @@ namespace Core.RoveProtocol
         }
 
         /// <summary>
-        /// request to subscribe this computer to all rover devices on the network so that they will send this pc rovecomm
-        /// messages. This must be called before any rovecomm streams can be received by this computer.
+        /// Request to subscribe this computer to all known rover devices on the network so that
+        /// they will send this pc rovecomm messages.
         /// </summary>
-        /// <param name="deviceIP">the ip address of the device to request</param>
-        public void SubscribeMyPCToAllDevices()
+        public void SubscribeToAll()
         {
-            foreach(IPAddress deviceIP in allDeviceIPs)
-            {
-                SubscribeMyPCToDevice(deviceIP);
-            }
+            //networkTCPClients.RemoveRange(0, networkTCPClients.Count);
 
+            foreach (Server device in allDevices)
+            {
+                SubscribeTo(device.Address);
+                //log.Log($"TCP to { device.Address } with { device.TCPPort}");
+                //networkTCPClients.Add(new TCPEndpoint(device.Address, device.TCPPort));
+            }
+            
             log.Log("Telemetry Subscriptions Sent");
         }
 
         /// <summary>
-        /// handler for when a message from the network is received. This should be tied to a network layer 'received message' event in this class's constructor.
-        /// Decode the message, check to see if it's a rovecomm system ID and should be processed seperately, and finally pass the message to any other object that 
-        /// has requested to be notified of a message receival with this dataid.
+        /// This method handles messages from the network when they are received, and distributes 
+        /// the data to the rest of the application subscribers. 
+        /// 
+        /// Steps contained include:
+        /// Decode the message into a "packet".
+        /// Switch on the packet's name to determine if it is a system packet and act accordingly.
+        /// If it passes though without being a system packet, pass to internal subscribers.
         /// </summary>
-        /// <param name="srcIP">the source ip address</param>
-        /// <param name="packet">the packet data received.</param>
+        /// <param name="srcIP">The source ip address</param>
+        /// <param name="packet">The packet data received</param>
         private void HandleReceivedPacket(IPAddress srcIP, byte[] encodedPacket)
         {
             Packet packet = RovecommTwo.DecodePacket(encodedPacket, metadataManager);
 
-            bool passToSubscribers = HandleSystemDataID(srcIP, packet);
-
-            NotifyReceivers(buffer.Add(packet));
-        }
-
-        /// <summary>
-        /// checks to see if a received message has a rovecomm system data id, IE if the protocol itself is supposed to do anything here such as
-        /// replying to a ping or subscription.
-        /// </summary>
-        /// <param name="srcIP">the ip address of the device that sent this PC the message</param>
-        /// <param name="packet">the packet</param>
-        /// <returns></returns>
-        private bool HandleSystemDataID(IPAddress srcIP, Packet packet)
-        {
             switch (packet.Name)
             {
                 case "Null":
                     log.Log("Packet recieved with null dataId"); //likely means a) wasn't a message for rovecomm b) message was just gobblygook
                     break;
-                case "Ping":
-                    SendPacket(new Packet("PingReply"), srcIP, false);
+                case null:
+                    log.Log("Packet recieved with null name");
                     break;
-                case "PingReply":
-                    ProcessPing(packet.Data);
+                case "Ping":
+                    SendCommand(Packet.Create("PingReply"), false, srcIP);
                     break;
                 case "Subscribe":
                     log.Log($"Packet recieved requesting subscription to dataId={packet.Name}");
@@ -334,106 +201,103 @@ namespace Core.RoveProtocol
                     log.Log($"Packet recieved requesting unsubscription from dataId={packet.Name}");
                     break;
                 default: //Regular DataId
-                    return true;
+
+                    if (registrations.TryGetValue(packet.Name, out List<IRovecommReceiver> registered))
+                    {
+                        foreach (IRovecommReceiver subscription in registered)
+                        {
+                            try
+                            {
+                                subscription.ReceivedRovecommMessageCallback(packet, false);
+                            }
+                            catch (System.Exception e)
+                            {
+                                log.Log("Error parsing packet with dataid={0}{1}{2}", packet.DataType, System.Environment.NewLine, e);
+                            }
+                        }
+                    }
+                    break;
             }
-
-            return false;
         }
 
         /// <summary>
-        /// send the received rovecomm message to any objects in this program that requested to be notified when a rovecomm message came in with a certain dataID, 
-        /// if the message's dataID corresponds to their request.
+        /// This method provides access to send a packet to a device on the network.
+        /// 
+        /// Steps contained include:
+        /// Check the destination IP, and if it's null try to populate from metadata.
+        ///     If unsuccessful, return out
+        /// Check if the destination IP is none, and if it is return out
+        /// Encode the packet into RovecommTwo
+        /// If the call requests reliable and reliable is enabled, send using TCP
+        /// If not, send using UDP
         /// </summary>
-        /// <param name="dataId">the dataid of the message received</param>
-        /// <param name="data">the data received</param>
-        /// <param name="reliable">whether or not it was sent over a 'reliable' (non broadcast or not) network protocol</param>
-        private void NotifyReceivers(int index)
+        /// <param name="packet">Packet to send</param>
+        /// <param name="reliable">Whether to send it reliably (TCP)</param>
+        /// <param name="destIP">IP of the device to send the message to</param>
+        public void SendCommand(Packet packet, bool reliable = false, IPAddress destIP = null)
         {
-			Packet packet = buffer[index];
-
-            if (packet.Name == null) return;
-            if (registrations.TryGetValue(packet.Name, out List<IRovecommReceiver> registered))
-                foreach (IRovecommReceiver subscription in registered)
-                {
-                    try
-                    {
-                        subscription.ReceivedRovecommMessageCallback(index, false);
-                    }
-                    catch (System.Exception e)
-                    {
-                        log.Log("Error parsing packet with dataid={0}{1}{2}", packet.DataType, System.Environment.NewLine, e);
-                    }
-                }
-        }
-
-        /// <summary>
-        /// fullest implementation of send packet. Encodes the packet into Rovecomm protocol and passes it to the network layer for sending.
-        /// </summary>
-        /// <param name="packet">packet to send</param>
-        /// <param name="destIP">ip of the device to send the message to</param>
-        /// <param name="reliable">whether to send it reliably (IE with a non broadcast protocol) or not</param>
-        public void SendPacket(Packet packet, IPAddress destIP, bool reliable = false, bool getReliableResponse = false)
-        {
-            if (destIP == null)
+            if(destIP == null)
             {
-                log.Log($"Attempted to send packet with unknown IP address. DataId={packet.Name}");
-                return;
+                destIP = metadataManager.GetIPAddress(metadataManager.GetId(packet.Name));
+                if(destIP == null)
+                {
+                    log.Log($"Attempted to send packet with unknown IP address. DataId={packet.Name}");
+                    return;
+                }
             }
-            if (destIP.Equals(IPAddress.None))
+            if(destIP.Equals(IPAddress.None))
             {
                 log.Log($"Attempted to send packet with invalid IP address. DataId={packet.Name} IP={destIP}");
                 return;
             }
 
+            byte[] packetData = RovecommTwo.EncodePacket(packet, metadataManager);
+
             if (reliable)
             {
-                byte[] packetData = RovecommTwo.EncodePacket(packet, metadataManager);
-                SendPacketReliable(destIP, packetData, getReliableResponse);
+                SendPacketReliable(destIP, packetData);
             }
             else
             {
-                byte[] packetData = RovecommTwo.EncodePacket(packet, metadataManager);
                 SendPacketUnreliable(destIP, packetData);
             }
         }
 
-        public void SetBlackBox(bool setting)
+        public async void SendPacketUnreliable(IPAddress destIP, byte[] packetData)
         {
-            sendToBlackbox = setting;
+            try
+            {
+                await networkClientUDP.SendMessage(destIP, packetData);
+            }
+            catch
+            {
+                log.Log("No network to send msg");
+            }
         }
 
-        /// <summary>
-        /// processes a received ping by computing how much time it took and releasing it from wait state.
-        /// </summary>
-        /// <param name="data"></param>
-        private void ProcessPing(byte[] data)
+        public async void SendPacketReliable(IPAddress destIP, byte[] packetData)
         {
-            DateTime now = DateTime.Now;
-            ushort responseSeqNum = BitConverter.ToUInt16(data, 0);
-            PendingPing ping = pendingPings.FirstOrDefault(x => x.SeqNum == responseSeqNum);
-            if (ping == null) return;
-            
-            ping.RoundtripTime = now - ping.Timestamp;
-            ping.Semaphore.Release();
-        }
+            try
+            {
+                foreach(TCPEndpoint client in networkTCPClients)
+                {
+                    if(client.serverIP.Equals(destIP) && client.IsConnected())
+                    {
+                        await client.SendMessage(packetData);
+                        return;
+                    }
+                }
 
-		public Packet GetPacketByID(int index) {
-			return buffer[index];
-		}
+                throw new Exception();
+            }
+            catch
+            {
+                log.Log($"Attempt to send reliable packet to {destIP} failed. Sending unreliable instead");
 
-		[Flags]
-        private enum RoveCommFlags : byte
-        {
-            None = 0b000_0000,
-            ACK = 0b000_0001
-        }
+                // We should still send information, so try again with UDP
+                SendPacketUnreliable(destIP, packetData);
+            }
 
-        private class PendingPing
-        {
-            public ushort SeqNum;
-            public DateTime Timestamp;
-            public System.Threading.SemaphoreSlim Semaphore;
-            public TimeSpan RoundtripTime;
         }
     }
 }

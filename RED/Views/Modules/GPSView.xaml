@@ -6,7 +6,10 @@
              xmlns:addonsNav="clr-namespace:RED.Addons.Navigation"
              xmlns:addons="clr-namespace:Core.Addons;assembly=Core"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             xmlns:h="http://helix-toolkit.org/wpf">
+
+
     <UserControl.Resources>
         <addonsNav:GPSCoordinateToLatitudeConverter x:Key="LatitudeConverter" />
         <addonsNav:GPSCoordinateToLongitudeConverter x:Key="LongitudeConverter" />
@@ -34,10 +37,21 @@
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="50" />
                 <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Row="0" Grid.Column="0">Fix Obtained</Label>
             <Label Grid.Row="0" Grid.Column="1" x:Name="FixObtained" />
+
+            <Label Grid.Row="1" Grid.Column="2">Odometer (Miles)</Label>
+            <Label Grid.Row="1" Grid.Column="3">
+                <TextBlock Grid.Row="2" Grid.Column="1" x:Name="RoverDistanceTraveled" />
+            </Label>
+
             <Label Grid.Row="1" Grid.Column="0">Fix Quality</Label>
             <Label Grid.Row="1" Grid.Column="1">
                 <TextBlock Grid.Row="1" Grid.Column="1" x:Name="FixQuality" Style="{DynamicResource MaybeStale}" />
@@ -54,6 +68,8 @@
             <Label Grid.Row="1" Grid.Column="5">
                 <TextBlock Text="{Binding CurrentLocation, Converter={StaticResource LongitudeConverter}}" Style="{DynamicResource MaybeStale}" />
             </Label>
+            <Label Grid.Row="0" Grid.Column="7">Lidar</Label>
+            <Label Grid.Row="0" Grid.Column="8" x:Name="Lidar" ContentStringFormat="{}{0:0.00}" />
         </Grid>
     </StackPanel>
 </UserControl>

@@ -6,184 +6,52 @@
              xmlns:cal="http://www.caliburnproject.org"
 			 mc:Ignorable="d" 
              d:DesignHeight="911.6" d:DesignWidth="607.2">
-    <UserControl.Resources>
-        <Style x:Key="OverrideBtn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
-            <Setter Property="Content" Value="Enabled" />
-            <EventSetter Event="Click" Handler="OverrideButton_Click" />
-        </Style>
-    </UserControl.Resources>
-    <Grid Margin="5">
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="2*" />
-			<ColumnDefinition Width="*" />
-		</Grid.ColumnDefinitions>
+    <Grid Margin="2">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="4*" />
+            <RowDefinition Height="4*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-        <StackPanel Grid.Column="0" Grid.Row="0" Margin="2.5">
-            <Expander Header="Control Multipliers" IsExpanded="True" Margin="2.5">
-                <Grid Margin="5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="3*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Label Grid.Column="0" Grid.Row="1">Base Control Multiplier:</Label>
-                    <Label Grid.Column="1" Grid.Row="1" x:Name="BaseRangeFactor"></Label>
-                    <Slider Grid.Column="2" Grid.Row="1" Width="300" Maximum="1000" Minimum="0" IsMoveToPointEnabled="True" Value="{Binding BaseRangeFactor}"></Slider>
-                    <Label Grid.Column="0" Grid.Row="2">Elbow Control Multiplier:</Label>
-                    <Label Grid.Column="1" Grid.Row="2" x:Name="ElbowRangeFactor"></Label>
-                    <Slider Grid.Column="2" Grid.Row="2" Width="300" Maximum="1000" Minimum="0" IsMoveToPointEnabled="True" Value="{Binding ElbowRangeFactor}"></Slider>
-                    <Label Grid.Column="0" Grid.Row="3">Wrist Control Multiplier:</Label>
-                    <Label Grid.Column="1" Grid.Row="3" x:Name="WristRangeFactor"></Label>
-                    <Slider Grid.Column="2" Grid.Row="3" Width="300" Maximum="1000" Minimum="0" IsMoveToPointEnabled="True" Value="{Binding WristRangeFactor}"></Slider>
-                    <Label Grid.Column="0" Grid.Row="4">Gripper Control Multiplier:</Label>
-                    <Label Grid.Column="1" Grid.Row="4" x:Name="GripperRangeFactor"></Label>
-                    <Slider Grid.Column="2" Grid.Row="4" Width="300" Maximum="1000" Minimum="0" IsMoveToPointEnabled="True" Value="{Binding GripperRangeFactor}"></Slider>
-                    <Label Grid.Column="0" Grid.Row="5">Gripper Two Control Multiplier:</Label>
-                    <Label Grid.Column="1" Grid.Row="5" x:Name="Gripper2RangeFactor"></Label>
-                    <Slider Grid.Column="2" Grid.Row="5" Width="300" Maximum="1000" Minimum="0" IsMoveToPointEnabled="True" Value="{Binding Gripper2RangeFactor}"></Slider>
-                </Grid>
-            </Expander>
-		</StackPanel>
+        <StackPanel Grid.Column="0" Margin="2.5">
+            <GroupBox Header="Angular" Margin="2.5">
+                <ContentControl x:Name="AngularControl"/>
+            </GroupBox>
+        </StackPanel>
 
-		<StackPanel Grid.Column="1" Margin="2.5">
-			<Expander Header="Angular Control" IsExpanded="True" Margin="2.5">
-				<StackPanel>
-					<Grid Margin="0 10 0 10">
-						<Grid.RowDefinitions>
-							<RowDefinition Height="auto" />
-							<RowDefinition Height="auto" />
-							<RowDefinition Height="auto" />
-						</Grid.RowDefinitions>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="3*" />
-							<ColumnDefinition Width="35*"/>
-							<ColumnDefinition Width="112*" />
-							<ColumnDefinition Width="38*" />
-							<ColumnDefinition Width="112*" />
-							<ColumnDefinition Width="38*" />
-							<ColumnDefinition Width="112*" />
-						</Grid.ColumnDefinitions>
-						<Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">J1</Label>
-						<TextBox Grid.Row="0" Grid.Column="2" Text="{Binding AngleJ1, StringFormat=0.##}" />
-                        <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">J2</Label>
-                        <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding AngleJ2, StringFormat=0.##}" />
-                        <Label Grid.Row="0" Grid.Column="3">J3</Label>
-                        <TextBox Grid.Row="0" Grid.Column="4" Text="{Binding AngleJ3, StringFormat=0.##}" />
-                        <Label Grid.Row="1" Grid.Column="3">J4</Label>
-                        <TextBox Grid.Row="1" Grid.Column="4" Text="{Binding AngleJ4, StringFormat=0.##}" />
-                        <Label Grid.Row="0" Grid.Column="5" >J5</Label>
-                        <TextBox Grid.Row="0" Grid.Column="6" Text="{Binding AngleJ5, StringFormat=0.##}" />
-                        <Label Grid.Row="1" Grid.Column="5" >J6</Label>
-                        <TextBox Grid.Row="1" Grid.Column="6" Text="{Binding AngleJ6, StringFormat=0.##}" />
-                    </Grid>
-					<UniformGrid Rows="1">
-						<Button x:Name="GetPosition">Get Position</Button>
-						<Button x:Name="SetPosition">Set Position</Button>
-						<Button x:Name="ToggleAuto" FontSize="8">Toggle auto telem</Button>
-					</UniformGrid>
-					<UniformGrid Rows="1"/>
-					<Border BorderThickness="1" BorderBrush="Gray">
-						<ListBox x:Name="Positions" SelectedItem="{Binding SelectedPosition}">
-							<ItemsControl.ItemTemplate>
-								<DataTemplate>
-									<TextBlock Text="{Binding Name}" />
-								</DataTemplate>
-							</ItemsControl.ItemTemplate>
-						</ListBox>
-					</Border>
-					<UniformGrid Rows="1">
-						<Button x:Name="StorePosition">Store</Button>
-						<Button x:Name="RecallPosition">Recall</Button>
-						<Button x:Name="DeletePosition">Delete</Button>
-					</UniformGrid>
-				</StackPanel>
-			</Expander>
-			<Expander Header="IK Control" IsExpanded="True" Margin="2.5">
-				<StackPanel>
-					<Grid Margin="0 10 0 10">
-						<Grid.RowDefinitions>
-							<RowDefinition Height="auto" />
-							<RowDefinition Height="auto" />
-							<RowDefinition Height="auto" />
-						</Grid.RowDefinitions>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="3*" />
-							<ColumnDefinition Width="35*"/>
-							<ColumnDefinition Width="112*" />
-							<ColumnDefinition Width="38*" />
-							<ColumnDefinition Width="112*" />
-						</Grid.ColumnDefinitions>
-						<Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">X</Label>
-						<TextBox Grid.Row="0" Grid.Column="2" Text="{Binding CoordinateX, StringFormat=0.##}" />
-                        <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">Y</Label>
-                        <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding CoordinateY, StringFormat=0.##}" />
-                        <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">Z</Label>
-                        <TextBox Grid.Row="3" Grid.Column="2" Text="{Binding CoordinateZ, StringFormat=0.##}" />
-                        <Label Grid.Row="0" Grid.Column="3">Yaw</Label>
-                        <TextBox Grid.Row="0" Grid.Column="4" Text="{Binding Yaw, StringFormat=0.##}" />
-                        <Label Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2">Pitch</Label>
-                        <TextBox Grid.Row="1" Grid.Column="4" Text="{Binding Pitch, StringFormat=0.##}" />
-                    </Grid>
-					<UniformGrid Rows="1">
-						<Button x:Name="SetXYZPosition" Content="Set absolute position" HorizontalAlignment="Center" />
-						<Button x:Name="GetXYZPosition" Content="Get Absolute Position" HorizontalAlignment="Center" />
-					</UniformGrid>
-					<Grid Margin="0 10 0 10">
-						<Grid.RowDefinitions>
-							<RowDefinition Height="auto" />
-						</Grid.RowDefinitions>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="3*" />
-							<ColumnDefinition Width="20*"/>
-							<ColumnDefinition Width="40*" />
-							<ColumnDefinition Width="20*" />
-							<ColumnDefinition Width="40*" />
-							<ColumnDefinition Width="20*" />
-							<ColumnDefinition Width="40*" />
-						</Grid.ColumnDefinitions>
-						<Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">OpX</Label>
-						<TextBox Grid.Row="0" Grid.Column="2" Text="{Binding OpX, StringFormat=0.##}" />
-						<Label Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2">OpY</Label>
-						<TextBox Grid.Row="0" Grid.Column="4" Text="{Binding OpY, StringFormat=0.##}" />
-						<Label Grid.Row="0" Grid.Column="5" Grid.ColumnSpan="2">OpY</Label>
-						<TextBox Grid.Row="0" Grid.Column="6" Text="{Binding OpZ, StringFormat=0.##}" />
-					</Grid>
-					<Button Width="100" Content="Set Op point" x:Name="SetOpPoint"/>
-				</StackPanel>
-			</Expander>
-			<Expander Header="Control Features" IsExpanded="True" Margin="2.5">
-                <StackPanel>
-                    <Grid>
-						<Grid.RowDefinitions>
-							<RowDefinition />
-							<RowDefinition />
-							<RowDefinition />
-							<RowDefinition />
-							<RowDefinition />
-							<RowDefinition />
-						</Grid.RowDefinitions>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="auto" />
-							<ColumnDefinition Width="*" />
-						</Grid.ColumnDefinitions>
-						<Label Grid.Column="0" Grid.Row="0">Limit Override</Label>
-						<UniformGrid Rows="1" Grid.Column="1" Grid.Row="0">
-                            <ToggleButton Style="{StaticResource OverrideBtn}">All Joints</ToggleButton>
-                        </UniformGrid>
-						
-						<Label Grid.Column="0" Grid.Row="5">Tool:</Label>
-                        <Label Grid.Column="1" Grid.Row="5" x:Name="SelectedTool"/>
-                    </Grid>
-                </StackPanel>
-            </Expander>
+        <StackPanel Grid.Column="1" Margin="2.5">
+            <GroupBox Header="Angular" Margin="2.5">
+                <ContentControl x:Name="IKControl"/>
+            </GroupBox>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="2.5">
+            <GroupBox Header="Power BMS" Margin="2.5">
+                <ContentControl x:Name="ArmPower" />
+            </GroupBox>
+        </StackPanel>
+
+        <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Margin="2.5">
+            <GroupBox Header="Control Multipliers" Margin="2.5">
+                <ContentControl x:Name="ControlMultipliers" />
+            </GroupBox>
+        </StackPanel>
+
+        <StackPanel Grid.Column="0" Grid.Row="4" Margin="2.5">
+            <GroupBox Header="Control Features" Margin="2.5">
+                <ContentControl x:Name="ControlFeatures"/>
+            </GroupBox>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Grid.Row="4" Margin="5">
+            <ContentControl x:Name="InputManager"/>
         </StackPanel>
     </Grid>
+
 </UserControl>

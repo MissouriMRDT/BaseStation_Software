@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+﻿using HelixToolkit.Wpf;
 
 namespace RED.Views.Modules
 {

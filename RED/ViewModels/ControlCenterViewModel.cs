@@ -9,6 +9,7 @@ using RED.ViewModels.Tools;
 using Core.ViewModels.Input;
 using Core.ViewModels.Input.Controllers;
 using Core.Interfaces.Input;
+using RED.Models.Modules;
 
 namespace RED.ViewModels
 {
@@ -136,6 +137,18 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => StopwatchTool);
             }
         }
+        public Rover3DViewModel RoverModel
+        {
+            get
+            {
+                return _model._RoverModel;
+            }
+            set
+            {
+                _model._RoverModel = value;
+                NotifyOfPropertyChange(() => RoverModel);
+            }
+        }
         public GPSViewModel GPS
         {
             get
@@ -146,18 +159,6 @@ namespace RED.ViewModels
             {
                 _model._GPS = value;
                 NotifyOfPropertyChange(() => GPS);
-            }
-        }
-        public SensorViewModel Sensor
-        {
-            get
-            {
-                return _model._sensor;
-            }
-            set
-            {
-                _model._sensor = value;
-                NotifyOfPropertyChange(() => Sensor);
             }
         }
         public PowerViewModel Power
@@ -172,16 +173,16 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => Power);
             }
         }
-        public LightingViewModel Lighting
+        public CameraViewModel CameraMux
         {
             get
             {
-                return _model._lighting;
+                return _model._cameraMux;
             }
             set
             {
-                _model._lighting = value;
-                NotifyOfPropertyChange(() => Lighting);
+                _model._cameraMux = value;
+                NotifyOfPropertyChange(() => CameraMux);
             }
         }
         public MapViewModel Map
@@ -307,6 +308,18 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => Camera2);
             }
         }
+        public CameraViewModel Camera3
+        {
+            get
+            {
+                return _model._camera3;
+            }
+            set
+            {
+                _model._camera3 = value;
+                NotifyOfPropertyChange(() => Camera3);
+            }
+        }
 
         public ControlCenterViewModel()
         {
@@ -319,11 +332,10 @@ namespace RED.ViewModels
        
             Rovecomm = Rovecomm.Instance;
             //ResubscribeAll();
-            
-            GPS = new GPSViewModel(Rovecomm, MetadataManager);
-            Sensor = new SensorViewModel(Rovecomm, MetadataManager, Console);
+
+            RoverModel = new Rover3DViewModel(Rovecomm, MetadataManager);
+            GPS = new GPSViewModel(Rovecomm, MetadataManager, Console);
             Power = new PowerViewModel(Rovecomm, MetadataManager, Console);
-            Lighting = new LightingViewModel(Rovecomm, MetadataManager, Console);
             Map = new MapViewModel(Console);
 
             Drive = new DriveViewModel(Rovecomm, MetadataManager, Console);
@@ -336,6 +348,7 @@ namespace RED.ViewModels
 
             Camera1 = new CameraViewModel(Core.CommonLog.Instance);
             Camera2 = new CameraViewModel(Core.CommonLog.Instance);
+            Camera3 = new CameraViewModel(Core.CommonLog.Instance);
 
             // Programatic instanciation of InputManager view, vs static like everything else in a xaml 
             InputManager = new InputManagerViewModel(Console, ConfigManager,
@@ -362,7 +375,7 @@ namespace RED.ViewModels
 
         public void ResubscribeAll()
         {
-            Rovecomm.SubscribeMyPCToAllDevices();
+            Rovecomm.SubscribeToAll();
 		}
 
 		public void NetworkManager() {

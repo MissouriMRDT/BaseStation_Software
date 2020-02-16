@@ -13,7 +13,7 @@ namespace RED
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
-            DisplayRootViewFor<ControlCenterViewModel>();
+            DisplayRootViewFor<ControlCenterViewModel>();  
         }
     }
 }

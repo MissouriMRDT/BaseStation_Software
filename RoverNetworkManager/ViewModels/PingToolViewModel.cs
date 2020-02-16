@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using Core.Interfaces;
+using Core.RoveProtocol;
 using RoverNetworkManager.Contexts;
 using RoverNetworkManager.Models;
 using System;
@@ -15,6 +16,7 @@ namespace RoverNetworkManager.ViewModels
     {
         private readonly PingToolModel _model;
         private readonly IRovecomm _networkManager;
+        private readonly PingManager _pingManager;
 
         private const string PingConfigName = "PingTool";
 
@@ -60,6 +62,7 @@ namespace RoverNetworkManager.ViewModels
         {
             _model = new PingToolModel();
             _networkManager = network;
+            _pingManager = new PingManager(network);
 
             PingServers = new ObservableCollection<PingServer>();
 
@@ -87,7 +90,7 @@ namespace RoverNetworkManager.ViewModels
 
         private async Task<long> SendRoveCommPing(IPAddress ip)
         {
-            TimeSpan roundtripTime = await _networkManager.SendPing(ip, TimeSpan.FromMilliseconds(Timeout));
+            TimeSpan roundtripTime = await _pingManager.SendPing(ip, TimeSpan.FromMilliseconds(Timeout));
             long time = (long)roundtripTime.TotalMilliseconds;
             return (time != 0) ? time : -1;
         }
@@ -150,7 +153,7 @@ namespace RoverNetworkManager.ViewModels
                     NotifyOfPropertyChange(() => SupportsRoveComm);
                 }
             }
-            public long Result
+            public float Result
             {
                 get
                 {

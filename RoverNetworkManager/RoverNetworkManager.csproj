@@ -122,7 +122,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Addons\PingColorValueConverter.cs" />
     <Compile Include="Configurations\PingToolConfig.cs" />
     <Compile Include="Contexts\PingToolContext.cs" />
     <Compile Include="Models\MainWindowModel.cs" />
@@ -201,6 +200,9 @@
       <Project>{2b6222de-ac5c-419a-a97a-ff3608c20023}</Project>
       <Name>Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Addons\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -1,0 +1,60 @@
+﻿<UserControl x:Class="RoverAttachmentManager.Views.Science.SpectrometerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RoverAttachmentManager.Views.Science"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style x:Key="EnableBtn" TargetType="ToggleButton" BasedOn="{StaticResource MetroToggleButton}">
+            <Setter Property="Content" Value="Enabled" />
+            <EventSetter Event="Click" Handler="EnableButton_Click" />
+        </Style>
+    </UserControl.Resources>
+
+
+    <StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="25"/>
+            </Grid.RowDefinitions>
+
+            <oxy:PlotView Margin="5" Grid.Row="0" Grid.ColumnSpan="10" Grid.RowSpan="2" Height="300" Name="Plot" Model="{Binding SelectedPlots, Mode=OneWay}"/>
+
+            
+            <Label Grid.Row="0" Grid.Column="0" >Number of Runs:</Label>
+            <TextBox Grid.Row="0" Grid.Column="1" x:Name="RunCount"/>
+            <Button Grid.Row="0" Grid.Column="2" x:Name="DownloadSpectrometer">RUN</Button>
+            <ToggleButton Grid.Row="0" Grid.Column="3"  Style="{StaticResource EnableBtn}" >ENABLE UV</ToggleButton>
+
+            <ComboBox Grid.Row="0" Grid.Column="7" Grid.ColumnSpan="3" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5" Width="200" Height="25" x:Name="Plots" SelectedItem="{Binding SelectedPlots}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock Text="{Binding Title}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ComboBox>
+
+        </Grid>
+        
+
+    </StackPanel>
+</UserControl>
