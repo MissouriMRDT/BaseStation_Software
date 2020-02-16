@@ -33,8 +33,8 @@
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
+                        <RowDefinition Height="185" />
                         <RowDefinition Height="*" />
-                        <RowDefinition Height="300" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
@@ -98,7 +98,7 @@
                     </GroupBox>
 
 
-                    <GroupBox Grid.Column="0"  Grid.Row="1" Header="Waypoints" Grid.ColumnSpan="2">
+                    <GroupBox Grid.Column="0"  Grid.Row="1" Header="Waypoints" Grid.ColumnSpan="2" Height="237">
                         <ContentControl x:Name="WaypointManager" />
                     </GroupBox>
 

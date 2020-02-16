@@ -69,13 +69,13 @@ namespace RED.ViewModels.Modules
             _log = log;
             Name = "Main Gimbal";
             ModeType = "Gimbal";
-            ControlState = System.IO.Path.GetFullPath("../../Images/NotConnected.png");
+            ControlState = System.IO.Path.GetFullPath(@"Images/NotConnected.png");
         }
 
         public void StartMode()
         {
             controlState = GimbalStates.MainGimbal;
-            ControlState = System.IO.Path.GetFullPath("../../Images/NotConnected.png");
+            ControlState = System.IO.Path.GetFullPath(@"Images/NotConnected.png");
         }
 
         public void SetValues(Dictionary<string, float> values)
@@ -104,12 +104,12 @@ namespace RED.ViewModels.Modules
             if (values["MainGimbalSwitch"] == 1)
             {
                 controlState = GimbalStates.MainGimbal;
-                ControlState = System.IO.Path.GetFullPath("../../Images/UpArrow.png");
+                ControlState = System.IO.Path.GetFullPath(@"Images/UpArrow.png");
             }
             else if (values["DriveGimbalSwitch"] == 1)
             {
                 controlState = GimbalStates.DriveGimbal;
-                ControlState = System.IO.Path.GetFullPath("../../Images/DownArrow.png");
+                ControlState = System.IO.Path.GetFullPath(@"Images/DownArrow.png");
             }
         }
 
