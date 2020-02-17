@@ -408,6 +408,18 @@ namespace RED.ViewModels.Modules
                 NotifyOfPropertyChange(() => Status);
             }
         }
+        public BitArray MotorBusStatus
+        {
+            get
+            {
+                return _model.MotorBusStatus;
+            }
+            set
+            {
+                _model.MotorBusStatus = value;
+                NotifyOfPropertyChange(() => MotorBusStatus);
+            }
+        }
 
         public PowerViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
@@ -449,14 +461,15 @@ namespace RED.ViewModels.Modules
 
                 case "BMSVoltages":
                     Int16[] cellVoltages = packet.GetDataArray<Int16>();
-                    Cell1Voltage = (float)(cellVoltages[0] / 1000.0);
-                    Cell2Voltage = (float)(cellVoltages[1] / 1000.0);
-                    Cell3Voltage = (float)(cellVoltages[2] / 1000.0);
-                    Cell4Voltage = (float)(cellVoltages[3] / 1000.0);
-                    Cell5Voltage = (float)(cellVoltages[4] / 1000.0);
-                    Cell6Voltage = (float)(cellVoltages[5] / 1000.0);
-                    Cell7Voltage = (float)(cellVoltages[6] / 1000.0);
-                    Cell8Voltage = (float)(cellVoltages[7] / 1000.0);
+                    TotalPackVoltage = (float)(cellVoltages[0] / 1000.0);
+                    Cell1Voltage = (float)(cellVoltages[1] / 1000.0);
+                    Cell2Voltage = (float)(cellVoltages[2] / 1000.0);
+                    Cell3Voltage = (float)(cellVoltages[3] / 1000.0);
+                    Cell4Voltage = (float)(cellVoltages[4] / 1000.0);
+                    Cell5Voltage = (float)(cellVoltages[5] / 1000.0);
+                    Cell6Voltage = (float)(cellVoltages[6] / 1000.0);
+                    Cell7Voltage = (float)(cellVoltages[7] / 1000.0);
+                    Cell8Voltage = (float)(cellVoltages[8] / 1000.0);
                     break;
 
                 case "TotalPackCurrentInt":
@@ -482,16 +495,15 @@ namespace RED.ViewModels.Modules
                     break;
 
                 case "CellCurrentInts":
-                    float[] values = packet.GetDataArray<float>();
-                    TotalPackVoltage = (float)(values[0]);
-                    Cell1Voltage = (float)(values[1]);
-                    Cell2Voltage = (float)(values[2]);
-                    Cell3Voltage = (float)(values[3]);
-                    Cell4Voltage = (float)(values[4]);
-                    Cell5Voltage = (float)(values[5]);
-                    Cell6Voltage = (float)(values[6]);
-                    Cell7Voltage = (float)(values[7]);
-                    Cell8Voltage = (float)(values[8]);
+                    float[] cellVoltages = packet.GetDataArray<float>();
+                    Cell1Voltage = (float)(cellVoltages[0]);
+                    Cell2Voltage = (float)(cellVoltages[1]);
+                    Cell3Voltage = (float)(cellVoltages[2]);
+                    Cell4Voltage = (float)(cellVoltages[3]);
+                    Cell5Voltage = (float)(cellVoltages[4]);
+                    Cell6Voltage = (float)(cellVoltages[5]);
+                    Cell7Voltage = (float)(cellVoltages[6]);
+                    Cell8Voltage = (float)(cellVoltages[7]);
                     break;
 
                 case "TotalPackVoltageInt":
@@ -499,7 +511,7 @@ namespace RED.ViewModels.Modules
                     break;
                 */
                 case "MotorBusEnabled":
-                    //Not implemented
+                    MotorBusStatus = new BitArray(packet.GetData<Byte>());
                     break;
 
                 case "12VEnabled":
