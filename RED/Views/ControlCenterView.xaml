@@ -33,8 +33,8 @@
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
-                        <RowDefinition Height="185" />
-                        <RowDefinition Height="*" />
+                        <RowDefinition Height="280" />
+                        <RowDefinition Height="500" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
