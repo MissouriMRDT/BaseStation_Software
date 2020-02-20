@@ -76,16 +76,16 @@ namespace RoverAttachmentManager.ViewModels.Science
                 NotifyOfPropertyChange(() => CO2Concentration);
             }
         }
-        public float O2MartialPressure
+        public float O2PartialPressure
         {
             get
             {
-                return _model.O2MartialPressure;
+                return _model.O2PartialPressure;
             }
             set
             {
-                _model.O2MartialPressure = value;
-                NotifyOfPropertyChange(() => O2MartialPressure);
+                _model.O2PartialPressure = value;
+                NotifyOfPropertyChange(() => O2PartialPressure);
             }
         }
         public float O2Temperature
@@ -360,7 +360,7 @@ namespace RoverAttachmentManager.ViewModels.Science
                     break;
 
                 case "O2":
-                    O2MartialPressure = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0)));
+                    O2PartialPressure = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0)));
                     O2Temperature = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 2)));
                     O2Concentration = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 4)));
                     O2BarometricPressure = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 6)));

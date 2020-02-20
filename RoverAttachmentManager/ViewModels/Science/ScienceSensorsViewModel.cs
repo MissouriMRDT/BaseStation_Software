@@ -61,16 +61,16 @@ namespace RoverAttachmentManager.ViewModels.Science
                 NotifyOfPropertyChange(() => CO2Concentration);
             }
         }
-        public float O2MartialPressure
+        public float O2PartialPressure
         {
             get
             {
-                return _model.O2MartialPressure;
+                return _model.O2PartialPressure;
             }
             set
             {
-                _model.O2MartialPressure = value;
-                NotifyOfPropertyChange(() => O2MartialPressure);
+                _model.O2PartialPressure = value;
+                NotifyOfPropertyChange(() => O2PartialPressure);
             }
         }
         public float O2Temperature
@@ -159,7 +159,7 @@ namespace RoverAttachmentManager.ViewModels.Science
 
                 case "O2":
                     float[] O2Data = packet.GetDataArray<float>();
-                    O2MartialPressure = (float)(O2Data[0]);
+                    O2PartialPressure = (float)(O2Data[0]);
                     O2Temperature = (float)(O2Data[1]);
                     O2Concentration = (float)(O2Data[2]);
                     O2BarometricPressure = (float)(O2Data[3]);
