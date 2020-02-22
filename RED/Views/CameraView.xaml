@@ -12,8 +12,8 @@
 				<RowDefinition />
 			</Grid.RowDefinitions>
 
-			<Image x:Name="CameraFeed" Grid.Row="0"></Image>
-			<Grid Grid.Row="1">
+			<Image x:Name="CameraFeed" Grid.Row="2"></Image>
+			<Grid Grid.Row="0">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition/>
 					<ColumnDefinition/>
@@ -33,7 +33,7 @@
 				<Button x:Name="Camera7" Grid.Column="6">7</Button>
 				<Button x:Name="Camera8" Grid.Column="7">8</Button>
 			</Grid>
-			<Grid Grid.Row="2">
+			<Grid Grid.Row="1">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition/>
 					<ColumnDefinition/>
