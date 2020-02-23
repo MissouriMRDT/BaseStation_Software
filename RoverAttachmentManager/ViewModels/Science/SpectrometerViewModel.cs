@@ -193,36 +193,68 @@ namespace RoverAttachmentManager.ViewModels.Science
 
         }
 
-        public async void DownloadSpectrometer()
+
+        public async void DownloadGraph()
         {
-            //this likely will change a lot with official tcp implementations
-            string filename = Path.Combine(SpectrometerFilePath, "REDSpectrometerData-" + DateTime.Now.ToString("yyyyMMdd'-'HHmmss") + ".csv");
-            try
+            if (SelectedPlots == SpectrometerPlotModel)
             {
-                using (var client = new TcpClient())
+                string filename = Path.Combine(SpectrometerFilePath, "REDSpectrometerData-" + DateTime.Now.ToString("yyyyMMdd'-'HHmmss") + ".csv");
+                try
                 {
-                    _log.Log("Connecting to Spectrometer...");
-                    // client.ConnectAsync(SpectrometerIPAddress, SpectrometerPortNumber);
-                    _log.Log("Spectrometer connection established");
-
-                    // Request the data
-                    _rovecomm.SendCommand(Packet.Create("RunSpectrometer", (byte)RunCount), true);
-
-                    _log.Log("Awaiting data...");
-                    using (var file = File.Create(filename))
+                    using (var client = new TcpClient())
                     {
-                        await client.GetStream().CopyToAsync(file);
-                    }
-                }
-                _log.Log($"Spectrometer data downloaded into {filename}");
-                GraphSpectrometerData(filename);
-            }
-            catch (Exception e)
-            {
-                _log.Log("There was an error downloading the spectrometer data:{0}{1}", Environment.NewLine, e);
-            }
-        }
+                        _log.Log("Connecting to Spectrometer...");
+                        // client.ConnectAsync(SpectrometerIPAddress, SpectrometerPortNumber);
+                        _log.Log("Spectrometer connection established");
 
+                        // Request the data
+                        _rovecomm.SendCommand(Packet.Create("RunSpectrometer", (byte)RunCount), true);
+
+                        _log.Log("Awaiting data...");
+                        using (var file = File.Create(filename))
+                        {
+                            await client.GetStream().CopyToAsync(file);
+                        }
+                    }
+                    _log.Log($"Spectrometer data downloaded into {filename}");
+                    GraphSpectrometerData(filename);
+                }
+                catch (Exception e)
+                {
+                    _log.Log("There was an error downloading the spectrometer data:{0}{1}", Environment.NewLine, e);
+                }
+            }
+            else
+            {
+                string filename = Path.Combine(MPPCFilePath, "REDSMPPCData-" + DateTime.Now.ToString("yyyyMMdd'-'HHmmss") + ".csv");
+                try
+                {
+                    using (var client = new TcpClient())
+                    {
+                        _log.Log("Connecting to MPPC...");
+                        //await client.ConnectAsync(MPPCIPAddress, MPPCPortNumber);
+                        _log.Log("MPPC connection established");
+
+                        // Request the data
+                        _rovecomm.SendCommand(Packet.Create("RunMPPC", (byte)RunCount), true);
+
+                        _log.Log("Awaiting data...");
+                        using (var file = File.Create(filename))
+                        {
+                            await client.GetStream().CopyToAsync(file);
+                        }
+                    }
+                    _log.Log($"MPPC data downloaded into {filename}");
+                    GraphMPPCData(filename);
+                }
+                catch (Exception e)
+                {
+                    _log.Log("There was an error downloading the MPPC data:{0}{1}", Environment.NewLine, e);
+                }
+            }
+
+        }
+        
         public void GraphSpectrometerData(string filename)
         {
             SpectrometerSeries.Points.Clear();
@@ -239,43 +271,6 @@ namespace RoverAttachmentManager.ViewModels.Science
             }
             SpectrometerPlotModel.InvalidatePlot(true);
             ExportGraph(SpectrometerPlotModel, SpectrometerFilePath + "\\SpectrometerGraph-Site" + SiteManagment.SiteNumber + ".png", 400);
-        }
-
-
-
-
-
-
-
-
-        public async void DownloadMPPC()
-        {
-            //this likely will change a lot with official tcp implementations
-            string filename = Path.Combine(MPPCFilePath, "REDSMPPCData-" + DateTime.Now.ToString("yyyyMMdd'-'HHmmss") + ".csv");
-            try
-            {
-                using (var client = new TcpClient())
-                {
-                    _log.Log("Connecting to MPPC...");
-                    //await client.ConnectAsync(MPPCIPAddress, MPPCPortNumber);
-                    _log.Log("Spectrometer connection established");
-
-                    // Request the data
-                    _rovecomm.SendCommand(Packet.Create("RunMPPC", (byte)RunCount), true);
-
-                    _log.Log("Awaiting data...");
-                    using (var file = File.Create(filename))
-                    {
-                        await client.GetStream().CopyToAsync(file);
-                    }
-                }
-                _log.Log($"MPPC data downloaded into {filename}");
-                GraphMPPCData(filename);
-            }
-            catch (Exception e)
-            {
-                _log.Log("There was an error downloading the MPPC data:{0}{1}", Environment.NewLine, e);
-            }
         }
 
 
@@ -309,7 +304,7 @@ namespace RoverAttachmentManager.ViewModels.Science
             }
             else
             {
-                _rovecomm.SendCommand(Packet.Create("", val));
+                _rovecomm.SendCommand(Packet.Create("ScienceLight", val));
             }
         }
 
