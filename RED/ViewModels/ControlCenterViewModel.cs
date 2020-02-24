@@ -318,14 +318,14 @@ namespace RED.ViewModels
             Console = new ConsoleViewModel();
             ConfigManager = new XMLConfigManager(Console);
             MetadataManager = new MetadataManager(Console, ConfigManager);
-       
+
             Rovecomm = Rovecomm.Instance;
             //ResubscribeAll();
 
             RoverModel = new Rover3DViewModel(Rovecomm, MetadataManager);
             GPS = new GPSViewModel(Rovecomm, MetadataManager, Console);
             Power = new PowerViewModel(Rovecomm, MetadataManager, Console);
-            Map = new MapViewModel(Console);
+            Map = new MapViewModel(Rovecomm, Console);
 
             Drive = new DriveViewModel(Rovecomm, MetadataManager, Console);
             Gimbal = new GimbalViewModel(Rovecomm, MetadataManager, Console);
@@ -339,7 +339,7 @@ namespace RED.ViewModels
             Camera2 = new CameraViewModel(Core.CommonLog.Instance);
             Camera3 = new CameraViewModel(Core.CommonLog.Instance);
 
-            // Programatic instanciation of InputManager view, vs static like everything else in a xaml 
+            // Programatic instanciation of InputManager view, vs static like everything else in a xaml
             InputManager = new InputManagerViewModel(Console, ConfigManager,
                 new IInputDevice[] { XboxController1, XboxController2, XboxController3, FlightStickController, KeyboardController },
                 new MappingViewModel[0],
