@@ -15,13 +15,6 @@
         <addonsNav:GPSCoordinateToLongitudeConverter x:Key="LongitudeConverter" />
     </UserControl.Resources>
     <StackPanel Orientation="Horizontal">
-        <Canvas Width="44" Height="44" Margin="4">
-            <Path Fill="{StaticResource AccentColorBrush}" Data="M 10,44 22,0 34,44 22,35 10,44" Width="44" Height="44">
-                <Path.LayoutTransform>
-                    <RotateTransform Angle="{Binding Heading}" />
-                </Path.LayoutTransform>
-            </Path>
-        </Canvas>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition />
