@@ -2,6 +2,7 @@
 using Core;
 using Core.Interfaces;
 using Core.Models;
+using Core.RoveProtocol;
 using Core.ViewModels;
 using GMap.NET;
 using GMap.NET.MapProviders;
@@ -132,14 +133,6 @@ namespace RED.ViewModels.Navigation
             {
                 _model.Heading = value;
                 NotifyOfPropertyChange(() => Heading);
-                NotifyOfPropertyChange(() => HeadingDeg);
-            }
-        }
-        public float HeadingDeg
-        {
-            get
-            {
-                return (float)(Heading * 180d / Math.PI);
             }
         }
 
@@ -153,7 +146,6 @@ namespace RED.ViewModels.Navigation
             CurrentLocation = new Waypoint("GPS", 0f, 0f) {Color = System.Windows.Media.Colors.Red};
 			RefreshMap();
 
-            _rovecomm.NotifyWhenMessageReceived(this, "NavTrueHeading");
             _rovecomm.NotifyWhenMessageReceived(this, "PitchHeadingRoll");
         }
 
@@ -161,10 +153,9 @@ namespace RED.ViewModels.Navigation
         {
             switch (packet.Name)
             {
-                case "NavTrueHeading":
-                    Heading = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0)); break;
                 case "PitchHeadingRoll":
-                    Heading = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 2)); break;
+                    Heading = packet.GetDataArray<Int16>()[1];
+                    break;
             }
 
         }
@@ -248,16 +239,13 @@ namespace RED.ViewModels.Navigation
             {
                 if (i == 0)
                 {
-                    RotateTransform Rotation = new RotateTransform(HeadingDeg);
+                    RotateTransform Rotation = new RotateTransform(Heading, 16.5, 16.5);
+                    
                     marker.Shape.RenderTransform = Rotation;
                 }
                 i++;
                 MainMap.Markers.Add(marker);
             }
-        }
-        public void ReceivedRovecommMessageCallback(int index, bool reliable)
-        {
-            ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
         }
     }
 }
