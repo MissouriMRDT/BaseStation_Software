@@ -84,8 +84,8 @@ namespace RED.ViewModels.Modules
 
             //increments
             // Pan, Tilt
-            short[] openValsLeft = { (Int16)(values["PanLeft"] * 50), (Int16)(values["TiltLeft"] * 50) };
-            short[] openValsRight = { (Int16)(values["PanRight"] * 50), (Int16)(values["TiltRight"] * 50) };
+            short[] openValsLeft = { (Int16)(values["PanLeft"] * 10), (Int16)(values["TiltLeft"] * 10) };
+            short[] openValsRight = { (Int16)(values["PanRight"] * 10), (Int16)(values["TiltRight"] * 10) };
 
             if (controlState == GimbalStates.DriveGimbal)
             {
