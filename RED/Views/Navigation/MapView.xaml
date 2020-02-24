@@ -64,7 +64,7 @@
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="-10" HorizontalAlignment="Center">
         <Label>Zoom:</Label>
             <Label Content="{Binding MainMap.Zoom}" Width="30" />
-            <Slider Value="{Binding MainMap.Zoom}" Minimum="1" Maximum="20" Width="150" Interval="1" IsSnapToTickEnabled="True" />
+            <Slider Value="{Binding MainMap.Zoom}" Minimum="1" Maximum="20" Margin="0 4 0 0" Width="150" Interval="1" IsSnapToTickEnabled="True" />
         </StackPanel>
     </Grid>
 

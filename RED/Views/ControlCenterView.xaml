@@ -20,12 +20,12 @@
     <ScrollViewer VerticalScrollBarVisibility="auto">
         <controls:MetroTabControl Name="MainTabs">
             <TabItem Header="Control Center">
-                <Grid>
+                <Grid Margin="0 -43 0 0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="475"/>
+                        <ColumnDefinition Width="474"/>
                     </Grid.ColumnDefinitions>
-                    <Grid Margin="5" Grid.Column="0">
+                    <Grid Margin="5 43 5 5" Grid.Column="0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
