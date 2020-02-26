@@ -255,6 +255,14 @@ namespace RoverAttachmentManager.ViewModels.Science
         {
             StartTime = DateTime.UtcNow;
             Graphing = true;
+            if(SelectedPlots == SpectrometerPlotModel)
+            {
+                _rovecomm.SendCommand(Packet.Create("RunSpectrometer", (byte)RunCount), true);
+            }
+            else
+            {
+                _rovecomm.SendCommand(Packet.Create("RunMPPC", (byte)RunCount), true);
+            }
             ClearGraphs();
         }
         public void ClearGraphs()
