@@ -27,5 +27,7 @@ namespace RoverAttachmentManager.Models.Science
         internal System.Net.IPAddress MPPCIPAddress;
         internal string SpectrometerFilePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Science Files";
         internal string MPPCFilePath;
+        internal float SpectrometerConcentration;
+        internal float MPPCConcentration;
     }
 }
