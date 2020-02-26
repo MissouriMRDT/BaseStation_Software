@@ -46,7 +46,6 @@
       <Button x:Name="SaveFileStart">Start</Button>
       <Button x:Name="SaveFileStop">Stop</Button>
     </UniformGrid>
-    <Button x:Name="StartSensorGraphs">Start Sensor Graphs</Button>
-    <Button x:Name="UpdateSensorGraphs">Update Sensor Graphs</Button>
+
   </StackPanel>
 </UserControl>
