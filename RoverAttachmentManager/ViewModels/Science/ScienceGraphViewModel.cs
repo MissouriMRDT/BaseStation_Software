@@ -259,7 +259,7 @@ namespace RoverAttachmentManager.ViewModels.Science
 
         public void CreateSiteAnnotation()
         {
-            SensorPlotModel.Annotations.Add(new OxyPlot.Annotations.RectangleAnnotation
+            SelectedPlots.Annotations.Add(new OxyPlot.Annotations.RectangleAnnotation
             {
                 MinimumX = SiteTimes[SiteManagment.SiteNumber * 2],
                 MaximumX = SiteTimes[(SiteManagment.SiteNumber * 2) + 1],
@@ -279,13 +279,13 @@ namespace RoverAttachmentManager.ViewModels.Science
             MethaneConcentrationSeries.Points.Add(new DataPoint(OxyPlot.Axes.DateTimeAxis.ToDouble(now), MethaneConcentration));
             CO2ConcentrationSeries.Points.Add(new DataPoint(OxyPlot.Axes.DateTimeAxis.ToDouble(now), CO2Concentration));
             O2ConcentrationSeries.Points.Add(new DataPoint(OxyPlot.Axes.DateTimeAxis.ToDouble(now), O2Concentration));
-            SensorPlotModel.InvalidatePlot(true);
+            SelectedPlots.InvalidatePlot(true);
         }
 
 
         public void AddSiteAnnotation(double x, string text)
         {
-            SensorPlotModel.Annotations.Add(new OxyPlot.Annotations.LineAnnotation { Type = LineAnnotationType.Vertical, X = x, Color = OxyColors.Green, Text = text });
+            SelectedPlots.Annotations.Add(new OxyPlot.Annotations.LineAnnotation { Type = LineAnnotationType.Vertical, X = x, Color = OxyColors.Green, Text = text });
         }
 
 
