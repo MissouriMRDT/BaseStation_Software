@@ -39,8 +39,8 @@ namespace RoverAttachmentManager.ViewModels
             }
         }
 
-        public void SetCamera(int camera)
-        {   
+        public void SetCamera(Camera camera)
+        {
             CameraMultiplexer.RemoveSurface(CameraFeed);
             CameraMultiplexer.AddSurface(camera, CameraFeed);
 
@@ -67,15 +67,15 @@ namespace RoverAttachmentManager.ViewModels
             CameraMultiplexer.Screenshot(_model.DisplayedCamera);
         }
 
-		#region Cameras
-		public void Camera1() { SetCamera(1); }
-        public void Camera2() { SetCamera(2); }
-        public void Camera3() { SetCamera(3); }
-        public void Camera4() { SetCamera(4); }
-        public void Camera5() { SetCamera(5); }
-        public void Camera6() { SetCamera(6); }
-        public void Camera7() { SetCamera(7); }
-		public void Camera8() { SetCamera(8); }
+        #region Cameras
+        public void Camera1() { SetCamera(Camera.LeftGimbal); }
+        public void Camera2() { SetCamera(Camera.RightGimbal); }
+        public void Camera3() { SetCamera(Camera.LeftSuspension); }
+        public void Camera4() { SetCamera(Camera.RightSuspension); }
+        public void Camera5() { SetCamera(Camera.LeftEndEffector); }
+        public void Camera6() { SetCamera(Camera.RightEndEffector); }
+        public void Camera7() { SetCamera(Camera.Elbow); }
+        public void Camera8() { SetCamera(Camera.PlaceholderCamera8); }
         #endregion
     }
 }

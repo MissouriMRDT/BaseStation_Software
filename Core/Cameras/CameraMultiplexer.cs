@@ -91,22 +91,15 @@ namespace Core.Cameras {
 		}
 
 		/// <summary>
-		/// Adds a rendering surface to display the output from a camera. This function is provided for backwards compatibility and will be removed in a future release.
-		/// </summary>
-		[Obsolete]
-		public static void AddSurface(int index, Image surface)
-		{
-			if (index > feeds.Count) throw new ArgumentOutOfRangeException("Passed camera index is not valid");
-			feeds[index - 1].RenderSurfaces.Add(surface);
-		}
-
-		/// <summary>
 		/// Adds a rendering surface to display the output from a camera.
 		/// </summary>
 		/// <param name="camera">Camera feed to display.</param>
 		/// <param name="surface">Name of an Image to display on.</param>
 		public static void AddSurface(Camera camera, Image surface) {
-			AddSurface((int)camera, surface);
+			int index = (int)camera;
+
+			if (index > feeds.Count) throw new ArgumentOutOfRangeException("Passed camera index is not valid");
+			feeds[index - 1].RenderSurfaces.Add(surface);
 		}
 
 		public static void RemoveSurface(Image surface) {
@@ -121,20 +114,15 @@ namespace Core.Cameras {
 		/// </summary>
 		/// <param name="camera">Camera stream to screenshot</param>
 		/// <returns>Bitmap image of the feed</returns>
-		public static System.Drawing.Bitmap Screenshot(Camera camera)
+		public static void Screenshot(Camera camera)
 		{
-			return Screenshot((int)camera);
-		}
+			int index = (int)camera;
 
-		/// <summary>
-		/// Saves and returns the last displayed frame from a camera. This function is provided for backwards compatibility and will be removed in a future release.
-		/// </summary>
-		/// <param name="index"></param>
-		/// <returns></returns>
-		[Obsolete]
-		public static System.Drawing.Bitmap Screenshot(int index) {
 			if (index > feeds.Count) throw new ArgumentOutOfRangeException("Passed camera index is not valid");
 			System.Drawing.Bitmap img = ConvertBitmapImageToBitmap(feeds[index - 1].LastFrame);
+
+			// If the image width is 1, there was an error converting the image
+			if (img.Width == 1) return;
 
 			DateTime now = DateTime.Now;
 			string fn = $"camera{Pad(index)}-{Pad(now.Year)}-{Pad(now.Month)}-{Pad(now.Day)}_{Pad(now.Hour)}-{Pad(now.Minute)}-{Pad(now.Second)}.jpg";
@@ -142,12 +130,10 @@ namespace Core.Cameras {
 			string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Rover Screenshots");
 			Directory.CreateDirectory(path);
 			path = Path.Combine(path, fn);
-			
+
 			img.Save(path, System.Drawing.Imaging.ImageFormat.Jpeg);
 
 			CommonLog.Instance.Log("Screenshot of camera stream {0} saved to {1}", index, path);
-
-			return img;
 		}
 
 		public static string Pad(int raw)
@@ -161,13 +147,20 @@ namespace Core.Cameras {
 		/// <param name="bitmapImage">Input BitmapImage to convert</param>
 		/// <returns>Converted Bitmap</returns>
 		private static System.Drawing.Bitmap ConvertBitmapImageToBitmap(BitmapImage bitmapImage) {
-			using (MemoryStream outStream = new MemoryStream()) {
-				BitmapEncoder enc = new BmpBitmapEncoder();
-				enc.Frames.Add(BitmapFrame.Create(bitmapImage));
-				enc.Save(outStream);
-				System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(outStream);
+			try {
+				using (MemoryStream outStream = new MemoryStream()) {
+					BitmapEncoder enc = new BmpBitmapEncoder();
+					enc.Frames.Add(BitmapFrame.Create(bitmapImage));
+					enc.Save(outStream);
+					System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(outStream);
 
-				return new System.Drawing.Bitmap(bitmap);
+					return new System.Drawing.Bitmap(bitmap);
+				}
+			}
+			
+			catch (InvalidOperationException ex) {
+				CommonLog.Instance.Log("Unable to create screenshot. Check if the camera is connected and has displayed at least one frame. Error message: {0}", ex.Message);
+				return new System.Drawing.Bitmap(1, 1);
 			}
 		}
 
@@ -205,15 +198,25 @@ namespace Core.Cameras {
 
 	public enum Camera
 	{
+		// Fixed and always present
 		LeftGimbal = 1,
 		RightGimbal,
 		LeftSuspension,
 		RightSuspension,
+
+		// Arm (swappable with science)
 		LeftEndEffector,
 		RightEndEffector,
 		Elbow,
-		Actuation,
-		SensorBox,
-		Carousel
+
+		// Science (swappable with arm)
+		Actuation = 5,
+		SensorBox = 6,
+		Carousel = 7,
+
+		/// <summary>
+		/// Placeholder camera for migrating off of hardcoded integer camera indexes
+		/// </summary>
+		PlaceholderCamera8
 	}
 }
