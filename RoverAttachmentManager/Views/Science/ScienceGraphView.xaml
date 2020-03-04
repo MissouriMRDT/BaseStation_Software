@@ -31,8 +31,7 @@
             
             <oxy:PlotView Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="10" Margin="5" Height="300" Name="Plot2" Model="{Binding SelectedPlots, Mode=OneWay}"/>
 
-            <Button Grid.Row="0" Grid.Column="0" x:Name="StartSensorGraphs">Start Graphs</Button>
-            <Button Grid.Row="0" Grid.Column="1"  x:Name="UpdateSensorGraphs">Update Graphs</Button>
+            <Button Grid.Row="0" Grid.Column="1" x:Name="StartSensorGraphs">Start Graphs</Button>
             <Button Grid.Row="0" Grid.Column="2" x:Name="ExportGraph">Export Graphs</Button>
 
             <ComboBox Grid.Row="0" Grid.Column="7" Grid.ColumnSpan="3" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5" Width="200" Height="25" x:Name="Plots" SelectedItem="{Binding SelectedPlots}">

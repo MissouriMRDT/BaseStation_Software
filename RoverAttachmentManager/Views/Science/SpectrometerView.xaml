@@ -40,9 +40,8 @@
             <Label Grid.Row="0" Grid.Column="0" >Number of Runs:</Label>
             <TextBox Grid.Row="0" Grid.Column="1" x:Name="RunCount"/>
             <Button Grid.Row="0" Grid.Column="2" x:Name="StartGraphs">RUN</Button>
-            <ToggleButton Grid.Row="0" Grid.Column="3"  Style="{StaticResource EnableBtn}" >ENABLE UV</ToggleButton>
-            <Button Grid.Row="0" Grid.Column="6" x:Name="UpdateGraphs">UPDATE GRAPHS</Button>
-            <Button Grid.Row="0" Grid.Column="7" x:Name="ExportGraphs">EXPORT GRAPHS</Button>
+            <Button Grid.Row="0" Grid.Column="3" x:Name="ExportGraphs">EXPORT GRAPHS</Button>
+            <ToggleButton Grid.Row="0" Grid.Column="7"  Style="{StaticResource EnableBtn}" >ENABLE UV</ToggleButton>
             
 
             <ComboBox Grid.Row="0" Grid.Column="7" Grid.ColumnSpan="3" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5" Width="200" Height="25" x:Name="Plots" SelectedItem="{Binding SelectedPlots}">
