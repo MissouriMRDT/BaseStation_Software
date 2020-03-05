@@ -1,7 +1,7 @@
-﻿using RoverNetworkManager.Models;
+﻿using RoverOverviewNetwork.Models;
 using Caliburn.Micro;
 
-namespace RoverNetworkManager.ViewModels
+namespace RoverOverviewNetwork.ViewModels
 {
     public class NetworkMapViewModel : PropertyChangedBase
     {

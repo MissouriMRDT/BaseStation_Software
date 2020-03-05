@@ -41,7 +41,7 @@
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>RoverNetworkManager.App</StartupObject>
+    <StartupObject>RoverOverviewNetwork.App</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -128,7 +128,7 @@
     <Compile Include="Models\PingToolModel.cs" />
     <Compile Include="Models\RoveCommCustomPacketModel.cs" />
     <Compile Include="Models\NetworkMapModel.cs" />
-    <Compile Include="RNMBootstrapper.cs" />
+    <Compile Include="RONBootstrapper.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>

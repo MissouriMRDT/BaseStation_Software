@@ -1,8 +1,8 @@
-﻿using RoverNetworkManager.ViewModels;
+﻿using RoverOverviewNetwork.ViewModels;
 using System.Collections.ObjectModel;
 using System.Net;
 
-namespace RoverNetworkManager.Models
+namespace RoverOverviewNetwork.Models
 {
     internal class PingToolModel
     {

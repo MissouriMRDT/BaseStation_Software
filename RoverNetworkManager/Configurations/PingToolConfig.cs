@@ -1,4 +1,4 @@
-﻿namespace RoverNetworkManager.Contexts
+﻿namespace RoverOverviewNetwork.Contexts
 {
     public static class PingToolConfig
     {

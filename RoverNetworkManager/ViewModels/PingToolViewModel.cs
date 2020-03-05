@@ -1,8 +1,8 @@
 ﻿using Caliburn.Micro;
 using Core.Interfaces;
 using Core.RoveProtocol;
-using RoverNetworkManager.Contexts;
-using RoverNetworkManager.Models;
+using RoverOverviewNetwork.Contexts;
+using RoverOverviewNetwork.Models;
 using System;
 using System.Collections.ObjectModel;
 using System.Net;
@@ -10,7 +10,7 @@ using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 
-namespace RoverNetworkManager.ViewModels
+namespace RoverOverviewNetwork.ViewModels
 {
     public class PingToolViewModel : PropertyChangedBase
     {

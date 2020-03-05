@@ -1,12 +1,12 @@
 ﻿using Caliburn.Micro;
-using RoverNetworkManager.ViewModels;
+using RoverOverviewNetwork.ViewModels;
 using System.Windows;
 
-namespace RoverNetworkManager
+namespace RoverOverviewNetwork
 {
-    public class RNMBootstrapper : BootstrapperBase
+    public class RONBootstrapper : BootstrapperBase
     {
-        public RNMBootstrapper()
+        public RONBootstrapper()
         {
             Initialize();
         }

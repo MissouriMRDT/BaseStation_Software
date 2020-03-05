@@ -368,7 +368,7 @@ namespace RED.ViewModels
 		}
 
 		public void NetworkManager() {
-			new RoverNetworkManager.RNMBootstrapper().DisplayNetworkManager();
+			new RoverOverviewNetwork.RONBootstrapper().DisplayNetworkManager();
 			NetworkManagerEnabled = false;
 		}
 

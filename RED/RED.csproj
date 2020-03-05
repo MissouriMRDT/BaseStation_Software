@@ -375,9 +375,9 @@
       <Project>{283076dc-705c-44e9-90f9-3991238995c0}</Project>
       <Name>RoverAttachmentManager</Name>
     </ProjectReference>
-    <ProjectReference Include="..\RoverNetworkManager\RoverNetworkManager.csproj">
+    <ProjectReference Include="..\RoverNetworkManager\RoverOverviewNetwork.csproj">
       <Project>{dd54c007-0165-449c-b091-682670174c62}</Project>
-      <Name>RoverNetworkManager</Name>
+      <Name>RoverOverviewNetwork</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

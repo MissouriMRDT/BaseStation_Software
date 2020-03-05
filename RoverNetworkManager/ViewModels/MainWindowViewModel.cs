@@ -1,11 +1,11 @@
 ﻿using Caliburn.Micro;
 using Core.RoveProtocol;
 using Core.Network;
-using RoverNetworkManager.Models;
+using RoverOverviewNetwork.Models;
 using Core.Configurations;
 using System;
 
-namespace RoverNetworkManager.ViewModels
+namespace RoverOverviewNetwork.ViewModels
 {
     public class MainWindowViewModel : Screen
     {
@@ -69,7 +69,7 @@ namespace RoverNetworkManager.ViewModels
 
         public MainWindowViewModel()
         {
-            base.DisplayName = "Rover Network Manager";
+            base.DisplayName = "Rover Overview: Network";
             _model = new MainWindowModel();
 
             XMLConfigManager ConfigManager = new XMLConfigManager(Core.CommonLog.Instance);

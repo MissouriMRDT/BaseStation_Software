@@ -3,12 +3,12 @@ using Core.Configurations;
 using Core.Contexts;
 using Core.Interfaces;
 using Core.RoveProtocol;
-using RoverNetworkManager.Models;
+using RoverOverviewNetwork.Models;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
-namespace RoverNetworkManager.ViewModels {
+namespace RoverOverviewNetwork.ViewModels {
 	public class RoveCommCustomPacketViewModel : PropertyChangedBase, IRovecommReceiver
     {
         private readonly RoveCommCustomPacketModel _model;

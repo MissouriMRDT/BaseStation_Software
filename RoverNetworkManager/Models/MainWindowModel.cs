@@ -1,7 +1,7 @@
 ﻿using Core.RoveProtocol;
-using RoverNetworkManager.ViewModels;
+using RoverOverviewNetwork.ViewModels;
 
-namespace RoverNetworkManager.Models
+namespace RoverOverviewNetwork.Models
 {
     internal class MainWindowModel
     {
