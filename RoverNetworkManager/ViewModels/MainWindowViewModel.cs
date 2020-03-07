@@ -69,7 +69,7 @@ namespace RoverOverviewNetwork.ViewModels
 
         public MainWindowViewModel()
         {
-            base.DisplayName = "Rover Overview: Network";
+            base.DisplayName = "Rover Overview - Network";
             _model = new MainWindowModel();
 
             XMLConfigManager ConfigManager = new XMLConfigManager(Core.CommonLog.Instance);
