@@ -24,5 +24,10 @@ namespace RoverAttachmentManager.Views.Arm
         {
             InitializeComponent();
         }
+
+        private void ConsoleText_Changed(object sender, TextChangedEventArgs e)
+        {
+            ConsoleTextBox.ScrollToEnd();
+        }
     }
 }
