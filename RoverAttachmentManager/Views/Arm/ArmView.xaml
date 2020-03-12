@@ -26,8 +26,8 @@
             </GroupBox>
         </StackPanel>
 
-        <StackPanel Grid.Column="1" Margin="2.5">
-            <GroupBox Header="Angular" Margin="2.5">
+		<StackPanel Grid.Column="1" Margin="2.5">
+			<GroupBox Header="Angular IK" Margin="2.5">
                 <ContentControl x:Name="IKControl"/>
             </GroupBox>
         </StackPanel>
@@ -38,13 +38,19 @@
             </GroupBox>
         </StackPanel>
 
-        <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Margin="2.5">
+        <StackPanel Grid.Row="3" Grid.ColumnSpan="1" Margin="2.5">
             <GroupBox Header="Control Multipliers" Margin="2.5">
                 <ContentControl x:Name="ControlMultipliers" />
             </GroupBox>
         </StackPanel>
 
-        <StackPanel Grid.Column="0" Grid.Row="4" Margin="2.5">
+		<StackPanel Grid.Row="3" Grid.Column="1" Margin="2.5">
+		<GroupBox Header="Console" Margin="2.5">
+			<ContentControl x:Name="ArmConsole" />
+		</GroupBox>
+		</StackPanel>
+
+		<StackPanel Grid.Column="0" Grid.Row="4" Margin="2.5">
             <GroupBox Header="Control Features" Margin="2.5">
                 <ContentControl x:Name="ControlFeatures"/>
             </GroupBox>

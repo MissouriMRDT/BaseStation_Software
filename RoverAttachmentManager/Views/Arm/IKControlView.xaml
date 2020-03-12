@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:RoverAttachmentManager.Views.Arm"
              mc:Ignorable="d">
-    <StackPanel>
+    <StackPanel Height="205">
         <Grid Margin="0 10 0 10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
@@ -32,30 +32,9 @@
             <Label Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="2">Roll</Label>
             <TextBox Grid.Row="2" Grid.Column="4" Text="{Binding Roll, StringFormat=0.##}" />
         </Grid>
-        <UniformGrid Rows="1">
-            <Button x:Name="SetXYZPosition" Content="Set absolute position" HorizontalAlignment="Center" />
-            <Button x:Name="GetXYZPosition" Content="Get Absolute Position" HorizontalAlignment="Center" />
-        </UniformGrid>
-        <Grid Margin="0 10 0 10">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*" />
-                <ColumnDefinition Width="20*"/>
-                <ColumnDefinition Width="40*" />
-                <ColumnDefinition Width="20*" />
-                <ColumnDefinition Width="40*" />
-                <ColumnDefinition Width="20*" />
-                <ColumnDefinition Width="40*" />
-            </Grid.ColumnDefinitions>
-            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">OpX</Label>
-            <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding OpX, StringFormat=0.##}" />
-            <Label Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2">OpY</Label>
-            <TextBox Grid.Row="0" Grid.Column="4" Text="{Binding OpY, StringFormat=0.##}" />
-            <Label Grid.Row="0" Grid.Column="5" Grid.ColumnSpan="2">OpZ</Label>
-            <TextBox Grid.Row="0" Grid.Column="6" Text="{Binding OpZ, StringFormat=0.##}" />
-        </Grid>
-        <Button Width="100" Content="Set Op point" x:Name="SetOpPoint"/>
-    </StackPanel>
+		<UniformGrid Rows="1">
+			<Button x:Name="SetXYZPosition" Content="Set absolute position" HorizontalAlignment="Center" />
+			<Button x:Name="GetXYZPosition" Content="Get Absolute Position" HorizontalAlignment="Center" />
+		</UniformGrid>
+	</StackPanel>
 </UserControl>
