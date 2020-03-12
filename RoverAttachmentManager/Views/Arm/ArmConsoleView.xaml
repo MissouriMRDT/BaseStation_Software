@@ -5,7 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:RoverAttachmentManager.Views.Arm"
              mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
+        <StackPanel>
+            <TextBox Name="ConsoleTextBox" Text="{Binding ConsoleText}" Margin="-4"
+                 IsReadOnly="True" IsHitTestVisible="True" BorderThickness="0"
+                 VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible"
+                 TextWrapping="NoWrap" TextChanged="ConsoleText_Changed" />
+        </StackPanel>
 </UserControl>

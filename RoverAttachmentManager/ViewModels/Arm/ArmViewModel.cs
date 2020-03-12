@@ -111,6 +111,19 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 NotifyOfPropertyChange(() => ControlFeatures);
             }
         }
+        public ArmConsoleViewModel ArmConsole
+        {
+            get
+            {
+                return _model._armConsole;
+            }
+            set
+            {
+                _model._armConsole = value;
+                NotifyOfPropertyChange(() => ArmConsole);
+            }
+        }
+
         public AngularControlViewModel AngularControl
         {
             get
@@ -219,6 +232,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
         public ArmViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log, IConfigurationManager configs)
         {
             _model = new ArmModel();
+            ArmConsole = new ArmConsoleViewModel();
             ControlMultipliers = new ControlMultipliersViewModel();
             ControlFeatures = new ControlFeaturesViewModel(networkMessenger, idResolver, log);
             AngularControl = new AngularControlViewModel(networkMessenger, idResolver, log, configs, this);
