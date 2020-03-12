@@ -195,7 +195,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Science\ScienceActuationView.xaml" />
     <Page Include="Views\Science\ScienceGenevaView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
