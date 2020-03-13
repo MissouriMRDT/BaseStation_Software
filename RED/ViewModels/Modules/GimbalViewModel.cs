@@ -84,16 +84,19 @@ namespace RED.ViewModels.Modules
 
             //increments
             // Pan, Tilt
-            short[] openValsLeft = { (Int16)(values["PanLeft"] * 10), (Int16)(values["TiltLeft"] * 10) };
-            short[] openValsRight = { (Int16)(values["PanRight"] * 10), (Int16)(values["TiltRight"] * 10) };
 
             if (controlState == GimbalStates.DriveGimbal)
             {
+
+                short[] openValsLeft = { (Int16)(values["PanLeft"] * 5), (Int16)(values["TiltLeft"] * -5) };
+                short[] openValsRight = { (Int16)(values["PanRight"] * 5), (Int16)(values["TiltRight"] * 5) };
                 _rovecomm.SendCommand(Packet.Create("LeftDriveGimbal", openValsLeft));
                 _rovecomm.SendCommand(Packet.Create("RightDriveGimbal", openValsRight));
             }
             else
             {
+                short[] openValsLeft = { (Int16)(values["PanLeft"] * -5), (Int16)(values["TiltLeft"] * 5) };
+                short[] openValsRight = { (Int16)(values["PanRight"] * -5), (Int16)(values["TiltRight"] * -5) };
                 _rovecomm.SendCommand(Packet.Create("LeftMainGimbal", openValsLeft));
                 _rovecomm.SendCommand(Packet.Create("RightMainGimbal", openValsRight));
             }
