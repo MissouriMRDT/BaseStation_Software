@@ -587,7 +587,11 @@ namespace RED.ViewModels.Modules
 
         public void RebootRover()
         {
-            _rovecomm.SendCommand(Packet.Create("SoftwareEStop", (byte)RebootTime), true);
+            //2020 BMS estop support
+            //_rovecomm.SendCommand(Packet.Create("SoftwareEStop", (byte)RebootTime), true);
+
+            //2019 BMS estop
+            _rovecomm.SendCommand(Packet.Create("BMSStop", (byte)RebootTime), true);
         }
         public void EStopRover()
         {
