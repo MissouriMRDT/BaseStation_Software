@@ -78,8 +78,8 @@ namespace Core.Configurations
 
             new MetadataServerContext("Nav Board", "192.168.1.136", "11005") {
                 Telemetry = new[] {
-                    new MetadataRecordContext(5100, "GPSPosition", "lat,long"),
-                    new MetadataRecordContext(5101, "PitchHeadingRoll", "pitch, heading, roll")
+                    new MetadataRecordContext(5100, "GPSPosition", "lat,long"), //same as last year
+                    new MetadataRecordContext(5101, "PitchHeadingRoll", "pitch, heading, roll") //same as last year
                 }
             },
 
@@ -104,8 +104,8 @@ namespace Core.Configurations
                 { //GripperSwap? ToolSelection? ArmStop? ArmBusEnableDisable? ToggleAutoPositionTelem? ArmGetXYZ
                     new MetadataRecordContext(7000, "ArmToAngle", "All values for the arm together. Armj1-j6."), //same as last year
                     new MetadataRecordContext(7001, "ArmToIK", "All values for the arm together. X,Y,Z,P,Y,R."), //updated/implemented
-                    new MetadataRecordContext(7002, "IKRoverIncrement", "Incremental values for rover ik."), //same as last year
-                    new MetadataRecordContext(7003, "IKWristIncrement", "Incremental values for wrist ik."), //same as last year
+                    new MetadataRecordContext(7002, "IKRoverIncrement", "Incremental values for rover ik. xyzpyr"), //same as last year
+                    new MetadataRecordContext(7003, "IKWristIncrement", "Incremental values for wrist ik. xyzpyr"), //same as last year
                     new MetadataRecordContext(7004, "ArmValues", "All values for the arm together. Armj1-j6, gripper1, nipper, gripper2."), //same as last year
                     new MetadataRecordContext(7005, "EndEffectorActuation", "enable/disable solenoid"), //not implemented
                     new MetadataRecordContext(7006, "GripperOpenLoop", "-1000,1000"), //not implemented
@@ -113,7 +113,7 @@ namespace Core.Configurations
                     new MetadataRecordContext(7008, "?????", ""), //manifest doesn't explain what this is
                     new MetadataRecordContext(7009, "ForearmMotors", "j5,j6,gripper1,nipper,gripper2"), //not implemented
                     new MetadataRecordContext(7010, "BicepMotors", "j1,j2,j3,j4"), //not implemented
-                    new MetadataRecordContext(7011, "ForearmAngles", "j5,j6,gripper1,nipper,gripper2"), //not implemented
+                    new MetadataRecordContext(7011, "ForearmAngles", "j5,j6"), //not implemented
                     new MetadataRecordContext(7012, "BicepAngles", "j1,j2,j3,j4"), //not implemented
                     new MetadataRecordContext(7013, "ToolSelection", "Change the selected tool, 0 1 & 2"), //same as last year
                     new MetadataRecordContext(7014, "Laser", "Toggle the laser"), //same as last year
@@ -126,7 +126,7 @@ namespace Core.Configurations
                     new MetadataRecordContext(7101, "ArmAngles", "Angles for the arm joints m1-6"), //same as last year
                     new MetadataRecordContext(7102, "BicepAngles", "Angles for the arm joints m1-8?"), //not implemented
                     new MetadataRecordContext(7103, "ForearmAngles", "Angles for the arm joints m1-8?"), //not implemented
-                    new MetadataRecordContext(7104, "LimitSwitchValues", "mc1,mc2"), //not implemented
+                    new MetadataRecordContext(7104, "LimitSwitchValues", "ls1-8 for mc1 and mc2"), //not implemented
                     new MetadataRecordContext(7105, "IKValue", "XYZPYR") //updated. Used to be XYZYPR
                 }
             },
@@ -152,12 +152,12 @@ namespace Core.Configurations
                 Commands = new[] {
                     new MetadataRecordContext(9000, "UVLedControl", "Control of light source."), //same as last year, confirmed with tester
                     new MetadataRecordContext(9001, "RunSpectrometer", "Sends command to begin the spectrometer sequence."), //same as last year, confirmed with tester
-                    new MetadataRecordContext(9002, "ScienceLight", ""), //not implemented
-                    new MetadataRecordContext(9003, "MPPC", "num of readings") //not implemented
+                    new MetadataRecordContext(9002, "ScienceLight", ""), //newly implemented, confirmed with tester
+                    new MetadataRecordContext(9003, "MPPC", "num of readings") //newly implemented, confirmed with tester
                 },
-                Telemetry = new[] { //from google sheet, not confirmed
-                    new MetadataRecordContext(9100, "SpectrometerData", ""),
-                    new MetadataRecordContext(9101, "MPPCData", ""),
+                Telemetry = new[] { //from google sheet, confirmed incorrect
+                    new MetadataRecordContext(9100, "SpectrometerData", ""), //attempted. Discarded last years TCP implementation and just assumed this would be similar to udp data
+                    new MetadataRecordContext(9101, "MPPCData", ""), //attempted. Discarded last years TCP implementation and just assumed this would be similar to udp data
                     new MetadataRecordContext(9103, "Methane", "gas concentration (%), temperature"), //updated
                     new MetadataRecordContext(9104, "CO2", "gas concentration (ppm)"), //updated
                     new MetadataRecordContext(9105, "O2", "partial pressure (mBar), tempartature (C), concentration (%), barometric pressure (mBar)") //updated
