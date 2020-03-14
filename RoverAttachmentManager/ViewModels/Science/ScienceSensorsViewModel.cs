@@ -140,6 +140,10 @@ namespace RoverAttachmentManager.ViewModels.Science
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _log = log;
+
+            _rovecomm.NotifyWhenMessageReceived(this, "Methane");
+            _rovecomm.NotifyWhenMessageReceived(this, "CO2");
+            _rovecomm.NotifyWhenMessageReceived(this, "O2");
         }
 
 

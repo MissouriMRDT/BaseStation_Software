@@ -349,21 +349,23 @@ namespace RoverAttachmentManager.ViewModels.Science
             switch (packet.Name)
             {
                 case "Methane":
-                    MethaneConcentration = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0)));
-                    MethaneTemperature = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 2)));
+                    float[] MethaneData = packet.GetDataArray<float>();
+                    MethaneConcentration = (float)(MethaneData[0]);
+                    MethaneTemperature = (float)(MethaneData[1]);
                     UpdateSensorGraphs();
                     break;
 
                 case "CO2":
-                    CO2Concentration = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0)));
+                    CO2Concentration = (float)(packet.GetData<float>());
                     UpdateSensorGraphs();
                     break;
 
                 case "O2":
-                    O2PartialPressure = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0)));
-                    O2Temperature = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 2)));
-                    O2Concentration = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 4)));
-                    O2BarometricPressure = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 6)));
+                    float[] O2Data = packet.GetDataArray<float>();
+                    O2PartialPressure = (float)(O2Data[0]);
+                    O2Temperature = (float)(O2Data[1]);
+                    O2Concentration = (float)(O2Data[2]);
+                    O2BarometricPressure = (float)(O2Data[3]);
                     UpdateSensorGraphs();
                     break;
 

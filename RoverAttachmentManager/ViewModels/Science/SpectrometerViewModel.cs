@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace RoverAttachmentManager.ViewModels.Science
 {
-    public class SpectrometerViewModel : PropertyChangedBase
+    public class SpectrometerViewModel : PropertyChangedBase, IRovecommReceiver
     {
         private readonly IRovecomm _rovecomm;
         private readonly IDataIdResolver _idResolver;
@@ -201,7 +201,8 @@ namespace RoverAttachmentManager.ViewModels.Science
             _log = log;
             SiteManagment = parent.SiteManagment;
 
-
+            _rovecomm.NotifyWhenMessageReceived(this, "SpectrometerData");
+            _rovecomm.NotifyWhenMessageReceived(this, "MPPCData");
 
             SpectrometerPlotModel = new PlotModel { Title = "Spectrometer Results" };
             SpectrometerSeries = new OxyPlot.Series.LineSeries();
@@ -225,12 +226,12 @@ namespace RoverAttachmentManager.ViewModels.Science
             switch (packet.Name)
             {
                 case "Spectrometer":
-                    SpectrometerConcentration = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0)));
+                    SpectrometerConcentration = (float)(packet.GetData<float>());
                     UpdateGraphs();
                     break;
 
                 case "MPPC":
-                    MPPCConcentration = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0)));
+                    MPPCConcentration = (float)(packet.GetData<float>());
                     UpdateGraphs();
                     break;
 

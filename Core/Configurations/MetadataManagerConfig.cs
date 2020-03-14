@@ -160,7 +160,7 @@ namespace Core.Configurations
                     new MetadataRecordContext(9101, "MPPCData", ""), //attempted. Discarded last years TCP implementation and just assumed this would be similar to udp data
                     new MetadataRecordContext(9103, "Methane", "gas concentration (%), temperature"), //updated
                     new MetadataRecordContext(9104, "CO2", "gas concentration (ppm)"), //updated
-                    new MetadataRecordContext(9105, "O2", "partial pressure (mBar), tempartature (C), concentration (%), barometric pressure (mBar)") //updated
+                    new MetadataRecordContext(9105, "O2", "partial pressure (mBar), tempartature (C), concentration (ppm), barometric pressure (mBar)") //updated
                 }
             },
 

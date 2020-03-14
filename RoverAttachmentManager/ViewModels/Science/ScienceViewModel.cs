@@ -231,6 +231,7 @@ namespace RoverAttachmentManager.ViewModels.Science
         }
 
         public void StartMode() { }
+
         public void SetValues(Dictionary<string, float> values)
         {           
             Int16[] zValue = { (Int16)(values["ZActuation"] * ZMultiplier) };
@@ -239,10 +240,10 @@ namespace RoverAttachmentManager.ViewModels.Science
             
             if (values["VacuumPulse"] == 1)
             {
-                _rovecomm.SendCommand(Packet.Create("Vacuum", (byte)1));
+                _rovecomm.SendCommand(Packet.Create("VacuumEnableDisable", (byte)1));
             }else if(values["VacuumPulse"] == 0)
             {
-                _rovecomm.SendCommand(Packet.Create("Vacuum", (byte)0));
+                _rovecomm.SendCommand(Packet.Create("VacuumEnableDisable", (byte)0));
             }
 
             if (values["Chem1"] == 1)
@@ -270,7 +271,7 @@ namespace RoverAttachmentManager.ViewModels.Science
             {
                 ChemThree = 0;
             }
-            byte[] chemicals = { ChemOne, ChemTwo, ChemThree };
+            Int16[] chemicals = { ChemOne, ChemTwo, ChemThree };
             _rovecomm.SendCommand(Packet.Create("Chemicals", chemicals));
         }
 
