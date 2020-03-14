@@ -31,9 +31,9 @@ namespace RoverAttachmentManager.ViewModels.Science
 
         public string Name { get; }
         public string ModeType { get; }
-        private byte ChemOne = 0;
-        private byte ChemTwo = 0;
-        private byte ChemThree = 0;
+        private Int16 ChemOne = 0;
+        private Int16 ChemTwo = 0;
+        private Int16 ChemThree = 0;
         private int ZMultiplier = 1000;
 
         private readonly ScienceModel _model;   
@@ -248,7 +248,7 @@ namespace RoverAttachmentManager.ViewModels.Science
 
             if (values["Chem1"] == 1)
             {
-                ChemOne = 1;
+                ChemOne = 1000;
             }else if(values["Chem1"] == 0)
             {
                 ChemOne = 0;
@@ -256,7 +256,7 @@ namespace RoverAttachmentManager.ViewModels.Science
 
             if (values["Chem2"] == 1)
             {
-                ChemTwo = 1;
+                ChemTwo = 1000;
             }
             else if (values["Chem2"] == 0)
             {
@@ -265,7 +265,7 @@ namespace RoverAttachmentManager.ViewModels.Science
 
             if (values["Chem3"] == 1)
             {
-                ChemThree = 1;
+                ChemThree = 1000;
             }
             else if (values["Chem3"] == 0)
             {
