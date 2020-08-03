@@ -28,6 +28,7 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
                 _model.CurrentState = value;
                 NotifyOfPropertyChange(() => CurrentState);
             }
+        }
         public string TBD
          {
             get
@@ -39,6 +40,7 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
                 _model.TBD = value;
                 NotifyOfPropertyChange(() => TBD);
             }
+        }
         public short Left
         {
             get
@@ -47,9 +49,10 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
             }
             set
             {
-                _model.TBD = value;
+                _model.Left = value;
                 NotifyOfPropertyChange(() => Left);
             }
+        }
         public short Right
         {
             get
@@ -58,9 +61,10 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
             }
             set
             {
-                _model.TBD = value;
+                _model.Right = value;
                 NotifyOfPropertyChange(() => Right);
             }
+        }
         public float CurrentLatitude
         {
             get
@@ -69,9 +73,10 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
             }
             set
             {
-                _model.TBD = value;
+                _model.CurrentLatitude = value;
                 NotifyOfPropertyChange(() => CurrentLatitude);
             }
+        }
         public float CurrentLongitude
         {
             get
@@ -80,10 +85,11 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
             }
             set
             {
-                _model.TBD = value;
+                _model.CurrentLongitude = value;
                 NotifyOfPropertyChange(() => CurrentLongitude);
             }
             //continue.
+        }
 
         public AutonomyTelemetryViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger logger)
         {
