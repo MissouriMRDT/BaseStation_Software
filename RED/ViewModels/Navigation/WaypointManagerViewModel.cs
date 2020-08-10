@@ -88,7 +88,114 @@ namespace RED.ViewModels.Navigation
                 NotifyOfPropertyChange(() => NewPoint);
             }
         }
-
+        public String Name
+        {
+            get
+            {
+                return _model.Name;
+            }
+            set
+            {
+                _model.Name = value;
+                NotifyOfPropertyChange(() => Name);
+            }
+        }
+        public float Latitude
+        {
+            get
+            {
+                return _model.Latitude;
+            }
+            set
+            {
+                _model.Latitude = value;
+                NotifyOfPropertyChange(() => Latitude);
+            }
+        }
+        public float Longitude
+        {
+            get
+            {
+                return _model.Longitude;
+            }
+            set
+            {
+                _model.Longitude = value;
+                NotifyOfPropertyChange(() => Longitude);
+            }
+        }
+        public float LatitudeD
+        {
+            get
+            {
+                return _model.LatitudeD;
+            }
+            set
+            {
+                _model.LatitudeD = value;
+                NotifyOfPropertyChange(() => LatitudeD);
+            }
+        }
+        public float LatitudeM
+        {
+            get
+            {
+                return _model.LatitudeM;
+            }
+            set
+            {
+                _model.LatitudeM = value;
+                NotifyOfPropertyChange(() => LatitudeM);
+            }
+        }
+        public float LatitudeS
+        {
+            get
+            {
+                return _model.LatitudeS;
+            }
+            set
+            {
+                _model.LatitudeS = value;
+                NotifyOfPropertyChange(() => LatitudeS);
+            }
+        }
+        public float LongitudeD
+        {
+            get
+            {
+                return _model.LongitudeD;
+            }
+            set
+            {
+                _model.LongitudeD = value;
+                NotifyOfPropertyChange(() => LongitudeD);
+            }
+        }
+        public float LongitudeM
+        {
+            get
+            {
+                return _model.LongitudeM;
+            }
+            set
+            {
+                _model.LongitudeM = value;
+                NotifyOfPropertyChange(() => LongitudeM);
+            }
+        }
+        public float LongitudeS
+        {
+            get
+            {
+                return _model.LongitudeS;
+            }
+            set
+            {
+                _model.LongitudeS = value;
+                NotifyOfPropertyChange(() => LongitudeS);
+            }
+        }
         public WaypointManagerViewModel(MapViewModel map, GPSViewModel gps)
         {
             _model = new WaypointManagerModel();
@@ -152,6 +259,19 @@ namespace RED.ViewModels.Navigation
                 double lat = WaypointManagerViewModel.ParseCoordinate(latitude);
                 double lon = WaypointManagerViewModel.ParseCoordinate(longitude);
                 AddWaypoint(new Waypoint(name, lat, lon) { Color = System.Windows.Media.Colors.Red });
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool AddWaypoint(string name, double latD, double latM, double latS, double longD, double longM, double longS)
+        {
+            try
+            {
+                AddWaypoint(new Waypoint(name, (latD + Math.Sign(latD) * ((latM * 1 / 60d) + (latS * 1 / 60d / 60d))), (longD + Math.Sign(longD) * ((longM* 1 / 60d) + (longS* 1 / 60d / 60d)))));
                 return true;
             }
             catch

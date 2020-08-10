@@ -15,8 +15,6 @@ namespace RED.Views.Navigation
 	public WaypointManagerView()
         {
             InitializeComponent();
-			InitSelector();
-
 		}
 
         private void AddMenu_Click(object sender, RoutedEventArgs e)
@@ -31,36 +29,24 @@ namespace RED.Views.Navigation
         private void AddWaypointBtn_Click(object sender, RoutedEventArgs e)
         {
             var vm = (WaypointManagerViewModel)DataContext;
-            vm.AddWaypoint(vm.NewPoint.Name, vm.NewPoint.Latitude, vm.NewPoint.Longitude);
-            
+            if (vm.Latitude != 0 && vm.Longitude != 0)
+            {
+                vm.AddWaypoint(vm.Name, vm.Latitude, vm.Longitude);
+            } else
+            {
+                vm.AddWaypoint(vm.Name, vm.LatitudeD, vm.LatitudeM, vm.LatitudeS, vm.LongitudeD, vm.LongitudeM, vm.LongitudeS);
+            }
+
         }
 
-		private void DMSSelector_Selected(object sender, RoutedEventArgs e)
+		private void DisplaySelector_Selected(object sender, RoutedEventArgs e)
 		{
-			
 			var selector = (ComboBox)sender;
-			var selected = selector.SelectedItem;
-	        
-			if (selected == )
-			{
-				 
-			}
-			else
-			{
-				
-			}
-
 		}
-
-		private void AddWaypointGrid_Initialized(object sender, System.EventArgs e)
+		private void WaypointSelector_Selected(object sender, RoutedEventArgs e)
 		{
-			Grid grid = (Grid)sender;
-			
+			var selector = (ComboBox)sender;
 		}
 
-		private void InitSelector()
-		{
-		  DMSSelector.SelectedIndex = 0;
-		}
 	}
 }
