@@ -11,10 +11,10 @@ namespace RED.Views.Navigation
     /// </summary>
     public partial class WaypointManagerView : UserControl
     {
-        public WaypointManagerView()
+	    public WaypointManagerView()
         {
             InitializeComponent();
-        }
+		}
 
         private void AddMenu_Click(object sender, RoutedEventArgs e)
         {
@@ -28,9 +28,13 @@ namespace RED.Views.Navigation
         private void AddWaypointBtn_Click(object sender, RoutedEventArgs e)
         {
             var vm = (WaypointManagerViewModel)DataContext;
-
-            vm.AddWaypoint(vm.NewPoint.Name, vm.NewPoint.Latitude, vm.NewPoint.Longitude);
-            
+            if (vm.Latitude != 0 && vm.Longitude != 0)
+            {
+                vm.AddWaypoint(vm.Name, vm.Latitude, vm.Longitude);
+            } else
+            {
+                vm.AddWaypoint(vm.Name, vm.LatitudeD, vm.LatitudeM, vm.LatitudeS, vm.LongitudeD, vm.LongitudeM, vm.LongitudeS);
+            }
         }
-    }
+	}
 }
