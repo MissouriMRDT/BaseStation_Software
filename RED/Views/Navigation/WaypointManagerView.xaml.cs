@@ -11,8 +11,7 @@ namespace RED.Views.Navigation
     /// </summary>
     public partial class WaypointManagerView : UserControl
     {
-
-	public WaypointManagerView()
+	    public WaypointManagerView()
         {
             InitializeComponent();
 		}
@@ -36,17 +35,6 @@ namespace RED.Views.Navigation
             {
                 vm.AddWaypoint(vm.Name, vm.LatitudeD, vm.LatitudeM, vm.LatitudeS, vm.LongitudeD, vm.LongitudeM, vm.LongitudeS);
             }
-
         }
-
-		private void DisplaySelector_Selected(object sender, RoutedEventArgs e)
-		{
-			var selector = (ComboBox)sender;
-		}
-		private void WaypointSelector_Selected(object sender, RoutedEventArgs e)
-		{
-			var selector = (ComboBox)sender;
-		}
-
 	}
 }
