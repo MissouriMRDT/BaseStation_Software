@@ -29,18 +29,6 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
                 NotifyOfPropertyChange(() => CurrentState);
             }
         }
-        public string TBD
-         {
-            get
-            {
-                return _model.TBD;
-            }
-            set
-            {
-                _model.TBD = value;
-                NotifyOfPropertyChange(() => TBD);
-            }
-        }
         public short Left
         {
             get
@@ -88,9 +76,91 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
                 _model.CurrentLongitude = value;
                 NotifyOfPropertyChange(() => CurrentLongitude);
             }
-            //continue.
         }
-
+        public float TargetLatitude
+        {
+            get
+            {
+                return _model.TargetLatitude;
+            }
+            set
+            {
+                _model.TargetLatitude = value;
+                NotifyOfPropertyChange(() => TargetLatitude);
+            }
+        }
+        public float TargetLongitude
+        {
+            get
+            {
+                return _model.TargetLongitude;
+            }
+            set
+            {
+                _model.TargetLongitude = value;
+                NotifyOfPropertyChange(() => TargetLongitude);
+            }
+        }
+        public float Pitch
+        {
+            get
+            {
+                return _model.Pitch;
+            }
+            set
+            {
+                _model.Pitch = value;
+                NotifyOfPropertyChange(() => Pitch);
+            }
+        }
+        public float Roll
+        {
+            get
+            {
+                return _model.Roll;
+            }
+            set
+            {
+                _model.Roll = value;
+                NotifyOfPropertyChange(() => Roll);
+            }
+        }
+        public float Heading
+        {
+            get
+            {
+                return _model.Heading;
+            }
+            set
+            {
+                _model.Heading = value;
+                NotifyOfPropertyChange(() => Heading);
+            }
+        }
+        public float TargetHeading
+        {
+            get
+            {
+                return _model.TargetHeading;
+            }
+            set
+            {
+                _model.TargetHeading = value;
+                NotifyOfPropertyChange(() => TargetHeading);
+            }
+        }
+        public float LiDAR
+        {
+            get
+            {
+                return _model.LiDAR;
+            }
+            set
+            {
+                _model.LiDAR = value;
+                NotifyOfPropertyChange(() => LiDAR);
+            }
+        }
         public AutonomyTelemetryViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger logger)
         {
             _model = new AutonomyTelemetryModel();

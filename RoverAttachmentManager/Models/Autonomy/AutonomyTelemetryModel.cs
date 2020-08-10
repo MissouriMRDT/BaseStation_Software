@@ -8,8 +8,7 @@ namespace RoverAttachmentManager.Models.Autonomy
 {
     internal class AutonomyTelemetryModel
     {
-        internal string CurrentState;
-        internal string TBD;
+        internal string CurrentState = "Idle";
         internal short Left;
         internal short Right;
         internal float CurrentLatitude;

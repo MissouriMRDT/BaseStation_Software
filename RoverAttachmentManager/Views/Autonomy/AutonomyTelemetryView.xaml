@@ -17,7 +17,6 @@
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
-            <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -27,46 +26,100 @@
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        
-        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">Current State</Label>
-        <Label Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="3" x:Name="CurrentState"/>
 
-        <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">TBD</Label>
-        <Label Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="3" x:Name="TBD"/>
+        <Label Grid.Row="0" Grid.Column="2" HorizontalContentAlignment="Center">Current State:</Label>
+        <Label Grid.Row="0" Grid.Column="3" HorizontalContentAlignment="Center" x:Name="CurrentState"/>
 
-        <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">Drive Speed</Label>
-        <Label Grid.Row="2" Grid.Column="2">Left:</Label>
-        <Label Grid.Row="2" Grid.Column="3" x:Name="Left"/>
-        <Label Grid.Row="2" Grid.Column="4">Right:</Label>
-        <Label Grid.Row="2" Grid.Column="5" x:Name="Right"/>
+        <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="black" BorderThickness="0 1 .5 0">
+            <Label FontWeight="Bold">Drive Speed</Label>
+        </Border>
+        <Border Grid.Row="1" Grid.Column="2" BorderBrush="black" BorderThickness="0 1 0 0">
+            <Label>Left:</Label>
+        </Border>
+        <Border Grid.Row="1" Grid.Column="3" BorderBrush="black" BorderThickness="0 1 .5 0">
+            <Label x:Name="Left"/>
+        </Border>
+        <Border Grid.Row="1" Grid.Column="4" BorderBrush="black" BorderThickness="0 1 0 0">
+            <Label>Right:</Label>
+        </Border>
+        <Border Grid.Row="1" Grid.Column="5" BorderBrush="black" BorderThickness="0 1 0 0">
+            <Label x:Name="Right"/>
+        </Border>
 
-        <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3">Current GPS Location</Label>
-        <Label Grid.Row="4" Grid.Column="0">Latitude:</Label>
-        <Label Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" x:Name="CurrentLatitude"/>
-        <Label Grid.Row="5" Grid.Column="0">Longitude:</Label>
-        <Label Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" x:Name="CurrentLongitude"/>
-        
-        <Label Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="3">Target GPS Location</Label>
-        <Label Grid.Row="4" Grid.Column="3">Latitude:</Label>
-        <Label Grid.Row="4" Grid.Column="4" Grid.ColumnSpan="2" x:Name="TargetLatitude"/>
-        <Label Grid.Row="5" Grid.Column="3">Longitude:</Label>
-        <Label Grid.Row="5" Grid.Column="4" Grid.ColumnSpan="2" x:Name="TargetLongitude"/>
 
-        <Label Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3">Current Pitch, Roll, Heading</Label>
-        <Label Grid.Row="7" Grid.Column="0">Pitch:</Label>
-        <Label Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" x:Name="Pitch"/>
-        <Label Grid.Row="8" Grid.Column="0">Roll:</Label>
-        <Label Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" x:Name="Roll"/>
-        <Label Grid.Row="9" Grid.Column="0">Heading:</Label>
-        <Label Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="2" x:Name="Heading"/>
+        <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"  BorderBrush="black" BorderThickness="0 1 1 0">
+            <Label FontWeight="Bold">Current GPS Location</Label>
+        </Border>
+        <Border Grid.Row="3" Grid.Column="0" BorderBrush="black" BorderThickness="0 .5 0 0">
+            <Label>Latitude:</Label>
+        </Border>
+        <Border Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"  BorderBrush="black" BorderThickness="0 .5 1 0">
+            <Label x:Name="CurrentLatitude"/>
+        </Border>
+        <Border Grid.Row="4" Grid.Column="0" BorderBrush="black" BorderThickness="0 .5 0 0">
+            <Label>Longitude:</Label>
+        </Border>
+        <Border Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"  BorderBrush="black" BorderThickness="0 .5 1 0">
+            <Label x:Name="CurrentLongitude"/>
+        </Border>
 
-        <Label Grid.Row="6" Grid.Column="3" Grid.ColumnSpan="3">Target Heading</Label>
-        <Label Grid.Row="7" Grid.Column="3">Heading:</Label>
-        <Label Grid.Row="7" Grid.Column="4" Grid.ColumnSpan="2" x:Name="TargetHeading"/>
+        <Border Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="3" BorderBrush="black" BorderThickness="0 1 0 0">
+            <Label FontWeight="Bold">Target GPS Location</Label>
+        </Border>
+        <Border Grid.Row="3" Grid.Column="3" BorderBrush="black" BorderThickness="0 .5 0 0">
+            <Label>Latitude:</Label>
+        </Border>
+        <Border Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="2" BorderBrush="black" BorderThickness="0 .5 0 0">
+            <Label x:Name="TargetLatitude"/>
+        </Border>
+        <Border Grid.Row="4" Grid.Column="3" BorderBrush="black" BorderThickness="0 .5 0 0">
+            <Label>Longitude:</Label>
+        </Border>
+        <Border Grid.Row="4" Grid.Column="4" Grid.ColumnSpan="2" BorderBrush="black" BorderThickness="0 .5 0 0">
+            <Label x:Name="TargetLongitude"/>
+        </Border>
 
-        <Label Grid.Row="8" Grid.Column="3" Grid.ColumnSpan="3">jk</Label>
-        <Label Grid.Row="9" Grid.Column="3">LiDAR:</Label>
-        <Label Grid.Row="9" Grid.Column="4" Grid.ColumnSpan="2" x:Name="LiDAR"/>
-            
+        <Border Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" BorderBrush="black" BorderThickness="0 1 1 0">
+            <Label FontWeight="Bold">Current Pitch, Roll, Heading</Label>
+        </Border>
+        <Border Grid.Row="6" Grid.Column="0" BorderBrush="black" BorderThickness="0 .5 0 0">
+            <Label>Pitch:</Label>
+        </Border>
+        <Border Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" BorderBrush="black" BorderThickness="0 .5 1 0">
+            <Label x:Name="Pitch"/>
+        </Border>
+        <Border Grid.Row="7" Grid.Column="0" BorderBrush="black" BorderThickness="0 .5 0 0">
+            <Label>Roll:</Label>
+        </Border>
+        <Border Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" BorderBrush="black" BorderThickness="0 .5 1 0">
+            <Label x:Name="Roll"/>
+        </Border>
+        <Border Grid.Row="8" Grid.Column="0" BorderBrush="black" BorderThickness="0 .5 0 0">
+            <Label>Heading:</Label>
+        </Border>
+        <Border Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" BorderBrush="black" BorderThickness="0 .5 1 0">
+            <Label x:Name="Heading"/>
+        </Border>
+
+        <Border Grid.Row="5" Grid.Column="3" Grid.ColumnSpan="3" BorderBrush="black" BorderThickness="0 1 0 0">
+            <Label FontWeight="Bold">Target Heading</Label>
+        </Border>
+        <Border Grid.Row="6" Grid.Column="3" BorderBrush="black" BorderThickness="0 .5 0 0">
+            <Label>Heading:</Label>
+        </Border>
+        <Border Grid.Row="6" Grid.Column="4" Grid.ColumnSpan="2" BorderBrush="black" BorderThickness="0 .5 0 0">
+            <Label x:Name="TargetHeading"/>
+        </Border>
+
+        <Border Grid.Row="7" Grid.Column="3" Grid.ColumnSpan="3" BorderBrush="black" BorderThickness="0 1 0 0">
+            <Label/>
+        </Border>
+        <Border Grid.Row="8" Grid.Column="3" BorderBrush="black" BorderThickness="0 1 0 0">
+            <Label>LiDAR:</Label>
+        </Border>
+        <Border Grid.Row="8" Grid.Column="4" Grid.ColumnSpan="2" BorderBrush="black" BorderThickness="0 1 0 0">
+            <Label x:Name="LiDAR"/>
+        </Border>
+
     </Grid>
 </UserControl>
