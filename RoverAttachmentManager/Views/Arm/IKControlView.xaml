@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:RoverAttachmentManager.Views.Arm"
              mc:Ignorable="d">
-    <StackPanel Height="205">
-        <Grid Margin="0 10 0 10">
+    <StackPanel>
+        <Grid Margin="0 15 0 15">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />

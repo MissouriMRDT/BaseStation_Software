@@ -20,45 +20,34 @@
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Column="0" Margin="2.5">
-            <GroupBox Header="Angular" Margin="2.5">
+            <GroupBox Grid.Column="0" Header="Angular" Margin="5">
                 <ContentControl x:Name="AngularControl"/>
             </GroupBox>
-        </StackPanel>
 
-		<StackPanel Grid.Column="1" Margin="2.5">
-			<GroupBox Header="Angular IK" Margin="2.5">
+        <StackPanel Grid.Column="1">
+            <GroupBox Header="Angular IK" Margin="5">
                 <ContentControl x:Name="IKControl"/>
             </GroupBox>
+            <StackPanel Grid.Column="1" Grid.Row="4" Margin="5">
+                <ContentControl x:Name="InputManager"/>
+            </StackPanel>
         </StackPanel>
 
-        <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="2.5">
-            <GroupBox Header="Power BMS" Margin="2.5">
-                <ContentControl x:Name="ArmPower" />
-            </GroupBox>
-        </StackPanel>
+        <GroupBox Grid.Row="2" Grid.ColumnSpan="2" Header="Power BMS" Margin="5">
+            <ContentControl x:Name="ArmPower" />
+        </GroupBox>
 
-        <StackPanel Grid.Row="3" Grid.ColumnSpan="1" Margin="2.5">
-            <GroupBox Header="Control Multipliers" Margin="2.5">
-                <ContentControl x:Name="ControlMultipliers" />
-            </GroupBox>
-        </StackPanel>
+        <GroupBox Grid.Row="3" Grid.ColumnSpan="1" Header="Control Multipliers" Margin="5">
+            <ContentControl x:Name="ControlMultipliers" />
+        </GroupBox>
 
-		<StackPanel Grid.Row="3" Grid.Column="1" Margin="2.5">
-		<GroupBox Header="Console" Margin="2.5">
-			<ContentControl x:Name="ArmConsole" />
+        <GroupBox Grid.Row="3" Grid.RowSpan="2" Grid.Column="1" Header="Console" Margin="5">
+            <ContentControl x:Name="ArmConsole" />
 		</GroupBox>
-		</StackPanel>
 
-		<StackPanel Grid.Column="0" Grid.Row="4" Margin="2.5">
-            <GroupBox Header="Control Features" Margin="2.5">
-                <ContentControl x:Name="ControlFeatures"/>
-            </GroupBox>
-        </StackPanel>
-
-        <StackPanel Grid.Column="1" Grid.Row="4" Margin="5">
-            <ContentControl x:Name="InputManager"/>
-        </StackPanel>
+        <GroupBox Grid.Column="0" Grid.Row="4" Header="Control Features" Margin="5">
+            <ContentControl x:Name="ControlFeatures"/>
+        </GroupBox>
 
         <GroupBox Grid.Column="0" Grid.Row="5" Margin="5" Header="Camera 1">
             <ContentControl x:Name="Camera1"></ContentControl>
