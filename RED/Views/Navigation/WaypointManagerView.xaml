@@ -48,7 +48,6 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
-					<ColumnDefinition Width="*"/> 
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" ContextMenuService.IsEnabled="False" Content="Add Waypoint" Click="AddMenu_Click" x:Name="AddMenu">
                     <Button.ContextMenu>
@@ -75,7 +74,7 @@
 
                                                 <Label Margin="2.5" Grid.Row="0" Grid.Column="0" Content="Name:" />
                                                 <TextBox Margin="2.5" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" x:Name="NameTextBox" Text="{Binding Name}"/>
-                                                <ComboBox Margin="2.5" x:Name="WaypointSelector" Grid.Row="0" Grid.Column="3" SelectedIndex="0" SelectionChanged="WaypointSelector_Selected">
+                                                <ComboBox Margin="2.5" x:Name="WaypointSelector" Grid.Row="0" Grid.Column="3" SelectedIndex="0">
                                                     <ComboBoxItem x:Name = "WaypointLonLat" Content = "Long/Lat"/>
                                                     <ComboBoxItem x:Name = "WaypointDMS" Content = "DMS"/>
                                                 </ComboBox>
@@ -106,12 +105,8 @@
                         </ContextMenu>
                     </Button.ContextMenu>
                 </Button>
-				<ComboBox x:Name="DisplaySelector" Grid.Column="1" SelectedIndex="0" SelectionChanged="DisplaySelector_Selected">
-					<ComboBoxItem x:Name = "LonLat" Content = "Long/Lat"/>
-					<ComboBoxItem x:Name = "DMS" Content = "DMS"/>
-				</ComboBox>
-				<Button x:Name="CurrentLocationToWaypoint" Grid.Column="2">Save Current</Button>
-                <Button x:Name="RemoveSelectedWaypoint" Grid.Column="3">Remove Selected</Button>
+				<Button x:Name="CurrentLocationToWaypoint" Grid.Column="1">Save Current</Button>
+                <Button x:Name="RemoveSelectedWaypoint" Grid.Column="2">Remove Selected</Button>
             </Grid>
         </StackPanel>
         <DataGrid ItemsSource="{Binding Waypoints}" SelectedItem="{Binding SelectedWaypoint}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" FrozenColumnCount="1" BorderThickness="1">
