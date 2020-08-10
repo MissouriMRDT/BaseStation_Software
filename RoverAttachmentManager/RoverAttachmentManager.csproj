@@ -124,19 +124,17 @@
     <Compile Include="Models\Science\ScienceModel.cs" />
     <Compile Include="ViewModels\Autonomy\AutonomyTelemetryViewModel.cs" />
     <Compile Include="ViewModels\Autonomy\StateControlViewModel.cs" />
+    <Compile Include="Views\Autonomy\StateControlView.xaml.cs">
+      <DependentUpon>StateControlView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\CameraViewModel.cs" />
     <Compile Include="ViewModels\Science\ScienceGenevaViewModel.cs" />
     <Compile Include="Views\Autonomy\AutonomyTelemetryView.xaml.cs">
       <DependentUpon>AutonomyTelemetryView.xaml</DependentUpon>
+	</Compile>
     <Compile Include="ViewModels\Arm\ArmConsoleViewModel.cs" />
-    <Compile Include="ViewModels\Autonomy\StateControlViewModel.cs" />
-    <Compile Include="ViewModels\CameraViewModel.cs" />
-    <Compile Include="ViewModels\Science\ScienceGenevaViewModel.cs" />
     <Compile Include="Views\Arm\ArmConsoleView.xaml.cs">
       <DependentUpon>ArmConsoleView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Autonomy\StateControlView.xaml.cs">
-      <DependentUpon>StateControlView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Autonomy\ControlsViewModel.cs" />
     <Compile Include="ViewModels\Autonomy\SentWaypointsViewModel.cs" />
