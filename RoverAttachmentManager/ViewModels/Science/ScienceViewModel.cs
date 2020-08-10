@@ -195,15 +195,30 @@ namespace RoverAttachmentManager.ViewModels.Science
                 NotifyOfPropertyChange(() => Camera2);
             }
         }
+        public int SiteNumber
+        {
+            get
+            {
+                return _model.SiteNumber;
+            }
+            set
+            {
+                _model.SiteNumber = value;
+                NotifyOfPropertyChange(() => SiteNumber);
+            }
+        }
+
+
         public ScienceViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
             _model = new ScienceModel();
-            SiteManagment = new SiteManagmentViewModel(networkMessenger, idResolver, log, this);
+            
             ScienceGeneva = new ScienceGenevaViewModel(networkMessenger, idResolver, log);
-            ScienceGraph = new ScienceGraphViewModel(networkMessenger, idResolver, log);
+            ScienceGraph = new ScienceGraphViewModel(networkMessenger, idResolver, log, this);
             Spectrometer = new SpectrometerViewModel(networkMessenger, idResolver, log, this);
             ScienceSensors = new ScienceSensorsViewModel(networkMessenger, idResolver, log, this);
             SciencePower = new SciencePowerViewModel(networkMessenger, idResolver, log);
+            SiteManagment = new SiteManagmentViewModel(networkMessenger, idResolver, log, this);
 
             _rovecomm = networkMessenger;
             _idResolver = idResolver;

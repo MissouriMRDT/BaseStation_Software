@@ -35,10 +35,12 @@ namespace RoverAttachmentManager.ViewModels.Science
         public OxyPlot.Series.LineSeries CO2ConcentrationSeries;
         public OxyPlot.Series.LineSeries O2ConcentrationSeries;
 
-        public DateTime StartTime;
+        public ScienceViewModel Science;
+
         public bool Graphing = false;
 
         public double[] SiteTimes = new double[12];
+
 
         public float MethaneConcentration
         {
@@ -122,6 +124,18 @@ namespace RoverAttachmentManager.ViewModels.Science
             {
                 _model.O2BarometricPressure = value;
                 NotifyOfPropertyChange(() => O2BarometricPressure);
+            }
+        }
+        public DateTime StartTime
+        {
+            get
+            {
+                return _model.StartTime;
+            }
+            set
+            {
+                _model.StartTime = value;
+                NotifyOfPropertyChange(() => StartTime);
             }
         }
         public int RunCount
@@ -213,12 +227,13 @@ namespace RoverAttachmentManager.ViewModels.Science
             }
         }
 
-        public ScienceGraphViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
+        public ScienceGraphViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log, ScienceViewModel parent)
         {
             _model = new ScienceGraphModel();
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _log = log;
+            Science = parent;
 
             _rovecomm.NotifyWhenMessageReceived(this, "Methane");
             _rovecomm.NotifyWhenMessageReceived(this, "CO2");
@@ -261,9 +276,9 @@ namespace RoverAttachmentManager.ViewModels.Science
         {
             SelectedPlots.Annotations.Add(new OxyPlot.Annotations.RectangleAnnotation
             {
-                MinimumX = SiteTimes[SiteManagment.SiteNumber * 2],
-                MaximumX = SiteTimes[(SiteManagment.SiteNumber * 2) + 1],
-                Text = "Site " + SiteManagment.SiteNumber,
+                MinimumX = SiteTimes[(Science.SiteNumber - 1) * 2],
+                MaximumX = SiteTimes[((Science.SiteNumber - 1) * 2) + 1],
+                Text = "Site " + Science.SiteNumber,
                 Fill = OxyColor.FromAColor(50, OxyColors.DarkOrange),
 
             });
@@ -315,7 +330,7 @@ namespace RoverAttachmentManager.ViewModels.Science
         {
             List<DataPoint> points = series.Points;
 
-            Predicate<DataPoint> isInRange = dataPoint => dataPoint.X >= SiteTimes[SiteManagment.SiteNumber * 2] && dataPoint.X <= SiteTimes[(SiteManagment.SiteNumber * 2) + 1];
+            Predicate<DataPoint> isInRange = dataPoint => dataPoint.X >= SiteTimes[Science.SiteNumber * 2] && dataPoint.X <= SiteTimes[(Science.SiteNumber * 2) + 1];
 
             points = points.FindAll(isInRange);
 

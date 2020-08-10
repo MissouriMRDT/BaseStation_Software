@@ -25,6 +25,8 @@ namespace RoverAttachmentManager.ViewModels.Science
 
         private readonly SiteManagmentModel _model;
 
+        
+
         public ScienceGraphViewModel ScienceGraph
         {
             get
@@ -42,12 +44,25 @@ namespace RoverAttachmentManager.ViewModels.Science
         {
             get
             {
-                return _model.SiteNumber;
+                return _model._science.SiteNumber;
             }
             set
             {
-                _model.SiteNumber = value;
+                _model._science.SiteNumber = value;
                 NotifyOfPropertyChange(() => SiteNumber);
+            }
+        }
+
+        public ScienceViewModel Science
+        {
+            get
+            {
+                return _model._science;
+            }
+            set
+            {
+                _model._science = value;
+                NotifyOfPropertyChange(() => Science);
             }
         }
 
@@ -65,13 +80,26 @@ namespace RoverAttachmentManager.ViewModels.Science
             _log = log;
 
             ScienceGraph = parent.ScienceGraph;
+            Science = parent;
 
         }
 
         public void ReachedSite()
         {
+
+            if (SiteNumber == 6)
+            {
+                SiteNumber = 1;
+            }
+            else
+            {
+                SiteNumber++;
+            }
+
             double siteTime = OxyPlot.Axes.DateTimeAxis.ToDouble(GetTimeDiff());
-            ScienceGraph.SiteTimes[SiteNumber * 2] = siteTime;
+            ScienceGraph.SiteTimes[(SiteNumber - 1) * 2] = siteTime;
+
+
         }
 
         private async void WriteSiteData(double temp, double humidity, double methane)
@@ -86,12 +114,13 @@ namespace RoverAttachmentManager.ViewModels.Science
             {
                 file.Close();
             }
+
         }
 
         public void LeftSite()
         {
             double siteTime = OxyPlot.Axes.DateTimeAxis.ToDouble(GetTimeDiff());
-            ScienceGraph.SiteTimes[(SiteNumber * 2) + 1] = siteTime;
+            ScienceGraph.SiteTimes[((SiteNumber-1) * 2) + 1] = siteTime;
 
             double methaneAvg = ScienceGraph.AverageValueForSeries(ScienceGraph.MethaneConcentrationSeries, "Methane vs Time", "Methane (parts per million)", 50, ScienceGraph.SpectrometerFilePath + "\\Methane-Site" + SiteNumber + ".png");
             double CO2Avg = ScienceGraph.AverageValueForSeries(ScienceGraph.CO2ConcentrationSeries, "CO2 vs Time", "CO2 (parts per million)", 100, ScienceGraph.SpectrometerFilePath + "\\CO2-Site" + SiteNumber + ".png");
@@ -100,7 +129,7 @@ namespace RoverAttachmentManager.ViewModels.Science
             WriteSiteData(methaneAvg, CO2Avg, O2Avg);
 
             ScienceGraph.CreateSiteAnnotation();
-            SiteNumber++;
+            
         }
 
     }

@@ -23,5 +23,6 @@ namespace RoverAttachmentManager.Models.Science
         internal XboxControllerInputViewModel _xboxController3;
         internal CameraViewModel _camera1;
         internal CameraViewModel _camera2;
+        internal int SiteNumber;
     }
 }

@@ -19,6 +19,8 @@ namespace RoverAttachmentManager.Models.Science
         internal float O2Concentration;
         internal float O2BarometricPressure;
 
+        internal DateTime StartTime;
+
         internal int RunCount = 100;
         internal ushort SpectrometerPortNumber = 11001;
 
