@@ -1,4 +1,5 @@
-﻿using RED.ViewModels;
+﻿using Core.Cameras;
+using RED.ViewModels;
 using System;
 using System.Windows.Controls;
 
@@ -25,7 +26,7 @@ namespace RED.Views
 
 			CameraViewModel cameraViewModel = ((CameraViewModel)(DataContext));
 			cameraViewModel.CameraFeed = CameraFeed;
-			cameraViewModel.SetCamera(1);
+			cameraViewModel.SetCamera(Camera.LeftGimbal);
 		}
 	}
 }

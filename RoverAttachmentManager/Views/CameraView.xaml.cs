@@ -26,7 +26,7 @@ namespace RoverAttachmentManager.Views
 
 			CameraViewModel cameraViewModel = ((CameraViewModel)(DataContext));
 			cameraViewModel.CameraFeed = CameraFeed;
-			cameraViewModel.SetCamera(1);
+			cameraViewModel.SetCamera(Camera.LeftGimbal);
 		}
 	}
 }
