@@ -2,6 +2,7 @@
 using Core.Interfaces;
 using Core.Models;
 using RoverAttachmentManager.Models.Autonomy;
+using Core.RoveProtocol;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -177,11 +178,6 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
                     _logger.Log("Waypoint Reached");
                     break;
             }
-        }
-
-        public void ReceivedRovecommMessageCallback(int index, bool reliable)
-        {
-            ReceivedRovecommMessageCallback(_rovecomm.GetPacketByID(index), false);
         }
     }
 }
