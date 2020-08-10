@@ -28,7 +28,7 @@ namespace RoverAttachmentManager.Models.Science
         internal PlotModel SelectedPlot;
 
         internal System.Net.IPAddress SpectrometerIPAddress;
-        internal string SpectrometerFilePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Science Files";
+        internal string SpectrometerFilePath = System.IO.Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Science Files").FullName;
 
 
 
