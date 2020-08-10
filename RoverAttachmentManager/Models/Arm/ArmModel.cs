@@ -11,6 +11,7 @@ namespace RoverAttachmentManager.Models.ArmModels
         internal ControlMultipliersViewModel _controlMultipliers;
         internal ControlFeaturesViewModel _controlFeatures;
         internal AngularControlViewModel _angularControl;
+        internal ArmConsoleViewModel _armConsole;
         internal IKControlViewModel _ikControl;
         internal InputManagerViewModel InputManager;
         internal XMLConfigManager _configManager;
