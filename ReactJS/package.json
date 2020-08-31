@@ -1,0 +1,19 @@
+{
+  "name": "mrdt_basestation",
+  "version": "1.0.0",
+  "description": "Electron application to interface with the MST Mars Rover",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MissouriMRDT/BaseStation_Software.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MissouriMRDT/BaseStation_Software/issues"
+  },
+  "homepage": "https://github.com/MissouriMRDT/BaseStation_Software#readme"
+}
