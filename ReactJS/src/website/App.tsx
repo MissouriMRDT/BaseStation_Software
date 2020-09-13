@@ -1,5 +1,16 @@
 import React, {Component} from 'react'
 import GPS from './GPS'
+import { IpcRenderer } from 'electron'
+
+declare global {
+    interface Window {
+      require: (module: 'electron') => {
+        ipcRenderer: IpcRenderer
+    };
+  }
+}
+  
+const { ipcRenderer } = window.require('electron');
 
 class App extends Component {
     /*
@@ -9,9 +20,8 @@ class App extends Component {
 
     constructor(props: Readonly<{}>) {
         super(props)
-        this.state = {
-            
-        }
+
+        ipcRenderer.on('targetPriceVal', (event: any) => console.log("ahh?"))
     }
 
     render() {
