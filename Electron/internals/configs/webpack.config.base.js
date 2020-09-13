@@ -4,7 +4,7 @@
 
 import path from 'path'
 import webpack from 'webpack'
-import { dependencies as externals } from '../app/package.json'
+import { dependencies as externals } from '../../RED/package.json'
 
 export default {
   externals: [...Object.keys(externals || {})],
@@ -25,7 +25,7 @@ export default {
   },
 
   output: {
-    path: path.join(__dirname, '..', 'app'),
+    path: path.join(__dirname, '..', 'RED'),
     // https://github.com/webpack/webpack/issues/1114
     libraryTarget: 'commonjs2',
   },
@@ -35,7 +35,7 @@ export default {
    */
   resolve: {
     extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
-    modules: [path.join(__dirname, '..', 'app'), 'node_modules'],
+    modules: [path.join(__dirname, '..', 'RED'), 'node_modules'],
   },
 
   plugins: [

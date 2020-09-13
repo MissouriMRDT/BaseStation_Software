@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import CSS from "csstype"
-import rovecomm from "../RoveProtocol/Rovecomm"
+import rovecomm from "../../Core/RoveProtocol/Rovecomm"
 
 const h1Style: CSS.Properties = {
   backgroundColor: "yellowgreen",

@@ -2,15 +2,12 @@
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
 import routes from './constants/routes.json'
-import App from './containers/App'
-import Home from './components/Home'
+import GPS from './components/GPS'
 
 export default function Routes() {
   return (
-    <App>
-      <Switch>
-        <Route path={routes.HOME} component={Home} />
-      </Switch>
-    </App>
+    <Switch>
+      <Route path={routes.HOME} component={GPS} />
+    </Switch>
   )
 }

@@ -6,12 +6,12 @@ import webpack from 'webpack'
 import path from 'path'
 import { merge } from 'webpack-merge'
 import baseConfig from './webpack.config.base'
-import { dependencies } from '../package.json'
-import CheckNodeEnv from '../internals/scripts/CheckNodeEnv'
+import { dependencies } from '../../package.json'
+import CheckNodeEnv from '../scripts/CheckNodeEnv'
 
 CheckNodeEnv('development')
 
-const dist = path.join(__dirname, '..', 'dll')
+const dist = path.join(__dirname, '..', '/dll')
 
 export default merge(baseConfig, {
   context: path.join(__dirname, '..'),
@@ -62,9 +62,9 @@ export default merge(baseConfig, {
     new webpack.LoaderOptionsPlugin({
       debug: true,
       options: {
-        context: path.join(__dirname, '..', 'app'),
+        context: path.join(__dirname, '..', 'RED'),
         output: {
-          path: path.join(__dirname, '..', 'dll'),
+          path: path.join(__dirname, '..', '/dll'),
         },
       },
     }),
