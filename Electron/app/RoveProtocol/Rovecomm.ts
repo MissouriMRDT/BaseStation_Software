@@ -1,9 +1,10 @@
-const dgram = require('dgram')
-const net = require('net')
+/* eslint-disable @typescript-eslint/no-var-requires */
+const dgram = require("dgram")
+const net = require("net")
 
 function TCPListen(socket: any) {
-  socket.write('Hello.')
-  socket.on('data', (data: any) => {
+  socket.write("Hello.")
+  socket.on("data", (data: any) => {
     console.log(data, data.toString())
   })
 }
@@ -20,7 +21,7 @@ class Rovecomm {
 
     // allDevices
 
-    this.UDPSocket = dgram.createSocket('udp4')
+    this.UDPSocket = dgram.createSocket("udp4")
     this.TCPServer = net.createServer((TCPSocket: any) => TCPListen(TCPSocket))
 
     this.UDPListen()
@@ -29,7 +30,7 @@ class Rovecomm {
 
   UDPListen() {
     this.UDPSocket.on(
-      'message',
+      "message",
       (msg: string, rinfo: { address: string; port: number }) => {
         console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`)
       }
