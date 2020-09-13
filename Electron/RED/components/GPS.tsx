@@ -3,7 +3,7 @@ import CSS from "csstype"
 import rovecomm from "../../Core/RoveProtocol/Rovecomm"
 
 const h1Style: CSS.Properties = {
-  backgroundColor: "yellowgreen",
+  backgroundColor: "white",
   right: 0,
   bottom: "0rem",
   padding: "0.5rem",
@@ -12,10 +12,21 @@ const h1Style: CSS.Properties = {
 }
 const container: CSS.Properties = {
   display: "grid",
-  borderColor: "gray",
-  borderWidth: "2px",
+  fontFamily: "arial",
+  width: "440px",
+  borderTopWidth: "16px",
+  borderColor: "darkred",
+  borderBottomWidth: "2px",
   borderStyle: "solid",
+  gridRowStart: "2 & {}",
   grid: "repeat(2, 36px) / auto-flow dense",
+}
+const label: CSS.Properties = {
+  position: "absolute",
+  top: "9px",
+  fontSize: "12px",
+  zIndex: 1,
+  color: "white",
 }
 
 class GPS extends Component {
@@ -33,6 +44,7 @@ class GPS extends Component {
   render(): JSX.Element {
     return (
       <div style={container}>
+        <div style={label}>GPS</div>
         {[
           { title: "Fix Obtained", value: "False" },
           { title: "Satellite Count", value: "255" },

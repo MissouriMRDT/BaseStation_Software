@@ -10,7 +10,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // const Root = require('./containers/Root').default
   render(
     <AppContainer>
-      <GPS />
+      <div>
+        <GPS />
+        <GPS />
+      </div>
     </AppContainer>,
     document.getElementById("root")
   )
