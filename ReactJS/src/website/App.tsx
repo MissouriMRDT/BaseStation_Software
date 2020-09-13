@@ -1,6 +1,9 @@
 import React, {Component} from 'react'
 import GPS from './GPS'
 import { IpcRenderer } from 'electron'
+import { css, jsx } from '@emotion/core'
+import CSS from 'csstype'
+
 
 declare global {
     interface Window {
@@ -11,6 +14,10 @@ declare global {
 }
   
 const { ipcRenderer } = window.require('electron');
+
+
+
+
 
 class App extends Component {
     /*
@@ -27,11 +34,24 @@ class App extends Component {
     render() {
         return (
             <div>
-                <h1>Control Center      Settings</h1>
+                <h1 style={h1Style}>Control Center      Settings</h1>
                 <GPS/>
             </div>
         )
     }
 }
+
+
+const h1Style: CSS.Properties = {
+    backgroundColor: 'gray',
+    right: '200rem',
+    bottom: '2rem',
+    padding: '0.5rem',
+    fontFamily: 'arial',
+    fontSize: '1rem',
+    boxShadow: '0 0 20px rgba(0, 0, 0, 0.3)'
+  }
+  
+
 
 export default App
