@@ -1,56 +1,57 @@
 module.exports = {
   extends: [
-    'erb/typescript',
-    'eslint:recommended',
-    'plugin:react/recommended',
-    'plugin:@typescript-eslint/eslint-recommended',
-    'plugin:@typescript-eslint/recommended',
-    'prettier/@typescript-eslint',
-    'airbnb',
-    'airbnb/hooks',
-    'plugin:prettier/recommended',
+    "erb/typescript",
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier/@typescript-eslint",
+    "plugin:prettier/recommended",
   ],
   rules: {
     // A temporary hack related to IDE not resolving correct package.json
-    'import/no-extraneous-dependencies': 'off',
-    semi: [2, 'never'],
-    'react/jsx-filename-extension': [
+    "import/no-extraneous-dependencies": "off",
+    semi: [2, "never"],
+    "react/jsx-filename-extension": [
       1,
-      { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
+      { extensions: [".js", ".jsx", ".ts", ".tsx"] },
     ],
-    'import/extensions': [
-      'error',
-      'ignorePackages',
+    "import/extensions": [
+      "error",
+      "ignorePackages",
       {
-        js: 'never',
-        jsx: 'never',
-        ts: 'never',
-        tsx: 'never',
+        js: "never",
+        jsx: "never",
+        ts: "never",
+        tsx: "never",
       },
     ],
-    'react/prop-types': 0,
-    'import/prefer-default-export': 0,
-    'react/no-danger': 0,
+    "react/prop-types": 0,
+    "import/prefer-default-export": 0,
+    "react/no-danger": 0,
   },
-  plugins: ['react', '@typescript-eslint', 'prettier'],
-  parser: '@typescript-eslint/parser',
+  plugins: ["react", "@typescript-eslint", "prettier"],
+  parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaVersion: 2020,
-    sourceType: 'module',
-    project: './tsconfig.json',
+    sourceType: "module",
+    project: "./tsconfig.json",
     tsconfigRootDir: __dirname,
     createDefaultProgram: true,
+    ecmaFeatures: {
+      jsx: true, // Allows for the parsing of JSX
+    },
   },
   settings: {
-    'import/resolver': {
+    "import/resolver": {
       // See https://github.com/benmosher/eslint-plugin-import/issues/1396#issuecomment-575727774 for line below
       node: {},
       webpack: {
-        config: require.resolve('./configs/webpack.config.eslint.js'),
+        config: require.resolve("./configs/webpack.config.eslint.js"),
       },
     },
-    'import/parsers': {
-      '@typescript-eslint/parser': ['.ts', '.tsx'],
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"],
     },
   },
 }
