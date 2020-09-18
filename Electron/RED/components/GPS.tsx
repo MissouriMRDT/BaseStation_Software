@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import CSS from "csstype"
-import rovecomm from "../../Core/RoveProtocol/Rovecomm"
+import { rovecomm, parse } from "../../Core/RoveProtocol/Rovecomm"
 
 const h1Style: CSS.Properties = {
   backgroundColor: "white",
@@ -38,7 +38,25 @@ class GPS extends Component {
   constructor(props: any) {
     super(props)
     this.state = {}
-    console.log(rovecomm)
+
+    const listen = ["DriveLeftRight"]
+
+    rovecomm.UDPSocket.on(
+      "message",
+      (msg: Uint8Array, rinfo: { address: string; port: number }) => {
+        console.log(msg, "here", parse("dataId", msg))
+        if (parse("dataId", msg) in listen) {
+          switch (parse("dataId", msg)) {
+            case "DriveLeftRight":
+              console.log(msg)
+              break
+            default:
+              console.log(msg)
+              break
+          }
+        }
+      }
+    )
   }
 
   render(): JSX.Element {
