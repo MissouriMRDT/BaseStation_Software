@@ -1,9 +1,9 @@
 import React, { Component } from "react"
 import CSS from "csstype"
-import { rovecomm, parse } from "../../Core/RoveProtocol/Rovecomm"
+import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
+// import { Packet } from "../../Core/RoveProtocol/Packet"
 
 const h1Style: CSS.Properties = {
-  backgroundColor: "white",
   right: 0,
   bottom: "0rem",
   padding: "0.5rem",
@@ -29,34 +29,50 @@ const label: CSS.Properties = {
   color: "white",
 }
 
-class GPS extends Component {
-  /*
-    This class is meant to be called by the index page and handles the base
-    logic for what is displayed
-    */
+interface IProps {}
 
+interface IState {
+  fixObtained: boolean
+  satelliteCount: number
+  currentLat: number
+  lidar: number
+  fixQuality: number
+  odometer: number
+  currentLon: number
+}
+
+class GPS extends Component<IProps, IState> {
   constructor(props: any) {
     super(props)
-    this.state = {}
+    this.state = {
+      fixObtained: false,
+      satelliteCount: 255,
+      currentLat: 0,
+      lidar: 0.0,
+      fixQuality: 255,
+      odometer: 0,
+      currentLon: 0,
+    }
 
-    const listen = ["DriveLeftRight"]
+    rovecomm.on("GPSTelem", (data: any) => this.GPSTelem(data))
+    rovecomm.on("GPSPosition", (data: any) => this.GPSPosition(data))
 
-    rovecomm.UDPSocket.on(
-      "message",
-      (msg: Uint8Array, rinfo: { address: string; port: number }) => {
-        console.log(msg, "here", parse("dataId", msg))
-        if (parse("dataId", msg) in listen) {
-          switch (parse("dataId", msg)) {
-            case "DriveLeftRight":
-              console.log(msg)
-              break
-            default:
-              console.log(msg)
-              break
-          }
-        }
-      }
-    )
+    // rovecomm.sendCommand(Packet(dataId, data), reliability)
+  }
+
+  GPSTelem(data: any) {
+    this.setState({
+      fixObtained: data[0] !== 0,
+      fixQuality: data[0],
+      satelliteCount: data[1],
+    })
+  }
+
+  GPSPosition(data: any) {
+    this.setState({
+      currentLat: data[0] / 10000000,
+      currentLon: data[1] / 10000000,
+    })
   }
 
   render(): JSX.Element {
@@ -64,13 +80,13 @@ class GPS extends Component {
       <div style={container}>
         <div style={label}>GPS</div>
         {[
-          { title: "Fix Obtained", value: "False" },
-          { title: "Satellite Count", value: "255" },
-          { title: "Current Lat.", value: "0" },
-          { title: "Lidar", value: "0.00" },
-          { title: "Fix Quality", value: "255" },
-          { title: "Odometer (Miles)", value: "0" },
-          { title: "Current Lon.", value: "0" },
+          { title: "Fix Obtained", value: this.state.fixObtained.toString() },
+          { title: "Satellite Count", value: this.state.satelliteCount },
+          { title: "Current Lat.", value: this.state.currentLat },
+          { title: "Lidar", value: this.state.lidar },
+          { title: "Fix Quality", value: this.state.fixQuality },
+          { title: "Odometer (Miles)", value: this.state.odometer },
+          { title: "Current Lon.", value: this.state.currentLon },
         ].map(datum => {
           const { title, value } = datum
           return (

@@ -12,7 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
     <AppContainer>
       <div>
         <GPS />
-        <GPS />
       </div>
     </AppContainer>,
     document.getElementById("root")
