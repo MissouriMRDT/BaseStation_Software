@@ -12,6 +12,8 @@ module.exports = {
     // A temporary hack related to IDE not resolving correct package.json
     "import/no-extraneous-dependencies": "off",
     "react/jsx-one-expression-per-line": "off",
+    "react/destructuring-assignment": "off",
+    "@typescript-eslint/no-empty-interface": "off",
     semi: [2, "never"],
     "react/jsx-filename-extension": [
       1,

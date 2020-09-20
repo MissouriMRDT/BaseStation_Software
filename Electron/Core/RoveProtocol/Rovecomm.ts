@@ -2,6 +2,7 @@ import { DATAID } from "./RovecommManifest"
 /* eslint-disable @typescript-eslint/no-var-requires */
 const dgram = require("dgram")
 const net = require("net")
+const EventEmitter = require("events")
 
 function TCPListen(socket: any) {
   socket.on("data", (data: any) => {
@@ -9,12 +10,13 @@ function TCPListen(socket: any) {
   })
 }
 
-class Rovecomm {
+class Rovecomm extends EventEmitter {
   UDPSocket: any
 
   TCPServer: any
 
   constructor() {
+    super()
     this.UDPSocket = dgram.createSocket("udp4")
     this.TCPServer = net.createServer((TCPSocket: any) => TCPListen(TCPSocket))
 
@@ -32,6 +34,7 @@ class Rovecomm {
     this.UDPSocket.bind(8081)
   }
 }
+export const rovecomm = new Rovecomm()
 
 export function parse(part: string, packet: Uint8Array): any {
   const VersionNumber = 2
@@ -61,6 +64,7 @@ export function parse(part: string, packet: Uint8Array): any {
     console.log(dataId)
     switch (part) {
       case "dataId":
+        rovecomm.emit(dataId, data)
         return DATAID[dataId]
       case "dataType":
         return DataTypes[dataType]
@@ -76,4 +80,6 @@ export function parse(part: string, packet: Uint8Array): any {
   }
 }
 
-export const rovecomm = new Rovecomm()
+export function sendCommand(packet: Packet, reliability = false) {
+  console.log(`Not yet implemented. Recieved ${packet}, ${reliability}`)
+}
