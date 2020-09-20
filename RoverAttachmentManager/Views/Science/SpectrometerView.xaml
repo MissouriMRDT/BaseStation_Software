@@ -35,13 +35,24 @@
                 <RowDefinition Height="25"/>
             </Grid.RowDefinitions>
 
-            <oxy:PlotView Margin="5" Grid.Row="0" Grid.ColumnSpan="10" Grid.RowSpan="2" Height="300" Name="Plot" Model="{Binding SpectrometerPlotModel}"/>
-            <Label Grid.Row="0" Grid.Column="1" >Number of Runs:</Label>
-            <TextBox Grid.Row="0" Grid.Column="2" x:Name="RunCount"/>
-            <Button Grid.Row="0" Grid.Column="7" x:Name="DownloadSpectrometer">RUN</Button>
-            <ToggleButton Grid.Row="0" Grid.Column="8"  Style="{StaticResource EnableBtn}" >ENABLE UV</ToggleButton>
-        </Grid>
-        
+            <oxy:PlotView Margin="5" Grid.Row="0" Grid.ColumnSpan="10" Grid.RowSpan="2" Height="300" Name="Plot" Model="{Binding SelectedPlots, Mode=OneWay}"/>
+            
+            <Label Grid.Row="0" Grid.Column="0" >Number of Runs:</Label>
+            <TextBox Grid.Row="0" Grid.Column="1" x:Name="RunCount"/>
+            <Button Grid.Row="0" Grid.Column="2" x:Name="StartGraphs">RUN</Button>
+            <Button Grid.Row="0" Grid.Column="3" x:Name="ExportGraphs">EXPORT GRAPHS</Button>
+            <ToggleButton Grid.Row="0" Grid.Column="7"  Style="{StaticResource EnableBtn}" >ENABLE UV</ToggleButton>
+            
 
+            <ComboBox Grid.Row="0" Grid.Column="7" Grid.ColumnSpan="3" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5" Width="200" Height="25" x:Name="Plots" SelectedItem="{Binding SelectedPlots}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock Text="{Binding Title}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ComboBox>
+        </Grid>       
     </StackPanel>
 </UserControl>

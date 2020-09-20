@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using Core.Cameras;
 using Core.Configurations;
 using Core.Interfaces;
 using Core.Interfaces.Input;
@@ -111,6 +112,19 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 NotifyOfPropertyChange(() => ControlFeatures);
             }
         }
+        public ArmConsoleViewModel ArmConsole
+        {
+            get
+            {
+                return _model._armConsole;
+            }
+            set
+            {
+                _model._armConsole = value;
+                NotifyOfPropertyChange(() => ArmConsole);
+            }
+        }
+
         public AngularControlViewModel AngularControl
         {
             get
@@ -210,6 +224,31 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 NotifyOfPropertyChange(() => XboxController3);
             }
         }
+        public CameraViewModel Camera1
+        {
+            get
+            {
+                return _model._camera1;
+            }
+            set
+            {
+                _model._camera1 = value;
+                NotifyOfPropertyChange(() => Camera1);
+            }
+        }
+
+        public CameraViewModel Camera2
+        {
+            get
+            {
+                return _model._camera2;
+            }
+            set
+            {
+                _model._camera2 = value;
+                NotifyOfPropertyChange(() => Camera2);
+            }
+        }
 
         public byte previousTool;
         public bool laser = false;
@@ -219,6 +258,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
         public ArmViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log, IConfigurationManager configs)
         {
             _model = new ArmModel();
+            ArmConsole = new ArmConsoleViewModel();
             ControlMultipliers = new ControlMultipliersViewModel();
             ControlFeatures = new ControlFeaturesViewModel(networkMessenger, idResolver, log);
             AngularControl = new AngularControlViewModel(networkMessenger, idResolver, log, configs, this);
@@ -231,6 +271,9 @@ namespace RoverAttachmentManager.ViewModels.Arm
             XboxController1 = new XboxControllerInputViewModel(1);
             XboxController2 = new XboxControllerInputViewModel(2);
             XboxController3 = new XboxControllerInputViewModel(3);
+
+            Camera1 = new CameraViewModel(Core.CommonLog.Instance);
+            Camera2 = new CameraViewModel(Core.CommonLog.Instance);
 
             // Programatic instanciation of InputManager view, vs static like everything else in a xaml 
             InputManager = new InputManagerViewModel(log, ConfigManager,
@@ -335,6 +378,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
             {
                 previousTool = ControlFeatures.SelectedTool;
             }
+
             if (values["LaserToggle"] == 1)
             {
                 laser = !laser;
@@ -457,7 +501,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
 
             if (oldState != myState)
             {
-                _rovecomm.SendCommand(Packet.Create("ArmStop"));
+                //_rovecomm.SendCommand(Packet.Create("ArmStop"));
                 ControlState = state;
             }
         }
@@ -478,14 +522,14 @@ namespace RoverAttachmentManager.ViewModels.Arm
             {
                 if(guiControlInitialized == false)
                 {
-                    _rovecomm.SendCommand(Packet.Create("ArmStop"));
+                    //_rovecomm.SendCommand(Packet.Create("ArmStop"));
                 }
             }
         }
 
         public void StopMode()
         {
-            _rovecomm.SendCommand(Packet.Create("ArmStop"));
+            //_rovecomm.SendCommand(Packet.Create("ArmStop"));
 
             myState = ArmControlState.GuiControl;
             ControlState = "GUI control";

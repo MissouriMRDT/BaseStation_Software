@@ -57,6 +57,19 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
                 NotifyOfPropertyChange(() => SentWaypoints);
             }
         }
+        public AutonomyTelemetryViewModel Telemetry
+        {
+            get
+            {
+                return _model._telemetry;
+            }
+
+            set
+            {
+                _model._telemetry = value;
+                NotifyOfPropertyChange(() => Telemetry);
+            }
+        }
 
         public AutonomyViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger logger)
         {
@@ -64,6 +77,7 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
             StateControl = new StateControlViewModel();
             Controls = new ControlsViewModel(networkMessenger, this);
             SentWaypoints = new SentWaypointsViewModel();
+            Telemetry = new AutonomyTelemetryViewModel(networkMessenger, idResolver, logger);
 
             _rovecomm = networkMessenger;
             _idResolver = idResolver;

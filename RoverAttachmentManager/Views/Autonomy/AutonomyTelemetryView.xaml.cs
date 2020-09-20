@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace RoverAttachmentManager.Views.Science
+namespace RoverAttachmentManager.Views.Autonomy
 {
     /// <summary>
-    /// Interaction logic for ScienceActuationView.xaml
+    /// Interaction logic for AutonomyTelemetryView.xaml
     /// </summary>
-    public partial class ScienceActuationView : UserControl
+    public partial class AutonomyTelemetryView : UserControl
     {
-        public ScienceActuationView()
+        public AutonomyTelemetryView()
         {
             InitializeComponent();
         }

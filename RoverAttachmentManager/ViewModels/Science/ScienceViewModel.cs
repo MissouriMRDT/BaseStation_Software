@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using Core.Cameras;
 using Core.Configurations;
 using Core.Interfaces;
 using Core.Interfaces.Input;
@@ -30,9 +31,10 @@ namespace RoverAttachmentManager.ViewModels.Science
 
         public string Name { get; }
         public string ModeType { get; }
-        private const int ScrewSpeedScale = 1000;
-        private const int XYSpeedScale = 1000;
-        private bool screwIncrementPressed = false;
+        private Int16 ChemOne = 0;
+        private Int16 ChemTwo = 0;
+        private Int16 ChemThree = 0;
+        private int ZMultiplier = 1000;
 
         private readonly ScienceModel _model;   
  
@@ -70,18 +72,6 @@ namespace RoverAttachmentManager.ViewModels.Science
             {
                 _model._scienceGeneva = value;
                 NotifyOfPropertyChange(() => ScienceGeneva);
-            }
-        }
-        public ScienceActuationViewModel ScienceActuation
-        {
-            get
-            {
-                return _model._scienceActuation;
-            }
-            set
-            {
-                _model._scienceActuation = value;
-                NotifyOfPropertyChange(() => ScienceActuation);
             }
         }
         public SpectrometerViewModel Spectrometer
@@ -180,17 +170,55 @@ namespace RoverAttachmentManager.ViewModels.Science
                 NotifyOfPropertyChange(() => XboxController3);
             }
         }
+        public CameraViewModel Camera1
+        {
+            get
+            {
+                return _model._camera1;
+            }
+            set
+            {
+                _model._camera1 = value;
+                NotifyOfPropertyChange(() => Camera1);
+            }
+        }
+
+        public CameraViewModel Camera2
+        {
+            get
+            {
+                return _model._camera2;
+            }
+            set
+            {
+                _model._camera2 = value;
+                NotifyOfPropertyChange(() => Camera2);
+            }
+        }
+        public int SiteNumber
+        {
+            get
+            {
+                return _model.SiteNumber;
+            }
+            set
+            {
+                _model.SiteNumber = value;
+                NotifyOfPropertyChange(() => SiteNumber);
+            }
+        }
+
 
         public ScienceViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
         {
             _model = new ScienceModel();
-            SiteManagment = new SiteManagmentViewModel(networkMessenger, idResolver, log, this);
+            
             ScienceGeneva = new ScienceGenevaViewModel(networkMessenger, idResolver, log);
-            ScienceGraph = new ScienceGraphViewModel(networkMessenger, idResolver, log);
-            ScienceActuation = new ScienceActuationViewModel(networkMessenger, idResolver, log);
+            ScienceGraph = new ScienceGraphViewModel(networkMessenger, idResolver, log, this);
             Spectrometer = new SpectrometerViewModel(networkMessenger, idResolver, log, this);
             ScienceSensors = new ScienceSensorsViewModel(networkMessenger, idResolver, log, this);
             SciencePower = new SciencePowerViewModel(networkMessenger, idResolver, log);
+            SiteManagment = new SiteManagmentViewModel(networkMessenger, idResolver, log, this);
 
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
@@ -200,6 +228,9 @@ namespace RoverAttachmentManager.ViewModels.Science
             XboxController1 = new XboxControllerInputViewModel(1);
             XboxController2 = new XboxControllerInputViewModel(2);
             XboxController3 = new XboxControllerInputViewModel(3);
+
+            Camera1 = new CameraViewModel(Core.CommonLog.Instance);
+            Camera2 = new CameraViewModel(Core.CommonLog.Instance);
 
             // Programatic instanciation of InputManager view, vs static like everything else in a xaml 
             InputManager = new InputManagerViewModel(log, ConfigManager,
@@ -215,37 +246,53 @@ namespace RoverAttachmentManager.ViewModels.Science
         }
 
         public void StartMode() { }
+
         public void SetValues(Dictionary<string, float> values)
-        {
+        {           
+            Int16[] zValue = { (Int16)(values["ZActuation"] * ZMultiplier) };
+            _rovecomm.SendCommand(Packet.Create("ZActuation", zValue));
 
-            if ((values["ScrewPosUp"] == 1 || values["ScrewPosDown"] == 1) && !screwIncrementPressed)
-            {
-                byte screwPosIncrement = (byte)(values["ScrewPosUp"] == 1 ? 1 : values["ScrewPosDown"] == 1 ? -1 : 0);
-                _rovecomm.SendCommand(Packet.Create("ScrewRelativeSetPosition", screwPosIncrement));
-                screwIncrementPressed = true;
-            }
-            else if (values["ScrewPosUp"] == 0 && values["ScrewPosDown"] == 0)
-            {
-                screwIncrementPressed = false;
-            }
             
-            Int16[] screwValue = { (Int16)(values["Screw"] * ScrewSpeedScale) };
-            _rovecomm.SendCommand(Packet.Create("Screw", screwValue));
+            if (values["VacuumPulse"] == 1)
+            {
+                _rovecomm.SendCommand(Packet.Create("VacuumEnableDisable", (byte)1));
+            }else if(values["VacuumPulse"] == 0)
+            {
+                _rovecomm.SendCommand(Packet.Create("VacuumEnableDisable", (byte)0));
+            }
 
-            Int16 xMovement = (Int16)(values["XActuation"] * XYSpeedScale);
-            Int16 yMovement = (Int16)(values["YActuation"] * XYSpeedScale);
-     
-            Int16[] sendValues = {xMovement, yMovement};
-            _rovecomm.SendCommand(Packet.Create("XYActuation", sendValues));
-            
+            if (values["Chem1"] == 1)
+            {
+                ChemOne = 1000;
+            }else if(values["Chem1"] == 0)
+            {
+                ChemOne = 0;
+            }
+
+            if (values["Chem2"] == 1)
+            {
+                ChemTwo = 1000;
+            }
+            else if (values["Chem2"] == 0)
+            {
+                ChemTwo = 0;
+            }
+
+            if (values["Chem3"] == 1)
+            {
+                ChemThree = 1000;
+            }
+            else if (values["Chem3"] == 0)
+            {
+                ChemThree = 0;
+            }
+            Int16[] chemicals = { ChemOne, ChemTwo, ChemThree };
+            _rovecomm.SendCommand(Packet.Create("Chemicals", chemicals));
         }
 
         public void StopMode()
         {
-            _rovecomm.SendCommand(Packet.Create("Screw", (Int16)(0)), true);
-
-            Int16[] sendValues = { 0, 0 };
-            _rovecomm.SendCommand(Packet.Create("XYActuation", sendValues));
+            //_rovecomm.SendCommand(Packet.Create("Screw", (Int16)(0)), true);
         }
 
     }

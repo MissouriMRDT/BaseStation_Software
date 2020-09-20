@@ -1,7 +1,7 @@
 ﻿using Core.Contexts;
 using System.Xml.Serialization;
 
-namespace RoverNetworkManager.Contexts
+namespace RoverOverviewNetwork.Contexts
 {
     [XmlType(TypeName = "PingToolConfig")]
     public class PingToolContext : ConfigurationFile

@@ -11,6 +11,7 @@ namespace RoverAttachmentManager.Models.ArmModels
         internal ControlMultipliersViewModel _controlMultipliers;
         internal ControlFeaturesViewModel _controlFeatures;
         internal AngularControlViewModel _angularControl;
+        internal ArmConsoleViewModel _armConsole;
         internal IKControlViewModel _ikControl;
         internal InputManagerViewModel InputManager;
         internal XMLConfigManager _configManager;
@@ -20,6 +21,8 @@ namespace RoverAttachmentManager.Models.ArmModels
         internal int IKRangeFactor = 1000;
         internal string ControlState;
         internal ArmPowerViewModel ArmPower;
-        
+
+        internal CameraViewModel _camera1;
+        internal CameraViewModel _camera2;
     }
 }

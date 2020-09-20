@@ -14,18 +14,30 @@
         <RowDefinition />
       </Grid.RowDefinitions>
       <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="150"/>
         <ColumnDefinition />
-        <ColumnDefinition />
+        <ColumnDefinition Width="150"/>
+        <ColumnDefinition />       
+
       </Grid.ColumnDefinitions>
 
-      <Label Grid.Row="0" Grid.Column="0">Air Temperature</Label>
-      <Label Grid.Row="0" Grid.Column="1" x:Name="Sensor0Value" ContentStringFormat="{}{0:0.#&#176;}" />
-
-      <Label Grid.Row="1" Grid.Column="0">Air Humidity</Label>
-      <Label Grid.Row="1" Grid.Column="1" x:Name="Sensor1Value" ContentStringFormat="{}{0:0.\%;}" />
-
-      <Label Grid.Row="2" Grid.Column="0">Air Methane</Label>
-      <Label Grid.Row="2" Grid.Column="1" x:Name="Sensor4Value" ContentStringFormat="{}{0:0.00;}" />
+      <Label Grid.Row="0" Grid.Column="0">Methane Temperature</Label>
+      <Label Grid.Row="0" Grid.Column="1" x:Name="MethaneTemperature" ContentStringFormat="{}{0:0.#&#176;}" />
+      
+      <Label Grid.Row="1" Grid.Column="0">Methane Concentration</Label>
+      <Label Grid.Row="1" Grid.Column="1" x:Name="MethaneConcentration" ContentStringFormat="{}{0:0.00. ppm;}" />
+        
+      <Label Grid.Row="2" Grid.Column="0">CO2 Concentration</Label>
+      <Label Grid.Row="2" Grid.Column="1" x:Name="CO2Concentration" ContentStringFormat="{}{0:0.00. ppm;}" />  
+      
+      <Label Grid.Row="0" Grid.Column="2">O2 Partial Pressure</Label>
+      <Label Grid.Row="0" Grid.Column="3" x:Name="O2PartialPressure" ContentStringFormat="{}{0:0.00. mBar;}" />
+        
+      <Label Grid.Row="1" Grid.Column="2">O2 Barometric Pressure</Label>
+      <Label Grid.Row="1" Grid.Column="3" x:Name="O2BarometricPressure" ContentStringFormat="{}{0:0.00. mBar;}" />
+ 
+      <Label Grid.Row="2" Grid.Column="2">O2 Concentration</Label>
+      <Label Grid.Row="2" Grid.Column="3" x:Name="O2Concentration" ContentStringFormat="{}{0:0.00. ppm}" />
 
     </Grid>
 
@@ -34,7 +46,6 @@
       <Button x:Name="SaveFileStart">Start</Button>
       <Button x:Name="SaveFileStop">Stop</Button>
     </UniformGrid>
-    <Button x:Name="StartSensorGraphs">Start Sensor Graphs</Button>
-    <Button x:Name="UpdateSensorGraphs">Update Sensor Graphs</Button>
+
   </StackPanel>
 </UserControl>
