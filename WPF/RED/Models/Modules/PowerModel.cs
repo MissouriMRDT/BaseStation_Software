@@ -20,6 +20,8 @@ namespace RED.Models.Modules
         internal float ActuationCurrent;
         internal float LogicCurrent;
         internal float CommunicationsCurrent;
+        internal float TwelveVoltCurrent;
+        internal float AuxiliaryCurrent;
         internal float InputVoltage;
 
         internal float Cell1Voltage;
@@ -37,5 +39,6 @@ namespace RED.Models.Modules
         internal byte RebootTime;
 
         internal BitArray Status;
+        internal BitArray MotorBusStatus;
     }
 }

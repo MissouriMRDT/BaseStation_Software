@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using Core.ViewModels.Input.Controllers;
 using Core.Configurations;
-
+using Core.Cameras;
 
 namespace RoverAttachmentManager.Models.Science
 {
@@ -14,7 +14,6 @@ namespace RoverAttachmentManager.Models.Science
         internal SiteManagmentViewModel _siteManagment;
         internal ScienceGenevaViewModel _scienceGeneva;
         internal ScienceSensorsViewModel _scienceSensors;
-        internal ScienceActuationViewModel _scienceActuation;
         internal SpectrometerViewModel _spectrometer;
         internal SciencePowerViewModel _sciencePower;
         internal InputManagerViewModel InputManager;
@@ -22,5 +21,8 @@ namespace RoverAttachmentManager.Models.Science
         internal XboxControllerInputViewModel _xboxController1;
         internal XboxControllerInputViewModel _xboxController2;
         internal XboxControllerInputViewModel _xboxController3;
+        internal CameraViewModel _camera1;
+        internal CameraViewModel _camera2;
+        internal int SiteNumber;
     }
 }

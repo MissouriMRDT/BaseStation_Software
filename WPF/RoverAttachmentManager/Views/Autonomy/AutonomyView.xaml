@@ -13,21 +13,26 @@
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="125px"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="125px"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <GroupBox Header="Controls" Margin="5" Grid.Row="0" Grid.Column="0">
                 <ContentControl x:Name="Controls"/>
             </GroupBox>
 
-            <GroupBox Header="State" Margin="5" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1">
+            <GroupBox Header="State" Margin="5" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1">
                 <ContentControl x:Name="StateControl"/>
             </GroupBox>
 
-            <GroupBox Header="Sent Waypoints" Margin="5" Grid.Row="1" Grid.RowSpan="2" Grid.Column="0">
+            <GroupBox Header="Sent Waypoints" Margin="5" Grid.Row="1" Grid.Column="0">
                 <ContentControl x:Name="SentWaypoints" />
             </GroupBox>
-        </Grid>
+
+            <GroupBox Header="Telemetry" Margin="5" Grid.Row="2" Grid.Column="0">
+                <ContentControl x:Name="Telemetry" />
+            </GroupBox>
+    </Grid>
 
 </UserControl>

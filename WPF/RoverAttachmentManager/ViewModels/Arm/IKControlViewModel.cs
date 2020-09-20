@@ -156,7 +156,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
 
             Arm = parent;
 
-            _rovecomm.NotifyWhenMessageReceived(this, "ArmCurrentXYZ");
+            _rovecomm.NotifyWhenMessageReceived(this, "IKValue");
         }
         public void GetPosition()
         {
@@ -174,13 +174,12 @@ namespace RoverAttachmentManager.ViewModels.Arm
         {
             switch (packet.Name)
             {
-
-                case "ArmCurrentXYZ":
+                case "IKValue":
                     CoordinateX = BitConverter.ToSingle(packet.Data, 0 * sizeof(float));
                     CoordinateY = BitConverter.ToSingle(packet.Data, 1 * sizeof(float));
                     CoordinateZ = BitConverter.ToSingle(packet.Data, 2 * sizeof(float));
-                    Yaw = BitConverter.ToSingle(packet.Data, 3 * sizeof(float));
-                    Pitch = BitConverter.ToSingle(packet.Data, 4 * sizeof(float));
+                    Pitch = BitConverter.ToSingle(packet.Data, 3 * sizeof(float));
+                    Yaw = BitConverter.ToSingle(packet.Data, 4 * sizeof(float));
                     Roll = BitConverter.ToSingle(packet.Data, 5 * sizeof(float));
                     break;
             }
@@ -197,16 +196,14 @@ namespace RoverAttachmentManager.ViewModels.Arm
         }
         public void GetXYZPosition()
         {
-            _rovecomm.SendCommand(Packet.Create("ArmGetXYZ"));
+            //_rovecomm.SendCommand(Packet.Create("ArmGetXYZ"));
         }
         public void SetXYZPosition()
         {
             float[] coordinates = { CoordinateX, CoordinateY, CoordinateZ, Yaw, Pitch, Roll };
             byte[] data = new byte[coordinates.Length * sizeof(float)];
-            Buffer.BlockCopy(coordinates, 0, data, 0, data.Length);
 
-            // TODO: floats
-            //_rovecomm.SendCommand(_idResolver.GetId("ArmAbsoluteXYZ"), data, true);
+            _rovecomm.SendCommand(new Packet("ArmToIK", data, 6, (byte)DataTypes.FLOAT_T), true);
 
             Arm.myState = ArmControlState.GuiControl;
         }

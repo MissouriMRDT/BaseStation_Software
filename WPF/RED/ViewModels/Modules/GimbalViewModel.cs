@@ -69,29 +69,36 @@ namespace RED.ViewModels.Modules
             _log = log;
             Name = "Main Gimbal";
             ModeType = "Gimbal";
-            ControlState = System.IO.Path.GetFullPath("../../Images/NotConnected.png");
+            ControlState = System.IO.Path.GetFullPath(@"Images/NotConnected.png");
         }
 
         public void StartMode()
         {
             controlState = GimbalStates.MainGimbal;
-            ControlState = System.IO.Path.GetFullPath("../../Images/NotConnected.png");
+            ControlState = System.IO.Path.GetFullPath(@"Images/NotConnected.png");
         }
 
         public void SetValues(Dictionary<string, float> values)
         {
             UpdateControlState(values);
-            
+
+            //increments
             // Pan, Tilt
-            short[] openVals = { (Int16)(values["Pan"] * 50), (Int16)(values["Tilt"] * 50)};
 
             if (controlState == GimbalStates.DriveGimbal)
             {
-                _rovecomm.SendCommand(Packet.Create("DriveGimbalIncrement", openVals));
+
+                short[] openValsLeft = { (Int16)(values["PanLeft"] * 5), (Int16)(values["TiltLeft"] * -5) };
+                short[] openValsRight = { (Int16)(values["PanRight"] * 5), (Int16)(values["TiltRight"] * 5) };
+                _rovecomm.SendCommand(Packet.Create("LeftDriveGimbal", openValsLeft));
+                _rovecomm.SendCommand(Packet.Create("RightDriveGimbal", openValsRight));
             }
             else
             {
-                _rovecomm.SendCommand(Packet.Create("MainGimbalIncrement", openVals));
+                short[] openValsLeft = { (Int16)(values["PanLeft"] * -5), (Int16)(values["TiltLeft"] * 5) };
+                short[] openValsRight = { (Int16)(values["PanRight"] * -5), (Int16)(values["TiltRight"] * -5) };
+                _rovecomm.SendCommand(Packet.Create("LeftMainGimbal", openValsLeft));
+                _rovecomm.SendCommand(Packet.Create("RightMainGimbal", openValsRight));
             }
         }
 
@@ -100,18 +107,22 @@ namespace RED.ViewModels.Modules
             if (values["MainGimbalSwitch"] == 1)
             {
                 controlState = GimbalStates.MainGimbal;
-                ControlState = System.IO.Path.GetFullPath("../../Images/UpArrow.png");
+                ControlState = System.IO.Path.GetFullPath(@"Images/UpArrow.png");
             }
             else if (values["DriveGimbalSwitch"] == 1)
             {
                 controlState = GimbalStates.DriveGimbal;
-                ControlState = System.IO.Path.GetFullPath("../../Images/DownArrow.png");
+                ControlState = System.IO.Path.GetFullPath(@"Images/DownArrow.png");
             }
         }
 
         public void StopMode()
         {
-            _rovecomm.SendCommand(Packet.Create("MainGimbalIncrement", new Int16[] { 0, 0 }));
+            short[] zero = { 0, 0 };
+            _rovecomm.SendCommand(Packet.Create("LeftDriveGimbal", zero));
+            _rovecomm.SendCommand(Packet.Create("RightDriveGimbal", zero));
+            _rovecomm.SendCommand(Packet.Create("LeftMainGimbal", zero));
+            _rovecomm.SendCommand(Packet.Create("RightMainGimbal", zero));
         }
 
         private enum GimbalStates

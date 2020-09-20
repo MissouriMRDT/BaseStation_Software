@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace RoverNetworkManager.Views
+namespace RoverOverviewNetwork.Views
 {
     /// <summary>
     /// Interaction logic for MainWindowView.xaml

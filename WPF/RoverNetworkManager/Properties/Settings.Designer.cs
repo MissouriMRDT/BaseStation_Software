@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace RoverNetworkManager.Properties {
+namespace RoverOverviewNetwork.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

@@ -38,7 +38,6 @@ namespace RED.ViewModels.Modules
             }
             set
             {
-                Rotate(Pitch, Yaw, value);
                 _model.Roll = value;
                 NotifyOfPropertyChange(() => Roll);
             }
@@ -52,7 +51,6 @@ namespace RED.ViewModels.Modules
             }
             set
             {
-                Rotate(value, Yaw, Roll);
                 _model.Pitch = value;
                 NotifyOfPropertyChange(() => Pitch);
             }
@@ -66,7 +64,6 @@ namespace RED.ViewModels.Modules
             }
             set
             {
-                Rotate(Pitch, value, Roll);
                 _model.Yaw = value;
                 NotifyOfPropertyChange(() => Yaw);
             }
@@ -79,7 +76,7 @@ namespace RED.ViewModels.Modules
             _idResolver = idResolver;
 
             ModelImporter importer = new ModelImporter();
-            RoverModel = importer.Load(@"../../Addons/Rover.stl");
+            RoverModel = importer.Load(System.IO.Path.GetFullPath(@"Addons\Rover.stl"));
             Rotate(0, 0, 0);
 
             _rovecomm.NotifyWhenMessageReceived(this, "PitchHeadingRoll");
@@ -126,6 +123,7 @@ namespace RED.ViewModels.Modules
                     Pitch = packet.GetDataArray<Int16>()[0];
                     Yaw = packet.GetDataArray<Int16>()[1];
                     Roll = packet.GetDataArray<Int16>()[2];
+                    Rotate(-Pitch, 0, -Roll);
                     break;
 
                 default:           

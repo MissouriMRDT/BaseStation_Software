@@ -30,7 +30,7 @@ namespace RED.ViewModels.Modules
                 NotifyOfPropertyChange(() => Lidar);
             }
         }
-        
+
         public bool FixObtained
         {
             get
@@ -88,12 +88,13 @@ namespace RED.ViewModels.Modules
             set
             {
                 _model.RawLocation = value;
-                CurrentLocation = new GPSCoordinate(RawLocation.Latitude + Offset.Latitude, 
+                CurrentLocation = new GPSCoordinate(RawLocation.Latitude + Offset.Latitude,
                     RawLocation.Longitude + Offset.Longitude);
                 NotifyOfPropertyChange(() => RawLocation);
+                NotifyOfPropertyChange(() => CurrentLocation);
             }
         }
-        
+
         public GPSCoordinate Offset
         {
             get
@@ -174,38 +175,34 @@ namespace RED.ViewModels.Modules
             }
             RoverDistanceTraveled = RoverDistanceStart;
 
+
             _rovecomm.NotifyWhenMessageReceived(this, "Lidar");
             _rovecomm.NotifyWhenMessageReceived(this, "GPSPosition");
             _rovecomm.NotifyWhenMessageReceived(this, "GPSTelem");
             _rovecomm.NotifyWhenMessageReceived(this, "RoverDistanceSession");
         }
 
-        
+
 
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
         {
             switch (packet.Name)
             {
-               
                 case "GPSPosition":
                     RawLocation = new GPSCoordinate()
                     {
                         Latitude = packet.GetDataArray<Int32>()[0] / 10000000d,
-                        Longitude = packet.GetDataArray<Int32>()[1] / 10000000d
+                        Longitude = packet.GetDataArray<Int32>()[1] / -10000000d
                     };
                     break;
 
-                case "GPSTelem":
-                    Byte[] data = packet.GetDataArray<Byte>();
-                    FixObtained = data[0] != 0;
-                    FixQuality = data[0];
-                    NumberOfSatellites = data[1];
-                    break;
+                /* not actually possible from n3?
                 case "RoverDistanceSession":
                     //RoverMetrics.txt should be found in RED/Bin/Debug
                     RoverDistanceTraveled = RoverDistanceStart + IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0))/1000.0f;
                     System.IO.File.WriteAllText(System.IO.Path.GetFullPath("RoverMetrics.txt"), RoverDistanceTraveled.ToString());
                     break;
+                */
             }
         }
 

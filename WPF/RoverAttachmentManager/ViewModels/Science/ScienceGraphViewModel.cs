@@ -22,86 +22,120 @@ namespace RoverAttachmentManager.ViewModels.Science
         private readonly IRovecomm _rovecomm;
         private readonly IDataIdResolver _idResolver;
         private readonly ILogger _log;
-        private const int ScrewSpeedScale = 1000;
-        private bool screwIncrementPressed = false;
-
-
-        private const int XYSpeedScale = 1000;
 
         private readonly ScienceGraphModel _model;
-
 
         public PlotModel SpectrometerPlotModel { set; private get; }
         public PlotModel SensorPlotModel { set; private get; }
         public PlotModel MethanePlotModel { set; private get; }
+        public PlotModel CO2PlotModel { set; private get; }
+        public PlotModel O2PlotModel { set; private get; }
         public OxyPlot.Series.LineSeries SpectrometerSeries;
-        public OxyPlot.Series.LineSeries Sensor0Series;
-        public OxyPlot.Series.LineSeries Sensor1Series;
-        public OxyPlot.Series.LineSeries Sensor4Series;
+        public OxyPlot.Series.LineSeries MethaneConcentrationSeries;
+        public OxyPlot.Series.LineSeries CO2ConcentrationSeries;
+        public OxyPlot.Series.LineSeries O2ConcentrationSeries;
 
-        public DateTime StartTime;
+        public ScienceViewModel Science;
+
         public bool Graphing = false;
 
         public double[] SiteTimes = new double[12];
 
-        public float Sensor0Value
+
+        public float MethaneConcentration
         {
             get
             {
-                return _model.Sensor0Value;
+                return _model.MethaneConcentration;
             }
             set
             {
-                _model.Sensor0Value = value;
-                NotifyOfPropertyChange(() => Sensor0Value);
+                _model.MethaneConcentration = value;
+                NotifyOfPropertyChange(() => MethaneConcentration);
             }
         }
-        public float Sensor1Value
+        public float MethaneTemperature
         {
             get
             {
-                return _model.Sensor1Value;
+                return _model.MethaneTemperature;
             }
             set
             {
-                _model.Sensor1Value = value;
-                NotifyOfPropertyChange(() => Sensor1Value);
+                _model.MethaneTemperature = value;
+                NotifyOfPropertyChange(() => MethaneTemperature);
             }
         }
-        public float Sensor2Value
+        public float CO2Concentration
         {
             get
             {
-                return _model.Sensor2Value;
+                return _model.CO2Concentration;
             }
             set
             {
-                _model.Sensor2Value = value;
-                NotifyOfPropertyChange(() => Sensor2Value);
+                _model.CO2Concentration = value;
+                NotifyOfPropertyChange(() => CO2Concentration);
             }
         }
-        public float Sensor3Value
+        public float O2PartialPressure
         {
             get
             {
-                return _model.Sensor3Value;
+                return _model.O2PartialPressure;
             }
             set
             {
-                _model.Sensor3Value = value;
-                NotifyOfPropertyChange(() => Sensor3Value);
+                _model.O2PartialPressure = value;
+                NotifyOfPropertyChange(() => O2PartialPressure);
             }
         }
-        public float Sensor4Value
+        public float O2Temperature
         {
             get
             {
-                return _model.Sensor4Value;
+                return _model.O2Temperature;
             }
             set
             {
-                _model.Sensor4Value = value;
-                NotifyOfPropertyChange(() => Sensor4Value);
+                _model.O2Temperature = value;
+                NotifyOfPropertyChange(() => O2Temperature);
+            }
+        }
+        public float O2Concentration
+        {
+            get
+            {
+                return _model.O2Concentration;
+            }
+            set
+            {
+                _model.O2Concentration = value;
+                NotifyOfPropertyChange(() => O2Concentration);
+            }
+        }
+        public float O2BarometricPressure
+        {
+            get
+            {
+                return _model.O2BarometricPressure;
+            }
+            set
+            {
+                _model.O2BarometricPressure = value;
+                NotifyOfPropertyChange(() => O2BarometricPressure);
+            }
+        }
+        public DateTime StartTime
+        {
+            get
+            {
+                return _model.StartTime;
+            }
+            set
+            {
+                _model.StartTime = value;
+                NotifyOfPropertyChange(() => StartTime);
             }
         }
         public int RunCount
@@ -193,54 +227,58 @@ namespace RoverAttachmentManager.ViewModels.Science
             }
         }
 
-        public ScienceGraphViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log)
+        public ScienceGraphViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger log, ScienceViewModel parent)
         {
             _model = new ScienceGraphModel();
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
             _log = log;
-            _rovecomm.NotifyWhenMessageReceived(this, "ScienceSensors");
+            Science = parent;
 
+            _rovecomm.NotifyWhenMessageReceived(this, "Methane");
+            _rovecomm.NotifyWhenMessageReceived(this, "CO2");
+            _rovecomm.NotifyWhenMessageReceived(this, "O2");
 
-            SpectrometerPlotModel = new PlotModel { Title = "Spectrometer Results" };
-            SpectrometerSeries = new OxyPlot.Series.LineSeries();
-            SpectrometerPlotModel.Series.Add(SpectrometerSeries);
-            SpectrometerPlotModel.Axes.Add(new OxyPlot.Axes.LinearAxis { Position = AxisPosition.Left, Title = "Intensity" });
-            SpectrometerPlotModel.Axes.Add(new OxyPlot.Axes.LinearAxis { Position = AxisPosition.Bottom, Title = "Wavelength (nanometers)" });
+            SensorPlotModel = new PlotModel { Title = "Methane, CO2, and O2 Data" };
+            MethaneConcentrationSeries = new OxyPlot.Series.LineSeries();
+            CO2ConcentrationSeries = new OxyPlot.Series.LineSeries();
+            O2ConcentrationSeries = new OxyPlot.Series.LineSeries();
+            SensorPlotModel.Series.Add(MethaneConcentrationSeries);
+            SensorPlotModel.Series.Add(CO2ConcentrationSeries);
+            SensorPlotModel.Series.Add(O2ConcentrationSeries);
+            SensorPlotModel.Axes.Add(new OxyPlot.Axes.DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "mm:ss", Title = "Time" });
+            SensorPlotModel.Axes.Add(new OxyPlot.Axes.LinearAxis { Position = AxisPosition.Left, Title = "Parts Per Million" });
 
-            MethanePlotModel = new PlotModel { Title = "Methane Data" };
-            Sensor4Series = new OxyPlot.Series.LineSeries();
-            MethanePlotModel.Series.Add(Sensor4Series);
-            MethanePlotModel.Axes.Add(new OxyPlot.Axes.DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "mm:ss" });
+            MethanePlotModel = new PlotModel { Title = "Methane" };
+            MethaneConcentrationSeries = new OxyPlot.Series.LineSeries();
+            MethanePlotModel.Series.Add(MethaneConcentrationSeries);
+            MethanePlotModel.Axes.Add(new OxyPlot.Axes.DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "mm:ss", Title = "Time" });
+            MethanePlotModel.Axes.Add(new OxyPlot.Axes.LinearAxis { Position = AxisPosition.Left, Title = "Parts Per Million" });
 
-            SensorPlotModel = new PlotModel { Title = "Temperature & Humidity Data" };
-            Sensor0Series = new OxyPlot.Series.LineSeries();
-            Sensor1Series = new OxyPlot.Series.LineSeries();
-            SensorPlotModel.Series.Add(Sensor0Series);
-            SensorPlotModel.Series.Add(Sensor1Series);
-            SensorPlotModel.Axes.Add(new OxyPlot.Axes.DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "mm:ss" });
+            CO2PlotModel = new PlotModel { Title = "CO2" };
+            CO2ConcentrationSeries = new OxyPlot.Series.LineSeries();
+            CO2PlotModel.Series.Add(CO2ConcentrationSeries);
+            CO2PlotModel.Axes.Add(new OxyPlot.Axes.DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "mm:ss", Title = "Time" });
+            CO2PlotModel.Axes.Add(new OxyPlot.Axes.LinearAxis { Position = AxisPosition.Left, Title = "Parts Per Million" });
 
+            O2PlotModel = new PlotModel { Title = "O2" };
+            O2ConcentrationSeries = new OxyPlot.Series.LineSeries();
+            O2PlotModel.Series.Add(O2ConcentrationSeries);
+            O2PlotModel.Axes.Add(new OxyPlot.Axes.DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "mm:ss", Title = "Time" });
+            O2PlotModel.Axes.Add(new OxyPlot.Axes.LinearAxis { Position = AxisPosition.Left, Title = "Parts Per Million" });
 
-            Plots = new ObservableCollection<PlotModel>() { MethanePlotModel, SensorPlotModel };
-            SelectedPlots = MethanePlotModel;
+            Plots = new ObservableCollection<PlotModel>() { SensorPlotModel, MethanePlotModel, CO2PlotModel, O2PlotModel };
+            SelectedPlots = SensorPlotModel;
         }
 
 
         public void CreateSiteAnnotation()
         {
-            SensorPlotModel.Annotations.Add(new OxyPlot.Annotations.RectangleAnnotation
+            SelectedPlots.Annotations.Add(new OxyPlot.Annotations.RectangleAnnotation
             {
-                MinimumX = SiteTimes[SiteManagment.SiteNumber * 2],
-                MaximumX = SiteTimes[(SiteManagment.SiteNumber * 2) + 1],
-                Text = "Site " + SiteManagment.SiteNumber,
-                Fill = OxyColor.FromAColor(50, OxyColors.DarkOrange),
-
-            });
-            MethanePlotModel.Annotations.Add(new OxyPlot.Annotations.RectangleAnnotation
-            {
-                MinimumX = SiteTimes[SiteManagment.SiteNumber * 2],
-                MaximumX = SiteTimes[(SiteManagment.SiteNumber * 2) + 1],
-                Text = "Site " + SiteManagment.SiteNumber,
+                MinimumX = SiteTimes[(Science.SiteNumber - 1) * 2],
+                MaximumX = SiteTimes[((Science.SiteNumber - 1) * 2) + 1],
+                Text = "Site " + Science.SiteNumber,
                 Fill = OxyColor.FromAColor(50, OxyColors.DarkOrange),
 
             });
@@ -253,21 +291,16 @@ namespace RoverAttachmentManager.ViewModels.Science
             TimeSpan nowSpan = DateTime.UtcNow.Subtract(StartTime);
             DateTime now = new DateTime(nowSpan.Ticks);
 
-            Sensor0Series.Points.Add(new DataPoint(OxyPlot.Axes.DateTimeAxis.ToDouble(now), Sensor0Value));
-            Sensor1Series.Points.Add(new DataPoint(OxyPlot.Axes.DateTimeAxis.ToDouble(now), Sensor1Value));
-            Sensor4Series.Points.Add(new DataPoint(OxyPlot.Axes.DateTimeAxis.ToDouble(now), Sensor4Value));
-            SensorPlotModel.InvalidatePlot(true);
-            MethanePlotModel.InvalidatePlot(true);
-
-
+            MethaneConcentrationSeries.Points.Add(new DataPoint(OxyPlot.Axes.DateTimeAxis.ToDouble(now), MethaneConcentration));
+            CO2ConcentrationSeries.Points.Add(new DataPoint(OxyPlot.Axes.DateTimeAxis.ToDouble(now), CO2Concentration));
+            O2ConcentrationSeries.Points.Add(new DataPoint(OxyPlot.Axes.DateTimeAxis.ToDouble(now), O2Concentration));
+            SelectedPlots.InvalidatePlot(true);
         }
 
 
         public void AddSiteAnnotation(double x, string text)
         {
-            SensorPlotModel.Annotations.Add(new OxyPlot.Annotations.LineAnnotation { Type = LineAnnotationType.Vertical, X = x, Color = OxyColors.Green, Text = text });
-            MethanePlotModel.Annotations.Add(new OxyPlot.Annotations.LineAnnotation { Type = LineAnnotationType.Vertical, X = x, Color = OxyColors.Green, Text = text });
-
+            SelectedPlots.Annotations.Add(new OxyPlot.Annotations.LineAnnotation { Type = LineAnnotationType.Vertical, X = x, Color = OxyColors.Green, Text = text });
         }
 
 
@@ -281,9 +314,9 @@ namespace RoverAttachmentManager.ViewModels.Science
 
         public void ClearSensorGraphs()
         {
-            Sensor0Series.Points.Clear();
-            Sensor1Series.Points.Clear();
-            Sensor4Series.Points.Clear();
+            MethaneConcentrationSeries.Points.Clear();
+            CO2ConcentrationSeries.Points.Clear();
+            O2ConcentrationSeries.Points.Clear();
         }
 
         public void ExportGraph(PlotModel model, string filename, int height)
@@ -297,7 +330,7 @@ namespace RoverAttachmentManager.ViewModels.Science
         {
             List<DataPoint> points = series.Points;
 
-            Predicate<DataPoint> isInRange = dataPoint => dataPoint.X >= SiteTimes[SiteManagment.SiteNumber * 2] && dataPoint.X <= SiteTimes[(SiteManagment.SiteNumber * 2) + 1];
+            Predicate<DataPoint> isInRange = dataPoint => dataPoint.X >= SiteTimes[Science.SiteNumber * 2] && dataPoint.X <= SiteTimes[(Science.SiteNumber * 2) + 1];
 
             points = points.FindAll(isInRange);
 
@@ -330,19 +363,29 @@ namespace RoverAttachmentManager.ViewModels.Science
         {
             switch (packet.Name)
             {
-                case "ScienceSensors":
-                    Sensor0Value = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 0)) / 100.0);
-                    Sensor1Value = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 2)) / 100.0);
-                    Sensor2Value = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 4)) / 100.0);
-                    Sensor3Value = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 6)) / 100.0);
-                    Sensor4Value = (float)(IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet.Data, 8)));
+                case "Methane":
+                    float[] MethaneData = packet.GetDataArray<float>();
+                    MethaneConcentration = (float)(MethaneData[0]);
+                    MethaneTemperature = (float)(MethaneData[1]);
+                    UpdateSensorGraphs();
+                    break;
 
+                case "CO2":
+                    CO2Concentration = (float)(packet.GetData<float>());
+                    UpdateSensorGraphs();
+                    break;
+
+                case "O2":
+                    float[] O2Data = packet.GetDataArray<float>();
+                    O2PartialPressure = (float)(O2Data[0]);
+                    O2Temperature = (float)(O2Data[1]);
+                    O2Concentration = (float)(O2Data[2]);
+                    O2BarometricPressure = (float)(O2Data[3]);
                     UpdateSensorGraphs();
                     break;
 
                 default:
                     break;
-
             }
         }
 

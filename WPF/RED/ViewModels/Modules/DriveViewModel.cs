@@ -149,7 +149,11 @@ namespace RED.ViewModels.Modules
 
         private void SendSpeeds(bool reliable)
         {
-            short[] sendValues = { IPAddress.HostToNetworkOrder(SpeedLeft), IPAddress.HostToNetworkOrder(SpeedRight) };
+
+
+
+            short[] sendValues = { SpeedLeft, SpeedRight };
+
             _rovecomm.SendCommand(Packet.Create("DriveLeftRight", sendValues), reliable);
         }
 

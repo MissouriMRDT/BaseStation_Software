@@ -4,8 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:cal="http://www.caliburnproject.org"
-             xmlns:vlc="clr-namespace:Vlc.DotNet.Wpf;assembly=Vlc.DotNet.Wpf"
-             mc:Ignorable="d" 
+			 mc:Ignorable="d" 
              d:DesignHeight="911.6" d:DesignWidth="607.2">
     <Grid Margin="2">
         <Grid.ColumnDefinitions>
@@ -18,41 +17,45 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="2*" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Column="0" Margin="2.5">
-            <GroupBox Header="Angular" Margin="2.5">
+            <GroupBox Grid.Column="0" Header="Angular" Margin="5">
                 <ContentControl x:Name="AngularControl"/>
             </GroupBox>
-        </StackPanel>
 
-        <StackPanel Grid.Column="1" Margin="2.5">
-            <GroupBox Header="Angular" Margin="2.5">
+        <StackPanel Grid.Column="1">
+            <GroupBox Header="Angular IK" Margin="5">
                 <ContentControl x:Name="IKControl"/>
             </GroupBox>
+            <StackPanel Grid.Column="1" Grid.Row="4" Margin="5">
+                <ContentControl x:Name="InputManager"/>
+            </StackPanel>
         </StackPanel>
 
-        <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="2.5">
-            <GroupBox Header="Power BMS" Margin="2.5">
-                <ContentControl x:Name="ArmPower" />
-            </GroupBox>
-        </StackPanel>
+        <GroupBox Grid.Row="2" Grid.ColumnSpan="2" Header="Power BMS" Margin="5">
+            <ContentControl x:Name="ArmPower" />
+        </GroupBox>
 
-        <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Margin="2.5">
-            <GroupBox Header="Control Multipliers" Margin="2.5">
-                <ContentControl x:Name="ControlMultipliers" />
-            </GroupBox>
-        </StackPanel>
+        <GroupBox Grid.Row="3" Grid.ColumnSpan="1" Header="Control Multipliers" Margin="5">
+            <ContentControl x:Name="ControlMultipliers" />
+        </GroupBox>
 
-        <StackPanel Grid.Column="0" Grid.Row="4" Margin="2.5">
-            <GroupBox Header="Control Features" Margin="2.5">
-                <ContentControl x:Name="ControlFeatures"/>
-            </GroupBox>
-        </StackPanel>
+        <GroupBox Grid.Row="3" Grid.RowSpan="2" Grid.Column="1" Header="Console" Margin="5">
+            <ContentControl x:Name="ArmConsole" />
+		</GroupBox>
 
-        <StackPanel Grid.Column="1" Grid.Row="4" Margin="5">
-            <ContentControl x:Name="InputManager"/>
-        </StackPanel>
+        <GroupBox Grid.Column="0" Grid.Row="4" Header="Control Features" Margin="5">
+            <ContentControl x:Name="ControlFeatures"/>
+        </GroupBox>
+
+        <GroupBox Grid.Column="0" Grid.Row="5" Margin="5" Header="Camera 1">
+            <ContentControl x:Name="Camera1"></ContentControl>
+        </GroupBox>
+        <GroupBox Grid.Column="1" Grid.Row="5" Margin="5" Header="Camera 2">
+            <ContentControl x:Name="Camera2"></ContentControl>
+        </GroupBox>
+
     </Grid>
 
 </UserControl>
