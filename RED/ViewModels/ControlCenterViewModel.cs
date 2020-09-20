@@ -9,6 +9,8 @@ using RED.ViewModels.Tools;
 using Core.ViewModels.Input;
 using Core.ViewModels.Input.Controllers;
 using Core.Interfaces.Input;
+using RED.Models.Modules;
+using Core.Cameras;
 
 namespace RED.ViewModels
 {
@@ -136,6 +138,18 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => StopwatchTool);
             }
         }
+        public Rover3DViewModel RoverModel
+        {
+            get
+            {
+                return _model._RoverModel;
+            }
+            set
+            {
+                _model._RoverModel = value;
+                NotifyOfPropertyChange(() => RoverModel);
+            }
+        }
         public GPSViewModel GPS
         {
             get
@@ -148,18 +162,6 @@ namespace RED.ViewModels
                 NotifyOfPropertyChange(() => GPS);
             }
         }
-        public SensorViewModel Sensor
-        {
-            get
-            {
-                return _model._sensor;
-            }
-            set
-            {
-                _model._sensor = value;
-                NotifyOfPropertyChange(() => Sensor);
-            }
-        }
         public PowerViewModel Power
         {
             get
@@ -170,30 +172,6 @@ namespace RED.ViewModels
             {
                 _model._power = value;
                 NotifyOfPropertyChange(() => Power);
-            }
-        }
-        public CameraViewModel CameraMux
-        {
-            get
-            {
-                return _model._cameraMux;
-            }
-            set
-            {
-                _model._cameraMux = value;
-                NotifyOfPropertyChange(() => CameraMux);
-            }
-        }
-        public LightingViewModel Lighting
-        {
-            get
-            {
-                return _model._lighting;
-            }
-            set
-            {
-                _model._lighting = value;
-                NotifyOfPropertyChange(() => Lighting);
             }
         }
         public MapViewModel Map
@@ -294,6 +272,44 @@ namespace RED.ViewModels
             }
         }
 
+        public CameraViewModel Camera1
+        {
+            get
+            {
+                return _model._camera1;
+            }
+            set
+            {
+                _model._camera1 = value;
+                NotifyOfPropertyChange(() => Camera1);
+            }
+        }
+
+        public CameraViewModel Camera2
+        {
+            get
+            {
+                return _model._camera2;
+            }
+            set
+            {
+                _model._camera2 = value;
+                NotifyOfPropertyChange(() => Camera2);
+            }
+        }
+        public CameraViewModel Camera3
+        {
+            get
+            {
+                return _model._camera3;
+            }
+            set
+            {
+                _model._camera3 = value;
+                NotifyOfPropertyChange(() => Camera3);
+            }
+        }
+
         public ControlCenterViewModel()
         {
             base.DisplayName = "Rover Engagement Display";
@@ -302,16 +318,14 @@ namespace RED.ViewModels
             Console = new ConsoleViewModel();
             ConfigManager = new XMLConfigManager(Console);
             MetadataManager = new MetadataManager(Console, ConfigManager);
-       
+
             Rovecomm = Rovecomm.Instance;
             //ResubscribeAll();
-            
-            GPS = new GPSViewModel(Rovecomm, MetadataManager);
-            Sensor = new SensorViewModel(Rovecomm, MetadataManager, Console);
+
+            RoverModel = new Rover3DViewModel(Rovecomm, MetadataManager);
+            GPS = new GPSViewModel(Rovecomm, MetadataManager, Console);
             Power = new PowerViewModel(Rovecomm, MetadataManager, Console);
-            CameraMux = new CameraViewModel(Rovecomm, MetadataManager);
-            Lighting = new LightingViewModel(Rovecomm, MetadataManager, Console);
-            Map = new MapViewModel(Console);
+            Map = new MapViewModel(Rovecomm, Console);
 
             Drive = new DriveViewModel(Rovecomm, MetadataManager, Console);
             Gimbal = new GimbalViewModel(Rovecomm, MetadataManager, Console);
@@ -321,7 +335,11 @@ namespace RED.ViewModels
             FlightStickController = new FlightStickViewModel();
             KeyboardController = new KeyboardInputViewModel();
 
-            // Programatic instanciation of InputManager view, vs static like everything else in a xaml 
+            Camera1 = new CameraViewModel(Core.CommonLog.Instance);
+            Camera2 = new CameraViewModel(Core.CommonLog.Instance);
+            Camera3 = new CameraViewModel(Core.CommonLog.Instance);
+
+            // Programatic instanciation of InputManager view, vs static like everything else in a xaml
             InputManager = new InputManagerViewModel(Console, ConfigManager,
                 new IInputDevice[] { XboxController1, XboxController2, XboxController3, FlightStickController, KeyboardController },
                 new MappingViewModel[0],
@@ -346,11 +364,11 @@ namespace RED.ViewModels
 
         public void ResubscribeAll()
         {
-            Rovecomm.SubscribeMyPCToAllDevices();
+            Rovecomm.SubscribeToAll();
 		}
 
 		public void NetworkManager() {
-			new RoverNetworkManager.RNMBootstrapper().DisplayNetworkManager();
+			new RoverOverviewNetwork.RONBootstrapper().DisplayNetworkManager();
 			NetworkManagerEnabled = false;
 		}
 

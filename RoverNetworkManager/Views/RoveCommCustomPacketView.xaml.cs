@@ -1,9 +1,9 @@
-﻿using RoverNetworkManager.ViewModels;
+﻿using RoverOverviewNetwork.ViewModels;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace RoverNetworkManager.Views
+namespace RoverOverviewNetwork.Views
 {
     /// <summary>
     /// Interaction logic for RoveCommCustomPacket.xaml
@@ -21,5 +21,5 @@ namespace RoverNetworkManager.Views
 		public void btnSubscribe_Click(object sender, RoutedEventArgs e) {
 			((RoveCommCustomPacketViewModel)DataContext).SubscribeID();
 		}
-	}
+    }
 }

@@ -149,18 +149,8 @@ namespace RED.ViewModels.Modules
 
         private void SendSpeeds(bool reliable)
         {
-            if (UseLegacyDataIds)
-            {
-                _rovecomm.SendCommand(new Packet("MotorLeftSpeed", SpeedLeft), reliable);
-                _rovecomm.SendCommand(new Packet("MotorRightSpeed", SpeedRight), reliable);
-            }
-            else
-            {
-                short[] sendValues = { IPAddress.HostToNetworkOrder(SpeedLeft), IPAddress.HostToNetworkOrder(SpeedRight) };
-                byte[] data = new byte[sendValues.Length * sizeof(short)];
-                Buffer.BlockCopy(sendValues, 0, data, 0, data.Length);
-                _rovecomm.SendCommand(new Packet("DriveLeftRight", data, 2, (byte)DataTypes.INT16_T), reliable);
-            }
+            short[] sendValues = { SpeedLeft, SpeedRight };
+            _rovecomm.SendCommand(Packet.Create("DriveLeftRight", sendValues), reliable);
         }
 
         private float ScaleVector(float theta)

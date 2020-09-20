@@ -2,25 +2,30 @@
 using Core;
 using Core.Interfaces;
 using Core.Models;
+using Core.RoveProtocol;
 using Core.ViewModels;
 using GMap.NET;
 using GMap.NET.MapProviders;
 using GMap.NET.WindowsPresentation;
 using RED.Addons.Navigation;
 using RED.Models.Navigation;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net;
 using System.Timers;
 using System.Windows;
 using System.Windows.Media;
 
+
 namespace RED.ViewModels.Navigation
 {
-    public class MapViewModel : PropertyChangedBase
+    public class MapViewModel : PropertyChangedBase, IRovecommReceiver
     {
         private readonly MapModel _model;
         private readonly ILogger _log;
+        private readonly IRovecomm _rovecomm;
 
         public Waypoint CurrentLocation
         {
@@ -118,15 +123,41 @@ namespace RED.ViewModels.Navigation
                 NotifyOfPropertyChange(() => MainMap);
             }
         }
+        public float Heading
+        {
+            get
+            {
+                return _model.Heading;
+            }
+            set
+            {
+                _model.Heading = value;
+                NotifyOfPropertyChange(() => Heading);
+            }
+        }
 
-        public MapViewModel(ILogger log)
+        public MapViewModel(IRovecomm networkMessenger, ILogger log)
         {
             _model = new MapModel();
             _log = log;
             Manager = WaypointManager.Instance;
+            _rovecomm = networkMessenger;
 
-            CurrentLocation = new Waypoint("GPS", 0f, 0f) { Color = System.Windows.Media.Colors.Red };
+            CurrentLocation = new Waypoint("GPS", 0f, 0f) {Color = System.Windows.Media.Colors.Red};
 			RefreshMap();
+
+            _rovecomm.NotifyWhenMessageReceived(this, "PitchHeadingRoll");
+        }
+
+        public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
+        {
+            switch (packet.Name)
+            {
+                case "PitchHeadingRoll":
+                    Heading = packet.GetDataArray<Int16>()[1];
+                    break;
+            }
+
         }
 
         public void SetMap(GMapControl map)
@@ -137,8 +168,6 @@ namespace RED.ViewModels.Navigation
             CachePrefetchStopZoom = MainMap.MaxZoom;
         }
 
-        public List<PointLatLng> RoverPath;
-
         private void InitializeMapControl()
         {
             MainMap.Margin = new Thickness(-5);
@@ -146,11 +175,11 @@ namespace RED.ViewModels.Navigation
             MainMap.FillEmptyTiles = !ShowEmptyTiles;
 
             MainMap.Manager.Mode = AccessMode.CacheOnly;
-            MainMap.MapProvider = GMapProviders.OpenStreetMapQuestHybrid;
+            MainMap.MapProvider = GMapProviders.GoogleSatelliteMap;
 
             MainMap.Position = new PointLatLng(StartPosition.Latitude, StartPosition.Longitude);
             MainMap.MinZoom = 1;
-            MainMap.MaxZoom = 18;
+            MainMap.MaxZoom = 20;
             MainMap.Zoom = 10;
 
             MainMap.EmptyMapBackground = Brushes.White;
@@ -159,40 +188,6 @@ namespace RED.ViewModels.Navigation
 
             MainMap.IgnoreMarkerOnMouseWheel = true;
             MainMap.MouseWheelZoomType = MouseWheelZoomType.MousePositionWithoutCenter;
-
-            RoverPath = new List<PointLatLng>();
-
-            Timer checkForTime = new Timer(1000);
-            checkForTime.Elapsed += new ElapsedEventHandler(UpdateRoverPath);
-            checkForTime.Enabled = true;
-
-        }
-
-        void UpdateRoverPath(object sender, ElapsedEventArgs e)
-        {
-            if (CurrentLocation.Longitude == 0 && CurrentLocation.Latitude == 0) {
-                return;
-            }
-
-            PointLatLng curr = new PointLatLng(CurrentLocation.Latitude, CurrentLocation.Longitude);
-            
-            if(RoverPath.Count > 0 && RoverPath[RoverPath.Count - 1].Equals(curr))
-            {
-                RoverPath.Add(curr);
-                _log.Log("Added point!");
-            }
-            else if(RoverPath.Count == 0)
-            {
-                RoverPath.Add(curr);
-                _log.Log("Added point!");
-            }
-            RefreshMap();
-        }
-
-        void ClearRoverPath()
-        {
-            RoverPath.Clear();
-            RefreshMap();
         }
 
         public void CacheImport()
@@ -238,11 +233,19 @@ namespace RED.ViewModels.Navigation
 
             var converter = new GMapMarkerCollectionMultiConverter();
             var newdata = (IEnumerable<GMapMarker>)converter.Convert(new object[] { CurrentLocation, Waypoints.Where(x => x.IsOnMap) }, typeof(System.Collections.ObjectModel.ObservableCollection<GMapMarker>), null, System.Globalization.CultureInfo.DefaultThreadCurrentUICulture);
-            foreach (var marker in newdata)
-                MainMap.Markers.Add(marker);
 
-            var routeMarker = new GMapRoute(RoverPath);
-            MainMap.Markers.Add(routeMarker);
+            int i = 0;
+            foreach (var marker in newdata)
+            {
+                if (i == 0)
+                {
+                    RotateTransform Rotation = new RotateTransform(Heading, 16.5, 16.5);
+                    
+                    marker.Shape.RenderTransform = Rotation;
+                }
+                i++;
+                MainMap.Markers.Add(marker);
+            }
         }
     }
 }

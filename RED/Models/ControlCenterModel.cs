@@ -6,6 +6,8 @@ using RED.ViewModels.Navigation;
 using RED.ViewModels.Tools;
 using Core.ViewModels.Input;
 using Core.ViewModels.Input.Controllers;
+using RED.Models.Modules;
+using Core.Cameras;
 
 namespace RED.Models
 {
@@ -20,12 +22,9 @@ namespace RED.Models
         internal InputManagerViewModel _input;
         internal WaypointManagerViewModel _waypoint;
         internal StopwatchToolViewModel _stopwatchTool;
-        
+        internal Rover3DViewModel _RoverModel; 
         internal GPSViewModel _GPS;
-        internal SensorViewModel _sensor;
         internal PowerViewModel _power;
-        internal CameraViewModel _cameraMux;
-        internal LightingViewModel _lighting;
         internal MapViewModel _map;
         internal DriveViewModel _drive;
         internal GimbalViewModel _gimbal;
@@ -35,7 +34,11 @@ namespace RED.Models
         internal FlightStickViewModel _flightStickController;
         internal KeyboardInputViewModel _keyboardController;
 
-		internal bool _networkManagerEnabled;
+        internal CameraViewModel _camera1;
+        internal CameraViewModel _camera2;
+        internal CameraViewModel _camera3;
+
+        internal bool _networkManagerEnabled;
         internal bool _attachmentManagerEnabled;
     }
 }

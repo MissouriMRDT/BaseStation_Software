@@ -1,8 +1,8 @@
-﻿using RoverNetworkManager.ViewModels;
+﻿using RoverOverviewNetwork.ViewModels;
 using System.Collections.ObjectModel;
 using System.Net;
 
-namespace RoverNetworkManager.Models
+namespace RoverOverviewNetwork.Models
 {
     internal class PingToolModel
     {
@@ -16,7 +16,7 @@ namespace RoverNetworkManager.Models
             internal IPAddress Address;
             internal bool SupportsICMP;
             internal bool SupportsRoveComm;
-            internal long Result;
+            internal float Result;
             internal bool IsSendingICMP;
             internal bool IsSendingRoveComm;
             internal bool AutoModeEnabled;

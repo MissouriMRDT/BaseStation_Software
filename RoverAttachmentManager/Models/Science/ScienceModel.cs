@@ -1,23 +1,28 @@
-﻿using System;
+﻿using RoverAttachmentManager.ViewModels.Science;
+﻿using RoverAttachmentManager.ViewModels;
+using System;
 using System.IO;
+using Core.ViewModels.Input.Controllers;
+using Core.Configurations;
+using Core.Cameras;
 
 namespace RoverAttachmentManager.Models.Science
 {
     internal class ScienceModel
     {
-        internal float Sensor0Value;
-        internal float Sensor1Value;
-        internal float Sensor2Value;
-        internal float Sensor3Value;
-        internal float Sensor4Value;
-        internal int ScrewPosition;
-        internal int RunCount = 100;
-        internal int SiteNumber = 1;
-
-        internal System.Net.IPAddress SpectrometerIPAddress;
-        internal ushort SpectrometerPortNumber = 11001;
-        internal string SpectrometerFilePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Science Files";
-
-        internal Stream SensorDataFile;
+        internal ScienceGraphViewModel _scienceGraph;
+        internal SiteManagmentViewModel _siteManagment;
+        internal ScienceGenevaViewModel _scienceGeneva;
+        internal ScienceSensorsViewModel _scienceSensors;
+        internal SpectrometerViewModel _spectrometer;
+        internal SciencePowerViewModel _sciencePower;
+        internal InputManagerViewModel InputManager;
+        internal XMLConfigManager _configManager;
+        internal XboxControllerInputViewModel _xboxController1;
+        internal XboxControllerInputViewModel _xboxController2;
+        internal XboxControllerInputViewModel _xboxController3;
+        internal CameraViewModel _camera1;
+        internal CameraViewModel _camera2;
+        internal int SiteNumber;
     }
 }

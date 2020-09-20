@@ -17,6 +17,7 @@ namespace RED.Models.Navigation
 
         internal int CachePrefetchStartZoom;
         internal int CachePrefetchStopZoom;
+        internal float Heading = 0;
 
         internal GMapControl MainMap;
     }

@@ -2,13 +2,13 @@
 using Core.Configurations;
 using Core.Contexts;
 using Core.Interfaces;
-using Core.Models;
-using RoverNetworkManager.Models;
+using Core.RoveProtocol;
+using RoverOverviewNetwork.Models;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
-namespace RoverNetworkManager.ViewModels {
+namespace RoverOverviewNetwork.ViewModels {
 	public class RoveCommCustomPacketViewModel : PropertyChangedBase, IRovecommReceiver
     {
         private readonly RoveCommCustomPacketModel _model;
@@ -173,13 +173,7 @@ namespace RoverNetworkManager.ViewModels {
 
 		internal void SendCommand() {
 			byte[] data = StringToByteArray(Data);
-
-            /*
-			ushort id;
-			if (ushort.TryParse(ID, out id)) {
-				_networkManager.SendPacket(new Packet(id, data.ToArray()), System.Net.IPAddress.Parse(IP), false);
-			}
-            */
+            
 		}
 
 		public RoveCommCustomPacketViewModel(IRovecomm network, IConfigurationManager config)
@@ -187,7 +181,7 @@ namespace RoverNetworkManager.ViewModels {
             _model = new RoveCommCustomPacketModel();
 			_networkManager = network;
 
-			_networkManager.SubscribeMyPCToAllDevices();
+			_networkManager.SubscribeToAll();
 
 			LoadMetadata();
 			PropertyChanged += RoveCommCustomPacketViewModel_PropertyChanged;
@@ -209,10 +203,5 @@ namespace RoverNetworkManager.ViewModels {
 
 			PacketLog += $"{packet.Name}: {d}\r\n";
 		}
-
-        public void ReceivedRovecommMessageCallback(int index, bool reliable)
-        {
-            ReceivedRovecommMessageCallback(_networkManager.GetPacketByID(index), false);
-        }
     }
 }

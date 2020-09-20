@@ -12,7 +12,7 @@ namespace RED.Addons.Tools
 
             var val = (TimeSpan)value;
             val = TimeSpan.FromSeconds(Math.Round(val.TotalSeconds));
-            return String.Format("{0:#00}:{1:00}", Math.Truncate(val.TotalMinutes), val.Seconds);
+            return String.Format("{0}{1:#00}:{2:00}", val.Seconds >= 0 ? "" : "-", Math.Abs(Math.Truncate(val.TotalMinutes)), Math.Abs(val.Seconds));
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

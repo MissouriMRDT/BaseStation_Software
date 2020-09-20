@@ -4,12 +4,12 @@
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:behaviours="clr-namespace:MahApps.Metro.Behaviours;assembly=MahApps.Metro"
-        MinHeight="640" MinWidth="1024" Height="640" Width="1024" 
+        MinHeight="640" MinWidth="1040" Height="640" Width="1240" 
         EnableDWMDropShadow="True" ResizeMode="CanResize" TitleCaps="False"
         WindowTransitionsEnabled="True" WindowStartupLocation="CenterScreen">
     <controls:MetroWindow.Resources>
-        <Style TargetType="Expander" BasedOn="{StaticResource {x:Type Expander}}">
-            <Setter Property="Margin" Value="5" />
+        <Style TargetType="GroupBox" BasedOn="{StaticResource {x:Type GroupBox}}">
+            <Setter Property="Margin" Value="5"/>
         </Style>
     </controls:MetroWindow.Resources>
     
@@ -17,71 +17,111 @@
         <behaviours:BorderlessWindowBehavior />
     </i:Interaction.Behaviors>
 
-    <controls:MetroTabControl Name="MainTabs">
-        <TabItem Header="Control Center">
-            <Grid Margin="5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="4*" />
-                    <ColumnDefinition Width="3*" />
-                    <ColumnDefinition Width="2*" />
-                </Grid.ColumnDefinitions>
-                <Grid Grid.Column="0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <ContentControl Grid.Row="0" x:Name="Map" />
-                    <StackPanel Grid.Row="1">
-                        <Expander Header="GPS" IsExpanded="True">
-                            <ContentControl x:Name="GPS" />
-                        </Expander>
-                        <Expander Header="Waypoints" IsExpanded="True">
-                            <ContentControl x:Name="WaypointManager" />
-                        </Expander>
-                    </StackPanel>
-                    
-                </Grid>
-                <ScrollViewer Grid.Column="1">
-                    <StackPanel>
-                        <Expander Header="Drive" IsExpanded="True">
-                            <ContentControl x:Name="Drive" />
-                        </Expander>
-                        <Expander Header="Gimbal" IsExpanded="True">
-                            <StackPanel>
-                                <ContentControl x:Name="Gimbal" />
-                            </StackPanel>
-                        </Expander>
-                        <Expander Header="Power and BMS">
-                            <ContentControl x:Name="Power" />
-                        </Expander>
-                        <Expander Header="Lighting">
-                            <ContentControl x:Name="Lighting" />
-                        </Expander>
-                    </StackPanel>
-                </ScrollViewer>
-                <Grid Grid.Column="2">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="auto" />
-                    </Grid.RowDefinitions>
+    <ScrollViewer VerticalScrollBarVisibility="auto">
+        <controls:MetroTabControl Name="MainTabs">
+            <TabItem Header="Control Center">
+                <Grid Margin="0 -43 0 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="474"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Margin="5 43 5 5" Grid.Column="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
 
-                    <Expander Grid.Row="0" Header="Sensors">
-                        <ContentControl x:Name="Sensor" />
-                    </Expander>
-                    <StackPanel Grid.Row="1" Margin="5">
-                        <Button DockPanel.Dock="Bottom" x:Name="ResubscribeAll">Resubscribe All</Button>
-						<Button DockPanel.Dock="Bottom" x:Name="NetworkManager" IsEnabled="{Binding NetworkManagerEnabled}" Content="Open Network Manager" Margin="0 0 0 5"/>
-                        <Button DockPanel.Dock="Bottom" x:Name="AttachmentManager" IsEnabled="{Binding AttachmentManagerEnabled}" Content="Open Attachment Manager" Margin="0 0 0 5"/>
-                    </StackPanel>
-                    <ContentControl Grid.Row="2" Margin="5" x:Name="Console" />
-                    <ContentControl Grid.Row="3" Margin="5" x:Name="InputManager"/>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+
+                        <GroupBox Header="GPS/Sensors"  Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
+                            <ContentControl x:Name="GPS" />
+                        </GroupBox>
+
+
+                        <GroupBox Grid.Row="2" Grid.ColumnSpan="3" Header="Power and BMS">
+                            <ContentControl x:Name="Power" />
+                        </GroupBox>
+
+                        <GroupBox Grid.Row="3" Grid.ColumnSpan="3" Header="Drive">
+                            <ContentControl x:Name="Drive" />
+                        </GroupBox>
+
+                        <ContentControl Grid.Row="5" Height="500" Grid.Column="0" Grid.ColumnSpan="3" x:Name="Console" />
+
+
+                        <ContentControl x:Name="InputManager" Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2"/>
+
+                        <GroupBox Header="Gimbal" Grid.Column="2" Grid.Row="6" Height="90">
+                            <ContentControl x:Name="Gimbal" />
+                        </GroupBox>
+
+                        <GroupBox Grid.Column="2" Grid.Row="1" Header="3D Model" Width="200">
+                            <ContentControl x:Name="RoverModel"/>
+                        </GroupBox>
+
+
+                        <GroupBox Grid.Column="0"  Grid.Row="1" Header="Waypoints" Grid.ColumnSpan="2" Height="237">
+                            <ContentControl x:Name="WaypointManager" />
+                        </GroupBox>
+
+                        <GroupBox Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="3" Header="Timer">
+                            <ContentControl x:Name="StopwatchTool"/>
+                        </GroupBox>
+
+                        <StackPanel HorizontalAlignment="Center" Grid.Row="7" Grid.ColumnSpan="3" Orientation="Horizontal">
+                            <Button DockPanel.Dock="Bottom" x:Name="ResubscribeAll" Margin="0 0 0 5">Resubscribe All</Button>
+                            <Button DockPanel.Dock="Bottom" x:Name="NetworkManager" IsEnabled="{Binding NetworkManagerEnabled}" Content="Open Overview of Network" Margin="0 0 0 5"/>
+                            <Button DockPanel.Dock="Bottom" x:Name="AttachmentManager" IsEnabled="{Binding AttachmentManagerEnabled}" Content="Open Attachment Manager" Margin="0 0 0 5"/>
+                        </StackPanel>
+
+                    </Grid>
+
+                    <Grid Grid.Column="1" Margin="0 0 0 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0" Grid.Column="0" Margin="0 0 0 5">
+                            <ContentControl  x:Name="Map" />
+                        </StackPanel>
+                        <GroupBox Grid.Row="1" Grid.Column="0" Header="Camera 1" Margin="5 0 5 5">
+                            <ContentControl x:Name="Camera1"></ContentControl>
+                        </GroupBox>
+
+                        <GroupBox Grid.Row="2" Grid.Column="0" Header="Camera 2" Margin="5 0 5 5" >
+                            <ContentControl x:Name="Camera2"></ContentControl>
+                        </GroupBox>
+
+                        <GroupBox Grid.Row="3" Grid.Column="0" Header="Camera 3" Margin="5 0 5 5" >
+                            <ContentControl x:Name="Camera3"></ContentControl>
+                        </GroupBox>
+
+                    </Grid>
                 </Grid>
-            </Grid>
-        </TabItem>
-        <TabItem Header="Settings" Name="SettingsTab">
-            <ContentControl x:Name="SettingsManager" />
-        </TabItem>
-    </controls:MetroTabControl>
+            </TabItem>
+
+            <TabItem Header="Settings" Name="SettingsTab">
+                <ContentControl x:Name="SettingsManager" />
+            </TabItem>
+        </controls:MetroTabControl>
+
+    </ScrollViewer>
 </controls:MetroWindow>

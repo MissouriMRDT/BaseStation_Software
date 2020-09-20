@@ -13,12 +13,14 @@
     </UserControl.Resources>
     <Grid Margin="10">
 		<Grid.RowDefinitions>
-			<RowDefinition Height="*"/>
-			<RowDefinition Height="10"/>
-			<RowDefinition Height="Auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="408"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
 		</Grid.RowDefinitions>
-		<gmap:GMapControl Grid.Row="0" Name="Gmap" DataContextChanged="Map_DataContextChanged"/>
-        <StackPanel Grid.Row="2" Orientation="Horizontal">
+		<gmap:GMapControl Grid.Row="2" Name="Gmap" DataContextChanged="Map_DataContextChanged"/>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
             <Button x:Name="RefreshMap">Refresh</Button>
             <Button x:Name="ClearRoverPath">Clear Rover Path</Button>
             <Button Content="Cache Control" ContextMenuService.IsEnabled="False" Click="CacheControl_Click">
@@ -58,9 +60,11 @@
                     </ContextMenu>
                 </Button.ContextMenu>
             </Button>
-            <Label>Zoom:</Label>
-            <Label Content="{Binding MainMap.Zoom}" Width="25" />
-            <Slider Value="{Binding MainMap.Zoom}" Minimum="1" Maximum="18" Width="100" Interval="1" IsSnapToTickEnabled="True" />
+        </StackPanel>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="-10" HorizontalAlignment="Center">
+        <Label>Zoom:</Label>
+            <Label Content="{Binding MainMap.Zoom}" Width="30" />
+            <Slider Value="{Binding MainMap.Zoom}" Minimum="1" Maximum="20" Margin="0 4 0 0" Width="150" Interval="1" IsSnapToTickEnabled="True" />
         </StackPanel>
     </Grid>
 

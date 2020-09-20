@@ -6,23 +6,15 @@
              xmlns:addonsNav="clr-namespace:RED.Addons.Navigation"
              xmlns:addons="clr-namespace:Core.Addons;assembly=Core"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             xmlns:h="http://helix-toolkit.org/wpf">
+
+
     <UserControl.Resources>
         <addonsNav:GPSCoordinateToLatitudeConverter x:Key="LatitudeConverter" />
         <addonsNav:GPSCoordinateToLongitudeConverter x:Key="LongitudeConverter" />
-        <addons:BoolToStringConverter x:Key="StaleDataConverter" TrueValue="" FalseValue="Strikethrough" />
-        <Style x:Key="MaybeStale">
-            <Setter Property="TextBlock.TextDecorations" Value="{Binding FixObtained, Converter={StaticResource StaleDataConverter}}" />
-        </Style>
     </UserControl.Resources>
     <StackPanel Orientation="Horizontal">
-        <Canvas Width="44" Height="44" Margin="4">
-            <Path Fill="{StaticResource AccentColorBrush}" Data="M 10,44 22,0 34,44 22,35 10,44" Width="44" Height="44">
-                <Path.LayoutTransform>
-                    <RotateTransform Angle="{Binding Heading}" />
-                </Path.LayoutTransform>
-            </Path>
-        </Canvas>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition />
@@ -34,26 +26,39 @@
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="50" />
                 <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Row="0" Grid.Column="0">Fix Obtained</Label>
             <Label Grid.Row="0" Grid.Column="1" x:Name="FixObtained" />
+
+            <Label Grid.Row="1" Grid.Column="2">Odometer (Miles)</Label>
+            <Label Grid.Row="1" Grid.Column="3">
+                <TextBlock Grid.Row="2" Grid.Column="1" x:Name="RoverDistanceTraveled" />
+            </Label>
+
             <Label Grid.Row="1" Grid.Column="0">Fix Quality</Label>
             <Label Grid.Row="1" Grid.Column="1">
-                <TextBlock Grid.Row="1" Grid.Column="1" x:Name="FixQuality" Style="{DynamicResource MaybeStale}" />
+                <TextBlock Grid.Row="1" Grid.Column="1" x:Name="FixQuality" />
             </Label>
             <Label Grid.Row="0" Grid.Column="2">Satellite Count</Label>
             <Label Grid.Row="0" Grid.Column="3">
-                <TextBlock x:Name="NumberOfSatellites" Style="{DynamicResource MaybeStale}" />
+                <TextBlock x:Name="NumberOfSatellites" />
             </Label>
             <Label Grid.Row="0" Grid.Column="4">Current Lat</Label>
             <Label Grid.Row="0" Grid.Column="5">
-                <TextBlock Text="{Binding CurrentLocation, Converter={StaticResource LatitudeConverter}}" Style="{DynamicResource MaybeStale}" />
+                <TextBlock Text="{Binding CurrentLocation, Converter={StaticResource LatitudeConverter}}" />
             </Label>
             <Label Grid.Row="1" Grid.Column="4">Current Lon</Label>
             <Label Grid.Row="1" Grid.Column="5">
-                <TextBlock Text="{Binding CurrentLocation, Converter={StaticResource LongitudeConverter}}" Style="{DynamicResource MaybeStale}" />
+                <TextBlock Text="{Binding CurrentLocation, Converter={StaticResource LongitudeConverter}}" />
             </Label>
+            <Label Grid.Row="0" Grid.Column="7">Lidar</Label>
+            <Label Grid.Row="0" Grid.Column="8" x:Name="Lidar" ContentStringFormat="{}{0:0.00}" />
         </Grid>
     </StackPanel>
 </UserControl>

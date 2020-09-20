@@ -91,14 +91,6 @@ namespace RED.Views.Modules
         {
             ((PowerViewModel)DataContext).MotorBusses((bool)((ToggleButton)sender).IsChecked);
         }
-        private void FanPower(object sender, RoutedEventArgs e)
-        {
-            ((PowerViewModel)DataContext).FanControl((bool)((ToggleButton)sender).IsChecked);
-        }
-        private void BuzzPower(object sender, RoutedEventArgs e)
-        {
-            ((PowerViewModel)DataContext).BuzzerControl((bool)((ToggleButton)sender).IsChecked);
-        }
         private void SaveLog(object sender, RoutedEventArgs e)
         {
             ((PowerViewModel)DataContext).SaveFile((bool)((ToggleButton)sender).IsChecked);

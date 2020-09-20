@@ -18,16 +18,38 @@
             <Color R="128" G="128" B="128" A="255" />
             <Color R="0" G="0" B="0" A="255" />
         </x:Array>
+        <Style x:Key="VisibleWhenLatLong"  TargetType="{x:Type Control}">
+            <Setter Property="Visibility" Value="Hidden" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName=WaypointLatLong, Path=IsSelected}" Value="False">
+                    <Setter Property="Visibility"  Value="Hidden"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ElementName=WaypointDMS, Path=IsSelected}" Value="False">
+                    <Setter Property="Visibility"  Value="Visible"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="VisibleWhenDMS"  TargetType="{x:Type Control}">
+            <Setter Property="Visibility" Value="Hidden" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName=WaypointLatLong, Path=IsSelected}" Value="True">
+                    <Setter Property="Visibility"  Value="Hidden"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ElementName=WaypointDMS, Path=IsSelected}" Value="True">
+                    <Setter Property="Visibility"  Value="Visible"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
     </UserControl.Resources>
     <DockPanel>
         <StackPanel Orientation="Vertical" DockPanel.Dock="Top">
-            <Grid>
-                <Grid.ColumnDefinitions>
+			<Grid>
+				<Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" ContextMenuService.IsEnabled="False" Content="Add Waypoint" Click="AddMenu_Click">
+                <Button Grid.Column="0" ContextMenuService.IsEnabled="False" Content="Add Waypoint" Click="AddMenu_Click" x:Name="AddMenu">
                     <Button.ContextMenu>
                         <ContextMenu>
                             <ContextMenu.Template>
@@ -36,24 +58,44 @@
                                         <GroupBox Header="Add Waypoint" Margin="0">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="50"/>
-                                                    <ColumnDefinition Width="150"/>
+                                                    <ColumnDefinition Width="100" />
+                                                    <ColumnDefinition Width="100" />
+													<ColumnDefinition Width="100"/>
+													<ColumnDefinition Width="100"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="*"/>
                                                     <RowDefinition Height="*"/>
                                                     <RowDefinition Height="*"/>
+													<RowDefinition Height="*"/>
+                                                    <RowDefinition Height="*"/>
                                                     <RowDefinition Height="*"/>
                                                 </Grid.RowDefinitions>
 
-                                                <Label Grid.Row="0" Grid.Column="0" Content="Name:" />
-                                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="NameTextBox" Text="{Binding NewPoint.Name}"/>
-                                                <Label Grid.Row="1" Grid.Column="0"  Content="Lat:" />
-                                                <TextBox Grid.Row="1" Grid.Column="1" x:Name="LatitudeTextBox" Text="{Binding NewPoint.Latitude}" />
-                                                <Label Grid.Row="2" Grid.Column="0" Content="Lon:" />
-                                                <TextBox Grid.Row="2" Grid.Column="1" x:Name="LongitudeTextBox" Text="{Binding NewPoint.Longitude}"/>
+                                                <Label Margin="2.5" Grid.Row="0" Grid.Column="0" Content="Name:" />
+                                                <TextBox Margin="2.5" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" x:Name="NameTextBox" Text="{Binding Name}"/>
+                                                <ComboBox Margin="2.5" x:Name="WaypointSelector" Grid.Row="0" Grid.Column="3" SelectedIndex="0">
+                                                    <ComboBoxItem x:Name = "WaypointLonLat" Content = "Long/Lat"/>
+                                                    <ComboBoxItem x:Name = "WaypointDMS" Content = "DMS"/>
+                                                </ComboBox>
+                                                <Label Margin="2.5" Grid.Row="1" Grid.Column="0" x:Name="LatitudeLabel" Content="Latitude:" />
+                                                <TextBox Margin="2.5" Grid.Row="1" Grid.Column="1" x:Name="LatitudeTextBox" Text="{Binding Latitude}" Style="{StaticResource VisibleWhenLatLong}"/>
+                                                <Label Margin="2.5" Grid.Row="1" Grid.Column="2" x:Name="LongitudeLabel" Content="Longitude:" />
+                                                <TextBox Margin="2.5" Grid.Row="1" Grid.Column="3" x:Name="LongitudeTextBox" Text="{Binding Longitude}" Style="{StaticResource VisibleWhenLatLong}"/>
+                                                <Label Margin="2.5" Grid.Row="2" Grid.Column="0" x:Name="LatitudeDegreesLabel" Content="  Degrees:" Style="{StaticResource VisibleWhenDMS}"/>
+                                                <TextBox Margin="2.5" Grid.Row="2" Grid.Column="1" x:Name="LatitudeDegreesTextBox" Text="{Binding LatitudeD}" Style="{StaticResource VisibleWhenDMS}"/>
+                                                <Label Margin="2.5" Grid.Row="2" Grid.Column="2" x:Name="LongitudeDegreesLabel" Content="  Degrees:" Style="{StaticResource VisibleWhenDMS}"/>
+                                                <TextBox Margin="2.5" Grid.Row="2" Grid.Column="3" x:Name="LongitudeDegreesTextBox" Text="{Binding LongitudeD}" Style="{StaticResource VisibleWhenDMS}"/>
+                                                <Label Margin="2.5" Grid.Row="3" Grid.Column="0" x:Name="LongitudeMinutesLabel" Content="  Minutes:" Style="{StaticResource VisibleWhenDMS}"/>
+                                                <TextBox Margin="2.5" Grid.Row="3" Grid.Column="1" x:Name="LatitudeMinutesTextBox" Text="{Binding LatitudeM}" Style="{StaticResource VisibleWhenDMS}"/>
+                                                <Label Margin="2.5" Grid.Row="3" Grid.Column="2" x:Name="LatitudeMinutesLabel" Content="  Minutes:" Style="{StaticResource VisibleWhenDMS}"/>
+                                                <TextBox Margin="2.5" Grid.Row="3" Grid.Column="3" x:Name="LongitudeMinutesTextBox" Text="{Binding LongitudeM}" Style="{StaticResource VisibleWhenDMS}"/>
+                                                <Label Margin="2.5" Grid.Row="4" Grid.Column="0" x:Name="LatitudeSecondsLabel" Content="  Seconds:" Style="{StaticResource VisibleWhenDMS}"/>
+                                                <TextBox Margin="2.5" Grid.Row="4" Grid.Column="1" x:Name="LatitudeSecondsTextBox" Text="{Binding LatitudeS}" Style="{StaticResource VisibleWhenDMS}"/>
+                                                <Label Margin="2.5" Grid.Row="4" Grid.Column="2" x:Name="LongitudeSecondsLabel" Content="  Seconds:" Style="{StaticResource VisibleWhenDMS}"/>
+                                                <TextBox Margin="2.5" Grid.Row="4" Grid.Column="3" x:Name="LongitudeSecondsTextBox" Text="{Binding LongitudeS}" Style="{StaticResource VisibleWhenDMS}"/>
 
-                                                <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" x:Name="AddWaypointBtn" Click="AddWaypointBtn_Click">Add</Button>
+                                                <Button Margin="2.5" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" x:Name="AddWaypointBtn" Click="AddWaypointBtn_Click">Add</Button>
 
                                             </Grid>
                                         </GroupBox>
@@ -63,16 +105,16 @@
                         </ContextMenu>
                     </Button.ContextMenu>
                 </Button>
-                <Button x:Name="CurrentLocationToWaypoint" Grid.Column="1">Save Current</Button>
+				<Button x:Name="CurrentLocationToWaypoint" Grid.Column="1">Save Current</Button>
                 <Button x:Name="RemoveSelectedWaypoint" Grid.Column="2">Remove Selected</Button>
             </Grid>
         </StackPanel>
         <DataGrid ItemsSource="{Binding Waypoints}" SelectedItem="{Binding SelectedWaypoint}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" FrozenColumnCount="1" BorderThickness="1">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
-                <DataGridTextColumn Header="Longitude" Binding="{Binding Longitude}" />
-                <DataGridTextColumn Header="Latitude" Binding="{Binding Latitude}" />
-                <DataGridTemplateColumn Header="Color">
+                <DataGridTextColumn x:Name="colLon" Header="Longitude" Binding="{Binding Longitude}" />
+                <DataGridTextColumn x:Name="colLat" Header="Latitude" Binding="{Binding Latitude}" />
+				<DataGridTemplateColumn Header="Color">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ComboBox ItemsSource="{Binding Source={StaticResource Colors}}" SelectedItem="{Binding Color, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -92,5 +134,5 @@
                 <DataGridCheckBoxColumn Header="Map" Binding="{Binding IsOnMap}" />
             </DataGrid.Columns>
         </DataGrid>
-    </DockPanel>
+ </DockPanel>
 </UserControl>

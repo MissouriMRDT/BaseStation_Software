@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace RoverNetworkManager.Models
+namespace RoverOverviewNetwork.Models
 {
     internal class RoveCommCustomPacketModel
     {
