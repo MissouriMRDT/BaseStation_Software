@@ -27,7 +27,7 @@ class Rovecomm extends EventEmitter {
   UDPListen() {
     this.UDPSocket.on(
       "message",
-      (msg: string, rinfo: { address: string; port: number }) => {
+      (msg: Buffer, rinfo: { address: string; port: number }) => {
         console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`)
       }
     )
@@ -57,7 +57,7 @@ export function parse(part: string, packet: Uint8Array): any {
   const dataType = packet[3]
   const dataLength = packet[4]
 
-  const rawdata = packet.slice(5, packet.length - 1)
+  const rawdata = packet.slice(5)
   const data: any = []
 
   if (version === VersionNumber) {
