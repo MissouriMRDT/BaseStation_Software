@@ -57,7 +57,7 @@ export function parse(part: string, packet: Uint8Array): any {
   const dataType = packet[3]
   const dataLength = packet[4]
 
-  const rawdata = packet.slice(5, packet.length - 5)
+  const rawdata = packet.slice(5, packet.length - 1)
   const data: any = []
 
   if (version === VersionNumber) {
