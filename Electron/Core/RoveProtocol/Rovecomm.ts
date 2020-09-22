@@ -36,7 +36,7 @@ class Rovecomm extends EventEmitter {
 }
 export const rovecomm = new Rovecomm()
 
-export function parse(part: string, packet: Uint8Array): any {
+export function parse(packet: Buffer): string {
   const VersionNumber = 2
 
   enum DataTypes {
@@ -62,22 +62,11 @@ export function parse(part: string, packet: Uint8Array): any {
 
   if (version === VersionNumber) {
     console.log(dataId)
-    switch (part) {
-      case "dataId":
-        rovecomm.emit(dataId, data)
-        return DATAID[dataId]
-      case "dataType":
-        return DataTypes[dataType]
-      case "dataLength":
-        return dataLength
-      case "data":
-        return data
-      default:
-        return "null"
-    }
+    rovecomm.emit(DATAID[dataId], data)
   } else {
     return "null"
   }
+  return DATAID[dataId]
 }
 
 export function sendCommand(packet: Packet, reliability = false) {
