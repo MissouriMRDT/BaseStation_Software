@@ -29,6 +29,7 @@ class Rovecomm extends EventEmitter {
       "message",
       (msg: Buffer, rinfo: { address: string; port: number }) => {
         console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`)
+        this.parse(msg)
       }
     )
     this.UDPSocket.bind(8081)
@@ -62,6 +63,7 @@ export function parse(packet: Buffer): string {
 
   if (version === VersionNumber) {
     console.log(dataId)
+    // add packet contents decoding here
     rovecomm.emit(DATAID[dataId], data)
   } else {
     return "null"
