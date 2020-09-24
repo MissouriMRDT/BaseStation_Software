@@ -38,6 +38,7 @@ class Rovecomm extends EventEmitter {
 export const rovecomm = new Rovecomm()
 
 export function parse(packet: Buffer): string {
+  // packets are currently packed as Version, DataIdHigh, DataIdLow, DataType, DataLength, and then sizes[DataType] * DataLength bytes which contain the actual data
   const VersionNumber = 2
 
   enum DataTypes {
@@ -63,7 +64,7 @@ export function parse(packet: Buffer): string {
 
   if (version === VersionNumber) {
     console.log(dataId)
-    // add packet contents decoding here
+    // data = decodePacket(sizes[dataType], dataLength, rawdata);
     rovecomm.emit(DATAID[dataId], data)
   } else {
     return "null"
