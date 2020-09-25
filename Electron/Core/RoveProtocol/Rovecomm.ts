@@ -37,6 +37,48 @@ class Rovecomm extends EventEmitter {
 }
 export const rovecomm = new Rovecomm()
 
+function decodePacket(
+  size: number,
+  dataLength: number,
+  data: Uint8Array
+): number[] {
+  const retArray = []
+  let i = 0
+  switch (size) {
+    case 1:
+      while (i < dataLength) {
+        retArray.push(Number(data[i]))
+        i += 1
+      }
+      return retArray
+    case 2:
+      while (i < dataLength) {
+        // eslint-disable-next-line no-bitwise
+        const val = Number(data[i] << (1 * 8) || data[i + 1])
+        retArray.push(val)
+        i += 2
+      }
+      return retArray
+    case 4:
+      while (i < dataLength) {
+        const val = Number(
+          // eslint-disable-next-line no-bitwise
+          data[i] << (3 * 8) ||
+            // eslint-disable-next-line no-bitwise
+            data[i + 1] << (2 * 8) ||
+            // eslint-disable-next-line no-bitwise
+            data[i + 2] << (1 * 8) ||
+            data[i + 3]
+        )
+        retArray.push(val)
+        i += 4
+      }
+      return retArray
+    default:
+      return []
+  }
+}
+
 export function parse(packet: Buffer): string {
   // packets are currently packed as Version, DataIdHigh, DataIdLow, DataType, DataLength, and then sizes[DataType] * DataLength bytes which contain the actual data
   const VersionNumber = 2
@@ -60,11 +102,11 @@ export function parse(packet: Buffer): string {
   const dataLength = packet[4]
 
   const rawdata = packet.slice(5)
-  const data: any = []
+  let data: number[]
 
   if (version === VersionNumber) {
     console.log(dataId)
-    // data = decodePacket(sizes[dataType], dataLength, rawdata);
+    data = decodePacket(sizes[dataType], dataLength, new Uint8Array(rawdata))
     rovecomm.emit(DATAID[dataId], data)
   } else {
     return "null"
