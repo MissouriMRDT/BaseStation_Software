@@ -1,7 +1,5 @@
 import React, { Component } from "react"
 import CSS from "csstype"
-import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
-// import { Packet } from "../../Core/RoveProtocol/Packet"
 
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -18,6 +16,7 @@ interface IProps {}
 
 interface IState {
   isRunning: boolean
+  seconds: number
 }
 
 class Timer extends Component<IProps, IState> {
@@ -25,6 +24,23 @@ class Timer extends Component<IProps, IState> {
     super(props)
     this.state = {
       isRunning: false,
+      seconds: 10,
+    }
+  }
+
+  componentDidMount(): void {
+    this.timerID = setInterval(() => this.tick(), 1000)
+  }
+
+  componentWillUnmount(): void {
+    clearInterval(this.timerID)
+  }
+
+  tick = (): void => {
+    if (this.state.isRunning) {
+      this.setState(previousState => ({
+        seconds: previousState.seconds - 1,
+      }))
     }
   }
 
@@ -34,10 +50,28 @@ class Timer extends Component<IProps, IState> {
     }))
   }
 
+  reset = (): void => {
+    this.setState({
+      isRunning: false,
+      seconds: 10,
+    })
+  }
+
   render(): JSX.Element {
     return (
       <div>
-        <p style={label}>Timer</p>
+        <div style={label}>Timer</div>
+        <div>
+          <p>{this.state.seconds}</p>
+          <div>
+            <button onClick={this.toggle} type="button">
+              Toggle
+            </button>
+            <button onClick={this.reset} type="button">
+              Reset
+            </button>
+          </div>
+        </div>
       </div>
     )
   }
