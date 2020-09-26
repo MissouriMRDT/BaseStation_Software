@@ -11,6 +11,17 @@ const label: CSS.Properties = {
   zIndex: 1,
   color: "white",
 }
+const container: CSS.Properties = {
+  display: "grid",
+  fontFamily: "arial",
+  width: "640px",
+  borderTopWidth: "28px",
+  borderColor: "#990000",
+  borderBottomWidth: "2px",
+  borderStyle: "solid",
+  gridRowStart: "2 & {}",
+  grid: "repeat(2, 28px) / auto-flow dense",
+}
 
 interface IProps {}
 
@@ -61,11 +72,11 @@ class Timer extends Component<IProps, IState> {
     return (
       <div>
         <div style={label}>Timer</div>
-        <div>
+        <div style={container}>
           <p>{this.state.seconds}</p>
           <div>
             <button onClick={this.toggle} type="button">
-              Toggle
+              {this.state.isRunning ? "Stop" : "Start"}
             </button>
             <button onClick={this.reset} type="button">
               Reset
