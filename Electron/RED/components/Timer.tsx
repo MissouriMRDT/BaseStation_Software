@@ -75,6 +75,12 @@ class Timer extends Component<IProps, IState> {
   }
 
   tick = (): void => {
+    if (this.state.time === 0) {
+      this.setState({
+        isRunning: false,
+      })
+    }
+
     if (this.state.isRunning) {
       this.setState(previousState => ({
         time: previousState.time - 1,
