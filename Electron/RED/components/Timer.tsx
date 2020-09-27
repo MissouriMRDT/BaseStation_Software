@@ -23,11 +23,17 @@ const container: CSS.Properties = {
   grid: "repeat(2, 28px) / auto-flow dense",
 }
 
-interface IProps {}
+interface IProps {
+  timeAlotted: string
+}
 
 interface IState {
   isRunning: boolean
-  seconds: number
+  time: number
+}
+
+const padWithZeroes = (num: number, desiredLength: number): string => {
+  return String(num).padStart(desiredLength, "0")
 }
 
 class Timer extends Component<IProps, IState> {
@@ -35,7 +41,7 @@ class Timer extends Component<IProps, IState> {
     super(props)
     this.state = {
       isRunning: false,
-      seconds: 10,
+      time: this.convertStringToSeconds(this.props.timeAlotted),
     }
   }
 
@@ -47,10 +53,31 @@ class Timer extends Component<IProps, IState> {
     clearInterval(this.timerID)
   }
 
+  convertStringToSeconds = (time: string): number => {
+    const hours = Number(time.split(":")[0])
+    const minutes = Number(time.split(":")[1])
+    const seconds = Number(time.split(":")[2])
+
+    return hours * 3600 + minutes * 60 + seconds
+  }
+
+  convertSecondsToString = (seconds: number): string => {
+    const hours = Math.floor(seconds / 3600)
+    const minutes = Math.floor((seconds - hours * 3600) / 60)
+    const remainingSeconds = seconds % 60
+
+    let timeString = ""
+    timeString += `${padWithZeroes(hours, 2)}:`
+    timeString += `${padWithZeroes(minutes, 2)}:`
+    timeString += padWithZeroes(remainingSeconds, 2)
+
+    return timeString
+  }
+
   tick = (): void => {
     if (this.state.isRunning) {
       this.setState(previousState => ({
-        seconds: previousState.seconds - 1,
+        time: previousState.time - 1,
       }))
     }
   }
@@ -64,7 +91,7 @@ class Timer extends Component<IProps, IState> {
   reset = (): void => {
     this.setState({
       isRunning: false,
-      seconds: 10,
+      time: this.convertStringToSeconds(this.props.timeAlotted),
     })
   }
 
@@ -73,7 +100,7 @@ class Timer extends Component<IProps, IState> {
       <div>
         <div style={label}>Timer</div>
         <div style={container}>
-          <p>{this.state.seconds}</p>
+          <p>{this.convertSecondsToString(this.state.time)}</p>
           <div>
             <button onClick={this.toggle} type="button">
               {this.state.isRunning ? "Stop" : "Start"}
@@ -86,6 +113,10 @@ class Timer extends Component<IProps, IState> {
       </div>
     )
   }
+}
+
+Timer.defaultProps = {
+  timeAlotted: "15:00",
 }
 
 export default Timer
