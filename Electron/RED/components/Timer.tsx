@@ -32,10 +32,6 @@ interface IState {
   time: number
 }
 
-const padWithZeroes = (num: number, desiredLength: number): string => {
-  return String(num).padStart(desiredLength, "0")
-}
-
 class Timer extends Component<IProps, IState> {
   constructor(props: any) {
     super(props)
@@ -65,6 +61,10 @@ class Timer extends Component<IProps, IState> {
     const hours = Math.floor(seconds / 3600)
     const minutes = Math.floor((seconds - hours * 3600) / 60)
     const remainingSeconds = seconds % 60
+
+    const padWithZeroes = (num: number, desiredLength: number): string => {
+      return String(num).padStart(desiredLength, "0")
+    }
 
     let timeString = ""
     timeString += `${padWithZeroes(hours, 2)}:`
@@ -101,12 +101,31 @@ class Timer extends Component<IProps, IState> {
     })
   }
 
+  calculatePercent = (current: number, total: number): number => {
+    return (current / total) * 100
+  }
+
   render(): JSX.Element {
     return (
       <div>
         <div style={label}>Timer</div>
         <div style={container}>
           <p>{this.convertSecondsToString(this.state.time)}</p>
+          <div style={{ background: "gray" }}>
+            <div
+              style={{
+                background: "#990000",
+                width: `${
+                  100 -
+                  this.calculatePercent(
+                    this.state.time,
+                    this.convertStringToSeconds(this.props.timeAlotted)
+                  )
+                }%`,
+                height: 28, // Hardcoded according to height of direct parent div.
+              }}
+            />
+          </div>
           <div>
             <button onClick={this.toggle} type="button">
               {this.state.isRunning ? "Stop" : "Start"}
