@@ -1,5 +1,7 @@
-import React, { Component } from "react"
+import React from "react"
 import CSS from "csstype"
+
+import ProgressBar from "./ProgressBar"
 
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -32,7 +34,7 @@ interface IState {
   time: number
 }
 
-class Timer extends Component<IProps, IState> {
+class Timer extends React.Component<IProps, IState> {
   constructor(props: any) {
     super(props)
     this.state = {
@@ -101,31 +103,16 @@ class Timer extends Component<IProps, IState> {
     })
   }
 
-  calculatePercent = (current: number, total: number): number => {
-    return (current / total) * 100
-  }
-
   render(): JSX.Element {
     return (
       <div>
         <div style={label}>Timer</div>
         <div style={container}>
           <p>{this.convertSecondsToString(this.state.time)}</p>
-          <div style={{ background: "gray" }}>
-            <div
-              style={{
-                background: "#990000",
-                width: `${
-                  100 -
-                  this.calculatePercent(
-                    this.state.time,
-                    this.convertStringToSeconds(this.props.timeAlotted)
-                  )
-                }%`,
-                height: 28, // Hardcoded according to height of direct parent div.
-              }}
-            />
-          </div>
+          <ProgressBar
+            current={this.state.time}
+            total={this.convertStringToSeconds(this.props.timeAlotted)}
+          />
           <div>
             <button onClick={this.toggle} type="button">
               {this.state.isRunning ? "Stop" : "Start"}
@@ -141,7 +128,7 @@ class Timer extends Component<IProps, IState> {
 }
 
 Timer.defaultProps = {
-  timeAlotted: "15:00",
+  timeAlotted: "00:15:00",
 }
 
 export default Timer
