@@ -25,21 +25,31 @@ const container: CSS.Properties = {
   grid: "repeat(2, 28px) / auto-flow dense",
 }
 
-interface IProps {
-  timeAllotted: string
+interface Task {
+  name: string
+  time: string
 }
+
+interface IProps {}
 
 interface IState {
   isRunning: boolean
+  tasks: Task[]
+  currentTask: Task
   time: number
 }
 
 class Timer extends React.Component<IProps, IState> {
   constructor(props: any) {
     super(props)
+
+    const tasks = [{ name: "Sample Task", time: "00:10:00" }]
+    const currentTask = tasks[0]
     this.state = {
       isRunning: false,
-      time: this.convertStringToSeconds(this.props.timeAllotted),
+      tasks,
+      currentTask,
+      time: this.convertStringToSeconds(currentTask.time),
     }
   }
 
@@ -97,21 +107,27 @@ class Timer extends React.Component<IProps, IState> {
   }
 
   reset = (): void => {
-    this.setState({
+    this.setState(previousState => ({
       isRunning: false,
-      time: this.convertStringToSeconds(this.props.timeAllotted),
-    })
+      time: this.convertStringToSeconds(previousState.currentTask.time),
+    }))
   }
 
   render(): JSX.Element {
+    const allTasks = this.state.tasks.map(task => (
+      <li key={task.name}>
+        {task.name}, {task.time}
+      </li>
+    ))
     return (
       <div>
         <div style={label}>Timer</div>
         <div style={container}>
+          <p>{this.state.currentTask.name}</p>
           <p>{this.convertSecondsToString(this.state.time)}</p>
           <ProgressBar
             current={this.state.time}
-            total={this.convertStringToSeconds(this.props.timeAllotted)}
+            total={this.convertStringToSeconds(this.state.currentTask.time)}
           />
           <div>
             <button onClick={this.toggle} type="button">
@@ -121,14 +137,12 @@ class Timer extends React.Component<IProps, IState> {
               Reset
             </button>
           </div>
+          {/* Convert List to Form. Tasks can be added, removed, and modified. */}
+          <ul>{allTasks}</ul>
         </div>
       </div>
     )
   }
-}
-
-Timer.defaultProps = {
-  timeAllotted: "00:15:00",
 }
 
 export default Timer
