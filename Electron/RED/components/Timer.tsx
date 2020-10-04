@@ -26,7 +26,7 @@ const container: CSS.Properties = {
 }
 
 interface IProps {
-  timeAlotted: string
+  timeAllotted: string
 }
 
 interface IState {
@@ -39,7 +39,7 @@ class Timer extends React.Component<IProps, IState> {
     super(props)
     this.state = {
       isRunning: false,
-      time: this.convertStringToSeconds(this.props.timeAlotted),
+      time: this.convertStringToSeconds(this.props.timeAllotted),
     }
   }
 
@@ -99,7 +99,7 @@ class Timer extends React.Component<IProps, IState> {
   reset = (): void => {
     this.setState({
       isRunning: false,
-      time: this.convertStringToSeconds(this.props.timeAlotted),
+      time: this.convertStringToSeconds(this.props.timeAllotted),
     })
   }
 
@@ -111,7 +111,7 @@ class Timer extends React.Component<IProps, IState> {
           <p>{this.convertSecondsToString(this.state.time)}</p>
           <ProgressBar
             current={this.state.time}
-            total={this.convertStringToSeconds(this.props.timeAlotted)}
+            total={this.convertStringToSeconds(this.props.timeAllotted)}
           />
           <div>
             <button onClick={this.toggle} type="button">
@@ -128,7 +128,7 @@ class Timer extends React.Component<IProps, IState> {
 }
 
 Timer.defaultProps = {
-  timeAlotted: "00:15:00",
+  timeAllotted: "00:15:00",
 }
 
 export default Timer
