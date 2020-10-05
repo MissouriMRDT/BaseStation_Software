@@ -78,7 +78,7 @@ export function parse(packet: string): string {
     console.log(dataId)
     data = decodePacket(sizes[dataType], dataLength, new Uint8Array(rawdata))
     // eslint-disable-next-line
-    emitHelper(DATAID[dataId], data)
+    rovecomm.emit(dataID, data)
   } else {
     return "null"
   }
@@ -117,10 +117,6 @@ class Rovecomm extends EventEmitter {
   }
 }
 export const rovecomm = new Rovecomm()
-
-function emitHelper(dataID: string, data: any[]) {
-  rovecomm.emit(dataID, data)
-}
 
 export function sendCommand(packet: Packet, reliability = false) {
   console.log(`Not yet implemented. Recieved ${packet}, ${reliability}`)
