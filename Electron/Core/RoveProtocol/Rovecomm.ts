@@ -113,7 +113,7 @@ class Rovecomm extends EventEmitter {
         parse(msg)
       }
     )
-    this.UDPSocket.bind(11000)
+    this.UDPSocket.bind(8080)
   }
 }
 export const rovecomm = new Rovecomm()
