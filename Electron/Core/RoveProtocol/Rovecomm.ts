@@ -50,7 +50,18 @@ function decodePacket(
 }
 
 export function parse(packet: string): string {
-  // packets are currently packed as Version, DataIdHigh, DataIdLow, DataLength, DataType and then sizes[DataType] * DataLength bytes which contain the actual data
+  // RoveComm Header Format:
+  //
+  //  0                   1                   2                   3
+  //  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+  // +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  // |    Version    |            Data Id            |  Data Length  |
+  // +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  // |   Data Type   |                Data (Variable)                |
+  // +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  //
+  // Note: the size of Data is sizes[DataType] * DataLength bytes
+
   const VersionNumber = 2
 
   enum DataTypes {
