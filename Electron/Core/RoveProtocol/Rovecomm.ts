@@ -7,49 +7,41 @@ const EventEmitter = require("events")
 function decodePacket(
   size: number,
   dataLength: number,
-  data: Uint8Array
+  data: Buffer
 ): number[] {
   const retArray = []
-  let i = 0
-  let j = 0
+  let readBytes
+
   switch (size) {
     case 1:
-      while (i < dataLength) {
-        retArray.push(Number(data[i]))
-        i += 1
+      readBytes = function (i: number) {
+        return data.readUInt8(i)
       }
-      return retArray
+      break
     case 2:
-      while (i < dataLength) {
-        // eslint-disable-next-line no-bitwise
-        const val = Number((data[j] << (1 * 8)) | data[j + 1])
-        retArray.push(val)
-        j += 2
-        i += 1
+      readBytes = function (i: number) {
+        return data.readUInt16BE(i)
       }
-      return retArray
+      break
     case 4:
-      while (i < dataLength) {
-        const val = Number(
-          // eslint-disable-next-line no-bitwise
-          (data[j] << (3 * 8)) |
-            // eslint-disable-next-line no-bitwise
-            (data[j + 1] << (2 * 8)) |
-            // eslint-disable-next-line no-bitwise
-            (data[j + 2] << (1 * 8)) |
-            data[j + 3]
-        )
-        retArray.push(val)
-        i += 1
-        j += 4
+      readBytes = function (i: number) {
+        return data.readUInt32BE(i)
       }
-      return retArray
+      break
     default:
       return []
   }
+
+  let offset: number
+  for (let i = 0; i < dataLength; i += 1) {
+    offset = i * size
+    retArray.push(readBytes(offset))
+  }
+
+  return retArray
 }
 
-export function parse(packet: string): string {
+export function parse(packet: Buffer): string {
   // RoveComm Header Format:
   //
   //  0                   1                   2                   3
@@ -76,20 +68,19 @@ export function parse(packet: string): string {
 
   const sizes = [1, 1, 2, 2, 4, 4, 4]
 
-  const version = Number(packet[0])
-  // eslint-disable-next-line no-bitwise
-  const dataId = Number((packet[1] << 8) | packet[2])
-  const dataLength = Number(packet[3])
-  const dataType = packet[4]
+  const version = packet.readUInt8(0)
+  const dataId = packet.readUInt16BE(1)
+  const dataLength = packet.readUInt8(3)
+  const dataType = packet.readUInt8(4)
 
   const rawdata = packet.slice(5)
   let data: number[]
 
   if (version === VersionNumber) {
     console.log(dataId)
-    data = decodePacket(sizes[dataType], dataLength, new Uint8Array(rawdata))
+    data = decodePacket(sizes[dataType], dataLength, rawdata)
     // eslint-disable-next-line
-    rovecomm.emit(dataID, data)
+    rovecomm.emit(dataId, data)
   } else {
     return "null"
   }
@@ -119,7 +110,7 @@ class Rovecomm extends EventEmitter {
   UDPListen() {
     this.UDPSocket.on(
       "message",
-      (msg: string, rinfo: { address: string; port: number }) => {
+      (msg: Buffer, rinfo: { address: string; port: number }) => {
         console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`)
         parse(msg)
       }
