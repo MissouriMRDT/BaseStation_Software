@@ -80,7 +80,7 @@ export function parse(packet: Buffer): string {
     console.log(dataId)
     data = decodePacket(sizes[dataType], dataLength, rawdata)
     // eslint-disable-next-line
-    rovecomm.emit(dataId, data)
+    rovecomm.emit(DATAID[dataId], data)
   } else {
     return "null"
   }
