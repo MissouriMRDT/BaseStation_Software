@@ -4,40 +4,62 @@ const dgram = require("dgram")
 const net = require("net")
 const EventEmitter = require("events")
 
+enum DataTypes {
+  INT8_T = 0,
+  UINT8_T = 1,
+  INT16_T = 2,
+  UINT16_T = 3,
+  INT32_T = 4,
+  UINT32_T = 5,
+  FLOAT_T = 6,
+}
+
 function decodePacket(
-  size: number,
+  dataType: number,
   dataLength: number,
   data: Buffer
 ): number[] {
-  const retArray = []
-  let readBytes
-
-  switch (size) {
-    case 1:
-      readBytes = function (i: number) {
-        return data.readUInt8(i)
-      }
+  let readBytes: (i: number) => number
+  let size: number
+  switch (dataType) {
+    case DataTypes.INT8_T:
+      readBytes = data.readInt8.bind(data)
+      size = 1
       break
-    case 2:
-      readBytes = function (i: number) {
-        return data.readUInt16BE(i)
-      }
+    case DataTypes.UINT8_T:
+      readBytes = data.readUInt8.bind(data)
+      size = 1
       break
-    case 4:
-      readBytes = function (i: number) {
-        return data.readUInt32BE(i)
-      }
+    case DataTypes.INT16_T:
+      readBytes = data.readInt16BE.bind(data)
+      size = 2
+      break
+    case DataTypes.UINT16_T:
+      readBytes = data.readUInt16BE.bind(data)
+      size = 2
+      break
+    case DataTypes.INT32_T:
+      readBytes = data.readInt32BE.bind(data)
+      size = 4
+      break
+    case DataTypes.UINT32_T:
+      readBytes = data.readUInt32BE.bind(data)
+      size = 4
+      break
+    case DataTypes.FLOAT_T:
+      readBytes = data.readFloatBE.bind(data)
+      size = 2
       break
     default:
       return []
   }
 
+  const retArray = []
   let offset: number
   for (let i = 0; i < dataLength; i += 1) {
     offset = i * size
     retArray.push(readBytes(offset))
   }
-
   return retArray
 }
 
@@ -56,18 +78,6 @@ export function parse(packet: Buffer): string {
 
   const VersionNumber = 2
 
-  enum DataTypes {
-    INT8_T = 0,
-    UINT8_T = 1,
-    INT16_T = 2,
-    UINT16_T = 3,
-    INT32_T = 4,
-    UINT32_T = 5,
-    FLOAT_T = 6,
-  }
-
-  const sizes = [1, 1, 2, 2, 4, 4, 4]
-
   const version = packet.readUInt8(0)
   const dataId = packet.readUInt16BE(1)
   const dataLength = packet.readUInt8(3)
@@ -78,7 +88,7 @@ export function parse(packet: Buffer): string {
 
   if (version === VersionNumber) {
     console.log(dataId)
-    data = decodePacket(sizes[dataType], dataLength, rawdata)
+    data = decodePacket(dataType, dataLength, rawdata)
     // eslint-disable-next-line
     rovecomm.emit(dataId, data)
   } else {
