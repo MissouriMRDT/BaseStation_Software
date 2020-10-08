@@ -46,14 +46,9 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
         public void AddWaypoint()
         {
             Waypoint waypoint = _waypointManager.SelectedWaypoint;
-            byte[] msg = new byte[2 * sizeof(double)];
-            Buffer.BlockCopy(BitConverter.GetBytes(waypoint.Longitude), 0, msg, 0 * sizeof(double), sizeof(double));
-            Buffer.BlockCopy(BitConverter.GetBytes(waypoint.Latitude), 0, msg, 1 * sizeof(double), sizeof(double));
-            Array.Reverse(msg);
-
+            float[] sendValues = { (float)waypoint.Longitude, (float)waypoint.Latitude };
+            _rovecomm.SendCommand(Packet.Create("WaypointAdd", sendValues), false);
             SentWaypoints.SentWaypoints(waypoint);
-
-            _rovecomm.SendCommand(new Packet("WaypointAdd", msg, 2, (byte)7), true);
         }
 
         public void ClearAllWaypoints()
