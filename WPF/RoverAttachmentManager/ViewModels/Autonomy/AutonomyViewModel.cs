@@ -75,9 +75,9 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
         {
             _model = new AutonomyModel();
             StateControl = new StateControlViewModel();
-            Controls = new ControlsViewModel(networkMessenger, this);
             SentWaypoints = new SentWaypointsViewModel();
             Telemetry = new AutonomyTelemetryViewModel(networkMessenger, idResolver, logger);
+            Controls = new ControlsViewModel(networkMessenger, this);
 
             _rovecomm = networkMessenger;
             _idResolver = idResolver;

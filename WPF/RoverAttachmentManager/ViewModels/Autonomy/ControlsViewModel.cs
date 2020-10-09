@@ -22,25 +22,29 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
 
         public SentWaypointsViewModel SentWaypoints
         {
-          get
-          {
-            return _model.SentWaypoints;
-          }
-          set
-          {
-            _model.SentWaypoints = value;
-          }
+            get
+            {
+                return _model.SentWaypoints;
+            }
+            set
+            {
+                _model.SentWaypoints = value;
+            }
         }
 
-        public void Enable() => _rovecomm.SendCommand(Packet.Create("AutonomousModeEnable"), true);
+        public void Enable()
+        {
+            _rovecomm.SendCommand(Packet.Create("AutonomousModeEnable"), false);
+        }
 
-        public void Disable() => _rovecomm.SendCommand(Packet.Create("AutonomousModeDisable"), true);
+        public void Disable() => _rovecomm.SendCommand(Packet.Create("AutonomousModeDisable"), false);
 
         public ControlsViewModel(IRovecomm networkMessenger, AutonomyViewModel parent)
         {
             _model = new ControlsModel();
             _rovecomm = networkMessenger;
             _waypointManager = WaypointManager.Instance;
+            SentWaypoints = parent.SentWaypoints;
         }
 
         public void AddWaypoint()
