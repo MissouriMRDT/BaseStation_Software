@@ -5,83 +5,9 @@ namespace Core.Configurations
     public static class MetadataManagerConfig
     {
         internal static MetadataSaveContext RovecommTwoMetadata = new MetadataSaveContext(new[] {
-            new MetadataServerContext("Drive Board", "192.168.1.131", "11001") {
-                Commands = new[] {
-                    //Drive
-                    new MetadataRecordContext(1000, "DriveLeftRight", "Left wheels speed followed by right wheels speed"), //same as last year, confirmed on rover
-                    new MetadataRecordContext(1001, "SpeedRamp", "Controls the accleration limit, ms to full speed"),
-                },
-                Telemetry = new[]
-                {
-                    new MetadataRecordContext(1100, "DriveWatchdogTriggered", "")
-                }
-            },
 
-           new MetadataServerContext("Power Board", "192.168.1.132", "11003") {
-                Commands = new[] {
-                    new MetadataRecordContext(3000, "PowerBusEnableDisable", "Enables or Disables power bus"),
-                },
-                Telemetry = new[] {
-                    new MetadataRecordContext(3100, "PowerCurrents", "Powerboard"),
-                    new MetadataRecordContext(3101, "PowerBusStatus", "")
-                }
-            },
 
-            /*New rovecomm ids, but we will be using the old board for a little while
-            new MetadataServerContext("BMS Board", "192.168.1.133", "11002") {
-                Commands = new[] {
-                    new MetadataRecordContext(2000, "BMSStop", "BMS E-stop. WARNING: Kills all rover power. Cannot be reversed remotely!"), //same as last year
-                    new MetadataRecordContext(2001, "SoftwareEStop", "Restarts the system in x seconds"), //updated, used to be in Estop
-                    new MetadataRecordContext(2002, "WirelessEStopEnable", "Enables/disables the wireless estop"), //not implemented
-                    new MetadataRecordContext(2003, "WirelessEstop", "Like BMS E-stop, but a wireless button") //not implemented
-                },
-                Telemetry = new[] {
-                    new MetadataRecordContext(2100, "TotalPackCurrentInt", "BMS"), //same as last year
-                    new MetadataRecordContext(2101, "TotalPackVoltageInt", "BMS"), //seperated from cell currents
-                    new MetadataRecordContext(2102, "CellCurrentInts", "BMS"), //name updated, indexs updated
-                    new MetadataRecordContext(2103, "BMSTemperatureInt", "BMS") //same as last year
-                }
-            },
-            */
-            //2019 BMS
-            new MetadataServerContext("BMS Board", "192.168.1.133", "11002") {
-                Commands = new[] {
-                    new MetadataRecordContext(2000, "BMSStop", "BMS E-stop. WARNING: Kills all rover power. Cannot be reversed remotely!")
-                },
-                Telemetry = new[] {
-                    new MetadataRecordContext(2101, "BMSVoltages", "BMS"),
-                    new MetadataRecordContext(2100, "TotalPackCurrentInt", "BMS"),
-                    new MetadataRecordContext(2102, "BMSTemperatureInt", "BMS"),
-                    new MetadataRecordContext(2103, "BMSError", "BMS")
-                }
-            },
-
-            new MetadataServerContext("Camera Board", "192.168.1.134", "11004") { },
-
-            new MetadataServerContext("Nav Board", "192.168.1.136", "11005") {
-                Telemetry = new[] {
-                    new MetadataRecordContext(5100, "GPSPosition", "lat,long"), //same as last year
-                    new MetadataRecordContext(5101, "PitchHeadingRoll", "pitch, heading, roll") //same as last year
-                }
-            },
-
-            new MetadataServerContext("Gimbal Board", "192.168.1.135", "11006") {
-                Commands = new[] {
-                    new MetadataRecordContext(6000, "LeftDriveGimbal", "pan, tilt"), //updated, confirmed with tester
-                    new MetadataRecordContext(6001, "RightDriveGimbal", "pan, tilt"), //updated, confirmed with tester
-                    new MetadataRecordContext(6002, "LeftMainGimbal", "pan, tilt"), //updated, confirmed with tester
-                    new MetadataRecordContext(6003, "RightMainGimbal", "pan, tilt"), //updated, confirmed with tester
-                    new MetadataRecordContext(6004, "LeftDriveAbsolute", "pan, tilt"), //not implemented
-                    new MetadataRecordContext(6005, "RightDriveAbsolute", "pan, tilt"), //not implemented
-                    new MetadataRecordContext(6006, "LeftMainAbsolute", "pan, tilt"), //not implemented
-                    new MetadataRecordContext(6007, "RightMainAbsolute", "pan, tilt") //not implemented
-                },
-                Telemetry = new[] {
-                    new MetadataRecordContext(6100, "ServoPosition", "Array of 8 servo positions") //not implemented
-                }
-            },
-
-            new MetadataServerContext("Arm Board", "192.168.1.137", "11007") {
+            new MetadataServerContext("Arm Board", "192.168.1.131", "11007") {
                 Commands = new[]
                 { //GripperSwap? ToolSelection? ArmStop? ArmBusEnableDisable? ToggleAutoPositionTelem? ArmGetXYZ
                     new MetadataRecordContext(7000, "ArmToAngle", "All values for the arm together. Armj1-j6."), //same as last year
@@ -103,7 +29,7 @@ namespace Core.Configurations
 
                 },
                 Telemetry = new[]
-                { 
+                {
                     new MetadataRecordContext(7100, "ArmCurrents", "Currents for the arm motors m1-8"), //arm power only accounts for 7 motors
                     new MetadataRecordContext(7101, "ArmAngles", "Angles for the arm joints m1-6"), //same as last year
                     new MetadataRecordContext(7102, "BicepAngles", "Angles for the arm joints m1-8?"), //not implemented
@@ -113,7 +39,64 @@ namespace Core.Configurations
                 }
             },
 
-            new MetadataServerContext("ScienceAcutation Board", "192.168.1.138", "11008") {
+            new MetadataServerContext("Power Board", "192.168.1.132", "11003") {
+                Commands = new[] {
+                    new MetadataRecordContext(3000, "PowerBusEnableDisable", "Enables or Disables power bus"),
+                },
+                Telemetry = new[] {
+                    new MetadataRecordContext(3100, "PowerCurrents", "Powerboard"),
+                    new MetadataRecordContext(3101, "PowerBusStatus", "")
+                }
+            },
+
+            new MetadataServerContext("BMS Board", "192.168.1.133", "11002") {
+                Commands = new[] {
+                    new MetadataRecordContext(2000, "BMSStop", "BMS E-stop. WARNING: Kills all rover power. Cannot be reversed remotely!")
+                },
+                Telemetry = new[] {
+                    new MetadataRecordContext(2101, "BMSVoltages", "BMS"),
+                    new MetadataRecordContext(2100, "TotalPackCurrentInt", "BMS"),
+                    new MetadataRecordContext(2102, "BMSTemperatureInt", "BMS"),
+                    new MetadataRecordContext(2103, "BMSError", "BMS")
+                }
+            },
+
+            new MetadataServerContext("Drive Board", "192.168.1.134", "11001") {
+                Commands = new[] {
+                    //Drive
+                    new MetadataRecordContext(1000, "DriveLeftRight", "Left wheels speed followed by right wheels speed"), //same as last year, confirmed on rover
+                    new MetadataRecordContext(1001, "SpeedRamp", "Controls the accleration limit, ms to full speed"),
+                },
+                Telemetry = new[]
+                {
+                    new MetadataRecordContext(1100, "DriveWatchdogTriggered", "")
+                }
+            },
+
+            new MetadataServerContext("Gimbal Board", "192.168.1.135", "11006") {
+                Commands = new[] {
+                    new MetadataRecordContext(6000, "LeftDriveGimbal", "pan, tilt"), //updated, confirmed with tester
+                    new MetadataRecordContext(6001, "RightDriveGimbal", "pan, tilt"), //updated, confirmed with tester
+                    new MetadataRecordContext(6002, "LeftMainGimbal", "pan, tilt"), //updated, confirmed with tester
+                    new MetadataRecordContext(6003, "RightMainGimbal", "pan, tilt"), //updated, confirmed with tester
+                    new MetadataRecordContext(6004, "LeftDriveAbsolute", "pan, tilt"), //not implemented
+                    new MetadataRecordContext(6005, "RightDriveAbsolute", "pan, tilt"), //not implemented
+                    new MetadataRecordContext(6006, "LeftMainAbsolute", "pan, tilt"), //not implemented
+                    new MetadataRecordContext(6007, "RightMainAbsolute", "pan, tilt") //not implemented
+                },
+                Telemetry = new[] {
+                    new MetadataRecordContext(6100, "ServoPosition", "Array of 8 servo positions") //not implemented
+                }
+            },
+
+            new MetadataServerContext("Nav Board", "192.168.1.136", "11005") {
+                Telemetry = new[] {
+                    new MetadataRecordContext(5100, "GPSPosition", "lat,long"), //same as last year
+                    new MetadataRecordContext(5101, "PitchHeadingRoll", "pitch, heading, roll") //same as last year
+                }
+            },
+
+            new MetadataServerContext("ScienceAcutation Board", "192.168.1.137", "11008") {
                 Commands = new[] {
                     new MetadataRecordContext(8000, "ZActuation", "-1000 to 1000 open loop for Z axis control"), //updated from screw, confirmed with tester
                     new MetadataRecordContext(8001, "GenevaOpenLoop", "-1000 to 1000 open loop for Geneva control"), //not implemented
@@ -130,7 +113,7 @@ namespace Core.Configurations
                 }
             },
 
-            new MetadataServerContext("ScienceSensors Board", "192.168.1.139", "11009") {
+            new MetadataServerContext("ScienceSensors Board", "192.168.1.138", "11009") {
                 Commands = new[] {
                     new MetadataRecordContext(9000, "UVLedControl", "Control of light source."), //same as last year, confirmed with tester
                     new MetadataRecordContext(9001, "RunSpectrometer", "Sends command to begin the spectrometer sequence."), //same as last year, confirmed with tester
@@ -146,11 +129,7 @@ namespace Core.Configurations
                 }
             },
 
-            new MetadataServerContext("BSMS", "192.168.1.142", "11012") { },
-
-            new MetadataServerContext("Blackbox", "192.168.1.143", "11013") { },
-
-            new MetadataServerContext("Autonomy Board", "192.168.1.144", "11015") {
+            new MetadataServerContext("Autonomy Board", "192.168.1.139", "11015") {
             Commands = new[] {
                     new MetadataRecordContext(11100, "AutonomousModeEnable", ""),
                     new MetadataRecordContext(11101, "AutonomousModeDisable", ""),
@@ -162,6 +141,7 @@ namespace Core.Configurations
                     new MetadataRecordContext(2580, "WaypointReached", "")
                 }
             },
+
             new MetadataServerContext("Lighting Board", "192.168.1.142", "11016") {
                 Commands = new[] {
                     new MetadataRecordContext(7000, "Headlights", "Headlights for the front of rover"),
@@ -169,6 +149,14 @@ namespace Core.Configurations
                     new MetadataRecordContext(7002, "CycleLightingMode", "byte mode")
                 }
             },
+
+            new MetadataServerContext("Blackbox", "192.168.1.143", "11013") { },
+
+            new MetadataServerContext("BSMS", "192.168.1.145", "11012") { },
+
+            new MetadataServerContext("Camera Board 1", "192.168.1.148", "11004") { },
+
+            new MetadataServerContext("Camera Board 2", "192.168.1.149", "11017") { },
 
         });
     }
