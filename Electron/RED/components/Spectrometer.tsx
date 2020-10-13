@@ -61,6 +61,22 @@ class Spectrometer extends Component<IProps, IState> {
     })
   }
 
+  Integrate(): number {
+    let left: { x: number; y: number } = this.state.spectrometerData[0]
+    let right: { x: number; y: number }
+    let i: number
+    let area = 0
+    for (
+      i = 1, right = this.state.spectrometerData[i];
+      i < this.state.spectrometerData.length;
+      i++
+    ) {
+      area += ((left.y + right.y) / 2) * (right.x - left.x)
+      left = right
+    }
+    return area
+  }
+
   render(): JSX.Element {
     return (
       <div>
@@ -72,6 +88,7 @@ class Spectrometer extends Component<IProps, IState> {
             <XAxis />
             <YAxis />
           </XYPlot>
+          <div style={{ margin: "0px 250px" }}>{this.Integrate()}</div>
         </div>
       </div>
     )

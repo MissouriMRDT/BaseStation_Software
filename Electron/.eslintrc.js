@@ -14,6 +14,7 @@ module.exports = {
     "react/jsx-one-expression-per-line": "off",
     "react/destructuring-assignment": "off",
     "@typescript-eslint/no-empty-interface": "off",
+    "no-plusplus": "off",
     semi: [2, "never"],
     "react/jsx-filename-extension": [
       1,
