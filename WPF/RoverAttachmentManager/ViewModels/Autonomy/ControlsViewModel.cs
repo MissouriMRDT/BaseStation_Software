@@ -57,7 +57,7 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
 
         public void ClearAllWaypoints()
         {
-          _rovecomm.SendCommand(Packet.Create("WaypointsClearAll"), true);
+          _rovecomm.SendCommand(Packet.Create("WaypointsClearAll"), false);
           SentWaypoints.ClearAllWaypoints();
         }
     }
