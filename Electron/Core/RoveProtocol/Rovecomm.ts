@@ -114,7 +114,7 @@ class Rovecomm extends EventEmitter {
     this.TCPServer = net.createServer((TCPSocket: any) => TCPListen(TCPSocket))
 
     this.UDPListen()
-    this.TCPServer.listen(8080)
+    this.TCPServer.listen(11111)
   }
 
   UDPListen() {
@@ -125,7 +125,7 @@ class Rovecomm extends EventEmitter {
         parse(msg)
       }
     )
-    this.UDPSocket.bind(8081)
+    this.UDPSocket.bind(11000)
   }
 }
 export const rovecomm = new Rovecomm()
