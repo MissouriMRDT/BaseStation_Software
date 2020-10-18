@@ -91,6 +91,11 @@ export function parse(packet: Buffer): string {
     data = decodePacket(dataType, dataLength, rawdata)
     // eslint-disable-next-line
     rovecomm.emit(DATAID[dataId], data)
+    // eslint-disable-next-line
+    rovecomm.emit(
+      "all",
+      `Data Id: ${dataId} (aka ${DATAID[dataId]}), Type: ${dataType}, Length: ${dataLength}, Data: ${data}`
+    )
   } else {
     return "null"
   }

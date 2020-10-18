@@ -11,12 +11,13 @@ const container: CSS.Properties = {
   display: "grid",
   fontFamily: "arial",
   width: "640px",
+  height: "400px",
   borderTopWidth: "28px",
   borderColor: "#990000",
   borderBottomWidth: "2px",
   borderStyle: "solid",
-  gridRowStart: "2 & {}",
-  grid: "repeat(1, 300px) / auto-flow dense",
+  whiteSpace: "pre-wrap",
+  overflow: "scroll",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -35,18 +36,18 @@ interface IState {
   ConsoleText: string
 }
 
-class Console extends Component<IProps, IState> {
+class Log extends Component<IProps, IState> {
   constructor(props: any) {
     super(props)
     this.state = {
       ConsoleText: "",
     }
-    this.Log()
+    rovecomm.on("all", (data: any) => this.Log(data))
   }
 
-  Log(/* add some variables */): void {
+  Log(data: string): void {
     let text = this.state.ConsoleText
-    text += "test" // set this to be that variable and time and newline
+    text += `${data} \n` // set this to be that variable and time and newline
     this.setState({
       ConsoleText: text,
     })
@@ -62,4 +63,4 @@ class Console extends Component<IProps, IState> {
   }
 }
 
-export default Console
+export default Log

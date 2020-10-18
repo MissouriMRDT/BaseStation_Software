@@ -1,8 +1,7 @@
 import React, { Fragment } from "react"
 import { render } from "react-dom"
 import { AppContainer as ReactHotAppContainer } from "react-hot-loader"
-import Console from "./components/Console"
-import GPS from "./components/GPS"
+import ControlCenter from "./ControlCenter"
 
 const AppContainer = process.env.PLAIN_HMR ? Fragment : ReactHotAppContainer
 
@@ -12,8 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   render(
     <AppContainer>
       <div>
-        <Console />
-        <GPS test={Console} />
+        <ControlCenter />
       </div>
     </AppContainer>,
     document.getElementById("root")

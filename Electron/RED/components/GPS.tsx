@@ -29,9 +29,7 @@ const label: CSS.Properties = {
   color: "white",
 }
 
-interface IProps {
-  test: Console
-}
+interface IProps {}
 
 interface IState {
   fixObtained: boolean
@@ -55,7 +53,7 @@ class GPS extends Component<IProps, IState> {
       currentLon: 0,
       lidar: 0.0,
     }
-    // something like this this.props.test.Log() 
+    // something like this this.props.test.Log()
     rovecomm.on("GPSTelem", (data: any) => this.GPSTelem(data))
     rovecomm.on("GPSPosition", (data: any) => this.GPSPosition(data))
 
