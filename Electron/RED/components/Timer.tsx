@@ -27,7 +27,8 @@ const container: CSS.Properties = {
 
 interface Task {
   name: string
-  time: string
+  allottedTime: string
+  runningTime: number
 }
 
 interface IProps {}
@@ -35,21 +36,23 @@ interface IProps {}
 interface IState {
   isRunning: boolean
   tasks: Task[]
-  currentTask: Task
-  time: number
+  newTask: Task
+  // selectedTaskIndex: number
 }
 
 class Timer extends React.Component<IProps, IState> {
   constructor(props: any) {
     super(props)
-
-    const tasks = [{ name: "Sample Task", time: "00:10:00" }]
-    const currentTask = tasks[0]
     this.state = {
       isRunning: false,
-      tasks,
-      currentTask,
-      time: this.convertStringToSeconds(currentTask.time),
+      tasks: [
+        {
+          name: "Sample Task",
+          allottedTime: "00:10:00",
+          runningTime: this.convertStringToSeconds("00:10:00"),
+        },
+      ],
+      newTask: { name: "", allottedTime: "", runningTime: 0 },
     }
   }
 
@@ -87,7 +90,7 @@ class Timer extends React.Component<IProps, IState> {
   }
 
   tick = (): void => {
-    if (this.state.time === 0) {
+    if (this.state.tasks[0].runningTime === 0) {
       this.setState({
         isRunning: false,
       })
@@ -95,7 +98,13 @@ class Timer extends React.Component<IProps, IState> {
 
     if (this.state.isRunning) {
       this.setState(previousState => ({
-        time: previousState.time - 1,
+        tasks: [
+          {
+            name: previousState.tasks[0].name,
+            allottedTime: previousState.tasks[0].allottedTime,
+            runningTime: previousState.tasks[0].runningTime - 1,
+          },
+        ].concat(previousState.tasks.splice(1)),
       }))
     }
   }
@@ -109,25 +118,62 @@ class Timer extends React.Component<IProps, IState> {
   reset = (): void => {
     this.setState(previousState => ({
       isRunning: false,
-      time: this.convertStringToSeconds(previousState.currentTask.time),
+      tasks: [
+        {
+          name: previousState.tasks[0].name,
+          allottedTime: previousState.tasks[0].allottedTime,
+          runningTime: this.convertStringToSeconds(
+            previousState.tasks[0].allottedTime
+          ),
+        },
+      ].concat(previousState.tasks.splice(1)),
+    }))
+  }
+
+  addNewTask = (event: { preventDefault: () => void }): void => {
+    this.setState(previousState => ({
+      tasks: [...previousState.tasks, previousState.newTask],
+      newTask: { name: "", allottedTime: "", runningTime: 0 },
+    }))
+    event.preventDefault()
+  }
+
+  changeNewTaskName = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    event.persist()
+    this.setState(previousState => ({
+      newTask: {
+        ...previousState.newTask,
+        name: event.target.value,
+      },
+    }))
+  }
+
+  changeNewTaskTime = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    event.persist()
+    this.setState(previousState => ({
+      newTask: {
+        ...previousState.newTask,
+        allottedTime: event.target.value,
+      },
     }))
   }
 
   render(): JSX.Element {
+    const currentTask = this.state.tasks[0]
     const allTasks = this.state.tasks.map(task => (
       <li key={task.name}>
-        {task.name}, {task.time}
+        {task.name}, {task.allottedTime}, {task.runningTime}
       </li>
     ))
     return (
       <div>
         <div style={label}>Timer</div>
         <div style={container}>
-          <p>{this.state.currentTask.name}</p>
-          <p>{this.convertSecondsToString(this.state.time)}</p>
+          <p>{currentTask.name}</p>
+          <p>{this.convertSecondsToString(currentTask.runningTime)}</p>
           <ProgressBar
-            current={this.state.time}
-            total={this.convertStringToSeconds(this.state.currentTask.time)}
+            current={currentTask.runningTime}
+            total={this.convertStringToSeconds(currentTask.allottedTime)}
           />
           <div>
             <button onClick={this.toggle} type="button">
@@ -137,8 +183,22 @@ class Timer extends React.Component<IProps, IState> {
               Reset
             </button>
           </div>
-          {/* Convert List to Form. Tasks can be added, removed, and modified. */}
           <ul>{allTasks}</ul>
+          <form onSubmit={this.addNewTask}>
+            <input
+              type="text"
+              placeholder="Name"
+              value={this.state.newTask.name}
+              onChange={this.changeNewTaskName}
+            />
+            <input
+              type="text"
+              placeholder="Allotted Time"
+              value={this.state.newTask.allottedTime}
+              onChange={this.changeNewTaskTime}
+            />
+            <input type="submit" value="+ Add Task" />
+          </form>
         </div>
       </div>
     )
