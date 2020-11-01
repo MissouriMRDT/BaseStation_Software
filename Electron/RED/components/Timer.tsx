@@ -131,10 +131,14 @@ class Timer extends React.Component<IProps, IState> {
   }
 
   addNewTask = (event: { preventDefault: () => void }): void => {
-    this.setState(previousState => ({
-      tasks: [...previousState.tasks, previousState.newTask],
-      newTask: { name: "", allottedTime: "", runningTime: 0 },
-    }))
+    if (this.state.newTask.allottedTime.match(/\d{2}:\d{2}:\d{2}/)) {
+      this.setState(previousState => ({
+        tasks: [...previousState.tasks, previousState.newTask],
+        newTask: { name: "", allottedTime: "", runningTime: 0 },
+      }))
+    } else {
+      alert("Improper format. allottedTime HH:MM:SS")
+    }
     event.preventDefault()
   }
 
