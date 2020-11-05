@@ -288,6 +288,22 @@ namespace RoverAttachmentManager.ViewModels.Science
             }
             Int16[] chemicals = { ChemOne, ChemTwo, ChemThree };
             _rovecomm.SendCommand(Packet.Create("Chemicals", chemicals));
+
+
+            Int16 GenevaPower = 0;
+
+            if (values["GenevaClockwise"] == 1)
+            {
+                GenevaPower = 1000;
+
+            }
+            else if (values["GenevaCounterclockwise"] == 1)
+            {
+                GenevaPower = -1000;
+            }
+
+            Int16[] GenevaSend = { GenevaPower };
+            _rovecomm.SendCommand(Packet.Create("GenevaOpenLoop", GenevaSend));
         }
 
         public void StopMode()
