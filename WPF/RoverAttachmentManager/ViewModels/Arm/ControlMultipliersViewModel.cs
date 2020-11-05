@@ -57,28 +57,28 @@ namespace RoverAttachmentManager.ViewModels.Arm
                 NotifyOfPropertyChange(() => WristRangeFactor);
             }
         }
-        public int GripperRangeFactor
+        public int GripperOpenRangeFactor
         {
             get
             {
-                return _model.GripperRangeFactor;
+                return _model.GripperOpenRangeFactor;
             }
             set
             {
-                _model.GripperRangeFactor = value;
-                NotifyOfPropertyChange(() => GripperRangeFactor);
+                _model.GripperOpenRangeFactor = value;
+                NotifyOfPropertyChange(() => GripperOpenRangeFactor);
             }
         }
-        public int Gripper2RangeFactor
+        public int GripperCloseRangeFactor
         {
             get
             {
-                return _model.Gripper2RangeFactor;
+                return _model.GripperCloseRangeFactor;
             }
             set
             {
-                _model.Gripper2RangeFactor = value;
-                NotifyOfPropertyChange(() => Gripper2RangeFactor);
+                _model.GripperCloseRangeFactor = value;
+                NotifyOfPropertyChange(() => GripperCloseRangeFactor);
             }
         }
 

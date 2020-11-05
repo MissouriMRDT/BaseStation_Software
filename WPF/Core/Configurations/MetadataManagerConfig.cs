@@ -101,23 +101,19 @@ namespace Core.Configurations
 
             new MetadataServerContext("Arm Board", "192.168.1.137", "11007") {
                 Commands = new[]
-                { //GripperSwap? ToolSelection? ArmStop? ArmBusEnableDisable? ToggleAutoPositionTelem? ArmGetXYZ
-                    new MetadataRecordContext(7000, "ArmToAngle", "All values for the arm together. Armj1-j6."), //same as last year
-                    new MetadataRecordContext(7001, "ArmToIK", "All values for the arm together. X,Y,Z,P,Y,R."), //updated/implemented
-                    new MetadataRecordContext(7002, "IKRoverIncrement", "Incremental values for rover ik. xyzpyr"), //same as last year
-                    new MetadataRecordContext(7003, "IKWristIncrement", "Incremental values for wrist ik. xyzpyr"), //same as last year
-                    new MetadataRecordContext(7004, "ArmValues", "All values for the arm together. Armj1-j6, gripper1, nipper, gripper2."), //same as last year
-                    new MetadataRecordContext(7005, "EndEffectorActuation", "enable/disable solenoid"), //not implemented
-                    new MetadataRecordContext(7006, "GripperOpenLoop", "-1000,1000"), //not implemented
-                    new MetadataRecordContext(7007, "ArmCommands", ""), //same as last year
-                    new MetadataRecordContext(7008, "?????", ""), //manifest doesn't explain what this is
-                    new MetadataRecordContext(7009, "ForearmMotors", "j5,j6,gripper1,nipper,gripper2"), //not implemented
-                    new MetadataRecordContext(7010, "BicepMotors", "j1,j2,j3,j4"), //not implemented
-                    new MetadataRecordContext(7011, "ForearmAngles", "j5,j6"), //not implemented
-                    new MetadataRecordContext(7012, "BicepAngles", "j1,j2,j3,j4"), //not implemented
-                    new MetadataRecordContext(7013, "ToolSelection", "Change the selected tool, 0 1 & 2"), //same as last year
-                    new MetadataRecordContext(7014, "Laser", "Toggle the laser"), //same as last year
-                    new MetadataRecordContext(7015, "LimitSwitchOverride", "") //same as last year
+                {
+                    new MetadataRecordContext(7000, "MoveOpenLoop", "All values for the arm together. Armj1-j6"), //same as last year
+                    new MetadataRecordContext(7001, "MoveToAngle", "All values for the arm together. Armj1-j6."), //same as last year
+                    new MetadataRecordContext(7002, "IncrementPosition", "-1000, 1000"), //not implemented
+                    new MetadataRecordContext(7003, "IKAbsolutePOS", "All values for the arm together. X,Y,Z,P,Y,R."), //updated/implemented
+                    new MetadataRecordContext(7004, "IKRoverIncrement", "Incremental values for rover ik. xyzpyr"), //same as last year
+                    new MetadataRecordContext(7005, "IKWristIncrement", "Incremental values for wrist ik. xyzpyr"), //same as last year
+                    new MetadataRecordContext(7006, "SetClosedLoopControl", "0=disable, 1=enable"), //not implemented
+                    new MetadataRecordContext(7010, "GripperOpenLoop", "-1000,1000"), //not implemented
+                    new MetadataRecordContext(7011, "LaserControl", "Toggle the laser"), //same as last year
+                    new MetadataRecordContext(7012, "SolenoidControl", "enable/disable solenoid"), //not implemented
+                    new MetadataRecordContext(7013, "WatchdogOverride", "0=disable, 1=enable"), //not implemented
+                    new MetadataRecordContext(7014, "LimitSwitchOverride", "0=disable, 1=enable"), //same as last year
 
                 },
                 Telemetry = new[]

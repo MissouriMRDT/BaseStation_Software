@@ -203,7 +203,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
             float[] coordinates = { CoordinateX, CoordinateY, CoordinateZ, Yaw, Pitch, Roll };
             byte[] data = new byte[coordinates.Length * sizeof(float)];
 
-            _rovecomm.SendCommand(new Packet("ArmToIK", data, 6, (byte)DataTypes.FLOAT_T), true);
+            _rovecomm.SendCommand(new Packet("MoveToAngle", data, 6, (byte)DataTypes.FLOAT_T), true);
 
             Arm.myState = ArmControlState.GuiControl;
         }
