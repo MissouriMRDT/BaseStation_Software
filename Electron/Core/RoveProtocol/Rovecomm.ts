@@ -99,7 +99,14 @@ export function parse(packet: Buffer): string {
   } else {
     return "null"
   }
-  return DATAID[dataId]
+
+  for (let i = 0; i < DATAID.length; i++) {
+    if (dataId in Object.keys(DATAID[i].Telemetry)) {
+      return DATAID[i].Telemetry[dataId]
+    }
+  }
+
+  return "null"
 }
 
 function TCPListen(socket: any) {
@@ -135,6 +142,34 @@ class Rovecomm extends EventEmitter {
 }
 export const rovecomm = new Rovecomm()
 
-export function sendCommand(packet: Packet, reliability = false) {
-  console.log(`Not yet implemented. Recieved ${packet}, ${reliability}`)
+export function sendCommand(dataId: number, data: any, reliability = false) {
+  const VersionNumber = 2
+  const dataLength = data.length
+  let destinationIp
+  let port
+  let dataType
+  for (let i = 0; i < DATAID.length; i++) {
+    if (dataId in Object.keys(DATAID[i].Commands)) {
+      destinationIp = DATAID[i].Ip
+      port = DATAID[i].Port
+      dataType = DATAID[i].Commands[dataId]
+    }
+  }
+
+  if (reliability === false) {
+    rovecomm.sendUDP(
+      [VersionNumber, dataId, dataLength, dataType, data],
+      destinationIp,
+      port
+    )
+  } else {
+    rovecomm.sendTCP(
+      [VersionNumber, dataId, dataLength, dataType, data],
+      destinationIp,
+      port
+    )
+  }
+  console.log(
+    `Not yet implemented. Recieved ${dataId}: ${data}, ${reliability}`
+  )
 }
