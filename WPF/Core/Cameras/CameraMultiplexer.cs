@@ -11,8 +11,10 @@ namespace Core.Cameras {
 		private static readonly List<string> BASE_ADDRESSES = new List<string>()
 		{
 			"http://192.168.1.50:8080",
-			"http://192.168.1.51:8080"
-		};
+			"http://192.168.1.51:8080",
+            "http://192.168.1.139:8081",
+            "http://192.168.1.139:8082"
+        };
 
 		private static bool initialized = false;
 		static List<FeedInfo> feeds = new List<FeedInfo>();
@@ -22,7 +24,7 @@ namespace Core.Cameras {
 		/// <summary>
 		/// Returns the total number of connected cameras.
 		/// </summary>
-		public static int TotalCameraFeeds { get; private set; } = 8;
+		public static int TotalCameraFeeds { get; private set; } = 16;
 
 		/// <summary>
 		/// Initialize the multiplexer. Must be called before any feeds are accessed.
@@ -217,6 +219,10 @@ namespace Core.Cameras {
 		/// <summary>
 		/// Placeholder camera for migrating off of hardcoded integer camera indexes
 		/// </summary>
-		PlaceholderCamera8
+		PlaceholderCamera8,
+
+        AutonomyRegular = 9,
+        AutonomyDepth = 13
+
 	}
 }

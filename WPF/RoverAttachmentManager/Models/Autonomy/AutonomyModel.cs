@@ -14,5 +14,8 @@ namespace RoverAttachmentManager.Models.Autonomy
         internal StateControlViewModel _stateControl;
         internal SentWaypointsViewModel _sentWaypoints;
         internal AutonomyTelemetryViewModel _telemetry;
+
+        internal CameraViewModel _camera1;
+        internal CameraViewModel _camera2;
     }
 }

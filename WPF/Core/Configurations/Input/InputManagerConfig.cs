@@ -53,6 +53,8 @@ namespace Core.Configurations.Input
                 new InputChannelContext("ButtonX", "Chem1"),
                 new InputChannelContext("ButtonY", "Chem2"),
                 new InputChannelContext("ButtonB", "Chem3"),
+                new InputChannelContext("ButtonRb", "GenevaClockwise"),
+                new InputChannelContext("ButtonLb", "GenevaCounterclockwise"),
                 new InputChannelContext("ButtonStartDebounced", "ModeCycle") }),
             new InputMappingContext("Xbox Gimbal", "Xbox", "Gimbal", 100, new[] {
                 new InputChannelContext("JoyStick1X", "PanLeft"){ Parabolic = true },

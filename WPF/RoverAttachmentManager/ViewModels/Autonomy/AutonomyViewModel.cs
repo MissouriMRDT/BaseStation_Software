@@ -70,6 +70,30 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
                 NotifyOfPropertyChange(() => Telemetry);
             }
         }
+        public CameraViewModel Camera1
+        {
+            get
+            {
+                return _model._camera1;
+            }
+            set
+            {
+                _model._camera1 = value;
+                NotifyOfPropertyChange(() => Camera1);
+            }
+        }
+        public CameraViewModel Camera2
+        {
+            get
+            {
+                return _model._camera2;
+            }
+            set
+            {
+                _model._camera2 = value;
+                NotifyOfPropertyChange(() => Camera2);
+            }
+        }
 
         public AutonomyViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger logger)
         {
@@ -78,6 +102,9 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
             Controls = new ControlsViewModel(networkMessenger, this);
             SentWaypoints = new SentWaypointsViewModel();
             Telemetry = new AutonomyTelemetryViewModel(networkMessenger, idResolver, logger);
+
+            Camera1 = new CameraViewModel(Core.CommonLog.Instance);
+            Camera2 = new CameraViewModel(Core.CommonLog.Instance);
 
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
