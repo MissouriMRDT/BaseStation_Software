@@ -15,8 +15,6 @@ const container: CSS.Properties = {
   borderColor: "#990000",
   borderBottomWidth: "2px",
   borderStyle: "solid",
-  gridRowStart: "2 & {}",
-  grid: "repeat(2, 28px) / auto-flow dense",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -29,23 +27,48 @@ const label: CSS.Properties = {
   color: "white",
 }
 
-interface IProps {}
+interface IProps {
+  defaultState: number
+}
 
-interface IState {}
+interface IState {
+  currentState: number
+}
 
 class ControlScheme extends Component<IProps, IState> {
   constructor(props: any) {
     super(props)
-    this.state = {}
+    this.state = {
+      currentState: this.props.defaultState,
+    }
   }
 
   render(): JSX.Element {
     return (
       <div>
-        
+        <div style={label}>ControlScheme</div>
+        <div style={container}>
+          {[
+            { title: "Drive", value: 1 },
+            { title: "Main Gimbal", value: 2 },
+          ].map(datum => {
+            const { title, value } = datum
+            return (
+              <>
+                <div>{title}</div>
+                <button
+                  type="button"
+                  key={value}
+                  onClick={() => this.setState({ currentState: value })}
+                >
+                  <h1 style={h1Style}>{value}</h1>
+                </button></>
+            )
+          })}
+        </div>
       </div>
     )
   }
 }
 
-export default GPS
+export default ControlScheme

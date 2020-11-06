@@ -2,6 +2,7 @@ import React, { Fragment } from "react"
 import { render } from "react-dom"
 import { AppContainer as ReactHotAppContainer } from "react-hot-loader"
 import GPS from "./components/GPS"
+import ControlScheme from "./components/ControlScheme"
 
 const AppContainer = process.env.PLAIN_HMR ? Fragment : ReactHotAppContainer
 
@@ -12,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     <AppContainer>
       <div>
         <GPS />
+        <ControlScheme />
       </div>
     </AppContainer>,
     document.getElementById("root")
