@@ -23,8 +23,10 @@ const label: CSS.Properties = {
   left: "3px",
   fontFamily: "arial",
   fontSize: "16px",
-  zIndex: 1,
+  zIndex: 2,
   color: "white",
+  gridRowStart: "2 & {}",
+  grid: "repeat(2, 28px) /auto-flow dense",
 }
 
 interface IProps {
@@ -49,8 +51,8 @@ class ControlScheme extends Component<IProps, IState> {
         <div style={label}>ControlScheme</div>
         <div style={container}>
           {[
-            { title: "Drive", value: 1 },
-            { title: "Main Gimbal", value: 2 },
+            { title: "Drive", value: "on" },
+            { title: "Main Gimbal", value: "off" },
           ].map(datum => {
             const { title, value } = datum
             return (
@@ -62,7 +64,8 @@ class ControlScheme extends Component<IProps, IState> {
                   onClick={() => this.setState({ currentState: value })}
                 >
                   <h1 style={h1Style}>{value}</h1>
-                </button></>
+                </button>
+              </>
             )
           })}
         </div>
