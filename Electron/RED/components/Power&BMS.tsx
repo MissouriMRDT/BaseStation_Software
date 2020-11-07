@@ -6,32 +6,34 @@ import { PassThrough } from "stream"
 // import { Packet } from "../../Core/RoveProtocol/Packet"
 
 const h1Style: CSS.Properties = {
-  fontFamily: "arial",
   fontSize: "12px",
 }
-// significant potential there will be a need for a mass container. If so, it'll
-// be easy to organize all the containers in a 1 column centered grid.
+const grandContainer: CSS.Properties = {
+  fontFamily: "arial",
+  display: "flex",
+  flexDirection: "column",
+  // width: "placeholder",
+  borderWidth: "thick",
+  borderColor: "rgb(153, 0, 0)",// MRDT red
+  borderStyle: "solid",
+  // gridRowStart: "placeholder",
+}
 const roAndBtnContainer: CSS.Properties = {
   // stands for "Readout and Button Container"; shortened for sanity.
   // intended to only contain the button and readout combo at top of feature.
   // Is a flexbox with each flex item containing columnated elements,
   // and location specifics will be determined by the "viewmodel"
-  display: "flex",
-  fontFamily: "arial",
+  display: "grid",
   width: "auto",
-  // next three lines will need to be moved to big container if one is made.
-  borderWidth: "thick",
-  borderColor: "#ff5938",
-  borderStyle: "solid",
-  flexWrap: "nowrap",
-  // next line is experimentation to get readout containers to scale
-  // with window width like in the c# software
-  flexBasis: "auto",
+  gridTemplateColumns: "75px 1fr 75px 1fr",
 }
 const readoutDisplays: CSS.Properties = {
   fontSize: "10px",
-  // color: "#30ff00", green; intended for container. Relocation likely
-  // needs some way to position label on left and data on right
+  color: "#30ff00",// green
+  justifyContent: "space-between",
+}
+const label: CSS.Properties = {
+  fontSize: "10px",
 }
 const btnArray: CSS.Properties = {
   // potential container for all the bus buttons and "reboot," "start log," etc.
@@ -39,7 +41,6 @@ const btnArray: CSS.Properties = {
   display: "grid",
   gridTemplateColumns: "auto auto auto auto",
   justifyContent: "center",
-  fontFamily: "arial",
 }
 const buttonStyle: CSS.Properties = {
   // intended to be used both for readout buttons and bus array buttons
@@ -58,6 +59,7 @@ const totalPackContainer: CSS.Properties = {
 const cellReadoutContainer: CSS.Properties = {
   // readoutDisplays will be used for text in this container
   display: "grid",
+  color: "#ff1100",// red
   gridTemplateColumns: "auto auto auto auto",
   // will likely need a way to keep elements confined to set columns
 }
@@ -85,16 +87,53 @@ interface IState {
   // same with bus button states
 }
 
-/*
 class Power extends Component<IProps, Istate> {
   constructor(props: any) {
     super(props)
     this.state = {
-      pass
+      motorLF: 0.00,
+      motorLM: 0.00,
+      motorLB: 0.00,
+      motorRF: 0.00,
+      motorRM: 0.00,
+      motorRB: 0.00,
+      motorExtra: 0.00,
+      auxiliary: 0.00,
+      comms: 0.00,
+      logic: 0.00,
+      actuation: 0.00,
+      twelveVNoard: 0.00,
+      batteryTemp: 0.00,
+      ttlPackVolt: 0.00,
+      ttlPackCurrent: 0.00,
     }
+    // rovecomm.on?
   }
+  // eslint-disable-next-line @typescript-eslint/lines-between-class-members
+  renderReadOutAmps(): JSX.Element {
+    
+  }
+
+  renderReadOutVolts()
+
   render(): JSX.Element {
-    pass
+    return (
+      <div>
+        <div style={h1Style}>POWER AND BMS</div>
+        <div style={grandContainer}>
+          <div style={roAndBtnContainer}>
+            <button style={buttonStyle}></button>
+          </div>
+          <div style={btnArray}></div>
+          <span>----------------------------------------</span>
+          <div style={totalPackContainer}></div>
+          <div style={cellReadoutContainer}>
+            {[
+              { title: "Cell 1", value: this.state.cell1 },
+            ]}
+          </div>
+        </div>
+      </div>
+    )
   }
 }
-*/
