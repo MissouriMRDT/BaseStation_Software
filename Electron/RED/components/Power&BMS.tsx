@@ -4,45 +4,54 @@ import CSS from "csstype"
 // import { Packet } from "../../Core/RoveProtocol/Packet"
 
 const h1Style: CSS.Properties = {
-  fontSize: "12px",
+  marginTop: "-10px",
+  position: "relative",
+  top: "24px",
+  left: "3px",
+  fontFamily: "arial",
+  fontSize: "16px",
+  zIndex: 1,
+  color: "white",
 }
 const grandContainer: CSS.Properties = {
-  fontFamily: "arial",
-  display: "flex",
-  flexDirection: "column",
-  // width: "placeholder",
-  borderWidth: "thick",
+  // display: "flex",
+  // flexDirection: "column",
+  display: "block",
+  width: "640px",
+  borderTopWidth: "28px",
+  borderBottomWidth: "2px",
   borderColor: "rgb(153, 0, 0)", // MRDT red
   borderStyle: "solid",
   // gridRowStart: "placeholder",
 }
 const roAndBtnContainer: CSS.Properties = {
-  // stands for "Readout and Button Container"; shortened for sanity.
-  // intended to only contain the button and readout combo at top of feature.
-  // Is a flexbox with each flex item containing columnated elements,
-  // and location specifics will be determined by the "viewmodel"
+  // stands for "Readout and Button Container"; shortened for sanity
   display: "grid",
   width: "auto",
-  gridTemplateColumns: "75px 1fr 75px 1fr",
+  gridTemplateColumns: "50px 1fr 50px 1fr",
+  margin: "5px",
 }
 const readoutDisplay: CSS.Properties = {
-  fontSize: "10px",
-  color: "#30ff00", // green
+  display: "grid",
+  gridTemplateColumns: "auto auto",
+  fontSize: "12px",
+  backgroundColor: "#30ff00", // green
   justifyContent: "space-between",
+  fontFamily: "arial",
+  paddingTop: "2px",
+  paddingLeft: "3px",
+  paddingRight: "3px",
 }
-const btnArray: CSS.Properties = {
+/* const btnArray: CSS.Properties = {
   // potential container for all the bus buttons and "reboot," "start log," etc.
-  // not sure how to organize containers and objects. Bring up during work hours
   display: "grid",
   gridTemplateColumns: "auto auto auto auto",
   justifyContent: "center",
-}
+} */
 const buttonStyle: CSS.Properties = {
   // intended to be used both for readout buttons and bus array buttons
-  fontSize: "9px",
-  // textAlign: "center",
-  width: "auto",
-  // color: "#f5f5f5", very light gray; intended to color the button, not text
+  fontSize: "11px",
+  fontFamily: "arial",
 }
 const totalPackContainer: CSS.Properties = {
   display: "grid",
@@ -52,7 +61,6 @@ const totalPackContainer: CSS.Properties = {
   // color: "#ff1100", red; intended for "voltage"
 }
 const cellReadoutContainer: CSS.Properties = {
-  // readoutDisplays will be used for text in this container
   display: "grid",
   color: "#ff1100", // red
   gridTemplateColumns: "auto auto auto auto",
@@ -114,7 +122,7 @@ class Power extends Component<IProps, IState> {
       motorLFButton: false,
       motorLM: 0.0,
       motorLMButton: false,
-      motorLB: 0.0,
+      /* motorLB: 0.0,
       motorLBButton: false,
       motorRF: 0.0,
       motorRFButton: false,
@@ -160,7 +168,7 @@ class Power extends Component<IProps, IState> {
       cellFive: 0.0,
       cellSix: 0.0,
       cellSeven: 0.0,
-      cellEight: 0.0,
+      cellEight: 0.0, */
     }
     // rovecomm.on?
   }
@@ -182,8 +190,8 @@ class Power extends Component<IProps, IState> {
               {this.state.motorLFButton === true ? "enabled" : "disabled"}
             </button>
             <div style={readoutDisplay}>
-              Motor LF
-              {this.state.motorLF}
+              <span>Motor LF</span>
+              {this.state.motorLF.toFixed(2)} A
             </div>
             <button
               style={buttonStyle}
@@ -196,8 +204,8 @@ class Power extends Component<IProps, IState> {
               {this.state.motorLFButton === true ? "enabled" : "disabled"}
             </button>
             <div style={readoutDisplay}>
-              Motor LM
-              {this.state.motorLM}
+              <span>Motor LM</span>
+              {this.state.motorLM.toFixed(2)} A
             </div>
           </div>
         </div>
