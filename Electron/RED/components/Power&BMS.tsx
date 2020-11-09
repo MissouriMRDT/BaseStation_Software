@@ -1,7 +1,5 @@
-/* eslint-disable prettier/prettier */
 import React, { Component } from "react"
 import CSS from "csstype"
-import { PassThrough } from "stream"
 // import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
 // import { Packet } from "../../Core/RoveProtocol/Packet"
 
@@ -14,7 +12,7 @@ const grandContainer: CSS.Properties = {
   flexDirection: "column",
   // width: "placeholder",
   borderWidth: "thick",
-  borderColor: "rgb(153, 0, 0)",// MRDT red
+  borderColor: "rgb(153, 0, 0)", // MRDT red
   borderStyle: "solid",
   // gridRowStart: "placeholder",
 }
@@ -27,13 +25,10 @@ const roAndBtnContainer: CSS.Properties = {
   width: "auto",
   gridTemplateColumns: "75px 1fr 75px 1fr",
 }
-const readoutDisplays: CSS.Properties = {
+const readoutDisplay: CSS.Properties = {
   fontSize: "10px",
-  color: "#30ff00",// green
+  color: "#30ff00", // green
   justifyContent: "space-between",
-}
-const label: CSS.Properties = {
-  fontSize: "10px",
 }
 const btnArray: CSS.Properties = {
   // potential container for all the bus buttons and "reboot," "start log," etc.
@@ -59,7 +54,7 @@ const totalPackContainer: CSS.Properties = {
 const cellReadoutContainer: CSS.Properties = {
   // readoutDisplays will be used for text in this container
   display: "grid",
-  color: "#ff1100",// red
+  color: "#ff1100", // red
   gridTemplateColumns: "auto auto auto auto",
   // will likely need a way to keep elements confined to set columns
 }
@@ -67,54 +62,108 @@ const cellReadoutContainer: CSS.Properties = {
 interface IProps {}
 
 interface IState {
-  // btnClicked: boolean
   motorLF: number
+  motorLFButton: boolean
   motorLM: number
+  motorLMButton: boolean
   motorLB: number
+  motorLBButton: boolean
   motorRF: number
+  motorRFButton: boolean
   motorRM: number
+  motorRMButton: boolean
   motorRB: number
+  motorRBButton: boolean
   motorExtra: number
+  motorExtraButton: boolean
   auxiliary: number
+  auxiliaryButton: boolean
   comms: number
+  commsButton: boolean
   logic: number
+  logicButton: boolean
   actuation: number
+  actuationButton: boolean
   twelveVBoard: number
+  twelveVBoardButton: boolean
   batteryTemp: number
   ttlPackVolt: number
   ttlPackCurrent: number
-  // unsure if each individual cell needs to be declared here.
-  // same with bus button states
+  bus15Button: boolean
+  bus16Button: boolean
+  bus17Button: boolean
+  bus18Button: boolean
+  bus19Button: boolean
+  bus20Button: boolean
+  bus21Button: boolean
+  bus22Button: boolean
+  bus23Button: boolean
+  bus24Button: boolean
+  bus25Button: boolean
+  bus26Button: boolean
+  allMtrsDisbled: boolean
+  reboot: boolean
+  shutDown: boolean
 }
 
-class Power extends Component<IProps, Istate> {
+class Power extends Component<IProps, IState> {
   constructor(props: any) {
     super(props)
     this.state = {
-      motorLF: 0.00,
-      motorLM: 0.00,
-      motorLB: 0.00,
-      motorRF: 0.00,
-      motorRM: 0.00,
-      motorRB: 0.00,
-      motorExtra: 0.00,
-      auxiliary: 0.00,
-      comms: 0.00,
-      logic: 0.00,
-      actuation: 0.00,
-      twelveVNoard: 0.00,
-      batteryTemp: 0.00,
-      ttlPackVolt: 0.00,
-      ttlPackCurrent: 0.00,
+      motorLF: 0.0,
+      motorLFButton: false,
+      motorLM: 0.0,
+      motorLMButton: false,
+      motorLB: 0.0,
+      motorLBButton: false,
+      motorRF: 0.0,
+      motorRFButton: false,
+      motorRM: 0.0,
+      motorRMButton: false,
+      motorRB: 0.0,
+      motorRBButton: false,
+      motorExtra: 0.0,
+      motorExtraButton: false,
+      auxiliary: 0.0,
+      auxiliaryButton: false,
+      comms: 0.0,
+      commsButton: false,
+      logic: 0.0,
+      logicButton: false,
+      actuation: 0.0,
+      actuationButton: false,
+      twelveVNoard: 0.0,
+      twelveVBoardButton: false,
+      batteryTemp: 0.0,
+      bus15Button: false,
+      bus16Button: false,
+      bus17Button: false,
+      bus18Button: false,
+      bus19Button: false,
+      bus20Button: false,
+      bus21Button: false,
+      bus22Button: false,
+      bus23Button: false,
+      bus24Button: false,
+      bus25Button: false,
+      bus26Button: false,
+      allMtrsDisbled: false,
+      reboot: false,
+      shutDown: false,
+      // startLog: false,
+      ttlPackVolt: 0.0,
+      ttlPackCurrent: 0.0,
+      cellOne: 0.0,
+      cellTwo: 0.0,
+      cellThree: 0.0,
+      cellFour: 0.0,
+      cellFive: 0.0,
+      cellSix: 0.0,
+      cellSeven: 0.0,
+      cellEight: 0.0,
     }
     // rovecomm.on?
   }
-  // eslint-disable-next-line @typescript-eslint/lines-between-class-members
-  renderReadOutAmps(): JSX.Element {
-    
-  }
-
-  renderReadOutVolts()
 
   render(): JSX.Element {
     return (
@@ -122,18 +171,39 @@ class Power extends Component<IProps, Istate> {
         <div style={h1Style}>POWER AND BMS</div>
         <div style={grandContainer}>
           <div style={roAndBtnContainer}>
-            <button style={buttonStyle}></button>
-          </div>
-          <div style={btnArray}></div>
-          <span>----------------------------------------</span>
-          <div style={totalPackContainer}></div>
-          <div style={cellReadoutContainer}>
-            {[
-              { title: "Cell 1", value: this.state.cell1 },
-            ]}
+            <button
+              style={buttonStyle}
+              type="button"
+              value={this.state.motorLFButton.toString()}
+              onClick={() => {
+                this.state.motorLFButton.setState(true)
+              }}
+            >
+              {this.state.motorLFButton === true ? "enabled" : "disabled"}
+            </button>
+            <div style={readoutDisplay}>
+              Motor LF
+              {this.state.motorLF}
+            </div>
+            <button
+              style={buttonStyle}
+              type="button"
+              value={this.state.motorLMButton.toString()}
+              onClick={() => {
+                this.state.motorLMButton.setState(true)
+              }}
+            >
+              {this.state.motorLFButton === true ? "enabled" : "disabled"}
+            </button>
+            <div style={readoutDisplay}>
+              Motor LM
+              {this.state.motorLM}
+            </div>
           </div>
         </div>
       </div>
     )
   }
 }
+
+export default Power
