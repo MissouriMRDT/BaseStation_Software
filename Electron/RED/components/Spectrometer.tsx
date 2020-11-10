@@ -7,7 +7,6 @@ import {
   HorizontalGridLines,
   LineSeries,
 } from "react-vis"
-import CSVReader from "react-csv-reader"
 import { specData } from "./spec"
 import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
 // import { Packet } from "../../Core/RoveProtocol/Packet"
