@@ -68,11 +68,12 @@ class Spectrometer extends Component<IProps, IState> {
     let area = 0
     for (
       i = 1, right = this.state.spectrometerData[i];
-      i < this.state.spectrometerData.length;
+      i <= this.state.spectrometerData.length;
       i++
     ) {
-      area += ((left.y + right.y) / 2) * (right.x - left.x)
+      area += (((left.y + right.y) / 2) * (right.x - left.x))
       left = right
+      right = this.state.spectrometerData[i]
     }
     return area
   }
