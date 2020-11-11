@@ -57,7 +57,7 @@ function decodePacket(
   return retArray
 }
 
-export function parse(packet: Buffer): string {
+function parse(packet: Buffer): string {
   // RoveComm Header Format:
   //
   //  0                   1                   2                   3
