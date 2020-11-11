@@ -40,7 +40,9 @@ interface IState {
   currentLon: number
   lidar: number
 }
-
+function sendCom() {
+  rovecomm.sendCommand("GPSPosition", [123000, 123000], true)
+}
 class GPS extends Component<IProps, IState> {
   constructor(props: any) {
     super(props)
@@ -98,6 +100,11 @@ class GPS extends Component<IProps, IState> {
               </div>
             )
           })}
+        </div>
+        <div style={container}>
+          <button type="button" onClick={sendCom}>
+            Send Drive Command
+          </button>
         </div>
       </div>
     )
