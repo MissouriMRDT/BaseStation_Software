@@ -152,8 +152,9 @@ class Rovecomm extends EventEmitter {
     )
 
     this.UDPListen()
-    this.TCPServer.listen(11111)
+    this.TCPServer.listen(11110)
     this.createTCPConnection(11111, "192.168.0.12")
+    this.createTCPConnection(11110, "192.168.0.12")
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   }
 
@@ -162,12 +163,8 @@ class Rovecomm extends EventEmitter {
     await temp.connect(port, host, function handler() {
       console.log(`Connected to ${host} on Port: ${port}`)
     })
-    console.log(temp)
     this.TCPConnections.push(temp)
-    console.log(this.TCPConnections)
-    /* this.TCPConnections[-1].connect(port, host, function handler() {
-      console.log(`Created connection to ${host} on Port: ${port}`)
-    }) */
+    // should this also subscribe to the board over TCP? Probably not since that should be UDP traffic, right?
   }
 
   UDPListen() {
@@ -190,12 +187,21 @@ class Rovecomm extends EventEmitter {
   }
 
   sendTCP(packet: Buffer, destinationIp: string, port: number) {
-    const temp = this.TCPConnections[0]
-    this.TCPConnections[0].write(packet, "utf8", function handler() {
-      console.log(
-        `wrote ${packet} to ${temp.remoteAddress} on ${temp.remotePort}`
-      )
-    })
+    // eslint-disable-next-line no-restricted-syntax
+    for (const socket in this.TCPConnections) {
+      if (
+        this.TCPConnections[socket].remoteAddress === destinationIp &&
+        this.TCPConnections[socket].remotePort === port
+      ) {
+        const temp = this.TCPConnections[socket]
+        this.TCPConnections[socket].write(packet, "utf8", function handler() {
+          console.log(
+            `wrote ${packet} to ${temp.remoteAddress} on ${temp.remotePort}`
+          )
+        })
+        break
+      }
+    }
   }
 
   // While most "any" variable types have been removed, data really can be almost any type
