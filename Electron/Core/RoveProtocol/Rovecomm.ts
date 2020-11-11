@@ -89,11 +89,20 @@ function parse(packet: Buffer): void {
     data = decodePacket(dataType, dataCount, rawdata)
 
     let dataIdStr = "null"
+    let endLoop = false
     // Here we loop through all of the Boards in the manifest,
     // looking specifically if this dataId is a known Telemetry of the board
     for (let i = 0; i < DATAID.length; i++) {
-      if (dataId in DATAID[i].Telemetry) {
-        dataIdStr = DATAID[i].Telemetry[dataId]
+      // eslint-disable-next-line no-restricted-syntax
+      for (const comm in DATAID[i].Telemetry) {
+        if (dataId === DATAID[i].Telemetry[comm].dataId) {
+          dataIdStr = comm
+          endLoop = true
+          break
+        }
+      }
+      if (endLoop) {
+        break
       }
     }
 
