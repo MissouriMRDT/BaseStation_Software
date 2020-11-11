@@ -81,7 +81,6 @@ function parse(packet: Buffer): string {
   let data: number[]
 
   if (version === VersionNumber) {
-    console.log(dataId)
     data = decodePacket(dataType, dataLength, rawdata)
     // eslint-disable-next-line
     rovecomm.emit(DATAID[dataId], data)
@@ -137,37 +136,81 @@ class Rovecomm extends EventEmitter {
     )
     this.UDPSocket.bind(11000)
   }
-}
-export const rovecomm = new Rovecomm()
 
-export function sendCommand(dataId: number, data: any, reliability = false) {
-  const VersionNumber = 2
-  const dataLength = data.length
-  let destinationIp
-  let port
-  let dataType
-  for (let i = 0; i < DATAID.length; i++) {
-    if (dataId in Object.keys(DATAID[i].Commands)) {
-      destinationIp = DATAID[i].Ip
-      port = DATAID[i].Port
-      dataType = DATAID[i].Commands[dataId]
+  sendUDP(packet: Buffer, destinationIp: string, port = 11000): void {
+    this.UDPSocket.send(packet, port, destinationIp)
+  }
+
+  sendCommand(dataIdStr: string, data: any, reliability = false): void {
+    const VersionNumber = 2
+    const dataLength = data.length
+    let destinationIp = ""
+    let port = 8081
+    let dataType
+    let dataId
+    for (let i = 0; i < DATAID.length; i++) {
+      if (dataIdStr in DATAID[i].Commands) {
+        destinationIp = DATAID[i].Ip
+        port = parseInt(DATAID[i].Port, 10)
+        dataType = DATAID[i].Commands[dataIdStr].dataType
+        dataId = DATAID[i].Commands[dataIdStr].dataId
+        break
+      }
+    }
+    const headerBuffer = Buffer.allocUnsafe(5)
+    headerBuffer.writeUInt8(VersionNumber, 0)
+    headerBuffer.writeUInt16BE(dataId, 1)
+    headerBuffer.writeUInt8(dataLength, 3)
+    headerBuffer.writeUInt8(dataType, 4)
+    const dataBuffer = Buffer.allocUnsafe(dataLength * DataLength[dataType])
+    switch (dataType) {
+      case DataTypes.INT8_T:
+        for (let i = 0; i < data.length; i++) {
+          dataBuffer.writeInt8(data[i], i * DataLength[DataTypes.INT8_T])
+        }
+        break
+      case DataTypes.UINT8_T:
+        for (let i = 0; i < data.length; i++) {
+          dataBuffer.writeUInt8(data[i], i * DataLength[DataTypes.UINT8_T])
+        }
+        break
+      case DataTypes.INT16_T:
+        for (let i = 0; i < data.length; i++) {
+          dataBuffer.writeInt16BE(data[i], i * DataLength[DataTypes.INT16_T])
+        }
+        break
+      case DataTypes.UINT16_T:
+        for (let i = 0; i < data.length; i++) {
+          dataBuffer.writeUInt16BE(data[i], i * DataLength[DataTypes.UINT16_T])
+        }
+        break
+      case DataTypes.INT32_T:
+        for (let i = 0; i < data.length; i++) {
+          dataBuffer.writeInt32BE(data[i], i * DataLength[DataTypes.INT32_T])
+        }
+        break
+      case DataTypes.UINT32_T:
+        for (let i = 0; i < data.length; i++) {
+          dataBuffer.writeUInt32BE(data[i], i * DataLength[DataTypes.UINT32_T])
+        }
+        break
+      case DataTypes.FLOAT_T:
+        for (let i = 0; i < data.length; i++) {
+          dataBuffer.writeFloatBE(data[i], i * DataLength[DataTypes.FLOAT_T])
+        }
+        break
+      default:
+        for (let i = 0; i < data.length; i++) {
+          dataBuffer.writeUInt8(0, i * DataLength[DataTypes.INT8_T])
+        }
+        break
+    }
+    const packet = Buffer.concat([headerBuffer, dataBuffer])
+    if (reliability === false) {
+      this.sendUDP(packet, destinationIp)
+    } else {
+      this.sendTCP(packet, destinationIp, port)
     }
   }
-
-  if (reliability === false) {
-    rovecomm.sendUDP(
-      [VersionNumber, dataId, dataLength, dataType, data],
-      destinationIp,
-      port
-    )
-  } else {
-    rovecomm.sendTCP(
-      [VersionNumber, dataId, dataLength, dataType, data],
-      destinationIp,
-      port
-    )
-  }
-  console.log(
-    `Not yet implemented. Recieved ${dataId}: ${data}, ${reliability}`
-  )
 }
+export const rovecomm = new Rovecomm()
