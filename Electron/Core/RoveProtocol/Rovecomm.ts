@@ -180,6 +180,8 @@ class Rovecomm extends EventEmitter {
     let dataType
     let dataId
 
+    // Boolean to keep track of if the dataId was found
+    let found = false
     // Here we loop through all of the Boards in the manifest,
     // looking specifically if this dataId is a known Command of the board
     for (let i = 0; i < DATAID.length; i++) {
@@ -188,8 +190,16 @@ class Rovecomm extends EventEmitter {
         port = DATAID[i].Port
         dataType = DATAID[i].Commands[dataIdStr].dataType
         dataId = DATAID[i].Commands[dataIdStr].dataId
+        found = true
         break
       }
+    }
+    if (found === false) {
+      this.emit(
+        "all",
+        `Attempting to send packet with DataId: ${dataIdStr} and data ${data} but dataId was not found. Packet not sent.`
+      )
+      return
     }
 
     /* Create the header buffer. Packet is formatted as below:

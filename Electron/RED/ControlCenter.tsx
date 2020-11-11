@@ -11,7 +11,6 @@ class ControlCenter extends Component<IProps, IState> {
   constructor(props: any) {
     super(props)
     this.state = {}
-    console.log("here")
   }
 
   render(): JSX.Element {
