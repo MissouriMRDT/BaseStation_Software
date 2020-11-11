@@ -1,11 +1,15 @@
 import { Socket } from "dgram"
 import { Server } from "http"
 import { DATAID } from "./RovecommManifest"
+
+// There is a fundamental implementation difference between these required imports
+// and the traditional typescript imports.
 /* eslint-disable @typescript-eslint/no-var-requires */
 const dgram = require("dgram")
 const net = require("net")
 const EventEmitter = require("events")
 
+// Enumeration of all datatypes supported by Basestation Rovecomm
 enum DataTypes {
   INT8_T = 0,
   UINT8_T = 1,
@@ -16,6 +20,7 @@ enum DataTypes {
   FLOAT_T = 6,
 }
 
+// Data sizes of the corresponding datatype enumeration
 const dataSizes = [1, 1, 2, 2, 4, 4, 2]
 
 function decodePacket(
@@ -23,7 +28,14 @@ function decodePacket(
   dataLength: number,
   data: Buffer
 ): number[] {
+  /*
+   * Takes in a dataType, dateLength, and data from an incoming rovecomm packet,
+   * and uses the dataType to return an array of the properly typed data.
+   * Note: even if dataLength is only 1, this returns an array of one item.
+   */
+
   let readBytes: (i: number) => number
+
   switch (dataType) {
     case DataTypes.INT8_T:
       readBytes = data.readInt8.bind(data)
@@ -60,17 +72,22 @@ function decodePacket(
 }
 
 function parse(packet: Buffer): void {
-  // RoveComm Header Format:
-  //
-  //  0                   1                   2                   3
-  //  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-  // +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  // |    Version    |            Data Id            |  Data Length  |
-  // +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  // |   Data Type   |                Data (Variable)                |
-  // +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  //
-  // Note: the size of Data is dataSizes[DataType] * dataSizes bytes
+  /*
+   * Parse takes in a packet buffer and will call decodePacket and emit
+   *  the rovecomm event with the proper dataId and that typed data
+   *
+   *  RoveComm Header Format:
+   *
+   *   0                   1                   2                   3
+   *   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   *  |    Version    |            Data Id            |  Data Length  |
+   *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   *  |   Data Type   |                Data (Variable)                |
+   *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   *
+   *  Note: the size of Data is dataSizes[DataType] * dataSizes bytes
+   */
 
   const VersionNumber = 2
 
@@ -86,23 +103,38 @@ function parse(packet: Buffer): void {
     data = decodePacket(dataType, dataLength, rawdata)
 
     let dataIdStr = "null"
+    // Here we loop through all of the Boards in the manifest,
+    // looking specifically if this dataId is a known Telemetry of the board
     for (let i = 0; i < DATAID.length; i++) {
       if (dataId in DATAID[i].Telemetry) {
         dataIdStr = DATAID[i].Telemetry[dataId]
       }
     }
 
-    // eslint-disable-next-line
+    // rovecomm depends on parse, and parse depends on rovecomm. Since parse is defined with the
+    // function keyword, this isn't a problem, but we don't want to disable this use before definition
+    // error for the whole file or project since it can be risky
+
+    // First emit is for the dataIdString (like DriveSpeeds)
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     rovecomm.emit(dataIdStr, data)
-    // eslint-disable-next-line
+
+    // Second emit is for "all" which is used for logging purposes
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     rovecomm.emit(
       "all",
       `Data Id: ${dataId} (aka ${dataIdStr}), Type: ${dataType}, Length: ${dataLength}, Data: ${data}`
     )
+
+    // More emits will potentially follow to allow RON to listen to only a certain board,
+    // Telemetry vs Commands vs Errors, etc.
   }
 }
 
 function TCPListen(socket: Socket) {
+  /*
+   * Listens on the passed in TCP socket, always calling parse if it recieves anything
+   */
   socket.on("message", (msg: Buffer) => {
     parse(msg)
   })
@@ -115,6 +147,8 @@ class Rovecomm extends EventEmitter {
 
   constructor() {
     super()
+
+    // Initialization of UDP socket and server
     this.UDPSocket = dgram.createSocket("udp4")
     this.TCPServer = net.createServer((TCPSocket: Socket) =>
       TCPListen(TCPSocket)
@@ -125,6 +159,10 @@ class Rovecomm extends EventEmitter {
   }
 
   UDPListen() {
+    /*
+     * Listens on the class UDP socket, always calling parse if it recieves anything,
+     * and properly binding the socket to a port
+     */
     this.UDPSocket.on("message", (msg: Buffer) => {
       parse(msg)
     })
@@ -132,17 +170,30 @@ class Rovecomm extends EventEmitter {
   }
 
   sendUDP(packet: Buffer, destinationIp: string, port = 11000): void {
+    /*
+     * Takes a packet (Buffer) and sends it out over the existing UDP socket
+     * to the correct destination IP
+     */
     this.UDPSocket.send(packet, port, destinationIp)
   }
 
   // While most "any" variable types have been removed, data really can be almost any type
   sendCommand(dataIdStr: string, data: any, reliability = false): void {
+    /*
+     * Takes a dataIdString, data, and optional reliability (to determine)
+     * UDP or TCP, properly types the data according to the type in the manifest
+     * creates a Buffer, and calls the proper send function
+     */
     const VersionNumber = 2
+
     const dataLength = data.length
     let destinationIp = ""
-    let port = 8081
+    let port = 11000
     let dataType
     let dataId
+
+    // Here we loop through all of the Boards in the manifest,
+    // looking specifically if this dataId is a known Command of the board
     for (let i = 0; i < DATAID.length; i++) {
       if (dataIdStr in DATAID[i].Commands) {
         destinationIp = DATAID[i].Ip
@@ -152,12 +203,31 @@ class Rovecomm extends EventEmitter {
         break
       }
     }
+
+    /* Create the header buffer. Packet is formatted as below:
+     *  RoveComm Header Format:
+     *   0                   1                   2                   3
+     *   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+     *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     *  |    Version    |            Data Id            |  Data Length  |
+     *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     *  |   Data Type   |                Data (Variable)                |
+     *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     *
+     *  Note: the size of Data is dataLength * dataSizes[DataType] bytes
+     */
     const headerBuffer = Buffer.allocUnsafe(5)
     headerBuffer.writeUInt8(VersionNumber, 0)
     headerBuffer.writeUInt16BE(dataId, 1)
     headerBuffer.writeUInt8(dataLength, 3)
     headerBuffer.writeUInt8(dataType, 4)
+
+    // Create the data buffer
     const dataBuffer = Buffer.allocUnsafe(dataLength * dataSizes[dataType])
+
+    // Switch on the data type, and properly encode each number in the data
+    // array depending on the enumerated type, computing the offset and pushing
+    // to the dataBuffer
     switch (dataType) {
       case DataTypes.INT8_T:
         for (let i = 0; i < data.length; i++) {
@@ -200,7 +270,11 @@ class Rovecomm extends EventEmitter {
         }
         break
     }
+
+    // Concatenate together the header and data before sending
     const packet = Buffer.concat([headerBuffer, dataBuffer])
+
+    // And send over the proper reliability connection
     if (reliability === false) {
       this.sendUDP(packet, destinationIp)
     } else {
@@ -208,4 +282,6 @@ class Rovecomm extends EventEmitter {
     }
   }
 }
+
+// Export a master rovecomm to be used by each component
 export const rovecomm = new Rovecomm()
