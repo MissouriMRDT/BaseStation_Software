@@ -104,9 +104,13 @@ function parse(packet: Buffer): string {
 }
 
 function TCPListen(socket: any) {
-  socket.on("data", (data: any) => {
-    console.log(data, data.toString())
-  })
+  socket.on(
+    "message",
+    (msg: Buffer, rinfo: { address: string; port: number }) => {
+      console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`)
+      parse(msg)
+    }
+  )
 }
 
 class Rovecomm extends EventEmitter {
