@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import { rovecomm } from "../Core/RoveProtocol/Rovecomm"
 import GPS from "./components/GPS"
 import Log from "./components/Log"
 
@@ -18,6 +19,13 @@ class ControlCenter extends Component<IProps, IState> {
       <div>
         <Log />
         <GPS />
+        <button
+          type="button"
+          onClick={rovecomm.resubscribe}
+          style={{ width: "100px" }}
+        >
+          Resubscribe All
+        </button>
       </div>
     )
   }

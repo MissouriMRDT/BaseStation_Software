@@ -142,6 +142,8 @@ class Rovecomm extends EventEmitter {
 
     this.UDPListen()
     this.TCPServer.listen(11111)
+
+    this.resubscribe = this.resubscribe.bind(this)
   }
 
   UDPListen() {
@@ -265,6 +267,25 @@ class Rovecomm extends EventEmitter {
       this.sendUDP(packet, destinationIp)
     } else {
       this.sendTCP(packet, destinationIp, port)
+    }
+  }
+
+  resubscribe() {
+    const VersionNumber = 2
+    const dataId = 3
+    const dataLength = 0
+    const dataType = DataTypes.UINT8_T
+    const data = 0
+
+    const subscribe = Buffer.allocUnsafe(6)
+    subscribe.writeUInt8(VersionNumber, 0)
+    subscribe.writeUInt16BE(dataId, 1)
+    subscribe.writeUInt8(dataLength, 3)
+    subscribe.writeUInt8(dataType, 4)
+    subscribe.writeUInt8(data, 5)
+
+    for (let i = 0; i < DATAID.length; i++) {
+      this.sendUDP(subscribe, DATAID[i].Ip)
     }
   }
 }
