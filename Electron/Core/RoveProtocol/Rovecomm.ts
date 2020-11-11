@@ -126,7 +126,7 @@ function parse(packet: Buffer): void {
   }
 }
 
-function TCPListen(socket) {
+function TCPListen(socket: Socket) {
   /*
    * Listens on the passed in TCP socket, always calling parse if it recieves anything
    */
@@ -140,11 +140,11 @@ class Rovecomm extends EventEmitter {
 
   TCPServer: Server
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  TCPConnections = new net.Socket()
+  TCPConnections: Socket[]
 
   constructor() {
     super()
+    this.TCPConnections = []
     // Initialization of UDP socket and server
     this.UDPSocket = dgram.createSocket("udp4")
     this.TCPServer = net.createServer((TCPSocket: Socket) =>
@@ -155,15 +155,15 @@ class Rovecomm extends EventEmitter {
     this.TCPServer.listen(11111)
     this.createTCPConnection(11111, "192.168.0.12")
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    this.TCPConnections.on("data", function handler(data: any) {
-      console.log(data)
-    })
   }
 
   async createTCPConnection(port: number, host = "localhost") {
-    this.TCPConnections.connect(port, host, function handler() {
+    const temp = await new net.Socket()
+    await temp.connect(port, host, function handler() {
       console.log(`Connected to ${host} on Port: ${port}`)
     })
+    console.log(temp)
+    this.TCPConnections.push(temp)
     console.log(this.TCPConnections)
     /* this.TCPConnections[-1].connect(port, host, function handler() {
       console.log(`Created connection to ${host} on Port: ${port}`)
@@ -190,8 +190,8 @@ class Rovecomm extends EventEmitter {
   }
 
   sendTCP(packet: Buffer, destinationIp: string, port: number) {
-    const temp = this.TCPConnections
-    this.TCPConnections.write(packet, "utf8", function handler() {
+    const temp = this.TCPConnections[0]
+    this.TCPConnections[0].write(packet, "utf8", function handler() {
       console.log(
         `wrote ${packet} to ${temp.remoteAddress} on ${temp.remotePort}`
       )
