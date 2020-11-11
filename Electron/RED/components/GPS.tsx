@@ -53,11 +53,11 @@ class GPS extends Component<IProps, IState> {
       currentLon: 0,
       lidar: 0.0,
     }
-    // something like this this.props.test.Log()
+
     rovecomm.on("GPSTelem", (data: any) => this.GPSTelem(data))
     rovecomm.on("GPSPosition", (data: any) => this.GPSPosition(data))
 
-    // rovecomm.sendCommand(Packet(dataId, data), reliability)
+    // rovecomm.sendCommand(dataIdStr, data, reliability)
   }
 
   GPSTelem(data: any) {
