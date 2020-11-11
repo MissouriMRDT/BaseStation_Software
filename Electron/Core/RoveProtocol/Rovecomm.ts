@@ -57,7 +57,7 @@ function decodePacket(
   return retArray
 }
 
-function parse(packet: Buffer): string {
+function parse(packet: Buffer): void {
   // RoveComm Header Format:
   //
   //  0                   1                   2                   3
@@ -68,7 +68,7 @@ function parse(packet: Buffer): string {
   // |   Data Type   |                Data (Variable)                |
   // +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   //
-  // Note: the size of Data is sizes[DataType] * DataLength bytes
+  // Note: the size of Data is dataSizes[DataType] * dataSizes bytes
 
   const VersionNumber = 2
 
@@ -82,24 +82,22 @@ function parse(packet: Buffer): string {
 
   if (version === VersionNumber) {
     data = decodePacket(dataType, dataLength, rawdata)
+
+    let dataIdStr = "null"
+    for (let i = 0; i < DATAID.length; i++) {
+      if (dataId in Object.keys(DATAID[i].Telemetry)) {
+        dataIdStr = DATAID[i].Telemetry[dataId]
+      }
+    }
+
     // eslint-disable-next-line
-    rovecomm.emit(DATAID[dataId], data)
+    rovecomm.emit(dataIdStr, data)
     // eslint-disable-next-line
     rovecomm.emit(
       "all",
-      `Data Id: ${dataId} (aka ${DATAID[dataId]}), Type: ${dataType}, Length: ${dataLength}, Data: ${data}`
+      `Data Id: ${dataId} (aka ${dataIdStr}), Type: ${dataType}, Length: ${dataLength}, Data: ${data}`
     )
-  } else {
-    return "null"
   }
-
-  for (let i = 0; i < DATAID.length; i++) {
-    if (dataId in Object.keys(DATAID[i].Telemetry)) {
-      return DATAID[i].Telemetry[dataId]
-    }
-  }
-
-  return "null"
 }
 
 function TCPListen(socket: any) {
