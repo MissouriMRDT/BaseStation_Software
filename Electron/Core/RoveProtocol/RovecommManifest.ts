@@ -1,3 +1,23 @@
+/* The manifest follows the following format:
+ * DATAID = [
+ *  {
+ *    Board: "Name",
+ *    Ip: "192.168.1.___",
+ *    Port: 110__,
+ *    Commands: {
+ *      DataIdString: {
+ *        dataId: ____, (number)
+ *        dataType: ____, (Enumeration declared below)
+ *        comments: "General description of command",
+ *      },
+ *     Telemetry: {
+ *        *follows same format as commands*
+ *      },
+ *    },
+ *  }
+ * ]
+ */
+
 // Enumeration of all datatypes supported by Basestation Rovecomm
 export enum DataTypes {
   INT8_T = 0,
