@@ -87,7 +87,7 @@ function parse(packet: Buffer): void {
 
     let dataIdStr = "null"
     for (let i = 0; i < DATAID.length; i++) {
-      if (dataId in Object.keys(DATAID[i].Telemetry)) {
+      if (dataId in DATAID[i].Telemetry) {
         dataIdStr = DATAID[i].Telemetry[dataId]
       }
     }
