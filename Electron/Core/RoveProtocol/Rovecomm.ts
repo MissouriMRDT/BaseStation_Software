@@ -14,41 +14,35 @@ enum DataTypes {
   FLOAT_T = 6,
 }
 
+const DataLength = [1, 1, 2, 2, 4, 4, 2]
+
 function decodePacket(
   dataType: number,
   dataLength: number,
   data: Buffer
 ): number[] {
   let readBytes: (i: number) => number
-  let size: number
   switch (dataType) {
     case DataTypes.INT8_T:
       readBytes = data.readInt8.bind(data)
-      size = 1
       break
     case DataTypes.UINT8_T:
       readBytes = data.readUInt8.bind(data)
-      size = 1
       break
     case DataTypes.INT16_T:
       readBytes = data.readInt16BE.bind(data)
-      size = 2
       break
     case DataTypes.UINT16_T:
       readBytes = data.readUInt16BE.bind(data)
-      size = 2
       break
     case DataTypes.INT32_T:
       readBytes = data.readInt32BE.bind(data)
-      size = 4
       break
     case DataTypes.UINT32_T:
       readBytes = data.readUInt32BE.bind(data)
-      size = 4
       break
     case DataTypes.FLOAT_T:
       readBytes = data.readFloatBE.bind(data)
-      size = 2
       break
     default:
       return []
@@ -57,7 +51,7 @@ function decodePacket(
   const retArray = []
   let offset: number
   for (let i = 0; i < dataLength; i += 1) {
-    offset = i * size
+    offset = i * DataLength[dataType]
     retArray.push(readBytes(offset))
   }
   return retArray
