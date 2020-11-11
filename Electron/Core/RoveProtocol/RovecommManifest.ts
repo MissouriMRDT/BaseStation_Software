@@ -36,7 +36,7 @@ export const DATAID = [
   {
     Board: "Drive",
     Ip: "192.168.1.131",
-    Port: 11001,
+    Port: 11111,
     Commands: {
       DriveLeftRight: {
         dataId: 1000,
@@ -205,9 +205,15 @@ export const DATAID = [
   },
   {
     Board: "Nav",
-    Ip: "192.168.1.136",
-    Port: 11005,
-    Commands: {},
+    Ip: "192.168.0.12",
+    Port: 11110,
+    Commands: {
+      GPSPosition: {
+        dataId: 5100,
+        dataType: DataTypes.INT32_T,
+        comments: "lat,long",
+      },
+    },
     Telemetry: {
       GPSPosition: {
         dataId: 5100,
