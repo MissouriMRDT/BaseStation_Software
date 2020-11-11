@@ -152,25 +152,18 @@ class Rovecomm extends EventEmitter {
     )
 
     this.UDPListen()
-    this.TCPServer.listen(11110)
-    this.createTCPConnection(11110, "192.168.0.12")
+    this.TCPServer.listen(11111)
+    this.createTCPConnection(11111, "192.168.0.12")
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.TCPConnections.on("data", function handler(data: any) {
-      console.log(data.to_String())
+      console.log(data)
     })
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  async sleep(ms: number) {
-    // eslint-disable-next-line no-new
-    new Promise(resolve => setTimeout(() => resolve(true), ms * 1000))
   }
 
   async createTCPConnection(port: number, host = "localhost") {
     this.TCPConnections.connect(port, host, function handler() {
       console.log(`Connected to ${host} on Port: ${port}`)
     })
-    await this.sleep(1000)
     console.log(this.TCPConnections)
     /* this.TCPConnections[-1].connect(port, host, function handler() {
       console.log(`Created connection to ${host} on Port: ${port}`)
@@ -185,7 +178,7 @@ class Rovecomm extends EventEmitter {
     this.UDPSocket.on("message", (msg: Buffer) => {
       parse(msg)
     })
-    this.UDPSocket.bind(10000)
+    this.UDPSocket.bind(11000)
   }
 
   sendUDP(packet: Buffer, destinationIp: string, port = 11000): void {
