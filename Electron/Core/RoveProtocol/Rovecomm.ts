@@ -11,13 +11,13 @@ const EventEmitter = require("events")
 
 function decodePacket(
   dataType: number,
-  dataCount: number,
+  dataLength: number,
   data: Buffer
 ): number[] {
   /*
    * Takes in a dataType, dateLength, and data from an incoming rovecomm packet,
    * and uses the dataType to return an array of the properly typed data.
-   * Note: even if dataCount is only 1, this returns an array of one item.
+   * Note: even if dataLength is only 1, this returns an array of one item.
    */
 
   let readBytes: (i: number) => number
@@ -50,7 +50,7 @@ function decodePacket(
 
   const retArray = []
   let offset: number
-  for (let i = 0; i < dataCount; i += 1) {
+  for (let i = 0; i < dataLength; i += 1) {
     offset = i * dataSizes[dataType]
     retArray.push(readBytes(offset))
   }
@@ -67,7 +67,7 @@ function parse(packet: Buffer): void {
    *   0                   1                   2                   3
    *   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   *  |    Version    |            Data Id            |  Data  Count  |
+   *  |    Version    |            Data Id            |  Data Length  |
    *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    *  |   Data Type   |                Data (Variable)                |
    *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -79,21 +79,30 @@ function parse(packet: Buffer): void {
 
   const version = packet.readUInt8(0)
   const dataId = packet.readUInt16BE(1)
-  const dataCount = packet.readUInt8(3)
+  const dataLength = packet.readUInt8(3)
   const dataType = packet.readUInt8(4)
 
   const rawdata = packet.slice(5)
   let data: number[]
 
   if (version === VersionNumber) {
-    data = decodePacket(dataType, dataCount, rawdata)
+    data = decodePacket(dataType, dataLength, rawdata)
 
     let dataIdStr = "null"
+    let endLoop = false
     // Here we loop through all of the Boards in the manifest,
     // looking specifically if this dataId is a known Telemetry of the board
     for (let i = 0; i < DATAID.length; i++) {
-      if (dataId in DATAID[i].Telemetry) {
-        dataIdStr = DATAID[i].Telemetry[dataId]
+      // eslint-disable-next-line no-restricted-syntax
+      for (const comm in DATAID[i].Telemetry) {
+        if (dataId === DATAID[i].Telemetry[comm].dataId) {
+          dataIdStr = comm
+          endLoop = true
+          break
+        }
+      }
+      if (endLoop) {
+        break
       }
     }
 
@@ -109,7 +118,7 @@ function parse(packet: Buffer): void {
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
     rovecomm.emit(
       "all",
-      `Data Id: ${dataId} (aka ${dataIdStr}), Type: ${dataType}, Count: ${dataCount}, Data: ${data}`
+      `Data Id: ${dataId} (aka ${dataIdStr}), Type: ${dataType}, Length: ${dataLength}, Data: ${data}`
     )
 
     // More emits will potentially follow to allow RON to listen to only a certain board,
@@ -117,11 +126,11 @@ function parse(packet: Buffer): void {
   }
 }
 
-function TCPListen(socket: Socket) {
+function TCPListen(socket) {
   /*
    * Listens on the passed in TCP socket, always calling parse if it recieves anything
    */
-  socket.on("message", (msg: Buffer) => {
+  socket.on("data", (msg: Buffer) => {
     parse(msg)
   })
 }
@@ -131,9 +140,11 @@ class Rovecomm extends EventEmitter {
 
   TCPServer: Server
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  TCPConnections = new net.Socket()
+
   constructor() {
     super()
-
     // Initialization of UDP socket and server
     this.UDPSocket = dgram.createSocket("udp4")
     this.TCPServer = net.createServer((TCPSocket: Socket) =>
@@ -141,9 +152,29 @@ class Rovecomm extends EventEmitter {
     )
 
     this.UDPListen()
-    this.TCPServer.listen(11111)
+    this.TCPServer.listen(11110)
+    this.createTCPConnection(11110, "192.168.0.12")
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    this.TCPConnections.on("data", function handler(data: any) {
+      console.log(data.to_String())
+    })
+  }
 
-    this.resubscribe = this.resubscribe.bind(this)
+  // eslint-disable-next-line class-methods-use-this
+  async sleep(ms: number) {
+    // eslint-disable-next-line no-new
+    new Promise(resolve => setTimeout(() => resolve(true), ms * 1000))
+  }
+
+  async createTCPConnection(port: number, host = "localhost") {
+    this.TCPConnections.connect(port, host, function handler() {
+      console.log(`Connected to ${host} on Port: ${port}`)
+    })
+    await this.sleep(1000)
+    console.log(this.TCPConnections)
+    /* this.TCPConnections[-1].connect(port, host, function handler() {
+      console.log(`Created connection to ${host} on Port: ${port}`)
+    }) */
   }
 
   UDPListen() {
@@ -154,7 +185,7 @@ class Rovecomm extends EventEmitter {
     this.UDPSocket.on("message", (msg: Buffer) => {
       parse(msg)
     })
-    this.UDPSocket.bind(11000)
+    this.UDPSocket.bind(10000)
   }
 
   sendUDP(packet: Buffer, destinationIp: string, port = 11000): void {
@@ -163,6 +194,15 @@ class Rovecomm extends EventEmitter {
      * to the correct destination IP
      */
     this.UDPSocket.send(packet, port, destinationIp)
+  }
+
+  sendTCP(packet: Buffer, destinationIp: string, port: number) {
+    const temp = this.TCPConnections
+    this.TCPConnections.write(packet, "utf8", function handler() {
+      console.log(
+        `wrote ${packet} to ${temp.remoteAddress} on ${temp.remotePort}`
+      )
+    })
   }
 
   // While most "any" variable types have been removed, data really can be almost any type
@@ -174,14 +214,12 @@ class Rovecomm extends EventEmitter {
      */
     const VersionNumber = 2
 
-    const dataCount = data.length
+    const dataLength = data.length
     let destinationIp = ""
     let port = 11000
     let dataType
     let dataId
 
-    // Boolean to keep track of if the dataId was found
-    let found = false
     // Here we loop through all of the Boards in the manifest,
     // looking specifically if this dataId is a known Command of the board
     for (let i = 0; i < DATAID.length; i++) {
@@ -190,16 +228,8 @@ class Rovecomm extends EventEmitter {
         port = DATAID[i].Port
         dataType = DATAID[i].Commands[dataIdStr].dataType
         dataId = DATAID[i].Commands[dataIdStr].dataId
-        found = true
         break
       }
-    }
-    if (found === false) {
-      this.emit(
-        "all",
-        `Attempting to send packet with DataId: ${dataIdStr} and data ${data} but dataId was not found. Packet not sent.`
-      )
-      return
     }
 
     /* Create the header buffer. Packet is formatted as below:
@@ -207,21 +237,21 @@ class Rovecomm extends EventEmitter {
      *   0                   1                   2                   3
      *   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
      *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     *  |    Version    |            Data Id            |  Data  Count  |
+     *  |    Version    |            Data Id            |  Data Length  |
      *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      *  |   Data Type   |                Data (Variable)                |
      *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      *
-     *  Note: the size of Data is dataCount * dataSizes[DataType] bytes
+     *  Note: the size of Data is dataLength * dataSizes[DataType] bytes
      */
     const headerBuffer = Buffer.allocUnsafe(5)
     headerBuffer.writeUInt8(VersionNumber, 0)
     headerBuffer.writeUInt16BE(dataId, 1)
-    headerBuffer.writeUInt8(dataCount, 3)
+    headerBuffer.writeUInt8(dataLength, 3)
     headerBuffer.writeUInt8(dataType, 4)
 
     // Create the data buffer
-    const dataBuffer = Buffer.allocUnsafe(dataCount * dataSizes[dataType])
+    const dataBuffer = Buffer.allocUnsafe(dataLength * dataSizes[dataType])
 
     // Switch on the data type, and properly encode each number in the data
     // array depending on the enumerated type, computing the offset and pushing
@@ -277,25 +307,6 @@ class Rovecomm extends EventEmitter {
       this.sendUDP(packet, destinationIp)
     } else {
       this.sendTCP(packet, destinationIp, port)
-    }
-  }
-
-  resubscribe() {
-    const VersionNumber = 2
-    const dataId = 3
-    const dataCount = 0
-    const dataType = DataTypes.UINT8_T
-    const data = 0
-
-    const subscribe = Buffer.allocUnsafe(6)
-    subscribe.writeUInt8(VersionNumber, 0)
-    subscribe.writeUInt16BE(dataId, 1)
-    subscribe.writeUInt8(dataCount, 3)
-    subscribe.writeUInt8(dataType, 4)
-    subscribe.writeUInt8(data, 5)
-
-    for (let i = 0; i < DATAID.length; i++) {
-      this.sendUDP(subscribe, DATAID[i].Ip)
     }
   }
 }
