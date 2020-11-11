@@ -101,13 +101,9 @@ function parse(packet: Buffer): void {
 }
 
 function TCPListen(socket: any) {
-  socket.on(
-    "message",
-    (msg: Buffer, rinfo: { address: string; port: number }) => {
-      console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`)
-      parse(msg)
-    }
-  )
+  socket.on("message", (msg: Buffer) => {
+    parse(msg)
+  })
 }
 
 class Rovecomm extends EventEmitter {
@@ -125,13 +121,9 @@ class Rovecomm extends EventEmitter {
   }
 
   UDPListen() {
-    this.UDPSocket.on(
-      "message",
-      (msg: Buffer, rinfo: { address: string; port: number }) => {
-        console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`)
-        parse(msg)
-      }
-    )
+    this.UDPSocket.on("message", (msg: Buffer) => {
+      parse(msg)
+    })
     this.UDPSocket.bind(11000)
   }
 
