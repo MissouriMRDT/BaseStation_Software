@@ -1,3 +1,5 @@
+import { Socket } from "dgram"
+import { Server } from "http"
 import { DATAID } from "./RovecommManifest"
 /* eslint-disable @typescript-eslint/no-var-requires */
 const dgram = require("dgram")
@@ -100,21 +102,23 @@ function parse(packet: Buffer): void {
   }
 }
 
-function TCPListen(socket: any) {
+function TCPListen(socket: Socket) {
   socket.on("message", (msg: Buffer) => {
     parse(msg)
   })
 }
 
 class Rovecomm extends EventEmitter {
-  UDPSocket: any
+  UDPSocket: Socket
 
-  TCPServer: any
+  TCPServer: Server
 
   constructor() {
     super()
     this.UDPSocket = dgram.createSocket("udp4")
-    this.TCPServer = net.createServer((TCPSocket: any) => TCPListen(TCPSocket))
+    this.TCPServer = net.createServer((TCPSocket: Socket) =>
+      TCPListen(TCPSocket)
+    )
 
     this.UDPListen()
     this.TCPServer.listen(11111)
@@ -131,6 +135,7 @@ class Rovecomm extends EventEmitter {
     this.UDPSocket.send(packet, port, destinationIp)
   }
 
+  // While most "any" variable types have been removed, data really can be almost any type
   sendCommand(dataIdStr: string, data: any, reliability = false): void {
     const VersionNumber = 2
     const dataLength = data.length
