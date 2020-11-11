@@ -2,7 +2,7 @@ export const DATAID = [
   {
     Board: "Drive",
     Ip: "192.168.1.131",
-    Port: "11001",
+    Port: 11001,
     Commands: {
       DriveLeftRight: { dataId: 1000, dataType: 2, comments: "" },
       DriveIndividual: { dataId: 1001, dataType: 2, comments: "" },
@@ -19,7 +19,7 @@ export const DATAID = [
   {
     Board: "Power",
     Ip: "192.168.1.132",
-    Port: "11003",
+    Port: 11003,
     Commands: {
       PowerBusEnableDisable: {
         dataId: 3000,
@@ -98,7 +98,7 @@ export const DATAID = [
   {
     Board: "BMS",
     Ip: "192.168.1.133",
-    Port: "11002",
+    Port: 11002,
     Commands: {
       BMSStop: {
         dataId: 2000,
@@ -117,14 +117,14 @@ export const DATAID = [
   {
     Board: "Camera",
     Ip: "192.168.1.134",
-    Port: "11004",
+    Port: 11004,
     Commands: {},
     Telemetry: {},
   },
   {
     Board: "Nav",
     Ip: "192.168.1.136",
-    Port: "11005",
+    Port: 11005,
     Commands: {},
     Telemetry: {
       GPSPosition: { dataId: 5100, dataType: 4, comments: "lat,long" },
@@ -138,7 +138,7 @@ export const DATAID = [
   {
     Board: "Gimbal",
     Ip: "192.168.1.135",
-    Port: "11006",
+    Port: 11006,
     Commands: {
       LeftDriveGimbal: { dataId: 6000, dataType: 2, comments: "pan, tilt" },
       RightDriveGimbal: { dataId: 6001, dataType: 2, comments: "pan, tilt" },
@@ -160,7 +160,7 @@ export const DATAID = [
   {
     Board: "Arm",
     Ip: "192.168.1.137",
-    Port: "11007",
+    Port: 11007,
     Commands: {
       ArmToAngle: {
         dataId: 7000,
@@ -244,7 +244,7 @@ export const DATAID = [
   {
     Board: "Science Actuation",
     Ip: "192.168.1.138",
-    Port: "11008",
+    Port: 11008,
     Commands: {
       ZActuation: {
         dataId: 8000,
@@ -290,7 +290,7 @@ export const DATAID = [
   {
     Board: "Science Sensors",
     Ip: "192.168.1.139",
-    Port: "11009",
+    Port: 11009,
     Commands: {
       UVLedControl: {
         dataId: 9000,
@@ -329,21 +329,21 @@ export const DATAID = [
   {
     Board: "BSMS",
     Ip: "192.168.1.142",
-    Port: "11012",
+    Port: 11012,
     Commands: {},
     Telemetry: {},
   },
   {
     Board: "Blackbox",
     Ip: "192.168.1.143",
-    Port: "11013",
+    Port: 11013,
     Commands: {},
     Telemetry: {},
   },
   {
     Board: "Autonomy Board",
     Ip: "192.168.1.144",
-    Port: "11015",
+    Port: 11015,
     Commands: {},
     Telemetry: {},
   },

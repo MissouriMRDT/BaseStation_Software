@@ -197,7 +197,7 @@ class Rovecomm extends EventEmitter {
     for (let i = 0; i < DATAID.length; i++) {
       if (dataIdStr in DATAID[i].Commands) {
         destinationIp = DATAID[i].Ip
-        port = parseInt(DATAID[i].Port, 10)
+        port = DATAID[i].Port
         dataType = DATAID[i].Commands[dataIdStr].dataType
         dataId = DATAID[i].Commands[dataIdStr].dataId
         break
