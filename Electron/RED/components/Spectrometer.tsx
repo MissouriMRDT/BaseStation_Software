@@ -7,9 +7,7 @@ import {
   HorizontalGridLines,
   LineSeries,
 } from "react-vis"
-import { specData } from "./spec"
 import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
-// import { Packet } from "../../Core/RoveProtocol/Packet"
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
@@ -52,17 +50,26 @@ class Spectrometer extends Component<IProps, IState> {
   constructor(props: any) {
     super(props)
     this.state = {
-      control: [],
-      experiment: [],
-      difference: [],
+      control: [
+        { x: 0, y: 0 },
+        { x: 1, y: 1 },
+      ],
+      experiment: [
+        { x: 0, y: 0 },
+        { x: 1, y: 1 },
+      ],
+      difference: [
+        { x: 0, y: 0 },
+        { x: 1, y: 1 },
+      ],
       gathering: "none",
       counter: 0,
     }
     this.getControl = this.getControl.bind(this)
     this.getSpectra = this.getSpectra.bind(this)
-    this.SpectromerData = this.SpectromerData.bind(this)
+    this.SpectrometerData = this.SpectrometerData.bind(this)
 
-    rovecomm.on("difference", (data: any) => this.SpectromerData(data))
+    rovecomm.on("SpectrometerData", (data: any) => this.SpectrometerData(data))
   }
 
   getControl() {
@@ -70,7 +77,6 @@ class Spectrometer extends Component<IProps, IState> {
       gathering: "control",
       counter: 0,
     })
-
     rovecomm.sendCommand("RunSpectrometer", [1])
   }
 
@@ -83,7 +89,7 @@ class Spectrometer extends Component<IProps, IState> {
     rovecomm.sendCommand("RunSpectrometer", [1])
   }
 
-  SpectromerData(data: number[]): void {
+  SpectrometerData(data: number[]): void {
     let { control, experiment, difference } = this.state
     let offset = 144
     switch (this.state.gathering) {
@@ -125,14 +131,10 @@ class Spectrometer extends Component<IProps, IState> {
 
   Integrate(): number {
     let left: { x: number; y: number } = this.state.difference[0]
-    let right: { x: number; y: number }
+    let right: { x: number; y: number } = this.state.difference[1]
     let i: number
     let area = 0
-    for (
-      i = 1, right = this.state.difference[i];
-      i <= this.state.difference.length;
-      i++
-    ) {
+    for (i = 1; i < this.state.difference.length; i++) {
       area += ((left.y + right.y) / 2) * (right.x - left.x)
       left = right
       right = this.state.difference[i]
@@ -146,10 +148,10 @@ class Spectrometer extends Component<IProps, IState> {
         <div style={label}>Spectrometer</div>
         <div style={container}>
           <XYPlot style={{ margin: 10 }} width={620} height={480}>
-            <HorizontalGridLines />
-            <LineSeries data={this.state.control} />
-            <LineSeries data={this.state.experiment} />
-            <LineSeries data={this.state.difference} />
+            <HorizontalGridLines stylee={{ fill: "none" }} />
+            <LineSeries data={this.state.control} style={{ fill: "none" }} />
+            <LineSeries data={this.state.experiment} style={{ fill: "none" }} />
+            <LineSeries data={this.state.difference} style={{ fill: "none" }} />
             <XAxis />
             <YAxis />
           </XYPlot>
