@@ -1,63 +1,3 @@
-/* eslint-disable prettier/prettier */
-interface DATAID {
-  [key: number]: string
-}
-
-export const CrappyDataIds = {
-  1001: "SpeedRamp", // "Controls the accleration limit, ms to full speed"
-  1000: "DriveLeftRight", // "Left wheels speed followed by right wheels speed"
-  1100: "DriveWatchdogTriggered", // ""
-  8000: "ArmToAngle", // "All values for the arm together. Armj1-j6."
-  8002: "IKRoverIncrement", // "Incremental values for rover ik."
-  8003: "IKGripperIncrement", // "Incremental values for gripper ik."
-  8004: "ArmValues", // "All values for the arm together. Armj1-j6, then primary then secondary gripper."
-  8007: "ArmCommands", // "Swap Gripper, Get Position 0, 1"
-  8013: "ToolSelection", // "Change the selected tool, 0 1 & 2"
-  8014: "Laser", // "Toggle the laser"
-  8015: "LimitSwitchOverride", // "Toggle the laser"
-  8101: "ArmAngles", // "Angles for the arm joints"
-  2000: "BMSStop", // "BMS E-stop. WARNING: Kills all rover power. Cannot be reversed remotely!"
-  2101: "BMSVoltages", // "BMS"
-  2100: "TotalPackCurrentInt", // "BMS"
-  2102: "BMSTemperatureInt", // "BMS"
-  2103: "BMSError", // "BMS"
-  3000: "PowerBusEnableDisable", // "Enables or Disables power bus"
-  3100: "PowerCurrents", // "Powerboard"
-  3101: "PowerBusStatus", // ""
-  5000: "CalibrateIMU", // ""
-  5100: "GPSPosition", // "GPS Position. Latitude followed by Longitude"
-  5101: "PitchHeadingRoll", // ""
-  5102: "Lidar", // ""
-  5103: "GPSTelem", // ""
-  5104: "RoverDistanceSession", // "Distance in Miles the rover has traveled in the current session"
-  // 1296, "GPSQuality", "Quality of GPS signal"
-  // 1298, "GPSSpeed", "Speed of GPS delta"
-  // 1299, "GPSSpeedAngle", "Angle of GPS delta in degrees"
-  // 1300, "GPSAltitude", "GPS Altitude"
-  // 1301, "GPSSatellites", "Number of GPS Satellites"
-  4000: "CameraMuxChannel1", // "Selection for Camera Mux Channel"
-  6002: "MainGimbalIncrement", // "pan, tilt"
-  6004: "DriveGimbalIncrement", // "pan, tilt"
-  10000: "RunSpectrometer", // "Sends command to begin the spectrometer sequence."
-  10001: "UVLedControl", // "Control of light source."
-  10100: "ScienceSensors", // "Sensor data [AirT, AirM, SoilT, SoilM, Methane]"
-  9000: "Screw", // "-1000 to 1000 open loop for screw control"
-  9001: "ScrewAbsoluteSetPosition", // ""
-  9002: "ScrewRelativeSetPosition", // ""
-  9003: "XYActuation", // "[x][y]"
-  9004: "CenterX", // ""
-  9100: "ScrewAtPos", // "byte"
-  11100: "AutonomousModeEnable", // ""
-  11101: "AutonomousModeDisable", // ""
-  11102: "WaypointAdd", // ""
-  11103: "WaypointsClearAll", // ""
-  11104: "AutonomyCalibrate", // ""
-  2580: "WaypointReached", // ""
-  7000: "Headlights", // "Headlights for the front of rover"
-  7001: "UnderglowColor", // "rgb byte[]"
-  7002: "CycleLightingMode", // "byte mode"
-}
-
 export const DATAID = [
   {
     Board: "Drive",
@@ -359,15 +299,19 @@ export const DATAID = [
       },
       RunSpectrometer: {
         dataId: 9001,
-        dataType: 3,
+        dataType: 1,
         comments: "Sends command to begin the spectrometer sequence.",
       },
       ScienceLight: { dataId: 9002, dataType: 1, comments: "" },
       MPPC: { dataId: 9003, dataType: 3, comments: "num of readings" },
     },
     Telemetry: {
-      SpectrometerData: { dataId: 9100, dataType: 6, comments: "" },
-      MPPCData: { dataId: 9101, dataType: 6, comments: "" },
+      MPPCData: { dataId: 9100, dataType: 3, comments: "" },
+      SpectrometerData: {
+        dataId: 9101,
+        dataType: 3,
+        comments: "Spectrometer returns 2 144 long uint16 arrays upon request",
+      },
       Methane: {
         dataId: 9103,
         dataType: 6,
