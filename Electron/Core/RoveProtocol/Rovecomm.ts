@@ -1,6 +1,6 @@
 import { Socket } from "dgram"
 import { Server } from "http"
-import { DATAID } from "./RovecommManifest"
+import { DATAID, dataSizes, DataTypes } from "./RovecommManifest"
 
 // There is a fundamental implementation difference between these required imports
 // and the traditional typescript imports.
@@ -8,20 +8,6 @@ import { DATAID } from "./RovecommManifest"
 const dgram = require("dgram")
 const net = require("net")
 const EventEmitter = require("events")
-
-// Enumeration of all datatypes supported by Basestation Rovecomm
-enum DataTypes {
-  INT8_T = 0,
-  UINT8_T = 1,
-  INT16_T = 2,
-  UINT16_T = 3,
-  INT32_T = 4,
-  UINT32_T = 5,
-  FLOAT_T = 6,
-}
-
-// Data sizes of the corresponding datatype enumeration
-const dataSizes = [1, 1, 2, 2, 4, 4, 2]
 
 function decodePacket(
   dataType: number,

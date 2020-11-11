@@ -1,3 +1,17 @@
+// Enumeration of all datatypes supported by Basestation Rovecomm
+export enum DataTypes {
+  INT8_T = 0,
+  UINT8_T = 1,
+  INT16_T = 2,
+  UINT16_T = 3,
+  INT32_T = 4,
+  UINT32_T = 5,
+  FLOAT_T = 6,
+}
+
+// Data sizes of the corresponding datatype enumeration
+export const dataSizes = [1, 1, 2, 2, 4, 4, 2]
+
 export const DATAID = [
   {
     Board: "Drive",
