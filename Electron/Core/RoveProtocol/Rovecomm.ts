@@ -11,13 +11,13 @@ const EventEmitter = require("events")
 
 function decodePacket(
   dataType: number,
-  dataLength: number,
+  DataCount: number,
   data: Buffer
 ): number[] {
   /*
    * Takes in a dataType, dateLength, and data from an incoming rovecomm packet,
    * and uses the dataType to return an array of the properly typed data.
-   * Note: even if dataLength is only 1, this returns an array of one item.
+   * Note: even if DataCount is only 1, this returns an array of one item.
    */
 
   let readBytes: (i: number) => number
@@ -50,7 +50,7 @@ function decodePacket(
 
   const retArray = []
   let offset: number
-  for (let i = 0; i < dataLength; i += 1) {
+  for (let i = 0; i < DataCount; i += 1) {
     offset = i * dataSizes[dataType]
     retArray.push(readBytes(offset))
   }
@@ -67,7 +67,7 @@ function parse(packet: Buffer): void {
    *   0                   1                   2                   3
    *   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   *  |    Version    |            Data Id            |  Data Length  |
+   *  |    Version    |            Data Id            |  Data Count  |
    *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    *  |   Data Type   |                Data (Variable)                |
    *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -79,14 +79,14 @@ function parse(packet: Buffer): void {
 
   const version = packet.readUInt8(0)
   const dataId = packet.readUInt16BE(1)
-  const dataLength = packet.readUInt8(3)
+  const DataCount = packet.readUInt8(3)
   const dataType = packet.readUInt8(4)
 
   const rawdata = packet.slice(5)
   let data: number[]
 
   if (version === VersionNumber) {
-    data = decodePacket(dataType, dataLength, rawdata)
+    data = decodePacket(dataType, DataCount, rawdata)
 
     let dataIdStr = "null"
     let endLoop = false
@@ -118,7 +118,7 @@ function parse(packet: Buffer): void {
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
     rovecomm.emit(
       "all",
-      `Data Id: ${dataId} (aka ${dataIdStr}), Type: ${dataType}, Length: ${dataLength}, Data: ${data}`
+      `Data Id: ${dataId} (aka ${dataIdStr}), Type: ${dataType}, Length: ${DataCount}, Data: ${data}`
     )
 
     // More emits will potentially follow to allow RON to listen to only a certain board,
@@ -154,6 +154,7 @@ class Rovecomm extends EventEmitter {
     this.UDPListen()
     this.TCPServer.listen(11110)
     this.createTCPConnection(11110, "192.168.0.12")
+    this.resubscribe = this.resubscribe.bind(this)
   }
 
   createTCPConnection(port: number, host = "localhost") {
@@ -224,7 +225,7 @@ class Rovecomm extends EventEmitter {
      */
     const VersionNumber = 2
 
-    const dataLength = data.length
+    const DataCount = data.length
     let destinationIp = ""
     let port = 11000
     let dataType
@@ -247,21 +248,21 @@ class Rovecomm extends EventEmitter {
      *   0                   1                   2                   3
      *   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
      *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     *  |    Version    |            Data Id            |  Data Length  |
+     *  |    Version    |            Data Id            |  Data Count  |
      *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      *  |   Data Type   |                Data (Variable)                |
      *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      *
-     *  Note: the size of Data is dataLength * dataSizes[DataType] bytes
+     *  Note: the size of Data is DataCount * dataSizes[DataType] bytes
      */
     const headerBuffer = Buffer.allocUnsafe(5)
     headerBuffer.writeUInt8(VersionNumber, 0)
     headerBuffer.writeUInt16BE(dataId, 1)
-    headerBuffer.writeUInt8(dataLength, 3)
+    headerBuffer.writeUInt8(DataCount, 3)
     headerBuffer.writeUInt8(dataType, 4)
 
     // Create the data buffer
-    const dataBuffer = Buffer.allocUnsafe(dataLength * dataSizes[dataType])
+    const dataBuffer = Buffer.allocUnsafe(DataCount * dataSizes[dataType])
 
     // Switch on the data type, and properly encode each number in the data
     // array depending on the enumerated type, computing the offset and pushing
@@ -317,6 +318,25 @@ class Rovecomm extends EventEmitter {
       this.sendUDP(packet, destinationIp)
     } else {
       this.sendTCP(packet, destinationIp, port)
+    }
+  }
+
+  resubscribe() {
+    const VersionNumber = 2
+    const dataId = 3
+    const dataLength = 0
+    const dataType = DataTypes.UINT8_T
+    const data = 0
+
+    const subscribe = Buffer.allocUnsafe(6)
+    subscribe.writeUInt8(VersionNumber, 0)
+    subscribe.writeUInt16BE(dataId, 1)
+    subscribe.writeUInt8(dataLength, 3)
+    subscribe.writeUInt8(dataType, 4)
+    subscribe.writeUInt8(data, 5)
+
+    for (let i = 0; i < DATAID.length; i++) {
+      this.sendUDP(subscribe, DATAID[i].Ip)
     }
   }
 }
