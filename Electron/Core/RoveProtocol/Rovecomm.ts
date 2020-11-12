@@ -153,14 +153,25 @@ class Rovecomm extends EventEmitter {
 
     this.UDPListen()
     this.TCPServer.listen(11110)
-    this.createTCPConnection(11111, "192.168.0.12")
     this.createTCPConnection(11110, "192.168.0.12")
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   }
 
-  async createTCPConnection(port: number, host = "localhost") {
-    const temp = await new net.Socket()
-    await temp.connect(port, host, function handler() {
+  createTCPConnection(port: number, host = "localhost") {
+    console.log(host, port)
+    // eslint-disable-next-line no-restricted-syntax
+    for (const socket in this.TCPConnections) {
+      if (
+        this.TCPConnections[socket].remoteAddress === host &&
+        this.TCPConnections[socket].remotePort === port
+      ) {
+        console.log(
+          `Attempted to add a second connection to ${host}:${port}, didn't add`
+        )
+        return
+      }
+    }
+    const temp = new net.Socket()
+    temp.connect(port, host, function handler() {
       console.log(`Connected to ${host} on Port: ${port}`)
     })
     this.TCPConnections.push(temp)

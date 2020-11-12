@@ -42,6 +42,10 @@ interface IState {
 }
 function sendCom() {
   rovecomm.sendCommand("GPSPosition", [123000, 123000], true)
+  rovecomm.createTCPConnection(11110, "192.168.0.12")
+}
+function sendComUn() {
+  rovecomm.sendCommand("GPSPosition", [123000, 123000], false)
 }
 class GPS extends Component<IProps, IState> {
   constructor(props: any) {
@@ -103,7 +107,10 @@ class GPS extends Component<IProps, IState> {
         </div>
         <div style={container}>
           <button type="button" onClick={sendCom}>
-            Send Drive Command
+            Send TCP
+          </button>
+          <button type="button" onClick={sendComUn}>
+            Send UDP
           </button>
         </div>
       </div>
