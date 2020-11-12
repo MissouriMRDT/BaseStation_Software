@@ -41,11 +41,12 @@ interface IState {
   lidar: number
 }
 function sendCom() {
-  rovecomm.sendCommand("GPSPosition", [123000, 123000], true)
-  rovecomm.createTCPConnection(11110, "192.168.0.12")
+  // this won't work as is, should probably define a test packet to send to self
+  // rovecomm.sendCommand("GPSPosition", [123000, 123000], true)
+  rovecomm.createTCPConnection(11111)
 }
 function sendComUn() {
-  rovecomm.sendCommand("GPSPosition", [123000, 123000], false)
+  // rovecomm.sendCommand("GPSPosition", [123000, 123000], false)
 }
 class GPS extends Component<IProps, IState> {
   constructor(props: any) {
