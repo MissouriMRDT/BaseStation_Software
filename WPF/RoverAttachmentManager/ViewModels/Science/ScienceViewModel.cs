@@ -255,15 +255,15 @@ namespace RoverAttachmentManager.ViewModels.Science
             
             if (values["VacuumPulse"] == 1)
             {
-                _rovecomm.SendCommand(Packet.Create("VacuumEnableDisable", (byte)1));
+                _rovecomm.SendCommand(Packet.Create("VacuumEnableDisable", (byte)255));
             }else if(values["VacuumPulse"] == 0)
             {
-                _rovecomm.SendCommand(Packet.Create("VacuumEnableDisable", (byte)0));
+                _rovecomm.SendCommand(Packet.Create("VacuumEnableDisable", (byte)254));
             }
 
             if (values["Chem1"] == 1)
             {
-                ChemOne = 1000;
+                ChemOne = 500;
             }else if(values["Chem1"] == 0)
             {
                 ChemOne = 0;
@@ -271,7 +271,7 @@ namespace RoverAttachmentManager.ViewModels.Science
 
             if (values["Chem2"] == 1)
             {
-                ChemTwo = 1000;
+                ChemTwo = 500;
             }
             else if (values["Chem2"] == 0)
             {
@@ -280,7 +280,7 @@ namespace RoverAttachmentManager.ViewModels.Science
 
             if (values["Chem3"] == 1)
             {
-                ChemThree = 1000;
+                ChemThree = 500;
             }
             else if (values["Chem3"] == 0)
             {
@@ -294,12 +294,12 @@ namespace RoverAttachmentManager.ViewModels.Science
 
             if (values["GenevaClockwise"] == 1)
             {
-                GenevaPower = 1000;
+                GenevaPower = 500;
 
             }
             else if (values["GenevaCounterclockwise"] == 1)
             {
-                GenevaPower = -1000;
+                GenevaPower = -500;
             }
 
             Int16[] GenevaSend = { GenevaPower };
