@@ -140,7 +140,7 @@ function TCPParseWrapper(socket: TCPSocket) {
     const dataCount = socket.RCDeque.get(3)
     const dataSize = dataSizes[socket.RCDeque.get(4)]
     // If the length of the Deque is more than the header size and the size of the packet, make a buffer and then parse that buffer
-    if (socket.RCDeque.length > 5 + dataCount * dataSize) {
+    if (socket.RCDeque.length >= 5 + dataCount * dataSize) {
       // create another list to put the entire packet into
       const packet = []
       for (let i = 0; i < 5 + dataCount * dataSize; i++) {
