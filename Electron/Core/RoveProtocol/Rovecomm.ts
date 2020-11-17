@@ -152,7 +152,7 @@ function TCPParseWrapper(socket: TCPSocket) {
         // Here we use Shift to get and remove the elements that make up the packet to prevent parsing the same packet multiple times
         packet.push(socket.RCDeque.shift())
       }
-      // Make a buffer from that list
+      // Make a buffer from that list, needed to provide the correct input for the parse function
       const packetBuffer = Buffer.from(packet)
       parse(packetBuffer)
       // If the Deque doesn't contain a full packet, return
