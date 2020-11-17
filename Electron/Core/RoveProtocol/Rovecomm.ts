@@ -141,6 +141,7 @@ function TCPParseWrapper(socket: TCPSocket) {
     const header = []
     for (let i = 0; i < 5; i++) {
       // Fill the list with the header contents, the first 5 bytes will only ever be the header of a packet if we read correctly
+      // Here we use get to acquire the values of the fist 5 entries without modifying the Deque, listed as an O(1) function
       header.push(socket.RCDeque.get(i))
     }
     // If the length of the Deque is more than the header size and the size of the packet, make a buffer and then parse that buffer
@@ -148,6 +149,7 @@ function TCPParseWrapper(socket: TCPSocket) {
       // create another list to put the entire packet into
       const packet = []
       for (let i = 0; i < 5 + header[3] * header[4]; i++) {
+        // Here we use Shift to get and remove the elements that make up the packet to prevent parsing the same packet multiple times
         packet.push(socket.RCDeque.shift())
       }
       // Make a buffer from that list
@@ -179,7 +181,7 @@ function TCPListen(socket: TCPSocket) {
 class Rovecomm extends EventEmitter {
   UDPSocket: Socket
 
-  TCPServer: Server
+  // TCPServer: Server
 
   TCPConnections: TCPSocket[]
 
@@ -189,15 +191,14 @@ class Rovecomm extends EventEmitter {
     // Initialization of UDP socket and server
     this.UDPSocket = dgram.createSocket("udp4")
     // TCPServer is purely for testing purposes and should not be relied on for use on Rover
-    this.TCPServer = net.createServer((TCPSocket: Socket) =>
+    /* this.TCPServer = net.createServer((TCPSocket: Socket) =>
       TCPSocket.on("data", (msg: Buffer) => {
         this.parse(msg)
       })
-    )
+    ) */
 
     this.UDPListen()
-    this.TCPServer.listen(11111)
-    this.createTCPConnection(11001, "192.168.1.131")
+    // this.TCPServer.listen(11111)
     this.resubscribe = this.resubscribe.bind(this)
   }
 
