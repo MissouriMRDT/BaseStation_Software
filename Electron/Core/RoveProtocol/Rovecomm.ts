@@ -199,6 +199,7 @@ class Rovecomm extends EventEmitter {
 
     this.UDPListen()
     // this.TCPServer.listen(11111)
+    this.createTCPConnection(11001, "192.168.1.131")
     this.resubscribe = this.resubscribe.bind(this)
   }
 
@@ -264,6 +265,7 @@ class Rovecomm extends EventEmitter {
   sendTCP(packet: Buffer, destinationIp: string, port: number) {
     // eslint-disable-next-line no-restricted-syntax
     for (const socket in this.TCPConnections) {
+      // TODO: When the boards all change to a single port, remove that check from this if statement
       if (
         this.TCPConnections[socket].RCSocket.remoteAddress === destinationIp &&
         this.TCPConnections[socket].RCSocket.remotePort === port
