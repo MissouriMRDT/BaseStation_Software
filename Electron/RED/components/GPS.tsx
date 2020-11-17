@@ -40,14 +40,6 @@ interface IState {
   currentLon: number
   lidar: number
 }
-function sendCom() {
-  // this won't work as is, should probably define a test packet to send to self
-  // rovecomm.sendCommand("GPSPosition", [123000, 123000], true)
-  rovecomm.createTCPConnection(11111)
-}
-function sendComUn() {
-  // rovecomm.sendCommand("GPSPosition", [123000, 123000], false)
-}
 class GPS extends Component<IProps, IState> {
   constructor(props: any) {
     super(props)
@@ -105,14 +97,6 @@ class GPS extends Component<IProps, IState> {
               </div>
             )
           })}
-        </div>
-        <div style={container}>
-          <button type="button" onClick={sendCom}>
-            Send TCP
-          </button>
-          <button type="button" onClick={sendComUn}>
-            Send UDP
-          </button>
         </div>
       </div>
     )
