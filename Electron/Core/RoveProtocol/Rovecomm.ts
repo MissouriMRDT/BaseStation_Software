@@ -1,5 +1,6 @@
 import { Socket } from "dgram"
 import { Server } from "http"
+import Deque from "double-ended-queue"
 import { DATAID, dataSizes, DataTypes } from "./RovecommManifest"
 
 // There is a fundamental implementation difference between these required imports
@@ -8,6 +9,13 @@ import { DATAID, dataSizes, DataTypes } from "./RovecommManifest"
 const dgram = require("dgram")
 const net = require("net")
 const EventEmitter = require("events")
+
+interface TCPSocket {
+  RCSocket: Socket
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  RCDeque: Deque<any>
+  newData: boolean
+}
 
 function decodePacket(
   dataType: number,
@@ -67,7 +75,7 @@ function parse(packet: Buffer): void {
    *   0                   1                   2                   3
    *   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   *  |    Version    |            Data Id            |  Data Count  |
+   *  |    Version    |            Data Id            |  Data  Count  |
    *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    *  |   Data Type   |                Data (Variable)                |
    *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -126,12 +134,45 @@ function parse(packet: Buffer): void {
   }
 }
 
-function TCPListen(socket: Socket) {
+function TCPParseWrapper(socket: TCPSocket) {
+  // While the Deque contains at least a header to allow parsing control packets
+  while (socket.RCDeque.length >= 5) {
+    // Create an empty list to fill with the header contents
+    const header = []
+    for (let i = 0; i < 5; i++) {
+      // Fill the list with the header contents, the first 5 bytes will only ever be the header of a packet if we read correctly
+      header.push(socket.RCDeque.get(i))
+    }
+    // If the length of the Deque is more than the header size and the size of the packet, make a buffer and then parse that buffer
+    if (socket.RCDeque.length > header[3] * header[4] + 5) {
+      // create another list to put the entire packet into
+      const packet = []
+      for (let i = 0; i < 5 + header[3] * header[4]; i++) {
+        packet.push(socket.RCDeque.shift())
+      }
+      // Make a buffer from that list
+      const packetBuffer = Buffer.from(packet)
+      parse(packetBuffer)
+      // If the Deque doesn't contain a full packet, return
+    } else return
+  }
+}
+
+function TCPListen(socket: TCPSocket) {
   /*
-   * Listens on the passed in TCP socket, always calling parse if it recieves anything
+   * Listens on the passed in TCP socket, always calling the TCP Parse Wrapper if data is received
    */
-  socket.on("data", (msg: Buffer) => {
-    parse(msg)
+  const selfComp = 1
+  socket.RCSocket.on("data", (msg: Buffer) => {
+    // eslint-disable-next-line no-restricted-syntax
+    for (let i = 0; i < msg.length; i++) {
+      // use this if compared to self to get rid of the linter no self compare
+      // eslint-disable-next-line no-self-compare
+      if (selfComp === selfComp) {
+        socket.RCDeque.push(msg[i])
+      }
+    }
+    TCPParseWrapper(socket)
   })
 }
 
@@ -140,20 +181,23 @@ class Rovecomm extends EventEmitter {
 
   TCPServer: Server
 
-  TCPConnections: Socket[]
+  TCPConnections: TCPSocket[]
 
   constructor() {
     super()
     this.TCPConnections = []
     // Initialization of UDP socket and server
     this.UDPSocket = dgram.createSocket("udp4")
+    // TCPServer is purely for testing purposes and should not be relied on for use on Rover
     this.TCPServer = net.createServer((TCPSocket: Socket) =>
-      TCPListen(TCPSocket)
+      TCPSocket.on("data", (msg: Buffer) => {
+        this.parse(msg)
+      })
     )
 
     this.UDPListen()
     this.TCPServer.listen(11111)
-    this.createTCPConnection(11111)
+    this.createTCPConnection(11001, "192.168.1.131")
     this.resubscribe = this.resubscribe.bind(this)
   }
 
@@ -162,8 +206,8 @@ class Rovecomm extends EventEmitter {
     // eslint-disable-next-line no-restricted-syntax
     for (const socket in this.TCPConnections) {
       if (
-        this.TCPConnections[socket].remoteAddress === host &&
-        this.TCPConnections[socket].remotePort === port
+        this.TCPConnections[socket].RCSocket.remoteAddress === host &&
+        this.TCPConnections[socket].RCSocket.remotePort === port
       ) {
         console.log(
           `Attempted to add a second connection to ${host}:${port}, didn't add`
@@ -171,12 +215,30 @@ class Rovecomm extends EventEmitter {
         return
       }
     }
-    const temp = new net.Socket()
-    temp.connect(port, host, function handler() {
+
+    const newSocket: TCPSocket = {
+      // New socket to connect with
+      RCSocket: new net.Socket(),
+      // Instantiate a new Deque of size 30KB, avoid runtime resizing
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      RCDeque: new Deque<any>(30 * 1024 * 1024),
+      // New Data flag, to determine if we need to parse or not (async read)
+      newData: false,
+    }
+    newSocket.RCSocket = new net.Socket()
+
+    // Connect to the board we're intending to communicate with
+    newSocket.RCSocket.connect(port, host, function handler() {
       console.log(`Connected to ${host} on Port: ${port}`)
     })
-    this.TCPConnections.push(temp)
-    // should this also subscribe to the board over TCP? Probably not since that should be UDP traffic, right?
+
+    // Listen for any data coming on this connection and parse it as it arrives
+    TCPListen(newSocket)
+
+    // Add the connection to the TCPConnections list to prevent garbage collection from deleting it
+    this.TCPConnections.push(newSocket)
+
+    // The board implementation currently doesn't require a subscribe for TCP, since its a connection-based protocol
   }
 
   UDPListen() {
@@ -202,15 +264,19 @@ class Rovecomm extends EventEmitter {
     // eslint-disable-next-line no-restricted-syntax
     for (const socket in this.TCPConnections) {
       if (
-        this.TCPConnections[socket].remoteAddress === destinationIp &&
-        this.TCPConnections[socket].remotePort === port
+        this.TCPConnections[socket].RCSocket.remoteAddress === destinationIp &&
+        this.TCPConnections[socket].RCSocket.remotePort === port
       ) {
         const temp = this.TCPConnections[socket]
-        this.TCPConnections[socket].write(packet, "utf8", function handler() {
-          console.log(
-            `wrote ${packet} to ${temp.remoteAddress} on ${temp.remotePort}`
-          )
-        })
+        this.TCPConnections[socket].RCSocket.write(
+          packet,
+          "utf8",
+          function handler() {
+            console.log(
+              `wrote ${packet} to ${temp.RCSocket.remoteAddress} on ${temp.RCSocket.remotePort}`
+            )
+          }
+        )
         break
       }
     }
@@ -231,6 +297,9 @@ class Rovecomm extends EventEmitter {
     let dataType
     let dataId
 
+    // Boolean to keep track of if the dataId was found
+    let found = false
+
     // Here we loop through all of the Boards in the manifest,
     // looking specifically if this dataId is a known Command of the board
     for (let i = 0; i < DATAID.length; i++) {
@@ -239,8 +308,16 @@ class Rovecomm extends EventEmitter {
         port = DATAID[i].Port
         dataType = DATAID[i].Commands[dataIdStr].dataType
         dataId = DATAID[i].Commands[dataIdStr].dataId
+        found = true
         break
       }
+    }
+    if (found === false) {
+      this.emit(
+        "all",
+        `Attempting to send packet with DataId: ${dataIdStr} and data ${data} but dataId was not found. Packet not sent.`
+      )
+      return
     }
 
     /* Create the header buffer. Packet is formatted as below:
@@ -248,7 +325,7 @@ class Rovecomm extends EventEmitter {
      *   0                   1                   2                   3
      *   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
      *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     *  |    Version    |            Data Id            |  Data Count  |
+     *  |    Version    |            Data Id            |  Data  Count  |
      *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      *  |   Data Type   |                Data (Variable)                |
      *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
