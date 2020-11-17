@@ -137,18 +137,13 @@ function parse(packet: Buffer): void {
 function TCPParseWrapper(socket: TCPSocket) {
   // While the Deque contains at least a header to allow parsing control packets
   while (socket.RCDeque.length >= 5) {
-    // Create an empty list to fill with the header contents
-    const header = []
-    for (let i = 0; i < 5; i++) {
-      // Fill the list with the header contents, the first 5 bytes will only ever be the header of a packet if we read correctly
-      // Here we use get to acquire the values of the fist 5 entries without modifying the Deque, listed as an O(1) function
-      header.push(socket.RCDeque.get(i))
-    }
+    const dataCount = socket.RCDeque.get(3)
+    const dataSize = dataSizes[socket.RCDeque.get(4)]
     // If the length of the Deque is more than the header size and the size of the packet, make a buffer and then parse that buffer
-    if (socket.RCDeque.length > 5 + header[3] * header[4]) {
+    if (socket.RCDeque.length > 5 + dataCount * dataSize) {
       // create another list to put the entire packet into
       const packet = []
-      for (let i = 0; i < 5 + header[3] * header[4]; i++) {
+      for (let i = 0; i < 5 + dataCount * dataSize; i++) {
         // Here we use Shift to get and remove the elements that make up the packet to prevent parsing the same packet multiple times
         packet.push(socket.RCDeque.shift())
       }
@@ -199,7 +194,6 @@ class Rovecomm extends EventEmitter {
 
     this.UDPListen()
     // this.TCPServer.listen(11111)
-    this.createTCPConnection(11001, "192.168.1.131")
     this.resubscribe = this.resubscribe.bind(this)
   }
 
