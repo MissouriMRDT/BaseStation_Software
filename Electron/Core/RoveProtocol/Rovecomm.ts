@@ -232,7 +232,6 @@ class Rovecomm extends EventEmitter {
       // New Data flag, to determine if we need to parse or not (async read)
       newData: false,
     }
-    newSocket.RCSocket = new net.Socket()
 
     // Connect to the board we're intending to communicate with
     newSocket.RCSocket.connect(port, host, function handler() {
