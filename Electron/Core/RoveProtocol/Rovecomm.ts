@@ -135,6 +135,11 @@ function parse(packet: Buffer): void {
 }
 
 function TCPParseWrapper(socket: TCPSocket) {
+  /*
+   * Takes in an object of the TCPSocket type defined in the interface TCPSocket at the top of this file
+   * Iterates while there is still at least five bytes in the Deque in the TCPSocket, parsing one RC Packet at a time
+   * Returns when there is either less than 5 bytes in the Deque or not a complete packet in the Deque
+   */
   // While the Deque contains at least a header to allow parsing control packets
   while (socket.RCDeque.length >= 5) {
     const dataCount = socket.RCDeque.get(3)
@@ -157,7 +162,7 @@ function TCPParseWrapper(socket: TCPSocket) {
 
 function TCPListen(socket: TCPSocket) {
   /*
-   * Listens on the passed in TCP socket, always calling the TCP Parse Wrapper if data is received
+   * Listens on the passed in TCP socket, pushing received data into the TCPSocket Deque and then calling the TCP Parse Wrapper when data is received
    */
   const selfComp = 1
   socket.RCSocket.on("data", (msg: Buffer) => {
@@ -198,14 +203,20 @@ class Rovecomm extends EventEmitter {
   }
 
   createTCPConnection(port: number, host = "localhost") {
-    console.log(host, port)
+    /*
+     * Takes in a port of type number and an optional host of type string, host defaults to localhost if not specified
+     * Creates a connection to the target Host:Port over TCP, if a connection doesn't already exist
+     * Runs the TCPListen function on the new TCPSocket, then pushes the new TCPSocket into the rovecomm TCPConnections list
+     */
     // eslint-disable-next-line no-restricted-syntax
     for (const socket in this.TCPConnections) {
       if (
         this.TCPConnections[socket].RCSocket.remoteAddress === host &&
         this.TCPConnections[socket].RCSocket.remotePort === port
       ) {
-        console.log(
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
+        rovecomm.emit(
+          "all",
           `Attempted to add a second connection to ${host}:${port}, didn't add`
         )
         return
@@ -225,7 +236,8 @@ class Rovecomm extends EventEmitter {
 
     // Connect to the board we're intending to communicate with
     newSocket.RCSocket.connect(port, host, function handler() {
-      console.log(`Connected to ${host} on Port: ${port}`)
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      rovecomm.emit("all", `Created TCP connection to ${host}:${port}`)
     })
 
     // Listen for any data coming on this connection and parse it as it arrives
@@ -257,6 +269,11 @@ class Rovecomm extends EventEmitter {
   }
 
   sendTCP(packet: Buffer, destinationIp: string, port: number) {
+    /*
+     * Takes a packet (buffer), and iterates over the list of available TCP Connections
+     * Sends the packet if there's a connection with the correct IP:Port combination
+     * If there is no connection, emits an error message
+     */
     // eslint-disable-next-line no-restricted-syntax
     for (const socket in this.TCPConnections) {
       // TODO: When the boards all change to a single port, remove that check from this if statement
@@ -274,9 +291,14 @@ class Rovecomm extends EventEmitter {
             )
           }
         )
-        break
+        return
       }
     }
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    rovecomm.emit(
+      "all",
+      `Attempted to send a packet to ${destinationIp}:${port} but there was no connection on that IP:Port combo`
+    )
   }
 
   // While most "any" variable types have been removed, data really can be almost any type
