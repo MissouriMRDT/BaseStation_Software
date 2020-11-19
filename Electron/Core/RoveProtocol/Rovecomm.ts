@@ -432,6 +432,7 @@ class Rovecomm extends EventEmitter {
 
     for (let i = 0; i < DATAID.length; i++) {
       this.sendUDP(subscribe, DATAID[i].Ip)
+      this.createTCPConnection(DATAID[i].Port, DATAID[i].Ip)
     }
   }
 }
