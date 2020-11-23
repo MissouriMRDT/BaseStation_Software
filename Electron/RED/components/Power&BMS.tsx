@@ -3,6 +3,8 @@ import CSS from "csstype"
 // import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
 // import { Packet } from "../../Core/RoveProtocol/Packet"
 
+/* eslint max-classes-per-file: ["error", 2] */
+
 const h1Style: CSS.Properties = {
   marginTop: "-10px",
   position: "relative",
@@ -28,8 +30,10 @@ const roAndBtnContainer: CSS.Properties = {
   // stands for "Readout and Button Container"; shortened for sanity
   display: "grid",
   width: "auto",
-  gridTemplateColumns: "50px 1fr 50px 1fr",
-  margin: "5px",
+  gridTemplateColumns: "69px 1fr 69px 1fr",
+  marginLeft: "2px",
+  marginTop: "2px",
+  marginBottom: "2px",
 }
 const readoutDisplay: CSS.Properties = {
   display: "grid",
@@ -38,9 +42,10 @@ const readoutDisplay: CSS.Properties = {
   backgroundColor: "#30ff00", // green
   justifyContent: "space-between",
   fontFamily: "arial",
-  paddingTop: "2px",
+  paddingTop: "3px",
   paddingLeft: "3px",
   paddingRight: "3px",
+  marginRight: "2px",
 }
 /* const btnArray: CSS.Properties = {
   // potential container for all the bus buttons and "reboot," "start log," etc.
@@ -48,11 +53,6 @@ const readoutDisplay: CSS.Properties = {
   gridTemplateColumns: "auto auto auto auto",
   justifyContent: "center",
 } */
-const buttonStyle: CSS.Properties = {
-  // intended to be used both for readout buttons and bus array buttons
-  fontSize: "11px",
-  fontFamily: "arial",
-}
 const totalPackContainer: CSS.Properties = {
   display: "grid",
   justifyContent: "space-evenly",
@@ -122,7 +122,7 @@ class Power extends Component<IProps, IState> {
       motorLFButton: false,
       motorLM: 0.0,
       motorLMButton: false,
-      /* motorLB: 0.0,
+      motorLB: 0.0,
       motorLBButton: false,
       motorRF: 0.0,
       motorRFButton: false,
@@ -140,7 +140,7 @@ class Power extends Component<IProps, IState> {
       logicButton: false,
       actuation: 0.0,
       actuationButton: false,
-      twelveVNoard: 0.0,
+      twelveVBoard: 0.0,
       twelveVBoardButton: false,
       batteryTemp: 0.0,
       bus15Button: false,
@@ -158,7 +158,7 @@ class Power extends Component<IProps, IState> {
       allMtrsDisbled: false,
       reboot: false,
       shutDown: false,
-      // startLog: false,
+      startLog: false,
       ttlPackVolt: 0.0,
       ttlPackCurrent: 0.0,
       cellOne: 0.0,
@@ -168,7 +168,7 @@ class Power extends Component<IProps, IState> {
       cellFive: 0.0,
       cellSix: 0.0,
       cellSeven: 0.0,
-      cellEight: 0.0, */
+      cellEight: 0.0,
     }
     // rovecomm.on?
   }
@@ -179,38 +179,167 @@ class Power extends Component<IProps, IState> {
         <div style={h1Style}>POWER AND BMS</div>
         <div style={grandContainer}>
           <div style={roAndBtnContainer}>
-            <button
-              style={buttonStyle}
-              type="button"
-              value={this.state.motorLFButton.toString()}
-              onClick={() => {
-                this.state.motorLFButton.setState(true)
-              }}
-            >
-              {this.state.motorLFButton === true ? "enabled" : "disabled"}
-            </button>
+            <ToggleButton>
+              {({ on, toggle }) => (
+                <button type="button" onClick={toggle}>
+                  {on ? "Enabled" : "Disabled"}
+                </button>
+              )}
+            </ToggleButton>
             <div style={readoutDisplay}>
               <span>Motor LF</span>
-              {this.state.motorLF.toFixed(2)} A
+              {this.state.motorLF.toFixed(1)} A
             </div>
-            <button
-              style={buttonStyle}
-              type="button"
-              value={this.state.motorLMButton.toString()}
-              onClick={() => {
-                this.state.motorLMButton.setState(true)
-              }}
-            >
-              {this.state.motorLFButton === true ? "enabled" : "disabled"}
-            </button>
+            <ToggleButton>
+              {({ on, toggle }) => (
+                <button type="button" onClick={toggle}>
+                  {on ? "Enabled" : "Disabled"}
+                </button>
+              )}
+            </ToggleButton>
+            <div style={readoutDisplay}>
+              <span>Auxiliary</span>
+              {this.state.auxiliary.toFixed(1)} A
+            </div>
+            <ToggleButton>
+              {({ on, toggle }) => (
+                <button type="button" onClick={toggle}>
+                  {on ? "Enabled" : "Disabled"}
+                </button>
+              )}
+            </ToggleButton>
             <div style={readoutDisplay}>
               <span>Motor LM</span>
-              {this.state.motorLM.toFixed(2)} A
+              {this.state.motorLM.toFixed(1)} A
+            </div>
+            <ToggleButton>
+              {({ on, toggle }) => (
+                <button type="button" onClick={toggle}>
+                  {on ? "Enabled" : "Disabled"}
+                </button>
+              )}
+            </ToggleButton>
+            <div style={readoutDisplay}>
+              <span>Comms</span>
+              {this.state.comms.toFixed(1)} A
+            </div>
+            <ToggleButton>
+              {({ on, toggle }) => (
+                <button type="button" onClick={toggle}>
+                  {on ? "Enabled" : "Disabled"}
+                </button>
+              )}
+            </ToggleButton>
+            <div style={readoutDisplay}>
+              <span>Motor LB</span>
+              {this.state.motorLB.toFixed(1)} A
+            </div>
+            <ToggleButton>
+              {({ on, toggle }) => (
+                <button type="button" onClick={toggle}>
+                  {on ? "Enabled" : "Disabled"}
+                </button>
+              )}
+            </ToggleButton>
+            <div style={readoutDisplay}>
+              <span>Logic</span>
+              {this.state.logic.toFixed(1)} A
+            </div>
+            <ToggleButton>
+              {({ on, toggle }) => (
+                <button type="button" onClick={toggle}>
+                  {on ? "Enabled" : "Disabled"}
+                </button>
+              )}
+            </ToggleButton>
+            <div style={readoutDisplay}>
+              <span>Motor RF</span>
+              {this.state.motorRF.toFixed(1)} A
+            </div>
+            <ToggleButton>
+              {({ on, toggle }) => (
+                <button type="button" onClick={toggle}>
+                  {on ? "Enabled" : "Disabled"}
+                </button>
+              )}
+            </ToggleButton>
+            <div style={readoutDisplay}>
+              <span>Actuation</span>
+              {this.state.actuation.toFixed(1)} A
+            </div>
+            <ToggleButton>
+              {({ on, toggle }) => (
+                <button type="button" onClick={toggle}>
+                  {on ? "Enabled" : "Disabled"}
+                </button>
+              )}
+            </ToggleButton>
+            <div style={readoutDisplay}>
+              <span>Motor RM</span>
+              {this.state.motorRM.toFixed(1)} A
+            </div>
+            <ToggleButton>
+              {({ on, toggle }) => (
+                <button type="button" onClick={toggle}>
+                  {on ? "Enabled" : "Disabled"}
+                </button>
+              )}
+            </ToggleButton>
+            <div style={readoutDisplay}>
+              <span>Twelve V Board</span>
+              {this.state.twelveVBoard.toFixed(1)} A
+            </div>
+            <ToggleButton>
+              {({ on, toggle }) => (
+                <button type="button" onClick={toggle}>
+                  {on ? "Enabled" : "Disabled"}
+                </button>
+              )}
+            </ToggleButton>
+            <div style={readoutDisplay}>
+              <span>Motor RB</span>
+              {this.state.motorRB.toFixed(1)} A
+            </div>
+            <div />
+            <div style={readoutDisplay}>
+              <span>Battery Temp</span>
+              {this.state.batteryTemp.toFixed(1)}°
+            </div>
+            <ToggleButton>
+              {({ on, toggle }) => (
+                <button type="button" onClick={toggle}>
+                  {on ? "Enabled" : "Disabled"}
+                </button>
+              )}
+            </ToggleButton>
+            <div style={readoutDisplay}>
+              <span>Motor Extra</span>
+              {this.state.motorExtra.toFixed(1)} A
             </div>
           </div>
         </div>
       </div>
     )
+  }
+}
+
+class ToggleButton extends Power {
+  state = {
+    on: false,
+  }
+
+  toggle = () => {
+    this.setState({
+      on: !this.state.on,
+    })
+  }
+
+  render() {
+    const { children } = this.props
+    return children({
+      on: this.state.on,
+      toggle: this.toggle,
+    })
   }
 }
 
