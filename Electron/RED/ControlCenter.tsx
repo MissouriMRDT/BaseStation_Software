@@ -26,8 +26,9 @@ class ControlCenter extends Component<IProps, IState> {
           // everything inside NewWindowComponent is considered props.children and will be
           // displayed in a new window
           this.state.isNewWindow === false && (
-            <NewWindowComponent>
+            <NewWindowComponent
               onClose={() => this.setState({ isNewWindow: false })}
+            >
               <h2>This will display in a new window</h2>
             </NewWindowComponent>
           )
@@ -43,23 +44,15 @@ class ControlCenter extends Component<IProps, IState> {
         </button>
         <button
           type="button"
-          onClick={rovecomm.resubscribe}
-          style={{ width: "100px" }}
+          onClick={() => this.setState({ isNewWindow: true })}
         >
-          Resubscribe All
-        </button>
-        <button
-          type="button"
-          onClick={rovecomm.resubscribe}
-          style={{ width: "100px" }}
-        >
-          Resubscribe All
+          Open Rover Overview of Network
         </button>
         <button
           type="button"
           onClick={() => this.setState({ isNewWindow: true })}
         >
-          Open in new window
+          Open Rover Attachment Manager
         </button>
       </div>
     )

@@ -1,22 +1,19 @@
 import { Component } from "react"
 import ReactDOM from "react-dom"
 
-interface IProps {}
-
-interface IState {
-  isNewWindow: false
+interface IProps {
+  onClose: any
 }
 
-class NewWindowComponent extends Component {
+interface IState {}
+
+export default class NewWindowComponent extends Component<IProps, IState> {
   // Create a container <div> for the window
   private containerEl = document.createElement("div")
 
   // This will keep a reference of the window
-  private externalWindow:
-    | Window
-    | null
-    // When the component mounts, Open a new window
-    | undefined
+  private externalWindow: Window | null = null
+  // When the component mounts, Open a new window
 
   // When the component mounts, Open a new window
   componentDidMount() {
@@ -29,7 +26,7 @@ class NewWindowComponent extends Component {
     // window is closed
     if (this.externalWindow) {
       this.externalWindow.document.body.appendChild(this.containerEl)
-      // this.externalWindow.onunload = () => this.props.onClose()
+      this.externalWindow.onunload = () => this.props.onClose()
     }
   }
 
@@ -37,5 +34,3 @@ class NewWindowComponent extends Component {
     return ReactDOM.createPortal(this.props.children, this.containerEl)
   }
 }
-
-export default NewWindowComponent
