@@ -16,8 +16,6 @@ const h1Style: CSS.Properties = {
   color: "white",
 }
 const grandContainer: CSS.Properties = {
-  // display: "flex",
-  // flexDirection: "column",
   display: "block",
   width: "640px",
   borderTopWidth: "28px",
@@ -35,6 +33,18 @@ const roAndBtnContainer: CSS.Properties = {
   marginTop: "2px",
   marginBottom: "2px",
 }
+const redReadoutDisplay: CSS.Properties = {
+  display: "grid",
+  gridTemplateColumns: "auto auto",
+  fontSize: "12px",
+  backgroundColor: "#ff3526", // red
+  justifyContent: "space-between",
+  fontFamily: "arial",
+  paddingTop: "4px",
+  paddingLeft: "3px",
+  paddingRight: "3px",
+  paddingBottom: "4px",
+}
 const readoutDisplay: CSS.Properties = {
   display: "grid",
   gridTemplateColumns: "auto auto",
@@ -42,29 +52,29 @@ const readoutDisplay: CSS.Properties = {
   backgroundColor: "#30ff00", // green
   justifyContent: "space-between",
   fontFamily: "arial",
-  paddingTop: "3px",
+  paddingTop: "4px",
   paddingLeft: "3px",
   paddingRight: "3px",
+  paddingBottom: "4px",
   marginRight: "2px",
 }
-/* const btnArray: CSS.Properties = {
-  // potential container for all the bus buttons and "reboot," "start log," etc.
+const btnArray: CSS.Properties = {
   display: "grid",
   gridTemplateColumns: "auto auto auto auto",
   justifyContent: "center",
-} */
+}
 const totalPackContainer: CSS.Properties = {
   display: "grid",
   justifyContent: "space-evenly",
-  gridTemplateColumns: "500px 500px", // placeholder number
-  // color: "#30ff00", green; intended for "current"
-  // color: "#ff1100", red; intended for "voltage"
+  gridTemplateColumns: "240px 240px",
 }
 const cellReadoutContainer: CSS.Properties = {
   display: "grid",
-  color: "#ff1100", // red
+  color: "black",
   gridTemplateColumns: "auto auto auto auto",
-  // will likely need a way to keep elements confined to set columns
+  marginLeft: "3px",
+  marginBottom: "3px",
+  marginRight: "3px",
 }
 
 interface IProps {}
@@ -112,6 +122,15 @@ interface IState {
   allMtrsDisbled: boolean
   reboot: boolean
   shutDown: boolean
+  startLog: boolean
+  cellOne: number
+  cellTwo: number
+  cellThree: number
+  cellFour: number
+  cellFive: number
+  cellSix: number
+  cellSeven: number
+  cellEight: number
 }
 
 class Power extends Component<IProps, IState> {
@@ -315,6 +334,145 @@ class Power extends Component<IProps, IState> {
             <div style={readoutDisplay}>
               <span>Motor Extra</span>
               {this.state.motorExtra.toFixed(1)} A
+            </div>
+          </div>
+          <div style={btnArray}>
+            <ToggleButton>
+              {({ on, toggle }) => (
+                <button type="button" onClick={toggle}>
+                  {on ? "Bus 15 Enabled" : "Bus 15 Disabled"}
+                </button>
+              )}
+            </ToggleButton>
+            <ToggleButton>
+              {({ on, toggle }) => (
+                <button type="button" onClick={toggle}>
+                  {on ? "Bus 16 Enabled" : "Bus 16 Disabled"}
+                </button>
+              )}
+            </ToggleButton>
+            <ToggleButton>
+              {({ on, toggle }) => (
+                <button type="button" onClick={toggle}>
+                  {on ? "Bus 17 Enabled" : "Bus 17 Disabled"}
+                </button>
+              )}
+            </ToggleButton>
+            <ToggleButton>
+              {({ on, toggle }) => (
+                <button type="button" onClick={toggle}>
+                  {on ? "Bus 18 Enabled" : "Bus 18 Disabled"}
+                </button>
+              )}
+            </ToggleButton>
+            <ToggleButton>
+              {({ on, toggle }) => (
+                <button type="button" onClick={toggle}>
+                  {on ? "Bus 19 Enabled" : "Bus 19 Disabled"}
+                </button>
+              )}
+            </ToggleButton>
+            <ToggleButton>
+              {({ on, toggle }) => (
+                <button type="button" onClick={toggle}>
+                  {on ? "Bus 20 Enabled" : "Bus 20 Disabled"}
+                </button>
+              )}
+            </ToggleButton>
+            <ToggleButton>
+              {({ on, toggle }) => (
+                <button type="button" onClick={toggle}>
+                  {on ? "Bus 21 Enabled" : "Bus 21 Disabled"}
+                </button>
+              )}
+            </ToggleButton>
+            <ToggleButton>
+              {({ on, toggle }) => (
+                <button type="button" onClick={toggle}>
+                  {on ? "Bus 22 Enabled" : "Bus 22 Disabled"}
+                </button>
+              )}
+            </ToggleButton>
+            <ToggleButton>
+              {({ on, toggle }) => (
+                <button type="button" onClick={toggle}>
+                  {on ? "Bus 23 Enabled" : "Bus 23 Disabled"}
+                </button>
+              )}
+            </ToggleButton>
+            <ToggleButton>
+              {({ on, toggle }) => (
+                <button type="button" onClick={toggle}>
+                  {on ? "Bus 24 Enabled" : "Bus 24 Disabled"}
+                </button>
+              )}
+            </ToggleButton>
+            <ToggleButton>
+              {({ on, toggle }) => (
+                <button type="button" onClick={toggle}>
+                  {on ? "Bus 25 Enabled" : "Bus 25 Disabled"}
+                </button>
+              )}
+            </ToggleButton>
+            <ToggleButton>
+              {({ on, toggle }) => (
+                <button type="button" onClick={toggle}>
+                  {on ? "Bus 26 Enabled" : "Bus 26 Disabled"}
+                </button>
+              )}
+            </ToggleButton>
+          </div>
+          <div style={btnArray}>
+            <button type="button">All Motors Disabled</button>
+            <button type="button">REBOOT</button>
+            <button type="button">SHUT DOWN</button>
+            <button type="button">START LOG</button>
+          </div>
+          <div style={btnArray}>
+            -------------------------------------------------
+          </div>
+          <div style={totalPackContainer}>
+            <div style={redReadoutDisplay}>
+              <span>Total Pack Voltage</span>
+              {this.state.ttlPackVolt.toFixed(1)} V
+            </div>
+            <div style={readoutDisplay}>
+              <span>Total Pack Current</span>
+              {this.state.ttlPackCurrent.toFixed(1)} A
+            </div>
+          </div>
+          <div style={cellReadoutContainer}>
+            <div style={redReadoutDisplay}>
+              <span>Cell 1</span>
+              {this.state.cellOne.toFixed(1)} V
+            </div>
+            <div style={redReadoutDisplay}>
+              <span>Cell 2</span>
+              {this.state.cellTwo.toFixed(1)} V
+            </div>
+            <div style={redReadoutDisplay}>
+              <span>Cell 3</span>
+              {this.state.cellThree.toFixed(1)} V
+            </div>
+            <div style={redReadoutDisplay}>
+              <span>Cell 4</span>
+              {this.state.cellFour.toFixed(1)} V
+            </div>
+            <div style={redReadoutDisplay}>
+              <span>Cell 5</span>
+              {this.state.cellFive.toFixed(1)} V
+            </div>
+            <div style={redReadoutDisplay}>
+              <span>Cell 6</span>
+              {this.state.cellSix.toFixed(1)} V
+            </div>
+            <div style={redReadoutDisplay}>
+              <span>Cell 7</span>
+              {this.state.cellSeven.toFixed(1)} V
+            </div>
+            <div style={redReadoutDisplay}>
+              <span>Cell 8</span>
+              {this.state.cellEight.toFixed(1)} V
             </div>
           </div>
         </div>
