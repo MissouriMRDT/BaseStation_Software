@@ -92,17 +92,18 @@ function parse(packet: Buffer): void {
     let endLoop = false
     // Here we loop through all of the Boards in the manifest,
     // looking specifically if this dataId is a known Telemetry of the board
-    for (let i = 0; i < DATAID.length; i++) {
-      // eslint-disable-next-line no-restricted-syntax
-      for (const comm in DATAID[i].Telemetry) {
-        if (dataId === DATAID[i].Telemetry[comm].dataId) {
-          dataIdStr = comm
-          endLoop = true
+    for (const board in DATAID) {
+      if (Object.prototype.hasOwnProperty.call(DATAID, board)) {
+        for (const comm in DATAID[board].Telemetry) {
+          if (dataId === DATAID[board].Telemetry[comm].dataId) {
+            dataIdStr = comm
+            endLoop = true
+            break
+          }
+        }
+        if (endLoop) {
           break
         }
-      }
-      if (endLoop) {
-        break
       }
     }
 
@@ -193,14 +194,16 @@ class Rovecomm extends EventEmitter {
     let found = false
     // Here we loop through all of the Boards in the manifest,
     // looking specifically if this dataId is a known Command of the board
-    for (let i = 0; i < DATAID.length; i++) {
-      if (dataIdStr in DATAID[i].Commands) {
-        destinationIp = DATAID[i].Ip
-        port = DATAID[i].Port
-        dataType = DATAID[i].Commands[dataIdStr].dataType
-        dataId = DATAID[i].Commands[dataIdStr].dataId
-        found = true
-        break
+    for (const board in DATAID) {
+      if (Object.prototype.hasOwnProperty.call(DATAID, board)) {
+        if (dataIdStr in DATAID[board].Commands) {
+          destinationIp = DATAID[board].Ip
+          port = DATAID[board].Port
+          dataType = DATAID[board].Commands[dataIdStr].dataType
+          dataId = DATAID[board].Commands[dataIdStr].dataId
+          found = true
+          break
+        }
       }
     }
     if (found === false) {
@@ -303,8 +306,10 @@ class Rovecomm extends EventEmitter {
     subscribe.writeUInt8(dataType, 4)
     subscribe.writeUInt8(data, 5)
 
-    for (let i = 0; i < DATAID.length; i++) {
-      this.sendUDP(subscribe, DATAID[i].Ip)
+    for (const board in DATAID) {
+      if (Object.prototype.hasOwnProperty.call(DATAID, board)) {
+        this.sendUDP(subscribe, DATAID[board].Ip)
+      }
     }
   }
 }
