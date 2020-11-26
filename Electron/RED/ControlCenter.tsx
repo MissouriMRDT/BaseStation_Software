@@ -25,7 +25,7 @@ class ControlCenter extends Component<IProps, IState> {
           // onClose will be fired when the new window is closed
           // everything inside NewWindowComponent is considered props.children and will be
           // displayed in a new window
-          this.state.isNewWindow === false && (
+          this.state.isNewWindow && (
             <NewWindowComponent
               onClose={() => this.setState({ isNewWindow: false })}
             >
