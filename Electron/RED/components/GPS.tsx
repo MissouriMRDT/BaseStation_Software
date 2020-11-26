@@ -17,6 +17,7 @@ const container: CSS.Properties = {
   borderStyle: "solid",
   gridRowStart: "2 & {}",
   grid: "repeat(2, 28px) / auto-flow dense",
+  padding: "5px",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
