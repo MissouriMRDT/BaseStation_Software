@@ -20,7 +20,7 @@ export default class NewWindowComponent extends Component<IProps, IState> {
     // The second argument in window.open is optional and can be set to whichever
     // value you want. You will notice the use of this value when we modify the main
     // electron.js file
-    this.externalWindow = window.open("", "NewWindowComponent ")
+    this.externalWindow = window.open("")
 
     // Append the container div and register the event that will get fired when the
     // window is closed
