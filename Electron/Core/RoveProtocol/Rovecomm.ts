@@ -12,7 +12,6 @@ const EventEmitter = require("events")
 
 interface TCPSocket {
   RCSocket: Socket
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   RCDeque: Deque<any>
   newData: boolean
 }
