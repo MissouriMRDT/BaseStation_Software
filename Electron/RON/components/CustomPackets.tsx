@@ -48,9 +48,7 @@ interface IProps {}
 
 interface IState {
   board: string
-  Ip: string
   command: string
-  dataId: number
   dataType: number
   value: number[]
   count: number
@@ -61,9 +59,7 @@ class CustomPackets extends Component<IProps, IState> {
     super(props)
     this.state = {
       board: "Drive",
-      Ip: "192.168.1.131",
       command: "DriveLeftRight",
-      dataId: 1000,
       value: [0, 0],
       count: 2,
       dataType: DataTypes.INT16_T,
@@ -77,15 +73,12 @@ class CustomPackets extends Component<IProps, IState> {
 
   boardChange(event: { target: { value: string } }): void {
     const board = event.target.value
-    const { Ip } = DATAID[board]
     const command = Object.keys(DATAID[board].Commands)[0]
-    const { dataId, dataType, dataCount } = DATAID[board].Commands[command]
+    const { dataType, dataCount } = DATAID[board].Commands[command]
     const value = Array(dataCount).fill(0)
     this.setState({
       board,
-      Ip,
       command,
-      dataId,
       count: dataCount,
       value,
       dataType,
@@ -93,13 +86,12 @@ class CustomPackets extends Component<IProps, IState> {
   }
 
   commandChange(event: { target: { value: string } }): void {
-    const { dataId, dataType, dataCount } = DATAID[this.state.board].Commands[
+    const { dataType, dataCount } = DATAID[this.state.board].Commands[
       event.target.value
     ]
     const value = Array(dataCount).fill(0)
     this.setState({
       command: event.target.value,
-      dataId,
       count: dataCount,
       value,
       dataType,

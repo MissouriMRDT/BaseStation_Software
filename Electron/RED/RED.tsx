@@ -2,6 +2,7 @@ import React, { Fragment } from "react"
 import { render } from "react-dom"
 import { AppContainer as ReactHotAppContainer } from "react-hot-loader"
 import ControlCenter from "./ControlCenter"
+import RON from "../RON/RON"
 
 const AppContainer = process.env.PLAIN_HMR ? Fragment : ReactHotAppContainer
 
