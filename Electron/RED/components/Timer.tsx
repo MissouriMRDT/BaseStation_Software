@@ -16,11 +16,13 @@ const label: CSS.Properties = {
 const container: CSS.Properties = {
   // display: "grid",
   fontFamily: "arial",
+  textAlign: "center",
   width: "640px",
   borderTopWidth: "28px",
   borderColor: "#990000",
   borderBottomWidth: "2px",
   borderStyle: "solid",
+  padding: "30px",
   // gridRowStart: "2 & {}",
   // grid: "repeat(2, 28px) / auto-flow dense",
 }
@@ -37,6 +39,7 @@ interface IState {
   isRunning: boolean
   tasks: Task[]
   newTask: Task
+  showTaskList: boolean
   // selectedTaskIndex: number
 }
 
@@ -53,6 +56,7 @@ class Timer extends React.Component<IProps, IState> {
         },
       ],
       newTask: { name: "", allottedTime: "", runningTime: 0 },
+      showTaskList: false,
     }
   }
 
@@ -168,6 +172,12 @@ class Timer extends React.Component<IProps, IState> {
     }))
   }
 
+  toggleTaskList = (): void => {
+    this.setState(previousState => ({
+      showTaskList: !previousState.showTaskList,
+    }))
+  }
+
   render(): JSX.Element {
     const currentTask = this.state.tasks[0]
     const allTasks = this.state.tasks.map(task => (
@@ -179,7 +189,7 @@ class Timer extends React.Component<IProps, IState> {
       <div>
         <div style={label}>Timer</div>
         <div style={container}>
-          <p>{currentTask.name}</p>
+          <h2>{currentTask.name}</h2>
           <p>{this.convertSecondsToString(currentTask.runningTime)}</p>
           <ProgressBar
             current={currentTask.runningTime}
@@ -193,22 +203,38 @@ class Timer extends React.Component<IProps, IState> {
               Reset
             </button>
           </div>
-          <ul>{allTasks}</ul>
-          <form onSubmit={this.addNewTask}>
-            <input
-              type="text"
-              placeholder="Name"
-              value={this.state.newTask.name}
-              onChange={this.changeNewTaskName}
-            />
-            <input
-              type="text"
-              placeholder="Allotted Time"
-              value={this.state.newTask.allottedTime}
-              onChange={this.changeNewTaskTime}
-            />
-            <input type="submit" value="+ Add Task" />
-          </form>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-evenly",
+              alignItems: "center",
+            }}
+          >
+            <h3>Tasks</h3>
+            <button onClick={this.toggleTaskList} type="button">
+              {this.state.showTaskList ? "Hide" : "Show"}
+            </button>
+          </div>
+          {this.state.showTaskList && (
+            <section>
+              <ul style={{ listStyle: "none", padding: 0 }}>{allTasks}</ul>
+              <form onSubmit={this.addNewTask}>
+                <input
+                  type="text"
+                  placeholder="Name"
+                  value={this.state.newTask.name}
+                  onChange={this.changeNewTaskName}
+                />
+                <input
+                  type="text"
+                  placeholder="Allotted Time"
+                  value={this.state.newTask.allottedTime}
+                  onChange={this.changeNewTaskTime}
+                />
+                <input type="submit" value="+ Add Task" />
+              </form>
+            </section>
+          )}
         </div>
       </div>
     )
