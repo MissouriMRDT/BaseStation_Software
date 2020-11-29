@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   render(
     <AppContainer>
       <div>
-        <ControlCenter />
+        <RON />
       </div>
     </AppContainer>,
     document.getElementById("root")
