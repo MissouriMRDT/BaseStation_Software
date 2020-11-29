@@ -14,15 +14,15 @@ const label: CSS.Properties = {
   color: "white",
 }
 const container: CSS.Properties = {
-  display: "grid",
+  // display: "grid",
   fontFamily: "arial",
   width: "640px",
   borderTopWidth: "28px",
   borderColor: "#990000",
   borderBottomWidth: "2px",
   borderStyle: "solid",
-  gridRowStart: "2 & {}",
-  grid: "repeat(2, 28px) / auto-flow dense",
+  // gridRowStart: "2 & {}",
+  // grid: "repeat(2, 28px) / auto-flow dense",
 }
 
 interface Task {
@@ -48,8 +48,8 @@ class Timer extends React.Component<IProps, IState> {
       tasks: [
         {
           name: "Sample Task",
-          allottedTime: "00:10:00",
-          runningTime: this.convertStringToSeconds("00:10:00"),
+          allottedTime: "00:01:00",
+          runningTime: this.convertStringToSeconds("00:01:00"),
         },
       ],
       newTask: { name: "", allottedTime: "", runningTime: 0 },
@@ -91,9 +91,14 @@ class Timer extends React.Component<IProps, IState> {
 
   tick = (): void => {
     if (this.state.tasks[0].runningTime === 0) {
-      this.setState({
-        isRunning: false,
-      })
+      if (this.state.tasks.length > 1) {
+        this.setState(previousState => ({
+          isRunning: false,
+          tasks: previousState.tasks.slice(1),
+        }))
+      } else {
+        this.setState({ isRunning: false })
+      }
     }
 
     if (this.state.isRunning) {
@@ -130,7 +135,7 @@ class Timer extends React.Component<IProps, IState> {
     }))
   }
 
-  addNewTask = (event: { preventDefault: () => void }): void => {
+  addNewTask = (event): void => {
     if (this.state.newTask.allottedTime.match(/\d{2}:\d{2}:\d{2}/)) {
       this.setState(previousState => ({
         tasks: [...previousState.tasks, previousState.newTask],
@@ -158,6 +163,7 @@ class Timer extends React.Component<IProps, IState> {
       newTask: {
         ...previousState.newTask,
         allottedTime: event.target.value,
+        runningTime: this.convertStringToSeconds(event.target.value),
       },
     }))
   }
@@ -166,7 +172,7 @@ class Timer extends React.Component<IProps, IState> {
     const currentTask = this.state.tasks[0]
     const allTasks = this.state.tasks.map(task => (
       <li key={task.name}>
-        {task.name}, {task.allottedTime}, {task.runningTime}
+        {task.name}, {task.allottedTime}, {task.runningTime}s
       </li>
     ))
     return (
