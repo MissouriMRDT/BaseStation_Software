@@ -591,3 +591,13 @@ export const DATAID = {
     Telemetry: {},
   },
 }
+
+export const NetworkDevices = {
+  BasestationSwitch: { Ip: "192.168.1.80" },
+  Rover900MHzRocket: { Ip: "192.168.1.82" },
+  Basestation900MHzRocket: { Ip: "192.168.1.83" },
+  Rover5GHzRocket: { Ip: "192.168.1.84" },
+  Basestation5GHzRocket: { Ip: "192.168.1.85" },
+  Rover2_4GHzRocket: { Ip: "192.168.1.86" },
+  GrandStream: { Ip: "192.168.1.226" },
+}
