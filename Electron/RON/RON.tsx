@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import CustomPackets from "./components/CustomPackets"
+import PingTool from "./components/PingTool"
 
 interface IProps {}
 
@@ -15,6 +16,7 @@ class RoverOverviewOfNetwork extends Component<IProps, IState> {
     return (
       <div>
         <CustomPackets />
+        <PingTool />
       </div>
     )
   }
