@@ -92,6 +92,8 @@ class PingTool extends Component<IProps, IState> {
     this.Rove = this.Rove.bind(this)
     this.AutoPing = this.AutoPing.bind(this)
     this.AutoPingAll = this.AutoPingAll.bind(this)
+    this.StartAutoPing = this.StartAutoPing.bind(this)
+    this.StartAutoPing(1000)
   }
 
   ICMP(device: string): void {
@@ -150,7 +152,6 @@ class PingTool extends Component<IProps, IState> {
   }
 
   AutoPing(device: string): void {
-    console.log(`Auto not yet implemented. Detected ${device}`)
     const autoPing = !this.state.devices[device].autoPing
     this.setState({
       devices: {
@@ -164,7 +165,6 @@ class PingTool extends Component<IProps, IState> {
   }
 
   AutoPingAll(): void {
-    console.log(`Auto Ping All not yet implemented`)
     const { devices } = this.state
     for (const device in devices) {
       if (Object.prototype.hasOwnProperty.call(devices, device)) {
@@ -174,6 +174,16 @@ class PingTool extends Component<IProps, IState> {
     this.setState({
       devices,
     })
+  }
+
+  StartAutoPing(interval: number): void {
+    setInterval(() => {
+      for (const device in this.state.devices) {
+        if (this.state.devices[device].autoPing) {
+          this.ICMP(device)
+        }
+      }
+    }, interval)
   }
 
   render(): JSX.Element {
