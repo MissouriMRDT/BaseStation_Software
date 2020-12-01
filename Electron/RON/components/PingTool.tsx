@@ -114,24 +114,24 @@ class PingTool extends Component<IProps, IState> {
 
     console.log(`Pinging ${ip}...`)
     exec(pingCommand, (error, stdout, stderr) => {
+      // -1 means not reachable
+      let delay = -1
       if (error) {
         console.log(`error: ${error.message}`)
-        return
-      }
-      if (stderr) {
+      } else if (stderr) {
         console.log(`stderr: ${stderr}`)
-        return
+      } else {
+        // Ex. 64 bytes from 8.8.8.8: icmp_seq=0 ttl=110 time=387.477 ms
+        const start = stdout.indexOf("time=") + 5
+        const end = stdout.indexOf("ms")
+        delay = Math.round(parseFloat(stdout.substring(start, end)))
       }
-      // Ex. 64 bytes from 8.8.8.8: icmp_seq=0 ttl=110 time=387.477 ms
-      const start = stdout.indexOf("time=") + 5
-      const end = stdout.indexOf("ms")
-      const time = parseFloat(stdout.substring(start, end))
       this.setState({
         devices: {
           ...this.state.devices,
           [device]: {
             ...this.state.devices[device],
-            ping: Math.round(time),
+            ping: delay,
           },
         },
       })
