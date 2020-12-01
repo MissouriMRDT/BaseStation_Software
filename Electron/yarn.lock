@@ -11194,6 +11194,11 @@ react-dom@^16.12.0:
     prop-types "^15.6.2"
     scheduler "^0.19.1"
 
+react-gamepads@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-gamepads/-/react-gamepads-1.0.0.tgz#72373c6bd332e0c42bb2d1584413d71fdb34f5da"
+  integrity sha512-jfmIBHI1EgjhEUOGTYnrzfhM6fV75d/rZAEuG90fwYBJ2mP2z+Z42UoodXa3OD00q9zGFeQCESlSY20UjAIGzA==
+
 react-hot-loader@^4.12.21:
   version "4.12.21"
   resolved "https://registry.yarnpkg.com/react-hot-loader/-/react-hot-loader-4.12.21.tgz#332e830801fb33024b5a147d6b13417f491eb975"
