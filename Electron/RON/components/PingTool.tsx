@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import CSS from "csstype"
+import { exec } from "child_process"
 import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
 import {
   DATAID,
@@ -94,17 +95,45 @@ class PingTool extends Component<IProps, IState> {
   }
 
   ICMP(device: string): void {
-    console.log(`ICMP not yet implemented. Detected ${device}`)
-    this.setState({
-      devices: {
-        ...this.state.devices,
-        [device]: {
-          ...this.state.devices[device],
-          ping: 5,
+    // If device is not a network device, it must be a board
+    let deviceInfo = NetworkDevices[device]
+    if (deviceInfo === undefined) {
+      deviceInfo = DATAID[device]
+    }
+    const ip = deviceInfo.Ip
+
+    // Ping command is slightly different for windows/unix
+    let pingCommand = ""
+    if (process.platform === "win32") {
+      pingCommand = `ping -n 1 ${ip}`
+    } else {
+      pingCommand = `ping -c 1 ${ip}`
+    }
+
+    console.log(`Pinging ${ip}...`)
+    exec(pingCommand, (error, stdout, stderr) => {
+      if (error) {
+        console.log(`error: ${error.message}`)
+        return
+      }
+      if (stderr) {
+        console.log(`stderr: ${stderr}`)
+        return
+      }
+      // Ex. 64 bytes from 8.8.8.8: icmp_seq=0 ttl=110 time=387.477 ms
+      const start = stdout.indexOf("time=") + 5
+      const end = stdout.indexOf("ms")
+      const time = parseFloat(stdout.substring(start, end))
+      this.setState({
+        devices: {
+          ...this.state.devices,
+          [device]: {
+            ...this.state.devices[device],
+            ping: Math.round(time),
+          },
         },
-      },
+      })
     })
-    console.log(this)
   }
 
   Rove(device: string): void {
