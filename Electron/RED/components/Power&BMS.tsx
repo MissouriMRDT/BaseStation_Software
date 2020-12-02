@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import CSS from "csstype"
+import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
 // import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
 // import { Packet } from "../../Core/RoveProtocol/Packet"
 
@@ -80,119 +81,26 @@ const cellReadoutContainer: CSS.Properties = {
 interface IProps {}
 
 interface IState {
-  motorLF: number
-  motorLFButton: boolean
-  motorLM: number
-  motorLMButton: boolean
-  motorLB: number
-  motorLBButton: boolean
-  motorRF: number
-  motorRFButton: boolean
-  motorRM: number
-  motorRMButton: boolean
-  motorRB: number
-  motorRBButton: boolean
-  motorExtra: number
-  motorExtraButton: boolean
-  auxiliary: number
-  auxiliaryButton: boolean
-  comms: number
-  commsButton: boolean
-  logic: number
-  logicButton: boolean
-  actuation: number
-  actuationButton: boolean
-  twelveVBoard: number
-  twelveVBoardButton: boolean
-  batteryTemp: number
-  ttlPackVolt: number
-  ttlPackCurrent: number
-  bus15Button: boolean
-  bus16Button: boolean
-  bus17Button: boolean
-  bus18Button: boolean
-  bus19Button: boolean
-  bus20Button: boolean
-  bus21Button: boolean
-  bus22Button: boolean
-  bus23Button: boolean
-  bus24Button: boolean
-  bus25Button: boolean
-  bus26Button: boolean
-  allMtrsDisbled: boolean
-  reboot: boolean
-  shutDown: boolean
-  startLog: boolean
-  cellOne: number
-  cellTwo: number
-  cellThree: number
-  cellFour: number
-  cellFive: number
-  cellSix: number
-  cellSeven: number
-  cellEight: number
+  motorBusButtons: string
 }
 
 class Power extends Component<IProps, IState> {
   constructor(props: any) {
     super(props)
     this.state = {
-      motorLF: 0.0,
-      motorLFButton: false,
-      motorLM: 0.0,
-      motorLMButton: false,
-      motorLB: 0.0,
-      motorLBButton: false,
-      motorRF: 0.0,
-      motorRFButton: false,
-      motorRM: 0.0,
-      motorRMButton: false,
-      motorRB: 0.0,
-      motorRBButton: false,
-      motorExtra: 0.0,
-      motorExtraButton: false,
-      auxiliary: 0.0,
-      auxiliaryButton: false,
-      comms: 0.0,
-      commsButton: false,
-      logic: 0.0,
-      logicButton: false,
-      actuation: 0.0,
-      actuationButton: false,
-      twelveVBoard: 0.0,
-      twelveVBoardButton: false,
-      batteryTemp: 0.0,
-      bus15Button: false,
-      bus16Button: false,
-      bus17Button: false,
-      bus18Button: false,
-      bus19Button: false,
-      bus20Button: false,
-      bus21Button: false,
-      bus22Button: false,
-      bus23Button: false,
-      bus24Button: false,
-      bus25Button: false,
-      bus26Button: false,
-      allMtrsDisbled: false,
-      reboot: false,
-      shutDown: false,
-      startLog: false,
-      ttlPackVolt: 0.0,
-      ttlPackCurrent: 0.0,
-      cellOne: 0.0,
-      cellTwo: 0.0,
-      cellThree: 0.0,
-      cellFour: 0.0,
-      cellFive: 0.0,
-      cellSix: 0.0,
-      cellSeven: 0.0,
-      cellEight: 0.0,
+      motorBusButtons: Array(16).join("0")
     }
-    // rovecomm.on?
+    rovecomm.on("MotorBusEnabled", (pckt: number) => this.MotorButtons(pckt))
   }
 
-  render(): JSX.Element {
+  MotorButtons(pckt: number) {
+    const binStr: string = pckt.toString(2)
+    this.setState({
+      motorBusButtons: binStr,
+    })
+  }
+
+  /* render(): JSX.Element {
     return (
       <div>
         <div style={h1Style}>POWER AND BMS</div>
@@ -425,7 +333,7 @@ class Power extends Component<IProps, IState> {
           <div style={btnArray}>
             <button type="button">All Motors Disabled</button>
             <button type="button">REBOOT</button>
-            <button type="button">SHUT DOWN</button>
+            <button type="button">SHUT DOWN</button> 
             <button type="button">START LOG</button>
           </div>
           <div style={btnArray}>
@@ -500,5 +408,5 @@ class ToggleButton extends Power {
     })
   }
 }
-
+*/ 
 export default Power
