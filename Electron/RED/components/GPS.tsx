@@ -57,7 +57,7 @@ class GPS extends Component<IProps, IState> {
     rovecomm.on("GPSTelem", (data: any) => this.GPSTelem(data))
     rovecomm.on("GPSPosition", (data: any) => this.GPSPosition(data))
 
-    // rovecomm.sendCommand(Packet(dataId, data), reliability)
+    // rovecomm.sendCommand(dataIdStr, data, reliability)
   }
 
   GPSTelem(data: any) {
