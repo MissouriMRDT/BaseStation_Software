@@ -96,6 +96,34 @@ namespace Core.Configurations
                 }
             },
 
+            new MetadataServerContext("Arm Board", "192.168.1.137", "11007") {
+                Commands = new[]
+                {
+                    new MetadataRecordContext(7000, "MoveOpenLoop", "All values for the arm together. Armj1-j6"), //same as last year
+                    new MetadataRecordContext(7001, "MoveToAngle", "All values for the arm together. Armj1-j6."), //same as last year
+                    new MetadataRecordContext(7002, "IncrementPosition", "-1000, 1000"), //not implemented
+                    new MetadataRecordContext(7003, "IKAbsolutePOS", "All values for the arm together. X,Y,Z,P,Y,R."), //updated/implemented
+                    new MetadataRecordContext(7004, "IKRoverIncrement", "Incremental values for rover ik. xyzpyr"), //same as last year
+                    new MetadataRecordContext(7005, "IKWristIncrement", "Incremental values for wrist ik. xyzpyr"), //same as last year
+                    new MetadataRecordContext(7006, "SetClosedLoopControl", "0=disable, 1=enable"), //not implemented
+                    new MetadataRecordContext(7010, "GripperOpenLoop", "-1000,1000"), //not implemented
+                    new MetadataRecordContext(7011, "LaserControl", "Toggle the laser"), //same as last year
+                    new MetadataRecordContext(7012, "SolenoidControl", "enable/disable solenoid"), //not implemented
+                    new MetadataRecordContext(7013, "WatchdogOverride", "0=disable, 1=enable"), //not implemented
+                    new MetadataRecordContext(7014, "LimitSwitchOverride", "0=disable, 1=enable"), //same as last year
+
+                },
+                Telemetry = new[]
+                { 
+                    new MetadataRecordContext(7100, "ArmCurrents", "Currents for the arm motors m1-8"), //arm power only accounts for 7 motors
+                    new MetadataRecordContext(7101, "ArmAngles", "Angles for the arm joints m1-6"), //same as last year
+                    new MetadataRecordContext(7102, "BicepAngles", "Angles for the arm joints m1-8?"), //not implemented
+                    new MetadataRecordContext(7103, "ForearmAngles", "Angles for the arm joints m1-8?"), //not implemented
+                    new MetadataRecordContext(7104, "LimitSwitchValues", "ls1-8 for mc1 and mc2"), //not implemented
+                    new MetadataRecordContext(7105, "IKValue", "XYZPYR") //updated. Used to be XYZYPR
+                }
+            },
+
             new MetadataServerContext("ScienceAcutation Board", "192.168.1.137", "11008") {
                 Commands = new[] {
                     new MetadataRecordContext(8000, "ZActuation", "-1000 to 1000 open loop for Z axis control"), //updated from screw, confirmed with tester
