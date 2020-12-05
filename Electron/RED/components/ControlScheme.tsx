@@ -1,5 +1,6 @@
 import React, { Component, ReactNode, useState } from "react"
 import { render } from "react-dom"
+import Gamepad from 'react-gamepad'
 import CSS from "csstype"
 import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
 import { redBright } from "chalk"
@@ -52,8 +53,10 @@ interface IState {
 }
 
 class ControlScheme extends Component<IProps, IState> {
-  constructor(props: any) {
+
+  constructor(props: Readonly<IProps>) {
     super(props)
+
     this.state = {
     }
   }
