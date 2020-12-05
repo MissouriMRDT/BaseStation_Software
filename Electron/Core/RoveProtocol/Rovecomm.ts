@@ -1,7 +1,7 @@
 import { Socket } from "dgram"
 import { Server } from "http"
 import Deque from "double-ended-queue"
-import { DATAID, dataSizes, DataTypes } from "./RovecommManifest"
+import { DATAID, dataSizes, DataTypes, headerLength } from "./RovecommManifest"
 
 // There is a fundamental implementation difference between these required imports
 // and the traditional typescript imports.
@@ -13,7 +13,6 @@ const EventEmitter = require("events")
 interface TCPSocket {
   RCSocket: Socket
   RCDeque: Deque<any>
-  newData: boolean
 }
 
 function decodePacket(
@@ -89,7 +88,7 @@ function parse(packet: Buffer): void {
   const dataCount = packet.readUInt8(3)
   const dataType = packet.readUInt8(4)
 
-  const rawdata = packet.slice(5)
+  const rawdata = packet.slice(headerLength)
   let data: number[]
 
   if (version === VersionNumber) {
@@ -140,14 +139,14 @@ function TCPParseWrapper(socket: TCPSocket) {
    * Returns when there is either less than 5 bytes in the Deque or not a complete packet in the Deque
    */
   // While the Deque contains at least a header to allow parsing control packets
-  while (socket.RCDeque.length >= 5) {
+  while (socket.RCDeque.length >= headerLength) {
     const dataCount = socket.RCDeque.get(3)
     const dataSize = dataSizes[socket.RCDeque.get(4)]
     // If the length of the Deque is more than the header size and the size of the packet, make a buffer and then parse that buffer
-    if (socket.RCDeque.length >= 5 + dataCount * dataSize) {
+    if (socket.RCDeque.length >= headerLength + dataCount * dataSize) {
       // create another list to put the entire packet into
       const packet = []
-      for (let i = 0; i < 5 + dataCount * dataSize; i++) {
+      for (let i = 0; i < headerLength + dataCount * dataSize; i++) {
         // Here we use Shift to get and remove the elements that make up the packet to prevent parsing the same packet multiple times
         packet.push(socket.RCDeque.shift())
       }
@@ -163,15 +162,9 @@ function TCPListen(socket: TCPSocket) {
   /*
    * Listens on the passed in TCP socket, pushing received data into the TCPSocket Deque and then calling the TCP Parse Wrapper when data is received
    */
-  const selfComp = 1
   socket.RCSocket.on("data", (msg: Buffer) => {
-    // eslint-disable-next-line no-restricted-syntax
     for (let i = 0; i < msg.length; i++) {
-      // use this if compared to self to get rid of the linter no self compare
-      // eslint-disable-next-line no-self-compare
-      if (selfComp === selfComp) {
-        socket.RCDeque.push(msg[i])
-      }
+      socket.RCDeque.push(msg[i])
     }
     TCPParseWrapper(socket)
   })
@@ -180,24 +173,16 @@ function TCPListen(socket: TCPSocket) {
 class Rovecomm extends EventEmitter {
   UDPSocket: Socket
 
-  // TCPServer: Server
-
   TCPConnections: TCPSocket[]
 
   constructor() {
     super()
-    this.TCPConnections = []
     // Initialization of UDP socket and server
     this.UDPSocket = dgram.createSocket("udp4")
-    // TCPServer is purely for testing purposes and should not be relied on for use on Rover
-    /* this.TCPServer = net.createServer((TCPSocket: Socket) =>
-      TCPSocket.on("data", (msg: Buffer) => {
-        this.parse(msg)
-      })
-    ) */
-
     this.UDPListen()
-    // this.TCPServer.listen(11111)
+
+    this.TCPConnections = []
+
     this.resubscribe = this.resubscribe.bind(this)
   }
 
@@ -227,9 +212,7 @@ class Rovecomm extends EventEmitter {
       RCSocket: new net.Socket(),
       // Instantiate a new Deque of size 30KB, avoid runtime resizing
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      RCDeque: new Deque<any>(30 * 1024 * 1024),
-      // New Data flag, to determine if we need to parse or not (async read)
-      newData: false,
+      RCDeque: new Deque<any>(30 * 1024),
     }
 
     // Connect to the board we're intending to communicate with
@@ -349,7 +332,7 @@ class Rovecomm extends EventEmitter {
      *
      *  Note: the size of Data is dataCount * dataSizes[DataType] bytes
      */
-    const headerBuffer = Buffer.allocUnsafe(5)
+    const headerBuffer = Buffer.allocUnsafe(headerLength)
     headerBuffer.writeUInt8(VersionNumber, 0)
     headerBuffer.writeUInt16BE(dataId, 1)
     headerBuffer.writeUInt8(dataCount, 3)
