@@ -1,5 +1,4 @@
 import { Socket } from "dgram"
-import { Server } from "http"
 import Deque from "double-ended-queue"
 import { DATAID, dataSizes, DataTypes, headerLength } from "./RovecommManifest"
 
@@ -99,7 +98,6 @@ function parse(packet: Buffer): void {
     // Here we loop through all of the Boards in the manifest,
     // looking specifically if this dataId is a known Telemetry of the board
     for (let i = 0; i < DATAID.length; i++) {
-      // eslint-disable-next-line no-restricted-syntax
       for (const comm in DATAID[i].Telemetry) {
         if (dataId === DATAID[i].Telemetry[comm].dataId) {
           dataIdStr = comm
@@ -192,7 +190,6 @@ class Rovecomm extends EventEmitter {
      * Creates a connection to the target Host:Port over TCP, if a connection doesn't already exist
      * Runs the TCPListen function on the new TCPSocket, then pushes the new TCPSocket into the rovecomm TCPConnections list
      */
-    // eslint-disable-next-line no-restricted-syntax
     for (const socket in this.TCPConnections) {
       if (
         this.TCPConnections[socket].RCSocket.remoteAddress === host &&
@@ -255,7 +252,6 @@ class Rovecomm extends EventEmitter {
      * Sends the packet if there's a connection with the correct IP:Port combination
      * If there is no connection, emits an error message
      */
-    // eslint-disable-next-line no-restricted-syntax
     for (const socket in this.TCPConnections) {
       // TODO: When the boards all change to a single port, remove that check from this if statement
       if (
