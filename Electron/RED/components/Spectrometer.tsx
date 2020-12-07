@@ -7,6 +7,13 @@ import {
   HorizontalGridLines,
   LineSeries,
 } from "react-vis"
+
+import {
+  database,
+  SpectrometerEntry,
+  SpecDataEntry,
+  TestInfoEntry,
+} from "../../Core/Spectrometer/Database"
 import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
 
 const h1Style: CSS.Properties = {
@@ -47,8 +54,21 @@ interface IState {
 }
 
 class Spectrometer extends Component<IProps, IState> {
+  static insertSpecData(data: { x: number; y: number }[]): void {
+    database.insertData(new SpecDataEntry(1, new Date().toLocaleString(), data))
+  }
+
+  specTests: SpecDataEntry[]
+
+  testInfos: TestInfoEntry[]
+
+  spectrometers: SpectrometerEntry[]
+
   constructor(props: any) {
     super(props)
+    this.specTests = []
+    this.testInfos = []
+    this.spectrometers = []
     this.state = {
       control: [
         { x: 0, y: 0 },
@@ -72,7 +92,7 @@ class Spectrometer extends Component<IProps, IState> {
     rovecomm.on("SpectrometerData", (data: any) => this.SpectrometerData(data))
   }
 
-  getControl() {
+  getControl(): void {
     this.setState({
       gathering: "control",
       counter: 0,
@@ -80,13 +100,39 @@ class Spectrometer extends Component<IProps, IState> {
     rovecomm.sendCommand("RunSpectrometer", [1])
   }
 
-  getSpectra() {
+  getSpectra(): void {
     this.setState({
       gathering: "spectra",
       counter: 0,
     })
 
     rovecomm.sendCommand("RunSpectrometer", [1])
+  }
+
+  getSpecTests(): void {
+    database.retrieveAllTests((succ: boolean, data: SpecDataEntry[]) => {
+      if (succ) {
+        this.specTests = data
+      }
+    })
+  }
+
+  getTestInfos(): void {
+    database.retrieveAllTestInfo((succ: boolean, data: TestInfoEntry[]) => {
+      if (succ) {
+        this.testInfos = data
+      }
+    })
+  }
+
+  getSpectrometers(): void {
+    database.retrieveSpectrometers(
+      (succ: boolean, data: SpectrometerEntry[]) => {
+        if (succ) {
+          this.spectrometers = data
+        }
+      }
+    )
   }
 
   SpectrometerData(data: number[]): void {
@@ -115,6 +161,13 @@ class Spectrometer extends Component<IProps, IState> {
             y: experiment[i + offset].y - control[i + offset].y,
           })
         }
+
+        // Insert this new data
+        Spectrometer.insertSpecData(experiment)
+
+        // Update local understanding of data
+        this.getSpecTests()
+
         break
       default:
         break
