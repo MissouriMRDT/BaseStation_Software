@@ -3,6 +3,7 @@ import { rovecomm } from "../Core/RoveProtocol/Rovecomm"
 import GPS from "./components/GPS"
 import Log from "./components/Log"
 import NewWindowComponent from "./components/Window"
+import RON from "../RON/RON"
 
 interface IProps {}
 
@@ -25,11 +26,11 @@ class ControlCenter extends Component<IProps, IState> {
           // onClose will be fired when the new window is closed
           // everything inside NewWindowComponent is considered props.children and will be
           // displayed in a new window
-          this.state.isNewWindow === false && (
+          this.state.isNewWindow && (
             <NewWindowComponent
               onClose={() => this.setState({ isNewWindow: false })}
             >
-              <h2>This will display in a new window</h2>
+              <RON />
             </NewWindowComponent>
           )
         }

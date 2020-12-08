@@ -79,11 +79,11 @@ class PingTool extends Component<IProps, IState> {
   constructor(props: any) {
     super(props)
     const devices = {}
-    Object.keys(DATAID).forEach(board => {
-      devices[board] = { autoPing: false, ping: -1 }
-    })
     Object.keys(NetworkDevices).forEach(device => {
       devices[device] = { autoPing: false, ping: -1 }
+    })
+    Object.keys(DATAID).forEach(board => {
+      devices[board] = { autoPing: false, ping: -1 }
     })
     this.state = {
       devices,

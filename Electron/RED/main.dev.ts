@@ -67,9 +67,11 @@ const createWindow = async () => {
       process.env.ERB_SECURE !== "true"
         ? {
             nodeIntegration: true,
+            nativeWindowOpen: true,
           }
         : {
             preload: path.join(__dirname, "dist/renderer.prod.js"),
+            nativeWindowOpen: true,
           },
   })
 
