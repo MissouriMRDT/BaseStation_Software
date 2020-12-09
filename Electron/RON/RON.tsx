@@ -29,6 +29,7 @@ class RoverOverviewOfNetwork extends Component<IProps, IState> {
         <CustomPackets />
         <PingTool />
         <PingGraph />
+        <PacketLogger />
       </div>
     )
   }
