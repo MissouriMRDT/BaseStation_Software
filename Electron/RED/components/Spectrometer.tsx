@@ -61,7 +61,6 @@ interface IState {
   B3: number
   B4: number
   B5: number
-  databaseSpectra: { x: number; y: number }[]
 }
 
 class Spectrometer extends Component<IProps, IState> {
@@ -95,10 +94,6 @@ class Spectrometer extends Component<IProps, IState> {
       ],
       gathering: "none",
       counter: 0,
-      databaseSpectra: [
-        { x: 0, y: 0 },
-        { x: 1, y: 1 },
-      ],
       integral: 0,
       A0: 3.033554037e2,
       B1: 2.719323032,
@@ -111,7 +106,6 @@ class Spectrometer extends Component<IProps, IState> {
     this.getSpectra = this.getSpectra.bind(this)
     this.SpectrometerData = this.SpectrometerData.bind(this)
     this.calcWavelength = this.calcWavelength.bind(this)
-    this.loadSpectra = this.loadSpectra.bind(this)
 
     // Create database, if doesnt exist
     database.createAllTables()
@@ -161,22 +155,6 @@ class Spectrometer extends Component<IProps, IState> {
       (succ: boolean, data: SpectrometerEntry[]) => {
         if (succ) {
           this.spectrometers = data
-        }
-      }
-    )
-  }
-
-  loadSpectra(event: { target: { value: string } }): void {
-    const timestamp = event.target.value
-
-    database.retrieveTestByTimestamp(
-      timestamp,
-      (succ: boolean, data: SpecDataEntry[]) => {
-        if (succ) {
-          // Load the spectra
-          this.setState({
-            databaseSpectra: data[0].data,
-          })
         }
       }
     )
@@ -309,15 +287,6 @@ class Spectrometer extends Component<IProps, IState> {
             <XAxis />
             <YAxis />
           </XYPlot>
-          <XYPlot style={{ margin: 10 }} width={620} height={480}>
-            <HorizontalGridLines stylee={{ fill: "none" }} />
-            <LineSeries
-              data={this.state.databaseSpectra}
-              style={{ fill: "none" }}
-            />
-            <XAxis />
-            <YAxis />
-          </XYPlot>
           <div style={row}>
             <button
               type="button"
@@ -333,16 +302,6 @@ class Spectrometer extends Component<IProps, IState> {
             >
               Grab Spectra
             </button>
-
-            <select onChange={this.loadSpectra}>
-              {this.specTests.map(item => {
-                return (
-                  <option key={item.datetime} value={item.datetime}>
-                    {item.datetime}
-                  </option>
-                )
-              })}
-            </select>
           </div>
         </div>
       </div>

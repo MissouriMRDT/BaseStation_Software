@@ -3,6 +3,7 @@ import { rovecomm } from "../Core/RoveProtocol/Rovecomm"
 import GPS from "./components/GPS"
 import Log from "./components/Log"
 import Spectrometer from "./components/Spectrometer"
+import SpectrometerViewer from "./components/SpectrometerViewer"
 
 interface IProps {}
 
@@ -20,6 +21,7 @@ class ControlCenter extends Component<IProps, IState> {
         <Log />
         <GPS />
         <Spectrometer />
+        <SpectrometerViewer />
         <button
           type="button"
           onClick={rovecomm.resubscribe}
