@@ -56,16 +56,7 @@ class PacketLogger extends Component<IProps, IState> {
     super(props)
     this.state = {
       board: "Drive",
-      data: [
-        {
-          name: "a",
-          dataId: "a",
-          time: Date.now().toString(),
-          dataType: "0",
-          dataCount: 1,
-          data: [1, 2, 3],
-        },
-      ],
+      data: [],
       columns: [
         { Header: "Name", accessor: "name" },
         { Header: "Data Id", accessor: "dataId" },
@@ -76,11 +67,12 @@ class PacketLogger extends Component<IProps, IState> {
       ],
     }
     this.boardChange = this.boardChange.bind(this)
+    this.addData = this.addData.bind(this)
   }
 
   boardChange(event: { target: { value: string } }): void {
     const board = event.target.value
-    rovecomm.off(this.state.board)
+    rovecomm.off(this.state.board, (data: any) => this.addData(data))
     rovecomm.on(board, (data: any) => this.addData(data))
     this.setState({
       board,
@@ -118,11 +110,7 @@ class PacketLogger extends Component<IProps, IState> {
           <ReactTable
             data={this.state.data}
             columns={this.state.columns}
-            className="-striped"
             filterable
-            defaultPageSize={Math.floor((window.innerHeight * 0.75 - 200) / 46)}
-            resizable={false}
-            showPageSizeOptions={false}
           />
         </div>
       </div>
