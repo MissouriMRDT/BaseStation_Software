@@ -51,6 +51,13 @@ interface IState {
   difference: { x: number; y: number }[]
   gathering: string
   counter: number
+  // These are all calibrated constants and should be determined for each spectrometer
+  A0: number
+  B1: number
+  B2: number
+  B3: number
+  B4: number
+  B5: number
 }
 
 class Spectrometer extends Component<IProps, IState> {
@@ -84,10 +91,17 @@ class Spectrometer extends Component<IProps, IState> {
       ],
       gathering: "none",
       counter: 0,
+      A0: 2.98820453e2,
+      B1: 2.402512393,
+      B2: -9.234466848e-4,
+      B3: -4.648308454e-6,
+      B4: 2.090258796e-10,
+      B5: 1.496304653e-11,
     }
     this.getControl = this.getControl.bind(this)
     this.getSpectra = this.getSpectra.bind(this)
     this.SpectrometerData = this.SpectrometerData.bind(this)
+    this.calcWavelength = this.calcWavelength.bind(this)
 
     rovecomm.on("SpectrometerData", (data: any) => this.SpectrometerData(data))
   }
@@ -135,6 +149,17 @@ class Spectrometer extends Component<IProps, IState> {
     )
   }
 
+  calcWavelength(pixel: number): number {
+    return (
+      this.state.A0 +
+      this.state.B1 * pixel +
+      this.state.B2 * pixel ** 2 +
+      this.state.B3 * pixel ** 3 +
+      this.state.B4 * pixel ** 4 +
+      this.state.B5 * pixel ** 5
+    )
+  }
+
   SpectrometerData(data: number[]): void {
     let { control, experiment, difference } = this.state
     let offset = 144
@@ -145,7 +170,7 @@ class Spectrometer extends Component<IProps, IState> {
           offset = 0
         }
         for (let i = 0; i < data.length; i++) {
-          control.push({ x: i + offset, y: data[i] })
+          control.push({ x: this.calcWavelength(i), y: data[i] })
         }
         break
       case "spectra":
@@ -155,9 +180,9 @@ class Spectrometer extends Component<IProps, IState> {
           offset = 0
         }
         for (let i = 0; i < data.length; i++) {
-          experiment.push({ x: i + offset, y: data[i] })
+          experiment.push({ x: this.calcWavelength(i), y: data[i] })
           difference.push({
-            x: i + offset,
+            x: this.calcWavelength(i),
             y: experiment[i + offset].y - control[i + offset].y,
           })
         }
