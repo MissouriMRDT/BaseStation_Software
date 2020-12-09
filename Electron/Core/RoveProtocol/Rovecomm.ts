@@ -90,6 +90,7 @@ function parse(packet: Buffer): void {
 
     let dataIdStr = "null"
     let endLoop = false
+    let boardName = "null"
     // Here we loop through all of the Boards in the manifest,
     // looking specifically if this dataId is a known Telemetry of the board
     for (const board in DATAID) {
@@ -98,6 +99,7 @@ function parse(packet: Buffer): void {
           if (dataId === DATAID[board].Telemetry[comm].dataId) {
             dataIdStr = comm
             endLoop = true
+            boardName = board
             break
           }
         }
@@ -122,7 +124,18 @@ function parse(packet: Buffer): void {
       `Data Id: ${dataId} (aka ${dataIdStr}), Type: ${dataType}, Count: ${dataCount}, Data: ${data}`
     )
 
-    // More emits will potentially follow to allow RON to listen to only a certain board,
+    // Third emit is for the board to be used in the RON packet logger
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    rovecomm.emit(boardName, [
+      dataIdStr,
+      dataId,
+      Date.now().toString(),
+      dataType,
+      dataCount,
+      data,
+    ])
+
+    // More emits will potentially follow for different logging levels
     // Telemetry vs Commands vs Errors, etc.
   }
 }

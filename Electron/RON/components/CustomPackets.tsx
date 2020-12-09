@@ -41,7 +41,7 @@ const selector: CSS.Properties = {
 }
 const textbox: CSS.Properties = {
   width: "50px",
-  height: "14px",
+  height: "18px",
 }
 
 interface IProps {}

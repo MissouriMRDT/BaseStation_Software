@@ -285,6 +285,8 @@
     "react-hot-loader": "^4.12.21",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
+    "react-table-v6": "^6.8.6",
+    "react-vis": "^1.11.7",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "regenerator-runtime": "^0.13.5",
