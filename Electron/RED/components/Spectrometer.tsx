@@ -172,6 +172,15 @@ class Spectrometer extends Component<IProps, IState> {
         for (let i = 0; i < data.length; i++) {
           control.push({ x: this.calcWavelength(i), y: data[i] })
         }
+        // Hack to correct x-axis immediately
+        experiment = [
+          { x: this.calcWavelength(0), y: 0 },
+          { x: this.calcWavelength(1), y: 1 },
+        ]
+        difference = [
+          { x: this.calcWavelength(0), y: 0 },
+          { x: this.calcWavelength(1), y: 1 },
+        ]
         break
       case "spectra":
         if (this.state.counter === 0) {
