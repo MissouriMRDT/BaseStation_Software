@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import html2canvas from "html2canvas"
 import CSS from "csstype"
 import {
   XYPlot,
@@ -193,6 +194,38 @@ class Spectrometer extends Component<IProps, IState> {
     )
   }
 
+  saveImage() {
+    const input = document.getElementById("canvas")
+    if (!input) {
+      throw new Error("The element 'canvas' wasn't found")
+    }
+    html2canvas(input, {
+      scrollX: 0,
+      scrollY: -window.scrollY,
+    })
+      .then(canvas => {
+        const imgData = canvas
+          .toDataURL("image/png")
+          .replace("image/png", "image/octet-stream")
+        this.downloadURL(imgData)
+        return null
+      })
+      .catch(error => {
+        console.error(error)
+      })
+  }
+
+  downloadURL(imgData: string) {
+    this.setState({
+      gathering: "graphImage",
+      counter: 0,
+    })
+    const a = document.createElement("a")
+    a.href = imgData.replace("image/png", "image/octet-stream")
+    a.download = "graph.png"
+    a.click()
+  }
+
   SpectrometerData(data: number[]): void {
     let { control, experiment, difference } = this.state
     let offset = 144
@@ -285,7 +318,7 @@ class Spectrometer extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div>
+      <div id="canvas">
         <div style={label}>Spectrometer</div>
         <div style={container}>
           <DiscreteColorLegend
@@ -319,6 +352,13 @@ class Spectrometer extends Component<IProps, IState> {
             <YAxis />
           </XYPlot>
           <div style={row}>
+            <button
+              type="button"
+              style={{ width: "100px", marginRight: "10px" }}
+              onClick={() => this.saveImage()}
+            >
+              Export Graph
+            </button>
             <button
               type="button"
               style={{ width: "100px", marginRight: "10px" }}
