@@ -199,12 +199,13 @@ class Spectrometer extends Component<IProps, IState> {
           })
         }
 
-        // Insert this new data
-        Spectrometer.insertSpecData(experiment)
+        if (this.state.counter) {
+          // Insert this complete spectra
+          Spectrometer.insertSpecData(difference)
 
-        // Update local understanding of data
-        this.getSpecTests()
-
+          // Update local understanding of data
+          this.getSpecTests()
+        }
         break
       default:
         break
