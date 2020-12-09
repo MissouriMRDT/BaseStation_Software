@@ -103,6 +103,9 @@ class Spectrometer extends Component<IProps, IState> {
     this.SpectrometerData = this.SpectrometerData.bind(this)
     this.calcWavelength = this.calcWavelength.bind(this)
 
+    // Create database, if doesnt exist
+    database.createAllTables()
+
     rovecomm.on("SpectrometerData", (data: any) => this.SpectrometerData(data))
   }
 
