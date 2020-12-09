@@ -16,10 +16,6 @@ import {
 } from "../../Core/Spectrometer/Database"
 import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
 
-const h1Style: CSS.Properties = {
-  fontFamily: "arial",
-  fontSize: "12px",
-}
 const container: CSS.Properties = {
   display: "grid",
   fontFamily: "arial",
@@ -51,6 +47,7 @@ interface IState {
   difference: { x: number; y: number }[]
   gathering: string
   counter: number
+  integral: number
   // These are all calibrated constants and should be determined for each spectrometer
   A0: number
   B1: number
@@ -91,6 +88,7 @@ class Spectrometer extends Component<IProps, IState> {
       ],
       gathering: "none",
       counter: 0,
+      integral: 0,
       A0: 2.98820453e2,
       B1: 2.402512393,
       B2: -9.234466848e-4,
@@ -217,12 +215,13 @@ class Spectrometer extends Component<IProps, IState> {
       experiment,
       difference,
       counter,
+      integral: this.Integrate(difference),
     })
   }
 
-  Integrate(): number {
-    let left: { x: number; y: number } = this.state.difference[0]
-    let right: { x: number; y: number } = this.state.difference[1]
+  Integrate(data: { x: number; y: number }[]): number {
+    let left: { x: number; y: number } = data[0]
+    let right: { x: number; y: number } = data[1]
     let i: number
     let area = 0
     for (i = 1; i < this.state.difference.length; i++) {
@@ -230,7 +229,26 @@ class Spectrometer extends Component<IProps, IState> {
       left = right
       right = this.state.difference[i]
     }
+
     return area
+  }
+
+  CompareIntegral(): string {
+    let cutoff = 0
+
+    for (const test in this.specTests) {
+      if (Object.prototype.hasOwnProperty.call(this.specTests, test)) {
+        cutoff += this.Integrate(this.specTests[test].data)
+      }
+    }
+
+    cutoff /= this.specTests.length
+    console.log(cutoff)
+
+    if (this.state.integral > cutoff) {
+      return "There is life in this sample"
+    }
+    return "There is not life in this sample"
   }
 
   render(): JSX.Element {
@@ -239,14 +257,15 @@ class Spectrometer extends Component<IProps, IState> {
         <div style={label}>Spectrometer</div>
         <div style={container}>
           <XYPlot style={{ margin: 10 }} width={620} height={480}>
-            <HorizontalGridLines stylee={{ fill: "none" }} />
+            <HorizontalGridLines style={{ fill: "none" }} />
             <LineSeries data={this.state.control} style={{ fill: "none" }} />
             <LineSeries data={this.state.experiment} style={{ fill: "none" }} />
             <LineSeries data={this.state.difference} style={{ fill: "none" }} />
             <XAxis />
             <YAxis />
           </XYPlot>
-          <div style={{ margin: "0px 250px" }}>{this.Integrate()}</div>
+          <div style={{ margin: "0px 250px" }}>{this.state.integral}</div>
+          <div style={{ margin: "0px 250px" }}>{this.CompareIntegral()}</div>
           <button
             type="button"
             style={{ width: "100px" }}
