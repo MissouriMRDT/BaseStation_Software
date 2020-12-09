@@ -66,6 +66,18 @@ class Database {
       callback(succ, data)
     })
   }
+
+  retrieveTestByTimestamp(timestamp: string, callback: CallableFunction) {
+    db.search(
+      this.tableNames[1],
+      this.location,
+      "datetime",
+      timestamp,
+      (succ: boolean, data: any) => {
+        callback(succ, data)
+      }
+    )
+  }
 }
 
 class SpectrometerEntry {

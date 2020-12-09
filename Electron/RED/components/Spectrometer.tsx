@@ -63,6 +63,7 @@ interface IState {
   B3: number
   B4: number
   B5: number
+  databaseSpectra: { x: number; y: number }[]
 }
 
 class Spectrometer extends Component<IProps, IState> {
@@ -102,14 +103,23 @@ class Spectrometer extends Component<IProps, IState> {
       B3: -4.648308454e-6,
       B4: 2.090258796e-10,
       B5: 1.496304653e-11,
+      databaseSpectra: [
+        { x: 0, y: 0 },
+        { x: 1, y: 1 },
+      ],
     }
     this.getControl = this.getControl.bind(this)
     this.getSpectra = this.getSpectra.bind(this)
     this.SpectrometerData = this.SpectrometerData.bind(this)
     this.calcWavelength = this.calcWavelength.bind(this)
+    this.loadSpectra = this.loadSpectra.bind(this)
 
     // Create database, if doesnt exist
     database.createAllTables()
+
+    this.getSpecTests()
+    this.getTestInfos()
+    this.getSpectrometers()
 
     rovecomm.on("SpectrometerData", (data: any) => this.SpectrometerData(data))
   }
@@ -152,6 +162,22 @@ class Spectrometer extends Component<IProps, IState> {
       (succ: boolean, data: SpectrometerEntry[]) => {
         if (succ) {
           this.spectrometers = data
+        }
+      }
+    )
+  }
+
+  loadSpectra(event: { target: { value: string } }): void {
+    const timestamp = event.target.value
+
+    database.retrieveTestByTimestamp(
+      timestamp,
+      (succ: boolean, data: SpecDataEntry[]) => {
+        if (succ) {
+          // Load the spectra
+          this.setState({
+            databaseSpectra: data[0].data,
+          })
         }
       }
     )
@@ -261,6 +287,15 @@ class Spectrometer extends Component<IProps, IState> {
             <XAxis />
             <YAxis />
           </XYPlot>
+          <XYPlot style={{ margin: 10 }} width={620} height={480}>
+            <HorizontalGridLines stylee={{ fill: "none" }} />
+            <LineSeries
+              data={this.state.databaseSpectra}
+              style={{ fill: "none" }}
+            />
+            <XAxis />
+            <YAxis />
+          </XYPlot>
           <div style={row}>
             <button
               type="button"
@@ -276,6 +311,16 @@ class Spectrometer extends Component<IProps, IState> {
             >
               Grab Spectra
             </button>
+
+            <select onChange={this.loadSpectra}>
+              {this.specTests.map(item => {
+                return (
+                  <option key={item.datetime} value={item.datetime}>
+                    {item.datetime}
+                  </option>
+                )
+              })}
+            </select>
           </div>
         </div>
       </div>
