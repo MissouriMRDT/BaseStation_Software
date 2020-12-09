@@ -89,11 +89,12 @@ class SpectrometerViewer extends Component<IProps, IState> {
       ],
       integral: 0,
     }
+    database.createAllTables()
+
     this.loadSpectra = this.loadSpectra.bind(this)
     this.getSpecTests()
 
     rovecomm.on("SpectrometerData", () => this.getSpecTests())
-    database.createAllTables()
   }
 
   getSpecTests(): void {
@@ -114,6 +115,7 @@ class SpectrometerViewer extends Component<IProps, IState> {
           // Load the spectra
           this.setState({
             databaseSpectra: data[0].data,
+            integral: Integrate(data[0].data),
           })
         }
       }
@@ -143,6 +145,11 @@ class SpectrometerViewer extends Component<IProps, IState> {
       <div>
         <div style={label}>Spectrometer Record Viewer</div>
         <div style={container}>
+          <DiscreteColorLegend
+            style={{ height: "75px", fontSize: "20px", textAlign: "center" }}
+            items={[{ title: "Experiment", strokeWidth: 6 }]}
+            orientation="horizontal"
+          />
           <div style={{ textAlign: "center" }}>
             Integral: {this.state.integral}
           </div>
