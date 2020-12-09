@@ -173,7 +173,7 @@ class Spectrometer extends Component<IProps, IState> {
           offset = 0
         }
         for (let i = 0; i < data.length; i++) {
-          control.push({ x: this.calcWavelength(i), y: data[i] })
+          control.push({ x: this.calcWavelength(i + offset), y: data[i] })
         }
         // Hack to correct x-axis immediately
         experiment = [
@@ -192,9 +192,9 @@ class Spectrometer extends Component<IProps, IState> {
           offset = 0
         }
         for (let i = 0; i < data.length; i++) {
-          experiment.push({ x: this.calcWavelength(i), y: data[i] })
+          experiment.push({ x: this.calcWavelength(i + offset), y: data[i] })
           difference.push({
-            x: this.calcWavelength(i),
+            x: this.calcWavelength(i + offset),
             y: experiment[i + offset].y - control[i + offset].y,
           })
         }
