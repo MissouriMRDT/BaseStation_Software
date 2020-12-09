@@ -95,12 +95,12 @@ class Spectrometer extends Component<IProps, IState> {
       gathering: "none",
       counter: 0,
       integral: 0,
-      A0: 2.98820453e2,
-      B1: 2.402512393,
-      B2: -9.234466848e-4,
-      B3: -4.648308454e-6,
-      B4: 2.090258796e-10,
-      B5: 1.496304653e-11,
+      A0: 3.033554037e2,
+      B1: 2.719323032,
+      B2: -1.242349083e-3,
+      B3: -7.181891333e-6,
+      B4: 9.029223723e-9,
+      B5: 2.829824434e-12,
     }
     this.getControl = this.getControl.bind(this)
     this.getSpectra = this.getSpectra.bind(this)
