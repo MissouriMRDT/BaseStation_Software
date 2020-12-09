@@ -61,6 +61,7 @@ const createWindow = async () => {
     show: false,
     width: 1024,
     height: 728,
+    icon: path.join(__dirname, "../rover_swoosh.ico"),
     webPreferences:
       (process.env.NODE_ENV === "development" ||
         process.env.E2E_BUILD === "true") &&
