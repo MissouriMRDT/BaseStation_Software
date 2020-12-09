@@ -6,6 +6,7 @@ import {
   YAxis,
   HorizontalGridLines,
   LineSeries,
+  DiscreteColorLegend,
 } from "react-vis"
 
 import {
@@ -17,16 +18,15 @@ import {
 import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
 
 const container: CSS.Properties = {
-  display: "grid",
+  display: "flex",
+  flexDirection: "column",
   fontFamily: "arial",
   width: "640px",
-  height: "500px",
   borderTopWidth: "28px",
   borderColor: "#990000",
   borderBottomWidth: "2px",
   borderStyle: "solid",
-  gridRowStart: "2 & {}",
-  grid: "repeat(2, 28px) / auto-flow dense",
+  justifyContent: "center",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -37,6 +37,12 @@ const label: CSS.Properties = {
   fontSize: "16px",
   zIndex: 1,
   color: "white",
+}
+const row: CSS.Properties = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  margin: "10px",
 }
 
 interface IProps {}
@@ -256,6 +262,19 @@ class Spectrometer extends Component<IProps, IState> {
       <div>
         <div style={label}>Spectrometer</div>
         <div style={container}>
+          <DiscreteColorLegend
+            style={{ height: "75px", fontSize: "20px", textAlign: "center" }}
+            items={[
+              { title: "Control", strokeWidth: 6 },
+              { title: "Experiment", strokeWidth: 6 },
+              { title: "Difference", strokeWidth: 6 },
+            ]}
+            orientation="horizontal"
+          />
+          <div style={{ textAlign: "center" }}>
+            Integral: {this.state.integral}
+          </div>
+          <div style={{ textAlign: "center" }}>{this.CompareIntegral()}</div>
           <XYPlot style={{ margin: 10 }} width={620} height={480}>
             <HorizontalGridLines style={{ fill: "none" }} />
             <LineSeries data={this.state.control} style={{ fill: "none" }} />
@@ -264,22 +283,22 @@ class Spectrometer extends Component<IProps, IState> {
             <XAxis />
             <YAxis />
           </XYPlot>
-          <div style={{ margin: "0px 250px" }}>{this.state.integral}</div>
-          <div style={{ margin: "0px 250px" }}>{this.CompareIntegral()}</div>
-          <button
-            type="button"
-            style={{ width: "100px" }}
-            onClick={this.getControl}
-          >
-            Grab Control
-          </button>
-          <button
-            type="button"
-            style={{ width: "100px" }}
-            onClick={this.getSpectra}
-          >
-            Grab Spectra
-          </button>
+          <div style={row}>
+            <button
+              type="button"
+              style={{ width: "100px", marginRight: "10px" }}
+              onClick={this.getControl}
+            >
+              Grab Control
+            </button>
+            <button
+              type="button"
+              style={{ width: "100px" }}
+              onClick={this.getSpectra}
+            >
+              Grab Spectra
+            </button>
+          </div>
         </div>
       </div>
     )
