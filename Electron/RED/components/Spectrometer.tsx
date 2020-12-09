@@ -119,6 +119,7 @@ class Spectrometer extends Component<IProps, IState> {
   }
 
   getControl(): void {
+    rovecomm.resubscribe()
     this.setState({
       gathering: "control",
       counter: 0,
@@ -127,6 +128,7 @@ class Spectrometer extends Component<IProps, IState> {
   }
 
   getSpectra(): void {
+    rovecomm.resubscribe()
     this.setState({
       gathering: "spectra",
       counter: 0,
@@ -172,7 +174,7 @@ class Spectrometer extends Component<IProps, IState> {
     )
   }
 
-  saveImage() {
+  saveImage(): void {
     const input = document.getElementById("canvas")
     if (!input) {
       throw new Error("The element 'canvas' wasn't found")
@@ -193,7 +195,7 @@ class Spectrometer extends Component<IProps, IState> {
       })
   }
 
-  downloadURL(imgData: string) {
+  downloadURL(imgData: string): void {
     this.setState({
       gathering: "graphImage",
       counter: 0,

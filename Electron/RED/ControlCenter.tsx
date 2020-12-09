@@ -31,13 +31,6 @@ class ControlCenter extends Component<IProps, IState> {
         <GPS />
         <Spectrometer />
         <SpectrometerViewer />
-        <button
-          type="button"
-          onClick={rovecomm.resubscribe}
-          style={{ width: "100px" }}
-        >
-          Resubscribe All
-        </button>
       </div>
     )
   }
