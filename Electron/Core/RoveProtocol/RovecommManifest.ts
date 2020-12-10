@@ -82,7 +82,7 @@ export const DATAID = {
     Telemetry: {
       DriveSpeeds: {
         dataId: 1100,
-        dataType: DataTypes.UINT8_T,
+        dataType: DataTypes.INT16_T,
         dataCount: 6,
         comments: "The drive speed of each motor, counterclockwise",
       },

@@ -125,15 +125,18 @@ function parse(packet: Buffer): void {
     )
 
     // Third emit is for the board to be used in the RON packet logger
+    // NOTE: this can only be used for the RON packet logger.
+    // Event listeners on these boardNames will likely be removed by
+    // the packet logger board selector
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    rovecomm.emit(boardName, [
-      dataIdStr,
+    rovecomm.emit(boardName, {
+      name: dataIdStr,
       dataId,
-      Date.now().toString(),
+      time: new Date().toLocaleTimeString(),
       dataType,
       dataCount,
       data,
-    ])
+    })
 
     // More emits will potentially follow for different logging levels
     // Telemetry vs Commands vs Errors, etc.
