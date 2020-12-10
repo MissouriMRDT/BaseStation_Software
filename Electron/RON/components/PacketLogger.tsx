@@ -73,11 +73,12 @@ class PacketLogger extends Component<IProps, IState> {
     }
     this.boardChange = this.boardChange.bind(this)
     this.addData = this.addData.bind(this)
+    rovecomm.on(this.state.board, (data: any) => this.addData(data))
   }
 
   boardChange(event: { target: { value: string } }): void {
     const board = event.target.value
-    rovecomm.off(this.state.board, (data: any) => this.addData(data))
+    rovecomm.removeAllListeners(this.state.board)
     rovecomm.on(board, (data: any) => this.addData(data))
     this.setState({
       board,
