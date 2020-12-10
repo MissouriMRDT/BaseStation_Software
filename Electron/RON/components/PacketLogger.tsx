@@ -20,7 +20,7 @@ const container: CSS.Properties = {
   borderBottomWidth: "2px",
   borderStyle: "solid",
   padding: "5px",
-  justifyContent: "center",
+  alignItems: "center",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -35,7 +35,7 @@ const label: CSS.Properties = {
 const selectbox: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
-  width: "450px",
+  width: "75%",
   margin: "2.5px",
   justifyContent: "space-around",
 }
@@ -58,12 +58,17 @@ class PacketLogger extends Component<IProps, IState> {
       board: "Drive",
       data: [],
       columns: [
-        { Header: "Name", accessor: "name" },
-        { Header: "Data Id", accessor: "dataId" },
-        { Header: "Time", accessor: "time" },
-        { Header: "Type", accessor: "dataType" },
-        { Header: "Count", accessor: "dataCount" },
-        { Header: "Data", accessor: "data" },
+        { Header: "Name", accessor: "name", width: "150" },
+        { Header: "Data Id", accessor: "dataId", width: "75" },
+        { Header: "Time", accessor: "time", width: "100" },
+        { Header: "Type", accessor: "dataType", width: "50" },
+        { Header: "Count", accessor: "dataCount", width: "50" },
+        {
+          Header: "Data",
+          accessor: "data",
+          width: "fill",
+          Cell: (data: any) => <span>{data.value.join(", ")}</span>,
+        },
       ],
     }
     this.boardChange = this.boardChange.bind(this)
@@ -81,8 +86,7 @@ class PacketLogger extends Component<IProps, IState> {
   }
 
   addData(newData: any): void {
-    const { data } = this.state
-    data.push(newData)
+    const data = [newData].concat(this.state.data)
     this.setState({ data })
   }
 
@@ -108,9 +112,14 @@ class PacketLogger extends Component<IProps, IState> {
             </select>
           </div>
           <ReactTable
+            className="-striped"
             data={this.state.data}
             columns={this.state.columns}
             filterable
+            defaultPageSize={10}
+            resizable={false}
+            showPageSizeOptions={false}
+            style={{ textAlign: "center" }}
           />
         </div>
       </div>
