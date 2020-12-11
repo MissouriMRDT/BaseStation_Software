@@ -6,6 +6,7 @@ import {
   DATAID,
   NetworkDevices,
 } from "../../Core/RoveProtocol/RovecommManifest"
+import { start } from "repl"
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
@@ -142,15 +143,7 @@ class PingTool extends Component<IProps, IState> {
 
   Rove(device: string): void {
     console.log(`Rove not yet implemented. Detected ${device}`)
-    this.setState({
-      devices: {
-        ...this.state.devices,
-        [device]: {
-          ...this.state.devices[device],
-          ping: 0,
-        },
-      },
-    })
+    rovecomm.ping(device)
   }
 
   AutoPing(device: string): void {

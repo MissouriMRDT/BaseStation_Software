@@ -57,7 +57,7 @@ function decodePacket(
   return retArray
 }
 
-function parse(packet: Buffer): void {
+function parse(packet: Buffer, rinfo): void {
   /*
    * Parse takes in a packet buffer and will call decodePacket and emit
    *  the rovecomm event with the proper dataId and that typed data
@@ -87,6 +87,23 @@ function parse(packet: Buffer): void {
 
   if (version === VersionNumber) {
     data = decodePacket(dataType, dataCount, rawdata)
+
+    if (dataId === SystemPackets.PING_REPLY) {
+      const endTime = Date.now()
+      let thisBoard = ""
+      for (const board in DATAID) {
+        if (DATAID[board].Ip == rinfo.address) {
+          thisBoard = board
+        }
+      }
+      const startTime = rovecomm.RovePingStartTimes[thisBoard]
+      rovecomm.RovePingStartTimes[thisBoard] = -1
+      const pingTime = (endTime - startTime)/(2 * 100)
+      rovecomm.emit("all", `Ping from ${thisBoard} is ${pingTime}`)
+
+      // emit properly for the PingTool in RON to read
+      return
+    }
 
     let dataIdStr = "null"
     let endLoop = false
@@ -157,6 +174,8 @@ class Rovecomm extends EventEmitter {
 
   TCPServer: Server
 
+  RovePingStartTimes: {}
+
   constructor() {
     super()
 
@@ -165,11 +184,17 @@ class Rovecomm extends EventEmitter {
     this.TCPServer = net.createServer((TCPSocket: Socket) =>
       TCPListen(TCPSocket)
     )
+    this.RovePingStartTimes = {}
+
+    for (const board in DATAID) {
+      this.RovePingStartTimes[board] = -1
+    }
 
     this.UDPListen()
     this.TCPServer.listen(11111)
 
     this.resubscribe = this.resubscribe.bind(this)
+    this.ping = this.ping.bind(this)
   }
 
   UDPListen() {
@@ -177,8 +202,8 @@ class Rovecomm extends EventEmitter {
      * Listens on the class UDP socket, always calling parse if it recieves anything,
      * and properly binding the socket to a port
      */
-    this.UDPSocket.on("message", (msg: Buffer) => {
-      parse(msg)
+    this.UDPSocket.on("message", (msg: Buffer, rinfo: any) => {
+      parse(msg, rinfo)
     })
     this.UDPSocket.bind(11000)
   }
@@ -327,6 +352,29 @@ class Rovecomm extends EventEmitter {
         this.sendUDP(subscribe, DATAID[board].Ip)
       }
     }
+  }
+
+  ping(device: string) {
+    if (this.RovePingStartTimes[device] === -1) {
+      return
+    }
+    const VersionNumber = 2
+    const dataId = SystemPackets.PING
+    const dataCount = 0
+    const dataType = DataTypes.UINT8_T
+    const data = 0
+    const ip = DATAID[device].Ip
+
+    const ping = Buffer.allocUnsafe(6)
+    ping.writeUInt8(VersionNumber, 0)
+    ping.writeUInt16BE(dataId, 1)
+    ping.writeUInt8(dataCount, 3)
+    ping.writeUInt8(dataType, 4)
+    ping.writeUInt8(data, 5)
+    
+  
+
+    this.sendUDP(ping, ip)
   }
 }
 
