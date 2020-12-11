@@ -1,6 +1,6 @@
 import { Socket } from "dgram"
 import { Server } from "http"
-import { DATAID, dataSizes, DataTypes } from "./RovecommManifest"
+import { DATAID, dataSizes, DataTypes, SystemPackets } from "./RovecommManifest"
 
 // There is a fundamental implementation difference between these required imports
 // and the traditional typescript imports.

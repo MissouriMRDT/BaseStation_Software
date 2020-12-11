@@ -28,6 +28,15 @@ export enum DataTypes {
   FLOAT_T = 6,
 }
 
+export enum SystemPackets {
+  PING = 1,
+  PING_REPLY = 2,
+  SUBSCRIBE = 3,
+  UNSUBSCRIBE = 4,
+  INVALID_VERSION = 5,
+  NO_DATA = 6,
+}
+
 // Data sizes of the corresponding datatype enumeration
 export const dataSizes = [1, 1, 2, 2, 4, 4, 2]
 
