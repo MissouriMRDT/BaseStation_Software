@@ -57,7 +57,7 @@ function decodePacket(
   return retArray
 }
 
-function parse(packet: Buffer, rinfo): void {
+function parse(packet: Buffer, rinfo?: any): void {
   /*
    * Parse takes in a packet buffer and will call decodePacket and emit
    *  the rovecomm event with the proper dataId and that typed data
@@ -92,14 +92,18 @@ function parse(packet: Buffer, rinfo): void {
       const endTime = Date.now()
       let thisBoard = ""
       for (const board in DATAID) {
-        if (DATAID[board].Ip == rinfo.address) {
+        if (DATAID[board].Ip === rinfo.address) {
           thisBoard = board
         }
       }
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
       const startTime = rovecomm.RovePingStartTimes[thisBoard]
-      rovecomm.RovePingStartTimes[thisBoard] = -1
-      const pingTime = (endTime - startTime)/(2 * 100)
+      // divide by two to take the per-leg time
+      const pingTime = (endTime - startTime) / 2
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
       rovecomm.emit("all", `Ping from ${thisBoard} is ${pingTime}`)
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      rovecomm.RovePingStartTimes[thisBoard] = -1
 
       // emit properly for the PingTool in RON to read
       return
@@ -136,10 +140,10 @@ function parse(packet: Buffer, rinfo): void {
 
     // Second emit is for "all" which is used for logging purposes
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    //rovecomm.emit(
+    // rovecomm.emit(
     //  "all",
     //  `Data Id: ${dataId} (aka ${dataIdStr}), Type: ${dataType}, Count: ${dataCount}, Data: ${data}`
-    //)
+    // )
 
     // Third emit is for the board to be used in the RON packet logger
     // NOTE: this can only be used for the RON packet logger.
@@ -174,7 +178,7 @@ class Rovecomm extends EventEmitter {
 
   TCPServer: Server
 
-  RovePingStartTimes: {}
+  RovePingStartTimes: { [id: string]: number } = {}
 
   constructor() {
     super()
@@ -184,8 +188,8 @@ class Rovecomm extends EventEmitter {
     this.TCPServer = net.createServer((TCPSocket: Socket) =>
       TCPListen(TCPSocket)
     )
-    this.RovePingStartTimes = {}
 
+    // eslint-disable-next-line guard-for-in
     for (const board in DATAID) {
       this.RovePingStartTimes[board] = -1
     }
@@ -355,7 +359,7 @@ class Rovecomm extends EventEmitter {
   }
 
   ping(device: string) {
-    if (this.RovePingStartTimes[device] === -1) {
+    if (this.RovePingStartTimes[device] !== -1) {
       return
     }
     const VersionNumber = 2
@@ -371,9 +375,8 @@ class Rovecomm extends EventEmitter {
     ping.writeUInt8(dataCount, 3)
     ping.writeUInt8(dataType, 4)
     ping.writeUInt8(data, 5)
-    
-  
 
+    this.RovePingStartTimes[device] = Date.now()
     this.sendUDP(ping, ip)
   }
 }

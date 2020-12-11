@@ -6,7 +6,6 @@ import {
   DATAID,
   NetworkDevices,
 } from "../../Core/RoveProtocol/RovecommManifest"
-import { start } from "repl"
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
@@ -141,8 +140,8 @@ class PingTool extends Component<IProps, IState> {
     })
   }
 
+  // eslint-disable-next-line class-methods-use-this
   Rove(device: string): void {
-    console.log(`Rove not yet implemented. Detected ${device}`)
     rovecomm.ping(device)
   }
 
