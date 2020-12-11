@@ -67,7 +67,17 @@ class PacketLogger extends Component<IProps, IState> {
           Header: "Data",
           accessor: "data",
           width: "fill",
-          Cell: (data: any) => <span>{data.value.join(", ")}</span>,
+          Cell: (data: any) => (
+            <div
+              style={{
+                width: "200",
+                overflow: "none",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {data.value.join(", ")}
+            </div>
+          ),
         },
       ],
     }

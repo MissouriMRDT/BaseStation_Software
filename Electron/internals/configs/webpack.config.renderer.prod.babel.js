@@ -26,11 +26,11 @@ export default merge(baseConfig, {
   entry: [
     "core-js",
     "regenerator-runtime/runtime",
-    path.join(__dirname, "..", "RED/RED.tsx"),
+    path.join(__dirname, "..", "../RED/RED.tsx"),
   ],
 
   output: {
-    path: path.join(__dirname, "..", "RED/dist"),
+    path: path.join(__dirname, "..", "../RED/dist"),
     publicPath: "./dist/",
     filename: "renderer.prod.js",
   },

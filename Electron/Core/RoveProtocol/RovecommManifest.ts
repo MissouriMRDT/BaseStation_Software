@@ -42,7 +42,7 @@ export const dataSizes = [1, 1, 2, 2, 4, 4, 2]
 
 export const DATAID = {
   Drive: {
-    Ip: "192.168.1.131",
+    Ip: "192.168.1.134",
     Port: 11001,
     Commands: {
       DriveLeftRight: {
@@ -229,7 +229,7 @@ export const DATAID = {
     },
   },
   Camera: {
-    Ip: "192.168.1.134",
+    Ip: "192.168.1.80",
     Port: 11004,
     Commands: {},
     Telemetry: {},
@@ -591,7 +591,13 @@ export const DATAID = {
     Ip: "192.168.1.143",
     Port: 11013,
     Commands: {},
-    Telemetry: {},
+    Telemetry: {
+      TCPTest: {
+        dataId: 9600,
+        dataType: DataTypes.UINT16_T,
+        dataCount: 1,
+      },
+    },
   },
   Autonomy: {
     Ip: "192.168.1.144",

@@ -119,10 +119,10 @@ function parse(packet: Buffer): void {
 
     // Second emit is for "all" which is used for logging purposes
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    rovecomm.emit(
-      "all",
-      `Data Id: ${dataId} (aka ${dataIdStr}), Type: ${dataType}, Count: ${dataCount}, Data: ${data}`
-    )
+    //rovecomm.emit(
+    //  "all",
+    //  `Data Id: ${dataId} (aka ${dataIdStr}), Type: ${dataType}, Count: ${dataCount}, Data: ${data}`
+    //)
 
     // Third emit is for the board to be used in the RON packet logger
     // NOTE: this can only be used for the RON packet logger.
