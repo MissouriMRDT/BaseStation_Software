@@ -123,7 +123,7 @@ class SpectrometerViewer extends Component<IProps, IState> {
   }
 
   CompareIntegral(): string {
-    let cutoff = 0
+    let cutoff = this.state.integral
 
     for (const test in this.specTests) {
       if (Object.prototype.hasOwnProperty.call(this.specTests, test)) {

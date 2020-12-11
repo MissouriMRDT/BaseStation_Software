@@ -1813,6 +1813,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-vis@^1.11.5":
+  version "1.11.5"
+  resolved "https://registry.yarnpkg.com/@types/react-vis/-/react-vis-1.11.5.tgz#60442aae4dff9022254f48fa1b985678c8e45e74"
+  integrity sha512-siCSR0RiKdwYmmEYLO2Jy3ejn3tWsUSFFAheyLI2Qevny9cFb/LC0zjsjfu7Nm0dXVrlY+QwRukPmVVZ3CkVOg==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react@*":
   version "16.9.43"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.43.tgz#c287f23f6189666ee3bebc2eb8d0f84bcb6cdb6b"
