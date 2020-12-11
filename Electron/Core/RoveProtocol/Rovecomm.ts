@@ -97,6 +97,7 @@ function parse(packet: Buffer, rinfo): void {
         }
       }
       const startTime = rovecomm.RovePingStartTimes[thisBoard]
+      rovecomm.RovePingStartTimes[thisBoard] = -1
       const pingTime = (endTime - startTime)/(2 * 100)
       rovecomm.emit("all", `Ping from ${thisBoard} is ${pingTime}`)
 
