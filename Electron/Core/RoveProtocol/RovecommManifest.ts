@@ -29,6 +29,15 @@ export enum DataTypes {
   FLOAT_T = 6,
 }
 
+export enum SystemPackets {
+  PING = 1,
+  PING_REPLY = 2,
+  SUBSCRIBE = 3,
+  UNSUBSCRIBE = 4,
+  INVALID_VERSION = 5,
+  NO_DATA = 6,
+}
+
 // The header length is currently 5 Bytes, stored here for better code in Rovecomm.ts
 export const headerLength = 5
 
