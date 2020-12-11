@@ -1,6 +1,12 @@
 import { Socket } from "dgram"
 import Deque from "double-ended-queue"
-import { DATAID, dataSizes, DataTypes, headerLength } from "./RovecommManifest"
+import {
+  DATAID,
+  dataSizes,
+  DataTypes,
+  headerLength,
+  SystemPackets,
+} from "./RovecommManifest"
 
 // There is a fundamental implementation difference between these required imports
 // and the traditional typescript imports.
@@ -396,17 +402,17 @@ class Rovecomm extends EventEmitter {
 
   resubscribe() {
     const VersionNumber = 2
-    const dataId = 3
+    const dataId = SystemPackets.SUBSCRIBE
     const dataLength = 0
     const dataType = DataTypes.UINT8_T
     const data = 0
 
-    const subscribe = Buffer.allocUnsafe(6)
+    const subscribe = Buffer.allocUnsafe(headerLength + 1)
     subscribe.writeUInt8(VersionNumber, 0)
     subscribe.writeUInt16BE(dataId, 1)
     subscribe.writeUInt8(dataLength, 3)
     subscribe.writeUInt8(dataType, 4)
-    subscribe.writeUInt8(data, 5)
+    subscribe.writeUInt8(data, headerLength)
 
     for (let i = 0; i < DATAID.length; i++) {
       this.sendUDP(subscribe, DATAID[i].Ip)
