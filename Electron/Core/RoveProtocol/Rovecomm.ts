@@ -310,7 +310,7 @@ class Rovecomm extends EventEmitter {
 
   resubscribe() {
     const VersionNumber = 2
-    const dataId = 3
+    const dataId = SystemPackets.SUBSCRIBE
     const dataCount = 0
     const dataType = DataTypes.UINT8_T
     const data = 0
