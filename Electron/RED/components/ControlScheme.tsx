@@ -67,30 +67,31 @@ class ControlScheme extends Component<IProps, IState> {
     window.addEventListener("gamepaddisconnected", function(e) {
       console.log("Gamepad disconnected from index %d: %s",
         e.gamepad.index, e.gamepad.id,
-        //console.log(e)
         );
     });
-    this.controller()
   }
 
-  controller(): void{
-    setInterval(() => {
-      if(navigator.getGamepads()[0] != null)
-      {
-        for (const button in CONTROLLERINPUT[this.state.scheme]){
-          if (CONTROLLERINPUT[this.state.scheme][button].buttonType == "button"){
-            input[button] = navigator.getGamepads()[0]?.buttons[CONTROLLERINPUT[this.state.scheme][button].buttonIndex].value
-          }
-          else{
-            input[button] = navigator.getGamepads()[0]?.axes[CONTROLLERINPUT[this.state.scheme][button].buttonIndex]
-            if (input[button] >= -(this.state.DeadZone) && input[button] <= this.state.DeadZone){
-              input[button] = 0.0
+  controller(pos: any): void{
+    //77, might work possibly not trying to make it stop running
+    if(pos != null){
+      setInterval(() => {
+          if(navigator.getGamepads()[pos] != null)
+          {
+            for (const button in CONTROLLERINPUT[this.state.scheme]){
+              if (CONTROLLERINPUT[this.state.scheme][button].buttonType == "button"){
+                input[button] = navigator.getGamepads()[pos]?.buttons[CONTROLLERINPUT[this.state.scheme][button].buttonIndex].value
+              }
+              else{
+                input[button] = navigator.getGamepads()[pos]?.axes[CONTROLLERINPUT[this.state.scheme][button].buttonIndex]
+                if (input[button] >= -(this.state.DeadZone) && input[button] <= this.state.DeadZone){
+                  input[button] = 0.0
+                }
+              }
             }
+            console.log(navigator.getGamepads()[pos]?.id, input)
           }
-        }
-        console.log(input)
-      }
-    }, 100)
+      }, 100)
+    }
   }
 
   render(): JSX.Element {
@@ -101,10 +102,7 @@ class ControlScheme extends Component<IProps, IState> {
           <div style={readoutDisplay}>
             Drive
           </div>
-          <select>
-            <option selected value="Xbox 1">Xbox 1</option>
-            <option value="Xbox 2">Xbox 2</option>
-          </select>
+
           <select>
             {Object.keys(CONTROLLERINPUT).map(scheme => {
               return(
@@ -116,6 +114,7 @@ class ControlScheme extends Component<IProps, IState> {
             {({ on, toggle,  }) => (
               <button type="button" onClick={toggle}>
                 {on ? "On" : "Off"}
+                {on ? this.controller(0) : this.controller(1)}
               </button>
           )}
           </ToggleButton>
@@ -137,6 +136,7 @@ class ControlScheme extends Component<IProps, IState> {
               {({ on, toggle}) => (
                 <button type="button" onClick={toggle}>
                   {on ? "On" : "Off"}
+                  {on ? this.controller(1) : null}
                 </button>
               )}
           </ToggleButton>
@@ -155,9 +155,16 @@ class ToggleButton extends ControlScheme {
     this.setState({
       on: !this.state.on,
     })
+    //using this to test how clicking the button interacts with this part in case it helps with preventing it from running
     if(this.state.on){
-      this.controller()
+      console.log("OFF: ")
     }
+    else
+    {
+      console.log("ON: ")
+      {this.controller}
+    }
+
   }
 
   render() {
