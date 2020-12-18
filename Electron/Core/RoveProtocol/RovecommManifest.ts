@@ -37,6 +37,9 @@ export enum SystemPackets {
   NO_DATA = 6,
 }
 
+// The header length is currently 5 Bytes, stored here for better code in Rovecomm.ts
+export const headerLength = 5
+
 // Data sizes of the corresponding datatype enumeration
 export const dataSizes = [1, 1, 2, 2, 4, 4, 2]
 

@@ -41,7 +41,6 @@ interface IState {
   currentLon: number
   lidar: number
 }
-
 class GPS extends Component<IProps, IState> {
   constructor(props: any) {
     super(props)
