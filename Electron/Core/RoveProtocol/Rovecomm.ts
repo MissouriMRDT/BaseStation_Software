@@ -298,7 +298,6 @@ class Rovecomm extends EventEmitter {
      * to the correct destination IP
      */
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    console.log(`sending UDP packet to ${destinationIp}:${port}`)
     this.UDPSocket.send(packet, port, destinationIp)
   }
 
@@ -468,14 +467,12 @@ class Rovecomm extends EventEmitter {
 
     for (const board in DATAID) {
       if (Object.prototype.hasOwnProperty.call(DATAID, board)) {
-        console.log(board)
         this.sendUDP(subscribe, DATAID[board].Ip)
       }
     }
     await new Promise(resolve => setTimeout(() => resolve(true), 300))
     for (const board in DATAID) {
       if (Object.prototype.hasOwnProperty.call(DATAID, board)) {
-        console.log(`TCP: ${board}`)
         this.createTCPConnection(DATAID[board].Port, DATAID[board].Ip)
       }
     }
