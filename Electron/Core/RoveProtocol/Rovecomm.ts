@@ -356,9 +356,7 @@ class Rovecomm extends EventEmitter {
       if (Object.prototype.hasOwnProperty.call(DATAID, board)) {
         if (dataIdStr in DATAID[board].Commands) {
           destinationIp = DATAID[board].Ip
-          if (reliability) {
-            port = DATAID[board].Port
-          }
+          port = DATAID[board].Port
           dataType = DATAID[board].Commands[dataIdStr].dataType
           dataId = DATAID[board].Commands[dataIdStr].dataId
           found = true
