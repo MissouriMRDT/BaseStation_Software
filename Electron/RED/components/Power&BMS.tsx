@@ -29,7 +29,7 @@ const roAndBtnContainer: CSS.Properties = {
   // stands for "Readout and Button Container"; shortened for sanity
   display: "grid",
   width: "auto",
-  gridTemplateColumns: "69px 1fr 69px 1fr",
+  gridTemplateColumns: "auto auto",
   marginLeft: "2px",
   marginTop: "2px",
   marginBottom: "2px",
@@ -38,7 +38,7 @@ const redReadoutDisplay: CSS.Properties = {
   display: "grid",
   gridTemplateColumns: "auto auto",
   fontSize: "12px",
-  backgroundColor: "#ff3526", // red
+  // backgroundColor: "#ff3526", // red
   justifyContent: "space-between",
   fontFamily: "arial",
   paddingTop: "4px",
@@ -50,7 +50,7 @@ const readoutDisplay: CSS.Properties = {
   display: "grid",
   gridTemplateColumns: "auto auto",
   fontSize: "12px",
-  backgroundColor: "#30ff00", // green
+  // backgroundColor: "#30ff00", // green
   justifyContent: "space-between",
   fontFamily: "arial",
   paddingTop: "4px",
@@ -82,13 +82,15 @@ interface IProps {}
 
 interface IState {
   motorBusButtons: string
+  motorBusCurrents: string
 }
 
 class Power extends Component<IProps, IState> {
   constructor(props: any) {
     super(props)
     this.state = {
-      motorBusButtons: Array(16).join("0")
+      motorBusButtons: Array(16).join("0"),
+      motorBusCurrents: Array(16).join("0")
     }
     rovecomm.on("MotorBusEnabled", (pckt: number) => this.MotorButtons(pckt))
   }
@@ -98,6 +100,31 @@ class Power extends Component<IProps, IState> {
     this.setState({
       motorBusButtons: binStr,
     })
+  }
+
+  render(): JSX.Element {
+    return(
+      <div style={grandContainer}>
+        <div style={roAndBtnContainer}>
+          <div style={roAndBtnContainer}>
+            {[0, 1, 2, 3, 4, 5, 6, 7].map(ndx => {
+              return(
+                <button 
+                type="button" 
+                key={ndx}
+                // onClick={() => placeHolder} 
+                >
+                  {this.state.motorBusButtons[ndx] ? "Enabled" : "Disabled"}
+                </button>
+              )
+            })}
+            {[
+              { title: "Motor LF", value: this.state.motorBusCurrents}
+            ]}
+          </div>
+        </div>
+      </div>
+    )
   }
 
   /* render(): JSX.Element {
