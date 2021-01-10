@@ -2,10 +2,8 @@ import React, { Component } from "react"
 import CSS from "csstype"
 import { exec } from "child_process"
 import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
-import {
-  DATAID,
-  NetworkDevices,
-} from "../../Core/RoveProtocol/RovecommManifest"
+import { DATAID, NetworkDevices } from "../../Core/RoveProtocol/RovecommManifest"
+import ColorConverter from "../../Core/ColorConverter"
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
@@ -74,6 +72,13 @@ interface IProps {}
 interface IState {
   devices: any
 }
+
+// For colorConverter
+const min = 0
+const cutoff = 45
+const max = 100
+const greenHue = 120
+const redHue = 360
 
 class PingTool extends Component<IProps, IState> {
   constructor(props: any) {
@@ -203,6 +208,7 @@ class PingTool extends Component<IProps, IState> {
                 </div>
                 {Object.keys(list).map(device => {
                   const { Ip } = list[device]
+                  const { ping } = this.state.devices[device]
                   return (
                     <div style={selectbox} key={device}>
                       <input
@@ -211,21 +217,17 @@ class PingTool extends Component<IProps, IState> {
                         checked={this.state.devices[device].autoPing}
                         onChange={() => this.AutoPing(device)}
                       />
-                      <div style={name}>{device}</div>
-                      <div style={num}>{Ip.split(".")[3]}</div>
-                      <div style={num}>{this.state.devices[device].ping}</div>
-                      <button
-                        type="button"
-                        style={but}
-                        onClick={() => this.ICMP(device)}
-                      >
+                      <div style={ColorConverter(ping, min, cutoff, max, greenHue, redHue, name)}>{device}</div>
+                      <div style={ColorConverter(ping, min, cutoff, max, greenHue, redHue, num)}>
+                        {Ip.split(".")[3]}
+                      </div>
+                      <div style={ColorConverter(ping, min, cutoff, max, greenHue, redHue, num)}>
+                        {this.state.devices[device].ping}
+                      </div>
+                      <button type="button" style={but} onClick={() => this.ICMP(device)}>
                         ICMP
                       </button>
-                      <button
-                        type="button"
-                        style={rove}
-                        onClick={() => this.Rove(device)}
-                      >
+                      <button type="button" style={rove} onClick={() => this.Rove(device)}>
                         Rove
                       </button>
                     </div>

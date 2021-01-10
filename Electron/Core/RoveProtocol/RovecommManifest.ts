@@ -200,8 +200,7 @@ export const DATAID = {
         dataId: 2000,
         dataType: DataTypes.UINT8_T,
         dataCount: 1,
-        comments:
-          "BMS E-stop. WARNING: Kills all rover power. Cannot be reversed remotely!",
+        comments: "BMS E-stop. WARNING: Kills all rover power. Cannot be reversed remotely!",
       },
     },
     Telemetry: {
@@ -350,8 +349,7 @@ export const DATAID = {
         dataId: 7004,
         dataType: DataTypes.FLOAT_T,
         dataCount: 9,
-        comments:
-          "All values for the arm together. Armj1-j6, gripper1, nipper, gripper2.",
+        comments: "All values for the arm together. Armj1-j6, gripper1, nipper, gripper2.",
       },
       EndEffectorActuation: {
         dataId: 7005,
@@ -579,8 +577,7 @@ export const DATAID = {
         dataId: 9105,
         dataType: DataTypes.FLOAT_T,
         dataCount: 4,
-        comments:
-          "partial pressure (mBar), tempartature (C), concentration (ppm), barometric pressure (mBar)",
+        comments: "partial pressure (mBar), tempartature (C), concentration (ppm), barometric pressure (mBar)",
       },
     },
   },
