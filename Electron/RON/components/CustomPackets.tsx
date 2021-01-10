@@ -86,9 +86,7 @@ class CustomPackets extends Component<IProps, IState> {
   }
 
   commandChange(event: { target: { value: string } }): void {
-    const { dataType, dataCount } = DATAID[this.state.board].Commands[
-      event.target.value
-    ]
+    const { dataType, dataCount } = DATAID[this.state.board].Commands[event.target.value]
     const value = Array(dataCount).fill(0)
     this.setState({
       command: event.target.value,
@@ -133,13 +131,7 @@ class CustomPackets extends Component<IProps, IState> {
             return (
               <div style={selectbox} key={title}>
                 <div style={h1Style}>{title}:</div>
-                <select
-                  name={title}
-                  id={title}
-                  value={value}
-                  onChange={onChange}
-                  style={selector}
-                >
+                <select name={title} id={title} value={value} onChange={onChange} style={selector}>
                   {Object.keys(list).map(item => {
                     return (
                       <option key={item} value={item}>
@@ -155,20 +147,11 @@ class CustomPackets extends Component<IProps, IState> {
             <div style={h1Style}>Data ({DataTypes[this.state.dataType]}):</div>
             {[...Array(this.state.count).keys()].map(n => {
               return (
-                <textarea
-                  style={textbox}
-                  key={n}
-                  value={this.state.value[n]}
-                  onChange={e => this.dataChange(e, n)}
-                />
+                <textarea style={textbox} key={n} value={this.state.value[n]} onChange={e => this.dataChange(e, n)} />
               )
             })}
           </div>
-          <button
-            type="button"
-            onClick={this.sendCommand}
-            style={{ margin: "2.5px" }}
-          >
+          <button type="button" onClick={this.sendCommand} style={{ margin: "2.5px" }}>
             Send
           </button>
         </div>

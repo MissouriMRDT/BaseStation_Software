@@ -1,17 +1,8 @@
 import React, { Component } from "react"
 import CSS from "csstype"
 import { exec } from "child_process"
-import {
-  XYPlot,
-  XAxis,
-  YAxis,
-  HorizontalGridLines,
-  LineSeries,
-} from "react-vis"
-import {
-  DATAID,
-  NetworkDevices,
-} from "../../Core/RoveProtocol/RovecommManifest"
+import { XYPlot, XAxis, YAxis, HorizontalGridLines, LineSeries } from "react-vis"
+import { DATAID, NetworkDevices } from "../../Core/RoveProtocol/RovecommManifest"
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
@@ -139,11 +130,7 @@ class PingGraph extends Component<IProps, IState> {
         <div style={container}>
           <div style={selectbox}>
             <div style={h1Style}>Board:</div>
-            <select
-              value={this.state.board}
-              onChange={e => this.boardChange(e)}
-              style={selector}
-            >
+            <select value={this.state.board} onChange={e => this.boardChange(e)} style={selector}>
               {Object.keys(DATAID).map(item => {
                 return (
                   <option key={item} value={item}>

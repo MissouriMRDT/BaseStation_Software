@@ -108,11 +108,7 @@ class PacketLogger extends Component<IProps, IState> {
         <div style={container}>
           <div style={selectbox}>
             <div style={h1Style}>Board:</div>
-            <select
-              value={this.state.board}
-              onChange={e => this.boardChange(e)}
-              style={selector}
-            >
+            <select value={this.state.board} onChange={e => this.boardChange(e)} style={selector}>
               {Object.keys(DATAID).map(item => {
                 return (
                   <option key={item} value={item}>
