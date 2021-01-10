@@ -3,7 +3,7 @@ import CSS from "csstype"
 import { exec } from "child_process"
 import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
 import { DATAID, NetworkDevices } from "../../Core/RoveProtocol/RovecommManifest"
-import ColorConverter from "../../Core/ColorConverter"
+import { ColorStyleConverter } from "../../Core/ColorConverter"
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
@@ -217,11 +217,11 @@ class PingTool extends Component<IProps, IState> {
                         checked={this.state.devices[device].autoPing}
                         onChange={() => this.AutoPing(device)}
                       />
-                      <div style={ColorConverter(ping, min, cutoff, max, greenHue, redHue, name)}>{device}</div>
-                      <div style={ColorConverter(ping, min, cutoff, max, greenHue, redHue, num)}>
+                      <div style={ColorStyleConverter(ping, min, cutoff, max, greenHue, redHue, name)}>{device}</div>
+                      <div style={ColorStyleConverter(ping, min, cutoff, max, greenHue, redHue, num)}>
                         {Ip.split(".")[3]}
                       </div>
-                      <div style={ColorConverter(ping, min, cutoff, max, greenHue, redHue, num)}>
+                      <div style={ColorStyleConverter(ping, min, cutoff, max, greenHue, redHue, num)}>
                         {this.state.devices[device].ping}
                       </div>
                       <button type="button" style={but} onClick={() => this.ICMP(device)}>
