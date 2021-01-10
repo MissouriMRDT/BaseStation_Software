@@ -4,6 +4,7 @@ import CustomPackets from "./components/CustomPackets"
 import PingGraph from "./components/PingGraph"
 import PingTool from "./components/PingTool"
 import PacketLogger from "./components/PacketLogger"
+import PingMap from "./components/PingMap"
 
 const RON: CSS.Properties = {
   display: "flex",
@@ -30,6 +31,7 @@ class RoverOverviewOfNetwork extends Component<IProps, IState> {
         <PingTool />
         <PingGraph />
         <PacketLogger />
+        <PingMap />
       </div>
     )
   }
