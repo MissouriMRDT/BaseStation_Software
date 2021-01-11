@@ -35,7 +35,7 @@ export const dataSizes = [1, 1, 2, 2, 4, 4, 2]
 export const DATAID = [
   {
     Board: "Drive",
-    Ip: "192.168.1.131",
+    Ip: "192.168.1.134",
     Port: 11001,
     Commands: {
       DriveLeftRight: {
@@ -198,7 +198,7 @@ export const DATAID = [
   },
   {
     Board: "Camera",
-    Ip: "192.168.1.134",
+    Ip: "192.168.1.80",
     Port: 11004,
     Commands: {},
     Telemetry: {},

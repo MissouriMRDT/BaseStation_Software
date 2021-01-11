@@ -200,6 +200,7 @@ class Rovecomm extends EventEmitter {
         dataType = DATAID[i].Commands[dataIdStr].dataType
         dataId = DATAID[i].Commands[dataIdStr].dataId
         found = true
+        console.log("sending ", dataIdStr, " ", data)
         break
       }
     }

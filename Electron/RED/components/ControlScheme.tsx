@@ -51,6 +51,7 @@ interface IProps {
 
 interface IState {
   scheme: string,
+  scheme2: string,
   DeadZone: number,
 }
 
@@ -62,8 +63,11 @@ class ControlScheme extends Component<IProps, IState> {
     super(props)
     this.state = {
       scheme: "TankDrive",
+      scheme2: "ArmControls",
       DeadZone: 0.15,
+      // controllerInput: {drive: {controller, setInterval, scheme}, gimbal: {controller, setInterval, scheme}, ...}
     }
+    this.schemeChange = this.schemeChange.bind(this)
     window.addEventListener("gamepaddisconnected", function(e) {
       console.log("Gamepad disconnected from index %d: %s",
         e.gamepad.index, e.gamepad.id,
@@ -71,7 +75,7 @@ class ControlScheme extends Component<IProps, IState> {
     });
   }
 
-  controller(pos: any): void{
+  controller(pos: any, ): void{
     //77, might work possibly not trying to make it stop running
     if(pos != null){
       setInterval(() => {
@@ -88,10 +92,15 @@ class ControlScheme extends Component<IProps, IState> {
                 }
               }
             }
-            console.log(navigator.getGamepads()[pos]?.id, input)
+            //console.log(navigator.getGamepads()[pos]?.id, input)
           }
       }, 100)
     }
+  }
+
+  schemeChange(e: any) {
+    this.setState({scheme: e.target.value})
+    console.log(this.state.scheme)
   }
 
   render(): JSX.Element {
@@ -99,11 +108,15 @@ class ControlScheme extends Component<IProps, IState> {
       <div>
         <div style={label}>ControlScheme</div>
         <div style={container}>
+          {/* [{name: Drive}].map({return(this.state.controllerInput[name].controller = value)}) */}
           <div style={readoutDisplay}>
             Drive
           </div>
-
           <select>
+            <option value="Xbox 1">Xbox 1</option>
+            <option selected value="Xbox 2">Xbox 2</option>
+          </select>
+          <select value={this.state.scheme} onChange={this.schemeChange}>
             {Object.keys(CONTROLLERINPUT).map(scheme => {
               return(
               <option value={scheme} >{scheme}</option>
@@ -114,7 +127,7 @@ class ControlScheme extends Component<IProps, IState> {
             {({ on, toggle,  }) => (
               <button type="button" onClick={toggle}>
                 {on ? "On" : "Off"}
-                {on ? this.controller(0) : this.controller(1)}
+                {on ? this.controller(0) : null}
               </button>
           )}
           </ToggleButton>
@@ -126,9 +139,9 @@ class ControlScheme extends Component<IProps, IState> {
             <option selected value="Xbox 2">Xbox 2</option>
           </select>
           <select>
-          {Object.keys(CONTROLLERINPUT).map(scheme => {
+          {Object.keys(CONTROLLERINPUT).map(scheme2 => {
               return(
-              <option value={scheme} >{scheme}</option>
+              <option value={scheme2} >{scheme2}</option>
               )
             })}
           </select>
@@ -158,6 +171,7 @@ class ToggleButton extends ControlScheme {
     //using this to test how clicking the button interacts with this part in case it helps with preventing it from running
     if(this.state.on){
       console.log("OFF: ")
+      window.clearInterval(0)
     }
     else
     {

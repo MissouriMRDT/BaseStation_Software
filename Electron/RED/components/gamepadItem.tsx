@@ -90,7 +90,7 @@ export default class GamepadItem extends React.Component<GamepadProps, any> {
 
           <ul className="buttons">
             {gamepad.buttons.map((button, i) =>
-              <AxisItem key={i} label={button + " "} value={this.formatFloat(this.buttonValue(button), 2)} style={this.buttonStyle(button)} />
+              <AxisItem key={i} label={"B" + i + " "} value={this.formatFloat(this.buttonValue(button), 2)} style={this.buttonStyle(button)} />
             )}
           </ul>
 
