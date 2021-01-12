@@ -45,6 +45,34 @@ const row: CSS.Properties = {
   justifyContent: "center",
   margin: "10px",
 }
+function integrate(data: { x: number; y: number }[]): number {
+  let left: { x: number; y: number } = data[0]
+  let right: { x: number; y: number } = data[1]
+  let i: number
+  let area = 0
+  for (i = 1; i < data.length; i++) {
+    area += ((left.y + right.y) / 2) * (right.x - left.x)
+    left = right
+    right = data[i]
+  }
+
+  return area
+}
+
+function insertSpecData(
+  lifePresent: boolean,
+  data: { x: number; y: number }[]
+): void {
+  database.insertData(
+    new SpecDataEntry(
+      1,
+      new Date().toLocaleString(),
+      lifePresent,
+      integrate(data),
+      data
+    )
+  )
+}
 
 interface IProps {}
 
@@ -65,10 +93,6 @@ interface IState {
 }
 
 class Spectrometer extends Component<IProps, IState> {
-  static insertSpecData(data: { x: number; y: number }[]): void {
-    database.insertData(new SpecDataEntry(1, new Date().toLocaleString(), data))
-  }
-
   specTests: SpecDataEntry[]
 
   testInfos: TestInfoEntry[]
@@ -241,14 +265,6 @@ class Spectrometer extends Component<IProps, IState> {
             y: experiment[i + offset].y - control[i + offset].y,
           })
         }
-
-        if (this.state.counter) {
-          // Insert this complete spectra
-          Spectrometer.insertSpecData(difference)
-
-          // Update local understanding of data
-          this.getSpecTests()
-        }
         break
       default:
         break
@@ -260,40 +276,20 @@ class Spectrometer extends Component<IProps, IState> {
       experiment,
       difference,
       counter,
-      integral: this.Integrate(difference),
+      integral: integrate(difference), // update the integral calc for the new difference
     })
   }
 
-  Integrate(data: { x: number; y: number }[]): number {
-    let left: { x: number; y: number } = data[0]
-    let right: { x: number; y: number } = data[1]
-    let i: number
-    let area = 0
-    for (i = 1; i < this.state.difference.length; i++) {
-      area += ((left.y + right.y) / 2) * (right.x - left.x)
-      left = right
-      right = this.state.difference[i]
-    }
-
-    return area
-  }
-
-  CompareIntegral(): string {
-    let cutoff = 0
-
-    for (const test in this.specTests) {
-      if (Object.prototype.hasOwnProperty.call(this.specTests, test)) {
-        cutoff += this.Integrate(this.specTests[test].data)
-      }
-    }
-
-    cutoff /= this.specTests.length
-    console.log(cutoff)
-
-    if (this.state.integral > cutoff) {
+  compareIntegral(): string {
+    // Used to display predicted life in the sample
+    // this shouldn't change even if our bound calculation changes
+    if (this.state.integral > this.state.lifeBound) {
       return "There is life in this sample"
+    } else if (this.state.integral < this.state.noLifeBound) {
+      return "There is not life in this sample"
+    } else {
+      return "Cannot predict if there is life in this sample"
     }
-    return "There is not life in this sample"
   }
 
   render(): JSX.Element {
@@ -313,7 +309,7 @@ class Spectrometer extends Component<IProps, IState> {
           <div style={{ textAlign: "center" }}>
             Integral: {this.state.integral}
           </div>
-          <div style={{ textAlign: "center" }}>{this.CompareIntegral()}</div>
+          <div style={{ textAlign: "center" }}>{this.compareIntegral()}</div>
           <XYPlot style={{ margin: 10 }} width={620} height={480}>
             <HorizontalGridLines style={{ fill: "none" }} />
             <LineSeries data={this.state.control} style={{ fill: "none" }} />
