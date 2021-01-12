@@ -175,7 +175,7 @@ class SpectrometerViewer extends Component<IProps, IState> {
         <div style={label}>Spectrometer Record Viewer</div>
         <div style={container}>
           <DiscreteColorLegend
-            style={{ height: "75px", fontSize: "20px", textAlign: "center" }}
+            style={{ fontSize: "20px", textAlign: "center" }}
             items={[{ title: "Experiment", strokeWidth: 6 }]}
             orientation="horizontal"
           />

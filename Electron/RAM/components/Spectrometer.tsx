@@ -404,9 +404,9 @@ class Spectrometer extends Component<IProps, IState> {
         <div style={label}>Spectrometer</div>
         <div style={container}>
           <DiscreteColorLegend
-            style={{ height: "75px", fontSize: "20px", textAlign: "center" }}
+            style={{ fontSize: "20px", textAlign: "center" }}
             items={[
-              { title: "Control", strokeWidth: 6 },
+              { title: "Control", strokeWidth: 6, margin: "10px" },
               { title: "Experiment", strokeWidth: 6 },
               { title: "Difference", strokeWidth: 6 },
             ]}

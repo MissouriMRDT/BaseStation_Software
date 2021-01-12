@@ -68,9 +68,11 @@ const createWindow = async () => {
       process.env.ERB_SECURE !== "true"
         ? {
             nodeIntegration: true,
+            nativeWindowOpen: true,
           }
         : {
             preload: path.join(__dirname, "dist/renderer.prod.js"),
+            nativeWindowOpen: true,
           },
   })
 
@@ -89,6 +91,25 @@ const createWindow = async () => {
       mainWindow.focus()
     }
   })
+
+  mainWindow.webContents.on(
+    "new-window",
+    (event, url, frameName, disposition, options, additionalFeatures) => {
+      // This is the name we chose for our window. You can have multiple names for
+      // multiple windows and each have their options
+      if (frameName === "NewWindowComponent ") {
+        event.preventDefault()
+        Object.assign(options, {
+          // This will prevent interactions with the mainWindow
+          parent: mainWindow,
+          width: 300,
+          height: 300,
+          // You can also set `left` and `top` positions
+        })
+        event.newGuest = new BrowserWindow(options)
+      }
+    }
+  )
 
   mainWindow.on("closed", () => {
     mainWindow = null
