@@ -8,7 +8,7 @@ const path = require("path")
 class Database {
   tableNames = ["spectrometers", "specdata", "testinfo"]
 
-  location = path.join(__dirname, "")
+  location = path.join(__dirname, "../Core/Spectrometer")
 
   createAllTables() {
     this.tableNames.forEach(element => {
@@ -100,15 +100,23 @@ class SpecDataEntry {
 
   datetime: string
 
+  life: boolean
+
+  integral: number
+
   data: { x: number; y: number }[]
 
   constructor(
     specID: number,
     datetime: string,
+    life: boolean,
+    integral: number,
     data: { x: number; y: number }[]
   ) {
     this.specID = specID
     this.datetime = datetime
+    this.life = life
+    this.integral = integral
     this.data = data
   }
 }
