@@ -45,7 +45,7 @@ const row: CSS.Properties = {
   margin: "10px",
 }
 
-function Integrate(data: { x: number; y: number }[]): number {
+function integrate(data: { x: number; y: number }[]): number {
   let left: { x: number; y: number } = data[0]
   let right: { x: number; y: number } = data[1]
   let i: number
@@ -64,12 +64,12 @@ interface IProps {}
 interface IState {
   integral: number
   databaseSpectra: { x: number; y: number }[]
+  lifeBound: number
+  noLifeBound: number
 }
 
 class SpectrometerViewer extends Component<IProps, IState> {
-  static insertSpecData(data: { x: number; y: number }[]): void {
-    database.insertData(new SpecDataEntry(1, new Date().toLocaleString(), data))
-  }
+  mounted = false
 
   specTests: SpecDataEntry[]
 
@@ -77,7 +77,7 @@ class SpectrometerViewer extends Component<IProps, IState> {
 
   spectrometers: SpectrometerEntry[]
 
-  constructor(props: any) {
+  constructor(props: IProps) {
     super(props)
     this.specTests = []
     this.testInfos = []
@@ -88,6 +88,8 @@ class SpectrometerViewer extends Component<IProps, IState> {
         { x: 1, y: 1 },
       ],
       integral: 0,
+      lifeBound: 0,
+      noLifeBound: 0,
     }
     database.createAllTables()
 
@@ -97,12 +99,47 @@ class SpectrometerViewer extends Component<IProps, IState> {
     rovecomm.on("SpectrometerData", () => this.getSpecTests())
   }
 
+  componentDidMount(): void {
+    this.mounted = true
+  }
+
   getSpecTests(): void {
     database.retrieveAllTests((succ: boolean, data: SpecDataEntry[]) => {
       if (succ) {
         this.specTests = data
       }
     })
+
+    let lifeCutoff = 0
+    let lifeCount = 0
+    let noLifeCutoff = 0
+    let noLifeCount = 0
+    for (const test in this.specTests) {
+      if (Object.prototype.hasOwnProperty.call(this.specTests, test)) {
+        if (this.specTests[test].life === true) {
+          lifeCutoff += this.specTests[test].integral
+          lifeCount += 1
+        } else if (this.specTests[test].life === false) {
+          noLifeCutoff += this.specTests[test].integral
+          noLifeCount += 1
+        }
+      }
+    }
+
+    if (this.mounted) {
+      this.setState({
+        lifeBound: lifeCutoff / lifeCount,
+        noLifeBound: noLifeCutoff / noLifeCount,
+      })
+    } else {
+      // You must mutate state directly when component is unmounted
+      // eslint-disable-next-line react/no-direct-mutation-state
+      this.state = {
+        ...this.state,
+        lifeBound: lifeCutoff / lifeCount,
+        noLifeBound: noLifeCutoff / noLifeCount,
+      }
+    }
   }
 
   loadSpectra(event: { target: { value: string } }): void {
@@ -115,29 +152,21 @@ class SpectrometerViewer extends Component<IProps, IState> {
           // Load the spectra
           this.setState({
             databaseSpectra: data[0].data,
-            integral: Integrate(data[0].data),
+            integral: integrate(data[0].data),
           })
         }
       }
     )
   }
 
-  CompareIntegral(): string {
-    let cutoff = this.state.integral
-
-    for (const test in this.specTests) {
-      if (Object.prototype.hasOwnProperty.call(this.specTests, test)) {
-        cutoff += Integrate(this.specTests[test].data)
-      }
-    }
-
-    cutoff /= this.specTests.length
-    console.log(cutoff)
-
-    if (this.state.integral > cutoff) {
+  compareIntegral(): string {
+    if (this.state.integral > this.state.lifeBound) {
       return "There is life in this sample"
+    } else if (this.state.integral < this.state.noLifeBound) {
+      return "There is not life in this sample"
+    } else {
+      return "Cannot predict if there is life in this sample"
     }
-    return "There is not life in this sample"
   }
 
   render(): JSX.Element {
@@ -153,7 +182,7 @@ class SpectrometerViewer extends Component<IProps, IState> {
           <div style={{ textAlign: "center" }}>
             Integral: {this.state.integral}
           </div>
-          <div style={{ textAlign: "center" }}>{this.CompareIntegral()}</div>
+          <div style={{ textAlign: "center" }}>{this.compareIntegral()}</div>
           <XYPlot style={{ margin: 10 }} width={620} height={480}>
             <HorizontalGridLines style={{ fill: "none" }} />
             <LineSeries
