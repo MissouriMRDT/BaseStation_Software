@@ -42,9 +42,28 @@ const label: CSS.Properties = {
 const row: CSS.Properties = {
   display: "flex",
   alignItems: "center",
-  justifyContent: "center",
+  justifyContent: "space-around",
   margin: "10px",
 }
+const modal: CSS.Properties = {
+  position: "absolute",
+  marginTop: "-350px",
+  width: "500px",
+  zIndex: 1,
+  backgroundColor: "rgba(255,255,255,0.9)",
+  border: "2px solid #990000",
+  textAlign: "center",
+  borderRadius: "25px",
+}
+const modalButton: CSS.Properties = {
+  width: "75px",
+  lineHeight: "24px",
+  color: "white",
+  fontWeight: "bold",
+  borderRadius: "10px",
+  border: "none",
+}
+
 function integrate(data: { x: number; y: number }[]): number {
   let left: { x: number; y: number } = data[0]
   let right: { x: number; y: number } = data[1]
@@ -90,6 +109,8 @@ interface IState {
   B3: number
   B4: number
   B5: number
+
+  addToDatabase: boolean
 }
 
 class Spectrometer extends Component<IProps, IState> {
@@ -126,6 +147,7 @@ class Spectrometer extends Component<IProps, IState> {
       B3: -7.181891333e-6,
       B4: 9.029223723e-9,
       B5: 2.829824434e-12,
+      addToDatabase: false,
     }
     this.getControl = this.getControl.bind(this)
     this.getSpectra = this.getSpectra.bind(this)
@@ -185,6 +207,17 @@ class Spectrometer extends Component<IProps, IState> {
         }
       }
     )
+  }
+
+  postSpectra(lifePresent: boolean): void {
+    // Insert this complete spectra
+    insertSpecData(lifePresent, this.state.difference)
+
+    // Update local understanding of data
+    this.getSpecTests()
+
+    // And hide the modal
+    this.setState({ addToDatabase: false })
   }
 
   calcWavelength(pixel: number): number {
@@ -319,27 +352,42 @@ class Spectrometer extends Component<IProps, IState> {
             <YAxis />
           </XYPlot>
           <div style={row}>
-            <button
-              type="button"
-              style={{ width: "100px", marginRight: "10px" }}
-              onClick={() => this.saveImage()}
-            >
+            <button type="button" onClick={() => this.saveImage()}>
               Export Graph
             </button>
-            <button
-              type="button"
-              style={{ width: "100px", marginRight: "10px" }}
-              onClick={this.getControl}
-            >
+            <button type="button" onClick={this.getControl}>
               Grab Control
             </button>
-            <button
-              type="button"
-              style={{ width: "100px" }}
-              onClick={this.getSpectra}
-            >
+            <button type="button" onClick={this.getSpectra}>
               Grab Spectra
             </button>
+            <button
+              type="button"
+              onClick={() => this.setState({ addToDatabase: true })}
+            >
+              Add to Database
+            </button>
+            {this.state.addToDatabase ? (
+              <div style={modal}>
+                <h1>Was there life in this sample?</h1>
+                <div style={row}>
+                  <button
+                    type="button"
+                    style={{ ...modalButton, backgroundColor: "red" }}
+                    onClick={() => this.postSpectra(false)}
+                  >
+                    NO
+                  </button>
+                  <button
+                    type="button"
+                    style={{ ...modalButton, backgroundColor: "green" }}
+                    onClick={() => this.postSpectra(true)}
+                  >
+                    YES
+                  </button>
+                </div>
+              </div>
+            ) : null}
           </div>
         </div>
       </div>
