@@ -1,20 +1,24 @@
 import React, { Component } from "react"
 import { rovecomm } from "../Core/RoveProtocol/Rovecomm"
+import RAM from "../RAM/RAM"
+import RON from "../RON/RON"
 import GPS from "./components/GPS"
 import Log from "./components/Log"
-import NewWindowComponent from "./components/Window"
+import NewWindowComponent from "../Core/Window"
 
 interface IProps {}
 
 interface IState {
-  isNewWindow: boolean
+  openRON: boolean
+  openRAM: boolean
 }
 
 class ControlCenter extends Component<IProps, IState> {
-  constructor(props: any) {
+  constructor(props: IProps) {
     super(props)
     this.state = {
-      isNewWindow: false,
+      openRON: false,
+      openRAM: false,
     }
   }
 
@@ -25,11 +29,25 @@ class ControlCenter extends Component<IProps, IState> {
           // onClose will be fired when the new window is closed
           // everything inside NewWindowComponent is considered props.children and will be
           // displayed in a new window
-          this.state.isNewWindow && (
+          this.state.openRON && (
             <NewWindowComponent
-              onClose={() => this.setState({ isNewWindow: false })}
+              name="RON"
+              onClose={() => this.setState({ openRON: false })}
             >
-              <h2>This will display in a new window</h2>
+              <RON />
+            </NewWindowComponent>
+          )
+        }
+        {
+          // onClose will be fired when the new window is closed
+          // everything inside NewWindowComponent is considered props.children and will be
+          // displayed in a new window
+          this.state.openRAM && (
+            <NewWindowComponent
+              name="RAM"
+              onClose={() => this.setState({ openRAM: false })}
+            >
+              <RAM />
             </NewWindowComponent>
           )
         }
@@ -42,16 +60,10 @@ class ControlCenter extends Component<IProps, IState> {
         >
           Resubscribe All
         </button>
-        <button
-          type="button"
-          onClick={() => this.setState({ isNewWindow: true })}
-        >
+        <button type="button" onClick={() => this.setState({ openRON: true })}>
           Open Rover Overview of Network
         </button>
-        <button
-          type="button"
-          onClick={() => this.setState({ isNewWindow: true })}
-        >
+        <button type="button" onClick={() => this.setState({ openRAM: true })}>
           Open Rover Attachment Manager
         </button>
       </div>
