@@ -111,9 +111,13 @@ interface IState {
   B5: number
 
   addToDatabase: boolean
+  lifeBound: number
+  noLifeBound: number
 }
 
 class Spectrometer extends Component<IProps, IState> {
+  mounted = false
+
   specTests: SpecDataEntry[]
 
   testInfos: TestInfoEntry[]
@@ -148,10 +152,12 @@ class Spectrometer extends Component<IProps, IState> {
       B4: 9.029223723e-9,
       B5: 2.829824434e-12,
       addToDatabase: false,
+      lifeBound: 0,
+      noLifeBound: 0,
     }
     this.getControl = this.getControl.bind(this)
     this.getSpectra = this.getSpectra.bind(this)
-    this.SpectrometerData = this.SpectrometerData.bind(this)
+    this.spectrometerData = this.spectrometerData.bind(this)
     this.calcWavelength = this.calcWavelength.bind(this)
 
     // Create database, if doesnt exist
@@ -162,6 +168,12 @@ class Spectrometer extends Component<IProps, IState> {
     this.getSpectrometers()
 
     rovecomm.on("SpectrometerData", (data: any) => this.SpectrometerData(data))
+  }
+
+  componentDidMount(): void {
+    // Boolean for if component has mounted or not to determine if
+    // this.state = {} or this.setState({}) should be used.
+    this.mounted = true
   }
 
   getControl(): void {
@@ -189,6 +201,51 @@ class Spectrometer extends Component<IProps, IState> {
         this.specTests = data
       }
     })
+
+    // Whenever we get more tests, we want to update our bounds being used
+    // to predict if there is life in a sample or not
+
+    // Create 2 counters and 2 accumulators
+    let lifeCutoff = 0
+    let lifeCount = 0
+    let noLifeCutoff = 0
+    let noLifeCount = 0
+
+    for (const test in this.specTests) {
+      if (Object.prototype.hasOwnProperty.call(this.specTests, test)) {
+        // If our records show this sample to contain life, add it to the
+        // variables calculating average integral of a sample with life
+        if (this.specTests[test].life === true) {
+          lifeCutoff += this.specTests[test].integral
+          lifeCount += 1
+        } else if (this.specTests[test].life === false) {
+          noLifeCutoff += this.specTests[test].integral
+          noLifeCount += 1
+        }
+      }
+    }
+
+    // Calculate the average integral of both life and noLife samples
+    // and use that as the bound to predict life
+    // Note, this method of determining the bound is subject to change.
+    const lifeBound = lifeCutoff / lifeCount
+    const noLifeBound = noLifeCutoff / noLifeCount
+
+    if (this.mounted) {
+      this.setState({
+        lifeBound,
+        noLifeBound,
+      })
+    } else {
+      // You must mutate state directly when component is unmounted,
+      // so use the spread operator to maintain other states
+      // eslint-disable-next-line react/no-direct-mutation-state
+      this.state = {
+        ...this.state,
+        lifeBound,
+        noLifeBound,
+      }
+    }
   }
 
   getTestInfos(): void {
