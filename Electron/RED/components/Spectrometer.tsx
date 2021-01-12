@@ -124,7 +124,7 @@ class Spectrometer extends Component<IProps, IState> {
 
   spectrometers: SpectrometerEntry[]
 
-  constructor(props: any) {
+  constructor(props: IProps) {
     super(props)
     this.specTests = []
     this.testInfos = []
@@ -167,7 +167,7 @@ class Spectrometer extends Component<IProps, IState> {
     this.getTestInfos()
     this.getSpectrometers()
 
-    rovecomm.on("SpectrometerData", (data: any) => this.SpectrometerData(data))
+    rovecomm.on("SpectrometerData", (data: any) => this.spectrometerData(data))
   }
 
   componentDidMount(): void {
@@ -320,16 +320,29 @@ class Spectrometer extends Component<IProps, IState> {
     a.click()
   }
 
-  SpectrometerData(data: number[]): void {
+  spectrometerData(data: number[]): void {
     let { control, experiment, difference } = this.state
     let offset = 144
+
+    // This function will be called when any spectrometer data is collected,
+    // so we need a method of determining whether it is a control or actual spectra
+    // so we switch on a variable set when the command is sent to the rover
     switch (this.state.gathering) {
       case "control":
+        // We also keep track of a counter of incoming packets, as the spectra
+        // is too large to fit in one rovecomm packet and is split across 2
+        // so if the counter is set to 0, this is the first packet and we want
+        // to reset the control data list and there should be no offset
+        // (The offset is set to 144 above to shift the second set of data's x values)
         if (this.state.counter === 0) {
           control = []
           offset = 0
         }
+
         for (let i = 0; i < data.length; i++) {
+          // calcWavelength must be called on the index of each datum
+          // as the spectrometer doesn't tell us the X but rather uses a precisely
+          // calibrated function to determine it
           control.push({ x: this.calcWavelength(i + offset), y: data[i] })
         }
         // Hack to correct x-axis immediately
@@ -360,6 +373,9 @@ class Spectrometer extends Component<IProps, IState> {
         break
     }
 
+    // No matter which packet we recieved, we want to toggle our packet counter
+    // such that if the first packet was recieved we know we are looking for the second
+    // or if the second is recieved we are again ready to recieve a spectra pair
     const counter = this.state.counter === 0 ? 1 : 0
     this.setState({
       control,

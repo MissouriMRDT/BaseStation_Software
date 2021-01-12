@@ -17,6 +17,7 @@ module.exports = {
     "react/no-access-state-in-setstate": "off",
     "no-plusplus": "off",
     "no-restricted-syntax": "off",
+    "no-else-return": "off",
     semi: [2, "never"],
     "react/jsx-filename-extension": [
       1,
