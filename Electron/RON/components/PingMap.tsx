@@ -244,15 +244,10 @@ class PingMap extends Component<IProps, IState> {
       pingCommand = `ping -c 1 ${ip}`
     }
 
-    console.log(`Pinging ${ip}...`)
     exec(pingCommand, (error, stdout, stderr) => {
       // -1 means not reachable
       let delay = -1
-      if (error) {
-        console.log(`error: ${error.message}`)
-      } else if (stderr) {
-        console.log(`stderr: ${stderr}`)
-      } else if (stdout.indexOf("unreachable") === -1) {
+      if (!error && !stderr && stdout.indexOf("unreachable") === -1) {
         // On Windows, failed ping is not necessarily an error
         // Windows Ex. 'Reply from 8.8.8.8: bytes=32 time=26ms TTL=110'
         // Unix Ex. '64 bytes from 8.8.8.8: icmp_seq=0 ttl=110 time=387.477 ms'
