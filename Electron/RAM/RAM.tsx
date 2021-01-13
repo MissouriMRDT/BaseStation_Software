@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import SensorGraphs from "./components/SensorGraphs"
 
 interface IProps {}
 
@@ -13,7 +14,7 @@ class RAM extends Component<IProps, IState> {
   render(): JSX.Element {
     return (
       <div>
-        <h1>This is RAM</h1>
+        <SensorGraphs />
       </div>
     )
   }
