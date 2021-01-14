@@ -138,10 +138,11 @@ class SensorGraphs extends Component<IProps, IState> {
 
   o2(data: any): void {
     const { temperature, o2PP, o2Concentration, o2Pressure } = this.state
-    temperature.push({ x: new Date(), y: data })
-    o2PP.push({ x: new Date(), y: data })
-    o2Concentration.push({ x: new Date(), y: data })
-    o2Pressure.push({ x: new Date(), y: data })
+    const [newTemperature, newO2PP, newO2Concentration, newO2Pressure] = data
+    temperature.push({ x: new Date(), y: newTemperature })
+    o2PP.push({ x: new Date(), y: newO2PP })
+    o2Concentration.push({ x: new Date(), y: newO2Concentration })
+    o2Pressure.push({ x: new Date(), y: newO2Pressure })
     this.setState({ temperature, o2PP, o2Concentration, o2Pressure })
   }
 
