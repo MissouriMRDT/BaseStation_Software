@@ -98,7 +98,7 @@ class SensorData extends Component<IProps, IState> {
   }
 
   co2(data: any): void {
-    this.setState({ co2: data })
+    this.setState({ co2: data[0] })
   }
 
   o2(data: any): void {
