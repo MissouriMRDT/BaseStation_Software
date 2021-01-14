@@ -176,7 +176,7 @@ class SensorGraphs extends Component<IProps, IState> {
 
   co2(data: any): void {
     const { co2 } = this.state
-    co2.push({ x: new Date(), y: data })
+    co2.push({ x: new Date(), y: data[0] })
     this.setState({ co2 })
   }
 
