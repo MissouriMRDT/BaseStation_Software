@@ -97,35 +97,15 @@ interface IState {
 }
 
 class SensorGraphs extends Component<IProps, IState> {
-  mounted = false
-
   constructor(props: IProps) {
     super(props)
     this.state = {
-      methane: [
-        { x: new Date(0), y: 0.0 },
-        { x: new Date(1), y: 1.0 },
-      ],
-      co2: [
-        { x: new Date(0), y: 0.1 },
-        { x: new Date(1), y: 0.9 },
-      ],
-      temperature: [
-        { x: new Date(0), y: 0.2 },
-        { x: new Date(1), y: 0.8 },
-      ],
-      o2PP: [
-        { x: new Date(0), y: 0.3 },
-        { x: new Date(1), y: 0.7 },
-      ],
-      o2Concentration: [
-        { x: new Date(0), y: 0.4 },
-        { x: new Date(1), y: 0.6 },
-      ],
-      o2Pressure: [
-        { x: new Date(0), y: 0.5 },
-        { x: new Date(1), y: 0.5 },
-      ],
+      methane: [],
+      co2: [],
+      temperature: [],
+      o2PP: [],
+      o2Concentration: [],
+      o2Pressure: [],
       sensor: "All",
     }
     this.methane = this.methane.bind(this)
@@ -138,19 +118,15 @@ class SensorGraphs extends Component<IProps, IState> {
     rovecomm.on("O2", (data: any) => this.o2(data))
   }
 
-  componentDidMount(): void {
-    // Boolean for if component has mounted or not to determine if
-    // this.state = {} or this.setState({}) should be used.
-    this.mounted = true
-  }
-
   sensorChange(event: { target: { value: string } }): void {
     this.setState({ sensor: event.target.value })
   }
 
   methane(data: any): void {
+    // the methane data packet is [methane concentration, temperature]
+    // temperature is discarded since it is supplied from the O2 sensor as well
     const { methane } = this.state
-    methane.push({ x: new Date(), y: data })
+    methane.push({ x: new Date(), y: data[0] })
     this.setState({ methane })
   }
 
@@ -252,6 +228,9 @@ class SensorGraphs extends Component<IProps, IState> {
           <div style={row}>
             <button type="button" onClick={saveImage}>
               Export Graph
+            </button>
+            <button type="button" onClick={() => this.methane([100, 82])}>
+              Add to Graph
             </button>
           </div>
         </div>
