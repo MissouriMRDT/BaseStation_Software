@@ -8,6 +8,7 @@ import {
   HorizontalGridLines,
   LineSeries,
   DiscreteColorLegend,
+  Crosshair,
 } from "react-vis"
 
 import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
@@ -54,6 +55,10 @@ const selectbox: CSS.Properties = {
 const selector: CSS.Properties = {
   width: "200px",
 }
+const overlay: CSS.Properties = {
+  width: "200px",
+  color: "black",
+}
 
 function downloadURL(imgData: string): void {
   const a = document.createElement("a")
@@ -94,28 +99,67 @@ interface IState {
   o2Concentration: { x: Date; y: number }[]
   o2Pressure: { x: Date; y: number }[]
   sensor: string
+  crosshairValues: { x: Date; y: number }[]
 }
 
 class SensorGraphs extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props)
     this.state = {
-      methane: [],
-      co2: [],
-      temperature: [],
-      o2PP: [],
-      o2Concentration: [],
-      o2Pressure: [],
+      methane: [
+        { x: new Date(0), y: 0 },
+        { x: new Date(60000), y: 1.5 },
+      ],
+      co2: [
+        { x: new Date(0), y: 10 },
+        { x: new Date(60000), y: 11 },
+      ],
+      temperature: [
+        { x: new Date(0), y: 20 },
+        { x: new Date(60000), y: 21 },
+      ],
+      o2PP: [
+        { x: new Date(0), y: 5 },
+        { x: new Date(60000), y: 15 },
+      ],
+      o2Concentration: [
+        { x: new Date(0), y: 7 },
+        { x: new Date(60000), y: 17 },
+      ],
+      o2Pressure: [
+        { x: new Date(0), y: 9 },
+        { x: new Date(60000), y: 16 },
+      ],
       sensor: "All",
+      crosshairValues: [],
     }
     this.methane = this.methane.bind(this)
     this.co2 = this.co2.bind(this)
     this.o2 = this.o2.bind(this)
     this.sensorChange = this.sensorChange.bind(this)
+    this.onNearestX = this.onNearestX.bind(this)
+    this.onMouseLeave = this.onMouseLeave.bind(this)
 
     rovecomm.on("Methane", (data: any) => this.methane(data))
     rovecomm.on("CO2", (data: any) => this.co2(data))
     rovecomm.on("O2", (data: any) => this.o2(data))
+  }
+
+  onMouseLeave(): void {
+    this.setState({ crosshairValues: [] })
+  }
+
+  onNearestX(value, { index }): void {
+    this.setState({
+      crosshairValues: [
+        this.state.methane,
+        this.state.co2,
+        this.state.temperature,
+        this.state.o2PP,
+        this.state.o2Concentration,
+        this.state.o2Pressure,
+      ].map(d => d[index]),
+    })
   }
 
   sensorChange(event: { target: { value: string } }): void {
@@ -146,8 +190,69 @@ class SensorGraphs extends Component<IProps, IState> {
     this.setState({ temperature, o2PP, o2Concentration, o2Pressure })
   }
 
+  crosshair(): JSX.Element | null {
+    if (
+      this.state.crosshairValues.length === 6 &&
+      "x" in this.state.crosshairValues[0] &&
+      "y" in this.state.crosshairValues[0]
+    ) {
+      return (
+        <Crosshair values={this.state.crosshairValues}>
+          <div style={overlay}>
+            <h3>
+              {this.state.crosshairValues[0].x.toTimeString().slice(0, 9)}
+            </h3>
+            <p>
+              Methane:{" "}
+              {this.state.crosshairValues[0].y.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+              })}{" "}
+              ppm
+            </p>
+            <p>
+              CO2:{" "}
+              {this.state.crosshairValues[1].y.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+              })}{" "}
+              ppm
+            </p>
+            <p>
+              Temperature:{" "}
+              {this.state.crosshairValues[2].y.toLocaleString(undefined, {
+                minimumFractionDigits: 1,
+                minimumIntegerDigits: 2,
+              })}
+              &#176;C
+            </p>
+            <p>
+              O2PP:{" "}
+              {this.state.crosshairValues[3].y.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+              })}{" "}
+              ppm
+            </p>
+            <p>
+              O2Concentration:{" "}
+              {this.state.crosshairValues[4].y.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+              })}{" "}
+              ppm
+            </p>
+            <p>
+              O2Pressure:{" "}
+              {this.state.crosshairValues[5].y.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+              })}{" "}
+              ppm
+            </p>
+          </div>
+        </Crosshair>
+      )
+    }
+    return null
+  }
+
   render(): JSX.Element {
-    console.log(this.state.sensor)
     return (
       <div id="canvas">
         <div style={label}>Sensor Graphs</div>
@@ -190,11 +295,21 @@ class SensorGraphs extends Component<IProps, IState> {
             ]}
             orientation="horizontal"
           />
-          <XYPlot style={{ margin: 10 }} width={620} height={480} xType="time">
+          <XYPlot
+            style={{ margin: 10 }}
+            width={620}
+            height={480}
+            xType="time"
+            onMouseLeave={this.onMouseLeave}
+          >
             <HorizontalGridLines style={{ fill: "none" }} />
             {(this.state.sensor === "Methane" ||
               this.state.sensor === "All") && (
-              <LineSeries data={this.state.methane} style={{ fill: "none" }} />
+              <LineSeries
+                data={this.state.methane}
+                style={{ fill: "none" }}
+                onNearestX={this.onNearestX}
+              />
             )}
             {(this.state.sensor === "CO2" || this.state.sensor === "All") && (
               <LineSeries data={this.state.co2} style={{ fill: "none" }} />
@@ -225,6 +340,7 @@ class SensorGraphs extends Component<IProps, IState> {
             )}
             <XAxis />
             <YAxis />
+            {this.crosshair()}
           </XYPlot>
           <div style={row}>
             <button type="button" onClick={saveImage}>
