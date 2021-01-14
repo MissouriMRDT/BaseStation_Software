@@ -31,6 +31,20 @@ const row: CSS.Properties = {
   justifyContent: "space-between",
   margin: "5px 25px",
 }
+const buttonRow: CSS.Properties = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-around",
+  margin: "10px 50px",
+}
+const buttons: CSS.Properties = {
+  lineHeight: "20px",
+  fontSize: "16px",
+  border: "none",
+  backgroundColor: "#990000",
+  borderRadius: "5px",
+  color: "white",
+}
 const grid: CSS.Properties = {
   display: "grid",
   gridTemplateColumns: "repeat(2, 1fr)",
@@ -45,6 +59,10 @@ interface IState {
   o2PP: number
   o2Concentration: number
   o2Pressure: number
+
+  writeToFile: boolean
+  sensorSaveFile: string | null
+  fileWriteInterval: NodeJS.Timeout | null
 }
 
 class SensorData extends Component<IProps, IState> {
@@ -57,10 +75,16 @@ class SensorData extends Component<IProps, IState> {
       o2PP: 0,
       o2Concentration: 0,
       o2Pressure: 0,
+      writeToFile: false,
+      sensorSaveFile: null,
+      fileWriteInterval: null,
     }
     this.methane = this.methane.bind(this)
     this.co2 = this.co2.bind(this)
     this.o2 = this.o2.bind(this)
+    this.fileWrite = this.fileWrite.bind(this)
+    this.fileStart = this.fileStart.bind(this)
+    this.fileStop = this.fileStop.bind(this)
 
     rovecomm.on("Methane", (data: any) => this.methane(data))
     rovecomm.on("CO2", (data: any) => this.co2(data))
@@ -80,6 +104,55 @@ class SensorData extends Component<IProps, IState> {
   o2(data: any): void {
     const [temperature, o2PP, o2Concentration, o2Pressure] = data
     this.setState({ temperature, o2PP, o2Concentration, o2Pressure })
+  }
+
+  fileStart(): void {
+    const filestream = `./ScienceSaveFiles/${new Date()
+      .toISOString()
+      // ISO string will be fromatted YYYY-MM-DDTHH:MM:SS:sssZ
+      // this regex will convert all -,T,:,Z to . (which covers to . for .csv)
+      .replaceAll(/[:\-TZ]/g, ".")}csv`
+    if (!fs.existsSync("./ScienceSaveFiles")) {
+      fs.mkdirSync("./ScienceSaveFiles")
+    }
+    fs.open(filestream, "w", err => {
+      if (err) throw err
+    })
+    fs.appendFile(filestream, "time,methane,co2,temp,o2PP,o2Concentration,o2Pressure\n", err => {
+      if (err) throw err
+    })
+    const fileWriteInterval = setInterval(this.fileWrite, 1000)
+    this.setState({
+      sensorSaveFile: filestream,
+      writeToFile: true,
+      fileWriteInterval,
+    })
+  }
+
+  fileStop(): void {
+    if (this.state.fileWriteInterval) {
+      clearInterval(this.state.fileWriteInterval)
+    }
+    this.setState({
+      writeToFile: false,
+      sensorSaveFile: null,
+      fileWriteInterval: null,
+    })
+  }
+
+  fileWrite(): void {
+    if (this.state.writeToFile && this.state.sensorSaveFile) {
+      fs.appendFile(
+        this.state.sensorSaveFile,
+        // time,methane,co2,temp,o2PP,o2Concentration,o2Pressure\n
+        `${new Date().toLocaleDateString()},${this.state.methane},${this.state.co2},${this.state.temperature},${
+          this.state.o2PP
+        },${this.state.o2Concentration},${this.state.o2Pressure}\n`,
+        err => {
+          if (err) throw err
+        }
+      )
+    }
   }
 
   render(): JSX.Element {
@@ -123,6 +196,15 @@ class SensorData extends Component<IProps, IState> {
               <div>O2 Barometric Pressure:</div>
               <div>{this.state.o2Pressure.toLocaleString(undefined, { minimumFractionDigits: 2 })} mBar</div>
             </div>
+          </div>
+          <div style={buttonRow}>
+            <div>Save Sensor Data</div>
+            <button type="button" onClick={this.fileStart} style={buttons}>
+              Start
+            </button>
+            <button type="button" onClick={this.fileStop} style={buttons}>
+              Stop
+            </button>
           </div>
         </div>
       </div>
