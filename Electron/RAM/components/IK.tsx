@@ -85,7 +85,7 @@ class IK extends Component<IProps, IState> {
      * and send the proper rovecomm packet
      */
     rovecomm.sendCommand(
-      "ArmToIk",
+      "ArmToIK",
       Object.values(this.state.IKValues).map(function (x: string) {
         return x ? parseFloat(x) : 0
       })
