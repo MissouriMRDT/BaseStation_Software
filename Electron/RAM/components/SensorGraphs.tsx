@@ -346,9 +346,6 @@ class SensorGraphs extends Component<IProps, IState> {
             <button type="button" onClick={saveImage}>
               Export Graph
             </button>
-            <button type="button" onClick={() => this.methane([100, 82])}>
-              Add to Graph
-            </button>
           </div>
         </div>
       </div>
