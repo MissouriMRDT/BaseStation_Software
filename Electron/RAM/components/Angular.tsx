@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import CSS from "csstype"
+import fs from "fs"
 import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
 
 const h1Style: CSS.Properties = {
@@ -76,6 +77,8 @@ const selector: CSS.Properties = {
   padding: "5px",
 }
 
+const filepath = "./Core/AngularPresets.json"
+
 function getPosition(): void {
   rovecomm.sendCommand("RequestJointPositions", [1])
 }
@@ -125,7 +128,18 @@ class Angular extends Component<IProps, IState> {
     this.recall = this.recall.bind(this)
     this.delete = this.delete.bind(this)
 
+    // rovecomm.sendCommand(dataIdStr, data, reliability)
     rovecomm.on("ArmAngles", (data: any) => this.updatePosition(data))
+  }
+
+  componentDidMount() {
+    if (fs.existsSync(filepath)) {
+      const storedPositions = JSON.parse(fs.readFileSync(filepath).toString())
+      if (Object.keys(storedPositions).length) {
+        const selectedPosition = Object.keys(storedPositions)[0]
+        this.setState({ storedPositions, selectedPosition })
+      }
+    }
   }
 
   setPosition(): void {
@@ -159,6 +173,15 @@ class Angular extends Component<IProps, IState> {
           [this.state.positionName]: this.state.jointValues,
         },
       },
+      () => {
+        fs.writeFile(
+          filepath,
+          JSON.stringify(this.state.storedPositions),
+          err => {
+            if (err) throw err
+          }
+        )
+      }
     )
   }
 
@@ -181,6 +204,15 @@ class Angular extends Component<IProps, IState> {
         storedPositions,
         selectedPosition,
       },
+      () => {
+        fs.writeFile(
+          filepath,
+          JSON.stringify(this.state.storedPositions),
+          err => {
+            if (err) throw err
+          }
+        )
+      }
     )
   }
 
