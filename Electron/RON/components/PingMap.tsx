@@ -278,7 +278,7 @@ class PingMap extends Component<IProps, IState> {
   render(): JSX.Element {
     return (
       <div>
-        <div style={label}>Ping Tool</div>
+        <div style={label}>Ping Map</div>
         <div style={container}>
           <canvas ref={this.canvasRef} width="640" height="640" />
         </div>
