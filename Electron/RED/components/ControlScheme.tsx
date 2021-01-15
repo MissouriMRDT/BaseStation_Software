@@ -1,9 +1,10 @@
+// eslint-disable-next-line max-classes-per-file
 import React, { Component, ReactNode, useState } from "react"
 import { render } from "react-dom"
 import Gamepad from 'react-gamepad'
 import CSS from "csstype"
 import { CONTROLLERINPUT } from "../../Core/ControllerInput/ControllerInput"
-//import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
+// import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
 // import { Packet } from "../../Core/RoveProtocol/Packet"
 
 const h1Style: CSS.Properties = {
@@ -46,8 +47,7 @@ const readoutDisplay: CSS.Properties = {
   marginRight: "2px",
 }
 
-interface IProps {
-}
+interface IProps {}
 
 interface IState {
   scheme: string,
@@ -76,7 +76,6 @@ class ControlScheme extends Component<IProps, IState> {
   }
 
   controller(pos: any, ): void{
-    //77, might work possibly not trying to make it stop running
     if(pos != null){
       setInterval(() => {
           if(navigator.getGamepads()[pos] != null)
