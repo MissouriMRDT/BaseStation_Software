@@ -19,7 +19,7 @@ const container: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
   fontFamily: "arial",
-  width: "640px",
+  width: "350px",
   borderTopWidth: "28px",
   borderColor: "#990000",
   borderBottomWidth: "2px",
@@ -42,11 +42,19 @@ const row: CSS.Properties = {
   alignItems: "center",
   margin: "5px",
 }
+const button: CSS.Properties = {
+  width: "35%",
+  margin: "5px",
+  fontSize: "16px",
+  lineHeight: "24px",
+  borderRadius: "20px",
+}
 
 interface IProps {}
 
 interface IState {
   overridden: boolean
+  tool: number
 }
 
 class ControlFeatures extends Component<IProps, IState> {
@@ -54,6 +62,7 @@ class ControlFeatures extends Component<IProps, IState> {
     super(props)
     this.state = {
       overridden: false,
+      tool: 0,
     }
   }
 
@@ -70,9 +79,13 @@ class ControlFeatures extends Component<IProps, IState> {
         <div style={container}>
           <div style={row}>
             <div style={header}>Limit Override: </div>
-            <button type="button" onClick={this.limitOverride}>
+            <button type="button" onClick={this.limitOverride} style={button}>
               All Joints
             </button>
+          </div>
+          <div style={row}>
+            <div style={header}>Tool: </div>
+            <div style={value}>{this.state.tool}</div>
           </div>
         </div>
       </div>

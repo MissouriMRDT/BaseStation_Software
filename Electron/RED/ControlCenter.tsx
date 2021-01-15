@@ -5,6 +5,7 @@ import RON from "../RON/RON"
 import GPS from "./components/GPS"
 import Log from "./components/Log"
 import NewWindowComponent from "../Core/Window"
+import ControlFeatures from "../RAM/components/ControlFeatures"
 
 interface IProps {}
 
@@ -53,6 +54,7 @@ class ControlCenter extends Component<IProps, IState> {
         }
         <Log />
         <GPS />
+        <ControlFeatures />
         <button
           type="button"
           onClick={rovecomm.resubscribe}
