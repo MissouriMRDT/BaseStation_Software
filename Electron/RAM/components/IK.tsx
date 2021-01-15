@@ -52,7 +52,7 @@ const buttons: CSS.Properties = {
 
 function getPosition(): void {
   // Unlike most telemetry, arm joint positions are only sent when requested
-  rovecomm.sendCommand("RequestJointPositions", [1])
+  rovecomm.sendCommand("RequestAxesPositions", [1])
 }
 
 interface IProps {}
