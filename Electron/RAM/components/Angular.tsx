@@ -80,10 +80,14 @@ const selector: CSS.Properties = {
 const filepath = "./Core/AngularPresets.json"
 
 function getPosition(): void {
+  // Unlike most telemetry, arm joint positions are only sent when requested
   rovecomm.sendCommand("RequestJointPositions", [1])
 }
 
 function toggleTelem(): void {
+  // Some arm systems allow toggling an incoming stream of arm telemetry
+  // When enabled, entering text into the textfields to set position will
+  // become practically impossible
   rovecomm.sendCommand("TogglePositionTelem", [1])
 }
 
@@ -128,11 +132,15 @@ class Angular extends Component<IProps, IState> {
     this.recall = this.recall.bind(this)
     this.delete = this.delete.bind(this)
 
-    // rovecomm.sendCommand(dataIdStr, data, reliability)
     rovecomm.on("ArmAngles", (data: any) => this.updatePosition(data))
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
+    /* When first built, we want to check the presets file if it exists
+     * and import all preset positions. If presets exist, we should also
+     * default selected position to the first position. If file does not
+     * exist, it isn't created until we attempt to store data
+     */
     if (fs.existsSync(filepath)) {
       const storedPositions = JSON.parse(fs.readFileSync(filepath).toString())
       if (Object.keys(storedPositions).length) {
@@ -143,6 +151,10 @@ class Angular extends Component<IProps, IState> {
   }
 
   setPosition(): void {
+    /* This function should take the values of all the joints,
+     * convert them from strings to floats (or empty string to 0)
+     * and send the proper rovecomm packet
+     */
     rovecomm.sendCommand(
       "ArmToAngle",
       Object.values(this.state.jointValues).map(function (x: string) {
@@ -152,12 +164,18 @@ class Angular extends Component<IProps, IState> {
   }
 
   updatePosition(data: any): void {
+    /* Function to update displayed jointValues when a new position is recieved */
     const [J1, J2, J3, J4, J5, J6] = data
     const jointValues = { J1, J2, J3, J4, J5, J6 }
     this.setState({ jointValues })
   }
 
   store(): void {
+    /* Adds the current position (or at least entered position) to the select box
+     * and updates the json file
+     */
+    // If selectedPosition is still an empty string, this is a good time
+    // to update it to a useful starting value
     let { selectedPosition } = this.state
     if (!selectedPosition) {
       selectedPosition = this.state.positionName
@@ -167,13 +185,18 @@ class Angular extends Component<IProps, IState> {
       {
         selectedPosition,
         addingPosition: false,
-        positionName: "",
+        positionName: "", // reset name in modal text box for next use
         storedPositions: {
+          // Spread to ensure all currently stored positions are kept
+          // but the newest position is added
           ...this.state.storedPositions,
           [this.state.positionName]: this.state.jointValues,
         },
       },
       () => {
+        // function callback so that when setState has finished executing
+        // we can properly update the json file. File is created if now if
+        // it doesn't already exist
         fs.writeFile(
           filepath,
           JSON.stringify(this.state.storedPositions),
@@ -186,19 +209,29 @@ class Angular extends Component<IProps, IState> {
   }
 
   recall(): void {
-    this.setState({
-      jointValues: this.state.storedPositions[
-        String(this.state.selectedPosition)
-      ],
-    })
+    /* Pulls selected stored position into the current jointValues
+     * (if a position has been selected)
+     */
+    if (this.state.selectedPosition) {
+      this.setState({
+        jointValues: this.state.storedPositions[this.state.selectedPosition],
+      })
+    }
   }
 
   delete(): void {
+    /* Deletes a selected stored position (if a position has been selected)
+     * and properly updates the json file (see store() for more detailed comments)
+     */
     const { storedPositions } = this.state
     delete storedPositions[this.state.selectedPosition]
+
+    // Since the selectedPosition was just deleted, we want to grab a new
+    // value. We grab the first key if one exists, or if not default to ""
     const selectedPosition = Object.keys(storedPositions).length
       ? Object.keys(storedPositions)[0]
       : ""
+
     this.setState(
       {
         storedPositions,
@@ -217,14 +250,20 @@ class Angular extends Component<IProps, IState> {
   }
 
   jointChange(event: { target: { value: string } }, joint: string): void {
-    // we only want positive floats, so filter out any other characters
-    // but match returns an array of [match, index, input, groups]
-    // or returns undefined if there is no match
+    /* We only want positive floats, so filter out any other characters
+     * but match returns an array of [match, index, input, groups]
+     * or returns undefined if there is no match
+     */
+    // Regex filters for 0+ digits, 0 or 1 decimal, followed by 0+ more digits
     const cleansedValue = event.target.value.match(/^\d*\.?\d*/)
+
     let value = ""
     if (cleansedValue) {
+      // Leading semicolon helps ensure [value] isn't taken as an index
+      // but properly used for array destructuring
       ;[value] = cleansedValue
     }
+
     this.setState({
       jointValues: {
         ...this.state.jointValues,
