@@ -281,6 +281,7 @@
     "electron-updater": "^4.3.1",
     "history": "^4.7.2",
     "react": "^16.13.1",
+    "react-color": "^2.19.3",
     "react-dom": "^16.12.0",
     "react-hot-loader": "^4.12.21",
     "react-redux": "^7.2.0",

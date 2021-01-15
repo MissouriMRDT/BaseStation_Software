@@ -1,0 +1,29 @@
+{
+  "fd": { "name": "fd", "latitude": 321, "longitude": 231, "color": "#990000", "onMap": true, "colorPicker": false },
+  "as": { "name": "as", "latitude": 123, "longitude": 123, "color": "#00d084", "colorPicker": false, "onMap": true },
+  "fds": { "name": "fds", "latitude": 123, "longitude": 321, "color": "#9900ef", "colorPicker": false, "onMap": true },
+  "gfd": {
+    "name": "gfd",
+    "latitude": 134.08416666666668,
+    "longitude": 1237043.3836111112,
+    "color": "#f78da7",
+    "colorPicker": false,
+    "onMap": true
+  },
+  "helllothereannemarie": {
+    "name": "helllothereannemarie",
+    "latitude": 123,
+    "longitude": 123,
+    "color": "#eb144c",
+    "colorPicker": false,
+    "onMap": true
+  },
+  "fda": {
+    "name": "fda",
+    "latitude": 231321,
+    "longitude": 2121,
+    "color": "#ff6900",
+    "colorPicker": false,
+    "onMap": true
+  }
+}

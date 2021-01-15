@@ -16,11 +16,10 @@ module.exports = {
     "@typescript-eslint/no-empty-interface": "off",
     "react/no-access-state-in-setstate": "off",
     "no-plusplus": "off",
+    "react/jsx-curly-newline": "off",
+    "jsx-a11y/no-autofocus": "off",
     semi: [2, "never"],
-    "react/jsx-filename-extension": [
-      1,
-      { extensions: [".js", ".jsx", ".ts", ".tsx"] },
-    ],
+    "react/jsx-filename-extension": [1, { extensions: [".js", ".jsx", ".ts", ".tsx"] }],
     "import/extensions": [
       "error",
       "ignorePackages",
