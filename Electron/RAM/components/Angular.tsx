@@ -58,6 +58,14 @@ const modal: CSS.Properties = {
   textAlign: "center",
   borderRadius: "25px",
 }
+const selector: CSS.Properties = {
+  margin: "5px 20px",
+  lineHeight: "24px",
+  fontSize: "16px",
+  WebkitAppearance: "none",
+  MozAppearance: "none",
+  padding: "5px",
+}
 
 function getPosition(): void {
   rovecomm.sendCommand("RequestJointPositions", [1])
@@ -215,6 +223,20 @@ class Angular extends Component<IProps, IState> {
               Toggle Auto Telem
             </button>
           </div>
+          <select
+            value={this.state.selectedPosition}
+            onChange={e => this.setState({ selectedPosition: e.target.value })}
+            size={5}
+            style={selector}
+          >
+            {Object.keys(this.state.storedPositions).map((position: any) => {
+              return (
+                <option key={position} value={position}>
+                  {position}
+                </option>
+              )
+            })}
+          </select>
           <div style={row}>
             <button
               type="button"
