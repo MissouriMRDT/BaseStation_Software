@@ -16,6 +16,7 @@ module.exports = {
     "@typescript-eslint/no-empty-interface": "off",
     "react/no-access-state-in-setstate": "off",
     "no-plusplus": "off",
+    "func-names": "off",
     semi: [2, "never"],
     "react/jsx-filename-extension": [
       1,
