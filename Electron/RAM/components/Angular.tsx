@@ -58,6 +58,15 @@ const modal: CSS.Properties = {
   textAlign: "center",
   borderRadius: "25px",
 }
+const modalButton: CSS.Properties = {
+  width: "75px",
+  lineHeight: "24px",
+  color: "white",
+  fontWeight: "bold",
+  borderRadius: "10px",
+  border: "none",
+  margin: "10px",
+}
 const selector: CSS.Properties = {
   margin: "5px 20px",
   lineHeight: "24px",
@@ -254,6 +263,34 @@ class Angular extends Component<IProps, IState> {
           </div>
           {this.state.addingPosition ? (
             <div style={modal}>
+              <h3>Please give this position a name</h3>
+              <input
+                type="text"
+                value={this.state.positionName}
+                onChange={e => this.setState({ positionName: e.target.value })}
+                autoFocus={this.state.addingPosition}
+              />
+              <div style={row}>
+                <button
+                  type="button"
+                  style={{ ...modalButton, backgroundColor: "red" }}
+                  onClick={() =>
+                    this.setState({
+                      addingPosition: false,
+                      positionName: "",
+                    })
+                  }
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  style={{ ...modalButton, backgroundColor: "green" }}
+                  onClick={this.store}
+                >
+                  Add
+                </button>
+              </div>
             </div>
           ) : null}
         </div>
