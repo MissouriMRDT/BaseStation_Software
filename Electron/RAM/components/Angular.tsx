@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import CSS from "csstype"
+import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
@@ -40,6 +41,31 @@ const row: CSS.Properties = {
 const input: CSS.Properties = {
   width: "75%",
 }
+const buttons: CSS.Properties = {
+  width: "30%",
+  margin: "5px",
+  fontSize: "14px",
+  lineHeight: "24px",
+  borderRadius: "20px",
+}
+const modal: CSS.Properties = {
+  position: "absolute",
+  width: "400px",
+  margin: "10px 50px",
+  zIndex: 1,
+  backgroundColor: "rgba(255,255,255,0.9)",
+  border: "2px solid #990000",
+  textAlign: "center",
+  borderRadius: "25px",
+}
+
+function getPosition(): void {
+  rovecomm.sendCommand("RequestJointPositions", [1])
+}
+
+function toggleTelem(): void {
+  rovecomm.sendCommand("TogglePositionTelem", [1])
+}
 
 interface Joint {
   J1: string
@@ -72,7 +98,73 @@ class Angular extends Component<IProps, IState> {
         J5: "",
         J6: "",
       },
+      storedPositions: {},
+      selectedPosition: "",
+      addingPosition: false,
+      positionName: "",
     }
+    this.store = this.store.bind(this)
+    this.setPosition = this.setPosition.bind(this)
+    this.recall = this.recall.bind(this)
+    this.delete = this.delete.bind(this)
+
+    rovecomm.on("ArmAngles", (data: any) => this.updatePosition(data))
+  }
+
+  setPosition(): void {
+    rovecomm.sendCommand(
+      "ArmToAngle",
+      Object.values(this.state.jointValues).map(function (x: string) {
+        return x ? parseFloat(x) : 0
+      })
+    )
+  }
+
+  updatePosition(data: any): void {
+    const [J1, J2, J3, J4, J5, J6] = data
+    const jointValues = { J1, J2, J3, J4, J5, J6 }
+    this.setState({ jointValues })
+  }
+
+  store(): void {
+    let { selectedPosition } = this.state
+    if (!selectedPosition) {
+      selectedPosition = this.state.positionName
+    }
+
+    this.setState(
+      {
+        selectedPosition,
+        addingPosition: false,
+        positionName: "",
+        storedPositions: {
+          ...this.state.storedPositions,
+          [this.state.positionName]: this.state.jointValues,
+        },
+      },
+    )
+  }
+
+  recall(): void {
+    this.setState({
+      jointValues: this.state.storedPositions[
+        String(this.state.selectedPosition)
+      ],
+    })
+  }
+
+  delete(): void {
+    const { storedPositions } = this.state
+    delete storedPositions[this.state.selectedPosition]
+    const selectedPosition = Object.keys(storedPositions).length
+      ? Object.keys(storedPositions)[0]
+      : ""
+    this.setState(
+      {
+        storedPositions,
+        selectedPosition,
+      },
+    )
   }
 
   jointChange(event: { target: { value: string } }, joint: string): void {
@@ -112,6 +204,36 @@ class Angular extends Component<IProps, IState> {
               )
             })}
           </div>
+          <div style={row}>
+            <button type="button" style={buttons} onClick={getPosition}>
+              Get Position
+            </button>
+            <button type="button" style={buttons} onClick={this.setPosition}>
+              Set Position
+            </button>
+            <button type="button" style={buttons} onClick={toggleTelem}>
+              Toggle Auto Telem
+            </button>
+          </div>
+          <div style={row}>
+            <button
+              type="button"
+              style={buttons}
+              onClick={() => this.setState({ addingPosition: true })}
+            >
+              Store
+            </button>
+            <button type="button" style={buttons} onClick={this.recall}>
+              Recall
+            </button>
+            <button type="button" style={buttons} onClick={this.delete}>
+              Delete
+            </button>
+          </div>
+          {this.state.addingPosition ? (
+            <div style={modal}>
+            </div>
+          ) : null}
         </div>
       </div>
     )
