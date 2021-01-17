@@ -1,9 +1,10 @@
 // eslint-disable-next-line max-classes-per-file
 import React, { Component, ReactNode, useState } from "react"
 import { render } from "react-dom"
-import Gamepad from 'react-gamepad'
+import Gamepad from "react-gamepad"
 import CSS from "csstype"
 import { CONTROLLERINPUT } from "../../Core/ControllerInput/ControllerInput"
+import GamepadItem from "./GamepadItem"
 // import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
 // import { Packet } from "../../Core/RoveProtocol/Packet"
 
@@ -50,56 +51,184 @@ const readoutDisplay: CSS.Properties = {
 interface IProps {}
 
 interface IState {
-  scheme: string,
-  scheme2: string,
-  DeadZone: number,
+  DeadZone: number
+  functionality: any
 }
 
 export var input = {}
 
 class ControlScheme extends Component<IProps, IState> {
-
   constructor(props: Readonly<IProps>) {
     super(props)
     this.state = {
-      scheme: "TankDrive",
-      scheme2: "ArmControls",
       DeadZone: 0.15,
-      // controllerInput: {drive: {controller, setInterval, scheme}, gimbal: {controller, setInterval, scheme}, ...}
+      functionality: {
+        Drive: {
+          toggled: "Off",
+          scheme: "TankDrive",
+          controller: "Xbox 1",
+          interval: null,
+        },
+        MainGimbal: {
+          toggled: "Off",
+          scheme: "ArmControls",
+          controller: "Xbox 2",
+          interval: null,
+        },
+      },
+      // controllerInput: {drive: {controller, setInterval, scheme}, Gimbal: {this.controller, setInterval, scheme}, ...},
     }
     this.schemeChange = this.schemeChange.bind(this)
-    window.addEventListener("gamepaddisconnected", function(e) {
-      console.log("Gamepad disconnected from index %d: %s",
-        e.gamepad.index, e.gamepad.id,
-        );
-    });
-  }
 
-  controller(pos: any, ): void{
-    if(pos != null){
-      setInterval(() => {
-          if(navigator.getGamepads()[pos] != null)
-          {
-            for (const button in CONTROLLERINPUT[this.state.scheme]){
-              if (CONTROLLERINPUT[this.state.scheme][button].buttonType == "button"){
-                input[button] = navigator.getGamepads()[pos]?.buttons[CONTROLLERINPUT[this.state.scheme][button].buttonIndex].value
-              }
-              else{
-                input[button] = navigator.getGamepads()[pos]?.axes[CONTROLLERINPUT[this.state.scheme][button].buttonIndex]
-                if (input[button] >= -(this.state.DeadZone) && input[button] <= this.state.DeadZone){
-                  input[button] = 0.0
-                }
-              }
+    window.addEventListener("gamepaddisconnected", function (e) {
+      console.log(
+        "Gamepad disconnected from index %d: %s",
+        e.gamepad.index,
+        e.gamepad.id
+      )
+    })
+  }
+  // takes in the controllers scheme and the position in the array of controllers to determin which controller it is
+
+  controller(passedScheme: any, pos: any): any {
+    input = {}
+    return setInterval(() => {
+      // if navigator.getGampads()[pos] == flight stick
+      let index: number
+      console.log(pos, this.state)
+      switch (pos) {
+        case "Xbox 1":
+          index = 0
+          break
+        case "Xbox 2":
+          index = 1
+          break
+        case "Xbox 3":
+          index = 2
+          break
+        case "Flight Stick":
+          index = 3
+          break
+        default:
+          return
+      }
+
+      if (navigator.getGamepads()[index] != null) {
+        for (const button in CONTROLLERINPUT[passedScheme]) {
+          if (CONTROLLERINPUT[passedScheme][button].buttonType === "button") {
+            input[button] = navigator.getGamepads()[index]?.buttons[
+              CONTROLLERINPUT[passedScheme][button].buttonIndex
+            ].value
+          } else {
+            input[button] = navigator.getGamepads()[index]?.axes[
+              CONTROLLERINPUT[passedScheme][button].buttonIndex
+            ]
+            if (
+              input[button] >= -this.state.DeadZone &&
+              input[button] <= this.state.DeadZone
+            ) {
+              input[button] = 0.0
             }
-            //console.log(navigator.getGamepads()[pos]?.id, input)
           }
-      }, 100)
-    }
+        }
+        console.log(input)
+      }
+    }, 100)
   }
 
-  schemeChange(e: any) {
-    this.setState({scheme: e.target.value})
-    console.log(this.state.scheme)
+  controllerChange(event: { target: { value: string } }, config: string) {
+    this.setState(
+      {
+        functionality: {
+          ...this.state.functionality,
+          [config]: {
+            ...this.state.functionality[config],
+            controller: event.target.value,
+            interval: clearInterval(this.state.functionality[config].interval),
+          },
+        },
+      },
+      () => {
+        if (this.state.functionality[config].toggled === "On") {
+          this.setState({
+            functionality: {
+              ...this.state.functionality,
+              [config]: {
+                ...this.state.functionality[config],
+                interval: this.controller(
+                  this.state.functionality[config].scheme,
+                  this.state.functionality[config].controller
+                ),
+              },
+            },
+          })
+        }
+      }
+    )
+  }
+
+  schemeChange(event: { target: { value: string } }, config: string) {
+    this.setState(
+      {
+        functionality: {
+          ...this.state.functionality,
+          [config]: {
+            ...this.state.functionality[config],
+            scheme: event.target.value,
+            interval: clearInterval(this.state.functionality[config].interval),
+          },
+        },
+      },
+      () => {
+        if (this.state.functionality[config].toggled === "On") {
+          this.setState({
+            functionality: {
+              ...this.state.functionality,
+              [config]: {
+                ...this.state.functionality[config],
+                interval: this.controller(
+                  this.state.functionality[config].scheme,
+                  this.state.functionality[config].controller
+                ),
+              },
+            },
+          })
+        }
+      }
+    )
+  }
+
+  buttonToggle(config: string) {
+    input = {}
+    // if toggling on
+    if (this.state.functionality[config].toggled === "Off") {
+      this.setState({
+        functionality: {
+          ...this.state.functionality,
+          [config]: {
+            ...this.state.functionality[config],
+            toggled: "On",
+            interval: this.controller(
+              this.state.functionality[config].scheme,
+              this.state.functionality[config].controller
+            ),
+          },
+        },
+      })
+    }
+    // if toggling off
+    else if (this.state.functionality[config].toggled === "On") {
+      this.setState({
+        functionality: {
+          ...this.state.functionality,
+          [config]: {
+            ...this.state.functionality[config],
+            toggled: "Off",
+            interval: clearInterval(this.state.functionality[config].interval),
+          },
+        },
+      })
+    }
   }
 
   render(): JSX.Element {
@@ -107,85 +236,47 @@ class ControlScheme extends Component<IProps, IState> {
       <div>
         <div style={label}>ControlScheme</div>
         <div style={container}>
-          {/* [{name: Drive}].map({return(this.state.controllerInput[name].controller = value)}) */}
-          <div style={readoutDisplay}>
-            Drive
-          </div>
-          <select>
-            <option value="Xbox 1">Xbox 1</option>
-            <option selected value="Xbox 2">Xbox 2</option>
-          </select>
-          <select value={this.state.scheme} onChange={this.schemeChange}>
-            {Object.keys(CONTROLLERINPUT).map(scheme => {
-              return(
-              <option value={scheme} >{scheme}</option>
-              )
-            })}
-          </select>
-          <ToggleButton>
-            {({ on, toggle,  }) => (
-              <button type="button" onClick={toggle}>
-                {on ? "On" : "Off"}
-                {on ? this.controller(0) : null}
-              </button>
-          )}
-          </ToggleButton>
-          <div style={readoutDisplay}>
-            Main Gimbal
-          </div>
-          <select>
-            <option value="Xbox 1">Xbox 1</option>
-            <option selected value="Xbox 2">Xbox 2</option>
-          </select>
-          <select>
-          {Object.keys(CONTROLLERINPUT).map(scheme2 => {
-              return(
-              <option value={scheme2} >{scheme2}</option>
-              )
-            })}
-          </select>
-          <ToggleButton>
-              {({ on, toggle}) => (
-                <button type="button" onClick={toggle}>
-                  {on ? "On" : "Off"}
-                  {on ? this.controller(1) : null}
+          {/* [{name: Drive}].map({return(this.state.controllerInput[name].controller = value)})["Xbox 1", "Xbox 2", "Xbox 3", "Flight Stick"] */}
+          {["Drive", "MainGimbal"].map(config => {
+            return (
+              <div key={config}>
+                <div style={readoutDisplay}>{config}</div>
+                <select
+                  value={this.state.functionality[config].controller}
+                  onChange={e => this.controllerChange(e, config)}
+                >
+                  {["Xbox 1", "Xbox 2", "Xbox 3", "Flight Stick"].map(
+                    controller => {
+                      return (
+                        <option value={controller} key={controller}>
+                          {controller}
+                        </option>
+                      )
+                    }
+                  )}
+                </select>
+                <select
+                  value={this.state.functionality[config].scheme}
+                  onChange={e => this.schemeChange(e, config)}
+                >
+                  {Object.keys(CONTROLLERINPUT).map(scheme => {
+                    return (
+                      <option value={scheme} key={scheme}>
+                        {scheme}
+                      </option>
+                    )
+                  })}
+                </select>
+                <button type="button" onClick={() => this.buttonToggle(config)}>
+                  {this.state.functionality[config].toggled}
                 </button>
-              )}
-          </ToggleButton>
+              </div>
+            )
+          })}
         </div>
       </div>
     )
   }
 }
 
-class ToggleButton extends ControlScheme {
-  state = {
-    on: false,
-  }
-
-  toggle = () => {
-    this.setState({
-      on: !this.state.on,
-    })
-    //using this to test how clicking the button interacts with this part in case it helps with preventing it from running
-    if(this.state.on){
-      console.log("OFF: ")
-      window.clearInterval(0)
-    }
-    else
-    {
-      console.log("ON: ")
-      {this.controller}
-    }
-
-  }
-
-  render() {
-    const { children } = this.props
-    return children({
-      on: this.state.on,
-      toggle: this.toggle,
-    })
-  }
-}
 export default ControlScheme

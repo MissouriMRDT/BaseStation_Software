@@ -24,7 +24,6 @@
     3: right stick up/down
 */
 
-
 export const CONTROLLERINPUT = {
   TankDrive: {
     LeftSpeed: { buttonType: "joystick", buttonIndex: 1 },
@@ -45,6 +44,10 @@ export const CONTROLLERINPUT = {
   ScienceControls: {
     yDirection: { buttonType: "joystick", buttonIndex: 1 },
     xDirection: { buttonType: "joystick", buttonIndex: 0 },
+    VacuumPulse: { buttonType: "button", buttonIndex: 0 },
+    Chem1: { buttonType: "button", buttonIndex: 2 },
+    Chem2: { buttonType: "button", buttonIndex: 3 },
+    Chem3: { buttonType: "button", buttonIndex: 1 },
   },
   ArmControls: {
     // some of these showed two instances of some buttons with the second one saying IK in the InputMangerConfig.cs
