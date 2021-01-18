@@ -116,7 +116,10 @@ interface Waypoint {
   onMap: boolean
 }
 
-interface IProps {}
+interface IProps {
+  onWaypointChange: (storedWaypoints: any) => void
+  currentCoords: { lat: number; long: number }
+}
 
 interface IState {
   storedWaypoints: any
@@ -127,8 +130,8 @@ interface IState {
   newWaypointCoords: any
 }
 
-class Angular extends Component<IProps, IState> {
-  constructor(props: any) {
+class Waypoints extends Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props)
     this.state = {
       storedWaypoints: {},
@@ -137,7 +140,7 @@ class Angular extends Component<IProps, IState> {
       newWaypointName: "",
       newWaypointCoords: {
         lat: "",
-        lon: "",
+        long: "",
       },
       coordinateFormat: "LatLong",
     }
@@ -156,33 +159,43 @@ class Angular extends Component<IProps, IState> {
       if (Object.keys(storedWaypoints).length) {
         const selectedWaypoint = Object.keys(storedWaypoints)[0]
         this.setState({ storedWaypoints, selectedWaypoint })
+        this.props.onWaypointChange(storedWaypoints)
       }
     }
   }
 
-  store(): void {
+  cascadeWaypoint(): void {
+    /* Function to be called on setState callback so that when setState has
+     * finished executing we can properly update the json file and trigger the
+     * parent function from props. File is created now if it doesn't already exist
+     */
+    this.props.onWaypointChange(this.state.storedWaypoints)
+    fs.writeFile(filepath, JSON.stringify(this.state.storedWaypoints, null, 2), err => {
+      if (err) throw err
+    })
+  }
+
+  store(name: string, coords: any): void {
     /* Adds the new waypoint to the select box and updates the json file
      */
     // If selectedWaypoint is still an empty string, this is a good time
     // to update it to a useful starting value
-    if (!this.state.newWaypointName) {
+    if (!name) {
       return
     }
-
-    const coords = this.state.newWaypointCoords
     let newWaypoint: Waypoint
     if (this.state.coordinateFormat === "LatLong") {
       newWaypoint = {
-        name: this.state.newWaypointName,
+        name,
         latitude: parseFloat(coords.lat),
-        longitude: parseFloat(coords.lon),
+        longitude: parseFloat(coords.long),
         color: "black",
         colorPicker: false,
         onMap: true,
       }
     } else {
       newWaypoint = {
-        name: this.state.newWaypointName,
+        name,
         latitude:
           parseFloat(coords.latD) +
           Math.sign(parseFloat(coords.latD)) * (parseFloat(coords.latM) / 60 + parseFloat(coords.latS) / 60 / 60),
@@ -201,24 +214,17 @@ class Angular extends Component<IProps, IState> {
         newWaypointName: "",
         newWaypointCoords: {
           lat: "",
-          lon: "",
+          long: "",
         },
         coordinateFormat: "LatLong",
         storedWaypoints: {
           // Spread to ensure all currently stored waypoint are kept
           // but the newest waypoint is added
           ...this.state.storedWaypoints,
-          [this.state.newWaypointName]: newWaypoint,
+          [name]: newWaypoint,
         },
       },
-      () => {
-        // function callback so that when setState has finished executing
-        // we can properly update the json file. File is created if now if
-        // it doesn't already exist
-        fs.writeFile(filepath, JSON.stringify(this.state.storedWaypoints), err => {
-          if (err) throw err
-        })
-      }
+      this.cascadeWaypoint
     )
   }
 
@@ -227,22 +233,29 @@ class Angular extends Component<IProps, IState> {
      * and properly updates the json file (see store() for more detailed comments)
      */
     const { storedWaypoints } = this.state
-    delete storedWaypoints[this.state.selectedWaypoint]
 
-    // Since the selectedPosition was just deleted, we want to grab a new
-    // value. We grab the first key if one exists, or if not default to ""
-    const selectedWaypoint = Object.keys(storedWaypoints).length ? Object.keys(storedWaypoints)[0] : ""
+    // Since the selectedPosition is to be deleted, we want to grab a new
+    // value. We grab the next key if one exists, or if not the previous key,
+    // or if not default to ""
+    const waypoints = Object.keys(storedWaypoints)
+    const index = waypoints.indexOf(this.state.selectedWaypoint)
+    let newSelectedWaypoint: string
+    if (waypoints.length > index + 1) {
+      newSelectedWaypoint = waypoints[index + 1]
+    } else if (waypoints.length > index) {
+      newSelectedWaypoint = waypoints[index - 1]
+    } else {
+      newSelectedWaypoint = ""
+    }
+
+    delete storedWaypoints[this.state.selectedWaypoint]
 
     this.setState(
       {
         storedWaypoints,
-        selectedWaypoint,
+        selectedWaypoint: newSelectedWaypoint,
       },
-      () => {
-        fs.writeFile(filepath, JSON.stringify(this.state.storedWaypoints), err => {
-          if (err) throw err
-        })
-      }
+      this.cascadeWaypoint
     )
   }
 
@@ -259,19 +272,9 @@ class Angular extends Component<IProps, IState> {
     let newWaypointCoords
     const coordinateFormat = event.target.value
     if (coordinateFormat === "LatLong") {
-      newWaypointCoords = {
-        lat: "",
-        lon: "",
-      }
+      newWaypointCoords = { lat: "", long: "" }
     } else if (coordinateFormat === "DMS") {
-      newWaypointCoords = {
-        latD: "",
-        latM: "",
-        latS: "",
-        lonD: "",
-        lonM: "",
-        lonS: "",
-      }
+      newWaypointCoords = { latD: "", latM: "", latS: "", lonD: "", lonM: "", lonS: "" }
     }
     this.setState({
       newWaypointCoords,
@@ -290,11 +293,7 @@ class Angular extends Component<IProps, IState> {
           },
         },
       },
-      () => {
-        fs.writeFile(filepath, JSON.stringify(this.state.storedWaypoints), err => {
-          if (err) throw err
-        })
-      }
+      this.cascadeWaypoint
     )
   }
 
@@ -310,11 +309,7 @@ class Angular extends Component<IProps, IState> {
           },
         },
       },
-      () => {
-        fs.writeFile(filepath, JSON.stringify(this.state.storedWaypoints), err => {
-          if (err) throw err
-        })
-      }
+      this.cascadeWaypoint
     )
   }
 
@@ -329,11 +324,7 @@ class Angular extends Component<IProps, IState> {
           },
         },
       },
-      () => {
-        fs.writeFile(filepath, JSON.stringify(this.state.storedWaypoints), err => {
-          if (err) throw err
-        })
-      }
+      this.cascadeWaypoint
     )
   }
 
@@ -346,7 +337,11 @@ class Angular extends Component<IProps, IState> {
             <button type="button" style={buttons} onClick={() => this.setState({ addingWaypoint: true })}>
               Add Waypoint
             </button>
-            <button type="button" style={buttons} onClick={this.saveCurrent}>
+            <button
+              type="button"
+              style={buttons}
+              onClick={() => this.store(new Date().toLocaleTimeString(), this.props.currentCoords)}
+            >
               Save Current
             </button>
             <button type="button" style={buttons} onClick={this.remove}>
@@ -420,88 +415,47 @@ class Angular extends Component<IProps, IState> {
                 <option value="DMS">DMS</option>
               </select>
               {this.state.coordinateFormat === "LatLong" ? (
-                <div>
-                  <div style={row}>
-                    <div style={title}>Latitude</div>
-                    <input
-                      type="text"
-                      style={input}
-                      value={this.state.newWaypointCoords.lat}
-                      onChange={e => this.updateCoords(e, "lat")}
-                    />
-                  </div>
-                  <div style={row}>
-                    <div style={title}>Longitude</div>
-                    <input
-                      type="text"
-                      style={input}
-                      value={this.state.newWaypointCoords.lon}
-                      onChange={e => this.updateCoords(e, "lon")}
-                    />
-                  </div>
-                </div>
+                [
+                  { label: "Latitude", short: "lat" },
+                  { label: "Longitude", short: "long" },
+                ].map((axis: any) => {
+                  return (
+                    <div style={row} key={axis.label}>
+                      <div style={title}>{axis.label}</div>
+                      <input
+                        type="text"
+                        style={input}
+                        value={this.state.newWaypointCoords[axis.short]}
+                        onChange={e => this.updateCoords(e, axis.short)}
+                      />
+                    </div>
+                  )
+                })
               ) : (
                 <div style={row}>
-                  <div>
-                    <div>Latitude</div>
-                    <div style={row}>
-                      <div style={title}>Degrees</div>
-                      <input
-                        type="text"
-                        style={input}
-                        value={this.state.newWaypointCoords.latD}
-                        onChange={e => this.updateCoords(e, "latD")}
-                      />
-                    </div>
-                    <div style={row}>
-                      <div style={title}>Minutes</div>
-                      <input
-                        type="text"
-                        style={input}
-                        value={this.state.newWaypointCoords.latM}
-                        onChange={e => this.updateCoords(e, "latM")}
-                      />
-                    </div>
-                    <div style={row}>
-                      <div style={title}>Seconds</div>
-                      <input
-                        type="text"
-                        style={input}
-                        value={this.state.newWaypointCoords.latS}
-                        onChange={e => this.updateCoords(e, "latS")}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <div>Longitude</div>
-                    <div style={row}>
-                      <div style={title}>Degrees</div>
-                      <input
-                        type="text"
-                        style={input}
-                        value={this.state.newWaypointCoords.lonD}
-                        onChange={e => this.updateCoords(e, "lonD")}
-                      />
-                    </div>
-                    <div style={row}>
-                      <div style={title}>Minutes</div>
-                      <input
-                        type="text"
-                        style={input}
-                        value={this.state.newWaypointCoords.lonM}
-                        onChange={e => this.updateCoords(e, "lonM")}
-                      />
-                    </div>
-                    <div style={row}>
-                      <div style={title}>Seconds</div>
-                      <input
-                        type="text"
-                        style={input}
-                        value={this.state.newWaypointCoords.lonS}
-                        onChange={e => this.updateCoords(e, "lonS")}
-                      />
-                    </div>
-                  </div>
+                  {[
+                    { label: "Latitude", short: "lat" },
+                    { label: "Longitude", short: "long" },
+                  ].map((axis: any) => {
+                    return (
+                      <div key={axis.label}>
+                        <div>{axis.label}</div>
+                        {["Degrees", "Minutes", "Seconds"].map((unit: string) => {
+                          return (
+                            <div style={row} key={unit}>
+                              <div style={title}>{unit}</div>
+                              <input
+                                type="text"
+                                style={input}
+                                value={this.state.newWaypointCoords[axis.short + unit[0]]}
+                                onChange={e => this.updateCoords(e, axis.short + unit[0])}
+                              />
+                            </div>
+                          )
+                        })}
+                      </div>
+                    )
+                  })}
                 </div>
               )}
               <div style={row}>
@@ -520,7 +474,11 @@ class Angular extends Component<IProps, IState> {
                 >
                   Cancel
                 </button>
-                <button type="button" style={{ ...modalButton, backgroundColor: "green" }} onClick={this.store}>
+                <button
+                  type="button"
+                  style={{ ...modalButton, backgroundColor: "green" }}
+                  onClick={() => this.store(this.state.newWaypointName, this.state.newWaypointCoords)}
+                >
                   Add
                 </button>
               </div>
@@ -532,4 +490,4 @@ class Angular extends Component<IProps, IState> {
   }
 }
 
-export default Angular
+export default Waypoints

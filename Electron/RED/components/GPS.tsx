@@ -29,7 +29,9 @@ const label: CSS.Properties = {
   color: "white",
 }
 
-interface IProps {}
+interface IProps {
+  onCoordsChange: (lat: number, long: number) => void
+}
 
 interface IState {
   fixObtained: boolean
@@ -37,7 +39,7 @@ interface IState {
   satelliteCount: number
   odometer: number
   currentLat: number
-  currentLon: number
+  currentLong: number
   lidar: number
 }
 
@@ -50,7 +52,7 @@ class GPS extends Component<IProps, IState> {
       satelliteCount: 255,
       odometer: 0,
       currentLat: 0,
-      currentLon: 0,
+      currentLong: 0,
       lidar: 0.0,
     }
 
@@ -69,10 +71,13 @@ class GPS extends Component<IProps, IState> {
   }
 
   GPSPosition(data: any) {
+    const currentLat = data[0] / 10000000
+    const currentLong = data[1] / 10000000
     this.setState({
-      currentLat: data[0] / 10000000,
-      currentLon: data[1] / 10000000,
+      currentLat,
+      currentLong,
     })
+    this.props.onCoordsChange(currentLat, currentLong)
   }
 
   render(): JSX.Element {
@@ -86,7 +91,7 @@ class GPS extends Component<IProps, IState> {
             { title: "Satellite Count", value: this.state.satelliteCount },
             { title: "Odometer (Miles)", value: this.state.odometer },
             { title: "Current Lat.", value: this.state.currentLat },
-            { title: "Current Lon.", value: this.state.currentLon },
+            { title: "Current Long.", value: this.state.currentLong },
             { title: "Lidar", value: this.state.lidar },
           ].map(datum => {
             const { title, value } = datum
