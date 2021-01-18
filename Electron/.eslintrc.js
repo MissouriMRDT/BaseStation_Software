@@ -15,6 +15,7 @@ module.exports = {
     "react/destructuring-assignment": "off",
     "@typescript-eslint/no-empty-interface": "off",
     "react/no-access-state-in-setstate": "off",
+    "no-restricted-syntax": "off",
     "no-plusplus": "off",
     semi: [2, "never"],
     "react/jsx-filename-extension": [
