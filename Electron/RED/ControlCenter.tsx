@@ -1,5 +1,7 @@
 import React, { Component } from "react"
 import { rovecomm } from "../Core/RoveProtocol/Rovecomm"
+import RAM from "../RAM/RAM"
+import RON from "../RON/RON"
 import GPS from "./components/GPS"
 import Log from "./components/Log"
 import NewWindowComponent from "../Core/Window"
@@ -14,7 +16,7 @@ interface IState {
 }
 
 class ControlCenter extends Component<IProps, IState> {
-  constructor(props: any) {
+  constructor(props: IProps) {
     super(props)
     this.state = {
       ronOpen: false,

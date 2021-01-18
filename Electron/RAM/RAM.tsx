@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import SensorGraphs from "./components/SensorGraphs"
 import CSS from "csstype"
 
 const RON: CSS.Properties = {
@@ -29,5 +30,4 @@ class RoverAttachmentManager extends Component<IProps, IState> {
     )
   }
 }
-
 export default RoverAttachmentManager
