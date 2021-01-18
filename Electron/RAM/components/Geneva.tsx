@@ -84,7 +84,13 @@ class Geneva extends Component<IProps, IState> {
       return
     }
     rovecomm.sendCommand("GenevaIncrementPosition", [-1])
-    this.setState({ tube: (this.state.tube - 1) % 8, buttonsDisabled: true })
+    // Javascript doesn't have a mod operator, only a remainder operator
+    // Since we want this value to wrap -1 to 7, we need mod, which can be
+    // defined as ((n%m)+m)%m
+    this.setState({
+      tube: (((this.state.tube - 1) % 8) + 8) % 8,
+      buttonsDisabled: false,
+    })
   }
 
   rotateRight(): void {
@@ -92,7 +98,10 @@ class Geneva extends Component<IProps, IState> {
       return
     }
     rovecomm.sendCommand("GenevaIncrementPosition", [1])
-    this.setState({ tube: (this.state.tube + 1) % 8, buttonsDisabled: true })
+    this.setState({
+      tube: (((this.state.tube + 1) % 8) + 8) % 8,
+      buttonsDisabled: false,
+    })
   }
 
   updatePosition(data: any): void {
