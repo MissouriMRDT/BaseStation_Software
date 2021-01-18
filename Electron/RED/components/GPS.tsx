@@ -30,7 +30,9 @@ const label: CSS.Properties = {
   color: "white",
 }
 
-interface IProps {}
+interface IProps {
+  onCoordsChange: (lat: number, lon: number) => void
+}
 
 interface IState {
   fixObtained: boolean
@@ -69,10 +71,14 @@ class GPS extends Component<IProps, IState> {
   }
 
   GPSPosition(data: any) {
+    // We divide by 10000000 because currently waypoints are sent as shifted INT32s, not floats
+    const currentLat = data[0] / 10000000
+    const currentLon = data[1] / 10000000
     this.setState({
-      currentLat: data[0] / 10000000,
-      currentLon: data[1] / 10000000,
+      currentLat,
+      currentLon,
     })
+    this.props.onCoordsChange(currentLat, currentLon)
   }
 
   render(): JSX.Element {

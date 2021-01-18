@@ -17,16 +17,13 @@ module.exports = {
     "react/no-access-state-in-setstate": "off",
     "no-restricted-syntax": "off",
     "no-plusplus": "off",
-    "func-names": "off",
     "react/jsx-curly-newline": "off",
     "jsx-a11y/no-autofocus": "off",
+    "func-names": "off",
     "no-restricted-syntax": "off",
     "no-else-return": "off",
     semi: [2, "never"],
-    "react/jsx-filename-extension": [
-      1,
-      { extensions: [".js", ".jsx", ".ts", ".tsx"] },
-    ],
+    "react/jsx-filename-extension": [1, { extensions: [".js", ".jsx", ".ts", ".tsx"] }],
     "import/extensions": [
       "error",
       "ignorePackages",
