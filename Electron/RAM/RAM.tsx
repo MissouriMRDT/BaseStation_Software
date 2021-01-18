@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import Geneva from "./components/Geneva"
 import SensorData from "./components/SensorData"
 import SensorGraphs from "./components/SensorGraphs"
 import CSS from "csstype"
