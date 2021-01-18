@@ -41,7 +41,7 @@ export enum SystemPackets {
 export const headerLength = 5
 
 // Data sizes of the corresponding datatype enumeration
-export const dataSizes = [1, 1, 2, 2, 4, 4, 2]
+export const dataSizes = [1, 1, 2, 2, 4, 4, 4]
 
 export const RovecommManifest = {
   Drive: {

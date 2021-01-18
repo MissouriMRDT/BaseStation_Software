@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import Angular from "./components/angular"
 
 import Spectrometer from "./components/Spectrometer"
 import SpectrometerViewer from "./components/SpectrometerViewer"
