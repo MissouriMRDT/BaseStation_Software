@@ -118,7 +118,7 @@ interface Waypoint {
 
 interface IProps {
   onWaypointChange: (storedWaypoints: any) => void
-  currentCoords: { lat: number; long: number }
+  currentCoords: { lat: number; lon: number }
 }
 
 interface IState {
@@ -140,9 +140,9 @@ class Waypoints extends Component<IProps, IState> {
       newWaypointName: "",
       newWaypointCoords: {
         lat: "",
-        long: "",
+        lon: "",
       },
-      coordinateFormat: "LatLong",
+      coordinateFormat: "LatLon",
     }
     this.store = this.store.bind(this)
     this.remove = this.remove.bind(this)
@@ -184,11 +184,11 @@ class Waypoints extends Component<IProps, IState> {
       return
     }
     let newWaypoint: Waypoint
-    if (this.state.coordinateFormat === "LatLong") {
+    if (this.state.coordinateFormat === "LatLon") {
       newWaypoint = {
         name,
         latitude: parseFloat(coords.lat),
-        longitude: parseFloat(coords.long),
+        longitude: parseFloat(coords.lon),
         color: "black",
         colorPicker: false,
         onMap: true,
@@ -214,9 +214,9 @@ class Waypoints extends Component<IProps, IState> {
         newWaypointName: "",
         newWaypointCoords: {
           lat: "",
-          long: "",
+          lon: "",
         },
-        coordinateFormat: "LatLong",
+        coordinateFormat: "LatLon",
         storedWaypoints: {
           // Spread to ensure all currently stored waypoint are kept
           // but the newest waypoint is added
@@ -271,8 +271,8 @@ class Waypoints extends Component<IProps, IState> {
   changeFormat(event: { target: { value: string } }): void {
     let newWaypointCoords
     const coordinateFormat = event.target.value
-    if (coordinateFormat === "LatLong") {
-      newWaypointCoords = { lat: "", long: "" }
+    if (coordinateFormat === "LatLon") {
+      newWaypointCoords = { lat: "", lon: "" }
     } else if (coordinateFormat === "DMS") {
       newWaypointCoords = { latD: "", latM: "", latS: "", lonD: "", lonM: "", lonS: "" }
     }
@@ -411,13 +411,13 @@ class Waypoints extends Component<IProps, IState> {
                 />
               </div>
               <select style={singleSelect} value={this.state.coordinateFormat} onChange={e => this.changeFormat(e)}>
-                <option value="LatLong">LatLong</option>
+                <option value="LatLon">LatLon</option>
                 <option value="DMS">DMS</option>
               </select>
-              {this.state.coordinateFormat === "LatLong" ? (
+              {this.state.coordinateFormat === "LatLon" ? (
                 [
                   { label: "Latitude", short: "lat" },
-                  { label: "Longitude", short: "long" },
+                  { label: "Longitude", short: "lon" },
                 ].map((axis: any) => {
                   return (
                     <div style={row} key={axis.label}>
@@ -435,7 +435,7 @@ class Waypoints extends Component<IProps, IState> {
                 <div style={row}>
                   {[
                     { label: "Latitude", short: "lat" },
-                    { label: "Longitude", short: "long" },
+                    { label: "Longitude", short: "lon" },
                   ].map((axis: any) => {
                     return (
                       <div key={axis.label}>
