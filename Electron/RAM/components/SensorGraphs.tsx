@@ -106,30 +106,12 @@ class SensorGraphs extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props)
     this.state = {
-      methane: [
-        { x: new Date(0), y: 0 },
-        { x: new Date(60000), y: 1.5 },
-      ],
-      co2: [
-        { x: new Date(0), y: 10 },
-        { x: new Date(60000), y: 11 },
-      ],
-      temperature: [
-        { x: new Date(0), y: 20 },
-        { x: new Date(60000), y: 21 },
-      ],
-      o2PP: [
-        { x: new Date(0), y: 5 },
-        { x: new Date(60000), y: 15 },
-      ],
-      o2Concentration: [
-        { x: new Date(0), y: 7 },
-        { x: new Date(60000), y: 17 },
-      ],
-      o2Pressure: [
-        { x: new Date(0), y: 9 },
-        { x: new Date(60000), y: 16 },
-      ],
+      methane: [],
+      co2: [],
+      temperature: [],
+      o2PP: [],
+      o2Concentration: [],
+      o2Pressure: [],
       sensor: "All",
       crosshairValues: [],
     }
