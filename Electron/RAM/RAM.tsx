@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import CSS from "csstype"
 import ControlMultipliers from "./components/ControlMultipliers"
 import IK from "./components/IK"
 import Angular from "./components/angular"
@@ -7,7 +8,6 @@ import SpectrometerViewer from "./components/SpectrometerViewer"
 import Geneva from "./components/Geneva"
 import SensorData from "./components/SensorData"
 import SensorGraphs from "./components/SensorGraphs"
-import CSS from "csstype"
 
 const RON: CSS.Properties = {
   display: "flex",
@@ -30,9 +30,14 @@ class RoverAttachmentManager extends Component<IProps, IState> {
   render(): JSX.Element {
     return (
       <div style={RON}>
-        <button onClick={() => console.log("RAM clicked")} type="button">
-          Sample RAM module
-        </button>
+        <Angular />
+        <ControlMultipliers />
+        <Geneva />
+        <IK />
+        <SensorData />
+        <SensorGraphs />
+        <Spectrometer />
+        <SpectrometerViewer />
       </div>
     )
   }
