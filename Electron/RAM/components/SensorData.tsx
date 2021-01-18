@@ -158,7 +158,7 @@ class SensorData extends Component<IProps, IState> {
   render(): JSX.Element {
     return (
       <div id="canvas">
-        <div style={label}>Sensor Graphs</div>
+        <div style={label}>Sensor Data</div>
         <div style={container}>
           <div style={grid}>
             <div style={row}>
