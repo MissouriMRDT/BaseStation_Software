@@ -5,10 +5,7 @@
     <title>Rover Engagement Display</title>
     <script>
       ;(() => {
-        if (
-          typeof process !== 'object' ||
-          (typeof process === 'object' && !process.env.START_HOT)
-        ) {
+        if (typeof process !== 'object' || (typeof process === 'object' && !process.env.START_HOT)) {
           const link = document.createElement('link')
           link.rel = 'stylesheet'
           link.href = './dist/style.css'
@@ -20,6 +17,8 @@
   </head>
   <body>
     <div id="root"></div>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
     <script>
       if (typeof process === 'object') {
         const scripts = []
@@ -38,11 +37,7 @@
         }
 
         if (scripts.length) {
-          document.write(
-            scripts
-              .map(script => `<script defer src="${script}"><\/script>`)
-              .join('')
-          )
+          document.write(scripts.map(script => `<script defer src="${script}"><\/script>`).join(''))
         }
       }
     </script>
