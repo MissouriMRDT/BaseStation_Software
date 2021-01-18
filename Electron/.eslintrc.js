@@ -17,6 +17,7 @@ module.exports = {
     "react/no-access-state-in-setstate": "off",
     "no-restricted-syntax": "off",
     "no-plusplus": "off",
+    "func-names": "off",
     "react/jsx-curly-newline": "off",
     "jsx-a11y/no-autofocus": "off",
     "no-restricted-syntax": "off",

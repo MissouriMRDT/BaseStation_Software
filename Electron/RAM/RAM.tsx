@@ -1,6 +1,6 @@
 import React, { Component } from "react"
+import IK from "./components/IK"
 import Angular from "./components/angular"
-
 import Spectrometer from "./components/Spectrometer"
 import SpectrometerViewer from "./components/SpectrometerViewer"
 import Geneva from "./components/Geneva"
