@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import CSS from "csstype"
 import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
-import { DataTypes, DATAID } from "../../Core/RoveProtocol/RovecommManifest"
+import { DataTypes, RovecommManifest } from "../../Core/RoveProtocol/RovecommManifest"
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
@@ -73,8 +73,8 @@ class CustomPackets extends Component<IProps, IState> {
 
   boardChange(event: { target: { value: string } }): void {
     const board = event.target.value
-    const command = Object.keys(DATAID[board].Commands)[0]
-    const { dataType, dataCount } = DATAID[board].Commands[command]
+    const command = Object.keys(RovecommManifest[board].Commands)[0]
+    const { dataType, dataCount } = RovecommManifest[board].Commands[command]
     const value = Array(dataCount).fill(0)
     this.setState({
       board,
@@ -86,7 +86,7 @@ class CustomPackets extends Component<IProps, IState> {
   }
 
   commandChange(event: { target: { value: string } }): void {
-    const { dataType, dataCount } = DATAID[this.state.board].Commands[event.target.value]
+    const { dataType, dataCount } = RovecommManifest[this.state.board].Commands[event.target.value]
     const value = Array(dataCount).fill(0)
     this.setState({
       command: event.target.value,
@@ -118,13 +118,13 @@ class CustomPackets extends Component<IProps, IState> {
               title: "Board",
               value: this.state.board,
               onChange: this.boardChange,
-              list: DATAID,
+              list: RovecommManifest,
             },
             {
               title: "Commands",
               value: this.state.command,
               onChange: this.commandChange,
-              list: DATAID[this.state.board].Commands,
+              list: RovecommManifest[this.state.board].Commands,
             },
           ].map(select => {
             const { title, value, onChange, list } = select

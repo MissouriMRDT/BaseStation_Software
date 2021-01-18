@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import CSS from "csstype"
 import { exec } from "child_process"
 import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
-import { DATAID, NetworkDevices } from "../../Core/RoveProtocol/RovecommManifest"
+import { RovecommManifest, NetworkDevices } from "../../Core/RoveProtocol/RovecommManifest"
 import { ColorConverter } from "../../Core/ColorConverter"
 
 const container: CSS.Properties = {
@@ -50,7 +50,7 @@ class PingMap extends Component<IProps, IState> {
     Object.keys(NetworkDevices).forEach(device => {
       ping[device] = -1
     })
-    Object.keys(DATAID).forEach(board => {
+    Object.keys(RovecommManifest).forEach(board => {
       ping[board] = -1
     })
     this.state = {
@@ -175,7 +175,7 @@ class PingMap extends Component<IProps, IState> {
     context.lineTo(centerW, 380)
     context.stroke()
 
-    const boards = Object.keys(DATAID)
+    const boards = Object.keys(RovecommManifest)
     const locations = [
       { x: centerW - 20, y: 540 },
       { x: centerW + 20, y: 540 },
@@ -232,7 +232,7 @@ class PingMap extends Component<IProps, IState> {
     // If device is not a network device, it must be a board
     let deviceInfo = NetworkDevices[device]
     if (deviceInfo === undefined) {
-      deviceInfo = DATAID[device]
+      deviceInfo = RovecommManifest[device]
     }
     const ip = deviceInfo.Ip
 

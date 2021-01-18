@@ -43,7 +43,7 @@ export const headerLength = 5
 // Data sizes of the corresponding datatype enumeration
 export const dataSizes = [1, 1, 2, 2, 4, 4, 2]
 
-export const DATAID = {
+export const RovecommManifest = {
   Drive: {
     Ip: "192.168.1.134",
     Port: 11001,

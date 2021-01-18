@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import CSS from "csstype"
 import ReactTable from "react-table-v6"
 import "../../node_modules/react-table-v6/react-table.css"
-import { DATAID } from "../../Core/RoveProtocol/RovecommManifest"
+import { RovecommManifest } from "../../Core/RoveProtocol/RovecommManifest"
 import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
 
 const h1Style: CSS.Properties = {
@@ -109,7 +109,7 @@ class PacketLogger extends Component<IProps, IState> {
           <div style={selectbox}>
             <div style={h1Style}>Board:</div>
             <select value={this.state.board} onChange={e => this.boardChange(e)} style={selector}>
-              {Object.keys(DATAID).map(item => {
+              {Object.keys(RovecommManifest).map(item => {
                 return (
                   <option key={item} value={item}>
                     {item}

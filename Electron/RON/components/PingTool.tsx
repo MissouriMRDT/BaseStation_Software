@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import CSS from "csstype"
 import { exec } from "child_process"
 import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
-import { DATAID, NetworkDevices } from "../../Core/RoveProtocol/RovecommManifest"
+import { RovecommManifest, NetworkDevices } from "../../Core/RoveProtocol/RovecommManifest"
 import { ColorStyleConverter } from "../../Core/ColorConverter"
 
 const h1Style: CSS.Properties = {
@@ -87,7 +87,7 @@ class PingTool extends Component<IProps, IState> {
     Object.keys(NetworkDevices).forEach(device => {
       devices[device] = { autoPing: false, ping: -1 }
     })
-    Object.keys(DATAID).forEach(board => {
+    Object.keys(RovecommManifest).forEach(board => {
       devices[board] = { autoPing: false, ping: -1 }
     })
     this.state = {
@@ -105,7 +105,7 @@ class PingTool extends Component<IProps, IState> {
     // If device is not a network device, it must be a board
     let deviceInfo = NetworkDevices[device]
     if (deviceInfo === undefined) {
-      deviceInfo = DATAID[device]
+      deviceInfo = RovecommManifest[device]
     }
     const ip = deviceInfo.Ip
 
@@ -117,7 +117,6 @@ class PingTool extends Component<IProps, IState> {
       pingCommand = `ping -c 1 ${ip}`
     }
 
-    console.log(`Pinging ${ip}...`)
     exec(pingCommand, (error, stdout, stderr) => {
       // -1 means not reachable
       let delay = -1
@@ -192,7 +191,7 @@ class PingTool extends Component<IProps, IState> {
         <div style={container}>
           {[
             { category: "Network", list: NetworkDevices, rove: hid },
-            { category: "Boards", list: DATAID, rove: but },
+            { category: "Boards", list: RovecommManifest, rove: but },
           ].map(item => {
             const { category, list, rove } = item
             return (
