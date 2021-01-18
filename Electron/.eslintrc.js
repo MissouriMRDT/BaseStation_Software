@@ -15,9 +15,12 @@ module.exports = {
     "react/destructuring-assignment": "off",
     "@typescript-eslint/no-empty-interface": "off",
     "react/no-access-state-in-setstate": "off",
+    "no-restricted-syntax": "off",
     "no-plusplus": "off",
     "react/jsx-curly-newline": "off",
     "jsx-a11y/no-autofocus": "off",
+    "no-restricted-syntax": "off",
+    "no-else-return": "off",
     semi: [2, "never"],
     "react/jsx-filename-extension": [
       1,
