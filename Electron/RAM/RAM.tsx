@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import ControlMultipliers from "./components/ControlMultipliers"
 import IK from "./components/IK"
 import Angular from "./components/angular"
 import Spectrometer from "./components/Spectrometer"
