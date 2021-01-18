@@ -1,10 +1,12 @@
 import React, { Component } from "react"
+import CSS from "csstype"
 import { rovecomm } from "../Core/RoveProtocol/Rovecomm"
 import RAM from "../RAM/RAM"
 import RON from "../RON/RON"
 import GPS from "./components/GPS"
 import Log from "./components/Log"
 import NewWindowComponent from "../Core/Window"
+import Spectrometer from "../RAM/components/Spectrometer"
 import RoverOverviewOfNetwork from "../RON/RON"
 import RoverAttachmentManager from "../RAM/RAM"
 
@@ -62,31 +64,5 @@ class ControlCenter extends Component<IProps, IState> {
     )
   }
 }
-/*
-      <div>
-        <Log />
-        <GPS />
-        <button
-          type="button"
-          onClick={rovecomm.resubscribe}
-          style={{ width: "100px" }}
-        >
-          Resubscribe All
-        </button>
-        <button
-          type="button"
-          onClick={rovecomm.resubscribe}
-          style={{ width: "100px" }}
-        >
-          Resubscribe All
-        </button>
-        <button
-          type="button"
-          onClick={rovecomm.resubscribe}
-          style={{ width: "100px" }}
-        >
-          Resubscribe All
-        </button>
-      </div> */
 
 export default ControlCenter

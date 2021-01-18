@@ -29,10 +29,7 @@ export default class NewWindowComponent extends Component<IProps, IState> {
 
     this.reactTableLink.type = "text/css"
     this.reactTableLink.rel = "stylesheet"
-
     this.reactTableLink.href = "https://unpkg.com/react-table-v6@latest/react-table.css"
-
-
     this.reactVisLink.type = "text/css"
     this.reactVisLink.rel = "stylesheet"
     this.reactVisLink.href = "https://unpkg.com/react-vis/dist/style.css"
