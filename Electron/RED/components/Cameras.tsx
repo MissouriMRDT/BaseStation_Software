@@ -26,6 +26,10 @@ const label: CSS.Properties = {
   zIndex: 1,
   color: "white",
 }
+const row: CSS.Properties = {
+  display: "flex",
+  flexDirection: "row",
+}
 
 interface IProps {
   defaultCamera: number
@@ -59,18 +63,25 @@ class Cameras extends Component<IProps, IState> {
       <div>
         <div style={label}>Cameras</div>
         <div style={container}>
-          {[1, 2, 3, 4, 5, 6, 7, 8].map(num => {
-            return (
-              <button
-                type="button"
-                key={num}
-                onClick={() => this.setState({ currentCamera: num })}
-              >
-                <h1 style={h1Style}>{num}</h1>
-              </button>
-            )
-          })}
-          <iframe title="test" src={this.ConstructAddress()} />
+          <div style={row}>
+            {[1, 2, 3, 4, 5, 6, 7, 8].map(num => {
+              return (
+                <button
+                  type="button"
+                  key={num}
+                  onClick={() => this.setState({ currentCamera: num })}
+                >
+                  <h1 style={h1Style}>{num}</h1>
+                </button>
+              )
+            })}
+          </div>
+          <iframe
+            title="test"
+            src={this.ConstructAddress()}
+            width="640"
+            height="500"
+          />
         </div>
       </div>
     )
