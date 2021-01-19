@@ -1,8 +1,5 @@
 import React, { Component } from "react"
-import CSS from "csstype"
 import { rovecomm } from "../Core/RoveProtocol/Rovecomm"
-import RAM from "../RAM/RAM"
-import RON from "../RON/RON"
 import GPS from "./components/GPS"
 import Log from "./components/Log"
 import Map from "./components/Map"
@@ -11,12 +8,19 @@ import NewWindowComponent from "../Core/Window"
 import Spectrometer from "../RAM/components/Spectrometer"
 import RoverOverviewOfNetwork from "../RON/RON"
 import RoverAttachmentManager from "../RAM/RAM"
+import Angular from "../RAM/components/angular"
+import ControlMultipliers from "../RAM/components/ControlMultipliers"
+import Geneva from "../RAM/components/Geneva"
+import IK from "../RAM/components/IK"
+import SensorData from "../RAM/components/SensorData"
+import SensorGraphs from "../RAM/components/SensorGraphs"
+import SpectrometerViewer from "../RAM/components/SpectrometerViewer"
 
 interface IProps {}
 
 interface IState {
   storedWaypoints: any
-  currentCoords: { lat: number; long: number }
+  currentCoords: { lat: number; lon: number }
   ronOpen: boolean
   ramOpen: boolean
 }
@@ -28,7 +32,7 @@ class ControlCenter extends Component<IProps, IState> {
     super(props)
     this.state = {
       storedWaypoints: {},
-      currentCoords: { lat: 0, long: 0 },
+      currentCoords: { lat: 0, lon: 0 },
       ronOpen: false,
       ramOpen: false,
     }
@@ -42,9 +46,9 @@ class ControlCenter extends Component<IProps, IState> {
     })
   }
 
-  updateCoords(lat: any, long: any): void {
+  updateCoords(lat: any, lon: any): void {
     this.setState({
-      currentCoords: { lat, long },
+      currentCoords: { lat, lon },
     })
   }
 
@@ -84,6 +88,14 @@ class ControlCenter extends Component<IProps, IState> {
           storedWaypoints={this.state.storedWaypoints}
           store={(name: string, coords: any) => this.waypointsInstance.store(name, coords)}
         />
+        <Angular />
+        <ControlMultipliers />
+        <Geneva />
+        <IK />
+        <SensorData />
+        <SensorGraphs />
+        <Spectrometer />
+        <SpectrometerViewer />
         <button type="button" onClick={rovecomm.resubscribe} style={{ width: "100px" }}>
           Resubscribe All
         </button>
