@@ -86,6 +86,7 @@ class ControlCenter extends Component<IProps, IState> {
         />
         <Map
           storedWaypoints={this.state.storedWaypoints}
+          currentCoords={this.state.currentCoords}
           store={(name: string, coords: any) => this.waypointsInstance.store(name, coords)}
         />
         <Angular />

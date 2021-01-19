@@ -36,12 +36,13 @@ const mapStyle: CSS.Properties = {
 
 interface IProps {
   storedWaypoints: any
+  currentCoords: { lat: number; lon: number }
   store: (name: string, coords: any) => void
 }
 
 interface IState {
-  currentLat: number
-  currentLon: number
+  centerLat: number
+  centerLon: number
   zoom: number
   maxZoom: number
   heading: number
@@ -52,8 +53,8 @@ class Map extends Component<IProps, IState> {
     super(props)
     this.state = {
       // Default map to near the SDELC
-      currentLat: 37.951631,
-      currentLon: -91.770001,
+      centerLat: 37.951631,
+      centerLon: -91.770001,
       zoom: 15,
       maxZoom: 19,
       heading: 0,
@@ -83,7 +84,7 @@ class Map extends Component<IProps, IState> {
   }
 
   render(): JSX.Element {
-    const position: LatLngTuple = [this.state.currentLat, this.state.currentLon]
+    const position: LatLngTuple = [this.state.centerLat, this.state.centerLon]
     return (
       <div>
         <div style={label}>Map</div>
@@ -105,10 +106,12 @@ class Map extends Component<IProps, IState> {
                 maxZoom={this.state.maxZoom}
                 url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
               />
-              <Marker
-                position={[this.state.currentLat, this.state.currentLon]}
-                icon={compassNeedle(this.state.heading)}
-              />
+              {this.props.currentCoords.lat && this.props.currentCoords.lon && (
+                <Marker
+                  position={[this.props.currentCoords.lat, this.props.currentCoords.lon]}
+                  icon={compassNeedle(this.state.heading)}
+                />
+              )}
               {Object.keys(this.props.storedWaypoints).map((waypointName: string) => {
                 const waypoint = this.props.storedWaypoints[waypointName]
                 const post: LatLngTuple = [waypoint.latitude, waypoint.longitude]
