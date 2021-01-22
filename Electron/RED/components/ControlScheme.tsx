@@ -1,28 +1,17 @@
 // eslint-disable-next-line max-classes-per-file
 import React, { Component, ReactNode, useState } from "react"
-import { render } from "react-dom"
-import Gamepad from "react-gamepad"
 import CSS from "csstype"
 import { CONTROLLERINPUT } from "../../Core/ControllerInput/ControllerInput"
-import GamepadItem from "./GamepadItem"
-// import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
-// import { Packet } from "../../Core/RoveProtocol/Packet"
 
-const h1Style: CSS.Properties = {
-  fontFamily: "arial",
-  fontSize: "12px",
-}
 const container: CSS.Properties = {
   display: "flex",
   fontFamily: "arial",
-  width: "640px",
   borderTopWidth: "30px",
   borderColor: "#990000",
   borderBottomWidth: "2px",
   borderStyle: "solid",
   flexWrap: "wrap",
-  flexDirection: "row",
-  gridAutoFlow: "column",
+  flexDirection: "column",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -34,21 +23,22 @@ const label: CSS.Properties = {
   zIndex: 2,
   color: "white",
 }
-
 const readoutDisplay: CSS.Properties = {
-  display: "grid",
-  gridTemplateColumns: "auto auto",
-  fontSize: "12px",
-  justifyContent: "space-between",
+  fontSize: "16px",
   fontFamily: "arial",
-  paddingTop: "6px",
-  paddingLeft: "3px",
-  paddingRight: "3px",
-  paddingBottom: "4px",
+  padding: "6px 3px 3px 4px",
   marginRight: "2px",
+  flex: 1,
+}
+const row: CSS.Properties = {
+  display: "flex",
+  flexDirection: "row",
+  margin: "2px",
 }
 
-interface IProps {}
+interface IProps {
+  style?: CSS.Properties
+}
 
 interface IState {
   DeadZone: number
@@ -81,11 +71,7 @@ class ControlScheme extends Component<IProps, IState> {
     this.schemeChange = this.schemeChange.bind(this)
 
     window.addEventListener("gamepaddisconnected", function (e) {
-      console.log(
-        "Gamepad disconnected from index %d: %s",
-        e.gamepad.index,
-        e.gamepad.id
-      )
+      console.log("Gamepad disconnected from index %d: %s", e.gamepad.index, e.gamepad.id)
     })
   }
   // takes in the controllers scheme and the position in the array of controllers to determin which controller it is
@@ -120,13 +106,8 @@ class ControlScheme extends Component<IProps, IState> {
               CONTROLLERINPUT[passedScheme][button].buttonIndex
             ].value
           } else {
-            input[button] = navigator.getGamepads()[index]?.axes[
-              CONTROLLERINPUT[passedScheme][button].buttonIndex
-            ]
-            if (
-              input[button] >= -this.state.DeadZone &&
-              input[button] <= this.state.DeadZone
-            ) {
+            input[button] = navigator.getGamepads()[index]?.axes[CONTROLLERINPUT[passedScheme][button].buttonIndex]
+            if (input[button] >= -this.state.DeadZone && input[button] <= this.state.DeadZone) {
               input[button] = 0.0
             }
           }
@@ -136,7 +117,7 @@ class ControlScheme extends Component<IProps, IState> {
     }, 100)
   }
 
-  controllerChange(event: { target: { value: string } }, config: string) {
+  controllerChange(event: { target: { value: string } }, config: string): void {
     this.setState(
       {
         functionality: {
@@ -167,7 +148,7 @@ class ControlScheme extends Component<IProps, IState> {
     )
   }
 
-  schemeChange(event: { target: { value: string } }, config: string) {
+  schemeChange(event: { target: { value: string } }, config: string): void {
     this.setState(
       {
         functionality: {
@@ -198,7 +179,7 @@ class ControlScheme extends Component<IProps, IState> {
     )
   }
 
-  buttonToggle(config: string) {
+  buttonToggle(config: string): void {
     input = {}
     // if toggling on
     if (this.state.functionality[config].toggled === "Off") {
@@ -233,31 +214,31 @@ class ControlScheme extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div>
-        <div style={label}>ControlScheme</div>
+      <div style={this.props.style}>
+        <div style={label}>Control Scheme</div>
         <div style={container}>
           {/* [{name: Drive}].map({return(this.state.controllerInput[name].controller = value)})["Xbox 1", "Xbox 2", "Xbox 3", "Flight Stick"] */}
           {["Drive", "MainGimbal"].map(config => {
             return (
-              <div key={config}>
+              <div key={config} style={row}>
                 <div style={readoutDisplay}>{config}</div>
                 <select
                   value={this.state.functionality[config].controller}
                   onChange={e => this.controllerChange(e, config)}
+                  style={{ flex: 1 }}
                 >
-                  {["Xbox 1", "Xbox 2", "Xbox 3", "Flight Stick"].map(
-                    controller => {
-                      return (
-                        <option value={controller} key={controller}>
-                          {controller}
-                        </option>
-                      )
-                    }
-                  )}
+                  {["Xbox 1", "Xbox 2", "Xbox 3", "Flight Stick"].map(controller => {
+                    return (
+                      <option value={controller} key={controller}>
+                        {controller}
+                      </option>
+                    )
+                  })}
                 </select>
                 <select
                   value={this.state.functionality[config].scheme}
                   onChange={e => this.schemeChange(e, config)}
+                  style={{ flex: 1 }}
                 >
                   {Object.keys(CONTROLLERINPUT).map(scheme => {
                     return (
