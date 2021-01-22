@@ -17,6 +17,7 @@ const container: CSS.Properties = {
   borderStyle: "solid",
   gridRowStart: "2 & {}",
   grid: "repeat(2, 28px) / auto-flow dense",
+  padding: "5px",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -29,7 +30,9 @@ const label: CSS.Properties = {
   color: "white",
 }
 
-interface IProps {}
+interface IProps {
+  onCoordsChange: (lat: number, lon: number) => void
+}
 
 interface IState {
   fixObtained: boolean
@@ -40,7 +43,6 @@ interface IState {
   currentLon: number
   lidar: number
 }
-
 class GPS extends Component<IProps, IState> {
   constructor(props: any) {
     super(props)
@@ -57,7 +59,7 @@ class GPS extends Component<IProps, IState> {
     rovecomm.on("GPSTelem", (data: any) => this.GPSTelem(data))
     rovecomm.on("GPSPosition", (data: any) => this.GPSPosition(data))
 
-    // rovecomm.sendCommand(Packet(dataId, data), reliability)
+    // rovecomm.sendCommand(dataIdStr, data, reliability)
   }
 
   GPSTelem(data: any) {
@@ -69,10 +71,14 @@ class GPS extends Component<IProps, IState> {
   }
 
   GPSPosition(data: any) {
+    // We divide by 10000000 because currently waypoints are sent as shifted INT32s, not floats
+    const currentLat = data[0] / 10000000
+    const currentLon = data[1] / 10000000
     this.setState({
-      currentLat: data[0] / 10000000,
-      currentLon: data[1] / 10000000,
+      currentLat,
+      currentLon,
     })
+    this.props.onCoordsChange(currentLat, currentLon)
   }
 
   render(): JSX.Element {

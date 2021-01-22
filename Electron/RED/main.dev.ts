@@ -32,10 +32,7 @@ if (process.env.NODE_ENV === "production") {
   sourceMapSupport.install()
 }
 
-if (
-  process.env.NODE_ENV === "development" ||
-  process.env.DEBUG_PROD === "true"
-) {
+if (process.env.NODE_ENV === "development" || process.env.DEBUG_PROD === "true") {
   require("electron-debug")()
 }
 
@@ -44,16 +41,11 @@ const installExtensions = async () => {
   const forceDownload = !!process.env.UPGRADE_EXTENSIONS
   const extensions = ["REACT_DEVELOPER_TOOLS", "REDUX_DEVTOOLS"]
 
-  return Promise.all(
-    extensions.map(name => installer.default(installer[name], forceDownload))
-  ).catch(console.log)
+  return Promise.all(extensions.map(name => installer.default(installer[name], forceDownload))).catch(console.log)
 }
 
 const createWindow = async () => {
-  if (
-    process.env.NODE_ENV === "development" ||
-    process.env.DEBUG_PROD === "true"
-  ) {
+  if (process.env.NODE_ENV === "development" || process.env.DEBUG_PROD === "true") {
     await installExtensions()
   }
 
@@ -61,15 +53,16 @@ const createWindow = async () => {
     show: false,
     width: 1024,
     height: 728,
+    icon: path.join(__dirname, "../rover_swoosh.ico"),
     webPreferences:
-      (process.env.NODE_ENV === "development" ||
-        process.env.E2E_BUILD === "true") &&
-      process.env.ERB_SECURE !== "true"
+      (process.env.NODE_ENV === "development" || process.env.E2E_BUILD === "true") && process.env.ERB_SECURE !== "true"
         ? {
             nodeIntegration: true,
+            nativeWindowOpen: true,
           }
         : {
             preload: path.join(__dirname, "dist/renderer.prod.js"),
+            nativeWindowOpen: true,
           },
   })
 
@@ -86,6 +79,22 @@ const createWindow = async () => {
     } else {
       mainWindow.show()
       mainWindow.focus()
+    }
+  })
+
+  mainWindow.webContents.on("new-window", (event, url, frameName, disposition, options, additionalFeatures) => {
+    // This is the name we chose for our window. You can have multiple names for
+    // multiple windows and each have their options
+    if (frameName === "NewWindowComponent ") {
+      event.preventDefault()
+      Object.assign(options, {
+        // This will prevent interactions with the mainWindow
+        parent: mainWindow,
+        width: 300,
+        height: 300,
+        // You can also set `left` and `top` positions
+      })
+      event.newGuest = new BrowserWindow(options)
     }
   })
 
