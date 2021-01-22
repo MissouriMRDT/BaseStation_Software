@@ -1,17 +1,9 @@
 import React, { Component } from "react"
 import CSS from "csstype"
 import html2canvas from "html2canvas"
-import {
-  XYPlot,
-  XAxis,
-  YAxis,
-  HorizontalGridLines,
-  LineSeries,
-  DiscreteColorLegend,
-  Crosshair,
-} from "react-vis"
+import { XYPlot, XAxis, YAxis, HorizontalGridLines, LineSeries, DiscreteColorLegend, Crosshair } from "react-vis"
 
-import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
+import { rovecomm } from "../../../Core/RoveProtocol/Rovecomm"
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
@@ -22,7 +14,6 @@ const container: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
   fontFamily: "arial",
-  width: "640px",
   borderTopWidth: "28px",
   borderColor: "#990000",
   borderBottomWidth: "2px",
@@ -78,9 +69,7 @@ function saveImage(): void {
     scrollY: -window.scrollY,
   })
     .then((canvas: any) => {
-      const imgData = canvas
-        .toDataURL("image/png")
-        .replace("image/png", "image/octet-stream")
+      const imgData = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream")
       downloadURL(imgData)
       return null
     })
@@ -89,7 +78,9 @@ function saveImage(): void {
     })
 }
 
-interface IProps {}
+interface IProps {
+  style?: CSS.Properties
+}
 
 interface IState {
   methane: { x: Date; y: number }[]
@@ -181,9 +172,7 @@ class SensorGraphs extends Component<IProps, IState> {
       return (
         <Crosshair values={this.state.crosshairValues}>
           <div style={overlay}>
-            <h3>
-              {this.state.crosshairValues[0].x.toTimeString().slice(0, 9)}
-            </h3>
+            <h3>{this.state.crosshairValues[0].x.toTimeString().slice(0, 9)}</h3>
             <p>
               Methane:{" "}
               {this.state.crosshairValues[0].y.toLocaleString(undefined, {
@@ -236,26 +225,14 @@ class SensorGraphs extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div id="canvas">
+      <div id="canvas" style={this.props.style}>
         <div style={label}>Sensor Graphs</div>
         <div style={container}>
           <div style={row}>
             <div style={selectbox}>
               <div style={h1Style}>Sensor:</div>
-              <select
-                value={this.state.sensor}
-                onChange={e => this.sensorChange(e)}
-                style={selector}
-              >
-                {[
-                  "All",
-                  "Methane",
-                  "CO2",
-                  "Temperature",
-                  "O2PP",
-                  "O2Concentration",
-                  "O2Pressure",
-                ].map(item => {
+              <select value={this.state.sensor} onChange={e => this.sensorChange(e)} style={selector}>
+                {["All", "Methane", "CO2", "Temperature", "O2PP", "O2Concentration", "O2Pressure"].map(item => {
                   return (
                     <option key={item} value={item}>
                       {item}
@@ -279,46 +256,29 @@ class SensorGraphs extends Component<IProps, IState> {
           />
           <XYPlot
             style={{ margin: 10 }}
-            width={620}
-            height={480}
+            width={window.innerWidth - 50}
+            height={300}
             xType="time"
             onMouseLeave={this.onMouseLeave}
           >
             <HorizontalGridLines style={{ fill: "none" }} />
-            {(this.state.sensor === "Methane" ||
-              this.state.sensor === "All") && (
-              <LineSeries
-                data={this.state.methane}
-                style={{ fill: "none" }}
-                onNearestX={this.onNearestX}
-              />
+            {(this.state.sensor === "Methane" || this.state.sensor === "All") && (
+              <LineSeries data={this.state.methane} style={{ fill: "none" }} onNearestX={this.onNearestX} />
             )}
             {(this.state.sensor === "CO2" || this.state.sensor === "All") && (
               <LineSeries data={this.state.co2} style={{ fill: "none" }} />
             )}
-            {(this.state.sensor === "Temperature" ||
-              this.state.sensor === "All") && (
-              <LineSeries
-                data={this.state.temperature}
-                style={{ fill: "none" }}
-              />
+            {(this.state.sensor === "Temperature" || this.state.sensor === "All") && (
+              <LineSeries data={this.state.temperature} style={{ fill: "none" }} />
             )}
             {(this.state.sensor === "O2PP" || this.state.sensor === "All") && (
               <LineSeries data={this.state.o2PP} style={{ fill: "none" }} />
             )}
-            {(this.state.sensor === "O2Concentration" ||
-              this.state.sensor === "All") && (
-              <LineSeries
-                data={this.state.o2Concentration}
-                style={{ fill: "none" }}
-              />
+            {(this.state.sensor === "O2Concentration" || this.state.sensor === "All") && (
+              <LineSeries data={this.state.o2Concentration} style={{ fill: "none" }} />
             )}
-            {(this.state.sensor === "O2Pressure" ||
-              this.state.sensor === "All") && (
-              <LineSeries
-                data={this.state.o2Pressure}
-                style={{ fill: "none" }}
-              />
+            {(this.state.sensor === "O2Pressure" || this.state.sensor === "All") && (
+              <LineSeries data={this.state.o2Pressure} style={{ fill: "none" }} />
             )}
             <XAxis />
             <YAxis />

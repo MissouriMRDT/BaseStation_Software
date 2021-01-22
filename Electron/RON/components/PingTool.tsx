@@ -16,7 +16,6 @@ const container: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
   fontFamily: "arial",
-  width: "640px",
   borderTopWidth: "28px",
   borderColor: "#990000",
   borderBottomWidth: "2px",

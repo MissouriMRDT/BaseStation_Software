@@ -13,7 +13,6 @@ const container: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
   fontFamily: "arial",
-  width: "640px",
   borderTopWidth: "28px",
   borderColor: "#990000",
   borderBottomWidth: "2px",
@@ -136,7 +135,7 @@ class PingGraph extends Component<IProps, IState> {
               })}
             </select>
           </div>
-          <XYPlot style={{ margin: 10 }} width={620} height={300}>
+          <XYPlot style={{ margin: 10 }} width={window.innerWidth / 2 - 10} height={300}>
             <HorizontalGridLines style={{ fill: "none" }} />
             <LineSeries data={this.state.ping} style={{ fill: "none" }} />
             <XAxis />

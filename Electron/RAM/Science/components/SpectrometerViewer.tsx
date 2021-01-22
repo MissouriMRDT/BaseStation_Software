@@ -1,27 +1,14 @@
 import React, { Component } from "react"
 import CSS from "csstype"
-import {
-  XYPlot,
-  XAxis,
-  YAxis,
-  HorizontalGridLines,
-  LineSeries,
-  DiscreteColorLegend,
-} from "react-vis"
+import { XYPlot, XAxis, YAxis, HorizontalGridLines, LineSeries, DiscreteColorLegend } from "react-vis"
 
-import {
-  database,
-  SpectrometerEntry,
-  SpecDataEntry,
-  TestInfoEntry,
-} from "../../Core/Spectrometer/Database"
-import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
+import { database, SpectrometerEntry, SpecDataEntry, TestInfoEntry } from "../../../Core/Spectrometer/Database"
+import { rovecomm } from "../../../Core/RoveProtocol/Rovecomm"
 
 const container: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
   fontFamily: "arial",
-  width: "640px",
   borderTopWidth: "28px",
   borderColor: "#990000",
   borderBottomWidth: "2px",
@@ -59,7 +46,9 @@ function integrate(data: { x: number; y: number }[]): number {
   return area
 }
 
-interface IProps {}
+interface IProps {
+  style?: CSS.Properties
+}
 
 interface IState {
   integral: number
@@ -145,18 +134,15 @@ class SpectrometerViewer extends Component<IProps, IState> {
   loadSpectra(event: { target: { value: string } }): void {
     const timestamp = event.target.value
 
-    database.retrieveTestByTimestamp(
-      timestamp,
-      (succ: boolean, data: SpecDataEntry[]) => {
-        if (succ) {
-          // Load the spectra
-          this.setState({
-            databaseSpectra: data[0].data,
-            integral: integrate(data[0].data),
-          })
-        }
+    database.retrieveTestByTimestamp(timestamp, (succ: boolean, data: SpecDataEntry[]) => {
+      if (succ) {
+        // Load the spectra
+        this.setState({
+          databaseSpectra: data[0].data,
+          integral: integrate(data[0].data),
+        })
       }
-    )
+    })
   }
 
   compareIntegral(): string {
@@ -171,7 +157,7 @@ class SpectrometerViewer extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div>
+      <div style={this.props.style}>
         <div style={label}>Spectrometer Record Viewer</div>
         <div style={container}>
           <DiscreteColorLegend
@@ -179,16 +165,11 @@ class SpectrometerViewer extends Component<IProps, IState> {
             items={[{ title: "Experiment", strokeWidth: 6 }]}
             orientation="horizontal"
           />
-          <div style={{ textAlign: "center" }}>
-            Integral: {this.state.integral}
-          </div>
+          <div style={{ textAlign: "center" }}>Integral: {this.state.integral}</div>
           <div style={{ textAlign: "center" }}>{this.compareIntegral()}</div>
-          <XYPlot style={{ margin: 10 }} width={620} height={480}>
+          <XYPlot style={{ margin: 10 }} width={window.innerWidth - 50} height={300}>
             <HorizontalGridLines style={{ fill: "none" }} />
-            <LineSeries
-              data={this.state.databaseSpectra}
-              style={{ fill: "none" }}
-            />
+            <LineSeries data={this.state.databaseSpectra} style={{ fill: "none" }} />
             <XAxis />
             <YAxis />
           </XYPlot>

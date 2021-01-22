@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import CSS from "csstype"
-import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
+import { rovecomm } from "../../../Core/RoveProtocol/Rovecomm"
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
@@ -11,7 +11,6 @@ const container: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
   fontFamily: "arial",
-  width: "500px",
   borderTopWidth: "28px",
   borderColor: "#990000",
   borderBottomWidth: "2px",
@@ -55,7 +54,9 @@ function getPosition(): void {
   rovecomm.sendCommand("RequestAxesPositions", [1])
 }
 
-interface IProps {}
+interface IProps {
+  style?: CSS.Properties
+}
 
 interface IState {
   IKValues: any
@@ -124,7 +125,7 @@ class IK extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div>
+      <div style={this.props.style}>
         <div style={label}>IK</div>
         <div style={container}>
           <div style={axes}>

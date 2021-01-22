@@ -1,12 +1,11 @@
 import React, { Component } from "react"
 import CSS from "csstype"
-import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
+import { rovecomm } from "../../../Core/RoveProtocol/Rovecomm"
 
 const container: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
   fontFamily: "arial",
-  width: "144px",
   borderTopWidth: "28px",
   borderColor: "#990000",
   borderBottomWidth: "2px",
@@ -57,7 +56,9 @@ const disabledButton: CSS.Properties = {
   border: "none",
 }
 
-interface IProps {}
+interface IProps {
+  style?: CSS.Properties
+}
 
 interface IState {
   tube: number
@@ -65,7 +66,7 @@ interface IState {
 }
 
 class Geneva extends Component<IProps, IState> {
-  constructor(props: any) {
+  constructor(props: IProps) {
     super(props)
     this.state = {
       tube: 0,
@@ -74,9 +75,7 @@ class Geneva extends Component<IProps, IState> {
     this.rotateLeft = this.rotateLeft.bind(this)
     this.rotateRight = this.rotateRight.bind(this)
     this.updatePosition = this.updatePosition.bind(this)
-    rovecomm.on("GenevaCurrentPosition", (data: any) =>
-      this.updatePosition(data)
-    )
+    rovecomm.on("GenevaCurrentPosition", (data: any) => this.updatePosition(data))
   }
 
   rotateLeft(): void {
@@ -111,7 +110,7 @@ class Geneva extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div>
+      <div style={this.props.style}>
         <div style={label}>Geneva Position</div>
         <div style={container}>
           <div style={row}>

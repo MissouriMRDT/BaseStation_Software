@@ -2,13 +2,12 @@ import React, { Component } from "react"
 import CSS from "csstype"
 import fs from "fs"
 
-import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
+import { rovecomm } from "../../../Core/RoveProtocol/Rovecomm"
 
 const container: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
   fontFamily: "arial",
-  width: "640px",
   borderTopWidth: "28px",
   borderColor: "#990000",
   borderBottomWidth: "2px",
@@ -50,7 +49,9 @@ const grid: CSS.Properties = {
   gridTemplateColumns: "repeat(2, 1fr)",
 }
 
-interface IProps {}
+interface IProps {
+  style?: CSS.Properties
+}
 
 interface IState {
   methane: number
@@ -157,7 +158,7 @@ class SensorData extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div id="canvas">
+      <div id="canvas" style={this.props.style}>
         <div style={label}>Sensor Data</div>
         <div style={container}>
           <div style={grid}>

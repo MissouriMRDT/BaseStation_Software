@@ -1,28 +1,15 @@
 import React, { Component } from "react"
 import html2canvas from "html2canvas"
 import CSS from "csstype"
-import {
-  XYPlot,
-  XAxis,
-  YAxis,
-  HorizontalGridLines,
-  LineSeries,
-  DiscreteColorLegend,
-} from "react-vis"
+import { XYPlot, XAxis, YAxis, HorizontalGridLines, LineSeries, DiscreteColorLegend } from "react-vis"
 
-import {
-  database,
-  SpectrometerEntry,
-  SpecDataEntry,
-  TestInfoEntry,
-} from "../../Core/Spectrometer/Database"
-import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
+import { database, SpectrometerEntry, SpecDataEntry, TestInfoEntry } from "../../../Core/Spectrometer/Database"
+import { rovecomm } from "../../../Core/RoveProtocol/Rovecomm"
 
 const container: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
   fontFamily: "arial",
-  width: "640px",
   borderTopWidth: "28px",
   borderColor: "#990000",
   borderBottomWidth: "2px",
@@ -78,22 +65,13 @@ function integrate(data: { x: number; y: number }[]): number {
   return area
 }
 
-function insertSpecData(
-  lifePresent: boolean,
-  data: { x: number; y: number }[]
-): void {
-  database.insertData(
-    new SpecDataEntry(
-      1,
-      new Date().toLocaleString(),
-      lifePresent,
-      integrate(data),
-      data
-    )
-  )
+function insertSpecData(lifePresent: boolean, data: { x: number; y: number }[]): void {
+  database.insertData(new SpecDataEntry(1, new Date().toLocaleString(), lifePresent, integrate(data), data))
 }
 
-interface IProps {}
+interface IProps {
+  style?: CSS.Properties
+}
 
 interface IState {
   control: { x: number; y: number }[]
@@ -257,13 +235,11 @@ class Spectrometer extends Component<IProps, IState> {
   }
 
   getSpectrometers(): void {
-    database.retrieveSpectrometers(
-      (succ: boolean, data: SpectrometerEntry[]) => {
-        if (succ) {
-          this.spectrometers = data
-        }
+    database.retrieveSpectrometers((succ: boolean, data: SpectrometerEntry[]) => {
+      if (succ) {
+        this.spectrometers = data
       }
-    )
+    })
   }
 
   postSpectra(lifePresent: boolean): void {
@@ -298,9 +274,7 @@ class Spectrometer extends Component<IProps, IState> {
       scrollY: -window.scrollY,
     })
       .then(canvas => {
-        const imgData = canvas
-          .toDataURL("image/png")
-          .replace("image/png", "image/octet-stream")
+        const imgData = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream")
         this.downloadURL(imgData)
         return null
       })
@@ -400,7 +374,7 @@ class Spectrometer extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div id="canvas">
+      <div id="canvas" style={this.props.style}>
         <div style={label}>Spectrometer</div>
         <div style={container}>
           <DiscreteColorLegend
@@ -412,11 +386,9 @@ class Spectrometer extends Component<IProps, IState> {
             ]}
             orientation="horizontal"
           />
-          <div style={{ textAlign: "center" }}>
-            Integral: {this.state.integral}
-          </div>
+          <div style={{ textAlign: "center" }}>Integral: {this.state.integral}</div>
           <div style={{ textAlign: "center" }}>{this.compareIntegral()}</div>
-          <XYPlot style={{ margin: 10 }} width={620} height={480}>
+          <XYPlot style={{ margin: 10 }} width={window.innerWidth - 50} height={300}>
             <HorizontalGridLines style={{ fill: "none" }} />
             <LineSeries data={this.state.control} style={{ fill: "none" }} />
             <LineSeries data={this.state.experiment} style={{ fill: "none" }} />
@@ -434,10 +406,7 @@ class Spectrometer extends Component<IProps, IState> {
             <button type="button" onClick={this.getSpectra}>
               Grab Spectra
             </button>
-            <button
-              type="button"
-              onClick={() => this.setState({ addToDatabase: true })}
-            >
+            <button type="button" onClick={() => this.setState({ addToDatabase: true })}>
               Add to Database
             </button>
             {this.state.addToDatabase ? (

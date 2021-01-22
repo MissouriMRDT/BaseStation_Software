@@ -10,7 +10,6 @@ const h1Style: CSS.Properties = {
 const container: CSS.Properties = {
   display: "grid",
   fontFamily: "arial",
-  width: "640px",
   borderTopWidth: "28px",
   borderColor: "#990000",
   borderBottomWidth: "2px",
@@ -32,6 +31,7 @@ const label: CSS.Properties = {
 
 interface IProps {
   onCoordsChange: (lat: number, lon: number) => void
+  style?: CSS.Properties
 }
 
 interface IState {
@@ -83,7 +83,7 @@ class GPS extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div>
+      <div style={this.props.style}>
         <div style={label}>GPS</div>
         <div style={container}>
           {[

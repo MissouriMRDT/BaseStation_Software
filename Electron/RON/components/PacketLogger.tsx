@@ -14,7 +14,6 @@ const container: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
   fontFamily: "arial",
-  width: "640px",
   borderTopWidth: "28px",
   borderColor: "#990000",
   borderBottomWidth: "2px",
@@ -58,9 +57,9 @@ class PacketLogger extends Component<IProps, IState> {
       board: "Drive",
       data: [],
       columns: [
-        { Header: "Name", accessor: "name", width: "150" },
+        { Header: "Name", accessor: "name", width: "100" },
         { Header: "Data Id", accessor: "dataId", width: "75" },
-        { Header: "Time", accessor: "time", width: "100" },
+        { Header: "Time", accessor: "time", width: "75" },
         { Header: "Type", accessor: "dataType", width: "50" },
         { Header: "Count", accessor: "dataCount", width: "50" },
         {
@@ -70,7 +69,7 @@ class PacketLogger extends Component<IProps, IState> {
           Cell: (data: any) => (
             <div
               style={{
-                width: "200",
+                width: "125",
                 overflow: "none",
                 textOverflow: "ellipsis",
               }}

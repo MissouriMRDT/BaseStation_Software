@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import CSS from "csstype"
-import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
+import { rovecomm } from "../RoveProtocol/Rovecomm"
 // import { Packet } from "../../Core/RoveProtocol/Packet"
 
 const h1Style: CSS.Properties = {
@@ -11,7 +11,6 @@ const container: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
   fontFamily: "arial",
-  width: "640px",
   borderTopWidth: "28px",
   borderColor: "#990000",
   borderBottomWidth: "2px",
@@ -35,6 +34,7 @@ const row: CSS.Properties = {
 
 interface IProps {
   defaultCamera: number
+  style?: CSS.Properties
 }
 
 interface IState {
@@ -73,7 +73,7 @@ class Cameras extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div>
+      <div style={this.props.style}>
         <div style={label}>Cameras</div>
         <div style={container}>
           <div style={row}>
@@ -90,11 +90,7 @@ class Cameras extends Component<IProps, IState> {
               )
             })}
           </div>
-          <img
-            src={this.ConstructAddress()}
-            alt={`Camera ${this.state.currentCamera}`}
-            style={{ flexGrow: 1 }}
-          />
+          <img src={this.ConstructAddress()} alt={`Camera ${this.state.currentCamera}`} style={{ flexGrow: 1 }} />
         </div>
       </div>
     )

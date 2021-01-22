@@ -1,20 +1,26 @@
 import React, { Component } from "react"
+import CSS from "csstype"
 import { rovecomm } from "../Core/RoveProtocol/Rovecomm"
 import GPS from "./components/GPS"
 import Log from "./components/Log"
 import Map from "./components/Map"
 import Waypoints from "./components/Waypoints"
 import NewWindowComponent from "../Core/Window"
-import Spectrometer from "../RAM/components/Spectrometer"
 import RoverOverviewOfNetwork from "../RON/RON"
 import RoverAttachmentManager from "../RAM/RAM"
-import Angular from "../RAM/components/angular"
-import ControlMultipliers from "../RAM/components/ControlMultipliers"
-import Geneva from "../RAM/components/Geneva"
-import IK from "../RAM/components/IK"
-import SensorData from "../RAM/components/SensorData"
-import SensorGraphs from "../RAM/components/SensorGraphs"
-import SpectrometerViewer from "../RAM/components/SpectrometerViewer"
+import Cameras from "../Core/components/Cameras"
+
+const row: CSS.Properties = {
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "space-between",
+}
+const column: CSS.Properties = {
+  display: "flex",
+  flexDirection: "column",
+  flexGrow: 1,
+  marginRight: "5px",
+}
 
 interface IProps {}
 
@@ -28,7 +34,7 @@ interface IState {
 class ControlCenter extends Component<IProps, IState> {
   waypointsInstance: any
 
-  constructor(props: any) {
+  constructor(props: IProps) {
     super(props)
     this.state = {
       storedWaypoints: {},
@@ -54,7 +60,7 @@ class ControlCenter extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div>
+      <div style={row}>
         {
           // onClose will be fired when the new window is closed
           // everything inside NewWindowComponent is considered props.children and will be
@@ -75,37 +81,38 @@ class ControlCenter extends Component<IProps, IState> {
             </NewWindowComponent>
           )
         }
-        <Log />
-        <GPS onCoordsChange={this.updateCoords} />
-        <Waypoints
-          onWaypointChange={this.updateWaypoints}
-          currentCoords={this.state.currentCoords}
-          ref={instance => {
-            this.waypointsInstance = instance
-          }}
-        />
-        <Map
-          storedWaypoints={this.state.storedWaypoints}
-          currentCoords={this.state.currentCoords}
-          store={(name: string, coords: any) => this.waypointsInstance.store(name, coords)}
-        />
-        <Angular />
-        <ControlMultipliers />
-        <Geneva />
-        <IK />
-        <SensorData />
-        <SensorGraphs />
-        <Spectrometer />
-        <SpectrometerViewer />
-        <button type="button" onClick={rovecomm.resubscribe} style={{ width: "100px" }}>
-          Resubscribe All
-        </button>
-        <button type="button" onClick={() => this.setState({ ronOpen: true })}>
-          Open Rover Overview of Network
-        </button>
-        <button type="button" onClick={() => this.setState({ ramOpen: true })}>
-          Open Rover Attachment Manager
-        </button>
+        <div style={column}>
+          <GPS onCoordsChange={this.updateCoords} />
+          <Waypoints
+            onWaypointChange={this.updateWaypoints}
+            currentCoords={this.state.currentCoords}
+            ref={instance => {
+              this.waypointsInstance = instance
+            }}
+          />
+          <Log />
+          <div style={row}>
+            <button type="button" onClick={rovecomm.resubscribe} style={{ width: "100px" }}>
+              Resubscribe All
+            </button>
+            <button type="button" onClick={() => this.setState({ ronOpen: true })}>
+              Open Rover Overview of Network
+            </button>
+            <button type="button" onClick={() => this.setState({ ramOpen: true })}>
+              Open Rover Attachment Manager
+            </button>
+          </div>
+        </div>
+        <div style={column}>
+          <Map
+            storedWaypoints={this.state.storedWaypoints}
+            currentCoords={this.state.currentCoords}
+            store={(name: string, coords: any) => this.waypointsInstance.store(name, coords)}
+          />
+          <Cameras defaultCamera={1} />
+          <Cameras defaultCamera={2} />
+          <Cameras defaultCamera={3} />
+        </div>
       </div>
     )
   }

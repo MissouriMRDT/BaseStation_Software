@@ -9,7 +9,6 @@ const container: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
   fontFamily: "arial",
-  width: "640px",
   borderTopWidth: "28px",
   borderColor: "#990000",
   borderBottomWidth: "2px",
@@ -280,7 +279,7 @@ class PingMap extends Component<IProps, IState> {
       <div>
         <div style={label}>Ping Map</div>
         <div style={container}>
-          <canvas ref={this.canvasRef} width="640" height="640" />
+          <canvas ref={this.canvasRef} width={window.innerWidth / 2 - 10} height="640" />
         </div>
       </div>
     )

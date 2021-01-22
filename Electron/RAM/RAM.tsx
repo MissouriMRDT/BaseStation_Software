@@ -1,43 +1,69 @@
 import React, { Component } from "react"
 import CSS from "csstype"
-import ControlMultipliers from "./components/ControlMultipliers"
-import IK from "./components/IK"
-import Angular from "./components/angular"
-import Spectrometer from "./components/Spectrometer"
-import SpectrometerViewer from "./components/SpectrometerViewer"
-import Geneva from "./components/Geneva"
-import SensorData from "./components/SensorData"
-import SensorGraphs from "./components/SensorGraphs"
+import Arm from "./Arm/Arm"
+import Autonomy from "./Autonomy/Autonomy"
+import Science from "./Science/Science"
 
 const RON: CSS.Properties = {
+  height: "100%",
+  width: "100%",
+}
+const row: CSS.Properties = {
   display: "flex",
-  flexDirection: "column",
-  flexWrap: "wrap",
-  height: "100vh",
-  alignContent: "flex-start",
+  flexDirection: "row",
+  justifyContent: "space-around",
+}
+const buttons: CSS.Properties = {
+  border: "none",
+  background: "none",
+  fontSize: "42px",
+  fontFamily: "times new roman",
+  fontWeight: "bold",
 }
 
 interface IProps {}
 
-interface IState {}
+interface IState {
+  displayed: string
+}
 
 class RoverAttachmentManager extends Component<IProps, IState> {
-  constructor(props: any) {
+  constructor(props: IProps) {
     super(props)
-    this.state = {}
+    this.state = {
+      displayed: "Arm",
+    }
+  }
+
+  screenChange(screen: string): void {
+    this.setState({
+      displayed: screen,
+    })
   }
 
   render(): JSX.Element {
     return (
       <div style={RON}>
-        <Angular />
-        <ControlMultipliers />
-        <Geneva />
-        <IK />
-        <SensorData />
-        <SensorGraphs />
-        <Spectrometer />
-        <SpectrometerViewer />
+        <div style={row}>
+          {["Arm", "Science", "Autonomy"].map(screen => {
+            return (
+              <button
+                type="button"
+                key={screen}
+                onClick={() => this.screenChange(screen)}
+                style={{
+                  ...buttons,
+                  color: this.state.displayed === screen ? "#990000" : "gray",
+                }}
+              >
+                {screen}
+              </button>
+            )
+          })}
+        </div>
+        {this.state.displayed === "Arm" && <Arm />}
+        {this.state.displayed === "Science" && <Science />}
+        {this.state.displayed === "Autonomy" && <Autonomy />}
       </div>
     )
   }

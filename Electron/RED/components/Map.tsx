@@ -13,7 +13,6 @@ const container: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
   fontFamily: "arial",
-  width: "640px",
   borderTopWidth: "28px",
   borderColor: "#990000",
   borderBottomWidth: "2px",
@@ -35,6 +34,7 @@ const mapStyle: CSS.Properties = {
 }
 
 interface IProps {
+  style?: CSS.Properties
   storedWaypoints: any
   currentCoords: { lat: number; lon: number }
   store: (name: string, coords: any) => void
@@ -86,7 +86,7 @@ class Map extends Component<IProps, IState> {
   render(): JSX.Element {
     const position: LatLngTuple = [this.state.centerLat, this.state.centerLon]
     return (
-      <div>
+      <div style={this.props.style}>
         <div style={label}>Map</div>
         <div style={container}>
           <div id="map-id" style={mapStyle}>

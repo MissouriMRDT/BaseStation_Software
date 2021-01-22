@@ -18,7 +18,6 @@ const container: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
   fontFamily: "arial",
-  width: "640px",
   borderTopWidth: "28px",
   borderColor: "#990000",
   borderBottomWidth: "2px",
@@ -56,7 +55,9 @@ const slider: CSS.Properties = {
 // eslint-disable-next-line import/no-mutable-exports
 export let controlMultipliers = {}
 
-interface IProps {}
+interface IProps {
+  style?: CSS.Properties
+}
 
 interface IState {
   controlMultipliers: {
@@ -102,16 +103,14 @@ class ControlMultipliers extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div>
+      <div style={this.props.style}>
         <div style={label}>Control Multipliers</div>
         <div style={container}>
           {Object.keys(this.state.controlMultipliers).map(multipliers => {
             return (
               <div key={multipliers} style={row}>
                 <div style={header}>{multipliers} Control Multiplier</div>
-                <div style={value}>
-                  {this.state.controlMultipliers[multipliers]}
-                </div>
+                <div style={value}>{this.state.controlMultipliers[multipliers]}</div>
                 <input
                   type="range"
                   min="1"

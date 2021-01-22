@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import CSS from "csstype"
 import fs from "fs"
-import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
+import { rovecomm } from "../../../Core/RoveProtocol/Rovecomm"
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
@@ -11,7 +11,6 @@ const container: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
   fontFamily: "arial",
-  width: "500px",
   borderTopWidth: "28px",
   borderColor: "#990000",
   borderBottomWidth: "2px",
@@ -100,7 +99,9 @@ interface Joint {
   J6: string
 }
 
-interface IProps {}
+interface IProps {
+  style?: CSS.Properties
+}
 
 interface IState {
   jointValues: Joint
@@ -111,7 +112,7 @@ interface IState {
 }
 
 class Angular extends Component<IProps, IState> {
-  constructor(props: any) {
+  constructor(props: IProps) {
     super(props)
     this.state = {
       jointValues: {
@@ -197,13 +198,9 @@ class Angular extends Component<IProps, IState> {
         // function callback so that when setState has finished executing
         // we can properly update the json file. File is created if now if
         // it doesn't already exist
-        fs.writeFile(
-          filepath,
-          JSON.stringify(this.state.storedPositions),
-          err => {
-            if (err) throw err
-          }
-        )
+        fs.writeFile(filepath, JSON.stringify(this.state.storedPositions), err => {
+          if (err) throw err
+        })
       }
     )
   }
@@ -228,9 +225,7 @@ class Angular extends Component<IProps, IState> {
 
     // Since the selectedPosition was just deleted, we want to grab a new
     // value. We grab the first key if one exists, or if not default to ""
-    const selectedPosition = Object.keys(storedPositions).length
-      ? Object.keys(storedPositions)[0]
-      : ""
+    const selectedPosition = Object.keys(storedPositions).length ? Object.keys(storedPositions)[0] : ""
 
     this.setState(
       {
@@ -238,13 +233,9 @@ class Angular extends Component<IProps, IState> {
         selectedPosition,
       },
       () => {
-        fs.writeFile(
-          filepath,
-          JSON.stringify(this.state.storedPositions),
-          err => {
-            if (err) throw err
-          }
-        )
+        fs.writeFile(filepath, JSON.stringify(this.state.storedPositions), err => {
+          if (err) throw err
+        })
       }
     )
   }
@@ -274,7 +265,7 @@ class Angular extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div>
+      <div style={this.props.style}>
         <div style={label}>Angular</div>
         <div style={container}>
           <div style={joints}>
@@ -318,11 +309,7 @@ class Angular extends Component<IProps, IState> {
             })}
           </select>
           <div style={row}>
-            <button
-              type="button"
-              style={buttons}
-              onClick={() => this.setState({ addingPosition: true })}
-            >
+            <button type="button" style={buttons} onClick={() => this.setState({ addingPosition: true })}>
               Store
             </button>
             <button type="button" style={buttons} onClick={this.recall}>
@@ -354,11 +341,7 @@ class Angular extends Component<IProps, IState> {
                 >
                   Cancel
                 </button>
-                <button
-                  type="button"
-                  style={{ ...modalButton, backgroundColor: "green" }}
-                  onClick={this.store}
-                >
+                <button type="button" style={{ ...modalButton, backgroundColor: "green" }} onClick={this.store}>
                   Add
                 </button>
               </div>

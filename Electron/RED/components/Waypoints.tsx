@@ -12,7 +12,6 @@ const container: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
   fontFamily: "arial",
-  width: "640px",
   borderTopWidth: "28px",
   borderColor: "#990000",
   borderBottomWidth: "2px",
@@ -117,6 +116,7 @@ interface Waypoint {
 }
 
 interface IProps {
+  style?: CSS.Properties
   onWaypointChange: (storedWaypoints: any) => void
   currentCoords: { lat: number; lon: number }
 }
@@ -330,7 +330,7 @@ class Waypoints extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div>
+      <div style={this.props.style}>
         <div style={label}>Waypoints</div>
         <div style={container}>
           <div style={row}>
