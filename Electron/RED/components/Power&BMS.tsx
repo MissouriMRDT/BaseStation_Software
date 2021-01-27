@@ -79,9 +79,7 @@ class Power extends Component<IProps, IState> {
       boardTelemetry: {},
       batteryTelemetry: {},
     }
-    rovecomm.on("MotorBusCurrent", (data: number) =>
-      this.motorBusCurrents(data)
-    )
+    rovecomm.on("MotorBusCurrent", (data: number) => this.motorBusCurrents(data))
     rovecomm.on("MotorBusEnabled", (data: number) => this.motorBusEnabled(data))
     rovecomm.on("SteeringMotorEnabled", (data: number) => this.steeringMotorEnabled(data))
     rovecomm.on("SteeringMotorCurrents", (data: number) => this.steeringMotorCurrents(data))
@@ -98,7 +96,6 @@ class Power extends Component<IProps, IState> {
 
   motorBusEnabled(data: number): void {
     const bitmask = data.toString(2)
-    let { boardTelemetry } = this.state
     const motors = [
       "Drive LF",
       "Drive LR",
@@ -106,6 +103,7 @@ class Power extends Component<IProps, IState> {
       "Drive FR",
       "Spare Motor",
     ]
+    const { boardTelemetry } = this.state
     for (let i = 0; i < motors.length; i++) {
       boardTelemetry[motors[i]].enabled = bitmask[i]
     }
@@ -120,7 +118,7 @@ class Power extends Component<IProps, IState> {
       "Drive FR",
       "Spare Motor",
     ]
-    let { boardTelemetry } = this.state
+    const { boardTelemetry } = this.state
     for (let i = 0; i < motors.length; i++) {
       boardTelemetry[motors[i]].value = data[i]
     }
@@ -129,8 +127,8 @@ class Power extends Component<IProps, IState> {
 
   steeringMotorEnabled(data: number): void {
     const bitmask = data.toString(2)
-    let { boardTelemetry } = this.state
     const motors = ["Steering LF", "Steering LR", "Steering RF", "Steering RR"]
+    const { boardTelemetry } = this.state
     for (let i = 0; i < motors.length; i++) {
       boardTelemetry[motors[i]].enabled = bitmask[i]
     }
@@ -139,7 +137,7 @@ class Power extends Component<IProps, IState> {
 
   steeringMotorCurrents(data: number): void {
     const motors = ["Steering LF", "Steering LR", "Steering RF", "Steering RR"]
-    let { boardTelemetry } = this.state
+    const { boardTelemetry } = this.state
     for (let i = 0; i < motors.length; i++) {
       boardTelemetry[motors[i]].value = data[i]
     }
@@ -149,7 +147,7 @@ class Power extends Component<IProps, IState> {
   twelveVActBusEnable(data: number): void {
     const bitmask = data.toString(2)
     const peripherals = ["Gimbal", "Multimedia", "Auxilliary"]
-    let { boardTelemetry } = this.state
+    const { boardTelemetry } = this.state
     for (let i = 0; i < peripherals.length; i++) {
       boardTelemetry[peripherals[i]].enabled = bitmask[i]
     }
@@ -167,7 +165,7 @@ class Power extends Component<IProps, IState> {
       "Cameras",
       "Auxiliary",
     ]
-    let { boardTelemetry } = this.state
+    const { boardTelemetry } = this.state
     for (let i = 0; i < boards.length; i++) {
       boardTelemetry[boards[i]].enabled = bitmask[i]
     }
@@ -176,7 +174,7 @@ class Power extends Component<IProps, IState> {
 
   twelveVBusCurrent(data: number): void {
     const boards = ["Gimbal", "Multimedia", "Auxiliary", "Logic"]
-    let { boardTelemetry } = this.state
+    const { boardTelemetry } = this.state
     for (let i = 0; i < boards.length; i++) {
       boardTelemetry[boards[i]].value = data[i]
     }
@@ -186,7 +184,7 @@ class Power extends Component<IProps, IState> {
   thirtyVBusEnabled(data: number): void {
     const bitmask = data.toString(2)
     const boards = ["12V", "Comms", "Auxiliary", "Drive"]
-    let { boardTelemetry } = this.state
+    const { boardTelemetry } = this.state
     for (let i = 0; i < boards.length; i++) {
       boardTelemetry[boards[i]].enabled = bitmask[i]
     }
@@ -195,7 +193,7 @@ class Power extends Component<IProps, IState> {
 
   thirtyVBusCurrents(data: number): void {
     const boards = ["12V", "Comms", "Auxiliary", "Drive"]
-    let { boardTelemetry } = this.state
+    const { boardTelemetry } = this.state
     for (let i = 0; i < boards.length; i++) {
       boardTelemetry[boards[i]].value = data[i]
     }
@@ -203,25 +201,25 @@ class Power extends Component<IProps, IState> {
   }
 
   vacuumEnabled(data: number): void {
-    let { boardTelemetry } = this.state
+    const { boardTelemetry } = this.state
     boardTelemetry["Vacuum"].enabled = data
     this.setState({ boardTelemetry })
   }
 
   vacuumCurrent(data: number): void {
-    let { boardTelemetry } = this.state
+    const { boardTelemetry } = this.state
     boardTelemetry["Vacuum"].value = data
     this.setState({ boardTelemetry })
   }
 
   packCurrentMeas(data: number): void {
-    let { batteryTelemetry } = this.state
+    const { batteryTelemetry } = this.state
     batteryTelemetry["TotalPackCurrent"].value = data
     this.setState({ batteryTelemetry })
   }
 
   packVoltageMeas(data: number): void {
-    let { batteryTelemetry } = this.state
+    const { batteryTelemetry } = this.state
     batteryTelemetry["TotalPackVoltage"].value = data
     this.setState({ batteryTelemetry })
   }
@@ -238,7 +236,7 @@ class Power extends Component<IProps, IState> {
       "Cell 7",
       "Cell 8",
     ]
-    let { batteryTelemetry } = this.state
+    const { batteryTelemetry } = this.state
     for (let i = 0; i < cells.length; i++) {
       batteryTelemetry[cells[i]].value = data[i]
     }
@@ -246,7 +244,7 @@ class Power extends Component<IProps, IState> {
   }
 
   battTempMeas(data: number): void {
-    let { batteryTelemetry } = this.state
+    const { batteryTelemetry } = this.state
     batteryTelemetry["Temp"].value = data
     this.setState({ batteryTelemetry })
   }
