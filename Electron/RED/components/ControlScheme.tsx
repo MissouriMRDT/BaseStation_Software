@@ -36,22 +36,75 @@ const row: CSS.Properties = {
   margin: "2px",
 }
 
+export var input = {}
+
+function controller(passedScheme: any, pos: any): any {
+  input = {}
+  return setInterval(() => {
+    // if navigator.getGampads()[pos] == flight stick
+    let index: number
+    let DeadZone = 0.15 // xbox one controller
+    const controllerList = []
+    for (let i = 0; i < 4; i++) {
+      if (navigator.getGamepads()[i] != null) {
+        controllerList.push(navigator.getGamepads()[i]?.id)
+      }
+    }
+
+    const FlightStickIndex = controllerList.findIndex(element => {
+      if (element && element.indexOf("Logitech Extreme 3D") >= 0) return true
+      else return false
+    })
+
+    switch (pos) {
+      case "Xbox 1":
+        index = FlightStickIndex <= 0 ? 1 : 0
+        break
+      case "Xbox 2":
+        index = FlightStickIndex <= 1 ? 2 : 1
+        break
+      case "Xbox 3":
+        index = FlightStickIndex <= 2 ? 3 : 2
+        break
+      case "Flight Stick": // Logitech Extreme 3D
+        index = FlightStickIndex
+        DeadZone = 0.1
+        break
+      default:
+        return
+    }
+
+    if (navigator.getGamepads()[index] != null) {
+      for (const button in CONTROLLERINPUT[passedScheme].bindings) {
+        if (CONTROLLERINPUT[passedScheme].bindings[button].buttonType === "button") {
+          input[button] = navigator.getGamepads()[index]?.buttons[
+            CONTROLLERINPUT[passedScheme].bindings[button].buttonIndex
+          ].value
+        } else {
+          input[button] = navigator.getGamepads()[index]?.axes[
+            CONTROLLERINPUT[passedScheme].bindings[button].buttonIndex
+          ]
+          if (input[button] >= -DeadZone && input[button] <= DeadZone) {
+            input[button] = 0.0
+          }
+        }
+      }
+    }
+  }, 100)
+}
+
 interface IProps {
   style?: CSS.Properties
 }
 
 interface IState {
-  DeadZone: number
   functionality: any
 }
-
-export var input = {}
 
 class ControlScheme extends Component<IProps, IState> {
   constructor(props: Readonly<IProps>) {
     super(props)
     this.state = {
-      DeadZone: 0.15,
       functionality: {
         Drive: {
           toggled: "Off",
@@ -66,7 +119,6 @@ class ControlScheme extends Component<IProps, IState> {
           interval: null,
         },
       },
-      // controllerInput: {drive: {controller, setInterval, scheme}, Gimbal: {this.controller, setInterval, scheme}, ...},
     }
     this.schemeChange = this.schemeChange.bind(this)
 
@@ -75,47 +127,6 @@ class ControlScheme extends Component<IProps, IState> {
     })
   }
   // takes in the controllers scheme and the position in the array of controllers to determin which controller it is
-
-  controller(passedScheme: any, pos: any): any {
-    input = {}
-    return setInterval(() => {
-      // if navigator.getGampads()[pos] == flight stick
-      let index: number
-      console.log(pos, this.state)
-      switch (pos) {
-        case "Xbox 1":
-          index = 0
-          break
-        case "Xbox 2":
-          index = 1
-          break
-        case "Xbox 3":
-          index = 2
-          break
-        case "Flight Stick":
-          index = 3
-          break
-        default:
-          return
-      }
-
-      if (navigator.getGamepads()[index] != null) {
-        for (const button in CONTROLLERINPUT[passedScheme]) {
-          if (CONTROLLERINPUT[passedScheme][button].buttonType === "button") {
-            input[button] = navigator.getGamepads()[index]?.buttons[
-              CONTROLLERINPUT[passedScheme][button].buttonIndex
-            ].value
-          } else {
-            input[button] = navigator.getGamepads()[index]?.axes[CONTROLLERINPUT[passedScheme][button].buttonIndex]
-            if (input[button] >= -this.state.DeadZone && input[button] <= this.state.DeadZone) {
-              input[button] = 0.0
-            }
-          }
-        }
-        console.log(input)
-      }
-    }, 100)
-  }
 
   controllerChange(event: { target: { value: string } }, config: string): void {
     this.setState(
@@ -136,7 +147,7 @@ class ControlScheme extends Component<IProps, IState> {
               ...this.state.functionality,
               [config]: {
                 ...this.state.functionality[config],
-                interval: this.controller(
+                interval: controller(
                   this.state.functionality[config].scheme,
                   this.state.functionality[config].controller
                 ),
@@ -167,7 +178,7 @@ class ControlScheme extends Component<IProps, IState> {
               ...this.state.functionality,
               [config]: {
                 ...this.state.functionality[config],
-                interval: this.controller(
+                interval: controller(
                   this.state.functionality[config].scheme,
                   this.state.functionality[config].controller
                 ),
@@ -189,10 +200,7 @@ class ControlScheme extends Component<IProps, IState> {
           [config]: {
             ...this.state.functionality[config],
             toggled: "On",
-            interval: this.controller(
-              this.state.functionality[config].scheme,
-              this.state.functionality[config].controller
-            ),
+            interval: controller(this.state.functionality[config].scheme, this.state.functionality[config].controller),
           },
         },
       })
@@ -227,10 +235,10 @@ class ControlScheme extends Component<IProps, IState> {
                   onChange={e => this.controllerChange(e, config)}
                   style={{ flex: 1 }}
                 >
-                  {["Xbox 1", "Xbox 2", "Xbox 3", "Flight Stick"].map(controller => {
+                  {["Xbox 1", "Xbox 2", "Xbox 3", "Flight Stick"].map(controllerSelect => {
                     return (
-                      <option value={controller} key={controller}>
-                        {controller}
+                      <option value={controllerSelect} key={controllerSelect}>
+                        {controllerSelect}
                       </option>
                     )
                   })}
@@ -241,11 +249,16 @@ class ControlScheme extends Component<IProps, IState> {
                   style={{ flex: 1 }}
                 >
                   {Object.keys(CONTROLLERINPUT).map(scheme => {
-                    return (
-                      <option value={scheme} key={scheme}>
-                        {scheme}
-                      </option>
+                    if (
+                      CONTROLLERINPUT[scheme].config === config &&
+                      this.state.functionality[config].controller.indexOf(CONTROLLERINPUT[scheme].controller) >= 0
                     )
+                      return (
+                        <option value={scheme} key={scheme}>
+                          {scheme}
+                        </option>
+                      )
+                    else return null
                   })}
                 </select>
                 <button type="button" onClick={() => this.buttonToggle(config)}>
