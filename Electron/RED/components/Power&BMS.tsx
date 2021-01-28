@@ -332,15 +332,14 @@ class Power extends Component<IProps, IState> {
                 onClick={() => this.buttonToggle(peripheral)}
               >
                 {this.state.boardTelemetry[peripheral].enabled
-                  ? "${peripheral} Enabled"
-                  : "${peripheral} Disabled"}
+                  ? `${peripheral} Enabled`
+                  : `${peripheral} Disabled`}
               </button>
             )
           })}
           <button type="button">All Motors</button>
           <button type="button">REBOOT</button>
           <button type="button">SHUT DOWN</button>
-          <button type="button">START LOG</button>
         </div>
         <h3>-------------------------------------</h3>
         <div style={totalPackContainer}>
