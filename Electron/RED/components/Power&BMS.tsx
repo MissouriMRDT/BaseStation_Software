@@ -24,8 +24,8 @@ const grandContainer: CSS.Properties = {
   borderStyle: "solid",
   justifyContent: "center",
 }
+// stands for "Readout and Button Container"; shortened for sanity
 const roAndBtnContainer: CSS.Properties = {
-  // stands for "Readout and Button Container"; shortened for sanity
   display: "grid",
   width: "auto",
   gridTemplateColumns: "auto auto",
@@ -264,8 +264,15 @@ class Power extends Component<IProps, IState> {
   render(): JSX.Element {
     return (
       <div style={grandContainer}>
-        <div style={roAndBtnContainer}>
-          <div style={roAndBtnContainer}>
+        <div
+          style={roAndBtnContainer}
+          /* meant to be a two column container that houses two two-column containers;
+          the child containers have buttons on the left and readouts on the right */
+        >
+          <div
+            style={roAndBtnContainer}
+            /* first column of buttons and readouts */
+          >
             {[
               "Drive LF",
               "Drive LR",
@@ -277,6 +284,9 @@ class Power extends Component<IProps, IState> {
               "Steering RR", // doesn't actually have enable
               "Spare Motor",
             ].map(motor => {
+              /* this and following map functions work to make the button onClick's, titles, 
+              and electrical current details all callable by the same respective "name" or "ID" 
+              stored in the above array */
               return (
                 <div key={motor}>
                   <button
@@ -295,7 +305,10 @@ class Power extends Component<IProps, IState> {
               )
             })}
           </div>
-          <div style={roAndBtnContainer}>
+          <div
+            style={roAndBtnContainer}
+            /* second column of buttons and readouts */
+          >
             {[
               "Gimbal",
               "Multimedia",
