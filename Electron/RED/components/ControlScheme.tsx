@@ -36,10 +36,11 @@ const row: CSS.Properties = {
   margin: "2px",
 }
 
-export var input = {}
+// eslint-disable-next-line import/no-mutable-exports
+export let inputs: any = {}
 
 function controller(passedScheme: any, pos: any): any {
-  input = {}
+  inputs = {}
   return setInterval(() => {
     // if navigator.getGampads()[pos] == flight stick
     let index: number
@@ -58,13 +59,13 @@ function controller(passedScheme: any, pos: any): any {
 
     switch (pos) {
       case "Xbox 1":
-        index = FlightStickIndex <= 0 ? 1 : 0
+        index = FlightStickIndex !== -1 && FlightStickIndex <= 0 ? 1 : 0
         break
       case "Xbox 2":
-        index = FlightStickIndex <= 1 ? 2 : 1
+        index = FlightStickIndex !== -1 && FlightStickIndex <= 1 ? 2 : 1
         break
       case "Xbox 3":
-        index = FlightStickIndex <= 2 ? 3 : 2
+        index = FlightStickIndex !== -1 && FlightStickIndex <= 2 ? 3 : 2
         break
       case "Flight Stick": // Logitech Extreme 3D
         index = FlightStickIndex
@@ -77,15 +78,17 @@ function controller(passedScheme: any, pos: any): any {
     if (navigator.getGamepads()[index] != null) {
       for (const button in CONTROLLERINPUT[passedScheme].bindings) {
         if (CONTROLLERINPUT[passedScheme].bindings[button].buttonType === "button") {
-          input[button] = navigator.getGamepads()[index]?.buttons[
+          inputs[button] = navigator.getGamepads()[index]?.buttons[
             CONTROLLERINPUT[passedScheme].bindings[button].buttonIndex
           ].value
         } else {
-          input[button] = navigator.getGamepads()[index]?.axes[
+          inputs[button] = navigator.getGamepads()[index]?.axes[
             CONTROLLERINPUT[passedScheme].bindings[button].buttonIndex
           ]
-          if (input[button] >= -DeadZone && input[button] <= DeadZone) {
-            input[button] = 0.0
+          if (inputs[button] >= -DeadZone && inputs[button] <= DeadZone) {
+            inputs[button] = 0.0
+          } else {
+            inputs[button] *= -1
           }
         }
       }
@@ -191,7 +194,7 @@ class ControlScheme extends Component<IProps, IState> {
   }
 
   buttonToggle(config: string): void {
-    input = {}
+    inputs = {}
     // if toggling on
     if (this.state.functionality[config].toggled === "Off") {
       this.setState({

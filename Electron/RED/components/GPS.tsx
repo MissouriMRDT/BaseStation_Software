@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import CSS from "csstype"
 import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
-import { input } from "./ControlScheme"
+import { inputs } from "./ControlScheme"
 // import { Packet } from "../../Core/RoveProtocol/Packet"
 
 const h1Style: CSS.Properties = {
@@ -61,21 +61,15 @@ class GPS extends Component<IProps, IState> {
     rovecomm.on("GPSPosition", (data: any) => this.GPSPosition(data))
 
     // rovecomm.sendCommand(dataIdStr, data, reliability)
-    setInterval(() => this.drive(), 100)
     setInterval(() => this.gimbal(), 100)
   }
-
-  drive() {
-    if (input["LeftSpeed"] != undefined && input["RightSpeed"] != undefined ) {
-      rovecomm.sendCommand("DriveLeftRight", [input["LeftSpeed"]*-300, input["RightSpeed"]*-300])
-    }
-  }
-
+  /*
   gimbal() {
-    if (input["PanLeft"] != undefined && input["TiltLeft"] != undefined ) {
-      rovecomm.sendCommand("LeftMainGimbal", [input["PanLeft"]*-5, input["TiltLeft"]*5])
+    if (inputs["PanLeft"] != undefined && inputs["TiltLeft"] != undefined ) {
+      rovecomm.sendCommand("LeftMainGimbal", [inputs["PanLeft"]*-5, inputs["TiltLeft"]*5])
     }
   }
+  */
 
   GPSTelem(data: any) {
     this.setState({
