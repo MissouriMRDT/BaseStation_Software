@@ -117,7 +117,7 @@ class ControlScheme extends Component<IProps, IState> {
         },
         MainGimbal: {
           toggled: "Off",
-          scheme: "ArmControls",
+          scheme: "Gimbal",
           controller: "Xbox 2",
           interval: null,
         },

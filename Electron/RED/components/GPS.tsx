@@ -61,15 +61,7 @@ class GPS extends Component<IProps, IState> {
     rovecomm.on("GPSPosition", (data: any) => this.GPSPosition(data))
 
     // rovecomm.sendCommand(dataIdStr, data, reliability)
-    setInterval(() => this.gimbal(), 100)
   }
-  /*
-  gimbal() {
-    if (inputs["PanLeft"] != undefined && inputs["TiltLeft"] != undefined ) {
-      rovecomm.sendCommand("LeftMainGimbal", [inputs["PanLeft"]*-5, inputs["TiltLeft"]*5])
-    }
-  }
-  */
 
   GPSTelem(data: any) {
     this.setState({

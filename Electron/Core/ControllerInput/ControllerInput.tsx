@@ -14,10 +14,10 @@
     11: right stick click
     12: d up
     13: d down
-    14: d left 
+    14: d left
     15: d right
     16: (unsure possibly home button)
-  joystick buttonIndex 
+  joystick buttonIndex
     0: left stick left/right
     1: left stick up/down
     2: right stick left/right
@@ -63,8 +63,8 @@ export const CONTROLLERINPUT = {
       PanRight: { buttonType: "joystick", buttonIndex: 2 },
       TiltLeft: { buttonType: "joystick", buttonIndex: 1 },
       TiltRight: { buttonType: "joystick", buttonIndex: 3 },
-      DPadU: { buttonType: "button", buttonIndex: 12 },
-      DPadD: { buttonType: "button", buttonIndex: 13 },
+      MainGimbalSwitch: { buttonType: "button", buttonIndex: 12 },
+      DriveGimbalSwitch: { buttonType: "button", buttonIndex: 13 },
       ButtonStartDebounced: { buttonType: "button", buttonIndex: 9 },
     },
   },
@@ -93,7 +93,7 @@ export const CONTROLLERINPUT = {
       ButtonB: { buttonType: "button", buttonIndex: 1 },
       ButtonX: { buttonType: "button", buttonIndex: 2 },
       ButtonY: { buttonType: "button", buttonIndex: 3 },
-      LeftBumeper: { buttonType: "button", buttonIndex: 4 },
+      LeftBumper: { buttonType: "button", buttonIndex: 4 },
       RightBumper: { buttonType: "button", buttonIndex: 5 },
       LeftTrigger: { buttonType: "button", buttonIndex: 6 },
       RightTrigger: { buttonType: "button", buttonIndex: 7 },

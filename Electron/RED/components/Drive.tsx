@@ -105,7 +105,7 @@ class Drive extends Component<IProps, IState> {
   render(): JSX.Element {
     return (
       <div style={this.props.style}>
-        <div style={label}>GPS</div>
+        <div style={label}>Drive</div>
         <div style={container}>
           <div style={row}>
             <progress
