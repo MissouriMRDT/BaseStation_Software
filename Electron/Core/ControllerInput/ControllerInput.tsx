@@ -40,8 +40,8 @@ export const CONTROLLERINPUT = {
     config: "Drive",
     controller: "Flight Stick",
     bindings: {
-      WheelsLeft: { buttonType: "joystick", buttonIndex: 0 },
-      WheelsRight: { buttonType: "joystick", buttonIndex: 1 },
+      LeftSpeed: { buttonType: "joystick", buttonIndex: 0 },
+      RightSpeed: { buttonType: "joystick", buttonIndex: 1 },
     },
   },
   VectorDrive: {
@@ -50,9 +50,9 @@ export const CONTROLLERINPUT = {
     bindings: {
       VectorX: { buttonType: "joystick", buttonIndex: 0 },
       VectorY: { buttonType: "joystick", buttonIndex: 1 },
-      Slider: { buttonType: "joystick", buttonIndex: 6 },
+      Throttle: { buttonType: "joystick", buttonIndex: 6 },
       ForwardBump: { buttonType: "button", buttonIndex: 7 },
-      BackwardBump: { buttonType: "button", buttonINdex: 9 },
+      BackwardBump: { buttonType: "button", buttonIndex: 9 },
     },
   },
   Gimbal: {
