@@ -10,14 +10,14 @@ const h1Style: CSS.Properties = {
 const container: CSS.Properties = {
   display: "grid",
   fontFamily: "arial",
-  height: "300px",
+  width: "640px",
+  height: "400px",
   borderTopWidth: "28px",
   borderColor: "#990000",
   borderBottomWidth: "2px",
   borderStyle: "solid",
   whiteSpace: "pre-wrap",
   overflow: "scroll",
-  padding: "5px",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -30,16 +30,14 @@ const label: CSS.Properties = {
   color: "white",
 }
 
-interface IProps {
-  style?: CSS.Properties
-}
+interface IProps {}
 
 interface IState {
   ConsoleText: string
 }
 
 class Log extends Component<IProps, IState> {
-  constructor(props: IProps) {
+  constructor(props: any) {
     super(props)
     this.state = {
       ConsoleText: "",
@@ -57,7 +55,7 @@ class Log extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div style={this.props.style}>
+      <div>
         <div style={label}>Console</div>
         <div style={container}>{this.state.ConsoleText}</div>
       </div>
