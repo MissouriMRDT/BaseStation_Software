@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import CSS from "csstype"
 import fs from "fs"
 import { TwitterPicker } from "react-color"
+import path from "path"
 
 const title: CSS.Properties = {
   fontFamily: "arial",
@@ -104,7 +105,7 @@ const colorButton: CSS.Properties = {
   lineHeight: "20px",
   borderRadius: "20px",
 }
-const filepath = "./Core/Waypoints.json"
+const filepath = path.join(__dirname, "../assets/Waypoints.json")
 
 interface Waypoint {
   name: string

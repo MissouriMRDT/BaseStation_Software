@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import CSS from "csstype"
 import fs from "fs"
+import path from "path"
 import { rovecomm } from "../../../Core/RoveProtocol/Rovecomm"
 
 const h1Style: CSS.Properties = {
@@ -76,7 +77,7 @@ const selector: CSS.Properties = {
   padding: "5px",
 }
 
-const filepath = "./Core/AngularPresets.json"
+const filepath = path.join(__dirname, "../assets/AngularPresets.json")
 
 function getPosition(): void {
   // Unlike most telemetry, arm joint positions are only sent when requested

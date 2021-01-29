@@ -8,7 +8,7 @@ const path = require("path")
 class Database {
   tableNames = ["spectrometers", "specdata", "testinfo"]
 
-  location = path.join(__dirname, "../Core/Spectrometer")
+  location = path.join(__dirname, "../assets")
 
   createAllTables() {
     this.tableNames.forEach(element => {

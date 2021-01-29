@@ -38,7 +38,8 @@
       "index.html",
       "main.prod.js",
       "main.prod.js.map",
-      "package.json"
+      "package.json",
+      "assets/"
     ],
     "afterSign": ".erb/scripts/Notarize.js",
     "mac": {
@@ -99,7 +100,7 @@
     "email": "marsrover@mst.edu",
     "url": "https://marsrover.mst.edu"
   },
-  "license": "GPL",
+  "license": "GPL-2.0-only",
   "keywords": [
     "electron",
     "react",
