@@ -2,69 +2,52 @@ import React, { Component } from "react"
 import CSS from "csstype"
 import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
 
-const h1Style: CSS.Properties = {
-  marginTop: "-3.5%",
-  marginBottom: "1.25%",
+const label: CSS.Properties = {
+  marginTop: "-10px",
   position: "relative",
+  top: "24px",
+  left: "3px",
   fontFamily: "arial",
   fontSize: "16px",
   zIndex: 1,
   color: "white",
 }
-const grandContainer: CSS.Properties = {
+const container: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
-  width: "640px",
+  width: "500px",
+  fontFamily: "arial",
   borderTopWidth: "28px",
+  borderColor: "#990000",
   borderBottomWidth: "2px",
-  borderColor: "rgb(153, 0, 0)", // MRDT red
   borderStyle: "solid",
-  justifyContent: "center",
+  padding: "5px",
+  fontSize: "10px",
+  lineHeight: "10px",
 }
 const row: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
-  fontFamily: "arial",
-  alignContent: "flex-start",
-  flexBasis: "auto",
+  justifyContent: "space-around",
 }
 const column: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
-  alignContent: "flex-start",
-  flexBasis: "auto",
+  margin: "5px",
 }
-// stands for "Readout and Button Container"; shortened for sanity
-const roAndBtnContainer: CSS.Properties = {
-  display: "grid",
-  width: "auto",
-  gridTemplateColumns: "auto auto",
-  marginLeft: "2px",
-  marginTop: "2px",
-  marginBottom: "2px",
-}
-const readoutDisplay: CSS.Properties = {
-  display: "grid",
-  gridTemplateColumns: "auto auto",
-  fontSize: "12px",
-  // backgroundColor: "#30ff00", // green
+const readout: CSS.Properties = {
+  display: "flex",
+  flexDirection: "row",
+  flexGrow: 1,
   justifyContent: "space-between",
   fontFamily: "arial",
-  paddingTop: "4px",
-  paddingLeft: "3px",
-  paddingRight: "3px",
-  paddingBottom: "4px",
-  marginRight: "2px",
+  margin: "0px 5px",
 }
 const btnArray: CSS.Properties = {
   display: "grid",
-  gridTemplateColumns: "auto auto auto auto",
+  gridTemplateColumns: "auto auto auto",
   justifyContent: "center",
-}
-const totalPackContainer: CSS.Properties = {
-  display: "grid",
-  justifyContent: "space-evenly",
-  gridTemplateColumns: "240px 240px 240px",
+  lineHeight: "11px",
 }
 const cellReadoutContainer: CSS.Properties = {
   display: "grid",
@@ -73,6 +56,10 @@ const cellReadoutContainer: CSS.Properties = {
   marginLeft: "3px",
   marginBottom: "3px",
   marginRight: "3px",
+}
+
+function turnOffReboot(time: number): void {
+  rovecomm.sendCommand("BMSStop", time)
 }
 
 interface IProps {}
@@ -252,138 +239,230 @@ class Power extends Component<IProps, IState> {
     this.setState({ batteryTelemetry })
   }
 
-  buttonToggle(motor: string): void {
+  buttonToggle(bus: string): void {
+    const motors = ["Drive LF", "Drive LR", "Drive RF", "Drive RR", "Spare Motor"]
+    const actBus = ["Gimbal", "Multimedia", "Auxilliary"]
+    const logicBus = ["Gimbal", "Multimedia", "Autonomy", "Drive", "Navigation", "Cameras", "Extra"]
+    const thirtyVBus = ["12V", "Comms", "Auxiliary", "Drive"]
     this.setState({
       boardTelemetry: {
         ...this.state.boardTelemetry,
-        [motor]: {
-          ...this.state.boardTelemetry[motor],
-          enabled: !this.state.boardTelemetry[motor].enabled,
+        [bus]: {
+          ...this.state.boardTelemetry[bus],
+          enabled: !this.state.boardTelemetry[bus].enabled,
         },
       },
     })
+    if (bus in motors) {
+      const newBitMask = ""
+      motors.forEach(motor => newBitMask.concat(this.state.boardTelemetry[motor].enabled ? "1" : "0"))
+      rovecomm.sendCommand("MotorBusEnabled", [parseInt(newBitMask, 2)])
+    }
+    if (bus in actBus) {
+      const newBitMask = ""
+      actBus.forEach(motor => newBitMask.concat(this.state.boardTelemetry[motor].enabled ? "1" : "0"))
+      rovecomm.sendCommand("12VActBusEnable", [parseInt(newBitMask, 2)])
+    }
+    if (bus in logicBus) {
+      const newBitMask = ""
+      logicBus.forEach(motor => newBitMask.concat(this.state.boardTelemetry[motor].enabled ? "1" : "0"))
+      rovecomm.sendCommand("12VLogicBusEnable", [parseInt(newBitMask, 2)])
+    }
+    if (bus in thirtyVBus) {
+      const newBitMask = ""
+      thirtyVBus.forEach(motor => newBitMask.concat(this.state.boardTelemetry[motor].enabled ? "1" : "0"))
+      rovecomm.sendCommand("30VBusEnable", [parseInt(newBitMask, 2)])
+    }
+    if (bus === "Vacuum") {
+      const newBitMask = this.state.boardTelemetry.vacuum.enabled ? "1" : "0"
+      rovecomm.sendCommand("vacuumEnabled", [parseInt(newBitMask, 2)])
+    }
+    // rovecomm.sendCommand("packetName", [dataArray])
+  }
+
+  allMotorToggle(button: boolean): void {
+    let i
+    let { boardTelemetry } = this.state
+    const motors = ["Drive LF", "Drive LR", "Drive RF", "Drive RR", "Spare Motor"]
+    if (button) {
+      for (i = 0; i < motors.length; i++) {
+        boardTelemetry = {
+          ...boardTelemetry,
+          [motors[i]]: {
+            ...boardTelemetry[motors[i]],
+            enabled: true,
+          },
+        }
+      }
+    } else {
+      for (i = 0; i < motors.length; i++) {
+        boardTelemetry = {
+          ...boardTelemetry,
+          [motors[i]]: {
+            ...boardTelemetry[motors[i]],
+            enabled: true,
+          },
+        }
+      }
+    }
+    this.setState({ boardTelemetry })
   }
 
   render(): JSX.Element {
     return (
-      <div style={grandContainer}>
-        <div style={h1Style}>POWER AND BMS</div>
-        <div
-          style={{ ...row, width: "100%", fontSize: "12px" }}
-          /* meant to be a two column container that houses two two-column containers;
-          the child containers have buttons on the left and readouts on the right */
-        >
-          <div
-            style={{ ...column, padding: "1%", width: "50%" }}
-            /* first column of buttons and readouts */
-          >
-            {[
-              "Drive LF",
-              "Drive LR",
-              "Drive RF",
-              "Drive RR",
-              "Steering LF", // doesn't actually have enable
-              "Steering LR", // doesn't actually have enable
-              "Steering RF", // doesn't actually have enable
-              "Steering RR", // doesn't actually have enable
-              "Spare Motor",
-            ].map(motor => {
-              /* this and following map functions work to make the button onClick's, titles, 
-              and electrical current details all callable by the same respective "name" or "ID" 
+      <div>
+        <div style={label}>Power and BMS</div>
+        <div style={container}>
+          <div style={{ ...row, width: "100%" }}>
+            <div
+              style={{ ...column, flexGrow: 1 }}
+              /* first column of buttons and readouts */
+            >
+              {[
+                "Drive LF",
+                "Drive LR",
+                "Drive RF",
+                "Drive RR",
+                "Steering LF", // doesn't actually have enable
+                "Steering LR", // doesn't actually have enable
+                "Steering RF", // doesn't actually have enable
+                "Steering RR", // doesn't actually have enable
+                "Spare Motor",
+              ].map(motor => {
+                /* this and following map functions work to make the button onClick's, titles,
+              and electrical current details all callable by the same respective "name" or "ID"
               stored in the above array */
-              return (
-                <div key={motor} style={{ ...row, height: "25px" }}>
-                  {"enabled" in this.state.boardTelemetry[motor] ? (
-                    <button
-                      type="button"
-                      onClick={() => this.buttonToggle(motor)}
-                      style={{ width: "auto", height: "auto", alignContent: "center", marginRight: "8px" }}
-                    >
-                      {this.state.boardTelemetry[motor].enabled ? "Enabled" : "Disabled"}
-                    </button>
-                  ) : (
-                    <div style={{ width: "73px" }} />
-                  )}
-                  <div style={{ ...row, flexGrow: 1, justifyContent: "space-between", paddingRight: "1%" }}>
-                    <h3>{motor}</h3>
-                    <h3>{this.state.boardTelemetry[motor].value}A</h3>
+                return (
+                  <div key={motor} style={row}>
+                    {"enabled" in this.state.boardTelemetry[motor] ? (
+                      <button type="button" onClick={() => this.buttonToggle(motor)} style={{ width: "30%" }}>
+                        {this.state.boardTelemetry[motor].enabled ? "Enabled" : "Disabled"}
+                      </button>
+                    ) : (
+                      <div style={{ width: "30%" }} />
+                    )}
+                    <div style={readout}>
+                      <h3>{motor}</h3>
+                      <h3>
+                        {this.state.boardTelemetry[motor].value.toLocaleString(undefined, {
+                          minimumFractionDigits: 1,
+                          minimumIntegerDigits: 2,
+                        })}
+                        A
+                      </h3>
+                    </div>
                   </div>
-                </div>
-              )
-            })}
-          </div>
-          <div
-            style={{ ...column, paddingRight: "1%" }}
-            /* second column of buttons and readouts */
-          >
-            {[
-              "Gimbal",
-              "Multimedia",
-              "Autonomy",
-              "Logic", // doesn't actually have enable
-              "12V",
-              "Comms",
-              "Auxiliary",
-              "Drive",
-              "Vacuum",
-            ].map(part => {
-              return (
-                <div key={part} style={{ ...row }}>
-                  {"enabled" in this.state.boardTelemetry[part] ? (
-                    <button
-                      type="button"
-                      onClick={() => this.buttonToggle(part)}
-                      style={{ width: "65px", height: "20px", alignSelf: "center", marginRight: "8px" }}
-                    >
-                      {this.state.boardTelemetry[part].enabled ? "Enabled" : "Disabled"}
-                    </button>
-                  ) : (
-                    <div style={{ width: "73px" }} />
-                  )}
-                  <div style={{ ...row, flexGrow: 1, justifyContent: "space-between" }}>
-                    <h3>{part}</h3>
-                    <h3>{this.state.boardTelemetry[part].value}A</h3>
+                )
+              })}
+            </div>
+            <div
+              style={{ ...column, flexGrow: 1 }}
+              /* second column of buttons and readouts */
+            >
+              {[
+                "Gimbal",
+                "Multimedia",
+                "Autonomy",
+                "Logic", // doesn't actually have enable
+                "12V",
+                "Comms",
+                "Auxiliary",
+                "Drive",
+                "Vacuum",
+              ].map(part => {
+                return (
+                  <div key={part} style={row}>
+                    {"enabled" in this.state.boardTelemetry[part] ? (
+                      <button type="button" onClick={() => this.buttonToggle(part)} style={{ width: "30%" }}>
+                        {this.state.boardTelemetry[part].enabled ? "Enabled" : "Disabled"}
+                      </button>
+                    ) : (
+                      <div style={{ width: "30%" }} />
+                    )}
+                    <div style={readout}>
+                      <h3>{part}</h3>
+                      <h3>
+                        {this.state.boardTelemetry[part].value.toLocaleString(undefined, {
+                          minimumFractionDigits: 1,
+                          minimumIntegerDigits: 2,
+                        })}
+                        A
+                      </h3>
+                    </div>
                   </div>
-                </div>
-              )
-            })}
+                )
+              })}
+            </div>
           </div>
-        </div>
-        <div style={btnArray}>
-          {["Nav", "Cameras", "Extra"].map(peripheral => {
-            return (
-              <button type="button" key={peripheral} onClick={() => this.buttonToggle(peripheral)}>
-                {this.state.boardTelemetry[peripheral].enabled ? `${peripheral} Enabled` : `${peripheral} Disabled`}
-              </button>
-            )
-          })}
-          <button type="button">All Motors</button>
-          <button type="button">REBOOT</button>
-          <button type="button">SHUT DOWN</button>
-        </div>
-        <h3>-------------------------------------</h3>
-        <div style={totalPackContainer}>
-          <div style={readoutDisplay}>
-            <h3>Battery Temperature</h3>
-            <h3>{this.state.batteryTelemetry.Temp.value}°</h3>
-          </div>
-          <div style={readoutDisplay}>
-            <h3>Total Pack Current</h3>
-            <h3>{this.state.batteryTelemetry.TotalPackCurrent.value}A</h3>
-          </div>
-          <div style={readoutDisplay}>
-            <h3>Total Pack Voltage</h3>
-            <h3>{this.state.batteryTelemetry.TotalPackVoltage.value}A</h3>
-          </div>
-          <div style={cellReadoutContainer}>
-            {["Cell 1", "Cell 2", "Cell 3", "Cell 4", "Cell 5", "Cell 6", "Cell 7", "Cell 8"].map(cell => {
+          <div style={{ ...row, ...btnArray, marginTop: "2%" }}>
+            {["Nav", "Cameras", "Extra"].map(peripheral => {
               return (
-                <div key={cell} style={readoutDisplay}>
-                  <h3>{cell}</h3>
-                  <h3>{this.state.batteryTelemetry[cell].value}V</h3>
-                </div>
+                <button type="button" key={peripheral} onClick={() => this.buttonToggle(peripheral)}>
+                  {this.state.boardTelemetry[peripheral].enabled ? `${peripheral} Enabled` : `${peripheral} Disabled`}
+                </button>
               )
             })}
+          </div>
+          <div style={{ ...row, ...btnArray, gridTemplateColumns: "auto auto" }}>
+            <button type="button" onClick={() => this.allMotorToggle(true)}>
+              Enable All Motors
+            </button>
+            <button type="button" onClick={() => this.allMotorToggle(false)}>
+              Disable All Motors
+            </button>
+            <button type="button" onClick={() => turnOffReboot(5)}>
+              REBOOT
+            </button>
+            <button type="button" onClick={() => turnOffReboot(0)}>
+              SHUT DOWN
+            </button>
+          </div>
+          <h3 style={{ alignSelf: "center", fontSize: "14px", fontFamily: "arial" }}>
+            -------------------------------------------
+          </h3>
+          <div style={{ ...row, width: "100%" }}>
+            <div style={readout}>
+              <h3>Battery Temperature</h3>
+              <h3>{this.state.batteryTelemetry.Temp.value}°</h3>
+            </div>
+            <div style={readout}>
+              <h3>Total Pack Current</h3>
+              <h3>
+                {this.state.batteryTelemetry.TotalPackCurrent.value.toLocaleString(undefined, {
+                  minimumFractionDigits: 1,
+                  minimumIntegerDigits: 2,
+                })}
+                A
+              </h3>
+            </div>
+            <div style={readout}>
+              <h3>Total Pack Voltage</h3>
+              <h3>
+                {this.state.batteryTelemetry.TotalPackVoltage.value.toLocaleString(undefined, {
+                  minimumFractionDigits: 1,
+                  minimumIntegerDigits: 2,
+                })}
+                A
+              </h3>
+            </div>
+          </div>
+          <div style={{ ...row, width: "100%" }}>
+            <div style={{ ...cellReadoutContainer, width: "100%" }}>
+              {["Cell 1", "Cell 2", "Cell 3", "Cell 4", "Cell 5", "Cell 6", "Cell 7", "Cell 8"].map(cell => {
+                return (
+                  <div key={cell} style={readout}>
+                    <h3>{cell}</h3>
+                    <h3>
+                      {this.state.batteryTelemetry[cell].value.toLocaleString(undefined, {
+                        minimumFractionDigits: 1,
+                        minimumIntegerDigits: 2,
+                      })}
+                      V
+                    </h3>
+                  </div>
+                )
+              })}
+            </div>
           </div>
         </div>
       </div>
