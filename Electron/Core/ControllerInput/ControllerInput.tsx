@@ -51,7 +51,7 @@ export const CONTROLLERINPUT = {
       VectorX: { buttonType: "joystick", buttonIndex: 0 },
       VectorY: { buttonType: "joystick", buttonIndex: 1 },
       Throttle: { buttonType: "joystick", buttonIndex: 6 },
-      ForwardBump: { buttonType: "button", buttonIndex: 7 },
+      ForwardBump: { buttonType: "button", buttonIndex: 8 },
       BackwardBump: { buttonType: "button", buttonIndex: 9 },
     },
   },

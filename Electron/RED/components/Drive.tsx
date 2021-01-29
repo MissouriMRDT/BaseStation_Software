@@ -86,7 +86,7 @@ class Drive extends Component<IProps, IState> {
         Math.sqrt(x * x + y * y) / Math.min(Math.abs(Math.sin(theta) ** -1.0), Math.abs(Math.cos(theta) ** -1.0))
       leftSpeed = -1 * r * scaleVector(theta - Math.PI / 2)
       rightSpeed = r * scaleVector(theta)
-      speedMultiplier *= inputs.Throttle
+      speedMultiplier *= (inputs.Throttle + 1) / 2
     }
     leftSpeed = Math.round(leftSpeed * speedMultiplier)
     rightSpeed = Math.round(rightSpeed * speedMultiplier)

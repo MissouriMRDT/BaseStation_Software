@@ -74,8 +74,7 @@ function controller(passedScheme: any, pos: any): any {
       default:
         return
     }
-
-    if (navigator.getGamepads()[index] != null) {
+    if (navigator.getGamepads()[index] != null && passedScheme !== "") {
       for (const button in CONTROLLERINPUT[passedScheme].bindings) {
         if (CONTROLLERINPUT[passedScheme].bindings[button].buttonType === "button") {
           inputs[button] = navigator.getGamepads()[index]?.buttons[
@@ -92,6 +91,7 @@ function controller(passedScheme: any, pos: any): any {
           }
         }
       }
+      console.log(inputs)
     }
   }, 100)
 }
@@ -132,6 +132,17 @@ class ControlScheme extends Component<IProps, IState> {
   // takes in the controllers scheme and the position in the array of controllers to determin which controller it is
 
   controllerChange(event: { target: { value: string } }, config: string): void {
+    let defaultScheme = ""
+    for (const scheme in CONTROLLERINPUT) {
+      if (
+        CONTROLLERINPUT[scheme].config === config &&
+        event.target.value.indexOf(CONTROLLERINPUT[scheme].controller) >= 0
+      ) {
+        defaultScheme = scheme
+        break
+      }
+    }
+    console.log(defaultScheme)
     this.setState(
       {
         functionality: {
@@ -139,6 +150,7 @@ class ControlScheme extends Component<IProps, IState> {
           [config]: {
             ...this.state.functionality[config],
             controller: event.target.value,
+            scheme: defaultScheme,
             interval: clearInterval(this.state.functionality[config].interval),
           },
         },
