@@ -12,7 +12,7 @@ const label: CSS.Properties = {
   zIndex: 1,
   color: "white",
 }
-const container: CSS.Properties = {
+const mainContainer: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
   width: "500px",
@@ -281,9 +281,9 @@ class Power extends Component<IProps, IState> {
   }
 
   allMotorToggle(button: boolean): void {
-    let i
-    let { boardTelemetry } = this.state
     const motors = ["Drive LF", "Drive LR", "Drive RF", "Drive RR", "Spare Motor"]
+    let { boardTelemetry } = this.state
+    let i
     if (button) {
       for (i = 0; i < motors.length; i++) {
         boardTelemetry = {
@@ -300,7 +300,7 @@ class Power extends Component<IProps, IState> {
           ...boardTelemetry,
           [motors[i]]: {
             ...boardTelemetry[motors[i]],
-            enabled: true,
+            enabled: false,
           },
         }
       }
@@ -312,11 +312,11 @@ class Power extends Component<IProps, IState> {
     return (
       <div>
         <div style={label}>Power and BMS</div>
-        <div style={container}>
+        <div style={mainContainer}>
           <div style={{ ...row, width: "100%" }}>
             <div
-              style={{ ...column, flexGrow: 1 }}
               /* first column of buttons and readouts */
+              style={{ ...column, flexGrow: 1 }}
             >
               {[
                 "Drive LF",
