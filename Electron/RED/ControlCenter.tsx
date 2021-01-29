@@ -9,6 +9,7 @@ import NewWindowComponent from "../Core/Window"
 import RoverOverviewOfNetwork from "../RON/RON"
 import RoverAttachmentManager from "../RAM/RAM"
 import Cameras from "../Core/components/Cameras"
+import Power from "./components/Power&BMS"
 
 const row: CSS.Properties = {
   display: "flex",
@@ -90,6 +91,7 @@ class ControlCenter extends Component<IProps, IState> {
               this.waypointsInstance = instance
             }}
           />
+          <Power />
           <Log />
           <div style={row}>
             <button type="button" onClick={rovecomm.resubscribe} style={{ width: "100px" }}>

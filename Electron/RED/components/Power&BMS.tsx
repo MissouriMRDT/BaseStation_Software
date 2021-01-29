@@ -15,7 +15,6 @@ const label: CSS.Properties = {
 const mainContainer: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
-  width: "500px",
   fontFamily: "arial",
   borderTopWidth: "28px",
   borderColor: "#990000",

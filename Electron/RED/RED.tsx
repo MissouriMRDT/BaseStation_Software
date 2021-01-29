@@ -3,6 +3,7 @@ import { render } from "react-dom"
 import { AppContainer as ReactHotAppContainer } from "react-hot-loader"
 import GPS from "./components/GPS"
 import Power from "./components/Power&BMS"
+import ControlCenter from "./ControlCenter"
 
 const AppContainer = process.env.PLAIN_HMR ? Fragment : ReactHotAppContainer
 
@@ -11,10 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // const Root = require('./containers/Root').default
   render(
     <AppContainer>
-      <div>
-        <GPS />
-        <Power />
-      </div>
+      <ControlCenter />
     </AppContainer>,
     document.getElementById("root")
   )
