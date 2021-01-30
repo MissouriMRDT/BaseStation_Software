@@ -66,10 +66,14 @@ const hid: CSS.Properties = {
   visibility: "hidden",
 }
 
-interface IProps {}
+interface IProps {
+  style?: CSS.Properties
+  onDevicesChange: (devices: any) => void
+}
 
 interface IState {
   devices: any
+  pingInterval: any
 }
 
 // For colorConverter
@@ -80,7 +84,7 @@ const greenHue = 120
 const redHue = 360
 
 class PingTool extends Component<IProps, IState> {
-  constructor(props: any) {
+  constructor(props: IProps) {
     super(props)
     const devices = {}
     Object.keys(NetworkDevices).forEach(device => {
@@ -91,13 +95,23 @@ class PingTool extends Component<IProps, IState> {
     })
     this.state = {
       devices,
+      pingInterval: setInterval(() => {
+        this.props.onDevicesChange(this.state.devices)
+        for (const device in this.state.devices) {
+          if (this.state.devices[device].autoPing) {
+            this.ICMP(device)
+          }
+        }
+      }, 1000),
     }
     this.ICMP = this.ICMP.bind(this)
     this.Rove = this.Rove.bind(this)
     this.AutoPing = this.AutoPing.bind(this)
     this.AutoPingAll = this.AutoPingAll.bind(this)
-    this.StartAutoPing = this.StartAutoPing.bind(this)
-    this.StartAutoPing(1000)
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.pingInterval)
   }
 
   ICMP(device: string): void {
@@ -171,21 +185,12 @@ class PingTool extends Component<IProps, IState> {
     this.setState({
       devices,
     })
-  }
-
-  StartAutoPing(interval: number): void {
-    setInterval(() => {
-      for (const device in this.state.devices) {
-        if (this.state.devices[device].autoPing) {
-          this.ICMP(device)
-        }
-      }
-    }, interval)
+    this.props.onDevicesChange(devices)
   }
 
   render(): JSX.Element {
     return (
-      <div>
+      <div style={this.props.style}>
         <div style={label}>Ping Tool</div>
         <div style={container}>
           {[

@@ -20,25 +20,34 @@ const column: CSS.Properties = {
 
 interface IProps {}
 
-interface IState {}
+interface IState {
+  devices: any
+}
 
 class RoverOverviewOfNetwork extends Component<IProps, IState> {
   constructor(props: any) {
     super(props)
-    this.state = {}
+    this.state = {
+      devices: {},
+    }
+    this.updateDevices = this.updateDevices.bind(this)
+  }
+
+  updateDevices(devices: any) {
+    this.setState({ devices })
   }
 
   render(): JSX.Element {
     return (
       <div style={row}>
         <div style={column}>
-          <PingGraph />
-          <PingMap />
+          <PingGraph devices={this.state.devices} />
+          <PingMap devices={this.state.devices} />
           <PacketLogger />
         </div>
         <div style={column}>
           <CustomPackets />
-          <PingTool />
+          <PingTool onDevicesChange={this.updateDevices} />
         </div>
       </div>
     )
