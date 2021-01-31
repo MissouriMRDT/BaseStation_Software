@@ -20,15 +20,7 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-    "allowJs": true,
-    "suppressImplicitAnyIndexErrors": true
+    "allowJs": true
   },
-  "exclude": [
-    "test",
-    "release",
-    "RED/main.prod.js",
-    "RED/renderer.prod.js",
-    "RED/dist",
-    "internals/dll"
-  ]
+  "exclude": ["test", "release", "src/main.prod.js", "src/renderer.prod.js", "src/dist", ".erb/dll"]
 }

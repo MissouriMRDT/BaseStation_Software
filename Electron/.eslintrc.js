@@ -1,7 +1,6 @@
 module.exports = {
   extends: [
-    "erb/typescript",
-    "eslint:recommended",
+    "erb",
     "plugin:react/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
@@ -54,7 +53,7 @@ module.exports = {
       // See https://github.com/benmosher/eslint-plugin-import/issues/1396#issuecomment-575727774 for line below
       node: {},
       webpack: {
-        config: require.resolve("./internals/configs/webpack.config.eslint.js"),
+        config: require.resolve("./.erb/configs/webpack.config.eslint.js"),
       },
     },
     "import/parsers": {
