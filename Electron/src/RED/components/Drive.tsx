@@ -33,6 +33,16 @@ const row: CSS.Properties = {
 }
 
 function scaleVector(thetaIn: number): number {
+  /* This function returns a value [-1, 1] based off of the value of theta
+   * This function really only makes sense with drive in mind - consider the case of the right wheel
+   * When theta = pi/2, we want to full send forward, so we return 1
+   * When theta = 0, we want to point turn clockwise, so we return -1
+   * To map any polar value in between, we can use 4*theta/pi - 1
+   * (note if theta = pi/2, 4*pi/2/pi-1 = 1; theta = 0, 4*0/pi-1 = -1; theta = pi/4, 4*pi/4/pi-1 = 0)
+   * When theta = 3pi/4, the right wheels should be going forward at full strength, while the left wheels adjust
+   * The bottom half of the unit circle is practically the same, with -1 when theta = -pi/4
+   * And anywhere -pi/2 <= theta <= 0 we use -4*theta/pi - 3 in order to get the same examples shown above
+   */
   const pi = Math.PI
   let theta = thetaIn
   if (theta < -pi) {
@@ -43,7 +53,7 @@ function scaleVector(thetaIn: number): number {
   } else if (theta >= pi / 2 && theta <= pi) {
     return 1
   } else if (theta >= -pi && theta <= -pi / 2) {
-    return (-4 / pi) * (theta + (5 / 4) * pi) + 2
+    return (-4 * theta) / pi - 3
   } else if (theta >= -pi / 2 && theta <= 0) {
     return -1
   }
@@ -72,8 +82,16 @@ class Drive extends Component<IProps, IState> {
   }
 
   drive(): void {
+    /* This function is called every 100ms, takes input from the inputs vector, and sends the proper
+     * commands to drive the left and right motors in tank drive. If being controlled via traditional tank
+     * drive, "LeftSpeed" and "RightSpeed" will exist as keys of inputs, and be the values to be sent
+     * If we are in flightstick vector drive, the X, Y, and throttle positions will be keys of inputs
+     * and will be translated to proper left/right speeds (largely by the scaleVector function)
+     * The appropriate values for left/right speeds are [-1000, 1000], but X/Y/Throttle will be [-1,1]
+     */
     let leftSpeed = 0
     let rightSpeed = 0
+    // Speed limit set by the GUI. If controller indicates 50% speed, thats 50% of the speedLimit, a value 0-1000
     let speedMultiplier = this.state.speedLimit
     if ("LeftSpeed" in inputs && "RightSpeed" in inputs) {
       leftSpeed = inputs.LeftSpeed
@@ -81,11 +99,16 @@ class Drive extends Component<IProps, IState> {
     } else if ("VectorX" in inputs && "VectorY" in inputs && "Throttle" in inputs) {
       const x = inputs.VectorX
       const y = inputs.VectorY
+      // Computes the angle between the positive x axis and the vector (VectorX, VectorY)
       const theta = Math.atan2(y, x)
-      const r =
-        Math.sqrt(x * x + y * y) / Math.min(Math.abs(Math.sin(theta) ** -1.0), Math.abs(Math.cos(theta) ** -1.0))
+      // We base our speed off the value of the larger vector component
+      const r = Math.max(Math.abs(x), Math.abs(y))
+      // Scale vector is explained in terms of the right wheels, and the left wheels can be thought of as
+      // a reflection over the y axis, which is easiest obtained by adjusting the angle 45deg and inverting the result
       leftSpeed = -1 * r * scaleVector(theta - Math.PI / 2)
       rightSpeed = r * scaleVector(theta)
+      // We want the throttle to be seen as 0% when all the way down, and 100% when all the way up, but throttle
+      // has values [-1, 1], so if we (throttle + 1) /2, we get [0,1]
       speedMultiplier *= (inputs.Throttle + 1) / 2
     }
     leftSpeed = Math.round(leftSpeed * speedMultiplier)
