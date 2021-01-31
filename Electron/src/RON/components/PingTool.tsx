@@ -141,7 +141,8 @@ class PingTool extends Component<IProps, IState> {
         // On Windows, failed ping is not necessarily an error
         // Windows Ex. 'Reply from 8.8.8.8: bytes=32 time=26ms TTL=110'
         // Unix Ex. '64 bytes from 8.8.8.8: icmp_seq=0 ttl=110 time=387.477 ms'
-        const start = stdout.indexOf("time=") + 5
+        // They may also return "time<1ms", which we will treat as =1ms
+        const start = stdout.indexOf("time") + 5
         const end = stdout.indexOf("ms")
         delay = Math.round(parseFloat(stdout.substring(start, end)))
       }
