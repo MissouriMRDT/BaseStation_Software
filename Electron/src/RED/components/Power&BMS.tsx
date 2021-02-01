@@ -58,7 +58,7 @@ const cellReadoutContainer: CSS.Properties = {
 }
 
 function turnOffReboot(time: number): void {
-  rovecomm.sendCommand("BMSStop", time)
+  rovecomm.sendCommand("BMSStop", [time])
 }
 
 interface IProps {}
@@ -273,7 +273,7 @@ class Power extends Component<IProps, IState> {
       rovecomm.sendCommand("30VBusEnable", [parseInt(newBitMask, 2)])
     }
     if (bus === "Vacuum") {
-      const newBitMask = this.state.boardTelemetry.vacuum.enabled ? "1" : "0"
+      const newBitMask = this.state.boardTelemetry.Vacuum.enabled ? "1" : "0"
       rovecomm.sendCommand("vacuumEnabled", [parseInt(newBitMask, 2)])
     }
     // rovecomm.sendCommand("packetName", [dataArray])
