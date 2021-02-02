@@ -14,7 +14,7 @@ interface TCPSocket {
   RCDeque: Deque<any>
 }
 
-function decodePacket(dataType: number, dataCount: number, data: Buffer): number[] {
+function decodePacket(dataType: number, dataCount: number, data: Buffer): number[] | string {
   /*
    * Takes in a dataType, dateLength, and data from an incoming rovecomm packet,
    * and uses the dataType to return an array of the properly typed data.
@@ -45,17 +45,31 @@ function decodePacket(dataType: number, dataCount: number, data: Buffer): number
     case DataTypes.FLOAT_T:
       readBytes = data.readFloatBE.bind(data)
       break
+    case DataTypes.DOUBLE_T:
+      readBytes = data.readDoubleBE.bind(data)
+      break
+    case DataTypes.CHAR:
+      readBytes = data.readUInt8.bind(data)
+      break
     default:
       return []
   }
 
   const retArray = []
   let offset: number
-  for (let i = 0; i < dataCount; i += 1) {
-    offset = i * dataSizes[dataType]
-    retArray.push(readBytes(offset))
+  if (dataType === DataTypes.CHAR) {
+    for (let i = 0; i < dataCount; i += 1) {
+      offset = i * dataSizes[dataType]
+      retArray.push(String.fromCharCode(readBytes(offset)))
+    }
+    return retArray.join()
+  } else {
+    for (let i = 0; i < dataCount; i += 1) {
+      offset = i * dataSizes[dataType]
+      retArray.push(readBytes(offset))
+    }
+    return retArray
   }
-  return retArray
 }
 
 function parse(packet: Buffer, rinfo?: any): void {
@@ -122,6 +136,19 @@ function parse(packet: Buffer, rinfo?: any): void {
             dataIdStr = comm
             endLoop = true
             boardName = board
+            break
+          }
+        }
+        if (endLoop) {
+          break
+        }
+        for (const comm in RovecommManifest[board].Error) {
+          if (dataId === RovecommManifest[board].Error[comm].dataId) {
+            dataIdStr = comm
+            endLoop = true
+            boardName = board
+            // eslint-disable-next-line @typescript-eslint/no-use-before-define
+            rovecomm.emit("Error", { dataIdStr, data })
             break
           }
         }
@@ -315,13 +342,19 @@ class Rovecomm extends EventEmitter {
   }
 
   // While most "any" variable types have been removed, data really can be almost any type
-  sendCommand(dataIdStr: string, data: any, reliability = false): void {
+  sendCommand(dataIdStr: string, dataIn: any, reliability = false): void {
     /*
      * Takes a dataIdString, data, and optional reliability (to determine)
      * UDP or TCP, properly types the data according to the type in the manifest
      * creates a Buffer, and calls the proper send function
      */
     const VersionNumber = 2
+
+    let data = dataIn
+    // If data is a single element rather than an array, put it in an array
+    if (!Array.isArray(data)) {
+      data = [data]
+    }
 
     const dataCount = data.length
     let destinationIp = ""
