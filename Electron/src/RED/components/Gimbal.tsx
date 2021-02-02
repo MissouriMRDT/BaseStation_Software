@@ -4,10 +4,6 @@ import path from "path"
 import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
 import { controllerInputs } from "../../Core/components/ControlScheme"
 
-const h1Style: CSS.Properties = {
-  fontFamily: "arial",
-  fontSize: "12px",
-}
 const container: CSS.Properties = {
   display: "flex",
   fontFamily: "arial",
@@ -28,10 +24,6 @@ const label: CSS.Properties = {
   zIndex: 1,
   color: "white",
 }
-const row: CSS.Properties = {
-  display: "flex",
-  flexDirection: "row",
-}
 
 interface IProps {
   style?: CSS.Properties
@@ -41,6 +33,7 @@ interface IState {
   image: string
 }
 
+// Dynamic paths to import images used to indicate which gimbal is being controlled
 const NotConnected = path.join(__dirname, "../assets/NotConnected.png")
 const UpArrow = path.join(__dirname, "../assets/UpArrow.png")
 const DownArrow = path.join(__dirname, "../assets/DownArrow.png")
@@ -49,6 +42,7 @@ class Gimbal extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props)
     this.state = {
+      // Controlling will be "none" by default, then set to "main" or "drive", and image will update to match
       controlling: "none",
       image: NotConnected,
     }
@@ -58,6 +52,9 @@ class Gimbal extends Component<IProps, IState> {
 
   gimbal(): void {
     let { controlling, image } = this.state
+    // When up on the dpad is pressed, we switch to controlling main gimbal in the code, although no rovecomm command is sent
+    // unless there is actually incoming control data from the thumbsticks
+    // Similarly, down on the dpad switches to controlling the drive gimbals
     if ("MainGimbalSwitch" in controllerInputs && controllerInputs.MainGimbalSwitch === 1) {
       controlling = "Main"
       image = UpArrow
@@ -65,13 +62,21 @@ class Gimbal extends Component<IProps, IState> {
       controlling = "Drive"
       image = DownArrow
     }
-    if ("PanLeft" in controllerInputs && "TiltLeft" in controllerInputs) {
+    if (
+      "PanLeft" in controllerInputs &&
+      "TiltLeft" in controllerInputs &&
+      "PanRight" in controllerInputs &&
+      "TiltRight" in controllerInputs
+    ) {
+      // The multiples defined below are for Valkyries mounting positions, and the * 5 is just a small constant to tweak how quickly they respond
+      // to controller input
       if (controlling === "Main") {
-        rovecomm.sendCommand("LeftMainGimbal", [controllerInputs.PanLeft * -5, controllerInputs.TiltLeft * 5])
-        rovecomm.sendCommand("RightMainGimbal", [controllerInputs.PanRight * -5, controllerInputs.TiltRight * 5])
+        rovecomm.sendCommand("LeftMainGimbal", [controllerInputs.PanLeft * 5, controllerInputs.TiltLeft * 5])
+        rovecomm.sendCommand("RightMainGimbal", [controllerInputs.PanRight * 5, controllerInputs.TiltRight * 5])
       } else if (controlling === "Drive") {
-        rovecomm.sendCommand("LeftDriveGimbal", [controllerInputs.PanLeft * 5, controllerInputs.TiltLeft * -5])
-        rovecomm.sendCommand("RightDriveGimbal", [controllerInputs.PanRight * 5, controllerInputs.TiltRight * -5])
+        // The drive gimbals currently take tilt, then pan and discard pan since they only tilt
+        rovecomm.sendCommand("LeftDriveGimbal", [controllerInputs.TiltLeft * 5, controllerInputs.PanLeft * 5])
+        rovecomm.sendCommand("RightDriveGimbal", [controllerInputs.TiltRight * -5, controllerInputs.TiltRight * 5])
       }
     }
     this.setState({

@@ -12,6 +12,7 @@ const container: CSS.Properties = {
   borderStyle: "solid",
   flexWrap: "wrap",
   flexDirection: "column",
+  height: "calc(100% - 40px)",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",

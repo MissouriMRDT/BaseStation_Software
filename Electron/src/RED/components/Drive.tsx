@@ -60,6 +60,8 @@ function scaleVector(thetaIn: number): number {
   return 0
 }
 
+const maxSpeed = 1000
+
 interface IProps {
   style?: CSS.Properties
 }
@@ -78,6 +80,7 @@ class Drive extends Component<IProps, IState> {
       speedLimit: 300,
     }
 
+    this.speedLimitChange = this.speedLimitChange.bind(this)
     setInterval(() => this.drive(), 100)
   }
 
@@ -104,7 +107,7 @@ class Drive extends Component<IProps, IState> {
       // We base our speed off the value of the larger vector component
       const r = Math.max(Math.abs(x), Math.abs(y))
       // Scale vector is explained in terms of the right wheels, and the left wheels can be thought of as
-      // a reflection over the y axis, which is easiest obtained by adjusting the angle 45deg and inverting the result
+      // a reflection over the y axis, which is easiest obtained by adjusting the angle 90deg and inverting the result
       leftSpeed = -1 * r * scaleVector(theta - Math.PI / 2)
       rightSpeed = r * scaleVector(theta)
       // We want the throttle to be seen as 0% when all the way down, and 100% when all the way up, but throttle
@@ -113,8 +116,8 @@ class Drive extends Component<IProps, IState> {
     }
     leftSpeed = Math.round(leftSpeed * speedMultiplier)
     rightSpeed = Math.round(rightSpeed * speedMultiplier)
-    if (("ForwardBump" in controllerInputs && controllerInputs.ForwardBump === 1) ||
-
+    if (
+      ("ForwardBump" in controllerInputs && controllerInputs.ForwardBump === 1) ||
       ("BackwardBump" in controllerInputs && controllerInputs.BackwardBump === 1)
     ) {
       const direction = controllerInputs.ForwardBump === 1 ? 1 : -1
@@ -129,6 +132,16 @@ class Drive extends Component<IProps, IState> {
     })
   }
 
+  speedLimitChange(event: { target: { value: string } }): void {
+    let speedLimit = parseInt(event.target.value, 10)
+    if (speedLimit < 0) {
+      speedLimit = 0
+    } else if (speedLimit > maxSpeed) {
+      speedLimit = maxSpeed
+    }
+    this.setState({ speedLimit })
+  }
+
   render(): JSX.Element {
     return (
       <div style={this.props.style}>
@@ -137,8 +150,8 @@ class Drive extends Component<IProps, IState> {
           <div style={row}>
             <progress
               value={this.state.leftSpeed < 0 ? -this.state.leftSpeed : 0}
-              max={1000}
-              style={{ display: "block", float: "right" }}
+              max={maxSpeed}
+              style={{ transform: "rotate(180deg)" }}
             />
             <div style={{ width: "30%", textAlign: "center" }}>Left Speed: {this.state.leftSpeed}</div>
             <progress style={{ flexGrow: 1 }} value={this.state.leftSpeed > 0 ? this.state.leftSpeed : 0} max={1000} />
@@ -146,14 +159,14 @@ class Drive extends Component<IProps, IState> {
           <div style={row}>
             <progress
               value={this.state.rightSpeed < 0 ? -this.state.rightSpeed : 0}
-              max={1000}
-              style={{ justifyContent: "end" }}
+              max={maxSpeed}
+              style={{ transform: "rotate(180deg)" }}
             />
             <div style={{ width: "30%", textAlign: "center" }}>Right Speed: {this.state.rightSpeed}</div>
             <progress
               style={{ flexGrow: 1 }}
               value={this.state.rightSpeed > 0 ? this.state.rightSpeed : 0}
-              max={1000}
+              max={maxSpeed}
             />
           </div>
           <div style={row}>
@@ -162,7 +175,7 @@ class Drive extends Component<IProps, IState> {
               type="text"
               style={{ marginLeft: "5px" }}
               value={this.state.speedLimit || ""}
-              onChange={e => this.setState({ speedLimit: parseInt(e.target.value, 10) })}
+              onChange={this.speedLimitChange}
             />
           </div>
         </div>
