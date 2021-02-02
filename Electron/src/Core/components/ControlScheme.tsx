@@ -93,7 +93,7 @@ function controller(passedScheme: any, pos: any): any {
         }
       }
     }
-  }, 100)
+  }, 50)
 }
 
 interface IProps {
