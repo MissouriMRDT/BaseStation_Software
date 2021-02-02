@@ -37,10 +37,10 @@ const row: CSS.Properties = {
 }
 
 // eslint-disable-next-line import/no-mutable-exports
-export let inputs: any = {}
+export let controllerInputs: any = {}
 
 function controller(passedScheme: any, pos: any): any {
-  inputs = {}
+  controllerInputs = {}
   return setInterval(() => {
     // if navigator.getGampads()[pos] == flight stick
     let index: number
@@ -77,21 +77,21 @@ function controller(passedScheme: any, pos: any): any {
     if (navigator.getGamepads()[index] != null && passedScheme !== "") {
       for (const button in CONTROLLERINPUT[passedScheme].bindings) {
         if (CONTROLLERINPUT[passedScheme].bindings[button].buttonType === "button") {
-          inputs[button] = navigator.getGamepads()[index]?.buttons[
+          controllerInputs[button] = navigator.getGamepads()[index]?.buttons[
             CONTROLLERINPUT[passedScheme].bindings[button].buttonIndex
           ].value
         } else {
-          inputs[button] = navigator.getGamepads()[index]?.axes[
+          controllerInputs[button] = navigator.getGamepads()[index]?.axes[
             CONTROLLERINPUT[passedScheme].bindings[button].buttonIndex
           ]
-          if (inputs[button] >= -DeadZone && inputs[button] <= DeadZone) {
-            inputs[button] = 0.0
+          if (controllerInputs[button] >= -DeadZone && controllerInputs[button] <= DeadZone) {
+            controllerInputs[button] = 0.0
           } else {
-            inputs[button] *= -1
+            controllerInputs[button] *= -1
           }
         }
       }
-      console.log(inputs)
+      console.log(controllerInputs)
     }
   }, 100)
 }
@@ -206,7 +206,7 @@ class ControlScheme extends Component<IProps, IState> {
   }
 
   buttonToggle(config: string): void {
-    inputs = {}
+    controllerInputs = {}
     // if toggling on
     if (this.state.functionality[config].toggled === "Off") {
       this.setState({
