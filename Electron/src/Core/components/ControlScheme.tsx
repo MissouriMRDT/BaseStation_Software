@@ -45,7 +45,7 @@ function controller(passedScheme: any, pos: any): any {
   return setInterval(() => {
     // if navigator.getGampads()[pos] == flight stick
     let index: number
-    let DeadZone = 0.15 // xbox one controller
+    let DeadZone = 0.05 // xbox one controller
     const controllerList = []
     for (let i = 0; i < 4; i++) {
       if (navigator.getGamepads()[i] != null) {
@@ -132,6 +132,7 @@ class ControlScheme extends Component<IProps, IState> {
   // takes in the controllers scheme and the position in the array of controllers to determin which controller it is
 
   controllerChange(event: { target: { value: string } }, config: string): void {
+    controllerInputs = {}
     let defaultScheme = ""
     for (const scheme in CONTROLLERINPUT) {
       if (
@@ -174,6 +175,7 @@ class ControlScheme extends Component<IProps, IState> {
   }
 
   schemeChange(event: { target: { value: string } }, config: string): void {
+    controllerInputs = {}
     this.setState(
       {
         functionality: {
@@ -239,7 +241,6 @@ class ControlScheme extends Component<IProps, IState> {
       <div style={this.props.style}>
         <div style={label}>Control Scheme</div>
         <div style={container}>
-          {/* [{name: Drive}].map({return(this.state.controllerInput[name].controller = value)})["Xbox 1", "Xbox 2", "Xbox 3", "Flight Stick"] */}
           {["Drive", "MainGimbal"].map(config => {
             return (
               <div key={config} style={row}>
