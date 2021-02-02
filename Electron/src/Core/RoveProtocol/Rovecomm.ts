@@ -1,6 +1,26 @@
+/* eslint-disable import/no-mutable-exports */
 import { Socket } from "dgram"
 import Deque from "double-ended-queue"
-import { RovecommManifest, dataSizes, DataTypes, headerLength, SystemPackets } from "./RovecommManifest"
+import fs from "fs"
+import path from "path"
+
+export let RovecommManifest: any = {}
+export let dataSizes: any = []
+export let DataTypes: any = {}
+export let headerLength: any = 0
+export let SystemPackets: any = {}
+export let NetworkDevices: any = {}
+const filepath = path.join(__dirname, "../assets/RovecommManifest.json")
+
+if (fs.existsSync(filepath)) {
+  const manifest = JSON.parse(fs.readFileSync(filepath).toString())
+  RovecommManifest = manifest.RovecommManifest
+  dataSizes = manifest.dataSizes
+  DataTypes = manifest.DataTypes
+  headerLength = manifest.headerLength
+  SystemPackets = manifest.SystemPackets
+  NetworkDevices = manifest.NetworkDevices
+}
 
 // There is a fundamental implementation difference between these required imports
 // and the traditional typescript imports.
@@ -23,7 +43,7 @@ function decodePacket(dataType: number, dataCount: number, data: Buffer): number
 
   let readBytes: (i: number) => number
 
-  switch (dataType) {
+  switch (DataTypes[dataType]) {
     case DataTypes.INT8_T:
       readBytes = data.readInt8.bind(data)
       break
@@ -98,7 +118,7 @@ function parse(packet: Buffer, rinfo?: any): void {
   const dataType = packet.readUInt8(4)
 
   const rawdata = packet.slice(headerLength)
-  let data: number[]
+  let data: number[] | string
 
   if (version === VersionNumber) {
     data = decodePacket(dataType, dataCount, rawdata)
