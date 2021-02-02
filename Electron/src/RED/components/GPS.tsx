@@ -35,50 +35,55 @@ interface IProps {
 }
 
 interface IState {
-  fixObtained: boolean
-  fixQuality: number
-  satelliteCount: number
-  odometer: number
   currentLat: number
   currentLon: number
-  lidar: number
+  pitch: number
+  yaw: number
+  roll: number
+  distance: number
+  quality: number
 }
 class GPS extends Component<IProps, IState> {
   constructor(props: any) {
     super(props)
     this.state = {
-      fixObtained: false,
-      fixQuality: 255,
-      satelliteCount: 255,
-      odometer: 0,
       currentLat: 0,
       currentLon: 0,
-      lidar: 0.0,
+      pitch: 0,
+      yaw: 0,
+      roll: 0,
+      distance: 0,
+      quality: 0,
     }
 
-    rovecomm.on("GPSTelem", (data: any) => this.GPSTelem(data))
-    rovecomm.on("GPSPosition", (data: any) => this.GPSPosition(data))
-
-    // rovecomm.sendCommand(dataIdStr, data, reliability)
+    rovecomm.on("GPSLatLon", (data: any) => this.GPSLatLon(data))
+    rovecomm.on("IMUData", (data: any) => this.IMUData(data))
+    rovecomm.on("LidarData", (data: any) => this.LidarData(data))
   }
 
-  GPSTelem(data: any) {
-    this.setState({
-      fixObtained: data[0] !== 0,
-      fixQuality: data[0],
-      satelliteCount: data[1],
-    })
-  }
-
-  GPSPosition(data: any) {
-    // We divide by 10000000 because currently waypoints are sent as shifted INT32s, not floats
-    const currentLat = data[0] / 10000000
-    const currentLon = data[1] / 10000000
+  GPSLatLon(data: any) {
+    const currentLat = data[0]
+    const currentLon = data[1]
     this.setState({
       currentLat,
       currentLon,
     })
     this.props.onCoordsChange(currentLat, currentLon)
+  }
+
+  IMUData(data: any) {
+    this.setState({
+      pitch: data[0],
+      yaw: data[1],
+      roll: data[2],
+    })
+  }
+
+  LidarData(data: any) {
+    this.setState({
+      distance: data[0],
+      quality: data[1],
+    })
   }
 
   render(): JSX.Element {
@@ -87,13 +92,13 @@ class GPS extends Component<IProps, IState> {
         <div style={label}>GPS</div>
         <div style={container}>
           {[
-            { title: "Fix Obtained", value: this.state.fixObtained.toString() },
-            { title: "Fix Quality", value: this.state.fixQuality },
-            { title: "Satellite Count", value: this.state.satelliteCount },
-            { title: "Odometer (Miles)", value: this.state.odometer },
             { title: "Current Lat.", value: this.state.currentLat },
             { title: "Current Lon.", value: this.state.currentLon },
-            { title: "Lidar", value: this.state.lidar },
+            { title: "Pitch", value: this.state.pitch },
+            { title: "Yaw", value: this.state.yaw },
+            { title: "Roll", value: this.state.roll },
+            { title: "Distance", value: this.state.distance },
+            { title: "Quality", value: this.state.quality },
           ].map(datum => {
             const { title, value } = datum
             return (

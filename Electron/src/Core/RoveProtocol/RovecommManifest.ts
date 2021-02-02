@@ -246,13 +246,13 @@ export const RovecommManifest = {
         dataCount: 5,
         comments: "[M1, M2, M3, M4, Spare] (A)",
       },
-      TwelveVBusCurrent: {
+      "12VBusCurrent": {
         dataId: 3106,
         dataType: DataTypes.FLOAT_T,
         dataCount: 4,
         comments: "[Gimbal, Multi, Aux, Logic] (A)",
       },
-      ThirtyVBusCurrent: {
+      "30VBusCurrent": {
         dataId: 3107,
         dataType: DataTypes.FLOAT_T,
         dataCount: 4,
