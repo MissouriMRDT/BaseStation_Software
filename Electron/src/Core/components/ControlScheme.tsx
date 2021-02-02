@@ -92,7 +92,6 @@ function controller(passedScheme: any, pos: any): any {
           }
         }
       }
-      console.log(controllerInputs)
     }
   }, 100)
 }
@@ -143,7 +142,6 @@ class ControlScheme extends Component<IProps, IState> {
         break
       }
     }
-    console.log(defaultScheme)
     this.setState(
       {
         functionality: {
