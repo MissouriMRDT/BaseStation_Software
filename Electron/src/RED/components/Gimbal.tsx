@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import CSS from "csstype"
 import path from "path"
 import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
-import { inputs } from "../../Core/components/ControlScheme"
+import { controllerInputs } from "../../Core/components/ControlScheme"
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
@@ -58,20 +58,20 @@ class Gimbal extends Component<IProps, IState> {
 
   gimbal(): void {
     let { controlling, image } = this.state
-    if ("MainGimbalSwitch" in inputs && inputs.MainGimbalSwitch === 1) {
+    if ("MainGimbalSwitch" in controllerInputs && controllerInputs.MainGimbalSwitch === 1) {
       controlling = "Main"
       image = UpArrow
-    } else if ("DriveGimbalSwitch" in inputs && inputs.DriveGimbalSwitch === 1) {
+    } else if ("DriveGimbalSwitch" in controllerInputs && controllerInputs.DriveGimbalSwitch === 1) {
       controlling = "Drive"
       image = DownArrow
     }
-    if ("PanLeft" in inputs && "TiltLeft" in inputs) {
+    if ("PanLeft" in controllerInputs && "TiltLeft" in controllerInputs) {
       if (controlling === "Main") {
-        rovecomm.sendCommand("LeftMainGimbal", [inputs.PanLeft * -5, inputs.TiltLeft * 5])
-        rovecomm.sendCommand("RightMainGimbal", [inputs.PanRight * -5, inputs.TiltRight * 5])
+        rovecomm.sendCommand("LeftMainGimbal", [controllerInputs.PanLeft * -5, controllerInputs.TiltLeft * 5])
+        rovecomm.sendCommand("RightMainGimbal", [controllerInputs.PanRight * -5, controllerInputs.TiltRight * 5])
       } else if (controlling === "Drive") {
-        rovecomm.sendCommand("LeftDriveGimbal", [inputs.PanLeft * 5, inputs.TiltLeft * -5])
-        rovecomm.sendCommand("RightDriveGimbal", [inputs.PanRight * 5, inputs.TiltRight * -5])
+        rovecomm.sendCommand("LeftDriveGimbal", [controllerInputs.PanLeft * 5, controllerInputs.TiltLeft * -5])
+        rovecomm.sendCommand("RightDriveGimbal", [controllerInputs.PanRight * 5, controllerInputs.TiltRight * -5])
       }
     }
     this.setState({

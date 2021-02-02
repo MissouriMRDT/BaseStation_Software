@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import CSS from "csstype"
 import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
-import { inputs } from "../../Core/components/ControlScheme"
+import { controllerInputs } from "../../Core/components/ControlScheme"
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
@@ -82,10 +82,10 @@ class Drive extends Component<IProps, IState> {
   }
 
   drive(): void {
-    /* This function is called every 100ms, takes input from the inputs vector, and sends the proper
+    /* This function is called every 100ms, takes input from the controllerInputs vector, and sends the proper
      * commands to drive the left and right motors in tank drive. If being controlled via traditional tank
-     * drive, "LeftSpeed" and "RightSpeed" will exist as keys of inputs, and be the values to be sent
-     * If we are in flightstick vector drive, the X, Y, and throttle positions will be keys of inputs
+     * drive, "LeftSpeed" and "RightSpeed" will exist as keys of controllerInputs, and be the values to be sent
+     * If we are in flightstick vector drive, the X, Y, and throttle positions will be keys of controllerInputs
      * and will be translated to proper left/right speeds (largely by the scaleVector function)
      * The appropriate values for left/right speeds are [-1000, 1000], but X/Y/Throttle will be [-1,1]
      */
@@ -93,12 +93,12 @@ class Drive extends Component<IProps, IState> {
     let rightSpeed = 0
     // Speed limit set by the GUI. If controller indicates 50% speed, thats 50% of the speedLimit, a value 0-1000
     let speedMultiplier = this.state.speedLimit
-    if ("LeftSpeed" in inputs && "RightSpeed" in inputs) {
-      leftSpeed = inputs.LeftSpeed
-      rightSpeed = inputs.RightSpeed
-    } else if ("VectorX" in inputs && "VectorY" in inputs && "Throttle" in inputs) {
-      const x = inputs.VectorX
-      const y = inputs.VectorY
+    if ("LeftSpeed" in controllerInputs && "RightSpeed" in controllerInputs) {
+      leftSpeed = controllerInputs.LeftSpeed
+      rightSpeed = controllerInputs.RightSpeed
+    } else if ("VectorX" in controllerInputs && "VectorY" in controllerInputs && "Throttle" in controllerInputs) {
+      const x = controllerInputs.VectorX
+      const y = controllerInputs.VectorY
       // Computes the angle between the positive x axis and the vector (VectorX, VectorY)
       const theta = Math.atan2(y, x)
       // We base our speed off the value of the larger vector component
@@ -109,16 +109,20 @@ class Drive extends Component<IProps, IState> {
       rightSpeed = r * scaleVector(theta)
       // We want the throttle to be seen as 0% when all the way down, and 100% when all the way up, but throttle
       // has values [-1, 1], so if we (throttle + 1) /2, we get [0,1]
-      speedMultiplier *= (inputs.Throttle + 1) / 2
+      speedMultiplier *= (controllerInputs.Throttle + 1) / 2
     }
     leftSpeed = Math.round(leftSpeed * speedMultiplier)
     rightSpeed = Math.round(rightSpeed * speedMultiplier)
-    if ("ForwardBump" in inputs || "BackwardBump" in inputs) {
-      const direction = "ForwardBump" in inputs ? 1 : -1
-      rovecomm.sendCommand("DriveLeftRight", [50 * direction, 50 * direction])
-    } else {
-      rovecomm.sendCommand("DriveLeftRight", [leftSpeed, rightSpeed])
+    if (("ForwardBump" in controllerInputs && controllerInputs.ForwardBump === 1) ||
+
+      ("BackwardBump" in controllerInputs && controllerInputs.BackwardBump === 1)
+    ) {
+      const direction = controllerInputs.ForwardBump === 1 ? 1 : -1
+      leftSpeed = 50 * direction
+      rightSpeed = 50 * direction
     }
+    rovecomm.sendCommand("DriveLeftRight", [leftSpeed, rightSpeed])
+
     this.setState({
       leftSpeed,
       rightSpeed,
