@@ -26,6 +26,8 @@ export enum DataTypes {
   INT32_T = 4,
   UINT32_T = 5,
   FLOAT_T = 6,
+  DOUBLE_T = 7,
+  CHAR = 8,
 }
 
 export enum SystemPackets {
@@ -46,266 +48,338 @@ export const dataSizes = [1, 1, 2, 2, 4, 4, 4]
 export const RovecommManifest = {
   Drive: {
     Ip: "192.168.1.134",
-    Port: 11001,
+    Port: 11004,
     Commands: {
       DriveLeftRight: {
         dataId: 1000,
         dataType: DataTypes.INT16_T,
         dataCount: 2,
-        comments: "Left wheels speed followed by right wheels speed",
+        comments: "[LeftSpeed, RightSpeed] (-1000, 1000)-> (-100%, 100%)",
       },
       DriveIndividual: {
         dataId: 1001,
         dataType: DataTypes.INT16_T,
-        dataCount: 6,
-        comments: "Controls each wheel individiually",
+        dataCount: 4,
+        comments: "[LF, LR, RF, RR] (-1000, 1000)-> (-100%, 100%)",
+      },
+      SetSteeringAngle: {
+        dataId: 1002,
+        dataType: DataTypes.INT16_T,
+        dataCount: 4,
+        comments: "[LF, LR, RF, RR] (0, 359)",
+      },
+      PointTurn: {
+        dataId: 1003,
+        dataType: DataTypes.INT16_T,
+        dataCount: 1,
+        comments: "[PointTurnSpeed] (-1000,1000) (Full speed CCW, full speed CW)",
       },
       WatchdogOverride: {
-        dataId: 1002,
+        dataId: 1004,
         dataType: DataTypes.UINT8_T,
         dataCount: 1,
-        comments: "",
-      },
-      Headlights: {
-        dataId: 14000,
-        dataType: DataTypes.UINT8_T,
-        dataCount: 1,
-        comments: "Headlight intensity for the front of rover",
-      },
-      UnderglowColor: {
-        dataId: 14001,
-        dataType: DataTypes.UINT8_T,
-        dataCount: 3,
-        comments: "rgb byte[]",
-      },
-      CycleLightingMode: {
-        dataId: 14002,
-        dataType: DataTypes.UINT8_T,
-        dataCount: 1,
-        comments: "",
-      },
-      StateDisplay: {
-        dataId: 14003,
-        dataType: DataTypes.UINT8_T,
-        dataCount: 1,
-        comments: "enum blue,red,green",
+        comments: "[0-Turn off Watchdog Override, 1-Turn on Watchdog Override]",
       },
     },
     Telemetry: {
       DriveSpeeds: {
         dataId: 1100,
         dataType: DataTypes.INT16_T,
-        dataCount: 6,
-        comments: "The drive speed of each motor, counterclockwise",
+        dataCount: 4,
+        comments: "[LF, LR, RF, RR] (-1000, 1000)-> (-100%, 100%)",
+      },
+      DriveAngles: {
+        dataId: 1101,
+        dataType: DataTypes.INT16_T,
+        dataCount: 4,
+        comments: "[LF, LR, RF, RR] -> (0, 360)",
+      },
+      SteeringMotorCurrents: {
+        dataId: 1102,
+        dataType: DataTypes.FLOAT_T,
+        dataCount: 4,
+        comments: "[M1, M2, M3, M4] (A)",
+      },
+    },
+    Error: {
+      SteeringMotorOverCurrent: {
+        dataId: 1200,
+        dataType: DataTypes.UINT8_T,
+        dataCount: 1,
+        comments: "[(0-undermaxcurrent, 1-overcurrent)] [LF, LR, RF, RL (Bitmask)]",
+      },
+    },
+  },
+  BMS: {
+    Ip: "192.168.1.133",
+    Port: 11003,
+    Commands: {
+      BMSStop: {
+        dataId: 2000,
+        dataType: DataTypes.UINT8_T,
+        dataCount: 1,
+        comments: "[delay] (s) -> a delay of 0 will shutdown, not restart and cannot be reversed",
+      },
+    },
+    Telemetry: {
+      PackI_Meas: {
+        dataId: 2100,
+        dataType: DataTypes.FLOAT_T,
+        dataCount: 1,
+        comments: "[Main] (A)",
+      },
+      PackV_Meas: {
+        dataId: 2101,
+        dataType: DataTypes.FLOAT_T,
+        dataCount: 1,
+        comments: "[Pack_Out] (V)",
+      },
+      CellV_Meas: {
+        dataId: 2102,
+        dataType: DataTypes.FLOAT_T,
+        dataCount: 8,
+        comments: "[C1-G, C2-1, C3-2, C4-3, C5-4, C6-5, C7-6, C8-7] (V)",
+      },
+      Temp_Meas: {
+        dataId: 2103,
+        dataType: DataTypes.FLOAT_T,
+        dataCount: 1,
+        comments: "[Temp] (degC)",
+      },
+      Error: {
+        PackOverCurrent: {
+          dataId: 2200,
+          dataType: DataTypes.UINT8_T,
+          dataCount: 1,
+          comments: "",
+        },
+        CellUnderVoltage: {
+          dataId: 2201,
+          dataType: DataTypes.UINT8_T,
+          dataCount: 1,
+          comments: "(bitmasked)",
+        },
+        PackUnderVoltage: {
+          dataId: 2202,
+          dataType: DataTypes.UINT8_T,
+          dataCount: 1,
+          comments: "",
+        },
+        PackSuperHot: {
+          dataId: 2203,
+          dataType: DataTypes.UINT8_T,
+          dataCount: 1,
+          comments: "",
+        },
       },
     },
   },
   Power: {
     Ip: "192.168.1.132",
-    Port: 11003,
+    Port: 11002,
     Commands: {
-      PowerBusEnableDisable: {
+      MotorBusEnable: {
         dataId: 3000,
         dataType: DataTypes.UINT8_T,
-        dataCount: 0,
-        comments: "Enables or Disables power bus",
+        dataCount: 1,
+        comments: "[(0-Disable, 1-Enable)], [M1, M2, M3, M4, Spare (Bitmask)]",
       },
-      TwelveVBusEnableDisable: {
+      "12VActBusEnable": {
         dataId: 3001,
         dataType: DataTypes.UINT8_T,
-        dataCount: 0,
-        comments: "Enables or Disables 12V bus",
+        dataCount: 1,
+        comments: "[(0-Disable, 1-Enable)], [Gimbal, Multi, Aux (Bitmask)]",
       },
-      ThirtyVBusEnableDisable: {
+      "12VLogicBusEnable": {
         dataId: 3002,
         dataType: DataTypes.UINT8_T,
-        dataCount: 0,
-        comments: "Enables or Disables 30V bus",
+        dataCount: 1,
+        comments: "[(0-Disable, 1-Enable)], [Gimbal, Multi, Aux, Drive, Nav, Cam, Extra (Bitmask)]",
       },
-      VacuumEnableDisable: {
+      "30VBusEnabled": {
         dataId: 3003,
         dataType: DataTypes.UINT8_T,
-        dataCount: 0,
-        comments: "Enables or Disables vacuum bus",
+        dataCount: 1,
+        comments: "[(0-Disable, 1-Enable)], [12V, Rockets, Aux, Drive (Bitmask)]",
       },
-      PatchPanelEnableDisable: {
+      VacuumEnabled: {
         dataId: 3004,
         dataType: DataTypes.UINT8_T,
-        dataCount: 0,
-        comments: "Enables or Disables path panel",
+        dataCount: 1,
+        comments: "[(0-Disable, 1-Enable)]",
       },
     },
     Telemetry: {
       MotorBusEnabled: {
         dataId: 3100,
         dataType: DataTypes.UINT8_T,
-        dataCount: 0,
-        comments: "Which motors are enabled",
+        dataCount: 1,
+        comments: "[(0-Disabled, 1-Enabled)],[M1, M2, M3, M4, Spare(Bitmask)]",
       },
-      TwelveVEnabled: {
+      "12VActBusEnabled": {
         dataId: 3101,
         dataType: DataTypes.UINT8_T,
-        dataCount: 0,
-        comments: "Which 12V busses are enabled",
+        dataCount: 1,
+        comments: "[(0-Disable, 1-Enable)], [Gimbal, Multi, Aux (Bitmask)]",
       },
-      ThirtyVEnabled: {
+      "12VLogicBusEnabled": {
         dataId: 3102,
         dataType: DataTypes.UINT8_T,
-        dataCount: 0,
-        comments: "Which 30V busses are enabled",
+        dataCount: 1,
+        comments: "[(0-Disable, 1-Enable)], [Gimbal, Multi, Aux, Drive, Nav, Cam, Extra (Bitmask)]",
       },
-      VacuumEnabled: {
+      ThirtyVEnabled: {
         dataId: 3103,
         dataType: DataTypes.UINT8_T,
-        dataCount: 0,
-        comments: "Is or isn't the vacuum enabled",
+        dataCount: 1,
+        comments: "[(0-Disable, 1-Enable)], [12V, Rockets, Aux, Drive (Bitmask)]",
       },
-      PatchPanelEnabled: {
+      VacuumEnabled: {
         dataId: 3104,
         dataType: DataTypes.UINT8_T,
-        dataCount: 0,
-        comments: "Which panels are enabled",
+        dataCount: 1,
+        comments: "[(0-Disabled, 1-Enabled)]",
       },
       MotorBusCurrent: {
         dataId: 3105,
         dataType: DataTypes.FLOAT_T,
-        dataCount: 8,
-        comments: "Each main motor current",
+        dataCount: 5,
+        comments: "[M1, M2, M3, M4, Spare] (A)",
       },
       TwelveVBusCurrent: {
         dataId: 3106,
         dataType: DataTypes.FLOAT_T,
-        dataCount: 2,
-        comments: "actuation, logic",
+        dataCount: 4,
+        comments: "[Gimbal, Multi, Aux, Logic] (A)",
       },
       ThirtyVBusCurrent: {
         dataId: 3107,
         dataType: DataTypes.FLOAT_T,
-        dataCount: 3,
-        comments: "12V bus, rockets, aux",
+        dataCount: 4,
+        comments: "[12V Board, Rockets, Aux, Drive] (A)",
       },
       VacuumCurrent: {
         dataId: 3108,
         dataType: DataTypes.FLOAT_T,
         dataCount: 1,
-        comments: "Vacuum current draw",
+        comments: "[Vacuum] (A)",
       },
     },
-  },
-  BMS: {
-    Ip: "192.168.1.133",
-    Port: 11002,
-    Commands: {
-      BMSStop: {
-        dataId: 2000,
+    Error: {
+      MotorBusOverCurrent: {
+        dataId: 3200,
         dataType: DataTypes.UINT8_T,
         dataCount: 1,
-        comments: "BMS E-stop. WARNING: Kills all rover power. Cannot be reversed remotely!",
+        comments: "[(0-undermaxcurrent, 1-overcurrent)] [M1, M2, M3, M4, Spare (Bitmask)]",
       },
-    },
-    Telemetry: {
-      BMSVoltages: {
-        dataId: 2101,
-        dataType: DataTypes.UINT16_T,
-        dataCount: 8,
-        comments: "BMS",
-      },
-      TotalPackCurrentInt: {
-        dataId: 2100,
-        dataType: DataTypes.INT32_T,
-        dataCount: 1,
-        comments: "BMS",
-      },
-      BMSTemperatureInt: {
-        dataId: 2102,
-        dataType: DataTypes.UINT16_T,
-        dataCount: 1,
-        comments: "BMS",
-      },
-      BMSError: {
-        dataId: 2103,
+      "12VBusOverCurrent": {
+        dataId: 3201,
         dataType: DataTypes.UINT8_T,
         dataCount: 1,
-        comments: "Tells if the BMS has encountered an error",
+        comments: "[(0-undermaxcurrent, 1-overcurrent)] [Gimbal, Multi, Aux, Logic (Bitmask)]",
+      },
+      "30VBusOverCurrent": {
+        dataId: 3202,
+        dataType: DataTypes.UINT8_T,
+        dataCount: 1,
+        comments: "[(0-undermaxcurrent, 1-overcurrent)] [12V Board, Rockets, Aux, Drive (Bitmask)]",
+      },
+      VaccuumOverCurrent: {
+        dataId: 3203,
+        dataType: DataTypes.UINT8_T,
+        dataCount: 1,
+        comments: "[(0-undermaxcurrent, 1-overcurrent)] [Vacuum]",
       },
     },
-  },
-  Camera: {
-    Ip: "192.168.1.80",
-    Port: 11004,
-    Commands: {},
-    Telemetry: {},
   },
   Nav: {
     Ip: "192.168.1.136",
-    Port: 11005,
+    Port: 11006,
     Commands: {},
     Telemetry: {
-      GPSPosition: {
+      GPSLatLon: {
         dataId: 5100,
-        dataType: DataTypes.INT32_T,
+        dataType: DataTypes.DOUBLE_T,
         dataCount: 2,
-        comments: "lat,long",
+        comments: "[Lat, Long] [(-90, 90), (-180, 180)] (deg)",
       },
-      PitchHeadingRoll: {
+      IMUData: {
         dataId: 5101,
-        dataType: DataTypes.INT16_T,
+        dataType: DataTypes.FLOAT_T,
         dataCount: 3,
-        comments: "pitch, heading, roll",
+        comments: "[Pitch, Yaw, Roll] [(-90, 90), (0, 360), (-90, 90)] (deg)",
       },
+      LidarData: {
+        dataId: 5101,
+        dataType: DataTypes.FLOAT_T,
+        dataCount: 2,
+        comments: "[Distance, Quality]",
+      },
+    },
+    Error: {
+      dataId: 5200,
+      dataType: DataTypes.UINT8_T,
+      dataCount: 1,
+      comments: "",
     },
   },
   Gimbal: {
     Ip: "192.168.1.135",
-    Port: 11006,
+    Port: 11005,
     Commands: {
-      LeftDriveGimbal: {
+      LeftDriveGimbalIncrement: {
         dataId: 6000,
         dataType: DataTypes.INT16_T,
         dataCount: 2,
-        comments: "pan, tilt",
+        comments: "[Pan, Tilt](degrees 0-270)",
       },
-      RightDriveGimbal: {
+      RightDriveGimbalIncrement: {
         dataId: 6001,
         dataType: DataTypes.INT16_T,
         dataCount: 2,
-        comments: "pan, tilt",
+        comments: "[Pan, Tilt](degrees 0-270)",
       },
-      LeftMainGimbal: {
+      LeftMainGimbalIncrement: {
         dataId: 6002,
         dataType: DataTypes.INT16_T,
         dataCount: 2,
-        comments: "pan, tilt",
+        comments: "[Pan, Tilt](degrees 0-270)",
       },
-      RightMainGimbal: {
+      RightMainGimbalIncrement: {
         dataId: 6003,
         dataType: DataTypes.INT16_T,
         dataCount: 2,
-        comments: "pan, tilt",
+        comments: "[Pan, Tilt](degrees 0-270)",
       },
-      LeftDriveAbsolute: {
+      LeftDriveGimbalAbsolute: {
         dataId: 6004,
         dataType: DataTypes.INT16_T,
         dataCount: 2,
-        comments: "pan, tilt",
+        comments: "[Pan, Tilt](degrees 0-270)",
       },
-      RightDriveAbsolute: {
+      RightDriveGimbalAbsolute: {
         dataId: 6005,
         dataType: DataTypes.INT16_T,
         dataCount: 2,
-        comments: "pan, tilt",
+        comments: "[Pan, Tilt](degrees 0-270)",
       },
-      LeftMainAbsolute: {
+      LeftMainGimbalAbsolute: {
         dataId: 6006,
         dataType: DataTypes.INT16_T,
         dataCount: 2,
-        comments: "pan, tilt",
+        comments: "[Pan, Tilt](degrees 0-270)",
       },
-      RightMainAbsolute: {
+      RightMainGimbalAbsolute: {
         dataId: 6007,
         dataType: DataTypes.INT16_T,
         dataCount: 2,
-        comments: "pan, tilt",
+        comments: "[Pan, Tilt](degrees 0-270)",
+      },
+      InitiateTestRoutine: {
+        dataId: 6008,
+        dataType: DataTypes.UINT8_T,
+        dataCount: 1,
+        comments: "",
       },
     },
     Telemetry: {
@@ -317,296 +391,363 @@ export const RovecommManifest = {
       },
     },
   },
-  Arm: {
-    Ip: "192.168.1.137",
-    Port: 11007,
+  Multimedia: {
+    Ip: "192.168.1.140",
+    Port: 11010,
     Commands: {
-      ArmToAngle: {
+      HeadlightIntensity: {
         dataId: 7000,
-        dataType: DataTypes.FLOAT_T,
-        dataCount: 6,
-        comments: "All values for the arm together. Armj1-j6.",
+        dataType: DataTypes.UINT8_T,
+        dataCount: 1,
+        comments: "Headlight intensity for the front of rover",
       },
-      ArmToIK: {
+      LEDRGB: {
         dataId: 7001,
-        dataType: DataTypes.FLOAT_T,
-        dataCount: 6,
-        comments: "All values for the arm together. X,Y,Z,P,Y,R.",
+        dataType: DataTypes.UINT8_T,
+        dataCount: 3,
+        comments: "[R, G, B] (0, 255)",
       },
-      IKRoverIncrement: {
+      LEDPatterns: {
         dataId: 7002,
-        dataType: DataTypes.FLOAT_T,
-        dataCount: 6,
-        comments: "Incremental values for rover ik. xyzpyr",
+        dataType: DataTypes.UINT8_T,
+        dataCount: 1,
+        comments: "[Pattern] (Enum)",
       },
-      IKWristIncrement: {
+      StateDisplay: {
         dataId: 7003,
+        dataType: DataTypes.UINT8_T,
+        dataCount: 1,
+        comments: "[Teleop, Autonomy, Reached Goal] (enum)",
+      },
+    },
+    Telemetry: {},
+    Error: {},
+  },
+  Arm: {
+    Ip: "192.168.1.131",
+    Port: 11001,
+    Commands: {
+      ArmVelocityControl: {
+        dataId: 8000,
+        dataType: DataTypes.INT16_T,
+        dataCount: 6,
+        comments: "[J1, J2, J3, J4, J5, J6] (rpm)",
+      },
+      ArmMoveToPosition: {
+        dataId: 8001,
         dataType: DataTypes.FLOAT_T,
         dataCount: 6,
-        comments: "Incremental values for wrist ik. xyzpyr",
+        comments: "[J1, J2, J3, J4, J5, J6] (Degrees)",
       },
-      ArmValues: {
-        dataId: 7004,
+      ArmIncrementPosition: {
+        dataId: 8002,
         dataType: DataTypes.FLOAT_T,
-        dataCount: 9,
-        comments: "All values for the arm together. Armj1-j6, gripper1, nipper, gripper2.",
+        dataCount: 6,
+        comments: "[J1, J2, J3, J4, J5, J6] (Degrees)",
       },
-      EndEffectorActuation: {
-        dataId: 7005,
+      ArmMoveIK: {
+        dataId: 8003,
+        dataType: DataTypes.FLOAT_T,
+        dataCount: 6,
+        comments: "[X, Y, Z, Y, P, R] (in)",
+      },
+      ArmIncrementIKRover: {
+        dataId: 8004,
+        dataType: DataTypes.FLOAT_T,
+        dataCount: 6,
+        comments: "[X, Y, Z, Y, P, R] (in)",
+      },
+      ArmIncrementIKWrist: {
+        dataId: 8005,
+        dataType: DataTypes.FLOAT_T,
+        dataCount: 6,
+        comments: "[X, Y, Z, Y, P, R] (in)",
+      },
+      SetClosedLoopState: {
+        dataId: 8006,
         dataType: DataTypes.UINT8_T,
         dataCount: 1,
-        comments: "enable/disable solenoid",
+        comments: "0-Disable Closed Loop, 1-Enable Closed Loop",
       },
-      GripperOpenLoop: {
-        dataId: 7006,
+      GripperMove: {
+        dataId: 8010,
+        dataType: DataTypes.INT16_T,
+        dataCount: 1,
+        comments: "[Power] (-1000, 1000) (m%)",
+      },
+      WatchdogOverride: {
+        dataId: 8011,
         dataType: DataTypes.UINT8_T,
         dataCount: 1,
-        comments: "-1000,1000",
-      },
-      ArmCommands: {
-        dataId: 7007,
-        dataType: DataTypes.INT8_T,
-        dataCount: 0,
-        comments: "",
-      },
-      Unknown: {
-        dataId: 7008,
-        dataType: DataTypes.INT8_T,
-        dataCount: 0,
-        comments: "",
-      },
-      ForearmMotors: {
-        dataId: 7009,
-        dataType: DataTypes.FLOAT_T,
-        dataCount: 5,
-        comments: "j5,j6,gripper1,nipper,gripper2",
-      },
-      BicepMotors: {
-        dataId: 7010,
-        dataType: DataTypes.FLOAT_T,
-        dataCount: 4,
-        comments: "j1,j2,j3,j4",
-      },
-      ForearmAngles: {
-        dataId: 7011,
-        dataType: DataTypes.FLOAT_T,
-        dataCount: 2,
-        comments: "j5,j6",
-      },
-      BicepAngles: {
-        dataId: 7012,
-        dataType: DataTypes.FLOAT_T,
-        dataCount: 4,
-        comments: "j1,j2,j3,j4",
-      },
-      ToolSelection: {
-        dataId: 7013,
-        dataType: DataTypes.UINT8_T,
-        dataCount: 1,
-        comments: "Change the selected tool, 0 1 & 2",
-      },
-      Laser: {
-        dataId: 7014,
-        dataType: DataTypes.UINT8_T,
-        dataCount: 1,
-        comments: "Toggle the laser",
+        comments: "[0-Turn off Watchdog Override, 1-Turn on Watchdog Override]",
       },
       LimitSwitchOverride: {
-        dataId: 7015,
+        dataId: 8012,
         dataType: DataTypes.UINT8_T,
-        dataCount: 0,
-        comments: "",
+        dataCount: 1,
+        comments:
+          "[Base Tilt Up, Base Tilt Down, Base Twist CW, Base Twist CCW, Elbow Tilt Up, Elbow Tilt Down, Elbow  Twist CW, Elbow  Twist CCW] (0-Turn off Limit Switch Override, 1-Turn on Limit Switch Override) (bitmasked)",
+      },
+      RebootODrive: {
+        dataId: 8013,
+        dataType: DataTypes.UINT8_T,
+        dataCount: 1,
+        comments: "[1-Base, 2-Elbow, 3-Wrist]",
+      },
+      RequestJointPositions: {
+        dataId: 8014,
+        dataType: DataTypes.UINT8_T,
+        dataCount: 1,
+        comments: "Prompt arm for J1-6 positions",
+      },
+      TogglePositionTelem: {
+        dataId: 8015,
+        dataType: DataTypes.UINT8_T,
+        dataCount: 1,
+        comments: "Start auto pushing arm J1-6 positions",
+      },
+      RequestAxesPositions: {
+        dataId: 8016,
+        dataType: DataTypes.UINT8_T,
+        dataCount: 1,
+        comments: "Prompt arm for XYZPYR Data",
       },
     },
     Telemetry: {
-      ArmCurrents: {
-        dataId: 7100,
-        dataType: DataTypes.FLOAT_T,
-        dataCount: 8,
-        comments: "Currents for the arm motors m1-8",
-      },
-      ArmAngles: {
-        dataId: 7101,
+      MotorCurrents: {
+        dataId: 8100,
         dataType: DataTypes.FLOAT_T,
         dataCount: 6,
-        comments: "Angles for the arm joints m1-6",
+        comments: "[M1, M2, M3, M4, M5, M6] (0, A)",
       },
-      BicepAngles: {
-        dataId: 7102,
-        dataType: DataTypes.FLOAT_T,
-        dataCount: 8,
-        comments: "Angles for the arm joints m1-8?",
-      },
-      ForearmAngles: {
-        dataId: 7103,
-        dataType: DataTypes.FLOAT_T,
-        dataCount: 8,
-        comments: "Angles for the arm joints m1-8?",
-      },
-      LimitSwitchValues: {
-        dataId: 7104,
-        dataType: DataTypes.FLOAT_T,
-        dataCount: 2,
-        comments: "ls1-8 for mc1 and mc2",
-      },
-      IKValue: {
-        dataId: 7105,
+      JointAngles: {
+        dataId: 8101,
         dataType: DataTypes.FLOAT_T,
         dataCount: 6,
-        comments: "XYZPYR",
+        comments: "[J1, J2, J3, J4, J5, J6] (0, Deg)",
+      },
+      MotorVelocities: {
+        dataId: 8102,
+        dataType: DataTypes.FLOAT_T,
+        dataCount: 6,
+        comments: "[J1, J2, J3, J4, J5, J6] (0, rpm)",
+      },
+      IKCoordinates: {
+        dataId: 8103,
+        dataType: DataTypes.FLOAT_T,
+        dataCount: 6,
+        comments: "[X, Y, Z, Y, P, R]",
+      },
+    },
+    Error: {
+      WatchDogStatus: {
+        dataId: 8200,
+        dataType: DataTypes.UINT8_T,
+        dataCount: 1,
+        comments: "[WatchDogStatus] (0-WD Not Triggered, 1-WD Triggered) ",
+      },
+      EncoderStatus: {
+        dataId: 8201,
+        dataType: DataTypes.UINT8_T,
+        dataCount: 1,
+        comments: "[E1, E2, E3, E4, E5, E6] (0-Good, 1-Failure)",
+      },
+      ODriveError: {
+        dataId: 8202,
+        dataType: DataTypes.UINT8_T,
+        dataCount: 3,
+        comments: "[Motor][Error Type][Error Specific]",
       },
     },
   },
   ScienceActuation: {
-    Ip: "192.168.1.138",
-    Port: 11008,
+    Ip: "192.168.1.137",
+    Port: 11007,
     Commands: {
-      ZActuation: {
-        dataId: 8000,
+      ZAxis: {
+        dataId: 9000,
         dataType: DataTypes.INT16_T,
         dataCount: 1,
-        comments: "-1000 to 1000 open loop for Z axis control",
+        comments: "[Power] (-1000, 1000) (m%)",
       },
       GenevaOpenLoop: {
-        dataId: 8001,
+        dataId: 9001,
         dataType: DataTypes.INT16_T,
         dataCount: 1,
-        comments: "-1000 to 1000 open loop for Geneva control",
+        comments: "[Power] (-1000, 1000) (m%)",
       },
       Chemicals: {
-        dataId: 8002,
-        dataType: DataTypes.INT16_T,
+        dataId: 9002,
+        dataType: DataTypes.UINT16_T,
         dataCount: 3,
-        comments: "Array to control all 3 chemicals",
+        comments: "[Chemical 1, Chemical 2, Chemical 3] (0, 1000) (m%)",
       },
       GenevaToPosition: {
-        dataId: 8002,
+        dataId: 9003,
         dataType: DataTypes.UINT8_T,
         dataCount: 1,
-        comments: "Set Geneva absolute position",
+        comments: "[absolute position]",
       },
       GenevaIncrementPosition: {
-        dataId: 8004,
+        dataId: 9004,
         dataType: DataTypes.INT8_T,
         dataCount: 1,
-        comments: "Increment Geneva position by x",
-      },
-      Vacuum: {
-        dataId: 8005,
-        dataType: DataTypes.UINT8_T,
-        dataCount: 1,
-        comments: "Vacuum off/on",
+        comments: "[relative position]",
       },
       LimitSwitchOverride: {
-        dataId: 8006,
+        dataId: 9005,
         dataType: DataTypes.UINT8_T,
+        dataCount: 1,
+        comments:
+          "[Z-axis Top, Z-axis Bottom, Geneva Set, Geneva Home] (0-Turn off Limit Switch Override, 1-Turn on Limit Switch Override) (bitmasked)",
+      },
+      MixerVelocity: {
+        dataId: 9006,
+        dataType: DataTypes.INT16_T,
         dataCount: 4,
-        comments: "0-off/1-on, [Ztop, Zbottom, GenevaSet, GenevaHome]",
+        comments: "[Power] (-1000, 1000) (m%)",
       },
     },
     Telemetry: {
       GenevaCurrentPosition: {
-        dataId: 8100,
+        dataId: 9100,
         dataType: DataTypes.UINT8_T,
         dataCount: 1,
-        comments: "",
+        comments: "[absolute position]",
       },
       LimitSwitchTriggered: {
-        dataId: 8101,
+        dataId: 9101,
         dataType: DataTypes.UINT8_T,
-        dataCount: 4,
-        comments: "[Ztop, Zbottom, GenevaSet, GenevaHome]",
+        dataCount: 1,
+        comments: "[Z-axis Top, Z-axis Bottom, Geneva Set, Geneva Home] (bitmasked)",
       },
     },
+    Error: {},
   },
   ScienceSensors: {
-    Ip: "192.168.1.139",
-    Port: 11009,
+    Ip: "192.168.1.138",
+    Port: 11008,
     Commands: {
       UVLedControl: {
-        dataId: 9000,
+        dataId: 10000,
         dataType: DataTypes.UINT8_T,
         dataCount: 1,
-        comments: "Control of light source.",
+        comments: "[(LED On = 1/LED Off = 0)]",
       },
       RunSpectrometer: {
-        dataId: 9001,
-        dataType: DataTypes.UINT8_T,
-        dataCount: 1,
-        comments: "Sends command to begin the spectrometer sequence.",
-      },
-      ScienceLight: {
-        dataId: 9002,
+        dataId: 10001,
         dataType: DataTypes.UINT8_T,
         dataCount: 1,
         comments: "",
-      },
-      MPPC: {
-        dataId: 9003,
-        dataType: DataTypes.UINT16_T,
-        dataCount: 2,
-        comments: "num of readings",
       },
     },
     Telemetry: {
-      MPPCData: {
-        dataId: 9100,
-        dataType: DataTypes.UINT16_T,
-        dataCount: 0,
-        comments: "",
-      },
       SpectrometerData: {
-        dataId: 9101,
+        dataId: 10100,
         dataType: DataTypes.UINT16_T,
         dataCount: 144,
-        comments: "Spectrometer returns 2 144 long uint16 arrays upon request",
+        comments: "Sends half of the spectrum read",
       },
       Methane: {
-        dataId: 9103,
+        dataId: 10101,
         dataType: DataTypes.FLOAT_T,
         dataCount: 2,
-        comments: "gas concentration (%), temperature",
+        comments: "[Gass concentration %, Temperature (C)]",
       },
       CO2: {
-        dataId: 9104,
-        dataType: DataTypes.FLOAT_T,
+        dataId: 10102,
+        dataType: DataTypes.UINT16_T,
         dataCount: 1,
-        comments: "gas concentration (ppm)",
+        comments: "[CO2 Concentration (ppm)]",
       },
       O2: {
-        dataId: 9105,
+        dataId: 10103,
         dataType: DataTypes.FLOAT_T,
         dataCount: 4,
-        comments: "partial pressure (mBar), tempartature (C), concentration (ppm), barometric pressure (mBar)",
+        comments: "[partial pressure, (mBar), temperature (C), concentration (ppm), barometric pressue (mBar)]",
+      },
+      NO: {
+        dataId: 10104,
+        dataType: DataTypes.FLOAT_T,
+        dataCount: 1,
+        comments: "",
+      },
+      N20: {
+        dataId: 10105,
+        dataType: DataTypes.UINT16_T,
+        dataCount: 1,
+        comments: "[ N2O volume (ppm)]",
+      },
+    },
+    Error: {},
+  },
+  Autonomy: {
+    Ip: "192.168.1.139",
+    Port: 11009,
+    Commands: {
+      StartAutonomy: {
+        dataId: 11000,
+        dataType: DataTypes.UINT8_T,
+        dataCount: 1,
+        comments: "",
+      },
+      DisableAutonomy: {
+        dataId: 11001,
+        dataType: DataTypes.UINT8_T,
+        dataCount: 1,
+        comments: "",
+      },
+      AddWaypoints: {
+        dataId: 11002,
+        dataType: DataTypes.DOUBLE_T,
+        dataCount: 2,
+        comments: "[Lat, Lon]",
+      },
+      ClearWaypoints: {
+        dataId: 11003,
+        dataType: DataTypes.UINT8_T,
+        dataCount: 1,
+        comments: "",
+      },
+    },
+    Telemetry: {
+      CurrentState: {
+        dataId: 11100,
+        dataType: DataTypes.UINT8_T,
+        dataCount: 1,
+        comments: "Enum (Idle, Navigating, SearchPattern, Approaching Marker)",
+      },
+      ReachedMarker: {
+        dataId: 11101,
+        dataType: DataTypes.UINT8_T,
+        dataCount: 1,
+        comments: "",
+      },
+    },
+    Error: {
+      CurrentLog: {
+        dataId: 11200,
+        dataType: DataTypes.CHAR,
+        dataCount: 255,
+        comments: "String version of most current error log",
       },
     },
   },
-  BSMS: {
+  Camera1: {
+    Ip: "192.168.1.141",
+    Port: 11011,
+    Commands: {},
+    Telemetry: {},
+    Error: {},
+  },
+  Camera2: {
     Ip: "192.168.1.142",
     Port: 11012,
     Commands: {},
     Telemetry: {},
-  },
-  Blackbox: {
-    Ip: "192.168.1.143",
-    Port: 11013,
-    Commands: {},
-    Telemetry: {
-      TCPTest: {
-        dataId: 9600,
-        dataType: DataTypes.UINT16_T,
-        dataCount: 1,
-      },
-    },
-  },
-  Autonomy: {
-    Ip: "192.168.1.144",
-    Port: 11015,
-    Commands: {},
-    Telemetry: {},
+    Error: {},
   },
 }
-
 export const NetworkDevices = {
   BasestationSwitch: { Ip: "192.168.1.80" },
   Rover900MHzRocket: { Ip: "192.168.1.82" },
