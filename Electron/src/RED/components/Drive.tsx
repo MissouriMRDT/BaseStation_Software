@@ -34,12 +34,12 @@ const row: CSS.Properties = {
 
 function scaleVector(thetaIn: number): number {
   /* This function returns a value [-1, 1] based off of the value of theta
-   * This function really only makes sense with drive in mind - consider the case of the right wheel
+   * This function really only makes sense with drive in mind - consider the case of the left wheel
    * When theta = pi/2, we want to full send forward, so we return 1
    * When theta = 0, we want to point turn clockwise, so we return -1
    * To map any polar value in between, we can use 4*theta/pi - 1
    * (note if theta = pi/2, 4*pi/2/pi-1 = 1; theta = 0, 4*0/pi-1 = -1; theta = pi/4, 4*pi/4/pi-1 = 0)
-   * When theta = 3pi/4, the right wheels should be going forward at full strength, while the left wheels adjust
+   * When theta = 3pi/4, the left wheels should be going forward at full strength, while the right wheels adjust
    * The bottom half of the unit circle is practically the same, with -1 when theta = -pi/4
    * And anywhere -pi/2 <= theta <= 0 we use -4*theta/pi - 3 in order to get the same examples shown above
    */
@@ -106,10 +106,10 @@ class Drive extends Component<IProps, IState> {
       const theta = Math.atan2(y, x)
       // We base our speed off the value of the larger vector component
       const r = Math.max(Math.abs(x), Math.abs(y))
-      // Scale vector is explained in terms of the right wheels, and the left wheels can be thought of as
+      // Scale vector is explained in terms of the left wheels, and the right wheels can be thought of as
       // a reflection over the y axis, which is easiest obtained by adjusting the angle 90deg and inverting the result
-      leftSpeed = -1 * r * scaleVector(theta - Math.PI / 2)
-      rightSpeed = r * scaleVector(theta)
+      leftSpeed = r * scaleVector(theta)
+      rightSpeed = -1 * r * scaleVector(theta - Math.PI / 2)
       // We want the throttle to be seen as 0% when all the way down, and 100% when all the way up, but throttle
       // has values [-1, 1], so if we (throttle + 1) /2, we get [0,1]
       speedMultiplier *= (controllerInputs.Throttle + 1) / 2
