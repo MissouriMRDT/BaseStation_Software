@@ -10,7 +10,7 @@
     "DOUBLE_T": 7,
     "CHAR": 8
   },
-  "dataSizes": [1, 1, 2, 2, 4, 4, 4, 8, 255],
+  "dataSizes": [1, 1, 2, 2, 4, 4, 4, 8, 1],
   "SystemPackets": {
     "PING": 1,
     "PING_REPLY": 2,

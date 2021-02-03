@@ -423,15 +423,15 @@ class Rovecomm extends EventEmitter {
     headerBuffer.writeUInt8(VersionNumber, 0)
     headerBuffer.writeUInt16BE(dataId, 1)
     headerBuffer.writeUInt8(dataCount, 3)
-    headerBuffer.writeUInt8(dataType, 4)
+    headerBuffer.writeUInt8(DataTypes[dataType], 4)
 
     // Create the data buffer
-    const dataBuffer = Buffer.allocUnsafe(dataCount * dataSizes[dataType])
+    const dataBuffer = Buffer.allocUnsafe(dataCount * dataSizes[DataTypes[dataType]])
 
     // Switch on the data type, and properly encode each number in the data
     // array depending on the enumerated type, computing the offset and pushing
     // to the dataBuffer
-    switch (dataType) {
+    switch (DataTypes[dataType]) {
       case DataTypes.INT8_T:
         for (let i = 0; i < data.length; i++) {
           dataBuffer.writeInt8(data[i], i * dataSizes[DataTypes.INT8_T])
@@ -465,6 +465,16 @@ class Rovecomm extends EventEmitter {
       case DataTypes.FLOAT_T:
         for (let i = 0; i < data.length; i++) {
           dataBuffer.writeFloatBE(data[i], i * dataSizes[DataTypes.FLOAT_T])
+        }
+        break
+      case DataTypes.DOUBLE_T:
+        for (let i = 0; i < data.length; i++) {
+          dataBuffer.writeDoubleBE(data[i], i * dataSizes[DataTypes.DOUBLE_T])
+        }
+        break
+      case DataTypes.CHAR:
+        for (let i = 0; i < data.length; i++) {
+          dataBuffer.writeUInt8(data[0].charCodeAt(i), i * dataSizes[DataTypes.CHAR])
         }
         break
       default:
