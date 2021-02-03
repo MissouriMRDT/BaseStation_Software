@@ -122,10 +122,23 @@ class ControlScheme extends Component<IProps, IState> {
           controller: "Xbox 2",
           interval: null,
         },
+        // Science and Arm are set to Xbox 3 so that they do not conflict with gimbal or drive as they might be on the same page
+        Science: {
+          toggled: "Off",
+          scheme: "ScienceControls",
+          controller: "Xbox 3",
+          interval: null,
+        },
+        Arm: {
+          toggled: "Off",
+          scheme: "ArmControls",
+          controller: "Xbox 3",
+          interval: null,
+        },
       },
     }
     this.schemeChange = this.schemeChange.bind(this)
-
+    // detects if a controller disconnects
     window.addEventListener("gamepaddisconnected", function (e) {
       console.log("Gamepad disconnected from index %d: %s", e.gamepad.index, e.gamepad.id)
     })
