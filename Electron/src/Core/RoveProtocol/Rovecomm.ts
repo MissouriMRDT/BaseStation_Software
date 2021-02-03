@@ -300,6 +300,14 @@ class Rovecomm extends EventEmitter {
       RCDeque: new Deque<any>(30 * 1024),
     }
 
+    // Handle Timeout errors from attempting to connect to things that don't exist.
+    newSocket.RCSocket.on("error", e => {
+      console.log(e)
+      if (!e.message.includes("connect ETIMEDOUT")) {
+        throw new Error(e.message)
+      }
+    })
+
     // Connect to the board we're intending to communicate with
     newSocket.RCSocket.connect(port, host, function handler() {
       // eslint-disable-next-line @typescript-eslint/no-use-before-define
