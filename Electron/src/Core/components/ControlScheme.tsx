@@ -1,5 +1,5 @@
 // eslint-disable-next-line max-classes-per-file
-import React, { Component, ReactNode, useState } from "react"
+import React, { Component } from "react"
 import CSS from "csstype"
 import { CONTROLLERINPUT } from "./ControllerInput"
 
@@ -98,6 +98,7 @@ function controller(passedScheme: any, pos: any): any {
 
 interface IProps {
   style?: CSS.Properties
+  configs: string[]
 }
 
 interface IState {
@@ -241,7 +242,7 @@ class ControlScheme extends Component<IProps, IState> {
       <div style={this.props.style}>
         <div style={label}>Control Scheme</div>
         <div style={container}>
-          {["Drive", "MainGimbal"].map(config => {
+          {this.props.configs.map(config => {
             return (
               <div key={config} style={row}>
                 <div style={readoutDisplay}>{config}</div>
