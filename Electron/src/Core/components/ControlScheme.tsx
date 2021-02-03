@@ -1,7 +1,35 @@
 // eslint-disable-next-line max-classes-per-file
 import React, { Component } from "react"
 import CSS from "csstype"
-import { CONTROLLERINPUT } from "./ControllerInput"
+import path from "path"
+import fs from "fs"
+
+/*
+  make a file in rover drive that has this and for flight stick and link to it
+  button buttonIndex (for xbox controller):
+    0: A
+    1: B
+    2: X
+    3: Y
+    4: LB
+    5: RB
+    6: RT
+    7: LT
+    8: back
+    9: start
+    10: left stick click
+    11: right stick click
+    12: d up
+    13: d down
+    14: d left
+    15: d right
+    16: (unsure possibly home button)
+  joystick buttonIndex
+    0: left stick left/right
+    1: left stick up/down
+    2: right stick left/right
+    3: right stick up/down
+*/
 
 const container: CSS.Properties = {
   display: "flex",
@@ -39,6 +67,11 @@ const row: CSS.Properties = {
 
 // eslint-disable-next-line import/no-mutable-exports
 export let controllerInputs: any = {}
+const filepath = path.join(__dirname, "../assets/ControllerInput.json")
+let CONTROLLERINPUT: any = {}
+if (fs.existsSync(filepath)) {
+  CONTROLLERINPUT = JSON.parse(fs.readFileSync(filepath).toString())
+}
 
 function controller(passedScheme: any, pos: any): any {
   controllerInputs = {}
