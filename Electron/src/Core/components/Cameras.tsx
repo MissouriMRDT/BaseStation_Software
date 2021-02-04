@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import CSS from "csstype"
-import { rovecomm } from "../RoveProtocol/Rovecomm"
+import html2canvas from "html2canvas"
+// import { rovecomm } from "../RoveProtocol/Rovecomm"
 // import { Packet } from "../../Core/RoveProtocol/Packet"
 
 const h1Style: CSS.Properties = {
@@ -32,6 +33,32 @@ const row: CSS.Properties = {
   flexDirection: "row",
 }
 
+function downloadURL(imgData: string): void {
+  const a = document.createElement("a")
+  a.href = imgData.replace("image/png", "image/octet-stream")
+  a.download = "camera.png"
+  a.click()
+}
+
+function saveImage(): void {
+  const input = document.getElementById("camera")
+  if (!input) {
+    throw new Error("The element 'camera' wasn't found")
+  }
+  html2canvas(input, {
+    scrollX: 0,
+    scrollY: -window.scrollY,
+  })
+    .then(canvas => {
+      const imgData = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream")
+      downloadURL(imgData)
+      return null
+    })
+    .catch(error => {
+      console.error(error)
+    })
+}
+
 interface IProps {
   defaultCamera: number
   style?: CSS.Properties
@@ -40,10 +67,11 @@ interface IProps {
 interface IState {
   currentCamera: number
   baseAddress: string[]
+  rotation: number
 }
 
 class Cameras extends Component<IProps, IState> {
-  constructor(props: any) {
+  constructor(props: IProps) {
     super(props)
     this.state = {
       currentCamera: this.props.defaultCamera,
@@ -53,8 +81,8 @@ class Cameras extends Component<IProps, IState> {
         "http://192.168.1.139:8081",
         "http://192.168.1.139:8082",
       ],
+      rotation: 0,
     }
-
     // rovecomm.sendCommand(Packet(dataId, data), reliability)
   }
 
@@ -69,6 +97,12 @@ class Cameras extends Component<IProps, IState> {
       return this.state.baseAddress[3]
     }
     return `${addr}/${camera}/stream`
+  }
+
+  rotate(): void {
+    this.setState({
+      rotation: this.state.rotation + (90 % 360),
+    })
   }
 
   render(): JSX.Element {
@@ -100,7 +134,20 @@ class Cameras extends Component<IProps, IState> {
             I'd check the electron-react-boilerplate repo to see
             if people are having issues with img elements
           */}
-          <img src={this.ConstructAddress()} alt={`Camera ${this.state.currentCamera}`} />
+          <img
+            id="camera"
+            src={this.ConstructAddress()}
+            alt={`Camera ${this.state.currentCamera}`}
+            style={{ transform: `rotate(${this.state.rotation}deg)` }}
+          />
+          <div style={row}>
+            <button type="button" onClick={() => saveImage()} style={{ flexGrow: 1 }}>
+              Screenshot
+            </button>
+            <button type="button" onClick={() => this.rotate()} style={{ flexGrow: 1 }}>
+              Rotate
+            </button>
+          </div>
         </div>
       </div>
     )
