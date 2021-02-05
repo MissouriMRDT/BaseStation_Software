@@ -109,9 +109,9 @@ class ControlCenter extends Component<IProps, IState> {
             currentCoords={this.state.currentCoords}
             store={(name: string, coords: any) => this.waypointsInstance.store(name, coords)}
           />
-          <Cameras defaultCamera={1} />
-          <Cameras defaultCamera={2} />
-          <Cameras defaultCamera={3} />
+          <Cameras defaultCamera={1} style={{ width: "100%" }} />
+          <Cameras defaultCamera={2} style={{ width: "100%" }} />
+          <Cameras defaultCamera={3} style={{ width: "100%" }} />
         </div>
       </div>
     )
