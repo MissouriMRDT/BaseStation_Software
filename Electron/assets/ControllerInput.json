@@ -46,12 +46,13 @@
     "config": "Science",
     "controller": "Xbox",
     "bindings": {
-      "yDirection": { "buttonType": "joystick", "buttonIndex": 1 },
-      "xDirection": { "buttonType": "joystick", "buttonIndex": 0 },
+      "zDirection": { "buttonType": "joystick", "buttonIndex": 1 },
       "VacuumPulse": { "buttonType": "button", "buttonIndex": 0 },
       "Chem1": { "buttonType": "button", "buttonIndex": 2 },
       "Chem2": { "buttonType": "button", "buttonIndex": 3 },
-      "Chem3": { "buttonType": "button", "buttonIndex": 1 }
+      "Chem3": { "buttonType": "button", "buttonIndex": 1 },
+      "GenevaCCW": { "buttonType": "button", "buttonIndex": 4 },
+      "GenevaCW": { "buttonType": "button", "buttonIndex": 5 }
     }
   },
   "ArmControls": {

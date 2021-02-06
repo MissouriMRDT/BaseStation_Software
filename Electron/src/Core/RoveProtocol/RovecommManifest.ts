@@ -104,7 +104,7 @@ export const RovecommManifest = {
     Ip: "192.168.1.132",
     Port: 11003,
     Commands: {
-      PowerBusEnableDisable: {
+      MotorBusEnable: {
         dataId: 3000,
         dataType: DataTypes.UINT8_T,
         dataCount: 0,
