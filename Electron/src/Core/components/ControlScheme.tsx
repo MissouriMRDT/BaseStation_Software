@@ -73,6 +73,7 @@ if (fs.existsSync(filepath)) {
   CONTROLLERINPUT = JSON.parse(fs.readFileSync(filepath).toString())
 }
 
+// passedScheme is the current scheme that is selected, pos is the position in the list of controllers that are connected
 function controller(passedScheme: any, pos: any): any {
   controllerInputs = {}
   return setInterval(() => {
