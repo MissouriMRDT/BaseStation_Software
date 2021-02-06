@@ -41,7 +41,9 @@ const selector: CSS.Properties = {
   width: "200px",
 }
 
-interface IProps {}
+interface IProps {
+  style?: CSS.Properties
+}
 
 interface IState {
   board: string
@@ -101,7 +103,7 @@ class PacketLogger extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div>
+      <div style={this.props.style}>
         <div style={label}>Packet Logger</div>
         <div style={container}>
           <div style={selectbox}>
