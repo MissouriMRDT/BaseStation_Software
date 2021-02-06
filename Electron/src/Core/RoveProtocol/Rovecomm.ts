@@ -148,9 +148,10 @@ function parse(packet: Buffer, rinfo?: any): void {
     let endLoop = false
     let boardName = "null"
     // Here we loop through all of the Boards in the manifest,
-    // looking specifically if this dataId is a known Telemetry of the board
+    // looking specifically if this dataId is a known Telemetry or Error of the board
     for (const board in RovecommManifest) {
       if (Object.prototype.hasOwnProperty.call(RovecommManifest, board)) {
+        // The majority of incoming data will be telemetry and will be found by this loop
         for (const comm in RovecommManifest[board].Telemetry) {
           if (dataId === RovecommManifest[board].Telemetry[comm].dataId) {
             dataIdStr = comm
@@ -162,6 +163,9 @@ function parse(packet: Buffer, rinfo?: any): void {
         if (endLoop) {
           break
         }
+
+        // Rovecomm has support for dedicated "Error" packets, which are essentially just
+        // a special type of telemetry to centralize and prioritize their handling
         for (const comm in RovecommManifest[board].Error) {
           if (dataId === RovecommManifest[board].Error[comm].dataId) {
             dataIdStr = comm
