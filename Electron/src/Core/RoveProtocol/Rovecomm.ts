@@ -1,6 +1,26 @@
+/* eslint-disable import/no-mutable-exports */
 import { Socket } from "dgram"
 import Deque from "double-ended-queue"
-import { RovecommManifest, dataSizes, DataTypes, headerLength, SystemPackets } from "./RovecommManifest"
+import fs from "fs"
+import path from "path"
+
+export let RovecommManifest: any = {}
+export let dataSizes: any = []
+export let DataTypes: any = {}
+export let headerLength: any = 0
+export let SystemPackets: any = {}
+export let NetworkDevices: any = {}
+const filepath = path.join(__dirname, "../assets/RovecommManifest.json")
+
+if (fs.existsSync(filepath)) {
+  const manifest = JSON.parse(fs.readFileSync(filepath).toString())
+  RovecommManifest = manifest.RovecommManifest
+  dataSizes = manifest.dataSizes
+  DataTypes = manifest.DataTypes
+  headerLength = manifest.headerLength
+  SystemPackets = manifest.SystemPackets
+  NetworkDevices = manifest.NetworkDevices
+}
 
 // There is a fundamental implementation difference between these required imports
 // and the traditional typescript imports.
@@ -14,7 +34,7 @@ interface TCPSocket {
   RCDeque: Deque<any>
 }
 
-function decodePacket(dataType: number, dataCount: number, data: Buffer): number[] {
+function decodePacket(dataType: number, dataCount: number, data: Buffer): number[] | string {
   /*
    * Takes in a dataType, dateLength, and data from an incoming rovecomm packet,
    * and uses the dataType to return an array of the properly typed data.
@@ -23,7 +43,7 @@ function decodePacket(dataType: number, dataCount: number, data: Buffer): number
 
   let readBytes: (i: number) => number
 
-  switch (dataType) {
+  switch (DataTypes[dataType]) {
     case DataTypes.INT8_T:
       readBytes = data.readInt8.bind(data)
       break
@@ -45,17 +65,31 @@ function decodePacket(dataType: number, dataCount: number, data: Buffer): number
     case DataTypes.FLOAT_T:
       readBytes = data.readFloatBE.bind(data)
       break
+    case DataTypes.DOUBLE_T:
+      readBytes = data.readDoubleBE.bind(data)
+      break
+    case DataTypes.CHAR:
+      readBytes = data.readUInt8.bind(data)
+      break
     default:
       return []
   }
 
   const retArray = []
   let offset: number
-  for (let i = 0; i < dataCount; i += 1) {
-    offset = i * dataSizes[dataType]
-    retArray.push(readBytes(offset))
+  if (dataType === DataTypes.CHAR) {
+    for (let i = 0; i < dataCount; i += 1) {
+      offset = i * dataSizes[dataType]
+      retArray.push(String.fromCharCode(readBytes(offset)))
+    }
+    return retArray.join()
+  } else {
+    for (let i = 0; i < dataCount; i += 1) {
+      offset = i * dataSizes[dataType]
+      retArray.push(readBytes(offset))
+    }
+    return retArray
   }
-  return retArray
 }
 
 function parse(packet: Buffer, rinfo?: any): void {
@@ -84,7 +118,7 @@ function parse(packet: Buffer, rinfo?: any): void {
   const dataType = packet.readUInt8(4)
 
   const rawdata = packet.slice(headerLength)
-  let data: number[]
+  let data: number[] | string
 
   if (version === VersionNumber) {
     data = decodePacket(dataType, dataCount, rawdata)
@@ -114,14 +148,31 @@ function parse(packet: Buffer, rinfo?: any): void {
     let endLoop = false
     let boardName = "null"
     // Here we loop through all of the Boards in the manifest,
-    // looking specifically if this dataId is a known Telemetry of the board
+    // looking specifically if this dataId is a known Telemetry or Error of the board
     for (const board in RovecommManifest) {
       if (Object.prototype.hasOwnProperty.call(RovecommManifest, board)) {
+        // The majority of incoming data will be telemetry and will be found by this loop
         for (const comm in RovecommManifest[board].Telemetry) {
           if (dataId === RovecommManifest[board].Telemetry[comm].dataId) {
             dataIdStr = comm
             endLoop = true
             boardName = board
+            break
+          }
+        }
+        if (endLoop) {
+          break
+        }
+
+        // Rovecomm has support for dedicated "Error" packets, which are essentially just
+        // a special type of telemetry to centralize and prioritize their handling
+        for (const comm in RovecommManifest[board].Error) {
+          if (dataId === RovecommManifest[board].Error[comm].dataId) {
+            dataIdStr = comm
+            endLoop = true
+            boardName = board
+            // eslint-disable-next-line @typescript-eslint/no-use-before-define
+            rovecomm.emit("Error", { dataIdStr, data })
             break
           }
         }
@@ -253,6 +304,14 @@ class Rovecomm extends EventEmitter {
       RCDeque: new Deque<any>(30 * 1024),
     }
 
+    // Handle Timeout errors from attempting to connect to things that don't exist.
+    newSocket.RCSocket.on("error", e => {
+      console.log(e)
+      if (!e.message.includes("connect ETIMEDOUT")) {
+        throw new Error(e.message)
+      }
+    })
+
     // Connect to the board we're intending to communicate with
     newSocket.RCSocket.connect(port, host, function handler() {
       // eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -315,13 +374,19 @@ class Rovecomm extends EventEmitter {
   }
 
   // While most "any" variable types have been removed, data really can be almost any type
-  sendCommand(dataIdStr: string, data: any, reliability = false): void {
+  sendCommand(dataIdStr: string, dataIn: any, reliability = false): void {
     /*
      * Takes a dataIdString, data, and optional reliability (to determine)
      * UDP or TCP, properly types the data according to the type in the manifest
      * creates a Buffer, and calls the proper send function
      */
     const VersionNumber = 2
+
+    let data = dataIn
+    // If data is a single element rather than an array, put it in an array
+    if (!Array.isArray(data)) {
+      data = [data]
+    }
 
     const dataCount = data.length
     let destinationIp = ""
@@ -370,15 +435,15 @@ class Rovecomm extends EventEmitter {
     headerBuffer.writeUInt8(VersionNumber, 0)
     headerBuffer.writeUInt16BE(dataId, 1)
     headerBuffer.writeUInt8(dataCount, 3)
-    headerBuffer.writeUInt8(dataType, 4)
+    headerBuffer.writeUInt8(DataTypes[dataType], 4)
 
     // Create the data buffer
-    const dataBuffer = Buffer.allocUnsafe(dataCount * dataSizes[dataType])
+    const dataBuffer = Buffer.allocUnsafe(dataCount * dataSizes[DataTypes[dataType]])
 
     // Switch on the data type, and properly encode each number in the data
     // array depending on the enumerated type, computing the offset and pushing
     // to the dataBuffer
-    switch (dataType) {
+    switch (DataTypes[dataType]) {
       case DataTypes.INT8_T:
         for (let i = 0; i < data.length; i++) {
           dataBuffer.writeInt8(data[i], i * dataSizes[DataTypes.INT8_T])
@@ -412,6 +477,16 @@ class Rovecomm extends EventEmitter {
       case DataTypes.FLOAT_T:
         for (let i = 0; i < data.length; i++) {
           dataBuffer.writeFloatBE(data[i], i * dataSizes[DataTypes.FLOAT_T])
+        }
+        break
+      case DataTypes.DOUBLE_T:
+        for (let i = 0; i < data.length; i++) {
+          dataBuffer.writeDoubleBE(data[i], i * dataSizes[DataTypes.DOUBLE_T])
+        }
+        break
+      case DataTypes.CHAR:
+        for (let i = 0; i < data.length; i++) {
+          dataBuffer.writeUInt8(data[0].charCodeAt(i), i * dataSizes[DataTypes.CHAR])
         }
         break
       default:

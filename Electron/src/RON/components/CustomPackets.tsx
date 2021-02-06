@@ -1,7 +1,6 @@
 import React, { Component } from "react"
 import CSS from "csstype"
-import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
-import { DataTypes, RovecommManifest } from "../../Core/RoveProtocol/RovecommManifest"
+import { rovecomm, DataTypes, RovecommManifest } from "../../Core/RoveProtocol/Rovecomm"
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",

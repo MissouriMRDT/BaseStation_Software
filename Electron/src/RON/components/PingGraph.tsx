@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import CSS from "csstype"
 import { exec } from "child_process"
 import { XYPlot, XAxis, YAxis, HorizontalGridLines, LineSeries } from "react-vis"
-import { RovecommManifest, NetworkDevices } from "../../Core/RoveProtocol/RovecommManifest"
+import { RovecommManifest, NetworkDevices } from "../../Core/RoveProtocol/Rovecomm"
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
