@@ -108,6 +108,7 @@ function controller(passedScheme: any, pos: any): any {
       default:
         return
     }
+    // buttonType will either return if it is a button (such as a,b, start, etc) or if it is a axes of controller (such as left stick x axis)
     if (navigator.getGamepads()[index] != null && passedScheme !== "") {
       for (const button in CONTROLLERINPUT[passedScheme].bindings) {
         if (CONTROLLERINPUT[passedScheme].bindings[button].buttonType === "button") {
@@ -118,8 +119,11 @@ function controller(passedScheme: any, pos: any): any {
           controllerInputs[button] = navigator.getGamepads()[index]?.axes[
             CONTROLLERINPUT[passedScheme].bindings[button].buttonIndex
           ]
+          // this checks to see if the current value of the axes are under the deadzone and will set
+          // it to zero to prevent unwanted inputs when the controller is not being used
           if (controllerInputs[button] >= -DeadZone && controllerInputs[button] <= DeadZone) {
             controllerInputs[button] = 0.0
+            // This inverts the input because it is opposite from what you would think (pushing forward would give you a negative value)
           } else {
             controllerInputs[button] *= -1
           }
