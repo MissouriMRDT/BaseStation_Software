@@ -87,11 +87,14 @@ function controller(passedScheme: any, pos: any): any {
       }
     }
 
+    // goes through the list of currently connected controllers and looks to see if any of their names are "Logitech Ex..."
+    // if there does exist an instance of that set FlighStickIndex to that Index, else set it to -1
     const FlightStickIndex = controllerList.findIndex(element => {
       if (element && element.indexOf("Logitech Extreme 3D") >= 0) return true
       else return false
     })
-
+    // This is the part that changes the current controller list to adjust for the FlightStick so that it never gets assigned as a xbox controller
+    // if the FlightStickIndex is not -1 and it is less than the current index it will then assign it to that spot and "push" the xbox controller back a spot in the index
     switch (pos) {
       case "Xbox 1":
         index = FlightStickIndex !== -1 && FlightStickIndex <= 0 ? 1 : 0
