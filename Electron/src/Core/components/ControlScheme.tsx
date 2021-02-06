@@ -185,6 +185,8 @@ class ControlScheme extends Component<IProps, IState> {
   controllerChange(event: { target: { value: string } }, config: string): void {
     controllerInputs = {}
     let defaultScheme = ""
+    // determines which scheme to select at default so that the default is not one that otherwise couldnt be used (if there is any available)
+    // (such as diagonal drive for xbox controller)
     for (const scheme in CONTROLLERINPUT) {
       if (
         CONTROLLERINPUT[scheme].config === config &&
