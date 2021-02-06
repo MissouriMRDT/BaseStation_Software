@@ -212,6 +212,8 @@ class ControlScheme extends Component<IProps, IState> {
           },
         },
       },
+      // this is a callback for when the setState finished updating it clears the set interval,
+      // so that after setState is finished it is able to create a new interval and assign it
       () => {
         if (this.state.functionality[config].toggled === "On") {
           this.setState({
