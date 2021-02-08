@@ -171,13 +171,13 @@
           "dataCount": 1,
           "comments": "[(0-Disable, 1-Enable)], [Gimbal, Multi, Aux, Drive, Nav, Cam, Extra (Bitmask)]"
         },
-        "30VBusEnabled": {
+        "30VBusEnable": {
           "dataId": 3003,
           "dataType": "UINT8_T",
           "dataCount": 1,
           "comments": "[(0-Disable, 1-Enable)], [12V, Rockets, Aux, Drive (Bitmask)]"
         },
-        "VacuumEnabled": {
+        "VacuumEnable": {
           "dataId": 3004,
           "dataType": "UINT8_T",
           "dataCount": 1,
@@ -292,10 +292,12 @@
         }
       },
       "Error": {
-        "dataId": 5200,
-        "dataType": "UINT8_T",
-        "dataCount": 1,
-        "comments": ""
+        "GPSLockError": {
+          "dataId": 5200,
+          "dataType": "UINT8_T",
+          "dataCount": 1,
+          "comments": ""
+        }
       }
     },
     "Gimbal": {
