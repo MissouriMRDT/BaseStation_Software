@@ -120,32 +120,32 @@
           "dataType": "FLOAT_T",
           "dataCount": 1,
           "comments": "[Temp] (degC)"
+        }
+      },
+      "Error": {
+        "PackOverCurrent": {
+          "dataId": 2200,
+          "dataType": "UINT8_T",
+          "dataCount": 1,
+          "comments": ""
         },
-        "Error": {
-          "PackOverCurrent": {
-            "dataId": 2200,
-            "dataType": "UINT8_T",
-            "dataCount": 1,
-            "comments": ""
-          },
-          "CellUnderVoltage": {
-            "dataId": 2201,
-            "dataType": "UINT8_T",
-            "dataCount": 1,
-            "comments": "(bitmasked)"
-          },
-          "PackUnderVoltage": {
-            "dataId": 2202,
-            "dataType": "UINT8_T",
-            "dataCount": 1,
-            "comments": ""
-          },
-          "PackSuperHot": {
-            "dataId": 2203,
-            "dataType": "UINT8_T",
-            "dataCount": 1,
-            "comments": ""
-          }
+        "CellUnderVoltage": {
+          "dataId": 2201,
+          "dataType": "UINT8_T",
+          "dataCount": 1,
+          "comments": "(bitmasked)"
+        },
+        "PackUnderVoltage": {
+          "dataId": 2202,
+          "dataType": "UINT8_T",
+          "dataCount": 1,
+          "comments": ""
+        },
+        "PackSuperHot": {
+          "dataId": 2203,
+          "dataType": "UINT8_T",
+          "dataCount": 1,
+          "comments": ""
         }
       }
     },
