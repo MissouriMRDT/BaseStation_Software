@@ -284,13 +284,13 @@ class SensorGraphs extends Component<IProps, IState> {
             style={{ fontSize: "16px", textAlign: "center" }}
             items={[
               { title: "Methane", strokeWidth: 6, color: "#990000" },
-              { title: "CO2", strokeWidth: 6, color: "orange" },
+              { title: "CO2", strokeWidth: 6, strokeStyle: "dashed", color: "orange" },
               { title: "Temperature", strokeWidth: 6, color: "yellow" },
-              { title: "O2PP", strokeWidth: 6, color: "green" },
+              { title: "O2PP", strokeWidth: 6, strokeStyle: "dashed", color: "green" },
               { title: "O2Concentration", strokeWidth: 6, color: "blue" },
-              { title: "O2Pressure", strokeWidth: 6, color: "purple" },
+              { title: "O2Pressure", strokeWidth: 6, strokeStyle: "dashed", color: "purple" },
               { title: "NO", strokeWidth: 6, color: "black" },
-              { title: "N2O", strokeWidth: 6, color: "gray" },
+              { title: "N2O", strokeWidth: 6, strokeStyle: "dashed", color: "gray" },
             ]}
             orientation="horizontal"
           />
