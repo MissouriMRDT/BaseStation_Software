@@ -19,6 +19,9 @@
     "INVALID_VERSION": 5,
     "NO_DATA": 6
   },
+  "updateRate": 100,
+  "ethernetUDPPort": 11000,
+  "subnetIP": [192, 168, 1],
   "headerLength": 5,
   "RovecommManifest": {
     "Drive": {
