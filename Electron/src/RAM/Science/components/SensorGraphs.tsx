@@ -262,22 +262,23 @@ class SensorGraphs extends Component<IProps, IState> {
             onMouseLeave={this.onMouseLeave}
           >
             <HorizontalGridLines style={{ fill: "none" }} />
-            {(this.state.sensor === "Methane" || this.state.sensor === "All") && (
+            {(this.state.sensor === "Methane" || this.state.sensor === "All") && this.state.methane !== [] && (
               <LineSeries data={this.state.methane} style={{ fill: "none" }} onNearestX={this.onNearestX} />
             )}
-            {(this.state.sensor === "CO2" || this.state.sensor === "All") && (
+            {(this.state.sensor === "CO2" || this.state.sensor === "All") && this.state.co2 !== [] && (
               <LineSeries data={this.state.co2} style={{ fill: "none" }} />
             )}
-            {(this.state.sensor === "Temperature" || this.state.sensor === "All") && (
+            {(this.state.sensor === "Temperature" || this.state.sensor === "All") && this.state.temperature !== [] && (
               <LineSeries data={this.state.temperature} style={{ fill: "none" }} />
             )}
-            {(this.state.sensor === "O2PP" || this.state.sensor === "All") && (
+            {(this.state.sensor === "O2PP" || this.state.sensor === "All") && this.state.o2PP !== [] && (
               <LineSeries data={this.state.o2PP} style={{ fill: "none" }} />
             )}
-            {(this.state.sensor === "O2Concentration" || this.state.sensor === "All") && (
-              <LineSeries data={this.state.o2Concentration} style={{ fill: "none" }} />
-            )}
-            {(this.state.sensor === "O2Pressure" || this.state.sensor === "All") && (
+            {(this.state.sensor === "O2Concentration" || this.state.sensor === "All") &&
+              this.state.o2Concentration !== [] && (
+                <LineSeries data={this.state.o2Concentration} style={{ fill: "none" }} />
+              )}
+            {(this.state.sensor === "O2Pressure" || this.state.sensor === "All") && this.state.o2Pressure !== [] && (
               <LineSeries data={this.state.o2Pressure} style={{ fill: "none" }} />
             )}
             <XAxis />

@@ -40,10 +40,9 @@ function decodePacket(dataType: number, dataCount: number, data: Buffer): number
    * and uses the dataType to return an array of the properly typed data.
    * Note: even if dataCount is only 1, this returns an array of one item.
    */
-
   let readBytes: (i: number) => number
 
-  switch (DataTypes[dataType]) {
+  switch (dataType) {
     case DataTypes.INT8_T:
       readBytes = data.readInt8.bind(data)
       break
