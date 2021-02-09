@@ -89,6 +89,8 @@ interface IState {
   o2PP: { x: Date; y: number }[]
   o2Concentration: { x: Date; y: number }[]
   o2Pressure: { x: Date; y: number }[]
+  no: { x: Date; y: number }[]
+  n2o: { x: Date; y: number }[]
   sensor: string
   crosshairValues: { x: Date; y: number }[]
 }
@@ -103,12 +105,16 @@ class SensorGraphs extends Component<IProps, IState> {
       o2PP: [],
       o2Concentration: [],
       o2Pressure: [],
+      no: [],
+      n2o: [],
       sensor: "All",
       crosshairValues: [],
     }
     this.methane = this.methane.bind(this)
     this.co2 = this.co2.bind(this)
     this.o2 = this.o2.bind(this)
+    this.no = this.no.bind(this)
+    this.n2o = this.n2o.bind(this)
     this.sensorChange = this.sensorChange.bind(this)
     this.onNearestX = this.onNearestX.bind(this)
     this.onMouseLeave = this.onMouseLeave.bind(this)
@@ -116,13 +122,15 @@ class SensorGraphs extends Component<IProps, IState> {
     rovecomm.on("Methane", (data: any) => this.methane(data))
     rovecomm.on("CO2", (data: any) => this.co2(data))
     rovecomm.on("O2", (data: any) => this.o2(data))
+    rovecomm.on("NO", (data: any) => this.no(data))
+    rovecomm.on("N2O", (data: any) => this.n2o(data))
   }
 
   onMouseLeave(): void {
     this.setState({ crosshairValues: [] })
   }
 
-  onNearestX(value, { index }): void {
+  onNearestX(value: any, { index }: any): void {
     this.setState({
       crosshairValues: [
         this.state.methane,
@@ -131,6 +139,8 @@ class SensorGraphs extends Component<IProps, IState> {
         this.state.o2PP,
         this.state.o2Concentration,
         this.state.o2Pressure,
+        this.state.no,
+        this.state.n2o,
       ].map(d => d[index]),
     })
   }
@@ -161,6 +171,18 @@ class SensorGraphs extends Component<IProps, IState> {
     o2Concentration.push({ x: new Date(), y: newO2Concentration })
     o2Pressure.push({ x: new Date(), y: newO2Pressure })
     this.setState({ temperature, o2PP, o2Concentration, o2Pressure })
+  }
+
+  no(data: any): void {
+    const { no } = this.state
+    no.push({ x: new Date(), y: data[0] })
+    this.setState({ no })
+  }
+
+  n2o(data: any): void {
+    const { n2o } = this.state
+    n2o.push({ x: new Date(), y: data[0] })
+    this.setState({ n2o })
   }
 
   crosshair(): JSX.Element | null {
@@ -216,6 +238,20 @@ class SensorGraphs extends Component<IProps, IState> {
               })}{" "}
               ppm
             </p>
+            <p>
+              NO:{" "}
+              {this.state.crosshairValues[1].y.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+              })}{" "}
+              ppm
+            </p>
+            <p>
+              N2O:{" "}
+              {this.state.crosshairValues[1].y.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+              })}{" "}
+              ppm
+            </p>
           </div>
         </Crosshair>
       )
@@ -232,25 +268,29 @@ class SensorGraphs extends Component<IProps, IState> {
             <div style={selectbox}>
               <div style={h1Style}>Sensor:</div>
               <select value={this.state.sensor} onChange={e => this.sensorChange(e)} style={selector}>
-                {["All", "Methane", "CO2", "Temperature", "O2PP", "O2Concentration", "O2Pressure"].map(item => {
-                  return (
-                    <option key={item} value={item}>
-                      {item}
-                    </option>
-                  )
-                })}
+                {["All", "Methane", "CO2", "Temperature", "O2PP", "O2Concentration", "O2Pressure", "NO", "N2O"].map(
+                  item => {
+                    return (
+                      <option key={item} value={item}>
+                        {item}
+                      </option>
+                    )
+                  }
+                )}
               </select>
             </div>
           </div>
           <DiscreteColorLegend
             style={{ fontSize: "16px", textAlign: "center" }}
             items={[
-              { title: "Methane", strokeWidth: 6 },
-              { title: "CO2", strokeWidth: 6 },
-              { title: "Temperature", strokeWidth: 6 },
-              { title: "O2PP", strokeWidth: 6 },
-              { title: "O2Concentration", strokeWidth: 6 },
-              { title: "O2Pressure", strokeWidth: 6 },
+              { title: "Methane", strokeWidth: 6, color: "#990000" },
+              { title: "CO2", strokeWidth: 6, color: "orange" },
+              { title: "Temperature", strokeWidth: 6, color: "yellow" },
+              { title: "O2PP", strokeWidth: 6, color: "green" },
+              { title: "O2Concentration", strokeWidth: 6, color: "blue" },
+              { title: "O2Pressure", strokeWidth: 6, color: "purple" },
+              { title: "NO", strokeWidth: 6, color: "black" },
+              { title: "N2O", strokeWidth: 6, color: "gray" },
             ]}
             orientation="horizontal"
           />
@@ -280,6 +320,12 @@ class SensorGraphs extends Component<IProps, IState> {
               )}
             {(this.state.sensor === "O2Pressure" || this.state.sensor === "All") && this.state.o2Pressure !== [] && (
               <LineSeries data={this.state.o2Pressure} style={{ fill: "none" }} />
+            )}
+            {(this.state.sensor === "NO" || this.state.sensor === "All") && this.state.no !== [] && (
+              <LineSeries data={this.state.no} style={{ fill: "none" }} />
+            )}
+            {(this.state.sensor === "N2O" || this.state.sensor === "All") && this.state.n2o !== [] && (
+              <LineSeries data={this.state.n2o} style={{ fill: "none" }} />
             )}
             <XAxis />
             <YAxis />
