@@ -285,7 +285,7 @@
           "comments": "[Pitch, Yaw, Roll] [(-90, 90), (0, 360), (-90, 90)] (deg)"
         },
         "LidarData": {
-          "dataId": 5101,
+          "dataId": 5102,
           "dataType": "FLOAT_T",
           "dataCount": 2,
           "comments": "[Distance, Quality]"
