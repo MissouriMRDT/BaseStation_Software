@@ -15,6 +15,7 @@ const column: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
   marginRight: "5px",
+  flexGrow: 1,
 }
 
 interface IProps {

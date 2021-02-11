@@ -19,6 +19,7 @@ const buttons: CSS.Properties = {
   fontSize: "42px",
   fontFamily: "times new roman",
   fontWeight: "bold",
+  outline: "none",
 }
 
 interface IProps {
