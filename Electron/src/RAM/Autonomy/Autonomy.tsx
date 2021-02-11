@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import CSS from "csstype"
+import Cameras from "../../Core/components/Cameras"
 
 const row: CSS.Properties = {
   display: "flex",
@@ -10,11 +11,12 @@ const row: CSS.Properties = {
 const column: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
-  flexGrow: 1,
   marginRight: "5px",
 }
 
-interface IProps {}
+interface IProps {
+  selectedWaypoint: any
+}
 
 interface IState {}
 
@@ -25,7 +27,14 @@ class Autonomy extends Component<IProps, IState> {
   }
 
   render(): JSX.Element {
-    return <div style={column}>Autonomy</div>
+    return (
+      <div style={column}>
+        <div style={row}>
+          <Cameras defaultCamera={9} style={{ flex: 1, marginRight: "5px" }} />
+          <Cameras defaultCamera={10} style={{ flex: 1, marginLeft: "5px" }} />
+        </div>
+      </div>
+    )
   }
 }
 export default Autonomy

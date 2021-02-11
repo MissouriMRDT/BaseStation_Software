@@ -80,7 +80,11 @@ class ControlCenter extends Component<IProps, IState> {
           // displayed in a new window
           this.state.ramOpen && (
             <NewWindowComponent onClose={() => this.setState({ ramOpen: false })} name="RAM">
-              <RoverAttachmentManager />
+              <RoverAttachmentManager
+                selectedWaypoint={
+                  this.waypointsInstance.state.storedWaypoints[this.waypointsInstance.state.selectedWaypoint]
+                }
+              />
             </NewWindowComponent>
           )
         }
