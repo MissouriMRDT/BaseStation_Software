@@ -35,6 +35,7 @@ class Autonomy extends Component<IProps, IState> {
         <div style={row}>
           <div style={column}>
             <Controls selectedWaypoint={this.props.selectedWaypoint} />
+            <Activity />
           </div>
         </div>
         <div style={row}>

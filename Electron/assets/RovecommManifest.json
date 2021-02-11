@@ -701,16 +701,15 @@
           "dataType": "UINT8_T",
           "dataCount": 1,
           "comments": ""
-        }
-      },
-      "Error": {
+        },
         "CurrentLog": {
           "dataId": 11200,
           "dataType": "CHAR",
           "dataCount": 255,
           "comments": "String version of most current error log"
         }
-      }
+      },
+      "Error": {}
     },
     "Camera1": {
       "Ip": "192.168.1.141",
