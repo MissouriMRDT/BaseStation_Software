@@ -37,6 +37,9 @@ class Autonomy extends Component<IProps, IState> {
             <Controls selectedWaypoint={this.props.selectedWaypoint} />
             <Activity />
           </div>
+          <div style={column}>
+            <StateDiagram style={{ flexGrow: 1 }} />
+          </div>
         </div>
         <div style={row}>
           <Cameras defaultCamera={9} style={{ flex: 1, marginRight: "5px" }} />
