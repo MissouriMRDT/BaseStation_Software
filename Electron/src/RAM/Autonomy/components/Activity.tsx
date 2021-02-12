@@ -31,6 +31,7 @@ interface IProps {
 
 interface IState {
   ActivityText: string
+  backgroundColor: string
 }
 
 class Activity extends Component<IProps, IState> {
@@ -38,9 +39,14 @@ class Activity extends Component<IProps, IState> {
     super(props)
     this.state = {
       ActivityText: "",
+      backgroundColor: "white",
     }
+
+    this.ReachedMarker = this.ReachedMarker.bind(this)
+
     rovecomm.on("AutonomyActivity", (data: any) => this.Log(data))
     rovecomm.on("CurrentLog", (data: any) => this.Log(data))
+    rovecomm.on("ReachedMarker", this.ReachedMarker)
   }
 
   Log(data: string): void {
@@ -51,11 +57,30 @@ class Activity extends Component<IProps, IState> {
     })
   }
 
+  ReachedMarker(): void {
+    this.setState({ backgroundColor: "green" })
+    this.Log("Reached waypoint!")
+    const reachInterval = setInterval(() => {
+      const backgroundColor: string = this.state.backgroundColor === "green" ? "white" : "green"
+      this.setState({ backgroundColor })
+    }, 250)
+
+    setTimeout(() => {
+      clearInterval(reachInterval)
+      this.setState({ backgroundColor: "white" })
+    }, 4000)
+  }
+
   render(): JSX.Element {
     return (
       <div style={this.props.style}>
         <div style={label}>Autonomy Activity</div>
-        <div style={container}>{this.state.ActivityText}</div>
+        <div style={{ ...container, backgroundColor: this.state.backgroundColor }}>
+          <button type="button" onClick={this.ReachedMarker}>
+            Reached
+          </button>
+          {this.state.ActivityText}
+        </div>
       </div>
     )
   }
