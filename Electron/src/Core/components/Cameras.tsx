@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import CSS from "csstype"
 import html2canvas from "html2canvas"
+import Canvas2Image from "canvas2image"
 // import { rovecomm } from "../RoveProtocol/Rovecomm"
 // import { Packet } from "../../Core/RoveProtocol/Packet"
 
@@ -48,6 +49,9 @@ function saveImage(): void {
   html2canvas(input, {
     scrollX: 0,
     scrollY: -window.scrollY,
+    letterRendering: 1,
+    useCORS: true,
+    allowTaint: false,
   })
     .then(canvas => {
       const imgData = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream")
@@ -107,7 +111,7 @@ class Cameras extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div style={this.props.style}>
+      <div id="camera" style={this.props.style}>
         <div style={label}>Cameras</div>
         <div style={container}>
           <div style={row}>
@@ -135,7 +139,6 @@ class Cameras extends Component<IProps, IState> {
             if people are having issues with img elements
           */}
           <img
-            id="camera"
             src={this.ConstructAddress()}
             alt={`Camera ${this.state.currentCamera}`}
             style={{ transform: `rotate(${this.state.rotation}deg)` }}
