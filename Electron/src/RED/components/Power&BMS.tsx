@@ -112,8 +112,8 @@ class Power extends Component<IProps, IState> {
     rovecomm.on("MotorBusCurrent", (data: number) => this.motorBusCurrents(data))
     rovecomm.on("MotorBusEnabled", (data: number) => this.motorBusEnabled(data))
     rovecomm.on("SteeringMotorCurrents", (data: number) => this.steeringMotorCurrents(data)) // potential removal
-    rovecomm.on("12VActBusEnable", (data: number) => this.twelveVActBusEnable(data))
-    rovecomm.on("12VLogicBusEnable", (data: number) => this.twelveVLogicBusEnable(data))
+    rovecomm.on("12VActBusEnabled", (data: number) => this.twelveVActBusEnabled(data))
+    rovecomm.on("12VLogicBusEnabled", (data: number) => this.twelveVLogicBusEnabled(data))
     rovecomm.on("30VBusEnabled", (data: number) => this.thirtyVBusEnabled(data))
     rovecomm.on("VacuumEnabled", (data: number) => this.vacuumEnabled(data))
     rovecomm.on("VacuumCurrent", (data: number) => this.vacuumCurrent(data))
@@ -151,7 +151,7 @@ class Power extends Component<IProps, IState> {
     this.setState({ boardTelemetry })
   }
 
-  twelveVActBusEnable(data: number): void {
+  twelveVActBusEnabled(data: number): void {
     const bitmask = data.toString(2)
     const peripherals = ["Gimbal", "Multimedia", "Auxilliary"]
     const { boardTelemetry } = this.state
@@ -161,7 +161,7 @@ class Power extends Component<IProps, IState> {
     this.setState({ boardTelemetry })
   }
 
-  twelveVLogicBusEnable(data: number): void {
+  twelveVLogicBusEnabled(data: number): void {
     const bitmask = data.toString(2)
     const boards = ["Gimbal", "Multimedia", "Autonomy", "Drive", "Navigation", "Cameras", "Extra"]
     const { boardTelemetry } = this.state
