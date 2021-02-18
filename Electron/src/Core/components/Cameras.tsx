@@ -16,6 +16,7 @@ const container: CSS.Properties = {
   borderBottomWidth: "2px",
   borderStyle: "solid",
   padding: "5px",
+  height: "calc(100% - 45px)",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -91,7 +92,7 @@ class Cameras extends Component<IProps, IState> {
             })}
           </div>
           {/*
-            NOTE: This is a theory. If this image somehow exceeds a 
+            NOTE: This is a theory. If this image somehow exceeds a
             certain dimension/width, whether it would be us increasing
             the resolution of the target computer, or adding styles,
             the entire app just fails to load without giving any

@@ -2,7 +2,6 @@ import React, { Component } from "react"
 import CSS from "csstype"
 import Cameras from "../Core/components/Cameras"
 import Map from "../RED/components/Map"
-import CM3MS from "./components/CM3MS"
 
 const row: CSS.Properties = {
   display: "flex",
@@ -29,7 +28,10 @@ function onClickCamera(this: any): void {
 }
 */
 
-interface IProps {}
+interface IProps {
+  style?: CSS.Properties
+  rowcol: string
+}
 
 interface IState {
   storedWaypoints: any
@@ -74,9 +76,9 @@ class RoverImageryDisplay extends Component<IProps, IState> {
     console.log(this)
     this.setState({
       display: (
-        <div style={{ flexGrow: "inherit" }}>
+        <div style={{ flexGrow: 1 }}>
           {this.buttons}
-          <Cameras defaultCamera={1} />
+          <Cameras defaultCamera={1} style={{ height: "100%", width: "100%", flexGrow: 1 }} />
         </div>
       ),
     })
@@ -85,23 +87,41 @@ class RoverImageryDisplay extends Component<IProps, IState> {
   onClickMap() {
     this.setState({
       display: (
-        <div style={{ flexGrow: "inherit" }}>
+        <div style={{ flexGrow: 1 }}>
           {this.buttons}
-          <Map storedWaypoints={this.state.storedWaypoints} currentCoords={this.state.currentCoords} name="RIDmap" />
+          <Map
+            style={{ height: "100%", width: "100%", flexGrow: 1 }}
+            storedWaypoints={this.state.storedWaypoints}
+            currentCoords={this.state.currentCoords}
+            name="RIDmap"
+          />
         </div>
       ),
     })
   }
 
   onClickSplit() {
+    const RIDStyle = this.props.rowcol === "row" ? row : column
+    const nextStyle = this.props.rowcol === "row" ? "column" : "row"
     this.setState({
-      display: <div>{this.buttons}</div>,
+      display: (
+        <div style={{ ...RIDStyle, width: "100%", height: "100%" }}>
+          <RoverImageryDisplay
+            rowcol={nextStyle}
+            style={{ height: "100%", width: "100%", border: "2px solid", borderColor: "#990000" }}
+          />
+          <RoverImageryDisplay
+            rowcol={nextStyle}
+            style={{ height: "100%", width: "100%", border: "2px solid", borderColor: "#990000" }}
+          />
+        </div>
+      ),
     })
   }
 
   render(): JSX.Element {
     console.log(this)
-    return <div>{this.state.display}</div>
+    return <div style={this.props.style}>{this.state.display}</div>
   }
 }
 export default RoverImageryDisplay

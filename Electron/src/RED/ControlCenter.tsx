@@ -93,7 +93,10 @@ class ControlCenter extends Component<IProps, IState> {
           // displayed in a new window
           this.state.ridOpen && (
             <NewWindowComponent onClose={() => this.setState({ ridOpen: false })} name="RID">
-              <RoverImageryDisplay />
+              <RoverImageryDisplay
+                rowcol=""
+                style={{ border: "2px solid", borderColor: "#990000", width: "100%", height: "100%" }}
+              />
             </NewWindowComponent>
           )
         }
