@@ -1,5 +1,6 @@
 /* eslint-disable import/no-mutable-exports */
 import { Socket } from "dgram"
+import { Socket as netSocket } from "net"
 import Deque from "double-ended-queue"
 import fs from "fs"
 import path from "path"
@@ -30,7 +31,7 @@ const net = require("net")
 const EventEmitter = require("events")
 
 interface TCPSocket {
-  RCSocket: Socket
+  RCSocket: netSocket
   RCDeque: Deque<any>
 }
 
