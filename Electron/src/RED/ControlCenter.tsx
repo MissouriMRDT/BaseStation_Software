@@ -8,6 +8,7 @@ import Waypoints from "./components/Waypoints"
 import NewWindowComponent from "../Core/Window"
 import RoverOverviewOfNetwork from "../RON/RON"
 import RoverAttachmentManager from "../RAM/RAM"
+import RoverImageryDisplay from "../RID/RID"
 import Cameras from "../Core/components/Cameras"
 import ControlScheme from "../Core/components/ControlScheme"
 import Drive from "./components/Drive"
@@ -32,6 +33,7 @@ interface IState {
   currentCoords: { lat: number; lon: number }
   ronOpen: boolean
   ramOpen: boolean
+  ridOpen: boolean
 }
 
 class ControlCenter extends Component<IProps, IState> {
@@ -44,6 +46,7 @@ class ControlCenter extends Component<IProps, IState> {
       currentCoords: { lat: 0, lon: 0 },
       ronOpen: false,
       ramOpen: false,
+      ridOpen: false,
     }
     this.updateWaypoints = this.updateWaypoints.bind(this)
     this.updateCoords = this.updateCoords.bind(this)
@@ -84,6 +87,16 @@ class ControlCenter extends Component<IProps, IState> {
             </NewWindowComponent>
           )
         }
+        {
+          // onClose will be fired when the new window is closed
+          // everything inside NewWindowComponent is considered props.children and will be
+          // displayed in a new window
+          this.state.ridOpen && (
+            <NewWindowComponent onClose={() => this.setState({ ridOpen: false })} name="RID">
+              <RoverImageryDisplay />
+            </NewWindowComponent>
+          )
+        }
         <div style={column}>
           <GPS onCoordsChange={this.updateCoords} />
           <Waypoints
@@ -109,13 +122,16 @@ class ControlCenter extends Component<IProps, IState> {
             <button type="button" onClick={() => this.setState({ ramOpen: true })}>
               Open Rover Attachment Manager
             </button>
+            <button type="button" onClick={() => this.setState({ ridOpen: true })}>
+              Open Rover Imagery Display
+            </button>
           </div>
         </div>
         <div style={column}>
           <Map
             storedWaypoints={this.state.storedWaypoints}
             currentCoords={this.state.currentCoords}
-            store={(name: string, coords: any) => this.waypointsInstance.store(name, coords)}
+            name="controlCenterMap"
           />
           <Cameras defaultCamera={1} />
           <Cameras defaultCamera={2} />

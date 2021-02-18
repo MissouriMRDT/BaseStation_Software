@@ -37,7 +37,8 @@ interface IProps {
   style?: CSS.Properties
   storedWaypoints: any
   currentCoords: { lat: number; lon: number }
-  store: (name: string, coords: any) => void
+  // store: (name: string, coords: any) => void
+  name: string
 }
 
 interface IState {
@@ -63,6 +64,7 @@ class Map extends Component<IProps, IState> {
     rovecomm.on("PitchHeadingRoll", (data: any) => this.IMUData(data))
   }
 
+  /*
   componentDidMount(): void {
     const map = L.map("map-id")
     const offlineLayer = L.tileLayer.offline(
@@ -76,6 +78,7 @@ class Map extends Component<IProps, IState> {
     )
     offlineLayer.addTo(map)
   }
+  */
 
   IMUData(data: any): void {
     this.setState({
@@ -96,14 +99,6 @@ class Map extends Component<IProps, IState> {
               zoom={this.state.zoom}
               maxZoom={this.state.maxZoom}
               id="map"
-              whenReady={(map: any): void =>
-                map.target.on("click", (e: { latlng: { lat: number; lng: number } }) => {
-                  this.props.store(new Date().toLocaleTimeString(), {
-                    lat: e.latlng.lat,
-                    lon: e.latlng.lng,
-                  })
-                })
-              }
             >
               <TileLayer
                 maxZoom={this.state.maxZoom}
