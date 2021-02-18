@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import CSS from "csstype"
 import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
+import { ColorStyleConverter } from "../../Core/ColorConverter"
 
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -11,6 +12,10 @@ const label: CSS.Properties = {
   fontSize: "16px",
   zIndex: 1,
   color: "white",
+}
+const textPad: CSS.Properties = {
+  paddingLeft: "10px",
+  paddingRight: "10px",
 }
 const mainContainer: CSS.Properties = {
   display: "flex",
@@ -32,7 +37,6 @@ const row: CSS.Properties = {
 const column: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
-  margin: "5px",
 }
 const readout: CSS.Properties = {
   display: "flex",
@@ -40,7 +44,6 @@ const readout: CSS.Properties = {
   flexGrow: 1,
   justifyContent: "space-between",
   fontFamily: "arial",
-  margin: "0px 5px",
 }
 const btnArray: CSS.Properties = {
   display: "grid",
@@ -52,9 +55,6 @@ const cellReadoutContainer: CSS.Properties = {
   display: "grid",
   color: "black",
   gridTemplateColumns: "auto auto auto auto",
-  marginLeft: "3px",
-  marginBottom: "3px",
-  marginRight: "3px",
 }
 
 function turnOffReboot(time: number): void {
@@ -338,11 +338,11 @@ class Power extends Component<IProps, IState> {
                         {this.state.boardTelemetry[motor].enabled ? "Enabled" : "Disabled"}
                       </button>
                     ) : (
-                      <div style={{ width: "30%" }} />
+                      <div style={{ width: "30%", backgroundColor: "hsl(0, 0%, 90%)" }} />
                     )}
-                    <div style={readout}>
-                      <h3>{motor}</h3>
-                      <h3>
+                    <div style={ColorStyleConverter(this.state.boardTelemetry[motor].value, 0, 7, 15, 120, 0, readout)}>
+                      <h3 style={textPad}>{motor}</h3>
+                      <h3 style={textPad}>
                         {this.state.boardTelemetry[motor].value.toLocaleString(undefined, {
                           minimumFractionDigits: 1,
                           minimumIntegerDigits: 2,
@@ -376,11 +376,11 @@ class Power extends Component<IProps, IState> {
                         {this.state.boardTelemetry[part].enabled ? "Enabled" : "Disabled"}
                       </button>
                     ) : (
-                      <div style={{ width: "30%" }} />
+                      <div style={{ width: "30%", backgroundColor: "hsl(0, 0%, 90%)" }} />
                     )}
-                    <div style={readout}>
-                      <h3>{part}</h3>
-                      <h3>
+                    <div style={ColorStyleConverter(this.state.boardTelemetry[part].value, 0, 7, 15, 120, 0, readout)}>
+                      <h3 style={textPad}>{part}</h3>
+                      <h3 style={textPad}>
                         {this.state.boardTelemetry[part].value.toLocaleString(undefined, {
                           minimumFractionDigits: 1,
                           minimumIntegerDigits: 2,
@@ -420,13 +420,15 @@ class Power extends Component<IProps, IState> {
             -------------------------------------------
           </h3>
           <div style={{ ...row, width: "100%" }}>
-            <div style={readout}>
-              <h3>Battery Temperature</h3>
-              <h3>{this.state.batteryTelemetry.Temp.value}°</h3>
+            <div style={ColorStyleConverter(this.state.batteryTelemetry.Temp.value, 30, 75, 115, 120, 0, readout)}>
+              <h3 style={textPad}>Battery Temperature</h3>
+              <h3 style={textPad}>{this.state.batteryTelemetry.Temp.value}°</h3>
             </div>
-            <div style={readout}>
-              <h3>Total Pack Current</h3>
-              <h3>
+            <div
+              style={ColorStyleConverter(this.state.batteryTelemetry.TotalPackCurrent.value, 0, 7, 15, 120, 0, readout)}
+            >
+              <h3 style={textPad}>Total Pack Current</h3>
+              <h3 style={textPad}>
                 {this.state.batteryTelemetry.TotalPackCurrent.value.toLocaleString(undefined, {
                   minimumFractionDigits: 1,
                   minimumIntegerDigits: 2,
@@ -434,9 +436,11 @@ class Power extends Component<IProps, IState> {
                 A
               </h3>
             </div>
-            <div style={readout}>
-              <h3>Total Pack Voltage</h3>
-              <h3>
+            <div
+              style={ColorStyleConverter(this.state.batteryTelemetry.TotalPackVoltage.value, 0, 7, 15, 120, 0, readout)}
+            >
+              <h3 style={textPad}>Total Pack Voltage</h3>
+              <h3 style={textPad}>
                 {this.state.batteryTelemetry.TotalPackVoltage.value.toLocaleString(undefined, {
                   minimumFractionDigits: 1,
                   minimumIntegerDigits: 2,
@@ -449,12 +453,15 @@ class Power extends Component<IProps, IState> {
             <div style={{ ...cellReadoutContainer, width: "100%" }}>
               {["Cell 1", "Cell 2", "Cell 3", "Cell 4", "Cell 5", "Cell 6", "Cell 7", "Cell 8"].map(cell => {
                 return (
-                  <div key={cell} style={readout}>
-                    <h3>{cell}</h3>
-                    <h3>
+                  <div
+                    key={cell}
+                    style={ColorStyleConverter(this.state.batteryTelemetry.Temp.value, 2.5, 3.1, 4.2, 0, 120, readout)}
+                  >
+                    <h3 style={textPad}>{cell}</h3>
+                    <h3 style={textPad}>
                       {this.state.batteryTelemetry[cell].value.toLocaleString(undefined, {
-                        minimumFractionDigits: 1,
-                        minimumIntegerDigits: 2,
+                        minimumFractionDigits: 2,
+                        minimumIntegerDigits: 1,
                       })}
                       V
                     </h3>
