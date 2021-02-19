@@ -132,8 +132,11 @@ class Drive extends Component<IProps, IState> {
       let { angle } = this.state
       angle = (((angle + controllerInputs.RotateCW - controllerInputs.RotateCCW) % 360) + 360) % 360
       this.setState({ angle })
-      rovecomm.sendCommand("SetSteeringAngle", angle)
-      console.log("No lock angle:", angle, controllerInputs.RotateCW, controllerInputs.RotateCCW)
+      // Currently, closed loop isn't fully operational, so we only use open loop control
+      // rovecomm.sendCommand("SetSteeringAngle", angle)
+      const direction: number = controllerInputs.RotateCW - controllerInputs.RotateCCW
+      const speed: number = 1000 * direction
+      rovecomm.sendCommand("SetSteeringSpeed", [speed, speed, speed, speed])
     } else if (
       "RotateTwist" in controllerInputs &&
       "RotateToggle" in controllerInputs &&
@@ -143,8 +146,25 @@ class Drive extends Component<IProps, IState> {
       let { angle } = this.state
       angle = (((angle - controllerInputs.RotateTwist) % 360) + 360) % 360
       this.setState({ angle })
-      rovecomm.sendCommand("SetSteeringAngle", angle)
-      console.log("Lock angle:", angle, controllerInputs.RotateTwist)
+      // Currently, closed loop isn't fully operational, so we only use open loop control
+      // rovecomm.sendCommand("SetSteeringAngle", angle)
+      const speed: number = 1000 * controllerInputs.RotateTwist
+      rovecomm.sendCommand("SetSteeringSpeed", [speed, speed, speed, speed])
+    } else if (
+      "RotateLF" in controllerInputs &&
+      "RotateLR" in controllerInputs &&
+      "RotateRF" in controllerInputs &&
+      "RotateRR" in controllerInputs
+    ) {
+      const LFSpeed =
+        1000 * controllerInputs.RotateLF ? controllerInputs.IndependentCW - controllerInputs.IndependentCCW : 0
+      const LRSpeed =
+        1000 * controllerInputs.RotateLR ? controllerInputs.IndependentCW - controllerInputs.IndependentCCW : 0
+      const RFSpeed =
+        1000 * controllerInputs.RotateRF ? controllerInputs.IndependentCW - controllerInputs.IndependentCCW : 0
+      const RRSpeed =
+        1000 * controllerInputs.RotateRR ? controllerInputs.IndependentCW - controllerInputs.IndependentCCW : 0
+      rovecomm.sendCommand("SetSteeringSpeed", [LFSpeed, LRSpeed, RFSpeed, RRSpeed])
     }
 
     this.setState({

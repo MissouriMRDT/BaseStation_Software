@@ -57,6 +57,12 @@
           "dataType": "UINT8_T",
           "dataCount": 1,
           "comments": "[0-Turn off Watchdog Override, 1-Turn on Watchdog Override]"
+        },
+        "SetSteeringSpeeds": {
+          "dataId": 1005,
+          "dataType": "INT16_T",
+          "dataCount": 4,
+          "comments": "[LF, LR, RF, RR] (-1000, 1000)-> (-100%, 100%)"
         }
       },
       "Telemetry": {
