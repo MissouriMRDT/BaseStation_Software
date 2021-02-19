@@ -70,6 +70,7 @@ interface IState {
   leftSpeed: number
   rightSpeed: number
   speedLimit: number
+  angle: number
 }
 class Drive extends Component<IProps, IState> {
   constructor(props: IProps) {
@@ -78,6 +79,7 @@ class Drive extends Component<IProps, IState> {
       leftSpeed: 0,
       rightSpeed: 0,
       speedLimit: 300,
+      angle: 0,
     }
 
     this.speedLimitChange = this.speedLimitChange.bind(this)
@@ -125,6 +127,25 @@ class Drive extends Component<IProps, IState> {
       rightSpeed = 50 * direction
     }
     rovecomm.sendCommand("DriveLeftRight", [leftSpeed, rightSpeed])
+
+    if ("RotateCW" in controllerInputs && "RotateCCW" in controllerInputs) {
+      let { angle } = this.state
+      angle = (((angle + controllerInputs.RotateCW - controllerInputs.RotateCCW) % 360) + 360) % 360
+      this.setState({ angle })
+      rovecomm.sendCommand("SetSteeringAngle", angle)
+      console.log("No lock angle:", angle, controllerInputs.RotateCW, controllerInputs.RotateCCW)
+    } else if (
+      "RotateTwist" in controllerInputs &&
+      "RotateToggle" in controllerInputs &&
+      controllerInputs.RotateToggle &&
+      Math.abs(controllerInputs.RotateTwist) > 0.15
+    ) {
+      let { angle } = this.state
+      angle = (((angle - controllerInputs.RotateTwist) % 360) + 360) % 360
+      this.setState({ angle })
+      rovecomm.sendCommand("SetSteeringAngle", angle)
+      console.log("Lock angle:", angle, controllerInputs.RotateTwist)
+    }
 
     this.setState({
       leftSpeed,
