@@ -1,8 +1,7 @@
 import React, { Component } from "react"
 import CSS from "csstype"
 import { exec } from "child_process"
-import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
-import { RovecommManifest, NetworkDevices } from "../../Core/RoveProtocol/RovecommManifest"
+import { rovecomm, RovecommManifest, NetworkDevices } from "../../Core/RoveProtocol/Rovecomm"
 import { ColorStyleConverter } from "../../Core/ColorConverter"
 
 const h1Style: CSS.Properties = {
@@ -66,10 +65,14 @@ const hid: CSS.Properties = {
   visibility: "hidden",
 }
 
-interface IProps {}
+interface IProps {
+  style?: CSS.Properties
+  onDevicesChange: (devices: any) => void
+}
 
 interface IState {
   devices: any
+  pingInterval: any
 }
 
 // For colorConverter
@@ -80,7 +83,7 @@ const greenHue = 120
 const redHue = 360
 
 class PingTool extends Component<IProps, IState> {
-  constructor(props: any) {
+  constructor(props: IProps) {
     super(props)
     const devices = {}
     Object.keys(NetworkDevices).forEach(device => {
@@ -91,13 +94,23 @@ class PingTool extends Component<IProps, IState> {
     })
     this.state = {
       devices,
+      pingInterval: setInterval(() => {
+        this.props.onDevicesChange(this.state.devices)
+        for (const device in this.state.devices) {
+          if (this.state.devices[device].autoPing) {
+            this.ICMP(device)
+          }
+        }
+      }, 1000),
     }
     this.ICMP = this.ICMP.bind(this)
     this.Rove = this.Rove.bind(this)
     this.AutoPing = this.AutoPing.bind(this)
     this.AutoPingAll = this.AutoPingAll.bind(this)
-    this.StartAutoPing = this.StartAutoPing.bind(this)
-    this.StartAutoPing(1000)
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.pingInterval)
   }
 
   ICMP(device: string): void {
@@ -127,7 +140,8 @@ class PingTool extends Component<IProps, IState> {
         // On Windows, failed ping is not necessarily an error
         // Windows Ex. 'Reply from 8.8.8.8: bytes=32 time=26ms TTL=110'
         // Unix Ex. '64 bytes from 8.8.8.8: icmp_seq=0 ttl=110 time=387.477 ms'
-        const start = stdout.indexOf("time=") + 5
+        // They may also return "time<1ms", which we will treat as =1ms
+        const start = stdout.indexOf("time") + 5
         const end = stdout.indexOf("ms")
         delay = Math.round(parseFloat(stdout.substring(start, end)))
       }
@@ -171,21 +185,12 @@ class PingTool extends Component<IProps, IState> {
     this.setState({
       devices,
     })
-  }
-
-  StartAutoPing(interval: number): void {
-    setInterval(() => {
-      for (const device in this.state.devices) {
-        if (this.state.devices[device].autoPing) {
-          this.ICMP(device)
-        }
-      }
-    }, interval)
+    this.props.onDevicesChange(devices)
   }
 
   render(): JSX.Element {
     return (
-      <div>
+      <div style={this.props.style}>
         <div style={label}>Ping Tool</div>
         <div style={container}>
           {[

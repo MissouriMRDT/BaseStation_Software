@@ -2,8 +2,7 @@ import React, { Component } from "react"
 import CSS from "csstype"
 import ReactTable from "react-table-v6"
 // import "../../node_modules/react-table-v6/react-table.css"
-import { RovecommManifest } from "../../Core/RoveProtocol/RovecommManifest"
-import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
+import { rovecomm, RovecommManifest } from "../../Core/RoveProtocol/Rovecomm"
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
@@ -42,7 +41,9 @@ const selector: CSS.Properties = {
   width: "200px",
 }
 
-interface IProps {}
+interface IProps {
+  style?: CSS.Properties
+}
 
 interface IState {
   board: string
@@ -102,7 +103,7 @@ class PacketLogger extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div>
+      <div style={this.props.style}>
         <div style={label}>Packet Logger</div>
         <div style={container}>
           <div style={selectbox}>

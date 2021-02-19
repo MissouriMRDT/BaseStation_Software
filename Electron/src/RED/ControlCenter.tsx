@@ -9,6 +9,9 @@ import NewWindowComponent from "../Core/Window"
 import RoverOverviewOfNetwork from "../RON/RON"
 import RoverAttachmentManager from "../RAM/RAM"
 import Cameras from "../Core/components/Cameras"
+import ControlScheme from "../Core/components/ControlScheme"
+import Drive from "./components/Drive"
+import Gimbal from "./components/Gimbal"
 
 const row: CSS.Properties = {
   display: "flex",
@@ -91,6 +94,11 @@ class ControlCenter extends Component<IProps, IState> {
             }}
           />
           <Log />
+          <Drive />
+          <div style={row}>
+            <ControlScheme style={{ flexGrow: 1, marginRight: "5px" }} configs={["Drive", "MainGimbal"]} />
+            <Gimbal />
+          </div>
           <div style={row}>
             <button type="button" onClick={rovecomm.resubscribe} style={{ width: "100px" }}>
               Resubscribe All

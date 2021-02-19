@@ -134,7 +134,7 @@ class Angular extends Component<IProps, IState> {
     this.recall = this.recall.bind(this)
     this.delete = this.delete.bind(this)
 
-    rovecomm.on("ArmAngles", (data: any) => this.updatePosition(data))
+    rovecomm.on("JointAngles", (data: any) => this.updatePosition(data))
   }
 
   componentDidMount(): void {
@@ -158,7 +158,7 @@ class Angular extends Component<IProps, IState> {
      * and send the proper rovecomm packet
      */
     rovecomm.sendCommand(
-      "ArmToAngle",
+      "ArmMoveToAngle",
       Object.values(this.state.jointValues).map(function (x: string) {
         return x ? parseFloat(x) : 0
       })
