@@ -60,6 +60,8 @@ interface IState {
   o2PP: number
   o2Concentration: number
   o2Pressure: number
+  no: number
+  n2o: number
 
   writeToFile: boolean
   sensorSaveFile: string | null
@@ -76,6 +78,8 @@ class SensorData extends Component<IProps, IState> {
       o2PP: 0,
       o2Concentration: 0,
       o2Pressure: 0,
+      no: 0,
+      n2o: 0,
       writeToFile: false,
       sensorSaveFile: null,
       fileWriteInterval: null,
@@ -83,6 +87,8 @@ class SensorData extends Component<IProps, IState> {
     this.methane = this.methane.bind(this)
     this.co2 = this.co2.bind(this)
     this.o2 = this.o2.bind(this)
+    this.no = this.no.bind(this)
+    this.n2o = this.n2o.bind(this)
     this.fileWrite = this.fileWrite.bind(this)
     this.fileStart = this.fileStart.bind(this)
     this.fileStop = this.fileStop.bind(this)
@@ -90,6 +96,8 @@ class SensorData extends Component<IProps, IState> {
     rovecomm.on("Methane", (data: any) => this.methane(data))
     rovecomm.on("CO2", (data: any) => this.co2(data))
     rovecomm.on("O2", (data: any) => this.o2(data))
+    rovecomm.on("NO", (data: any) => this.no(data))
+    rovecomm.on("N2O", (data: any) => this.n2o(data))
   }
 
   methane(data: any): void {
@@ -105,6 +113,14 @@ class SensorData extends Component<IProps, IState> {
   o2(data: any): void {
     const [temperature, o2PP, o2Concentration, o2Pressure] = data
     this.setState({ temperature, o2PP, o2Concentration, o2Pressure })
+  }
+
+  no(data: any): void {
+    this.setState({ no: data[0] })
+  }
+
+  n2o(data: any): void {
+    this.setState({ n2o: data[0] })
   }
 
   fileStart(): void {
@@ -215,6 +231,24 @@ class SensorData extends Component<IProps, IState> {
                   minimumFractionDigits: 2,
                 })}{" "}
                 mBar
+              </div>
+            </div>
+            <div style={row}>
+              <div>NO Concentration:</div>
+              <div>
+                {this.state.no.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                })}{" "}
+                ppm
+              </div>
+            </div>
+            <div style={row}>
+              <div>N2O Concentration:</div>
+              <div>
+                {this.state.n2o.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                })}{" "}
+                ppm
               </div>
             </div>
           </div>

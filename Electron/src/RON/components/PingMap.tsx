@@ -1,8 +1,6 @@
 import React, { Component } from "react"
 import CSS from "csstype"
-import { exec } from "child_process"
-import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
-import { RovecommManifest, NetworkDevices } from "../../Core/RoveProtocol/RovecommManifest"
+import { RovecommManifest } from "../../Core/RoveProtocol/Rovecomm"
 import { ColorConverter } from "../../Core/ColorConverter"
 
 const container: CSS.Properties = {
@@ -27,11 +25,12 @@ const label: CSS.Properties = {
   color: "white",
 }
 
-interface IProps {}
-
-interface IState {
-  ping: any
+interface IProps {
+  devices: any
+  style?: CSS.Properties
 }
+
+interface IState {}
 
 // For colorConverter
 const min = 0
@@ -45,25 +44,16 @@ class PingMap extends Component<IProps, IState> {
 
   constructor(props: IProps) {
     super(props)
-    const ping = {}
-    Object.keys(NetworkDevices).forEach(device => {
-      ping[device] = -1
-    })
-    Object.keys(RovecommManifest).forEach(board => {
-      ping[board] = -1
-    })
-    this.state = {
-      ping,
-    }
-    this.ICMP = this.ICMP.bind(this)
-    this.StartAutoPing = this.StartAutoPing.bind(this)
-    this.StartAutoPing(1000)
+    this.state = {}
 
     this.canvasRef = React.createRef()
   }
 
-  componentDidMount(): void {
-    this.updatePingMap()
+  componentDidUpdate(prevProps: IProps) {
+    // Any time props are recieved that are different than the previous props, update the pingmap
+    if (this.props.devices !== prevProps.devices) {
+      this.updatePingMap()
+    }
   }
 
   updatePingMap(): void {
@@ -84,9 +74,9 @@ class PingMap extends Component<IProps, IState> {
     context.beginPath()
     context.arc(centerW, 50, 20, 0, 2 * Math.PI)
     context.fillStyle =
-      this.state.ping.BasestationSwitch === -1
+      this.props.devices.BasestationSwitch.ping === -1
         ? "white"
-        : ColorConverter(this.state.ping.BasestationSwitch, min, cutoff, max, greenHue, redHue)
+        : ColorConverter(this.props.devices.BasestationSwitch.ping, min, cutoff, max, greenHue, redHue)
     context.fill()
     context.stroke()
 
@@ -100,9 +90,9 @@ class PingMap extends Component<IProps, IState> {
     context.rect(centerW - 60, 110, 40, 40)
     context.stroke()
     context.fillStyle =
-      this.state.ping.Basestation5GHzRocket === -1
+      this.props.devices.Basestation5GHzRocket.ping === -1
         ? "white"
-        : ColorConverter(this.state.ping.Basestation5GHzRocket, min, cutoff, max, greenHue, redHue)
+        : ColorConverter(this.props.devices.Basestation5GHzRocket.ping, min, cutoff, max, greenHue, redHue)
     context.fill()
     text = "BaseStation 5GHz Rocket"
     context.textBaseline = "middle"
@@ -113,9 +103,9 @@ class PingMap extends Component<IProps, IState> {
     context.rect(centerW + 20, 110, 40, 40)
     context.stroke()
     context.fillStyle =
-      this.state.ping.Basestation900MHzRocket === -1
+      this.props.devices.Basestation900MHzRocket.ping === -1
         ? "white"
-        : ColorConverter(this.state.ping.Basestation900MHzRocket, min, cutoff, max, greenHue, redHue)
+        : ColorConverter(this.props.devices.Basestation900MHzRocket.ping, min, cutoff, max, greenHue, redHue)
     context.fill()
     text = "BaseStation 900MHz Rocket"
     context.textBaseline = "middle"
@@ -142,9 +132,9 @@ class PingMap extends Component<IProps, IState> {
     context.beginPath()
     context.arc(centerW - 40, 320, 20, 0, 2 * Math.PI)
     context.fillStyle =
-      this.state.ping.Rover5GHzRocket === -1
+      this.props.devices.Rover5GHzRocket.ping === -1
         ? "white"
-        : ColorConverter(this.state.ping.Rover5GHzRocket, min, cutoff, max, greenHue, redHue)
+        : ColorConverter(this.props.devices.Rover5GHzRocket.ping, min, cutoff, max, greenHue, redHue)
     context.fill()
     context.stroke()
     text = "Rover 5GHz Rocket"
@@ -156,9 +146,9 @@ class PingMap extends Component<IProps, IState> {
     context.beginPath()
     context.arc(centerW + 40, 320, 20, 0, 2 * Math.PI)
     context.fillStyle =
-      this.state.ping.Rover900MHzRocket === -1
+      this.props.devices.Rover900MHzRocket.ping === -1
         ? "white"
-        : ColorConverter(this.state.ping.Rover900MHzRocket, min, cutoff, max, greenHue, redHue)
+        : ColorConverter(this.props.devices.Rover900MHzRocket.ping, min, cutoff, max, greenHue, redHue)
     context.fill()
     context.stroke()
     text = "Rover 900MHz Rocket"
@@ -195,9 +185,9 @@ class PingMap extends Component<IProps, IState> {
       const coords = locations[i]
       const board = boards[i]
       context.fillStyle =
-        this.state.ping[board] === -1
+        this.props.devices[board].ping === -1
           ? "white"
-          : ColorConverter(this.state.ping[board], min, cutoff, max, greenHue, redHue)
+          : ColorConverter(this.props.devices[board].ping, min, cutoff, max, greenHue, redHue)
       context.beginPath()
       context.moveTo(centerW, 400)
       context.lineTo(coords.x, coords.y)
@@ -214,9 +204,9 @@ class PingMap extends Component<IProps, IState> {
     }
     context.beginPath()
     context.fillStyle =
-      this.state.ping.GrandStream === -1
+      this.props.devices.GrandStream.ping === -1
         ? "white"
-        : ColorConverter(this.state.ping.GrandStream, min, cutoff, max, greenHue, redHue)
+        : ColorConverter(this.props.devices.GrandStream.ping, min, cutoff, max, greenHue, redHue)
     context.rect(centerW - 20, 380, 40, 40)
     context.stroke()
     context.fill()
@@ -227,56 +217,9 @@ class PingMap extends Component<IProps, IState> {
     context.fillText(text, centerW, 400)
   }
 
-  ICMP(device: string): void {
-    // If device is not a network device, it must be a board
-    let deviceInfo = NetworkDevices[device]
-    if (deviceInfo === undefined) {
-      deviceInfo = RovecommManifest[device]
-    }
-    const ip = deviceInfo.Ip
-
-    // Ping command is slightly different for windows/unix
-    let pingCommand = ""
-    if (process.platform === "win32") {
-      pingCommand = `ping -n 1 ${ip}`
-    } else {
-      pingCommand = `ping -c 1 ${ip}`
-    }
-
-    exec(pingCommand, (error, stdout, stderr) => {
-      // -1 means not reachable
-      let delay = -1
-      if (!error && !stderr && stdout.indexOf("unreachable") === -1) {
-        // On Windows, failed ping is not necessarily an error
-        // Windows Ex. 'Reply from 8.8.8.8: bytes=32 time=26ms TTL=110'
-        // Unix Ex. '64 bytes from 8.8.8.8: icmp_seq=0 ttl=110 time=387.477 ms'
-        const start = stdout.indexOf("time=") + 5
-        const end = stdout.indexOf("ms")
-        delay = Math.round(parseFloat(stdout.substring(start, end)))
-      }
-      this.setState({
-        ping: {
-          ...this.state.ping,
-          [device]: delay,
-        },
-      })
-    })
-  }
-
-  StartAutoPing(interval: number): void {
-    setInterval(() => {
-      for (const device in this.state.ping) {
-        if (Object.prototype.hasOwnProperty.call(this.state.ping, device)) {
-          this.ICMP(device)
-        }
-      }
-      this.updatePingMap()
-    }, interval)
-  }
-
   render(): JSX.Element {
     return (
-      <div>
+      <div style={this.props.style}>
         <div style={label}>Ping Map</div>
         <div style={container}>
           <canvas ref={this.canvasRef} width={window.innerWidth / 2 - 10} height="640" />

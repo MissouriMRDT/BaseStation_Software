@@ -63,7 +63,7 @@ const createWindow = async () => {
     show: false,
     width: 1024,
     height: 728,
-    icon: getAssetPath("./rover_swoosh.ico"),
+    icon: path.join(__dirname, "../assets/icon.ico"),
     webPreferences: {
       nodeIntegration: true,
       nativeWindowOpen: true,

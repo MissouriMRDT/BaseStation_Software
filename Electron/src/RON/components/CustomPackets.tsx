@@ -1,7 +1,6 @@
 import React, { Component } from "react"
 import CSS from "csstype"
-import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
-import { DataTypes, RovecommManifest } from "../../Core/RoveProtocol/RovecommManifest"
+import { rovecomm, DataTypes, RovecommManifest } from "../../Core/RoveProtocol/Rovecomm"
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
@@ -43,7 +42,9 @@ const textbox: CSS.Properties = {
   height: "18px",
 }
 
-interface IProps {}
+interface IProps {
+  style?: CSS.Properties
+}
 
 interface IState {
   board: string
@@ -109,7 +110,7 @@ class CustomPackets extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div>
+      <div style={this.props.style}>
         <div style={label}>Custom Packets</div>
         <div style={container}>
           {[
