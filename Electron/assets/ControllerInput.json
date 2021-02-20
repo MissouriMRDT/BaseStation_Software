@@ -19,12 +19,12 @@
       "RightDirection": { "buttonType": "joystick", "buttonIndex": 2 },
       "RotateCW": { "buttonType": "button", "buttonIndex": 7 },
       "RotateCCW": { "buttonType": "button", "buttonIndex": 6 },
-      "RotateLF": { "buttonType": "button", "buttonIndex": 0 },
-      "RotateLR": { "buttonType": "button", "buttonIndex": 1 },
-      "RotateRF": { "buttonType": "button", "buttonIndex": 2 },
-      "RotateRR": { "buttonType": "button", "buttonIndex": 3 },
-      "IndependentCW": { "buttonType": "button", "buttonIndex": 4 },
-      "IndependentCCW": { "buttonType": "button", "buttonIndex": 5 }
+      "RotateLF": { "buttonType": "button", "buttonIndex": 3 },
+      "RotateLR": { "buttonType": "button", "buttonIndex": 2 },
+      "RotateRF": { "buttonType": "button", "buttonIndex": 1 },
+      "RotateRR": { "buttonType": "button", "buttonIndex": 0 },
+      "IndependentCW": { "buttonType": "button", "buttonIndex": 5 },
+      "IndependentCCW": { "buttonType": "button", "buttonIndex": 4 }
     }
   },
   "SwerveDriveButtons": {
@@ -41,8 +41,8 @@
       "RotateLR": { "buttonType": "button", "buttonIndex": 14 },
       "RotateRF": { "buttonType": "button", "buttonIndex": 15 },
       "RotateRR": { "buttonType": "button", "buttonIndex": 13 },
-      "IndependentCW": { "buttonType": "button", "buttonIndex": 4 },
-      "IndependentCCW": { "buttonType": "button", "buttonIndex": 5 }
+      "IndependentCW": { "buttonType": "button", "buttonIndex": 5 },
+      "IndependentCCW": { "buttonType": "button", "buttonIndex": 4 }
     }
   },
   "SwerveDriveDPad": {
@@ -55,12 +55,12 @@
       "RightDirection": { "buttonType": "joystick", "buttonIndex": 2 },
       "RotateCW": { "buttonType": "button", "buttonIndex": 15 },
       "RotateCCW": { "buttonType": "button", "buttonIndex": 14 },
-      "RotateLF": { "buttonType": "button", "buttonIndex": 0 },
-      "RotateLR": { "buttonType": "button", "buttonIndex": 1 },
-      "RotateRF": { "buttonType": "button", "buttonIndex": 2 },
-      "RotateRR": { "buttonType": "button", "buttonIndex": 3 },
-      "IndependentCW": { "buttonType": "button", "buttonIndex": 4 },
-      "IndependentCCW": { "buttonType": "button", "buttonIndex": 5 }
+      "RotateLF": { "buttonType": "button", "buttonIndex": 3 },
+      "RotateLR": { "buttonType": "button", "buttonIndex": 2 },
+      "RotateRF": { "buttonType": "button", "buttonIndex": 1 },
+      "RotateRR": { "buttonType": "button", "buttonIndex": 0 },
+      "IndependentCW": { "buttonType": "button", "buttonIndex": 5 },
+      "IndependentCCW": { "buttonType": "button", "buttonIndex": 4 }
     }
   },
   "DiagonalDrive": {
@@ -90,15 +90,15 @@
       "VectorY": { "buttonType": "joystick", "buttonIndex": 1 },
       "Throttle": { "buttonType": "joystick", "buttonIndex": 6 },
       "ForwardBump": { "buttonType": "button", "buttonIndex": 7 },
-      "BackwardBump": { "buttonType": "button", "buttonIndex": 9 },
+      "BackwardBump": { "buttonType": "button", "buttonIndex": 6 },
       "RotateCW": { "buttonType": "button", "buttonIndex": 5 },
       "RotateCCW": { "buttonType": "button", "buttonIndex": 4 },
-      "RotateLF": { "buttonType": "button", "buttonIndex": 9 },
-      "RotateLR": { "buttonType": "button", "buttonIndex": 11 },
-      "RotateRF": { "buttonType": "button", "buttonIndex": 10 },
-      "RotateRR": { "buttonType": "button", "buttonIndex": 12 },
-      "IndependentCW": { "buttonType": "button", "buttonIndex": 0 },
-      "IndependentCCW": { "buttonType": "button", "buttonIndex": 1 }
+      "RotateLF": { "buttonType": "button", "buttonIndex": 8 },
+      "RotateLR": { "buttonType": "button", "buttonIndex": 10 },
+      "RotateRF": { "buttonType": "button", "buttonIndex": 9 },
+      "RotateRR": { "buttonType": "button", "buttonIndex": 11 },
+      "IndependentCW": { "buttonType": "button", "buttonIndex": 3 },
+      "IndependentCCW": { "buttonType": "button", "buttonIndex": 2 }
     }
   },
   "VectorTriggerSwerve": {
@@ -109,15 +109,15 @@
       "VectorY": { "buttonType": "joystick", "buttonIndex": 1 },
       "Throttle": { "buttonType": "joystick", "buttonIndex": 6 },
       "ForwardBump": { "buttonType": "button", "buttonIndex": 7 },
-      "BackwardBump": { "buttonType": "button", "buttonIndex": 9 },
+      "BackwardBump": { "buttonType": "button", "buttonIndex": 6 },
       "RotateTwist": { "buttonType": "joystick", "buttonIndex": 5 },
       "RotateToggle": { "buttonType": "button", "buttonIndex": 0 },
-      "RotateLF": { "buttonType": "button", "buttonIndex": 9 },
-      "RotateLR": { "buttonType": "button", "buttonIndex": 11 },
-      "RotateRF": { "buttonType": "button", "buttonIndex": 10 },
-      "RotateRR": { "buttonType": "button", "buttonIndex": 12 },
-      "IndependentCW": { "buttonType": "button", "buttonIndex": 5 },
-      "IndependentCCW": { "buttonType": "button", "buttonIndex": 4 }
+      "RotateLF": { "buttonType": "button", "buttonIndex": 8 },
+      "RotateLR": { "buttonType": "button", "buttonIndex": 10 },
+      "RotateRF": { "buttonType": "button", "buttonIndex": 9 },
+      "RotateRR": { "buttonType": "button", "buttonIndex": 11 },
+      "IndependentCW": { "buttonType": "button", "buttonIndex": 3 },
+      "IndependentCCW": { "buttonType": "button", "buttonIndex": 2 }
     }
   },
   "VectorThumbSwerve": {
@@ -128,15 +128,15 @@
       "VectorY": { "buttonType": "joystick", "buttonIndex": 1 },
       "Throttle": { "buttonType": "joystick", "buttonIndex": 6 },
       "ForwardBump": { "buttonType": "button", "buttonIndex": 7 },
-      "BackwardBump": { "buttonType": "button", "buttonIndex": 9 },
+      "BackwardBump": { "buttonType": "button", "buttonIndex": 6 },
       "RotateTwist": { "buttonType": "joystick", "buttonIndex": 5 },
       "RotateToggle": { "buttonType": "button", "buttonIndex": 1 },
-      "RotateLF": { "buttonType": "button", "buttonIndex": 9 },
-      "RotateLR": { "buttonType": "button", "buttonIndex": 11 },
-      "RotateRF": { "buttonType": "button", "buttonIndex": 10 },
-      "RotateRR": { "buttonType": "button", "buttonIndex": 12 },
-      "IndependentCW": { "buttonType": "button", "buttonIndex": 5 },
-      "IndependentCCW": { "buttonType": "button", "buttonIndex": 4 }
+      "RotateLF": { "buttonType": "button", "buttonIndex": 8 },
+      "RotateLR": { "buttonType": "button", "buttonIndex": 10 },
+      "RotateRF": { "buttonType": "button", "buttonIndex": 9 },
+      "RotateRR": { "buttonType": "button", "buttonIndex": 11 },
+      "IndependentCW": { "buttonType": "button", "buttonIndex": 3 },
+      "IndependentCCW": { "buttonType": "button", "buttonIndex": 2 }
     }
   },
   "Gimbal": {

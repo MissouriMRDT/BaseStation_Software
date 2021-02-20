@@ -98,9 +98,19 @@ class Drive extends Component<IProps, IState> {
     let rightSpeed = 0
     // Speed limit set by the GUI. If controller indicates 50% speed, thats 50% of the speedLimit, a value 0-1000
     let speedMultiplier = this.state.speedLimit
-    if ("LeftSpeed" in controllerInputs && "RightSpeed" in controllerInputs) {
-      leftSpeed = controllerInputs.LeftSpeed
-      rightSpeed = controllerInputs.RightSpeed
+    if (
+      ("ForwardBump" in controllerInputs && controllerInputs.ForwardBump === 1) ||
+      ("BackwardBump" in controllerInputs && controllerInputs.BackwardBump === 1)
+    ) {
+      const direction = controllerInputs.ForwardBump === 1 ? 1 : -1
+
+      leftSpeed = 50 * direction
+      rightSpeed = 50 * direction
+      rovecomm.sendCommand("DriveLeftRight", [leftSpeed, rightSpeed])
+    } else if ("LeftSpeed" in controllerInputs && "RightSpeed" in controllerInputs) {
+      leftSpeed = Math.round(controllerInputs.LeftSpeed * speedMultiplier)
+      rightSpeed = Math.round(controllerInputs.RightSpeed * speedMultiplier)
+      rovecomm.sendCommand("DriveLeftRight", [leftSpeed, rightSpeed])
     } else if ("VectorX" in controllerInputs && "VectorY" in controllerInputs && "Throttle" in controllerInputs) {
       const x = controllerInputs.VectorX
       const y = controllerInputs.VectorY
@@ -115,20 +125,17 @@ class Drive extends Component<IProps, IState> {
       // We want the throttle to be seen as 0% when all the way down, and 100% when all the way up, but throttle
       // has values [-1, 1], so if we (throttle + 1) /2, we get [0,1]
       speedMultiplier *= (controllerInputs.Throttle + 1) / 2
-    }
-    leftSpeed = Math.round(leftSpeed * speedMultiplier)
-    rightSpeed = Math.round(rightSpeed * speedMultiplier)
-    if (
-      ("ForwardBump" in controllerInputs && controllerInputs.ForwardBump === 1) ||
-      ("BackwardBump" in controllerInputs && controllerInputs.BackwardBump === 1)
-    ) {
-      const direction = controllerInputs.ForwardBump === 1 ? 1 : -1
-      leftSpeed = 50 * direction
-      rightSpeed = 50 * direction
-    }
-    rovecomm.sendCommand("DriveLeftRight", [leftSpeed, rightSpeed])
 
-    if ("RotateCW" in controllerInputs && "RotateCCW" in controllerInputs) {
+      leftSpeed = Math.round(leftSpeed * speedMultiplier)
+      rightSpeed = Math.round(rightSpeed * speedMultiplier)
+      rovecomm.sendCommand("DriveLeftRight", [leftSpeed, rightSpeed])
+    }
+
+    if (
+      "RotateCW" in controllerInputs &&
+      "RotateCCW" in controllerInputs &&
+      (controllerInputs.RotateCW || controllerInputs.RotateCCW)
+    ) {
       let { angle } = this.state
       angle = (((angle + controllerInputs.RotateCW - controllerInputs.RotateCCW) % 360) + 360) % 360
       this.setState({ angle })
@@ -136,7 +143,7 @@ class Drive extends Component<IProps, IState> {
       // rovecomm.sendCommand("SetSteeringAngle", angle)
       const direction: number = controllerInputs.RotateCW - controllerInputs.RotateCCW
       const speed: number = 1000 * direction
-      rovecomm.sendCommand("SetSteeringSpeed", [speed, speed, speed, speed])
+      rovecomm.sendCommand("SetSteeringSpeeds", [speed, speed, speed, speed])
     } else if (
       "RotateTwist" in controllerInputs &&
       "RotateToggle" in controllerInputs &&
@@ -149,24 +156,25 @@ class Drive extends Component<IProps, IState> {
       // Currently, closed loop isn't fully operational, so we only use open loop control
       // rovecomm.sendCommand("SetSteeringAngle", angle)
       const speed: number = 1000 * controllerInputs.RotateTwist
-      rovecomm.sendCommand("SetSteeringSpeed", [speed, speed, speed, speed])
+      rovecomm.sendCommand("SetSteeringSpeeds", [speed, speed, speed, speed])
     } else if (
       "RotateLF" in controllerInputs &&
       "RotateLR" in controllerInputs &&
       "RotateRF" in controllerInputs &&
-      "RotateRR" in controllerInputs
+      "RotateRR" in controllerInputs &&
+      "IndependentCW" in controllerInputs &&
+      "IndependentCCW" in controllerInputs
     ) {
       const LFSpeed =
-        1000 * controllerInputs.RotateLF ? controllerInputs.IndependentCW - controllerInputs.IndependentCCW : 0
+        1000 * (controllerInputs.RotateLF ? controllerInputs.IndependentCW - controllerInputs.IndependentCCW : 0)
       const LRSpeed =
-        1000 * controllerInputs.RotateLR ? controllerInputs.IndependentCW - controllerInputs.IndependentCCW : 0
+        1000 * (controllerInputs.RotateLR ? controllerInputs.IndependentCW - controllerInputs.IndependentCCW : 0)
       const RFSpeed =
-        1000 * controllerInputs.RotateRF ? controllerInputs.IndependentCW - controllerInputs.IndependentCCW : 0
+        1000 * (controllerInputs.RotateRF ? controllerInputs.IndependentCW - controllerInputs.IndependentCCW : 0)
       const RRSpeed =
-        1000 * controllerInputs.RotateRR ? controllerInputs.IndependentCW - controllerInputs.IndependentCCW : 0
-      rovecomm.sendCommand("SetSteeringSpeed", [LFSpeed, LRSpeed, RFSpeed, RRSpeed])
+        1000 * (controllerInputs.RotateRR ? controllerInputs.IndependentCW - controllerInputs.IndependentCCW : 0)
+      rovecomm.sendCommand("SetSteeringSpeeds", [LFSpeed, LRSpeed, RFSpeed, RRSpeed])
     }
-
     this.setState({
       leftSpeed,
       rightSpeed,

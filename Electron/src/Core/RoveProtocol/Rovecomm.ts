@@ -11,6 +11,7 @@ export let DataTypes: any = {}
 export let headerLength: any = 0
 export let SystemPackets: any = {}
 export let NetworkDevices: any = {}
+let ethernetUDPPort = 11000
 const filepath = path.join(__dirname, "../assets/RovecommManifest.json")
 
 if (fs.existsSync(filepath)) {
@@ -21,6 +22,7 @@ if (fs.existsSync(filepath)) {
   headerLength = manifest.headerLength
   SystemPackets = manifest.SystemPackets
   NetworkDevices = manifest.NetworkDevices
+  ethernetUDPPort = manifest.ethernetUDPPort
 }
 
 // There is a fundamental implementation difference between these required imports
@@ -338,7 +340,7 @@ class Rovecomm extends EventEmitter {
     this.UDPSocket.bind(11000)
   }
 
-  sendUDP(packet: Buffer, destinationIp: string, port = 11000): void {
+  sendUDP(packet: Buffer, destinationIp: string, port = ethernetUDPPort): void {
     /*
      * Takes a packet (Buffer) and sends it out over the existing UDP socket
      * to the correct destination IP
