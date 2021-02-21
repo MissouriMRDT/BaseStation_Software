@@ -127,7 +127,9 @@ class Power extends Component<IProps, IState> {
     this.steeringMotorCurrents = this.steeringMotorCurrents.bind(this)
     this.twelveVActBusEnabled = this.twelveVActBusEnabled.bind(this)
     this.twelveVLogicBusEnabled = this.twelveVLogicBusEnabled.bind(this)
+    this.twelveVBusCurrent = this.twelveVBusCurrent.bind(this)
     this.thirtyVBusEnabled = this.thirtyVBusEnabled.bind(this)
+    this.thirtyVBusCurrents = this.thirtyVBusCurrents.bind(this)
     this.vacuumEnabled = this.vacuumEnabled.bind(this)
     this.vacuumCurrent = this.vacuumCurrent.bind(this)
     this.packCurrentMeas = this.packCurrentMeas.bind(this)
@@ -140,7 +142,9 @@ class Power extends Component<IProps, IState> {
     rovecomm.on("SteeringMotorCurrents", (data: number[]) => this.steeringMotorCurrents(data)) // potential removal
     rovecomm.on("12VActBusEnabled", (data: number[]) => this.twelveVActBusEnabled(data))
     rovecomm.on("12VLogicBusEnabled", (data: number[]) => this.twelveVLogicBusEnabled(data))
-    rovecomm.on("30VBusEnabled", (data: number[]) => this.thirtyVBusEnabled(data))
+    rovecomm.on("12VBusCurrent", (data: number[]) => this.twelveVBusCurrent(data))
+    rovecomm.on("ThirtyVEnabled", (data: number[]) => this.thirtyVBusEnabled(data))
+    rovecomm.on("30VBusCurrent", (data: number[]) => this.thirtyVBusCurrents(data))
     rovecomm.on("VacuumEnabled", (data: number[]) => this.vacuumEnabled(data))
     rovecomm.on("VacuumCurrent", (data: number[]) => this.vacuumCurrent(data))
     rovecomm.on("PackI_Meas", (data: number) => this.packCurrentMeas(data))
@@ -154,7 +158,7 @@ class Power extends Component<IProps, IState> {
     const bitmask = bitmaskUnpack(data[0], motors)
     const { boardTelemetry } = this.state
     for (let i = 0; i < motors.length; i++) {
-      boardTelemetry[motors[i]].enabled = Boolean(bitmask[i])
+      boardTelemetry[motors[i]].enabled = Boolean(Number(bitmask[i]))
     }
     this.setState({ boardTelemetry })
   }
@@ -178,21 +182,21 @@ class Power extends Component<IProps, IState> {
   }
 
   twelveVActBusEnabled(data: number[]): void {
-    const peripherals = ["Gimbal", "Multimedia", "Auxilliary"]
+    const peripherals = ["Gimbal", "Multimedia", "Auxiliary"]
     const bitmask = bitmaskUnpack(data[0], peripherals)
     const { boardTelemetry } = this.state
     for (let i = 0; i < peripherals.length; i++) {
-      boardTelemetry[peripherals[i]].enabled = Boolean(bitmask[i])
+      boardTelemetry[peripherals[i]].enabled = Boolean(Number(bitmask[i]))
     }
     this.setState({ boardTelemetry })
   }
 
   twelveVLogicBusEnabled(data: number[]): void {
-    const boards = ["Gimbal", "Multimedia", "Autonomy", "Drive", "Navigation", "Cameras", "Extra"]
+    const boards = ["Gimbal", "Multimedia", "Autonomy", "Drive", "Nav", "Cameras", "Extra"]
     const bitmask = bitmaskUnpack(data[0], boards)
     const { boardTelemetry } = this.state
     for (let i = 0; i < boards.length; i++) {
-      boardTelemetry[boards[i]].enabled = Boolean(bitmask[i])
+      boardTelemetry[boards[i]].enabled = Boolean(Number(bitmask[i]))
     }
     this.setState({ boardTelemetry })
   }
@@ -211,7 +215,7 @@ class Power extends Component<IProps, IState> {
     const bitmask = bitmaskUnpack(data[0], boards)
     const { boardTelemetry } = this.state
     for (let i = 0; i < boards.length; i++) {
-      boardTelemetry[boards[i]].enabled = Boolean(bitmask[i])
+      boardTelemetry[boards[i]].enabled = Boolean(Number(bitmask[i]))
     }
     this.setState({ boardTelemetry })
   }
@@ -227,7 +231,7 @@ class Power extends Component<IProps, IState> {
 
   vacuumEnabled(data: number[]): void {
     const { boardTelemetry } = this.state
-    boardTelemetry.Vacuum.enabled = Boolean(data[0])
+    boardTelemetry.Vacuum.enabled = Boolean(Number(data[0]))
     this.setState({ boardTelemetry })
   }
 
@@ -269,52 +273,25 @@ class Power extends Component<IProps, IState> {
   }
 
   buttonToggle(bus: string): void {
-    const motors = ["Drive LF", "Drive LR", "Drive RF", "Drive RR", "Spare Motor"]
-    const actBus = ["Gimbal", "Multimedia", "Auxilliary"]
-    const logicBus = ["Gimbal", "Multimedia", "Autonomy", "Drive", "Navigation", "Cameras", "Extra"]
-    const thirtyVBus = ["12V", "Comms", "Auxiliary", "Drive"]
-    this.setState({
-      boardTelemetry: {
-        ...this.state.boardTelemetry,
-        [bus]: {
-          ...this.state.boardTelemetry[bus],
-          enabled: !this.state.boardTelemetry[bus].enabled,
+    this.setState(
+      {
+        boardTelemetry: {
+          ...this.state.boardTelemetry,
+          [bus]: {
+            ...this.state.boardTelemetry[bus],
+            enabled: !this.state.boardTelemetry[bus].enabled,
+          },
         },
       },
-    })
-    if (bus in motors) {
-      const newBitMask = ""
-      motors.forEach(motor => newBitMask.concat(this.state.boardTelemetry[motor].enabled ? "1" : "0"))
-      rovecomm.sendCommand("MotorBusEnabled", [parseInt(newBitMask, 2)])
-    }
-    if (bus in actBus) {
-      const newBitMask = ""
-      actBus.forEach(motor => newBitMask.concat(this.state.boardTelemetry[motor].enabled ? "1" : "0"))
-      rovecomm.sendCommand("12VActBusEnable", [parseInt(newBitMask, 2)])
-    }
-    if (bus in logicBus) {
-      const newBitMask = ""
-      logicBus.forEach(motor => newBitMask.concat(this.state.boardTelemetry[motor].enabled ? "1" : "0"))
-      rovecomm.sendCommand("12VLogicBusEnable", [parseInt(newBitMask, 2)])
-    }
-    if (bus in thirtyVBus) {
-      const newBitMask = ""
-      thirtyVBus.forEach(motor => newBitMask.concat(this.state.boardTelemetry[motor].enabled ? "1" : "0"))
-      rovecomm.sendCommand("30VBusEnable", [parseInt(newBitMask, 2)])
-    }
-    if (bus === "Vacuum") {
-      const newBitMask = this.state.boardTelemetry.Vacuum.enabled ? "1" : "0"
-      rovecomm.sendCommand("vacuumEnabled", [parseInt(newBitMask, 2)])
-    }
-    // rovecomm.sendCommand("packetName", [dataArray])
+      () => this.packCommand(bus)
+    )
   }
 
   allMotorToggle(button: boolean): void {
     const motors = ["Drive LF", "Drive LR", "Drive RF", "Drive RR", "Spare Motor"]
     let { boardTelemetry } = this.state
-    let i
     if (button) {
-      for (i = 0; i < motors.length; i++) {
+      for (let i = 0; i < motors.length; i++) {
         boardTelemetry = {
           ...boardTelemetry,
           [motors[i]]: {
@@ -324,7 +301,7 @@ class Power extends Component<IProps, IState> {
         }
       }
     } else {
-      for (i = 0; i < motors.length; i++) {
+      for (let i = 0; i < motors.length; i++) {
         boardTelemetry = {
           ...boardTelemetry,
           [motors[i]]: {
@@ -334,7 +311,38 @@ class Power extends Component<IProps, IState> {
         }
       }
     }
-    this.setState({ boardTelemetry })
+    this.setState({ boardTelemetry }, () => this.packCommand(motors[0]))
+  }
+
+  packCommand(bus: string): void {
+    const motors = ["Drive LF", "Drive LR", "Drive RF", "Drive RR", "Spare Motor"]
+    const actBus = ["Gimbal", "Multimedia", "Auxiliary"]
+    const logicBus = ["Gimbal", "Multimedia", "Autonomy", "Drive", "Nav", "Cameras", "Extra"]
+    const thirtyVBus = ["12V", "Comms", "Auxiliary", "Drive"]
+    if (motors.includes(bus)) {
+      const newBitMask = ""
+      motors.forEach(motor => newBitMask.concat(this.state.boardTelemetry[motor].enabled ? "1" : "0"))
+      rovecomm.sendCommand("MotorBusEnable", [parseInt(newBitMask, 2)])
+    }
+    if (actBus.includes(bus)) {
+      const newBitMask = ""
+      actBus.forEach(motor => newBitMask.concat(this.state.boardTelemetry[motor].enabled ? "1" : "0"))
+      rovecomm.sendCommand("12VActBusEnable", [parseInt(newBitMask, 2)])
+    }
+    if (logicBus.includes(bus)) {
+      const newBitMask = ""
+      logicBus.forEach(motor => newBitMask.concat(this.state.boardTelemetry[motor].enabled ? "1" : "0"))
+      rovecomm.sendCommand("12VLogicBusEnable", [parseInt(newBitMask, 2)])
+    }
+    if (thirtyVBus.includes(bus)) {
+      const newBitMask = ""
+      thirtyVBus.forEach(motor => newBitMask.concat(this.state.boardTelemetry[motor].enabled ? "1" : "0"))
+      rovecomm.sendCommand("30VBusEnable", [parseInt(newBitMask, 2)])
+    }
+    if (bus === "Vacuum") {
+      const newBitMask = this.state.boardTelemetry.Vacuum.enabled ? "1" : "0"
+      rovecomm.sendCommand("vacuumEnable", [parseInt(newBitMask, 2)])
+    }
   }
 
   render(): JSX.Element {
@@ -454,7 +462,14 @@ class Power extends Component<IProps, IState> {
           <div style={{ ...row, width: "100%" }}>
             <div style={ColorStyleConverter(this.state.batteryTelemetry.Temp.value, 30, 75, 115, 120, 0, readout)}>
               <h3 style={textPad}>Battery Temperature</h3>
-              <h3 style={textPad}>{this.state.batteryTelemetry.Temp.value}°</h3>
+              <h3 style={textPad}>
+                {this.state.batteryTelemetry.Temp.value.toLocaleString(undefined, {
+                  minimumFractionDigits: 1,
+                  maximumFractionDigits: 1,
+                  minimumIntegerDigits: 2,
+                })}
+                °
+              </h3>
             </div>
             <div
               style={ColorStyleConverter(
