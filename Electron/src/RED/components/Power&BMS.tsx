@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import CSS from "csstype"
 import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
 import { ColorStyleConverter } from "../../Core/ColorConverter"
+import { BitmaskUnpack } from "../../Core/BitmaskUnpack"
 
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -59,19 +60,6 @@ const cellReadoutContainer: CSS.Properties = {
 
 function turnOffReboot(time: number): void {
   rovecomm.sendCommand("BMSStop", [time])
-}
-
-function bitmaskUnpack(data: number, referenceList: string[]): string {
-  const startBit = data.toString(2)
-  const difference = referenceList.length - startBit.length
-  let returnBitString = ""
-  for (let i = 0; i < difference; i++) {
-    returnBitString += "0"
-  }
-  for (let i = 0; i < startBit.length; i++) {
-    returnBitString += startBit[i]
-  }
-  return returnBitString
 }
 
 interface IProps {}
@@ -155,7 +143,7 @@ class Power extends Component<IProps, IState> {
 
   motorBusEnabled(data: number[]): void {
     const motors = ["Drive LF", "Drive LR", "Drive RF", "Drive RR", "Spare Motor"]
-    const bitmask = bitmaskUnpack(data[0], motors)
+    const bitmask = BitmaskUnpack(data[0], motors)
     const { boardTelemetry } = this.state
     for (let i = 0; i < motors.length; i++) {
       boardTelemetry[motors[i]].enabled = Boolean(Number(bitmask[i]))
@@ -183,7 +171,7 @@ class Power extends Component<IProps, IState> {
 
   twelveVActBusEnabled(data: number[]): void {
     const peripherals = ["Gimbal", "Multimedia", "Auxiliary"]
-    const bitmask = bitmaskUnpack(data[0], peripherals)
+    const bitmask = BitmaskUnpack(data[0], peripherals)
     const { boardTelemetry } = this.state
     for (let i = 0; i < peripherals.length; i++) {
       boardTelemetry[peripherals[i]].enabled = Boolean(Number(bitmask[i]))
@@ -193,7 +181,7 @@ class Power extends Component<IProps, IState> {
 
   twelveVLogicBusEnabled(data: number[]): void {
     const boards = ["Gimbal", "Multimedia", "Autonomy", "Drive", "Nav", "Cameras", "Extra"]
-    const bitmask = bitmaskUnpack(data[0], boards)
+    const bitmask = BitmaskUnpack(data[0], boards)
     const { boardTelemetry } = this.state
     for (let i = 0; i < boards.length; i++) {
       boardTelemetry[boards[i]].enabled = Boolean(Number(bitmask[i]))
@@ -212,7 +200,7 @@ class Power extends Component<IProps, IState> {
 
   thirtyVBusEnabled(data: number[]): void {
     const boards = ["12V", "Comms", "Auxiliary", "Drive"]
-    const bitmask = bitmaskUnpack(data[0], boards)
+    const bitmask = BitmaskUnpack(data[0], boards)
     const { boardTelemetry } = this.state
     for (let i = 0; i < boards.length; i++) {
       boardTelemetry[boards[i]].enabled = Boolean(Number(bitmask[i]))
