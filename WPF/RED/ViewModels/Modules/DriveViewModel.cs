@@ -149,11 +149,7 @@ namespace RED.ViewModels.Modules
 
         private void SendSpeeds(bool reliable)
         {
-
-
-
             short[] sendValues = { SpeedLeft, SpeedRight };
-
             _rovecomm.SendCommand(Packet.Create("DriveLeftRight", sendValues), reliable);
         }
 

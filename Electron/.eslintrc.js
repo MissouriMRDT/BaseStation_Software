@@ -1,7 +1,6 @@
 module.exports = {
   extends: [
-    "erb/typescript",
-    "eslint:recommended",
+    "erb",
     "plugin:react/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
@@ -14,11 +13,15 @@ module.exports = {
     "react/jsx-one-expression-per-line": "off",
     "react/destructuring-assignment": "off",
     "@typescript-eslint/no-empty-interface": "off",
+    "react/no-access-state-in-setstate": "off",
+    "no-restricted-syntax": "off",
+    "no-plusplus": "off",
+    "react/jsx-curly-newline": "off",
+    "jsx-a11y/no-autofocus": "off",
+    "func-names": "off",
+    "no-else-return": "off",
     semi: [2, "never"],
-    "react/jsx-filename-extension": [
-      1,
-      { extensions: [".js", ".jsx", ".ts", ".tsx"] },
-    ],
+    "react/jsx-filename-extension": [1, { extensions: [".js", ".jsx", ".ts", ".tsx"] }],
     "import/extensions": [
       "error",
       "ignorePackages",
@@ -50,7 +53,7 @@ module.exports = {
       // See https://github.com/benmosher/eslint-plugin-import/issues/1396#issuecomment-575727774 for line below
       node: {},
       webpack: {
-        config: require.resolve("./internals/configs/webpack.config.eslint.js"),
+        config: require.resolve("./.erb/configs/webpack.config.eslint.js"),
       },
     },
     "import/parsers": {
