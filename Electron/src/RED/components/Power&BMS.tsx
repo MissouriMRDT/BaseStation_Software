@@ -320,23 +320,31 @@ class Power extends Component<IProps, IState> {
     const logicBus = ["Gimbal", "Multimedia", "Autonomy", "Drive", "Nav", "Cameras", "Extra"]
     const thirtyVBus = ["12V", "Comms", "Auxiliary", "Drive"]
     if (motors.includes(bus)) {
-      const newBitMask = ""
-      motors.forEach(motor => newBitMask.concat(this.state.boardTelemetry[motor].enabled ? "1" : "0"))
+      let newBitMask = ""
+      motors.forEach(motor => {
+        newBitMask += this.state.boardTelemetry[motor].enabled ? "1" : "0"
+      })
       rovecomm.sendCommand("MotorBusEnable", [parseInt(newBitMask, 2)])
     }
     if (actBus.includes(bus)) {
-      const newBitMask = ""
-      actBus.forEach(motor => newBitMask.concat(this.state.boardTelemetry[motor].enabled ? "1" : "0"))
+      let newBitMask = ""
+      actBus.forEach(motor => {
+        newBitMask += this.state.boardTelemetry[motor].enabled ? "1" : "0"
+      })
       rovecomm.sendCommand("12VActBusEnable", [parseInt(newBitMask, 2)])
     }
     if (logicBus.includes(bus)) {
-      const newBitMask = ""
-      logicBus.forEach(motor => newBitMask.concat(this.state.boardTelemetry[motor].enabled ? "1" : "0"))
+      let newBitMask = ""
+      logicBus.forEach(motor => {
+        newBitMask += this.state.boardTelemetry[motor].enabled ? "1" : "0"
+      })
       rovecomm.sendCommand("12VLogicBusEnable", [parseInt(newBitMask, 2)])
     }
     if (thirtyVBus.includes(bus)) {
-      const newBitMask = ""
-      thirtyVBus.forEach(motor => newBitMask.concat(this.state.boardTelemetry[motor].enabled ? "1" : "0"))
+      let newBitMask = ""
+      thirtyVBus.forEach(motor => {
+        newBitMask += this.state.boardTelemetry[motor].enabled ? "1" : "0"
+      })
       rovecomm.sendCommand("30VBusEnable", [parseInt(newBitMask, 2)])
     }
     if (bus === "Vacuum") {
