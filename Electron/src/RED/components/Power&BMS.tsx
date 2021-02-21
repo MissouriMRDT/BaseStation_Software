@@ -33,7 +33,6 @@ const mainContainer: CSS.Properties = {
 const row: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
-  justifyContent: "space-around",
 }
 const column: CSS.Properties = {
   display: "flex",
@@ -48,14 +47,17 @@ const readout: CSS.Properties = {
 }
 const btnArray: CSS.Properties = {
   display: "grid",
-  gridTemplateColumns: "auto auto auto",
+  gridTemplateColumns: "105px 130px 105px",
   justifyContent: "center",
-  lineHeight: "11px",
+  gridTemplateRows: "25px",
 }
 const cellReadoutContainer: CSS.Properties = {
   display: "grid",
-  color: "black",
   gridTemplateColumns: "auto auto auto auto",
+}
+const btnStyle: CSS.Properties = {
+  width: "70px",
+  cursor: "pointer",
 }
 
 function turnOffReboot(time: number): void {
@@ -337,7 +339,7 @@ class Power extends Component<IProps, IState> {
     }
     if (bus === "Vacuum") {
       const newBitMask = this.state.boardTelemetry.Vacuum.enabled ? "1" : "0"
-      rovecomm.sendCommand("vacuumEnable", [parseInt(newBitMask, 2)])
+      rovecomm.sendCommand("VacuumEnable", [parseInt(newBitMask, 2)])
     }
   }
 
@@ -368,21 +370,21 @@ class Power extends Component<IProps, IState> {
                 return (
                   <div key={motor} style={row}>
                     {"enabled" in this.state.boardTelemetry[motor] ? (
-                      <button type="button" onClick={() => this.buttonToggle(motor)} style={{ width: "30%" }}>
+                      <button type="button" onClick={() => this.buttonToggle(motor)} style={btnStyle}>
                         {this.state.boardTelemetry[motor].enabled ? "Enabled" : "Disabled"}
                       </button>
                     ) : (
-                      <div style={{ width: "30%", backgroundColor: "hsl(0, 0%, 90%)" }} />
+                      <div style={{ width: "70px", backgroundColor: "hsl(0, 0%, 90%)" }} />
                     )}
                     <div style={ColorStyleConverter(this.state.boardTelemetry[motor].value, 0, 7, 15, 120, 0, readout)}>
                       <h3 style={textPad}>{motor}</h3>
                       <h3 style={textPad}>
                         {this.state.boardTelemetry[motor].value.toLocaleString(undefined, {
                           minimumFractionDigits: 1,
+                          maximumFractionDigits: 1,
                           minimumIntegerDigits: 2,
-                          maximumFractionDigits: 2,
                         })}
-                        A
+                        &nbsp;A
                       </h3>
                     </div>
                   </div>
@@ -407,21 +409,21 @@ class Power extends Component<IProps, IState> {
                 return (
                   <div key={part} style={row}>
                     {"enabled" in this.state.boardTelemetry[part] ? (
-                      <button type="button" onClick={() => this.buttonToggle(part)} style={{ width: "30%" }}>
+                      <button type="button" onClick={() => this.buttonToggle(part)} style={btnStyle}>
                         {this.state.boardTelemetry[part].enabled ? "Enabled" : "Disabled"}
                       </button>
                     ) : (
-                      <div style={{ width: "30%", backgroundColor: "hsl(0, 0%, 90%)" }} />
+                      <div style={{ width: "70px", backgroundColor: "hsl(0, 0%, 90%)" }} />
                     )}
                     <div style={ColorStyleConverter(this.state.boardTelemetry[part].value, 0, 7, 15, 120, 0, readout)}>
                       <h3 style={textPad}>{part}</h3>
                       <h3 style={textPad}>
                         {this.state.boardTelemetry[part].value.toLocaleString(undefined, {
                           minimumFractionDigits: 1,
-                          minimumIntegerDigits: 2,
                           maximumFractionDigits: 1,
+                          minimumIntegerDigits: 2,
                         })}
-                        A
+                        &nbsp;A
                       </h3>
                     </div>
                   </div>
@@ -432,23 +434,28 @@ class Power extends Component<IProps, IState> {
           <div style={{ ...row, ...btnArray, marginTop: "2%" }}>
             {["Nav", "Cameras", "Extra"].map(peripheral => {
               return (
-                <button type="button" key={peripheral} onClick={() => this.buttonToggle(peripheral)}>
+                <button
+                  type="button"
+                  key={peripheral}
+                  onClick={() => this.buttonToggle(peripheral)}
+                  style={{ cursor: "pointer" }}
+                >
                   {this.state.boardTelemetry[peripheral].enabled ? `${peripheral} Enabled` : `${peripheral} Disabled`}
                 </button>
               )
             })}
           </div>
           <div style={{ ...row, ...btnArray, gridTemplateColumns: "auto auto" }}>
-            <button type="button" onClick={() => this.allMotorToggle(true)}>
+            <button type="button" onClick={() => this.allMotorToggle(true)} style={{ cursor: "pointer" }}>
               Enable All Motors
             </button>
-            <button type="button" onClick={() => this.allMotorToggle(false)}>
+            <button type="button" onClick={() => this.allMotorToggle(false)} style={{ cursor: "pointer" }}>
               Disable All Motors
             </button>
-            <button type="button" onClick={() => turnOffReboot(5)}>
+            <button type="button" onClick={() => turnOffReboot(5)} style={{ cursor: "pointer" }}>
               REBOOT
             </button>
-            <button type="button" onClick={() => turnOffReboot(0)}>
+            <button type="button" onClick={() => turnOffReboot(0)} style={{ cursor: "pointer" }}>
               SHUT DOWN
             </button>
           </div>
@@ -482,10 +489,10 @@ class Power extends Component<IProps, IState> {
               <h3 style={textPad}>
                 {this.state.batteryTelemetry.TotalPackCurrent.value.toLocaleString(undefined, {
                   minimumFractionDigits: 1,
-                  minimumIntegerDigits: 2,
                   maximumFractionDigits: 1,
+                  minimumIntegerDigits: 2,
                 })}
-                A
+                &nbsp;A
               </h3>
             </div>
             <div
@@ -503,10 +510,10 @@ class Power extends Component<IProps, IState> {
               <h3 style={textPad}>
                 {this.state.batteryTelemetry.TotalPackVoltage.value.toLocaleString(undefined, {
                   minimumFractionDigits: 1,
-                  minimumIntegerDigits: 2,
                   maximumFractionDigits: 2,
+                  minimumIntegerDigits: 2,
                 })}
-                V
+                &nbsp;V
               </h3>
             </div>
           </div>
@@ -522,10 +529,10 @@ class Power extends Component<IProps, IState> {
                     <h3 style={textPad}>
                       {this.state.batteryTelemetry[cell].value.toLocaleString(undefined, {
                         minimumFractionDigits: 2,
-                        minimumIntegerDigits: 1,
                         maximumFractionDigits: 2,
+                        minimumIntegerDigits: 1,
                       })}
-                      V
+                      &nbsp;V
                     </h3>
                   </div>
                 )
