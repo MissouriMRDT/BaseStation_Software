@@ -1,8 +1,25 @@
 import React from "react"
+import CSS from "csstype"
+
+const totalBar: CSS.Properties = {
+  background: "gray",
+  height: "20px",
+  width: "90%",
+  marginLeft: "auto",
+  marginRight: "auto",
+}
+const otherBar: CSS.Properties = {
+  background: "gray",
+  height: "35px",
+  width: "70%",
+  marginLeft: "auto",
+  marginRight: "auto",
+}
 
 interface IProps {
   current: number
   total: number
+  name: string
 }
 
 class ProgressBar extends React.Component<IProps> {
@@ -12,12 +29,13 @@ class ProgressBar extends React.Component<IProps> {
 
   render(): JSX.Element {
     return (
-      <div style={{ background: "gray" }}>
+      <div style={this.props.name === "total" ? totalBar : otherBar}>
         <div
           style={{
             background: "#990000",
-            height: 28,
-            width: `${100 - this.calculatePercent(this.props.current, this.props.total)}%`,
+            height: `${this.props.name === "total" ? "20px" : "35px"}`,
+            width: `${this.calculatePercent(this.props.current, this.props.total)}%`,
+            zIndex: 1,
           }}
         />
       </div>
