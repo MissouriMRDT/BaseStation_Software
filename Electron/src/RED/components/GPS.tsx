@@ -92,13 +92,13 @@ class GPS extends Component<IProps, IState> {
         <div style={label}>GPS</div>
         <div style={container}>
           {[
-            { title: "Current Lat.", value: this.state.currentLat },
-            { title: "Current Lon.", value: this.state.currentLon },
-            { title: "Pitch", value: this.state.pitch },
-            { title: "Yaw", value: this.state.yaw },
-            { title: "Roll", value: this.state.roll },
-            { title: "Distance", value: this.state.distance },
-            { title: "Quality", value: this.state.quality },
+            { title: "Current Lat.", value: this.state.currentLat.toFixed(7) },
+            { title: "Current Lon.", value: this.state.currentLon.toFixed(7) },
+            { title: "Pitch", value: this.state.pitch.toFixed(3) },
+            { title: "Yaw", value: this.state.yaw.toFixed(3) },
+            { title: "Roll", value: this.state.roll.toFixed(3) },
+            { title: "Distance", value: this.state.distance.toFixed(3) },
+            { title: "Quality", value: this.state.quality.toFixed(3) },
           ].map(datum => {
             const { title, value } = datum
             return (
