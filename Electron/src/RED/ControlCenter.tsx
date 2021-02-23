@@ -12,6 +12,8 @@ import Cameras from "../Core/components/Cameras"
 import ControlScheme from "../Core/components/ControlScheme"
 import Drive from "./components/Drive"
 import Gimbal from "./components/Gimbal"
+import STLViewer from "../Core/components/STLViewer"
+import ThreeDRover from "../Core/components/ThreeDRover"
 
 const row: CSS.Properties = {
   display: "flex",
@@ -120,6 +122,7 @@ class ControlCenter extends Component<IProps, IState> {
           <Cameras defaultCamera={1} />
           <Cameras defaultCamera={2} />
           <Cameras defaultCamera={3} />
+          <ThreeDRover />
         </div>
       </div>
     )
