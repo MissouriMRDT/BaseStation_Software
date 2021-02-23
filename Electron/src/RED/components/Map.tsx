@@ -69,8 +69,8 @@ class Map extends Component<IProps, IState> {
       "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
       localforage,
       {
-        minZoom: 13,
-        maxZoom: 19,
+        minZoom: 11,
+        maxZoom: 20,
         crossOrigin: true,
       }
     )
