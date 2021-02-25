@@ -20,6 +20,7 @@ module.exports = {
     "jsx-a11y/no-autofocus": "off",
     "func-names": "off",
     "no-else-return": "off",
+    "react/static-property-placement": "off",
     semi: [2, "never"],
     "react/jsx-filename-extension": [1, { extensions: [".js", ".jsx", ".ts", ".tsx"] }],
     "import/extensions": [

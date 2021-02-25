@@ -3,6 +3,7 @@ import CSS from "csstype"
 import path from "path"
 import { rovecomm } from "../RoveProtocol/Rovecomm"
 import STLViewer from "./STLViewer"
+import { windows } from "../Window"
 
 const container: CSS.Properties = {
   display: "flex",
@@ -14,6 +15,7 @@ const container: CSS.Properties = {
   borderStyle: "solid",
   padding: "5px",
   alignItems: "center",
+  height: "calc(100% - 47px)",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -30,22 +32,35 @@ const RoverFile = path.join(__dirname, "../assets/Rover.stl")
 
 interface IProps {
   style?: CSS.Properties
+  zoom: number
 }
 
 interface IState {
   IMUData: number[]
-  masterDiv: any
+  id: string
+  width: number
+  height: number
 }
 
 class ThreeDRover extends Component<IProps, IState> {
+  static defaultProps = {
+    zoom: 20,
+  }
+
   constructor(props: any) {
     super(props)
     this.state = {
       IMUData: [0, 0, 0],
-      masterDiv: React.createRef(),
+      id: new Date().toLocaleTimeString(),
+      width: 300,
+      height: 150,
     }
 
     rovecomm.on("IMUData", (data: any) => this.IMUData(data))
+  }
+
+  componentDidMount() {
+    this.findWidth()
   }
 
   IMUData(data: any) {
@@ -58,11 +73,22 @@ class ThreeDRover extends Component<IProps, IState> {
     this.setState({ IMUData })
   }
 
+  findWidth() {
+    for (const win of Object.keys(windows)) {
+      if (windows[win].document.getElementById(this.state.id)) {
+        this.setState({
+          width: windows[win].document.getElementById(this.state.id).clientWidth,
+          height: windows[win].document.getElementById(this.state.id).clientHeight,
+        })
+      }
+    }
+  }
+
   render(): JSX.Element {
     return (
       <div style={this.props.style}>
         <div style={label}>3D Rover</div>
-        <div style={container} ref={this.state.masterDiv}>
+        <div style={container} id={this.state.id}>
           <STLViewer
             model={RoverFile}
             modelColor="#B92C2C"
@@ -70,9 +96,9 @@ class ThreeDRover extends Component<IProps, IState> {
             rotate={false}
             rotation={this.state.IMUData}
             orbitControls
-            width={300}
-            height={150}
-            zoom={20}
+            width={this.state.width}
+            height={this.state.height}
+            zoom={this.props.zoom}
           />
         </div>
       </div>

@@ -1,6 +1,8 @@
 import { Component } from "react"
 import ReactDOM from "react-dom"
 
+export const windows = { RED: window }
+
 interface IProps {
   onClose: any
   name: string
@@ -40,7 +42,11 @@ export default class NewWindowComponent extends Component<IProps, IState> {
       this.externalWindow.document.body.appendChild(this.reactTableLink)
       this.externalWindow.document.body.appendChild(this.reactVisLink)
       this.externalWindow.document.body.appendChild(this.containerEl)
-      this.externalWindow.onunload = () => this.props.onClose()
+      windows[this.props.name] = this.externalWindow
+      this.externalWindow.onunload = () => {
+        this.props.onClose()
+        delete windows[this.props.name]
+      }
     }
   }
 
