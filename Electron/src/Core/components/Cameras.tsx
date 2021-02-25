@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import CSS from "csstype"
-import { rovecomm } from "../RoveProtocol/Rovecomm"
+import { rovecomm, RovecommManifest } from "../RoveProtocol/Rovecomm"
 // import { Packet } from "../../Core/RoveProtocol/Packet"
 
 const h1Style: CSS.Properties = {
@@ -39,7 +39,7 @@ interface IProps {
 
 interface IState {
   currentCamera: number
-  baseAddress: string[]
+  cameraIps: string[]
 }
 
 class Cameras extends Component<IProps, IState> {
@@ -47,7 +47,7 @@ class Cameras extends Component<IProps, IState> {
     super(props)
     this.state = {
       currentCamera: this.props.defaultCamera,
-      baseAddress: ["http://192.168.1.50:8080", "http://192.168.1.51:8080", "http://192.168.1.139:8080"],
+      cameraIps: [RovecommManifest.Camera1.Ip, RovecommManifest.Camera2.Ip, RovecommManifest.Autonomy.Ip],
     }
 
     // rovecomm.sendCommand(Packet(dataId, data), reliability)
@@ -56,8 +56,8 @@ class Cameras extends Component<IProps, IState> {
   ConstructAddress() {
     const index = Math.floor((this.state.currentCamera - 1) / 4)
     const camera = ((this.state.currentCamera - 1) % 4) + 1
-    const addr = this.state.baseAddress[index]
-    return `${addr}/${camera}/stream`
+    const ip = this.state.cameraIps[index]
+    return `http://${ip}:8080/${camera}/stream`
   }
 
   render(): JSX.Element {
