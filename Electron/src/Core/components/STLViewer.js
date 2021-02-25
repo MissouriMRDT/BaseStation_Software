@@ -21,6 +21,7 @@ class STLViewer extends Component {
     rotation: PropTypes.arrayOf(PropTypes.number),
     rotationSpeeds: PropTypes.arrayOf(PropTypes.number),
     model: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(ArrayBuffer)]).isRequired,
+    zoom: PropTypes.number,
   }
 
   static defaultProps = {
@@ -38,6 +39,7 @@ class STLViewer extends Component {
     rotation: [0, 0, 0],
     rotationSpeeds: [0, 0, 0.02],
     model: undefined,
+    zoom: 30,
   }
 
   componentDidMount() {

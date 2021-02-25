@@ -13,6 +13,7 @@ const container: CSS.Properties = {
   borderBottomWidth: "2px",
   borderStyle: "solid",
   padding: "5px",
+  alignItems: "center",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -33,6 +34,7 @@ interface IProps {
 
 interface IState {
   IMUData: number[]
+  masterDiv: any
 }
 
 class ThreeDRover extends Component<IProps, IState> {
@@ -40,6 +42,7 @@ class ThreeDRover extends Component<IProps, IState> {
     super(props)
     this.state = {
       IMUData: [0, 0, 0],
+      masterDiv: React.createRef(),
     }
 
     rovecomm.on("IMUData", (data: any) => this.IMUData(data))
@@ -48,9 +51,10 @@ class ThreeDRover extends Component<IProps, IState> {
   IMUData(data: any) {
     // We discard the yaw of the rover because it makes it harder to tell if the
     // rotation of the rover is worriesome, which is the main point of the graphic
+    // IMU data is in degrees but STL viewer needs radians
     const { IMUData } = this.state
-    IMUData[0] = data[0]
-    IMUData[2] = data[2]
+    IMUData[0] = (data[0] / 360) * (2 * Math.PI)
+    IMUData[2] = (data[2] / 360) * (2 * Math.PI)
     this.setState({ IMUData })
   }
 
@@ -58,16 +62,17 @@ class ThreeDRover extends Component<IProps, IState> {
     return (
       <div style={this.props.style}>
         <div style={label}>3D Rover</div>
-        <div style={container}>
+        <div style={container} ref={this.state.masterDiv}>
           <STLViewer
             model={RoverFile}
             modelColor="#B92C2C"
-            backgroundColor="#EAEAEA"
+            backgroundColor="#FFFFFF"
             rotate={false}
             rotation={this.state.IMUData}
             orbitControls
-            width={700}
-            height={500}
+            width={300}
+            height={150}
+            zoom={20}
           />
         </div>
       </div>

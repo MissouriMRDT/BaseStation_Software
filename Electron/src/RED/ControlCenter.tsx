@@ -87,7 +87,10 @@ class ControlCenter extends Component<IProps, IState> {
           )
         }
         <div style={column}>
-          <GPS onCoordsChange={this.updateCoords} />
+          <div style={row}>
+            <GPS onCoordsChange={this.updateCoords} style={{ flexGrow: 1, marginRight: "5px" }} />
+            <ThreeDRover />
+          </div>
           <Waypoints
             onWaypointChange={this.updateWaypoints}
             currentCoords={this.state.currentCoords}
@@ -122,7 +125,6 @@ class ControlCenter extends Component<IProps, IState> {
           <Cameras defaultCamera={1} />
           <Cameras defaultCamera={2} />
           <Cameras defaultCamera={3} />
-          <ThreeDRover />
         </div>
       </div>
     )

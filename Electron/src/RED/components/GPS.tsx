@@ -5,7 +5,10 @@ import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
-  fontSize: "12px",
+  fontSize: "18px",
+  lineHeight: "36px",
+  marginBlockStart: "0",
+  marginBlockEnd: "0",
 }
 const container: CSS.Properties = {
   display: "grid",
@@ -15,8 +18,9 @@ const container: CSS.Properties = {
   borderBottomWidth: "2px",
   borderStyle: "solid",
   gridRowStart: "2 & {}",
-  grid: "repeat(2, 28px) / auto-flow dense",
+  grid: "repeat(4, 36px) / auto-flow dense",
   padding: "5px",
+  height: "calc(100% - 47px)",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -94,18 +98,18 @@ class GPS extends Component<IProps, IState> {
           {[
             { title: "Current Lat.", value: this.state.currentLat },
             { title: "Current Lon.", value: this.state.currentLon },
+            { title: "Distance", value: this.state.distance },
+            { title: "Quality", value: this.state.quality },
             { title: "Pitch", value: this.state.pitch },
             { title: "Yaw", value: this.state.yaw },
             { title: "Roll", value: this.state.roll },
-            { title: "Distance", value: this.state.distance },
-            { title: "Quality", value: this.state.quality },
           ].map(datum => {
             const { title, value } = datum
             return (
               <div key={title}>
-                <h1 style={h1Style}>
+                <p style={h1Style}>
                   {title}: {value}
-                </h1>
+                </p>
               </div>
             )
           })}

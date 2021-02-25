@@ -31,6 +31,7 @@ class Paint {
     this.lights = context.props.lights
     this.lightColor = context.props.lightColor
     this.model = context.props.model
+    this.zoom = context.props.zoom
 
     if (this.mesh !== undefined) {
       this.scene.remove(this.mesh)
@@ -149,7 +150,7 @@ class Paint {
 
   addCamera() {
     // Add the camera
-    this.camera = new THREE.PerspectiveCamera(30, this.width / this.height, 1, this.distance)
+    this.camera = new THREE.PerspectiveCamera(this.zoom, this.width / this.height, 1, this.distance)
 
     if (this.cameraZ === null) {
       this.cameraZ = Math.max(this.xDims * 3, this.yDims * 3, this.zDims * 3)
