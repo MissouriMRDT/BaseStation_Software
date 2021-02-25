@@ -75,12 +75,7 @@ class Activity extends Component<IProps, IState> {
     return (
       <div style={this.props.style}>
         <div style={label}>Autonomy Activity</div>
-        <div style={{ ...container, backgroundColor: this.state.backgroundColor }}>
-          <button type="button" onClick={this.ReachedMarker}>
-            Reached
-          </button>
-          {this.state.ActivityText}
-        </div>
+        <div style={{ ...container, backgroundColor: this.state.backgroundColor }}>{this.state.ActivityText}</div>
       </div>
     )
   }
