@@ -49,7 +49,7 @@ class Log extends Component<IProps, IState> {
 
   Log(data: string): void {
     let text = this.state.ConsoleText
-    text += `${data} \n` // set this to be that variable and time and newline
+    text += `${new Date().toLocaleTimeString()}: ${data} \n`
     this.setState({
       ConsoleText: text,
     })

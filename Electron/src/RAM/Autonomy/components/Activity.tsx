@@ -51,7 +51,7 @@ class Activity extends Component<IProps, IState> {
 
   Log(data: string): void {
     let text = this.state.ActivityText
-    text += `${data} \n` // set this to be that variable and time and newline
+    text += `${new Date().toLocaleTimeString()}: ${data} \n` // set this to be that variable and time and newline
     this.setState({
       ActivityText: text,
     })
