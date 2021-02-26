@@ -19,9 +19,12 @@ const buttons: CSS.Properties = {
   fontSize: "42px",
   fontFamily: "times new roman",
   fontWeight: "bold",
+  outline: "none",
 }
 
-interface IProps {}
+interface IProps {
+  selectedWaypoint: any
+}
 
 interface IState {
   displayed: string
@@ -63,7 +66,7 @@ class RoverAttachmentManager extends Component<IProps, IState> {
         </div>
         {this.state.displayed === "Arm" && <Arm />}
         {this.state.displayed === "Science" && <Science />}
-        {this.state.displayed === "Autonomy" && <Autonomy />}
+        {this.state.displayed === "Autonomy" && <Autonomy selectedWaypoint={this.props.selectedWaypoint} />}
       </div>
     )
   }
