@@ -48,6 +48,7 @@ const buttons: CSS.Properties = {
   fontSize: "14px",
   lineHeight: "24px",
   borderRadius: "20px",
+  outline: "none",
 }
 const modal: CSS.Properties = {
   position: "absolute",

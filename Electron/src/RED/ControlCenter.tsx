@@ -71,7 +71,7 @@ class ControlCenter extends Component<IProps, IState> {
           // everything inside NewWindowComponent is considered props.children and will be
           // displayed in a new window
           this.state.ronOpen && (
-            <NewWindowComponent onClose={() => this.setState({ ronOpen: false })} name="RON">
+            <NewWindowComponent onClose={() => this.setState({ ronOpen: false })} name="Rover Overview of Network">
               <RoverOverviewOfNetwork />
             </NewWindowComponent>
           )
@@ -81,8 +81,12 @@ class ControlCenter extends Component<IProps, IState> {
           // everything inside NewWindowComponent is considered props.children and will be
           // displayed in a new window
           this.state.ramOpen && (
-            <NewWindowComponent onClose={() => this.setState({ ramOpen: false })} name="RAM">
-              <RoverAttachmentManager />
+            <NewWindowComponent onClose={() => this.setState({ ramOpen: false })} name="Rover Attachment Manager">
+              <RoverAttachmentManager
+                selectedWaypoint={
+                  this.waypointsInstance.state.storedWaypoints[this.waypointsInstance.state.selectedWaypoint]
+                }
+              />
             </NewWindowComponent>
           )
         }
