@@ -70,14 +70,41 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
                 NotifyOfPropertyChange(() => Telemetry);
             }
         }
+        public CameraViewModel Camera1
+        {
+            get
+            {
+                return _model._camera1;
+            }
+            set
+            {
+                _model._camera1 = value;
+                NotifyOfPropertyChange(() => Camera1);
+            }
+        }
+        public CameraViewModel Camera2
+        {
+            get
+            {
+                return _model._camera2;
+            }
+            set
+            {
+                _model._camera2 = value;
+                NotifyOfPropertyChange(() => Camera2);
+            }
+        }
 
         public AutonomyViewModel(IRovecomm networkMessenger, IDataIdResolver idResolver, ILogger logger)
         {
             _model = new AutonomyModel();
             StateControl = new StateControlViewModel();
-            Controls = new ControlsViewModel(networkMessenger, this);
             SentWaypoints = new SentWaypointsViewModel();
             Telemetry = new AutonomyTelemetryViewModel(networkMessenger, idResolver, logger);
+            Controls = new ControlsViewModel(networkMessenger, this);
+
+            Camera1 = new CameraViewModel(Core.CommonLog.Instance);
+            Camera2 = new CameraViewModel(Core.CommonLog.Instance);
 
             _rovecomm = networkMessenger;
             _idResolver = idResolver;
@@ -87,10 +114,6 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
             _rovecomm.NotifyWhenMessageReceived(this, "WaypointReached");
         }
 
-        public void Enable() => _rovecomm.SendCommand(Packet.Create("AutonomousModeEnable"), true);
-
-        public void Disable() => _rovecomm.SendCommand(Packet.Create("AutonomousModeDisable"), true);
-
         public void ReceivedRovecommMessageCallback(Packet packet, bool reliable)
         {
             switch (packet.Name)
@@ -99,17 +122,6 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
                     _logger.Log("Waypoint Reached");
                     break;
             }
-        }
-
-        public void AddWaypoint()
-        {
-            Waypoint waypoint = _waypointManager.SelectedWaypoint;
-            byte[] msg = new byte[2 * sizeof(double)];
-            Buffer.BlockCopy(BitConverter.GetBytes(waypoint.Longitude), 0, msg, 0 * sizeof(double), sizeof(double));
-            Buffer.BlockCopy(BitConverter.GetBytes(waypoint.Latitude), 0, msg, 1 * sizeof(double), sizeof(double));
-            Array.Reverse(msg);
-
-            _rovecomm.SendCommand(new Packet("WaypointAdd", msg, 2, (byte)7), true);
         }
     }
 }
