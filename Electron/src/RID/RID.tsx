@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import CSS from "csstype"
 import Cameras from "../Core/components/Cameras"
 import Map from "../RED/components/Map"
+import ThreeDRover from "../Core/components/ThreeDRover"
 
 const row: CSS.Properties = {
   display: "flex",
@@ -50,7 +51,7 @@ class RoverImageryDisplay extends Component<IProps, IState> {
       <button type="button" style={{ flexGrow: 1 }} onClick={() => this.onClickMap()}>
         Map
       </button>
-      <button type="button" style={{ flexGrow: 1 }}>
+      <button type="button" style={{ flexGrow: 1 }} onClick={() => this.onThreeDRover()}>
         3D Rover
       </button>
       <button type="button" style={{ flexGrow: 1 }}>
@@ -79,6 +80,17 @@ class RoverImageryDisplay extends Component<IProps, IState> {
         <div style={{ flexGrow: 1 }}>
           {this.buttons}
           <Cameras defaultCamera={1} style={{ height: "100%", width: "100%", flexGrow: 1 }} />
+        </div>
+      ),
+    })
+  }
+
+  onThreeDRover() {
+    this.setState({
+      display: (
+        <div style={{ flexGrow: 1 }}>
+          {this.buttons}
+          <ThreeDRover style={{ height: "100%", width: "100%", flexGrow: 1 }} />
         </div>
       ),
     })
