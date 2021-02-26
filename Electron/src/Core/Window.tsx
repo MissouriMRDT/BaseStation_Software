@@ -1,7 +1,7 @@
 import { Component } from "react"
 import ReactDOM from "react-dom"
 
-export const windows = { RED: window }
+export const windows: any = { RED: window }
 
 interface IProps {
   onClose: any
