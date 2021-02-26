@@ -6,6 +6,7 @@ import Angular from "./components/Angular"
 import Cameras from "../../Core/components/Cameras"
 import { controllerInputs } from "../../Core/components/ControlScheme"
 import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
+import ControlFeatures from "./components/ControlFeatures"
 
 const row: CSS.Properties = {
   display: "flex",
@@ -88,7 +89,10 @@ class Arm extends Component<IProps, IState> {
       <div style={column}>
         <div style={row}>
           <Angular style={{ flex: 1, marginRight: "5px" }} />
-          <IK style={{ flex: 1, marginLeft: "5px" }} />
+          <div style={{ ...column, flex: 1, marginLeft: "5px" }}>
+            <IK />
+            <ControlFeatures style={{ height: "100%" }} />
+          </div>
         </div>
         <div style={row}>
           <Cameras defaultCamera={5} style={{ flex: 1, marginRight: "5px" }} />
