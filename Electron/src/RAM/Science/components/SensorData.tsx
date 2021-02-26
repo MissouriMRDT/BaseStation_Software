@@ -43,6 +43,7 @@ const buttons: CSS.Properties = {
   backgroundColor: "#990000",
   borderRadius: "5px",
   color: "white",
+  outline: "none",
 }
 const grid: CSS.Properties = {
   display: "grid",

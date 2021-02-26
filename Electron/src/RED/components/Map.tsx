@@ -61,7 +61,7 @@ class Map extends Component<IProps, IState> {
       heading: 0,
     }
 
-    rovecomm.on("PitchHeadingRoll", (data: any) => this.IMUData(data))
+    rovecomm.on("IMUData", (data: any) => this.IMUData(data))
   }
 
   /*

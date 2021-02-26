@@ -6,6 +6,8 @@ const reactTable = path.join(__dirname, "../assets/react-table.css")
 const reactVis = path.join(__dirname, "../assets/react-vis.css")
 const leafletStyle = path.join(__dirname, "../assets/leaflet.css")
 const leafletJS = path.join(__dirname, "../assets/leaflet.js")
+export const windows: any = { RED: window }
+
 interface IProps {
   onClose: any
   name: string
@@ -57,7 +59,11 @@ export default class NewWindowComponent extends Component<IProps, IState> {
       this.externalWindow.document.body.appendChild(this.leafletLink)
       this.externalWindow.document.body.appendChild(this.leafletScript)
       this.externalWindow.document.body.appendChild(this.containerEl)
-      this.externalWindow.onunload = () => this.props.onClose()
+      windows[this.props.name] = this.externalWindow
+      this.externalWindow.onunload = () => {
+        this.props.onClose()
+        delete windows[this.props.name]
+      }
     }
   }
 

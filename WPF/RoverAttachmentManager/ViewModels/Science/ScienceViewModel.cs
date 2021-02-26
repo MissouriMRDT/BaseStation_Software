@@ -255,15 +255,15 @@ namespace RoverAttachmentManager.ViewModels.Science
             
             if (values["VacuumPulse"] == 1)
             {
-                _rovecomm.SendCommand(Packet.Create("VacuumEnableDisable", (byte)1));
+                _rovecomm.SendCommand(Packet.Create("VacuumEnableDisable", (byte)255));
             }else if(values["VacuumPulse"] == 0)
             {
-                _rovecomm.SendCommand(Packet.Create("VacuumEnableDisable", (byte)0));
+                _rovecomm.SendCommand(Packet.Create("VacuumEnableDisable", (byte)254));
             }
 
             if (values["Chem1"] == 1)
             {
-                ChemOne = 1000;
+                ChemOne = 500;
             }else if(values["Chem1"] == 0)
             {
                 ChemOne = 0;
@@ -271,7 +271,7 @@ namespace RoverAttachmentManager.ViewModels.Science
 
             if (values["Chem2"] == 1)
             {
-                ChemTwo = 1000;
+                ChemTwo = 500;
             }
             else if (values["Chem2"] == 0)
             {
@@ -280,7 +280,7 @@ namespace RoverAttachmentManager.ViewModels.Science
 
             if (values["Chem3"] == 1)
             {
-                ChemThree = 1000;
+                ChemThree = 500;
             }
             else if (values["Chem3"] == 0)
             {
@@ -288,6 +288,22 @@ namespace RoverAttachmentManager.ViewModels.Science
             }
             Int16[] chemicals = { ChemOne, ChemTwo, ChemThree };
             _rovecomm.SendCommand(Packet.Create("Chemicals", chemicals));
+
+
+            Int16 GenevaPower = 0;
+
+            if (values["GenevaClockwise"] == 1)
+            {
+                GenevaPower = 500;
+
+            }
+            else if (values["GenevaCounterclockwise"] == 1)
+            {
+                GenevaPower = -500;
+            }
+
+            Int16[] GenevaSend = { GenevaPower };
+            _rovecomm.SendCommand(Packet.Create("GenevaOpenLoop", GenevaSend));
         }
 
         public void StopMode()
