@@ -36,8 +36,8 @@ class Arm extends Component<IProps, IState> {
           <IK style={{ flex: 1, marginLeft: "5px" }} />
         </div>
         <div style={row}>
-          <Cameras defaultCamera={5} style={{ flex: 1, marginRight: "5px" }} />
-          <Cameras defaultCamera={6} style={{ flex: 1, marginLeft: "5px" }} />
+          <Cameras defaultCamera={5} style={{ width: "50%", marginRight: "5px" }} />
+          <Cameras defaultCamera={6} style={{ width: "50%", marginLeft: "5px" }} />
         </div>
         <ControlMultipliers />
       </div>

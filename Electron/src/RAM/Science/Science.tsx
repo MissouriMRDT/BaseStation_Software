@@ -42,8 +42,8 @@ class Science extends Component<IProps, IState> {
           <Geneva style={{ flex: 1, marginLeft: "5px" }} />
         </div>
         <div style={row}>
-          <Cameras defaultCamera={7} style={{ flex: 1, marginRight: "5px" }} />
-          <Cameras defaultCamera={8} style={{ flex: 1, marginLeft: "5px" }} />
+          <Cameras defaultCamera={7} style={{ width: "50%", marginRight: "5px" }} />
+          <Cameras defaultCamera={8} style={{ width: "50%", marginLeft: "5px" }} />
         </div>
       </div>
     )

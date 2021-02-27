@@ -18,6 +18,7 @@ const container: CSS.Properties = {
   borderBottomWidth: "2px",
   borderStyle: "solid",
   padding: "5px",
+  height: "calc(100% - 50px)",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -32,6 +33,10 @@ const label: CSS.Properties = {
 const row: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
+}
+
+const cam: CSS.Properties = {
+  height: "calc(100% - 60px)",
 }
 
 function downloadURL(imgData: string): void {
@@ -66,6 +71,7 @@ function saveImage(): void {
 interface IProps {
   defaultCamera: number
   style?: CSS.Properties
+  maxHeight?: number
 }
 
 interface IState {
@@ -111,7 +117,7 @@ class Cameras extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div id="camera" style={this.props.style}>
+      <div id="camera" style={{ ...this.props.style, maxHeight: `${this.props.maxHeight}px` }}>
         <div style={label}>Cameras</div>
         <div style={container}>
           <div style={row}>
@@ -128,20 +134,10 @@ class Cameras extends Component<IProps, IState> {
               )
             })}
           </div>
-          {/*
-            NOTE: This is a theory. If this image somehow exceeds a 
-            certain dimension/width, whether it would be us increasing
-            the resolution of the target computer, or adding styles,
-            the entire app just fails to load without giving any
-            obvious error.
-
-            I'd check the electron-react-boilerplate repo to see
-            if people are having issues with img elements
-          */}
           <img
             src={this.ConstructAddress()}
             alt={`Camera ${this.state.currentCamera}`}
-            style={{ transform: `rotate(${this.state.rotation}deg)` }}
+            style={{ ...cam, transform: `${this.state.rotation}deg` }}
           />
           <div style={row}>
             <button type="button" onClick={() => saveImage()} style={{ flexGrow: 1 }}>
