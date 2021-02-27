@@ -60,7 +60,7 @@ class PacketLogger extends Component<IProps, IState> {
       columns: [
         { Header: "Name", accessor: "name", width: "100" },
         { Header: "Data Id", accessor: "dataId", width: "75" },
-        { Header: "Time", accessor: "time", width: "75" },
+        { Header: "Time", accessor: "time", width: "100" },
         { Header: "Type", accessor: "dataType", width: "50" },
         { Header: "Count", accessor: "dataCount", width: "50" },
         {
