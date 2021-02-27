@@ -5,7 +5,7 @@ import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
-  fontSize: "18px",
+  fontSize: "16px",
   lineHeight: "36px",
   marginBlockStart: "0",
   marginBlockEnd: "0",

@@ -1,6 +1,8 @@
+/* eslint-disable react/no-find-dom-node */
 import ReactDOM from "react-dom"
 import THREE from "./Three"
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const OrbitControls = require("three-orbit-controls")(THREE)
 
 const DIRECTIONAL_LIGHT = "directionalLight"
@@ -66,7 +68,7 @@ class Paint {
   addLight(lights, index = 0) {
     const directionalLight = new THREE.DirectionalLight(this.lightColor)
     directionalLight.position.set(...lights)
-    directionalLight.name = DIRECTIONAL_LIGHT + index
+    directionalLight.name = DIRECTIONAL_LIGHT
     directionalLight.position.normalize()
     this.scene.add(directionalLight)
   }
@@ -127,14 +129,11 @@ class Paint {
       this.yDims = geometry.boundingBox.max.y - geometry.boundingBox.min.y
       this.zDims = geometry.boundingBox.max.z - geometry.boundingBox.min.z
 
+      // eslint-disable-next-line promise/always-return
       if (this.rotate[0] || this.rotate[1] || this.rotate[2]) {
-        this.mesh.rotation.x = this.rotation[0]
-        this.mesh.rotation.y = this.rotation[1]
-        this.mesh.rotation.z = this.rotation[2]
+        ;[this.mesh.rotation.x, this.mesh.rotation.y, this.mesh.rotation.z] = this.rotation
       } else if (this.rotate) {
-        this.mesh.rotation.x = this.rotationSpeeds[0]
-        this.mesh.rotation.y = this.rotationSpeeds[1]
-        this.mesh.rotation.z = this.rotationSpeeds[2]
+        ;[this.mesh.rotation.x, this.mesh.rotation.y, this.mesh.rotation.z] = this.rotationSpeeds
       }
 
       this.scene.add(this.mesh)
@@ -162,7 +161,6 @@ class Paint {
 
     this.camera.lookAt(this.mesh)
 
-    this.renderer.set
     this.renderer.setSize(this.width, this.height)
     this.renderer.setClearColor(this.backgroundColor, 1)
   }
