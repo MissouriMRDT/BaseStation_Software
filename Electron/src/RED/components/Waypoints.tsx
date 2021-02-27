@@ -3,6 +3,7 @@ import CSS from "csstype"
 import fs from "fs"
 import { TwitterPicker } from "react-color"
 import path from "path"
+import ThreeDRover from "../../Core/components/ThreeDRover"
 
 const title: CSS.Properties = {
   fontFamily: "arial",
@@ -135,6 +136,8 @@ interface IState {
 }
 
 class Waypoints extends Component<IProps, IState> {
+  static id = 0
+
   constructor(props: IProps) {
     super(props)
     this.state = {
@@ -160,11 +163,15 @@ class Waypoints extends Component<IProps, IState> {
      */
     if (fs.existsSync(filepath)) {
       const storedWaypoints = JSON.parse(fs.readFileSync(filepath).toString())
-      if (Object.keys(storedWaypoints).length) {
-        const selectedWaypoint = Object.keys(storedWaypoints)[0]
+      const waypointKeys = Object.keys(storedWaypoints)
+      const waypointCount = waypointKeys.length
+      if (waypointCount) {
+        const selectedWaypoint = waypointKeys[0]
         this.setState({ storedWaypoints, selectedWaypoint })
         this.props.onWaypointChange(storedWaypoints)
       }
+
+      ThreeDRover.id = parseInt(waypointKeys[waypointCount - 1], 10) + 1
     }
   }
 
@@ -225,11 +232,12 @@ class Waypoints extends Component<IProps, IState> {
           // Spread to ensure all currently stored waypoint are kept
           // but the newest waypoint is added
           ...this.state.storedWaypoints,
-          [name]: newWaypoint,
+          [ThreeDRover.id]: newWaypoint,
         },
       },
       this.cascadeWaypoint
     )
+    ThreeDRover.id += 1
   }
 
   remove(): void {
