@@ -48,6 +48,7 @@ const button: CSS.Properties = {
   borderRadius: "10px",
   boxShadow: "3px 3px 3px gray",
   border: "none",
+  outline: "none",
 }
 const disabledButton: CSS.Properties = {
   width: "60px",
@@ -55,6 +56,7 @@ const disabledButton: CSS.Properties = {
   borderRadius: "10px",
   boxShadow: "3px 3px 3px gray inset",
   border: "none",
+  outline: "none",
 }
 
 interface IProps {

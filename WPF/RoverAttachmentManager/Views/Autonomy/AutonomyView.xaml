@@ -16,6 +16,7 @@
                 <RowDefinition Height="125px"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <GroupBox Header="Controls" Margin="5" Grid.Row="0" Grid.Column="0">
@@ -32,6 +33,14 @@
 
             <GroupBox Header="Telemetry" Margin="5" Grid.Row="2" Grid.Column="0">
                 <ContentControl x:Name="Telemetry" />
+            </GroupBox>
+
+            <GroupBox Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Margin="5" Header="Camera1">
+                <ContentControl x:Name="Camera1"></ContentControl>
+            </GroupBox>
+
+            <GroupBox Grid.Column="1" Grid.Row="2" Margin="5" Header="Camera2">
+                <ContentControl x:Name="Camera2"></ContentControl>
             </GroupBox>
     </Grid>
 

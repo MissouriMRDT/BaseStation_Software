@@ -23,7 +23,9 @@
 					<ColumnDefinition/>
 					<ColumnDefinition/>
 					<ColumnDefinition/>
-				</Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
 				<Button x:Name="Camera1" Grid.Column="0">1</Button>
 				<Button x:Name="Camera2" Grid.Column="1">2</Button>
 				<Button x:Name="Camera3" Grid.Column="2">3</Button>
@@ -32,7 +34,9 @@
 				<Button x:Name="Camera6" Grid.Column="5">6</Button>
 				<Button x:Name="Camera7" Grid.Column="6">7</Button>
 				<Button x:Name="Camera8" Grid.Column="7">8</Button>
-			</Grid>
+                <Button x:Name="Camera9" Grid.Column="8">9</Button>
+                <Button x:Name="Camera10" Grid.Column="9">10</Button>
+            </Grid>
 			<Grid Grid.Row="2">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition/>

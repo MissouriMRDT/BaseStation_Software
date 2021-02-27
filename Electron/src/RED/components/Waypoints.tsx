@@ -50,6 +50,7 @@ const buttons: CSS.Properties = {
   fontSize: "14px",
   lineHeight: "24px",
   borderRadius: "20px",
+  outline: "none",
 }
 const modal: CSS.Properties = {
   position: "absolute",
@@ -69,6 +70,7 @@ const modalButton: CSS.Properties = {
   borderRadius: "10px",
   border: "none",
   margin: "10px",
+  outline: "none",
 }
 const scrollviewer: CSS.Properties = {
   display: "flex",
@@ -104,6 +106,7 @@ const colorButton: CSS.Properties = {
   fontSize: "0px",
   lineHeight: "20px",
   borderRadius: "20px",
+  outline: "none",
 }
 const filepath = path.join(__dirname, "../assets/Waypoints.json")
 

@@ -11,7 +11,7 @@ namespace RoverAttachmentManager.Models.Arm
         internal int BaseRangeFactor = 500;
         internal int ElbowRangeFactor = 500;
         internal int WristRangeFactor = 1000;
-        internal int GripperRangeFactor = 1000;
-        internal int Gripper2RangeFactor = 1000;
+        internal int GripperOpenRangeFactor = 1000;
+        internal int GripperCloseRangeFactor = 1000;
     }
 }

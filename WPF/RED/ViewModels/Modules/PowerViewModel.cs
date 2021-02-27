@@ -510,54 +510,33 @@ namespace RED.ViewModels.Modules
                     TotalPackVoltage = (float)(packet.GetData<Int32>() / 1000.0);
                     break;
                 */
+
+                case "PowerCurrents":
+                    float[] currents = packet.GetDataArray<float>();
+                    ActuationCurrent = (float)(currents[0]);
+                    LogicCurrent = (float)(currents[1]);
+                    CommunicationsCurrent = (float)(currents[2] / 1000.0);
+                    Motor1Current = (float)(currents[3] / 1000.0);
+                    Motor2Current = (float)(currents[4] / 1000.0);
+                    Motor3Current = (float)(currents[5] / 1000.0);
+                    Motor4Current = (float)(currents[6] / 1000.0);
+                    Motor5Current = (float)(currents[7] / 1000.0);
+                    Motor6Current = (float)(currents[8] / 1000.0);
+                    AuxiliaryCurrent = (float)(currents[9] / 1000.0);
+                    TwelveVoltCurrent = (float)(currents[10] / 1000.0);
+
+                    break;
+
+                case "PowerBusStatus":
+                    MotorBusStatus = new BitArray(packet.Data);
+                    break;
+
                 case "MotorBusEnabled":
                     MotorBusStatus = new BitArray(packet.GetData<Byte>());
                     break;
 
-                case "12VEnabled":
-                    //Not implemented
-                    break;
-
-                case "30VEnabled":
-                    //Not implemented
-                    break;
-
-                case "VacuumEnabled":
-                    //Not implemented
-                    break;
-
-                case "PatchPanelEnabled":
-                    //Not implemented
-                    break;
-
-                case "MotorBusCurrent":
-                    float[] motorCurrents = packet.GetDataArray<float>();
-                    Motor1Current = (float)(motorCurrents[0]);
-                    Motor2Current = (float)(motorCurrents[1]);
-                    Motor3Current = (float)(motorCurrents[2]);
-                    Motor4Current = (float)(motorCurrents[3]);
-                    Motor5Current = (float)(motorCurrents[4]);
-                    Motor6Current = (float)(motorCurrents[5]);
-                    break;
-
-                case "12VBusCurrent":
-                    float[] twelveVCurrents = packet.GetDataArray<float>();
-                    ActuationCurrent = (float)(twelveVCurrents[0]);
-                    LogicCurrent = (float)(twelveVCurrents[1]);
-                    break;
-
-                case "30VBusCurrent":
-                    //Not implemented
-                    float[] thirtyVCurrents = packet.GetDataArray<float>();
-                    TwelveVoltCurrent = (float)(thirtyVCurrents[0]);
-                    CommunicationsCurrent = (float)(thirtyVCurrents[1]);
-                    AuxiliaryCurrent = (float)(thirtyVCurrents[2]);
-                    //Aux?
-                    break;
-                
                 default:
                     break;
-
             }
 
             
@@ -616,16 +595,16 @@ namespace RED.ViewModels.Modules
 
         public void DisableBus(byte index) //not updated
         {
-            BitArray bits = new BitArray(32);
+            BitArray bits = new BitArray(16);
             bits.Set(index + 1, true);
-            byte[] thebits = new byte[4];
+            byte[] thebits = new byte[2];
 
             bits.CopyTo(thebits, 0);
 
-            byte[] bytes = new byte[5];
-            thebits.CopyTo(bytes, 1);
+            byte[] bytes = new byte[3];
+            thebits.CopyTo(bytes, 0);
 
-            bytes[0] = 0;
+            bytes[2] = 0;
 
             _rovecomm.SendCommand(Packet.Create("PowerBusEnableDisable", bytes));
         }
@@ -638,9 +617,9 @@ namespace RED.ViewModels.Modules
             bits.Set(11, true);
 
             byte[] bytes = new byte[3];
-            bits.CopyTo(bytes, 1);
+            bits.CopyTo(bytes, 0);
 
-            bytes[0] = (state) ? (byte)1 : (byte)0;
+            bytes[2] = (state) ? (byte)1 : (byte)0;
             _rovecomm.SendCommand(Packet.Create("PowerBusEnableDisable", bytes));
         }
 
