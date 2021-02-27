@@ -36,6 +36,7 @@ interface IState {
   ronOpen: boolean
   ramOpen: boolean
   ridOpen: boolean
+  fourthHeight: number
 }
 
 class ControlCenter extends Component<IProps, IState> {
@@ -49,9 +50,12 @@ class ControlCenter extends Component<IProps, IState> {
       ronOpen: false,
       ramOpen: false,
       ridOpen: false,
+      fourthHeight: window.innerHeight / 4,
     }
     this.updateWaypoints = this.updateWaypoints.bind(this)
     this.updateCoords = this.updateCoords.bind(this)
+
+    window.addEventListener("resize", () => this.setState({ fourthHeight: window.innerHeight / 4 }))
   }
 
   updateWaypoints(storedWaypoints: any): void {
@@ -106,7 +110,7 @@ class ControlCenter extends Component<IProps, IState> {
             </NewWindowComponent>
           )
         }
-        <div style={column}>
+        <div style={{ ...column, width: "60%" }}>
           <div style={row}>
             <GPS onCoordsChange={this.updateCoords} style={{ flexGrow: 1, marginRight: "5px" }} />
             <ThreeDRover />
@@ -139,15 +143,16 @@ class ControlCenter extends Component<IProps, IState> {
             </button>
           </div>
         </div>
-        <div style={column}>
+        <div style={{ ...column, width: "40%" }}>
           <Map
+            style={{ minHeight: `${this.state.fourthHeight}px` }}
             storedWaypoints={this.state.storedWaypoints}
             currentCoords={this.state.currentCoords}
             name="controlCenterMap"
           />
-          <Cameras defaultCamera={1} />
-          <Cameras defaultCamera={2} />
-          <Cameras defaultCamera={3} />
+          <Cameras defaultCamera={1} maxHeight={this.state.fourthHeight} style={{ width: "100%" }} />
+          <Cameras defaultCamera={2} maxHeight={this.state.fourthHeight} style={{ width: "100%" }} />
+          <Cameras defaultCamera={3} maxHeight={this.state.fourthHeight} style={{ width: "100%" }} />
         </div>
       </div>
     )

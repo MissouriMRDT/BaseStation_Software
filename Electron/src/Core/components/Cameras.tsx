@@ -1,6 +1,8 @@
 import React, { Component } from "react"
 import CSS from "csstype"
-import { rovecomm, RovecommManifest } from "../RoveProtocol/Rovecomm"
+import html2canvas from "html2canvas"
+import { RovecommManifest } from "../RoveProtocol/Rovecomm"
+// import { rovecomm } from "../RoveProtocol/Rovecomm"
 // import { Packet } from "../../Core/RoveProtocol/Packet"
 
 const h1Style: CSS.Properties = {
@@ -33,24 +35,59 @@ const row: CSS.Properties = {
   flexDirection: "row",
 }
 
+const cam: CSS.Properties = {
+  height: "calc(100% - 60px)",
+}
+
+function downloadURL(imgData: string): void {
+  const a = document.createElement("a")
+  a.href = imgData.replace("image/png", "image/octet-stream")
+  a.download = "camera.png"
+  a.click()
+}
+
+function saveImage(): void {
+  const input = document.getElementById("camera")
+  if (!input) {
+    throw new Error("The element 'camera' wasn't found")
+  }
+  html2canvas(input, {
+    scrollX: 0,
+    scrollY: -window.scrollY,
+    letterRendering: 1,
+    useCORS: true,
+    allowTaint: false,
+  })
+    .then(canvas => {
+      const imgData = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream")
+      downloadURL(imgData)
+      return null
+    })
+    .catch(error => {
+      console.error(error)
+    })
+}
+
 interface IProps {
   defaultCamera: number
   style?: CSS.Properties
+  maxHeight?: number
 }
 
 interface IState {
   currentCamera: number
   cameraIps: string[]
+  rotation: number
 }
 
 class Cameras extends Component<IProps, IState> {
-  constructor(props: any) {
+  constructor(props: IProps) {
     super(props)
     this.state = {
       currentCamera: this.props.defaultCamera,
       cameraIps: [RovecommManifest.Camera1.Ip, RovecommManifest.Camera2.Ip, RovecommManifest.Autonomy.Ip],
+      rotation: 0,
     }
-
     // rovecomm.sendCommand(Packet(dataId, data), reliability)
   }
 
@@ -61,9 +98,15 @@ class Cameras extends Component<IProps, IState> {
     return `http://${ip}:8080/${camera}/stream`
   }
 
+  rotate(): void {
+    this.setState({
+      rotation: this.state.rotation + (90 % 360),
+    })
+  }
+
   render(): JSX.Element {
     return (
-      <div style={this.props.style}>
+      <div id="camera" style={{ ...this.props.style, maxHeight: `${this.props.maxHeight}px` }}>
         <div style={label}>Cameras</div>
         <div style={container}>
           <div style={row}>
@@ -80,7 +123,19 @@ class Cameras extends Component<IProps, IState> {
               )
             })}
           </div>
-          <img src={this.ConstructAddress()} alt={`Camera ${this.state.currentCamera}`} />
+          <img
+            src={this.ConstructAddress()}
+            alt={`Camera ${this.state.currentCamera}`}
+            style={{ ...cam, transform: `${this.state.rotation}deg` }}
+          />
+          <div style={row}>
+            <button type="button" onClick={() => saveImage()} style={{ flexGrow: 1 }}>
+              Screenshot
+            </button>
+            <button type="button" onClick={() => this.rotate()} style={{ flexGrow: 1 }}>
+              Rotate
+            </button>
+          </div>
         </div>
       </div>
     )
