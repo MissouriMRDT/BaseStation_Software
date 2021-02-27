@@ -17,6 +17,7 @@ const container: CSS.Properties = {
   borderColor: "#990000",
   borderBottomWidth: "2px",
   borderStyle: "solid",
+  height: "calc(100% - 35px)",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -29,7 +30,7 @@ const label: CSS.Properties = {
   color: "white",
 }
 const mapStyle: CSS.Properties = {
-  height: "400px",
+  height: "100%",
   width: "100%",
 }
 

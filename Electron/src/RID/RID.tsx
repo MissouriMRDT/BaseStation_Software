@@ -15,29 +15,24 @@ const column: CSS.Properties = {
   flexGrow: 1,
   marginRight: "5px",
 }
-
-/*
-function onClickCamera(this: any): void {
-  this.setState({
-    display: (
-      <div>
-        {buttons}
-        <Cameras defaultCamera={1}/>
-      </div>
-    )
-  })
+const submod: CSS.Properties = {
+  height: "calc(100% - 30px)",
+  width: "100%",
+  flexGrow: 1,
 }
-*/
 
 interface IProps {
   style?: CSS.Properties
   rowcol: string
+  onMerge?: (display: string) => void
+  displayed?: string
 }
 
 interface IState {
   storedWaypoints: any
   currentCoords: { lat: number; lon: number }
   display: any
+  displayed: string
 }
 
 class RoverImageryDisplay extends Component<IProps, IState> {
@@ -51,10 +46,10 @@ class RoverImageryDisplay extends Component<IProps, IState> {
       <button type="button" style={{ flexGrow: 1 }} onClick={() => this.onClickMap()}>
         Map
       </button>
-      <button type="button" style={{ flexGrow: 1 }} onClick={() => this.onThreeDRover()}>
+      <button type="button" style={{ flexGrow: 1 }} onClick={() => this.onClickThreeDRover()}>
         3D Rover
       </button>
-      <button type="button" style={{ flexGrow: 1 }}>
+      <button type="button" style={{ flexGrow: 1 }} onClick={() => this.onMerge()}>
         Merge
       </button>
       <button type="button" style={{ flexGrow: 1 }} onClick={() => this.onClickSplit()}>
@@ -69,46 +64,65 @@ class RoverImageryDisplay extends Component<IProps, IState> {
       storedWaypoints: {},
       currentCoords: { lat: 0, lon: 0 },
       display: this.buttons,
+      displayed: this.props.displayed ? this.props.displayed : "none",
     }
-    this.onClickCamera = this.onClickCamera.bind(this)
+    this.merge = this.merge.bind(this)
   }
 
-  onClickCamera() {
-    console.log(this)
+  componentDidMount() {
+    switch (this.state.displayed) {
+      case "Camera":
+        this.onClickCamera()
+        break
+      case "Map":
+        this.onClickMap()
+        break
+      case "3D Rover":
+        this.onClickThreeDRover()
+        break
+      default:
+        this.setState({ display: this.buttons, displayed: "none" })
+    }
+  }
+
+  onClickCamera(cam = 1) {
     this.setState({
       display: (
-        <div style={{ flexGrow: 1 }}>
+        <div style={{ flexGrow: 1, height: "100%" }}>
           {this.buttons}
-          <Cameras defaultCamera={1} style={{ height: "100%", width: "100%", flexGrow: 1 }} />
+          <Cameras defaultCamera={cam} style={submod} />
         </div>
       ),
+      displayed: "Camera",
     })
   }
 
-  onThreeDRover() {
+  onClickThreeDRover() {
     this.setState({
       display: (
-        <div style={{ flexGrow: 1 }}>
+        <div style={{ flexGrow: 1, height: "100%" }}>
           {this.buttons}
-          <ThreeDRover style={{ height: "100%", width: "100%", flexGrow: 1 }} />
+          <ThreeDRover style={submod} zoom={30} />
         </div>
       ),
+      displayed: "3D Rover",
     })
   }
 
   onClickMap() {
     this.setState({
       display: (
-        <div style={{ flexGrow: 1 }}>
+        <div style={{ flexGrow: 1, height: "100%" }}>
           {this.buttons}
           <Map
-            style={{ height: "100%", width: "100%", flexGrow: 1 }}
+            style={submod}
             storedWaypoints={this.state.storedWaypoints}
             currentCoords={this.state.currentCoords}
             name="RIDmap"
           />
         </div>
       ),
+      displayed: "Map",
     })
   }
 
@@ -121,18 +135,42 @@ class RoverImageryDisplay extends Component<IProps, IState> {
           <RoverImageryDisplay
             rowcol={nextStyle}
             style={{ height: "100%", width: "100%", border: "2px solid", borderColor: "#990000" }}
+            onMerge={this.merge}
+            displayed={this.state.displayed}
           />
           <RoverImageryDisplay
             rowcol={nextStyle}
             style={{ height: "100%", width: "100%", border: "2px solid", borderColor: "#990000" }}
+            onMerge={this.merge}
           />
         </div>
       ),
     })
   }
 
+  onMerge() {
+    if (typeof this.props.onMerge === "function") {
+      this.props.onMerge(this.state.displayed)
+    }
+  }
+
+  merge(display: string) {
+    switch (display) {
+      case "Camera":
+        this.onClickCamera()
+        break
+      case "Map":
+        this.onClickMap()
+        break
+      case "3D Rover":
+        this.onClickThreeDRover()
+        break
+      default:
+        this.setState({ display: this.buttons, displayed: "none" })
+    }
+  }
+
   render(): JSX.Element {
-    console.log(this)
     return <div style={this.props.style}>{this.state.display}</div>
   }
 }
