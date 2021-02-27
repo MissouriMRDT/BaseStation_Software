@@ -63,7 +63,7 @@ class RoverImageryDisplay extends Component<IProps, IState> {
     this.state = {
       storedWaypoints: {},
       currentCoords: { lat: 0, lon: 0 },
-      display: this.buttons,
+      display: <div style={{ ...this.props.style, backgroundColor: "E0E0E0" }}>this.buttons</div>,
       displayed: this.props.displayed ? this.props.displayed : "none",
     }
     this.merge = this.merge.bind(this)
@@ -81,7 +81,10 @@ class RoverImageryDisplay extends Component<IProps, IState> {
         this.onClickThreeDRover()
         break
       default:
-        this.setState({ display: this.buttons, displayed: "none" })
+        this.setState({
+          display: <div style={{ ...this.props.style, backgroundColor: "E0E0E0" }}>{this.buttons}</div>,
+          displayed: "none",
+        })
     }
   }
 
@@ -128,21 +131,18 @@ class RoverImageryDisplay extends Component<IProps, IState> {
 
   onClickSplit() {
     const RIDStyle = this.props.rowcol === "row" ? row : column
+    const margin = this.props.rowcol === "row" ? { marginRight: "5px" } : { marginBottom: "5px" }
     const nextStyle = this.props.rowcol === "row" ? "column" : "row"
     this.setState({
       display: (
         <div style={{ ...RIDStyle, width: "100%", height: "100%" }}>
           <RoverImageryDisplay
             rowcol={nextStyle}
-            style={{ height: "100%", width: "100%", border: "2px solid", borderColor: "#990000" }}
+            style={{ ...margin, height: "100%", width: "100%" }}
             onMerge={this.merge}
             displayed={this.state.displayed}
           />
-          <RoverImageryDisplay
-            rowcol={nextStyle}
-            style={{ height: "100%", width: "100%", border: "2px solid", borderColor: "#990000" }}
-            onMerge={this.merge}
-          />
+          <RoverImageryDisplay rowcol={nextStyle} style={{ height: "100%", width: "100%" }} onMerge={this.merge} />
         </div>
       ),
     })
