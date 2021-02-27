@@ -155,7 +155,6 @@ class Spectrometer extends Component<IProps, IState> {
   }
 
   getControl(): void {
-    rovecomm.resubscribe()
     this.setState({
       gathering: "control",
       counter: 0,
@@ -164,7 +163,6 @@ class Spectrometer extends Component<IProps, IState> {
   }
 
   getSpectra(): void {
-    rovecomm.resubscribe()
     this.setState({
       gathering: "spectra",
       counter: 0,

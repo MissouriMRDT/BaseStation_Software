@@ -10,6 +10,7 @@ const container: CSS.Properties = {
   borderColor: "#990000",
   borderBottomWidth: "2px",
   borderStyle: "solid",
+  height: "calc(100% - 40px)",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -47,6 +48,7 @@ const button: CSS.Properties = {
   borderRadius: "10px",
   boxShadow: "3px 3px 3px gray",
   border: "none",
+  outline: "none",
 }
 const disabledButton: CSS.Properties = {
   width: "60px",
@@ -54,6 +56,7 @@ const disabledButton: CSS.Properties = {
   borderRadius: "10px",
   boxShadow: "3px 3px 3px gray inset",
   border: "none",
+  outline: "none",
 }
 
 interface IProps {
@@ -88,7 +91,7 @@ class Geneva extends Component<IProps, IState> {
     // defined as ((n%m)+m)%m
     this.setState({
       tube: (((this.state.tube - 1) % 8) + 8) % 8,
-      buttonsDisabled: false,
+      buttonsDisabled: true,
     })
   }
 
@@ -99,7 +102,7 @@ class Geneva extends Component<IProps, IState> {
     rovecomm.sendCommand("GenevaIncrementPosition", [1])
     this.setState({
       tube: (((this.state.tube + 1) % 8) + 8) % 8,
-      buttonsDisabled: false,
+      buttonsDisabled: true,
     })
   }
 

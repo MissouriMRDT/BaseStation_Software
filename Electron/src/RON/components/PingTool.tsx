@@ -1,8 +1,7 @@
 import React, { Component } from "react"
 import CSS from "csstype"
 import { exec } from "child_process"
-import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
-import { RovecommManifest, NetworkDevices } from "../../Core/RoveProtocol/RovecommManifest"
+import { rovecomm, RovecommManifest, NetworkDevices } from "../../Core/RoveProtocol/Rovecomm"
 import { ColorStyleConverter } from "../../Core/ColorConverter"
 
 const h1Style: CSS.Properties = {

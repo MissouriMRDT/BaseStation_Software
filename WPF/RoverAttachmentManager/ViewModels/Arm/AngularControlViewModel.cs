@@ -161,7 +161,7 @@ namespace RoverAttachmentManager.ViewModels.Arm
             Buffer.BlockCopy(angles, 0, data, 0, data.Length);
             Array.Reverse(data);
             //TODO: Determine floats for this
-            _rovecomm.SendCommand(new Packet("ArmToAngle", data, 6, (byte)DataTypes.UINT32_T));
+            _rovecomm.SendCommand(new Packet("MoveToAngle", data, 6, (byte)DataTypes.UINT32_T));
 
             Arm.myState = ArmControlState.GuiControl;
             Arm.guiControlInitialized = true;

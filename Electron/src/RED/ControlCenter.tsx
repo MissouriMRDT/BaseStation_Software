@@ -12,6 +12,8 @@ import Cameras from "../Core/components/Cameras"
 import ControlScheme from "../Core/components/ControlScheme"
 import Drive from "./components/Drive"
 import Gimbal from "./components/Gimbal"
+import STLViewer from "../Core/components/STLViewer"
+import ThreeDRover from "../Core/components/ThreeDRover"
 
 const row: CSS.Properties = {
   display: "flex",
@@ -69,7 +71,7 @@ class ControlCenter extends Component<IProps, IState> {
           // everything inside NewWindowComponent is considered props.children and will be
           // displayed in a new window
           this.state.ronOpen && (
-            <NewWindowComponent onClose={() => this.setState({ ronOpen: false })} name="RON">
+            <NewWindowComponent onClose={() => this.setState({ ronOpen: false })} name="Rover Overview of Network">
               <RoverOverviewOfNetwork />
             </NewWindowComponent>
           )
@@ -79,13 +81,20 @@ class ControlCenter extends Component<IProps, IState> {
           // everything inside NewWindowComponent is considered props.children and will be
           // displayed in a new window
           this.state.ramOpen && (
-            <NewWindowComponent onClose={() => this.setState({ ramOpen: false })} name="RAM">
-              <RoverAttachmentManager />
+            <NewWindowComponent onClose={() => this.setState({ ramOpen: false })} name="Rover Attachment Manager">
+              <RoverAttachmentManager
+                selectedWaypoint={
+                  this.waypointsInstance.state.storedWaypoints[this.waypointsInstance.state.selectedWaypoint]
+                }
+              />
             </NewWindowComponent>
           )
         }
         <div style={column}>
-          <GPS onCoordsChange={this.updateCoords} />
+          <div style={row}>
+            <GPS onCoordsChange={this.updateCoords} style={{ flexGrow: 1, marginRight: "5px" }} />
+            <ThreeDRover />
+          </div>
           <Waypoints
             onWaypointChange={this.updateWaypoints}
             currentCoords={this.state.currentCoords}

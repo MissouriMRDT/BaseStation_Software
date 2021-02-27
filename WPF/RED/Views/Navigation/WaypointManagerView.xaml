@@ -95,7 +95,8 @@
                                                 <Label Margin="2.5" Grid.Row="4" Grid.Column="2" x:Name="LongitudeSecondsLabel" Content="  Seconds:" Style="{StaticResource VisibleWhenDMS}"/>
                                                 <TextBox Margin="2.5" Grid.Row="4" Grid.Column="3" x:Name="LongitudeSecondsTextBox" Text="{Binding LongitudeS}" Style="{StaticResource VisibleWhenDMS}"/>
 
-                                                <Button Margin="2.5" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" x:Name="AddWaypointBtn" Click="AddWaypointBtn_Click">Add</Button>
+                                                <Button Margin="2.5" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" x:Name="AddWaypointBtn" Click="AddWaypointBtn_Click" Style="{StaticResource VisibleWhenLatLong}">Add</Button>
+                                                <Button Margin="2.5" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" x:Name="AddWaypointDMSBtn" Click="AddWaypointDMSBtn_Click" Style="{StaticResource VisibleWhenDMS}">Add</Button>
 
                                             </Grid>
                                         </GroupBox>

@@ -2,7 +2,8 @@ import React, { Component } from "react"
 import CSS from "csstype"
 import { exec } from "child_process"
 import { XYPlot, XAxis, YAxis, HorizontalGridLines, LineSeries } from "react-vis"
-import { RovecommManifest, NetworkDevices } from "../../Core/RoveProtocol/RovecommManifest"
+import { RovecommManifest, NetworkDevices } from "../../Core/RoveProtocol/Rovecomm"
+import { windows } from "../../Core/Window"
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
@@ -108,6 +109,11 @@ class PingGraph extends Component<IProps, IState> {
   }
 
   render(): JSX.Element {
+    let width = window.innerWidth / 2
+    if ("RON" in windows) {
+      width = windows.RON.innerWidth / 2
+    }
+
     return (
       <div style={this.props.style}>
         <div style={label}>Ping Graph</div>
@@ -124,7 +130,7 @@ class PingGraph extends Component<IProps, IState> {
               })}
             </select>
           </div>
-          <XYPlot style={{ margin: 10 }} width={window.innerWidth / 2 - 10} height={300}>
+          <XYPlot style={{ margin: 10 }} width={width - 10} height={300}>
             <HorizontalGridLines style={{ fill: "none" }} />
             <LineSeries data={this.state.ping} style={{ fill: "none" }} />
             <XAxis />

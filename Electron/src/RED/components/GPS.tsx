@@ -5,7 +5,10 @@ import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
-  fontSize: "12px",
+  fontSize: "16px",
+  lineHeight: "36px",
+  marginBlockStart: "0",
+  marginBlockEnd: "0",
 }
 const container: CSS.Properties = {
   display: "grid",
@@ -15,8 +18,9 @@ const container: CSS.Properties = {
   borderBottomWidth: "2px",
   borderStyle: "solid",
   gridRowStart: "2 & {}",
-  grid: "repeat(2, 28px) / auto-flow dense",
+  grid: "repeat(4, 36px) / auto-flow dense",
   padding: "5px",
+  height: "calc(100% - 47px)",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -35,50 +39,55 @@ interface IProps {
 }
 
 interface IState {
-  fixObtained: boolean
-  fixQuality: number
-  satelliteCount: number
-  odometer: number
   currentLat: number
   currentLon: number
-  lidar: number
+  pitch: number
+  yaw: number
+  roll: number
+  distance: number
+  quality: number
 }
 class GPS extends Component<IProps, IState> {
   constructor(props: any) {
     super(props)
     this.state = {
-      fixObtained: false,
-      fixQuality: 255,
-      satelliteCount: 255,
-      odometer: 0,
       currentLat: 0,
       currentLon: 0,
-      lidar: 0.0,
+      pitch: 0,
+      yaw: 0,
+      roll: 0,
+      distance: 0,
+      quality: 0,
     }
 
-    rovecomm.on("GPSTelem", (data: any) => this.GPSTelem(data))
-    rovecomm.on("GPSPosition", (data: any) => this.GPSPosition(data))
-
-    // rovecomm.sendCommand(dataIdStr, data, reliability)
+    rovecomm.on("GPSLatLon", (data: any) => this.GPSLatLon(data))
+    rovecomm.on("IMUData", (data: any) => this.IMUData(data))
+    rovecomm.on("LidarData", (data: any) => this.LidarData(data))
   }
 
-  GPSTelem(data: any) {
-    this.setState({
-      fixObtained: data[0] !== 0,
-      fixQuality: data[0],
-      satelliteCount: data[1],
-    })
-  }
-
-  GPSPosition(data: any) {
-    // We divide by 10000000 because currently waypoints are sent as shifted INT32s, not floats
-    const currentLat = data[0] / 10000000
-    const currentLon = data[1] / 10000000
+  GPSLatLon(data: any) {
+    const currentLat = data[0]
+    const currentLon = data[1]
     this.setState({
       currentLat,
       currentLon,
     })
     this.props.onCoordsChange(currentLat, currentLon)
+  }
+
+  IMUData(data: any) {
+    this.setState({
+      pitch: data[0],
+      yaw: data[1],
+      roll: data[2],
+    })
+  }
+
+  LidarData(data: any) {
+    this.setState({
+      distance: data[0],
+      quality: data[1],
+    })
   }
 
   render(): JSX.Element {
@@ -87,20 +96,20 @@ class GPS extends Component<IProps, IState> {
         <div style={label}>GPS</div>
         <div style={container}>
           {[
-            { title: "Fix Obtained", value: this.state.fixObtained.toString() },
-            { title: "Fix Quality", value: this.state.fixQuality },
-            { title: "Satellite Count", value: this.state.satelliteCount },
-            { title: "Odometer (Miles)", value: this.state.odometer },
-            { title: "Current Lat.", value: this.state.currentLat },
-            { title: "Current Lon.", value: this.state.currentLon },
-            { title: "Lidar", value: this.state.lidar },
+            { title: "Current Lat.", value: this.state.currentLat.toFixed(7) },
+            { title: "Current Lon.", value: this.state.currentLon.toFixed(7) },
+            { title: "Distance", value: this.state.distance.toFixed(3) },
+            { title: "Quality", value: this.state.quality.toFixed(3) },
+            { title: "Pitch", value: this.state.pitch.toFixed(3) },
+            { title: "Yaw", value: this.state.yaw.toFixed(3) },
+            { title: "Roll", value: this.state.roll.toFixed(3) },
           ].map(datum => {
             const { title, value } = datum
             return (
               <div key={title}>
-                <h1 style={h1Style}>
+                <p style={h1Style}>
                   {title}: {value}
-                </h1>
+                </p>
               </div>
             )
           })}

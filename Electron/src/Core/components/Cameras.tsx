@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import CSS from "csstype"
-import { rovecomm } from "../RoveProtocol/Rovecomm"
+import { rovecomm, RovecommManifest } from "../RoveProtocol/Rovecomm"
 // import { Packet } from "../../Core/RoveProtocol/Packet"
 
 const h1Style: CSS.Properties = {
@@ -39,7 +39,7 @@ interface IProps {
 
 interface IState {
   currentCamera: number
-  baseAddress: string[]
+  cameraIps: string[]
 }
 
 class Cameras extends Component<IProps, IState> {
@@ -47,12 +47,7 @@ class Cameras extends Component<IProps, IState> {
     super(props)
     this.state = {
       currentCamera: this.props.defaultCamera,
-      baseAddress: [
-        "http://192.168.1.50:8080",
-        "http://192.168.1.51:8080",
-        "http://192.168.1.139:8081",
-        "http://192.168.1.139:8082",
-      ],
+      cameraIps: [RovecommManifest.Camera1.Ip, RovecommManifest.Camera2.Ip, RovecommManifest.Autonomy.Ip],
     }
 
     // rovecomm.sendCommand(Packet(dataId, data), reliability)
@@ -61,14 +56,8 @@ class Cameras extends Component<IProps, IState> {
   ConstructAddress() {
     const index = Math.floor((this.state.currentCamera - 1) / 4)
     const camera = ((this.state.currentCamera - 1) % 4) + 1
-    const addr = this.state.baseAddress[index]
-    if (this.state.currentCamera === 9) {
-      return this.state.baseAddress[2]
-    }
-    if (this.state.currentCamera === 10) {
-      return this.state.baseAddress[3]
-    }
-    return `${addr}/${camera}/stream`
+    const ip = this.state.cameraIps[index]
+    return `http://${ip}:8080/${camera}/stream`
   }
 
   render(): JSX.Element {
@@ -90,16 +79,6 @@ class Cameras extends Component<IProps, IState> {
               )
             })}
           </div>
-          {/*
-            NOTE: This is a theory. If this image somehow exceeds a 
-            certain dimension/width, whether it would be us increasing
-            the resolution of the target computer, or adding styles,
-            the entire app just fails to load without giving any
-            obvious error.
-
-            I'd check the electron-react-boilerplate repo to see
-            if people are having issues with img elements
-          */}
           <img src={this.ConstructAddress()} alt={`Camera ${this.state.currentCamera}`} />
         </div>
       </div>

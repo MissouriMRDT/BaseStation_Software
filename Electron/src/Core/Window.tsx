@@ -4,6 +4,7 @@ import ReactDOM from "react-dom"
 
 const reactTable = path.join(__dirname, "../assets/react-table.css")
 const reactVis = path.join(__dirname, "../assets/react-vis.css")
+export const windows: any = { RED: window }
 
 interface IProps {
   onClose: any
@@ -46,7 +47,11 @@ export default class NewWindowComponent extends Component<IProps, IState> {
       this.externalWindow.document.body.appendChild(this.reactTableLink)
       this.externalWindow.document.body.appendChild(this.reactVisLink)
       this.externalWindow.document.body.appendChild(this.containerEl)
-      this.externalWindow.onunload = () => this.props.onClose()
+      windows[this.props.name] = this.externalWindow
+      this.externalWindow.onunload = () => {
+        this.props.onClose()
+        delete windows[this.props.name]
+      }
     }
   }
 

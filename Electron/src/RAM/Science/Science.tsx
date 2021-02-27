@@ -24,11 +24,12 @@ const column: CSS.Properties = {
 }
 
 const motorMultiplier = 500
+const zMotorMultiplier = 200
 
 function science(): void {
   // Z actuation of the science system is controlled by the left up/down thumbstick
   if ("zDirection" in controllerInputs) {
-    rovecomm.SendCommand("ZActuation", [controllerInputs * motorMultiplier])
+    rovecomm.sendCommand("ZAxis", [controllerInputs.zDirection * zMotorMultiplier])
   }
 
   // Geneva should mainly be controlled by the gui, but open loop control is possible
@@ -40,7 +41,8 @@ function science(): void {
     } else if ("GenevaCW" in controllerInputs && controllerInputs.GenevaCW === 1) {
       direction = 1
     }
-    rovecomm.SendCommand("GenevaOpenLoop", [direction * motorMultiplier])
+    console.log("GenevaOpenLoop", direction * motorMultiplier)
+    rovecomm.sendCommand("GenevaOpenLoop", [direction * motorMultiplier])
   }
 
   // All of the chemical send values are in one array, and we only want to send no power or half power
@@ -57,7 +59,7 @@ function science(): void {
     if (controllerInputs.Chem3 === 1) {
       chemicals[2] = motorMultiplier
     }
-    rovecomm.SendCommand("Chemicals", chemicals)
+    rovecomm.sendCommand("Chemicals", chemicals)
   }
 
   // NOTE: This is NOT how this should be done for the 2021 rover.
@@ -67,7 +69,7 @@ function science(): void {
   // of driving around.
   if ("VacuumPulse" in controllerInputs) {
     const value = controllerInputs.VacuumPulse ? 255 : 0
-    rovecomm.SendCommand("MotorBusEnable", value)
+    rovecomm.sendCommand("MotorBusEnable", value)
   }
 }
 
@@ -88,10 +90,9 @@ class Science extends Component<IProps, IState> {
       <div style={column}>
         <SensorGraphs />
         <Spectrometer />
-        <SpectrometerViewer />
         <div style={row}>
           <SensorData style={{ flex: 3, marginRight: "5px" }} />
-          <Geneva style={{ flex: 1, marginLeft: "5px" }} />
+          <Geneva style={{ flexGrow: 1, marginLeft: "5px" }} />
         </div>
         <ControlScheme configs={["Science"]} />
         <div style={row}>

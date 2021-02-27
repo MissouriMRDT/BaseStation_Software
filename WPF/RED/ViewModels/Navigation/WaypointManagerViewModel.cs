@@ -100,7 +100,7 @@ namespace RED.ViewModels.Navigation
                 NotifyOfPropertyChange(() => Name);
             }
         }
-        public float Latitude
+        public double Latitude
         {
             get
             {
@@ -112,7 +112,7 @@ namespace RED.ViewModels.Navigation
                 NotifyOfPropertyChange(() => Latitude);
             }
         }
-        public float Longitude
+        public double Longitude
         {
             get
             {
@@ -124,7 +124,7 @@ namespace RED.ViewModels.Navigation
                 NotifyOfPropertyChange(() => Longitude);
             }
         }
-        public float LatitudeD
+        public double LatitudeD
         {
             get
             {
@@ -136,7 +136,7 @@ namespace RED.ViewModels.Navigation
                 NotifyOfPropertyChange(() => LatitudeD);
             }
         }
-        public float LatitudeM
+        public double LatitudeM
         {
             get
             {
@@ -148,7 +148,7 @@ namespace RED.ViewModels.Navigation
                 NotifyOfPropertyChange(() => LatitudeM);
             }
         }
-        public float LatitudeS
+        public double LatitudeS
         {
             get
             {
@@ -160,7 +160,7 @@ namespace RED.ViewModels.Navigation
                 NotifyOfPropertyChange(() => LatitudeS);
             }
         }
-        public float LongitudeD
+        public double LongitudeD
         {
             get
             {
@@ -172,7 +172,7 @@ namespace RED.ViewModels.Navigation
                 NotifyOfPropertyChange(() => LongitudeD);
             }
         }
-        public float LongitudeM
+        public double LongitudeM
         {
             get
             {
@@ -184,7 +184,7 @@ namespace RED.ViewModels.Navigation
                 NotifyOfPropertyChange(() => LongitudeM);
             }
         }
-        public float LongitudeS
+        public double LongitudeS
         {
             get
             {

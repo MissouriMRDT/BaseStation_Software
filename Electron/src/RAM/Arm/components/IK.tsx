@@ -47,6 +47,7 @@ const buttons: CSS.Properties = {
   fontSize: "14px",
   lineHeight: "24px",
   borderRadius: "20px",
+  outline: "none",
 }
 
 function getPosition(): void {
@@ -77,7 +78,7 @@ class IK extends Component<IProps, IState> {
     }
     this.setPosition = this.setPosition.bind(this)
 
-    rovecomm.on("IKValues", (data: any) => this.updatePosition(data))
+    rovecomm.on("IKCoordinates", (data: any) => this.updatePosition(data))
   }
 
   setPosition(): void {
@@ -86,7 +87,7 @@ class IK extends Component<IProps, IState> {
      * and send the proper rovecomm packet
      */
     rovecomm.sendCommand(
-      "ArmToIK",
+      "ArmMoveIK",
       Object.values(this.state.IKValues).map(function (x: string) {
         return x ? parseFloat(x) : 0
       })

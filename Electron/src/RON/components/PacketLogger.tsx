@@ -2,8 +2,7 @@ import React, { Component } from "react"
 import CSS from "csstype"
 import ReactTable from "react-table-v6"
 // import "../../node_modules/react-table-v6/react-table.css"
-import { RovecommManifest } from "../../Core/RoveProtocol/RovecommManifest"
-import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
+import { rovecomm, RovecommManifest } from "../../Core/RoveProtocol/Rovecomm"
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
@@ -61,7 +60,7 @@ class PacketLogger extends Component<IProps, IState> {
       columns: [
         { Header: "Name", accessor: "name", width: "100" },
         { Header: "Data Id", accessor: "dataId", width: "75" },
-        { Header: "Time", accessor: "time", width: "75" },
+        { Header: "Time", accessor: "time", width: "100" },
         { Header: "Type", accessor: "dataType", width: "50" },
         { Header: "Count", accessor: "dataCount", width: "50" },
         {
