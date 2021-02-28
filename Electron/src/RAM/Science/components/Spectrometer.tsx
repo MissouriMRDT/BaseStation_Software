@@ -2,9 +2,11 @@ import React, { Component } from "react"
 import html2canvas from "html2canvas"
 import CSS from "csstype"
 import { XYPlot, XAxis, YAxis, HorizontalGridLines, LineSeries, DiscreteColorLegend } from "react-vis"
+import fs from "fs"
 
 import { database, SpectrometerEntry, SpecDataEntry, TestInfoEntry } from "../../../Core/Spectrometer/Database"
 import { rovecomm } from "../../../Core/RoveProtocol/Rovecomm"
+import { windows } from "../../../Core/Window"
 
 const container: CSS.Properties = {
   display: "flex",
@@ -67,6 +69,50 @@ function integrate(data: { x: number; y: number }[]): number {
 
 function insertSpecData(lifePresent: boolean, data: { x: number; y: number }[]): void {
   database.insertData(new SpecDataEntry(1, new Date().toLocaleString(), lifePresent, integrate(data), data))
+}
+
+function downloadURL(imgData: string): void {
+  const filename = `./Screenshots/${new Date()
+    .toISOString()
+    // ISO string will be fromatted YYYY-MM-DDTHH:MM:SS:sssZ
+    // this regex will convert all -,T,:,Z to . (which covers to . for .csv)
+    .replaceAll(/[:\-TZ]/g, ".")}SpectrometerGraph.png`
+
+  if (!fs.existsSync("./Screenshots")) {
+    fs.mkdirSync("./Screenshots")
+  }
+
+  const base64Image = imgData.replace("image/png", "image/octet-stream").split(";base64,").pop()
+  fs.writeFileSync(filename, base64Image!, { encoding: "base64" })
+}
+
+function saveImage(): void {
+  let graph
+  for (const win of Object.keys(windows)) {
+    if (windows[win].document.getElementById("SensorGraph")) {
+      graph = windows[win].document.getElementById("SensorGraph")
+      break
+    }
+  }
+
+  if (!graph) {
+    throw new Error("The element 'SpectrometerGraph' wasn't found")
+  }
+
+  html2canvas(graph, {
+    scrollX: 0,
+    scrollY: -window.scrollY,
+    useCORS: true,
+    allowTaint: true,
+  })
+    .then(canvas => {
+      const imgData = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream")
+      downloadURL(imgData)
+      return null
+    })
+    .catch(error => {
+      console.error(error)
+    })
 }
 
 interface IProps {
@@ -262,36 +308,6 @@ class Spectrometer extends Component<IProps, IState> {
     )
   }
 
-  saveImage(): void {
-    const input = document.getElementById("canvas")
-    if (!input) {
-      throw new Error("The element 'canvas' wasn't found")
-    }
-    html2canvas(input, {
-      scrollX: 0,
-      scrollY: -window.scrollY,
-    })
-      .then(canvas => {
-        const imgData = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream")
-        this.downloadURL(imgData)
-        return null
-      })
-      .catch(error => {
-        console.error(error)
-      })
-  }
-
-  downloadURL(imgData: string): void {
-    this.setState({
-      gathering: "graphImage",
-      counter: 0,
-    })
-    const a = document.createElement("a")
-    a.href = imgData.replace("image/png", "image/octet-stream")
-    a.download = "graph.png"
-    a.click()
-  }
-
   spectrometerData(data: number[]): void {
     let { control, experiment, difference } = this.state
     let offset = 144
@@ -372,7 +388,7 @@ class Spectrometer extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div id="canvas" style={this.props.style}>
+      <div id="SpectrometerGraph" style={this.props.style}>
         <div style={label}>Spectrometer</div>
         <div style={container}>
           <DiscreteColorLegend
@@ -395,7 +411,7 @@ class Spectrometer extends Component<IProps, IState> {
             <YAxis />
           </XYPlot>
           <div style={row}>
-            <button type="button" onClick={() => this.saveImage()}>
+            <button type="button" onClick={() => saveImage()}>
               Export Graph
             </button>
             <button type="button" onClick={this.getControl}>

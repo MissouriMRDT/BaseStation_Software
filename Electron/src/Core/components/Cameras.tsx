@@ -1,10 +1,10 @@
 import React, { Component } from "react"
 import CSS from "csstype"
 import html2canvas from "html2canvas"
+import fs from "fs"
+
 import { RovecommManifest } from "../RoveProtocol/Rovecomm"
 import { windows } from "../Window"
-// import { rovecomm } from "../RoveProtocol/Rovecomm"
-// import { Packet } from "../../Core/RoveProtocol/Packet"
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
@@ -38,35 +38,6 @@ const row: CSS.Properties = {
 
 const cam: CSS.Properties = {
   height: "calc(100% - 60px)",
-}
-
-function downloadURL(imgData: string): void {
-  const a = document.createElement("a")
-  a.href = imgData.replace("image/png", "image/octet-stream")
-  a.download = "camera.png"
-  a.click()
-}
-
-function saveImage(): void {
-  const input = document.getElementById("camera")
-  if (!input) {
-    throw new Error("The element 'camera' wasn't found")
-  }
-  html2canvas(input, {
-    scrollX: 0,
-    scrollY: -window.scrollY,
-    letterRendering: 1,
-    useCORS: true,
-    allowTaint: false,
-  })
-    .then(canvas => {
-      const imgData = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream")
-      downloadURL(imgData)
-      return null
-    })
-    .catch(error => {
-      console.error(error)
-    })
 }
 
 interface IProps {
@@ -143,6 +114,50 @@ class Cameras extends Component<IProps, IState> {
     this.setState({ rotation, style })
   }
 
+  saveImage(): void {
+    let camera
+    for (const win of Object.keys(windows)) {
+      if (windows[win].document.getElementById(this.state.id.toString())) {
+        camera = windows[win].document.getElementById(this.state.id.toString())
+        break
+      }
+    }
+
+    if (!camera) {
+      throw new Error("The element 'camera' wasn't found")
+    }
+
+    html2canvas(camera, {
+      scrollX: 0,
+      scrollY: -window.scrollY,
+      useCORS: true,
+      allowTaint: true,
+    })
+      .then(canvas => {
+        const imgData = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream")
+        this.downloadURL(imgData)
+        return null
+      })
+      .catch(error => {
+        console.error(error)
+      })
+  }
+
+  downloadURL(imgData: string): void {
+    const filename = `./Screenshots/${new Date()
+      .toISOString()
+      // ISO string will be fromatted YYYY-MM-DDTHH:MM:SS:sssZ
+      // this regex will convert all -,T,:,Z to . (which covers to . for .csv)
+      .replaceAll(/[:\-TZ]/g, ".")}Cam${this.state.id}.png`
+
+    if (!fs.existsSync("./Screenshots")) {
+      fs.mkdirSync("./Screenshots")
+    }
+
+    const base64Image = imgData.replace("image/png", "image/octet-stream").split(";base64,").pop()
+    fs.writeFileSync(filename, base64Image!, { encoding: "base64" })
+  }
+
   render(): JSX.Element {
     return (
       <div id="camera" style={{ ...this.props.style, maxHeight: `${this.props.maxHeight}px` }}>
@@ -169,7 +184,7 @@ class Cameras extends Component<IProps, IState> {
             id={this.state.id.toString()}
           />
           <div style={row}>
-            <button type="button" onClick={() => saveImage()} style={{ flexGrow: 1 }}>
+            <button type="button" onClick={() => this.saveImage()} style={{ flexGrow: 1 }}>
               Screenshot
             </button>
             <button type="button" onClick={() => this.rotate()} style={{ flexGrow: 1 }}>
