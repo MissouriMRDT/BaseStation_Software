@@ -110,8 +110,8 @@ class PingGraph extends Component<IProps, IState> {
 
   render(): JSX.Element {
     let width = window.innerWidth / 2
-    if ("RON" in windows) {
-      width = windows.RON.innerWidth / 2
+    if ("Rover Overview of Network" in windows) {
+      width = windows["Rover Overview of Network"].innerWidth / 2
     }
 
     return (

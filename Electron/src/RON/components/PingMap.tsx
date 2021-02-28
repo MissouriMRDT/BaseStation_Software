@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import CSS from "csstype"
 import { RovecommManifest } from "../../Core/RoveProtocol/Rovecomm"
 import { ColorConverter } from "../../Core/ColorConverter"
+import { windows } from "../../Core/Window"
 
 const container: CSS.Properties = {
   display: "flex",
@@ -30,7 +31,9 @@ interface IProps {
   style?: CSS.Properties
 }
 
-interface IState {}
+interface IState {
+  width: number
+}
 
 // For colorConverter
 const min = 0
@@ -44,9 +47,17 @@ class PingMap extends Component<IProps, IState> {
 
   constructor(props: IProps) {
     super(props)
-    this.state = {}
+    this.state = {
+      width: window.innerWidth / 2,
+    }
 
     this.canvasRef = React.createRef()
+  }
+
+  componentDidMount() {
+    if ("Rover Overview of Network" in windows) {
+      this.setState({ width: windows["Rover Overview of Network"].innerWidth / 2 })
+    }
   }
 
   componentDidUpdate(prevProps: IProps) {
@@ -57,6 +68,8 @@ class PingMap extends Component<IProps, IState> {
   }
 
   updatePingMap(): void {
+    console.log("updating map")
+
     let text
 
     const canvas = this.canvasRef.current
@@ -222,7 +235,7 @@ class PingMap extends Component<IProps, IState> {
       <div style={this.props.style}>
         <div style={label}>Ping Map</div>
         <div style={container}>
-          <canvas ref={this.canvasRef} width={window.innerWidth / 2 - 10} height="640" />
+          <canvas ref={this.canvasRef} width={this.state.width - 10} height="640" />
         </div>
       </div>
     )
