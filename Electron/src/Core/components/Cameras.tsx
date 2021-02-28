@@ -148,7 +148,7 @@ class Cameras extends Component<IProps, IState> {
       .toISOString()
       // ISO string will be fromatted YYYY-MM-DDTHH:MM:SS:sssZ
       // this regex will convert all -,T,:,Z to . (which covers to . for .csv)
-      .replaceAll(/[:\-TZ]/g, ".")}Cam${this.state.id}.png`
+      .replaceAll(/[:\-TZ]/g, ".")}Cam${this.state.currentCamera}.png`
 
     if (!fs.existsSync("./Screenshots")) {
       fs.mkdirSync("./Screenshots")
