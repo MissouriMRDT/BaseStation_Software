@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import CSS from "csstype"
 import html2canvas from "html2canvas"
 import { RovecommManifest } from "../RoveProtocol/Rovecomm"
+import { windows } from "../Window"
 // import { rovecomm } from "../RoveProtocol/Rovecomm"
 // import { Packet } from "../../Core/RoveProtocol/Packet"
 
@@ -78,16 +79,23 @@ interface IState {
   currentCamera: number
   cameraIps: string[]
   rotation: number
+  style: CSS.Properties
+  id: number
 }
 
 class Cameras extends Component<IProps, IState> {
+  static id = 0
+
   constructor(props: IProps) {
     super(props)
     this.state = {
       currentCamera: this.props.defaultCamera,
       cameraIps: [RovecommManifest.Camera1.Ip, RovecommManifest.Camera2.Ip, RovecommManifest.Autonomy.Ip],
       rotation: 0,
+      style: {},
+      id: Cameras.id,
     }
+    Cameras.id += 1
     // rovecomm.sendCommand(Packet(dataId, data), reliability)
   }
 
@@ -99,9 +107,40 @@ class Cameras extends Component<IProps, IState> {
   }
 
   rotate(): void {
-    this.setState({
-      rotation: this.state.rotation + (90 % 360),
-    })
+    let style: CSS.Properties
+    let { rotation } = this.state
+    rotation = (rotation + 90) % 360
+
+    let width = 0
+    let height = 0
+
+    for (const win of Object.keys(windows)) {
+      if (windows[win].document.getElementById(this.state.id)) {
+        width = windows[win].document.getElementById(this.state.id).clientWidth
+        height = windows[win].document.getElementById(this.state.id).clientHeight
+        break
+      }
+    }
+
+    const Xfactor = height / width
+    const Yfactor = width / height
+
+    switch (rotation) {
+      case 90:
+        style = { transform: `rotate(90deg) scaleX(${Xfactor}) scaleY(${Yfactor})` }
+        break
+      case 180:
+        style = { transform: "rotate(180deg)" }
+        break
+      case 270:
+        style = { transform: `rotate(270deg) scaleX(${Xfactor}) scaleY(${Yfactor})` }
+        break
+      default:
+        style = { transform: "" }
+        break
+    }
+
+    this.setState({ rotation, style })
   }
 
   render(): JSX.Element {
@@ -126,7 +165,8 @@ class Cameras extends Component<IProps, IState> {
           <img
             src={this.ConstructAddress()}
             alt={`Camera ${this.state.currentCamera}`}
-            style={{ ...cam, transform: `${this.state.rotation}deg` }}
+            style={{ ...cam, ...this.state.style }}
+            id={this.state.id.toString()}
           />
           <div style={row}>
             <button type="button" onClick={() => saveImage()} style={{ flexGrow: 1 }}>
