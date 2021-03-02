@@ -58,6 +58,18 @@ const cellReadoutContainer: CSS.Properties = {
   gridTemplateColumns: "auto auto auto auto",
 }
 
+const motors = ["Drive LF", "Drive LR", "Drive RF", "Drive RR", "Spare Motor"]
+const steerMotors = ["Steering LF", "Steering LR", "Steering RF", "Steering RR"]
+const actBus = ["Gimbal", "multimedia", "Auxiliary"]
+const logicBus = ["Gimbal", "Multimedia", "Autonomy", "Drive", "Nav", "Cameras", "Extra"]
+const thirtyVBus = ["12V", "Comms", "Auxiliary", "Drive"]
+const twelveVBus = ["Gimbal", "Multimedia", "Autonomy", "Logic"]
+const cells = ["Cell 1", "Cell 2", "Cell 3", "Cell 4", "Cell 5", "Cell 6", "Cell 7", "Cell 8"]
+const vacuum = ["Vacuum"]
+const totalPackCurrent = ["TotalPackCurrent"]
+const totalPackVoltage = ["TotalPackVoltage"]
+const battTempMeas = ["Temp"]
+
 function turnOffReboot(time: number): void {
   rovecomm.sendCommand("BMSStop", [time])
 }
@@ -110,153 +122,45 @@ class Power extends Component<IProps, IState> {
         "Cell 8": { value: 0 },
       },
     }
-    this.motorBusCurrents = this.motorBusCurrents.bind(this)
-    this.motorBusEnabled = this.motorBusEnabled.bind(this)
-    this.steeringMotorCurrents = this.steeringMotorCurrents.bind(this)
-    this.twelveVActBusEnabled = this.twelveVActBusEnabled.bind(this)
-    this.twelveVLogicBusEnabled = this.twelveVLogicBusEnabled.bind(this)
-    this.twelveVBusCurrent = this.twelveVBusCurrent.bind(this)
-    this.thirtyVBusEnabled = this.thirtyVBusEnabled.bind(this)
-    this.thirtyVBusCurrents = this.thirtyVBusCurrents.bind(this)
-    this.vacuumEnabled = this.vacuumEnabled.bind(this)
-    this.vacuumCurrent = this.vacuumCurrent.bind(this)
-    this.packCurrentMeas = this.packCurrentMeas.bind(this)
-    this.packVoltageMeas = this.packVoltageMeas.bind(this)
-    this.cellsVoltMeas = this.cellsVoltMeas.bind(this)
-    this.battTempMeas = this.battTempMeas.bind(this)
+    this.boardListenHandler = this.boardListenHandler.bind(this)
+    this.batteryListenHandler = this.batteryListenHandler.bind(this)
 
-    rovecomm.on("MotorBusCurrent", (data: number[]) => this.motorBusCurrents(data))
-    rovecomm.on("MotorBusEnabled", (data: number[]) => this.motorBusEnabled(data))
-    rovecomm.on("SteeringMotorCurrents", (data: number[]) => this.steeringMotorCurrents(data)) // potential removal
-    rovecomm.on("12VActBusEnabled", (data: number[]) => this.twelveVActBusEnabled(data))
-    rovecomm.on("12VLogicBusEnabled", (data: number[]) => this.twelveVLogicBusEnabled(data))
-    rovecomm.on("12VBusCurrent", (data: number[]) => this.twelveVBusCurrent(data))
-    rovecomm.on("ThirtyVEnabled", (data: number[]) => this.thirtyVBusEnabled(data))
-    rovecomm.on("30VBusCurrent", (data: number[]) => this.thirtyVBusCurrents(data))
-    rovecomm.on("VacuumEnabled", (data: number[]) => this.vacuumEnabled(data))
-    rovecomm.on("VacuumCurrent", (data: number[]) => this.vacuumCurrent(data))
-    rovecomm.on("PackI_Meas", (data: number) => this.packCurrentMeas(data))
-    rovecomm.on("PackV_Meas", (data: number) => this.packVoltageMeas(data))
-    rovecomm.on("CellV_Meas", (data: number) => this.cellsVoltMeas(data))
-    rovecomm.on("Temp_Meas", (data: number) => this.battTempMeas(data))
+    rovecomm.on("MotorBusCurrent", (data: number[]) => this.boardListenHandler(data, motors, false))
+    rovecomm.on("MotorBusEnabled", (data: number[]) => this.boardListenHandler(data, motors, true))
+    rovecomm.on("SteeringMotorCurrents", (data: number[]) => this.boardListenHandler(data, steerMotors, false)) // potential removal
+    rovecomm.on("12VActBusEnabled", (data: number[]) => this.boardListenHandler(data, actBus, true))
+    rovecomm.on("12VLogicBusEnabled", (data: number[]) => this.boardListenHandler(data, logicBus, true))
+    rovecomm.on("12VBusCurrent", (data: number[]) => this.boardListenHandler(data, twelveVBus, false))
+    rovecomm.on("ThirtyVEnabled", (data: number[]) => this.boardListenHandler(data, thirtyVBus, false))
+    rovecomm.on("30VBusCurrent", (data: number[]) => this.boardListenHandler(data, thirtyVBus, false))
+    rovecomm.on("VacuumEnabled", (data: number[]) => this.boardListenHandler(data, vacuum, true))
+    rovecomm.on("VacuumCurrent", (data: number[]) => this.boardListenHandler(data, vacuum, false))
+    rovecomm.on("PackI_Meas", (data: number) => this.batteryListenHandler(data, totalPackCurrent))
+    rovecomm.on("PackV_Meas", (data: number) => this.batteryListenHandler(data, totalPackVoltage))
+    rovecomm.on("CellV_Meas", (data: number) => this.batteryListenHandler(data, cells))
+    rovecomm.on("Temp_Meas", (data: number) => this.batteryListenHandler(data, battTempMeas))
   }
 
-  motorBusEnabled(data: number[]): void {
-    const motors = ["Drive LF", "Drive LR", "Drive RF", "Drive RR", "Spare Motor"]
-    const bitmask = BitmaskUnpack(data[0], motors)
+  boardListenHandler(data: number[], partList: string[], isEnabler: boolean): void {
     const { boardTelemetry } = this.state
-    for (let i = 0; i < motors.length; i++) {
-      boardTelemetry[motors[i]].enabled = Boolean(Number(bitmask[i]))
+    if (isEnabler) {
+      const bitmask = BitmaskUnpack(data[0], partList.length)
+      for (let i = 0; i < partList.length; i++) {
+        boardTelemetry[partList[i]].enabled = Boolean(Number(bitmask[i]))
+      }
+    } else {
+      for (let i = 0; i < partList.length; i++) {
+        boardTelemetry[partList[i]].value = data[i]
+      }
     }
     this.setState({ boardTelemetry })
   }
 
-  motorBusCurrents(data: number[]): void {
-    const motors = ["Drive LF", "Drive LR", "Drive RF", "Drive RR", "Spare Motor"]
-    const { boardTelemetry } = this.state
-    for (let i = 0; i < motors.length; i++) {
-      boardTelemetry[motors[i]].value = data[i]
-    }
-    this.setState({ boardTelemetry })
-  }
-
-  steeringMotorCurrents(data: number[]): void {
-    const motors = ["Steering LF", "Steering LR", "Steering RF", "Steering RR"]
-    const { boardTelemetry } = this.state
-    for (let i = 0; i < motors.length; i++) {
-      boardTelemetry[motors[i]].value = data[i]
-    }
-    this.setState({ boardTelemetry })
-  }
-
-  twelveVActBusEnabled(data: number[]): void {
-    const peripherals = ["Gimbal", "Multimedia", "Auxiliary"]
-    const bitmask = BitmaskUnpack(data[0], peripherals)
-    const { boardTelemetry } = this.state
-    for (let i = 0; i < peripherals.length; i++) {
-      boardTelemetry[peripherals[i]].enabled = Boolean(Number(bitmask[i]))
-    }
-    this.setState({ boardTelemetry })
-  }
-
-  twelveVLogicBusEnabled(data: number[]): void {
-    const boards = ["Gimbal", "Multimedia", "Autonomy", "Drive", "Nav", "Cameras", "Extra"]
-    const bitmask = BitmaskUnpack(data[0], boards)
-    const { boardTelemetry } = this.state
-    for (let i = 0; i < boards.length; i++) {
-      boardTelemetry[boards[i]].enabled = Boolean(Number(bitmask[i]))
-    }
-    this.setState({ boardTelemetry })
-  }
-
-  twelveVBusCurrent(data: number[]): void {
-    const boards = ["Gimbal", "Multimedia", "Autonomy", "Logic"]
-    const { boardTelemetry } = this.state
-    for (let i = 0; i < boards.length; i++) {
-      boardTelemetry[boards[i]].value = data[i]
-    }
-    this.setState({ boardTelemetry })
-  }
-
-  thirtyVBusEnabled(data: number[]): void {
-    const boards = ["12V", "Comms", "Auxiliary", "Drive"]
-    const bitmask = BitmaskUnpack(data[0], boards)
-    const { boardTelemetry } = this.state
-    for (let i = 0; i < boards.length; i++) {
-      boardTelemetry[boards[i]].enabled = Boolean(Number(bitmask[i]))
-    }
-    this.setState({ boardTelemetry })
-  }
-
-  thirtyVBusCurrents(data: number[]): void {
-    const boards = ["12V", "Comms", "Auxiliary", "Drive"]
-    const { boardTelemetry } = this.state
-    for (let i = 0; i < boards.length; i++) {
-      boardTelemetry[boards[i]].value = data[i]
-    }
-    this.setState({ boardTelemetry })
-  }
-
-  vacuumEnabled(data: number[]): void {
-    const { boardTelemetry } = this.state
-    boardTelemetry.Vacuum.enabled = Boolean(Number(data[0]))
-    this.setState({ boardTelemetry })
-  }
-
-  vacuumCurrent(data: number[]): void {
-    const { boardTelemetry } = this.state
-    // eslint-disable-next-line prefer-destructuring
-    boardTelemetry.Vacuum.value = data[0]
-    this.setState({ boardTelemetry })
-  }
-
-  packCurrentMeas(data: number): void {
+  batteryListenHandler(data: number, partList: string[]): void {
     const { batteryTelemetry } = this.state
-    // eslint-disable-next-line prefer-destructuring
-    batteryTelemetry.TotalPackCurrent.value = data[0]
-    this.setState({ batteryTelemetry })
-  }
-
-  packVoltageMeas(data: number): void {
-    const { batteryTelemetry } = this.state
-    // eslint-disable-next-line prefer-destructuring
-    batteryTelemetry.TotalPackVoltage.value = data[0]
-    this.setState({ batteryTelemetry })
-  }
-
-  cellsVoltMeas(data: number): void {
-    const cells = ["Cell 1", "Cell 2", "Cell 3", "Cell 4", "Cell 5", "Cell 6", "Cell 7", "Cell 8"]
-    const { batteryTelemetry } = this.state
-    for (let i = 0; i < cells.length; i++) {
-      batteryTelemetry[cells[i]].value = data[i]
+    for (let i = 0; i < partList.length; i++) {
+      batteryTelemetry[partList[i]].value = data[i]
     }
-    this.setState({ batteryTelemetry })
-  }
-
-  battTempMeas(data: number): void {
-    const { batteryTelemetry } = this.state
-    // eslint-disable-next-line prefer-destructuring
-    batteryTelemetry.Temp.value = data[0]
     this.setState({ batteryTelemetry })
   }
 
@@ -276,7 +180,6 @@ class Power extends Component<IProps, IState> {
   }
 
   allMotorToggle(button: boolean): void {
-    const motors = ["Drive LF", "Drive LR", "Drive RF", "Drive RR", "Spare Motor"]
     let { boardTelemetry } = this.state
     if (button) {
       for (let i = 0; i < motors.length; i++) {
@@ -303,10 +206,6 @@ class Power extends Component<IProps, IState> {
   }
 
   packCommand(bus: string): void {
-    const motors = ["Drive LF", "Drive LR", "Drive RF", "Drive RR", "Spare Motor"]
-    const actBus = ["Gimbal", "Multimedia", "Auxiliary"]
-    const logicBus = ["Gimbal", "Multimedia", "Autonomy", "Drive", "Nav", "Cameras", "Extra"]
-    const thirtyVBus = ["12V", "Comms", "Auxiliary", "Drive"]
     if (motors.includes(bus)) {
       let newBitMask = ""
       motors.forEach(motor => {
@@ -316,22 +215,22 @@ class Power extends Component<IProps, IState> {
     }
     if (actBus.includes(bus)) {
       let newBitMask = ""
-      actBus.forEach(motor => {
-        newBitMask += this.state.boardTelemetry[motor].enabled ? "1" : "0"
+      actBus.forEach(part => {
+        newBitMask += this.state.boardTelemetry[part].enabled ? "1" : "0"
       })
       rovecomm.sendCommand("12VActBusEnable", [parseInt(newBitMask, 2)])
     }
     if (logicBus.includes(bus)) {
       let newBitMask = ""
-      logicBus.forEach(motor => {
-        newBitMask += this.state.boardTelemetry[motor].enabled ? "1" : "0"
+      logicBus.forEach(board => {
+        newBitMask += this.state.boardTelemetry[board].enabled ? "1" : "0"
       })
       rovecomm.sendCommand("12VLogicBusEnable", [parseInt(newBitMask, 2)])
     }
     if (thirtyVBus.includes(bus)) {
       let newBitMask = ""
-      thirtyVBus.forEach(motor => {
-        newBitMask += this.state.boardTelemetry[motor].enabled ? "1" : "0"
+      thirtyVBus.forEach(lane => {
+        newBitMask += this.state.boardTelemetry[lane].enabled ? "1" : "0"
       })
       rovecomm.sendCommand("30VBusEnable", [parseInt(newBitMask, 2)])
     }
