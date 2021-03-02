@@ -47,6 +47,7 @@ const buttons: CSS.Properties = {
   fontSize: "14px",
   lineHeight: "24px",
   borderRadius: "20px",
+  outline: "none",
 }
 
 function getPosition(): void {

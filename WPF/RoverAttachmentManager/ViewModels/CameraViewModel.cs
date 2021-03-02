@@ -76,6 +76,8 @@ namespace RoverAttachmentManager.ViewModels
         public void Camera6() { SetCamera(Camera.RightEndEffector); }
         public void Camera7() { SetCamera(Camera.Elbow); }
         public void Camera8() { SetCamera(Camera.PlaceholderCamera8); }
+        public void Camera9() { SetCamera(Camera.AutonomyRegular); }
+        public void Camera10() { SetCamera(Camera.AutonomyDepth); }
         #endregion
     }
 }

@@ -22,43 +22,42 @@ namespace RoverAttachmentManager.ViewModels.Autonomy
 
         public SentWaypointsViewModel SentWaypoints
         {
-          get
-          {
-            return _model.SentWaypoints;
-          }
-          set
-          {
-            _model.SentWaypoints = value;
-          }
+            get
+            {
+                return _model.SentWaypoints;
+            }
+            set
+            {
+                _model.SentWaypoints = value;
+            }
         }
 
-        public void Enable() => _rovecomm.SendCommand(Packet.Create("AutonomousModeEnable"), true);
+        public void Enable()
+        {
+            _rovecomm.SendCommand(Packet.Create("AutonomousModeEnable"), false);
+        }
 
-        public void Disable() => _rovecomm.SendCommand(Packet.Create("AutonomousModeDisable"), true);
+        public void Disable() => _rovecomm.SendCommand(Packet.Create("AutonomousModeDisable"), false);
 
         public ControlsViewModel(IRovecomm networkMessenger, AutonomyViewModel parent)
         {
             _model = new ControlsModel();
             _rovecomm = networkMessenger;
             _waypointManager = WaypointManager.Instance;
+            SentWaypoints = parent.SentWaypoints;
         }
 
         public void AddWaypoint()
         {
             Waypoint waypoint = _waypointManager.SelectedWaypoint;
-            byte[] msg = new byte[2 * sizeof(double)];
-            Buffer.BlockCopy(BitConverter.GetBytes(waypoint.Longitude), 0, msg, 0 * sizeof(double), sizeof(double));
-            Buffer.BlockCopy(BitConverter.GetBytes(waypoint.Latitude), 0, msg, 1 * sizeof(double), sizeof(double));
-            Array.Reverse(msg);
-
+            float[] sendValues = { (float)waypoint.Longitude, (float)waypoint.Latitude };
+            _rovecomm.SendCommand(Packet.Create("WaypointAdd", sendValues), false);
             SentWaypoints.SentWaypoints(waypoint);
-
-            _rovecomm.SendCommand(new Packet("WaypointAdd", msg, 2, (byte)7), true);
         }
 
         public void ClearAllWaypoints()
         {
-          _rovecomm.SendCommand(Packet.Create("WaypointsClearAll"), true);
+          _rovecomm.SendCommand(Packet.Create("WaypointsClearAll"), false);
           SentWaypoints.ClearAllWaypoints();
         }
     }
