@@ -60,18 +60,24 @@ const btnStyle: CSS.Properties = {
   cursor: "pointer",
 }
 
-const motors = ["Drive LF", "Drive LR", "Drive RF", "Drive RR", "Spare Motor"]
-const steerMotors = ["Steering LF", "Steering LR", "Steering RF", "Steering RR"]
-const actBus = ["Gimbal", "multimedia", "Auxiliary"]
-const logicBus = ["Gimbal", "Multimedia", "Autonomy", "Drive", "Nav", "Cameras", "Extra"]
-const thirtyVBus = ["12V", "Comms", "Auxiliary", "Drive"]
-const twelveVBus = ["Gimbal", "Multimedia", "Autonomy", "Logic"]
-const cells = ["Cell 1", "Cell 2", "Cell 3", "Cell 4", "Cell 5", "Cell 6", "Cell 7", "Cell 8"]
-const vacuum = ["Vacuum"]
-const totalPackCurrent = ["TotalPackCurrent"]
-const totalPackVoltage = ["TotalPackVoltage"]
-const battTempMeas = ["Temp"]
+const MOTORS = ["Drive LF", "Drive LR", "Drive RF", "Drive RR", "Spare Motor"]
+const STEERMOTORS = ["Steering LF", "Steering LR", "Steering RF", "Steering RR"]
+const ACTBUS = ["Gimbal", "Multimedia", "Auxiliary"]
+const LOGICBUS = ["Gimbal", "Multimedia", "Autonomy", "Drive", "Nav", "Cameras", "Extra"]
+const THIRTY_V_BUS = ["12V", "Comms", "Auxiliary", "Drive"]
+const TWELVE_V_BUS = ["Gimbal", "Multimedia", "Autonomy", "Logic"]
+const CELLS = ["Cell 1", "Cell 2", "Cell 3", "Cell 4", "Cell 5", "Cell 6", "Cell 7", "Cell 8"]
+const VACUUM = ["Vacuum"]
+const TOTALPACKCURRENT = ["TotalPackCurrent"]
+const TOTALPACKVOLTAGE = ["TotalPackVoltage"]
+const BATTERY_TEMP = ["Temp"]
 
+// The specific function of turnOffReboot() originates from how the control boards
+// on the rover are programmed. If turnOffReboot() gets passed "0", the rover turns off.
+// If "time" is any positive number, the rover just powercycles for that many seconds.
+// It's been determined that 5 seconds is long enough for a standard powercycle as any longer
+// is mostly redundent and would cut into the allowed time during competition, and any shorter
+// is probably not enough time. ¯\_(ツ)_/¯
 function turnOffReboot(time: number): void {
   rovecomm.sendCommand("BMSStop", [time])
 }
@@ -127,20 +133,20 @@ class Power extends Component<IProps, IState> {
     this.boardListenHandler = this.boardListenHandler.bind(this)
     this.batteryListenHandler = this.batteryListenHandler.bind(this)
 
-    rovecomm.on("MotorBusCurrent", (data: number[]) => this.boardListenHandler(data, motors, false))
-    rovecomm.on("MotorBusEnabled", (data: number[]) => this.boardListenHandler(data, motors, true))
-    rovecomm.on("SteeringMotorCurrents", (data: number[]) => this.boardListenHandler(data, steerMotors, false)) // potential removal
-    rovecomm.on("12VActBusEnabled", (data: number[]) => this.boardListenHandler(data, actBus, true))
-    rovecomm.on("12VLogicBusEnabled", (data: number[]) => this.boardListenHandler(data, logicBus, true))
-    rovecomm.on("12VBusCurrent", (data: number[]) => this.boardListenHandler(data, twelveVBus, false))
-    rovecomm.on("ThirtyVEnabled", (data: number[]) => this.boardListenHandler(data, thirtyVBus, false))
-    rovecomm.on("30VBusCurrent", (data: number[]) => this.boardListenHandler(data, thirtyVBus, false))
-    rovecomm.on("VacuumEnabled", (data: number[]) => this.boardListenHandler(data, vacuum, true))
-    rovecomm.on("VacuumCurrent", (data: number[]) => this.boardListenHandler(data, vacuum, false))
-    rovecomm.on("PackI_Meas", (data: number) => this.batteryListenHandler(data, totalPackCurrent))
-    rovecomm.on("PackV_Meas", (data: number) => this.batteryListenHandler(data, totalPackVoltage))
-    rovecomm.on("CellV_Meas", (data: number) => this.batteryListenHandler(data, cells))
-    rovecomm.on("Temp_Meas", (data: number) => this.batteryListenHandler(data, battTempMeas))
+    rovecomm.on("MotorBusCurrent", (data: number[]) => this.boardListenHandler(data, MOTORS, false))
+    rovecomm.on("MotorBusEnabled", (data: number[]) => this.boardListenHandler(data, MOTORS, true))
+    rovecomm.on("SteeringMotorCurrents", (data: number[]) => this.boardListenHandler(data, STEERMOTORS, false))
+    rovecomm.on("12VActBusEnabled", (data: number[]) => this.boardListenHandler(data, ACTBUS, true))
+    rovecomm.on("12VLogicBusEnabled", (data: number[]) => this.boardListenHandler(data, LOGICBUS, true))
+    rovecomm.on("12VBusCurrent", (data: number[]) => this.boardListenHandler(data, TWELVE_V_BUS, false))
+    rovecomm.on("ThirtyVEnabled", (data: number[]) => this.boardListenHandler(data, THIRTY_V_BUS, true))
+    rovecomm.on("30VBusCurrent", (data: number[]) => this.boardListenHandler(data, THIRTY_V_BUS, false))
+    rovecomm.on("VacuumEnabled", (data: number[]) => this.boardListenHandler(data, VACUUM, true))
+    rovecomm.on("VacuumCurrent", (data: number[]) => this.boardListenHandler(data, VACUUM, false))
+    rovecomm.on("PackI_Meas", (data: number) => this.batteryListenHandler(data, TOTALPACKCURRENT))
+    rovecomm.on("PackV_Meas", (data: number) => this.batteryListenHandler(data, TOTALPACKVOLTAGE))
+    rovecomm.on("CellV_Meas", (data: number) => this.batteryListenHandler(data, CELLS))
+    rovecomm.on("Temp_Meas", (data: number) => this.batteryListenHandler(data, BATTERY_TEMP))
   }
 
   boardListenHandler(data: number[], partList: string[], isEnabler: boolean): void {
@@ -155,6 +161,8 @@ class Power extends Component<IProps, IState> {
         boardTelemetry[partList[i]].value = data[i]
       }
     }
+    // The setState is kept until the end because of how the priority of state changes are handled.
+    // This reason remains the same for all the functions with a setState at the end.
     this.setState({ boardTelemetry })
   }
 
@@ -177,6 +185,8 @@ class Power extends Component<IProps, IState> {
           },
         },
       },
+      // after the state of a given device is changed, packCommand() gets called to send the command(s)
+      // corresponding with the toggled device to the rover, making it so only relevent commands are sent
       () => this.packCommand(bus)
     )
   }
@@ -184,60 +194,71 @@ class Power extends Component<IProps, IState> {
   allMotorToggle(button: boolean): void {
     let { boardTelemetry } = this.state
     if (button) {
-      for (let i = 0; i < motors.length; i++) {
+      for (let i = 0; i < MOTORS.length; i++) {
         boardTelemetry = {
           ...boardTelemetry,
-          [motors[i]]: {
-            ...boardTelemetry[motors[i]],
+          [MOTORS[i]]: {
+            ...boardTelemetry[MOTORS[i]],
             enabled: true,
           },
         }
       }
     } else {
-      for (let i = 0; i < motors.length; i++) {
+      for (let i = 0; i < MOTORS.length; i++) {
         boardTelemetry = {
           ...boardTelemetry,
-          [motors[i]]: {
-            ...boardTelemetry[motors[i]],
+          [MOTORS[i]]: {
+            ...boardTelemetry[MOTORS[i]],
             enabled: false,
           },
         }
       }
     }
-    this.setState({ boardTelemetry }, () => this.packCommand(motors[0]))
+    // MOTORS[0] is used used mostly arbitrarily. allMotorToggle() changes the
+    // state of all the motors at the same time, but even if only one motor had
+    // changed state, the state of ALL the motors are sent as a SINGLE packet
+    // by packCommand(), according to the groups defined by roveComm.
+    this.setState({ boardTelemetry }, () => this.packCommand(MOTORS[0]))
   }
 
   packCommand(bus: string): void {
-    if (motors.includes(bus)) {
+    // pack command will be passed the object whose button got pressed (ie "Drive LF"
+    // or "Vacuum", etc.). It then gets checked which list that object is a part of.
+    // Multiple lists have objects the exist in multiple lists, hence only if's and
+    // not if-else's. After an object's "home list" is determined, a new bitmask string
+    // is made where each character corresponds to the "enabled" state of each object
+    // in the "home list." After the bitmask's string is constructed, it gets turned
+    // from a binary string into an integer and sent as a command to roveComm.
+    if (MOTORS.includes(bus)) {
       let newBitMask = ""
-      motors.forEach(motor => {
+      MOTORS.forEach(motor => {
         newBitMask += this.state.boardTelemetry[motor].enabled ? "1" : "0"
       })
       rovecomm.sendCommand("MotorBusEnable", [parseInt(newBitMask, 2)])
     }
-    if (actBus.includes(bus)) {
+    if (ACTBUS.includes(bus)) {
       let newBitMask = ""
-      actBus.forEach(part => {
+      ACTBUS.forEach(part => {
         newBitMask += this.state.boardTelemetry[part].enabled ? "1" : "0"
       })
       rovecomm.sendCommand("12VActBusEnable", [parseInt(newBitMask, 2)])
     }
-    if (logicBus.includes(bus)) {
+    if (LOGICBUS.includes(bus)) {
       let newBitMask = ""
-      logicBus.forEach(board => {
+      LOGICBUS.forEach(board => {
         newBitMask += this.state.boardTelemetry[board].enabled ? "1" : "0"
       })
       rovecomm.sendCommand("12VLogicBusEnable", [parseInt(newBitMask, 2)])
     }
-    if (thirtyVBus.includes(bus)) {
+    if (THIRTY_V_BUS.includes(bus)) {
       let newBitMask = ""
-      thirtyVBus.forEach(lane => {
+      THIRTY_V_BUS.forEach(lane => {
         newBitMask += this.state.boardTelemetry[lane].enabled ? "1" : "0"
       })
       rovecomm.sendCommand("30VBusEnable", [parseInt(newBitMask, 2)])
     }
     if (bus === "Vacuum") {
-      const newBitMask = this.state.boardTelemetry.Vacuum.enabled ? "1" : "0"
+      const newBitMask = this.state.boardTelemetry[bus].enabled ? "1" : "0"
       rovecomm.sendCommand("VacuumEnable", [parseInt(newBitMask, 2)])
     }
   }
@@ -248,87 +269,40 @@ class Power extends Component<IProps, IState> {
         <div style={label}>Power and BMS</div>
         <div style={mainContainer}>
           <div style={{ ...row, width: "100%" }}>
-            <div
-              /* first column of buttons and readouts */
-              style={{ ...column, flexGrow: 1 }}
-            >
-              {[
-                "Drive LF",
-                "Drive LR",
-                "Drive RF",
-                "Drive RR",
-                "Steering LF", // doesn't actually have enable
-                "Steering LR", // doesn't actually have enable
-                "Steering RF", // doesn't actually have enable
-                "Steering RR", // doesn't actually have enable
-                "Spare Motor",
-              ].map(motor => {
-                /* this and following map functions work to make the button onClick's, titles,
-              and electrical current details all callable by the same respective "name" or "ID"
-              stored in the above array */
-                return (
-                  <div key={motor} style={row}>
-                    {"enabled" in this.state.boardTelemetry[motor] ? (
-                      <button type="button" onClick={() => this.buttonToggle(motor)} style={btnStyle}>
-                        {this.state.boardTelemetry[motor].enabled ? "Enabled" : "Disabled"}
-                      </button>
-                    ) : (
-                      <div style={{ width: "70px", backgroundColor: "hsl(0, 0%, 90%)" }} />
-                    )}
-                    <div style={ColorStyleConverter(this.state.boardTelemetry[motor].value, 0, 7, 15, 120, 0, readout)}>
-                      <h3 style={textPad}>{motor}</h3>
-                      <h3 style={textPad}>
-                        {this.state.boardTelemetry[motor].value.toLocaleString(undefined, {
-                          minimumFractionDigits: 1,
-                          maximumFractionDigits: 1,
-                          minimumIntegerDigits: 2,
-                        })}
-                        &nbsp;A
-                      </h3>
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-            <div
-              style={{ ...column, flexGrow: 1 }}
-              /* second column of buttons and readouts */
-            >
-              {[
-                "Gimbal",
-                "Multimedia",
-                "Autonomy",
-                "Logic", // doesn't actually have enable
-                "12V",
-                "Comms",
-                "Auxiliary",
-                "Drive",
-                "Vacuum",
-              ].map(part => {
-                return (
-                  <div key={part} style={row}>
-                    {"enabled" in this.state.boardTelemetry[part] ? (
-                      <button type="button" onClick={() => this.buttonToggle(part)} style={btnStyle}>
-                        {this.state.boardTelemetry[part].enabled ? "Enabled" : "Disabled"}
-                      </button>
-                    ) : (
-                      <div style={{ width: "70px", backgroundColor: "hsl(0, 0%, 90%)" }} />
-                    )}
-                    <div style={ColorStyleConverter(this.state.boardTelemetry[part].value, 0, 7, 15, 120, 0, readout)}>
-                      <h3 style={textPad}>{part}</h3>
-                      <h3 style={textPad}>
-                        {this.state.boardTelemetry[part].value.toLocaleString(undefined, {
-                          minimumFractionDigits: 1,
-                          maximumFractionDigits: 1,
-                          minimumIntegerDigits: 2,
-                        })}
-                        &nbsp;A
-                      </h3>
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
+            {[
+              [...STEERMOTORS, ...MOTORS],
+              ["Gimbal", "Multimedia", "Autonomy", "Logic", "12V", "Comms", "Auxiliary", "Drive", "Vacuum"],
+            ].map(part => {
+              return (
+                <div key={undefined} style={{ ...column, flexGrow: 1 }}>
+                  {part.map(motor => {
+                    return (
+                      <div key={motor} style={row}>
+                        {"enabled" in this.state.boardTelemetry[motor] ? (
+                          <button type="button" onClick={() => this.buttonToggle(motor)} style={btnStyle}>
+                            {this.state.boardTelemetry[motor].enabled ? "Enabled" : "Disabled"}
+                          </button>
+                        ) : (
+                          <div style={{ width: "70px", backgroundColor: "hsl(0, 0%, 90%)" }} />
+                        )}
+                        <div
+                          style={ColorStyleConverter(this.state.boardTelemetry[motor].value, 0, 7, 15, 120, 0, readout)}
+                        >
+                          <h3 style={textPad}>{motor}</h3>
+                          <h3 style={textPad}>
+                            {`${this.state.boardTelemetry[motor].value.toLocaleString(undefined, {
+                              minimumFractionDigits: 1,
+                              maximumFractionDigits: 1,
+                              minimumIntegerDigits: 2,
+                            })} A`}
+                          </h3>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              )
+            })}
           </div>
           <div style={{ ...row, ...btnArray, marginTop: "2%" }}>
             {["Nav", "Cameras", "Extra"].map(peripheral => {
@@ -386,12 +360,11 @@ class Power extends Component<IProps, IState> {
             >
               <h3 style={textPad}>Total Pack Current</h3>
               <h3 style={textPad}>
-                {this.state.batteryTelemetry.TotalPackCurrent.value.toLocaleString(undefined, {
+                {`${this.state.batteryTelemetry.TotalPackCurrent.value.toLocaleString(undefined, {
                   minimumFractionDigits: 1,
                   maximumFractionDigits: 1,
                   minimumIntegerDigits: 2,
-                })}
-                &nbsp;A
+                })} A`}
               </h3>
             </div>
             <div
@@ -407,18 +380,17 @@ class Power extends Component<IProps, IState> {
             >
               <h3 style={textPad}>Total Pack Voltage</h3>
               <h3 style={textPad}>
-                {this.state.batteryTelemetry.TotalPackVoltage.value.toLocaleString(undefined, {
+                {`${this.state.batteryTelemetry.TotalPackVoltage.value.toLocaleString(undefined, {
                   minimumFractionDigits: 1,
                   maximumFractionDigits: 2,
                   minimumIntegerDigits: 2,
-                })}
-                &nbsp;V
+                })} V`}
               </h3>
             </div>
           </div>
           <div style={{ ...row, width: "100%" }}>
             <div style={{ ...cellReadoutContainer, width: "100%" }}>
-              {["Cell 1", "Cell 2", "Cell 3", "Cell 4", "Cell 5", "Cell 6", "Cell 7", "Cell 8"].map(cell => {
+              {CELLS.map(cell => {
                 return (
                   <div
                     key={cell}
@@ -426,12 +398,11 @@ class Power extends Component<IProps, IState> {
                   >
                     <h3 style={textPad}>{cell}</h3>
                     <h3 style={textPad}>
-                      {this.state.batteryTelemetry[cell].value.toLocaleString(undefined, {
+                      {`${this.state.batteryTelemetry[cell].value.toLocaleString(undefined, {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                         minimumIntegerDigits: 1,
-                      })}
-                      &nbsp;V
+                      })} V`}
                     </h3>
                   </div>
                 )
