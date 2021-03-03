@@ -22,8 +22,8 @@ const container: CSS.Properties = {
   padding: "5px",
 }
 const timeRead: CSS.Properties = {
-  display: "grid",
-  gridTemplateColumns: "auto auto",
+  display: "flex",
+  flexDirection: "row",
   justifyContent: "space-between",
   fontSize: "20px",
   marginTop: "-26px",
