@@ -174,6 +174,11 @@ class Power extends Component<IProps, IState> {
     this.setState({ batteryTelemetry })
   }
 
+  // except for the all motor buttons, buttonToggle() is called every time an enable/disable
+  // button is pressed. When called, it's passed the name of a bus/device defined in the global
+  // lists, and sets the state for that item to the opposite it was prior to the function call.
+  // The ellipses function as the "spreading apart" operator that makes it so ONLY the specified
+  // states get changed.
   buttonToggle(bus: string): void {
     this.setState(
       {
@@ -193,6 +198,11 @@ class Power extends Component<IProps, IState> {
 
   allMotorToggle(button: boolean): void {
     let { boardTelemetry } = this.state
+    // to simplify things, the all motor toggle was split into two buttons: an all enabled and an all disable.
+    // Both buttons will pass a boolean to allMotorToggle() where it goes through each item in the constant
+    // list and sets all their "enabled" states to true. Same if allMotorToggle() is passed false except it
+    // sets all the states to false. Then the state changes all get thrown to the actual setState() and the
+    // command is packed and sent.
     if (button) {
       for (let i = 0; i < MOTORS.length; i++) {
         boardTelemetry = {
