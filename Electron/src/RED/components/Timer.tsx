@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import CSS from "csstype"
+import path from "path"
 import ProgressBar from "../../Core/ProgressBar"
 
 const label: CSS.Properties = {
@@ -37,6 +38,25 @@ const column: CSS.Properties = {
   marginLeft: "auto",
   marginRight: "auto",
 }
+const advOptionsModal: CSS.Properties = {
+  position: "absolute",
+  zIndex: 1,
+  border: "2px solid #990000",
+  backgroundColor: "white",
+}
+const timeSplitModal: CSS.Properties = {
+  position: "absolute",
+  zIndex: 1,
+  border: "2px solid #990000",
+  backgroundColor: "white",
+}
+const rmvAddModal: CSS.Properties = {
+  position: "absolute",
+  zIndex: 1,
+  border: "2px solid #990000",
+  backgroundColor: "white",
+}
+const filepath = path.join(__dirname, "../assets/TaskList.json")
 
 function unpackInput(time: string): number {
   const formattedTime = time.split(":")
@@ -54,22 +74,40 @@ function packOutput(time: number): string {
   })}:${remainSeconds.toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
 }
 
+interface ParentTask {
+  index: number
+  title: string
+  setTime: number
+  currentTime: number
+}
+
+interface ChildTask extends ParentTask {}
+
 interface IProps {}
 
 interface IState {
-  totalTime: any
+  parentTask: any
   timerInstance: any
-  currentInstance: number
+  currentChild: number
+  currentParent: number
+  advOptionsOpen: boolean
+  rmvAddOptionOpen: boolean
+  timeSplitOpen: boolean
 }
 
 class Timer extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props)
     this.state = {
-      totalTime: {
-        title: "Total Time",
-        setTime: 300,
-        currentTime: 195,
+      advOptionsOpen: false,
+      rmvAddOptionOpen: false,
+      timeSplitOpen: false,
+      parentTask: {
+        1: {
+          title: "Parent Task",
+          setTime: 300,
+          currentTime: 195,
+        },
       },
       timerInstance: {
         1: {
@@ -79,7 +117,8 @@ class Timer extends Component<IProps, IState> {
           difference: 0,
         },
       },
-      currentInstance: 1,
+      currentChild: 1,
+      currentParent: 1,
     }
   }
 
@@ -112,20 +151,26 @@ class Timer extends Component<IProps, IState> {
         <div style={label}>Timer</div>
         <div style={{ ...container, ...column }}>
           <div id="TotalTimeContainer" style={{ ...column, marginTop: "-2.5%", width: "98%" }}>
-            <p style={{ marginBottom: "0px", fontSize: "15px", marginTop: "10px" }}>{this.state.totalTime.title}</p>
-            <ProgressBar current={this.state.totalTime.currentTime} total={this.state.totalTime.setTime} name="total" />
+            <p style={{ marginBottom: "0px", fontSize: "15px", marginTop: "10px", fontWeight: "bold" }}>
+              {this.state.parentTask[this.state.currentParent].title}
+            </p>
+            <ProgressBar
+              current={this.state.parentTask[this.state.currentParent].currentTime}
+              total={this.state.parentTask[this.state.currentParent].setTime}
+              name="total"
+            />
             <div style={{ ...timeRead, marginLeft: "1%", marginRight: "1%", marginTop: "-2.8%" }}>
-              <p>{packOutput(this.state.totalTime.currentTime)}</p>
-              <p>-{packOutput(this.state.totalTime.setTime)}</p>
+              <p>{packOutput(this.state.parentTask[this.state.currentParent].currentTime)}</p>
+              <p>-{packOutput(this.state.parentTask[this.state.currentParent].setTime)}</p>
             </div>
           </div>
           <div id="CurrentTaskContainer" style={{ ...column, marginTop: "-5%", width: "100%" }}>
             <p style={{ margin: "0px", fontSize: "23px", fontWeight: "bold" }}>
-              {this.state.timerInstance[this.state.currentInstance].title}
+              {this.state.timerInstance[this.state.currentChild].title}
             </p>
             <ProgressBar
-              current={this.state.timerInstance[this.state.currentInstance].currentTime}
-              total={this.state.timerInstance[this.state.currentInstance].setTime}
+              current={this.state.timerInstance[this.state.currentChild].currentTime}
+              total={this.state.timerInstance[this.state.currentChild].setTime}
               name="other"
             />
             <div
@@ -138,8 +183,8 @@ class Timer extends Component<IProps, IState> {
                 fontWeight: "bold",
               }}
             >
-              <p>{packOutput(this.state.timerInstance[this.state.currentInstance].currentTime)}</p>
-              <p>-{packOutput(this.state.timerInstance[this.state.currentInstance].setTime)}</p>
+              <p>{packOutput(this.state.timerInstance[this.state.currentChild].currentTime)}</p>
+              <p>-{packOutput(this.state.timerInstance[this.state.currentChild].setTime)}</p>
             </div>
           </div>
           <div id="NextTaskContainer" />
@@ -152,12 +197,12 @@ class Timer extends Component<IProps, IState> {
             }}
           >
             <div style={{ flexGrow: 3 }}>
-              <button type="button" style={{ height: "50px", width: "100%", fontSize: "25px" }}>
+              <button type="button" style={{ height: "50px", width: "100%", fontSize: "30px" }}>
                 START/STOP
               </button>
             </div>
             <div style={{ ...column, flexGrow: 1 }}>
-              <button type="button" style={{ height: "20px" }}>
+              <button type="button" style={{ height: "20px" }} onClick={() => this.setState({ advOptionsOpen: true })}>
                 Advanced Options
               </button>
               <button type="button" style={{ height: "30px", fontSize: "23px" }}>
@@ -165,140 +210,92 @@ class Timer extends Component<IProps, IState> {
               </button>
             </div>
             <div style={{ flexGrow: 3 }}>
-              <button type="button" style={{ height: "50px", width: "100%", fontSize: "25px", marginLeft: "-10px" }}>
+              <button type="button" style={{ height: "50px", width: "100%", fontSize: "30px", marginLeft: "-10px" }}>
                 NEXT TASK
               </button>
             </div>
           </div>
-          <div id="ResetButtonContainer" />
+          {this.state.advOptionsOpen ? (
+            <div style={advOptionsModal}>
+              <p>Advanced Options</p>
+              <div>
+                <button type="button">Prev Sub-Task</button>
+                <button type="button" onClick={() => this.setState({ timeSplitOpen: true })}>
+                  Open Split
+                </button>
+                <button type="button">Reset Task</button>
+                <button type="button" onClick={() => this.setState({ rmvAddOptionOpen: true })}>
+                  Edit List
+                </button>
+              </div>
+              <div>
+                <button type="button" onClick={() => this.setState({ advOptionsOpen: false })}>
+                  back
+                </button>
+              </div>
+            </div>
+          ) : null}
+          {this.state.timeSplitOpen ? (
+            <div style={timeSplitModal}>
+              <p>Times and Differences</p>
+              <div>
+                {[TASKLIST].map(task => {
+                  return (
+                    <div key={undefined}>
+                      <p>{task}</p>
+                    </div>
+                  )
+                })}
+              </div>
+              <div>
+                <button type="button" onClick={() => this.setState({ timeSplitOpen: false })}>
+                  back
+                </button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    this.setState({ timeSplitOpen: false, advOptionsOpen: false, rmvAddOptionOpen: false })
+                  }
+                >
+                  close all
+                </button>
+              </div>
+            </div>
+          ) : null}
+          {this.state.rmvAddOptionOpen ? (
+            <div style={rmvAddModal}>
+              <p>Edit Task List</p>
+              <div>
+                {[TASKLIST].map(task => {
+                  return (
+                    <div key={undefined}>
+                      <p>{task}</p>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          // placeholder for delete entry
+                        }}
+                      >
+                        Trash Can Icon
+                      </button>
+                    </div>
+                  )
+                })}
+              </div>
+              <button type="button" onClick={() => this.setState({ rmvAddOptionOpen: false })}>
+                back
+              </button>
+              <button
+                type="button"
+                onClick={() => this.setState({ rmvAddOptionOpen: false, advOptionsOpen: false, timeSplitOpen: false })}
+              >
+                close all
+              </button>
+            </div>
+          ) : null}
         </div>
       </div>
     )
   }
 }
 export default Timer
-/*
-const generateId = (): string => Math.random().toString(36).substr(2, 8)
-
-const convertStringToSeconds = (time: string): number => {
-  const [hours, minutes, seconds] = time.split(":").map(n => Number(n))
-  return hours * 3600 + minutes * 60 + seconds
-}
-
-const convertSecondsToString = (seconds: number): string => {
-  const padNumber = (n: number): string => {
-    return String(n).padStart(2, "0")
-  }
-  const hours = padNumber(Math.floor(seconds / 3600))
-  const minutes = padNumber(Math.floor((seconds - hours * 3600) / 60))
-  const remainingSeconds = padNumber(seconds % 60)
-  return `${hours}:${minutes}:${remainingSeconds}`
-}
-
-const Timer = (): JSX.Element => {
-  const [tasks, setTasks] = useState([
-    {
-      id: generateId(),
-      name: "Sample Task",
-      allottedTime: "00:00:30",
-      runningTime: 30,
-    },
-  ])
-  const [runningTime, setRunningTime] = useState(tasks[0].runningTime)
-  const [newTaskName, setNewTaskName] = useState("")
-  const [newTaskTime, setNewTaskTime] = useState("")
-  const [isRunning, setIsRunning] = useState(false)
-
-  useEffect(() => {
-    const tick = setTimeout(() => {
-      // If the current timer is finished, check if there is another task.
-      // If so, set running time to that of the next task and remove the
-      // finished one. Otherwise, stop.
-      if (runningTime === 0) {
-        if (tasks.length - 1 > 0) {
-          setRunningTime(tasks[1].runningTime)
-          setTasks(tasks.slice(1))
-        } else {
-          setIsRunning(false)
-        }
-      }
-
-      if (isRunning && runningTime > 0) {
-        setRunningTime(runningTime - 1)
-      }
-    }, 1000)
-    return () => clearTimeout(tick)
-  })
-
-  const removeTask = (taskId: string): void => {
-    setTasks(tasks.filter(task => task.id !== taskId))
-  }
-
-  const addTask = (): void => {
-    setTasks(
-      tasks.concat({
-        id: generateId(),
-        name: newTaskName,
-        allottedTime: newTaskTime,
-        runningTime: convertStringToSeconds(newTaskTime),
-      })
-    )
-  }
-
-  return (
-    <div>
-      <div style={label}>Timer</div>
-      <div style={container}>
-        <h2>{tasks[0].name}</h2>
-        <p>{convertSecondsToString(runningTime)}</p>
-        <ProgressBar current={runningTime} total={tasks[0].runningTime} />
-        <button type="button" onClick={() => setIsRunning(!isRunning)}>
-          {isRunning ? "Stop" : "Start"}
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            setRunningTime(tasks[0].runningTime)
-            setIsRunning(false)
-          }}
-        >
-          Reset
-        </button>
-
-        <ul style={{ listStyle: "none" }}>
-          {tasks.map(task => (
-            <li key={task.id}>
-              <p>
-                {task.id}, {task.name}, {task.allottedTime}, {task.runningTime}s
-              </p>
-              <button type="button" onClick={() => removeTask(task.id)}>
-                Remove Task
-              </button>
-            </li>
-          ))}
-        </ul>
-
-        <form>
-          <input
-            type="text"
-            value={newTaskName}
-            placeholder={newTaskName}
-            onChange={event => setNewTaskName(event.target.value)}
-          />
-          <input
-            type="text"
-            value={newTaskTime}
-            placeholder={newTaskTime}
-            onChange={event => setNewTaskTime(event.target.value)}
-          />
-          <button type="button" onClick={addTask}>
-            + Add Task
-          </button>
-        </form>
-      </div>
-    </div>
-  )
-}
-
-export default Timer
-*/
