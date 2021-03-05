@@ -25,8 +25,7 @@ const timeRead: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
   justifyContent: "space-between",
-  fontSize: "20px",
-  marginTop: "-26px",
+  marginTop: "0px",
 }
 const row: CSS.Properties = {
   display: "flex",
@@ -35,6 +34,8 @@ const row: CSS.Properties = {
 const column: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
+  marginLeft: "auto",
+  marginRight: "auto",
 }
 
 function unpackInput(time: string): number {
@@ -110,45 +111,64 @@ class Timer extends Component<IProps, IState> {
       <div>
         <div style={label}>Timer</div>
         <div style={{ ...container, ...column }}>
-          <div id="TotalTimeContainer" style={{ ...column, marginTop: "-15px" }}>
-            <h3 style={{ marginBottom: "0px", fontSize: "25px", marginTop: "10px" }}>{this.state.totalTime.title}</h3>
+          <div id="TotalTimeContainer" style={{ ...column, marginTop: "-2.5%", width: "98%" }}>
+            <p style={{ marginBottom: "0px", fontSize: "15px", marginTop: "10px" }}>{this.state.totalTime.title}</p>
             <ProgressBar current={this.state.totalTime.currentTime} total={this.state.totalTime.setTime} name="total" />
-            <div style={{ ...timeRead, marginLeft: "1%", marginRight: "1%" }}>
-              <h4>{packOutput(this.state.totalTime.currentTime)}</h4>
-              <h4>-{packOutput(this.state.totalTime.setTime)}</h4>
+            <div style={{ ...timeRead, marginLeft: "1%", marginRight: "1%", marginTop: "-2.8%" }}>
+              <p>{packOutput(this.state.totalTime.currentTime)}</p>
+              <p>-{packOutput(this.state.totalTime.setTime)}</p>
             </div>
           </div>
-          <div id="CurrentTaskContainer" style={{ ...column, marginTop: "-20px" }}>
-            <h1 style={{ margin: "0px" }}>{this.state.timerInstance[this.state.currentInstance].title}</h1>
+          <div id="CurrentTaskContainer" style={{ ...column, marginTop: "-5%", width: "100%" }}>
+            <p style={{ margin: "0px", fontSize: "23px", fontWeight: "bold" }}>
+              {this.state.timerInstance[this.state.currentInstance].title}
+            </p>
             <ProgressBar
               current={this.state.timerInstance[this.state.currentInstance].currentTime}
               total={this.state.timerInstance[this.state.currentInstance].setTime}
               name="other"
             />
-            <div style={{ ...timeRead, fontSize: "30px", marginTop: "-38px", marginLeft: "3%", marginRight: "3%" }}>
-              <h2>{packOutput(this.state.timerInstance[this.state.currentInstance].currentTime)}</h2>
-              <h2>-{packOutput(this.state.timerInstance[this.state.currentInstance].setTime)}</h2>
+            <div
+              style={{
+                ...timeRead,
+                fontSize: "20px",
+                marginTop: "-3.5%",
+                marginLeft: "9%",
+                marginRight: "9%",
+                fontWeight: "bold",
+              }}
+            >
+              <p>{packOutput(this.state.timerInstance[this.state.currentInstance].currentTime)}</p>
+              <p>-{packOutput(this.state.timerInstance[this.state.currentInstance].setTime)}</p>
             </div>
           </div>
           <div id="NextTaskContainer" />
           <div
             id="StartStopContainer"
             style={{
-              display: "grid",
-              gridTemplateColumns: "auto auto auto",
-              justifyContent: "space-between",
-              alignItems: "flex-end",
+              display: "flex",
+              marginTop: "-3%",
+              flexBasis: "auto",
             }}
           >
-            <button type="button" style={{ height: "100px", width: "180px", fontSize: "25px" }}>
-              START/STOP
-            </button>
-            <button type="button" style={{ height: "20px", width: "130px" }}>
-              Advanced Options
-            </button>
-            <button type="button" style={{ height: "100px", width: "180px", fontSize: "25px" }}>
-              RESET
-            </button>
+            <div style={{ flexGrow: 3 }}>
+              <button type="button" style={{ height: "50px", width: "100%", fontSize: "25px" }}>
+                START/STOP
+              </button>
+            </div>
+            <div style={{ ...column, flexGrow: 1 }}>
+              <button type="button" style={{ height: "20px" }}>
+                Advanced Options
+              </button>
+              <button type="button" style={{ height: "30px", fontSize: "23px" }}>
+                RESET
+              </button>
+            </div>
+            <div style={{ flexGrow: 3 }}>
+              <button type="button" style={{ height: "50px", width: "100%", fontSize: "25px", marginLeft: "-10px" }}>
+                NEXT TASK
+              </button>
+            </div>
           </div>
           <div id="ResetButtonContainer" />
         </div>
