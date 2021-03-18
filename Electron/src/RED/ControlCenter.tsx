@@ -9,6 +9,7 @@ import NewWindowComponent from "../Core/Window"
 import RoverOverviewOfNetwork from "../RON/RON"
 import RoverAttachmentManager from "../RAM/RAM"
 import Cameras from "../Core/components/Cameras"
+import Power from "./components/Power&BMS"
 import ControlScheme from "../Core/components/ControlScheme"
 import Drive from "./components/Drive"
 import Gimbal from "./components/Gimbal"
@@ -102,6 +103,7 @@ class ControlCenter extends Component<IProps, IState> {
               this.waypointsInstance = instance
             }}
           />
+          <Power />
           <Log />
           <Drive />
           <div style={row}>
