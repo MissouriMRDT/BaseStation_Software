@@ -13,8 +13,8 @@ import Power from "./components/Power&BMS"
 import ControlScheme from "../Core/components/ControlScheme"
 import Drive from "./components/Drive"
 import Gimbal from "./components/Gimbal"
-import STLViewer from "../Core/components/STLViewer"
 import ThreeDRover from "../Core/components/ThreeDRover"
+import Lighting from "./components/Lighting"
 
 const row: CSS.Properties = {
   display: "flex",
@@ -96,14 +96,17 @@ class ControlCenter extends Component<IProps, IState> {
             <GPS onCoordsChange={this.updateCoords} style={{ flexGrow: 1, marginRight: "5px" }} />
             <ThreeDRover />
           </div>
-          <Waypoints
-            onWaypointChange={this.updateWaypoints}
-            currentCoords={this.state.currentCoords}
-            ref={instance => {
-              this.waypointsInstance = instance
-            }}
-          />
-          <Power />
+          <div style={row}>
+            <Waypoints
+              onWaypointChange={this.updateWaypoints}
+              currentCoords={this.state.currentCoords}
+              ref={instance => {
+                this.waypointsInstance = instance
+              }}
+              style={{ flexGrow: 1, marginRight: "5px" }}
+            />
+            <Lighting />
+          </div>
           <Log />
           <Drive />
           <div style={row}>
