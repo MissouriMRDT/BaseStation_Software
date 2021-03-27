@@ -71,12 +71,28 @@ class Gimbal extends Component<IProps, IState> {
       // The multiples defined below are for Valkyries mounting positions, and the * 5 is just a small constant to tweak how quickly they respond
       // to controller input
       if (controlling === "Main") {
-        rovecomm.sendCommand("LeftMainGimbal", [controllerInputs.PanLeft * 5, controllerInputs.TiltLeft * 5])
-        rovecomm.sendCommand("RightMainGimbal", [controllerInputs.PanRight * 5, controllerInputs.TiltRight * 5])
+        rovecomm.sendCommand(
+          "LeftMainGimbalIncrement",
+          [controllerInputs.PanLeft * 5, controllerInputs.TiltLeft * 5],
+          true
+        )
+        rovecomm.sendCommand(
+          "RightMainGimbalIncrement",
+          [controllerInputs.PanRight * 5, controllerInputs.TiltRight * 5],
+          true
+        )
       } else if (controlling === "Drive") {
         // The drive gimbals currently take tilt, then pan and discard pan since they only tilt
-        rovecomm.sendCommand("LeftDriveGimbal", [controllerInputs.TiltLeft * 5, controllerInputs.PanLeft * 5])
-        rovecomm.sendCommand("RightDriveGimbal", [controllerInputs.TiltRight * -5, controllerInputs.TiltRight * 5])
+        rovecomm.sendCommand(
+          "LeftDriveGimbalIncrement",
+          [controllerInputs.TiltLeft * 5, controllerInputs.PanLeft * 5],
+          true
+        )
+        rovecomm.sendCommand(
+          "RightDriveGimbalIncrement",
+          [controllerInputs.TiltRight * -5, controllerInputs.TiltRight * 5],
+          true
+        )
       }
     }
     this.setState({
