@@ -3,6 +3,7 @@ import CSS from "csstype"
 import { RovecommManifest } from "../../Core/RoveProtocol/Rovecomm"
 import { ColorConverter } from "../../Core/ColorConverter"
 import { windows } from "../../Core/Window"
+import { RONModuleWidth } from "./PingGraph"
 
 const container: CSS.Properties = {
   display: "flex",
@@ -32,7 +33,7 @@ interface IProps {
 }
 
 interface IState {
-  width: number
+  lastWidth: number
 }
 
 // For colorConverter
@@ -48,27 +49,21 @@ class PingMap extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props)
     this.state = {
-      width: window.innerWidth / 2,
+      lastWidth: RONModuleWidth,
     }
 
     this.canvasRef = React.createRef()
   }
 
-  componentDidMount() {
-    if ("Rover Overview of Network" in windows) {
-      this.setState({ width: windows["Rover Overview of Network"].innerWidth / 2 })
-    }
-  }
-
   componentDidUpdate(prevProps: IProps) {
     // Any time props are recieved that are different than the previous props, update the pingmap
-    if (this.props.devices !== prevProps.devices) {
+    if (this.props.devices !== prevProps.devices || this.state.lastWidth !== RONModuleWidth) {
       this.updatePingMap()
     }
   }
 
   updatePingMap(): void {
-    console.log("updating map")
+    this.setState({ lastWidth: RONModuleWidth })
 
     let text
 
@@ -232,10 +227,10 @@ class PingMap extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div style={this.props.style}>
+      <div style={{ ...this.props.style, width: RONModuleWidth }}>
         <div style={label}>Ping Map</div>
         <div style={container}>
-          <canvas ref={this.canvasRef} width={this.state.width - 10} height="640" />
+          <canvas ref={this.canvasRef} width={RONModuleWidth - 10} height="640" />
         </div>
       </div>
     )

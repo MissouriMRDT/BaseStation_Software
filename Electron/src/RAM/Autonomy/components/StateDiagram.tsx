@@ -176,7 +176,7 @@ class StateDiagram extends Component<IProps, IState> {
       <div style={this.props.style}>
         <div style={label}>State Diagram</div>
         <div style={container}>
-          <canvas ref={this.canvasRef} width={window.innerWidth / 2 - 10} height={400} />
+          <canvas ref={this.canvasRef} width={window.document.documentElement.clientWidth / 2 - 10} height={400} />
         </div>
       </div>
     )

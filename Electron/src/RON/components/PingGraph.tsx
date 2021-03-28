@@ -1,9 +1,11 @@
 import React, { Component } from "react"
 import CSS from "csstype"
-import { exec } from "child_process"
 import { XYPlot, XAxis, YAxis, HorizontalGridLines, LineSeries } from "react-vis"
-import { RovecommManifest, NetworkDevices } from "../../Core/RoveProtocol/Rovecomm"
+import { RovecommManifest } from "../../Core/RoveProtocol/Rovecomm"
 import { windows } from "../../Core/Window"
+
+// eslint-disable-next-line import/no-mutable-exports
+export let RONModuleWidth: number = window.document.documentElement.clientWidth / 2 - 10
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
@@ -31,10 +33,10 @@ const label: CSS.Properties = {
   zIndex: 1,
   color: "white",
 }
-const selectbox: CSS.Properties = {
+let selectbox: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
-  width: "450px",
+  width: `min(450px, ${RONModuleWidth}px)`,
   margin: "2.5px",
   justifyContent: "space-around",
 }
@@ -109,13 +111,14 @@ class PingGraph extends Component<IProps, IState> {
   }
 
   render(): JSX.Element {
-    let width = window.innerWidth / 2
+    selectbox = { ...selectbox, width: `min(450px, ${RONModuleWidth - 15}px)` }
+
     if ("Rover Overview of Network" in windows) {
-      width = windows["Rover Overview of Network"].innerWidth / 2
+      RONModuleWidth = windows["Rover Overview of Network"].document.documentElement.clientWidth / 2 - 10
     }
 
     return (
-      <div style={this.props.style}>
+      <div style={{ ...this.props.style, width: RONModuleWidth }}>
         <div style={label}>Ping Graph</div>
         <div style={container}>
           <div style={selectbox}>
@@ -130,7 +133,7 @@ class PingGraph extends Component<IProps, IState> {
               })}
             </select>
           </div>
-          <XYPlot style={{ margin: 10 }} width={width - 10} height={300}>
+          <XYPlot style={{ margin: 10 }} width={RONModuleWidth - 10} height={300}>
             <HorizontalGridLines style={{ fill: "none" }} />
             <LineSeries data={this.state.ping} style={{ fill: "none" }} />
             <XAxis />
