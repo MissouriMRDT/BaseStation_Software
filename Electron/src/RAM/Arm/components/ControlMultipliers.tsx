@@ -53,7 +53,7 @@ const slider: CSS.Properties = {
 // exporting this is far easier and more accessible than passing it through
 // the props chain. Disabled linter for just this line.
 // eslint-disable-next-line import/no-mutable-exports
-export let controlMultipliers = {}
+export let controlMultipliers: any = {}
 
 interface IProps {
   style?: CSS.Properties
@@ -64,8 +64,8 @@ interface IState {
     Base: number
     Elbow: number
     Wrist: number
-    GripperOne: number
-    GripperTwo: number
+    Gripper: number
+    Nipper: number
   }
 }
 
@@ -77,8 +77,8 @@ class ControlMultipliers extends Component<IProps, IState> {
         Base: 500,
         Elbow: 500,
         Wrist: 500,
-        GripperOne: 500,
-        GripperTwo: 500,
+        Gripper: 500,
+        Nipper: 500,
       },
     }
   }

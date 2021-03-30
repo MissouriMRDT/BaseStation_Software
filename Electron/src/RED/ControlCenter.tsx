@@ -10,11 +10,12 @@ import RoverOverviewOfNetwork from "../RON/RON"
 import RoverAttachmentManager from "../RAM/RAM"
 import RoverImageryDisplay from "../RID/RID"
 import Cameras from "../Core/components/Cameras"
+import Power from "./components/Power&BMS"
 import ControlScheme from "../Core/components/ControlScheme"
 import Drive from "./components/Drive"
 import Gimbal from "./components/Gimbal"
-import STLViewer from "../Core/components/STLViewer"
 import ThreeDRover from "../Core/components/ThreeDRover"
+import Lighting from "./components/Lighting"
 
 const row: CSS.Properties = {
   display: "flex",
@@ -112,13 +113,17 @@ class ControlCenter extends Component<IProps, IState> {
             <GPS onCoordsChange={this.updateCoords} style={{ flexGrow: 1, marginRight: "5px", width: "60%" }} />
             <ThreeDRover style={{ width: "40%" }} />
           </div>
-          <Waypoints
-            onWaypointChange={this.updateWaypoints}
-            currentCoords={this.state.currentCoords}
-            ref={instance => {
-              this.waypointsInstance = instance
-            }}
-          />
+          <div style={row}>
+            <Waypoints
+              onWaypointChange={this.updateWaypoints}
+              currentCoords={this.state.currentCoords}
+              ref={instance => {
+                this.waypointsInstance = instance
+              }}
+              style={{ flexGrow: 1, marginRight: "5px" }}
+            />
+            <Lighting />
+          </div>
           <Log />
           <Drive />
           <div style={row}>

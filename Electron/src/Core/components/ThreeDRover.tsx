@@ -47,14 +47,18 @@ class ThreeDRover extends Component<IProps, IState> {
     zoom: 20,
   }
 
+  static id = 0
+
   constructor(props: any) {
     super(props)
     this.state = {
       IMUData: [0, 0, 0],
-      id: new Date().toLocaleTimeString(),
+      id: ThreeDRover.id.toString(),
       width: 300,
       height: 150,
     }
+
+    ThreeDRover.id += 1
 
     rovecomm.on("IMUData", (data: any) => this.IMUData(data))
   }
