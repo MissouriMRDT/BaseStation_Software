@@ -53,7 +53,7 @@ class ThreeDRover extends Component<IProps, IState> {
     super(props)
     this.state = {
       IMUData: [0, 0, 0],
-      id: ThreeDRover.id.toString(),
+      id: `3DRover_${ThreeDRover.id}`,
       width: 300,
       height: 150,
     }
@@ -80,10 +80,16 @@ class ThreeDRover extends Component<IProps, IState> {
   findWidth() {
     for (const win of Object.keys(windows)) {
       if (windows[win].document.getElementById(this.state.id)) {
-        this.setState({
-          width: windows[win].document.getElementById(this.state.id).clientWidth,
-          height: windows[win].document.getElementById(this.state.id).clientHeight,
-        })
+        if (
+          this.state.width !== windows[win].document.getElementById(this.state.id).clientWidth - 10 ||
+          this.state.height !== windows[win].document.getElementById(this.state.id).clientHeight - 12
+        ) {
+          windows[win].addEventListener("resize", () => this.findWidth())
+          this.setState({
+            width: windows[win].document.getElementById(this.state.id).clientWidth - 10,
+            height: windows[win].document.getElementById(this.state.id).clientHeight - 12,
+          })
+        }
       }
     }
   }
