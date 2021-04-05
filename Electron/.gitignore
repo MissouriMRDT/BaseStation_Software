@@ -1,6 +1,9 @@
 # Map files
 assets/maps
 
+# Exported Data
+Screenshots/
+
 # Logs
 logs
 *.log

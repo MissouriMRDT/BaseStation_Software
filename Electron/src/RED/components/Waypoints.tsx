@@ -18,6 +18,7 @@ const container: CSS.Properties = {
   borderColor: "#990000",
   borderBottomWidth: "2px",
   borderStyle: "solid",
+  height: "calc(100% - 38px)",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
