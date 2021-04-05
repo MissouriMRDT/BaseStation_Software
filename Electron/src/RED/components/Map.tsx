@@ -1,9 +1,7 @@
 import React, { Component } from "react"
 import CSS from "csstype"
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet"
-import localforage from "localforage"
-import L, { LatLngTuple } from "leaflet"
-import "leaflet-offline"
+import { LatLngTuple } from "leaflet"
 
 import icon from "./Icon"
 import compassNeedle from "./CompassNeedle"
@@ -63,20 +61,6 @@ class Map extends Component<IProps, IState> {
     rovecomm.on("IMUData", (data: any) => this.IMUData(data))
   }
 
-  componentDidMount(): void {
-    const map = L.map("map-id")
-    const offlineLayer = L.tileLayer.offline(
-      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-      localforage,
-      {
-        minZoom: 11,
-        maxZoom: 20,
-        crossOrigin: true,
-      }
-    )
-    offlineLayer.addTo(map)
-  }
-
   IMUData(data: any): void {
     this.setState({
       heading: data[1],
@@ -89,13 +73,12 @@ class Map extends Component<IProps, IState> {
       <div style={this.props.style}>
         <div style={label}>Map</div>
         <div style={container}>
-          <div id="map-id" style={mapStyle}>
+          <div style={mapStyle}>
             <MapContainer
               style={mapStyle}
               center={position}
               zoom={this.state.zoom}
               maxZoom={this.state.maxZoom}
-              id="map"
               whenReady={(map: any): void =>
                 map.target.on("click", (e: { latlng: { lat: number; lng: number } }) => {
                   this.props.store(new Date().toLocaleTimeString(), {
@@ -105,10 +88,7 @@ class Map extends Component<IProps, IState> {
                 })
               }
             >
-              <TileLayer
-                maxZoom={this.state.maxZoom}
-                url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-              />
+              <TileLayer maxZoom={this.state.maxZoom} url="../assets/maps/{z}/{y}/{x}" />
               {this.props.currentCoords.lat && this.props.currentCoords.lon && (
                 <Marker
                   position={[this.props.currentCoords.lat, this.props.currentCoords.lon]}
