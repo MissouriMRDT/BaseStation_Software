@@ -32,8 +32,6 @@ export default class NewWindowComponent extends Component<IProps, IState> {
     // electron.js file
     this.externalWindow = window.open("", this.props.name)
 
-    console.log(reactTable, reactVis)
-
     this.reactTableLink.type = "text/css"
     this.reactTableLink.rel = "stylesheet"
     this.reactTableLink.href = reactTable
