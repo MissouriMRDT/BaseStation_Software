@@ -3,8 +3,8 @@
 
 *.png binary
 *.ico binary
-*.stl binary
 *.obj binary
+*.stl binary
 
 # Custom for Visual Studio
 *.cs     diff=csharp
