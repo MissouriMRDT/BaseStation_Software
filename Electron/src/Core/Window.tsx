@@ -1,6 +1,9 @@
+import path from "path"
 import { Component } from "react"
 import ReactDOM from "react-dom"
 
+const reactTable = path.join(__dirname, "../assets/react-table.css")
+const reactVis = path.join(__dirname, "../assets/react-vis.css")
 export const windows: any = { RED: window }
 
 interface IProps {
@@ -31,10 +34,10 @@ export default class NewWindowComponent extends Component<IProps, IState> {
 
     this.reactTableLink.type = "text/css"
     this.reactTableLink.rel = "stylesheet"
-    this.reactTableLink.href = "https://unpkg.com/react-table-v6@latest/react-table.css"
+    this.reactTableLink.href = reactTable
     this.reactVisLink.type = "text/css"
     this.reactVisLink.rel = "stylesheet"
-    this.reactVisLink.href = "https://unpkg.com/react-vis/dist/style.css"
+    this.reactVisLink.href = reactVis
 
     // Append the container div and register the event that will get fired when the
     // window is closed
