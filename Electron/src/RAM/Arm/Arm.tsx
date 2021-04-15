@@ -4,7 +4,7 @@ import ControlMultipliers, { controlMultipliers } from "./components/ControlMult
 import IK from "./components/IK"
 import Angular from "./components/Angular"
 import Cameras from "../../Core/components/Cameras"
-import { controllerInputs } from "../../Core/components/ControlScheme"
+import ControlScheme, { controllerInputs } from "../../Core/components/ControlScheme"
 import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
 import ControlFeatures from "./components/ControlFeatures"
 
@@ -29,7 +29,8 @@ function arm(): void {
   let ArmBaseTwist = 0
   let ArmBaseBend = 0
   let moveArm = false
-
+  console.log(controllerInputs)
+  console.log(controlMultipliers)
   if ("UseOpenLoop" in controllerInputs && controllerInputs.UseOpenLoop) {
     rovecomm.sendCommand("SetClosedLoopState", [1])
   } else if ("UseAngular" in controllerInputs && controllerInputs.UseAngular) {
@@ -59,9 +60,10 @@ function arm(): void {
     ArmBaseTwist = direction * controllerInputs.BaseTwistMagnitude * controlMultipliers.Base
     moveArm = true
   }
-
+  console.log(moveArm)
   if (moveArm) {
     const armValues = [ArmWristBend, ArmWristTwist, ArmElbowTwist, ArmElbowBend, ArmBaseTwist, ArmBaseBend]
+    console.log("moveArm", armValues)
     rovecomm.sendCommand("ArmVelocityControl", armValues)
   }
 
@@ -111,6 +113,7 @@ class Arm extends Component<IProps, IState> {
           <Cameras defaultCamera={6} style={{ width: "50%", marginLeft: "5px" }} />
         </div>
         <ControlMultipliers />
+        <ControlScheme configs={["Arm"]} />
       </div>
     )
   }
