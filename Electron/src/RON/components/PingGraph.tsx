@@ -113,6 +113,8 @@ class PingGraph extends Component<IProps, IState> {
   render(): JSX.Element {
     selectbox = { ...selectbox, width: `min(450px, ${RONModuleWidth - 15}px)` }
 
+    // At render time, we search for the RON window so that we can properly scale down the size of these
+    // components if the width of this monitor is known
     if ("Rover Overview of Network" in windows) {
       RONModuleWidth = windows["Rover Overview of Network"].document.documentElement.clientWidth / 2 - 10
     }
