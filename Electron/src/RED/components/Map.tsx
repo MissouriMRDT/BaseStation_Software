@@ -15,6 +15,7 @@ const container: CSS.Properties = {
   borderColor: "#990000",
   borderBottomWidth: "2px",
   borderStyle: "solid",
+  height: "calc(100% - 35px)",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -27,7 +28,7 @@ const label: CSS.Properties = {
   color: "white",
 }
 const mapStyle: CSS.Properties = {
-  height: "400px",
+  height: "100%",
   width: "100%",
 }
 
@@ -35,7 +36,8 @@ interface IProps {
   style?: CSS.Properties
   storedWaypoints: any
   currentCoords: { lat: number; lon: number }
-  store: (name: string, coords: any) => void
+  // store: (name: string, coords: any) => void
+  name: string
 }
 
 interface IState {

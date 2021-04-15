@@ -167,7 +167,7 @@ class SpectrometerViewer extends Component<IProps, IState> {
           />
           <div style={{ textAlign: "center" }}>Integral: {this.state.integral}</div>
           <div style={{ textAlign: "center" }}>{this.compareIntegral()}</div>
-          <XYPlot style={{ margin: 10 }} width={window.innerWidth - 50} height={300}>
+          <XYPlot style={{ margin: 10 }} width={window.document.documentElement.clientWidth - 50} height={300}>
             <HorizontalGridLines style={{ fill: "none" }} />
             <LineSeries data={this.state.databaseSpectra} style={{ fill: "none" }} />
             <XAxis />

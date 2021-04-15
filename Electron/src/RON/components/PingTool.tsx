@@ -3,6 +3,7 @@ import CSS from "csstype"
 import { exec } from "child_process"
 import { rovecomm, RovecommManifest, NetworkDevices } from "../../Core/RoveProtocol/Rovecomm"
 import { ColorStyleConverter } from "../../Core/ColorConverter"
+import { RONModuleWidth } from "./PingGraph"
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
@@ -14,6 +15,7 @@ const h1Style: CSS.Properties = {
 const container: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
+  flexWrap: "wrap",
   fontFamily: "arial",
   borderTopWidth: "28px",
   borderColor: "#990000",
@@ -32,17 +34,17 @@ const label: CSS.Properties = {
   zIndex: 1,
   color: "white",
 }
-const selectbox: CSS.Properties = {
+let selectbox: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
-  width: "450px",
+  width: `min(450px, ${RONModuleWidth}px)`,
   margin: "2.5px",
   justifyContent: "space-between",
 }
-const labelbox: CSS.Properties = {
+let labelbox: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
-  width: "450px",
+  width: `min(450px, ${RONModuleWidth}px)`,
   margin: "2.5px",
   justifyContent: "space-between",
   textAlign: "center",
@@ -52,10 +54,24 @@ const auto: CSS.Properties = {
 }
 const name: CSS.Properties = {
   width: "50%",
+  display: "block",
+  textOverflow: "ellipsis",
+  overflow: "hidden",
+  whiteSpace: "nowrap",
 }
 const num: CSS.Properties = {
   width: "10%",
   textAlign: "center",
+  display: "block",
+  textOverflow: "ellipsis",
+  overflow: "hidden",
+  whiteSpace: "nowrap",
+}
+const buttonText: CSS.Properties = {
+  display: "block",
+  textOverflow: "ellipsis",
+  overflow: "hidden",
+  whiteSpace: "nowrap",
 }
 const but: CSS.Properties = {
   width: "10%",
@@ -189,8 +205,10 @@ class PingTool extends Component<IProps, IState> {
   }
 
   render(): JSX.Element {
+    selectbox = { ...selectbox, width: `min(450px, ${RONModuleWidth - 15}px)` }
+    labelbox = { ...selectbox, width: `min(450px, ${RONModuleWidth - 15}px)` }
     return (
-      <div style={this.props.style}>
+      <div style={{ ...this.props.style, width: RONModuleWidth }}>
         <div style={label}>Ping Tool</div>
         <div style={container}>
           {[
@@ -199,7 +217,7 @@ class PingTool extends Component<IProps, IState> {
           ].map(item => {
             const { category, list, rove } = item
             return (
-              <div key={category}>
+              <div key={category} style={{ width: RONModuleWidth - 15 }}>
                 <div style={h1Style}>{category}</div>
                 <div style={labelbox}>
                   <div style={auto}>Auto</div>
@@ -228,10 +246,10 @@ class PingTool extends Component<IProps, IState> {
                         {this.state.devices[device].ping}
                       </div>
                       <button type="button" style={but} onClick={() => this.ICMP(device)}>
-                        ICMP
+                        <div style={buttonText}>ICMP</div>
                       </button>
                       <button type="button" style={rove} onClick={() => this.Rove(device)}>
-                        Rove
+                        <div style={buttonText}>Rove</div>
                       </button>
                     </div>
                   )

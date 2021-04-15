@@ -8,6 +8,7 @@ import Waypoints from "./components/Waypoints"
 import NewWindowComponent from "../Core/Window"
 import RoverOverviewOfNetwork from "../RON/RON"
 import RoverAttachmentManager from "../RAM/RAM"
+import RoverImageryDisplay from "../RID/RID"
 import Cameras from "../Core/components/Cameras"
 import Power from "./components/Power&BMS"
 import ControlScheme from "../Core/components/ControlScheme"
@@ -35,6 +36,8 @@ interface IState {
   currentCoords: { lat: number; lon: number }
   ronOpen: boolean
   ramOpen: boolean
+  ridOpen: boolean
+  fourthHeight: number
 }
 
 class ControlCenter extends Component<IProps, IState> {
@@ -47,9 +50,13 @@ class ControlCenter extends Component<IProps, IState> {
       currentCoords: { lat: 0, lon: 0 },
       ronOpen: false,
       ramOpen: false,
+      ridOpen: false,
+      fourthHeight: window.innerHeight / 4,
     }
     this.updateWaypoints = this.updateWaypoints.bind(this)
     this.updateCoords = this.updateCoords.bind(this)
+
+    window.addEventListener("resize", () => this.setState({ fourthHeight: window.innerHeight / 4 }))
   }
 
   updateWaypoints(storedWaypoints: any): void {
@@ -91,10 +98,20 @@ class ControlCenter extends Component<IProps, IState> {
             </NewWindowComponent>
           )
         }
-        <div style={column}>
+        {
+          // onClose will be fired when the new window is closed
+          // everything inside NewWindowComponent is considered props.children and will be
+          // displayed in a new window
+          this.state.ridOpen && (
+            <NewWindowComponent onClose={() => this.setState({ ridOpen: false })} name="RID">
+              <RoverImageryDisplay rowcol="" style={{ width: "100%", height: "100%" }} />
+            </NewWindowComponent>
+          )
+        }
+        <div style={{ ...column, width: "60%" }}>
           <div style={row}>
-            <GPS onCoordsChange={this.updateCoords} style={{ flexGrow: 1, marginRight: "5px" }} />
-            <ThreeDRover />
+            <GPS onCoordsChange={this.updateCoords} style={{ flexGrow: 1, marginRight: "5px", width: "60%" }} />
+            <ThreeDRover style={{ width: "40%" }} />
           </div>
           <div style={row}>
             <Waypoints
@@ -123,17 +140,21 @@ class ControlCenter extends Component<IProps, IState> {
             <button type="button" onClick={() => this.setState({ ramOpen: true })}>
               Open Rover Attachment Manager
             </button>
+            <button type="button" onClick={() => this.setState({ ridOpen: true })}>
+              Open Rover Imagery Display
+            </button>
           </div>
         </div>
-        <div style={column}>
+        <div style={{ ...column, width: "40%" }}>
           <Map
+            style={{ minHeight: `${this.state.fourthHeight}px` }}
             storedWaypoints={this.state.storedWaypoints}
             currentCoords={this.state.currentCoords}
-            store={(name: string, coords: any) => this.waypointsInstance.store(name, coords)}
+            name="controlCenterMap"
           />
-          <Cameras defaultCamera={1} />
-          <Cameras defaultCamera={2} />
-          <Cameras defaultCamera={3} />
+          <Cameras defaultCamera={1} maxHeight={this.state.fourthHeight} style={{ width: "100%" }} />
+          <Cameras defaultCamera={2} maxHeight={this.state.fourthHeight} style={{ width: "100%" }} />
+          <Cameras defaultCamera={3} maxHeight={this.state.fourthHeight} style={{ width: "100%" }} />
         </div>
       </div>
     )
