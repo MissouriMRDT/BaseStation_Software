@@ -63,14 +63,6 @@
       "IndependentCCW": { "buttonType": "button", "buttonIndex": 4 }
     }
   },
-  "DiagonalDrive": {
-    "config": "Drive",
-    "controller": "Flight Stick",
-    "bindings": {
-      "LeftSpeed": { "buttonType": "joystick", "buttonIndex": 0 },
-      "RightSpeed": { "buttonType": "joystick", "buttonIndex": 1 }
-    }
-  },
   "VectorDrive": {
     "config": "Drive",
     "controller": "Flight Stick",
