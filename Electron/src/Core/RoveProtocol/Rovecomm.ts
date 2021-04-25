@@ -13,6 +13,7 @@ export let SystemPackets: any = {}
 export let NetworkDevices: any = {}
 let ethernetUDPPort = 11000
 const filepath = path.join(__dirname, "../assets/RovecommManifest.json")
+const VersionNumber = 2
 
 if (fs.existsSync(filepath)) {
   const manifest = JSON.parse(fs.readFileSync(filepath).toString())
@@ -111,8 +112,6 @@ function parse(packet: Buffer, rinfo?: any): void {
    *
    *  Note: the size of Data is dataSizes[DataType] * dataSizes bytes
    */
-
-  const VersionNumber = 2
 
   const version = packet.readUInt8(0)
   const dataId = packet.readUInt16BE(1)
@@ -215,6 +214,9 @@ function parse(packet: Buffer, rinfo?: any): void {
 
     // More emits will potentially follow for different logging levels
     // Telemetry vs Commands vs Errors, etc.
+  } else {
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    rovecomm.emit("all", `Packet with Rovecomm version of ${version} recieved. Incorrect version. Aborted.`)
   }
 }
 
@@ -375,6 +377,15 @@ class Rovecomm extends EventEmitter {
     )
   }
 
+  closeAllTCPConnections(): void {
+    for (const socket in this.TCPConnections) {
+      if ("RCSocket" in this.TCPConnections[socket]) {
+        this.TCPConnections[socket].RCSocket.destroy()
+        delete this.TCPConnections[socket]
+      }
+    }
+  }
+
   // While most "any" variable types have been removed, data really can be almost any type
   sendCommand(dataIdStr: string, dataIn: any, reliability = false): void {
     /*
@@ -382,7 +393,6 @@ class Rovecomm extends EventEmitter {
      * UDP or TCP, properly types the data according to the type in the manifest
      * creates a Buffer, and calls the proper send function
      */
-    const VersionNumber = 2
 
     let data = dataIn
     // If data is a single element rather than an array, put it in an array
@@ -510,7 +520,6 @@ class Rovecomm extends EventEmitter {
   }
 
   async resubscribe() {
-    const VersionNumber = 2
     const dataId = SystemPackets.SUBSCRIBE
     const dataCount = 0
     const dataType = DataTypes.UINT8_T
@@ -522,6 +531,8 @@ class Rovecomm extends EventEmitter {
     subscribe.writeUInt8(dataCount, 3)
     subscribe.writeUInt8(dataType, 4)
     subscribe.writeUInt8(data, headerLength)
+
+    this.closeAllTCPConnections()
 
     for (const board in RovecommManifest) {
       if (Object.prototype.hasOwnProperty.call(RovecommManifest, board)) {
@@ -540,7 +551,6 @@ class Rovecomm extends EventEmitter {
     if (this.RovePingStartTimes[device] !== -1) {
       return
     }
-    const VersionNumber = 2
     const dataId = SystemPackets.PING
     const dataCount = 0
     const dataType = DataTypes.UINT8_T
