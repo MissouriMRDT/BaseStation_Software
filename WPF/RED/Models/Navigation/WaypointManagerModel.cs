@@ -16,13 +16,13 @@ namespace RED.Models.Navigation
         internal Waypoint NewPoint;
 
         internal string Name;
-        internal float Latitude;
-        internal float Longitude;
-        internal float LatitudeD;
-        internal float LongitudeD;
-        internal float LatitudeM;
-        internal float LongitudeM;
-        internal float LatitudeS;
-        internal float LongitudeS;
+        internal double Latitude;
+        internal double Longitude;
+        internal double LatitudeD;
+        internal double LongitudeD;
+        internal double LatitudeM;
+        internal double LongitudeM;
+        internal double LatitudeS;
+        internal double LongitudeS;
     }
 }

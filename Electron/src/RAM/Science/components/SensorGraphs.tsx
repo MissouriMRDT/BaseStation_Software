@@ -296,7 +296,7 @@ class SensorGraphs extends Component<IProps, IState> {
           />
           <XYPlot
             style={{ margin: 10 }}
-            width={window.innerWidth - 50}
+            width={window.document.documentElement.clientWidth - 50}
             height={300}
             xType="time"
             onMouseLeave={this.onMouseLeave}

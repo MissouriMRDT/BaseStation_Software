@@ -1,5 +1,12 @@
+import path from "path"
 import { Component } from "react"
 import ReactDOM from "react-dom"
+
+const reactTable = path.join(__dirname, "../assets/react-table.css")
+const reactVis = path.join(__dirname, "../assets/react-vis.css")
+const leafletStyle = path.join(__dirname, "../assets/leaflet.css")
+const leafletJS = path.join(__dirname, "../assets/leaflet.js")
+export const windows: any = { RED: window }
 
 interface IProps {
   onClose: any
@@ -16,6 +23,10 @@ export default class NewWindowComponent extends Component<IProps, IState> {
 
   private reactVisLink = document.createElement("link")
 
+  private leafletLink = document.createElement("link")
+
+  private leafletScript = document.createElement("script")
+
   // This will keep a reference of the window
   private externalWindow: Window | null = null
   // When the component mounts, Open a new window
@@ -29,18 +40,28 @@ export default class NewWindowComponent extends Component<IProps, IState> {
 
     this.reactTableLink.type = "text/css"
     this.reactTableLink.rel = "stylesheet"
-    this.reactTableLink.href = "https://unpkg.com/react-table-v6@latest/react-table.css"
+    this.reactTableLink.href = reactTable
     this.reactVisLink.type = "text/css"
     this.reactVisLink.rel = "stylesheet"
-    this.reactVisLink.href = "https://unpkg.com/react-vis/dist/style.css"
+    this.reactVisLink.href = reactVis
+    this.leafletLink.type = "text/css"
+    this.leafletLink.rel = "stylesheet"
+    this.leafletLink.href = leafletStyle
+    this.leafletScript.src = leafletJS
 
     // Append the container div and register the event that will get fired when the
     // window is closed
     if (this.externalWindow) {
       this.externalWindow.document.body.appendChild(this.reactTableLink)
       this.externalWindow.document.body.appendChild(this.reactVisLink)
+      this.externalWindow.document.body.appendChild(this.leafletLink)
+      this.externalWindow.document.body.appendChild(this.leafletScript)
       this.externalWindow.document.body.appendChild(this.containerEl)
-      this.externalWindow.onunload = () => this.props.onClose()
+      windows[this.props.name] = this.externalWindow
+      this.externalWindow.onunload = () => {
+        this.props.onClose()
+        delete windows[this.props.name]
+      }
     }
   }
 

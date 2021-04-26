@@ -3,6 +3,7 @@ import CSS from "csstype"
 import ReactTable from "react-table-v6"
 // import "../../node_modules/react-table-v6/react-table.css"
 import { rovecomm, RovecommManifest } from "../../Core/RoveProtocol/Rovecomm"
+import { RONModuleWidth } from "./PingGraph"
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
@@ -19,6 +20,7 @@ const container: CSS.Properties = {
   borderStyle: "solid",
   padding: "5px",
   alignItems: "center",
+  overflow: "auto",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -60,7 +62,7 @@ class PacketLogger extends Component<IProps, IState> {
       columns: [
         { Header: "Name", accessor: "name", width: "100" },
         { Header: "Data Id", accessor: "dataId", width: "75" },
-        { Header: "Time", accessor: "time", width: "75" },
+        { Header: "Time", accessor: "time", width: "100" },
         { Header: "Type", accessor: "dataType", width: "50" },
         { Header: "Count", accessor: "dataCount", width: "50" },
         {
@@ -70,7 +72,6 @@ class PacketLogger extends Component<IProps, IState> {
           Cell: (data: any) => (
             <div
               style={{
-                width: "125",
                 overflow: "none",
                 textOverflow: "ellipsis",
               }}
@@ -103,7 +104,7 @@ class PacketLogger extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div style={this.props.style}>
+      <div style={{ ...this.props.style, width: RONModuleWidth }}>
         <div style={label}>Packet Logger</div>
         <div style={container}>
           <div style={selectbox}>
@@ -126,7 +127,7 @@ class PacketLogger extends Component<IProps, IState> {
             defaultPageSize={10}
             resizable={false}
             showPageSizeOptions={false}
-            style={{ textAlign: "center" }}
+            style={{ textAlign: "center", margin: "auto" }}
           />
         </div>
       </div>

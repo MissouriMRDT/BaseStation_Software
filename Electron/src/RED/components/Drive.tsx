@@ -70,6 +70,7 @@ interface IState {
   leftSpeed: number
   rightSpeed: number
   speedLimit: number
+  steeringSpeed: number
   angle: number
 }
 class Drive extends Component<IProps, IState> {
@@ -79,10 +80,12 @@ class Drive extends Component<IProps, IState> {
       leftSpeed: 0,
       rightSpeed: 0,
       speedLimit: 300,
+      steeringSpeed: 300,
       angle: 0,
     }
 
     this.speedLimitChange = this.speedLimitChange.bind(this)
+    this.steeringSpeedChange = this.steeringSpeedChange.bind(this)
     setInterval(() => this.drive(), 100)
   }
 
@@ -103,13 +106,14 @@ class Drive extends Component<IProps, IState> {
       ("BackwardBump" in controllerInputs && controllerInputs.BackwardBump === 1)
     ) {
       const direction = controllerInputs.ForwardBump === 1 ? 1 : -1
-
       leftSpeed = 50 * direction
       rightSpeed = 50 * direction
+
       rovecomm.sendCommand("DriveLeftRight", [leftSpeed, rightSpeed])
     } else if ("LeftSpeed" in controllerInputs && "RightSpeed" in controllerInputs) {
       leftSpeed = Math.round(controllerInputs.LeftSpeed * speedMultiplier)
       rightSpeed = Math.round(controllerInputs.RightSpeed * speedMultiplier)
+
       rovecomm.sendCommand("DriveLeftRight", [leftSpeed, rightSpeed])
     } else if ("VectorX" in controllerInputs && "VectorY" in controllerInputs && "Throttle" in controllerInputs) {
       const x = controllerInputs.VectorX
@@ -142,7 +146,7 @@ class Drive extends Component<IProps, IState> {
       // Currently, closed loop isn't fully operational, so we only use open loop control
       // rovecomm.sendCommand("SetSteeringAngle", angle)
       const direction: number = controllerInputs.RotateCW - controllerInputs.RotateCCW
-      const speed: number = 1000 * direction
+      const speed: number = this.state.steeringSpeed * direction
       rovecomm.sendCommand("SetSteeringSpeeds", [speed, speed, speed, speed])
     } else if (
       "RotateTwist" in controllerInputs &&
@@ -155,7 +159,7 @@ class Drive extends Component<IProps, IState> {
       this.setState({ angle })
       // Currently, closed loop isn't fully operational, so we only use open loop control
       // rovecomm.sendCommand("SetSteeringAngle", angle)
-      const speed: number = 1000 * controllerInputs.RotateTwist
+      const speed: number = this.state.steeringSpeed * controllerInputs.RotateTwist
       rovecomm.sendCommand("SetSteeringSpeeds", [speed, speed, speed, speed])
     } else if (
       "RotateLF" in controllerInputs &&
@@ -166,15 +170,20 @@ class Drive extends Component<IProps, IState> {
       "IndependentCCW" in controllerInputs
     ) {
       const LFSpeed =
-        1000 * (controllerInputs.RotateLF ? controllerInputs.IndependentCW - controllerInputs.IndependentCCW : 0)
+        this.state.steeringSpeed *
+        (controllerInputs.RotateLF ? controllerInputs.IndependentCW - controllerInputs.IndependentCCW : 0)
       const LRSpeed =
-        1000 * (controllerInputs.RotateLR ? controllerInputs.IndependentCW - controllerInputs.IndependentCCW : 0)
+        this.state.steeringSpeed *
+        (controllerInputs.RotateLR ? controllerInputs.IndependentCW - controllerInputs.IndependentCCW : 0)
       const RFSpeed =
-        1000 * (controllerInputs.RotateRF ? controllerInputs.IndependentCW - controllerInputs.IndependentCCW : 0)
+        this.state.steeringSpeed *
+        (controllerInputs.RotateRF ? controllerInputs.IndependentCW - controllerInputs.IndependentCCW : 0)
       const RRSpeed =
-        1000 * (controllerInputs.RotateRR ? controllerInputs.IndependentCW - controllerInputs.IndependentCCW : 0)
+        this.state.steeringSpeed *
+        (controllerInputs.RotateRR ? controllerInputs.IndependentCW - controllerInputs.IndependentCCW : 0)
       rovecomm.sendCommand("SetSteeringSpeeds", [LFSpeed, LRSpeed, RFSpeed, RRSpeed])
     }
+
     this.setState({
       leftSpeed,
       rightSpeed,
@@ -189,6 +198,16 @@ class Drive extends Component<IProps, IState> {
       speedLimit = maxSpeed
     }
     this.setState({ speedLimit })
+  }
+
+  steeringSpeedChange(event: { target: { value: string } }): void {
+    let steeringSpeed = parseInt(event.target.value, 10)
+    if (steeringSpeed < 0) {
+      steeringSpeed = 0
+    } else if (steeringSpeed > maxSpeed) {
+      steeringSpeed = maxSpeed
+    }
+    this.setState({ steeringSpeed })
   }
 
   render(): JSX.Element {
@@ -219,13 +238,24 @@ class Drive extends Component<IProps, IState> {
             />
           </div>
           <div style={row}>
-            Speed Limit:
-            <input
-              type="text"
-              style={{ marginLeft: "5px" }}
-              value={this.state.speedLimit || ""}
-              onChange={this.speedLimitChange}
-            />
+            <div>
+              Speed Limit:
+              <input
+                type="text"
+                style={{ marginLeft: "5px" }}
+                value={this.state.speedLimit || ""}
+                onChange={this.speedLimitChange}
+              />
+            </div>
+            <div>
+              Steering Speed:
+              <input
+                type="text"
+                style={{ marginLeft: "5px" }}
+                value={this.state.steeringSpeed || ""}
+                onChange={this.steeringSpeedChange}
+              />
+            </div>
           </div>
         </div>
       </div>

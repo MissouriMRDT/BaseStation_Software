@@ -1,9 +1,7 @@
 import React, { Component } from "react"
 import CSS from "csstype"
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet"
-import localforage from "localforage"
-import L, { LatLngTuple } from "leaflet"
-import "leaflet-offline"
+import { LatLngTuple } from "leaflet"
 
 import icon from "./Icon"
 import compassNeedle from "./CompassNeedle"
@@ -17,6 +15,7 @@ const container: CSS.Properties = {
   borderColor: "#990000",
   borderBottomWidth: "2px",
   borderStyle: "solid",
+  height: "calc(100% - 35px)",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -29,7 +28,7 @@ const label: CSS.Properties = {
   color: "white",
 }
 const mapStyle: CSS.Properties = {
-  height: "400px",
+  height: "100%",
   width: "100%",
 }
 
@@ -37,7 +36,8 @@ interface IProps {
   style?: CSS.Properties
   storedWaypoints: any
   currentCoords: { lat: number; lon: number }
-  store: (name: string, coords: any) => void
+  // store: (name: string, coords: any) => void
+  name: string
 }
 
 interface IState {
@@ -60,21 +60,7 @@ class Map extends Component<IProps, IState> {
       heading: 0,
     }
 
-    rovecomm.on("PitchHeadingRoll", (data: any) => this.IMUData(data))
-  }
-
-  componentDidMount(): void {
-    const map = L.map("map-id")
-    const offlineLayer = L.tileLayer.offline(
-      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-      localforage,
-      {
-        minZoom: 13,
-        maxZoom: 19,
-        crossOrigin: true,
-      }
-    )
-    offlineLayer.addTo(map)
+    rovecomm.on("IMUData", (data: any) => this.IMUData(data))
   }
 
   IMUData(data: any): void {
@@ -89,13 +75,12 @@ class Map extends Component<IProps, IState> {
       <div style={this.props.style}>
         <div style={label}>Map</div>
         <div style={container}>
-          <div id="map-id" style={mapStyle}>
+          <div style={mapStyle}>
             <MapContainer
               style={mapStyle}
               center={position}
               zoom={this.state.zoom}
               maxZoom={this.state.maxZoom}
-              id="map"
               whenReady={(map: any): void =>
                 map.target.on("click", (e: { latlng: { lat: number; lng: number } }) => {
                   this.props.store(new Date().toLocaleTimeString(), {
@@ -105,10 +90,7 @@ class Map extends Component<IProps, IState> {
                 })
               }
             >
-              <TileLayer
-                maxZoom={this.state.maxZoom}
-                url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-              />
+              <TileLayer maxZoom={this.state.maxZoom} url="../assets/maps/{z}/{y}/{x}" />
               {this.props.currentCoords.lat && this.props.currentCoords.lon && (
                 <Marker
                   position={[this.props.currentCoords.lat, this.props.currentCoords.lon]}

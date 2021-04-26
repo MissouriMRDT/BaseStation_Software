@@ -48,6 +48,7 @@ const button: CSS.Properties = {
   borderRadius: "10px",
   boxShadow: "3px 3px 3px gray",
   border: "none",
+  outline: "none",
 }
 const disabledButton: CSS.Properties = {
   width: "60px",
@@ -55,7 +56,10 @@ const disabledButton: CSS.Properties = {
   borderRadius: "10px",
   boxShadow: "3px 3px 3px gray inset",
   border: "none",
+  outline: "none",
 }
+
+const testTube = 12
 
 interface IProps {
   style?: CSS.Properties
@@ -88,7 +92,7 @@ class Geneva extends Component<IProps, IState> {
     // Since we want this value to wrap -1 to 7, we need mod, which can be
     // defined as ((n%m)+m)%m
     this.setState({
-      tube: (((this.state.tube - 1) % 8) + 8) % 8,
+      tube: (((this.state.tube - 1) % testTube) + testTube) % testTube,
       buttonsDisabled: true,
     })
   }
@@ -99,7 +103,7 @@ class Geneva extends Component<IProps, IState> {
     }
     rovecomm.sendCommand("GenevaIncrementPosition", [1])
     this.setState({
-      tube: (((this.state.tube + 1) % 8) + 8) % 8,
+      tube: (((this.state.tube + 1) % testTube) + testTube) % testTube,
       buttonsDisabled: true,
     })
   }

@@ -28,13 +28,13 @@ namespace RED.Views.Navigation
         private void AddWaypointBtn_Click(object sender, RoutedEventArgs e)
         {
             var vm = (WaypointManagerViewModel)DataContext;
-            if (vm.Latitude != 0 && vm.Longitude != 0)
-            {
-                vm.AddWaypoint(vm.Name, vm.Latitude, vm.Longitude);
-            } else
-            {
-                vm.AddWaypoint(vm.Name, vm.LatitudeD, vm.LatitudeM, vm.LatitudeS, vm.LongitudeD, vm.LongitudeM, vm.LongitudeS);
-            }
+            vm.AddWaypoint(vm.Name, vm.Latitude, vm.Longitude);
         }
-	}
+
+        private void AddWaypointDMSBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = (WaypointManagerViewModel)DataContext;
+            vm.AddWaypoint(vm.Name, vm.LatitudeD, vm.LatitudeM, vm.LatitudeS, vm.LongitudeD, vm.LongitudeM, vm.LongitudeS);
+        }
+    }
 }

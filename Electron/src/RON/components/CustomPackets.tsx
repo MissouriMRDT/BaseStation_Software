@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import CSS from "csstype"
 import { rovecomm, DataTypes, RovecommManifest } from "../../Core/RoveProtocol/Rovecomm"
+import { RONModuleWidth } from "./PingGraph"
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
@@ -27,10 +28,10 @@ const label: CSS.Properties = {
   zIndex: 1,
   color: "white",
 }
-const selectbox: CSS.Properties = {
+let selectbox: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
-  width: "450px",
+  width: `min(450px, ${RONModuleWidth}px)`,
   justifyContent: "space-between",
   margin: "2.5px",
 }
@@ -41,6 +42,13 @@ const textbox: CSS.Properties = {
   width: "50px",
   height: "18px",
 }
+let textboxRow: CSS.Properties = {
+  width: `min(450px, ${RONModuleWidth}px)`,
+  display: "flex",
+  flexDirection: "row",
+  flexWrap: "wrap",
+  justifyContent: "space-between",
+}
 
 interface IProps {
   style?: CSS.Properties
@@ -49,7 +57,7 @@ interface IProps {
 interface IState {
   board: string
   command: string
-  dataType: number
+  dataType: string
   value: number[]
   count: number
 }
@@ -62,7 +70,7 @@ class CustomPackets extends Component<IProps, IState> {
       command: "DriveLeftRight",
       value: [0, 0],
       count: 2,
-      dataType: DataTypes.INT16_T,
+      dataType: "INT16_T",
     }
 
     this.boardChange = this.boardChange.bind(this)
@@ -109,8 +117,10 @@ class CustomPackets extends Component<IProps, IState> {
   }
 
   render(): JSX.Element {
+    selectbox = { ...selectbox, width: `min(450px, ${RONModuleWidth - 15}px)` }
+    textboxRow = { ...textboxRow, width: `min(450px, ${RONModuleWidth - 15}px)` }
     return (
-      <div style={this.props.style}>
+      <div style={{ ...this.props.style, width: RONModuleWidth }}>
         <div style={label}>Custom Packets</div>
         <div style={container}>
           {[
@@ -144,12 +154,14 @@ class CustomPackets extends Component<IProps, IState> {
             )
           })}
           <div style={selectbox} key="Data">
-            <div style={h1Style}>Data ({DataTypes[this.state.dataType]}):</div>
-            {[...Array(this.state.count).keys()].map(n => {
-              return (
-                <textarea style={textbox} key={n} value={this.state.value[n]} onChange={e => this.dataChange(e, n)} />
-              )
-            })}
+            <div style={h1Style}>Data ({this.state.dataType}):</div>
+            <div style={textboxRow}>
+              {[...Array(this.state.count).keys()].map(n => {
+                return (
+                  <textarea style={textbox} key={n} value={this.state.value[n]} onChange={e => this.dataChange(e, n)} />
+                )
+              })}
+            </div>
           </div>
           <button type="button" onClick={this.sendCommand} style={{ margin: "2.5px" }}>
             Send

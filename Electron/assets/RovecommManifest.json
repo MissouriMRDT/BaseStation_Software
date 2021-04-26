@@ -22,7 +22,7 @@
   "updateRate": 100,
   "ethernetUDPPort": 11000,
   "subnetIP": [192, 168, 1],
-  "headerLength": 5,
+  "headerLength": 6,
   "RovecommManifest": {
     "Drive": {
       "Ip": "192.168.1.134",
@@ -40,6 +40,27 @@
           "dataCount": 4,
           "comments": "[LF, LR, RF, RR] (-1000, 1000)-> (-100%, 100%)"
         },
+        "WatchdogOverride": {
+          "dataId": 1004,
+          "dataType": "UINT8_T",
+          "dataCount": 1,
+          "comments": "[0-Turn off Watchdog Override, 1-Turn on Watchdog Override]"
+        }
+      },
+      "Telemetry": {
+        "DriveSpeeds": {
+          "dataId": 1100,
+          "dataType": "INT16_T",
+          "dataCount": 4,
+          "comments": "[LF, LR, RF, RR] (-1000, 1000)-> (-100%, 100%)"
+        }
+      },
+      "Error": {}
+    },
+    "Steer": {
+      "Ip": "192.168.1.154",
+      "Port": 11024,
+      "Commands": {
         "SetSteeringAngle": {
           "dataId": 1002,
           "dataType": "INT16_T",
@@ -52,12 +73,6 @@
           "dataCount": 1,
           "comments": "[PointTurnSpeed] (-1000,1000) (Full speed CCW, full speed CW)"
         },
-        "WatchdogOverride": {
-          "dataId": 1004,
-          "dataType": "UINT8_T",
-          "dataCount": 1,
-          "comments": "[0-Turn off Watchdog Override, 1-Turn on Watchdog Override]"
-        },
         "SetSteeringSpeeds": {
           "dataId": 1005,
           "dataType": "INT16_T",
@@ -66,12 +81,6 @@
         }
       },
       "Telemetry": {
-        "DriveSpeeds": {
-          "dataId": 1100,
-          "dataType": "INT16_T",
-          "dataCount": 4,
-          "comments": "[LF, LR, RF, RR] (-1000, 1000)-> (-100%, 100%)"
-        },
         "DriveAngles": {
           "dataId": 1101,
           "dataType": "INT16_T",
@@ -707,16 +716,15 @@
           "dataType": "UINT8_T",
           "dataCount": 1,
           "comments": ""
-        }
-      },
-      "Error": {
+        },
         "CurrentLog": {
           "dataId": 11200,
           "dataType": "CHAR",
           "dataCount": 255,
           "comments": "String version of most current error log"
         }
-      }
+      },
+      "Error": {}
     },
     "Camera1": {
       "Ip": "192.168.1.141",

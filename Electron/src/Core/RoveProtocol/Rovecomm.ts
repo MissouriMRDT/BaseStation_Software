@@ -13,6 +13,7 @@ export let SystemPackets: any = {}
 export let NetworkDevices: any = {}
 let ethernetUDPPort = 11000
 const filepath = path.join(__dirname, "../assets/RovecommManifest.json")
+const VersionNumber = 3
 
 if (fs.existsSync(filepath)) {
   const manifest = JSON.parse(fs.readFileSync(filepath).toString())
@@ -112,12 +113,10 @@ function parse(packet: Buffer, rinfo?: any): void {
    *  Note: the size of Data is dataSizes[DataType] * dataSizes bytes
    */
 
-  const VersionNumber = 2
-
   const version = packet.readUInt8(0)
   const dataId = packet.readUInt16BE(1)
-  const dataCount = packet.readUInt8(3)
-  const dataType = packet.readUInt8(4)
+  const dataCount = packet.readUInt16BE(3)
+  const dataType = packet.readUInt8(5)
 
   const rawdata = packet.slice(headerLength)
   let data: number[] | string
@@ -215,6 +214,9 @@ function parse(packet: Buffer, rinfo?: any): void {
 
     // More emits will potentially follow for different logging levels
     // Telemetry vs Commands vs Errors, etc.
+  } else {
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    rovecomm.emit("all", `Packet with Rovecomm version of ${version} recieved. Incorrect version. Aborted.`)
   }
 }
 
@@ -226,8 +228,9 @@ function TCPParseWrapper(socket: TCPSocket) {
    */
   // While the Deque contains at least a header to allow parsing control packets
   while (socket.RCDeque.length >= headerLength) {
-    const dataCount = socket.RCDeque.get(3)
-    const dataSize = dataSizes[socket.RCDeque.get(4)]
+    // the following is a very hacky solution for bit shifting the java script way. it's ugly and gross and we want to change it soon but don't know how right now
+    const dataCount = socket.RCDeque.get(3) * 256 + socket.RCDeque.get(4)
+    const dataSize = dataSizes[socket.RCDeque.get(5)]
     // If the length of the Deque is more than the header size and the size of the packet, make a buffer and then parse that buffer
     if (socket.RCDeque.length >= headerLength + dataCount * dataSize) {
       // create another list to put the entire packet into
@@ -375,6 +378,15 @@ class Rovecomm extends EventEmitter {
     )
   }
 
+  closeAllTCPConnections(): void {
+    for (const socket in this.TCPConnections) {
+      if ("RCSocket" in this.TCPConnections[socket]) {
+        this.TCPConnections[socket].RCSocket.destroy()
+        delete this.TCPConnections[socket]
+      }
+    }
+  }
+
   // While most "any" variable types have been removed, data really can be almost any type
   sendCommand(dataIdStr: string, dataIn: any, reliability = false): void {
     /*
@@ -382,7 +394,6 @@ class Rovecomm extends EventEmitter {
      * UDP or TCP, properly types the data according to the type in the manifest
      * creates a Buffer, and calls the proper send function
      */
-    const VersionNumber = 2
 
     let data = dataIn
     // If data is a single element rather than an array, put it in an array
@@ -436,8 +447,8 @@ class Rovecomm extends EventEmitter {
     const headerBuffer = Buffer.allocUnsafe(headerLength)
     headerBuffer.writeUInt8(VersionNumber, 0)
     headerBuffer.writeUInt16BE(dataId, 1)
-    headerBuffer.writeUInt8(dataCount, 3)
-    headerBuffer.writeUInt8(DataTypes[dataType], 4)
+    headerBuffer.writeUInt16BE(dataCount, 3)
+    headerBuffer.writeUInt8(DataTypes[dataType], 5)
 
     // Create the data buffer
     const dataBuffer = Buffer.allocUnsafe(dataCount * dataSizes[DataTypes[dataType]])
@@ -510,7 +521,6 @@ class Rovecomm extends EventEmitter {
   }
 
   async resubscribe() {
-    const VersionNumber = 2
     const dataId = SystemPackets.SUBSCRIBE
     const dataCount = 0
     const dataType = DataTypes.UINT8_T
@@ -519,9 +529,11 @@ class Rovecomm extends EventEmitter {
     const subscribe = Buffer.allocUnsafe(headerLength + 1)
     subscribe.writeUInt8(VersionNumber, 0)
     subscribe.writeUInt16BE(dataId, 1)
-    subscribe.writeUInt8(dataCount, 3)
-    subscribe.writeUInt8(dataType, 4)
+    subscribe.writeUInt16BE(dataCount, 3)
+    subscribe.writeUInt8(dataType, 5)
     subscribe.writeUInt8(data, headerLength)
+
+    this.closeAllTCPConnections()
 
     for (const board in RovecommManifest) {
       if (Object.prototype.hasOwnProperty.call(RovecommManifest, board)) {
@@ -540,19 +552,18 @@ class Rovecomm extends EventEmitter {
     if (this.RovePingStartTimes[device] !== -1) {
       return
     }
-    const VersionNumber = 2
     const dataId = SystemPackets.PING
     const dataCount = 0
     const dataType = DataTypes.UINT8_T
     const data = 0
     const ip = RovecommManifest[device].Ip
 
-    const ping = Buffer.allocUnsafe(6)
+    const ping = Buffer.allocUnsafe(headerLength + 1)
     ping.writeUInt8(VersionNumber, 0)
     ping.writeUInt16BE(dataId, 1)
-    ping.writeUInt8(dataCount, 3)
-    ping.writeUInt8(dataType, 4)
-    ping.writeUInt8(data, 5)
+    ping.writeUInt16BE(dataCount, 3)
+    ping.writeUInt8(dataType, 5)
+    ping.writeUInt8(data, headerLength)
 
     this.RovePingStartTimes[device] = Date.now()
     this.sendUDP(ping, ip)
