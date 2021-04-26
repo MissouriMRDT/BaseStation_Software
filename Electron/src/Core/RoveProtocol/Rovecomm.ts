@@ -13,7 +13,7 @@ export let SystemPackets: any = {}
 export let NetworkDevices: any = {}
 let ethernetUDPPort = 11000
 const filepath = path.join(__dirname, "../assets/RovecommManifest.json")
-const VersionNumber = 2
+const VersionNumber = 3
 
 if (fs.existsSync(filepath)) {
   const manifest = JSON.parse(fs.readFileSync(filepath).toString())
@@ -115,8 +115,8 @@ function parse(packet: Buffer, rinfo?: any): void {
 
   const version = packet.readUInt8(0)
   const dataId = packet.readUInt16BE(1)
-  const dataCount = packet.readUInt8(3)
-  const dataType = packet.readUInt8(4)
+  const dataCount = packet.readUInt16BE(3)
+  const dataType = packet.readUInt8(5)
 
   const rawdata = packet.slice(headerLength)
   let data: number[] | string
@@ -228,8 +228,9 @@ function TCPParseWrapper(socket: TCPSocket) {
    */
   // While the Deque contains at least a header to allow parsing control packets
   while (socket.RCDeque.length >= headerLength) {
-    const dataCount = socket.RCDeque.get(3)
-    const dataSize = dataSizes[socket.RCDeque.get(4)]
+    // the following is a very hacky solution for bit shifting the java script way. it's ugly and gross and we want to change it soon but don't know how right now
+    const dataCount = socket.RCDeque.get(3) * 256 + socket.RCDeque.get(4)
+    const dataSize = dataSizes[socket.RCDeque.get(5)]
     // If the length of the Deque is more than the header size and the size of the packet, make a buffer and then parse that buffer
     if (socket.RCDeque.length >= headerLength + dataCount * dataSize) {
       // create another list to put the entire packet into
@@ -446,8 +447,8 @@ class Rovecomm extends EventEmitter {
     const headerBuffer = Buffer.allocUnsafe(headerLength)
     headerBuffer.writeUInt8(VersionNumber, 0)
     headerBuffer.writeUInt16BE(dataId, 1)
-    headerBuffer.writeUInt8(dataCount, 3)
-    headerBuffer.writeUInt8(DataTypes[dataType], 4)
+    headerBuffer.writeUInt16BE(dataCount, 3)
+    headerBuffer.writeUInt8(DataTypes[dataType], 5)
 
     // Create the data buffer
     const dataBuffer = Buffer.allocUnsafe(dataCount * dataSizes[DataTypes[dataType]])
@@ -528,8 +529,8 @@ class Rovecomm extends EventEmitter {
     const subscribe = Buffer.allocUnsafe(headerLength + 1)
     subscribe.writeUInt8(VersionNumber, 0)
     subscribe.writeUInt16BE(dataId, 1)
-    subscribe.writeUInt8(dataCount, 3)
-    subscribe.writeUInt8(dataType, 4)
+    subscribe.writeUInt16BE(dataCount, 3)
+    subscribe.writeUInt8(dataType, 5)
     subscribe.writeUInt8(data, headerLength)
 
     this.closeAllTCPConnections()
@@ -560,8 +561,8 @@ class Rovecomm extends EventEmitter {
     const ping = Buffer.allocUnsafe(headerLength + 1)
     ping.writeUInt8(VersionNumber, 0)
     ping.writeUInt16BE(dataId, 1)
-    ping.writeUInt8(dataCount, 3)
-    ping.writeUInt8(dataType, 4)
+    ping.writeUInt16BE(dataCount, 3)
+    ping.writeUInt8(dataType, 5)
     ping.writeUInt8(data, headerLength)
 
     this.RovePingStartTimes[device] = Date.now()
