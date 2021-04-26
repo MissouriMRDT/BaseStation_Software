@@ -557,12 +557,12 @@ class Rovecomm extends EventEmitter {
     const data = 0
     const ip = RovecommManifest[device].Ip
 
-    const ping = Buffer.allocUnsafe(6)
+    const ping = Buffer.allocUnsafe(headerLength + 1)
     ping.writeUInt8(VersionNumber, 0)
     ping.writeUInt16BE(dataId, 1)
     ping.writeUInt8(dataCount, 3)
     ping.writeUInt8(dataType, 4)
-    ping.writeUInt8(data, 5)
+    ping.writeUInt8(data, headerLength)
 
     this.RovePingStartTimes[device] = Date.now()
     this.sendUDP(ping, ip)
