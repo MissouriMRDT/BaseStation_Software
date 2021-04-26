@@ -74,20 +74,20 @@ function packOutput(time: number): string {
   })}:${remainSeconds.toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
 }
 
-interface ParentTask {
-  index: number
+interface Task {
   title: string
-  setTime: number
-  currentTime: number
+  setTime?: number
+  currentTime?: number
 }
 
-interface ChildTask extends ParentTask {}
+interface Parent extends Task {
+  childTasks: Task[]
+}
 
 interface IProps {}
 
 interface IState {
-  parentTask: any
-  timerInstance: any
+  parentTask: Parent[]
   currentChild: number
   currentParent: number
   advOptionsOpen: boolean
@@ -102,47 +102,56 @@ class Timer extends Component<IProps, IState> {
       advOptionsOpen: false,
       rmvAddOptionOpen: false,
       timeSplitOpen: false,
-      parentTask: {
-        1: {
+      parentTask: [
+        {
           title: "Parent Task",
           setTime: 300,
           currentTime: 195,
+          childTasks: [
+            {
+              title: "Default Instance",
+              setTime: 30,
+              currentTime: 10,
+            },
+          ],
         },
-      },
-      timerInstance: {
-        1: {
-          title: "Default Instance",
-          setTime: 30,
-          currentTime: 10,
-          difference: 0,
-        },
-      },
-      currentChild: 1,
-      currentParent: 1,
+      ],
+      currentParent: 0,
+      currentChild: 0,
     }
   }
 
-  addInstance(time: string, title: string): void {
+  addInstance(time: string, parentName: string, childNameIn: string, parentNdx: number): void {
+    const childName = childNameIn || ""
     const timeInSeconds = unpackInput(time)
-    let { timerInstance } = this.state
-    let idNum: number
-    for (idNum = 0; idNum <= timerInstance[idNum]; idNum++);
-    timerInstance = {
-      ...timerInstance,
-      [idNum]: {
-        title: { title },
-        setTime: { time },
-        currentTime: { timeInSeconds },
-        difference: 0,
-      },
+    let newId: number
+    let { parentTask } = this.state
+    if (childName) {
+      newId = this.state.parentTask[parentNdx].childTasks.length
+      const newTask: Task = {
+        title: childName,
+        setTime: timeInSeconds,
+      }
+      parentTask = []
+    } else {
+      const newTask: Parent = {
+        title: parentName,
+        setTime: timeInSeconds,
+        childTasks: [],
+      }
+      parentTask = [...parentTask, newTask]
     }
-    this.setState({ timerInstance })
+    this.setState({ parentTask })
   }
 
-  removeInstance(idNum: number): void {
-    const { timerInstance } = this.state
-    delete timerInstance[idNum]
-    this.setState({ timerInstance })
+  removeInstance(parentName: string, childId: number): void {
+    const { parentTask } = this.state
+    if (childId !== -1) {
+      delete parentTask[parentName].childTasks[childId]
+    } else {
+      delete parentTask[parentName]
+    }
+    this.setState({ parentTask })
   }
 
   render(): JSX.Element {
@@ -166,11 +175,11 @@ class Timer extends Component<IProps, IState> {
           </div>
           <div id="CurrentTaskContainer" style={{ ...column, marginTop: "-5%", width: "100%" }}>
             <p style={{ margin: "0px", fontSize: "23px", fontWeight: "bold" }}>
-              {this.state.timerInstance[this.state.currentChild].title}
+              {this.state.parentTask[this.state.currentParent].childTasks[this.state.currentChild].title}
             </p>
             <ProgressBar
-              current={this.state.timerInstance[this.state.currentChild].currentTime}
-              total={this.state.timerInstance[this.state.currentChild].setTime}
+              current={this.state.parentTask[this.state.currentParent].childTasks[this.state.currentChild].currentTime}
+              total={this.state.parentTask[this.state.currentParent].childTasks[this.state.currentChild].setTime}
               name="other"
             />
             <div
@@ -183,8 +192,17 @@ class Timer extends Component<IProps, IState> {
                 fontWeight: "bold",
               }}
             >
-              <p>{packOutput(this.state.timerInstance[this.state.currentChild].currentTime)}</p>
-              <p>-{packOutput(this.state.timerInstance[this.state.currentChild].setTime)}</p>
+              <p>
+                {packOutput(
+                  this.state.parentTask[this.state.currentParent].childTasks[this.state.currentChild].currentTime
+                )}
+              </p>
+              <p>
+                -
+                {packOutput(
+                  this.state.parentTask[this.state.currentParent].childTasks[this.state.currentChild].setTime
+                )}
+              </p>
             </div>
           </div>
           <div id="NextTaskContainer" />
@@ -238,15 +256,7 @@ class Timer extends Component<IProps, IState> {
           {this.state.timeSplitOpen ? (
             <div style={timeSplitModal}>
               <p>Times and Differences</p>
-              <div>
-                {[TASKLIST].map(task => {
-                  return (
-                    <div key={undefined}>
-                      <p>{task}</p>
-                    </div>
-                  )
-                })}
-              </div>
+              <div>BIG LIST GOES HERE</div>
               <div>
                 <button type="button" onClick={() => this.setState({ timeSplitOpen: false })}>
                   back
@@ -266,7 +276,7 @@ class Timer extends Component<IProps, IState> {
             <div style={rmvAddModal}>
               <p>Edit Task List</p>
               <div>
-                {[TASKLIST].map(task => {
+                {[this.state.parentTask].map(task => {
                   return (
                     <div key={undefined}>
                       <p>{task}</p>
