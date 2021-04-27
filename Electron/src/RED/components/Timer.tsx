@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import CSS from "csstype"
 import path from "path"
+import fs from "fs"
 import ProgressBar from "../../Core/ProgressBar"
 
 const label: CSS.Properties = {
@@ -56,7 +57,13 @@ const rmvAddModal: CSS.Properties = {
   border: "2px solid #990000",
   backgroundColor: "white",
 }
-const filepath = path.join(__dirname, "../assets/TaskList.json")
+const FILEPATH = path.join(__dirname, "../assets/TaskList.json")
+let taskList: any
+
+if (fs.existsSync(FILEPATH)) {
+  taskList = JSON.parse(fs.readFileSync(FILEPATH).toString())
+}
+// at some point work on being able to load a different file at runtime
 
 function unpackInput(time: string): number {
   const formattedTime = time.split(":")
@@ -76,8 +83,8 @@ function packOutput(time: number): string {
 
 interface Task {
   title: string
-  setTime?: number
-  currentTime?: number
+  setTime: number
+  difference: number
 }
 
 interface Parent extends Task {
@@ -93,6 +100,8 @@ interface IState {
   advOptionsOpen: boolean
   rmvAddOptionOpen: boolean
   timeSplitOpen: boolean
+  currentParentTime: number
+  currentChildTime: number
 }
 
 class Timer extends Component<IProps, IState> {
@@ -102,46 +111,70 @@ class Timer extends Component<IProps, IState> {
       advOptionsOpen: false,
       rmvAddOptionOpen: false,
       timeSplitOpen: false,
-      parentTask: [
-        {
-          title: "Parent Task",
-          setTime: 300,
-          currentTime: 195,
-          childTasks: [
-            {
-              title: "Default Instance",
-              setTime: 30,
-              currentTime: 10,
-            },
-          ],
-        },
-      ],
+      parentTask: taskList.ParentTasks,
       currentParent: 0,
       currentChild: 0,
+      currentParentTime: 0,
+      currentChildTime: 0,
     }
+  }
+
+  loadNextTask(): void {
+    if (this.state.currentChild === this.state.parentTask[this.state.currentParent].childTasks.length - 1) {
+      let { currentParentTime } = this.state
+      currentParentTime = 0
+      this.setState({ currentParentTime })
+      // if (this.state.currentParent < this.state.parentTask.length - 1) {
+      // }
+    }
+    let { currentChildTime } = this.state
+    currentChildTime = 0
+    this.setState({ currentChildTime })
+  }
+
+  // currently there's no ability to save the differences for analysis after the app is closed
+  // but there's the option to make that a saveable thing to the JSON
+  saveJSON(): void {
+    // prefer-const wants "parentTask" to be const, despite member variables being altered. Look at later
+    const { parentTask } = this.state
+    for (let ndx = 0; ndx < parentTask.length; ndx++) {
+      parentTask[ndx].difference = 0
+      for (let inner = 0; inner < parentTask[ndx].childTasks.length; inner++) {
+        parentTask[ndx].childTasks[inner].difference = 0
+      }
+    }
+    this.setState({ parentTask })
+    fs.writeFileSync(FILEPATH, JSON.stringify(this.state.parentTask))
+  }
+
+  reset(): void {
+    let { parentTask } = this.state
+    parentTask = taskList.ParentTasks
+    this.setState({ parentTask })
   }
 
   addInstance(time: string, parentName: string, childNameIn: string, parentNdx: number): void {
     const childName = childNameIn || ""
     const timeInSeconds = unpackInput(time)
-    let newId: number
     let { parentTask } = this.state
     if (childName) {
-      newId = this.state.parentTask[parentNdx].childTasks.length
       const newTask: Task = {
         title: childName,
         setTime: timeInSeconds,
+        difference: 0,
       }
-      parentTask = []
+      parentTask[parentNdx].childTasks = [...parentTask[parentNdx].childTasks, newTask]
     } else {
       const newTask: Parent = {
         title: parentName,
         setTime: timeInSeconds,
+        difference: 0,
         childTasks: [],
       }
       parentTask = [...parentTask, newTask]
     }
     this.setState({ parentTask })
+    this.saveJSON()
   }
 
   removeInstance(parentName: string, childId: number): void {
@@ -152,6 +185,7 @@ class Timer extends Component<IProps, IState> {
       delete parentTask[parentName]
     }
     this.setState({ parentTask })
+    this.saveJSON()
   }
 
   render(): JSX.Element {
@@ -164,12 +198,12 @@ class Timer extends Component<IProps, IState> {
               {this.state.parentTask[this.state.currentParent].title}
             </p>
             <ProgressBar
-              current={this.state.parentTask[this.state.currentParent].currentTime}
+              current={this.state.currentParentTime}
               total={this.state.parentTask[this.state.currentParent].setTime}
               name="total"
             />
             <div style={{ ...timeRead, marginLeft: "1%", marginRight: "1%", marginTop: "-2.8%" }}>
-              <p>{packOutput(this.state.parentTask[this.state.currentParent].currentTime)}</p>
+              <p>{packOutput(this.state.currentParentTime)}</p>
               <p>-{packOutput(this.state.parentTask[this.state.currentParent].setTime)}</p>
             </div>
           </div>
@@ -178,7 +212,7 @@ class Timer extends Component<IProps, IState> {
               {this.state.parentTask[this.state.currentParent].childTasks[this.state.currentChild].title}
             </p>
             <ProgressBar
-              current={this.state.parentTask[this.state.currentParent].childTasks[this.state.currentChild].currentTime}
+              current={this.state.currentChildTime}
               total={this.state.parentTask[this.state.currentParent].childTasks[this.state.currentChild].setTime}
               name="other"
             />
@@ -192,11 +226,7 @@ class Timer extends Component<IProps, IState> {
                 fontWeight: "bold",
               }}
             >
-              <p>
-                {packOutput(
-                  this.state.parentTask[this.state.currentParent].childTasks[this.state.currentChild].currentTime
-                )}
-              </p>
+              <p>{packOutput(this.state.currentChildTime)}</p>
               <p>
                 -
                 {packOutput(

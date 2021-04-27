@@ -1,1 +1,33 @@
-{}
+{
+  "ParentTasks": [
+    {
+      "title": "Parent Task",
+      "setTime": 300,
+      "difference": 0,
+      "childTasks": [
+        {
+          "title": "Default Instance",
+          "setTime": 30,
+          "difference": 0
+        },
+        {
+          "title": "Secondary Instance",
+          "setTime": 30,
+          "difference": 0
+        }
+      ]
+    },
+    {
+      "title": "Second Parent Task",
+      "setTime": 400,
+      "difference": 0,
+      "childTasks": [
+        {
+          "title": "Tertiary Instance",
+          "setTime": 30,
+          "difference": 0
+        }
+      ]
+    }
+  ]
+}
