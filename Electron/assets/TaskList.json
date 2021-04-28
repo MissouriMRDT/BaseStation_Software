@@ -26,6 +26,11 @@
           "title": "Tertiary Instance",
           "setTime": 30,
           "difference": 0
+        },
+        {
+          "title": "Quaternary Instance",
+          "setTime": 8412,
+          "difference": 0
         }
       ]
     }

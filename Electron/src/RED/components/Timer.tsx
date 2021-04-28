@@ -60,10 +60,17 @@ const rmvAddModal: CSS.Properties = {
 const FILEPATH = path.join(__dirname, "../assets/TaskList.json")
 let taskList: any
 
+let timer: any = 0
+
 if (fs.existsSync(FILEPATH)) {
   taskList = JSON.parse(fs.readFileSync(FILEPATH).toString())
 }
 // at some point work on being able to load a different file at runtime
+
+function stopTimer(): void {
+  clearInterval(timer)
+  timer = 0
+}
 
 function unpackInput(time: string): number {
   const formattedTime = time.split(":")
@@ -91,7 +98,9 @@ interface Parent extends Task {
   childTasks: Task[]
 }
 
-interface IProps {}
+interface IProps {
+  timer: any
+}
 
 interface IState {
   parentTask: Parent[]
@@ -102,6 +111,8 @@ interface IState {
   timeSplitOpen: boolean
   currentParentTime: number
   currentChildTime: number
+  endOfList: boolean
+  isCounting: boolean
 }
 
 class Timer extends Component<IProps, IState> {
@@ -114,22 +125,42 @@ class Timer extends Component<IProps, IState> {
       parentTask: taskList.ParentTasks,
       currentParent: 0,
       currentChild: 0,
-      currentParentTime: 0,
-      currentChildTime: 0,
+      currentParentTime: 124,
+      currentChildTime: 22,
+      endOfList: false,
+      isCounting: false,
+    }
+    this.startTimer = this.startTimer.bind(this)
+    this.countDown = this.countDown.bind(this)
+  }
+
+  countDown(): void {
+    let { currentParentTime, currentChildTime } = this.state
+    currentChildTime++
+    currentParentTime++
+    this.setState({ currentChildTime, currentParentTime })
+  }
+
+  startTimer(): void {
+    if (timer === 0) {
+      timer = setInterval(this.countDown, 1000)
     }
   }
 
   loadNextTask(): void {
-    if (this.state.currentChild === this.state.parentTask[this.state.currentParent].childTasks.length - 1) {
-      let { currentParentTime } = this.state
-      currentParentTime = 0
-      this.setState({ currentParentTime })
-      // if (this.state.currentParent < this.state.parentTask.length - 1) {
-      // }
+    let { endOfList, currentParent, currentChild, currentParentTime } = this.state
+    if (currentChild === this.state.parentTask[currentParent].childTasks.length - 1) {
+      if (currentParent === this.state.parentTask.length - 1) {
+        endOfList = true
+      } else {
+        currentParent++
+        currentParentTime = 0
+        currentChild = 0
+      }
+    } else {
+      currentChild++
     }
-    let { currentChildTime } = this.state
-    currentChildTime = 0
-    this.setState({ currentChildTime })
+    this.setState({ currentChildTime: 0, currentParentTime, endOfList, currentParent, currentChild })
   }
 
   // currently there's no ability to save the differences for analysis after the app is closed
@@ -150,7 +181,20 @@ class Timer extends Component<IProps, IState> {
   reset(): void {
     let { parentTask } = this.state
     parentTask = taskList.ParentTasks
-    this.setState({ parentTask })
+    this.setState({ parentTask, currentParentTime: 0, currentChildTime: 0 })
+    stopTimer()
+  }
+
+  handleStartStop(): void {
+    let { isCounting } = this.state
+    if (!isCounting) {
+      this.startTimer()
+      isCounting = true
+    } else {
+      stopTimer()
+      isCounting = false
+    }
+    this.setState({ isCounting })
   }
 
   addInstance(time: string, parentName: string, childNameIn: string, parentNdx: number): void {
@@ -245,7 +289,11 @@ class Timer extends Component<IProps, IState> {
             }}
           >
             <div style={{ flexGrow: 3 }}>
-              <button type="button" style={{ height: "50px", width: "100%", fontSize: "30px" }}>
+              <button
+                type="button"
+                style={{ height: "50px", width: "100%", fontSize: "30px" }}
+                onClick={() => this.handleStartStop()}
+              >
                 START/STOP
               </button>
             </div>
@@ -253,12 +301,16 @@ class Timer extends Component<IProps, IState> {
               <button type="button" style={{ height: "20px" }} onClick={() => this.setState({ advOptionsOpen: true })}>
                 Advanced Options
               </button>
-              <button type="button" style={{ height: "30px", fontSize: "23px" }}>
+              <button type="button" style={{ height: "30px", fontSize: "23px" }} onClick={() => this.reset()}>
                 RESET
               </button>
             </div>
             <div style={{ flexGrow: 3 }}>
-              <button type="button" style={{ height: "50px", width: "100%", fontSize: "30px", marginLeft: "-10px" }}>
+              <button
+                type="button"
+                style={{ height: "50px", width: "100%", fontSize: "30px", marginLeft: "-10px" }}
+                onClick={() => this.loadNextTask()}
+              >
                 NEXT TASK
               </button>
             </div>
@@ -306,18 +358,11 @@ class Timer extends Component<IProps, IState> {
             <div style={rmvAddModal}>
               <p>Edit Task List</p>
               <div>
-                {[this.state.parentTask].map(task => {
+                {this.state.parentTask.map(task => {
                   return (
-                    <div key={undefined}>
-                      <p>{task}</p>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          // placeholder for delete entry
-                        }}
-                      >
-                        Trash Can Icon
-                      </button>
+                    <div key={task.title}>
+                      <p>{task.title}</p>
+                      <button type="button">Trash Can Icon</button>
                     </div>
                   )
                 })}
