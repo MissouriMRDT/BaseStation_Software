@@ -34,10 +34,27 @@ class ProgressBar extends React.Component<IProps> {
           style={{
             background: "#990000",
             height: `${this.props.name === "total" ? "20px" : "35px"}`,
-            width: `${this.calculatePercent(this.props.current, this.props.total)}%`,
-            zIndex: 1,
+            width: `${
+              this.props.current >= this.props.total ? 100 : this.calculatePercent(this.props.current, this.props.total)
+            }%`,
           }}
-        />
+        >
+          <div
+            style={{
+              background: "#ca27d9",
+              height: `${this.props.name === "total" ? "20px" : "35px"}`,
+              /* eslint-disable */
+              width: `${
+                this.props.current > this.props.total
+                  ? this.props.current > 2 * this.props.total
+                    ? 100
+                    : this.calculatePercent(this.props.current - this.props.total, this.props.total)
+                  : 0
+              }%`,
+              /* eslint-enable */
+            }}
+          />
+        </div>
       </div>
     )
   }

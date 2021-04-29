@@ -67,6 +67,8 @@ if (fs.existsSync(FILEPATH)) {
 }
 // at some point work on being able to load a different file at runtime
 
+// arrow buttons in the top corners to navigate main tasks
+
 function stopTimer(): void {
   clearInterval(timer)
   timer = 0
@@ -90,6 +92,7 @@ function packOutput(time: number): string {
 
 interface Task {
   title: string
+  id: number
   setTime: number
   difference: number
 }
@@ -153,12 +156,14 @@ class Timer extends Component<IProps, IState> {
       if (currentParent === this.state.parentTask.length - 1) {
         endOfList = true
       } else {
+        // add something to difference
         currentParent++
         currentParentTime = 0
         currentChild = 0
       }
     } else {
       currentChild++
+      // add something to difference
     }
     this.setState({ currentChildTime: 0, currentParentTime, endOfList, currentParent, currentChild })
   }
@@ -179,10 +184,24 @@ class Timer extends Component<IProps, IState> {
   }
 
   reset(): void {
-    let { parentTask } = this.state
-    parentTask = taskList.ParentTasks
-    this.setState({ parentTask, currentParentTime: 0, currentChildTime: 0 })
+    let { currentParentTime } = this.state
+    currentParentTime -= this.state.currentChildTime
+    this.setState({ currentParentTime, currentChildTime: 0, isCounting: false })
     stopTimer()
+  }
+
+  resetParentTask(): void {
+    this.setState({ currentParentTime: 0, currentChild: 0, currentChildTime: 0, isCounting: false })
+    stopTimer()
+  }
+
+  previousSubTask(): void {
+    let { currentChild } = this.state
+    if (currentChild) {
+      this.reset()
+      currentChild -= 1
+    }
+    this.setState({ currentChild })
   }
 
   handleStartStop(): void {
@@ -197,20 +216,23 @@ class Timer extends Component<IProps, IState> {
     this.setState({ isCounting })
   }
 
-  addInstance(time: string, parentName: string, childNameIn: string, parentNdx: number): void {
+  addInstance(time: string, parentName: string, childNameIn: string, parentID: number): void {
     const childName = childNameIn || ""
     const timeInSeconds = unpackInput(time)
     let { parentTask } = this.state
     if (childName) {
       const newTask: Task = {
         title: childName,
+        id: parentID + 1,
         setTime: timeInSeconds,
         difference: 0,
       }
-      parentTask[parentNdx].childTasks = [...parentTask[parentNdx].childTasks, newTask]
+      const index = Math.floor(parentID / 1000) * 1000
+      parentTask[index].childTasks = [...parentTask[index].childTasks, newTask]
     } else {
       const newTask: Parent = {
         title: parentName,
+        id: parentTask.length * 100,
         setTime: timeInSeconds,
         difference: 0,
         childTasks: [],
@@ -221,14 +243,17 @@ class Timer extends Component<IProps, IState> {
     this.saveJSON()
   }
 
-  removeInstance(parentName: string, childId: number): void {
-    const { parentTask } = this.state
-    if (childId !== -1) {
-      delete parentTask[parentName].childTasks[childId]
+  removeInstance(ID: number): void {
+    let { parentTask } = this.state
+    if (ID % 100) {
+      const index = Math.floor(ID / 1000) * 1000
+      const newChildList = parentTask[index].childTasks.filter(i => i.id !== ID)
+      parentTask[index].childTasks = newChildList
     } else {
-      delete parentTask[parentName]
+      const newParentList = parentTask.filter(i => i.id !== ID)
+      parentTask = newParentList
     }
-    this.setState({ parentTask })
+    this.setState({ parentTask, currentChild: 0, currentParent: 0 })
     this.saveJSON()
   }
 
@@ -251,33 +276,37 @@ class Timer extends Component<IProps, IState> {
               <p>-{packOutput(this.state.parentTask[this.state.currentParent].setTime)}</p>
             </div>
           </div>
-          <div id="CurrentTaskContainer" style={{ ...column, marginTop: "-5%", width: "100%" }}>
-            <p style={{ margin: "0px", fontSize: "23px", fontWeight: "bold" }}>
-              {this.state.parentTask[this.state.currentParent].childTasks[this.state.currentChild].title}
-            </p>
-            <ProgressBar
-              current={this.state.currentChildTime}
-              total={this.state.parentTask[this.state.currentParent].childTasks[this.state.currentChild].setTime}
-              name="other"
-            />
-            <div
-              style={{
-                ...timeRead,
-                fontSize: "20px",
-                marginTop: "-3.5%",
-                marginLeft: "9%",
-                marginRight: "9%",
-                fontWeight: "bold",
-              }}
-            >
-              <p>{packOutput(this.state.currentChildTime)}</p>
-              <p>
-                -
-                {packOutput(
-                  this.state.parentTask[this.state.currentParent].childTasks[this.state.currentChild].setTime
-                )}
-              </p>
-            </div>
+          <div>
+            {this.state.parentTask[this.state.currentParent].childTasks.length ? (
+              <div id="CurrentTaskContainer" style={{ ...column, marginTop: "-5%", width: "100%" }}>
+                <p style={{ margin: "0px", fontSize: "23px", fontWeight: "bold" }}>
+                  {this.state.parentTask[this.state.currentParent].childTasks[this.state.currentChild].title}
+                </p>
+                <ProgressBar
+                  current={this.state.currentChildTime}
+                  total={this.state.parentTask[this.state.currentParent].childTasks[this.state.currentChild].setTime}
+                  name="other"
+                />
+                <div
+                  style={{
+                    ...timeRead,
+                    fontSize: "20px",
+                    marginTop: "-3.5%",
+                    marginLeft: "9%",
+                    marginRight: "9%",
+                    fontWeight: "bold",
+                  }}
+                >
+                  <p>{packOutput(this.state.currentChildTime)}</p>
+                  <p>
+                    -
+                    {packOutput(
+                      this.state.parentTask[this.state.currentParent].childTasks[this.state.currentChild].setTime
+                    )}
+                  </p>
+                </div>
+              </div>
+            ) : null}
           </div>
           <div id="NextTaskContainer" />
           <div
@@ -319,11 +348,15 @@ class Timer extends Component<IProps, IState> {
             <div style={advOptionsModal}>
               <p>Advanced Options</p>
               <div>
-                <button type="button">Prev Sub-Task</button>
+                <button type="button" onClick={() => this.previousSubTask()}>
+                  Prev Sub-Task
+                </button>
                 <button type="button" onClick={() => this.setState({ timeSplitOpen: true })}>
                   Open Split
                 </button>
-                <button type="button">Reset Task</button>
+                <button type="button" onClick={() => this.resetParentTask()}>
+                  Reset Task
+                </button>
                 <button type="button" onClick={() => this.setState({ rmvAddOptionOpen: true })}>
                   Edit List
                 </button>
@@ -360,9 +393,23 @@ class Timer extends Component<IProps, IState> {
               <div>
                 {this.state.parentTask.map(task => {
                   return (
-                    <div key={task.title}>
+                    <div key={task.id} style={row}>
                       <p>{task.title}</p>
-                      <button type="button">Trash Can Icon</button>
+                      <button type="button" onClick={() => this.removeInstance(task.id)}>
+                        Trash Can Icon
+                      </button>
+                      <div style={{ borderStyle: "solid", borderColor: "teal" }}>
+                        {task.childTasks.map(subTask => {
+                          return (
+                            <div key={subTask.id}>
+                              <p>{subTask.title}</p>
+                              <button type="button" onClick={() => this.removeInstance(subTask.id)}>
+                                Trash Can Icon
+                              </button>
+                            </div>
+                          )
+                        })}
+                      </div>
                     </div>
                   )
                 })}
