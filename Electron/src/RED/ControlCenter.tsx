@@ -16,6 +16,7 @@ import Drive from "./components/Drive"
 import Gimbal from "./components/Gimbal"
 import ThreeDRover from "../Core/components/ThreeDRover"
 import Lighting from "./components/Lighting"
+import Steering from "./components/Steering"
 
 const row: CSS.Properties = {
   display: "flex",
@@ -122,7 +123,7 @@ class ControlCenter extends Component<IProps, IState> {
               }}
               style={{ flexGrow: 1, marginRight: "5px" }}
             />
-            <Lighting />
+            <Steering />
           </div>
           <Log />
           <Drive />
