@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import CSS from "csstype"
 import path from "path"
 import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
+import { controllerInputs } from "../../Core/components/ControlScheme"
 
 const container: CSS.Properties = {
   display: "flex",
@@ -36,6 +37,26 @@ const column: CSS.Properties = {
 // File path to up arrow in assets folder to use at dev or production time
 const UpArrow = path.join(__dirname, "../assets/UpArrow.png")
 
+function steer(): void {
+  /* Takes controller input to send preset absolute positions to steering
+   * or sends a default speed of 500 to spin CW or CCW
+   */
+  if ("PointTurnCW" in controllerInputs && controllerInputs.PointTurnCW === 1) {
+    rovecomm.sendCommand("PointTurn", [500])
+  } else if ("PointTurnCCW" in controllerInputs && controllerInputs.PointTurnCCW === 1) {
+    rovecomm.sendCommand("PointTurn", [-500])
+  } else if ("SteerUp" in controllerInputs && controllerInputs.SteerUp === 1) {
+    // Data should come in as the current angles of LF, LR, RF, RR
+    rovecomm.sendCommand("SetSteeringAngle", [0, 0, 0, 0])
+  } else if ("SteerDown" in controllerInputs && controllerInputs.SteerDown === 1) {
+    rovecomm.sendCommand("SetSteeringAngle", [180, 180, 180, 180])
+  } else if ("SteerLeft" in controllerInputs && controllerInputs.SteerLeft === 1) {
+    rovecomm.sendCommand("SetSteeringAngle", [90, 90, 90, 90])
+  } else if ("SteerRight" in controllerInputs && controllerInputs.SteerRight === 1) {
+    rovecomm.sendCommand("SetSteeringAngle", [270, 270, 270, 270])
+  }
+}
+
 interface IProps {
   style?: CSS.Properties
 }
@@ -54,6 +75,7 @@ class Steering extends Component<IProps, IState> {
       sendAngles: [0, 0, 0, 0],
     }
     rovecomm.on("DriveAngles", (data: any) => this.recieveAngles(data))
+    setInterval(() => steer(), 100)
   }
 
   recieveAngles(data: any) {
