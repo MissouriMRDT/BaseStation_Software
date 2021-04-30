@@ -125,6 +125,7 @@ class ControlCenter extends Component<IProps, IState> {
             <Lighting />
           </div>
           <Log />
+          <Power />
           <Drive />
           <div style={row}>
             <ControlScheme style={{ flexGrow: 1, marginRight: "5px" }} configs={["Drive", "MainGimbal"]} />
