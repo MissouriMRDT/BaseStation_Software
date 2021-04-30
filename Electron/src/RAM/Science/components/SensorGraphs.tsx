@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import React, { Component } from "react"
 import CSS from "csstype"
 import html2canvas from "html2canvas"
@@ -91,6 +92,22 @@ interface IState {
   o2Pressure: { x: Date; y: number }[]
   no: { x: Date; y: number }[]
   n2o: { x: Date; y: number }[]
+  normalized_methane: { x: Date; y: number }[]
+  normalized_co2: { x: Date; y: number }[]
+  normalized_temperature: { x: Date; y: number }[]
+  normalized_o2PP: { x: Date; y: number }[]
+  normalized_o2Concentration: { x: Date; y: number }[]
+  normalized_o2Pressure: { x: Date; y: number }[]
+  normalized_no: { x: Date; y: number }[]
+  normalized_n2o: { x: Date; y: number }[]
+  max_methane: number
+  max_co2: number
+  max_temperature: number
+  max_o2PP: number
+  max_o2Concentration: number
+  max_o2Pressure: number
+  max_no: number
+  max_n2o: number
   sensor: string
   crosshairValues: { x: Date; y: number }[]
 }
@@ -107,6 +124,22 @@ class SensorGraphs extends Component<IProps, IState> {
       o2Pressure: [],
       no: [],
       n2o: [],
+      normalized_methane: [],
+      normalized_co2: [],
+      normalized_temperature: [],
+      normalized_o2PP: [],
+      normalized_o2Concentration: [],
+      normalized_o2Pressure: [],
+      normalized_no: [],
+      normalized_n2o: [],
+      max_methane: 0,
+      max_co2: 0,
+      max_temperature: 0,
+      max_o2PP: 0,
+      max_o2Concentration: 0,
+      max_o2Pressure: 0,
+      max_no: 0,
+      max_n2o: 0,
       sensor: "All",
       crosshairValues: [],
     }
@@ -152,106 +185,187 @@ class SensorGraphs extends Component<IProps, IState> {
   methane(data: any): void {
     // the methane data packet is [methane concentration, temperature]
     // temperature is discarded since it is supplied from the O2 sensor as well
-    const { methane } = this.state
+    const { methane, normalized_methane } = this.state
     methane.push({ x: new Date(), y: data[0] })
+    normalized_methane.push({ x: new Date(), y: data[0] / this.state.max_methane })
+
+    if (data[0] > this.state.max_methane) {
+      for (const pairs of normalized_methane) {
+        pairs.y *= this.state.max_methane / data[0]
+      }
+      this.setState({ max_methane: data[0], normalized_methane })
+    }
+
     this.setState({ methane })
   }
 
   co2(data: any): void {
-    const { co2 } = this.state
+    const { co2, normalized_co2 } = this.state
     co2.push({ x: new Date(), y: data[0] })
+    normalized_co2.push({ x: new Date(), y: data[0] / this.state.max_co2 })
+
+    if (data[0] > this.state.max_co2) {
+      for (const pairs of normalized_co2) {
+        pairs.y *= this.state.max_co2 / data[0]
+      }
+      this.setState({ max_methane: data[0], normalized_co2 })
+    }
+
     this.setState({ co2 })
   }
 
   o2(data: any): void {
     const { temperature, o2PP, o2Concentration, o2Pressure } = this.state
+    const { normalized_temperature, normalized_o2PP, normalized_o2Concentration, normalized_o2Pressure } = this.state
     const [newTemperature, newO2PP, newO2Concentration, newO2Pressure] = data
+
     temperature.push({ x: new Date(), y: newTemperature })
     o2PP.push({ x: new Date(), y: newO2PP })
     o2Concentration.push({ x: new Date(), y: newO2Concentration })
     o2Pressure.push({ x: new Date(), y: newO2Pressure })
+
+    normalized_temperature.push({ x: new Date(), y: newTemperature / this.state.max_temperature })
+    normalized_o2PP.push({ x: new Date(), y: newO2PP / this.state.max_o2PP })
+    normalized_o2Concentration.push({ x: new Date(), y: newO2Concentration / this.state.max_o2Concentration })
+    normalized_o2Pressure.push({ x: new Date(), y: newO2Pressure / this.state.max_o2Pressure })
+
+    if (newTemperature > this.state.max_temperature) {
+      for (const pairs of normalized_temperature) {
+        pairs.y *= this.state.max_temperature / newTemperature
+      }
+      this.setState({ max_temperature: newTemperature, normalized_temperature })
+    }
+    if (newO2PP > this.state.max_o2PP) {
+      for (const pairs of normalized_o2PP) {
+        pairs.y *= this.state.max_o2PP / newO2PP
+      }
+      this.setState({ max_o2PP: newO2PP, normalized_o2PP })
+    }
+    if (newO2Concentration > this.state.max_o2Concentration) {
+      for (const pairs of normalized_o2Concentration) {
+        pairs.y *= this.state.max_o2Concentration / newO2Concentration
+      }
+      this.setState({ max_o2Concentration: newO2Concentration, normalized_o2Concentration })
+    }
+    if (newO2Pressure > this.state.max_o2Pressure) {
+      for (const pairs of normalized_o2Pressure) {
+        pairs.y *= this.state.max_o2Pressure / newO2Pressure
+      }
+      this.setState({ max_o2Pressure: newO2Pressure, normalized_o2Pressure })
+    }
+
     this.setState({ temperature, o2PP, o2Concentration, o2Pressure })
   }
 
   no(data: any): void {
-    const { no } = this.state
+    const { no, normalized_no } = this.state
     no.push({ x: new Date(), y: data[0] })
+    normalized_no.push({ x: new Date(), y: data[0] / this.state.max_no })
+
+    if (data[0] > this.state.max_no) {
+      for (const pairs of normalized_no) {
+        pairs.y *= this.state.max_no / data[0]
+      }
+      this.setState({ max_methane: data[0], normalized_no })
+    }
+
     this.setState({ no })
   }
 
   n2o(data: any): void {
-    const { n2o } = this.state
+    const { n2o, normalized_n2o } = this.state
+    normalized_n2o.push({ x: new Date(), y: data[0] / this.state.max_n2o })
+
+    if (data[0] > this.state.max_no) {
+      for (const pairs of normalized_n2o) {
+        pairs.y *= this.state.max_no / data[0]
+      }
+      this.setState({ max_methane: data[0], normalized_n2o })
+    }
+
     n2o.push({ x: new Date(), y: data[0] })
     this.setState({ n2o })
   }
 
   crosshair(): JSX.Element | null {
-    if (
-      this.state.crosshairValues.length === 6 &&
-      "x" in this.state.crosshairValues[0] &&
-      "y" in this.state.crosshairValues[0]
-    ) {
+    if (this.state.crosshairValues[0]) {
       return (
         <Crosshair values={this.state.crosshairValues}>
           <div style={overlay}>
             <h3>{this.state.crosshairValues[0].x.toTimeString().slice(0, 9)}</h3>
-            <p>
-              Methane:{" "}
-              {this.state.crosshairValues[0].y.toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-              })}{" "}
-              ppm
-            </p>
-            <p>
-              CO2:{" "}
-              {this.state.crosshairValues[1].y.toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-              })}{" "}
-              ppm
-            </p>
-            <p>
-              Temperature:{" "}
-              {this.state.crosshairValues[2].y.toLocaleString(undefined, {
-                minimumFractionDigits: 1,
-                minimumIntegerDigits: 2,
-              })}
-              &#176;C
-            </p>
-            <p>
-              O2PP:{" "}
-              {this.state.crosshairValues[3].y.toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-              })}{" "}
-              ppm
-            </p>
-            <p>
-              O2Concentration:{" "}
-              {this.state.crosshairValues[4].y.toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-              })}{" "}
-              ppm
-            </p>
-            <p>
-              O2Pressure:{" "}
-              {this.state.crosshairValues[5].y.toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-              })}{" "}
-              ppm
-            </p>
-            <p>
-              NO:{" "}
-              {this.state.crosshairValues[1].y.toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-              })}{" "}
-              ppm
-            </p>
-            <p>
-              N2O:{" "}
-              {this.state.crosshairValues[1].y.toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-              })}{" "}
-              ppm
-            </p>
+            {this.state.methane !== [] && (
+              <p>
+                Methane:{" "}
+                {this.state.crosshairValues[0].y.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                })}{" "}
+                ppm
+              </p>
+            )}
+            {this.state.co2 !== [] && (
+              <p>
+                CO2:{" "}
+                {this.state.crosshairValues[1].y.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                })}{" "}
+                ppm
+              </p>
+            )}
+            {this.state.temperature !== [] && (
+              <p>
+                Temperature:{" "}
+                {this.state.crosshairValues[2].y.toLocaleString(undefined, {
+                  minimumFractionDigits: 1,
+                  minimumIntegerDigits: 2,
+                })}
+                &#176;C
+              </p>
+            )}
+            {this.state.o2PP !== [] && (
+              <p>
+                O2PP:{" "}
+                {this.state.crosshairValues[3].y.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                })}{" "}
+                ppm
+              </p>
+            )}
+            {this.state.o2Concentration !== [] && (
+              <p>
+                O2Concentration:{" "}
+                {this.state.crosshairValues[4].y.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                })}{" "}
+                ppm
+              </p>
+            )}
+            {this.state.o2Pressure !== [] && (
+              <p>
+                O2Pressure:{" "}
+                {this.state.crosshairValues[5].y.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                })}{" "}
+                ppm
+              </p>
+            )}
+            {this.state.no !== [] && (
+              <p>
+                NO:{" "}
+                {this.state.crosshairValues[1].y.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                })}{" "}
+                ppm
+              </p>
+            )}
+            {this.state.n2o !== [] && (
+              <p>
+                N2O:{" "}
+                {this.state.crosshairValues[1].y.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                })}{" "}
+                ppm
+              </p>
+            )}
           </div>
         </Crosshair>
       )
@@ -303,32 +417,59 @@ class SensorGraphs extends Component<IProps, IState> {
           >
             <HorizontalGridLines style={{ fill: "none" }} />
             {(this.state.sensor === "Methane" || this.state.sensor === "All") && this.state.methane !== [] && (
-              <LineSeries data={this.state.methane} style={{ fill: "none" }} onNearestX={this.onNearestX} />
+              <LineSeries
+                data={this.state.sensor === "All" ? this.state.normalized_methane : this.state.methane}
+                style={{ fill: "none" }}
+                onNearestX={this.onNearestX}
+              />
             )}
             {(this.state.sensor === "CO2" || this.state.sensor === "All") && this.state.co2 !== [] && (
-              <LineSeries data={this.state.co2} style={{ fill: "none" }} />
+              <LineSeries
+                data={this.state.sensor === "All" ? this.state.normalized_co2 : this.state.co2}
+                style={{ fill: "none" }}
+              />
             )}
             {(this.state.sensor === "Temperature" || this.state.sensor === "All") && this.state.temperature !== [] && (
-              <LineSeries data={this.state.temperature} style={{ fill: "none" }} />
+              <LineSeries
+                data={this.state.sensor === "All" ? this.state.normalized_temperature : this.state.temperature}
+                style={{ fill: "none" }}
+              />
             )}
             {(this.state.sensor === "O2PP" || this.state.sensor === "All") && this.state.o2PP !== [] && (
-              <LineSeries data={this.state.o2PP} style={{ fill: "none" }} />
+              <LineSeries
+                data={this.state.sensor === "All" ? this.state.normalized_o2PP : this.state.o2PP}
+                style={{ fill: "none" }}
+              />
             )}
             {(this.state.sensor === "O2Concentration" || this.state.sensor === "All") &&
               this.state.o2Concentration !== [] && (
-                <LineSeries data={this.state.o2Concentration} style={{ fill: "none" }} />
+                <LineSeries
+                  data={
+                    this.state.sensor === "All" ? this.state.normalized_o2Concentration : this.state.o2Concentration
+                  }
+                  style={{ fill: "none" }}
+                />
               )}
             {(this.state.sensor === "O2Pressure" || this.state.sensor === "All") && this.state.o2Pressure !== [] && (
-              <LineSeries data={this.state.o2Pressure} style={{ fill: "none" }} />
+              <LineSeries
+                data={this.state.sensor === "All" ? this.state.normalized_o2Pressure : this.state.o2Pressure}
+                style={{ fill: "none" }}
+              />
             )}
             {(this.state.sensor === "NO" || this.state.sensor === "All") && this.state.no !== [] && (
-              <LineSeries data={this.state.no} style={{ fill: "none" }} />
+              <LineSeries
+                data={this.state.sensor === "All" ? this.state.normalized_no : this.state.no}
+                style={{ fill: "none" }}
+              />
             )}
             {(this.state.sensor === "N2O" || this.state.sensor === "All") && this.state.n2o !== [] && (
-              <LineSeries data={this.state.n2o} style={{ fill: "none" }} />
+              <LineSeries
+                data={this.state.sensor === "All" ? this.state.normalized_n2o : this.state.n2o}
+                style={{ fill: "none" }}
+              />
             )}
             <XAxis />
-            <YAxis />
+            {this.state.sensor !== "All" && <YAxis />}
             {this.crosshair()}
           </XYPlot>
           <div style={row}>

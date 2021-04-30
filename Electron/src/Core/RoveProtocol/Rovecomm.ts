@@ -5,6 +5,15 @@ import Deque from "double-ended-queue"
 import fs from "fs"
 import path from "path"
 
+// Change these 2s to 3s to use rovecomm3 instead. Eventually, this should
+// be done programatically, but currently there is no rover select.
+// Make sure header length is correct in the manifest for the appropriate
+// rovecomm (5 for rovecomm2, 6 for rovecomm3)
+/* eslint-disable import/no-cycle */
+import { parseHeader, createHeader, TCPParseWrapper } from "./Rovecomm2"
+
+const VersionNumber = 2
+
 export let RovecommManifest: any = {}
 export let dataSizes: any = []
 export let DataTypes: any = {}
@@ -13,7 +22,6 @@ export let SystemPackets: any = {}
 export let NetworkDevices: any = {}
 let ethernetUDPPort = 11000
 const filepath = path.join(__dirname, "../assets/RovecommManifest.json")
-const VersionNumber = 3
 
 if (fs.existsSync(filepath)) {
   const manifest = JSON.parse(fs.readFileSync(filepath).toString())
@@ -95,7 +103,7 @@ function decodePacket(dataType: number, dataCount: number, data: Buffer): number
   }
 }
 
-function parse(packet: Buffer, rinfo?: any): void {
+export function parse(packet: Buffer, rinfo?: any): void {
   /*
    * Parse takes in a packet buffer and will call decodePacket and emit
    *  the rovecomm event with the proper dataId and that typed data
@@ -113,10 +121,7 @@ function parse(packet: Buffer, rinfo?: any): void {
    *  Note: the size of Data is dataSizes[DataType] * dataSizes bytes
    */
 
-  const version = packet.readUInt8(0)
-  const dataId = packet.readUInt16BE(1)
-  const dataCount = packet.readUInt16BE(3)
-  const dataType = packet.readUInt8(5)
+  const { version, dataId, dataCount, dataType } = parseHeader(packet)
 
   const rawdata = packet.slice(headerLength)
   let data: number[] | string
@@ -148,6 +153,7 @@ function parse(packet: Buffer, rinfo?: any): void {
     let dataIdStr = "null"
     let endLoop = false
     let boardName = "null"
+    let dataCountMatch = 0
     // Here we loop through all of the Boards in the manifest,
     // looking specifically if this dataId is a known Telemetry or Error of the board
     for (const board in RovecommManifest) {
@@ -158,6 +164,7 @@ function parse(packet: Buffer, rinfo?: any): void {
             dataIdStr = comm
             endLoop = true
             boardName = board
+            dataCountMatch = RovecommManifest[board].Error[comm].dataCount
             break
           }
         }
@@ -172,6 +179,8 @@ function parse(packet: Buffer, rinfo?: any): void {
             dataIdStr = comm
             endLoop = true
             boardName = board
+            dataCountMatch = RovecommManifest[board].Error[comm].dataCount
+
             // eslint-disable-next-line @typescript-eslint/no-use-before-define
             rovecomm.emit("Error", { dataIdStr, data })
             break
@@ -181,6 +190,12 @@ function parse(packet: Buffer, rinfo?: any): void {
           break
         }
       }
+    }
+
+    if (dataCount !== dataCountMatch) {
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      rovecomm.emit("all", `Packet dataCount of ${dataCount} didn't match ${dataCountMatch} of manifest.`)
+      return
     }
 
     // rovecomm depends on parse, and parse depends on rovecomm. Since parse is defined with the
@@ -220,33 +235,6 @@ function parse(packet: Buffer, rinfo?: any): void {
   }
 }
 
-function TCPParseWrapper(socket: TCPSocket) {
-  /*
-   * Takes in an object of the TCPSocket type defined in the interface TCPSocket at the top of this file
-   * Iterates while there is still at least five bytes in the Deque in the TCPSocket, parsing one RC Packet at a time
-   * Returns when there is either less than 5 bytes in the Deque or not a complete packet in the Deque
-   */
-  // While the Deque contains at least a header to allow parsing control packets
-  while (socket.RCDeque.length >= headerLength) {
-    // the following is a very hacky solution for bit shifting the java script way. it's ugly and gross and we want to change it soon but don't know how right now
-    const dataCount = socket.RCDeque.get(3) * 256 + socket.RCDeque.get(4)
-    const dataSize = dataSizes[socket.RCDeque.get(5)]
-    // If the length of the Deque is more than the header size and the size of the packet, make a buffer and then parse that buffer
-    if (socket.RCDeque.length >= headerLength + dataCount * dataSize) {
-      // create another list to put the entire packet into
-      const packet = []
-      for (let i = 0; i < headerLength + dataCount * dataSize; i++) {
-        // Here we use Shift to get and remove the elements that make up the packet to prevent parsing the same packet multiple times
-        packet.push(socket.RCDeque.shift())
-      }
-      // Make a buffer from that list, needed to provide the correct input for the parse function
-      const packetBuffer = Buffer.from(packet)
-      parse(packetBuffer)
-      // If the Deque doesn't contain a full packet, return
-    } else return
-  }
-}
-
 function TCPListen(socket: TCPSocket) {
   /*
    * Listens on the passed in TCP socket, pushing received data into the TCPSocket Deque and then calling the TCP Parse Wrapper when data is received
@@ -260,133 +248,6 @@ function TCPListen(socket: TCPSocket) {
 }
 
 class Rovecomm extends EventEmitter {
-  UDPSocket: Socket
-
-  TCPConnections: TCPSocket[]
-
-  RovePingStartTimes: { [id: string]: number } = {}
-
-  constructor() {
-    super()
-    // Initialization of UDP socket and server
-    this.UDPSocket = dgram.createSocket("udp4")
-
-    // eslint-disable-next-line guard-for-in
-    for (const board in RovecommManifest) {
-      this.RovePingStartTimes[board] = -1
-    }
-
-    this.UDPListen()
-
-    this.TCPConnections = []
-
-    this.resubscribe = this.resubscribe.bind(this)
-    this.ping = this.ping.bind(this)
-  }
-
-  createTCPConnection(port: number, host = "localhost") {
-    /*
-     * Takes in a port of type number and an optional host of type string, host defaults to localhost if not specified
-     * Creates a connection to the target Host:Port over TCP, if a connection doesn't already exist
-     * Runs the TCPListen function on the new TCPSocket, then pushes the new TCPSocket into the rovecomm TCPConnections list
-     */
-    for (const socket in this.TCPConnections) {
-      if (
-        this.TCPConnections[socket].RCSocket.remoteAddress === host &&
-        this.TCPConnections[socket].RCSocket.remotePort === port
-      ) {
-        // eslint-disable-next-line @typescript-eslint/no-use-before-define
-        rovecomm.emit("all", `Attempted to add a second connection to ${host}:${port}, didn't add`)
-        return
-      }
-    }
-
-    const newSocket: TCPSocket = {
-      // New socket to connect with
-      RCSocket: new net.Socket(),
-      // Instantiate a new Deque of size 30KB, avoid runtime resizing
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      RCDeque: new Deque<any>(30 * 1024),
-    }
-
-    // Handle Timeout errors from attempting to connect to things that don't exist.
-    newSocket.RCSocket.on("error", e => {
-      console.log(e)
-      if (!e.message.includes("connect ETIMEDOUT")) {
-        throw new Error(e.message)
-      }
-    })
-
-    // Connect to the board we're intending to communicate with
-    newSocket.RCSocket.connect(port, host, function handler() {
-      // eslint-disable-next-line @typescript-eslint/no-use-before-define
-      rovecomm.emit("all", `Created TCP connection to ${host}:${port}`)
-    })
-
-    // Listen for any data coming on this connection and parse it as it arrives
-    TCPListen(newSocket)
-
-    // Add the connection to the TCPConnections list to prevent garbage collection from deleting it
-    this.TCPConnections.push(newSocket)
-
-    // The board implementation currently doesn't require a subscribe for TCP, since its a connection-based protocol
-  }
-
-  UDPListen() {
-    /*
-     * Listens on the class UDP socket, always calling parse if it recieves anything,
-     * and properly binding the socket to a port
-     */
-    this.UDPSocket.on("message", (msg: Buffer, rinfo: any) => {
-      parse(msg, rinfo)
-    })
-    this.UDPSocket.bind(11000)
-  }
-
-  sendUDP(packet: Buffer, destinationIp: string, port = ethernetUDPPort): void {
-    /*
-     * Takes a packet (Buffer) and sends it out over the existing UDP socket
-     * to the correct destination IP
-     */
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    this.UDPSocket.send(packet, port, destinationIp)
-  }
-
-  sendTCP(packet: Buffer, destinationIp: string, port: number) {
-    /*
-     * Takes a packet (buffer), and iterates over the list of available TCP Connections
-     * Sends the packet if there's a connection with the correct IP:Port combination
-     * If there is no connection, emits an error message
-     */
-    for (const socket in this.TCPConnections) {
-      // TODO: When the boards all change to a single port, remove that check from this if statement
-      if (
-        this.TCPConnections[socket].RCSocket.remoteAddress === destinationIp &&
-        this.TCPConnections[socket].RCSocket.remotePort === port
-      ) {
-        const temp = this.TCPConnections[socket]
-        this.TCPConnections[socket].RCSocket.write(packet, "utf8", function handler() {
-          console.log(`wrote ${packet} to ${temp.RCSocket.remoteAddress} on ${temp.RCSocket.remotePort}`)
-        })
-        return
-      }
-    }
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    rovecomm.emit(
-      "all",
-      `Attempted to send a packet to ${destinationIp}:${port} but there was no connection on that IP:Port combo`
-    )
-  }
-
-  closeAllTCPConnections(): void {
-    for (const socket in this.TCPConnections) {
-      if ("RCSocket" in this.TCPConnections[socket]) {
-        this.TCPConnections[socket].RCSocket.destroy()
-        delete this.TCPConnections[socket]
-      }
-    }
-  }
-
   // While most "any" variable types have been removed, data really can be almost any type
   sendCommand(dataIdStr: string, dataIn: any, reliability = false): void {
     /*
@@ -444,11 +305,7 @@ class Rovecomm extends EventEmitter {
      *
      *  Note: the size of Data is dataCount * dataSizes[DataType] bytes
      */
-    const headerBuffer = Buffer.allocUnsafe(headerLength)
-    headerBuffer.writeUInt8(VersionNumber, 0)
-    headerBuffer.writeUInt16BE(dataId, 1)
-    headerBuffer.writeUInt16BE(dataCount, 3)
-    headerBuffer.writeUInt8(DataTypes[dataType], 5)
+    const headerBuffer = createHeader(dataId, dataCount, dataType)
 
     // Create the data buffer
     const dataBuffer = Buffer.allocUnsafe(dataCount * dataSizes[DataTypes[dataType]])
@@ -526,18 +383,17 @@ class Rovecomm extends EventEmitter {
     const dataType = DataTypes.UINT8_T
     const data = 0
 
-    const subscribe = Buffer.allocUnsafe(headerLength + 1)
-    subscribe.writeUInt8(VersionNumber, 0)
-    subscribe.writeUInt16BE(dataId, 1)
-    subscribe.writeUInt16BE(dataCount, 3)
-    subscribe.writeUInt8(dataType, 5)
-    subscribe.writeUInt8(data, headerLength)
+    const headerBuffer = createHeader(dataId, dataCount, dataType)
+    const dataBuffer = Buffer.allocUnsafe(headerLength)
+    dataBuffer.writeUInt8(data, headerLength)
+
+    const packet = Buffer.concat([headerBuffer, dataBuffer])
 
     this.closeAllTCPConnections()
 
     for (const board in RovecommManifest) {
       if (Object.prototype.hasOwnProperty.call(RovecommManifest, board)) {
-        this.sendUDP(subscribe, RovecommManifest[board].Ip)
+        this.sendUDP(packet, RovecommManifest[board].Ip)
       }
     }
     await new Promise(resolve => setTimeout(() => resolve(true), 300))
@@ -558,15 +414,14 @@ class Rovecomm extends EventEmitter {
     const data = 0
     const ip = RovecommManifest[device].Ip
 
-    const ping = Buffer.allocUnsafe(headerLength + 1)
-    ping.writeUInt8(VersionNumber, 0)
-    ping.writeUInt16BE(dataId, 1)
-    ping.writeUInt16BE(dataCount, 3)
-    ping.writeUInt8(dataType, 5)
-    ping.writeUInt8(data, headerLength)
+    const headerBuffer = createHeader(dataId, dataCount, dataType)
+    const dataBuffer = Buffer.allocUnsafe(headerLength)
+    dataBuffer.writeUInt8(data, headerLength)
+
+    const packet = Buffer.concat([headerBuffer, dataBuffer])
 
     this.RovePingStartTimes[device] = Date.now()
-    this.sendUDP(ping, ip)
+    this.sendUDP(packet, ip)
   }
 }
 
