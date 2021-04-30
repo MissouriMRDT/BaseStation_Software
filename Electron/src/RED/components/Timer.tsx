@@ -106,7 +106,12 @@ interface IProps {
 }
 
 interface IState {
+  selectedOption: number
   parentTask: Parent[]
+  timeInput: string
+  nameInput: string
+  missionInputOpen: boolean
+  taskInputOpen: boolean
   currentChild: number
   currentParent: number
   advOptionsOpen: boolean
@@ -122,6 +127,11 @@ class Timer extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props)
     this.state = {
+      selectedOption: 100,
+      nameInput: "",
+      timeInput: "",
+      missionInputOpen: false,
+      taskInputOpen: false,
       advOptionsOpen: false,
       rmvAddOptionOpen: false,
       timeSplitOpen: false,
@@ -135,6 +145,30 @@ class Timer extends Component<IProps, IState> {
     }
     this.startTimer = this.startTimer.bind(this)
     this.countDown = this.countDown.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
+  }
+
+  handleChange(event: any, type: string): void {
+    if (type === "name") {
+      this.setState({ nameInput: event.target.value })
+    } else if (type === "time") {
+      this.setState({ timeInput: event.target.value })
+    }
+  }
+
+  findIndex(ID: number): number {
+    for (let i = 0; i < this.state.parentTask.length; i++) {
+      if (this.state.parentTask[i].id === ID) {
+        return i
+      }
+    }
+    return -1
+  }
+
+  handleSubmit(event: any): void {
+    event.preventDefault()
+    this.addInstance(this.state.timeInput, this.state.selectedOption, this.state.nameInput)
+    this.setState({ timeInput: "", nameInput: "" })
   }
 
   countDown(): void {
@@ -172,15 +206,15 @@ class Timer extends Component<IProps, IState> {
   // but there's the option to make that a saveable thing to the JSON
   saveJSON(): void {
     // prefer-const wants "parentTask" to be const, despite member variables being altered. Look at later
-    const { parentTask } = this.state
+    /* const { parentTask } = this.state
     for (let ndx = 0; ndx < parentTask.length; ndx++) {
       parentTask[ndx].difference = 0
       for (let inner = 0; inner < parentTask[ndx].childTasks.length; inner++) {
         parentTask[ndx].childTasks[inner].difference = 0
       }
     }
-    this.setState({ parentTask })
-    fs.writeFileSync(FILEPATH, JSON.stringify(this.state.parentTask))
+    this.setState({ parentTask }) */
+    fs.writeFileSync(FILEPATH, JSON.stringify({ ParentTasks: this.state.parentTask }, null, 2))
   }
 
   reset(): void {
@@ -193,6 +227,21 @@ class Timer extends Component<IProps, IState> {
   resetParentTask(): void {
     this.setState({ currentParentTime: 0, currentChild: 0, currentChildTime: 0, isCounting: false })
     stopTimer()
+  }
+
+  findNewID(): number {
+    let ID = 100
+    let doesExist = true
+    while (doesExist) {
+      doesExist = false
+      for (let i = 0; i < this.state.parentTask.length; i++) {
+        if (ID === this.state.parentTask[i].id) {
+          doesExist = true
+        }
+      }
+      ID += doesExist ? 100 : 0
+    }
+    return ID
   }
 
   previousSubTask(): void {
@@ -216,28 +265,29 @@ class Timer extends Component<IProps, IState> {
     this.setState({ isCounting })
   }
 
-  addInstance(time: string, parentName: string, childNameIn: string, parentID: number): void {
-    const childName = childNameIn || ""
+  addInstance(time: string, inputID: number, nameIn: string): void {
+    const index = this.findIndex(inputID)
     const timeInSeconds = unpackInput(time)
-    let { parentTask } = this.state
-    if (childName) {
+    // eslint also wants this one made a const... not sure why as it does get changed but yeah
+    const { parentTask } = this.state
+    if (time) {
       const newTask: Task = {
-        title: childName,
-        id: parentID + 1,
+        title: nameIn,
+        id: inputID + parentTask[index].childTasks.length + 1,
         setTime: timeInSeconds,
         difference: 0,
       }
-      const index = Math.floor(parentID / 1000) * 1000
-      parentTask[index].childTasks = [...parentTask[index].childTasks, newTask]
+      parentTask[index].childTasks.push(newTask)
+      parentTask[index].setTime += timeInSeconds
     } else {
       const newTask: Parent = {
-        title: parentName,
-        id: parentTask.length * 100,
-        setTime: timeInSeconds,
+        title: nameIn,
+        id: this.findNewID(),
+        setTime: 0,
         difference: 0,
         childTasks: [],
       }
-      parentTask = [...parentTask, newTask]
+      parentTask.push(newTask)
     }
     this.setState({ parentTask })
     this.saveJSON()
@@ -246,7 +296,8 @@ class Timer extends Component<IProps, IState> {
   removeInstance(ID: number): void {
     let { parentTask } = this.state
     if (ID % 100) {
-      const index = Math.floor(ID / 1000) * 1000
+      const index = this.findIndex(ID)
+      console.log(index)
       const newChildList = parentTask[index].childTasks.filter(i => i.id !== ID)
       parentTask[index].childTasks = newChildList
     } else {
@@ -276,37 +327,33 @@ class Timer extends Component<IProps, IState> {
               <p>-{packOutput(this.state.parentTask[this.state.currentParent].setTime)}</p>
             </div>
           </div>
-          <div>
-            {this.state.parentTask[this.state.currentParent].childTasks.length ? (
-              <div id="CurrentTaskContainer" style={{ ...column, marginTop: "-5%", width: "100%" }}>
-                <p style={{ margin: "0px", fontSize: "23px", fontWeight: "bold" }}>
-                  {this.state.parentTask[this.state.currentParent].childTasks[this.state.currentChild].title}
-                </p>
-                <ProgressBar
-                  current={this.state.currentChildTime}
-                  total={this.state.parentTask[this.state.currentParent].childTasks[this.state.currentChild].setTime}
-                  name="other"
-                />
-                <div
-                  style={{
-                    ...timeRead,
-                    fontSize: "20px",
-                    marginTop: "-3.5%",
-                    marginLeft: "9%",
-                    marginRight: "9%",
-                    fontWeight: "bold",
-                  }}
-                >
-                  <p>{packOutput(this.state.currentChildTime)}</p>
-                  <p>
-                    -
-                    {packOutput(
-                      this.state.parentTask[this.state.currentParent].childTasks[this.state.currentChild].setTime
-                    )}
-                  </p>
-                </div>
-              </div>
-            ) : null}
+          <div id="CurrentTaskContainer" style={{ ...column, marginTop: "-5%", width: "100%" }}>
+            <p style={{ margin: "0px", fontSize: "23px", fontWeight: "bold" }}>
+              {this.state.parentTask[this.state.currentParent].childTasks[this.state.currentChild].title}
+            </p>
+            <ProgressBar
+              current={this.state.currentChildTime}
+              total={this.state.parentTask[this.state.currentParent].childTasks[this.state.currentChild].setTime}
+              name="other"
+            />
+            <div
+              style={{
+                ...timeRead,
+                fontSize: "20px",
+                marginTop: "-3.5%",
+                marginLeft: "9%",
+                marginRight: "9%",
+                fontWeight: "bold",
+              }}
+            >
+              <p>{packOutput(this.state.currentChildTime)}</p>
+              <p>
+                -
+                {packOutput(
+                  this.state.parentTask[this.state.currentParent].childTasks[this.state.currentChild].setTime
+                )}
+              </p>
+            </div>
           </div>
           <div id="NextTaskContainer" />
           <div
@@ -330,7 +377,11 @@ class Timer extends Component<IProps, IState> {
               <button type="button" style={{ height: "20px" }} onClick={() => this.setState({ advOptionsOpen: true })}>
                 Advanced Options
               </button>
-              <button type="button" style={{ height: "30px", fontSize: "23px" }} onClick={() => this.reset()}>
+              <button
+                type="button"
+                style={{ height: "30px", fontSize: "23px" }}
+                onClick={() => (this.state.currentChildTime ? this.reset() : this.resetParentTask())}
+              >
                 RESET
               </button>
             </div>
@@ -353,9 +404,6 @@ class Timer extends Component<IProps, IState> {
                 </button>
                 <button type="button" onClick={() => this.setState({ timeSplitOpen: true })}>
                   Open Split
-                </button>
-                <button type="button" onClick={() => this.resetParentTask()}>
-                  Reset Task
                 </button>
                 <button type="button" onClick={() => this.setState({ rmvAddOptionOpen: true })}>
                   Edit List
@@ -390,30 +438,90 @@ class Timer extends Component<IProps, IState> {
           {this.state.rmvAddOptionOpen ? (
             <div style={rmvAddModal}>
               <p>Edit Task List</p>
-              <div>
-                {this.state.parentTask.map(task => {
-                  return (
-                    <div key={task.id} style={row}>
-                      <p>{task.title}</p>
-                      <button type="button" onClick={() => this.removeInstance(task.id)}>
-                        Trash Can Icon
-                      </button>
-                      <div style={{ borderStyle: "solid", borderColor: "teal" }}>
-                        {task.childTasks.map(subTask => {
-                          return (
-                            <div key={subTask.id}>
-                              <p>{subTask.title}</p>
-                              <button type="button" onClick={() => this.removeInstance(subTask.id)}>
-                                Trash Can Icon
-                              </button>
-                            </div>
-                          )
-                        })}
-                      </div>
+              <form onSubmit={this.handleSubmit}>
+                <div>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      this.setState({
+                        missionInputOpen: !this.state.missionInputOpen,
+                        taskInputOpen: this.state.taskInputOpen,
+                      })
+                    }
+                  >
+                    Add Mission
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      this.setState({
+                        taskInputOpen: !this.state.taskInputOpen,
+                        missionInputOpen: this.state.taskInputOpen,
+                      })
+                    }
+                  >
+                    Add Task
+                  </button>
+                  <input type="submit" value="Submit" />
+                </div>
+                <div>
+                  {this.state.taskInputOpen ? (
+                    <div>
+                      <input
+                        value={this.state.nameInput}
+                        onChange={e => this.handleChange(e, "name")}
+                        placeholder="Task Name"
+                      />
+                      <input
+                        value={this.state.timeInput}
+                        onChange={e => this.handleChange(e, "time")}
+                        placeholder="HH:MM:SS"
+                      />
                     </div>
-                  )
-                })}
-              </div>
+                  ) : null}
+                </div>
+                <div>
+                  {this.state.missionInputOpen ? (
+                    <div>
+                      <input
+                        value={this.state.nameInput}
+                        onChange={e => this.handleChange(e, "name")}
+                        placeholder="Mission Name"
+                      />
+                    </div>
+                  ) : null}
+                </div>
+                <li>
+                  {this.state.parentTask.map(task => {
+                    return (
+                      <div key={task.id} style={row}>
+                        <input
+                          type="radio"
+                          value={task.id}
+                          checked={this.state.selectedOption === task.id}
+                          onChange={() => this.setState({ selectedOption: task.id })}
+                        />
+                        <p>{task.title}</p>
+                        <button type="button" onClick={() => this.removeInstance(task.id)}>
+                          Trash Can Icon
+                        </button>
+                        <div style={{ borderStyle: "solid", borderColor: "teal" }}>
+                          {task.childTasks.map(subTask => {
+                            return (
+                              <div key={subTask.id}>
+                                <p>{subTask.title}</p>
+                                <button type="button" onClick={() => this.removeInstance(subTask.id)}>
+                                  Trash Can Icon
+                                </button>
+                              </div>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    )
+                  })}
+                </li>
+              </form>
               <button type="button" onClick={() => this.setState({ rmvAddOptionOpen: false })}>
                 back
               </button>

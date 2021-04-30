@@ -27,12 +27,24 @@ class ProgressBar extends React.Component<IProps> {
     return (current / total) * 100
   }
 
+  overtime(): number {
+    if (this.props.current > this.props.total) {
+      if (this.props.current > 2 * this.props.total) {
+        return 100
+      } else {
+        return this.calculatePercent(this.props.current - this.props.total, this.props.total)
+      }
+    } else {
+      return 0
+    }
+  }
+
   render(): JSX.Element {
     return (
       <div style={this.props.name === "total" ? totalBar : otherBar}>
         <div
           style={{
-            background: "#990000",
+            background: "hsl(120, 70%, 50%)",
             height: `${this.props.name === "total" ? "20px" : "35px"}`,
             width: `${
               this.props.current >= this.props.total ? 100 : this.calculatePercent(this.props.current, this.props.total)
@@ -41,17 +53,9 @@ class ProgressBar extends React.Component<IProps> {
         >
           <div
             style={{
-              background: "#ca27d9",
+              background: "#990000",
               height: `${this.props.name === "total" ? "20px" : "35px"}`,
-              /* eslint-disable */
-              width: `${
-                this.props.current > this.props.total
-                  ? this.props.current > 2 * this.props.total
-                    ? 100
-                    : this.calculatePercent(this.props.current - this.props.total, this.props.total)
-                  : 0
-              }%`,
-              /* eslint-enable */
+              width: `${this.overtime()}%`,
             }}
           />
         </div>
