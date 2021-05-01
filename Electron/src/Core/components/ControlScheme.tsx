@@ -4,33 +4,6 @@ import CSS from "csstype"
 import path from "path"
 import fs from "fs"
 
-/*
-  make a file in rover drive that has this and for flight stick and link to it
-  button buttonIndex (for xbox controller):
-    0: A
-    1: B
-    2: X
-    3: Y
-    4: LB
-    5: RB
-    6: RT
-    7: LT
-    8: back
-    9: start
-    10: left stick click
-    11: right stick click
-    12: d up
-    13: d down
-    14: d left
-    15: d right
-    16: (unsure possibly home button)
-  joystick buttonIndex
-    0: left stick left/right
-    1: left stick up/down
-    2: right stick left/right
-    3: right stick up/down
-*/
-
 const container: CSS.Properties = {
   display: "flex",
   fontFamily: "arial",
@@ -67,10 +40,19 @@ const row: CSS.Properties = {
 
 // eslint-disable-next-line import/no-mutable-exports
 export let controllerInputs: any = {}
-const filepath = path.join(__dirname, "../assets/ControllerInput.json")
+
+// Input configuration file
+const inputJSON = path.join(__dirname, "../assets/ControllerInput.json")
 let CONTROLLERINPUT: any = {}
-if (fs.existsSync(filepath)) {
-  CONTROLLERINPUT = JSON.parse(fs.readFileSync(filepath).toString())
+if (fs.existsSync(inputJSON)) {
+  CONTROLLERINPUT = JSON.parse(fs.readFileSync(inputJSON).toString())
+}
+
+// Mappings between controller buttons' names and their indexes
+const controllerJSON = path.join(__dirname, "../assets/Controller.json")
+let CONTROLLER: any = {}
+if (fs.existsSync(controllerJSON)) {
+  CONTROLLER = JSON.parse(fs.readFileSync(controllerJSON).toString())
 }
 
 // passedScheme is the current scheme that is selected, pos is the position in the list of controllers that are connected
@@ -116,12 +98,16 @@ function controller(passedScheme: any, pos: any): any {
     if (navigator.getGamepads()[index] != null && passedScheme !== "") {
       for (const button in CONTROLLERINPUT[passedScheme].bindings) {
         if (CONTROLLERINPUT[passedScheme].bindings[button].buttonType === "button") {
-          controllerInputs[button] = navigator.getGamepads()[index]?.buttons[
-            CONTROLLERINPUT[passedScheme].bindings[button].buttonIndex
+          controllerInputs[button] = navigator.getGamepads()[index]?.buttons[ // Button indexes from the controller
+            CONTROLLER[CONTROLLERINPUT[passedScheme].controller].button[ // object of buttons on this controller type
+              CONTROLLERINPUT[passedScheme].bindings[button].button // the desired button from this control scheme
+            ]
           ].value
         } else {
-          controllerInputs[button] = navigator.getGamepads()[index]?.axes[
-            CONTROLLERINPUT[passedScheme].bindings[button].buttonIndex
+          controllerInputs[button] = navigator.getGamepads()[index]?.axes[ // axes indexes from the controller
+            CONTROLLER[CONTROLLERINPUT[passedScheme].controller].joystick[ // object of joystick on this controller type
+              CONTROLLERINPUT[passedScheme].bindings[button].button // the desired "button" from this control scheme
+            ]
           ]
           // this checks to see if the current value of the axes are under the deadzone and will set
           // it to zero to prevent unwanted inputs when the controller is not being used
