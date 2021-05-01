@@ -41,6 +41,9 @@ const dgram = require("dgram")
 const net = require("net")
 const EventEmitter = require("events")
 
+// List of dataIds which are known to be conflicting with the current manifest
+const reject: number[] = []
+
 interface TCPSocket {
   RCSocket: netSocket
   RCDeque: Deque<any>
@@ -164,7 +167,7 @@ export function parse(packet: Buffer, rinfo?: any): void {
             dataIdStr = comm
             endLoop = true
             boardName = board
-            dataCountMatch = RovecommManifest[board].Error[comm].dataCount
+            dataCountMatch = RovecommManifest[board].Telemetry[comm].dataCount
             break
           }
         }
@@ -192,19 +195,28 @@ export function parse(packet: Buffer, rinfo?: any): void {
       }
     }
 
-    if (dataCount !== dataCountMatch) {
+    // If the datacount recieved doesn't match that of the manifest, output an error message
+    // Only output this error message once for each datacount, completeling blacklisting the dataid
+    if (dataCount !== dataCountMatch && !reject.includes(dataId)) {
+      reject.push(dataId)
       // eslint-disable-next-line @typescript-eslint/no-use-before-define
-      rovecomm.emit("all", `Packet dataCount of ${dataCount} didn't match ${dataCountMatch} of manifest.`)
-      return
+      rovecomm.emit(
+        "all",
+        `Packet with dataId ${dataId} dataCount of ${dataCount} didn't match ${dataCountMatch} of manifest.`
+      )
     }
 
     // rovecomm depends on parse, and parse depends on rovecomm. Since parse is defined with the
     // function keyword, this isn't a problem, but we don't want to disable this use before definition
     // error for the whole file or project since it can be risky
 
-    // First emit is for the dataIdString (like DriveSpeeds)
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    rovecomm.emit(dataIdStr, data)
+    // If the dataid has been blacklisted, don't output to things expecting it
+    // note, it still is okay to output blacklisted data ids to RON
+    if (!reject.includes(dataId)) {
+      // First emit is for the dataIdString (like DriveSpeeds)
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      rovecomm.emit(dataIdStr, data)
+    }
 
     // Second emit is for "all" which is used for logging purposes
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -248,6 +260,133 @@ function TCPListen(socket: TCPSocket) {
 }
 
 class Rovecomm extends EventEmitter {
+  UDPSocket: Socket
+
+  TCPConnections: TCPSocket[]
+
+  RovePingStartTimes: { [id: string]: number } = {}
+
+  constructor() {
+    super()
+    // Initialization of UDP socket and server
+    this.UDPSocket = dgram.createSocket("udp4")
+
+    // eslint-disable-next-line guard-for-in
+    for (const board in RovecommManifest) {
+      this.RovePingStartTimes[board] = -1
+    }
+
+    this.UDPListen()
+
+    this.TCPConnections = []
+
+    this.resubscribe = this.resubscribe.bind(this)
+    this.ping = this.ping.bind(this)
+  }
+
+  createTCPConnection(port: number, host = "localhost") {
+    /*
+     * Takes in a port of type number and an optional host of type string, host defaults to localhost if not specified
+     * Creates a connection to the target Host:Port over TCP, if a connection doesn't already exist
+     * Runs the TCPListen function on the new TCPSocket, then pushes the new TCPSocket into the rovecomm TCPConnections list
+     */
+    for (const socket in this.TCPConnections) {
+      if (
+        this.TCPConnections[socket].RCSocket.remoteAddress === host &&
+        this.TCPConnections[socket].RCSocket.remotePort === port
+      ) {
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
+        rovecomm.emit("all", `Attempted to add a second connection to ${host}:${port}, didn't add`)
+        return
+      }
+    }
+
+    const newSocket: TCPSocket = {
+      // New socket to connect with
+      RCSocket: new net.Socket(),
+      // Instantiate a new Deque of size 30KB, avoid runtime resizing
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      RCDeque: new Deque<any>(30 * 1024),
+    }
+
+    // Handle Timeout errors from attempting to connect to things that don't exist.
+    newSocket.RCSocket.on("error", e => {
+      console.log(e)
+      if (!e.message.includes("connect ETIMEDOUT")) {
+        throw new Error(e.message)
+      }
+    })
+
+    // Connect to the board we're intending to communicate with
+    newSocket.RCSocket.connect(port, host, function handler() {
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      rovecomm.emit("all", `Created TCP connection to ${host}:${port}`)
+    })
+
+    // Listen for any data coming on this connection and parse it as it arrives
+    TCPListen(newSocket)
+
+    // Add the connection to the TCPConnections list to prevent garbage collection from deleting it
+    this.TCPConnections.push(newSocket)
+
+    // The board implementation currently doesn't require a subscribe for TCP, since its a connection-based protocol
+  }
+
+  UDPListen() {
+    /*
+     * Listens on the class UDP socket, always calling parse if it recieves anything,
+     * and properly binding the socket to a port
+     */
+    this.UDPSocket.on("message", (msg: Buffer, rinfo: any) => {
+      parse(msg, rinfo)
+    })
+    this.UDPSocket.bind(11000)
+  }
+
+  sendUDP(packet: Buffer, destinationIp: string, port = ethernetUDPPort): void {
+    /*
+     * Takes a packet (Buffer) and sends it out over the existing UDP socket
+     * to the correct destination IP
+     */
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    this.UDPSocket.send(packet, port, destinationIp)
+  }
+
+  sendTCP(packet: Buffer, destinationIp: string, port: number) {
+    /*
+     * Takes a packet (buffer), and iterates over the list of available TCP Connections
+     * Sends the packet if there's a connection with the correct IP:Port combination
+     * If there is no connection, emits an error message
+     */
+    for (const socket in this.TCPConnections) {
+      // TODO: When the boards all change to a single port, remove that check from this if statement
+      if (
+        this.TCPConnections[socket].RCSocket.remoteAddress === destinationIp &&
+        this.TCPConnections[socket].RCSocket.remotePort === port
+      ) {
+        const temp = this.TCPConnections[socket]
+        this.TCPConnections[socket].RCSocket.write(packet, "utf8", function handler() {
+          console.log(`wrote ${packet} to ${temp.RCSocket.remoteAddress} on ${temp.RCSocket.remotePort}`)
+        })
+        return
+      }
+    }
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    rovecomm.emit(
+      "all",
+      `Attempted to send a packet to ${destinationIp}:${port} but there was no connection on that IP:Port combo`
+    )
+  }
+
+  closeAllTCPConnections(): void {
+    for (const socket in this.TCPConnections) {
+      if ("RCSocket" in this.TCPConnections[socket]) {
+        this.TCPConnections[socket].RCSocket.destroy()
+        delete this.TCPConnections[socket]
+      }
+    }
+  }
+
   // While most "any" variable types have been removed, data really can be almost any type
   sendCommand(dataIdStr: string, dataIn: any, reliability = false): void {
     /*
@@ -384,8 +523,8 @@ class Rovecomm extends EventEmitter {
     const data = 0
 
     const headerBuffer = createHeader(dataId, dataCount, dataType)
-    const dataBuffer = Buffer.allocUnsafe(headerLength)
-    dataBuffer.writeUInt8(data, headerLength)
+    const dataBuffer = Buffer.allocUnsafe(1)
+    dataBuffer.writeUInt8(data, 0)
 
     const packet = Buffer.concat([headerBuffer, dataBuffer])
 
@@ -415,8 +554,8 @@ class Rovecomm extends EventEmitter {
     const ip = RovecommManifest[device].Ip
 
     const headerBuffer = createHeader(dataId, dataCount, dataType)
-    const dataBuffer = Buffer.allocUnsafe(headerLength)
-    dataBuffer.writeUInt8(data, headerLength)
+    const dataBuffer = Buffer.allocUnsafe(1)
+    dataBuffer.writeUInt8(data, 0)
 
     const packet = Buffer.concat([headerBuffer, dataBuffer])
 
