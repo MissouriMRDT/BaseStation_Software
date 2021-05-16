@@ -442,24 +442,11 @@ class Timer extends Component<IProps, IState> {
                 <div>
                   <button
                     type="button"
-                    onClick={() =>
-                      this.setState({
-                        missionInputOpen: !this.state.missionInputOpen,
-                        taskInputOpen: this.state.taskInputOpen,
-                      })
-                    }
+                    onClick={() => this.setState({ missionInputOpen: !this.state.missionInputOpen })}
                   >
                     Add Mission
                   </button>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      this.setState({
-                        taskInputOpen: !this.state.taskInputOpen,
-                        missionInputOpen: this.state.taskInputOpen,
-                      })
-                    }
-                  >
+                  <button type="button" onClick={() => this.setState({ taskInputOpen: !this.state.taskInputOpen })}>
                     Add Task
                   </button>
                   <input type="submit" value="Submit" />
