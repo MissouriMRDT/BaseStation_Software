@@ -113,7 +113,6 @@ interface IState {
   missionInputOpen: boolean
   taskInputOpen: boolean
   currentChild: number
-  currentParent: number
   advOptionsOpen: boolean
   rmvAddOptionOpen: boolean
   timeSplitOpen: boolean
@@ -136,7 +135,6 @@ class Timer extends Component<IProps, IState> {
       rmvAddOptionOpen: false,
       timeSplitOpen: false,
       parentTask: taskList.ParentTasks,
-      currentParent: 0,
       currentChild: 0,
       currentParentTime: 124,
       currentChildTime: 22,
@@ -185,21 +183,16 @@ class Timer extends Component<IProps, IState> {
   }
 
   loadNextTask(): void {
-    let { endOfList, currentParent, currentChild, currentParentTime } = this.state
-    if (currentChild === this.state.parentTask[currentParent].childTasks.length - 1) {
-      if (currentParent === this.state.parentTask.length - 1) {
+    let { endOfList, currentChild } = this.state
+    if (currentChild === this.state.parentTask[this.findIndex(this.state.selectedOption)].childTasks.length - 1) {
+      if (this.findIndex(this.state.selectedOption) === this.state.parentTask.length - 1) {
         endOfList = true
-      } else {
-        // add something to difference
-        currentParent++
-        currentParentTime = 0
-        currentChild = 0
       }
     } else {
       currentChild++
       // add something to difference
     }
-    this.setState({ currentChildTime: 0, currentParentTime, endOfList, currentParent, currentChild })
+    this.setState({ currentChildTime: 0, endOfList, currentChild })
   }
 
   // currently there's no ability to save the differences for analysis after the app is closed
@@ -304,7 +297,7 @@ class Timer extends Component<IProps, IState> {
       const newParentList = parentTask.filter(i => i.id !== ID)
       parentTask = newParentList
     }
-    this.setState({ parentTask, currentChild: 0, currentParent: 0 })
+    this.setState({ parentTask, currentChild: 0, selectedOption: 100 })
     this.saveJSON()
   }
 
@@ -401,7 +394,14 @@ class Timer extends Component<IProps, IState> {
                     type="radio"
                     value={task.id}
                     checked={this.state.selectedOption === task.id}
-                    onChange={() => this.setState({ selectedOption: task.id })}
+                    onChange={() =>
+                      this.setState({
+                        selectedOption: task.id,
+                        currentChild: 0,
+                        currentParentTime: 0,
+                        currentChildTime: 0,
+                      })
+                    }
                   />
                   <p>{task.title}</p>
                   <button type="button" onClick={() => this.removeInstance(task.id)}>
@@ -444,25 +444,31 @@ class Timer extends Component<IProps, IState> {
         <div style={{ ...container, ...column }}>
           <div id="TotalTimeContainer" style={{ ...column, marginTop: "-2.5%", width: "98%" }}>
             <p style={{ marginBottom: "0px", fontSize: "15px", marginTop: "10px", fontWeight: "bold" }}>
-              {this.state.parentTask[this.state.currentParent].title}
+              {this.state.parentTask[this.findIndex(this.state.selectedOption)].title}
             </p>
             <ProgressBar
               current={this.state.currentParentTime}
-              total={this.state.parentTask[this.state.currentParent].setTime}
+              total={this.state.parentTask[this.findIndex(this.state.selectedOption)].setTime}
               name="total"
             />
             <div style={{ ...timeRead, marginLeft: "1%", marginRight: "1%", marginTop: "-2.8%" }}>
               <p>{packOutput(this.state.currentParentTime)}</p>
-              <p>-{packOutput(this.state.parentTask[this.state.currentParent].setTime)}</p>
+              <p>-{packOutput(this.state.parentTask[this.findIndex(this.state.selectedOption)].setTime)}</p>
             </div>
           </div>
           <div id="CurrentTaskContainer" style={{ ...column, marginTop: "-5%", width: "100%" }}>
             <p style={{ margin: "0px", fontSize: "23px", fontWeight: "bold" }}>
-              {this.state.parentTask[this.state.currentParent].childTasks[this.state.currentChild].title}
+              {
+                this.state.parentTask[this.findIndex(this.state.selectedOption)].childTasks[this.state.currentChild]
+                  .title
+              }
             </p>
             <ProgressBar
               current={this.state.currentChildTime}
-              total={this.state.parentTask[this.state.currentParent].childTasks[this.state.currentChild].setTime}
+              total={
+                this.state.parentTask[this.findIndex(this.state.selectedOption)].childTasks[this.state.currentChild]
+                  .setTime
+              }
               name="other"
             />
             <div
@@ -479,7 +485,8 @@ class Timer extends Component<IProps, IState> {
               <p>
                 -
                 {packOutput(
-                  this.state.parentTask[this.state.currentParent].childTasks[this.state.currentChild].setTime
+                  this.state.parentTask[this.findIndex(this.state.selectedOption)].childTasks[this.state.currentChild]
+                    .setTime
                 )}
               </p>
             </div>
