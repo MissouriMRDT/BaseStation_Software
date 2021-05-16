@@ -61,20 +61,24 @@ function downloadURL(imgData: string): void {
 }
 
 function saveImage(): void {
+  // Search through all the windows for SensorGraphs
   let graph
   let thisWindow
   for (const win of Object.keys(windows)) {
     if (windows[win].document.getElementById("SensorGraph")) {
+      // When found, store the graph and the window it was in
       thisWindow = windows[win]
       graph = thisWindow.document.getElementById("SensorGraph")
       break
     }
   }
 
+  // If the graph isn't found, throw an error
   if (!graph) {
     throw new Error("The element 'SensorGraph' wasn't found")
   }
 
+  // If the graph is found, convert its html into a canvas to be downloaded
   html2canvas(graph, {
     scrollX: 0,
     scrollY: -thisWindow.scrollY - 38,
@@ -170,16 +174,21 @@ class SensorGraphs extends Component<IProps, IState> {
   }
 
   onMouseLeave(): void {
-    this.setState({ crosshairValues: [] })
+    // When the mouse exits the graph area, the crosshair should be cleared
+    this.setState({ crosshairValues: {} })
   }
 
   onNearestX(value: any, { index }: any, list: any, listName: string): void {
+    // When we hover over the graph area, find the closest x position of each line series
+    // (using a built in function to react-vis) and then set that key-value pair
+    // in crosshair values to be displayed
     this.setState({
       crosshairValues: { ...this.state.crosshairValues, [listName]: list[index] },
     })
   }
 
   sensorChange(event: { target: { value: string } }): void {
+    // When the dropdown selects a different sensor, properly update the variable in state
     this.setState({ sensor: event.target.value })
   }
 
@@ -188,12 +197,17 @@ class SensorGraphs extends Component<IProps, IState> {
     // temperature is discarded since it is supplied from the O2 sensor as well
     const { methane, normalized_methane } = this.state
     let { max_methane } = this.state
+    // If the max_methane value is 0 we are doing to get a div by zero error,
+    // so update it with the incoming data
     if (max_methane === 0) {
       ;[max_methane] = data
     }
+
     methane.push({ x: new Date(), y: data[0] })
+    // Normalize the data to 0 to 1 by dividing by the largest datum
     normalized_methane.push({ x: new Date(), y: data[0] / max_methane })
 
+    // If the newest datum was bigger than the max, readjust all past data to the new normalization
     if (data[0] > max_methane) {
       for (const pairs of normalized_methane) {
         pairs.y *= max_methane / data[0]
@@ -207,11 +221,12 @@ class SensorGraphs extends Component<IProps, IState> {
   co2(data: any): void {
     const { co2, normalized_co2 } = this.state
     let { max_co2 } = this.state
-    co2.push({ x: new Date(), y: data[0] })
-    normalized_co2.push({ x: new Date(), y: data[0] / max_co2 })
     if (max_co2 === 0) {
       ;[max_co2] = data
     }
+
+    co2.push({ x: new Date(), y: data[0] })
+    normalized_co2.push({ x: new Date(), y: data[0] / max_co2 })
 
     if (data[0] > max_co2) {
       for (const pairs of normalized_co2) {
@@ -300,6 +315,7 @@ class SensorGraphs extends Component<IProps, IState> {
       ;[max_n2o] = data
     }
 
+    n2o.push({ x: new Date(), y: data[0] })
     normalized_n2o.push({ x: new Date(), y: data[0] / max_n2o })
 
     if (data[0] > max_n2o) {
@@ -314,6 +330,9 @@ class SensorGraphs extends Component<IProps, IState> {
   }
 
   crosshair(): JSX.Element | null {
+    // Return the desired crosshair element
+
+    // We only want to return a crosshair element if there is a valid reading in the crosshair values
     let time
     for (const reading of this.state.crosshairValues) {
       if (reading !== undefined) {
@@ -321,80 +340,83 @@ class SensorGraphs extends Component<IProps, IState> {
         break
       }
     }
-    console.log(this.state.crosshairValues)
+
+    // If we were able to find a reading at a time, then go ahead and display the crosshair
+    // The heading will be that time as a string, and then if the key exists in crosshairValues
+    // then we want to display its y value
     if (time) {
       return (
         <Crosshair values={this.state.crosshairValues}>
           <div style={overlay}>
             <h3>{time?.toTimeString().slice(0, 9)}</h3>
-            {this.state.crosshairValues[0] !== undefined && (
+            {"Methane" in this.state.crosshairValues && (
               <p>
                 Methane:{" "}
-                {this.state.crosshairValues[0].y.toLocaleString(undefined, {
+                {this.state.crosshairValues.Methane.y.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                 })}{" "}
                 %
               </p>
             )}
-            {this.state.crosshairValues[1] !== undefined && (
+            {"CO2" in this.state.crosshairValues && (
               <p>
                 CO2:{" "}
-                {this.state.crosshairValues[1].y.toLocaleString(undefined, {
+                {this.state.crosshairValues.CO2.y.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                 })}{" "}
                 ppm
               </p>
             )}
-            {this.state.crosshairValues[2] !== undefined && (
+            {"Temperature" in this.state.crosshairValues && (
               <p>
                 Temperature:{" "}
-                {this.state.crosshairValues[2].y.toLocaleString(undefined, {
+                {this.state.crosshairValues.Temperature.y.toLocaleString(undefined, {
                   minimumFractionDigits: 1,
                   minimumIntegerDigits: 2,
                 })}
                 &#176;C
               </p>
             )}
-            {this.state.crosshairValues[3] !== undefined && (
+            {"O2PP" in this.state.crosshairValues && (
               <p>
                 O2PP:{" "}
-                {this.state.crosshairValues[3].y.toLocaleString(undefined, {
+                {this.state.crosshairValues.O2PP.y.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                 })}{" "}
                 ppm
               </p>
             )}
-            {this.state.crosshairValues[4] !== undefined && (
+            {"O2Concentration" in this.state.crosshairValues && (
               <p>
                 O2Concentration:{" "}
-                {this.state.crosshairValues[4].y.toLocaleString(undefined, {
+                {this.state.crosshairValues.O2Concentration.y.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                 })}{" "}
                 ppm
               </p>
             )}
-            {this.state.crosshairValues[5] !== undefined && (
+            {"O2Pressure" in this.state.crosshairValues && (
               <p>
                 O2Pressure:{" "}
-                {this.state.crosshairValues[5].y.toLocaleString(undefined, {
+                {this.state.crosshairValues.O2Pressure.y.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                 })}{" "}
                 ppm
               </p>
             )}
-            {this.state.crosshairValues[6] !== undefined && (
+            {"NO" in this.state.crosshairValues && (
               <p>
                 NO:{" "}
-                {this.state.crosshairValues[6].y.toLocaleString(undefined, {
+                {this.state.crosshairValues.NO.y.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                 })}{" "}
                 ppm
               </p>
             )}
-            {this.state.crosshairValues[7] !== undefined && (
+            {"N2O" in this.state.crosshairValues && (
               <p>
                 N2O:{" "}
-                {this.state.crosshairValues[7].y.toLocaleString(undefined, {
+                {this.state.crosshairValues.N2O.y.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                 })}{" "}
                 ppm
@@ -408,7 +430,6 @@ class SensorGraphs extends Component<IProps, IState> {
   }
 
   render(): JSX.Element {
-    console.log(this.state)
     return (
       <div id="SensorGraph" style={this.props.style}>
         <div style={label}>Sensor Graphs</div>
