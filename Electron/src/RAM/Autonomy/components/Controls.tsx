@@ -65,7 +65,8 @@ class Controls extends Component<IProps, IState> {
   addMarkerLeg(): void {
     rovecomm.emit(
       "AutonomyActivity",
-      `Sending Marker (Lat: ${this.props.selectedWaypoint.latitude} Lon: ${this.props.selectedWaypoint.longitude})`
+      `Sending Marker (Lat: ${this.props.selectedWaypoint.latitude.toFixed(7)} 
+       Lon: ${this.props.selectedWaypoint.longitude.toFixed(7)})`
     )
     rovecomm.sendCommand("AddMarkerLeg", [this.props.selectedWaypoint.latitude, this.props.selectedWaypoint.longitude])
   }
@@ -73,7 +74,8 @@ class Controls extends Component<IProps, IState> {
   addGateLeg(): void {
     rovecomm.emit(
       "AutonomyActivity",
-      `Sending Gate (Lat: ${this.props.selectedWaypoint.latitude} Lon: ${this.props.selectedWaypoint.longitude})`
+      `Sending Gate (Lat: ${this.props.selectedWaypoint.latitude.toFixed(7)} 
+       Lon: ${this.props.selectedWaypoint.longitude.toFixed(7)})`
     )
     rovecomm.sendCommand("AddGateLeg", [this.props.selectedWaypoint.latitude, this.props.selectedWaypoint.longitude])
   }
