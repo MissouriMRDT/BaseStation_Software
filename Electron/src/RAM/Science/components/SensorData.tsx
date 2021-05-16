@@ -185,7 +185,7 @@ class SensorData extends Component<IProps, IState> {
                 {this.state.methane.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                 })}{" "}
-                ppm
+                %
               </div>
             </div>
             <div style={row}>

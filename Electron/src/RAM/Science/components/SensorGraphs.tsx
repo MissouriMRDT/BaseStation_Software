@@ -187,12 +187,16 @@ class SensorGraphs extends Component<IProps, IState> {
     // the methane data packet is [methane concentration, temperature]
     // temperature is discarded since it is supplied from the O2 sensor as well
     const { methane, normalized_methane } = this.state
+    let { max_methane } = this.state
+    if (max_methane === 0) {
+      ;[max_methane] = data
+    }
     methane.push({ x: new Date(), y: data[0] })
-    normalized_methane.push({ x: new Date(), y: data[0] / this.state.max_methane })
+    normalized_methane.push({ x: new Date(), y: data[0] / max_methane })
 
-    if (data[0] > this.state.max_methane) {
+    if (data[0] > max_methane) {
       for (const pairs of normalized_methane) {
-        pairs.y *= this.state.max_methane / data[0]
+        pairs.y *= max_methane / data[0]
       }
       this.setState({ max_methane: data[0], normalized_methane })
     }
@@ -202,12 +206,16 @@ class SensorGraphs extends Component<IProps, IState> {
 
   co2(data: any): void {
     const { co2, normalized_co2 } = this.state
+    let { max_co2 } = this.state
     co2.push({ x: new Date(), y: data[0] })
-    normalized_co2.push({ x: new Date(), y: data[0] / this.state.max_co2 })
+    normalized_co2.push({ x: new Date(), y: data[0] / max_co2 })
+    if (max_co2 === 0) {
+      ;[max_co2] = data
+    }
 
-    if (data[0] > this.state.max_co2) {
+    if (data[0] > max_co2) {
       for (const pairs of normalized_co2) {
-        pairs.y *= this.state.max_co2 / data[0]
+        pairs.y *= max_co2 / data[0]
       }
       this.setState({ max_methane: data[0], normalized_co2 })
     }
@@ -217,40 +225,47 @@ class SensorGraphs extends Component<IProps, IState> {
 
   o2(data: any): void {
     const { temperature, o2PP, o2Concentration, o2Pressure } = this.state
+    let { max_temperature, max_o2PP, max_o2Concentration, max_o2Pressure } = this.state
     const { normalized_temperature, normalized_o2PP, normalized_o2Concentration, normalized_o2Pressure } = this.state
     const [newTemperature, newO2PP, newO2Concentration, newO2Pressure] = data
+    if (max_temperature === 0 || max_o2PP === 0 || max_o2Concentration === 0 || max_o2Pressure === 0) {
+      max_temperature = newTemperature
+      max_o2PP = newO2PP
+      max_o2Concentration = newO2Concentration
+      max_o2Pressure = newO2Concentration
+    }
 
     temperature.push({ x: new Date(), y: newTemperature })
     o2PP.push({ x: new Date(), y: newO2PP })
     o2Concentration.push({ x: new Date(), y: newO2Concentration })
     o2Pressure.push({ x: new Date(), y: newO2Pressure })
 
-    normalized_temperature.push({ x: new Date(), y: newTemperature / this.state.max_temperature })
-    normalized_o2PP.push({ x: new Date(), y: newO2PP / this.state.max_o2PP })
-    normalized_o2Concentration.push({ x: new Date(), y: newO2Concentration / this.state.max_o2Concentration })
-    normalized_o2Pressure.push({ x: new Date(), y: newO2Pressure / this.state.max_o2Pressure })
+    normalized_temperature.push({ x: new Date(), y: newTemperature / max_temperature })
+    normalized_o2PP.push({ x: new Date(), y: newO2PP / max_o2PP })
+    normalized_o2Concentration.push({ x: new Date(), y: newO2Concentration / max_o2Concentration })
+    normalized_o2Pressure.push({ x: new Date(), y: newO2Pressure / max_o2Pressure })
 
-    if (newTemperature > this.state.max_temperature) {
+    if (newTemperature > max_temperature) {
       for (const pairs of normalized_temperature) {
-        pairs.y *= this.state.max_temperature / newTemperature
+        pairs.y *= max_temperature / newTemperature
       }
       this.setState({ max_temperature: newTemperature, normalized_temperature })
     }
-    if (newO2PP > this.state.max_o2PP) {
+    if (newO2PP > max_o2PP) {
       for (const pairs of normalized_o2PP) {
-        pairs.y *= this.state.max_o2PP / newO2PP
+        pairs.y *= max_o2PP / newO2PP
       }
       this.setState({ max_o2PP: newO2PP, normalized_o2PP })
     }
-    if (newO2Concentration > this.state.max_o2Concentration) {
+    if (newO2Concentration > max_o2Concentration) {
       for (const pairs of normalized_o2Concentration) {
-        pairs.y *= this.state.max_o2Concentration / newO2Concentration
+        pairs.y *= max_o2Concentration / newO2Concentration
       }
       this.setState({ max_o2Concentration: newO2Concentration, normalized_o2Concentration })
     }
-    if (newO2Pressure > this.state.max_o2Pressure) {
+    if (newO2Pressure > max_o2Pressure) {
       for (const pairs of normalized_o2Pressure) {
-        pairs.y *= this.state.max_o2Pressure / newO2Pressure
+        pairs.y *= max_o2Pressure / newO2Pressure
       }
       this.setState({ max_o2Pressure: newO2Pressure, normalized_o2Pressure })
     }
@@ -260,14 +275,19 @@ class SensorGraphs extends Component<IProps, IState> {
 
   no(data: any): void {
     const { no, normalized_no } = this.state
-    no.push({ x: new Date(), y: data[0] })
-    normalized_no.push({ x: new Date(), y: data[0] / this.state.max_no })
+    let { max_no } = this.state
+    if (max_no === 0) {
+      ;[max_no] = data
+    }
 
-    if (data[0] > this.state.max_no) {
+    no.push({ x: new Date(), y: data[0] })
+    normalized_no.push({ x: new Date(), y: data[0] / max_no })
+
+    if (data[0] > max_no) {
       for (const pairs of normalized_no) {
-        pairs.y *= this.state.max_no / data[0]
+        pairs.y *= max_no / data[0]
       }
-      this.setState({ max_methane: data[0], normalized_no })
+      this.setState({ max_no: data[0], normalized_no })
     }
 
     this.setState({ no })
@@ -275,13 +295,18 @@ class SensorGraphs extends Component<IProps, IState> {
 
   n2o(data: any): void {
     const { n2o, normalized_n2o } = this.state
-    normalized_n2o.push({ x: new Date(), y: data[0] / this.state.max_n2o })
+    let { max_n2o } = this.state
+    if (max_n2o === 0) {
+      ;[max_n2o] = data
+    }
 
-    if (data[0] > this.state.max_no) {
+    normalized_n2o.push({ x: new Date(), y: data[0] / max_n2o })
+
+    if (data[0] > max_n2o) {
       for (const pairs of normalized_n2o) {
-        pairs.y *= this.state.max_no / data[0]
+        pairs.y *= max_n2o / data[0]
       }
-      this.setState({ max_methane: data[0], normalized_n2o })
+      this.setState({ max_n2o: data[0], normalized_n2o })
     }
 
     n2o.push({ x: new Date(), y: data[0] })
@@ -383,6 +408,7 @@ class SensorGraphs extends Component<IProps, IState> {
   }
 
   render(): JSX.Element {
+    console.log(this.state)
     return (
       <div id="SensorGraph" style={this.props.style}>
         <div style={label}>Sensor Graphs</div>
