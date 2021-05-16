@@ -5,6 +5,7 @@ import html2canvas from "html2canvas"
 import { XYPlot, XAxis, YAxis, HorizontalGridLines, LineSeries, DiscreteColorLegend, Crosshair } from "react-vis"
 
 import { rovecomm } from "../../../Core/RoveProtocol/Rovecomm"
+import { windows } from "../../../Core/Window"
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
@@ -60,15 +61,24 @@ function downloadURL(imgData: string): void {
 }
 
 function saveImage(): void {
-  console.log("Save")
-  const input = document.getElementById("canvas")
-  if (!input) {
-    throw new Error("The element 'canvas' wasn't found")
+  let graph
+  let thisWindow
+  for (const win of Object.keys(windows)) {
+    if (windows[win].document.getElementById("SensorGraph")) {
+      thisWindow = windows[win]
+      graph = thisWindow.document.getElementById("SensorGraph")
+      break
+    }
   }
-  html2canvas(input, {
+
+  if (!graph) {
+    throw new Error("The element 'SensorGraph' wasn't found")
+  }
+
+  html2canvas(graph, {
     scrollX: 0,
-    scrollY: -window.scrollY,
-  })
+    scrollY: -thisWindow.scrollY - 38,
+  }) // We subtract 38 to make up for the 28 pixel top border and the -10 top margin
     .then((canvas: any) => {
       const imgData = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream")
       downloadURL(imgData)
