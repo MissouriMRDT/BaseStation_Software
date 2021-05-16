@@ -308,6 +308,135 @@ class Timer extends Component<IProps, IState> {
     this.saveJSON()
   }
 
+  advancedOptionsMenu(): JSX.Element {
+    return (
+      <div style={advOptionsModal}>
+        <p>Advanced Options</p>
+        <div>
+          <button type="button" onClick={() => this.previousSubTask()}>
+            Prev Sub-Task
+          </button>
+          <button type="button" onClick={() => this.setState({ timeSplitOpen: true })}>
+            Open Split
+          </button>
+          <button type="button" onClick={() => this.setState({ rmvAddOptionOpen: true })}>
+            Edit List
+          </button>
+        </div>
+        <div>
+          <button type="button" onClick={() => this.setState({ advOptionsOpen: false })}>
+            back
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  timeSplitMenu(): JSX.Element {
+    return (
+      <div style={timeSplitModal}>
+        <p>Times and Differences</p>
+        <div>BIG LIST GOES HERE</div>
+        <div>
+          <button type="button" onClick={() => this.setState({ timeSplitOpen: false })}>
+            back
+          </button>
+          <button
+            type="button"
+            onClick={() => this.setState({ timeSplitOpen: false, advOptionsOpen: false, rmvAddOptionOpen: false })}
+          >
+            close all
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  rmvAddMenu(): JSX.Element {
+    return (
+      <div style={rmvAddModal}>
+        <p>Edit Task List</p>
+        <form onSubmit={this.handleSubmit}>
+          <div>
+            <button type="button" onClick={() => this.setState({ missionInputOpen: !this.state.missionInputOpen })}>
+              Add Mission
+            </button>
+            <button type="button" onClick={() => this.setState({ taskInputOpen: !this.state.taskInputOpen })}>
+              Add Task
+            </button>
+            <input type="submit" value="Submit" />
+          </div>
+          <div>
+            {this.state.taskInputOpen ? (
+              <div>
+                <input
+                  value={this.state.nameInput}
+                  onChange={e => this.handleChange(e, "name")}
+                  placeholder="Task Name"
+                />
+                <input
+                  value={this.state.timeInput}
+                  onChange={e => this.handleChange(e, "time")}
+                  placeholder="HH:MM:SS"
+                />
+              </div>
+            ) : null}
+          </div>
+          <div>
+            {this.state.missionInputOpen ? (
+              <div>
+                <input
+                  value={this.state.nameInput}
+                  onChange={e => this.handleChange(e, "name")}
+                  placeholder="Mission Name"
+                />
+              </div>
+            ) : null}
+          </div>
+          <li>
+            {this.state.parentTask.map(task => {
+              return (
+                <div key={task.id} style={row}>
+                  <input
+                    type="radio"
+                    value={task.id}
+                    checked={this.state.selectedOption === task.id}
+                    onChange={() => this.setState({ selectedOption: task.id })}
+                  />
+                  <p>{task.title}</p>
+                  <button type="button" onClick={() => this.removeInstance(task.id)}>
+                    Trash Can Icon
+                  </button>
+                  <div style={{ borderStyle: "solid", borderColor: "teal" }}>
+                    {task.childTasks.map(subTask => {
+                      return (
+                        <div key={subTask.id}>
+                          <p>{subTask.title}</p>
+                          <button type="button" onClick={() => this.removeInstance(subTask.id)}>
+                            Trash Can Icon
+                          </button>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              )
+            })}
+          </li>
+        </form>
+        <button type="button" onClick={() => this.setState({ rmvAddOptionOpen: false })}>
+          back
+        </button>
+        <button
+          type="button"
+          onClick={() => this.setState({ rmvAddOptionOpen: false, advOptionsOpen: false, timeSplitOpen: false })}
+        >
+          close all
+        </button>
+      </div>
+    )
+  }
+
   render(): JSX.Element {
     return (
       <div>
@@ -395,131 +524,9 @@ class Timer extends Component<IProps, IState> {
               </button>
             </div>
           </div>
-          {this.state.advOptionsOpen ? (
-            <div style={advOptionsModal}>
-              <p>Advanced Options</p>
-              <div>
-                <button type="button" onClick={() => this.previousSubTask()}>
-                  Prev Sub-Task
-                </button>
-                <button type="button" onClick={() => this.setState({ timeSplitOpen: true })}>
-                  Open Split
-                </button>
-                <button type="button" onClick={() => this.setState({ rmvAddOptionOpen: true })}>
-                  Edit List
-                </button>
-              </div>
-              <div>
-                <button type="button" onClick={() => this.setState({ advOptionsOpen: false })}>
-                  back
-                </button>
-              </div>
-            </div>
-          ) : null}
-          {this.state.timeSplitOpen ? (
-            <div style={timeSplitModal}>
-              <p>Times and Differences</p>
-              <div>BIG LIST GOES HERE</div>
-              <div>
-                <button type="button" onClick={() => this.setState({ timeSplitOpen: false })}>
-                  back
-                </button>
-                <button
-                  type="button"
-                  onClick={() =>
-                    this.setState({ timeSplitOpen: false, advOptionsOpen: false, rmvAddOptionOpen: false })
-                  }
-                >
-                  close all
-                </button>
-              </div>
-            </div>
-          ) : null}
-          {this.state.rmvAddOptionOpen ? (
-            <div style={rmvAddModal}>
-              <p>Edit Task List</p>
-              <form onSubmit={this.handleSubmit}>
-                <div>
-                  <button
-                    type="button"
-                    onClick={() => this.setState({ missionInputOpen: !this.state.missionInputOpen })}
-                  >
-                    Add Mission
-                  </button>
-                  <button type="button" onClick={() => this.setState({ taskInputOpen: !this.state.taskInputOpen })}>
-                    Add Task
-                  </button>
-                  <input type="submit" value="Submit" />
-                </div>
-                <div>
-                  {this.state.taskInputOpen ? (
-                    <div>
-                      <input
-                        value={this.state.nameInput}
-                        onChange={e => this.handleChange(e, "name")}
-                        placeholder="Task Name"
-                      />
-                      <input
-                        value={this.state.timeInput}
-                        onChange={e => this.handleChange(e, "time")}
-                        placeholder="HH:MM:SS"
-                      />
-                    </div>
-                  ) : null}
-                </div>
-                <div>
-                  {this.state.missionInputOpen ? (
-                    <div>
-                      <input
-                        value={this.state.nameInput}
-                        onChange={e => this.handleChange(e, "name")}
-                        placeholder="Mission Name"
-                      />
-                    </div>
-                  ) : null}
-                </div>
-                <li>
-                  {this.state.parentTask.map(task => {
-                    return (
-                      <div key={task.id} style={row}>
-                        <input
-                          type="radio"
-                          value={task.id}
-                          checked={this.state.selectedOption === task.id}
-                          onChange={() => this.setState({ selectedOption: task.id })}
-                        />
-                        <p>{task.title}</p>
-                        <button type="button" onClick={() => this.removeInstance(task.id)}>
-                          Trash Can Icon
-                        </button>
-                        <div style={{ borderStyle: "solid", borderColor: "teal" }}>
-                          {task.childTasks.map(subTask => {
-                            return (
-                              <div key={subTask.id}>
-                                <p>{subTask.title}</p>
-                                <button type="button" onClick={() => this.removeInstance(subTask.id)}>
-                                  Trash Can Icon
-                                </button>
-                              </div>
-                            )
-                          })}
-                        </div>
-                      </div>
-                    )
-                  })}
-                </li>
-              </form>
-              <button type="button" onClick={() => this.setState({ rmvAddOptionOpen: false })}>
-                back
-              </button>
-              <button
-                type="button"
-                onClick={() => this.setState({ rmvAddOptionOpen: false, advOptionsOpen: false, timeSplitOpen: false })}
-              >
-                close all
-              </button>
-            </div>
-          ) : null}
+          {this.state.advOptionsOpen ? this.advancedOptionsMenu() : null}
+          {this.state.timeSplitOpen ? this.timeSplitMenu() : null}
+          {this.state.rmvAddOptionOpen ? this.rmvAddMenu() : null}
         </div>
       </div>
     )

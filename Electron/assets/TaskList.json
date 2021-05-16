@@ -1,61 +1,73 @@
 {
   "ParentTasks": [
     {
-      "title": "First Mission",
+      "title": "Science Mission",
       "id": 100,
-      "setTime": 200,
+      "setTime": 3600,
+      "difference": 0,
+      "childTasks": [
+        {
+          "title": "In-Field Sample Collection",
+          "id": 101,
+          "setTime": 2400,
+          "difference": 0
+        },
+        {
+          "title": "Presentation Prep",
+          "id": 102,
+          "setTime": 600,
+          "difference": 0
+        },
+        {
+          "title": "Conduct Presentation",
+          "id": 103,
+          "setTime": 600,
+          "difference": 0
+        }
+      ]
+    },
+    {
+      "title": "Equipment Servicing & Autonomy",
+      "id": 200,
+      "setTime": 5400,
+      "difference": 0,
+      "childTasks": [
+        {
+          "title": "Equipment Servicing",
+          "id": 201,
+          "setTime": 2400,
+          "difference": 0
+        },
+        {
+          "title": "Autonomy Preparation",
+          "id": 202,
+          "setTime": 600,
+          "difference": 0
+        },
+        {
+          "title": "Autonomy",
+          "id": 203,
+          "setTime": 2400,
+          "difference": 0
+        }
+      ]
+    },
+    {
+      "title": "Extreme Retrieval & Delivery",
+      "id": 300,
+      "setTime": 3000,
       "difference": 0,
       "childTasks": [
         {
           "title": "First Task",
-          "id": 101,
-          "setTime": 30,
+          "id": 301,
+          "setTime": 1500,
           "difference": 0
         },
         {
           "title": "Second Task",
-          "id": 102,
-          "setTime": 30,
-          "difference": 0
-        }
-      ]
-    },
-    {
-      "title": "heppy long day",
-      "id": 300,
-      "setTime": 171,
-      "difference": 0,
-      "childTasks": [
-        {
-          "title": "bing bong",
-          "id": 301,
-          "setTime": 81,
-          "difference": 0
-        },
-        {
-          "title": "susus amongus",
           "id": 302,
-          "setTime": 90,
-          "difference": 0
-        }
-      ]
-    },
-    {
-      "title": "big jumbo",
-      "id": 200,
-      "setTime": 1349,
-      "difference": 0,
-      "childTasks": [
-        {
-          "title": "hugh mungus",
-          "id": 201,
-          "setTime": 1301,
-          "difference": 0
-        },
-        {
-          "title": "mongus",
-          "id": 202,
-          "setTime": 48,
+          "setTime": 1500,
           "difference": 0
         }
       ]
