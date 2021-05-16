@@ -384,7 +384,7 @@ class SensorGraphs extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div id="canvas" style={this.props.style}>
+      <div id="SensorGraph" style={this.props.style}>
         <div style={label}>Sensor Graphs</div>
         <div style={container}>
           <div style={row}>
@@ -429,25 +429,32 @@ class SensorGraphs extends Component<IProps, IState> {
               <LineSeries
                 data={this.state.sensor === "All" ? this.state.normalized_methane : this.state.methane}
                 style={{ fill: "none" }}
-                onNearestX={this.onNearestX}
+                onNearestX={(datapoint: any, event: any) =>
+                  this.onNearestX(datapoint, event, this.state.methane, "Methane")
+                }
               />
             )}
             {(this.state.sensor === "CO2" || this.state.sensor === "All") && this.state.co2 !== [] && (
               <LineSeries
                 data={this.state.sensor === "All" ? this.state.normalized_co2 : this.state.co2}
                 style={{ fill: "none" }}
+                onNearestX={(datapoint: any, event: any) => this.onNearestX(datapoint, event, this.state.co2, "CO2")}
               />
             )}
             {(this.state.sensor === "Temperature" || this.state.sensor === "All") && this.state.temperature !== [] && (
               <LineSeries
                 data={this.state.sensor === "All" ? this.state.normalized_temperature : this.state.temperature}
                 style={{ fill: "none" }}
+                onNearestX={(datapoint: any, event: any) =>
+                  this.onNearestX(datapoint, event, this.state.temperature, "Temperature")
+                }
               />
             )}
             {(this.state.sensor === "O2PP" || this.state.sensor === "All") && this.state.o2PP !== [] && (
               <LineSeries
                 data={this.state.sensor === "All" ? this.state.normalized_o2PP : this.state.o2PP}
                 style={{ fill: "none" }}
+                onNearestX={(datapoint: any, event: any) => this.onNearestX(datapoint, event, this.state.o2PP, "O2PP")}
               />
             )}
             {(this.state.sensor === "O2Concentration" || this.state.sensor === "All") &&
@@ -457,24 +464,32 @@ class SensorGraphs extends Component<IProps, IState> {
                     this.state.sensor === "All" ? this.state.normalized_o2Concentration : this.state.o2Concentration
                   }
                   style={{ fill: "none" }}
+                  onNearestX={(datapoint: any, event: any) =>
+                    this.onNearestX(datapoint, event, this.state.o2Concentration, "O2Concentration")
+                  }
                 />
               )}
             {(this.state.sensor === "O2Pressure" || this.state.sensor === "All") && this.state.o2Pressure !== [] && (
               <LineSeries
                 data={this.state.sensor === "All" ? this.state.normalized_o2Pressure : this.state.o2Pressure}
                 style={{ fill: "none" }}
+                onNearestX={(datapoint: any, event: any) =>
+                  this.onNearestX(datapoint, event, this.state.o2Pressure, "O2Pressure")
+                }
               />
             )}
             {(this.state.sensor === "NO" || this.state.sensor === "All") && this.state.no !== [] && (
               <LineSeries
                 data={this.state.sensor === "All" ? this.state.normalized_no : this.state.no}
                 style={{ fill: "none" }}
+                onNearestX={(datapoint: any, event: any) => this.onNearestX(datapoint, event, this.state.no, "NO")}
               />
             )}
             {(this.state.sensor === "N2O" || this.state.sensor === "All") && this.state.n2o !== [] && (
               <LineSeries
                 data={this.state.sensor === "All" ? this.state.normalized_n2o : this.state.n2o}
                 style={{ fill: "none" }}
+                onNearestX={(datapoint: any, event: any) => this.onNearestX(datapoint, event, this.state.n2o, "N2O")}
               />
             )}
             <XAxis />
