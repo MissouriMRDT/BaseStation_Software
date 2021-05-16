@@ -307,6 +307,12 @@
           "dataType": "FLOAT_T",
           "dataCount": 2,
           "comments": "[Distance, Quality]"
+        },
+        "SatelliteCountData": {
+          "dataId": 5103,
+          "dataType": "UINT16_T",
+          "dataCount": 1,
+          "comments": "[Number of satellites]"
         }
       },
       "Error": {
