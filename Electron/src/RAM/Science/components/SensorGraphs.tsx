@@ -119,7 +119,7 @@ interface IState {
   max_no: number
   max_n2o: number
   sensor: string
-  crosshairValues: { x: Date; y: number }[]
+  crosshairValues: any
 }
 
 class SensorGraphs extends Component<IProps, IState> {
@@ -151,7 +151,7 @@ class SensorGraphs extends Component<IProps, IState> {
       max_no: 0,
       max_n2o: 0,
       sensor: "All",
-      crosshairValues: [],
+      crosshairValues: {},
     }
     this.methane = this.methane.bind(this)
     this.co2 = this.co2.bind(this)
@@ -173,18 +173,9 @@ class SensorGraphs extends Component<IProps, IState> {
     this.setState({ crosshairValues: [] })
   }
 
-  onNearestX(value: any, { index }: any): void {
+  onNearestX(value: any, { index }: any, list: any, listName: string): void {
     this.setState({
-      crosshairValues: [
-        this.state.methane,
-        this.state.co2,
-        this.state.temperature,
-        this.state.o2PP,
-        this.state.o2Concentration,
-        this.state.o2Pressure,
-        this.state.no,
-        this.state.n2o,
-      ].map(d => d[index]),
+      crosshairValues: { ...this.state.crosshairValues, [listName]: list[index] },
     })
   }
 
@@ -298,21 +289,29 @@ class SensorGraphs extends Component<IProps, IState> {
   }
 
   crosshair(): JSX.Element | null {
-    if (this.state.crosshairValues[0]) {
+    let time
+    for (const reading of this.state.crosshairValues) {
+      if (reading !== undefined) {
+        time = reading.x
+        break
+      }
+    }
+    console.log(this.state.crosshairValues)
+    if (time) {
       return (
         <Crosshair values={this.state.crosshairValues}>
           <div style={overlay}>
-            <h3>{this.state.crosshairValues[0].x.toTimeString().slice(0, 9)}</h3>
-            {this.state.methane !== [] && (
+            <h3>{time?.toTimeString().slice(0, 9)}</h3>
+            {this.state.crosshairValues[0] !== undefined && (
               <p>
                 Methane:{" "}
                 {this.state.crosshairValues[0].y.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                 })}{" "}
-                ppm
+                %
               </p>
             )}
-            {this.state.co2 !== [] && (
+            {this.state.crosshairValues[1] !== undefined && (
               <p>
                 CO2:{" "}
                 {this.state.crosshairValues[1].y.toLocaleString(undefined, {
@@ -321,7 +320,7 @@ class SensorGraphs extends Component<IProps, IState> {
                 ppm
               </p>
             )}
-            {this.state.temperature !== [] && (
+            {this.state.crosshairValues[2] !== undefined && (
               <p>
                 Temperature:{" "}
                 {this.state.crosshairValues[2].y.toLocaleString(undefined, {
@@ -331,7 +330,7 @@ class SensorGraphs extends Component<IProps, IState> {
                 &#176;C
               </p>
             )}
-            {this.state.o2PP !== [] && (
+            {this.state.crosshairValues[3] !== undefined && (
               <p>
                 O2PP:{" "}
                 {this.state.crosshairValues[3].y.toLocaleString(undefined, {
@@ -340,7 +339,7 @@ class SensorGraphs extends Component<IProps, IState> {
                 ppm
               </p>
             )}
-            {this.state.o2Concentration !== [] && (
+            {this.state.crosshairValues[4] !== undefined && (
               <p>
                 O2Concentration:{" "}
                 {this.state.crosshairValues[4].y.toLocaleString(undefined, {
@@ -349,7 +348,7 @@ class SensorGraphs extends Component<IProps, IState> {
                 ppm
               </p>
             )}
-            {this.state.o2Pressure !== [] && (
+            {this.state.crosshairValues[5] !== undefined && (
               <p>
                 O2Pressure:{" "}
                 {this.state.crosshairValues[5].y.toLocaleString(undefined, {
@@ -358,19 +357,19 @@ class SensorGraphs extends Component<IProps, IState> {
                 ppm
               </p>
             )}
-            {this.state.no !== [] && (
+            {this.state.crosshairValues[6] !== undefined && (
               <p>
                 NO:{" "}
-                {this.state.crosshairValues[1].y.toLocaleString(undefined, {
+                {this.state.crosshairValues[6].y.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                 })}{" "}
                 ppm
               </p>
             )}
-            {this.state.n2o !== [] && (
+            {this.state.crosshairValues[7] !== undefined && (
               <p>
                 N2O:{" "}
-                {this.state.crosshairValues[1].y.toLocaleString(undefined, {
+                {this.state.crosshairValues[7].y.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                 })}{" "}
                 ppm
