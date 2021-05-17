@@ -130,6 +130,7 @@ interface IProps {
 
 interface IState {
   functionality: any
+  controlPreviewModal: boolean
 }
 
 class ControlScheme extends Component<IProps, IState> {
@@ -163,6 +164,7 @@ class ControlScheme extends Component<IProps, IState> {
           interval: null,
         },
       },
+      controlPreviewModal: false,
     }
     this.schemeChange = this.schemeChange.bind(this)
     // detects if a controller disconnects
@@ -281,6 +283,20 @@ class ControlScheme extends Component<IProps, IState> {
     }
   }
 
+  controlLayoutPreview(): JSX.Element {
+    return (
+      <div>
+        {this.state.functionality.map(selectedController => {
+          return (
+            <div key={selectedController}>
+              {selectedController.toggled === "On" ? <img alt={selectedController.controller} /> : null}
+            </div>
+          )
+        })}
+      </div>
+    )
+  }
+
   render(): JSX.Element {
     return (
       <div style={this.props.style}>
@@ -327,6 +343,14 @@ class ControlScheme extends Component<IProps, IState> {
               </div>
             )
           })}
+          <button
+            type="button"
+            onClick={() => this.setState({ controlPreviewModal: !this.state.controlPreviewModal })}
+            style={{ width: "120px", marginLeft: "40%" }}
+          >
+            Show Controls
+          </button>
+          <div>{this.state.controlPreviewModal ? this.controlLayoutPreview() : null}</div>
         </div>
       </div>
     )
