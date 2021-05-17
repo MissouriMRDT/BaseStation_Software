@@ -3,13 +3,25 @@
     {
       "title": "Default Mission",
       "id": 100,
-      "setTime": 60,
+      "setTime": 90,
       "difference": 0,
       "childTasks": [
         {
           "title": "Default Task",
           "id": 101,
-          "setTime": 60,
+          "setTime": 30,
+          "difference": 0
+        },
+        {
+          "title": "Default Task 2",
+          "id": 102,
+          "setTime": 30,
+          "difference": 0
+        },
+        {
+          "title": "Default 3",
+          "id": 103,
+          "setTime": 30,
           "difference": 0
         }
       ]

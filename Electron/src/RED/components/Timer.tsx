@@ -83,9 +83,10 @@ function unpackInput(time: string): number {
 }
 
 function packOutput(time: number): string {
-  const secondsToHours = Math.floor(time / 3600)
-  const secondsToMinutes = Math.floor((time - secondsToHours * 3600) / 60)
-  const remainSeconds = time - (secondsToHours * 3600 + secondsToMinutes * 60)
+  const absTime = Math.abs(time)
+  const secondsToHours = Math.floor(absTime / 3600)
+  const secondsToMinutes = Math.floor((absTime - secondsToHours * 3600) / 60)
+  const remainSeconds = absTime - (secondsToHours * 3600 + secondsToMinutes * 60)
   return `${secondsToHours}:${secondsToMinutes.toLocaleString(undefined, {
     minimumIntegerDigits: 2,
   })}:${remainSeconds.toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
@@ -122,6 +123,7 @@ interface IState {
   currentChildTime: number
   endOfList: boolean
   isCounting: boolean
+  delta: number
 }
 
 class Timer extends Component<IProps, IState> {
@@ -143,6 +145,7 @@ class Timer extends Component<IProps, IState> {
       currentChildTime: 22,
       endOfList: false,
       isCounting: false,
+      delta: 0,
     }
     this.startTimer = this.startTimer.bind(this)
     this.countDown = this.countDown.bind(this)
@@ -210,16 +213,18 @@ class Timer extends Component<IProps, IState> {
   }
 
   loadNextTask(): void {
-    let { endOfList, currentChild } = this.state
+    let { endOfList, currentChild, delta } = this.state
     if (currentChild === this.state.parentTask[this.findIndex(this.state.selectedOption)].childTasks.length - 1) {
       if (this.findIndex(this.state.selectedOption) === this.state.parentTask.length - 1) {
         endOfList = true
       }
     } else {
+      delta +=
+        this.state.parentTask[this.findIndex(this.state.selectedOption)].childTasks[currentChild].setTime -
+        this.state.currentChildTime
       currentChild++
-      // add something to difference
     }
-    this.setState({ currentChildTime: 0, endOfList, currentChild })
+    this.setState({ currentChildTime: 0, endOfList, currentChild, delta })
   }
 
   // currently there's no ability to save the differences for analysis after the app is closed
@@ -236,7 +241,7 @@ class Timer extends Component<IProps, IState> {
   }
 
   resetParentTask(): void {
-    this.setState({ currentParentTime: 0, currentChild: 0, currentChildTime: 0, isCounting: false })
+    this.setState({ currentParentTime: 0, currentChild: 0, currentChildTime: 0, isCounting: false, delta: 0 })
     stopTimer()
   }
 
@@ -437,7 +442,7 @@ class Timer extends Component<IProps, IState> {
                   >
                     <img src={TrashCanIcon} alt="Trash Can Icon" />
                   </button>
-                  <div style={{ borderStyle: "solid", borderColor: "teal", width: "55%", flexWrap: "wrap" }}>
+                  <div style={{ marginBottom: "20px", width: "55%", flexWrap: "wrap" }}>
                     {task.childTasks.map(subTask => {
                       return (
                         <div key={subTask.id} style={row}>
@@ -511,7 +516,13 @@ class Timer extends Component<IProps, IState> {
             />
             <div style={{ ...timeRead, marginLeft: "1%", marginRight: "1%", marginTop: "-2.8%" }}>
               <p>{packOutput(this.state.currentParentTime)}</p>
-              <p>-{packOutput(this.state.parentTask[this.findIndex(this.state.selectedOption)].setTime)}</p>
+              <p>
+                -
+                {packOutput(
+                  this.state.currentParentTime -
+                    this.state.parentTask[this.findIndex(this.state.selectedOption)].setTime
+                )}
+              </p>
             </div>
           </div>
           <div id="CurrentTaskContainer" style={{ ...column, marginTop: "-5%", width: "100%" }}>
@@ -521,6 +532,11 @@ class Timer extends Component<IProps, IState> {
                   .title
               }
             </p>
+            {this.state.delta ? (
+              <div style={{ zIndex: 5, marginBottom: "-4%", fontWeight: "bold", fontSize: "20px", color: "white" }}>
+                {this.state.delta} seconds
+              </div>
+            ) : null}
             <ProgressBar
               current={this.state.currentChildTime}
               total={
@@ -543,8 +559,9 @@ class Timer extends Component<IProps, IState> {
               <p>
                 -
                 {packOutput(
-                  this.state.parentTask[this.findIndex(this.state.selectedOption)].childTasks[this.state.currentChild]
-                    .setTime
+                  this.state.currentChildTime -
+                    this.state.parentTask[this.findIndex(this.state.selectedOption)].childTasks[this.state.currentChild]
+                      .setTime
                 )}
               </p>
             </div>
