@@ -24,7 +24,7 @@ const column: CSS.Properties = {
 }
 
 const motorMultiplier = 500
-const zMotorMultiplier = 200
+const zMotorMultiplier = 500
 
 function science(): void {
   // Z actuation of the science system is controlled by the left up/down thumbstick
@@ -68,7 +68,7 @@ function science(): void {
   // so we plug vacuum into the wheels and turn them on / off instead
   // of driving around.
   if ("VacuumPulse" in controllerInputs) {
-    const value = controllerInputs.VacuumPulse ? 255 : 0
+    const value = controllerInputs.VacuumPulse ? 255 : 239
     rovecomm.sendCommand("MotorBusEnable", value)
   }
 }

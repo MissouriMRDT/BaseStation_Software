@@ -112,7 +112,7 @@ class SensorData extends Component<IProps, IState> {
   }
 
   o2(data: any): void {
-    const [temperature, o2PP, o2Concentration, o2Pressure] = data
+    const [o2PP, temperature, o2Concentration, o2Pressure] = data
     this.setState({ temperature, o2PP, o2Concentration, o2Pressure })
   }
 
