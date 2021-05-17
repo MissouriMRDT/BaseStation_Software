@@ -534,7 +534,7 @@ class Timer extends Component<IProps, IState> {
             </p>
             {this.state.delta ? (
               <div style={{ zIndex: 5, marginBottom: "-4%", fontWeight: "bold", fontSize: "20px", color: "white" }}>
-                {this.state.delta} seconds
+                {packOutput(this.state.delta)}
               </div>
             ) : null}
             <ProgressBar
