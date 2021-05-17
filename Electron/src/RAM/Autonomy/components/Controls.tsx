@@ -58,15 +58,26 @@ class Controls extends Component<IProps, IState> {
     super(props)
     this.state = {}
 
-    this.addWaypoints = this.addWaypoints.bind(this)
+    this.addMarkerLeg = this.addMarkerLeg.bind(this)
+    this.addGateLeg = this.addGateLeg.bind(this)
   }
 
-  addWaypoints(): void {
+  addMarkerLeg(): void {
     rovecomm.emit(
       "AutonomyActivity",
-      `Sending Lat: ${this.props.selectedWaypoint.latitude} Lon: ${this.props.selectedWaypoint.longitude}`
+      `Sending Marker (Lat: ${this.props.selectedWaypoint.latitude.toFixed(7)} 
+       Lon: ${this.props.selectedWaypoint.longitude.toFixed(7)})`
     )
-    rovecomm.sendCommand("AddWaypoints", [this.props.selectedWaypoint.latitude, this.props.selectedWaypoint.longitude])
+    rovecomm.sendCommand("AddMarkerLeg", [this.props.selectedWaypoint.latitude, this.props.selectedWaypoint.longitude])
+  }
+
+  addGateLeg(): void {
+    rovecomm.emit(
+      "AutonomyActivity",
+      `Sending Gate (Lat: ${this.props.selectedWaypoint.latitude.toFixed(7)} 
+       Lon: ${this.props.selectedWaypoint.longitude.toFixed(7)})`
+    )
+    rovecomm.sendCommand("AddGateLeg", [this.props.selectedWaypoint.latitude, this.props.selectedWaypoint.longitude])
   }
 
   render(): JSX.Element {
@@ -81,8 +92,11 @@ class Controls extends Component<IProps, IState> {
             <button type="button" onClick={stopAutonomy} style={button}>
               <h1 style={button}>Stop Autonomy</h1>
             </button>
-            <button type="button" onClick={this.addWaypoints} style={button}>
-              <h1 style={button}>Add Waypoint</h1>
+            <button type="button" onClick={this.addMarkerLeg} style={button}>
+              <h1 style={button}>Add Marker Waypoint</h1>
+            </button>
+            <button type="button" onClick={this.addGateLeg} style={button}>
+              <h1 style={button}>Add Gate Waypoint</h1>
             </button>
             <button type="button" onClick={clearWaypoints} style={button}>
               <h1 style={button}>Clear Waypoints</h1>

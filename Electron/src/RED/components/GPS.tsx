@@ -41,6 +41,7 @@ interface IProps {
 interface IState {
   currentLat: number
   currentLon: number
+  satelliteCount: number
   pitch: number
   yaw: number
   roll: number
@@ -53,6 +54,7 @@ class GPS extends Component<IProps, IState> {
     this.state = {
       currentLat: 0,
       currentLon: 0,
+      satelliteCount: 0,
       pitch: 0,
       yaw: 0,
       roll: 0,
@@ -63,6 +65,7 @@ class GPS extends Component<IProps, IState> {
     rovecomm.on("GPSLatLon", (data: any) => this.GPSLatLon(data))
     rovecomm.on("IMUData", (data: any) => this.IMUData(data))
     rovecomm.on("LidarData", (data: any) => this.LidarData(data))
+    rovecomm.on("SatelliteCountData", (data: any) => this.SatelliteCountData(data))
   }
 
   GPSLatLon(data: any) {
@@ -73,6 +76,12 @@ class GPS extends Component<IProps, IState> {
       currentLon,
     })
     this.props.onCoordsChange(currentLat, currentLon)
+  }
+
+  SatelliteCountData(data: any) {
+    this.setState({
+      satelliteCount: data[0],
+    })
   }
 
   IMUData(data: any) {
@@ -98,6 +107,7 @@ class GPS extends Component<IProps, IState> {
           {[
             { title: "Current Lat.", value: this.state.currentLat.toFixed(7) },
             { title: "Current Lon.", value: this.state.currentLon.toFixed(7) },
+            { title: "Satellite Count", value: this.state.satelliteCount.toFixed(0) },
             { title: "Distance", value: this.state.distance.toFixed(3) },
             { title: "Quality", value: this.state.quality.toFixed(3) },
             { title: "Pitch", value: this.state.pitch.toFixed(3) },

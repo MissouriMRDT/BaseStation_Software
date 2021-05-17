@@ -307,6 +307,12 @@
           "dataType": "FLOAT_T",
           "dataCount": 2,
           "comments": "[Distance, Quality]"
+        },
+        "SatelliteCountData": {
+          "dataId": 5103,
+          "dataType": "UINT16_T",
+          "dataCount": 1,
+          "comments": "[Number of satellites]"
         }
       },
       "Error": {
@@ -691,14 +697,20 @@
           "dataCount": 1,
           "comments": ""
         },
-        "AddWaypoints": {
+        "AddMarkerLeg": {
           "dataId": 11002,
           "dataType": "DOUBLE_T",
           "dataCount": 2,
           "comments": "[Lat, Lon]"
         },
-        "ClearWaypoints": {
+        "AddGateLeg": {
           "dataId": 11003,
+          "dataType": "DOUBLE_T",
+          "dataCount": 2,
+          "comments": "[Lat, Lon]"
+        },
+        "ClearWaypoints": {
+          "dataId": 11004,
           "dataType": "UINT8_T",
           "dataCount": 1,
           "comments": ""
