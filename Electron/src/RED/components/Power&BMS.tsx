@@ -82,7 +82,9 @@ function turnOffReboot(time: number): void {
   rovecomm.sendCommand("BMSStop", [time])
 }
 
-interface IProps {}
+interface IProps {
+  style?: CSS.Properties
+}
 
 interface IState {
   boardTelemetry: any
@@ -275,7 +277,7 @@ class Power extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div>
+      <div style={this.props.style}>
         <div style={label}>Power and BMS</div>
         <div style={mainContainer}>
           <div style={{ ...row, width: "100%" }}>
