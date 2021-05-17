@@ -107,6 +107,7 @@ interface IProps {
 }
 
 interface IState {
+  chosenEdit: number
   selectedOption: number
   parentTask: Parent[]
   timeInput: string
@@ -127,6 +128,7 @@ class Timer extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props)
     this.state = {
+      chosenEdit: 0,
       selectedOption: 100,
       nameInput: "",
       timeInput: "",
@@ -137,7 +139,7 @@ class Timer extends Component<IProps, IState> {
       timeSplitOpen: false,
       parentTask: taskList.ParentTasks,
       currentChild: 0,
-      currentParentTime: 124,
+      currentParentTime: 22,
       currentChildTime: 22,
       endOfList: false,
       isCounting: false,
@@ -153,6 +155,30 @@ class Timer extends Component<IProps, IState> {
     } else if (type === "time") {
       this.setState({ timeInput: event.target.value })
     }
+  }
+
+  handleEdit(ID: number): void {
+    const { parentTask } = this.state
+    let { timeInput, chosenEdit } = this.state
+    if (this.state.timeInput) {
+      let childIndex = 0
+      const newTime = unpackInput(timeInput)
+      const parentIndex = this.findIndex(ID)
+      const oldChild = parentTask[this.findIndex(ID)].childTasks.filter(i => i.id === ID)
+      parentTask[parentIndex].setTime -= oldChild[0].setTime
+      parentTask[parentIndex].setTime += newTime
+      for (let i = 0; i < parentTask.length; i++) {
+        if (parentTask[parentIndex].childTasks[i].id === ID) {
+          childIndex = i
+          break
+        }
+      }
+      parentTask[parentIndex].childTasks[childIndex].setTime = newTime
+      timeInput = ""
+    }
+    chosenEdit = 0
+    this.setState({ parentTask, timeInput, chosenEdit })
+    this.saveJSON()
   }
 
   findIndex(ID: number): number {
@@ -199,15 +225,6 @@ class Timer extends Component<IProps, IState> {
   // currently there's no ability to save the differences for analysis after the app is closed
   // but there's the option to make that a saveable thing to the JSON
   saveJSON(): void {
-    // prefer-const wants "parentTask" to be const, despite member variables being altered. Look at later
-    /* const { parentTask } = this.state
-    for (let ndx = 0; ndx < parentTask.length; ndx++) {
-      parentTask[ndx].difference = 0
-      for (let inner = 0; inner < parentTask[ndx].childTasks.length; inner++) {
-        parentTask[ndx].childTasks[inner].difference = 0
-      }
-    }
-    this.setState({ parentTask }) */
     fs.writeFileSync(FILEPATH, JSON.stringify({ ParentTasks: this.state.parentTask }, null, 2))
   }
 
@@ -288,9 +305,11 @@ class Timer extends Component<IProps, IState> {
   }
 
   removeInstance(ID: number): void {
+    this.reset()
     let { parentTask } = this.state
     if (ID % 100) {
       const index = this.findIndex(ID)
+      console.log(ID)
       console.log(index)
       const oldChild = parentTask[index].childTasks.filter(i => i.id === ID)
       parentTask[index].setTime -= oldChild[0].setTime
@@ -360,7 +379,6 @@ class Timer extends Component<IProps, IState> {
             <button type="button" onClick={() => this.setState({ taskInputOpen: !this.state.taskInputOpen })}>
               Add Task
             </button>
-            <input type="submit" value="Submit" />
           </div>
           <div>
             {this.state.taskInputOpen ? (
@@ -375,6 +393,7 @@ class Timer extends Component<IProps, IState> {
                   onChange={e => this.handleChange(e, "time")}
                   placeholder="HH:MM:SS"
                 />
+                <input type="submit" value="Submit" />
               </div>
             ) : null}
           </div>
@@ -386,10 +405,11 @@ class Timer extends Component<IProps, IState> {
                   onChange={e => this.handleChange(e, "name")}
                   placeholder="Mission Name"
                 />
+                <input type="submit" value="Submit" />
               </div>
             ) : null}
           </div>
-          <div style={{ ...column }}>
+          <div style={{ ...column, padding: "5px" }}>
             {this.state.parentTask.map(task => {
               return (
                 <div key={task.id} style={{ ...row }}>
@@ -406,20 +426,45 @@ class Timer extends Component<IProps, IState> {
                       })
                     }
                   />
-                  <div style={column}>
-                    {task.title}
-                    {packOutput(task.setTime)}
+                  <div style={{ ...column, height: "20px", padding: "2px", width: "33%" }}>
+                    <div>{task.title}</div>
+                    <div>{packOutput(task.setTime)}</div>
                   </div>
-                  <button type="button" onClick={() => this.removeInstance(task.id)}>
+                  <button
+                    type="button"
+                    onClick={() => this.removeInstance(task.id)}
+                    style={{ height: "34px", margin: "3px" }}
+                  >
                     <img src={TrashCanIcon} alt="Trash Can Icon" />
                   </button>
-                  <div style={{ borderStyle: "solid", borderColor: "teal" }}>
+                  <div style={{ borderStyle: "solid", borderColor: "teal", width: "55%", flexWrap: "wrap" }}>
                     {task.childTasks.map(subTask => {
                       return (
-                        <div key={subTask.id}>
-                          <div style={column}>
-                            <p>{subTask.title}</p>
-                            <p>{packOutput(subTask.setTime)}</p>
+                        <div key={subTask.id} style={row}>
+                          <div style={{ ...column, flexBasis: "content", padding: "3px" }}>
+                            <div>{subTask.title}</div>
+                            <div>
+                              {this.state.chosenEdit === subTask.id ? (
+                                <div>
+                                  <input
+                                    value={this.state.timeInput}
+                                    onChange={e => this.handleChange(e, "time")}
+                                    placeholder={packOutput(subTask.setTime)}
+                                    style={{ width: "40%" }}
+                                  />
+                                  <button type="button" onClick={() => this.handleEdit(subTask.id)}>
+                                    save
+                                  </button>
+                                </div>
+                              ) : (
+                                <div>
+                                  {packOutput(subTask.setTime)}
+                                  <button type="button" onClick={() => this.setState({ chosenEdit: subTask.id })}>
+                                    Edit
+                                  </button>
+                                </div>
+                              )}
+                            </div>
                           </div>
                           <button
                             type="button"
