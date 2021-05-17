@@ -3,6 +3,7 @@ import CSS from "csstype"
 import path from "path"
 import fs from "fs"
 import ProgressBar from "../../Core/ProgressBar"
+import TrashCanIcon from "../../../assets/icons/TrashCanIcon.png"
 
 const label: CSS.Properties = {
   color: "white",
@@ -47,13 +48,13 @@ const advOptionsModal: CSS.Properties = {
 }
 const timeSplitModal: CSS.Properties = {
   position: "absolute",
-  zIndex: 1,
+  zIndex: 2,
   border: "2px solid #990000",
   backgroundColor: "white",
 }
 const rmvAddModal: CSS.Properties = {
   position: "absolute",
-  zIndex: 1,
+  zIndex: 2,
   border: "2px solid #990000",
   backgroundColor: "white",
 }
@@ -291,6 +292,8 @@ class Timer extends Component<IProps, IState> {
     if (ID % 100) {
       const index = this.findIndex(ID)
       console.log(index)
+      const oldChild = parentTask[index].childTasks.filter(i => i.id === ID)
+      parentTask[index].setTime -= oldChild[0].setTime
       const newChildList = parentTask[index].childTasks.filter(i => i.id !== ID)
       parentTask[index].childTasks = newChildList
     } else {
@@ -347,7 +350,7 @@ class Timer extends Component<IProps, IState> {
 
   rmvAddMenu(): JSX.Element {
     return (
-      <div style={rmvAddModal}>
+      <div style={{ ...rmvAddModal }}>
         <p>Edit Task List</p>
         <form onSubmit={this.handleSubmit}>
           <div>
@@ -386,10 +389,10 @@ class Timer extends Component<IProps, IState> {
               </div>
             ) : null}
           </div>
-          <li>
+          <div style={{ ...column }}>
             {this.state.parentTask.map(task => {
               return (
-                <div key={task.id} style={row}>
+                <div key={task.id} style={{ ...row }}>
                   <input
                     type="radio"
                     value={task.id}
@@ -403,19 +406,27 @@ class Timer extends Component<IProps, IState> {
                       })
                     }
                   />
-                  <p>{task.title}</p>
-                  <p>{packOutput(task.setTime)}</p>
+                  <div style={column}>
+                    {task.title}
+                    {packOutput(task.setTime)}
+                  </div>
                   <button type="button" onClick={() => this.removeInstance(task.id)}>
-                    Trash Can Icon
+                    <img src={TrashCanIcon} alt="Trash Can Icon" />
                   </button>
                   <div style={{ borderStyle: "solid", borderColor: "teal" }}>
                     {task.childTasks.map(subTask => {
                       return (
                         <div key={subTask.id}>
-                          <p>{subTask.title}</p>
-                          <p>{packOutput(subTask.setTime)}</p>
-                          <button type="button" onClick={() => this.removeInstance(subTask.id)}>
-                            Trash Can Icon
+                          <div style={column}>
+                            <p>{subTask.title}</p>
+                            <p>{packOutput(subTask.setTime)}</p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => this.removeInstance(subTask.id)}
+                            style={{ padding: "auto" }}
+                          >
+                            <img src={TrashCanIcon} alt="Trash Can Icon" />
                           </button>
                         </div>
                       )
@@ -424,7 +435,7 @@ class Timer extends Component<IProps, IState> {
                 </div>
               )
             })}
-          </li>
+          </div>
         </form>
         <button type="button" onClick={() => this.setState({ rmvAddOptionOpen: false })}>
           back
