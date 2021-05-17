@@ -10,6 +10,7 @@ import RoverOverviewOfNetwork from "../RON/RON"
 import RoverAttachmentManager from "../RAM/RAM"
 import RoverImageryDisplay from "../RID/RID"
 import Cameras from "../Core/components/Cameras"
+import Timer from "./components/Timer"
 import Power from "./components/Power&BMS"
 import ControlScheme from "../Core/components/ControlScheme"
 import Drive from "./components/Drive"
@@ -124,6 +125,7 @@ class ControlCenter extends Component<IProps, IState> {
             />
             <Lighting />
           </div>
+          <Timer />
           <Log />
           <Power />
           <Drive />
