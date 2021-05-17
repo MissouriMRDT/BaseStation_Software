@@ -156,7 +156,7 @@ class Timer extends Component<IProps, IState> {
 
   findIndex(ID: number): number {
     for (let i = 0; i < this.state.parentTask.length; i++) {
-      if (this.state.parentTask[i].id === ID) {
+      if (Math.floor(this.state.parentTask[i].id / 100) === Math.floor(ID / 100)) {
         return i
       }
     }
@@ -297,7 +297,7 @@ class Timer extends Component<IProps, IState> {
       const newParentList = parentTask.filter(i => i.id !== ID)
       parentTask = newParentList
     }
-    this.setState({ parentTask, currentChild: 0, selectedOption: 100 })
+    this.setState({ parentTask, currentChild: 0 })
     this.saveJSON()
   }
 
@@ -307,13 +307,13 @@ class Timer extends Component<IProps, IState> {
         <p>Advanced Options</p>
         <div>
           <button type="button" onClick={() => this.previousSubTask()}>
-            Prev Sub-Task
+            Prev Task
           </button>
           <button type="button" onClick={() => this.setState({ timeSplitOpen: true })}>
             Open Split
           </button>
           <button type="button" onClick={() => this.setState({ rmvAddOptionOpen: true })}>
-            Edit List
+            Show/Edit List
           </button>
         </div>
         <div>
@@ -404,6 +404,7 @@ class Timer extends Component<IProps, IState> {
                     }
                   />
                   <p>{task.title}</p>
+                  <p>{packOutput(task.setTime)}</p>
                   <button type="button" onClick={() => this.removeInstance(task.id)}>
                     Trash Can Icon
                   </button>
@@ -412,6 +413,7 @@ class Timer extends Component<IProps, IState> {
                       return (
                         <div key={subTask.id}>
                           <p>{subTask.title}</p>
+                          <p>{packOutput(subTask.setTime)}</p>
                           <button type="button" onClick={() => this.removeInstance(subTask.id)}>
                             Trash Can Icon
                           </button>
