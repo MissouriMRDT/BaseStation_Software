@@ -81,6 +81,7 @@ class ControlMultipliers extends Component<IProps, IState> {
         Nipper: 500,
       },
     }
+    controlMultipliers = this.state.controlMultipliers
   }
 
   sliderChange(event: { target: { value: string } }, multiplier: string): void {
