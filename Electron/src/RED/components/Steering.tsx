@@ -74,6 +74,7 @@ class Steering extends Component<IProps, IState> {
       // List of angles that we want the motors to move to
       sendAngles: [0, 0, 0, 0],
     }
+    this.sendAngles = this.sendAngles.bind(this)
     rovecomm.on("DriveAngles", (data: any) => this.recieveAngles(data))
     setInterval(() => steer(), 100)
   }
