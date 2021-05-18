@@ -89,6 +89,7 @@ class Steering extends Component<IProps, IState> {
     // When we have configured all the angles how we want them, we want to send them all
     // at the same time. If we send on each change event, changing from 25 to 30 may
     // cause steering to waste time trying to move from 25 to 3, then from 3 to 30
+    console.log(this.state.sendAngles)
     rovecomm.sendCommand("SetSteeringAngle", this.state.sendAngles)
   }
 
@@ -125,7 +126,11 @@ class Steering extends Component<IProps, IState> {
         <div style={container}>
           <div style={row}>
             <div style={column}>
-              <img src={UpArrow} alt="Wheel 0" style={{ transform: `rotate(${this.state.angles[0]}deg)` }} />
+              <img
+                src={UpArrow}
+                alt="Wheel 0"
+                style={{ transform: `rotate(${this.state.angles[0]}deg)`, zIndex: -1 }}
+              />
               <input
                 type="text"
                 style={{ margin: "0px 10px", textAlign: "center" }}
@@ -134,7 +139,11 @@ class Steering extends Component<IProps, IState> {
               />
             </div>
             <div style={column}>
-              <img src={UpArrow} alt="Wheel 2" style={{ transform: `rotate(${this.state.angles[1]}deg)` }} />
+              <img
+                src={UpArrow}
+                alt="Wheel 2"
+                style={{ transform: `rotate(${this.state.angles[2]}deg)`, zIndex: -1 }}
+              />
               <input
                 type="text"
                 style={{ margin: "0px 10px", textAlign: "center" }}
@@ -145,7 +154,11 @@ class Steering extends Component<IProps, IState> {
           </div>
           <div style={row}>
             <div style={column}>
-              <img src={UpArrow} alt="Wheel 1" style={{ transform: `rotate(${this.state.angles[2]}deg)` }} />
+              <img
+                src={UpArrow}
+                alt="Wheel 1"
+                style={{ transform: `rotate(${this.state.angles[1]}deg)`, zIndex: -1 }}
+              />
               <input
                 type="text"
                 style={{ margin: "0px 10px", textAlign: "center" }}
@@ -154,7 +167,11 @@ class Steering extends Component<IProps, IState> {
               />
             </div>
             <div style={column}>
-              <img src={UpArrow} alt="Wheel 3" style={{ transform: `rotate(${this.state.angles[3]}deg)` }} />
+              <img
+                src={UpArrow}
+                alt="Wheel 3"
+                style={{ transform: `rotate(${this.state.angles[3]}deg)`, zIndex: -1 }}
+              />
               <input
                 type="text"
                 style={{ margin: "0px 10px", textAlign: "center" }}

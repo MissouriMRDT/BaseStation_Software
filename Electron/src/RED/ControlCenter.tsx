@@ -124,7 +124,6 @@ class ControlCenter extends Component<IProps, IState> {
               }}
               style={{ flexGrow: 1, marginRight: "5px" }}
             />
-            <Steering />
           </div>
           <Timer />
           <Log />
@@ -154,6 +153,7 @@ class ControlCenter extends Component<IProps, IState> {
             style={{ minHeight: `${this.state.fourthHeight}px` }}
             storedWaypoints={this.state.storedWaypoints}
             currentCoords={this.state.currentCoords}
+            store={(name: string, coords: any) => this.waypointsInstance.store(name, coords)}
             name="controlCenterMap"
           />
           <Cameras defaultCamera={1} maxHeight={this.state.fourthHeight} style={{ width: "100%" }} />

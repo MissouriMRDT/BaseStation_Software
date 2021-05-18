@@ -58,8 +58,22 @@ class Controls extends Component<IProps, IState> {
     super(props)
     this.state = {}
 
+    this.addPositionLeg = this.addPositionLeg.bind(this)
     this.addMarkerLeg = this.addMarkerLeg.bind(this)
     this.addGateLeg = this.addGateLeg.bind(this)
+  }
+
+  addPositionLeg(): void {
+    rovecomm.emit(
+      "AutonomyActivity",
+      `Sending Position (
+       Lat: ${this.props.selectedWaypoint.latitude.toFixed(7)} 
+       Lon: ${this.props.selectedWaypoint.longitude.toFixed(7)})`
+    )
+    rovecomm.sendCommand("AddPositionLeg", [
+      this.props.selectedWaypoint.latitude,
+      this.props.selectedWaypoint.longitude,
+    ])
   }
 
   addMarkerLeg(): void {
@@ -91,6 +105,9 @@ class Controls extends Component<IProps, IState> {
             </button>
             <button type="button" onClick={stopAutonomy} style={button}>
               <h1 style={button}>Stop Autonomy</h1>
+            </button>
+            <button type="button" onClick={this.addPositionLeg} style={button}>
+              <h1 style={button}>Add Position Waypoint</h1>
             </button>
             <button type="button" onClick={this.addMarkerLeg} style={button}>
               <h1 style={button}>Add Marker Waypoint</h1>

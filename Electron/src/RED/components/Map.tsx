@@ -36,7 +36,7 @@ interface IProps {
   style?: CSS.Properties
   storedWaypoints: any
   currentCoords: { lat: number; lon: number }
-  // store: (name: string, coords: any) => void
+  store?: (name: string, coords: any) => void
   name: string
 }
 
@@ -83,10 +83,12 @@ class Map extends Component<IProps, IState> {
               maxZoom={this.state.maxZoom}
               whenReady={(map: any): void =>
                 map.target.on("click", (e: { latlng: { lat: number; lng: number } }) => {
-                  this.props.store(new Date().toLocaleTimeString(), {
-                    lat: e.latlng.lat,
-                    lon: e.latlng.lng,
-                  })
+                  if (this.props.store) {
+                    this.props.store(new Date().toLocaleTimeString(), {
+                      lat: e.latlng.lat,
+                      lon: e.latlng.lng,
+                    })
+                  }
                 })
               }
             >

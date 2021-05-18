@@ -697,20 +697,26 @@
           "dataCount": 1,
           "comments": ""
         },
-        "AddMarkerLeg": {
+        "AddPositionLeg": {
           "dataId": 11002,
           "dataType": "DOUBLE_T",
           "dataCount": 2,
           "comments": "[Lat, Lon]"
         },
-        "AddGateLeg": {
+        "AddMarkerLeg": {
           "dataId": 11003,
           "dataType": "DOUBLE_T",
           "dataCount": 2,
           "comments": "[Lat, Lon]"
         },
-        "ClearWaypoints": {
+        "AddGateLeg": {
           "dataId": 11004,
+          "dataType": "DOUBLE_T",
+          "dataCount": 2,
+          "comments": "[Lat, Lon]"
+        },
+        "ClearWaypoints": {
+          "dataId": 11005,
           "dataType": "UINT8_T",
           "dataCount": 1,
           "comments": ""
