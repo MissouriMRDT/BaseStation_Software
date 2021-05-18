@@ -664,7 +664,7 @@
           "dataId": 10103,
           "dataType": "FLOAT_T",
           "dataCount": 4,
-          "comments": "[partial pressure, (mBar), temperature (C), concentration (ppm), barometric pressue (mBar)]"
+          "comments": "[partial pressure (mBar), temperature (C), concentration (ppm), barometric pressue (mBar)]"
         },
         "NO": {
           "dataId": 10104,
@@ -697,20 +697,26 @@
           "dataCount": 1,
           "comments": ""
         },
-        "AddMarkerLeg": {
+        "AddPositionLeg": {
           "dataId": 11002,
           "dataType": "DOUBLE_T",
           "dataCount": 2,
           "comments": "[Lat, Lon]"
         },
-        "AddGateLeg": {
+        "AddMarkerLeg": {
           "dataId": 11003,
           "dataType": "DOUBLE_T",
           "dataCount": 2,
           "comments": "[Lat, Lon]"
         },
-        "ClearWaypoints": {
+        "AddGateLeg": {
           "dataId": 11004,
+          "dataType": "DOUBLE_T",
+          "dataCount": 2,
+          "comments": "[Lat, Lon]"
+        },
+        "ClearWaypoints": {
+          "dataId": 11005,
           "dataType": "UINT8_T",
           "dataCount": 1,
           "comments": ""

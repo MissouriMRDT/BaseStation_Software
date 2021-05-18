@@ -10,12 +10,14 @@ import RoverOverviewOfNetwork from "../RON/RON"
 import RoverAttachmentManager from "../RAM/RAM"
 import RoverImageryDisplay from "../RID/RID"
 import Cameras from "../Core/components/Cameras"
+import Timer from "./components/Timer"
 import Power from "./components/Power&BMS"
 import ControlScheme from "../Core/components/ControlScheme"
 import Drive from "./components/Drive"
 import Gimbal from "./components/Gimbal"
 import ThreeDRover from "../Core/components/ThreeDRover"
 import Lighting from "./components/Lighting"
+import Steering from "./components/Steering"
 
 const row: CSS.Properties = {
   display: "flex",
@@ -122,8 +124,8 @@ class ControlCenter extends Component<IProps, IState> {
               }}
               style={{ flexGrow: 1, marginRight: "5px" }}
             />
-            <Lighting />
           </div>
+          <Timer />
           <Log />
           <Power />
           <Drive />
@@ -151,6 +153,7 @@ class ControlCenter extends Component<IProps, IState> {
             style={{ minHeight: `${this.state.fourthHeight}px` }}
             storedWaypoints={this.state.storedWaypoints}
             currentCoords={this.state.currentCoords}
+            store={(name: string, coords: any) => this.waypointsInstance.store(name, coords)}
             name="controlCenterMap"
           />
           <Cameras defaultCamera={1} maxHeight={this.state.fourthHeight} style={{ width: "100%" }} />

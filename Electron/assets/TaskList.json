@@ -1,0 +1,110 @@
+{
+  "ParentTasks": [
+    {
+      "title": "Default Mission",
+      "id": 100,
+      "setTime": 90,
+      "difference": 0,
+      "childTasks": [
+        {
+          "title": "Default Task",
+          "id": 101,
+          "setTime": 30,
+          "difference": 0
+        },
+        {
+          "title": "Default Task 2",
+          "id": 102,
+          "setTime": 30,
+          "difference": 0
+        },
+        {
+          "title": "Default 3",
+          "id": 103,
+          "setTime": 30,
+          "difference": 0
+        }
+      ]
+    },
+    {
+      "title": "Science Mission",
+      "id": 200,
+      "setTime": 3600,
+      "difference": 0,
+      "childTasks": [
+        {
+          "title": "In-Field Sample Collection",
+          "id": 201,
+          "setTime": 2400,
+          "difference": 0
+        },
+        {
+          "title": "Presentation Prep",
+          "id": 202,
+          "setTime": 600,
+          "difference": 0
+        },
+        {
+          "title": "Conduct Presentation",
+          "id": 203,
+          "setTime": 600,
+          "difference": 0
+        }
+      ]
+    },
+    {
+      "title": "Equipment Servicing",
+      "id": 300,
+      "setTime": 5400,
+      "difference": 0,
+      "childTasks": [
+        {
+          "title": "Equipment Servicing",
+          "id": 301,
+          "setTime": 2400,
+          "difference": 0
+        }
+      ]
+    },
+    {
+      "title": "Autonomy",
+      "id": 500,
+      "setTime": 3000,
+      "difference": 0,
+      "childTasks": [
+        {
+          "title": "Autonomy Preparation",
+          "id": 302,
+          "setTime": 600,
+          "difference": 0
+        },
+        {
+          "title": "Autonomy",
+          "id": 303,
+          "setTime": 2400,
+          "difference": 0
+        }
+      ]
+    },
+    {
+      "title": "Extreme Retrieval & Delivery",
+      "id": 400,
+      "setTime": 3000,
+      "difference": 0,
+      "childTasks": [
+        {
+          "title": "First Task",
+          "id": 401,
+          "setTime": 1500,
+          "difference": 0
+        },
+        {
+          "title": "Second Task",
+          "id": 402,
+          "setTime": 1500,
+          "difference": 0
+        }
+      ]
+    }
+  ]
+}
