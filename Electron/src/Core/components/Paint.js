@@ -6,6 +6,7 @@ import THREE from "./Three"
 const OrbitControls = require("three-orbit-controls")(THREE)
 
 const DIRECTIONAL_LIGHT = "directionalLight"
+const PERSPECTIVE_CAMERA = "PerspectiveCamera"
 
 class Paint {
   constructor() {
@@ -44,6 +45,10 @@ class Paint {
     const directionalLightObj = this.scene.getObjectByName(DIRECTIONAL_LIGHT)
     if (directionalLightObj) {
       this.scene.remove(directionalLightObj)
+    }
+    const PerspectiveCameraObj = this.scene.getObjectByName(PERSPECTIVE_CAMERA)
+    if (PerspectiveCameraObj) {
+      this.scene.remove(PerspectiveCameraObj)
     }
 
     if (this.animationRequestId) {
@@ -222,10 +227,13 @@ class Paint {
       delete this.mesh
     }
     const directionalLightObj = this.scene.getObjectByName(DIRECTIONAL_LIGHT)
+    const PerspectiveCameraObj = this.scene.getObjectByName(PERSPECTIVE_CAMERA)
     if (directionalLightObj) {
       this.scene.remove(directionalLightObj)
     }
-
+    if (PerspectiveCameraObj) {
+      this.scene.remove(PerspectiveCameraObj)
+    }
     if (this.animationRequestId) {
       cancelAnimationFrame(this.animationRequestId)
     }
