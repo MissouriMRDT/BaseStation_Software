@@ -285,14 +285,31 @@ class ControlScheme extends Component<IProps, IState> {
 
   controlLayoutPreview(): JSX.Element {
     return (
-      <div>
-        {this.state.functionality.map(selectedController => {
+      <div
+        style={{
+          zIndex: 2,
+          backgroundColor: "white",
+          borderStyle: "solid",
+          borderWidth: "2px",
+          borderColor: "black",
+          margin: "3px",
+        }}
+      >
+        {Object.keys(this.state.functionality).map(selectedController => {
           return (
             <div key={selectedController}>
-              {selectedController.toggled === "On" ? <img alt={selectedController.controller} /> : null}
+              {this.state.functionality[selectedController].toggled === "On" ? (
+                <div style={{ borderWidth: "1px", borderStyle: "solid", borderColor: "black", margin: "2px" }}>
+                  <img alt={selectedController} />
+                  <div>bunger</div>
+                </div>
+              ) : null}
             </div>
           )
         })}
+        <button type="button" onClick={() => this.setState({ controlPreviewModal: false })}>
+          Close
+        </button>
       </div>
     )
   }
