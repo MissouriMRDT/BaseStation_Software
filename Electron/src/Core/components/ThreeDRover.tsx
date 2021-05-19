@@ -102,7 +102,7 @@ class ThreeDRover extends Component<IProps, IState> {
           <STLViewer
             model={RoverFile}
             modelColor="#B92C2C"
-            backgroundColor="#FFFFFF"
+            backgroundColor="#b0b0b0"
             rotate={false}
             rotation={this.state.IMUData}
             orbitControls

@@ -44,6 +44,7 @@ interface IProps {
   style?: CSS.Properties
   rowcol: string
   onMerge?: (display: string) => void
+  store: (name: string, coords: any) => void
   displayed?: string // Initial conditition of what should be displayed
 }
 
@@ -55,8 +56,6 @@ interface IState {
 }
 
 class RoverImageryDisplay extends Component<IProps, IState> {
-  waypointsInstance: any
-
   buttons: JSX.Element
 
   constructor(props: IProps) {
@@ -189,6 +188,7 @@ class RoverImageryDisplay extends Component<IProps, IState> {
             style={submod}
             storedWaypoints={this.state.storedWaypoints}
             currentCoords={this.state.currentCoords}
+            store={(name: string, coords: any) => this.props.store(name, coords)}
             name="RIDmap"
           />
         </div>
