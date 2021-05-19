@@ -14,5 +14,21 @@
     "color": "#8ed1fc",
     "colorPicker": false,
     "onMap": true
+  },
+  "4": {
+    "name": "7:42:49 PM",
+    "latitude": 37.95161313274457,
+    "longitude": -91.7730474472046,
+    "color": "#00d084",
+    "colorPicker": false,
+    "onMap": true
+  },
+  "5": {
+    "name": "7:42:50 PM",
+    "latitude": 37.95151180442294,
+    "longitude": -91.76995754241943,
+    "color": "black",
+    "colorPicker": false,
+    "onMap": true
   }
 }

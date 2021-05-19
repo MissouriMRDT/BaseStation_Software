@@ -102,11 +102,15 @@ class Map extends Component<IProps, IState> {
               {Object.keys(this.props.storedWaypoints).map((waypointName: string) => {
                 const waypoint = this.props.storedWaypoints[waypointName]
                 const post: LatLngTuple = [waypoint.latitude, waypoint.longitude]
-                return (
-                  <Marker key={waypoint.name} position={post} icon={icon(waypoint.color)}>
-                    <Popup>{waypoint.name}</Popup>
-                  </Marker>
-                )
+                if (waypoint.onMap === true) {
+                  return (
+                    <Marker key={waypoint.name} position={post} icon={icon(waypoint.color)}>
+                      <Popup>{waypoint.name}</Popup>
+                    </Marker>
+                  )
+                } else {
+                  return null
+                }
               })}
             </MapContainer>
           </div>
