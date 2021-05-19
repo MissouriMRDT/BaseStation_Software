@@ -14,5 +14,13 @@
     "color": "#8ed1fc",
     "colorPicker": false,
     "onMap": true
+  },
+  "5": {
+    "name": "buuuuuun",
+    "latitude": 37.95032666666667,
+    "longitude": -91.77973166666666,
+    "color": "#0693e3",
+    "colorPicker": false,
+    "onMap": true
   }
 }
