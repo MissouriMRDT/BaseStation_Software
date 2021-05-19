@@ -55,7 +55,7 @@
     {
       "title": "Equipment Servicing",
       "id": 300,
-      "setTime": 5400,
+      "setTime": 2400,
       "difference": 0,
       "childTasks": [
         {
