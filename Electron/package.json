@@ -251,6 +251,7 @@
     "leaflet-offline": "^1.1.0",
     "localforage": "^1.9.0",
     "react": "^17.0.1",
+    "react-beautiful-dnd": "^13.1.0",
     "react-color": "^2.19.3",
     "react-dom": "^17.0.1",
     "react-leaflet": "^3.0.5",
