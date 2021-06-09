@@ -412,35 +412,27 @@ class Timer extends Component<IProps, IState> {
               Add Task
             </button>
           </div>
-          <div>
-            {this.state.taskInputOpen ? (
-              <div>
-                <input
-                  value={this.state.nameInput}
-                  onChange={e => this.handleChange(e, "name")}
-                  placeholder="Task Name"
-                />
-                <input
-                  value={this.state.timeInput}
-                  onChange={e => this.handleChange(e, "time")}
-                  placeholder="HH:MM:SS"
-                />
-                <input type="submit" value="Submit" />
-              </div>
-            ) : null}
-          </div>
-          <div>
-            {this.state.missionInputOpen ? (
-              <div>
-                <input
-                  value={this.state.nameInput}
-                  onChange={e => this.handleChange(e, "name")}
-                  placeholder="Mission Name"
-                />
-                <input type="submit" value="Submit" />
-              </div>
-            ) : null}
-          </div>
+          {this.state.taskInputOpen ? (
+            <div>
+              <input
+                value={this.state.nameInput}
+                onChange={e => this.handleChange(e, "name")}
+                placeholder="Task Name"
+              />
+              <input value={this.state.timeInput} onChange={e => this.handleChange(e, "time")} placeholder="HH:MM:SS" />
+              <input type="submit" value="Submit" />
+            </div>
+          ) : null}
+          {this.state.missionInputOpen ? (
+            <div>
+              <input
+                value={this.state.nameInput}
+                onChange={e => this.handleChange(e, "name")}
+                placeholder="Mission Name"
+              />
+              <input type="submit" value="Submit" />
+            </div>
+          ) : null}
           <div
             style={{
               ...column,
@@ -468,7 +460,7 @@ class Timer extends Component<IProps, IState> {
                   />
                   <div style={{ ...column, height: "20px", padding: "2px", width: "23%" }}>
                     <div style={{ wordWrap: "break-word" }}>{mission.title}</div>
-                    <div>{packOutput(mission.setTime)}</div>
+                    {packOutput(mission.setTime)}
                   </div>
                   <button type="button" onClick={() => this.removeListItem(mission.id)} style={trashButtons}>
                     <img src={TrashCanIcon} alt="Trash Can Icon" />
