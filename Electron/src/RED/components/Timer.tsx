@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable no-shadow */
 import React, { Component } from "react"
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
 import CSS from "csstype"
@@ -149,6 +148,7 @@ class Timer extends Component<IProps, IState> {
     this.startTimer = this.startTimer.bind(this)
     this.countDown = this.countDown.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleOnDragEnd = this.handleOnDragEnd.bind(this)
   }
 
   handleChange(event: any, type: string): void {
@@ -328,13 +328,8 @@ class Timer extends Component<IProps, IState> {
   }
 
   handleOnDragEnd(result: any): void {
-    console.log(result)
-    console.log(typeof result.draggableId)
-    console.log(parseInt(result.draggableId, 10))
-    console.log(typeof parseInt(result.draggableId, 10))
-    const tempStr = result.draggableId
-    const relevantMission = parseInt(tempStr, 10)
-    if (result.destination.index !== result.source.index) {
+    const relevantMission = this.findIndex(parseInt(result.draggableId, 10))
+    if (result.destination) {
       // another instance of something deeper than surface level being edited but eslint wanting const
       const { parentTask } = this.state
       const [reorderedItem] = parentTask[relevantMission].childTasks.splice(result.source.index, 1)
@@ -469,80 +464,74 @@ class Timer extends Component<IProps, IState> {
                   </button>
                   <div style={{ width: "63%", maxWidth: "63%" }}>
                     <DragDropContext onDragEnd={this.handleOnDragEnd}>
-                      <Droppable droppableId="missions">
-                        {
-                          // eslint-disable-next-line no-shadow
-                          provided => (
-                            <ul
-                              style={{ ...ulStyle, paddingLeft: "2px" }}
-                              className="tasks"
-                              {...provided.droppableProps}
-                              ref={provided.innerRef}
-                            >
-                              <div style={{ ...column }}>
-                                {mission.childTasks.map((subTask, index) => {
-                                  return (
-                                    <Draggable key={subTask.id} draggableId={subTask.id.toString()} index={index}>
-                                      {
-                                        // eslint-disable-next-line no-shadow
-                                        provided => (
-                                          <li
-                                            ref={provided.innerRef}
-                                            {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
-                                          >
-                                            <div style={{ ...row, padding: "3px" }}>
-                                              <img
-                                                style={{ height: "36px" }}
-                                                src={ListReorderIcon}
-                                                alt="Drag_n_Drop Icon"
-                                              />
-                                              <div style={{ width: "48%", maxWidth: "48%" }}>{subTask.title}</div>
-                                              <div style={{ width: "28%" }}>
-                                                {this.state.chosenEdit === subTask.id ? (
-                                                  <div>
-                                                    <input
-                                                      value={this.state.timeInput}
-                                                      onChange={e => this.handleChange(e, "time")}
-                                                      placeholder={packOutput(subTask.setTime)}
-                                                      style={{ width: "60%" }}
-                                                    />
-                                                    <button type="button" onClick={() => this.handleEdit(subTask.id)}>
-                                                      save
-                                                    </button>
-                                                  </div>
-                                                ) : (
-                                                  <div>
-                                                    {packOutput(subTask.setTime)}
-                                                    <button
-                                                      style={{ margin: "2px" }}
-                                                      type="button"
-                                                      onClick={() => this.setState({ chosenEdit: subTask.id })}
-                                                    >
-                                                      Edit
-                                                    </button>
-                                                  </div>
-                                                )}
+                      <Droppable droppableId={mission.id.toString()}>
+                        {(providedDrop: any) => (
+                          <ul
+                            style={{ ...ulStyle, paddingLeft: "2px" }}
+                            className="tasks"
+                            {...providedDrop.droppableProps}
+                            ref={providedDrop.innerRef}
+                          >
+                            <div style={{ ...column }}>
+                              {mission.childTasks.map((subTask, index) => {
+                                return (
+                                  <Draggable key={subTask.id} draggableId={subTask.id.toString()} index={index}>
+                                    {(provided: any) => (
+                                      <li
+                                        ref={provided.innerRef}
+                                        {...provided.draggableProps}
+                                        {...provided.dragHandleProps}
+                                      >
+                                        <div style={{ ...row, padding: "3px" }}>
+                                          <img
+                                            style={{ height: "36px" }}
+                                            src={ListReorderIcon}
+                                            alt="Drag_n_Drop Icon"
+                                          />
+                                          <div style={{ width: "48%", maxWidth: "48%" }}>{subTask.title}</div>
+                                          <div style={{ width: "28%" }}>
+                                            {this.state.chosenEdit === subTask.id ? (
+                                              <div>
+                                                <input
+                                                  value={this.state.timeInput}
+                                                  onChange={e => this.handleChange(e, "time")}
+                                                  placeholder={packOutput(subTask.setTime)}
+                                                  style={{ width: "60%" }}
+                                                />
+                                                <button type="button" onClick={() => this.handleEdit(subTask.id)}>
+                                                  save
+                                                </button>
                                               </div>
-                                              <button
-                                                type="button"
-                                                onClick={() => this.removeListItem(subTask.id)}
-                                                style={{ padding: "auto", width: "40px", height: "36px" }}
-                                              >
-                                                <img src={TrashCanIcon} alt="Trash Can Icon" />
-                                              </button>
-                                            </div>
-                                          </li>
-                                        )
-                                      }
-                                    </Draggable>
-                                  )
-                                })}
-                                {provided.placeholder}
-                              </div>
-                            </ul>
-                          )
-                        }
+                                            ) : (
+                                              <div>
+                                                {packOutput(subTask.setTime)}
+                                                <button
+                                                  style={{ margin: "2px" }}
+                                                  type="button"
+                                                  onClick={() => this.setState({ chosenEdit: subTask.id })}
+                                                >
+                                                  Edit
+                                                </button>
+                                              </div>
+                                            )}
+                                          </div>
+                                          <button
+                                            type="button"
+                                            onClick={() => this.removeListItem(subTask.id)}
+                                            style={{ padding: "auto", width: "40px", height: "36px" }}
+                                          >
+                                            <img src={TrashCanIcon} alt="Trash Can Icon" />
+                                          </button>
+                                        </div>
+                                      </li>
+                                    )}
+                                  </Draggable>
+                                )
+                              })}
+                              {providedDrop.placeholder}
+                            </div>
+                          </ul>
+                        )}
                       </Droppable>
                     </DragDropContext>
                   </div>
