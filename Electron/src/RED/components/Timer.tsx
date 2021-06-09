@@ -329,11 +329,12 @@ class Timer extends Component<IProps, IState> {
 
   handleOnDragEnd(result: any): void {
     console.log(result)
-    console.log(result.draggableId)
+    console.log(typeof result.draggableId)
     console.log(parseInt(result.draggableId, 10))
     console.log(typeof parseInt(result.draggableId, 10))
-    const relevantMission = this.findIndex(parseInt(result.draggableId, 10))
-    if (result.destination) {
+    const tempStr = result.draggableId
+    const relevantMission = parseInt(tempStr, 10)
+    if (result.destination.index !== result.source.index) {
       // another instance of something deeper than surface level being edited but eslint wanting const
       const { parentTask } = this.state
       const [reorderedItem] = parentTask[relevantMission].childTasks.splice(result.source.index, 1)
