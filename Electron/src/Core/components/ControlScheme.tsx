@@ -15,6 +15,14 @@ const container: CSS.Properties = {
   flexDirection: "column",
   height: "calc(100% - 40px)",
 }
+const modal: CSS.Properties = {
+  zIndex: 2,
+  backgroundColor: "white",
+  borderStyle: "solid",
+  borderWidth: "2px",
+  borderColor: "black",
+  margin: "3px",
+}
 const label: CSS.Properties = {
   marginTop: "-10px",
   position: "relative",
@@ -285,31 +293,23 @@ class ControlScheme extends Component<IProps, IState> {
 
   controlLayoutPreview(): JSX.Element {
     return (
-      <div
-        style={{
-          zIndex: 2,
-          backgroundColor: "white",
-          borderStyle: "solid",
-          borderWidth: "2px",
-          borderColor: "black",
-          margin: "3px",
-        }}
-      >
+      <div style={modal}>
         {Object.keys(this.state.functionality).map(selectedController => {
           return (
             <div key={selectedController}>
               {this.state.functionality[selectedController].toggled === "On" ? (
                 <div style={{ borderWidth: "1px", borderStyle: "solid", borderColor: "black", margin: "2px" }}>
                   <img alt={selectedController} />
-                  <div>bunger</div>
+                  <div>
+                    {this.state.functionality[selectedController].scheme} controlled with{" "}
+                    {this.state.functionality[selectedController].controller}:
+                  </div>
+                  {console.log(CONTROLLERINPUT)}
                 </div>
               ) : null}
             </div>
           )
         })}
-        <button type="button" onClick={() => this.setState({ controlPreviewModal: false })}>
-          Close
-        </button>
       </div>
     )
   }
@@ -365,7 +365,7 @@ class ControlScheme extends Component<IProps, IState> {
             onClick={() => this.setState({ controlPreviewModal: !this.state.controlPreviewModal })}
             style={{ width: "120px", marginLeft: "40%" }}
           >
-            Show Controls
+            {this.state.controlPreviewModal ? "Hide Controls" : "Show Controls"}
           </button>
           <div>{this.state.controlPreviewModal ? this.controlLayoutPreview() : null}</div>
         </div>
