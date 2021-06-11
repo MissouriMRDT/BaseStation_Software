@@ -301,10 +301,8 @@ class ControlScheme extends Component<IProps, IState> {
                 <div style={{ borderWidth: "1px", borderStyle: "solid", borderColor: "black", margin: "2px" }}>
                   <img alt={selectedController} />
                   <div>
-                    {this.state.functionality[selectedController].scheme} controlled with{" "}
-                    {this.state.functionality[selectedController].controller}:
+                    {selectedController} controlled with {this.state.functionality[selectedController].controller}:
                   </div>
-                  {console.log(CONTROLLERINPUT)}
                 </div>
               ) : null}
             </div>
