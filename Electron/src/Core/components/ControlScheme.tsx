@@ -303,6 +303,18 @@ class ControlScheme extends Component<IProps, IState> {
                   <div>
                     {selectedController} controlled with {this.state.functionality[selectedController].controller}:
                   </div>
+                  {Object.keys(CONTROLLERINPUT[this.state.functionality[selectedController].scheme].bindings).map(
+                    bind => {
+                      return (
+                        <div key={bind}>
+                          {bind}:{" "}
+                          {CONTROLLERINPUT[this.state.functionality[selectedController].scheme].bindings[bind].button
+                            ? CONTROLLERINPUT[this.state.functionality[selectedController].scheme].bindings[bind].button
+                            : CONTROLLERINPUT[this.state.functionality[selectedController].scheme].bindings.buttonIndex}
+                        </div>
+                      )
+                    }
+                  )}
                 </div>
               ) : null}
             </div>
