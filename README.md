@@ -7,6 +7,6 @@ The first time you clone the repo, Nuget will attempt to download any required p
 ## Introduction
 RED is structured as a Model-View-View Model (MVVM) application, similar to Model-View-Presenter (MVP). This means the code/XAML that creates a view is seperated from its construction and control logic. https://en.wikipedia.org/wiki/Model–view–viewmodel
 
-The core view controller that handles the contruction of the application is in [ViewModels/ControlCenterViewModel.cs](/RED/ViewModels/ControlCenterViewModel.cs). From there, the individual views are contructed.
+The core view controller that handles the construction of the application is in [ViewModels/ControlCenterViewModel.cs](/RED/ViewModels/ControlCenterViewModel.cs). From there, the individual views are contructed.
 
-Underneath the GUI, there is an implementation of RoveComm in C#, within [Rove Protocol](/RED/RoveProtocol/). This is the core software functionality, as RED's purpose is to send/recieve UDP packets to the rover's systems in a human-convienent manner. The file that defines the data for these packets is defined in [Configurations/MetadataManagerConfig.cs](/RED/Configurations/MetadataManagerConfig.cs).
+Underneath the GUI, there is an implementation of RoveComm in C#, within [Rove Protocol](/RED/RoveProtocol/). This is the core software functionality, as RED's purpose is to send/recieve UDP packets to the rover's systems in a human-convenient manner. The file that defines the data for these packets is defined in [Configurations/MetadataManagerConfig.cs](/RED/Configurations/MetadataManagerConfig.cs).
