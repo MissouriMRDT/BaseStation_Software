@@ -17,6 +17,7 @@ import Drive from "./components/Drive"
 import Gimbal from "./components/Gimbal"
 import ThreeDRover from "../Core/components/ThreeDRover"
 import Lighting from "./components/Lighting"
+import Steering from "./components/Steering"
 
 const row: CSS.Properties = {
   display: "flex",
@@ -104,7 +105,7 @@ class ControlCenter extends Component<IProps, IState> {
           // everything inside NewWindowComponent is considered props.children and will be
           // displayed in a new window
           this.state.ridOpen && (
-            <NewWindowComponent onClose={() => this.setState({ ridOpen: false })} name="RID">
+            <NewWindowComponent onClose={() => this.setState({ ridOpen: false })} name="Rover Imagery Display">
               <RoverImageryDisplay rowcol="" style={{ width: "100%", height: "100%" }} />
             </NewWindowComponent>
           )
@@ -123,7 +124,6 @@ class ControlCenter extends Component<IProps, IState> {
               }}
               style={{ flexGrow: 1, marginRight: "5px" }}
             />
-            <Lighting />
           </div>
           <Timer />
           <Log />
@@ -153,6 +153,7 @@ class ControlCenter extends Component<IProps, IState> {
             style={{ minHeight: `${this.state.fourthHeight}px` }}
             storedWaypoints={this.state.storedWaypoints}
             currentCoords={this.state.currentCoords}
+            store={(name: string, coords: any) => this.waypointsInstance.store(name, coords)}
             name="controlCenterMap"
           />
           <Cameras defaultCamera={1} maxHeight={this.state.fourthHeight} style={{ width: "100%" }} />

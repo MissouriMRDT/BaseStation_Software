@@ -3,6 +3,25 @@ import CSS from "csstype"
 import Cameras from "../Core/components/Cameras"
 import Map from "../RED/components/Map"
 import ThreeDRover from "../Core/components/ThreeDRover"
+import Angular from "../RAM/Arm/components/Angular"
+import ControlFeatures from "../RAM/Arm/components/ControlFeatures"
+import ControlMultipliers from "../RAM/Arm/components/ControlMultipliers"
+import IK from "../RAM/Arm/components/IK"
+import Activity from "../RAM/Autonomy/components/Activity"
+import StateDiagram from "../RAM/Autonomy/components/StateDiagram"
+import Geneva from "../RAM/Science/components/Geneva"
+import SensorData from "../RAM/Science/components/SensorData"
+import SensorGraphs from "../RAM/Science/components/SensorGraphs"
+import Spectrometer from "../RAM/Science/components/Spectrometer"
+import SpectrometerViewer from "../RAM/Science/components/SpectrometerViewer"
+import Drive from "../RED/components/Drive"
+import Gimbal from "../RED/components/Gimbal"
+import Lighting from "../RED/components/Lighting"
+import Log from "../RED/components/Log"
+import Power from "../RED/components/Power&BMS"
+import CustomPackets from "../RON/components/CustomPackets"
+import PacketLogger from "../RON/components/PacketLogger"
+import PingGraph from "../RON/components/PingGraph"
 
 const row: CSS.Properties = {
   display: "flex",
@@ -25,6 +44,7 @@ interface IProps {
   style?: CSS.Properties
   rowcol: string
   onMerge?: (display: string) => void
+  store: (name: string, coords: any) => void
   displayed?: string // Initial conditition of what should be displayed
 }
 
@@ -36,29 +56,7 @@ interface IState {
 }
 
 class RoverImageryDisplay extends Component<IProps, IState> {
-  waypointsInstance: any
-
-  // Buttons is a recurring div that is displayed with every choice, and used in many
-  // places, so is declared here as a constant
-  buttons = (
-    <div style={row}>
-      <button type="button" style={{ flexGrow: 1 }} onClick={() => this.onClickCamera()}>
-        Camera
-      </button>
-      <button type="button" style={{ flexGrow: 1 }} onClick={() => this.onClickMap()}>
-        Map
-      </button>
-      <button type="button" style={{ flexGrow: 1 }} onClick={() => this.onClickThreeDRover()}>
-        3D Rover
-      </button>
-      <button type="button" style={{ flexGrow: 1 }} onClick={() => this.onMerge()}>
-        Merge
-      </button>
-      <button type="button" style={{ flexGrow: 1 }} onClick={() => this.onClickSplit()}>
-        Split
-      </button>
-    </div>
-  )
+  buttons: JSX.Element
 
   constructor(props: IProps) {
     super(props)
@@ -69,7 +67,66 @@ class RoverImageryDisplay extends Component<IProps, IState> {
       // Set displayed to the passed in default if there is one, or default to "none"
       displayed: this.props.displayed ? this.props.displayed : "none",
     }
+
     this.merge = this.merge.bind(this)
+    this.onSelect = this.onSelect.bind(this)
+
+    // Buttons is a recurring div that is displayed with every choice, and used in many
+    // places, so is declared here as a constant
+    this.buttons = (
+      <div style={row}>
+        {console.log("buttons", this.state.display)}
+        <button type="button" style={{ flexGrow: 1 }} onClick={() => this.onClickCamera()}>
+          Camera
+        </button>
+        <button type="button" style={{ flexGrow: 1 }} onClick={() => this.onClickMap()}>
+          Map
+        </button>
+        <button type="button" style={{ flexGrow: 1 }} onClick={() => this.onClickThreeDRover()}>
+          3D Rover
+        </button>
+        <button type="button" style={{ flexGrow: 1 }} onClick={() => this.onMerge()}>
+          Merge
+        </button>
+        <button type="button" style={{ flexGrow: 1 }} onClick={() => this.onClickSplit()}>
+          Split
+        </button>
+        <select onChange={e => this.onSelect(e.target.value)} style={{ flexGrow: 1, textAlign: "center" }}>
+          {[
+            "Angular",
+            "ControlFeatures",
+            "ControlMultipliers",
+            "IK",
+            "Activity",
+            "Controls",
+            "StateDiagram",
+            "Geneva",
+            "SensorData",
+            "SensorGraphs",
+            "Spectrometer",
+            "SpectrometerViewer",
+            "Drive",
+            "Gimbal",
+            "GPS",
+            "Lighting",
+            "Log",
+            "Power",
+            "Waypoints",
+            "CustomPackets",
+            "PacketLogger",
+            "PingGraph",
+            "PingMap",
+            "PingTool",
+          ].map(component => {
+            return (
+              <option key={component} value={component}>
+                {component}
+              </option>
+            )
+          })}
+        </select>
+      </div>
+    )
   }
 
   componentDidMount() {
@@ -131,6 +188,7 @@ class RoverImageryDisplay extends Component<IProps, IState> {
             style={submod}
             storedWaypoints={this.state.storedWaypoints}
             currentCoords={this.state.currentCoords}
+            store={(name: string, coords: any) => this.props.store(name, coords)}
             name="RIDmap"
           />
         </div>
@@ -165,6 +223,97 @@ class RoverImageryDisplay extends Component<IProps, IState> {
             displayed={this.state.displayed}
           />
           <RoverImageryDisplay rowcol={nextStyle} style={{ height: "100%", width: "100%" }} onMerge={this.merge} />
+        </div>
+      ),
+    })
+  }
+
+  onSelect(value: string): void {
+    console.log(this.state, value)
+    let submodule: JSX.Element = <p>Error loading {value}</p>
+    switch (value) {
+      case "Angular":
+        submodule = <Angular style={submod} />
+        break
+      case "ControlFeatures":
+        submodule = <ControlFeatures style={submod} />
+        break
+      case "ControlMultipliers":
+        submodule = <ControlMultipliers style={submod} />
+        break
+      case "IK":
+        console.log("IK")
+        submodule = <IK style={submod} />
+        break
+      case "Activity":
+        submodule = <Activity style={submod} />
+        break
+      case "Controls":
+        // We cannot currently support controls since we don't have access to waypoints
+        break
+      case "StateDiagram":
+        submodule = <StateDiagram style={submod} />
+        break
+      case "Geneva":
+        submodule = <Geneva style={submod} />
+        break
+      case "SensorData":
+        submodule = <SensorData style={submod} />
+        break
+      case "SensorGraphs":
+        submodule = <SensorGraphs style={submod} />
+        break
+      case "Spectrometer":
+        submodule = <Spectrometer style={submod} />
+        break
+      case "SpectrometerViewer":
+        submodule = <SpectrometerViewer style={submod} />
+        break
+      case "Drive":
+        submodule = <Drive style={submod} />
+        break
+      case "Gimbal":
+        submodule = <Gimbal style={submod} />
+        break
+      case "GPS":
+        // We cannot currently support GPS since we have no onCoordsChange handler
+        break
+      case "Lighting":
+        submodule = <Lighting style={submod} />
+        break
+      case "Log":
+        submodule = <Log style={submod} />
+        break
+      case "Power":
+        submodule = <Power style={submod} />
+        break
+      case "Waypoints":
+        // We cannot currently support Waypoints since we have no ref, onWaypointChange, or currentCoords
+        break
+      case "CustomPackets":
+        submodule = <CustomPackets style={submod} />
+        break
+      case "PacketLogger":
+        submodule = <PacketLogger style={submod} />
+        break
+      case "PingGraph":
+        // We cannot currently support PingGraph because we have no devices object
+        break
+      case "PingMap":
+        // We cannot currently support PingGraph because we have no devices object
+        break
+      case "PingTool":
+        // We cannot currently support PingTool because we have no onDevicesChange handler
+        break
+      default:
+        break
+    }
+    this.setState({
+      displayed: value,
+      display: (
+        <div style={{ flexGrow: 1, height: "100%" }}>
+          {this.buttons}
+          {submodule}
         </div>
       ),
     })

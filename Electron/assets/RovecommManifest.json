@@ -123,19 +123,13 @@
         },
         "PackV_Meas": {
           "dataId": 2101,
-          "dataType": "FLOAT_T",
-          "dataCount": 1,
-          "comments": "[Pack_Out] (V)"
-        },
-        "CellV_Meas": {
-          "dataId": 2102,
-          "dataType": "FLOAT_T",
-          "dataCount": 8,
-          "comments": "[C1-G, C2-1, C3-2, C4-3, C5-4, C6-5, C7-6, C8-7] (V)"
+          "dataType": "UINT16_T",
+          "dataCount": 9,
+          "comments": "[Pack_Out, C1-G, C2-1, C3-2, C4-3, C5-4, C6-5, C7-6, C8-7] (V)"
         },
         "Temp_Meas": {
           "dataId": 2103,
-          "dataType": "FLOAT_T",
+          "dataType": "UINT8_T",
           "dataCount": 1,
           "comments": "[Temp] (degC)"
         }
@@ -664,7 +658,7 @@
           "dataId": 10103,
           "dataType": "FLOAT_T",
           "dataCount": 4,
-          "comments": "[partial pressure, (mBar), temperature (C), concentration (ppm), barometric pressue (mBar)]"
+          "comments": "[partial pressure (mBar), temperature (C), concentration (ppm), barometric pressue (mBar)]"
         },
         "NO": {
           "dataId": 10104,
@@ -697,20 +691,26 @@
           "dataCount": 1,
           "comments": ""
         },
-        "AddMarkerLeg": {
+        "AddPositionLeg": {
           "dataId": 11002,
           "dataType": "DOUBLE_T",
           "dataCount": 2,
           "comments": "[Lat, Lon]"
         },
-        "AddGateLeg": {
+        "AddMarkerLeg": {
           "dataId": 11003,
           "dataType": "DOUBLE_T",
           "dataCount": 2,
           "comments": "[Lat, Lon]"
         },
-        "ClearWaypoints": {
+        "AddGateLeg": {
           "dataId": 11004,
+          "dataType": "DOUBLE_T",
+          "dataCount": 2,
+          "comments": "[Lat, Lon]"
+        },
+        "ClearWaypoints": {
+          "dataId": 11005,
           "dataType": "UINT8_T",
           "dataCount": 1,
           "comments": ""

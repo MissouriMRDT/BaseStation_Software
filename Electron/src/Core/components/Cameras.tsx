@@ -117,9 +117,11 @@ class Cameras extends Component<IProps, IState> {
 
     // Look through all of the window documents for the current camera feed
     let camera
+    let thisWindow
     for (const win of Object.keys(windows)) {
       if (windows[win].document.getElementById(this.state.id)) {
-        camera = windows[win].document.getElementById(this.state.id)
+        thisWindow = windows[win]
+        camera = thisWindow.document.getElementById(this.state.id)
         break
       }
     }
@@ -134,7 +136,7 @@ class Cameras extends Component<IProps, IState> {
     // is only able to return the html for the first few seconds of operation
     html2canvas(camera, {
       scrollX: 0,
-      scrollY: -window.scrollY,
+      scrollY: -thisWindow.scrollY,
       useCORS: true,
       allowTaint: true,
     })
