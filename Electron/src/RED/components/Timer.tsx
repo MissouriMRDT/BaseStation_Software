@@ -64,6 +64,27 @@ const Modal: CSS.Properties = {
   backgroundColor: "white",
   width: "56%",
 }
+const splitMenu: CSS.Properties = {
+  position: "absolute",
+  zIndex: 2,
+  width: "56%",
+  backgroundColor: "white",
+  border: "2px solid #990000",
+  boxSizing: "border-box",
+  boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25), inset 0px 4px 4px rgba(0, 0, 0, 0.25)",
+}
+const timeSplitTitle: CSS.Properties = {
+  color: "black",
+  position: "relative",
+  marginTop: "-10px",
+  top: "24px",
+  fontFamily: "Roboto",
+  fontWeight: "bold",
+  fontSize: "30px",
+  display: "flex",
+  textAlign: "center",
+  margin: "0 auto",
+}
 
 const FILEPATH = path.join(__dirname, "../assets/TaskList.json")
 let taskList: any
@@ -393,8 +414,8 @@ class Timer extends Component<IProps, IState> {
 
   timeSplitMenu(): JSX.Element {
     return (
-      <div style={Modal}>
-        <p>Times and Differences</p>
+      <div style={splitMenu}>
+        <div style={timeSplitTitle}>Time Splitter</div>
         <div>BIG LIST GOES HERE</div>
         <div>
           <button type="button" onClick={() => this.setState({ timeSplitOpen: false })}>
