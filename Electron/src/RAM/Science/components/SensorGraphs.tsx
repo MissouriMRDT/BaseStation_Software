@@ -33,11 +33,17 @@ const label: CSS.Properties = {
   zIndex: 1,
   color: "white",
 }
-const row: CSS.Properties = {
+const buttonrow: CSS.Properties = {
   display: "flex",
   alignItems: "center",
   justifyContent: "space-around",
   margin: "10px",
+} 
+const row: CSS.Properties = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-around",
+  margin: "0px 10px 10px",
 }
 const selectbox: CSS.Properties = {
   display: "flex",
@@ -48,6 +54,9 @@ const selectbox: CSS.Properties = {
 }
 const selector: CSS.Properties = {
   width: "200px",
+  display: "flex",
+  flexDirection: "row",
+  margin: "2.5px",
 }
 const overlay: CSS.Properties = {
   width: "200px",
@@ -139,7 +148,7 @@ interface IState {
   min_o2Pressure: number
   min_no: number
   min_n2o: number
-  sensor: string
+  enabledSensors: Map<string, boolean>
 }
 
 class SensorGraphs extends Component<IProps, IState> {
@@ -180,14 +189,16 @@ class SensorGraphs extends Component<IProps, IState> {
       min_o2Pressure: -1,
       min_no: -1,
       min_n2o: -1,
-      sensor: "All",
+      enabledSensors: new Map([["Methane", false], ["CO2", false], ["Temperature", false], ["O2PP", false], ["O2Concentration", false], ["O2Pressure", false], ["NO", false], ["N2O", false]]),
     }
     this.methane = this.methane.bind(this)
     this.co2 = this.co2.bind(this)
     this.o2 = this.o2.bind(this)
     this.no = this.no.bind(this)
     this.n2o = this.n2o.bind(this)
-    this.sensorChange = this.sensorChange.bind(this)
+    this.sensorSelectionChanged = this.sensorSelectionChanged.bind(this)
+    this.selectAll = this.selectAll.bind(this)
+    this.deselectAll = this.deselectAll.bind(this)
     this.onNearestX = this.onNearestX.bind(this)
     this.onMouseLeave = this.onMouseLeave.bind(this)
     this.clearData = this.clearData.bind(this)
@@ -211,9 +222,37 @@ class SensorGraphs extends Component<IProps, IState> {
     this.crosshairValues = { ...this.crosshairValues, [listName]: list[index] }
   }
 
-  sensorChange(event: { target: { value: string } }): void {
+  /*sensorChange(event: { target: { value: string } }): void {
     // When the dropdown selects a different sensor, properly update the variable in state
     this.setState({ sensor: event.target.value })
+  }*/
+
+  sensorSelectionChanged(sensorName: string): void {
+    const { enabledSensors } = this.state;
+
+    enabledSensors.set(sensorName, !enabledSensors.get(sensorName))
+    
+    this.setState({enabledSensors})
+  }
+
+  selectAll(): void {
+    const { enabledSensors } = this.state;
+
+    enabledSensors.forEach((value, key) => {
+      enabledSensors.set(key, true);
+    })
+    
+    this.setState({enabledSensors})
+  }
+
+  deselectAll(): void {
+    const { enabledSensors } = this.state;
+
+    enabledSensors.forEach((value, key) => {
+      enabledSensors.set(key, false)
+    })
+    
+    this.setState({enabledSensors})
   }
 
   methane(data: any): void {
@@ -603,36 +642,32 @@ class SensorGraphs extends Component<IProps, IState> {
       <div id="SensorGraph" style={this.props.style}>
         <div style={label}>Sensor Graphs</div>
         <div style={container}>
+        <div style={buttonrow}>
+            <button type="button" onClick={this.selectAll}>
+              Select All
+            </button>
+            <button type="button" onClick={this.deselectAll}>
+              Deselect All
+            </button>
+            <button type="button" onClick={saveImage}>
+              Export Graph
+            </button>
+            <button type="button" onClick={this.clearData}>
+              Clear Data
+            </button>
+          </div>
           <div style={row}>
             <div style={selectbox}>
-              <div style={h1Style}>Sensor:</div>
-              <select value={this.state.sensor} onChange={e => this.sensorChange(e)} style={selector}>
-                {["All", "Methane", "CO2", "Temperature", "O2PP", "O2Concentration", "O2Pressure", "NO", "N2O"].map(
-                  item => {
-                    return (
-                      <option key={item} value={item}>
-                        {item}
-                      </option>
-                    )
-                  }
-                )}
-              </select>
+              {[...this.state.enabledSensors].map(([sensorName, val]) => {
+                return(
+                  <div key={undefined} style={selector}>
+                    <input type="checkbox" id={sensorName} name={sensorName} checked={val} onClick={() => this.sensorSelectionChanged(sensorName)}/>
+                    <label>{sensorName}</label>
+                  </div>
+                )
+              })}
             </div>
           </div>
-          <DiscreteColorLegend
-            style={{ fontSize: "16px", textAlign: "center" }}
-            items={[
-              { title: "Methane", strokeWidth: 6, color: "#990000" },
-              { title: "CO2", strokeWidth: 6, strokeStyle: "dashed", color: "orange" },
-              { title: "Temperature", strokeWidth: 6, color: "yellow" },
-              { title: "O2PP", strokeWidth: 6, strokeStyle: "dashed", color: "green" },
-              { title: "O2Concentration", strokeWidth: 6, color: "blue" },
-              { title: "O2Pressure", strokeWidth: 6, strokeStyle: "dashed", color: "purple" },
-              { title: "NO", strokeWidth: 6, color: "black" },
-              { title: "N2O", strokeWidth: 6, strokeStyle: "dashed", color: "gray" },
-            ]}
-            orientation="horizontal"
-          />
           <XYPlot
             style={{ margin: 10 }}
             width={window.document.documentElement.clientWidth - 50}
@@ -732,14 +767,20 @@ class SensorGraphs extends Component<IProps, IState> {
             {this.state.sensor !== "All" && <YAxis />}
             {this.crosshair()}
           </XYPlot>
-          <div style={row}>
-            <button type="button" onClick={saveImage}>
-              Export Graph
-            </button>
-            <button type="button" onClick={this.clearData}>
-              Clear Data
-            </button>
-          </div>
+          <DiscreteColorLegend
+            style={{ fontSize: "16px", textAlign: "center" }}
+            items={[
+              { title: "Methane", strokeWidth: 6, color: "#990000", disabled: !this.state.enabledSensors.get("Methane") },
+              { title: "CO2", strokeWidth: 6, strokeStyle: "dashed", color: "orange", disabled: !this.state.enabledSensors.get("CO2") },
+              { title: "Temperature", strokeWidth: 6, color: "yellow", disabled: !this.state.enabledSensors.get("Temperature") },
+              { title: "O2PP", strokeWidth: 6, strokeStyle: "dashed", color: "green", disabled: !this.state.enabledSensors.get("O2PP") },
+              { title: "O2Concentration", strokeWidth: 6, color: "blue", disabled: !this.state.enabledSensors.get("O2Concentration") },
+              { title: "O2Pressure", strokeWidth: 6, strokeStyle: "dashed", color: "purple", disabled: !this.state.enabledSensors.get("O2Pressure") },
+              { title: "NO", strokeWidth: 6, color: "black", disabled: !this.state.enabledSensors.get("NO") },
+              { title: "N2O", strokeWidth: 6, strokeStyle: "dashed", color: "gray", disabled: !this.state.enabledSensors.get("N2O") },
+            ]}
+            orientation="horizontal"
+          />
         </div>
       </div>
     )
