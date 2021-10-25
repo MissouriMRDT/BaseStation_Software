@@ -158,6 +158,12 @@ class Timer extends Component<IProps, IState> {
     this.handleOnDragEnd = this.handleOnDragEnd.bind(this)
   }
 
+  isTaskListEmpty(ID: number): boolean {
+    //Checks to see if the selected mission has no tasks.
+    //Return 'true' if it is empty, return 'false' otherwise.
+    return this.state.parentMission[this.findIndex(ID)].childTasks.length === 0 ? true : false
+  }
+
   handleChange(event: any, type: string): void {
     switch (type) {
       case "name": {
@@ -228,17 +234,20 @@ class Timer extends Component<IProps, IState> {
   }
 
   loadNextTask(): void {
-    let { currentTask, currentTaskTime, delta } = this.state
-    if (currentTask === this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks.length - 1) {
-      console.log("End of task list")
-    } else {
-      delta +=
-        this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks[currentTask].setTime -
-        this.state.currentTaskTime
-      currentTask++
-      currentTaskTime = 0
+    //Prevents the next task from being loaded if the current mission has no tasks.
+    if (!this.isTaskListEmpty(this.state.selectedMission)) {
+      let { currentTask, currentTaskTime, delta } = this.state
+      if (currentTask === this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks.length - 1) {
+        console.log("End of task list")
+      } else {
+        delta +=
+          this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks[currentTask].setTime -
+          this.state.currentTaskTime
+        currentTask++
+        currentTaskTime = 0
+      }
+      this.setState({ currentTaskTime, currentTask, delta })
     }
-    this.setState({ currentTaskTime, currentTask, delta })
   }
 
   // currently there's no ability to save the differences for analysis after the app is closed
@@ -284,15 +293,18 @@ class Timer extends Component<IProps, IState> {
   }
 
   handleStartStop(): void {
-    let { isCounting } = this.state
-    if (!isCounting) {
-      this.startTimer()
-      isCounting = true
-    } else {
-      stopTimer()
-      isCounting = false
+    //Prevents timer from starting if current mission has no tasks of its own.
+    if (!this.isTaskListEmpty(this.state.selectedMission)) {
+      let { isCounting } = this.state
+      if (!isCounting) {
+        this.startTimer()
+        isCounting = true
+      } else {
+        stopTimer()
+        isCounting = false
+      }
+      this.setState({ isCounting })
     }
-    this.setState({ isCounting })
   }
 
   addListItem(time: string, inputID: number, nameIn: string): void {
@@ -593,11 +605,18 @@ class Timer extends Component<IProps, IState> {
             <p style={{ marginBottom: "0px", fontSize: "15px", marginTop: "10px", fontWeight: "bold" }}>
               {this.state.parentMission[this.findIndex(this.state.selectedMission)].title}
             </p>
+
             <ProgressBar
               current={this.state.currentMissionTime}
-              total={this.state.parentMission[this.findIndex(this.state.selectedMission)].setTime}
+              //Prevents a newly instantiated mission from having it's non-existent time being accessed.
+              total={
+                this.isTaskListEmpty(this.state.selectedMission)
+                  ? NaN
+                  : this.state.parentMission[this.findIndex(this.state.selectedMission)].setTime
+              }
               name="total"
             />
+
             <div style={{ ...timeRead, marginLeft: "1%", marginRight: "1%", marginTop: "-2.8%" }}>
               <p>{packOutput(this.state.currentMissionTime)}</p>
               <p>
@@ -609,23 +628,34 @@ class Timer extends Component<IProps, IState> {
               </p>
             </div>
           </div>
+
           <div id="CurrentTaskContainer" style={{ ...column, marginTop: "-5%", width: "100%" }}>
             <p style={{ margin: "0px", fontSize: "23px", fontWeight: "bold" }}>
               {
-                this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks[this.state.currentTask]
-                  .title
+                //Renders "No Tasks" if the current mission has an empty array of tasks.
+                this.isTaskListEmpty(this.state.selectedMission)
+                  ? "No Tasks Listed"
+                  : this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks[
+                      this.state.currentTask
+                    ].title
               }
             </p>
+
             {this.state.delta ? (
               <div style={{ zIndex: 5, marginBottom: "-4%", fontWeight: "bold", fontSize: "20px", color: "white" }}>
                 {packOutput(this.state.delta)}
               </div>
             ) : null}
+
             <ProgressBar
               current={this.state.currentTaskTime}
+              //Prevents non-existent task time data from being accessed
               total={
-                this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks[this.state.currentTask]
-                  .setTime
+                this.isTaskListEmpty(this.state.selectedMission)
+                  ? NaN
+                  : this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks[
+                      this.state.currentTask
+                    ].setTime
               }
               name="other"
             />
@@ -639,18 +669,23 @@ class Timer extends Component<IProps, IState> {
                 fontWeight: "bold",
               }}
             >
-              <p>{packOutput(this.state.currentTaskTime)}</p>
+              <p>
+                {this.isTaskListEmpty(this.state.selectedMission) ? "0:00:00" : packOutput(this.state.currentTaskTime)}
+              </p>
               <p>
                 -
-                {packOutput(
-                  this.state.currentTaskTime -
-                    this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks[
-                      this.state.currentTask
-                    ].setTime
-                )}
+                {this.isTaskListEmpty(this.state.selectedMission)
+                  ? "0:00:00"
+                  : packOutput(
+                      this.state.currentTaskTime -
+                        this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks[
+                          this.state.currentTask
+                        ].setTime
+                    )}
               </p>
             </div>
           </div>
+
           <div id="NextTaskContainer" />
           <div
             id="StartStopContainer"
