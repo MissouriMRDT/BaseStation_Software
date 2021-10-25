@@ -1,0 +1,142 @@
+[
+  {
+    "Rock/      Mineral:": "Basalt",
+    "Mineral/s Included:": "Required: Calcic Plagioclase (Ca(Al2Si2O8)), ClinoPyroxene (ADSi2O6) Common: Olivine (Typically (Mg, Fe)2SiO4), Quartz (SiO2)",
+    "Isometric System/s:": "Plagioclase- Triclinic;                                     ClinoPyroxene-Monoclinic;                                     Olivine-Orthohombic;                                     Quartz-Trigonal;",
+    "Crystal Forms and Habits:": "Plagioclase- Pinacoidal, prismatic/lamellar/massive;                                     ClinoPyroxene- Prismatic;                                     Olivine-Dipyramid, euhedral->subhedral;                                     Quartz-prismatic, rhombo/tri-dipyramid",
+    "Mineral Common Colors:": "Plagioclase- Usually white, gray;                                     ClinoPyroxene- white, grey, green;                                     Olivine- green, orange, white;                                     Quartz- clear;",
+    "Rock Features:": "Mafic. Mostly black",
+    "Picture of Rock:": "",
+    "Link:": "Basalt"
+  },
+  {
+    "Rock/      Mineral:": "Granite",
+    "Mineral/s Included:": "Required: Plagioclase (Al2Si2O8), Quartz (SiO3), K-feldspar (KAlSi3O8)                                        Common: Biotite (K(Mg,Fe)3AlSi3O10(OH)2), Kaolinite [weathered k-feldpar] (Al2(Si2O5))(OH)4",
+    "Isometric System/s:": "Plagioclase- Triclinic;                                     K-feldspar- Triclinic;                                     Quartz- Trigonal;                                     Biotite- monoclinic",
+    "Crystal Forms and Habits:": "Plagioclase- Pinacoidal, prismatic/lamellar/massive;                                     K-feldspar- Pinacoidal, prismatic/granular/massive;                                     Quartz- prismatic, rhombo/tri-dipyramid;                                     Biotite- Prismatic, tabular",
+    "Mineral Common Colors:": "Plagioclase- Usually white/gray;                                     K-feldspar- pink(common);                                     Quartz- clear/white;                                     Biotite- black",
+    "Rock Features:": "Felsic.                                      Common Colors: pink, white, grey, tan",
+    "Picture of Rock:": "",
+    "Link:": "Granite"
+  },
+  {
+    "Rock/      Mineral:": "Conglomerate",
+    "Mineral/s Included:": "Pebbles >2mm in size, set in a fine-grained matrix of sand/silt, commonly cemented with CaCO3, iron oxide, SiO2, or hardened clay",
+    "Isometric System/s:": "Minerals common- quartz (silica /SiO2), hematite (Iron oxide /Fe2O3), magnetite (Iron oxide /Fe3O4), Calcite (CaCO3)",
+    "Crystal Forms and Habits:": "Quartz- prismatic, rhombo/tri-dipyramid;                                     Hematite- hexagonal, tabular;                                     Magnetite- octahedron, massive/granular;                                     Calcite- hexagonal, rhombo/prismatic;",
+    "Mineral Common Colors:": "Quartz- Clear, Trigonal; Hematite- metallic grey, Trigonal; Magnetite- Metallic grey, Isometric;                                     Calcite- usually white, Trigonal",
+    "Rock Features:": "coarse-grained clastic (fragments) sedimentary rock",
+    "Picture of Rock:": "",
+    "Link:": "Conglomerate"
+  },
+  {
+    "Rock/      Mineral:": "Limestone",
+    "Mineral/s Included:": "Required: CaCO3 (usually calcite)                                     Common: Aragonite (CaCO3), Dolomite (CaMg(CO3)2), silica (SiO3), feldspar, clays, etc",
+    "Isometric System/s:": "Calcite- Trigonal;                                     Aragonite- Orthorhombic;                                     Dolomite- Trigonal;",
+    "Crystal Forms and Habits:": "Calcite- hexagonal, rhombo/prismatic;                                     Aragonite- dipryamid, prismatic/acicular/stellar;                                     Dolomite- rhombo, prismatic/tabular/massive;",
+    "Mineral Common Colors:": "Calcite- usually white;                                     Aragonite- clear, white;                                     Dolomite- pink, white, tan, clear;",
+    "Rock Features:": "Sedimentary rock 50% or more CaCO3. Usually white, grey, tan",
+    "Picture of Rock:": "",
+    "Link:": "Limestone"
+  },
+  {
+    "Rock/      Mineral:": "Shale",
+    "Mineral/s Included:": "Consolidation of clay/silt/mud. Clay minerals (talc [Mg3Si4O10(OH)2], mica (muscovite [KAl2(AlSi3O10)(OH)2), biotite, chlorite [Mg5Al(AlSi3O10)(OH)8]), and quartz.",
+    "Isometric System/s:": "talc- Triclinic;                                     Mica- Monoclinic;                                      quartz- Trigonal",
+    "Crystal Forms and Habits:": "talc- Pinacoidal, platy;                                     Mica- platy/brittle, prismatic/sphenoidal;                                      Quartz- prismatic, rhombo/tri-dipyramid",
+    "Mineral Common Colors:": "Talc- white, green, grey, brown;                                     Mica- white, black, grey, green;                                                                                                              Quartz- usually clear",
+    "Rock Features:": "fine-grained detrital sedimentary rock, breaks readily into thin layers, red, brown, black, or gray",
+    "Picture of Rock:": "",
+    "Link:": "Shale"
+  },
+  {
+    "Rock/      Mineral:": "Gypsum",
+    "Mineral/s Included:": "CaSO4 · 2H2O",
+    "Isometric System/s:": "Monoclinic",
+    "Crystal Forms and Habits:": "Prismatic, tabular, acicular, granular, fibrous",
+    "Mineral Common Colors:": "Clear, white",
+    "Rock Features:": "Mineral",
+    "Picture of Rock:": "",
+    "Link:": "Gypsum"
+  },
+  {
+    "Rock/      Mineral:": "Calcite",
+    "Mineral/s Included:": "CaCO3",
+    "Isometric System/s:": "Trigonal",
+    "Crystal Forms and Habits:": "Hexagonal, commonly rhombohedron or prismatic",
+    "Mineral Common Colors:": "White (common), green, yellow, blue, grey, red, orange, brown, etc.",
+    "Rock Features:": "Mineral",
+    "Picture of Rock:": "",
+    "Link:": "Calcite"
+  },
+  {
+    "Rock/      Mineral:": "Quartz",
+    "Mineral/s Included:": "SiO2",
+    "Isometric System/s:": "Trigonal",
+    "Crystal Forms and Habits:": "prismatic, acicular, rhombo, tri-dipyramid, traphezohedron,",
+    "Mineral Common Colors:": "White (common), green, yellow, blue, grey, pink, purple, red, orange, brown, etc.",
+    "Rock Features:": "Mineral",
+    "Picture of Rock:": "",
+    "Link:": "Quartz"
+  },
+  {
+    "Rock/      Mineral:": "Andesite",
+    "Mineral/s Included:": "Plagioclase- (Na,Ca)[(Si,Al)AlSi2]O8; Hornblende-(Ca2(Mg4Al)(Si7Al)O22(OH)2;                                                                  Biotite- K(Mg,Fe)3AlSi3O10(OH)2;                            Pyroxene- ADSi2O6;",
+    "Isometric System/s:": "Plagioclase- Triclinic;                                     Hornblende- Monoclinic;                                     Biotite- Monoclinic;                                      Pyroxene- monoclinic, orthorhombic;",
+    "Crystal Forms and Habits:": "Plagioclase- pinacoidal, tabular/granular/massive;                                     Hornblende- Prismatic;                                     Biotite- prismatic, tabular;                                     Pyroxene- prismatic/dipyramidal;",
+    "Mineral Common Colors:": "Plagioclase- white, grey;                                      Hornblende- green, black, brown;                                      Biotite- black;                                      Pyroxene- white, grey, black, green, brown",
+    "Rock Features:": "dark-colored, fine-grained, the fine-grained equivalent of diorite.",
+    "Picture of Rock:": "",
+    "Link:": "Andesite"
+  },
+  {
+    "Rock/      Mineral:": "Chert",
+    "Mineral/s Included:": "Mainly Quartz (SiO2) or Opal (SiO2 · nH2O)",
+    "Isometric System/s:": "Quartz- Trigonal;                                     Opal- Tetragonal and/or Triclinic",
+    "Crystal Forms and Habits:": "Quartz- prismatic, rhombo/tri-dipyramid;                                     Opal- Pedial/trapezohedral, tabular, pseudo octahedral, dendritic",
+    "Mineral Common Colors:": "Quartz- White (common), green, yellow, blue, grey, pink, purple, red, orange, brown, etc.                                             Opal- clear, white, blue, grey, iridescent, yellow, red, orange, green, brown, black",
+    "Rock Features:": "A dense, hard siliceous-rock with low porosity.",
+    "Picture of Rock:": "",
+    "Link:": "Chert"
+  },
+  {
+    "Rock/      Mineral:": "Sandstone",
+    "Mineral/s Included:": "Mainly Quartz (SiO2), some feldspar (albite, anorthite, orthoclase and microcline) and clay minerals (talc [Mg3Si4O10(OH)2], mica (muscovite [KAl2(AlSi3O10)(OH)2], biotite, chlorite [Mg5Al(AlSi3O10)(OH)8]),",
+    "Isometric System/s:": "Quartz- Trigonal;                 talc- Triclinic;                                     Mica- Monoclinic;  Plagioclase- Triclinic;                                     K-feldspar- Triclinic;",
+    "Crystal Forms and Habits:": "Quartz- prismatic, rhombo/tri-dipyramid;                                   Talc- Pinacoidal, platy;                                     Mica- platy/brittle, prismatic/sphenoidal;                                      Plagioclase- Pinacoidal, prismatic/lamellar/massive;                                     K-feldspar- Pinacoidal, prismatic/granular/massive;",
+    "Mineral Common Colors:": "Plagioclase- Usually white/gray;                                     K-feldspar- pink(common);                                     Quartz- clear/white;                                     Talc- white, green, grey, brown;                                     Mica- white, black, grey, green;",
+    "Rock Features:": "sand-grade clastic-sedimentary-rock, majorly silicate-sandstone",
+    "Picture of Rock:": "",
+    "Link:": "Sandstone"
+  },
+  {
+    "Rock/      Mineral:": "Willemite",
+    "Mineral/s Included:": "Zn2SiO4",
+    "Isometric System/s:": "Trigonal",
+    "Crystal Forms and Habits:": "Rhombohedral, barrel-shaped, acicular(common), hexagonal, boytroidal",
+    "Mineral Common Colors:": "Variable- clear, green, blue, yellow, brown, red, grey, pink",
+    "Rock Features:": "Mineral",
+    "Picture of Rock:": "",
+    "Link:": "Willemite"
+  },
+  {
+    "Rock/      Mineral:": "Iron Stone",
+    "Mineral/s Included:": "Common Minerals: Goethite (FeO(OH)), Hematite (Fe2O3), Siderite (FeCO3), Limonite",
+    "Isometric System/s:": "Goethite- Orthorhombic;      Hematite- Trigonal;          Siderite- Trigonal;",
+    "Crystal Forms and Habits:": "Goethite- Dipyramid, prismatic, acicular, massive, reniform, bladed;      Hematite- Hexagonal, tabular, \"iron roses,\" granular;                                     Siderite- Hexagonal, rhombohedral, massive;",
+    "Mineral Common Colors:": "Goethite- Brown-black;      Hematite- Steel grey;          Siderite- yellow-brown;",
+    "Rock Features:": "iron-rich sedimentary rock, hard, coarsely banded or non-banded, and non-cherty",
+    "Picture of Rock:": "",
+    "Link:": "Ironstone"
+  },
+  {
+    "Rock/      Mineral:": "Siltstone",
+    "Mineral/s Included:": "Common Minerals: Quartz (SiO2), clay minerals, micas (talc [Mg3Si4O10(OH)2], mica (muscovite [KAl2(AlSi3O10)(OH)2], biotite, chlorite [Mg5Al(AlSi3O10)(OH)8]), feldspars (albite, anorthite, orthoclase and microcline)",
+    "Isometric System/s:": "Quartz- Trigonal;                 talc- Triclinic;                                     Mica- Monoclinic;  Plagioclase- Triclinic;                                     K-feldspar- Triclinic;",
+    "Crystal Forms and Habits:": "Quartz- prismatic, rhombo/tri-dipyramid;                                   Talc- Pinacoidal, platy;                                     Mica- platy/brittle, prismatic/sphenoidal;                                      Plagioclase- Pinacoidal, prismatic/lamellar/massive;                                     K-feldspar- Pinacoidal, prismatic/granular/massive;",
+    "Mineral Common Colors:": "Plagioclase- Usually white/gray;                                     K-feldspar- pink(common);                                     Quartz- clear/white;                                     Talc- white, green, grey, brown;                                     Mica- white, black, grey, green;",
+    "Rock Features:": "massive mudstone in which the silt predominates over clay, like a very fine-grained sandstone",
+    "Picture of Rock:": "",
+    "Link:": "Siltstone"
+  }
+]
