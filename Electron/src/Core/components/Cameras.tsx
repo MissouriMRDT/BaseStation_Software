@@ -171,6 +171,14 @@ class Cameras extends Component<IProps, IState> {
     fs.writeFileSync(filename, base64Image!, { encoding: "base64" })
   }
 
+  refresh(): void {
+    //TODO: implement camera refresh function
+  }
+
+  stopListening(): void {
+    //TODO: implement stop listening to camera function
+  }
+
   render(): JSX.Element {
     return (
       <div id="camera" style={{ ...this.props.style, maxHeight: `${this.props.maxHeight}px` }}>
@@ -202,6 +210,14 @@ class Cameras extends Component<IProps, IState> {
             </button>
             <button type="button" onClick={() => this.rotate()} style={{ flexGrow: 1 }}>
               Rotate
+            </button>
+          </div>
+          <div style={row}>
+            <button type="button" onClick={() => this.refresh()} style={{ flexGrow: 1 }}>
+              Stop Listening
+            </button>
+            <button type="button" onClick={() => this.stopListening()} style={{ flexGrow: 1 }}>
+              Refresh
             </button>
           </div>
         </div>
