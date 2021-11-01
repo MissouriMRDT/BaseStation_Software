@@ -450,7 +450,7 @@ class SensorGraphs extends Component<IProps, IState> {
       for (const pairs of no) {
         normalized_no.push({ x: pairs.x, y: (pairs.y - min_no) / (data[0] - min_no) })
       }
-      this.setState({ max_methane: data[0], normalized_no })
+      this.setState({ max_no: data[0], normalized_no })
     }
     if (data[0] <= min_no) {
       normalized_no = []
@@ -491,7 +491,7 @@ class SensorGraphs extends Component<IProps, IState> {
       for (const pairs of n2o) {
         normalized_n2o.push({ x: pairs.x, y: (pairs.y - data[0]) / (max_n2o - data[0]) })
       }
-      this.setState({ min_methane: data[0], normalized_n2o })
+      this.setState({ min_n2o: data[0], normalized_n2o })
     }
 
     n2o.push({ x: new Date(), y: data[0] })
