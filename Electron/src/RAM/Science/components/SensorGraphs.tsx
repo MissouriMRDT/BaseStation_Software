@@ -222,29 +222,45 @@ class SensorGraphs extends Component<IProps, IState> {
     this.crosshairValues = { ...this.crosshairValues, [listName]: list[index] }
   }
 
-  /*sensorChange(event: { target: { value: string } }): void {
-    // When the dropdown selects a different sensor, properly update the variable in state
-    this.setState({ sensor: event.target.value })
-  }*/
-
+  /**
+   * Called when a checkbox or radio box is clicked to change which sensors are active
+   * @param sensorName the name of the sensor that was toggled. Must be a valid sensor in {this.state.enabledSensors}
+   */
   sensorSelectionChanged(sensorName: string): void {
     const { enabledSensors } = this.state;
 
+    if(sensorName === "Temperature" || sensorName === "O2Pressure") {
+      //This will also deselect the temperature and o2pressure sensors.
+      //The radio boxes don't allow deselection, so it'll get turned on again below
+      this.deselectAll()
+    }
+    else {
+      //If a concentration sensor is enabled, turn off the temperature & pressure sensors
+      enabledSensors.set("Temperature", false)
+      enabledSensors.set("O2Pressure", false)
+    }
     enabledSensors.set(sensorName, !enabledSensors.get(sensorName))
     
     this.setState({enabledSensors})
   }
 
+  /**
+   * Turn on all concentration sensors' graph displays
+   */
   selectAll(): void {
     const { enabledSensors } = this.state;
 
     enabledSensors.forEach((value, key) => {
-      enabledSensors.set(key, true);
+      if(key !== "O2Pressure" && key !== "Temperature")
+        enabledSensors.set(key, true);
     })
     
     this.setState({enabledSensors})
   }
 
+  /**
+   * Turn off all sensors' graph displays
+   */
   deselectAll(): void {
     const { enabledSensors } = this.state;
 
@@ -643,6 +659,9 @@ class SensorGraphs extends Component<IProps, IState> {
         <div style={label}>Sensor Graphs</div>
         <div style={container}>
         <div style={buttonrow}>
+            <button type="button" onClick={e => {this.methane([e.pageX])}}>
+              Test
+            </button>
             <button type="button" onClick={this.selectAll}>
               Select All
             </button>
@@ -661,7 +680,8 @@ class SensorGraphs extends Component<IProps, IState> {
               {[...this.state.enabledSensors].map(([sensorName, val]) => {
                 return(
                   <div key={undefined} style={selector}>
-                    <input type="checkbox" id={sensorName} name={sensorName} checked={val} onClick={() => this.sensorSelectionChanged(sensorName)}/>
+                    <input type={sensorName === "Temperature" || sensorName === "O2Pressure" ? "radio" : "checkbox"} 
+                      id={sensorName} name={sensorName} checked={val} onChange={() => this.sensorSelectionChanged(sensorName)}/>
                     <label>{sensorName}</label>
                   </div>
                 )
@@ -676,9 +696,9 @@ class SensorGraphs extends Component<IProps, IState> {
             onMouseLeave={this.onMouseLeave}
           >
             <HorizontalGridLines style={{ fill: "none" }} />
-            {(this.state.sensor === "Methane" || this.state.sensor === "All") && this.state.methane !== [] && (
+            {(this.state.enabledSensors.get("Methane") && this.state.methane !== []) && (
               <LineSeries
-                data={this.state.sensor === "All" ? this.state.normalized_methane : this.state.methane}
+                data={this.state.normalized_methane}
                 style={{ fill: "none" }}
                 strokeWidth="6"
                 color="#990000"
@@ -687,9 +707,9 @@ class SensorGraphs extends Component<IProps, IState> {
                 }
               />
             )}
-            {(this.state.sensor === "CO2" || this.state.sensor === "All") && this.state.co2 !== [] && (
+            {(this.state.enabledSensors.get("CO2") && this.state.co2 !== []) && (
               <LineSeries
-                data={this.state.sensor === "All" ? this.state.normalized_co2 : this.state.co2}
+                data={this.state.normalized_co2}
                 style={{ fill: "none" }}
                 strokeWidth="6"
                 strokeStyle="dashed"
@@ -697,9 +717,9 @@ class SensorGraphs extends Component<IProps, IState> {
                 onNearestX={(datapoint: any, event: any) => this.onNearestX(datapoint, event, this.state.co2, "CO2")}
               />
             )}
-            {(this.state.sensor === "Temperature" || this.state.sensor === "All") && this.state.temperature !== [] && (
+            {(this.state.enabledSensors.get("Temperature") && this.state.temperature !== []) && (
               <LineSeries
-                data={this.state.sensor === "All" ? this.state.normalized_temperature : this.state.temperature}
+                data={this.state.normalized_temperature}
                 style={{ fill: "none" }}
                 strokeWidth="6"
                 color="yellow"
@@ -708,9 +728,9 @@ class SensorGraphs extends Component<IProps, IState> {
                 }
               />
             )}
-            {(this.state.sensor === "O2PP" || this.state.sensor === "All") && this.state.o2PP !== [] && (
+            {(this.state.enabledSensors.get("O2PP") && this.state.o2PP !== []) && (
               <LineSeries
-                data={this.state.sensor === "All" ? this.state.normalized_o2PP : this.state.o2PP}
+                data={this.state.normalized_o2PP}
                 style={{ fill: "none" }}
                 strokeWidth="6"
                 strokeStyle="dashed"
@@ -718,12 +738,9 @@ class SensorGraphs extends Component<IProps, IState> {
                 onNearestX={(datapoint: any, event: any) => this.onNearestX(datapoint, event, this.state.o2PP, "O2PP")}
               />
             )}
-            {(this.state.sensor === "O2Concentration" || this.state.sensor === "All") &&
-              this.state.o2Concentration !== [] && (
+            {(this.state.enabledSensors.get("O2Concentration") && this.state.o2Concentration !== []) && (
                 <LineSeries
-                  data={
-                    this.state.sensor === "All" ? this.state.normalized_o2Concentration : this.state.o2Concentration
-                  }
+                  data={this.state.normalized_o2Concentration}
                   style={{ fill: "none" }}
                   strokeWidth="6"
                   color="blue"
@@ -732,9 +749,9 @@ class SensorGraphs extends Component<IProps, IState> {
                   }
                 />
               )}
-            {(this.state.sensor === "O2Pressure" || this.state.sensor === "All") && this.state.o2Pressure !== [] && (
+            {(this.state.enabledSensors.get("O2Pressure") && this.state.o2Pressure !== []) && (
               <LineSeries
-                data={this.state.sensor === "All" ? this.state.normalized_o2Pressure : this.state.o2Pressure}
+                data={this.state.normalized_o2Pressure}
                 style={{ fill: "none" }}
                 strokeWidth="6"
                 strokeStyle="dashed"
@@ -744,18 +761,18 @@ class SensorGraphs extends Component<IProps, IState> {
                 }
               />
             )}
-            {(this.state.sensor === "NO" || this.state.sensor === "All") && this.state.no !== [] && (
+            {(this.state.enabledSensors.get("NO") && this.state.no !== []) && (
               <LineSeries
-                data={this.state.sensor === "All" ? this.state.normalized_no : this.state.no}
+                data={this.state.normalized_no}
                 style={{ fill: "none" }}
                 strokeWidth="6"
                 color="black"
                 onNearestX={(datapoint: any, event: any) => this.onNearestX(datapoint, event, this.state.no, "NO")}
               />
             )}
-            {(this.state.sensor === "N2O" || this.state.sensor === "All") && this.state.n2o !== [] && (
+            {(this.state.enabledSensors.get("N2O") && this.state.n2o !== []) && (
               <LineSeries
-                data={this.state.sensor === "All" ? this.state.normalized_n2o : this.state.n2o}
+                data={this.state.normalized_n2o}
                 style={{ fill: "none" }}
                 strokeWidth="6"
                 strokeStyle="dashed"
@@ -764,7 +781,7 @@ class SensorGraphs extends Component<IProps, IState> {
               />
             )}
             <XAxis />
-            {this.state.sensor !== "All" && <YAxis />}
+            {/*this.state.sensor !== "All" &&*/ <YAxis />}
             {this.crosshair()}
           </XYPlot>
           <DiscreteColorLegend
