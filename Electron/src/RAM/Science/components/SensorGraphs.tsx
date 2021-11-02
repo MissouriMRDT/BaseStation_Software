@@ -38,7 +38,7 @@ const buttonrow: CSS.Properties = {
   alignItems: "center",
   justifyContent: "space-around",
   margin: "10px",
-} 
+}
 const row: CSS.Properties = {
   display: "flex",
   alignItems: "center",
@@ -116,6 +116,7 @@ interface IProps {
 }
 
 interface IState {
+  crosshairValues: Map<string, { x: Date; y: number }>
   methane: { x: Date; y: number }[]
   co2: { x: Date; y: number }[]
   temperature: { x: Date; y: number }[]
@@ -152,11 +153,10 @@ interface IState {
 }
 
 class SensorGraphs extends Component<IProps, IState> {
-  crosshairValues: any = {}
-
   constructor(props: IProps) {
     super(props)
     this.state = {
+      crosshairValues: new Map(),
       methane: [],
       co2: [],
       temperature: [],
@@ -189,7 +189,16 @@ class SensorGraphs extends Component<IProps, IState> {
       min_o2Pressure: -1,
       min_no: -1,
       min_n2o: -1,
-      enabledSensors: new Map([["Methane", false], ["CO2", false], ["Temperature", false], ["O2PP", false], ["O2Concentration", false], ["O2Pressure", false], ["NO", false], ["N2O", false]]),
+      enabledSensors: new Map([
+        ["Methane", false],
+        ["CO2", false],
+        ["Temperature", false],
+        ["O2PP", false],
+        ["O2Concentration", false],
+        ["O2Pressure", false],
+        ["NO", false],
+        ["N2O", false],
+      ]),
     }
     this.methane = this.methane.bind(this)
     this.co2 = this.co2.bind(this)
@@ -212,14 +221,18 @@ class SensorGraphs extends Component<IProps, IState> {
 
   onMouseLeave(): void {
     // When the mouse exits the graph area, the crosshair should be cleared
-    this.crosshairValues = {}
+    const { crosshairValues } = this.state
+    crosshairValues.clear()
+    this.setState({ crosshairValues })
   }
 
-  onNearestX(value: any, { index }: any, list: any, listName: string): void {
+  onNearestX(value: any, { index }: any, list: Array<{ x: Date; y: number }>, listName: string): void {
     // When we hover over the graph area, find the closest x position of each line series
     // (using a built in function to react-vis) and then set that key-value pair
     // in crosshair values to be displayed
-    this.crosshairValues = { ...this.crosshairValues, [listName]: list[index] }
+    const { crosshairValues } = this.state
+    crosshairValues.set(listName, list[index])
+    this.setState({ crosshairValues })
   }
 
   /**
@@ -227,48 +240,46 @@ class SensorGraphs extends Component<IProps, IState> {
    * @param sensorName the name of the sensor that was toggled. Must be a valid sensor in {this.state.enabledSensors}
    */
   sensorSelectionChanged(sensorName: string): void {
-    const { enabledSensors } = this.state;
+    const { enabledSensors } = this.state
 
-    if(sensorName === "Temperature" || sensorName === "O2Pressure") {
+    if (sensorName === "Temperature" || sensorName === "O2Pressure") {
       //This will also deselect the temperature and o2pressure sensors.
       //The radio boxes don't allow deselection, so it'll get turned on again below
       this.deselectAll()
-    }
-    else {
+    } else {
       //If a concentration sensor is enabled, turn off the temperature & pressure sensors
       enabledSensors.set("Temperature", false)
       enabledSensors.set("O2Pressure", false)
     }
     enabledSensors.set(sensorName, !enabledSensors.get(sensorName))
-    
-    this.setState({enabledSensors})
+
+    this.setState({ enabledSensors })
   }
 
   /**
    * Turn on all concentration sensors' graph displays
    */
   selectAll(): void {
-    const { enabledSensors } = this.state;
+    const { enabledSensors } = this.state
 
     enabledSensors.forEach((value, key) => {
-      if(key !== "O2Pressure" && key !== "Temperature")
-        enabledSensors.set(key, true);
+      if (key !== "O2Pressure" && key !== "Temperature") enabledSensors.set(key, true)
     })
-    
-    this.setState({enabledSensors})
+
+    this.setState({ enabledSensors })
   }
 
   /**
    * Turn off all sensors' graph displays
    */
   deselectAll(): void {
-    const { enabledSensors } = this.state;
+    const { enabledSensors } = this.state
 
     enabledSensors.forEach((value, key) => {
       enabledSensors.set(key, false)
     })
-    
-    this.setState({enabledSensors})
+
+    this.setState({ enabledSensors })
   }
 
   methane(data: any): void {
@@ -556,13 +567,14 @@ class SensorGraphs extends Component<IProps, IState> {
 
     // We only want to return a crosshair element if there is a valid reading in the crosshair values
     // We would prefer CO2 cause it has the fastest update rate, then O2, then methane
+    const { crosshairValues } = this.state
     let time
-    if ("CO2" in this.crosshairValues) {
-      time = this.crosshairValues.CO2.x
-    } else if ("O2PP" in this.crosshairValues) {
-      time = this.crosshairValues.O2PP.x
-    } else if ("Methane" in this.crosshairValues) {
-      time = this.crosshairValues.Methane.x
+    if (crosshairValues.has("CO2")) {
+      time = crosshairValues.get("CO2")?.x
+    } else if (crosshairValues.has("O2PP")) {
+      time = crosshairValues.get("O2PP")?.x
+    } else if (crosshairValues.has("Methane")) {
+      time = crosshairValues.get("Methane")?.x
     }
 
     // If we were able to find a reading at a time, then go ahead and display the crosshair
@@ -570,77 +582,77 @@ class SensorGraphs extends Component<IProps, IState> {
     // then we want to display its y value
     if (time) {
       return (
-        <Crosshair values={Object.values(this.crosshairValues)}>
+        <Crosshair values={[...crosshairValues.values()]}>
           <div style={overlay}>
             <h3 style={{ backgroundColor: "white" }}>{time?.toTimeString().slice(0, 9)}</h3>
-            {"Methane" in this.crosshairValues && (
+            {crosshairValues.has("Methane") && (
               <p style={{ backgroundColor: "white" }}>
                 Methane:{" "}
-                {this.crosshairValues.Methane.y.toLocaleString(undefined, {
+                {crosshairValues.get("Methane")?.y.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                 })}{" "}
                 %
               </p>
             )}
-            {"CO2" in this.crosshairValues && (
+            {crosshairValues.has("CO2") && (
               <p style={{ backgroundColor: "white" }}>
                 CO2:{" "}
-                {this.crosshairValues.CO2.y.toLocaleString(undefined, {
+                {crosshairValues.get("CO2")?.y.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                 })}{" "}
                 ppm
               </p>
             )}
-            {"Temperature" in this.crosshairValues && (
+            {crosshairValues.has("Temperature") && (
               <p style={{ backgroundColor: "white" }}>
                 Temperature:{" "}
-                {this.crosshairValues.Temperature.y.toLocaleString(undefined, {
+                {crosshairValues.get("Temperature")?.y.toLocaleString(undefined, {
                   minimumFractionDigits: 1,
                   minimumIntegerDigits: 2,
                 })}
                 &#176;C
               </p>
             )}
-            {"O2PP" in this.crosshairValues && (
+            {crosshairValues.has("O2PP") && (
               <p style={{ backgroundColor: "white" }}>
                 O2PP:{" "}
-                {this.crosshairValues.O2PP.y.toLocaleString(undefined, {
+                {crosshairValues.get("O2PP")?.y.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                 })}{" "}
                 ppm
               </p>
             )}
-            {"O2Concentration" in this.crosshairValues && (
+            {crosshairValues.has("O2Concentration") && (
               <p style={{ backgroundColor: "white" }}>
                 O2Concentration:{" "}
-                {this.crosshairValues.O2Concentration.y.toLocaleString(undefined, {
+                {crosshairValues.get("O2Concentration")?.y.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                 })}{" "}
                 ppm
               </p>
             )}
-            {"O2Pressure" in this.crosshairValues && (
+            {crosshairValues.has("O2Pressure") && (
               <p style={{ backgroundColor: "white" }}>
                 O2Pressure:{" "}
-                {this.crosshairValues.O2Pressure.y.toLocaleString(undefined, {
+                {crosshairValues.get("O2Pressure")?.y.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                 })}{" "}
                 ppm
               </p>
             )}
-            {"NO" in this.crosshairValues && (
+            {crosshairValues.has("NO") && (
               <p style={{ backgroundColor: "white" }}>
                 NO:{" "}
-                {this.crosshairValues.NO.y.toLocaleString(undefined, {
+                {crosshairValues.get("NO")?.y.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                 })}{" "}
                 ppm
               </p>
             )}
-            {"N2O" in this.crosshairValues && (
+            {crosshairValues.has("N2O") && (
               <p style={{ backgroundColor: "white" }}>
                 N2O:{" "}
-                {this.crosshairValues.N2O.y.toLocaleString(undefined, {
+                {crosshairValues.get("N2O")?.y.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                 })}{" "}
                 ppm
@@ -658,9 +670,22 @@ class SensorGraphs extends Component<IProps, IState> {
       <div id="SensorGraph" style={this.props.style}>
         <div style={label}>Sensor Graphs</div>
         <div style={container}>
-        <div style={buttonrow}>
-            <button type="button" onClick={e => {this.methane([e.pageX])}}>
-              Test
+          <div style={buttonrow}>
+            <button
+              type="button"
+              onClick={e => {
+                this.methane([e.pageX])
+              }}
+            >
+              TestMethane
+            </button>
+            <button
+              type="button"
+              onClick={e => {
+                this.no([e.pageX])
+              }}
+            >
+              TestNO
             </button>
             <button type="button" onClick={this.selectAll}>
               Select All
@@ -678,10 +703,15 @@ class SensorGraphs extends Component<IProps, IState> {
           <div style={row}>
             <div style={selectbox}>
               {[...this.state.enabledSensors].map(([sensorName, val]) => {
-                return(
+                return (
                   <div key={undefined} style={selector}>
-                    <input type={sensorName === "Temperature" || sensorName === "O2Pressure" ? "radio" : "checkbox"} 
-                      id={sensorName} name={sensorName} checked={val} onChange={() => this.sensorSelectionChanged(sensorName)}/>
+                    <input
+                      type={sensorName === "Temperature" || sensorName === "O2Pressure" ? "radio" : "checkbox"}
+                      id={sensorName}
+                      name={sensorName}
+                      checked={val}
+                      onChange={() => this.sensorSelectionChanged(sensorName)}
+                    />
                     <label>{sensorName}</label>
                   </div>
                 )
@@ -696,7 +726,7 @@ class SensorGraphs extends Component<IProps, IState> {
             onMouseLeave={this.onMouseLeave}
           >
             <HorizontalGridLines style={{ fill: "none" }} />
-            {(this.state.enabledSensors.get("Methane") && this.state.methane !== []) && (
+            {this.state.enabledSensors.get("Methane") && this.state.methane !== [] && (
               <LineSeries
                 data={this.state.normalized_methane}
                 style={{ fill: "none" }}
@@ -707,7 +737,7 @@ class SensorGraphs extends Component<IProps, IState> {
                 }
               />
             )}
-            {(this.state.enabledSensors.get("CO2") && this.state.co2 !== []) && (
+            {this.state.enabledSensors.get("CO2") && this.state.co2 !== [] && (
               <LineSeries
                 data={this.state.normalized_co2}
                 style={{ fill: "none" }}
@@ -717,7 +747,7 @@ class SensorGraphs extends Component<IProps, IState> {
                 onNearestX={(datapoint: any, event: any) => this.onNearestX(datapoint, event, this.state.co2, "CO2")}
               />
             )}
-            {(this.state.enabledSensors.get("Temperature") && this.state.temperature !== []) && (
+            {this.state.enabledSensors.get("Temperature") && this.state.temperature !== [] && (
               <LineSeries
                 data={this.state.normalized_temperature}
                 style={{ fill: "none" }}
@@ -728,7 +758,7 @@ class SensorGraphs extends Component<IProps, IState> {
                 }
               />
             )}
-            {(this.state.enabledSensors.get("O2PP") && this.state.o2PP !== []) && (
+            {this.state.enabledSensors.get("O2PP") && this.state.o2PP !== [] && (
               <LineSeries
                 data={this.state.normalized_o2PP}
                 style={{ fill: "none" }}
@@ -738,18 +768,18 @@ class SensorGraphs extends Component<IProps, IState> {
                 onNearestX={(datapoint: any, event: any) => this.onNearestX(datapoint, event, this.state.o2PP, "O2PP")}
               />
             )}
-            {(this.state.enabledSensors.get("O2Concentration") && this.state.o2Concentration !== []) && (
-                <LineSeries
-                  data={this.state.normalized_o2Concentration}
-                  style={{ fill: "none" }}
-                  strokeWidth="6"
-                  color="blue"
-                  onNearestX={(datapoint: any, event: any) =>
-                    this.onNearestX(datapoint, event, this.state.o2Concentration, "O2Concentration")
-                  }
-                />
-              )}
-            {(this.state.enabledSensors.get("O2Pressure") && this.state.o2Pressure !== []) && (
+            {this.state.enabledSensors.get("O2Concentration") && this.state.o2Concentration !== [] && (
+              <LineSeries
+                data={this.state.normalized_o2Concentration}
+                style={{ fill: "none" }}
+                strokeWidth="6"
+                color="blue"
+                onNearestX={(datapoint: any, event: any) =>
+                  this.onNearestX(datapoint, event, this.state.o2Concentration, "O2Concentration")
+                }
+              />
+            )}
+            {this.state.enabledSensors.get("O2Pressure") && this.state.o2Pressure !== [] && (
               <LineSeries
                 data={this.state.normalized_o2Pressure}
                 style={{ fill: "none" }}
@@ -761,7 +791,7 @@ class SensorGraphs extends Component<IProps, IState> {
                 }
               />
             )}
-            {(this.state.enabledSensors.get("NO") && this.state.no !== []) && (
+            {this.state.enabledSensors.get("NO") && this.state.no !== [] && (
               <LineSeries
                 data={this.state.normalized_no}
                 style={{ fill: "none" }}
@@ -770,7 +800,7 @@ class SensorGraphs extends Component<IProps, IState> {
                 onNearestX={(datapoint: any, event: any) => this.onNearestX(datapoint, event, this.state.no, "NO")}
               />
             )}
-            {(this.state.enabledSensors.get("N2O") && this.state.n2o !== []) && (
+            {this.state.enabledSensors.get("N2O") && this.state.n2o !== [] && (
               <LineSeries
                 data={this.state.normalized_n2o}
                 style={{ fill: "none" }}
@@ -787,14 +817,53 @@ class SensorGraphs extends Component<IProps, IState> {
           <DiscreteColorLegend
             style={{ fontSize: "16px", textAlign: "center" }}
             items={[
-              { title: "Methane", strokeWidth: 6, color: "#990000", disabled: !this.state.enabledSensors.get("Methane") },
-              { title: "CO2", strokeWidth: 6, strokeStyle: "dashed", color: "orange", disabled: !this.state.enabledSensors.get("CO2") },
-              { title: "Temperature", strokeWidth: 6, color: "yellow", disabled: !this.state.enabledSensors.get("Temperature") },
-              { title: "O2PP", strokeWidth: 6, strokeStyle: "dashed", color: "green", disabled: !this.state.enabledSensors.get("O2PP") },
-              { title: "O2Concentration", strokeWidth: 6, color: "blue", disabled: !this.state.enabledSensors.get("O2Concentration") },
-              { title: "O2Pressure", strokeWidth: 6, strokeStyle: "dashed", color: "purple", disabled: !this.state.enabledSensors.get("O2Pressure") },
+              {
+                title: "Methane",
+                strokeWidth: 6,
+                color: "#990000",
+                disabled: !this.state.enabledSensors.get("Methane"),
+              },
+              {
+                title: "CO2",
+                strokeWidth: 6,
+                strokeStyle: "dashed",
+                color: "orange",
+                disabled: !this.state.enabledSensors.get("CO2"),
+              },
+              {
+                title: "Temperature",
+                strokeWidth: 6,
+                color: "yellow",
+                disabled: !this.state.enabledSensors.get("Temperature"),
+              },
+              {
+                title: "O2PP",
+                strokeWidth: 6,
+                strokeStyle: "dashed",
+                color: "green",
+                disabled: !this.state.enabledSensors.get("O2PP"),
+              },
+              {
+                title: "O2Concentration",
+                strokeWidth: 6,
+                color: "blue",
+                disabled: !this.state.enabledSensors.get("O2Concentration"),
+              },
+              {
+                title: "O2Pressure",
+                strokeWidth: 6,
+                strokeStyle: "dashed",
+                color: "purple",
+                disabled: !this.state.enabledSensors.get("O2Pressure"),
+              },
               { title: "NO", strokeWidth: 6, color: "black", disabled: !this.state.enabledSensors.get("NO") },
-              { title: "N2O", strokeWidth: 6, strokeStyle: "dashed", color: "gray", disabled: !this.state.enabledSensors.get("N2O") },
+              {
+                title: "N2O",
+                strokeWidth: 6,
+                strokeStyle: "dashed",
+                color: "gray",
+                disabled: !this.state.enabledSensors.get("N2O"),
+              },
             ]}
             orientation="horizontal"
           />
