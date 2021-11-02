@@ -64,26 +64,42 @@ const Modal: CSS.Properties = {
   backgroundColor: "white",
   width: "56%",
 }
-const splitMenu: CSS.Properties = {
+const splitMainMenu: CSS.Properties = {
   position: "absolute",
   zIndex: 2,
   width: "56%",
   backgroundColor: "white",
   border: "2px solid #990000",
   boxSizing: "border-box",
-  boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25), inset 0px 4px 4px rgba(0, 0, 0, 0.25)",
+  boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+  textAlign: "center"
+}
+const differenceMenu: CSS.Properties = {
+  position: "relative",
+  border: "2px solid #990000",
+  boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+  width: "95%",
+  marginLeft: "auto",
+  marginRight: "auto"
+}
+const timeSplitMissionTitle: CSS.Properties = {
+  position: "relative",
+  borderBottom: "2px solid #990000",
+  width: "95%",
+  fontFamily: "Roboto",
+  fontSize: "25px",
+  marginLeft: "auto",
+  marginRight: "auto"
 }
 const timeSplitTitle: CSS.Properties = {
-  color: "black",
   position: "relative",
-  marginTop: "-10px",
-  top: "24px",
+  paddingTop: "25px",
+  color: "black",
   fontFamily: "Roboto",
   fontWeight: "bold",
   fontSize: "30px",
-  display: "flex",
-  textAlign: "center",
-  margin: "0 auto",
+  marginLeft: "auto",
+  marginRight: "auto"
 }
 
 const FILEPATH = path.join(__dirname, "../assets/TaskList.json")
@@ -414,9 +430,16 @@ class Timer extends Component<IProps, IState> {
 
   timeSplitMenu(): JSX.Element {
     return (
-      <div style={splitMenu}>
-        <div style={timeSplitTitle}>Time Splitter</div>
-        <div>BIG LIST GOES HERE</div>
+      <div style={splitMainMenu}>
+        <div style={timeSplitTitle}>
+          Time Splitter
+        </div>
+        <div style={differenceMenu}>
+          <div style={{ ...timeSplitMissionTitle, textAlign:"justify"}}>
+              {this.state.parentMission[this.findIndex(this.state.selectedMission)].title}
+              {packOutput(this.state.parentMission[this.findIndex(this.state.selectedMission)].setTime)}
+          </div>
+        </div>
         <div>
           <button type="button" onClick={() => this.setState({ timeSplitOpen: false })}>
             back
