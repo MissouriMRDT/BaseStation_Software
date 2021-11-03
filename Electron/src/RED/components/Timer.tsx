@@ -84,7 +84,6 @@ const differenceMenu: CSS.Properties = {
 }
 const timeSplitMissionTitle: CSS.Properties = {
   position: "relative",
-  borderBottom: "2px solid #990000",
   width: "95%",
   fontFamily: "Roboto",
   fontSize: "25px",
@@ -284,6 +283,7 @@ class Timer extends Component<IProps, IState> {
         currentTaskTime = 0
       }
       this.setState({ currentTaskTime, currentTask, delta })
+      this.saveJSON()
     }
   }
 
@@ -428,18 +428,75 @@ class Timer extends Component<IProps, IState> {
     )
   }
 
+  taskDifferenceList(): JSX.Element {
+    return (
+      <div style={{ ...column, padding: "5px", width: "93%", fontFamily: "Roboto"}}>
+        {this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks.map(task => {
+          return (
+            <div key={task.id} style={{ display:"flex", justifyContent: "space-between"}}>
+              <div style={{color: (task.id === this.state.currentTask) ? "#FFE600" : "#000000"}}>
+                {task.title}
+              </div>
+              <div>
+                {(task.difference == 0) 
+                 ? 
+                  null
+                 :
+                  <div style={{color: (task.difference < 0) ? "#00AA00" : "#AA0000"}}>
+                    {task.difference > 0 ? "+" : ""}{task.difference}
+                  </div>
+                 }
+              </div>
+              <div>
+                {packOutput(task.setTime)}
+              </div>
+            </div>
+          )
+        })}
+      </div>
+    )
+  }
+
   timeSplitMenu(): JSX.Element {
     return (
-      <div style={splitMainMenu}>
+      <div id="Time Split Menu" style={splitMainMenu}>
+        {/*Large title at the top of the time split menu.*/}
         <div style={timeSplitTitle}>
           Time Splitter
         </div>
+
+        {/*This contains the actual time split table to view current time differences.*/}
         <div style={differenceMenu}>
-          <div style={{ ...timeSplitMissionTitle, textAlign:"justify"}}>
+
+          {/*This displays the current mission title as well as the total mission time.*/}
+          <div style={{ ...timeSplitMissionTitle, borderBottom: "2px solid #990000", justifyContent: "space-between", display: "flex"}}>
+            <div>
               {this.state.parentMission[this.findIndex(this.state.selectedMission)].title}
+            </div>
+            <div>
               {packOutput(this.state.parentMission[this.findIndex(this.state.selectedMission)].setTime)}
+            </div>
+          </div>
+
+          {/*This block will print out the task list, along with its respected target times. If the
+             currently selected mission has no tasks, then do not attempt to render any task data.*/}
+          <div>
+            {this.isTaskListEmpty(this.state.selectedMission)
+             ? "No Tasks Listed"
+             : this.taskDifferenceList()
+            }
           </div>
         </div>
+
+        <div style={{ ...timeSplitMissionTitle, paddingTop: "5px", justifyContent: "space-between", display: "flex"}}>
+          <div>
+            Total Time Passed:
+          </div>
+          <div>
+            {packOutput(this.state.currentMissionTime)}
+          </div>
+        </div>
+
         <div>
           <button type="button" onClick={() => this.setState({ timeSplitOpen: false })}>
             back
