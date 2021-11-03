@@ -8,11 +8,6 @@ import fs from "fs"
 import { rovecomm } from "../../../Core/RoveProtocol/Rovecomm"
 import { windows } from "../../../Core/Window"
 
-const h1Style: CSS.Properties = {
-  fontFamily: "arial",
-  fontSize: "18px",
-  margin: "5px 0px",
-}
 const container: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
@@ -226,7 +221,7 @@ class SensorGraphs extends Component<IProps, IState> {
     this.setState({ crosshairValues })
   }
 
-  onNearestX(value: any, { index }: any, list: Array<{ x: Date; y: number }>, listName: string): void {
+  onNearestX(index: number, list: Array<{ x: Date; y: number }>, listName: string): void {
     // When we hover over the graph area, find the closest x position of each line series
     // (using a built in function to react-vis) and then set that key-value pair
     // in crosshair values to be displayed
@@ -262,7 +257,7 @@ class SensorGraphs extends Component<IProps, IState> {
   selectAll(): void {
     const { enabledSensors } = this.state
 
-    enabledSensors.forEach((value, key) => {
+    enabledSensors.forEach((_value, key) => {
       if (key !== "O2Pressure" && key !== "Temperature") enabledSensors.set(key, true)
     })
 
@@ -275,7 +270,8 @@ class SensorGraphs extends Component<IProps, IState> {
   deselectAll(): void {
     const { enabledSensors } = this.state
 
-    enabledSensors.forEach((value, key) => {
+    //Can't clear here because we use this map to render the input boxes
+    enabledSensors.forEach((_value, key) => {
       enabledSensors.set(key, false)
     })
 
@@ -732,8 +728,8 @@ class SensorGraphs extends Component<IProps, IState> {
                 style={{ fill: "none" }}
                 strokeWidth="6"
                 color="#990000"
-                onNearestX={(datapoint: any, event: any) =>
-                  this.onNearestX(datapoint, event, this.state.methane, "Methane")
+                onNearestX={(_datapoint: any, event: any) =>
+                  this.onNearestX(event.index, this.state.methane, "Methane")
                 }
               />
             )}
@@ -744,7 +740,7 @@ class SensorGraphs extends Component<IProps, IState> {
                 strokeWidth="6"
                 strokeStyle="dashed"
                 color="orange"
-                onNearestX={(datapoint: any, event: any) => this.onNearestX(datapoint, event, this.state.co2, "CO2")}
+                onNearestX={(_datapoint: any, event: any) => this.onNearestX(event.index, this.state.co2, "CO2")}
               />
             )}
             {this.state.enabledSensors.get("Temperature") && this.state.temperature !== [] && (
@@ -753,8 +749,8 @@ class SensorGraphs extends Component<IProps, IState> {
                 style={{ fill: "none" }}
                 strokeWidth="6"
                 color="yellow"
-                onNearestX={(datapoint: any, event: any) =>
-                  this.onNearestX(datapoint, event, this.state.temperature, "Temperature")
+                onNearestX={(_datapoint: any, event: any) =>
+                  this.onNearestX(event.index, this.state.temperature, "Temperature")
                 }
               />
             )}
@@ -765,7 +761,7 @@ class SensorGraphs extends Component<IProps, IState> {
                 strokeWidth="6"
                 strokeStyle="dashed"
                 color="green"
-                onNearestX={(datapoint: any, event: any) => this.onNearestX(datapoint, event, this.state.o2PP, "O2PP")}
+                onNearestX={(_datapoint: any, event: any) => this.onNearestX(event.index, this.state.o2PP, "O2PP")}
               />
             )}
             {this.state.enabledSensors.get("O2Concentration") && this.state.o2Concentration !== [] && (
@@ -774,8 +770,8 @@ class SensorGraphs extends Component<IProps, IState> {
                 style={{ fill: "none" }}
                 strokeWidth="6"
                 color="blue"
-                onNearestX={(datapoint: any, event: any) =>
-                  this.onNearestX(datapoint, event, this.state.o2Concentration, "O2Concentration")
+                onNearestX={(_datapoint: any, event: any) =>
+                  this.onNearestX(event.index, this.state.o2Concentration, "O2Concentration")
                 }
               />
             )}
@@ -786,8 +782,8 @@ class SensorGraphs extends Component<IProps, IState> {
                 strokeWidth="6"
                 strokeStyle="dashed"
                 color="purple"
-                onNearestX={(datapoint: any, event: any) =>
-                  this.onNearestX(datapoint, event, this.state.o2Pressure, "O2Pressure")
+                onNearestX={(_datapoint: any, event: any) =>
+                  this.onNearestX(event.index, this.state.o2Pressure, "O2Pressure")
                 }
               />
             )}
@@ -797,7 +793,7 @@ class SensorGraphs extends Component<IProps, IState> {
                 style={{ fill: "none" }}
                 strokeWidth="6"
                 color="black"
-                onNearestX={(datapoint: any, event: any) => this.onNearestX(datapoint, event, this.state.no, "NO")}
+                onNearestX={(_datapoint: any, event: any) => this.onNearestX(event.index, this.state.no, "NO")}
               />
             )}
             {this.state.enabledSensors.get("N2O") && this.state.n2o !== [] && (
@@ -807,11 +803,11 @@ class SensorGraphs extends Component<IProps, IState> {
                 strokeWidth="6"
                 strokeStyle="dashed"
                 color="gray"
-                onNearestX={(datapoint: any, event: any) => this.onNearestX(datapoint, event, this.state.n2o, "N2O")}
+                onNearestX={(_datapoint: any, event: any) => this.onNearestX(event.index, this.state.n2o, "N2O")}
               />
             )}
             <XAxis />
-            {/*this.state.sensor !== "All" &&*/ <YAxis />}
+            <YAxis />
             {this.crosshair()}
           </XYPlot>
           <DiscreteColorLegend
