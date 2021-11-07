@@ -8,6 +8,26 @@ import fs from "fs"
 import { rovecomm } from "../../../Core/RoveProtocol/Rovecomm"
 import { windows } from "../../../Core/Window"
 
+/**
+ * Type definition for a sensor.
+ * To add a new sensor, define the default values in the clearData() function and
+ * add a function to interpret the rovecomm packet.
+ */
+type Sensor = {
+  /** The unit to display in the crosshair */
+  units: string
+  /**Color of the line on the graph for this sensor */
+  graphLineColor: string
+  /**Style of the line in the graph for this sensor */
+  graphLineType: "solid" | "dashed"
+  /**Keeps track of the sensor value at a given time */
+  values: { x: Date; y: number }[]
+  /**Values normalized between 0 and 1 */
+  normalizedValues: { x: Date; y: number }[]
+  max: number
+  min: number
+}
+
 const container: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
@@ -112,38 +132,7 @@ interface IProps {
 
 interface IState {
   crosshairValues: Map<string, { x: Date; y: number }>
-  methane: { x: Date; y: number }[]
-  co2: { x: Date; y: number }[]
-  temperature: { x: Date; y: number }[]
-  o2PP: { x: Date; y: number }[]
-  o2Concentration: { x: Date; y: number }[]
-  o2Pressure: { x: Date; y: number }[]
-  no: { x: Date; y: number }[]
-  n2o: { x: Date; y: number }[]
-  normalized_methane: { x: Date; y: number }[]
-  normalized_co2: { x: Date; y: number }[]
-  normalized_temperature: { x: Date; y: number }[]
-  normalized_o2PP: { x: Date; y: number }[]
-  normalized_o2Concentration: { x: Date; y: number }[]
-  normalized_o2Pressure: { x: Date; y: number }[]
-  normalized_no: { x: Date; y: number }[]
-  normalized_n2o: { x: Date; y: number }[]
-  max_methane: number
-  max_co2: number
-  max_temperature: number
-  max_o2PP: number
-  max_o2Concentration: number
-  max_o2Pressure: number
-  max_no: number
-  max_n2o: number
-  min_methane: number
-  min_co2: number
-  min_temperature: number
-  min_o2PP: number
-  min_o2Concentration: number
-  min_o2Pressure: number
-  min_no: number
-  min_n2o: number
+  sensors: Map<string, Sensor>
   enabledSensors: Map<string, boolean>
 }
 
@@ -152,38 +141,7 @@ class SensorGraphs extends Component<IProps, IState> {
     super(props)
     this.state = {
       crosshairValues: new Map(),
-      methane: [],
-      co2: [],
-      temperature: [],
-      o2PP: [],
-      o2Concentration: [],
-      o2Pressure: [],
-      no: [],
-      n2o: [],
-      normalized_methane: [],
-      normalized_co2: [],
-      normalized_temperature: [],
-      normalized_o2PP: [],
-      normalized_o2Concentration: [],
-      normalized_o2Pressure: [],
-      normalized_no: [],
-      normalized_n2o: [],
-      max_methane: -1,
-      max_co2: -1,
-      max_temperature: -1,
-      max_o2PP: -1,
-      max_o2Concentration: -1,
-      max_o2Pressure: -1,
-      max_no: -1,
-      max_n2o: -1,
-      min_methane: -1,
-      min_co2: -1,
-      min_temperature: -1,
-      min_o2PP: -1,
-      min_o2Concentration: -1,
-      min_o2Pressure: -1,
-      min_no: -1,
-      min_n2o: -1,
+      sensors: this.clearData(),
       enabledSensors: new Map([
         ["Methane", false],
         ["CO2", false],
@@ -278,6 +236,33 @@ class SensorGraphs extends Component<IProps, IState> {
     this.setState({ enabledSensors })
   }
 
+  /**
+   * Adds a value to the sensor's values
+   * @param sensor the name of the sensor to add the data to
+   * @param newData the data to add to the sensor's values
+   */
+  addData(name: string, newData: number): void {
+    if (newData === 0) {
+      return
+    }
+
+    const { sensors } = this.state
+    if (!sensors.has(name)) {
+      return
+    }
+
+    let sensor = sensors.get(name)
+
+    if (sensor!.max === -1) {
+      sensor!.max = newData
+    }
+    if (sensor!.min === -1) {
+      sensor!.min = newData
+    }
+
+    sensor!.values.push({ x: new Date() })
+  }
+
   methane(data: any): void {
     // Data of 0 probably just means the sensors aren't working and risks causing div by 0 errors
     if (data[0] === 0) {
@@ -285,277 +270,392 @@ class SensorGraphs extends Component<IProps, IState> {
     }
     // the methane data packet is [methane concentration, temperature]
     // temperature is discarded since it is supplied from the O2 sensor as well
-    const { methane } = this.state
-    let { normalized_methane, max_methane, min_methane } = this.state
+    const { sensors } = this.state
+    //If the methane object doesn't exist, we can't write anything to it
+    if (!sensors.has("Methane")) {
+      return
+    }
+    let methane = sensors.get("Methane")
+
     // If the max_methane value is -1 its unset, so update it with the incoming data
-    if (max_methane === -1) {
-      ;[max_methane] = data
+    if (methane!.max === -1) {
+      ;[methane!.max] = data
     }
     // If the min_methane value is -1 its unset, so update it with the incoming data
-    if (min_methane === -1) {
-      ;[min_methane] = data
+    if (methane!.min === -1) {
+      ;[methane!.min] = data
     }
 
-    methane.push({ x: new Date(), y: data[0] })
+    methane?.values.push({ x: new Date(), y: data[0] })
     // Normalize the data to 0 to 1 by dividing its position in the range by the range
-    normalized_methane.push({ x: new Date(), y: (data[0] - min_methane) / (max_methane - min_methane) })
+    methane?.normalizedValues.push({ x: new Date(), y: (data[0] - methane!.min) / (methane!.max - methane!.min) })
 
     // If the newest datum was bigger than the max, readjust all past data to the new normalization
-    if (data[0] >= max_methane) {
-      normalized_methane = []
-      for (const pairs of methane) {
-        normalized_methane.push({ x: pairs.x, y: (pairs.y - min_methane) / (data[0] - min_methane) })
+    if (data[0] > methane!.max) {
+      methane!.normalizedValues = []
+      for (const pairs of methane!.values) {
+        methane?.normalizedValues.push({ x: pairs.x, y: (pairs.y - methane.min) / (data[0] - methane.min) })
       }
-      this.setState({ max_methane: data[0], normalized_methane })
+      methane!.max = data[0]
     }
     // If the newest datum was smaller than the min, similarly readjust all past data to the new normalization
-    if (data[0] <= min_methane) {
-      normalized_methane = []
-      for (const pairs of methane) {
-        normalized_methane.push({ x: pairs.x, y: (pairs.y - data[0]) / (max_methane - data[0]) })
+    if (data[0] < methane!.min) {
+      methane!.normalizedValues = []
+      for (const pairs of methane!.values) {
+        methane?.normalizedValues.push({ x: pairs.x, y: (pairs.y - data[0]) / (methane.min - data[0]) })
       }
-      this.setState({ min_methane: data[0], normalized_methane })
+      methane!.min = data[0]
     }
-
-    this.setState({ methane })
+    sensors.set("Methane", methane!)
+    this.setState({ sensors })
   }
 
   co2(data: any): void {
     if (data[0] === 0) {
       return
     }
-    const { co2 } = this.state
-    let { normalized_co2, max_co2, min_co2 } = this.state
-    if (max_co2 === -1) {
-      ;[max_co2] = data
+    const { sensors } = this.state
+    if (!sensors.has("CO2")) {
+      return
     }
-    if (min_co2 === -1) {
-      ;[min_co2] = data
+    let co2 = sensors.get("CO2")
+    if (co2!.max === -1) {
+      ;[co2!.max] = data
+    }
+    if (co2!.min === -1) {
+      ;[co2!.min] = data
     }
 
-    co2.push({ x: new Date(), y: data[0] })
-    normalized_co2.push({ x: new Date(), y: data[0] / max_co2 })
+    co2?.values.push({ x: new Date(), y: data[0] })
+    co2?.normalizedValues.push({ x: new Date(), y: (data[0] - co2!.min) / (co2!.max - co2!.min) })
 
-    if (data[0] >= max_co2) {
-      normalized_co2 = []
-      for (const pairs of co2) {
-        normalized_co2.push({ x: pairs.x, y: (pairs.y - min_co2) / (data[0] - min_co2) })
+    if (data[0] > co2!.max) {
+      co2!.normalizedValues = []
+      for (const pairs of co2!.values) {
+        co2!.normalizedValues.push({ x: pairs.x, y: (pairs.y - co2!.min) / (data[0] - co2!.min) })
       }
-      this.setState({ max_co2: data[0], normalized_co2 })
+      co2!.max = data[0]
     }
-    if (data[0] <= min_co2) {
-      normalized_co2 = []
-      for (const pairs of co2) {
-        normalized_co2.push({ x: pairs.x, y: (pairs.y - data[0]) / (max_co2 - data[0]) })
+    if (data[0] < co2!.min) {
+      co2!.normalizedValues = []
+      for (const pairs of co2!.values) {
+        co2!.normalizedValues.push({ x: pairs.x, y: (pairs.y - data[0]) / (co2!.max - data[0]) })
       }
-      this.setState({ min_co2: data[0], normalized_co2 })
+      co2!.min = data[0]
     }
-
-    this.setState({ co2 })
+    sensors.set("CO2", co2!)
+    this.setState({ sensors })
   }
 
   o2(data: any): void {
     if (data[0] === 0 || data[1] === 0 || data[2] === 0 || data[3] === 0) {
       return
     }
-    const { temperature, o2PP, o2Concentration, o2Pressure } = this.state
-    let { max_temperature, max_o2PP, max_o2Concentration, max_o2Pressure } = this.state
-    let { min_temperature, min_o2PP, min_o2Concentration, min_o2Pressure } = this.state
-    let { normalized_temperature, normalized_o2PP, normalized_o2Concentration, normalized_o2Pressure } = this.state
+    const { sensors } = this.state
+    if (
+      !sensors.has("Temperature") ||
+      !sensors.has("O2PP") ||
+      !sensors.has("O2Concentration") ||
+      !sensors.has("O2Pressure")
+    ) {
+      return
+    }
+    let temperature = sensors.get("Temperature")
+    let o2PP = sensors.get("O2PP")
+    let o2Concentration = sensors.get("O2Concentration")
+    let o2Pressure = sensors.get("o2Pressure")
     const [newO2PP, newTemperature, newO2Concentration, newO2Pressure] = data
-    if (max_temperature === -1 || max_o2PP === -1 || max_o2Concentration === -1 || max_o2Pressure === -1) {
-      max_temperature = newTemperature
-      max_o2PP = newO2PP
-      max_o2Concentration = newO2Concentration
-      max_o2Pressure = newO2Pressure
+    if (temperature!.max === -1 || o2PP!.max === -1 || o2Concentration!.max === -1 || o2Pressure!.max === -1) {
+      temperature!.max = newTemperature
+      o2PP!.max = newO2PP
+      o2Concentration!.max = newO2Concentration
+      o2Pressure!.max = newO2Pressure
     }
-    if (min_temperature === -1 || min_o2PP === -1 || min_o2Concentration === -1 || min_o2Pressure === -1) {
-      min_temperature = newTemperature
-      min_o2PP = newO2PP
-      min_o2Concentration = newO2Concentration
-      min_o2Pressure = newO2Pressure
+    if (temperature!.min === -1 || o2PP!.min === -1 || o2Concentration!.min === -1 || o2Pressure!.min === -1) {
+      temperature!.min = newTemperature
+      o2PP!.min = newO2PP
+      o2Concentration!.min = newO2Concentration
+      o2Pressure!.min = newO2Pressure
     }
 
-    temperature.push({ x: new Date(), y: newTemperature })
-    o2PP.push({ x: new Date(), y: newO2PP })
-    o2Concentration.push({ x: new Date(), y: newO2Concentration })
-    o2Pressure.push({ x: new Date(), y: newO2Pressure })
+    temperature!.values.push({ x: new Date(), y: newTemperature })
+    o2PP!.values.push({ x: new Date(), y: newO2PP })
+    o2Concentration!.values.push({ x: new Date(), y: newO2Concentration })
+    o2Pressure!.values.push({ x: new Date(), y: newO2Pressure })
 
-    normalized_temperature.push({ x: new Date(), y: newTemperature / max_temperature })
-    normalized_o2PP.push({ x: new Date(), y: newO2PP / max_o2PP })
-    normalized_o2Concentration.push({ x: new Date(), y: newO2Concentration / max_o2Concentration })
-    normalized_o2Pressure.push({ x: new Date(), y: newO2Pressure / max_o2Pressure })
+    temperature!.normalizedValues.push({
+      x: new Date(),
+      y: (newTemperature - temperature!.min) / (temperature!.max - temperature!.min),
+    })
+    o2PP!.normalizedValues.push({ x: new Date(), y: (newO2PP - o2PP!.min) / (o2PP!.max - o2PP!.min) })
+    o2Concentration!.normalizedValues.push({
+      x: new Date(),
+      y: (newO2Concentration - o2Concentration!.min) / (o2Concentration!.max - o2Concentration!.min),
+    })
+    o2Pressure!.normalizedValues.push({
+      x: new Date(),
+      y: (newO2Pressure - o2Pressure!.min) / (o2Pressure!.max - o2Pressure!.min),
+    })
 
-    if (newTemperature >= max_temperature) {
-      normalized_temperature = []
-      for (const pairs of temperature) {
-        normalized_temperature.push({ x: pairs.x, y: (pairs.y - min_temperature) / (newTemperature - min_temperature) })
-      }
-      this.setState({ max_temperature: newTemperature, normalized_temperature })
-    }
-    if (newTemperature <= min_temperature) {
-      normalized_temperature = []
-      for (const pairs of temperature) {
-        normalized_temperature.push({ x: pairs.x, y: (pairs.y - newTemperature) / (max_temperature - newTemperature) })
-      }
-      this.setState({ min_temperature: newTemperature, normalized_temperature })
-    }
-    if (newO2PP >= max_o2PP) {
-      normalized_o2PP = []
-      for (const pairs of o2PP) {
-        normalized_o2PP.push({ x: pairs.x, y: (pairs.y - min_o2PP) / (newO2PP - min_o2PP) })
-      }
-      this.setState({ max_o2PP: newO2PP, normalized_o2PP })
-    }
-    if (newO2PP <= min_o2PP) {
-      normalized_o2PP = []
-      for (const pairs of o2PP) {
-        normalized_o2PP.push({ x: pairs.x, y: (pairs.y - newO2PP) / (max_o2PP - newO2PP) })
-      }
-      this.setState({ min_o2PP: newO2PP, normalized_o2PP })
-    }
-    if (newO2Concentration >= max_o2Concentration) {
-      normalized_o2Concentration = []
-      for (const pairs of o2Concentration) {
-        normalized_o2Concentration.push({
+    if (newTemperature > temperature!.max) {
+      temperature!.normalizedValues = []
+      for (const pairs of temperature!.values) {
+        temperature!.normalizedValues.push({
           x: pairs.x,
-          y: (pairs.y - min_o2Concentration) / (newO2Concentration - min_o2Concentration),
+          y: (pairs.y - temperature!.min) / (newTemperature - temperature!.min),
         })
       }
-      this.setState({ max_o2Concentration: newO2Concentration, normalized_o2Concentration })
+      temperature!.max = newTemperature
     }
-    if (newO2Concentration <= min_o2Concentration) {
-      normalized_o2Concentration = []
-      for (const pairs of o2Concentration) {
-        normalized_o2Concentration.push({
+    if (newTemperature < temperature!.min) {
+      temperature!.normalizedValues = []
+      for (const pairs of temperature!.values) {
+        temperature!.normalizedValues.push({
           x: pairs.x,
-          y: (pairs.y - newO2Concentration) / (max_o2Concentration - newO2Concentration),
+          y: (pairs.y - newTemperature) / (temperature!.max - newTemperature),
         })
       }
-      this.setState({ min_o2Concentration: newO2Concentration, normalized_o2Concentration })
+      temperature!.min = newTemperature
     }
-    if (newO2Pressure >= max_o2Pressure) {
-      normalized_o2Pressure = []
-      for (const pairs of o2Pressure) {
-        normalized_o2Pressure.push({ x: pairs.x, y: (pairs.y - min_o2Pressure) / (newO2Pressure - min_o2Pressure) })
+    if (newO2PP > o2PP!.max) {
+      o2PP!.normalizedValues = []
+      for (const pairs of o2PP!.values) {
+        o2PP!.normalizedValues.push({ x: pairs.x, y: (pairs.y - o2PP!.min) / (newO2PP - o2PP!.min) })
       }
-      this.setState({ max_o2Pressure: newO2Pressure, normalized_o2Pressure })
+      o2PP!.max = newO2PP
     }
-    if (newO2Pressure <= min_o2Pressure) {
-      normalized_o2Pressure = []
-      for (const pairs of o2Pressure) {
-        normalized_o2Pressure.push({ x: pairs.x, y: (pairs.y - newO2Pressure) / (max_o2Pressure - newO2Pressure) })
+    if (newO2PP < o2PP!.min) {
+      o2PP!.normalizedValues = []
+      for (const pairs of o2PP!.values) {
+        o2PP!.normalizedValues.push({ x: pairs.x, y: (pairs.y - newO2PP) / (o2PP!.max - newO2PP) })
       }
-      this.setState({ min_o2Pressure: newO2Pressure, normalized_o2Pressure })
+      o2PP!.min = newO2PP
+    }
+    if (newO2Concentration > o2Concentration!.max) {
+      o2Concentration!.normalizedValues = []
+      for (const pairs of o2Concentration!.values) {
+        o2Concentration!.normalizedValues.push({
+          x: pairs.x,
+          y: (pairs.y - o2Concentration!.min) / (newO2Concentration - o2Concentration!.min),
+        })
+      }
+      o2Concentration!.max = newO2Concentration
+    }
+    if (newO2Concentration < o2Concentration!.min) {
+      o2Concentration!.normalizedValues = []
+      for (const pairs of o2Concentration!.values) {
+        o2Concentration!.normalizedValues.push({
+          x: pairs.x,
+          y: (pairs.y - newO2Concentration) / (o2Concentration!.max - newO2Concentration),
+        })
+      }
+      o2Concentration!.min = newO2Concentration
+    }
+    if (newO2Pressure > o2Pressure!.max) {
+      o2Pressure!.normalizedValues = []
+      for (const pairs of o2Pressure!.values) {
+        o2Pressure!.normalizedValues.push({
+          x: pairs.x,
+          y: (pairs.y - o2Pressure!.min) / (newO2Pressure - o2Pressure!.min),
+        })
+      }
+      o2Pressure!.max = newO2Pressure
+    }
+    if (newO2Pressure < o2Pressure!.min) {
+      o2Pressure!.normalizedValues = []
+      for (const pairs of o2Pressure!.values) {
+        o2Pressure!.normalizedValues.push({
+          x: pairs.x,
+          y: (pairs.y - newO2Pressure) / (o2Pressure!.max - newO2Pressure),
+        })
+      }
+      o2Pressure!.min = newO2Pressure
     }
 
-    this.setState({ temperature, o2PP, o2Concentration, o2Pressure })
+    sensors.set("Temperature", temperature!)
+    sensors.set("O2PP", o2PP!)
+    sensors.set("O2Concentration", o2Concentration!)
+    sensors.set("O2Pressure", o2Pressure!)
+    this.setState({ sensors })
   }
 
   no(data: any): void {
     if (data[0] === 0) {
       return
     }
-    const { no } = this.state
-    let { normalized_no, min_no, max_no } = this.state
-    if (max_no === -1) {
-      ;[max_no] = data
+    const { sensors } = this.state
+    if (!sensors.has("NO")) {
+      return
     }
-    if (min_no === -1) {
-      ;[min_no] = data
+    let no = sensors.get("NO")
+    if (no!.max === -1) {
+      ;[no!.max] = data
+    }
+    if (no!.min === -1) {
+      ;[no!.min] = data
     }
 
-    no.push({ x: new Date(), y: data[0] })
-    normalized_no.push({ x: new Date(), y: data[0] / max_no })
+    no!.values.push({ x: new Date(), y: data[0] })
+    no!.normalizedValues.push({ x: new Date(), y: (data[0] - no!.min) / (no!.max - no!.min) })
 
-    if (data[0] >= max_no) {
-      normalized_no = []
-      for (const pairs of no) {
-        normalized_no.push({ x: pairs.x, y: (pairs.y - min_no) / (data[0] - min_no) })
+    if (data[0] > no!.max) {
+      no!.normalizedValues = []
+      for (const pairs of no!.values) {
+        no!.normalizedValues.push({ x: pairs.x, y: (pairs.y - no!.min) / (data[0] - no!.min) })
       }
-      this.setState({ max_no: data[0], normalized_no })
+      no!.max = data[0]
     }
-    if (data[0] <= min_no) {
-      normalized_no = []
-      for (const pairs of no) {
-        normalized_no.push({ x: pairs.x, y: (pairs.y - data[0]) / (max_no - data[0]) })
+    if (data[0] < no!.min) {
+      no!.normalizedValues = []
+      for (const pairs of no!.values) {
+        no!.normalizedValues.push({ x: pairs.x, y: (pairs.y - data[0]) / (no!.max - data[0]) })
       }
-      this.setState({ min_no: data[0], normalized_no })
+      no!.min = data[0]
     }
 
-    this.setState({ no })
+    sensors.set("NO", no!)
+    this.setState({ sensors })
   }
 
   n2o(data: any): void {
     if (data[0] === 0) {
       return
     }
-    const { n2o } = this.state
-    let { normalized_n2o, min_n2o, max_n2o } = this.state
-    if (max_n2o === -1) {
-      ;[max_n2o] = data
+    const { sensors } = this.state
+    if (!sensors.has("N2O")) {
+      return
     }
-    if (min_n2o === -1) {
-      ;[min_n2o] = data
+    let n2o = sensors.get("N2O")
+    if (n2o!.max === -1) {
+      ;[n2o!.max] = data
+    }
+    if (n2o!.min === -1) {
+      ;[n2o!.min] = data
     }
 
-    n2o.push({ x: new Date(), y: data[0] })
-    normalized_n2o.push({ x: new Date(), y: data[0] / max_n2o })
+    n2o!.values.push({ x: new Date(), y: data[0] })
+    n2o!.normalizedValues.push({ x: new Date(), y: (data[0] - n2o!.min) / (n2o!.max - n2o!.min) })
 
-    if (data[0] >= max_n2o) {
-      normalized_n2o = []
-      for (const pairs of n2o) {
-        normalized_n2o.push({ x: pairs.x, y: (pairs.y - min_n2o) / (data[0] - min_n2o) })
+    if (data[0] > n2o!.max) {
+      n2o!.normalizedValues = []
+      for (const pairs of n2o!.values) {
+        n2o!.normalizedValues.push({ x: pairs.x, y: (pairs.y - n2o!.min) / (data[0] - n2o!.min) })
       }
-      this.setState({ max_n2o: data[0], normalized_n2o })
+      n2o!.max = data[0]
     }
-    if (data[0] <= min_n2o) {
-      normalized_n2o = []
-      for (const pairs of n2o) {
-        normalized_n2o.push({ x: pairs.x, y: (pairs.y - data[0]) / (max_n2o - data[0]) })
+    if (data[0] < n2o!.min) {
+      n2o!.normalizedValues = []
+      for (const pairs of n2o!.values) {
+        n2o!.normalizedValues.push({ x: pairs.x, y: (pairs.y - data[0]) / (n2o!.max - data[0]) })
       }
-      this.setState({ min_n2o: data[0], normalized_n2o })
+      n2o!.min = data[0]
     }
 
-    n2o.push({ x: new Date(), y: data[0] })
-    this.setState({ n2o })
+    sensors.set("N2O", n2o!)
+    this.setState({ sensors })
   }
 
-  clearData(): void {
-    this.setState({
-      methane: [],
-      co2: [],
-      temperature: [],
-      o2PP: [],
-      o2Concentration: [],
-      o2Pressure: [],
-      no: [],
-      n2o: [],
-      normalized_methane: [],
-      normalized_co2: [],
-      normalized_temperature: [],
-      normalized_o2PP: [],
-      normalized_o2Concentration: [],
-      normalized_o2Pressure: [],
-      normalized_no: [],
-      normalized_n2o: [],
-      max_methane: -1,
-      max_co2: -1,
-      max_temperature: -1,
-      max_o2PP: -1,
-      max_o2Concentration: -1,
-      max_o2Pressure: -1,
-      max_no: -1,
-      max_n2o: -1,
-      min_methane: -1,
-      min_co2: -1,
-      min_temperature: -1,
-      min_o2PP: -1,
-      min_o2Concentration: -1,
-      min_o2Pressure: -1,
-      min_no: -1,
-      min_n2o: -1,
-    })
+  clearData(): Map<string, Sensor> {
+    let emptyData: Map<string, Sensor> = new Map([
+      [
+        "Methane",
+        {
+          units: "%",
+          graphLineColor: "#990000",
+          graphLineType: "solid",
+          values: [],
+          normalizedValues: [],
+          max: -1,
+          min: -1,
+        },
+      ],
+      [
+        "CO2",
+        {
+          units: "ppm",
+          graphLineColor: "orange",
+          graphLineType: "dashed",
+          values: [],
+          normalizedValues: [],
+          max: -1,
+          min: -1,
+        },
+      ],
+      [
+        "Temperature",
+        {
+          units: "&#176;C",
+          graphLineColor: "yellow",
+          graphLineType: "solid",
+          values: [],
+          normalizedValues: [],
+          max: -1,
+          min: -1,
+        },
+      ],
+      [
+        "O2PP",
+        {
+          units: "ppm",
+          graphLineColor: "green",
+          graphLineType: "dashed",
+          values: [],
+          normalizedValues: [],
+          max: -1,
+          min: -1,
+        },
+      ],
+      [
+        "O2Concentration",
+        {
+          units: "ppm",
+          graphLineColor: "blue",
+          graphLineType: "solid",
+          values: [],
+          normalizedValues: [],
+          max: -1,
+          min: -1,
+        },
+      ],
+      [
+        "O2Pressure",
+        {
+          units: "ppm",
+          graphLineColor: "purple",
+          graphLineType: "dashed",
+          values: [],
+          normalizedValues: [],
+          max: -1,
+          min: -1,
+        },
+      ],
+      [
+        "NO",
+        {
+          units: "ppm",
+          graphLineColor: "black",
+          graphLineType: "solid",
+          values: [],
+          normalizedValues: [],
+          max: -1,
+          min: -1,
+        },
+      ],
+      [
+        "N2O",
+        {
+          units: "ppm",
+          graphLineColor: "gray",
+          graphLineType: "dashed",
+          values: [],
+          normalizedValues: [],
+          max: -1,
+          min: -1,
+        },
+      ],
+    ])
+
+    return emptyData
   }
 
   crosshair(): JSX.Element | null {
@@ -581,79 +681,19 @@ class SensorGraphs extends Component<IProps, IState> {
         <Crosshair values={[...crosshairValues.values()]}>
           <div style={overlay}>
             <h3 style={{ backgroundColor: "white" }}>{time?.toTimeString().slice(0, 9)}</h3>
-            {crosshairValues.has("Methane") && (
-              <p style={{ backgroundColor: "white" }}>
-                Methane:{" "}
-                {crosshairValues.get("Methane")?.y.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                })}{" "}
-                %
-              </p>
-            )}
-            {crosshairValues.has("CO2") && (
-              <p style={{ backgroundColor: "white" }}>
-                CO2:{" "}
-                {crosshairValues.get("CO2")?.y.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                })}{" "}
-                ppm
-              </p>
-            )}
-            {crosshairValues.has("Temperature") && (
-              <p style={{ backgroundColor: "white" }}>
-                Temperature:{" "}
-                {crosshairValues.get("Temperature")?.y.toLocaleString(undefined, {
-                  minimumFractionDigits: 1,
-                  minimumIntegerDigits: 2,
-                })}
-                &#176;C
-              </p>
-            )}
-            {crosshairValues.has("O2PP") && (
-              <p style={{ backgroundColor: "white" }}>
-                O2PP:{" "}
-                {crosshairValues.get("O2PP")?.y.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                })}{" "}
-                ppm
-              </p>
-            )}
-            {crosshairValues.has("O2Concentration") && (
-              <p style={{ backgroundColor: "white" }}>
-                O2Concentration:{" "}
-                {crosshairValues.get("O2Concentration")?.y.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                })}{" "}
-                ppm
-              </p>
-            )}
-            {crosshairValues.has("O2Pressure") && (
-              <p style={{ backgroundColor: "white" }}>
-                O2Pressure:{" "}
-                {crosshairValues.get("O2Pressure")?.y.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                })}{" "}
-                ppm
-              </p>
-            )}
-            {crosshairValues.has("NO") && (
-              <p style={{ backgroundColor: "white" }}>
-                NO:{" "}
-                {crosshairValues.get("NO")?.y.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                })}{" "}
-                ppm
-              </p>
-            )}
-            {crosshairValues.has("N2O") && (
-              <p style={{ backgroundColor: "white" }}>
-                N2O:{" "}
-                {crosshairValues.get("N2O")?.y.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                })}{" "}
-                ppm
-              </p>
-            )}
+            {[...this.state.sensors].map(([name, sensor]) => {
+              return (
+                crosshairValues.has(name) && (
+                  <p style={{ backgroundColor: "white" }}>
+                    {name}:{" "}
+                    {crosshairValues.get(name)?.y.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                    })}{" "}
+                    {sensor.units}
+                  </p>
+                )
+              )
+            })}
           </div>
         </Crosshair>
       )
@@ -678,10 +718,10 @@ class SensorGraphs extends Component<IProps, IState> {
             <button
               type="button"
               onClick={e => {
-                this.no([e.pageX])
+                this.n2o([e.pageX])
               }}
             >
-              TestNO
+              TestN2O
             </button>
             <button type="button" onClick={this.selectAll}>
               Select All
@@ -692,7 +732,7 @@ class SensorGraphs extends Component<IProps, IState> {
             <button type="button" onClick={saveImage}>
               Export Graph
             </button>
-            <button type="button" onClick={this.clearData}>
+            <button type="button" onClick={_e => this.setState({ sensors: this.clearData() })}>
               Clear Data
             </button>
           </div>
@@ -722,145 +762,36 @@ class SensorGraphs extends Component<IProps, IState> {
             onMouseLeave={this.onMouseLeave}
           >
             <HorizontalGridLines style={{ fill: "none" }} />
-            {this.state.enabledSensors.get("Methane") && this.state.methane !== [] && (
-              <LineSeries
-                data={this.state.normalized_methane}
-                style={{ fill: "none" }}
-                strokeWidth="6"
-                color="#990000"
-                onNearestX={(_datapoint: any, event: any) =>
-                  this.onNearestX(event.index, this.state.methane, "Methane")
-                }
-              />
-            )}
-            {this.state.enabledSensors.get("CO2") && this.state.co2 !== [] && (
-              <LineSeries
-                data={this.state.normalized_co2}
-                style={{ fill: "none" }}
-                strokeWidth="6"
-                strokeStyle="dashed"
-                color="orange"
-                onNearestX={(_datapoint: any, event: any) => this.onNearestX(event.index, this.state.co2, "CO2")}
-              />
-            )}
-            {this.state.enabledSensors.get("Temperature") && this.state.temperature !== [] && (
-              <LineSeries
-                data={this.state.normalized_temperature}
-                style={{ fill: "none" }}
-                strokeWidth="6"
-                color="yellow"
-                onNearestX={(_datapoint: any, event: any) =>
-                  this.onNearestX(event.index, this.state.temperature, "Temperature")
-                }
-              />
-            )}
-            {this.state.enabledSensors.get("O2PP") && this.state.o2PP !== [] && (
-              <LineSeries
-                data={this.state.normalized_o2PP}
-                style={{ fill: "none" }}
-                strokeWidth="6"
-                strokeStyle="dashed"
-                color="green"
-                onNearestX={(_datapoint: any, event: any) => this.onNearestX(event.index, this.state.o2PP, "O2PP")}
-              />
-            )}
-            {this.state.enabledSensors.get("O2Concentration") && this.state.o2Concentration !== [] && (
-              <LineSeries
-                data={this.state.normalized_o2Concentration}
-                style={{ fill: "none" }}
-                strokeWidth="6"
-                color="blue"
-                onNearestX={(_datapoint: any, event: any) =>
-                  this.onNearestX(event.index, this.state.o2Concentration, "O2Concentration")
-                }
-              />
-            )}
-            {this.state.enabledSensors.get("O2Pressure") && this.state.o2Pressure !== [] && (
-              <LineSeries
-                data={this.state.normalized_o2Pressure}
-                style={{ fill: "none" }}
-                strokeWidth="6"
-                strokeStyle="dashed"
-                color="purple"
-                onNearestX={(_datapoint: any, event: any) =>
-                  this.onNearestX(event.index, this.state.o2Pressure, "O2Pressure")
-                }
-              />
-            )}
-            {this.state.enabledSensors.get("NO") && this.state.no !== [] && (
-              <LineSeries
-                data={this.state.normalized_no}
-                style={{ fill: "none" }}
-                strokeWidth="6"
-                color="black"
-                onNearestX={(_datapoint: any, event: any) => this.onNearestX(event.index, this.state.no, "NO")}
-              />
-            )}
-            {this.state.enabledSensors.get("N2O") && this.state.n2o !== [] && (
-              <LineSeries
-                data={this.state.normalized_n2o}
-                style={{ fill: "none" }}
-                strokeWidth="6"
-                strokeStyle="dashed"
-                color="gray"
-                onNearestX={(_datapoint: any, event: any) => this.onNearestX(event.index, this.state.n2o, "N2O")}
-              />
-            )}
+            {[...this.state.sensors].map(([name, sensor]) => {
+              return (
+                this.state.enabledSensors.get(name) &&
+                sensor.values !== [] && (
+                  <LineSeries
+                    data={sensor.normalizedValues}
+                    style={{ fill: "none" }}
+                    strokeWidth="6"
+                    color={sensor.graphLineColor}
+                    strokeStyle={sensor.graphLineType}
+                    onNearestX={(_datapoint: any, event: any) => this.onNearestX(event.index, sensor.values, name)}
+                  />
+                )
+              )
+            })}
             <XAxis />
             <YAxis />
             {this.crosshair()}
           </XYPlot>
           <DiscreteColorLegend
             style={{ fontSize: "16px", textAlign: "center" }}
-            items={[
-              {
-                title: "Methane",
+            items={[...this.state.sensors].map(([name, sensor]) => {
+              return {
+                title: name,
                 strokeWidth: 6,
-                color: "#990000",
-                disabled: !this.state.enabledSensors.get("Methane"),
-              },
-              {
-                title: "CO2",
-                strokeWidth: 6,
-                strokeStyle: "dashed",
-                color: "orange",
-                disabled: !this.state.enabledSensors.get("CO2"),
-              },
-              {
-                title: "Temperature",
-                strokeWidth: 6,
-                color: "yellow",
-                disabled: !this.state.enabledSensors.get("Temperature"),
-              },
-              {
-                title: "O2PP",
-                strokeWidth: 6,
-                strokeStyle: "dashed",
-                color: "green",
-                disabled: !this.state.enabledSensors.get("O2PP"),
-              },
-              {
-                title: "O2Concentration",
-                strokeWidth: 6,
-                color: "blue",
-                disabled: !this.state.enabledSensors.get("O2Concentration"),
-              },
-              {
-                title: "O2Pressure",
-                strokeWidth: 6,
-                strokeStyle: "dashed",
-                color: "purple",
-                disabled: !this.state.enabledSensors.get("O2Pressure"),
-              },
-              { title: "NO", strokeWidth: 6, color: "black", disabled: !this.state.enabledSensors.get("NO") },
-              {
-                title: "N2O",
-                strokeWidth: 6,
-                strokeStyle: "dashed",
-                color: "gray",
-                disabled: !this.state.enabledSensors.get("N2O"),
-              },
-            ]}
+                color: sensor.graphLineColor,
+                strokeStyle: sensor.graphLineType,
+                disabled: !this.state.enabledSensors.get(name),
+              }
+            })}
             orientation="horizontal"
           />
         </div>
