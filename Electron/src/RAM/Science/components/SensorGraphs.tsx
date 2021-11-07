@@ -161,6 +161,7 @@ class SensorGraphs extends Component<IProps, IState> {
     this.sensorSelectionChanged = this.sensorSelectionChanged.bind(this)
     this.selectAll = this.selectAll.bind(this)
     this.deselectAll = this.deselectAll.bind(this)
+    this.addData = this.addData.bind(this)
     this.onNearestX = this.onNearestX.bind(this)
     this.onMouseLeave = this.onMouseLeave.bind(this)
     this.clearData = this.clearData.bind(this)
@@ -463,22 +464,6 @@ class SensorGraphs extends Component<IProps, IState> {
         <div style={label}>Sensor Graphs</div>
         <div style={container}>
           <div style={buttonrow}>
-            <button
-              type="button"
-              onClick={e => {
-                this.methane([e.pageX])
-              }}
-            >
-              TestMethane
-            </button>
-            <button
-              type="button"
-              onClick={e => {
-                this.n2o([e.pageX])
-              }}
-            >
-              TestN2O
-            </button>
             <button type="button" onClick={this.selectAll}>
               Select All
             </button>
