@@ -67,7 +67,7 @@ const Modal: CSS.Properties = {
 const splitMainMenu: CSS.Properties = {
   position: "absolute",
   zIndex: 2,
-  width: "56%",
+  width: "50%",
   backgroundColor: "white",
   border: "2px solid #990000",
   boxSizing: "border-box",
@@ -282,8 +282,10 @@ class Timer extends Component<IProps, IState> {
         currentTask++
         currentTaskTime = 0
       }
+      //delta will be assigned to difference in the current mission's task list so that a value can be stored to
+      //bring up in the time split menu.
+      this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks[currentTask - 1].difference = -delta
       this.setState({ currentTaskTime, currentTask, delta })
-      this.saveJSON()
     }
   }
 
@@ -294,12 +296,22 @@ class Timer extends Component<IProps, IState> {
   }
 
   reset(): void {
+
+    let currentMission = this.findIndex(this.state.selectedMission)
+
     if (this.state.currentTaskTime) {
       let { currentMissionTime } = this.state
       currentMissionTime -= this.state.currentTaskTime
+      //Reset the current time difference for the task, whenever resetting a single task.
+      this.state.parentMission[currentMission].childTasks[this.state.currentTask].difference = 0
       this.setState({ currentMissionTime, currentTaskTime: 0, isCounting: false })
       stopTimer()
     } else {
+      
+      //Resets all time differences in parentMission[], from the index in parentMission[] that reset() was called.
+      for(let i = this.state.currentTask; i >= 0; i--)
+          this.state.parentMission[currentMission].childTasks[i].difference = 0
+
       this.setState({ currentMissionTime: 0, currentTask: 0, currentTaskTime: 0, isCounting: false, delta: 0 })
       stopTimer()
     }
@@ -430,14 +442,23 @@ class Timer extends Component<IProps, IState> {
 
   taskDifferenceList(): JSX.Element {
     return (
-      <div style={{ ...column, padding: "5px", width: "93%", fontFamily: "Roboto"}}>
+      <div id="Time Differences" style={{ ...column, padding: "5px", width: "93%", fontFamily: "Roboto", maxHeight: "150px", overflowY: "scroll"}}>
         {this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks.map(task => {
           return (
-            <div key={task.id} style={{ display:"flex", justifyContent: "space-between"}}>
-              <div style={{color: (task.id === this.state.currentTask) ? "#FFE600" : "#000000"}}>
+            <div key={task.id}
+                 style={{
+                   display: "flex",
+                   //Depending on if the printed out task is the current task, then that task will be highlighted.
+                   backgroundColor: (task.id == this.state.parentMission[this.findIndex(this.state.selectedMission)]
+                            .childTasks[this.state.currentTask].id)
+                            ? "#FFFF00"
+                            : "white"
+                  }}
+                 >
+              <div style={{width: "50%", textAlign: "left"}}>
                 {task.title}
               </div>
-              <div>
+              <div style={{width: "25%", textAlign: "right"}}>
                 {(task.difference == 0) 
                  ? 
                   null
@@ -447,7 +468,7 @@ class Timer extends Component<IProps, IState> {
                   </div>
                  }
               </div>
-              <div>
+              <div style={{width: "25%", textAlign: "right"}}>
                 {packOutput(task.setTime)}
               </div>
             </div>
@@ -490,10 +511,19 @@ class Timer extends Component<IProps, IState> {
 
         <div style={{ ...timeSplitMissionTitle, paddingTop: "5px", justifyContent: "space-between", display: "flex"}}>
           <div>
-            Total Time Passed:
+            Current Mission Time:
           </div>
           <div>
             {packOutput(this.state.currentMissionTime)}
+          </div>
+        </div>
+
+        <div style={{ ...timeSplitMissionTitle, paddingBottom: "5px", justifyContent: "space-between", display: "flex"}}>
+          <div>
+            Current Task Time:
+          </div>
+          <div>
+            {packOutput(this.state.currentTaskTime)}
           </div>
         </div>
 
@@ -744,7 +774,9 @@ class Timer extends Component<IProps, IState> {
 
             {this.state.delta ? (
               <div style={{ zIndex: 5, marginBottom: "-4%", fontWeight: "bold", fontSize: "20px", color: "white" }}>
-                {packOutput(this.state.delta)}
+                {/* This makes it so that the time saved from the previous task won't overlay onto the
+                    advanced options menu screen.*/}
+                {(this.state.advOptionsOpen) ? null : packOutput(this.state.delta)}
               </div>
             ) : null}
 
