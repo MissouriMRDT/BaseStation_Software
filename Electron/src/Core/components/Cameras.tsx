@@ -172,11 +172,14 @@ class Cameras extends Component<IProps, IState> {
   }
 
   refresh(): void {
-    //TODO: implement camera refresh function
+    //for now, calling setState without changing anything (i think) causes a re-render. i have no idea how to do this better
+    this.setState({ currentCamera: this.state.currentCamera })
   }
 
   stopListening(): void {
     //TODO: implement stop listening to camera function
+    //need to find a way to edit src (line 204), but i don't think i can directly ref it from here
+    
   }
 
   render(): JSX.Element {
@@ -213,10 +216,10 @@ class Cameras extends Component<IProps, IState> {
             </button>
           </div>
           <div style={row}>
-            <button type="button" onClick={() => this.refresh()} style={{ flexGrow: 1 }}>
+            <button type="button" onClick={() => this.stopListening()} style={{ flexGrow: 1 }}>
               Stop Listening
             </button>
-            <button type="button" onClick={() => this.stopListening()} style={{ flexGrow: 1 }}>
+            <button type="button" onClick={() => this.refresh()} style={{ flexGrow: 1 }}>
               Refresh
             </button>
           </div>
