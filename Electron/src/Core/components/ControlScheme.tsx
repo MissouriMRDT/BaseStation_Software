@@ -139,7 +139,11 @@ interface IProps {
 interface IState {
   functionality: any
   controlPreviewModal: boolean
+  image: string
 }
+
+const xboxController = path.join(__dirname, "../assets/xboxController.png")
+const flightStick = path.join(__dirname, "../assets/flightStick.png")
 
 class ControlScheme extends Component<IProps, IState> {
   constructor(props: Readonly<IProps>) {
@@ -173,6 +177,7 @@ class ControlScheme extends Component<IProps, IState> {
         },
       },
       controlPreviewModal: false,
+      image: xboxController,
     }
     this.schemeChange = this.schemeChange.bind(this)
     // detects if a controller disconnects
@@ -299,7 +304,7 @@ class ControlScheme extends Component<IProps, IState> {
             <div key={selectedController}>
               {this.state.functionality[selectedController].toggled === "On" ? (
                 <div style={{ borderWidth: "1px", borderStyle: "solid", borderColor: "black", margin: "2px" }}>
-                  <img alt={selectedController} />
+                  <img src={this.state.image} alt={selectedController} />
                   <div>
                     {selectedController} controlled with {this.state.functionality[selectedController].controller}:
                   </div>
