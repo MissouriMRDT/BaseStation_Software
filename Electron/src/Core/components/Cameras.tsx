@@ -173,7 +173,7 @@ class Cameras extends Component<IProps, IState> {
 
   refresh(): void {
     //for now, calling setState without changing anything (i think) causes a re-render. i have no idea how to do this better
-    this.setState({ currentCamera: this.state.currentCamera })
+    this.forceUpdate()
   }
 
   stopListening(): void {
@@ -188,13 +188,13 @@ class Cameras extends Component<IProps, IState> {
         <div style={label}>Cameras</div>
         <div style={container}>
           <div style={row}>
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => {
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(num => {
               return (
                 <button
                   type="button"
                   key={num}
                   onClick={() => this.setState({ currentCamera: num })}
-                  style={{ flexGrow: 1 }}
+                  style={{ flexGrow: 1  }}
                 >
                   <h1 style={h1Style}>{num}</h1>
                 </button>
