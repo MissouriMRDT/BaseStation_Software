@@ -67,7 +67,7 @@ const Modal: CSS.Properties = {
 const splitMainMenu: CSS.Properties = {
   position: "absolute",
   zIndex: 2,
-  width: "50%",
+  width: "46%",
   backgroundColor: "white",
   border: "2px solid #990000",
   boxSizing: "border-box",
@@ -85,7 +85,7 @@ const differenceMenu: CSS.Properties = {
 const timeSplitMissionTitle: CSS.Properties = {
   position: "relative",
   width: "95%",
-  fontFamily: "Roboto",
+  fontFamily: "Times New Roman",
   fontSize: "25px",
   marginLeft: "auto",
   marginRight: "auto"
@@ -94,7 +94,7 @@ const timeSplitTitle: CSS.Properties = {
   position: "relative",
   paddingTop: "25px",
   color: "black",
-  fontFamily: "Roboto",
+  fontFamily: "Times New Roman",
   fontWeight: "bold",
   fontSize: "30px",
   marginLeft: "auto",
@@ -270,21 +270,29 @@ class Timer extends Component<IProps, IState> {
   }
 
   loadNextTask(): void {
+    let { currentTask, currentTaskTime, delta } = this.state
+
     //Prevents the next task from being loaded if the current mission has no tasks.
-    if (!this.isTaskListEmpty(this.state.selectedMission)) {
-      let { currentTask, currentTaskTime, delta } = this.state
-      if (currentTask === this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks.length - 1) {
-        console.log("End of task list")
-      } else {
-        delta +=
+    //Also, the next task won't be loaded if the current task is the last task in the tasklist of the currently selected
+    //mission and the timer is not counting.
+    if (!this.isTaskListEmpty(this.state.selectedMission)
+        && ((currentTask != this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks.length - 1)
+           && (this.state.isCounting))) {
+      delta +=
           this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks[currentTask].setTime -
           this.state.currentTaskTime
+
+      //If the current task is the last task of the mission, then record the time difference of the current task and stop the timer.
+      if (currentTask === this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks.length - 1) {
+        console.log("End of task list")
+        this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks[currentTask].difference = -delta
+        this.setState({ isCounting: false })
+        stopTimer()
+      } else {
         currentTask++
         currentTaskTime = 0
+        this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks[currentTask - 1].difference = -delta
       }
-      //delta will be assigned to difference in the current mission's task list so that a value can be stored to
-      //bring up in the time split menu.
-      this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks[currentTask - 1].difference = -delta
       this.setState({ currentTaskTime, currentTask, delta })
     }
   }
@@ -299,19 +307,19 @@ class Timer extends Component<IProps, IState> {
 
     let currentMission = this.findIndex(this.state.selectedMission)
 
+    //If the timer is running whenever reset() is called, then only reset the current task
     if (this.state.currentTaskTime) {
       let { currentMissionTime } = this.state
       currentMissionTime -= this.state.currentTaskTime
-      //Reset the current time difference for the task, whenever resetting a single task.
       this.state.parentMission[currentMission].childTasks[this.state.currentTask].difference = 0
       this.setState({ currentMissionTime, currentTaskTime: 0, isCounting: false })
       stopTimer()
+
+      //If the timer is stopped and reset() is called, then reset the entire mission
     } else {
-      
       //Resets all time differences in parentMission[], from the index in parentMission[] that reset() was called.
       for(let i = this.state.currentTask; i >= 0; i--)
           this.state.parentMission[currentMission].childTasks[i].difference = 0
-
       this.setState({ currentMissionTime: 0, currentTask: 0, currentTaskTime: 0, isCounting: false, delta: 0 })
       stopTimer()
     }
@@ -335,8 +343,8 @@ class Timer extends Component<IProps, IState> {
   previousTask(): void {
     let { currentTask } = this.state
     if (currentTask) {
-      this.reset()
       currentTask -= 1
+      this.reset()
     }
     this.setState({ currentTask })
   }
@@ -424,10 +432,10 @@ class Timer extends Component<IProps, IState> {
           <button type="button" onClick={() => this.previousTask()}>
             Prev Task
           </button>
-          <button type="button" onClick={() => this.setState({ timeSplitOpen: true })}>
+          <button type="button" onClick={() => this.setState({ timeSplitOpen: true, advOptionsOpen: false })}>
             Open Split
           </button>
-          <button type="button" onClick={() => this.setState({ rmvAddOptionOpen: true })}>
+          <button type="button" onClick={() => this.setState({ rmvAddOptionOpen: true, advOptionsOpen: false })}>
             Show/Edit List
           </button>
         </div>
@@ -442,7 +450,7 @@ class Timer extends Component<IProps, IState> {
 
   taskDifferenceList(): JSX.Element {
     return (
-      <div id="Time Differences" style={{ ...column, padding: "5px", width: "93%", fontFamily: "Roboto", maxHeight: "150px", overflowY: "scroll"}}>
+      <div id="Time Differences" style={{ ...column, padding: "5px", width: "93%", fontFamily: "Times New Roman", maxHeight: "150px", overflowY: "scroll", overflow: "auto"}}>
         {this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks.map(task => {
           return (
             <div key={task.id}
@@ -528,7 +536,13 @@ class Timer extends Component<IProps, IState> {
         </div>
 
         <div>
-          <button type="button" onClick={() => this.setState({ timeSplitOpen: false })}>
+          <button type="button" style={{height: "50px", width: "auto", fontSize: "30px",}} onClick={() => this.saveJSON()}>
+            Save Differences
+          </button>
+        </div>
+
+        <div>
+          <button type="button" onClick={() => this.setState({ timeSplitOpen: false, advOptionsOpen: true })}>
             back
           </button>
           <button
@@ -592,13 +606,15 @@ class Timer extends Component<IProps, IState> {
                     type="radio"
                     value={mission.id}
                     checked={this.state.selectedMission === mission.id}
-                    onChange={() =>
+                    onChange={() => {
+                      //Reset is called to reset the time differences in the time split menu.
+                      this.reset()
                       this.setState({
                         selectedMission: mission.id,
                         currentTask: 0,
                         currentMissionTime: 0,
                         currentTaskTime: 0,
-                      })
+                      })}
                     }
                   />
                   <div style={{ ...column, height: "20px", padding: "2px", width: "23%" }}>
@@ -686,7 +702,7 @@ class Timer extends Component<IProps, IState> {
             })}
           </div>
         </form>
-        <button type="button" onClick={() => this.setState({ rmvAddOptionOpen: false })}>
+        <button type="button" onClick={() => this.setState({ rmvAddOptionOpen: false, advOptionsOpen: true })}>
           back
         </button>
         <button
@@ -843,7 +859,10 @@ class Timer extends Component<IProps, IState> {
             </div>
             <div style={{ flexGrow: 3, width: "33%" }}>
               <button type="button" style={mainButtons} onClick={() => this.loadNextTask()}>
-                NEXT TASK
+                {this.state.currentTask != this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks.length - 1
+                  ? <div>NEXT TASK</div>
+                  : <div>END MISSION</div>
+                }
               </button>
             </div>
           </div>
