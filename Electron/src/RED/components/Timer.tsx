@@ -85,7 +85,7 @@ const differenceMenu: CSS.Properties = {
 const timeSplitMissionTitle: CSS.Properties = {
   position: "relative",
   width: "95%",
-  fontFamily: "Times New Roman",
+  fontFamily: "Arial",
   fontSize: "25px",
   marginLeft: "auto",
   marginRight: "auto"
@@ -94,7 +94,7 @@ const timeSplitTitle: CSS.Properties = {
   position: "relative",
   paddingTop: "25px",
   color: "black",
-  fontFamily: "Times New Roman",
+  fontFamily: "Arial",
   fontWeight: "bold",
   fontSize: "30px",
   marginLeft: "auto",
@@ -197,7 +197,7 @@ class Timer extends Component<IProps, IState> {
   isTaskListEmpty(ID: number): boolean {
     //Checks to see if the selected mission has no tasks.
     //Return 'true' if it is empty, return 'false' otherwise.
-    return this.state.parentMission[this.findIndex(ID)].childTasks.length === 0 ? true : false
+    return this.state.parentMission[this.findIndex(ID)].childTasks.length === 0
   }
 
   handleChange(event: any, type: string): void {
@@ -275,16 +275,18 @@ class Timer extends Component<IProps, IState> {
     //Prevents the next task from being loaded if the current mission has no tasks.
     //Also, the next task won't be loaded if the current task is the last task in the tasklist of the currently selected
     //mission and the timer is not counting.
-    if (!this.isTaskListEmpty(this.state.selectedMission)
-        && ((currentTask != this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks.length - 1)
-           && (this.state.isCounting))) {
+    if (!this.isTaskListEmpty(this.state.selectedMission)) {
+      if(currentTask != this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks.length - 1
+          && this.state.isCounting) {
       delta +=
           this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks[currentTask].setTime -
           this.state.currentTaskTime
+      }
 
       //If the current task is the last task of the mission, then record the time difference of the current task and stop the timer.
       if (currentTask === this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks.length - 1) {
         console.log("End of task list")
+        //Change to current time - the set time for the task.
         this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks[currentTask].difference = -delta
         this.setState({ isCounting: false })
         stopTimer()
@@ -318,8 +320,12 @@ class Timer extends Component<IProps, IState> {
       //If the timer is stopped and reset() is called, then reset the entire mission
     } else {
       //Resets all time differences in parentMission[], from the index in parentMission[] that reset() was called.
-      for(let i = this.state.currentTask; i >= 0; i--)
+      //So long as the mission's tasklist is NOT empty.
+      try {
+        for(let i = this.state.currentTask; i >= 0; i--)
           this.state.parentMission[currentMission].childTasks[i].difference = 0
+      } catch(error){}
+      
       this.setState({ currentMissionTime: 0, currentTask: 0, currentTaskTime: 0, isCounting: false, delta: 0 })
       stopTimer()
     }
@@ -450,7 +456,7 @@ class Timer extends Component<IProps, IState> {
 
   taskDifferenceList(): JSX.Element {
     return (
-      <div id="Time Differences" style={{ ...column, padding: "5px", width: "93%", fontFamily: "Times New Roman", maxHeight: "150px", overflowY: "scroll", overflow: "auto"}}>
+      <div id="Time Differences" style={{ ...column, padding: "5px", width: "93%", fontFamily: "Arial", maxHeight: "150px", overflowY: "scroll", overflow: "auto"}}>
         {this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks.map(task => {
           return (
             <div key={task.id}
@@ -757,9 +763,10 @@ class Timer extends Component<IProps, IState> {
               current={this.state.currentMissionTime}
               //Prevents a newly instantiated mission from having it's non-existent time being accessed.
               total={
-                this.isTaskListEmpty(this.state.selectedMission)
-                  ? NaN
-                  : this.state.parentMission[this.findIndex(this.state.selectedMission)].setTime
+                //Makes progress bar green when a mission has no child tasks.
+                (this.state.parentMission.length)
+                  ? this.state.parentMission[this.findIndex(this.state.selectedMission)].setTime
+                  : NaN
               }
               name="total"
             />
@@ -787,14 +794,6 @@ class Timer extends Component<IProps, IState> {
                     ].title
               }
             </p>
-
-            {this.state.delta ? (
-              <div style={{ zIndex: 5, marginBottom: "-4%", fontWeight: "bold", fontSize: "20px", color: "white" }}>
-                {/* This makes it so that the time saved from the previous task won't overlay onto the
-                    advanced options menu screen.*/}
-                {(this.state.advOptionsOpen) ? null : packOutput(this.state.delta)}
-              </div>
-            ) : null}
 
             <ProgressBar
               current={this.state.currentTaskTime}
