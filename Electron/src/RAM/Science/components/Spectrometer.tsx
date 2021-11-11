@@ -88,9 +88,11 @@ function downloadURL(imgData: string): void {
 
 function saveImage(): void {
   let graph
+  let thisWindow
   for (const win of Object.keys(windows)) {
-    if (windows[win].document.getElementById("SensorGraph")) {
-      graph = windows[win].document.getElementById("SensorGraph")
+    if (windows[win].document.getElementById("SpectrometerGraph")) {
+      thisWindow = windows[win]
+      graph = thisWindow.document.getElementById("SpectrometerGraph")
       break
     }
   }
@@ -101,10 +103,10 @@ function saveImage(): void {
 
   html2canvas(graph, {
     scrollX: 0,
-    scrollY: -window.scrollY,
+    scrollY: -thisWindow.scrollY - 38,
     useCORS: true,
     allowTaint: true,
-  })
+  }) // We subtract 38 to make up for the 28 pixel top border and the -10 top margin
     .then(canvas => {
       const imgData = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream")
       downloadURL(imgData)

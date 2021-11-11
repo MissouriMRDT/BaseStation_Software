@@ -36,6 +36,8 @@ const stateEnum = {
   Navigating: 1,
   SearchPattern: 2,
   ApproachingMarker: 3,
+  ApproachingGate: 4,
+  Avoidance: 5,
 }
 
 class StateDiagram extends Component<IProps, IState> {
