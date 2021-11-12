@@ -105,7 +105,7 @@ class ControlCenter extends Component<IProps, IState> {
           // everything inside NewWindowComponent is considered props.children and will be
           // displayed in a new window
           this.state.ridOpen && (
-            <NewWindowComponent onClose={() => this.setState({ ridOpen: false })} name="RID">
+            <NewWindowComponent onClose={() => this.setState({ ridOpen: false })} name="Rover Imagery Display">
               <RoverImageryDisplay rowcol="" style={{ width: "100%", height: "100%" }} />
             </NewWindowComponent>
           )
