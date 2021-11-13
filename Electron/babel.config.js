@@ -43,6 +43,8 @@ module.exports = api => {
       require("@babel/plugin-proposal-export-namespace-from"),
       require("@babel/plugin-proposal-numeric-separator"),
       require("@babel/plugin-proposal-throw-expressions"),
+      [require("@babel/plugin-proposal-private-methods"), { loose: true }],
+      [require("@babel/plugin-proposal-private-property-in-object"), { loose: true }],
 
       // Stage 3
       require("@babel/plugin-syntax-dynamic-import"),
