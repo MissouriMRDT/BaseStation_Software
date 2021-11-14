@@ -2,12 +2,14 @@ import React, { Component } from "react"
 import CSS from "csstype"
 import SensorData from "./components/SensorData"
 import SensorGraphs from "./components/SensorGraphs"
+import RockLookUp from "./components/rocklookup"
 import Spectrometer from "./components/Spectrometer"
 import SpectrometerViewer from "./components/SpectrometerViewer"
 import Geneva from "./components/Geneva"
 import Cameras from "../../Core/components/Cameras"
 import ControlScheme, { controllerInputs } from "../../Core/components/ControlScheme"
 import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
+
 
 const row: CSS.Properties = {
   display: "flex",
@@ -97,7 +99,7 @@ class Science extends Component<IProps, IState> {
         <ControlScheme configs={["Science"]} />
         <div style={row}>
           <Cameras defaultCamera={7} style={{ width: "50%", marginRight: "5px" }} />
-          <Cameras defaultCamera={8} style={{ width: "50%", marginLeft: "5px" }} />
+          <RockLookUp />
         </div>
       </div>
     )
