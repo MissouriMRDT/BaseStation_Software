@@ -9,7 +9,6 @@ import PingMap from "./components/PingMap"
 const row: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
-  justifyContent: "space-between",
 }
 const column: CSS.Properties = {
   display: "flex",
