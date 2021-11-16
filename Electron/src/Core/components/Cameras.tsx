@@ -6,6 +6,14 @@ import fs from "fs"
 import { RovecommManifest } from "../RoveProtocol/Rovecomm"
 import { windows } from "../Window"
 
+const button: CSS.Properties = {
+  flexGrow: 1,
+  backgroundColor: "white",
+}
+const greenButton: CSS.Properties = {
+  flexGrow: 1,
+  backgroundColor: "green",
+}
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
   fontSize: "12px",
@@ -172,7 +180,7 @@ class Cameras extends Component<IProps, IState> {
   }
 
   refresh(): void {
-    //for now, calling setState without changing anything (i think) causes a re-render. i have no idea how to do this better
+    //for now, forceUpdate forces a re-render. i have no idea how to do this better
     this.forceUpdate()
   }
 
@@ -194,7 +202,11 @@ class Cameras extends Component<IProps, IState> {
                   type="button"
                   key={num}
                   onClick={() => this.setState({ currentCamera: num })}
-                  style={{ flexGrow: 1  }}
+                  style={{
+                    flexGrow : 1, 
+                    backgroundColor: num > 4 ? "white" : "lightgreen",
+                    borderWidth: this.state.currentCamera == num ? "medium" : "thin",
+                  }}
                 >
                   <h1 style={h1Style}>{num}</h1>
                 </button>
