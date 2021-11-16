@@ -152,8 +152,6 @@
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.16.0",
     "@babel/plugin-proposal-optional-chaining": "^7.16.0",
     "@babel/plugin-proposal-pipeline-operator": "^7.16.0",
-    "@babel/plugin-proposal-private-methods": "^7.16.0",
-    "@babel/plugin-proposal-private-property-in-object": "^7.16.0",
     "@babel/plugin-proposal-throw-expressions": "^7.16.0",
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
     "@babel/plugin-syntax-import-meta": "^7.10.4",
@@ -173,7 +171,7 @@
     "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/history": "4.7.6",
     "@types/jest": "^26.0.24",
-    "@types/leaflet": "^1.7.6",
+    "@types/leaflet": "^1.7.5",
     "@types/node": "14.14.10",
     "@types/react": "^16.14.20",
     "@types/react-color": "^3.0.6",
@@ -193,7 +191,7 @@
     "chalk": "^4.1.2",
     "concurrently": "^6.4.0",
     "core-js": "^3.19.1",
-    "cross-env": "^7.0.2",
+    "cross-env": "^7.0.3",
     "css-loader": "^5.2.7",
     "css-minimizer-webpack-plugin": "^1.3.0",
     "detect-port": "^1.3.0",
@@ -237,7 +235,7 @@
     "terser-webpack-plugin": "^5.2.5",
     "typescript": "^4.4.4",
     "url-loader": "^4.1.0",
-    "webpack": "^5.64.1",
+    "webpack": "^5.64.0",
     "webpack-bundle-analyzer": "^4.5.0",
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^3.11.3",
@@ -245,7 +243,6 @@
     "yarn-deduplicate": "^3.1.0"
   },
   "dependencies": {
-    "@babel/plugin-proposal-numeric-separator": "^7.16.0",
     "ansi-regex": "^6.0.1",
     "double-ended-queue": "^2.1.0-0",
     "electron-db": "^0.15.7",
@@ -267,8 +264,7 @@
     "react-vis": "^1.11.7",
     "regenerator-runtime": "^0.13.9",
     "source-map-support": "^0.5.20",
-    "styled-components": "^5.3.3",
-    "three": "^0.134.0"
+    "styled-components": "^5.3.3"
   },
   "devEngines": {
     "node": ">=10.x",
