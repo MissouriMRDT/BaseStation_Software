@@ -141,7 +141,7 @@ class SensorGraphs extends Component<IProps, IState> {
     super(props)
     this.state = {
       crosshairValues: new Map(),
-      sensors: this.clearData(),
+      sensors: this.getNewEmptyMap(),
       enabledSensors: new Map([
         ["Methane", false],
         ["CO2", false],
@@ -164,7 +164,7 @@ class SensorGraphs extends Component<IProps, IState> {
     this.addData = this.addData.bind(this)
     this.onNearestX = this.onNearestX.bind(this)
     this.onMouseLeave = this.onMouseLeave.bind(this)
-    this.clearData = this.clearData.bind(this)
+    this.getNewEmptyMap = this.getNewEmptyMap.bind(this)
 
     rovecomm.on("Methane", (data: any) => this.methane(data))
     rovecomm.on("CO2", (data: any) => this.co2(data))
@@ -196,15 +196,6 @@ class SensorGraphs extends Component<IProps, IState> {
   sensorSelectionChanged(sensorName: string): void {
     const { enabledSensors } = this.state
 
-    if (sensorName === "Temperature" || sensorName === "O2Pressure") {
-      //This will also deselect the temperature and o2pressure sensors.
-      //The radio boxes don't allow deselection, so it'll get turned on again below
-      this.deselectAll()
-    } else {
-      //If a concentration sensor is enabled, turn off the temperature & pressure sensors
-      enabledSensors.set("Temperature", false)
-      enabledSensors.set("O2Pressure", false)
-    }
     enabledSensors.set(sensorName, !enabledSensors.get(sensorName))
 
     this.setState({ enabledSensors })
@@ -217,7 +208,7 @@ class SensorGraphs extends Component<IProps, IState> {
     const { enabledSensors } = this.state
 
     enabledSensors.forEach((_value, key) => {
-      if (key !== "O2Pressure" && key !== "Temperature") enabledSensors.set(key, true)
+      enabledSensors.set(key, true)
     })
 
     this.setState({ enabledSensors })
@@ -229,7 +220,7 @@ class SensorGraphs extends Component<IProps, IState> {
   deselectAll(): void {
     const { enabledSensors } = this.state
 
-    //Can't clear here because we use this map to render the input boxes
+    //Can't clear map because we use the keys to render the input boxes
     enabledSensors.forEach((_value, key) => {
       enabledSensors.set(key, false)
     })
@@ -249,39 +240,36 @@ class SensorGraphs extends Component<IProps, IState> {
     }
 
     const { sensors } = this.state
-    //If the sensor object doesn't exist, we can't write anything to it
-    if (!sensors.has(name)) {
-      return
-    }
 
     let sensor = sensors.get(name)
+    if (!sensor) { return }
 
     //if the min and max are -1, they are unset and need to be updated
-    if (sensor!.max === -1) {
-      sensor!.max = newData
+    if (sensor.max === -1) {
+      sensor.max = newData
     }
-    if (sensor!.min === -1) {
-      sensor!.min = newData
+    if (sensor.min === -1) {
+      sensor.min = newData
     }
 
-    sensor!.values.push({ x: new Date(), y: newData })
+    sensor.values.push({ x: new Date(), y: newData })
     //Normalize data from 0 to 1 based on the minimum and maximum
-    sensor!.normalizedValues.push({ x: new Date(), y: (newData - sensor!.min) / (sensor!.max - sensor!.min) })
+    sensor.normalizedValues.push({ x: new Date(), y: (newData - sensor.min) / (sensor.max - sensor.min) })
 
     //renormalize entire array if newData is outside of current range
-    if (newData > sensor!.max) {
-      sensor!.normalizedValues = []
-      for (const pairs of sensor!.values) {
-        sensor!.normalizedValues.push({ x: pairs.x, y: (pairs.y - sensor!.min) / (newData - sensor!.min) })
+    if (newData > sensor.max) {
+      sensor.normalizedValues = []
+      for (const pairs of sensor.values) {
+        sensor.normalizedValues.push({ x: pairs.x, y: (pairs.y - sensor.min) / (newData - sensor.min) })
       }
-      sensor!.max = newData
+      sensor.max = newData
     }
-    if (newData < sensor!.min) {
-      sensor!.normalizedValues = []
-      for (const pairs of sensor!.values) {
-        sensor?.normalizedValues.push({ x: pairs.x, y: (pairs.y - newData) / (sensor!.max - newData) })
+    if (newData < sensor.min) {
+      sensor.normalizedValues = []
+      for (const pairs of sensor.values) {
+        sensor.normalizedValues.push({ x: pairs.x, y: (pairs.y - newData) / (sensor.max - newData) })
       }
-      sensor!.min = newData
+      sensor.min = newData
     }
     sensors.set(name, sensor!)
     this.setState({ sensors })
@@ -312,8 +300,12 @@ class SensorGraphs extends Component<IProps, IState> {
     this.addData("N2O", data[0])
   }
 
-  clearData(): Map<string, Sensor> {
-    let emptyData: Map<string, Sensor> = new Map([
+  /**
+   * There's no way to deep copy the data in a Map, so this function returns a new map with the empty sensors
+   * @returns A new empty map of the default sensors
+   */
+  getNewEmptyMap(): Map<string, Sensor> {
+    return new Map([
       [
         "Methane",
         {
@@ -411,8 +403,6 @@ class SensorGraphs extends Component<IProps, IState> {
         },
       ],
     ])
-
-    return emptyData
   }
 
   crosshair(): JSX.Element | null {
@@ -464,6 +454,22 @@ class SensorGraphs extends Component<IProps, IState> {
         <div style={label}>Sensor Graphs</div>
         <div style={container}>
           <div style={buttonrow}>
+            <button
+              type="button"
+              onClick={e => {
+                this.methane([e.pageX])
+              }}
+            >
+              TestMethane
+            </button>
+            <button
+              type="button"
+              onClick={e => {
+                this.n2o([e.pageX])
+              }}
+            >
+              TestN2O
+            </button>
             <button type="button" onClick={this.selectAll}>
               Select All
             </button>
@@ -473,7 +479,7 @@ class SensorGraphs extends Component<IProps, IState> {
             <button type="button" onClick={saveImage}>
               Export Graph
             </button>
-            <button type="button" onClick={_e => this.setState({ sensors: this.clearData() })}>
+            <button type="button" onClick={_e => this.setState({ sensors: this.getNewEmptyMap() })}>
               Clear Data
             </button>
           </div>
@@ -483,7 +489,7 @@ class SensorGraphs extends Component<IProps, IState> {
                 return (
                   <div key={undefined} style={selector}>
                     <input
-                      type={sensorName === "Temperature" || sensorName === "O2Pressure" ? "radio" : "checkbox"}
+                      type="checkbox"
                       id={sensorName}
                       name={sensorName}
                       checked={val}
