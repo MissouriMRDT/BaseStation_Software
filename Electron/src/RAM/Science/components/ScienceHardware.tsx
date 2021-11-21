@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import CSS from "csstype"
 import { rovecomm } from "../../../Core/RoveProtocol/Rovecomm"
+import internal from "stream"
 
 const container: CSS.Properties = {
   display: "flex",
@@ -11,6 +12,7 @@ const container: CSS.Properties = {
   borderBottomWidth: "2px",
   borderStyle: "solid",
   height: "calc(100% - 40px)",
+  minWidth: "150px",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -26,79 +28,64 @@ const row: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
   justifyContent: "center",
-  marginTop: "5px",
-  lineHeight: "25px",
-}
-const buttonRow: CSS.Properties = {
-  display: "flex",
-  flexDirection: "row",
-  justifyContent: "center",
-  marginTop: "5px",
-  marginBottom: "5px",
-}
-const leftGroup: CSS.Properties = {
-  width: "50%",
-  justifyContent: "center",
   margin: "auto",
+  lineHeight: "25px",
+  width: "100%",
 }
-const rightGroup: CSS.Properties = {
-  width: "40%",
-  justifyContent: "center",
+const blockLabel: CSS.Properties = {
   margin: "auto",
 }
 
-const testTube = 12
+type HeaterBlock = {
+  /** The current temperature of the block in Celsius */
+  temp: number
+  /** True if the heater block is turned on */
+  isOn: boolean
+}
 
 interface IProps {
   style?: CSS.Properties
 }
 
 interface IState {
-  tube: number
-  buttonsDisabled: boolean
+  blocks: HeaterBlock[]
 }
 
-class Geneva extends Component<IProps, IState> {
+class ScienceHardware extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props)
     this.state = {
-      tube: 0,
-      buttonsDisabled: false,
+      blocks: [
+        {
+          temp: -1,
+          isOn: false,
+        },
+        {
+          temp: -1,
+          isOn: false,
+        },
+        {
+          temp: -1,
+          isOn: false,
+        },
+      ],
     }
-    this.rotateLeft = this.rotateLeft.bind(this)
-    this.rotateRight = this.rotateRight.bind(this)
-    this.updatePosition = this.updatePosition.bind(this)
-    rovecomm.on("GenevaCurrentPosition", (data: any) => this.updatePosition(data))
+    //this.rotateLeft = this.rotateLeft.bind(this)
+    //this.rotateRight = this.rotateRight.bind(this)
+    //this.updatePosition = this.updatePosition.bind(this)
+    //rovecomm.on("GenevaCurrentPosition", (data: any) => this.updatePosition(data))
   }
 
-  rotateLeft(): void {
-    if (this.state.buttonsDisabled) {
-      return
-    }
-    rovecomm.sendCommand("GenevaIncrementPosition", [-1])
-    // Javascript doesn't have a mod operator, only a remainder operator
-    // Since we want this value to wrap -1 to 7, we need mod, which can be
-    // defined as ((n%m)+m)%m
-    this.setState({
-      tube: (((this.state.tube - 1) % testTube) + testTube) % testTube,
-      buttonsDisabled: true,
-    })
-  }
-
-  rotateRight(): void {
-    if (this.state.buttonsDisabled) {
-      return
-    }
-    rovecomm.sendCommand("GenevaIncrementPosition", [1])
-    this.setState({
-      tube: (((this.state.tube + 1) % testTube) + testTube) % testTube,
-      buttonsDisabled: true,
-    })
-  }
-
-  updatePosition(data: any): void {
-    const buttonsDisabled = this.state.tube === data[0]
-    this.setState({ buttonsDisabled })
+  /**
+   * Toggles the power of a given heater block
+   * @param index 0-based index of the block to toggle
+   */
+  toggleBlock(index: number): void {
+    //TODO: Implement rovecomm
+    //TODO: Maybe use 1-based index? Depends on rovecomm packet spec.
+    const { blocks } = this.state
+    blocks[index].isOn = !blocks[index].isOn
+    this.setState({ blocks })
   }
 
   render(): JSX.Element {
@@ -106,37 +93,20 @@ class Geneva extends Component<IProps, IState> {
       <div style={this.props.style}>
         <div style={label}>Science Hardware</div>
         <div style={container}>
-          <div style={row}>
-            <div style={leftGroup}>
-              <div style={row}>Move Gantry to Test Tubes</div>
-              <div style={buttonRow}>
-                <button type="button">Grp 1</button>
-                <button type="button">Grp 2</button>
-                <button type="button">Grp 3</button>
-              </div>
-              <div style={row}>Move to Spare Scoop</div>
-              <div style={buttonRow}>
-                <button type="button">Test 1</button>
-                <button type="button">Test 2</button>
-                <button type="button">Test 2</button>
-              </div>
-            </div>
-            <div style={rightGroup}>
-              <div style={row}>Testing</div>
+          {this.state.blocks.map((block, index) => {
+            return (
               <div style={row}>
-                <button type="button">Grp 1</button>
-                <button type="button">Grp 2</button>
+                <label style={blockLabel} onClick={() => this.toggleBlock(index)}>
+                  Block {index + 1}:{" "}
+                </label>
+                <button style={blockLabel}>{block.temp}&#176; C</button>
               </div>
-              <div style={row}>
-                <button type="button">Grp 3</button>
-                <button type="button">Drill</button>
-              </div>
-            </div>
-          </div>
+            )
+          })}
         </div>
       </div>
     )
   }
 }
 
-export default Geneva
+export default ScienceHardware

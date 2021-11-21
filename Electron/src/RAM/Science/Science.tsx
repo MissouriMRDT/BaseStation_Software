@@ -8,6 +8,7 @@ import Geneva from "./components/ScienceHardware"
 import Cameras from "../../Core/components/Cameras"
 import ControlScheme, { controllerInputs } from "../../Core/components/ControlScheme"
 import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
+import ScienceHardware from "./components/ScienceHardware"
 
 const row: CSS.Properties = {
   display: "flex",
@@ -92,7 +93,7 @@ class Science extends Component<IProps, IState> {
         <Spectrometer />
         <div style={row}>
           <SensorData style={{ flex: 3, marginRight: "5px" }} />
-          <Geneva style={{ flexGrow: 1, marginLeft: "5px" }} />
+          <ScienceHardware />
         </div>
         <ControlScheme configs={["Science"]} />
         <div style={row}>
