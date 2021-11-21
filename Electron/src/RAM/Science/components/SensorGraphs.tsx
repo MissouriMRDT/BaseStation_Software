@@ -236,13 +236,16 @@ class SensorGraphs extends Component<IProps, IState> {
   addData(name: string, newData: number): void {
     // Data of 0 probably just means the sensors aren't working and risks causing div by 0 errors
     if (newData === 0) {
+      rovecomm.emit("all", name + " Sensor sent 0. Discarding.")
       return
     }
 
     const { sensors } = this.state
 
     let sensor = sensors.get(name)
-    if (!sensor) { return }
+    if (!sensor) {
+      return
+    }
 
     //if the min and max are -1, they are unset and need to be updated
     if (sensor.max === -1) {
@@ -514,7 +517,12 @@ class SensorGraphs extends Component<IProps, IState> {
                 this.state.enabledSensors.get(name) &&
                 sensor.values !== [] && (
                   <LineSeries
-                    data={sensor.normalizedValues}
+                    data={
+                      //If there's more than one graph enabled, use the normalized values
+                      [...this.state.enabledSensors.values()].filter(Boolean).length > 1
+                        ? sensor.normalizedValues
+                        : sensor.values
+                    }
                     style={{ fill: "none" }}
                     strokeWidth="6"
                     color={sensor.graphLineColor}
@@ -525,7 +533,7 @@ class SensorGraphs extends Component<IProps, IState> {
               )
             })}
             <XAxis />
-            <YAxis />
+            {[...this.state.enabledSensors.values()].filter(Boolean).length > 1 ? null : <YAxis />}
             {this.crosshair()}
           </XYPlot>
           <DiscreteColorLegend
