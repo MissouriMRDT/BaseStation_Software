@@ -35,6 +35,22 @@ const row: CSS.Properties = {
 const blockLabel: CSS.Properties = {
   margin: "auto",
 }
+const onIndicator: CSS.Properties = {
+  height: "10px",
+  width: "10px",
+  backgroundColor: "lightgreen",
+  borderRadius: "50%",
+  display: "flex",
+  margin: "auto",
+}
+const offIndicator: CSS.Properties = {
+  height: "10px",
+  width: "10px",
+  backgroundColor: "#990000",
+  borderRadius: "50%",
+  display: "flex",
+  margin: "auto",
+}
 
 type HeaterBlock = {
   /** The current temperature of the block in Celsius */
@@ -83,9 +99,10 @@ class ScienceHardware extends Component<IProps, IState> {
   toggleBlock(index: number): void {
     //TODO: Implement rovecomm
     //TODO: Maybe use 1-based index? Depends on rovecomm packet spec.
+    console.log("toggle block " + index)
     const { blocks } = this.state
     blocks[index].isOn = !blocks[index].isOn
-    this.setState({ blocks })
+    this.setState({ blocks: blocks })
   }
 
   render(): JSX.Element {
@@ -96,10 +113,11 @@ class ScienceHardware extends Component<IProps, IState> {
           {this.state.blocks.map((block, index) => {
             return (
               <div style={row}>
-                <label style={blockLabel} onClick={() => this.toggleBlock(index)}>
-                  Block {index + 1}:{" "}
-                </label>
-                <button style={blockLabel}>{block.temp}&#176; C</button>
+                <label style={blockLabel}>Block {index + 1}: </label>
+                <button style={blockLabel} onClick={() => this.toggleBlock(index)}>
+                  {block.temp}&#176; C
+                </button>
+                <span style={block.isOn ? onIndicator : offIndicator}></span>
               </div>
             )
           })}
