@@ -498,7 +498,7 @@ class SensorGraphs extends Component<IProps, IState> {
                       checked={val}
                       onChange={() => this.sensorSelectionChanged(sensorName)}
                     />
-                    <label>{sensorName}</label>
+                    <label htmlFor={sensorName}>{sensorName}</label>
                   </div>
                 )
               })}
