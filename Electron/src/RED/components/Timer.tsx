@@ -102,6 +102,7 @@ const timeSplitTitle: CSS.Properties = {
 }
 
 const FILEPATH = path.join(__dirname, "../assets/TaskList.json")
+const DIFFPATH = path.join(__dirname, "../assets/Differences.txt")
 let taskList: any
 
 let timer: any = 0
@@ -273,11 +274,12 @@ class Timer extends Component<IProps, IState> {
     let { currentTask, currentTaskTime, delta } = this.state
 
     //Prevents the next task from being loaded if the current mission has no tasks.
-    //Also, the next task won't be loaded if the current task is the last task in the tasklist of the currently selected
-    //mission and the timer is not counting.
     if (!this.isTaskListEmpty(this.state.selectedMission)) {
+
+      //Delta will only increment if we are not on the last task in the mission OR if the timer is counting
+      //(the timer is not stopped).
       if(currentTask != this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks.length - 1
-          && this.state.isCounting) {
+          || this.state.isCounting) {
       delta +=
           this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks[currentTask].setTime -
           this.state.currentTaskTime
@@ -303,6 +305,53 @@ class Timer extends Component<IProps, IState> {
   // but there's the option to make that a saveable thing to the JSON
   saveJSON(): void {
     fs.writeFileSync(FILEPATH, JSON.stringify({ ParentTasks: this.state.parentMission }, null, 2))
+  }
+
+  saveDifferences(): void {
+    //Prevents saveDifferences() from being executed if the selected mission has no childtasks.
+    if (!this.isTaskListEmpty(this.state.selectedMission)) {
+      let currentMission = this.state.parentMission[this.findIndex(this.state.selectedMission)]
+
+      //This gets the current date on the user's computer.
+      let currentDate = new Date()
+
+      //The way that differences are saved is by appending the current mission's differences to the .txt file. In order
+      //to keep any older difference data, we need to read in all of the contents of that file and store it as a string.
+      let differenceList = fs.readFileSync(DIFFPATH, {encoding: 'utf-8', flag: 'r'})
+
+      //A timestamp is used to mark when a difference was saved, it follows this format:
+      // "Differences saved on: MM/DD/YYYY @ HH:MM:SS"
+      let timeStamp = "Differences saved on: " + (currentDate.getMonth() + 1) + '/' + currentDate.getDate() + '/'
+                                               + currentDate.getFullYear() + " @ " + currentDate.getHours() + ':'
+                                               + currentDate.getMinutes() + ':' + currentDate.getSeconds()
+
+
+      //Prints the mission name and task label on separate lines.
+      differenceList += timeStamp + '\n' + "Mission: " + currentMission.title + '\n' + "Tasks:\n"
+
+      //Each task name is printed out, along with its difference.
+      for(let i = 0; i < currentMission.childTasks.length; i++) {
+        differenceList += "  " + currentMission.childTasks[i].title + ": "
+          + (currentMission.childTasks[i].difference <= 0 ? "-" : "+")
+          + packOutput(currentMission.childTasks[i].difference) + '\n'
+      }
+
+      //Actual mission completion time.
+      let completedMissionTime = currentMission.setTime - this.state.delta
+
+      //Various data are printed out about the time differences, including the time saved/lost between the expected
+      //mission time and the actual mission time.
+      differenceList += "\nExpected Mission Completion Time: " + packOutput(currentMission.setTime) + '\n'
+      differenceList += "Actual Mission Time Achieved: " + packOutput(completedMissionTime) + '\n'
+      differenceList += "Total Time " + (completedMissionTime - currentMission.setTime <= 0 ? "Saved: " : "Lost: ") +
+        (packOutput(completedMissionTime - currentMission.setTime)) + "\n\n"
+
+      //A small border is added to separate different difference data.
+      differenceList += "-------------------------------------------------------------\n\n"
+
+    //The added time differences are saved onto "Differences.txt"
+    fs.writeFileSync(DIFFPATH, differenceList)
+    }
   }
 
   reset(): void {
@@ -352,6 +401,10 @@ class Timer extends Component<IProps, IState> {
       currentTask -= 1
       this.reset()
     }
+
+    //This clears the now current task's time difference.
+    this.state.parentMission[this.findIndex(this.state.selectedMission)]
+      .childTasks[currentTask].difference = 0
     this.setState({ currentTask })
   }
 
@@ -478,7 +531,7 @@ class Timer extends Component<IProps, IState> {
                   null
                  :
                   <div style={{color: (task.difference < 0) ? "#00AA00" : "#AA0000"}}>
-                    {task.difference > 0 ? "+" : ""}{task.difference}
+                    {task.difference > 0 ? "+" : "-"}{packOutput(task.difference)}
                   </div>
                  }
               </div>
@@ -542,7 +595,7 @@ class Timer extends Component<IProps, IState> {
         </div>
 
         <div>
-          <button type="button" style={{height: "50px", width: "auto", fontSize: "30px",}} onClick={() => this.saveJSON()}>
+          <button type="button" style={{height: "50px", width: "auto", fontSize: "30px",}} onClick={() => this.saveDifferences()}>
             Save Differences
           </button>
         </div>
@@ -620,6 +673,7 @@ class Timer extends Component<IProps, IState> {
                         currentTask: 0,
                         currentMissionTime: 0,
                         currentTaskTime: 0,
+                        delta: 0
                       })}
                     }
                   />
