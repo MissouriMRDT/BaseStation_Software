@@ -420,6 +420,16 @@ class SensorGraphs extends Component<IProps, IState> {
       time = crosshairValues.get("O2PP")?.x
     } else if (crosshairValues.has("Methane")) {
       time = crosshairValues.get("Methane")?.x
+    } else if (crosshairValues.has("Temperature")) {
+      time = crosshairValues.get("Temperature")?.x
+    } else if (crosshairValues.has("O2Concentration")) {
+      time = crosshairValues.get("O2Concentration")?.x
+    } else if (crosshairValues.has("O2Pressure")) {
+      time = crosshairValues.get("O2Pressure")?.x
+    } else if (crosshairValues.has("NO")) {
+      time = crosshairValues.get("NO")?.x
+    } else if (crosshairValues.has("N2O")) {
+      time = crosshairValues.get("N2O")?.x
     }
 
     // If we were able to find a reading at a time, then go ahead and display the crosshair
