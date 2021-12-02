@@ -68,7 +68,6 @@ const selectbox: CSS.Properties = {
   justifyContent: "space-around",
 }
 const selector: CSS.Properties = {
-  width: "200px",
   display: "flex",
   flexDirection: "row",
   margin: "2.5px",
