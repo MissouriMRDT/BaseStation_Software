@@ -429,7 +429,7 @@ class SensorGraphs extends Component<IProps, IState> {
       return (
         <Crosshair values={[...crosshairValues.values()]}>
           <div style={overlay}>
-            <h3 style={{ backgroundColor: "white" }}>{time?.toTimeString().slice(0, 9)}</h3>
+            <h3 style={{ backgroundColor: "white" }}>{time.toTimeString().slice(0, 9)}</h3>
             {[...this.state.sensors].map(([name, sensor]) => {
               return (
                 crosshairValues.has(name) && (
@@ -456,20 +456,10 @@ class SensorGraphs extends Component<IProps, IState> {
         <div style={label}>Sensor Graphs</div>
         <div style={container}>
           <div style={buttonrow}>
-            <button
-              type="button"
-              onClick={e => {
-                this.methane([e.pageX])
-              }}
-            >
+            <button type="button" onClick={e => setInterval(() => this.addData("Methane", 100 * Math.random()), 2000)}>
               TestMethane
             </button>
-            <button
-              type="button"
-              onClick={e => {
-                this.n2o([e.pageX])
-              }}
-            >
+            <button type="button" onClick={e => setInterval(() => this.addData("N2O", 100 * Math.random()), 2000)}>
               TestN2O
             </button>
             <button type="button" onClick={this.selectAll}>
