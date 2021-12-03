@@ -190,6 +190,7 @@ class ControlScheme extends Component<IProps, IState> {
   controllerChange(event: { target: { value: string } }, config: string): void {
     controllerInputs = {}
     let defaultScheme = ""
+    let selectedImage = ""
     // determines which scheme to select at default so that the default is not one that otherwise couldnt be used (if there is any available)
     // (such as diagonal drive for xbox controller)
     for (const scheme in CONTROLLERINPUT) {
@@ -197,9 +198,16 @@ class ControlScheme extends Component<IProps, IState> {
         CONTROLLERINPUT[scheme].config === config &&
         event.target.value.indexOf(CONTROLLERINPUT[scheme].controller) >= 0
       ) {
+        selectedImage = xboxController
         defaultScheme = scheme
         break
       }
+      else{
+        selectedImage = flightStick
+        defaultScheme = scheme
+        break
+      }
+
     }
     this.setState(
       {
@@ -212,6 +220,7 @@ class ControlScheme extends Component<IProps, IState> {
             interval: clearInterval(this.state.functionality[config].interval),
           },
         },
+        image: selectedImage
       },
       // this is a callback for when the setState finished updating it clears the set interval,
       // so that after setState is finished it is able to create a new interval and assign it
@@ -228,6 +237,7 @@ class ControlScheme extends Component<IProps, IState> {
                 ),
               },
             },
+            image:selectedImage
           })
         }
       }
@@ -296,38 +306,41 @@ class ControlScheme extends Component<IProps, IState> {
     }
   }
 
-  controlLayoutPreview(): JSX.Element {
+  //this is used as a model for the new preview
+  controlLayoutPreview(){
     return (
       <div style={modal}>
         {Object.keys(this.state.functionality).map(selectedController => {
           return (
             <div key={selectedController}>
               {this.state.functionality[selectedController].toggled === "On" ? (
-                <div style={{ borderWidth: "1px", borderStyle: "solid", borderColor: "black", margin: "2px" }}>
-                  <img src={this.state.image} alt={selectedController} />
-                  <div>
-                    {selectedController} controlled with {this.state.functionality[selectedController].controller}:
-                  </div>
-                  {Object.keys(CONTROLLERINPUT[this.state.functionality[selectedController].scheme].bindings).map(
-                    bind => {
-                      return (
-                        <div key={bind}>
-                          {bind}:{" "}
-                          {CONTROLLERINPUT[this.state.functionality[selectedController].scheme].bindings[bind].button
-                            ? CONTROLLERINPUT[this.state.functionality[selectedController].scheme].bindings[bind].button
-                            : CONTROLLERINPUT[this.state.functionality[selectedController].scheme].bindings.buttonIndex}
+                  <div style={{ borderWidth: "1px", borderStyle: "solid", borderColor: "black", margin: "2px" }}>
+                        <img src={this.state.image} alt={selectedController} />
+                        <div>
+                          {selectedController} controlled with {this.state.functionality[selectedController].controller}:
                         </div>
-                      )
-                    }
-                  )}
-                </div>
+                        {Object.keys(CONTROLLERINPUT[this.state.functionality[selectedController].scheme].bindings).map(
+                          bind => {
+                            return (
+                              <div key={bind}>
+                                {bind}:{" "}
+                                {CONTROLLERINPUT[this.state.functionality[selectedController].scheme].bindings[bind].button
+                                  ? CONTROLLERINPUT[this.state.functionality[selectedController].scheme].bindings[bind].button
+                                 : CONTROLLERINPUT[this.state.functionality[selectedController].scheme].bindings.buttonIndex}
+                             </div>
+                            )
+                          }
+                        )}
+                  </div>
               ) : null}
+              {/*button to close here*/}
             </div>
           )
         })}
       </div>
     )
   }
+
 
   render(): JSX.Element {
     return (
@@ -369,7 +382,7 @@ class ControlScheme extends Component<IProps, IState> {
                     else return null
                   })}
                 </select>
-                <button type="button" onClick={() => this.buttonToggle(config)}>
+                <button style={{ zIndex: 2 }} type="button" onClick={() => this.buttonToggle(config)}>
                   {this.state.functionality[config].toggled}
                 </button>
               </div>
