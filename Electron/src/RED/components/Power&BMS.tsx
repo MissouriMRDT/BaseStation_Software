@@ -66,10 +66,19 @@ const ACTBUS = ["Gimbal", "Multimedia", "Auxiliary"]
 const LOGICBUS = ["Gimbal", "Multimedia", "Autonomy", "Drive", "Nav", "Cameras", "Extra"]
 const THIRTY_V_BUS = ["12V", "Comms", "Auxiliary", "Drive"]
 const TWELVE_V_BUS = ["Gimbal", "Multimedia", "Autonomy", "Logic"]
-const CELLS = ["Cell 1", "Cell 2", "Cell 3", "Cell 4", "Cell 5", "Cell 6", "Cell 7", "Cell 8"]
 const VACUUM = ["Vacuum"]
 const TOTALPACKCURRENT = ["TotalPackCurrent"]
-const TOTALPACKVOLTAGE = ["TotalPackVoltage"]
+const TOTALPACKVOLTAGE = [
+  "TotalPackVoltage",
+  "Cell 1",
+  "Cell 2",
+  "Cell 3",
+  "Cell 4",
+  "Cell 5",
+  "Cell 6",
+  "Cell 7",
+  "Cell 8",
+]
 const BATTERY_TEMP = ["Temp"]
 
 // The specific function of turnOffReboot() originates from how the control boards
@@ -147,7 +156,6 @@ class Power extends Component<IProps, IState> {
     rovecomm.on("VacuumCurrent", (data: number[]) => this.boardListenHandler(data, VACUUM, false))
     rovecomm.on("PackI_Meas", (data: number) => this.batteryListenHandler(data, TOTALPACKCURRENT))
     rovecomm.on("PackV_Meas", (data: number) => this.batteryListenHandler(data, TOTALPACKVOLTAGE))
-    rovecomm.on("CellV_Meas", (data: number) => this.batteryListenHandler(data, CELLS))
     rovecomm.on("Temp_Meas", (data: number) => this.batteryListenHandler(data, BATTERY_TEMP))
   }
 
@@ -372,7 +380,7 @@ class Power extends Component<IProps, IState> {
             >
               <h3 style={textPad}>Total Pack Current</h3>
               <h3 style={textPad}>
-                {`${this.state.batteryTelemetry.TotalPackCurrent.value.toLocaleString(undefined, {
+                {`${(this.state.batteryTelemetry.TotalPackCurrent.value / 1000).toLocaleString(undefined, {
                   minimumFractionDigits: 1,
                   maximumFractionDigits: 1,
                   minimumIntegerDigits: 2,
@@ -392,7 +400,7 @@ class Power extends Component<IProps, IState> {
             >
               <h3 style={textPad}>Total Pack Voltage</h3>
               <h3 style={textPad}>
-                {`${this.state.batteryTelemetry.TotalPackVoltage.value.toLocaleString(undefined, {
+                {`${(this.state.batteryTelemetry.TotalPackVoltage.value / 1000).toLocaleString(undefined, {
                   minimumFractionDigits: 1,
                   maximumFractionDigits: 2,
                   minimumIntegerDigits: 2,
@@ -402,7 +410,7 @@ class Power extends Component<IProps, IState> {
           </div>
           <div style={{ ...row, width: "100%" }}>
             <div style={{ ...cellReadoutContainer, width: "100%" }}>
-              {CELLS.map(cell => {
+              {["Cell 1", "Cell 2", "Cell 3", "Cell 4", "Cell 5", "Cell 6", "Cell 7", "Cell 8"].map(cell => {
                 return (
                   <div
                     key={cell}
@@ -410,7 +418,7 @@ class Power extends Component<IProps, IState> {
                   >
                     <h3 style={textPad}>{cell}</h3>
                     <h3 style={textPad}>
-                      {`${this.state.batteryTelemetry[cell].value.toLocaleString(undefined, {
+                      {`${(this.state.batteryTelemetry[cell].value / 1000).toLocaleString(undefined, {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                         minimumIntegerDigits: 1,

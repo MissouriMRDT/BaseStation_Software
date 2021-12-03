@@ -51,7 +51,7 @@ class PingMap extends Component<IProps, IState> {
     this.state = {
       lastWidth: RONModuleWidth,
     }
-
+    this.updatePingMap = this.updatePingMap.bind(this)
     this.canvasRef = React.createRef()
   }
 

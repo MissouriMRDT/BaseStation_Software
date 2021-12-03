@@ -16,6 +16,7 @@ const container: CSS.Properties = {
   height: "calc(100% - 40px)",
 }
 const modal: CSS.Properties = {
+  position: "absolute",
   zIndex: 2,
   backgroundColor: "white",
   borderStyle: "solid",
@@ -306,8 +307,8 @@ class ControlScheme extends Component<IProps, IState> {
     }
   }
 
-  //this is used as a model for the new preview
-  controlLayoutPreview(){
+
+  controlLayoutPreview(): JSX.Element{
     return (
       <div style={modal}>
         {Object.keys(this.state.functionality).map(selectedController => {
@@ -331,16 +332,17 @@ class ControlScheme extends Component<IProps, IState> {
                             )
                           }
                         )}
+                <button type="button" onClick={() => this.setState({ controlPreviewModal: !this.state.controlPreviewModal })}>
+                  back
+                </button>
                   </div>
               ) : null}
-              {/*button to close here*/}
             </div>
           )
         })}
       </div>
     )
   }
-
 
   render(): JSX.Element {
     return (

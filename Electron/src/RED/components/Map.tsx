@@ -36,7 +36,7 @@ interface IProps {
   style?: CSS.Properties
   storedWaypoints: any
   currentCoords: { lat: number; lon: number }
-  store?: (name: string, coords: any) => void
+  store: (name: string, coords: any) => void
   name: string
 }
 
@@ -83,12 +83,10 @@ class Map extends Component<IProps, IState> {
               maxZoom={this.state.maxZoom}
               whenReady={(map: any): void =>
                 map.target.on("click", (e: { latlng: { lat: number; lng: number } }) => {
-                  if (this.props.store) {
-                    this.props.store(new Date().toLocaleTimeString(), {
-                      lat: e.latlng.lat,
-                      lon: e.latlng.lng,
-                    })
-                  }
+                  this.props.store(new Date().toLocaleTimeString(), {
+                    lat: e.latlng.lat,
+                    lon: e.latlng.lng,
+                  })
                 })
               }
             >
@@ -102,11 +100,15 @@ class Map extends Component<IProps, IState> {
               {Object.keys(this.props.storedWaypoints).map((waypointName: string) => {
                 const waypoint = this.props.storedWaypoints[waypointName]
                 const post: LatLngTuple = [waypoint.latitude, waypoint.longitude]
-                return (
-                  <Marker key={waypoint.name} position={post} icon={icon(waypoint.color)}>
-                    <Popup>{waypoint.name}</Popup>
-                  </Marker>
-                )
+                if (waypoint.onMap === true) {
+                  return (
+                    <Marker key={waypoint.name} position={post} icon={icon(waypoint.color)}>
+                      <Popup>{waypoint.name}</Popup>
+                    </Marker>
+                  )
+                } else {
+                  return null
+                }
               })}
             </MapContainer>
           </div>
