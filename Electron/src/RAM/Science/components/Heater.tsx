@@ -36,19 +36,23 @@ const blockLabel: CSS.Properties = {
   margin: "auto",
 }
 const onIndicator: CSS.Properties = {
-  height: "10px",
-  width: "10px",
-  backgroundColor: "lightgreen",
+  height: "15px",
+  width: "15px",
+  backgroundColor: "#009900",
   borderRadius: "50%",
   display: "flex",
   margin: "auto",
 }
 const offIndicator: CSS.Properties = {
-  height: "10px",
-  width: "10px",
+  height: "15px",
+  width: "15px",
   backgroundColor: "#990000",
   borderRadius: "50%",
   display: "flex",
+  margin: "auto",
+}
+const button: CSS.Properties = {
+  width: "60px",
   margin: "auto",
 }
 
@@ -67,21 +71,21 @@ interface IState {
   blocks: HeaterBlock[]
 }
 
-class ScienceHardware extends Component<IProps, IState> {
+class Heater extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props)
     this.state = {
       blocks: [
         {
-          temp: -1,
+          temp: 105,
           isOn: false,
         },
         {
-          temp: -1,
+          temp: 98,
           isOn: false,
         },
         {
-          temp: -1,
+          temp: 32,
           isOn: false,
         },
       ],
@@ -114,7 +118,7 @@ class ScienceHardware extends Component<IProps, IState> {
             return (
               <div style={row}>
                 <label style={blockLabel}>Block {index + 1}: </label>
-                <button style={blockLabel} onClick={() => this.toggleBlock(index)}>
+                <button style={button} onClick={() => this.toggleBlock(index)}>
                   {block.temp}&#176; C
                 </button>
                 <span style={block.isOn ? onIndicator : offIndicator}></span>
@@ -127,4 +131,4 @@ class ScienceHardware extends Component<IProps, IState> {
   }
 }
 
-export default ScienceHardware
+export default Heater

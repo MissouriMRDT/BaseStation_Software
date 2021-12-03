@@ -9,7 +9,7 @@ import ControlMultipliers from "../RAM/Arm/components/ControlMultipliers"
 import IK from "../RAM/Arm/components/IK"
 import Activity from "../RAM/Autonomy/components/Activity"
 import StateDiagram from "../RAM/Autonomy/components/StateDiagram"
-import Geneva from "../RAM/Science/components/ScienceHardware"
+import Heater from "../RAM/Science/components/Heater"
 import SensorData from "../RAM/Science/components/SensorData"
 import SensorGraphs from "../RAM/Science/components/SensorGraphs"
 import Spectrometer from "../RAM/Science/components/Spectrometer"
@@ -100,7 +100,7 @@ class RoverImageryDisplay extends Component<IProps, IState> {
             "Activity",
             "Controls",
             "StateDiagram",
-            "Geneva",
+            "Heater",
             "SensorData",
             "SensorGraphs",
             "Spectrometer",
@@ -254,8 +254,8 @@ class RoverImageryDisplay extends Component<IProps, IState> {
       case "StateDiagram":
         submodule = <StateDiagram style={submod} />
         break
-      case "Geneva":
-        submodule = <Geneva style={submod} />
+      case "Heater":
+        submodule = <Heater style={submod} />
         break
       case "SensorData":
         submodule = <SensorData style={submod} />
