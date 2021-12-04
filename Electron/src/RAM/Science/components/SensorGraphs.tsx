@@ -133,6 +133,7 @@ interface IState {
   crosshairValues: Map<string, { x: Date; y: number }>
   sensors: Map<string, Sensor>
   enabledSensors: Map<string, boolean>
+  crosshairPos: Date | null
 }
 
 class SensorGraphs extends Component<IProps, IState> {
@@ -151,6 +152,7 @@ class SensorGraphs extends Component<IProps, IState> {
         ["NO", false],
         ["N2O", false],
       ]),
+      crosshairPos: null,
     }
     this.methane = this.methane.bind(this)
     this.co2 = this.co2.bind(this)
@@ -185,7 +187,7 @@ class SensorGraphs extends Component<IProps, IState> {
     // in crosshair values to be displayed
     const { crosshairValues } = this.state
     crosshairValues.set(listName, list[index])
-    this.setState({ crosshairValues })
+    this.setState({ crosshairValues, crosshairPos: list[index].x })
   }
 
   /**
@@ -410,36 +412,16 @@ class SensorGraphs extends Component<IProps, IState> {
   crosshair(): JSX.Element | null {
     // Return the desired crosshair element
 
-    // We only want to return a crosshair element if there is a valid reading in the crosshair values
-    // We would prefer CO2 cause it has the fastest update rate, then O2, then methane
-    const { crosshairValues } = this.state
-    let time
-    if (crosshairValues.has("CO2")) {
-      time = crosshairValues.get("CO2")?.x
-    } else if (crosshairValues.has("O2PP")) {
-      time = crosshairValues.get("O2PP")?.x
-    } else if (crosshairValues.has("Methane")) {
-      time = crosshairValues.get("Methane")?.x
-    } else if (crosshairValues.has("Temperature")) {
-      time = crosshairValues.get("Temperature")?.x
-    } else if (crosshairValues.has("O2Concentration")) {
-      time = crosshairValues.get("O2Concentration")?.x
-    } else if (crosshairValues.has("O2Pressure")) {
-      time = crosshairValues.get("O2Pressure")?.x
-    } else if (crosshairValues.has("NO")) {
-      time = crosshairValues.get("NO")?.x
-    } else if (crosshairValues.has("N2O")) {
-      time = crosshairValues.get("N2O")?.x
-    }
+    let { crosshairPos, crosshairValues } = this.state
 
     // If we were able to find a reading at a time, then go ahead and display the crosshair
     // The heading will be that time as a string, and then if the key exists in crosshairValues
     // then we want to display its y value
-    if (time) {
+    if (crosshairPos) {
       return (
         <Crosshair values={[...crosshairValues.values()]}>
           <div style={overlay}>
-            <h3 style={{ backgroundColor: "white" }}>{time.toTimeString().slice(0, 9)}</h3>
+            <h3 style={{ backgroundColor: "white" }}>{crosshairPos.toTimeString().slice(0, 9)}</h3>
             {[...this.state.sensors].map(([name, sensor]) => {
               return (
                 crosshairValues.has(name) && (
