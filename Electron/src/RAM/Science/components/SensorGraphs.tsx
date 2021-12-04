@@ -305,7 +305,8 @@ class SensorGraphs extends Component<IProps, IState> {
   }
 
   /**
-   * There's no way to deep copy the data in a Map, so this function returns a new map with the empty sensors
+   * There's no way to easily deep copy the data in a Map, so this
+   * function returns a new map with the empty sensors' options
    * @returns A new empty map of the default sensors
    */
   getNewEmptyMap(): Map<string, Sensor> {
@@ -448,10 +449,10 @@ class SensorGraphs extends Component<IProps, IState> {
         <div style={label}>Sensor Graphs</div>
         <div style={container}>
           <div style={buttonrow}>
-            <button type="button" onClick={e => setInterval(() => this.addData("Methane", 100 * Math.random()), 2000)}>
+            <button type="button" onClick={() => setInterval(() => this.addData("Methane", 100 * Math.random()), 2000)}>
               TestMethane
             </button>
-            <button type="button" onClick={e => setInterval(() => this.addData("N2O", 100 * Math.random()), 2000)}>
+            <button type="button" onClick={() => setInterval(() => this.addData("N2O", 100 * Math.random()), 2000)}>
               TestN2O
             </button>
             <button type="button" onClick={this.selectAll}>
@@ -463,7 +464,7 @@ class SensorGraphs extends Component<IProps, IState> {
             <button type="button" onClick={saveImage}>
               Export Graph
             </button>
-            <button type="button" onClick={_e => this.setState({ sensors: this.getNewEmptyMap() })}>
+            <button type="button" onClick={() => this.setState({ sensors: this.getNewEmptyMap() })}>
               Clear Data
             </button>
           </div>
