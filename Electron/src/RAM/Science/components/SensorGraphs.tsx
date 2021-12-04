@@ -10,13 +10,13 @@ import { windows } from "../../../Core/Window"
 
 /**
  * Type definition for a sensor.
- * To add a new sensor, define the default values in the clearData() function and
+ * To add a new sensor, define the default values in the getNewEmptyMap() function and
  * add a function to interpret the rovecomm packet.
  */
 type Sensor = {
   /** The unit to display in the crosshair */
   units: string
-  /**Color of the line on the graph for this sensor */
+  /**Color of the line in the graph for this sensor */
   graphLineColor: string
   /**Style of the line in the graph for this sensor */
   graphLineType: "solid" | "dashed"
@@ -130,9 +130,18 @@ interface IProps {
 }
 
 interface IState {
+  /**Map of values to display in the crosshair. Keys are the name of the sensor.
+   * Values are the nearest value of the graph on the x-axis to the mouse. */
   crosshairValues: Map<string, { x: Date; y: number }>
+  /**Map of the sensors, holds all recorded data sent from the rover.
+   * Keys are the names of the sensor in PascalCase.
+   * Values are Sensor objects which contain all rendering options and logged data. */
   sensors: Map<string, Sensor>
+  /** Keys are names of sensors in PascalCase,
+   * values control whether the sensor shows on the graph or not */
   enabledSensors: Map<string, boolean>
+  /**The x-axis position to draw the crosshair at.
+   * If null, the crosshair will not be drawn */
   crosshairPos: Date | null
 }
 
@@ -410,9 +419,10 @@ class SensorGraphs extends Component<IProps, IState> {
     ])
   }
 
+  /**
+   * @returns The JSX element for the crosshair if the crosshair should render, null if it shouldn't render
+   */
   crosshair(): JSX.Element | null {
-    // Return the desired crosshair element
-
     let { crosshairPos, crosshairValues } = this.state
 
     // If we were able to find a reading at a time, then go ahead and display the crosshair
@@ -501,6 +511,7 @@ class SensorGraphs extends Component<IProps, IState> {
                   <LineSeries
                     data={
                       //If there's more than one graph enabled, use the normalized values
+                      //Gets the values from the enabledSensors, then filters them for truthy values
                       [...this.state.enabledSensors.values()].filter(Boolean).length > 1
                         ? sensor.normalizedValues
                         : sensor.values
