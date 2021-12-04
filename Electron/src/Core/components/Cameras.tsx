@@ -3,17 +3,14 @@ import CSS from "csstype"
 import html2canvas from "html2canvas"
 import fs from "fs"
 
-import { RovecommManifest } from "../RoveProtocol/Rovecomm"
 import { windows } from "../Window"
 
-const button: CSS.Properties = {
-  flexGrow: 1,
-  backgroundColor: "white",
-}
-const greenButton: CSS.Properties = {
-  flexGrow: 1,
-  backgroundColor: "green",
-}
+const cameraNumList = [1,2,3,4,5,6,7,8,9,10]
+const cam_ips = 
+["0", `http://192.168.1.141:8080/1/stream`, `http://192.168.1.141:8080/2/stream`, `http://192.168.1.141:8080/3/stream`, 
+`http://192.168.1.141:8080/4/stream`, `http://192.168.1.142:8080/1/stream`, `http://192.168.1.142:8080/2/stream`, 
+`http://192.168.1.142:8080/3/stream`, `http://192.168.1.142:8080/4/stream`, `http://192.168.1.139:8080/1/stream`, `http://192.168.1.139:8080/2/stream`]
+
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
   fontSize: "12px",
@@ -42,6 +39,7 @@ const label: CSS.Properties = {
 const row: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
+  flexWrap: "wrap",
 }
 
 const cam: CSS.Properties = {
@@ -56,7 +54,6 @@ interface IProps {
 
 interface IState {
   currentCamera: number
-  cameraIps: string[]
   rotation: number
   style: CSS.Properties
   id: string
@@ -70,21 +67,11 @@ class Cameras extends Component<IProps, IState> {
     super(props)
     this.state = {
       currentCamera: this.props.defaultCamera,
-      cameraIps: [RovecommManifest.Camera1.Ip, RovecommManifest.Camera2.Ip, RovecommManifest.Autonomy.Ip],
       rotation: 0,
       style: {},
       id: `Camera ${Cameras.id}`,
     }
     Cameras.id += 1
-  }
-
-  ConstructAddress() {
-    // Construct address looks at the camera's index to determine which IP should be used
-    // Then finds the relative camera number and returns the configured source url
-    const index = Math.floor((this.state.currentCamera - 1) / 4)
-    const camera = ((this.state.currentCamera - 1) % 4) + 1
-    const ip = this.state.cameraIps[index]
-    return `http://${ip}:8080/${camera}/stream`
   }
 
   rotate(): void {
@@ -180,14 +167,10 @@ class Cameras extends Component<IProps, IState> {
   }
 
   refresh(): void {
-    //for now, forceUpdate forces a re-render. i have no idea how to do this better
-    this.forceUpdate()
-  }
-
-  stopListening(): void {
-    //TODO: implement stop listening to camera function
-    //need to find a way to edit src (line 204), but i don't think i can directly ref it from here
-    
+    //changes camera to 0 feed (default no camera), then changes back to current camera
+    //uses setstate callback function to assure that the camera changes to 0 before changing it back
+    let curCam = this.state.currentCamera
+    this.setState({currentCamera : 0}, () => this.setState({currentCamera : curCam}))
   }
 
   render(): JSX.Element {
@@ -196,7 +179,7 @@ class Cameras extends Component<IProps, IState> {
         <div style={label}>Cameras</div>
         <div style={container}>
           <div style={row}>
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(num => {
+            {cameraNumList.map(num => {
               return (
                 <button
                   type="button"
@@ -204,7 +187,7 @@ class Cameras extends Component<IProps, IState> {
                   onClick={() => this.setState({ currentCamera: num })}
                   style={{
                     flexGrow : 1, 
-                    backgroundColor: num > 4 ? "white" : "lightgreen",
+                    backgroundColor: num > 4 ? "white" : "#00ff00",
                     borderWidth: this.state.currentCamera == num ? "medium" : "thin",
                   }}
                 >
@@ -214,7 +197,7 @@ class Cameras extends Component<IProps, IState> {
             })}
           </div>
           <img
-            src={this.ConstructAddress()}
+            src={cam_ips[this.state.currentCamera]}
             alt={`Camera ${this.state.currentCamera}`}
             style={{ ...cam, ...this.state.style }}
             id={this.state.id}
@@ -226,9 +209,7 @@ class Cameras extends Component<IProps, IState> {
             <button type="button" onClick={() => this.rotate()} style={{ flexGrow: 1 }}>
               Rotate
             </button>
-          </div>
-          <div style={row}>
-            <button type="button" onClick={() => this.stopListening()} style={{ flexGrow: 1 }}>
+            <button type="button" onClick={() => this.setState({currentCamera : 0})} style={{ flexGrow: 1 }}>
               Stop Listening
             </button>
             <button type="button" onClick={() => this.refresh()} style={{ flexGrow: 1 }}>
