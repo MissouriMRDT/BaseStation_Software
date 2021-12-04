@@ -4,12 +4,14 @@ import html2canvas from "html2canvas"
 import fs from "fs"
 
 import { windows } from "../Window"
+import no_cam_img from "../../../assets/no_cam_img.jpg"
 
 const cameraNumList = [1,2,3,4,5,6,7,8,9,10]
 const cam_ips = 
-["0", `http://192.168.1.141:8080/1/stream`, `http://192.168.1.141:8080/2/stream`, `http://192.168.1.141:8080/3/stream`, 
+[no_cam_img, `http://192.168.1.141:8080/1/stream`, `http://192.168.1.141:8080/2/stream`, `http://192.168.1.141:8080/3/stream`, 
 `http://192.168.1.141:8080/4/stream`, `http://192.168.1.142:8080/1/stream`, `http://192.168.1.142:8080/2/stream`, 
-`http://192.168.1.142:8080/3/stream`, `http://192.168.1.142:8080/4/stream`, `http://192.168.1.139:8080/1/stream`, `http://192.168.1.139:8080/2/stream`]
+`http://192.168.1.142:8080/3/stream`, `http://192.168.1.142:8080/4/stream`, `http://192.168.1.139:8080/1/stream`, 
+`http://192.168.1.139:8080/2/stream`]
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
@@ -39,6 +41,7 @@ const label: CSS.Properties = {
 const row: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
+  flexBasis: "0px",
   flexWrap: "wrap",
 }
 
@@ -187,7 +190,7 @@ class Cameras extends Component<IProps, IState> {
                   onClick={() => this.setState({ currentCamera: num })}
                   style={{
                     flexGrow : 1, 
-                    backgroundColor: num > 4 ? "white" : "#00ff00",
+                    //backgroundColor: num > 4 ? "white" : "#00ff00",
                     borderWidth: this.state.currentCamera == num ? "medium" : "thin",
                   }}
                 >
@@ -209,6 +212,8 @@ class Cameras extends Component<IProps, IState> {
             <button type="button" onClick={() => this.rotate()} style={{ flexGrow: 1 }}>
               Rotate
             </button>
+          </div>
+          <div style={row}>
             <button type="button" onClick={() => this.setState({currentCamera : 0})} style={{ flexGrow: 1 }}>
               Stop Listening
             </button>
