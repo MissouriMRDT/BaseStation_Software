@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import CSS from "csstype"
 import { rovecomm } from "../../../Core/RoveProtocol/Rovecomm"
 import internal from "stream"
+import { blockStatement } from "@babel/types"
 
 const container: CSS.Properties = {
   display: "flex",
@@ -90,10 +91,25 @@ class Heater extends Component<IProps, IState> {
         },
       ],
     }
-    //this.rotateLeft = this.rotateLeft.bind(this)
-    //this.rotateRight = this.rotateRight.bind(this)
-    //this.updatePosition = this.updatePosition.bind(this)
-    //rovecomm.on("GenevaCurrentPosition", (data: any) => this.updatePosition(data))
+    this.updateTemps = this.updateTemps.bind(this)
+    this.toggleBlock = this.toggleBlock.bind(this)
+    rovecomm.on("Thermo Values", (data: any) => this.updateTemps(data))
+    // need to clarify data type for HeaterEnabled
+    rovecomm.on("HeaterEnabled", (data: any) => this.updateEnabled(data))
+  }
+
+  /**
+   * Updates the temperatures shown on the component
+   * @param temps a three value array of temps in degrees C
+   */
+  updateTemps(temps: number[]): void {
+    const { blocks } = this.state
+
+    for (let i: number = 0; i < this.state.blocks.length; i++) {
+      blocks[i].temp = temps[i]
+    }
+
+    this.setState({ blocks })
   }
 
   /**
@@ -101,8 +117,7 @@ class Heater extends Component<IProps, IState> {
    * @param index 0-based index of the block to toggle
    */
   toggleBlock(index: number): void {
-    //TODO: Implement rovecomm
-    //TODO: Maybe use 1-based index? Depends on rovecomm packet spec.
+    //TODO: Implement rovecomm. ask about bitmask
     console.log("toggle block " + index)
     const { blocks } = this.state
     blocks[index].isOn = !blocks[index].isOn
