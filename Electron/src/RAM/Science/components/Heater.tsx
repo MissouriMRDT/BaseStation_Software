@@ -1,8 +1,7 @@
 import React, { Component } from "react"
 import CSS from "csstype"
 import { rovecomm } from "../../../Core/RoveProtocol/Rovecomm"
-import internal from "stream"
-import { blockStatement } from "@babel/types"
+import { BitmaskUnpack } from "../../../Core/BitmaskUnpack"
 
 const container: CSS.Properties = {
   display: "flex",
@@ -93,9 +92,19 @@ class Heater extends Component<IProps, IState> {
     }
     this.updateTemps = this.updateTemps.bind(this)
     this.toggleBlock = this.toggleBlock.bind(this)
+    this.updateEnabled = this.updateEnabled.bind(this)
     rovecomm.on("Thermo Values", (data: any) => this.updateTemps(data))
     // need to clarify data type for HeaterEnabled
     rovecomm.on("HeaterEnabled", (data: any) => this.updateEnabled(data))
+  }
+
+  updateEnabled(data: number): void {
+    const { blocks } = this.state
+    const bitmask = BitmaskUnpack(data, blocks.length)
+    for (var i: number = 0; i < blocks.length; i++) {
+      blocks[i].isOn = Boolean(Number(bitmask[i]))
+    }
+    this.setState({ blocks })
   }
 
   /**
@@ -113,15 +122,21 @@ class Heater extends Component<IProps, IState> {
   }
 
   /**
-   * Toggles the power of a given heater block
+   * Sends the command to toggle one block
+   * Does **not** update the state of the component. The board will send when it has turned off
    * @param index 0-based index of the block to toggle
    */
   toggleBlock(index: number): void {
-    //TODO: Implement rovecomm. ask about bitmask
-    console.log("toggle block " + index)
     const { blocks } = this.state
     blocks[index].isOn = !blocks[index].isOn
-    this.setState({ blocks: blocks })
+
+    let bitmask = "0".repeat(8)
+    for (let i: number = 0; i < blocks.length; i++) {
+      //bitmask[i] = blocks[i].isOn ? "1" : "0" //Doesn't work strings are immutable for some reason
+      bitmask = bitmask.substring(0, i) + (blocks[i].isOn ? "1" : "0") + bitmask.substring(i + 1)
+    }
+
+    rovecomm.sendCommand("HeaterToggle", [parseInt(bitmask, 2)])
   }
 
   render(): JSX.Element {
