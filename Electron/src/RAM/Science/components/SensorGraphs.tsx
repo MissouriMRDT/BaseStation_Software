@@ -155,19 +155,17 @@ class SensorGraphs extends Component<IProps, IState> {
         ["Methane", false],
         ["CO2", false],
         ["Temperature", false],
-        ["O2PP", false],
-        ["O2Concentration", false],
-        ["O2Pressure", false],
-        ["NO", false],
-        ["N2O", false],
+        ["O2", false],
+        ["CH3", false],
+        ["NO2", false],
       ]),
       crosshairPos: null,
     }
     this.methane = this.methane.bind(this)
     this.co2 = this.co2.bind(this)
     this.o2 = this.o2.bind(this)
-    this.no = this.no.bind(this)
-    this.n2o = this.n2o.bind(this)
+    this.ch3 = this.ch3.bind(this)
+    this.no2 = this.no2.bind(this)
     this.sensorSelectionChanged = this.sensorSelectionChanged.bind(this)
     this.selectAll = this.selectAll.bind(this)
     this.deselectAll = this.deselectAll.bind(this)
@@ -179,8 +177,8 @@ class SensorGraphs extends Component<IProps, IState> {
     rovecomm.on("Methane", (data: any) => this.methane(data))
     rovecomm.on("CO2", (data: any) => this.co2(data))
     rovecomm.on("O2", (data: any) => this.o2(data))
-    rovecomm.on("NO", (data: any) => this.no(data))
-    rovecomm.on("N2O", (data: any) => this.n2o(data))
+    rovecomm.on("CH3", (data: any) => this.ch3(data))
+    rovecomm.on("NO2", (data: any) => this.no2(data))
   }
 
   onMouseLeave(): void {
@@ -290,8 +288,8 @@ class SensorGraphs extends Component<IProps, IState> {
 
   methane(data: any): void {
     // the methane data packet is [methane concentration, temperature]
-    // temperature is discarded since it is supplied from the O2 sensor as well
     this.addData("Methane", data[0])
+    this.addData("Temperature", data[1])
   }
 
   co2(data: any): void {
@@ -299,18 +297,15 @@ class SensorGraphs extends Component<IProps, IState> {
   }
 
   o2(data: any): void {
-    this.addData("O2PP", data[0])
-    this.addData("Temperature", data[1])
-    this.addData("O2Concentration", data[2])
-    this.addData("O2Pressure", data[3])
+    this.addData("O2", data[0])
   }
 
-  no(data: any): void {
-    this.addData("NO", data[0])
+  ch3(data: any): void {
+    this.addData("CH3", data[0])
   }
 
-  n2o(data: any): void {
-    this.addData("N2O", data[0])
+  no2(data: any): void {
+    this.addData("NO2", data[0])
   }
 
   /**
@@ -357,19 +352,7 @@ class SensorGraphs extends Component<IProps, IState> {
         },
       ],
       [
-        "O2PP",
-        {
-          units: "mBar",
-          graphLineColor: "green",
-          graphLineType: "dashed",
-          values: [],
-          normalizedValues: [],
-          max: -1,
-          min: -1,
-        },
-      ],
-      [
-        "O2Concentration",
+        "O2",
         {
           units: "ppm",
           graphLineColor: "blue",
@@ -381,19 +364,7 @@ class SensorGraphs extends Component<IProps, IState> {
         },
       ],
       [
-        "O2Pressure",
-        {
-          units: "mBar",
-          graphLineColor: "purple",
-          graphLineType: "dashed",
-          values: [],
-          normalizedValues: [],
-          max: -1,
-          min: -1,
-        },
-      ],
-      [
-        "NO",
+        "CH3",
         {
           units: "ppm",
           graphLineColor: "black",
@@ -405,7 +376,7 @@ class SensorGraphs extends Component<IProps, IState> {
         },
       ],
       [
-        "N2O",
+        "NO2",
         {
           units: "ppm",
           graphLineColor: "gray",
@@ -459,11 +430,14 @@ class SensorGraphs extends Component<IProps, IState> {
         <div style={label}>Sensor Graphs</div>
         <div style={container}>
           <div style={buttonrow}>
-            <button type="button" onClick={() => setInterval(() => this.addData("Methane", 100 * Math.random()), 2000)}>
+            <button
+              type="button"
+              onClick={() => setInterval(() => this.addData("Temperature", 100 * Math.random()), 2000)}
+            >
               TestMethane
             </button>
-            <button type="button" onClick={() => setInterval(() => this.addData("N2O", 100 * Math.random()), 2000)}>
-              TestN2O
+            <button type="button" onClick={() => setInterval(() => this.addData("NO2", 100 * Math.random()), 2000)}>
+              TestNO2
             </button>
             <button type="button" onClick={this.selectAll}>
               Select All
