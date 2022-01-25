@@ -1,3 +1,8 @@
+# Rover Engagement Display (RED)
+*A telemetry and command interface for operating a remote, embedded system.*
+
+---
+
 <img alt="Mars Rover Design Team Logo" src="https://avatars.githubusercontent.com/u/3443325?s=200&v=4" width="15%" />
 
 [Mars Rover Design Team](https://marsrover.mst.edu/)
@@ -5,9 +10,8 @@
 <img alt="MS&T Logo" src="https://brand.mst.edu/media/universityadvancement/communications/images/logos/logo/Logo_356.jpg" width="15%" />
 
 [Missouri University of Science and Technology](https://www.mst.edu/)
+
 ---
-# Rover Engagement Display (RED)
-*A telemetry and command interface for operating a remote, embedded system.*
 
 ## Introduction
 RED is a standalone application utilizing ReactJS built on an Electron boilerplate.
