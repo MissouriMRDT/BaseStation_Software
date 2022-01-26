@@ -72,7 +72,7 @@ const splitMainMenu: CSS.Properties = {
   border: "2px solid #990000",
   boxSizing: "border-box",
   boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-  textAlign: "center"
+  textAlign: "center",
 }
 const differenceMenu: CSS.Properties = {
   position: "relative",
@@ -80,7 +80,7 @@ const differenceMenu: CSS.Properties = {
   boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
   width: "95%",
   marginLeft: "auto",
-  marginRight: "auto"
+  marginRight: "auto",
 }
 const timeSplitMissionTitle: CSS.Properties = {
   position: "relative",
@@ -88,7 +88,7 @@ const timeSplitMissionTitle: CSS.Properties = {
   fontFamily: "Arial",
   fontSize: "25px",
   marginLeft: "auto",
-  marginRight: "auto"
+  marginRight: "auto",
 }
 const timeSplitTitle: CSS.Properties = {
   position: "relative",
@@ -98,7 +98,7 @@ const timeSplitTitle: CSS.Properties = {
   fontWeight: "bold",
   fontSize: "30px",
   marginLeft: "auto",
-  marginRight: "auto"
+  marginRight: "auto",
 }
 
 const FILEPATH = path.join(__dirname, "../assets/TaskList.json")
@@ -195,12 +195,6 @@ class Timer extends Component<IProps, IState> {
     this.handleOnDragEnd = this.handleOnDragEnd.bind(this)
   }
 
-  isTaskListEmpty(ID: number): boolean {
-    //Checks to see if the selected mission has no tasks.
-    //Return 'true' if it is empty, return 'false' otherwise.
-    return this.state.parentMission[this.findIndex(ID)].childTasks.length === 0
-  }
-
   handleChange(event: any, type: string): void {
     switch (type) {
       case "name": {
@@ -242,174 +236,14 @@ class Timer extends Component<IProps, IState> {
     this.saveJSON()
   }
 
-  findIndex(ID: number): number {
-    for (let i = 0; i < this.state.parentMission.length; i++) {
-      if (Math.floor(this.state.parentMission[i].id / 100) === Math.floor(ID / 100)) {
-        return i
-      }
-    }
-    return -1
-  }
-
   handleSubmit(event: any): void {
     event.preventDefault()
     this.addListItem(this.state.timeInput, this.state.selectedMission, this.state.nameInput)
     this.setState({ timeInput: "", nameInput: "" })
   }
 
-  countDown(): void {
-    let { currentMissionTime, currentTaskTime } = this.state
-    currentTaskTime++
-    currentMissionTime++
-    this.setState({ currentTaskTime, currentMissionTime })
-  }
-
-  startTimer(): void {
-    if (timer === 0) {
-      timer = setInterval(this.countDown, 1000)
-    }
-  }
-
-  loadNextTask(): void {
-    let { currentTask, currentTaskTime, delta } = this.state
-
-    //Prevents the next task from being loaded if the current mission has no tasks.
-    if (!this.isTaskListEmpty(this.state.selectedMission)) {
-
-      //Delta will only increment if we are not on the last task in the mission OR if the timer is counting
-      //(the timer is not stopped).
-      if(currentTask != this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks.length - 1
-          || this.state.isCounting) {
-      delta +=
-          this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks[currentTask].setTime -
-          this.state.currentTaskTime
-      }
-
-      //If the current task is the last task of the mission, then record the time difference of the current task and stop the timer.
-      if (currentTask === this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks.length - 1) {
-        console.log("End of task list")
-        //Change to current time - the set time for the task.
-        this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks[currentTask].difference = -delta
-        this.setState({ isCounting: false })
-        stopTimer()
-      } else {
-        currentTask++
-        currentTaskTime = 0
-        this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks[currentTask - 1].difference = -delta
-      }
-      this.setState({ currentTaskTime, currentTask, delta })
-    }
-  }
-
-  // currently there's no ability to save the differences for analysis after the app is closed
-  // but there's the option to make that a saveable thing to the JSON
-  saveJSON(): void {
-    fs.writeFileSync(FILEPATH, JSON.stringify({ ParentTasks: this.state.parentMission }, null, 2))
-  }
-
-  saveDifferences(): void {
-    //Prevents saveDifferences() from being executed if the selected mission has no childtasks.
-    if (!this.isTaskListEmpty(this.state.selectedMission)) {
-      let currentMission = this.state.parentMission[this.findIndex(this.state.selectedMission)]
-
-      //This gets the current date on the user's computer.
-      let currentDate = new Date()
-
-      //The way that differences are saved is by appending the current mission's differences to the .txt file. In order
-      //to keep any older difference data, we need to read in all of the contents of that file and store it as a string.
-      let differenceList = fs.readFileSync(DIFFPATH, {encoding: 'utf-8', flag: 'r'})
-
-      //A timestamp is used to mark when a difference was saved, it follows this format:
-      // "Differences saved on: MM/DD/YYYY @ HH:MM:SS"
-      let timeStamp = "Differences saved on: " + (currentDate.getMonth() + 1) + '/' + currentDate.getDate() + '/'
-                                               + currentDate.getFullYear() + " @ " + currentDate.getHours() + ':'
-                                               + currentDate.getMinutes() + ':' + currentDate.getSeconds()
-
-
-      //Prints the mission name and task label on separate lines.
-      differenceList += timeStamp + '\n' + "Mission: " + currentMission.title + '\n' + "Tasks:\n"
-
-      //Each task name is printed out, along with its difference.
-      for(let i = 0; i < currentMission.childTasks.length; i++) {
-        differenceList += "  " + currentMission.childTasks[i].title + ": "
-          + (currentMission.childTasks[i].difference <= 0 ? "-" : "+")
-          + packOutput(currentMission.childTasks[i].difference) + '\n'
-      }
-
-      //Actual mission completion time.
-      let completedMissionTime = currentMission.setTime - this.state.delta
-
-      //Various data are printed out about the time differences, including the time saved/lost between the expected
-      //mission time and the actual mission time.
-      differenceList += "\nExpected Mission Completion Time: " + packOutput(currentMission.setTime) + '\n'
-      differenceList += "Actual Mission Time Achieved: " + packOutput(completedMissionTime) + '\n'
-      differenceList += "Total Time " + (completedMissionTime - currentMission.setTime <= 0 ? "Saved: " : "Lost: ") +
-        (packOutput(completedMissionTime - currentMission.setTime)) + "\n\n"
-
-      //A small border is added to separate different difference data.
-      differenceList += "-------------------------------------------------------------\n\n"
-
-    //The added time differences are saved onto "Differences.txt"
-    fs.writeFileSync(DIFFPATH, differenceList)
-    }
-  }
-
-  reset(): void {
-
-    let currentMission = this.findIndex(this.state.selectedMission)
-
-    //If the timer is running whenever reset() is called, then only reset the current task
-    if (this.state.currentTaskTime) {
-      let { currentMissionTime } = this.state
-      currentMissionTime -= this.state.currentTaskTime
-      this.state.parentMission[currentMission].childTasks[this.state.currentTask].difference = 0
-      this.setState({ currentMissionTime, currentTaskTime: 0, isCounting: false })
-      stopTimer()
-
-      //If the timer is stopped and reset() is called, then reset the entire mission
-    } else {
-      //Resets all time differences in parentMission[], from the index in parentMission[] that reset() was called.
-      //So long as the mission's tasklist is NOT empty.
-      try {
-        for(let i = this.state.currentTask; i >= 0; i--)
-          this.state.parentMission[currentMission].childTasks[i].difference = 0
-      } catch(error){}
-      
-      this.setState({ currentMissionTime: 0, currentTask: 0, currentTaskTime: 0, isCounting: false, delta: 0 })
-      stopTimer()
-    }
-  }
-
-  findNewID(): number {
-    let ID = 100
-    let doesExist = true
-    while (doesExist) {
-      doesExist = false
-      for (let i = 0; i < this.state.parentMission.length; i++) {
-        if (ID === this.state.parentMission[i].id) {
-          doesExist = true
-        }
-      }
-      ID += doesExist ? 100 : 0
-    }
-    return ID
-  }
-
-  previousTask(): void {
-    let { currentTask } = this.state
-    if (currentTask) {
-      currentTask -= 1
-      this.reset()
-    }
-
-    //This clears the now current task's time difference.
-    this.state.parentMission[this.findIndex(this.state.selectedMission)]
-      .childTasks[currentTask].difference = 0
-    this.setState({ currentTask })
-  }
-
   handleStartStop(): void {
-    //Prevents timer from starting if current mission has no tasks of its own.
+    // Prevents timer from starting if current mission has no tasks of its own.
     if (!this.isTaskListEmpty(this.state.selectedMission)) {
       let { isCounting } = this.state
       if (!isCounting) {
@@ -421,6 +255,38 @@ class Timer extends Component<IProps, IState> {
       }
       this.setState({ isCounting })
     }
+  }
+
+  handleOnDragEnd(result: any): void {
+    const relevantMission = this.findIndex(parseInt(result.draggableId, 10))
+    if (result.destination) {
+      // another instance of something deeper than surface level being edited but eslint wanting const
+      const { parentMission } = this.state
+      const [reorderedItem] = parentMission[relevantMission].childTasks.splice(result.source.index, 1)
+      parentMission[relevantMission].childTasks.splice(result.destination.index, 0, reorderedItem)
+      this.setState({ parentMission })
+      this.saveJSON()
+    }
+  }
+
+  removeListItem(ID: number): void {
+    this.reset()
+    let { parentMission, selectedMission } = this.state
+    console.log(ID)
+    if (ID % 100) {
+      const index = this.findIndex(ID)
+      console.log(index)
+      const oldTask = parentMission[index].childTasks.filter(i => i.id === ID)
+      parentMission[index].setTime -= oldTask[0].setTime
+      const newChildList = parentMission[index].childTasks.filter(i => i.id !== ID)
+      parentMission[index].childTasks = newChildList
+    } else {
+      const newParentList = parentMission.filter(i => i.id !== ID)
+      parentMission = newParentList
+      selectedMission = parentMission[0].id
+    }
+    this.setState({ parentMission, currentTask: 0, selectedMission })
+    this.saveJSON()
   }
 
   addListItem(time: string, inputID: number, nameIn: string): void {
@@ -451,36 +317,187 @@ class Timer extends Component<IProps, IState> {
     this.saveJSON()
   }
 
-  removeListItem(ID: number): void {
-    this.reset()
-    let { parentMission, selectedMission } = this.state
-    console.log(ID)
-    if (ID % 100) {
-      const index = this.findIndex(ID)
-      console.log(index)
-      const oldTask = parentMission[index].childTasks.filter(i => i.id === ID)
-      parentMission[index].setTime -= oldTask[0].setTime
-      const newChildList = parentMission[index].childTasks.filter(i => i.id !== ID)
-      parentMission[index].childTasks = newChildList
-    } else {
-      const newParentList = parentMission.filter(i => i.id !== ID)
-      parentMission = newParentList
-      selectedMission = parentMission[0].id
+  previousTask(): void {
+    const { parentMission } = this.state
+    let { currentTask } = this.state
+    if (currentTask) {
+      currentTask -= 1
+      this.reset()
     }
-    this.setState({ parentMission, currentTask: 0, selectedMission })
-    this.saveJSON()
+
+    // This clears the now current task's time difference.
+    parentMission[this.findIndex(this.state.selectedMission)].childTasks[currentTask].difference = 0
+    this.setState({ currentTask, parentMission })
   }
 
-  handleOnDragEnd(result: any): void {
-    const relevantMission = this.findIndex(parseInt(result.draggableId, 10))
-    if (result.destination) {
-      // another instance of something deeper than surface level being edited but eslint wanting const
-      const { parentMission } = this.state
-      const [reorderedItem] = parentMission[relevantMission].childTasks.splice(result.source.index, 1)
-      parentMission[relevantMission].childTasks.splice(result.destination.index, 0, reorderedItem)
-      this.setState({ parentMission })
-      this.saveJSON()
+  findNewID(): number {
+    let ID = 100
+    let doesExist = true
+    while (doesExist) {
+      doesExist = false
+      for (let i = 0; i < this.state.parentMission.length; i++) {
+        if (ID === this.state.parentMission[i].id) {
+          doesExist = true
+        }
+      }
+      ID += doesExist ? 100 : 0
     }
+    return ID
+  }
+
+  reset(): void {
+    const { parentMission } = this.state
+    const currentMission = this.findIndex(this.state.selectedMission)
+
+    // If the timer is running whenever reset() is called, then only reset the current task
+    if (this.state.currentTaskTime) {
+      let { currentMissionTime } = this.state
+      currentMissionTime -= this.state.currentTaskTime
+      parentMission[currentMission].childTasks[this.state.currentTask].difference = 0
+      this.setState({ currentMissionTime, currentTaskTime: 0, isCounting: false })
+      stopTimer()
+
+      // If the timer is stopped and reset() is called, then reset the entire mission
+    } else {
+      // Resets all time differences in parentMission[], from the index in parentMission[] that reset() was called.
+      // So long as the mission's tasklist is NOT empty.
+      try {
+        for (let i = this.state.currentTask; i >= 0; i--) parentMission[currentMission].childTasks[i].difference = 0
+      } catch (error) {}
+
+      this.setState({
+        currentMissionTime: 0,
+        currentTask: 0,
+        currentTaskTime: 0,
+        isCounting: false,
+        delta: 0,
+        parentMission,
+      })
+      stopTimer()
+    }
+  }
+
+  saveDifferences(): void {
+    // Prevents saveDifferences() from being executed if the selected mission has no childtasks.
+    if (!this.isTaskListEmpty(this.state.selectedMission)) {
+      const currentMission = this.state.parentMission[this.findIndex(this.state.selectedMission)]
+
+      // If "Differences.txt" does not exist in it's directory, then make the file "Differences.txt".
+      if (!fs.existsSync(DIFFPATH)) {
+        fs.openSync(DIFFPATH, "w")
+      }
+
+      // This gets the current date on the user's computer.
+      const currentDate = new Date()
+
+      // This string contains the difference data for the current mission.
+      let differenceList = ""
+
+      // A timestamp is used to mark when a difference was saved, it follows this format:
+      // "Differences saved on: MM/DD/YYYY @ HH:MM:SS"
+      const timeStamp = `Differences saved on: ${
+        currentDate.getMonth() + 1
+      }/${currentDate.getDate()}/${currentDate.getFullYear()} @ ${currentDate.getHours()}:${currentDate.getMinutes()}:${currentDate.getSeconds()}`
+
+      // Prints the mission name and task label on separate lines.
+      differenceList += `${timeStamp}\nMission: ${currentMission.title}\nTasks:\n`
+
+      // Each task name is printed out, along with its difference.
+      for (let i = 0; i < currentMission.childTasks.length; i++) {
+        differenceList += `  ${currentMission.childTasks[i].title}: ${
+          currentMission.childTasks[i].difference <= 0 ? "-" : "+"
+        }${packOutput(currentMission.childTasks[i].difference)}\n`
+      }
+
+      // Actual mission completion time.
+      const completedMissionTime = currentMission.setTime - this.state.delta
+
+      // Various data are printed out about the time differences, including the time saved/lost between the expected
+      // mission time and the actual mission time.
+      differenceList += `\nExpected Mission Completion Time: ${packOutput(currentMission.setTime)}\n`
+      differenceList += `Actual Mission Time Achieved: ${packOutput(completedMissionTime)}\n`
+      differenceList += `Total Time ${
+        completedMissionTime - currentMission.setTime <= 0 ? "Saved: " : "Lost: "
+      }${packOutput(completedMissionTime - currentMission.setTime)}\n\n`
+
+      // A small border is added to separate different difference data.
+      differenceList += "-------------------------------------------------------------\n\n"
+
+      // Previous difference data in Differences.txt is appended at the end of the most recent
+      // data to keep an archive of dirfferences for future references.
+      differenceList += fs.readFileSync(DIFFPATH, { encoding: "utf-8", flag: "r" })
+
+      // The added time differences are saved onto "Differences.txt"
+      fs.writeFileSync(DIFFPATH, differenceList)
+    }
+  }
+
+  // currently there's no ability to save the differences for analysis after the app is closed
+  // but there's the option to make that a saveable thing to the JSON
+  saveJSON(): void {
+    fs.writeFileSync(FILEPATH, JSON.stringify({ ParentTasks: this.state.parentMission }, null, 2))
+  }
+
+  loadNextTask(): void {
+    const { parentMission } = this.state
+    let { currentTask, currentTaskTime, delta } = this.state
+
+    // Prevents the next task from being loaded if the current mission has no tasks.
+    if (!this.isTaskListEmpty(this.state.selectedMission)) {
+      // Delta will only increment if we are not on the last task in the mission OR if the timer is counting
+      // (the timer is not stopped).
+      if (
+        currentTask !== parentMission[this.findIndex(this.state.selectedMission)].childTasks.length - 1 ||
+        this.state.isCounting
+      ) {
+        delta +=
+          parentMission[this.findIndex(this.state.selectedMission)].childTasks[currentTask].setTime -
+          this.state.currentTaskTime
+      }
+
+      // If the current task is the last task of the mission, then record the time difference of the current task and stop the timer.
+      if (currentTask === parentMission[this.findIndex(this.state.selectedMission)].childTasks.length - 1) {
+        console.log("End of task list")
+        // Change to current time - the set time for the task.
+
+        this.setState({ isCounting: false })
+        parentMission[this.findIndex(this.state.selectedMission)].childTasks[currentTask].difference = -delta
+        stopTimer()
+      } else {
+        currentTask++
+        currentTaskTime = 0
+        parentMission[this.findIndex(this.state.selectedMission)].childTasks[currentTask - 1].difference = -delta
+      }
+      this.setState({ currentTaskTime, currentTask, delta, parentMission })
+    }
+  }
+
+  startTimer(): void {
+    if (timer === 0) {
+      timer = setInterval(this.countDown, 1000)
+    }
+  }
+
+  countDown(): void {
+    let { currentMissionTime, currentTaskTime } = this.state
+    currentTaskTime++
+    currentMissionTime++
+    this.setState({ currentTaskTime, currentMissionTime })
+  }
+
+  findIndex(ID: number): number {
+    for (let i = 0; i < this.state.parentMission.length; i++) {
+      if (Math.floor(this.state.parentMission[i].id / 100) === Math.floor(ID / 100)) {
+        return i
+      }
+    }
+    return -1
+  }
+
+  isTaskListEmpty(ID: number): boolean {
+    // Checks to see if the selected mission has no tasks.
+    // Return 'true' if it is empty, return 'false' otherwise.
+    return this.state.parentMission[this.findIndex(ID)].childTasks.length === 0
   }
 
   advancedOptionsMenu(): JSX.Element {
@@ -509,35 +526,44 @@ class Timer extends Component<IProps, IState> {
 
   taskDifferenceList(): JSX.Element {
     return (
-      <div id="Time Differences" style={{ ...column, padding: "5px", width: "93%", fontFamily: "Arial", maxHeight: "150px", overflowY: "scroll", overflow: "auto"}}>
+      <div
+        id="Time Differences"
+        style={{
+          ...column,
+          padding: "5px",
+          width: "93%",
+          fontFamily: "Arial",
+          maxHeight: "150px",
+          overflowY: "scroll",
+          overflow: "auto",
+        }}
+      >
         {this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks.map(task => {
           return (
-            <div key={task.id}
-                 style={{
-                   display: "flex",
-                   //Depending on if the printed out task is the current task, then that task will be highlighted.
-                   backgroundColor: (task.id == this.state.parentMission[this.findIndex(this.state.selectedMission)]
-                            .childTasks[this.state.currentTask].id)
-                            ? "#FFFF00"
-                            : "white"
-                  }}
-                 >
-              <div style={{width: "50%", textAlign: "left"}}>
-                {task.title}
-              </div>
-              <div style={{width: "25%", textAlign: "right"}}>
-                {(task.difference == 0) 
-                 ? 
-                  null
-                 :
-                  <div style={{color: (task.difference < 0) ? "#00AA00" : "#AA0000"}}>
-                    {task.difference > 0 ? "+" : "-"}{packOutput(task.difference)}
+            <div
+              key={task.id}
+              style={{
+                display: "flex",
+                // Depending on if the printed out task is the current task, then that task will be highlighted.
+                backgroundColor:
+                  task.id ===
+                  this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks[
+                    this.state.currentTask
+                  ].id
+                    ? "#FFFF00"
+                    : "white",
+              }}
+            >
+              <div style={{ width: "50%", textAlign: "left" }}>{task.title}</div>
+              <div style={{ width: "25%", textAlign: "right" }}>
+                {task.difference === 0 ? null : (
+                  <div style={{ color: task.difference < 0 ? "#00AA00" : "#AA0000" }}>
+                    {task.difference > 0 ? "+" : "-"}
+                    {packOutput(task.difference)}
                   </div>
-                 }
+                )}
               </div>
-              <div style={{width: "25%", textAlign: "right"}}>
-                {packOutput(task.setTime)}
-              </div>
+              <div style={{ width: "25%", textAlign: "right" }}>{packOutput(task.setTime)}</div>
             </div>
           )
         })}
@@ -548,54 +574,47 @@ class Timer extends Component<IProps, IState> {
   timeSplitMenu(): JSX.Element {
     return (
       <div id="Time Split Menu" style={splitMainMenu}>
-        {/*Large title at the top of the time split menu.*/}
-        <div style={timeSplitTitle}>
-          Time Splitter
-        </div>
+        {/* Large title at the top of the time split menu. */}
+        <div style={timeSplitTitle}>Time Splitter</div>
 
-        {/*This contains the actual time split table to view current time differences.*/}
+        {/* This contains the actual time split table to view current time differences. */}
         <div style={differenceMenu}>
-
-          {/*This displays the current mission title as well as the total mission time.*/}
-          <div style={{ ...timeSplitMissionTitle, borderBottom: "2px solid #990000", justifyContent: "space-between", display: "flex"}}>
-            <div>
-              {this.state.parentMission[this.findIndex(this.state.selectedMission)].title}
-            </div>
-            <div>
-              {packOutput(this.state.parentMission[this.findIndex(this.state.selectedMission)].setTime)}
-            </div>
+          {/* This displays the current mission title as well as the total mission time. */}
+          <div
+            style={{
+              ...timeSplitMissionTitle,
+              borderBottom: "2px solid #990000",
+              justifyContent: "space-between",
+              display: "flex",
+            }}
+          >
+            <div>{this.state.parentMission[this.findIndex(this.state.selectedMission)].title}</div>
+            <div>{packOutput(this.state.parentMission[this.findIndex(this.state.selectedMission)].setTime)}</div>
           </div>
 
-          {/*This block will print out the task list, along with its respected target times. If the
-             currently selected mission has no tasks, then do not attempt to render any task data.*/}
-          <div>
-            {this.isTaskListEmpty(this.state.selectedMission)
-             ? "No Tasks Listed"
-             : this.taskDifferenceList()
-            }
-          </div>
+          {/* This block will print out the task list, along with its respected target times. If the
+             currently selected mission has no tasks, then do not attempt to render any task data. */}
+          <div>{this.isTaskListEmpty(this.state.selectedMission) ? "No Tasks Listed" : this.taskDifferenceList()}</div>
         </div>
 
-        <div style={{ ...timeSplitMissionTitle, paddingTop: "5px", justifyContent: "space-between", display: "flex"}}>
-          <div>
-            Current Mission Time:
-          </div>
-          <div>
-            {packOutput(this.state.currentMissionTime)}
-          </div>
+        <div style={{ ...timeSplitMissionTitle, paddingTop: "5px", justifyContent: "space-between", display: "flex" }}>
+          <div>Current Mission Time:</div>
+          <div>{packOutput(this.state.currentMissionTime)}</div>
         </div>
 
-        <div style={{ ...timeSplitMissionTitle, paddingBottom: "5px", justifyContent: "space-between", display: "flex"}}>
-          <div>
-            Current Task Time:
-          </div>
-          <div>
-            {packOutput(this.state.currentTaskTime)}
-          </div>
+        <div
+          style={{ ...timeSplitMissionTitle, paddingBottom: "5px", justifyContent: "space-between", display: "flex" }}
+        >
+          <div>Current Task Time:</div>
+          <div>{packOutput(this.state.currentTaskTime)}</div>
         </div>
 
         <div>
-          <button type="button" style={{height: "50px", width: "auto", fontSize: "30px",}} onClick={() => this.saveDifferences()}>
+          <button
+            type="button"
+            style={{ height: "50px", width: "auto", fontSize: "30px" }}
+            onClick={() => this.saveDifferences()}
+          >
             Save Differences
           </button>
         </div>
@@ -666,16 +685,16 @@ class Timer extends Component<IProps, IState> {
                     value={mission.id}
                     checked={this.state.selectedMission === mission.id}
                     onChange={() => {
-                      //Reset is called to reset the time differences in the time split menu.
+                      // Reset is called to reset the time differences in the time split menu.
                       this.reset()
                       this.setState({
                         selectedMission: mission.id,
                         currentTask: 0,
                         currentMissionTime: 0,
                         currentTaskTime: 0,
-                        delta: 0
-                      })}
-                    }
+                        delta: 0,
+                      })
+                    }}
                   />
                   <div style={{ ...column, height: "20px", padding: "2px", width: "23%" }}>
                     <div style={{ wordWrap: "break-word" }}>{mission.title}</div>
@@ -815,10 +834,10 @@ class Timer extends Component<IProps, IState> {
 
             <ProgressBar
               current={this.state.currentMissionTime}
-              //Prevents a newly instantiated mission from having it's non-existent time being accessed.
+              // Prevents a newly instantiated mission from having it's non-existent time being accessed.
               total={
-                //Makes progress bar green when a mission has no child tasks.
-                (this.state.parentMission.length)
+                // Makes progress bar green when a mission has no child tasks.
+                this.state.parentMission.length
                   ? this.state.parentMission[this.findIndex(this.state.selectedMission)].setTime
                   : NaN
               }
@@ -840,7 +859,7 @@ class Timer extends Component<IProps, IState> {
           <div id="CurrentTaskContainer" style={{ ...column, marginTop: "-5%", width: "100%" }}>
             <p style={{ margin: "0px", fontSize: "23px", fontWeight: "bold" }}>
               {
-                //Renders "No Tasks" if the current mission has an empty array of tasks.
+                // Renders "No Tasks" if the current mission has an empty array of tasks.
                 this.isTaskListEmpty(this.state.selectedMission)
                   ? "No Tasks Listed"
                   : this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks[
@@ -851,7 +870,7 @@ class Timer extends Component<IProps, IState> {
 
             <ProgressBar
               current={this.state.currentTaskTime}
-              //Prevents non-existent task time data from being accessed
+              // Prevents non-existent task time data from being accessed
               total={
                 this.isTaskListEmpty(this.state.selectedMission)
                   ? NaN
@@ -912,10 +931,12 @@ class Timer extends Component<IProps, IState> {
             </div>
             <div style={{ flexGrow: 3, width: "33%" }}>
               <button type="button" style={mainButtons} onClick={() => this.loadNextTask()}>
-                {this.state.currentTask != this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks.length - 1
-                  ? <div>NEXT TASK</div>
-                  : <div>END MISSION</div>
-                }
+                {this.state.currentTask !==
+                this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks.length - 1 ? (
+                  <div>NEXT TASK</div>
+                ) : (
+                  <div>END MISSION</div>
+                )}
               </button>
             </div>
           </div>
