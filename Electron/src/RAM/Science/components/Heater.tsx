@@ -93,8 +93,7 @@ class Heater extends Component<IProps, IState> {
     this.updateTemps = this.updateTemps.bind(this)
     this.toggleBlock = this.toggleBlock.bind(this)
     this.updateEnabled = this.updateEnabled.bind(this)
-    rovecomm.on("Thermo Values", (data: any) => this.updateTemps(data))
-    // need to clarify data type for HeaterEnabled
+    rovecomm.on("ThermoValues", (data: any) => this.updateTemps(data))
     rovecomm.on("HeaterEnabled", (data: any) => this.updateEnabled(data))
   }
 
@@ -130,12 +129,12 @@ class Heater extends Component<IProps, IState> {
     const { blocks } = this.state
     blocks[index].isOn = !blocks[index].isOn
 
-    let bitmask = "0".repeat(8)
+    let bitmask = "0".repeat(blocks.length)
     for (let i: number = 0; i < blocks.length; i++) {
       //bitmask[i] = blocks[i].isOn ? "1" : "0" //Doesn't work strings are immutable for some reason
       bitmask = bitmask.substring(0, i) + (blocks[i].isOn ? "1" : "0") + bitmask.substring(i + 1)
     }
-
+    console.log(bitmask)
     rovecomm.sendCommand("HeaterToggle", [parseInt(bitmask, 2)])
   }
 
@@ -155,6 +154,10 @@ class Heater extends Component<IProps, IState> {
               </div>
             )
           })}
+          <div style={row}>
+            <button style={button}>Enable All</button>
+            <button style={button}>Disable All</button>
+          </div>
         </div>
       </div>
     )
