@@ -93,6 +93,7 @@ class Heater extends Component<IProps, IState> {
     this.updateTemps = this.updateTemps.bind(this)
     this.toggleBlock = this.toggleBlock.bind(this)
     this.updateEnabled = this.updateEnabled.bind(this)
+    this.setAllBlocks = this.setAllBlocks.bind(this)
     rovecomm.on("ThermoValues", (data: any) => this.updateTemps(data))
     rovecomm.on("HeaterEnabled", (data: any) => this.updateEnabled(data))
   }
@@ -134,8 +135,19 @@ class Heater extends Component<IProps, IState> {
       //bitmask[i] = blocks[i].isOn ? "1" : "0" //Doesn't work strings are immutable for some reason
       bitmask = bitmask.substring(0, i) + (blocks[i].isOn ? "1" : "0") + bitmask.substring(i + 1)
     }
-    console.log(bitmask)
     rovecomm.sendCommand("HeaterToggle", [parseInt(bitmask, 2)])
+  }
+
+  /**
+   * Sends the command to set all blocks to either on or off
+   * Does **not** update the state of the component. The board will send when it has turned off
+   * @param powered true to turn all on, false to turn all off
+   */
+  setAllBlocks(powered: boolean): void {
+    let bitmask = powered ? "1" : "0"
+    bitmask = bitmask.repeat(this.state.blocks.length)
+    rovecomm.sendCommand("HeaterToggle", [parseInt(bitmask, 2)])
+    console.log(bitmask)
   }
 
   render(): JSX.Element {
@@ -155,8 +167,12 @@ class Heater extends Component<IProps, IState> {
             )
           })}
           <div style={row}>
-            <button style={button}>Enable All</button>
-            <button style={button}>Disable All</button>
+            <button style={button} onClick={() => this.setAllBlocks(true)}>
+              Enable All
+            </button>
+            <button style={button} onClick={() => this.setAllBlocks(false)}>
+              Disable All
+            </button>
           </div>
         </div>
       </div>
