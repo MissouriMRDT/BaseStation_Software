@@ -181,17 +181,25 @@ class SensorGraphs extends Component<IProps, IState> {
     rovecomm.on("NO2", (data: any) => this.no2(data))
   }
 
+  /**
+   * Clears the crosshair when the mouse leaves the graph area
+   */
   onMouseLeave(): void {
-    // When the mouse exits the graph area, the crosshair should be cleared
     const { crosshairValues } = this.state
     crosshairValues.clear()
     this.setState({ crosshairValues })
   }
 
+  /**
+   * Called for every enabled sensor when the mouse hovers over the graph
+   * (using a built in function to react-vis) and then set that key-value pair
+   * in crosshair values to be displayed
+   *
+   * @param index index of sensor's data to use
+   * @param list sensor's data list
+   * @param listName name of the sensor to set
+   */
   onNearestX(index: number, list: Array<{ x: Date; y: number }>, listName: string): void {
-    // When we hover over the graph area, find the closest x position of each line series
-    // (using a built in function to react-vis) and then set that key-value pair
-    // in crosshair values to be displayed
     const { crosshairValues } = this.state
     crosshairValues.set(listName, list[index])
     this.setState({ crosshairValues, crosshairPos: list[index].x })
@@ -238,11 +246,13 @@ class SensorGraphs extends Component<IProps, IState> {
 
   /**
    * Adds a value to the sensor's values
+   * Discards if data is 0
    * @param sensor the name of the sensor to add the data to
    * @param newData the data to add to the sensor's values
    */
   addData(name: string, newData: number): void {
-    // Data of 0 probably just means the sensors aren't working and risks causing div by 0 errors
+    // Data of 0 risks causing div by 0 errors
+    // log it to the Rovecomm console
     if (newData === 0) {
       rovecomm.emit("all", name + " Sensor sent 0. Discarding.")
       return
