@@ -122,10 +122,10 @@ class ControlCenter extends Component<IProps, IState> {
               ref={instance => {
                 this.waypointsInstance = instance
               }}
-              style={{ flexGrow: 1, marginRight: "5px" }}
+              style={{ flexGrow: 1 }}
             />
           </div>
-          <Timer />
+          <Timer timer={undefined} />
           <Log />
           <Power />
           <Drive />
@@ -150,7 +150,7 @@ class ControlCenter extends Component<IProps, IState> {
         </div>
         <div style={{ ...column, width: "40%" }}>
           <Map
-            style={{ minHeight: `${this.state.fourthHeight}px` }}
+            style={{ minHeight: `${this.state.fourthHeight / 1.25}px` }}
             storedWaypoints={this.state.storedWaypoints}
             currentCoords={this.state.currentCoords}
             store={(name: string, coords: any) => this.waypointsInstance.store(name, coords)}

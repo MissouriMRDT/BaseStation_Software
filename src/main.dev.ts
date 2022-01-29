@@ -67,6 +67,7 @@ const createWindow = async () => {
     webPreferences: {
       nodeIntegration: true,
       nativeWindowOpen: true,
+      contextIsolation: false,
     },
   })
 
