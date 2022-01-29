@@ -2,10 +2,7 @@ import React, { Component } from "react"
 import CSS from "csstype"
 import path from "path"
 import fs from "fs"
-import { nullLiteral } from "@babel/types"
-
-
-const h1Style: CSS.Properties = {}
+import { group } from "console"
 
 const label: CSS.Properties = {
   color: "white",
@@ -18,59 +15,51 @@ const label: CSS.Properties = {
   zIndex: 1,
 }
 
-const mainContainer: CSS.Properties = {
+const container: CSS.Properties = {
   display: "flex",
-  width:"400px",
+  flexDirection: "column",
   fontFamily: "arial",
-  margin: "5px",
   borderTopWidth: "28px",
   borderColor: "#990000",
   borderBottomWidth: "2px",
   borderStyle: "solid",
-  height: "40px",
+  justifyContent: "center",
 }
 
-const mineralModal: CSS.Properties = {
-  position: "absolute",
-  zIndex:1,
-  border:"2px solid #990000",
-  backgroundColor:"white",
-  width: "600px"
+const row: CSS.Properties = {
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "center",
+  margin: "auto",
+  //lineHeight: "25px",
+  width: "98%"
 }
 
-const columns: CSS.Properties = {
-  /*float: "left",
-  width: "28%",*/
-  padding: "10px",
-  /*height: "400px",*/
-  columnWidth: "180px",
-  columnCount: 3,
+const column: CSS.Properties = {
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  margin: "auto",
+  lineHeight: "25px",
 }
 
-const rows: CSS.Properties = {
-  content: "",
-  display: "table",
-  clear: "both",
+const featureColumn: CSS.Properties = {
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  margin: "auto",
+  //lineHeight: "25px",
+  width: "33%"
 }
 
-const dropdown: CSS.Properties = {
-  position: "absolute",
-  zIndex:1,
-  backgroundColor:"white",
+const tagList: CSS.Properties = {
+  display: "flex",
+  flexDirection: "row",
+  flexWrap: "wrap",
 }
 
-const button: CSS.Properties = {
-  width: "65px",
-  border: "none",
-  
-}
-
-const FILEPATH = path.join(__dirname, "//assets/rockList.json")
-
-let rockList: any
-
-if (fs.existsSync(FILEPATH)) {
-  rockList = JSON.parse(fs.readFileSync(FILEPATH).toString())
+const tagStyle: CSS.Properties = {
+  border: "1px black"
 }
 
 const featurelist: string[] = [
@@ -99,264 +88,277 @@ const colorlist: string[] = [
   "Purple",
 ]
 
-interface MineralTab{
-  colors: string[],
-  isometric:string[],
-  forms:string[],
-  Id: number,
+/**
+ * Read the rock definitions from the json file
+ */
+function fillFrom_R_Database(): Rocks[] {
+  const FILEPATH = path.join(__dirname, "/assets/rockLookupAssets")
+  if (fs.existsSync(FILEPATH.concat("/Rock Database"))) {
+    let rockList = JSON.parse(fs.readFileSync(FILEPATH).toString()) // TODO
+    /** TODO
+     * Some kind of string parsing that takes all the values and splits them
+     * according to the special characters in the excel sheet
+     */
+    return rockList
+  }
+  else {
+    console.error("Failed loading Rock Table. File might not exist. Look in " + FILEPATH)
+    return []
+  }
+}
+
+function fillFrom_M_Database(): Minerals[] {
+  const FILEPATH = path.join(__dirname, "/assets/rockLookupAssets")
+  if (fs.existsSync(FILEPATH.concat("/Mineral Database"))) {
+    let mineralList = JSON.parse(fs.readFileSync(FILEPATH).toString()) // TODO
+    /** TODO
+     * Some kind of string parsing that takes all the values and splits them
+     * according to the special characters in the excel sheet
+     */
+    return mineralList
+  }
+  else {
+    console.error("Failed loading Mineral Table. File might not exist. Look in " + FILEPATH)
+    return []
+  }
+}
+
+function populateColors(): string[] {
+  let colorList = []
+  MINARR.map(mineral => {
+    mineral.colors.map(color => {
+      colorList.push(color)
+    })
+  })
+  return colorList
+}
+
+function populateForms(): string[] {
+  let formList = []
+  MINARR.map(mineral => {
+    mineral.forms.map(form => {
+      formList.push(form)
+    })
+  })
+  return formList
+}
+
+function populateCleaves() : string[] {
+  let cleaveList = []
+  MINARR.map(mineral => {
+    mineral.cleaveAndLuster.map(cleave => {
+      cleaveList.push(cleave)
+    })
+  })
+  return cleaveList
+}
+
+const MINARR: Minerals[] = /*fillFrom_M_Database()*/ [
+  {
+    name: "oaihg",
+    forms: [
+      "bigmama",
+      "hooba"
+    ],
+    cleaveAndLuster: [
+      "howdyouknow",
+      "yourmom",
+      "wasgey"
+    ],
+    colors: [
+      "brown",
+      "blue",
+      "green"
+    ]
+  },
+  {
+    name: "oagdggswdsihg",
+    forms: [
+      "biegdeama",
+      "hoobaggadga"
+    ],
+    cleaveAndLuster: [
+      "howagagdyouknow",
+      "youlkgbarmom",
+      "waaghasgey"
+    ],
+    colors: [
+      "shartruse",
+      "cyan",
+      "babypoogreen"
+    ]
+  }
+]
+
+const ROCKARR: Rocks[] = /*fillFrom_R_Database()*/ [
+  {
+    name: "hsveday",
+    minerals: [
+      "greenday",
+      "coldplay",
+      "owl city"
+    ],
+    description: "ITS A BOY"
+  },
+  {
+    name: "blueaboodeeaboodie",
+    minerals: [
+      "MUZZIE",
+      "RIOT",
+      "WRLD"
+    ],
+    description: "I really like listening to really loud drum and bass"
+  }
+]
+interface Minerals {
+  name: string,
+  forms: string[],
+  cleaveAndLuster: string[],
+  colors: string[]
+}
+
+interface Rocks {
+  name: string,
+  minerals: string[],
+  description: string
+}
+
+interface Output {
+  Rock: Rocks,
+  ConfidenceScore: number
 }
 
 interface IProps {
+  style?: CSS.Properties
 }
 
 interface IState {
-  feature: number,
-  selectedTab: number,
-  MineralArr:MineralTab[],
-  mineralModalOpen:boolean,
-  mineralModalOpen2: boolean,
-  featureopen: boolean,
-  colorlist: string[],
-  colorid: number,
+  availColors: string[],
+  /** Selected Colors */
+  s_Colors: string[],
+  availForms: string[],
+  /** Selected Forms */
+  s_Forms: string[],
+  availCleave: string[],
+  /** Selected Cleave */
+  s_Cleave: string[],
+  searchField: string,
+  outputArr: Output[],
+  selectedOutput: number
 }
 
 class RockLookUp extends Component<IProps, IState> {
   constructor(props: Readonly<IProps>) {
     super(props)
     this.state = {
-      selectedTab: -1,
-      feature: 0,
-      mineralModalOpen: false,
-      mineralModalOpen2: false,
-      featureopen: false,
-      colorid: 0,
-      colorlist: [],
-      MineralArr: [
-        {
-          colors: ["Blue", "Green", "Black", "Pink"],
-          isometric: ["Caltic", "Clinopyroxene", "Quartz"],
-          forms: ["Monoclinic", "Triclinic"],
-          Id: 101,
-        }
-      ]
+      availColors: populateColors(),
+      s_Colors: [],
+      availForms: populateForms(),
+      s_Forms: [],
+      availCleave: populateCleaves(),
+      s_Cleave: [],
+      searchField: "WIP; Feature frozen",
+      outputArr: [],
+      selectedOutput: 0,
+    }
+    this.handleFeatureSubmit = this.handleFeatureSubmit.bind(this)
+    this.handleInputChange = this.handleInputChange.bind(this)
+    this.handleFeatureSelect = this.handleFeatureSelect.bind(this)
+  }
+
+  handleFeatureSelect(event: any): void {
+    console.log(event)
+    console.log(event.target.id)
+    console.log(event.target.value)
+    if (event.target.id === "ColorList") {
+      let { s_Colors, availColors } = this.state
+      availColors.splice(availColors.indexOf(event.target.value), 1)
+      s_Colors.push(event.target.value)
+      this.setState({s_Colors, availColors})
+    }
+    if (event.id === "CleaveList") {
+      let { s_Cleave, availCleave } = this.state
+      availCleave.splice(availCleave.indexOf(event.target.value), 1)
+      s_Cleave.push(event.target.value)
+      this.setState({s_Cleave, availCleave})
+    }
+    if (event.id === "FormList") {
+      let { s_Forms, availForms } = this.state
+      availForms.splice(availForms.indexOf(event.target.value), 1)
+      s_Forms.push(event.target.value)
+      this.setState({s_Forms, availForms})
     }
   }
 
-  featureChange(event: {target: {value: string }}): void {
-    this.setState({ feature: featurelist.indexOf(event.target.value) })
+  handleFeatureSubmit(event: any) {
+    event.preventDefault()
   }
-/*
-  colorchange(event: {target: {value: string }}): void {
-    this.setState({ colorid: colorlist.indexOf(event.target.value) })
+
+  handleInputChange(event: any) {
+    event.preventDefault()
   }
-  <h1 style={h1Style}>RockLookUp</h1>
-*/
 
-
-  mineralMenu3(tabNum: number): JSX.Element {
-    const mineralobj=this.state.MineralArr[tabNum]
-    return (
-      <div>
-        <p>Third Mineral Characteristics</p>
-        <div style={columns}>
-          <div key={mineralobj.Id}>
-            <div >
-              <p>Colors</p>
-              <div>{mineralobj.colors.map(color =>{
-                return(
-                  <div>
-                    <form>
-                      <input type="checkbox"></input>
-                      <label id={color}>{color}</label><br></br>
-                    </form>
-                  </div>
-                )
-              })}</div>
-            </div>
-            <div >
-              <p>Isometric</p>
-              <div>{mineralobj.isometric.map(isometric =>{
-                return(
-                  <div>
-                    <form>
-                      <input type="checkbox"></input>
-                      <label id={isometric}>{isometric}</label><br></br>
-                    </form>
-                  </div>
-                )
-              })}</div>
-            </div>
-            <div>
-              <p>Forms</p>
-              <div>{mineralobj.forms.map(forms =>{
-                return(
-                  <div>
-                    <form>
-                      <input type="checkbox"></input>
-                      <label id={forms}>{forms}</label><br></br>
-                    </form>
-                  </div>
-                )
-              })}</div>
-            </div>
-            
-          </div>
-        </div>
-        <button type="button" onClick={()=>this.setState({selectedTab: -1 })}>
-            Back
-            </button>
-      </div>  
-    )
+  clearSelectedFeatures(): void {
+    let {availColors, availCleave, availForms} = this.state
+    let {s_Colors, s_Cleave, s_Forms} = this.state
+    availColors.push.apply(availColors, s_Colors)
+    availCleave.push.apply(availCleave, s_Cleave)
+    availForms.push.apply(availForms, s_Forms)
+    this.setState({
+      s_Colors: [], s_Cleave: [], s_Forms: [], availColors, availCleave, availForms
+    })
   }
-  
-
-mineralMenu2():JSX.Element{
-  return(
-    
-    <div/*style={mineralModal}*/>
-      <p>Second Mineral Characteristics</p>
-      <div style={columns}>
-        <div>
-          <p>Colors</p>
-          <form>
-            <input type="checkbox"></input>
-            <label>Blue</label><br></br>
-          </form>
-          <form>
-            <input type="checkbox"></input>
-            <label>Green</label><br></br>
-          </form>
-        </div>
-        <div >
-          <p>Isometric</p>
-          <form>
-            <input type="checkbox"></input>
-            <label>Clinopyroxene</label>
-          </form>
-          <form>
-            <input type="checkbox"></input>
-            <label>Caltic</label>
-          </form>
-        </div>
-        <div >
-          <p>Forms</p>
-          <form>
-            <input type="checkbox"></input>
-            <label>Monoclinic</label><br></br>
-          </form>
-          <form>
-            <input type="checkbox"></input>
-            <label>Triclinic</label>
-          </form>
-        </div>
-        
-      </div>
-      <button type="button" onClick={()=>this.setState({mineralModalOpen2: false})}>
-          Back
-        </button>
-        <button type={"button"} onClick={() => this.setState({ selectedTab: 0 })}>More</button>
-        {this.state.selectedTab == -1 ? null : this.mineralMenu3(this.state.selectedTab)}
-    </div>
-  )
-}
-
-
-mineralMenu():JSX.Element{
-  return(
-    <div style={mineralModal}>
-      <p>Mineral Characteristics</p>
-      <div style={columns}>
-        <div >
-          <p>Colors</p>
-          <form>
-            <input type="checkbox"></input>
-            <label>Blue</label><br></br>
-          </form>
-          <form>
-            <input type="checkbox"></input>
-            <label>Green</label><br></br>
-          </form>
-        </div>
-        <div >
-          <p>Isometric</p>
-          <form>
-            <input type="checkbox"></input>
-            <label>Olivine</label>
-          </form>
-          <form>
-            <input type="checkbox"></input>
-            <label>Caltic</label>
-          </form>
-        </div>
-        <div >
-          <p>Crystal Forms</p>
-          <form>
-            <input type="checkbox"></input>
-            <label>Monoclinic</label><br></br>
-          </form>
-          <form>
-            <input type="checkbox"></input>
-            <label>Triclinic</label>
-          </form>
-        </div>
-        
-      </div>
-      <button type="button" onClick={()=>this.setState({mineralModalOpen: false})}>
-          Back
-        </button>
-        <button type="button" onClick={()=>this.setState({mineralModalOpen2: true})}>More</button>
-        {this.state.mineralModalOpen2 ? this.mineralMenu2():null}
-    </div>
-  )
-}
-
-mineraldropdown(): JSX.Element{
-  return(
-    <div style={dropdown}>
-      <div>
-        <button type="button" style={button} onClick={()=>this.setState({mineralModalOpen: true})}>Mineral</button>
-      </div>
-      <div>
-        <button type="button" style={button} onClick={()=>this.setState({mineralModalOpen: true})}>Mafic</button>
-      </div> 
-      <div> 
-        <button type="button" style={button} onClick={()=>this.setState({mineralModalOpen: true})}>Fine</button>
-      </div>
-      <div>  
-        <button type="button" style={button} onClick={()=>this.setState({mineralModalOpen: true})}>Coarse</button>
-      </div>
-      <div>
-        <button type="button" style={button} onClick={()=>this.setState({mineralModalOpen: true})}>Felsic</button>
-      </div>
-    </div>
-  )
-}
 
   render(): JSX.Element {
     return (
-      <div>
+      <div style={this.props.style}>
         <div style={label}>Rock Lookup</div>
-        <div style={mainContainer}>
-          <button type="button" onClick={()=>this.setState({mineralModalOpen: true})}>Mineral characteristics</button>
-          <button type="button" onClick={()=>this.setState({featureopen: true})}>Select Feature</button>
-          <button type={"button"} onClick={() => this.setState({ selectedTab: 0 })}>color</button>
-          <select 
-            value={featurelist[this.state.feature]}
-            onChange = {e => this.featureChange(e)}
-            onClick={()=>this.state.feature>0? this.setState({mineralModalOpen:true}):null}
-          >
-            {featurelist.map(feature => {
-              return(
-                <option value={feature} key={feature}>
-                  {feature}
-                </option>
-              )})
-            }
-          </select>
-          
-        {this.state.mineralModalOpen ? this.mineralMenu():null}
-        {this.state.featureopen ? this.mineraldropdown():null}
-        {this.state.selectedTab == -1 ? null : this.mineralMenu3(this.state.selectedTab)}
+        <div style={container}>
+          <div style={row}>
+            <form onSubmit={() => {this.handleFeatureSubmit} /* TODO */}>
+              <input type="text" name="newTag" onChange={(e) => {this.handleInputChange(e)}}/>
+              <input type="submit" value="Add"/>
+            </form>
+          </div>
+          <div style={row}>
+            <div style={featureColumn}>
+              <p>Colors</p>
+              <select size={10} id={"ColorList"} onChange={(event) => {this.handleFeatureSelect(event)}}>
+                {this.state.availColors.map((colorName: string) => {
+                  return (<option value={colorName}>{colorName}</option>)
+                })}
+              </select>
+            </div>
+            <div style={featureColumn}>
+              <p>Cleavage</p>
+              <select size={10} id={"CleaveList"} onChange={(event) => {this.handleFeatureSelect(event)}}>
+                {this.state.availCleave.map((cleaveName: string) => {
+                  return (<option value={cleaveName}>{cleaveName}</option>)
+                })}
+              </select>
+            </div>
+            <div style={featureColumn}>
+              <p>Forms</p>
+              <select size={10} id={"FormList"} onChange={(event) => {this.handleFeatureSelect(event)}}>
+                {this.state.availForms.map((formName: string) => {
+                  return (<option value={formName}>{formName}</option>)
+                })}
+              </select>
+            </div>
+          </div>
+          <div style={column}>
+            <div style={tagList}>
+                {[...this.state.s_Colors, ...this.state.s_Forms, ...this.state.s_Cleave].map((tag: string) => {
+                  return (<div style={tagStyle}>
+                    <p>{tag}</p>
+                    <p onClick={()=>{} /* TODO */}>x</p>
+                  </div>)
+                })}
+            </div>
+            <div style={column}>
+              <button onClick={this.clearSelectedFeatures}>Clear</button>
+            </div>
+          </div>
         </div>
       </div>
     )
