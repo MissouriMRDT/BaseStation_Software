@@ -27,6 +27,7 @@ const label: CSS.Properties = {
 const row: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
+  flexGrow: 1,
   justifyContent: "center",
   margin: "auto",
   lineHeight: "25px",
@@ -35,25 +36,20 @@ const row: CSS.Properties = {
 const blockLabel: CSS.Properties = {
   margin: "auto",
 }
-const onIndicator: CSS.Properties = {
-  height: "15px",
-  width: "15px",
-  backgroundColor: "#009900",
-  borderRadius: "50%",
-  display: "flex",
-  margin: "auto",
-}
-const offIndicator: CSS.Properties = {
-  height: "15px",
-  width: "15px",
-  backgroundColor: "#990000",
-  borderRadius: "50%",
-  display: "flex",
-  margin: "auto",
-}
+
 const button: CSS.Properties = {
   width: "60px",
   margin: "auto",
+}
+
+/** Will be merged with the row css if the block is off */
+const offIndicator: CSS.Properties = {
+  backgroundColor: "#FF0000",
+}
+
+/** Will be merged with the row css if the block is off */
+const onIndicator: CSS.Properties = {
+  backgroundColor: "#00FF00",
 }
 
 type HeaterBlock = {
@@ -77,15 +73,15 @@ class Heater extends Component<IProps, IState> {
     this.state = {
       blocks: [
         {
-          temp: 105,
+          temp: -1,
           isOn: false,
         },
         {
-          temp: 98,
+          temp: -1,
           isOn: false,
         },
         {
-          temp: 32,
+          temp: -1,
           isOn: false,
         },
       ],
@@ -127,14 +123,13 @@ class Heater extends Component<IProps, IState> {
    * @param index 0-based index of the block to toggle
    */
   toggleBlock(index: number): void {
-    const { blocks } = this.state
+    const blocks: HeaterBlock[] = JSON.parse(JSON.stringify(this.state.blocks)) //Make a new array with copied data in order to not change state
     blocks[index].isOn = !blocks[index].isOn
 
-    let bitmask = "0".repeat(blocks.length)
-    for (let i: number = 0; i < blocks.length; i++) {
-      //bitmask[i] = blocks[i].isOn ? "1" : "0" //Doesn't work strings are immutable for some reason
-      bitmask = bitmask.substring(0, i) + (blocks[i].isOn ? "1" : "0") + bitmask.substring(i + 1)
-    }
+    let bitmask = ""
+    blocks.forEach(block => {
+      bitmask += block.isOn ? "1" : "0"
+    })
     rovecomm.sendCommand("HeaterToggle", [parseInt(bitmask, 2)])
   }
 
@@ -147,7 +142,6 @@ class Heater extends Component<IProps, IState> {
     let bitmask = powered ? "1" : "0"
     bitmask = bitmask.repeat(this.state.blocks.length)
     rovecomm.sendCommand("HeaterToggle", [parseInt(bitmask, 2)])
-    console.log(bitmask)
   }
 
   render(): JSX.Element {
@@ -157,12 +151,11 @@ class Heater extends Component<IProps, IState> {
         <div style={container}>
           {this.state.blocks.map((block, index) => {
             return (
-              <div style={row}>
+              <div style={{ ...row, ...(block.isOn ? onIndicator : offIndicator) }}>
                 <label style={blockLabel}>Block {index + 1}: </label>
                 <button style={button} onClick={() => this.toggleBlock(index)}>
                   {block.temp}&#176; C
                 </button>
-                <span style={block.isOn ? onIndicator : offIndicator}></span>
               </div>
             )
           })}
