@@ -1,12 +1,32 @@
 # Rover Engagement Display (RED)
 *A telemetry and command interface for operating a remote, embedded system.*
 
-## First clone?
-The first time you clone the repo, Nuget will attempt to download any required packages.  One of these packages, SharpDX, is very large for some reason - 250+ mb.  After Nuget is finished installing these packages, remove all folders in `/Packages/SharpDX.2.6.2/Bin/` EXCEPT `DirectX11-Signed-net40` which is the only folder that's actually needed.
+---
+
+<img alt="Mars Rover Design Team Logo" src="https://avatars.githubusercontent.com/u/3443325?s=200&v=4" width="15%" />
+
+[Mars Rover Design Team](https://marsrover.mst.edu/)
+
+<img alt="MS&T Logo" src="https://brand.mst.edu/media/universityadvancement/communications/images/logos/logo/Logo_356.jpg" width="15%" />
+
+[Missouri University of Science and Technology](https://www.mst.edu/)
+
+---
 
 ## Introduction
-RED is structured as a Model-View-View Model (MVVM) application, similar to Model-View-Presenter (MVP). This means the code/XAML that creates a view is seperated from its construction and control logic. https://en.wikipedia.org/wiki/Model–view–viewmodel
+RED is a standalone application utilizing ReactJS built on an Electron boilerplate.
 
-The core view controller that handles the contruction of the application is in [ViewModels/ControlCenterViewModel.cs](/RED/ViewModels/ControlCenterViewModel.cs). From there, the individual views are contructed.
+Three additional windows launch from one initial window, with each window serving one or more separate roles.
 
-Underneath the GUI, there is an implementation of RoveComm in C#, within [Rove Protocol](/RED/RoveProtocol/). This is the core software functionality, as RED's purpose is to send/recieve UDP packets to the rover's systems in a human-convienent manner. The file that defines the data for these packets is defined in [Configurations/MetadataManagerConfig.cs](/RED/Configurations/MetadataManagerConfig.cs).
+- [RED - Rover Engagement Display](link)
+- [RAM - Rover Attachment Manager](link)
+- [RON - Rover Overview ~of~ Network](link)
+- [RID - Rover Imagery Display](link)
+
+---
+
+## RED - Rover Engagement Display
+
+The main window of the application, wherein many of the primary components for controlling the rover are organized.
+- IMU (inertial measurement unit) and raw GPS readout; displays the numerical orientation, heading, and gps position of the rover
+- Waypoints
