@@ -440,15 +440,6 @@ class SensorGraphs extends Component<IProps, IState> {
         <div style={label}>Sensor Graphs</div>
         <div style={container}>
           <div style={buttonrow}>
-            <button
-              type="button"
-              onClick={() => setInterval(() => this.addData("Temperature", 100 * Math.random()), 2000)}
-            >
-              TestMethane
-            </button>
-            <button type="button" onClick={() => setInterval(() => this.addData("NO2", 100 * Math.random()), 2000)}>
-              TestNO2
-            </button>
             <button type="button" onClick={this.selectAll}>
               Select All
             </button>
