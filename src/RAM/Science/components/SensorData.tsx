@@ -56,13 +56,11 @@ interface IProps {
 
 interface IState {
   methane: number
-  co2: number
   temperature: number
-  o2PP: number
-  o2Concentration: number
-  o2Pressure: number
-  no: number
-  n2o: number
+  co2: number
+  o2: number
+  ch3: number
+  no2: number
 
   writeToFile: boolean
   sensorSaveFile: string | null
@@ -74,13 +72,11 @@ class SensorData extends Component<IProps, IState> {
     super(props)
     this.state = {
       methane: 0,
-      co2: 0,
       temperature: 0,
-      o2PP: 0,
-      o2Concentration: 0,
-      o2Pressure: 0,
-      no: 0,
-      n2o: 0,
+      co2: 0,
+      o2: 0,
+      ch3: 0,
+      no2: 0,
       writeToFile: false,
       sensorSaveFile: null,
       fileWriteInterval: null,
@@ -88,8 +84,8 @@ class SensorData extends Component<IProps, IState> {
     this.methane = this.methane.bind(this)
     this.co2 = this.co2.bind(this)
     this.o2 = this.o2.bind(this)
-    this.no = this.no.bind(this)
-    this.n2o = this.n2o.bind(this)
+    this.no2 = this.no2.bind(this)
+    this.ch3 = this.ch3.bind(this)
     this.fileWrite = this.fileWrite.bind(this)
     this.fileStart = this.fileStart.bind(this)
     this.fileStop = this.fileStop.bind(this)
@@ -97,14 +93,13 @@ class SensorData extends Component<IProps, IState> {
     rovecomm.on("Methane", (data: any) => this.methane(data))
     rovecomm.on("CO2", (data: any) => this.co2(data))
     rovecomm.on("O2", (data: any) => this.o2(data))
-    rovecomm.on("NO", (data: any) => this.no(data))
-    rovecomm.on("N2O", (data: any) => this.n2o(data))
+    rovecomm.on("CH3", (data: any) => this.ch3(data))
+    rovecomm.on("NO2", (data: any) => this.no2(data))
   }
 
   methane(data: any): void {
-    // the methane data packet is [methane concentration, temperature]
-    // temperature is discarded since it is supplied from the O2 sensor as well
-    this.setState({ methane: data[0] })
+    const [methane, temperature] = data
+    this.setState({ methane, temperature })
   }
 
   co2(data: any): void {
@@ -112,16 +107,15 @@ class SensorData extends Component<IProps, IState> {
   }
 
   o2(data: any): void {
-    const [o2PP, temperature, o2Concentration, o2Pressure] = data
-    this.setState({ temperature, o2PP, o2Concentration, o2Pressure })
+    this.setState({ o2: data[0] })
   }
 
-  no(data: any): void {
-    this.setState({ no: data[0] })
+  no2(data: any): void {
+    this.setState({ no2: data[0] })
   }
 
-  n2o(data: any): void {
-    this.setState({ n2o: data[0] })
+  ch3(data: any): void {
+    this.setState({ ch3: data[0] })
   }
 
   fileStart(): void {
@@ -136,7 +130,7 @@ class SensorData extends Component<IProps, IState> {
     fs.open(filestream, "w", err => {
       if (err) throw err
     })
-    fs.appendFile(filestream, "time,methane,co2,temp,o2PP,o2Concentration,o2Pressure\n", err => {
+    fs.appendFile(filestream, "time,methane,temp,co2,o2,ch3,no2\n", err => {
       if (err) throw err
     })
     const fileWriteInterval = setInterval(this.fileWrite, 1000)
@@ -162,10 +156,10 @@ class SensorData extends Component<IProps, IState> {
     if (this.state.writeToFile && this.state.sensorSaveFile) {
       fs.appendFile(
         this.state.sensorSaveFile,
-        // time,methane,co2,temp,o2PP,o2Concentration,o2Pressure\n
-        `${new Date().toLocaleDateString()},${this.state.methane},${this.state.co2},${this.state.temperature},${
-          this.state.o2PP
-        },${this.state.o2Concentration},${this.state.o2Pressure}\n`,
+        // time,methane,temp,co2,o2,ch3,no2
+        `${new Date().toLocaleDateString()},${this.state.methane},${this.state.temperature},${this.state.co2},${
+          this.state.o2
+        },${this.state.ch3},${this.state.no2}\n`,
         err => {
           if (err) throw err
         }
@@ -189,15 +183,6 @@ class SensorData extends Component<IProps, IState> {
               </div>
             </div>
             <div style={row}>
-              <div>CO2 Concentration:</div>
-              <div>
-                {this.state.co2.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                })}{" "}
-                ppm
-              </div>
-            </div>
-            <div style={row}>
               <div>Temperature:</div>
               <div>
                 {this.state.temperature.toLocaleString(undefined, {
@@ -208,50 +193,42 @@ class SensorData extends Component<IProps, IState> {
               </div>
             </div>
             <div style={row}>
-              <div>O2 Partial Pressure:</div>
+              <div>CO2 Concentration:</div>
               <div>
-                {this.state.o2PP.toLocaleString(undefined, {
+                {this.state.co2.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                 })}{" "}
-                mBar
+                ppm
               </div>
             </div>
             <div style={row}>
               <div>O2 Concentration:</div>
               <div>
-                {this.state.o2Concentration.toLocaleString(undefined, {
+                {this.state.o2.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                 })}{" "}
                 ppm
               </div>
             </div>
             <div style={row}>
-              <div>O2 Barometric Pressure:</div>
+              <div>CH3 Concentration:</div>
               <div>
-                {this.state.o2Pressure.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                })}{" "}
-                mBar
-              </div>
-            </div>
-            <div style={row}>
-              <div>NO Concentration:</div>
-              <div>
-                {this.state.no.toLocaleString(undefined, {
+                {this.state.ch3.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                 })}{" "}
                 ppm
               </div>
             </div>
             <div style={row}>
-              <div>N2O Concentration:</div>
+              <div>NO2 Volume:</div>
               <div>
-                {this.state.n2o.toLocaleString(undefined, {
+                {this.state.no2.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                 })}{" "}
                 ppm
               </div>
             </div>
+            <div style={row}></div>
           </div>
           <div style={buttonRow}>
             <div>Save Sensor Data</div>
