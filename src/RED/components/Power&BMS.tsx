@@ -1,8 +1,10 @@
 import React, { Component } from "react"
 import CSS from "csstype"
+import fs from "fs"
 import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
 import { ColorStyleConverter } from "../../Core/ColorConverter"
 import { BitmaskUnpack } from "../../Core/BitmaskUnpack"
+import path from "path"
 
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -20,7 +22,9 @@ const textPad: CSS.Properties = {
 }
 const mainContainer: CSS.Properties = {
   display: "flex",
+  flexWrap: "wrap",
   flexDirection: "column",
+  flexGrow: 1,
   fontFamily: "arial",
   borderTopWidth: "28px",
   borderColor: "#990000",
@@ -33,10 +37,12 @@ const mainContainer: CSS.Properties = {
 const row: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
+  flexGrow: 2,
 }
 const column: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
+  flexGrow: 2,
 }
 const readout: CSS.Properties = {
   display: "flex",
@@ -59,27 +65,11 @@ const btnStyle: CSS.Properties = {
   width: "70px",
   cursor: "pointer",
 }
-
-const MOTORS = ["Drive LF", "Drive LR", "Drive RF", "Drive RR", "Spare Motor"]
-const STEERMOTORS = ["Steering LF", "Steering LR", "Steering RF", "Steering RR"]
-const ACTBUS = ["Gimbal", "Multimedia", "Auxiliary"]
-const LOGICBUS = ["Gimbal", "Multimedia", "Autonomy", "Drive", "Nav", "Cameras", "Extra"]
-const THIRTY_V_BUS = ["12V", "Comms", "Auxiliary", "Drive"]
-const TWELVE_V_BUS = ["Gimbal", "Multimedia", "Autonomy", "Logic"]
-const VACUUM = ["Vacuum"]
-const TOTALPACKCURRENT = ["TotalPackCurrent"]
-const TOTALPACKVOLTAGE = [
-  "TotalPackVoltage",
-  "Cell 1",
-  "Cell 2",
-  "Cell 3",
-  "Cell 4",
-  "Cell 5",
-  "Cell 6",
-  "Cell 7",
-  "Cell 8",
-]
-const BATTERY_TEMP = ["Temp"]
+let RovecommManifest: any = {}
+const FILEPATH = path.join(__dirname, "../assets/RovecommManifest.json")
+if (fs.existsSync(FILEPATH)) {
+  RovecommManifest = JSON.parse(fs.readFileSync(FILEPATH).toString())
+}
 
 // The specific function of turnOffReboot() originates from how the control boards
 // on the rover are programmed. If turnOffReboot() gets passed "0", the rover turns off.
@@ -103,47 +93,28 @@ interface IState {
 class Power extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props)
+    const boardTelemetry = {}
+    const batteryTelemetry = {}
+    console.log(Object.keys(RovecommManifest.RovecommManifest.Power.Commands))
+    Object.keys(RovecommManifest.RovecommManifest.Power.Commands).forEach((Bus: string, index: any) => {
+      RovecommManifest.RovecommManifest.Power.Commands[Bus].comments.split(", ").forEach((component: any) => {
+        boardTelemetry[component] = { enabled: true, value: 0 }
+      })
+    })
+    Object.keys(RovecommManifest.RovecommManifest.BMS.Telemetry).forEach((meas_group: string, index: any) => {
+      batteryTelemetry[meas_group] = {}
+      RovecommManifest.RovecommManifest.BMS.Telemetry[meas_group].comments.split(", ").forEach((element: any) => {
+        batteryTelemetry[meas_group][element] = { value: 0 }
+      })
+    })
     this.state = {
-      boardTelemetry: {
-        "Drive LF": { enabled: true, value: 0 },
-        "Drive LR": { enabled: true, value: 0 },
-        "Drive RF": { enabled: true, value: 0 },
-        "Drive RR": { enabled: true, value: 0 },
-        "Steering LF": { value: 0 },
-        "Steering LR": { value: 0 },
-        "Steering RF": { value: 0 },
-        "Steering RR": { value: 0 },
-        "Spare Motor": { enabled: true, value: 0 },
-        Gimbal: { enabled: true, value: 0 },
-        Multimedia: { enabled: true, value: 0 },
-        Autonomy: { enabled: true, value: 0 },
-        Logic: { value: 0 },
-        "12V": { enabled: true, value: 0 },
-        Comms: { enabled: true, value: 0 },
-        Auxiliary: { enabled: true, value: 0 },
-        Drive: { enabled: true, value: 0 },
-        Vacuum: { enabled: true, value: 0 },
-        Nav: { enabled: true },
-        Cameras: { enabled: true },
-        Extra: { enabled: true },
-      },
-      batteryTelemetry: {
-        Temp: { value: 0 },
-        TotalPackCurrent: { value: 0 },
-        TotalPackVoltage: { value: 0 },
-        "Cell 1": { value: 0 },
-        "Cell 2": { value: 0 },
-        "Cell 3": { value: 0 },
-        "Cell 4": { value: 0 },
-        "Cell 5": { value: 0 },
-        "Cell 6": { value: 0 },
-        "Cell 7": { value: 0 },
-        "Cell 8": { value: 0 },
-      },
+      boardTelemetry,
+      batteryTelemetry,
     }
+    console.log(this.state.batteryTelemetry)
     this.boardListenHandler = this.boardListenHandler.bind(this)
     this.batteryListenHandler = this.batteryListenHandler.bind(this)
-
+    /*
     rovecomm.on("MotorBusCurrent", (data: number[]) => this.boardListenHandler(data, MOTORS, false))
     rovecomm.on("MotorBusEnabled", (data: number[]) => this.boardListenHandler(data, MOTORS, true))
     rovecomm.on("SteeringMotorCurrents", (data: number[]) => this.boardListenHandler(data, STEERMOTORS, false))
@@ -156,7 +127,7 @@ class Power extends Component<IProps, IState> {
     rovecomm.on("VacuumCurrent", (data: number[]) => this.boardListenHandler(data, VACUUM, false))
     rovecomm.on("PackI_Meas", (data: number) => this.batteryListenHandler(data, TOTALPACKCURRENT))
     rovecomm.on("PackV_Meas", (data: number) => this.batteryListenHandler(data, TOTALPACKVOLTAGE))
-    rovecomm.on("Temp_Meas", (data: number) => this.batteryListenHandler(data, BATTERY_TEMP))
+    rovecomm.on("Temp_Meas", (data: number) => this.batteryListenHandler(data, BATTERY_TEMP)) */
   }
 
   boardListenHandler(data: number[], partList: string[], isEnabler: boolean): void {
@@ -199,13 +170,13 @@ class Power extends Component<IProps, IState> {
             enabled: !this.state.boardTelemetry[bus].enabled,
           },
         },
-      },
+      }
       // after the state of a given device is changed, packCommand() gets called to send the command(s)
       // corresponding with the toggled device to the rover, making it so only relevent commands are sent
-      () => this.packCommand(bus)
+      // () => this.packCommand(bus)
     )
   }
-
+  /*
   allMotorToggle(button: boolean): void {
     let { boardTelemetry } = this.state
     // to simplify things, the all motor toggle was split into two buttons: an all enabled and an all disable.
@@ -282,67 +253,41 @@ class Power extends Component<IProps, IState> {
       rovecomm.sendCommand("VacuumEnable", [parseInt(newBitMask, 2)])
     }
   }
-
+*/
   render(): JSX.Element {
     return (
       <div style={this.props.style}>
         <div style={label}>Power and BMS</div>
         <div style={mainContainer}>
-          <div style={{ ...row, width: "100%" }}>
-            {[
-              [...STEERMOTORS, ...MOTORS],
-              ["Gimbal", "Multimedia", "Autonomy", "Logic", "12V", "Comms", "Auxiliary", "Drive", "Vacuum"],
-            ].map(part => {
-              return (
-                <div key={undefined} style={{ ...column, flexGrow: 1 }}>
-                  {part.map(motor => {
-                    return (
-                      <div key={motor} style={row}>
-                        {"enabled" in this.state.boardTelemetry[motor] ? (
-                          <button type="button" onClick={() => this.buttonToggle(motor)} style={btnStyle}>
-                            {this.state.boardTelemetry[motor].enabled ? "Enabled" : "Disabled"}
-                          </button>
-                        ) : (
-                          <div style={{ width: "70px", backgroundColor: "hsl(0, 0%, 90%)" }} />
-                        )}
-                        <div
-                          style={ColorStyleConverter(this.state.boardTelemetry[motor].value, 0, 7, 15, 120, 0, readout)}
-                        >
-                          <h3 style={textPad}>{motor}</h3>
-                          <h3 style={textPad}>
-                            {`${this.state.boardTelemetry[motor].value.toLocaleString(undefined, {
-                              minimumFractionDigits: 1,
-                              maximumFractionDigits: 1,
-                              minimumIntegerDigits: 2,
-                            })} A`}
-                          </h3>
-                        </div>
-                      </div>
-                    )
-                  })}
-                </div>
-              )
-            })}
-          </div>
-          <div style={{ ...row, ...btnArray, marginTop: "2%" }}>
-            {["Nav", "Cameras", "Extra"].map(peripheral => {
-              return (
-                <button
-                  type="button"
-                  key={peripheral}
-                  onClick={() => this.buttonToggle(peripheral)}
-                  style={{ cursor: "pointer" }}
-                >
-                  {this.state.boardTelemetry[peripheral].enabled ? `${peripheral} Enabled` : `${peripheral} Disabled`}
-                </button>
-              )
-            })}
+          <div style={{ height: "400px" }}>
+            <div style={{ ...column, flexGrow: 1, flexShrink: 1, flexBasis: "40%", margin: "1px" }}>
+              {Object.keys(this.state.boardTelemetry).map((part: any) => {
+                const { enabled, value } = this.state.boardTelemetry[part]
+                return (
+                  <div key={undefined} style={{ ...row }}>
+                    <button type="button" onClick={() => this.buttonToggle(enabled)} style={btnStyle}>
+                      {enabled ? "Enabled" : "Disabled"}
+                    </button>
+                    <div style={ColorStyleConverter(value, 0, 7, 15, 120, 0, readout)}>
+                      <h3 style={textPad}>{part}</h3>
+                      <h3 style={textPad}>
+                        {`${value.toLocaleString(undefined, {
+                          minimumFractionDigits: 1,
+                          maximumFractionDigits: 1,
+                          minimumIntegerDigits: 2,
+                        })} A`}
+                      </h3>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
           </div>
           <div style={{ ...row, ...btnArray, gridTemplateColumns: "auto auto" }}>
-            <button type="button" onClick={() => this.allMotorToggle(true)} style={{ cursor: "pointer" }}>
+            <button type="button" onClick={() => {}} style={{ cursor: "pointer" }}>
               Enable All Motors
             </button>
-            <button type="button" onClick={() => this.allMotorToggle(false)} style={{ cursor: "pointer" }}>
+            <button type="button" onClick={() => {}} style={{ cursor: "pointer" }}>
               Disable All Motors
             </button>
             <button type="button" onClick={() => turnOffReboot(5)} style={{ cursor: "pointer" }}>
@@ -356,10 +301,10 @@ class Power extends Component<IProps, IState> {
             -------------------------------------------
           </h3>
           <div style={{ ...row, width: "100%" }}>
-            <div style={ColorStyleConverter(this.state.batteryTelemetry.Temp.value, 30, 75, 115, 120, 0, readout)}>
+            <div style={ColorStyleConverter(this.state.batteryTelemetry.Temp_Meas.value, 30, 75, 115, 120, 0, readout)}>
               <h3 style={textPad}>Battery Temperature</h3>
               <h3 style={textPad}>
-                {this.state.batteryTelemetry.Temp.value.toLocaleString(undefined, {
+                {this.state.batteryTelemetry.Temp_Meas.Temperature.value.toLocaleString(undefined, {
                   minimumFractionDigits: 1,
                   maximumFractionDigits: 1,
                   minimumIntegerDigits: 2,
@@ -369,7 +314,7 @@ class Power extends Component<IProps, IState> {
             </div>
             <div
               style={ColorStyleConverter(
-                this.state.batteryTelemetry.TotalPackCurrent.value,
+                this.state.batteryTelemetry.PackI_Meas["Total Current"].value,
                 0,
                 15,
                 20,
@@ -380,7 +325,7 @@ class Power extends Component<IProps, IState> {
             >
               <h3 style={textPad}>Total Pack Current</h3>
               <h3 style={textPad}>
-                {`${(this.state.batteryTelemetry.TotalPackCurrent.value / 1000).toLocaleString(undefined, {
+                {`${(this.state.batteryTelemetry.PackI_Meas["Total Current"].value / 1000).toLocaleString(undefined, {
                   minimumFractionDigits: 1,
                   maximumFractionDigits: 1,
                   minimumIntegerDigits: 2,
@@ -389,7 +334,7 @@ class Power extends Component<IProps, IState> {
             </div>
             <div
               style={ColorStyleConverter(
-                this.state.batteryTelemetry.TotalPackVoltage.value,
+                this.state.batteryTelemetry.PackV_Meas["Pack Voltage"].value,
                 22,
                 28,
                 33,
@@ -400,7 +345,7 @@ class Power extends Component<IProps, IState> {
             >
               <h3 style={textPad}>Total Pack Voltage</h3>
               <h3 style={textPad}>
-                {`${(this.state.batteryTelemetry.TotalPackVoltage.value / 1000).toLocaleString(undefined, {
+                {`${(this.state.batteryTelemetry.PackV_Meas["Pack Voltage"].value / 1000).toLocaleString(undefined, {
                   minimumFractionDigits: 1,
                   maximumFractionDigits: 2,
                   minimumIntegerDigits: 2,
@@ -410,15 +355,13 @@ class Power extends Component<IProps, IState> {
           </div>
           <div style={{ ...row, width: "100%" }}>
             <div style={{ ...cellReadoutContainer, width: "100%" }}>
-              {["Cell 1", "Cell 2", "Cell 3", "Cell 4", "Cell 5", "Cell 6", "Cell 7", "Cell 8"].map(cell => {
+              {Object.keys(this.state.batteryTelemetry.CellV_Meas).map(cell => {
+                const { value } = this.state.batteryTelemetry.CellV_Meas[cell]
                 return (
-                  <div
-                    key={cell}
-                    style={ColorStyleConverter(this.state.batteryTelemetry[cell].value, 2.5, 3.1, 4.2, 0, 120, readout)}
-                  >
+                  <div key={cell} style={ColorStyleConverter(value, 2.5, 3.1, 4.2, 0, 120, readout)}>
                     <h3 style={textPad}>{cell}</h3>
                     <h3 style={textPad}>
-                      {`${(this.state.batteryTelemetry[cell].value / 1000).toLocaleString(undefined, {
+                      {`${(value / 1000).toLocaleString(undefined, {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                         minimumIntegerDigits: 1,
