@@ -68,7 +68,7 @@ const btnStyle: CSS.Properties = {
 let RovecommManifest: any = {}
 const FILEPATH = path.join(__dirname, "../assets/RovecommManifest.json")
 if (fs.existsSync(FILEPATH)) {
-  RovecommManifest = JSON.parse(fs.readFileSync(FILEPATH).toString())
+  RovecommManifest = JSON.parse(fs.readFileSync(FILEPATH).toString()).RovecommManifest
 }
 
 // The specific function of turnOffReboot() originates from how the control boards
@@ -93,17 +93,18 @@ interface IState {
 class Power extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props)
+    const { Power, BMS } = RovecommManifest
     const boardTelemetry = {}
     const batteryTelemetry = {}
-    console.log(Object.keys(RovecommManifest.RovecommManifest.Power.Commands))
-    Object.keys(RovecommManifest.RovecommManifest.Power.Commands).forEach((Bus: string, index: any) => {
-      RovecommManifest.RovecommManifest.Power.Commands[Bus].comments.split(", ").forEach((component: any) => {
+    console.log(Object.keys(Power.Commands))
+    Object.keys(Power.Commands).forEach((Bus: string, index: any) => {
+      Power.Commands[Bus].comments.split(", ").forEach((component: any) => {
         boardTelemetry[component] = { enabled: true, value: 0 }
       })
     })
-    Object.keys(RovecommManifest.RovecommManifest.BMS.Telemetry).forEach((meas_group: string, index: any) => {
+    Object.keys(BMS.Telemetry).forEach((meas_group: string, index: any) => {
       batteryTelemetry[meas_group] = {}
-      RovecommManifest.RovecommManifest.BMS.Telemetry[meas_group].comments.split(", ").forEach((element: any) => {
+      BMS.Telemetry[meas_group].comments.split(", ").forEach((element: any) => {
         batteryTelemetry[meas_group][element] = { value: 0 }
       })
     })
@@ -259,8 +260,7 @@ class Power extends Component<IProps, IState> {
       <div style={this.props.style}>
         <div style={label}>Power and BMS</div>
         <div style={mainContainer}>
-          <div style={{ height: "400px" }}>
-            <div style={{ ...column, flexGrow: 1, flexShrink: 1, flexBasis: "40%", margin: "1px" }}>
+            <div style={{ ...column, height: "401px", flexWrap:"wrap", margin: "1px" }}>
               {Object.keys(this.state.boardTelemetry).map((part: any) => {
                 const { enabled, value } = this.state.boardTelemetry[part]
                 return (
@@ -281,7 +281,6 @@ class Power extends Component<IProps, IState> {
                   </div>
                 )
               })}
-            </div>
           </div>
           <div style={{ ...row, ...btnArray, gridTemplateColumns: "auto auto" }}>
             <button type="button" onClick={() => {}} style={{ cursor: "pointer" }}>
