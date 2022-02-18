@@ -1,5 +1,7 @@
 import React, { Component } from "react"
 import CSS from "csstype"
+import { rovecomm } from "../../../Core/RoveProtocol/Rovecomm"
+import fs from "fs"
 
 const container: CSS.Properties = {
   display: "flex",
@@ -31,7 +33,8 @@ const row: CSS.Properties = {
   width: "100%",
 }
 const componentBox: CSS.Properties = {
-  margin: "5px",
+  marginTop: "5px",
+  marginBottom: "5px",
 }
 const button: CSS.Properties = {
   marginLeft: "15px",
@@ -63,8 +66,8 @@ interface IState {
   LasersPowered: boolean[]
   /** If UV light is on */
   UVPowered: boolean
-  /** If White Light is powered */
-  LightPowered: boolean
+  /** If White Light is on */
+  WhiteLightPowered: boolean
 }
 
 class Fluorometer extends Component<IProps, IState> {
@@ -74,8 +77,90 @@ class Fluorometer extends Component<IProps, IState> {
       DiodeValues: [0, 0, 0],
       LasersPowered: [false, false, false],
       UVPowered: false,
-      LightPowered: false,
+      WhiteLightPowered: false,
     }
+    this.updateDiodeVals = this.updateDiodeVals.bind(this)
+    this.toggleWhiteLight = this.toggleWhiteLight.bind(this)
+    this.toggleUV = this.toggleUV.bind(this)
+    this.buildLightCommand = this.buildLightCommand.bind(this)
+    this.buildLaserCommand = this.buildLaserCommand.bind(this)
+    this.exportData = this.exportData.bind(this)
+
+    rovecomm.on("FluorometerData", (data: any) => this.updateDiodeVals(data))
+  }
+
+  /**
+   * Updates the wavelengths received from the Rover.
+   * @param data float array of length 3 with the new data
+   */
+  updateDiodeVals(data: number[]): void {
+    const { DiodeValues } = this.state
+    DiodeValues[0] = data[0]
+    DiodeValues[1] = data[1]
+    DiodeValues[2] = data[2]
+    this.setState({ DiodeValues })
+  }
+
+  buildLightCommand(UV: boolean, White: boolean): number {
+    let bitmask = ""
+    bitmask += UV ? "1" : "0"
+    bitmask += White ? "1" : "0"
+    console.log(bitmask)
+    return parseInt(bitmask, 2)
+  }
+
+  buildLaserCommand(Lasers: boolean[]): number {
+    let bitmask = ""
+    bitmask += Lasers[0] ? "1" : "0"
+    bitmask += Lasers[1] ? "1" : "0"
+    bitmask += Lasers[2] ? "1" : "0"
+    console.log(bitmask)
+    return parseInt(bitmask, 2)
+  }
+
+  toggleWhiteLight(): void {
+    let { WhiteLightPowered } = this.state
+    WhiteLightPowered = !WhiteLightPowered
+    rovecomm.sendCommand("Lights", [this.buildLightCommand(this.state.UVPowered, WhiteLightPowered)])
+    this.setState({ WhiteLightPowered })
+  }
+
+  toggleUV(): void {
+    let { UVPowered } = this.state
+    UVPowered = !UVPowered
+    rovecomm.sendCommand("Lights", [this.buildLightCommand(UVPowered, this.state.WhiteLightPowered)])
+    this.setState({ UVPowered })
+  }
+
+  toggleLaser(index: number): void {
+    const { LasersPowered } = this.state
+    LasersPowered[index] = !LasersPowered[index]
+    rovecomm.sendCommand("FLasers", [this.buildLaserCommand(LasersPowered)])
+    this.setState({ LasersPowered })
+  }
+
+  exportData(): void {
+    // ISO string will be fromatted YYYY-MM-DDTHH:MM:SS:sssZ
+    // this regex will convert all -,T,:,Z to . (which covers to . for .csv)
+    // Date format is consistent with the SensorData csv
+    const timestamp = new Date().toISOString().replaceAll(/[:\-TZ]/g, ".")
+    const EXPORT_FILE = `./ScienceSaveFiles/Fluormeter-${timestamp}.csv`
+
+    const { DiodeValues, LasersPowered, UVPowered, WhiteLightPowered } = this.state
+
+    if (!fs.existsSync("./ScienceSaveFiles")) {
+      fs.mkdirSync("./ScienceSaveFiles")
+    }
+    let csvText = "Laser1,Laser2,Laser3,UV Light,White Light,Diode1 (nm),Diode2 (nm),Diode3 (nm)\n"
+    csvText += `${LasersPowered[0] ? "On" : "Off"},${LasersPowered[1] ? "On" : "Off"},${
+      LasersPowered[2] ? "On" : "Off"
+    },`
+    csvText += `${UVPowered ? "On" : "Off"},${WhiteLightPowered ? "On" : "Off"},`
+    csvText += `${DiodeValues[0]},${DiodeValues[1]},${DiodeValues[2]},\n`
+
+    fs.writeFile(EXPORT_FILE, csvText, err => {
+      if (err) throw err
+    })
   }
 
   render(): JSX.Element {
@@ -83,6 +168,14 @@ class Fluorometer extends Component<IProps, IState> {
       <div id="Flurometer" style={this.props.style}>
         <div style={label}>Fluorometer</div>
         <div style={container}>
+          <div style={row}>
+            <button style={controlButton} onClick={() => this.toggleWhiteLight()}>
+              {this.state.WhiteLightPowered ? "Disable" : "Enable"} White Light
+            </button>
+            <button style={controlButton} onClick={() => this.toggleUV()}>
+              {this.state.UVPowered ? "Disable" : "Enable"} UV Light
+            </button>
+          </div>
           <div style={componentBox}>
             {this.state.DiodeValues.map((value, index) => {
               return (
@@ -99,16 +192,18 @@ class Fluorometer extends Component<IProps, IState> {
               return (
                 <div style={{ ...row, ...(value ? onIndicator : offIndicator) }}>
                   <label> Laser {index + 1}: </label>
-                  <button style={button}>{value ? "Disable" : "Enable"}</button>
+                  <button style={button} onClick={() => this.toggleLaser(index)}>
+                    {value ? "Disable" : "Enable"}
+                  </button>
                 </div>
               )
             })}
           </div>
           <div style={componentBox}>
             <div style={row}>
-              <button style={controlButton}>Enable All</button>
-              <button style={controlButton}>Disable All</button>
-              <button style={controlButton}>Export</button>
+              <button style={controlButton} onClick={() => this.exportData()}>
+                Export
+              </button>
             </div>
           </div>
         </div>
