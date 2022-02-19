@@ -8,10 +8,10 @@ import { parse } from "./Rovecomm"
 
 export let dataSizes: any = []
 export let DataTypes: any = {}
-const headerLength = 5
+const headerLength = 6
 
 const filepath = path.join(__dirname, "../assets/RovecommManifest.json")
-const VersionNumber = 3
+const VersionNumber = 25
 
 if (fs.existsSync(filepath)) {
   const manifest = JSON.parse(fs.readFileSync(filepath).toString())
@@ -43,12 +43,13 @@ export function parseHeader(packet: any) {
   return header
 }
 
+/**
+ * Takes in an object of the TCPSocket type defined in the interface TCPSocket at the top of this file
+ * Iterates while there is still at least five bytes in the Deque in the TCPSocket, parsing one RC Packet at a time
+ * @param socket
+ * @returns when there is either less than 5 bytes in the Deque or not a complete packet in the Deque
+ */
 export function TCPParseWrapper(socket: TCPSocket) {
-  /*
-   * Takes in an object of the TCPSocket type defined in the interface TCPSocket at the top of this file
-   * Iterates while there is still at least five bytes in the Deque in the TCPSocket, parsing one RC Packet at a time
-   * Returns when there is either less than 5 bytes in the Deque or not a complete packet in the Deque
-   */
   // While the Deque contains at least a header to allow parsing control packets
   while (socket.RCDeque.length >= headerLength) {
     const dataCount = socket.RCDeque.get(3) * 256 + socket.RCDeque.get(4)
