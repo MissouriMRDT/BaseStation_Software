@@ -94,11 +94,7 @@ class Fluorometer extends Component<IProps, IState> {
    * @param data float array of length 3 with the new data
    */
   updateDiodeVals(data: number[]): void {
-    const { DiodeValues } = this.state
-    DiodeValues[0] = data[0]
-    DiodeValues[1] = data[1]
-    DiodeValues[2] = data[2]
-    this.setState({ DiodeValues })
+    this.setState({ DiodeValues: [data[0], data[1], data[2]] })
   }
 
   buildLightCommand(UV: boolean, White: boolean): number {
@@ -117,17 +113,15 @@ class Fluorometer extends Component<IProps, IState> {
   }
 
   toggleWhiteLight(): void {
-    let { WhiteLightPowered } = this.state
-    WhiteLightPowered = !WhiteLightPowered
-    rovecomm.sendCommand("Lights", [this.buildLightCommand(this.state.UVPowered, WhiteLightPowered)])
-    this.setState({ WhiteLightPowered })
+    this.setState({ WhiteLightPowered: !this.state.WhiteLightPowered }, () => {
+      rovecomm.sendCommand("Lights", [this.buildLightCommand(this.state.UVPowered, this.state.WhiteLightPowered)]) 
+    })
   }
 
   toggleUV(): void {
-    let { UVPowered } = this.state
-    UVPowered = !UVPowered
-    rovecomm.sendCommand("Lights", [this.buildLightCommand(UVPowered, this.state.WhiteLightPowered)])
-    this.setState({ UVPowered })
+    this.setState({ UVPowered: !this.state.UVPowered }, () => {
+      rovecomm.sendCommand("Lights", [this.buildLightCommand(this.state.UVPowered, this.state.WhiteLightPowered)]) 
+    })
   }
 
   toggleLaser(index: number): void {
