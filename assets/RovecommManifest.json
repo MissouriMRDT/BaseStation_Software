@@ -22,7 +22,7 @@
   "updateRate": 100,
   "ethernetUDPPort": 11000,
   "subnetIP": [192, 168, 1],
-  "headerLength": 5,
+  "headerLength": 6,
   "RovecommManifest": {
     "Drive": {
       "Ip": "192.168.1.134",
