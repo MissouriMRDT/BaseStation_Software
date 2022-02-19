@@ -105,7 +105,6 @@ class Fluorometer extends Component<IProps, IState> {
     let bitmask = ""
     bitmask += UV ? "1" : "0"
     bitmask += White ? "1" : "0"
-    console.log(bitmask)
     return parseInt(bitmask, 2)
   }
 
@@ -114,7 +113,6 @@ class Fluorometer extends Component<IProps, IState> {
     bitmask += Lasers[0] ? "1" : "0"
     bitmask += Lasers[1] ? "1" : "0"
     bitmask += Lasers[2] ? "1" : "0"
-    console.log(bitmask)
     return parseInt(bitmask, 2)
   }
 
@@ -169,19 +167,21 @@ class Fluorometer extends Component<IProps, IState> {
         <div style={label}>Fluorometer</div>
         <div style={container}>
           <div style={row}>
-            <button style={controlButton} onClick={() => this.toggleWhiteLight()}>
-              {this.state.WhiteLightPowered ? "Disable" : "Enable"} White Light
-            </button>
-            <button style={controlButton} onClick={() => this.toggleUV()}>
-              {this.state.UVPowered ? "Disable" : "Enable"} UV Light
-            </button>
+            <div>
+              <input type="checkbox" id="WhiteCheck" name="WhiteCheck" onChange={() => this.toggleWhiteLight()} checked={this.state.WhiteLightPowered}/>
+              <label htmlFor="WhiteCheck">White Light</label>
+            </div>
+            <div>
+              <input type="checkbox" id="UVCheck" name="UVChech" onChange={() => this.toggleUV()} checked={this.state.UVPowered}/>
+              <label htmlFor="UVCheck">UV Light</label>
+            </div>
           </div>
           <div style={componentBox}>
             {this.state.DiodeValues.map((value, index) => {
               return (
                 <div style={row}>
                   <label>
-                    Diode {index + 1}: {value} nm
+                    Diode {index + 1}: {value.toFixed(3)} nm
                   </label>
                 </div>
               )
