@@ -6,6 +6,7 @@ import Heater from "./components/Heater"
 import Cameras from "../../Core/components/Cameras"
 import ControlScheme, { controllerInputs } from "../../Core/components/ControlScheme"
 import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
+import Fluorometer from "./components/Fluorometer"
 
 const row: CSS.Properties = {
   display: "flex",
@@ -85,6 +86,7 @@ class Science extends Component<IProps, IState> {
         <div style={row}>
           <SensorData style={{ flex: 3, marginRight: "5px" }} />
           <Heater />
+          <Fluorometer style={{ marginLeft: "5px" }}/>
         </div>
         <ControlScheme configs={["Science"]} />
         <div style={row}>
