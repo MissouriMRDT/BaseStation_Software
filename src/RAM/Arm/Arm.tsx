@@ -11,8 +11,8 @@ import ControlFeatures from "./components/ControlFeatures"
 const row: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
-  justifyContent: "space-between",
   flexGrow: 1,
+  justifyContent: "space-between"
 }
 const column: CSS.Properties = {
   display: "flex",
@@ -29,15 +29,16 @@ function arm(): void {
   let ArmBaseTwist = 0
   let ArmBaseBend = 0
   let moveArm = false
-  if ("UseOpenLoop" in controllerInputs && controllerInputs.UseOpenLoop) {
-    rovecomm.sendCommand("SetClosedLoopState", [1])
-  } else if ("UseAngular" in controllerInputs && controllerInputs.UseAngular) {
-    rovecomm.sendCommand("SetClosedLoopState", [0])
+
+  if ("WristBendDirection" in controllerInputs && "WristBendMagnitude" in controllerInputs) {
+    const direction = controllerInputs.WristBendDirection === 1 ? -1 : 1
+    ArmWristBend = direction * controllerInputs.WristBendMagnitude * controlMultipliers.Wrist
+    moveArm = true
   }
 
-  if ("WristBend" in controllerInputs && "WristTwist" in controllerInputs) {
-    ArmWristBend = controllerInputs.WristBend * controlMultipliers.Wrist
-    ArmWristTwist = controllerInputs.WristTwist * controlMultipliers.Wrist
+  if ("WristTwistDirection" in controllerInputs && "WristTwistMagnitude" in controllerInputs) {
+    const direction = controllerInputs.WristTwistDirection === 1 ? -1 : 1
+    ArmWristTwist = direction * controllerInputs.WristTwistMagnitude * controlMultipliers.Wrist
     moveArm = true
   }
 
@@ -47,17 +48,12 @@ function arm(): void {
     moveArm = true
   }
 
-  if ("BaseBendDirection" in controllerInputs && "BaseBendMagnitude" in controllerInputs) {
-    const direction = controllerInputs.BaseBendDirection === 1 ? -1 : 1
-    ArmBaseBend = direction * controllerInputs.BaseBendMagnitude * controlMultipliers.Base
+  if ("BaseBend" in controllerInputs && "BaseTwist" in controllerInputs) {
+    ArmBaseTwist = controllerInputs.BaseTwist * controlMultipliers.Base
+    ArmBaseBend = controllerInputs.BaseBend * controlMultipliers.Base
     moveArm = true
   }
 
-  if ("BaseTwistDirection" in controllerInputs && "BaseTwistMagnitude" in controllerInputs) {
-    const direction = controllerInputs.BaseTwistDirection === 1 ? -1 : 1
-    ArmBaseTwist = direction * controllerInputs.BaseTwistMagnitude * controlMultipliers.Base
-    moveArm = true
-  }
   if (moveArm) {
     const armValues = [ArmWristBend, ArmWristTwist, ArmElbowTwist, ArmElbowBend, ArmBaseTwist, ArmBaseBend]
     rovecomm.sendCommand("ArmVelocityControl", armValues)
@@ -74,17 +70,12 @@ function arm(): void {
     }
     rovecomm.sendCommand("GripperMove", Gripper)
   }
-
-  if ("Nipper" in controllerInputs) {
-    let Nipper = 0
-    Nipper = controllerInputs.Nipper
-    // rovecomm.sendCommand("NipperMove", Nipper)
-  }
 }
 
 interface IProps {}
 
-interface IState {}
+interface IState {
+}
 
 class Arm extends Component<IProps, IState> {
   constructor(props: IProps) {
@@ -98,15 +89,15 @@ class Arm extends Component<IProps, IState> {
     return (
       <div style={column}>
         <div style={row}>
-          <Angular style={{ flex: 1, marginRight: "5px" }} />
-          <div style={{ ...column, flex: 1, marginLeft: "5px" }}>
+          <Angular style={{ flex: 1, margin: "2.5px" }} />
+          <div style={{ ...column, flex: 1, margin: "2.5px" }}>
             <IK />
             <ControlFeatures style={{ height: "100%" }} />
           </div>
         </div>
         <div style={row}>
-          <Cameras defaultCamera={5} style={{ width: "50%", marginRight: "5px" }} />
-          <Cameras defaultCamera={6} style={{ width: "50%", marginLeft: "5px" }} />
+          <Cameras defaultCamera={5} style={{ width: "50%", margin: "2.5px" }} />
+          <Cameras defaultCamera={6} style={{ width: "50%", margin: "2.5px" }} />
         </div>
         <ControlMultipliers />
         <ControlScheme configs={["Arm"]} />

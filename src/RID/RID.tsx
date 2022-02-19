@@ -12,8 +12,6 @@ import StateDiagram from "../RAM/Autonomy/components/StateDiagram"
 import Heater from "../RAM/Science/components/Heater"
 import SensorData from "../RAM/Science/components/SensorData"
 import SensorGraphs from "../RAM/Science/components/SensorGraphs"
-import Spectrometer from "../RAM/Science/components/Spectrometer"
-import SpectrometerViewer from "../RAM/Science/components/SpectrometerViewer"
 import Drive from "../RED/components/Drive"
 import Gimbal from "../RED/components/Gimbal"
 import Lighting from "../RED/components/Lighting"
@@ -61,13 +59,12 @@ class RoverImageryDisplay extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props)
     this.state = {
-      storedWaypoints: {},
-      currentCoords: { lat: 0, lon: 0 },
-      display: <div style={{ ...this.props.style, backgroundColor: "E0E0E0" }}>{this.buttons}</div>,
-      // Set displayed to the passed in default if there is one, or default to "none"
-      displayed: this.props.displayed ? this.props.displayed : "none",
-    }
-
+          storedWaypoints: {},
+          currentCoords: { lat: 0, lon: 0 },
+          display: <div style={{ ...this.props.style, backgroundColor: "E0E0E0" }}>{this.buttons}</div>,
+          // Set displayed to the passed in default if there is one, or default to "none"
+          displayed: this.props.displayed ? this.props.displayed : "none",
+        }
     this.merge = this.merge.bind(this)
     this.onSelect = this.onSelect.bind(this)
 
@@ -103,8 +100,6 @@ class RoverImageryDisplay extends Component<IProps, IState> {
             "Heater",
             "SensorData",
             "SensorGraphs",
-            "Spectrometer",
-            "SpectrometerViewer",
             "Drive",
             "Gimbal",
             "GPS",
@@ -262,12 +257,6 @@ class RoverImageryDisplay extends Component<IProps, IState> {
         break
       case "SensorGraphs":
         submodule = <SensorGraphs style={submod} />
-        break
-      case "Spectrometer":
-        submodule = <Spectrometer style={submod} />
-        break
-      case "SpectrometerViewer":
-        submodule = <SpectrometerViewer style={submod} />
         break
       case "Drive":
         submodule = <Drive style={submod} />

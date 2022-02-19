@@ -61,7 +61,7 @@
       "Ip": "192.168.1.133",
       "Port": 11003,
       "Commands": {
-          "BMSStop": {
+        "BMSStop": {
           "dataId": 2000,
           "dataType": "UINT8_T",
           "dataCount": 1,
@@ -143,7 +143,7 @@
           "dataCount": 1,
           "comments": "Gimbal-Log, Drive-Log, NetworkSwitch, Nav, Cam1, Cam2, BBB, Science-Sensor (Spare)"
         },
-          "ThirtyVBusEnable": {
+        "ThirtyVBusEnable": {
           "dataId": 3003,
           "dataType": "UINT8_T",
           "dataCount": 1,
@@ -281,39 +281,39 @@
       }
     },
     "Gimbal": {
-        "Ip": "192.168.1.135",
-        "Port": 11005,
-        "Commands": {
-          "LeftDriveGimbalIncrement": {
-            "dataId": 6000,
-            "dataType": "INT16_T",
-            "dataCount": 2,
-            "comments": "[Pan, Tilt](degrees 0-180)"
-          },
-          "RightDriveGimbalIncrement": {
-            "dataId": 6001,
-            "dataType": "INT16_T",
-            "dataCount": 2,
-            "comments": "[Pan, Tilt](degrees 0-180)"
-          },
-          "LeftMainGimbalIncrement": {
-            "dataId": 6002,
-            "dataType": "INT16_T",
-            "dataCount": 2,
-            "comments": "[Pan, Tilt](degrees 0-180)"
-          },
-          "RightMainGimbalIncrement": {
-            "dataId": 6003,
-            "dataType": "INT16_T",
-            "dataCount": 2,
-            "comments": "[Pan, Tilt](degrees 0-180)"
-          },
-          "InitiateTestRoutine": {
-            "dataId": 6004,
-            "dataType": "UINT8_T",
-            "dataCount": 1,
-            "comments": ""
-          }
+      "Ip": "192.168.1.135",
+      "Port": 11005,
+      "Commands": {
+        "LeftDriveGimbalIncrement": {
+          "dataId": 6000,
+          "dataType": "INT16_T",
+          "dataCount": 2,
+          "comments": "[Pan, Tilt](degrees 0-180)"
+        },
+        "RightDriveGimbalIncrement": {
+          "dataId": 6001,
+          "dataType": "INT16_T",
+          "dataCount": 2,
+          "comments": "[Pan, Tilt](degrees 0-180)"
+        },
+        "LeftMainGimbalIncrement": {
+          "dataId": 6002,
+          "dataType": "INT16_T",
+          "dataCount": 2,
+          "comments": "[Pan, Tilt](degrees 0-180)"
+        },
+        "RightMainGimbalIncrement": {
+          "dataId": 6003,
+          "dataType": "INT16_T",
+          "dataCount": 2,
+          "comments": "[Pan, Tilt](degrees 0-180)"
+        },
+        "InitiateTestRoutine": {
+          "dataId": 6004,
+          "dataType": "UINT8_T",
+          "dataCount": 1,
+          "comments": ""
+        }
       },
       "Telemetry": {},
       "Error": {}
@@ -348,7 +348,14 @@
         }
       },
       "Telemetry": {},
-      "Error": {}
+      "Error": {},
+      "Enums": {
+        "DISPLAYSTATE": {
+          "Teleop": 0,
+          "Autonomy": 1,
+          "Reached_Goal": 2
+        }
+      }
     },
     "Arm": {
       "Ip": "192.168.1.131",

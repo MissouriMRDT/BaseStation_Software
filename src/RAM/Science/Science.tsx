@@ -2,8 +2,6 @@ import React, { Component } from "react"
 import CSS from "csstype"
 import SensorData from "./components/SensorData"
 import SensorGraphs from "./components/SensorGraphs"
-import Spectrometer from "./components/Spectrometer"
-import SpectrometerViewer from "./components/SpectrometerViewer"
 import Heater from "./components/Heater"
 import Cameras from "../../Core/components/Cameras"
 import ControlScheme, { controllerInputs } from "../../Core/components/ControlScheme"
@@ -84,7 +82,6 @@ class Science extends Component<IProps, IState> {
     return (
       <div style={column}>
         <SensorGraphs />
-        <Spectrometer />
         <div style={row}>
           <SensorData style={{ flex: 3, marginRight: "5px" }} />
           <Heater />

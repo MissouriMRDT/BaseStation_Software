@@ -57,6 +57,8 @@ interface IProps {
 interface IState {
   overridden: boolean
   tool: number
+  laserOn: boolean
+  sendInterval: NodeJS.Timeout
 }
 
 class ControlFeatures extends Component<IProps, IState> {
@@ -65,13 +67,27 @@ class ControlFeatures extends Component<IProps, IState> {
     this.state = {
       overridden: false,
       tool: 0,
+      laserOn: false,
+      sendInterval: setInterval(() => rovecomm.sendCommand("Lasers", this.state.laserOn ? [1] : [0]), 1000)
     }
+  }
+
+  /** Called by React when the component is destroyed
+   *  We want to stop sending the lasers command when the arm isn't being controlled.
+   */
+  componentWillUnmount(){
+    clearInterval(this.state.sendInterval)
   }
 
   limitOverride(): void {
     // we send 1 when false and 0 when true because we are about to toggle the bool
     rovecomm.sendCommand("LimitSwitchOverride", this.state.overridden ? 0 : 1)
     this.setState({ overridden: !this.state.overridden })
+  }
+
+  toggleLasers(): void {
+    const { laserOn } = this.state
+    this.setState({laserOn: !laserOn})
   }
 
   render(): JSX.Element {
@@ -88,6 +104,12 @@ class ControlFeatures extends Component<IProps, IState> {
           <div style={row}>
             <div style={header}>Tool: </div>
             <div style={value}>{this.state.tool}</div>
+          </div>
+          <div style={row}>
+            <div>
+              <input type="checkbox" id="LaserToggle" name="LaserToggle" checked={this.state.laserOn} onChange={() => this.toggleLasers()}/>
+              <label style={{marginLeft: "5px"}} htmlFor="LaserToggle">Laser Power</label>
+            </div>
           </div>
         </div>
       </div>
