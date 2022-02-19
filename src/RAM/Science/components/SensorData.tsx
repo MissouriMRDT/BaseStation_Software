@@ -13,6 +13,7 @@ const container: CSS.Properties = {
   borderBottomWidth: "2px",
   borderStyle: "solid",
   justifyContent: "center",
+  height: "calc(100% - 40px)",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",

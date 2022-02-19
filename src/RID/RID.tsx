@@ -12,8 +12,6 @@ import StateDiagram from "../RAM/Autonomy/components/StateDiagram"
 import Heater from "../RAM/Science/components/Heater"
 import SensorData from "../RAM/Science/components/SensorData"
 import SensorGraphs from "../RAM/Science/components/SensorGraphs"
-import Spectrometer from "../RAM/Science/components/Spectrometer"
-import SpectrometerViewer from "../RAM/Science/components/SpectrometerViewer"
 import Drive from "../RED/components/Drive"
 import Gimbal from "../RED/components/Gimbal"
 import Lighting from "../RED/components/Lighting"
@@ -22,6 +20,7 @@ import Power from "../RED/components/Power&BMS"
 import CustomPackets from "../RON/components/CustomPackets"
 import PacketLogger from "../RON/components/PacketLogger"
 import PingGraph from "../RON/components/PingGraph"
+import Fluorometer from "../RAM/Science/components/Fluorometer"
 
 const row: CSS.Properties = {
   display: "flex",
@@ -103,8 +102,7 @@ class RoverImageryDisplay extends Component<IProps, IState> {
             "Heater",
             "SensorData",
             "SensorGraphs",
-            "Spectrometer",
-            "SpectrometerViewer",
+            "Fluorometer",
             "Drive",
             "Gimbal",
             "GPS",
@@ -263,11 +261,8 @@ class RoverImageryDisplay extends Component<IProps, IState> {
       case "SensorGraphs":
         submodule = <SensorGraphs style={submod} />
         break
-      case "Spectrometer":
-        submodule = <Spectrometer style={submod} />
-        break
-      case "SpectrometerViewer":
-        submodule = <SpectrometerViewer style={submod} />
+      case "Fluorometer":
+        submodule = <Fluorometer style={submod} />
         break
       case "Drive":
         submodule = <Drive style={submod} />
