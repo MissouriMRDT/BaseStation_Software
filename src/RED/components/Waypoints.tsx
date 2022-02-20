@@ -13,12 +13,13 @@ const title: CSS.Properties = {
 const container: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
+  flexGrow: 1,
   fontFamily: "arial",
   borderTopWidth: "28px",
   borderColor: "#990000",
   borderBottomWidth: "2px",
   borderStyle: "solid",
-  height: "calc(100% - 38px)",
+  marginBottom: "5px",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -78,7 +79,7 @@ const scrollviewer: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
   overflowY: "scroll",
-  height: "150px",
+  height: "77px",
 }
 const listEntry: CSS.Properties = {
   appearance: "none",

@@ -14,6 +14,7 @@ const container: CSS.Properties = {
   borderStyle: "solid",
   justifyContent: "center",
   height: "calc(100% - 40px)",
+  padding: "5px",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -94,6 +95,7 @@ class SensorData extends Component<IProps, IState> {
     rovecomm.on("Methane", (data: any) => this.methane(data))
     rovecomm.on("CO2", (data: any) => this.co2(data))
     rovecomm.on("O2", (data: any) => this.o2(data))
+    // LIKELY CHANGE AS CH3 IS AN ION AND PROBABLY NOT WHAT WE'RE MEASURING
     rovecomm.on("CH3", (data: any) => this.ch3(data))
     rovecomm.on("NO2", (data: any) => this.no2(data))
   }
@@ -170,10 +172,9 @@ class SensorData extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div id="canvas" style={this.props.style}>
+      <div id={"SensorData"} style={this.props.style}>
         <div style={label}>Sensor Data</div>
         <div style={container}>
-          <div style={grid}>
             <div style={row}>
               <div>Methane Concentration:</div>
               <div>
@@ -230,7 +231,6 @@ class SensorData extends Component<IProps, IState> {
               </div>
             </div>
             <div style={row}></div>
-          </div>
           <div style={buttonRow}>
             <div>Save Sensor Data</div>
             <button type="button" onClick={this.fileStart} style={buttons}>

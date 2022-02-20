@@ -296,8 +296,8 @@ class Power extends Component<IProps, IState> {
               SHUT DOWN
             </button>
           </div>
-          <h3 style={{ alignSelf: "center", fontSize: "14px", fontFamily: "arial" }}>
-            -------------------------------------------
+          <h3 style={{ alignSelf: "center", fontSize: "16px", fontFamily: "arial", marginTop: "-1px", marginBottom: "2px" }}>
+            -------------------------------------------------
           </h3>
           <div style={{ ...row, width: "100%" }}>
             <div style={ColorStyleConverter(this.state.batteryTelemetry.Temp_Meas.value, 30, 75, 115, 120, 0, readout)}>

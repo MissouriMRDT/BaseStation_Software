@@ -18,7 +18,6 @@ const column: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
   flexGrow: 1,
-  marginRight: "5px",
 }
 
 function arm(): void {
@@ -89,15 +88,15 @@ class Arm extends Component<IProps, IState> {
     return (
       <div style={column}>
         <div style={row}>
-          <Angular style={{ flex: 1, margin: "2.5px" }} />
-          <div style={{ ...column, flex: 1, margin: "2.5px" }}>
+          <Angular style={{ flex: 1, marginRight: "2.5px" }} />
+          <div style={{ ...column, flex: 1, marginLeft: "2.5px" }}>
             <IK />
             <ControlFeatures style={{ height: "100%" }} />
           </div>
         </div>
         <div style={row}>
-          <Cameras defaultCamera={5} style={{ width: "50%", margin: "2.5px" }} />
-          <Cameras defaultCamera={6} style={{ width: "50%", margin: "2.5px" }} />
+          <Cameras defaultCamera={5} style={{ width: "50%", marginRight: "2.5px" }} />
+          <Cameras defaultCamera={6} style={{ width: "50%", marginLeft: "2.5px" }} />
         </div>
         <ControlMultipliers />
         <ControlScheme configs={["Arm"]} />

@@ -38,15 +38,17 @@ class RoverOverviewOfNetwork extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div style={row}>
-        <div style={column}>
-          <PingGraph devices={this.state.devices} />
-          <PingMap devices={this.state.devices} />
-          <PacketLogger />
-        </div>
-        <div style={column}>
-          <CustomPackets />
-          <PingTool onDevicesChange={this.updateDevices} />
+      <div>
+        <PingGraph devices={this.state.devices} style={{marginRight: "5px"}} />
+        <div style={row}>
+          <div style={column}>
+            <PingMap devices={this.state.devices} />
+            <PacketLogger />
+          </div>
+          <div style={column}>
+            <CustomPackets />
+            <PingTool onDevicesChange={this.updateDevices} />
+          </div>
         </div>
       </div>
     )

@@ -2,10 +2,9 @@ import React, { Component } from "react"
 import CSS from "csstype"
 import { XYPlot, XAxis, YAxis, HorizontalGridLines, LineSeries } from "react-vis"
 import { RovecommManifest } from "../../Core/RoveProtocol/Rovecomm"
-import { windows } from "../../Core/Window"
 
 // eslint-disable-next-line import/no-mutable-exports
-export let RONModuleWidth: number = window.document.documentElement.clientWidth / 2 - 10
+// export let RONModuleWidth: number = window.document.documentElement.clientWidth / 2 - 10
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
@@ -36,7 +35,7 @@ const label: CSS.Properties = {
 let selectbox: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
-  width: `min(450px, ${RONModuleWidth}px)`,
+  // width: `min(450px, ${RONModuleWidth}px)`,
   margin: "2.5px",
   justifyContent: "space-around",
 }
@@ -111,16 +110,12 @@ class PingGraph extends Component<IProps, IState> {
   }
 
   render(): JSX.Element {
-    selectbox = { ...selectbox, width: `min(450px, ${RONModuleWidth - 15}px)` }
-
+    selectbox = { ...selectbox }
     // At render time, we search for the RON window so that we can properly scale down the size of these
     // components if the width of this monitor is known
-    if ("Rover Overview of Network" in windows) {
-      RONModuleWidth = windows["Rover Overview of Network"].document.documentElement.clientWidth / 2 - 10
-    }
 
     return (
-      <div style={{ ...this.props.style, width: RONModuleWidth }}>
+      <div style={{ ...this.props.style }}>
         <div style={label}>Ping Graph</div>
         <div style={container}>
           <div style={selectbox}>
@@ -135,7 +130,7 @@ class PingGraph extends Component<IProps, IState> {
               })}
             </select>
           </div>
-          <XYPlot style={{ margin: 10 }} width={RONModuleWidth - 10} height={300}>
+          <XYPlot style={{ margin: 10 }} height={300} width={window.document.documentElement.clientWidth - 30}>
             <HorizontalGridLines style={{ fill: "none" }} />
             <LineSeries data={this.state.ping} style={{ fill: "none" }} />
             <XAxis />

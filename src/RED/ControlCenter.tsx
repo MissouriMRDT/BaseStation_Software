@@ -22,12 +22,15 @@ import Lighting from "./components/Lighting"
 const row: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
+  flexShrink: 1,
+  flexGrow: 1,
   justifyContent: "space-between",
 }
 const column: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
   flexGrow: 1,
+  flexShrink: 1,
   marginRight: "5px",
 }
 
@@ -115,7 +118,7 @@ class ControlCenter extends Component<IProps, IState> {
             <GPS onCoordsChange={this.updateCoords} style={{ flexGrow: 1, marginRight: "5px", width: "60%" }} />
             <ThreeDRover style={{ width: "40%" }} />
           </div>
-          <div style={row}>
+          <div style={{ ...row, height: "200px" }}>
             <Waypoints
               onWaypointChange={this.updateWaypoints}
               currentCoords={this.state.currentCoords}

@@ -1,7 +1,6 @@
 import React, { Component } from "react"
 import CSS from "csstype"
 import { rovecomm, DataTypes, RovecommManifest } from "../../Core/RoveProtocol/Rovecomm"
-import { RONModuleWidth } from "./PingGraph"
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
@@ -31,7 +30,6 @@ const label: CSS.Properties = {
 let selectbox: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
-  width: `min(450px, ${RONModuleWidth}px)`,
   justifyContent: "space-between",
   margin: "2.5px",
 }
@@ -43,7 +41,6 @@ const textbox: CSS.Properties = {
   height: "18px",
 }
 let textboxRow: CSS.Properties = {
-  width: `min(450px, ${RONModuleWidth}px)`,
   display: "flex",
   flexDirection: "row",
   flexWrap: "wrap",
@@ -117,10 +114,10 @@ class CustomPackets extends Component<IProps, IState> {
   }
 
   render(): JSX.Element {
-    selectbox = { ...selectbox, width: `min(450px, ${RONModuleWidth - 15}px)` }
-    textboxRow = { ...textboxRow, width: `min(450px, ${RONModuleWidth - 15}px)` }
+    selectbox = { ...selectbox }
+    textboxRow = { ...textboxRow }
     return (
-      <div style={{ ...this.props.style, width: RONModuleWidth }}>
+      <div style={{ ...this.props.style }}>
         <div style={label}>Custom Packets</div>
         <div style={container}>
           {[

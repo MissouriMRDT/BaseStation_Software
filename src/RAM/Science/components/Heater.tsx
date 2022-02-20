@@ -12,7 +12,7 @@ const container: CSS.Properties = {
   borderBottomWidth: "2px",
   borderStyle: "solid",
   height: "calc(100% - 40px)",
-  minWidth: "150px",
+  padding: "5px",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -28,18 +28,29 @@ const row: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
   flexGrow: 1,
-  justifyContent: "center",
-  margin: "auto",
+  justifyContent: "space-around",
   lineHeight: "25px",
-  width: "100%",
+  margin: "2.5px",
+}
+const column: CSS.Properties = {
+  display: "flex",
+  flexDirection: "column",
+  flexGrow: 1,
+  justifyContent: "space-around"
 }
 const blockLabel: CSS.Properties = {
-  margin: "auto",
+  width: "100%",
+  justifyContent: "space-around",
+  alignSelf: "center",
+  marginLeft: "5px",
+  fontWeight: "bold",
 }
 
 const button: CSS.Properties = {
-  width: "60px",
-  margin: "auto",
+  width: "80px",
+  height: "25px",
+  alignSelf: "center",
+  margin: "0 5px 0 5px",
 }
 
 /** Will be merged with the row css if the block is off */
@@ -146,26 +157,28 @@ class Heater extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div style={this.props.style}>
+      <div id={"Heater"} style={this.props.style}>
         <div style={label}>Science Hardware</div>
         <div style={container}>
-          {this.state.blocks.map((block, index) => {
-            return (
-              <div style={{ ...row, ...(block.isOn ? onIndicator : offIndicator) }}>
-                <label style={blockLabel}>Block {index + 1}: </label>
-                <button style={button} onClick={() => this.toggleBlock(index)}>
-                  {block.temp}&#176; C
-                </button>
-              </div>
-            )
-          })}
-          <div style={row}>
-            <button style={button} onClick={() => this.setAllBlocks(true)}>
-              Enable All
-            </button>
-            <button style={button} onClick={() => this.setAllBlocks(false)}>
-              Disable All
-            </button>
+          <div style={column}>
+            {this.state.blocks.map((block, index) => {
+              return (
+                <div style={{ ...row, ...(block.isOn ? onIndicator : offIndicator) }}>
+                  <label style={blockLabel}>Block {index + 1}: </label>
+                  <button style={button} onClick={() => this.toggleBlock(index)}>
+                    {block.temp}&#176; C
+                  </button>
+                </div>
+              )
+            })}
+            <div style={row}>
+              <button style={button} onClick={() => this.setAllBlocks(true)}>
+                Enable All
+              </button>
+              <button style={button} onClick={() => this.setAllBlocks(false)}>
+                Disable All
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -24,6 +24,7 @@ const container: CSS.Properties = {
   borderBottomWidth: "2px",
   borderStyle: "solid",
   height: "calc(100% - 38px)",
+  marginBottom: "5px"
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -40,7 +41,6 @@ const row: CSS.Properties = {
   flexDirection: "row",
   justifyContent: "space-around",
   alignItems: "center",
-  margin: "5px",
 }
 const button: CSS.Properties = {
   width: "35%",

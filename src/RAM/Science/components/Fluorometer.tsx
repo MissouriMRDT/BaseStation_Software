@@ -12,6 +12,7 @@ const container: CSS.Properties = {
   borderBottomWidth: "2px",
   borderStyle: "solid",
   height: "calc(100% - 40px)",
+  padding: "5px",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -27,9 +28,9 @@ const row: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
   flexGrow: 1,
-  justifyContent: "center",
-  margin: "auto",
-  lineHeight: "30px",
+  justifyContent: "space-around",
+  alignContent: "center",
+  marginTop: "5px",
   width: "100%",
 }
 const componentBox: CSS.Properties = {
@@ -39,6 +40,7 @@ const componentBox: CSS.Properties = {
 const button: CSS.Properties = {
   marginLeft: "15px",
   width: "60px",
+  alignSelf: "center",
 }
 
 const controlButton: CSS.Properties = {
@@ -114,13 +116,13 @@ class Fluorometer extends Component<IProps, IState> {
 
   toggleWhiteLight(): void {
     this.setState({ WhiteLightPowered: !this.state.WhiteLightPowered }, () => {
-      rovecomm.sendCommand("Lights", [this.buildLightCommand(this.state.UVPowered, this.state.WhiteLightPowered)]) 
+      rovecomm.sendCommand("Lights", [this.buildLightCommand(this.state.UVPowered, this.state.WhiteLightPowered)])
     })
   }
 
   toggleUV(): void {
     this.setState({ UVPowered: !this.state.UVPowered }, () => {
-      rovecomm.sendCommand("Lights", [this.buildLightCommand(this.state.UVPowered, this.state.WhiteLightPowered)]) 
+      rovecomm.sendCommand("Lights", [this.buildLightCommand(this.state.UVPowered, this.state.WhiteLightPowered)])
     })
   }
 
@@ -173,7 +175,7 @@ class Fluorometer extends Component<IProps, IState> {
           <div style={componentBox}>
             {this.state.DiodeValues.map((value, index) => {
               return (
-                <div style={row}>
+                <div key={index} style={row}>
                   <label>
                     Diode {index + 1}: {value.toFixed(3)} nm
                   </label>
@@ -184,8 +186,8 @@ class Fluorometer extends Component<IProps, IState> {
           <div style={componentBox}>
             {this.state.LasersPowered.map((value, index) => {
               return (
-                <div style={{ ...row, ...(value ? onIndicator : offIndicator) }}>
-                  <label> Laser {index + 1}: </label>
+                <div key={index} style={{ ...row, ...(value ? onIndicator : offIndicator) }}>
+                  <label style={{ alignSelf: "center", fontWeight: "bold" }}> Laser {index + 1}: </label>
                   <button style={button} onClick={() => this.toggleLaser(index)}>
                     {value ? "Disable" : "Enable"}
                   </button>

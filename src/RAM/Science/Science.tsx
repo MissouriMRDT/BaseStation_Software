@@ -11,15 +11,10 @@ import Fluorometer from "./components/Fluorometer"
 const row: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
-  justifyContent: "space-between",
-  flexGrow: 1,
-  alignItems: "stretch",
 }
 const column: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
-  flexGrow: 1,
-  marginRight: "5px",
 }
 
 const waterMotorMultiplier = 500
@@ -83,15 +78,15 @@ class Science extends Component<IProps, IState> {
     return (
       <div style={column}>
         <SensorGraphs />
-        <div style={row}>
-          <SensorData style={{ flex: 3, marginRight: "5px" }} />
-          <Heater />
-          <Fluorometer style={{ marginLeft: "5px" }}/>
+        <div style={{ ...row, marginBottom: "7px" }}>
+          <SensorData style={{ width: "34%", marginRight: "5px" }} />
+          <Heater style={{ width: "33%" }} />
+          <Fluorometer style={{ width: "33%", marginLeft: "5px" }}/>
         </div>
         <ControlScheme configs={["Science"]} />
         <div style={row}>
-          <Cameras defaultCamera={7} style={{ width: "50%", marginRight: "5px" }} />
-          <Cameras defaultCamera={8} style={{ width: "50%", marginLeft: "5px" }} />
+          <Cameras defaultCamera={7} style={{ width: "50%", marginRight: "2.5px" }} />
+          <Cameras defaultCamera={8} style={{ width: "50%", marginLeft: "2.5px" }} />
         </div>
       </div>
     )
