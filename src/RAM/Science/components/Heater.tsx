@@ -107,7 +107,7 @@ class Heater extends Component<IProps, IState> {
 
   updateEnabled(data: number): void {
     const { blocks } = this.state
-    const bitmask = BitmaskUnpack(data, blocks.length)
+    const bitmask = BitmaskUnpack(data[0], blocks.length)
     for (var i: number = 0; i < blocks.length; i++) {
       blocks[i].isOn = Boolean(Number(bitmask[i]))
     }
