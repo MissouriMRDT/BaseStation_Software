@@ -11,7 +11,9 @@ const container: CSS.Properties = {
   borderBottomWidth: "2px",
   borderStyle: "solid",
   padding: "5px",
-  alignItems: "center",
+  alignItems: "flex-start",
+  justifyContent: "center",
+  width: `${window.document.documentElement.clientWidth / 4}`,
   height: "calc(100% - 50px)",
 }
 const label: CSS.Properties = {
@@ -178,7 +180,7 @@ class StateDiagram extends Component<IProps, IState> {
       <div style={this.props.style}>
         <div style={label}>State Diagram</div>
         <div style={container}>
-          <canvas ref={this.canvasRef} width={window.document.documentElement.clientWidth / 2 - 10} height={400} />
+          <canvas ref={this.canvasRef} width={window.document.documentElement.clientWidth / 4} height={400} />
         </div>
       </div>
     )

@@ -130,7 +130,7 @@ class PingGraph extends Component<IProps, IState> {
               })}
             </select>
           </div>
-          <XYPlot style={{ margin: 10 }} height={300} width={window.document.documentElement.clientWidth - 30}>
+          <XYPlot style={{ margin: 10 }} height={300} width={window.document.documentElement.clientWidth - 50}>
             <HorizontalGridLines style={{ fill: "none" }} />
             <LineSeries data={this.state.ping} style={{ fill: "none" }} />
             <XAxis />

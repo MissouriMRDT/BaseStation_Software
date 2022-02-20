@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import CSS from "csstype"
 import { ChromePicker } from "react-color"
-import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
+import { rovecomm } from "../../../Core/RoveProtocol/Rovecomm"
 
 const container: CSS.Properties = {
   display: "flex",
@@ -11,7 +11,6 @@ const container: CSS.Properties = {
   borderBottomWidth: "2px",
   borderStyle: "solid",
   flexDirection: "column",
-  height: "calc(100% - 38px)",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",

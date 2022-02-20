@@ -258,11 +258,11 @@
           "dataCount": 3,
           "comments": "[Pitch, Yaw, Roll] [(-90, 90), (0, 360), (-90, 90)] (deg)"
         },
-        "LidarData": {
+        "CompassData": {
           "dataId": 5102,
           "dataType": "FLOAT_T",
-          "dataCount": 2,
-          "comments": "[Distance, Quality]"
+          "dataCount": 1,
+          "comments": "[Heading] [ 0, 360 ]"
         },
         "SatelliteCountData": {
           "dataId": 5103,

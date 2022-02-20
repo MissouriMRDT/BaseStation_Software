@@ -172,12 +172,12 @@ class PingMap extends Component<IProps, IState> {
 
     const boards = Object.keys(RovecommManifest)
     const locations = [
-      { x: centerW - 20, y: 540 },
-      { x: centerW + 20, y: 540 },
-      { x: centerW - 60, y: 530 },
-      { x: centerW + 60, y: 530 },
-      { x: centerW - 95, y: 515 },
-      { x: centerW + 95, y: 515 },
+      { x: centerW -  20, y: 540 },
+      { x: centerW +  20, y: 540 },
+      { x: centerW -  60, y: 530 },
+      { x: centerW +  60, y: 530 },
+      { x: centerW -  95, y: 515 },
+      { x: centerW +  95, y: 515 },
       { x: centerW - 130, y: 495 },
       { x: centerW + 130, y: 495 },
       { x: centerW - 155, y: 460 },
@@ -186,6 +186,7 @@ class PingMap extends Component<IProps, IState> {
       { x: centerW + 170, y: 420 },
       { x: centerW - 150, y: 380 },
       { x: centerW + 150, y: 380 },
+      { x: centerW      , y: 590 }
     ]
     for (let i = 0; i < locations.length && i < boards.length; i++) {
       const coords = locations[i]

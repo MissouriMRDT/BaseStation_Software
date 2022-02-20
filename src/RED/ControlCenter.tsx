@@ -16,7 +16,6 @@ import ControlScheme from "../Core/components/ControlScheme"
 import Drive from "./components/Drive"
 import Gimbal from "./components/Gimbal"
 import ThreeDRover from "../Core/components/ThreeDRover"
-import Lighting from "./components/Lighting"
 
 
 const row: CSS.Properties = {
