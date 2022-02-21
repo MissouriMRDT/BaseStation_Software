@@ -29,18 +29,16 @@ class Autonomy extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div style={{ ...column, padding: "5px" }}>
-        <div style={{ ...row, justifyContent: "space-between" }}>
-          <div style={{...column, flex: 1, }}>
+      <div style={{ ...column }}>
+        <div style={{ ...row, justifyContent: "space-between", flex: 1 }}>
+          <div style={{...column, flex: 1 }}>
             <Controls style={{ marginRight: "5px", flexWrap: "wrap" }} selectedWaypoint={this.props.selectedWaypoint} />
             <div style={{ ...row, marginRight: "5px", flexGrow: 1 }}>
               <Activity style={{ flex: 1, marginRight: "5px" }}/>
-              <Lighting style={{ flexShrink: 1 }} />
+              <Lighting />
             </div>
           </div>
-          <div style={column}>
-            <StateDiagram />
-          </div>
+          <StateDiagram />
         </div>
         <div style={row}>
           <Cameras defaultCamera={9} style={{ flex: 1, marginRight: "2.5px" }} />

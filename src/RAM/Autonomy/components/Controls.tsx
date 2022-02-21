@@ -58,11 +58,11 @@ class Controls extends Component<IProps, IState> {
     super(props)
     this.state = {}
 
-    // this.addPositionLeg = this.addPositionLeg.bind(this)
-    // this.addMarkerLeg = this.addMarkerLeg.bind(this)
-    // this.addGateLeg = this.addGateLeg.bind(this)
+    this.addPositionLeg = this.addPositionLeg.bind(this)
+    this.addMarkerLeg = this.addMarkerLeg.bind(this)
+    this.addGateLeg = this.addGateLeg.bind(this)
   }
-/*
+
   addPositionLeg(): void {
     rovecomm.emit(
       "AutonomyActivity",
@@ -93,7 +93,7 @@ class Controls extends Component<IProps, IState> {
     )
     rovecomm.sendCommand("AddGateLeg", [this.props.selectedWaypoint.latitude, this.props.selectedWaypoint.longitude])
   }
-*/
+
   render(): JSX.Element {
     return (
       <div style={this.props.style}>
@@ -107,7 +107,13 @@ class Controls extends Component<IProps, IState> {
               <h1 style={button}>Stop Autonomy</h1>
             </button>
             <button type="button" style={button}>
-              <h1 style={button}>Add Waypoint</h1>
+              <h1 style={button}>Add Position Leg</h1>
+            </button>
+            <button type="button" style={button}>
+              <h1 style={button}>Add Marker Leg</h1>
+            </button>
+            <button type="button" style={button}>
+              <h1 style={button}>Add Gate Leg</h1>
             </button>
             <button type="button" onClick={clearWaypoints} style={button}>
               <h1 style={button}>Clear Waypoints</h1>
