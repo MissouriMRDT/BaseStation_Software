@@ -106,13 +106,13 @@ class Controls extends Component<IProps, IState> {
             <button type="button" onClick={stopAutonomy} style={button}>
               <h1 style={button}>Stop Autonomy</h1>
             </button>
-            <button type="button" style={button}>
+            <button type="button" onClick={this.addPositionLeg} style={button}>
               <h1 style={button}>Add Position Leg</h1>
             </button>
-            <button type="button" style={button}>
+            <button type="button" onClick={this.addMarkerLeg} style={button}>
               <h1 style={button}>Add Marker Leg</h1>
             </button>
-            <button type="button" style={button}>
+            <button type="button" onClick={this.addGateLeg} style={button}>
               <h1 style={button}>Add Gate Leg</h1>
             </button>
             <button type="button" onClick={clearWaypoints} style={button}>
