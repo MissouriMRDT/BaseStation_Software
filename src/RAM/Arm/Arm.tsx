@@ -73,8 +73,7 @@ function arm(): void {
 
 interface IProps {}
 
-interface IState {
-}
+interface IState {}
 
 class Arm extends Component<IProps, IState> {
   constructor(props: IProps) {
