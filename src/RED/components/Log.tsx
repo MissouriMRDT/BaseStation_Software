@@ -10,7 +10,7 @@ const h1Style: CSS.Properties = {
 const container: CSS.Properties = {
   display: "grid",
   fontFamily: "arial",
-  height: "300px",
+  height: "250px",
   borderTopWidth: "28px",
   borderColor: "#990000",
   borderBottomWidth: "2px",

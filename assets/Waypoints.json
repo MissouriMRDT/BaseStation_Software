@@ -5,7 +5,7 @@
     "longitude": -91.777713,
     "color": "#9900ef",
     "colorPicker": false,
-    "onMap": false
+    "onMap": true
   },
   "2": {
     "name": "MDRS",
