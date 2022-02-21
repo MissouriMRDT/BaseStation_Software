@@ -86,8 +86,7 @@ class ControlFeatures extends Component<IProps, IState> {
   }
 
   toggleLasers(): void {
-    const { laserOn } = this.state
-    this.setState({laserOn: !laserOn})
+    this.setState({laserOn: !this.state.laserOn})
   }
 
   render(): JSX.Element {
