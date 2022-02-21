@@ -3,7 +3,6 @@ import CSS from "csstype"
 import { exec } from "child_process"
 import { rovecomm, RovecommManifest, NetworkDevices } from "../../Core/RoveProtocol/Rovecomm"
 import { ColorStyleConverter } from "../../Core/ColorConverter"
-import { RONModuleWidth } from "./PingGraph"
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
@@ -22,7 +21,6 @@ const container: CSS.Properties = {
   borderBottomWidth: "2px",
   borderStyle: "solid",
   padding: "5px",
-  alignItems: "center",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -37,20 +35,19 @@ const label: CSS.Properties = {
 let selectbox: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
-  width: `min(450px, ${RONModuleWidth}px)`,
+  width: "100%",
   margin: "2.5px",
   justifyContent: "space-between",
 }
 let labelbox: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
-  width: `min(450px, ${RONModuleWidth}px)`,
   margin: "2.5px",
   justifyContent: "space-between",
-  textAlign: "center",
+  width: "100%",
+  textAlign: "start",
 }
 const auto: CSS.Properties = {
-  width: "10%",
 }
 const name: CSS.Properties = {
   width: "50%",
@@ -74,10 +71,10 @@ const buttonText: CSS.Properties = {
   whiteSpace: "nowrap",
 }
 const but: CSS.Properties = {
-  width: "10%",
+  width: "18%",
 }
 const hid: CSS.Properties = {
-  width: "10%",
+  width: "19%",
   visibility: "hidden",
 }
 
@@ -205,10 +202,10 @@ class PingTool extends Component<IProps, IState> {
   }
 
   render(): JSX.Element {
-    selectbox = { ...selectbox, width: `min(450px, ${RONModuleWidth - 15}px)` }
-    labelbox = { ...selectbox, width: `min(450px, ${RONModuleWidth - 15}px)` }
+    selectbox = { ...selectbox }
+    labelbox = { ...selectbox }
     return (
-      <div style={{ ...this.props.style, width: RONModuleWidth }}>
+      <div style={{ ...this.props.style }}>
         <div style={label}>Ping Tool</div>
         <div style={container}>
           {[
@@ -217,7 +214,7 @@ class PingTool extends Component<IProps, IState> {
           ].map(item => {
             const { category, list, rove } = item
             return (
-              <div key={category} style={{ width: RONModuleWidth - 15 }}>
+              <div key={category}>
                 <div style={h1Style}>{category}</div>
                 <div style={labelbox}>
                   <div style={auto}>Auto</div>
@@ -238,7 +235,7 @@ class PingTool extends Component<IProps, IState> {
                         checked={this.state.devices[device].autoPing}
                         onChange={() => this.AutoPing(device)}
                       />
-                      <div style={ColorStyleConverter(ping, min, cutoff, max, greenHue, redHue, name)}>{device}</div>
+                      <div style={{ ...ColorStyleConverter(ping, min, cutoff, max, greenHue, redHue, name), paddingLeft: "3%"}}>{device}</div>
                       <div style={ColorStyleConverter(ping, min, cutoff, max, greenHue, redHue, num)}>
                         {Ip.split(".")[3]}
                       </div>

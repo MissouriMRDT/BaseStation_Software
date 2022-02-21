@@ -14,6 +14,7 @@ const container: CSS.Properties = {
   flexWrap: "wrap",
   flexDirection: "column",
   height: "calc(100% - 40px)",
+  padding: "5px",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",

@@ -14,7 +14,7 @@ import SensorData from "../RAM/Science/components/SensorData"
 import SensorGraphs from "../RAM/Science/components/SensorGraphs"
 import Drive from "../RED/components/Drive"
 import Gimbal from "../RED/components/Gimbal"
-import Lighting from "../RED/components/Lighting"
+import Lighting from "../RAM/Autonomy/components/Lighting"
 import Log from "../RED/components/Log"
 import Power from "../RED/components/Power&BMS"
 import CustomPackets from "../RON/components/CustomPackets"
@@ -66,7 +66,6 @@ class RoverImageryDisplay extends Component<IProps, IState> {
       // Set displayed to the passed in default if there is one, or default to "none"
       displayed: this.props.displayed ? this.props.displayed : "none",
     }
-
     this.merge = this.merge.bind(this)
     this.onSelect = this.onSelect.bind(this)
 
@@ -102,10 +101,10 @@ class RoverImageryDisplay extends Component<IProps, IState> {
             "Heater",
             "SensorData",
             "SensorGraphs",
-            "Fluorometer",
             "Drive",
             "Gimbal",
             "GPS",
+            "Flourometer",
             "Lighting",
             "Log",
             "Power",

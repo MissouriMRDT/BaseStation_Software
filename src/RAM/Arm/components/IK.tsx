@@ -60,7 +60,14 @@ interface IProps {
 }
 
 interface IState {
-  IKValues: any
+  IKValues: {
+    X: string,
+    Y: string,
+    Z: string,
+    Pitch: string,
+    Yaw: string,
+    Roll: string
+  }
 }
 
 class IK extends Component<IProps, IState> {
@@ -88,7 +95,7 @@ class IK extends Component<IProps, IState> {
      */
     rovecomm.sendCommand(
       "ArmMoveIK",
-      Object.values(this.state.IKValues).map(function (x: string) {
+      Object.values(this.state.IKValues).map((x: string) => {
         return x ? parseFloat(x) : 0
       })
     )

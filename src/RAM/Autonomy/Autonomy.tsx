@@ -4,18 +4,15 @@ import Cameras from "../../Core/components/Cameras"
 import Controls from "./components/Controls"
 import StateDiagram from "./components/StateDiagram"
 import Activity from "./components/Activity"
+import Lighting from "./components/Lighting"
 
 const row: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
-  justifyContent: "space-between",
-  flexGrow: 1,
 }
 const column: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
-  marginRight: "5px",
-  flexGrow: 1,
 }
 
 interface IProps {
@@ -32,19 +29,20 @@ class Autonomy extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div style={column}>
-        <div style={row}>
-          <div style={column}>
-            <Controls selectedWaypoint={this.props.selectedWaypoint} />
-            <Activity />
+      <div style={{ ...column }}>
+        <div style={{ ...row, justifyContent: "space-between", flex: 1 }}>
+          <div style={{...column, flex: 1 }}>
+            <Controls style={{ marginRight: "5px", flexWrap: "wrap" }} selectedWaypoint={this.props.selectedWaypoint} />
+            <div style={{ ...row, marginRight: "5px", flexGrow: 1 }}>
+              <Activity style={{ flex: 1, marginRight: "5px" }}/>
+              <Lighting />
+            </div>
           </div>
-          <div style={column}>
-            <StateDiagram style={{ flexGrow: 1 }} />
-          </div>
+          <StateDiagram />
         </div>
         <div style={row}>
-          <Cameras defaultCamera={9} style={{ flex: 1, marginRight: "5px" }} />
-          <Cameras defaultCamera={10} style={{ flex: 1, marginLeft: "5px" }} />
+          <Cameras defaultCamera={9} style={{ flex: 1, marginRight: "2.5px" }} />
+          <Cameras defaultCamera={10} style={{ flex: 1, marginLeft: "2.5px" }} />
         </div>
       </div>
     )

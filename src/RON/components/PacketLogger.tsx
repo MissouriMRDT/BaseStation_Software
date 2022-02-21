@@ -3,7 +3,6 @@ import CSS from "csstype"
 import ReactTable from "react-table-v6"
 // import "../../node_modules/react-table-v6/react-table.css"
 import { rovecomm, RovecommManifest } from "../../Core/RoveProtocol/Rovecomm"
-import { RONModuleWidth } from "./PingGraph"
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
@@ -104,7 +103,7 @@ class PacketLogger extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div style={{ ...this.props.style, width: RONModuleWidth }}>
+      <div style={{ ...this.props.style }}>
         <div style={label}>Packet Logger</div>
         <div style={container}>
           <div style={selectbox}>
