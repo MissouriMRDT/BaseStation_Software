@@ -32,7 +32,7 @@ const label: CSS.Properties = {
   zIndex: 1,
   color: "white",
 }
-let selectbox: CSS.Properties = {
+const selectbox: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
   // width: `min(450px, ${RONModuleWidth}px)`,
