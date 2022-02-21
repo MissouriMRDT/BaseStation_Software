@@ -1,0 +1,201 @@
+{
+  "TankDrive": {
+    "config": "Drive",
+    "controller": "Xbox",
+    "bindings": {
+      "LeftSpeed": { "buttonType": "joystick", "button": "left stick y" },
+      "LeftDirection": { "buttonType": "joystick", "button": "left stick x" },
+      "RightSpeed": { "buttonType": "joystick", "button": "right stick y" },
+      "RightDirection": { "buttonType": "joystick", "button": "right stick x" }
+    }
+  },
+  "SwerveDriveTriggers": {
+    "config": "Drive",
+    "controller": "Xbox",
+    "bindings": {
+      "LeftSpeed": { "buttonType": "joystick", "buttonIndex": 1 },
+      "LeftDirection": { "buttonType": "joystick", "buttonIndex": 0 },
+      "RightSpeed": { "buttonType": "joystick", "buttonIndex": 3 },
+      "RightDirection": { "buttonType": "joystick", "buttonIndex": 2 },
+      "RotateCW": { "buttonType": "button", "buttonIndex": 7 },
+      "RotateCCW": { "buttonType": "button", "buttonIndex": 6 },
+      "RotateLF": { "buttonType": "button", "buttonIndex": 3 },
+      "RotateLR": { "buttonType": "button", "buttonIndex": 2 },
+      "RotateRF": { "buttonType": "button", "buttonIndex": 1 },
+      "RotateRR": { "buttonType": "button", "buttonIndex": 0 },
+      "PointTurnCCW": { "buttonType": "button", "buttonIndex": 10 },
+      "PointTurnCW": { "buttonType": "button", "buttonIndex": 11 },
+      "SteerUp": { "buttnType": "button", "buttonIndex": 12 },
+      "SteerDown": { "buttnType": "button", "buttonIndex": 13 },
+      "SteerLeft": { "buttnType": "button", "buttonIndex": 14 },
+      "SteerRight": { "buttnType": "button", "buttonIndex": 15 },
+      "IndependentCW": { "buttonType": "button", "buttonIndex": 5 },
+      "IndependentCCW": { "buttonType": "button", "buttonIndex": 4 }
+    }
+  },
+  "SwerveDriveButtons": {
+    "config": "Drive",
+    "controller": "Xbox",
+    "bindings": {
+      "LeftSpeed": { "buttonType": "joystick", "buttonIndex": 1 },
+      "LeftDirection": { "buttonType": "joystick", "buttonIndex": 0 },
+      "RightSpeed": { "buttonType": "joystick", "buttonIndex": 3 },
+      "RightDirection": { "buttonType": "joystick", "buttonIndex": 2 },
+      "RotateCW": { "buttonType": "button", "buttonIndex": 1 },
+      "RotateCCW": { "buttonType": "button", "buttonIndex": 0 },
+      "RotateLF": { "buttonType": "button", "buttonIndex": 12 },
+      "RotateLR": { "buttonType": "button", "buttonIndex": 14 },
+      "RotateRF": { "buttonType": "button", "buttonIndex": 15 },
+      "RotateRR": { "buttonType": "button", "buttonIndex": 13 },
+      "PointTurnCCW": { "buttonType": "button", "buttonIndex": 10 },
+      "PointTurnCW": { "buttonType": "button", "buttonIndex": 11 },
+      "SteerUp": { "buttnType": "button", "buttonIndex": 3 },
+      "SteerDown": { "buttnType": "button", "buttonIndex": 0 },
+      "SteerLeft": { "buttnType": "button", "buttonIndex": 2 },
+      "SteerRight": { "buttnType": "button", "buttonIndex": 1 },
+      "IndependentCW": { "buttonType": "button", "buttonIndex": 5 },
+      "IndependentCCW": { "buttonType": "button", "buttonIndex": 4 }
+    }
+  },
+  "SwerveDriveDPad": {
+    "config": "Drive",
+    "controller": "Xbox",
+    "bindings": {
+      "LeftSpeed": { "buttonType": "joystick", "button": "left stick y" },
+      "LeftDirection": { "buttonType": "joystick", "button": "left stick x" },
+      "RightSpeed": { "buttonType": "joystick", "button": "right stick y" },
+      "RightDirection": { "buttonType": "joystick", "button": "right stick x" },
+      "RotateCW": { "buttonType": "button", "button": "dpad right" },
+      "RotateCCW": { "buttonType": "button", "button": "dpad left" },
+      "RotateLF": { "buttonType": "button", "button": "Y" },
+      "RotateLR": { "buttonType": "button", "button": "X" },
+      "RotateRF": { "buttonType": "button", "button": "B" },
+      "RotateRR": { "buttonType": "button", "button": "A" },
+      "IndependentCW": { "buttonType": "button", "button": "RB" },
+      "IndependentCCW": { "buttonType": "button", "button": "LB" }
+    }
+  },
+  "VectorDrive": {
+    "config": "Drive",
+    "controller": "Flight Stick",
+    "bindings": {
+      "VectorX": { "buttonType": "joystick", "button": "x joystick" },
+      "VectorY": { "buttonType": "joystick", "button": "y joystick" },
+      "Throttle": { "buttonType": "joystick", "button": "throttle" },
+      "ForwardBump": { "buttonType": "button", "button": "top right" },
+      "BackwardBump": { "buttonType": "button", "button": "middle left" }
+    }
+  },
+  "VectorButtonSwerve": {
+    "config": "Drive",
+    "controller": "Flight Stick",
+    "bindings": {
+      "VectorX": { "buttonType": "joystick", "buttonIndex": 0 },
+      "VectorY": { "buttonType": "joystick", "buttonIndex": 1 },
+      "Throttle": { "buttonType": "joystick", "buttonIndex": 6 },
+      "ForwardBump": { "buttonType": "button", "buttonIndex": 7 },
+      "BackwardBump": { "buttonType": "button", "buttonIndex": 6 },
+      "PointTurnCCW": { "buttonType": "button", "buttonIndex": 1 },
+      "PointTurnCW": { "buttonType": "button", "buttonIndex": 0 },
+      "RotateCW": { "buttonType": "button", "buttonIndex": 5 },
+      "RotateCCW": { "buttonType": "button", "buttonIndex": 4 },
+      "RotateLF": { "buttonType": "button", "buttonIndex": 8 },
+      "RotateLR": { "buttonType": "button", "buttonIndex": 10 },
+      "RotateRF": { "buttonType": "button", "buttonIndex": 9 },
+      "RotateRR": { "buttonType": "button", "buttonIndex": 11 },
+      "IndependentCW": { "buttonType": "button", "buttonIndex": 3 },
+      "IndependentCCW": { "buttonType": "button", "buttonIndex": 2 }
+    }
+  },
+  "VectorTriggerSwerve": {
+    "config": "Drive",
+    "controller": "Flight Stick",
+    "bindings": {
+      "VectorX": { "buttonType": "joystick", "buttonIndex": 0 },
+      "VectorY": { "buttonType": "joystick", "buttonIndex": 1 },
+      "Throttle": { "buttonType": "joystick", "buttonIndex": 6 },
+      "ForwardBump": { "buttonType": "button", "buttonIndex": 7 },
+      "BackwardBump": { "buttonType": "button", "buttonIndex": 6 },
+      "RotateTwist": { "buttonType": "joystick", "buttonIndex": 5 },
+      "RotateToggle": { "buttonType": "button", "buttonIndex": 0 },
+      "RotateLF": { "buttonType": "button", "buttonIndex": 8 },
+      "RotateLR": { "buttonType": "button", "buttonIndex": 10 },
+      "RotateRF": { "buttonType": "button", "buttonIndex": 9 },
+      "RotateRR": { "buttonType": "button", "buttonIndex": 11 },
+      "PointTurnCW": { "buttonType": "button", "buttonIndex": 1 },
+      "IndependentCW": { "buttonType": "button", "buttonIndex": 3 },
+      "IndependentCCW": { "buttonType": "button", "buttonIndex": 2 }
+    }
+  },
+  "VectorThumbSwerve": {
+    "config": "Drive",
+    "controller": "Flight Stick",
+    "bindings": {
+      "VectorX": { "buttonType": "joystick", "buttonIndex": 0 },
+      "VectorY": { "buttonType": "joystick", "buttonIndex": 1 },
+      "Throttle": { "buttonType": "joystick", "buttonIndex": 6 },
+      "ForwardBump": { "buttonType": "button", "buttonIndex": 7 },
+      "BackwardBump": { "buttonType": "button", "buttonIndex": 6 },
+      "RotateTwist": { "buttonType": "joystick", "buttonIndex": 5 },
+      "RotateToggle": { "buttonType": "button", "buttonIndex": 1 },
+      "PointTurnCW": { "buttonType": "button", "buttonIndex": 0 },
+      "RotateLF": { "buttonType": "button", "buttonIndex": 8 },
+      "RotateLR": { "buttonType": "button", "buttonIndex": 10 },
+      "RotateRF": { "buttonType": "button", "buttonIndex": 9 },
+      "RotateRR": { "buttonType": "button", "buttonIndex": 11 },
+      "IndependentCW": { "buttonType": "button", "buttonIndex": 3 },
+      "IndependentCCW": { "buttonType": "button", "buttonIndex": 2 }
+    }
+  },
+  "Gimbal": {
+    "config": "MainGimbal",
+    "controller": "Xbox",
+    "bindings": {
+      "PanLeft": { "buttonType": "joystick", "button": "left stick x" },
+      "PanRight": { "buttonType": "joystick", "button": "right stick x" },
+      "TiltLeft": { "buttonType": "joystick", "button": "left stick y" },
+      "TiltRight": { "buttonType": "joystick", "button": "right stick y" },
+      "MainGimbalSwitch": { "buttonType": "button", "button": "dpad up" },
+      "DriveGimbalSwitch": { "buttonType": "button", "button": "dpad down" },
+      "ButtonStartDebounced": { "buttonType": "button", "button": "start" }
+    }
+  },
+  "ScienceControls": {
+    "config": "Science",
+    "controller": "Xbox",
+    "bindings": {
+      "SensorAxis": { "buttonType": "joystick", "button": "left stick y" },
+      "Water1": { "buttonType": "button", "button": "X" },
+      "Water2": { "buttonType": "button", "button": "Y" },
+      "Water3": { "buttonType": "button", "button": "B" },
+      "XoopAxis": { "buttonType": "joystick", "button": "right stick x" },
+      "ZoopAxis": { "buttonType": "joystick", "button": "right stick y" },
+      "OpenScoop": { "buttonType": "button", "button": "dpad up" },
+      "CloseScoop": { "buttonType": "button", "button": "dpad down" }
+    }
+  },
+  "ArmControls": {
+    "config": "Arm",
+    "controller": "Xbox",
+    "bindings": {
+      "ElbowBend": { "buttonType": "joystick", "button": "right stick x" },
+      "ElbowTwist": { "buttonType": "joystick", "button": "right stick y" },
+      "WristBend": { "buttonType": "joystick", "button": "left stick x" },
+      "WristTwist": { "buttonType": "joystick", "button": "left stick y" },
+      "SwitchTool": { "buttonType": "button", "button": "A" },
+      "GripperOpen": { "buttonType": "button", "button": "B" },
+      "GripperClose": { "buttonType": "button", "button": "X" },
+      "Nipper": { "buttonType": "button", "button": "Y" },
+      "BaseTwistDirection": { "buttonType": "button", "button": "LB" },
+      "BaseBendDirection": { "buttonType": "button", "button": "RB" },
+      "BaseTwistMagnitude": { "buttonType": "button", "button": "LT" },
+      "BaseBendMagnitude": { "buttonType": "button", "button": "RT" },
+      "GripperSwap": { "buttonType": "button", "button": "back" },
+      "LaserToggle": { "buttonType": "button", "button": "start" },
+      "UseOpenLoop": { "buttonType": "button", "button": "dpad up" },
+      "UseAngular": { "buttonType": "button", "button": "dpad down" },
+      "UseWristPerspectiveIK": { "buttonType": "button", "button": "dpad left" },
+      "UseRoverPerspectiveIK": { "buttonType": "button", "button": "dpad right" }
+    }
+  }
+}
