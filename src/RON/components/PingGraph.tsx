@@ -110,7 +110,6 @@ class PingGraph extends Component<IProps, IState> {
   }
 
   render(): JSX.Element {
-    selectbox = { ...selectbox }
     // At render time, we search for the RON window so that we can properly scale down the size of these
     // components if the width of this monitor is known
 
