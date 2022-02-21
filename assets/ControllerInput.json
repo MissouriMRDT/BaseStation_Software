@@ -164,13 +164,14 @@
     "config": "Science",
     "controller": "Xbox",
     "bindings": {
-      "zDirection": { "buttonType": "joystick", "button": "left stick y" },
-      "VacuumPulse": { "buttonType": "button", "button": "A" },
-      "Chem1": { "buttonType": "button", "button": "X" },
-      "Chem2": { "buttonType": "button", "button": "Y" },
-      "Chem3": { "buttonType": "button", "button": "B" },
-      "GenevaCCW": { "buttonType": "button", "button": "LB" },
-      "GenevaCW": { "buttonType": "button", "button": "RB" }
+      "SensorAxis": { "buttonType": "joystick", "button": "left stick y" },
+      "Water1": { "buttonType": "button", "button": "X" },
+      "Water2": { "buttonType": "button", "button": "Y" },
+      "Water3": { "buttonType": "button", "button": "B" },
+      "XoopAxis": { "buttonType": "joystick", "button": "right stick x" },
+      "ZoopAxis": { "buttonType": "joystick", "button": "right stick y" },
+      "OpenScoop": { "buttonType": "button", "button": "dpad up" },
+      "CloseScoop": { "buttonType": "button", "button": "dpad down" }
     }
   },
   "ArmControls": {
