@@ -172,7 +172,7 @@ class SensorData extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div id={"SensorData"} style={this.props.style}>
+      <div id="SensorData" style={this.props.style}>
         <div style={label}>Sensor Data</div>
         <div style={container}>
             <div style={row}>
