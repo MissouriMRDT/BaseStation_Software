@@ -126,7 +126,8 @@ class Power extends Component<IProps, IState> {
       boardTelemetry,
       batteryTelemetry,
     }
-    this.boardListenHandler = this.boardListenHandler.bind(this)
+    this.boardListenHandlerTog = this.boardListenHandlerTog.bind(this)
+    this.boardListenHandlerAmp = this.boardListenHandlerAmp.bind(this)
     this.batteryListenHandler = this.batteryListenHandler.bind(this)
 
     /**
@@ -140,14 +141,14 @@ class Power extends Component<IProps, IState> {
      *   AND IS APPLYING THAT VALUE TO THE NAME FROM THE COMMANDS OBJECT
      * # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
      */
-    rovecomm.on("MotorBusEnabled", (data: number[]) => this.boardListenHandler(data, "MotorBusEnable"))
-    rovecomm.on("MotorBusCurrent", (data: number[]) => this.boardListenHandler(data, "MotorBusEnable"))
-    rovecomm.on("TwelveVActBusEnabled", (data: number[]) => this.boardListenHandler(data, "TwelveVActBusEnable"))
-    rovecomm.on("TwelveVActBusCurrent", (data: number[]) => this.boardListenHandler(data, "TwelveVActBusEnable"))
-    rovecomm.on("TwelveVLogicBusEnabled", (data: number[]) => this.boardListenHandler(data, "TwelveVLogicBusEnable"))
-    rovecomm.on("TwelveVLogicBusCurrent", (data: number[]) => this.boardListenHandler(data, "TwelveVLogicBusEnable"))
-    rovecomm.on("ThirtyVEnabled", (data: number[]) => this.boardListenHandler(data, "ThirtyVBusEnable"))
-    rovecomm.on("ThirtyVCurrent", (data: number[]) => this.boardListenHandler(data, "ThirtyVBusEnable"))
+    rovecomm.on("MotorBusEnabled", (data: number[]) => this.boardListenHandlerTog(data, "MotorBusEnable"))
+    rovecomm.on("MotorBusCurrent", (data: number[]) => this.boardListenHandlerAmp(data, "MotorBusEnable"))
+    rovecomm.on("TwelveVActBusEnabled", (data: number[]) => this.boardListenHandlerTog(data, "TwelveVActBusEnable"))
+    rovecomm.on("TwelveVActBusCurrent", (data: number[]) => this.boardListenHandlerAmp(data, "TwelveVActBusEnable"))
+    rovecomm.on("TwelveVLogicBusEnabled", (data: number[]) => this.boardListenHandlerTog(data, "TwelveVLogicBusEnable"))
+    rovecomm.on("TwelveVLogicBusCurrent", (data: number[]) => this.boardListenHandlerAmp(data, "TwelveVLogicBusEnable"))
+    rovecomm.on("ThirtyVEnabled", (data: number[]) => this.boardListenHandlerTog(data, "ThirtyVBusEnable"))
+    rovecomm.on("ThirtyVCurrent", (data: number[]) => this.boardListenHandlerAmp(data, "ThirtyVBusEnable"))
 
     rovecomm.on("PackI_Meas", (data: number[]) => this.batteryListenHandler(data, "PackI_Meas"))
     rovecomm.on("PackV_Meas", (data: number[]) => this.batteryListenHandler(data, "PackV_Meas"))
@@ -158,28 +159,30 @@ class Power extends Component<IProps, IState> {
 
   /**
    * @desc takes data from rovecomm and applies those values to the state object
-   * all rovecomm telemetry values are transported as arrays, even if only a single value
-   * is transferred. IF a single value is transferred, the data is assumed to be a bitmask,
-   * after which it is unpacked and has the resultant boolean values applied to the 'enabled'
-   * properties of each component object. If there is more than one value, the data is assumed
-   * to be the list of amperage floats, and assigned to the 'value' property.
-   * @param data contains either a single bitmask number or a list of numbers; both inside of an array
+   * @param data contains an array of floats that correspond to electrical current measurements
    * @param partList the list of components determined by the state object
    */
-  boardListenHandler(data: number[], partList: string): void {
+  boardListenHandlerAmp(data: number[], partList: string): void {
     const { boardTelemetry } = this.state
-    if (data.length > 1) {
-      boardTelemetry[partList].forEach((part: string, index: number) => {
-        boardTelemetry[partList][part].value = data[index]
-      })
-    } else {
-      const bitmask = BitmaskUnpack(data[0], partList.length)
-      boardTelemetry[partList].forEach((part: string, index: number) => {
-        boardTelemetry[partList][part].enabled = Boolean(Number(bitmask[index]))
-      })
-    }
+    boardTelemetry[partList].forEach((part: string, index: number) => {
+      boardTelemetry[partList][part].value = data[index]
+    })
     // The setState is kept until the end because of how the priority of state changes are handled.
     // This reason remains the same for all the functions with a setState at the end.
+    this.setState({ boardTelemetry })
+  }
+
+  /**
+   *
+   * @param data contains a single bitmasked number inside of an arra
+   * @param partList this list of componenets dtermined by the state object
+   */
+  boardListenHandlerTog(data: number[], partList: string): void {
+    const { boardTelemetry } = this.state
+    const bitmask = BitmaskUnpack(data[0], partList.length)
+    boardTelemetry[partList].forEach((part: string, index: number) => {
+      boardTelemetry[partList][part].enabled = Boolean(Number(bitmask[index]))
+    })
     this.setState({ boardTelemetry })
   }
 
@@ -296,7 +299,15 @@ class Power extends Component<IProps, IState> {
               SHUT DOWN
             </button>
           </div>
-          <h3 style={{ alignSelf: "center", fontSize: "16px", fontFamily: "arial", marginTop: "-1px", marginBottom: "2px" }}>
+          <h3
+            style={{
+              alignSelf: "center",
+              fontSize: "16px",
+              fontFamily: "arial",
+              marginTop: "-1px",
+              marginBottom: "2px",
+            }}
+          >
             -------------------------------------------------
           </h3>
           <div style={{ ...row, width: "100%" }}>

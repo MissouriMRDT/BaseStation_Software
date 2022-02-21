@@ -3,9 +3,6 @@ import CSS from "csstype"
 import { XYPlot, XAxis, YAxis, HorizontalGridLines, LineSeries } from "react-vis"
 import { RovecommManifest } from "../../Core/RoveProtocol/Rovecomm"
 
-// eslint-disable-next-line import/no-mutable-exports
-// export let RONModuleWidth: number = window.document.documentElement.clientWidth / 2 - 10
-
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
   fontSize: "18px",
@@ -35,7 +32,6 @@ const label: CSS.Properties = {
 const selectbox: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
-  // width: `min(450px, ${RONModuleWidth}px)`,
   margin: "2.5px",
   justifyContent: "space-around",
 }
@@ -110,9 +106,6 @@ class PingGraph extends Component<IProps, IState> {
   }
 
   render(): JSX.Element {
-    // At render time, we search for the RON window so that we can properly scale down the size of these
-    // components if the width of this monitor is known
-
     return (
       <div style={{ ...this.props.style }}>
         <div style={label}>Ping Graph</div>
