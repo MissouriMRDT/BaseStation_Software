@@ -1,10 +1,8 @@
 import React, { Component } from "react"
 import CSS from "csstype"
-import fs from "fs"
-import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
+import { rovecomm, RovecommManifest } from "../../Core/RoveProtocol/Rovecomm"
 import { ColorStyleConverter } from "../../Core/ColorConverter"
 import { BitmaskUnpack } from "../../Core/BitmaskUnpack"
-import path from "path"
 
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -69,12 +67,6 @@ const cellReadoutContainer: CSS.Properties = {
 const btnStyle: CSS.Properties = {
   width: "70px",
   cursor: "pointer",
-}
-
-let RovecommManifest: any = {}
-const FILEPATH = path.join(__dirname, "../assets/RovecommManifest.json")
-if (fs.existsSync(FILEPATH)) {
-  RovecommManifest = JSON.parse(fs.readFileSync(FILEPATH).toString()).RovecommManifest
 }
 
 /**
