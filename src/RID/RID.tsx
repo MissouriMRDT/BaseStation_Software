@@ -20,6 +20,7 @@ import Power from "../RED/components/Power&BMS"
 import CustomPackets from "../RON/components/CustomPackets"
 import PacketLogger from "../RON/components/PacketLogger"
 import PingGraph from "../RON/components/PingGraph"
+import Fluorometer from "../RAM/Science/components/Fluorometer"
 
 const row: CSS.Properties = {
   display: "flex",
@@ -59,12 +60,12 @@ class RoverImageryDisplay extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props)
     this.state = {
-          storedWaypoints: {},
-          currentCoords: { lat: 0, lon: 0 },
-          display: <div style={{ ...this.props.style, backgroundColor: "E0E0E0" }}>{this.buttons}</div>,
-          // Set displayed to the passed in default if there is one, or default to "none"
-          displayed: this.props.displayed ? this.props.displayed : "none",
-        }
+      storedWaypoints: {},
+      currentCoords: { lat: 0, lon: 0 },
+      display: <div style={{ ...this.props.style, backgroundColor: "E0E0E0" }}>{this.buttons}</div>,
+      // Set displayed to the passed in default if there is one, or default to "none"
+      displayed: this.props.displayed ? this.props.displayed : "none",
+    }
     this.merge = this.merge.bind(this)
     this.onSelect = this.onSelect.bind(this)
 
@@ -103,6 +104,7 @@ class RoverImageryDisplay extends Component<IProps, IState> {
             "Drive",
             "Gimbal",
             "GPS",
+            "Flourometer",
             "Lighting",
             "Log",
             "Power",
@@ -257,6 +259,9 @@ class RoverImageryDisplay extends Component<IProps, IState> {
         break
       case "SensorGraphs":
         submodule = <SensorGraphs style={submod} />
+        break
+      case "Fluorometer":
+        submodule = <Fluorometer style={submod} />
         break
       case "Drive":
         submodule = <Drive style={submod} />

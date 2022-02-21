@@ -126,20 +126,25 @@ class Power extends Component<IProps, IState> {
       boardTelemetry,
       batteryTelemetry,
     }
-    this.boardListenHandlerTog = this.boardListenHandlerTog.bind(this)
-    this.boardListenHandlerAmp = this.boardListenHandlerAmp.bind(this)
-    this.batteryListenHandler = this.batteryListenHandler.bind(this)
 
     /**
      * bit of awkwardness with the board telemetry listeners:
-     * the code that populates the state array for the board telemetry use the "Commands" object from the manifest
-     * because the "comments" subobject don't have any duplicates. The "Telemetry" object contains duplicates
-     * because there are two separate data types that relate to each physical component. Because the populator
-     * pulls from "Commands," though, the name of the object in the State array is the name of the Command object.
-     * # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-     *   IF YOU ARE EXPERIENCING ERRORS RELATING TO ROVECOMM, MAKE SURE THE LISTENER IS LISTENING FOR TELEMETRY
-     *   AND IS APPLYING THAT VALUE TO THE NAME FROM THE COMMANDS OBJECT
-     * # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+     * the code that populates the state array for the board telemetry use the "Commands"
+     * object from the manifest because the "comments" subobject don't have any duplicates.
+     * The "Telemetry" object contains duplicates because there are two separate data types
+     * that relate to each physical component. Because the populator pulls from "Commands,"
+     * though, the name of the object in the State array is the name of the Command object.
+     *
+     * As of 2/21/22, changes are planned to accommodate the splitting of the power board in
+     * addition to the fact that some of the boards should not have toggle buttons as they
+     * should never toggle (nor will they since those specific boards aren't listening for
+     * toggle commands).
+     *
+     * # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+     *   IF YOU ARE EXPERIENCING ERRORS RELATING TO ROVECOMM
+     *   MAKE SURE THE LISTENER IS LISTENING FOR TELEMETRY AND
+     *   IS APPLYING THAT VALUE TO THE NAME FROM THE COMMANDS OBJECT
+     * # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
      */
     rovecomm.on("MotorBusEnabled", (data: number[]) => this.boardListenHandlerTog(data, "MotorBusEnable"))
     rovecomm.on("MotorBusCurrent", (data: number[]) => this.boardListenHandlerAmp(data, "MotorBusEnable"))
@@ -158,7 +163,7 @@ class Power extends Component<IProps, IState> {
   }
 
   /**
-   * @desc takes data from rovecomm and applies those values to the state object
+   * @desc takes amperage data from rovecomm and applies those values to the corresponding state object in boardTelemetry
    * @param data contains an array of floats that correspond to electrical current measurements
    * @param partList the list of components determined by the state object
    */
@@ -168,12 +173,12 @@ class Power extends Component<IProps, IState> {
       boardTelemetry[partList][part].value = data[index]
     })
     // The setState is kept until the end because of how the priority of state changes are handled.
-    // This reason remains the same for all the functions with a setState at the end.
+    // ### This reason remains the same for all functions with a setState at the end. ###
     this.setState({ boardTelemetry })
   }
 
   /**
-   *
+   * @desc takes toggle data from rovecomm and applies those values to the corresponding state object in boardTelemetry
    * @param data contains a single bitmasked number inside of an arra
    * @param partList this list of componenets dtermined by the state object
    */
@@ -186,6 +191,11 @@ class Power extends Component<IProps, IState> {
     this.setState({ boardTelemetry })
   }
 
+  /**
+   * @desc takes voltage data from rovecomm and applies those values to the corresponding state object in batteryTelemetry
+   * @param data is an array of voltage values. If the array size is >1, it assigns those values to the battery cell objects
+   * @param part name of the object to assign values to
+   */
   batteryListenHandler(data: number[], part: string): void {
     const { batteryTelemetry } = this.state
     if (data.length > 1) {
@@ -198,39 +208,36 @@ class Power extends Component<IProps, IState> {
     this.setState({ batteryTelemetry })
   }
 
-  // except for the all motor buttons, buttonToggle() is called every time an enable/disable
-  // button is pressed. When called, it's passed the name of a bus/device defined in the global
-  // lists, and sets the state for that item to the opposite it was prior to the function call.
-  // The ellipses function as the "spreading apart" operator that makes it so ONLY the specified
-  // states get changed.
+  /**
+   * @desc gets called by each Enable/Disable button that changes a single value. After the state object is changed, packCommand() gets called immediately after.
+   * @param board the object that the bus object is a child of
+   * @param bus the object that is getting toggled by the Enable/Disable button
+   */
   buttonToggle(board: string, bus: string): void {
     let { boardTelemetry } = this.state
     boardTelemetry[board][bus].enabled = !this.state.boardTelemetry[board][bus].enabled
-    this.setState(
-      { boardTelemetry },
-      // after the state of a given device is changed, packCommand() gets called to send the command(s)
-      // corresponding with the toggled device to the rover, making it so only relevent commands are sent
-      () => this.packCommand(board)
-    )
+    this.setState({ boardTelemetry }, () => this.packCommand(board))
   }
 
+  /**
+   * To simultaneously simplify code and to assure ALL the motors get enabled in case the
+   * signal connection is spotty, the allMotorToggle button was split into two staticly
+   * defined buttons
+   * @desc Takes true or false and attempts to apply that to every motor object. After reassigning the state objects, it sends a bitmasked command to the rover
+   * @param button True or false depending on which button is pressed
+   */
   allMotorToggle(button: boolean): void {
     let { boardTelemetry } = this.state
-    // to simplify things, the all motor toggle was split into two buttons: an all enabled and an all disable.
-    // Both buttons will pass a boolean to allMotorToggle() where it goes through each item in the constant
-    // list and sets all their "enabled" states to true. Same if allMotorToggle() is passed false except it
-    // sets all the states to false. Then the state changes all get thrown to the actual setState() and the
-    // command is packed and sent.
     Object.keys(boardTelemetry.MotorBusEnable).forEach((motor: string) => {
-      boardTelemetry.MotorBusEnable[motor].enabled = button ? true : false
+      boardTelemetry.MotorBusEnable[motor].enabled = button
     })
-    // MOTORS[0] is used used mostly arbitrarily. allMotorToggle() changes the
-    // state of all the motors at the same time, but even if only one motor had
-    // changed state, the state of ALL the motors are sent as a SINGLE packet
-    // by packCommand(), according to the groups defined by roveComm.
     this.setState({ boardTelemetry }, () => this.packCommand("MotorBusEnable"))
   }
 
+  /**
+   * @desc gets called any time a bus needs to be toggled. Takes the array of booleans and translates it to a bitmasked integer which then gets sent to the relevant board.
+   * @param board corresponds to the board that is being sent the toggle command
+   */
   packCommand(board: string): void {
     const { boardTelemetry } = this.state
     let newBitMask = ""

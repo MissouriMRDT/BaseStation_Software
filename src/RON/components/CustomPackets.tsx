@@ -27,7 +27,7 @@ const label: CSS.Properties = {
   zIndex: 1,
   color: "white",
 }
-let selectbox: CSS.Properties = {
+const selectbox: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
   justifyContent: "space-between",
@@ -40,7 +40,7 @@ const textbox: CSS.Properties = {
   width: "50px",
   height: "18px",
 }
-let textboxRow: CSS.Properties = {
+const textboxRow: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
   flexWrap: "wrap",
@@ -114,8 +114,6 @@ class CustomPackets extends Component<IProps, IState> {
   }
 
   render(): JSX.Element {
-    selectbox = { ...selectbox }
-    textboxRow = { ...textboxRow }
     return (
       <div style={{ ...this.props.style }}>
         <div style={label}>Custom Packets</div>
