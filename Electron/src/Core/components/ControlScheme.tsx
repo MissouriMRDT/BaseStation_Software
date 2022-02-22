@@ -3,6 +3,7 @@ import React, { Component } from "react"
 import CSS from "csstype"
 import path from "path"
 import fs from "fs"
+import { float } from "html2canvas/dist/types/css/property-descriptors/float"
 
 const container: CSS.Properties = {
   display: "flex",
@@ -16,8 +17,8 @@ const container: CSS.Properties = {
   height: "calc(100% - 40px)",
 }
 const modal: CSS.Properties = {
+  zIndex: 1,
   position: "absolute",
-  zIndex: 2,
   backgroundColor: "white",
   borderStyle: "solid",
   borderWidth: "2px",
@@ -307,16 +308,17 @@ class ControlScheme extends Component<IProps, IState> {
     }
   }
 
-
+//now operates as a windowed modal
   controlLayoutPreview(): JSX.Element{
     return (
-      <div style={modal}>
+      <div style={{...modal, ...row}}>
         {Object.keys(this.state.functionality).map(selectedController => {
           return (
             <div key={selectedController}>
               {this.state.functionality[selectedController].toggled === "On" ? (
-                  <div style={{ borderWidth: "1px", borderStyle: "solid", borderColor: "black", margin: "2px" }}>
+                  <div style={{ ...row, alignItems: "center", alignSelf: "auto" }}>
                         <img src={this.state.image} alt={selectedController} />
+                        <div style ={{ flexDirection: "column"}}>
                         <div>
                           {selectedController} controlled with {this.state.functionality[selectedController].controller}:
                         </div>
@@ -332,6 +334,7 @@ class ControlScheme extends Component<IProps, IState> {
                             )
                           }
                         )}
+                        </div>
                 <button type="button" onClick={() => this.setState({ controlPreviewModal: !this.state.controlPreviewModal })}>
                   back
                 </button>
