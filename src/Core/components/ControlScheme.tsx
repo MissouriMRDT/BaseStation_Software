@@ -18,13 +18,12 @@ const container: CSS.Properties = {
   padding: "5px",
 }
 const modal: CSS.Properties = {
-  zIndex: 1,
+  zIndex: 2,
   position: "absolute",
   backgroundColor: "white",
   borderStyle: "solid",
   borderWidth: "2px",
   borderColor: "black",
-  margin: "3px",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -388,7 +387,7 @@ class ControlScheme extends Component<IProps, IState> {
                     else return null
                   })}
                 </select>
-                <button style={{ zIndex: 2 }} type="button" onClick={() => this.buttonToggle(config)}>
+                <button style={{ zIndex: 1 }} type="button" onClick={() => this.buttonToggle(config)}>
                   {this.state.functionality[config].toggled}
                 </button>
               </div>
@@ -401,7 +400,7 @@ class ControlScheme extends Component<IProps, IState> {
           >
             {this.state.controlPreviewModal ? "Hide Controls" : "Show Controls"}
           </button>
-          <div>{this.state.controlPreviewModal ? this.controlLayoutPreview() : null}</div>
+          {this.state.controlPreviewModal ? this.controlLayoutPreview() : null}
         </div>
       </div>
     )
