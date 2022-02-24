@@ -31,6 +31,7 @@ interface IProps {
 interface IState {
   controlling: string
   image: string
+  interval: NodeJS.Timeout
 }
 
 // Dynamic paths to import images used to indicate which gimbal is being controlled
@@ -45,9 +46,14 @@ class Gimbal extends Component<IProps, IState> {
       // Controlling will be "none" by default, then set to "main" or "drive", and image will update to match
       controlling: "none",
       image: NotConnected,
+      interval: setInterval(() => this.gimbal(), 100)
     }
 
-    setInterval(() => this.gimbal(), 100)
+
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.interval)
   }
 
   gimbal(): void {

@@ -2,27 +2,21 @@ import React, { Component } from "react"
 import CSS from "csstype"
 import SensorData from "./components/SensorData"
 import SensorGraphs from "./components/SensorGraphs"
-import RockLookUp from "./components/rocklookup"
-import Spectrometer from "./components/Spectrometer"
-import SpectrometerViewer from "./components/SpectrometerViewer"
-import Geneva from "./components/Geneva"
+import Heater from "./components/Heater"
 import Cameras from "../../Core/components/Cameras"
+import RockLookUp from "./components/rocklookup"
 import ControlScheme, { controllerInputs } from "../../Core/components/ControlScheme"
 import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
+import Fluorometer from "./components/Fluorometer"
 
 
 const row: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
-  justifyContent: "space-between",
-  flexGrow: 1,
-  alignItems: "stretch",
 }
 const column: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
-  flexGrow: 1,
-  marginRight: "5px",
 }
 
 const motorMultiplier = 500
@@ -91,15 +85,15 @@ class Science extends Component<IProps, IState> {
     return (
       <div style={column}>
         <SensorGraphs />
-        <Spectrometer />
-        <div style={row}>
-          <SensorData style={{ flex: 3, marginRight: "5px" }} />
-          <Geneva style={{ flexGrow: 1, marginLeft: "5px" }} />
+        <div style={{ ...row, marginBottom: "7px" }}>
+          <SensorData style={{ width: "34%", marginRight: "5px" }} />
+          <Heater style={{ width: "33%" }} />
+          <Fluorometer style={{ width: "33%", marginLeft: "5px" }}/>
         </div>
         <ControlScheme configs={["Science"]} />
         <div style={row}>
-          <Cameras defaultCamera={7} style={{ width: "50%", marginRight: "5px" }} />
-          <RockLookUp style={{ width: "50%", marginLeft: "5px"}}/>
+          <Cameras defaultCamera={7} style={{ width: "50%", marginRight: "2.5px" }} />
+          <RockLookUp style={{ width: "50%", marginLeft: "2.5px"}}/>
         </div>
       </div>
     )

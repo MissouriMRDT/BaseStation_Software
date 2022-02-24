@@ -6,13 +6,15 @@ const container: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
   fontFamily: "arial",
-  borderTopWidth: "28px",
+  borderTopWidth: "30px",
   borderColor: "#990000",
   borderBottomWidth: "2px",
   borderStyle: "solid",
   padding: "5px",
-  alignItems: "center",
-  height: "calc(100% - 50px)",
+  alignItems: "flex-start",
+  justifyContent: "center",
+  width: `${window.document.documentElement.clientWidth / 4}`,
+  minWidth: `${window.document.documentElement.clientWidth / 4}`,
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -178,7 +180,7 @@ class StateDiagram extends Component<IProps, IState> {
       <div style={this.props.style}>
         <div style={label}>State Diagram</div>
         <div style={container}>
-          <canvas ref={this.canvasRef} width={window.document.documentElement.clientWidth / 2 - 10} height={400} />
+          <canvas ref={this.canvasRef} width={window.document.documentElement.clientWidth / 4 + 15} height={400} />
         </div>
       </div>
     )

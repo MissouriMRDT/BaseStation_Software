@@ -12,7 +12,7 @@ const container: CSS.Properties = {
   borderStyle: "solid",
   whiteSpace: "pre-wrap",
   overflow: "scroll",
-  height: "320px",
+  height: "calc(100% - 40px)",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -44,7 +44,6 @@ class Activity extends Component<IProps, IState> {
 
     this.ReachedMarker = this.ReachedMarker.bind(this)
 
-    rovecomm.on("AutonomyActivity", (data: any) => this.Log(data))
     rovecomm.on("CurrentLog", (data: any) => this.Log(data))
     rovecomm.on("ReachedMarker", this.ReachedMarker)
   }

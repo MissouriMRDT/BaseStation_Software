@@ -5,14 +5,14 @@ import Deque from "double-ended-queue"
 import fs from "fs"
 import path from "path"
 
-// Change these 2s to 3s to use rovecomm3 instead. Eventually, this should
+// Change these 25s to 2s to use rovecomm2 instead. Eventually, this should
 // be done programatically, but currently there is no rover select.
 // Make sure header length is correct in the manifest for the appropriate
-// rovecomm (5 for rovecomm2, 6 for rovecomm3)
+// rovecomm (5 for rovecomm2, 6 for rovecomm2.5)
 /* eslint-disable import/no-cycle */
-import { parseHeader, createHeader, TCPParseWrapper } from "./Rovecomm2"
+import { parseHeader, createHeader, TCPParseWrapper } from "./Rovecomm25"
 
-const VersionNumber = 2
+const VersionNumber = 25
 
 export let RovecommManifest: any = {}
 export let dataSizes: any = []
@@ -113,11 +113,11 @@ export function parse(packet: Buffer, rinfo?: any): void {
    *
    *  RoveComm Header Format:
    *
-   *   0                   1                   2                   3
-   *   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   *  |    Version    |            Data Id            |  Data  Count  |
-   *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   *   0                   1                   2                   3                   4
+   *   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0
+   *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   *  |    Version    |            Data Id            |          Data  Count          |
+   *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    *  |   Data Type   |                Data (Variable)                |
    *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    *
@@ -434,11 +434,12 @@ class Rovecomm extends EventEmitter {
 
     /* Create the header buffer. Packet is formatted as below:
      *  RoveComm Header Format:
-     *   0                   1                   2                   3
-     *   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-     *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     *  |    Version    |            Data Id            |  Data  Count  |
-     *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     *
+     *   0                   1                   2                   3                   4
+     *   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0
+     *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     *  |    Version    |            Data Id            |          Data  Count          |
+     *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      *  |   Data Type   |                Data (Variable)                |
      *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      *

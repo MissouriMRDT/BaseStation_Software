@@ -2,8 +2,6 @@ import React, { Component } from "react"
 import CSS from "csstype"
 import { RovecommManifest } from "../../Core/RoveProtocol/Rovecomm"
 import { ColorConverter } from "../../Core/ColorConverter"
-import { windows } from "../../Core/Window"
-import { RONModuleWidth } from "./PingGraph"
 
 const container: CSS.Properties = {
   display: "flex",
@@ -49,7 +47,7 @@ class PingMap extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props)
     this.state = {
-      lastWidth: RONModuleWidth,
+      lastWidth: 300,
     }
     this.updatePingMap = this.updatePingMap.bind(this)
     this.canvasRef = React.createRef()
@@ -57,13 +55,13 @@ class PingMap extends Component<IProps, IState> {
 
   componentDidUpdate(prevProps: IProps) {
     // Any time props are recieved that are different than the previous props, update the pingmap
-    if (this.props.devices !== prevProps.devices || this.state.lastWidth !== RONModuleWidth) {
+    if (this.props.devices !== prevProps.devices || this.state.lastWidth !== 300) {
       this.updatePingMap()
     }
   }
 
   updatePingMap(): void {
-    this.setState({ lastWidth: RONModuleWidth })
+    this.setState({ lastWidth: 300 })
 
     let text
 
@@ -174,12 +172,12 @@ class PingMap extends Component<IProps, IState> {
 
     const boards = Object.keys(RovecommManifest)
     const locations = [
-      { x: centerW - 20, y: 540 },
-      { x: centerW + 20, y: 540 },
-      { x: centerW - 60, y: 530 },
-      { x: centerW + 60, y: 530 },
-      { x: centerW - 95, y: 515 },
-      { x: centerW + 95, y: 515 },
+      { x: centerW -  20, y: 540 },
+      { x: centerW +  20, y: 540 },
+      { x: centerW -  60, y: 530 },
+      { x: centerW +  60, y: 530 },
+      { x: centerW -  95, y: 515 },
+      { x: centerW +  95, y: 515 },
       { x: centerW - 130, y: 495 },
       { x: centerW + 130, y: 495 },
       { x: centerW - 155, y: 460 },
@@ -188,6 +186,7 @@ class PingMap extends Component<IProps, IState> {
       { x: centerW + 170, y: 420 },
       { x: centerW - 150, y: 380 },
       { x: centerW + 150, y: 380 },
+      { x: centerW      , y: 590 }
     ]
     for (let i = 0; i < locations.length && i < boards.length; i++) {
       const coords = locations[i]
@@ -227,10 +226,10 @@ class PingMap extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div style={{ ...this.props.style, width: RONModuleWidth }}>
+      <div style={{ ...this.props.style }}>
         <div style={label}>Ping Map</div>
         <div style={container}>
-          <canvas ref={this.canvasRef} width={RONModuleWidth - 10} height="640" />
+          <canvas ref={this.canvasRef} height="640" width={(window.document.documentElement.clientWidth / 2) - 20}/>
         </div>
       </div>
     )

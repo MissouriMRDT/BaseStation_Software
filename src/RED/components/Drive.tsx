@@ -70,8 +70,6 @@ interface IState {
   leftSpeed: number
   rightSpeed: number
   speedLimit: number
-  steeringSpeed: number
-  angle: number
 }
 class Drive extends Component<IProps, IState> {
   constructor(props: IProps) {
@@ -80,12 +78,9 @@ class Drive extends Component<IProps, IState> {
       leftSpeed: 0,
       rightSpeed: 0,
       speedLimit: 300,
-      steeringSpeed: 300,
-      angle: 0,
     }
 
     this.speedLimitChange = this.speedLimitChange.bind(this)
-    this.steeringSpeedChange = this.steeringSpeedChange.bind(this)
     setInterval(() => this.drive(), 100)
   }
 
@@ -134,56 +129,6 @@ class Drive extends Component<IProps, IState> {
       rightSpeed = Math.round(rightSpeed * speedMultiplier)
       rovecomm.sendCommand("DriveLeftRight", [leftSpeed, rightSpeed])
     }
-
-    if (
-      "RotateCW" in controllerInputs &&
-      "RotateCCW" in controllerInputs &&
-      (controllerInputs.RotateCW || controllerInputs.RotateCCW)
-    ) {
-      let { angle } = this.state
-      angle = (((angle + controllerInputs.RotateCW - controllerInputs.RotateCCW) % 360) + 360) % 360
-      this.setState({ angle })
-      // Currently, closed loop isn't fully operational, so we only use open loop control
-      // rovecomm.sendCommand("SetSteeringAngle", angle)
-      const direction: number = controllerInputs.RotateCW - controllerInputs.RotateCCW
-      const speed: number = this.state.steeringSpeed * direction
-      rovecomm.sendCommand("SetSteeringSpeeds", [speed, speed, speed, speed])
-    } else if (
-      "RotateTwist" in controllerInputs &&
-      "RotateToggle" in controllerInputs &&
-      controllerInputs.RotateToggle &&
-      Math.abs(controllerInputs.RotateTwist) > 0.15
-    ) {
-      let { angle } = this.state
-      angle = (((angle - controllerInputs.RotateTwist) % 360) + 360) % 360
-      this.setState({ angle })
-      // Currently, closed loop isn't fully operational, so we only use open loop control
-      // rovecomm.sendCommand("SetSteeringAngle", angle)
-      const speed: number = this.state.steeringSpeed * controllerInputs.RotateTwist
-      rovecomm.sendCommand("SetSteeringSpeeds", [speed, speed, speed, speed])
-    } else if (
-      "RotateLF" in controllerInputs &&
-      "RotateLR" in controllerInputs &&
-      "RotateRF" in controllerInputs &&
-      "RotateRR" in controllerInputs &&
-      "IndependentCW" in controllerInputs &&
-      "IndependentCCW" in controllerInputs
-    ) {
-      const LFSpeed =
-        this.state.steeringSpeed *
-        (controllerInputs.RotateLF ? controllerInputs.IndependentCW - controllerInputs.IndependentCCW : 0)
-      const LRSpeed =
-        this.state.steeringSpeed *
-        (controllerInputs.RotateLR ? controllerInputs.IndependentCW - controllerInputs.IndependentCCW : 0)
-      const RFSpeed =
-        this.state.steeringSpeed *
-        (controllerInputs.RotateRF ? controllerInputs.IndependentCW - controllerInputs.IndependentCCW : 0)
-      const RRSpeed =
-        this.state.steeringSpeed *
-        (controllerInputs.RotateRR ? controllerInputs.IndependentCW - controllerInputs.IndependentCCW : 0)
-      rovecomm.sendCommand("SetSteeringSpeeds", [LFSpeed, LRSpeed, RFSpeed, RRSpeed])
-    }
-
     this.setState({
       leftSpeed,
       rightSpeed,
@@ -198,16 +143,6 @@ class Drive extends Component<IProps, IState> {
       speedLimit = maxSpeed
     }
     this.setState({ speedLimit })
-  }
-
-  steeringSpeedChange(event: { target: { value: string } }): void {
-    let steeringSpeed = parseInt(event.target.value, 10)
-    if (steeringSpeed < 0) {
-      steeringSpeed = 0
-    } else if (steeringSpeed > maxSpeed) {
-      steeringSpeed = maxSpeed
-    }
-    this.setState({ steeringSpeed })
   }
 
   render(): JSX.Element {
@@ -245,15 +180,6 @@ class Drive extends Component<IProps, IState> {
                 style={{ marginLeft: "5px" }}
                 value={this.state.speedLimit || ""}
                 onChange={this.speedLimitChange}
-              />
-            </div>
-            <div>
-              Steering Speed:
-              <input
-                type="text"
-                style={{ marginLeft: "5px" }}
-                value={this.state.steeringSpeed || ""}
-                onChange={this.steeringSpeedChange}
               />
             </div>
           </div>
