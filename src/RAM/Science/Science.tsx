@@ -18,54 +18,48 @@ const column: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
 }
-
-const motorMultiplier = 500
-const zMotorMultiplier = 500
+const waterMotorMultiplier = 500
+const sensorMotorMultiplier = 500
+const scoopMotorMultiplier = 500
 
 function science(): void {
   // Z actuation of the science system is controlled by the left up/down thumbstick
-  if ("zDirection" in controllerInputs) {
-    rovecomm.sendCommand("ZAxis", [controllerInputs.zDirection * zMotorMultiplier])
+  if ("SensorAxis" in controllerInputs) {
+    rovecomm.sendCommand("SensorAxis", [controllerInputs.SensorAxis * sensorMotorMultiplier])
   }
 
-  // Geneva should mainly be controlled by the gui, but open loop control is possible
-  // via the bumpers
-  if ("GenevaCCW" in controllerInputs || "GenevaCW" in controllerInputs) {
-    let direction = 0
-    if ("GenevaCCW" in controllerInputs && controllerInputs.GenevaCCW === 1) {
-      direction = -1
-    } else if ("GenevaCW" in controllerInputs && controllerInputs.GenevaCW === 1) {
-      direction = 1
-    }
-    console.log("GenevaOpenLoop", direction * motorMultiplier)
-    rovecomm.sendCommand("GenevaOpenLoop", [direction * motorMultiplier])
+  if ("XoopAxis" in controllerInputs) {
+    rovecomm.sendCommand("XoopAxis", [controllerInputs.XoopAxis * scoopMotorMultiplier])
   }
 
-  // All of the chemical send values are in one array, and we only want to send no power or half power
+  if ("ZoopAxis" in controllerInputs) {
+    rovecomm.sendCommand("ZoopAxis", [controllerInputs.ZoopAxis * scoopMotorMultiplier])
+  }
+
+  //Open scoop if *only* the OpenScoop button is pressed
+  //Close scoop if *only* the CloseScoop button is pressed
+  //If both are pressed, do nothing
+  if ("OpenScoop" in controllerInputs && !("CloseScoop" in controllerInputs)) {
+    rovecomm.sendCommand("ScoopGrabber", 180)
+  } else if (!("OpenScoop" in controllerInputs) && "CloseScoop" in controllerInputs) {
+    rovecomm.sendCommand("ScoopGrabber", 0)
+  }
+
+  // All of the water send values are in one array, and we only want to send no power or half power
   // (full power is a bit too strong, and negative implies we are trying to suck water/air out of the
   // test tubes into the chemical containers)
-  if ("Chem1" in controllerInputs && "Chem2" in controllerInputs && "Chem3" in controllerInputs) {
-    const chemicals = [0, 0, 0]
-    if (controllerInputs.Chem1 === 1) {
-      chemicals[0] = motorMultiplier
+  if ("Water1" in controllerInputs && "Water2" in controllerInputs && "Water3" in controllerInputs) {
+    const water = [0, 0, 0]
+    if (controllerInputs.Water1 === 1) {
+      water[0] = waterMotorMultiplier
     }
-    if (controllerInputs.Chem2 === 1) {
-      chemicals[1] = motorMultiplier
+    if (controllerInputs.Water2 === 1) {
+      water[1] = waterMotorMultiplier
     }
-    if (controllerInputs.Chem3 === 1) {
-      chemicals[2] = motorMultiplier
+    if (controllerInputs.Water3 === 1) {
+      water[2] = waterMotorMultiplier
     }
-    rovecomm.sendCommand("Chemicals", chemicals)
-  }
-
-  // NOTE: This is NOT how this should be done for the 2021 rover.
-  // We are testing the science system with  the broken 2020 power
-  // board which does not allow us to enable / diable just the vacuum
-  // so we plug vacuum into the wheels and turn them on / off instead
-  // of driving around.
-  if ("VacuumPulse" in controllerInputs) {
-    const value = controllerInputs.VacuumPulse ? 255 : 239
-    rovecomm.sendCommand("MotorBusEnable", value)
+    rovecomm.sendCommand("Water", water)
   }
 }
 
