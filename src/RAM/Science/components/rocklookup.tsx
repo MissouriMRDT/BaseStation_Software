@@ -244,11 +244,11 @@ class RockLookUp extends Component<IProps, IState> {
         availForms: JSON.parse(JSON.stringify(FORMMASTER)),
         availColors: JSON.parse(JSON.stringify(COLORMASTER)),
       },
-      () => this.compareSelections()
+      () => this.compareSelections(false)
     )
   }
 
-  compareSelections() {
+  compareSelections(remove: boolean = true) {
     let { s_Colors, s_Forms, s_Cleave } = this.state
     let possRock: Output[] = []
     let selectedMins: Minerals[] = []
@@ -275,7 +275,7 @@ class RockLookUp extends Component<IProps, IState> {
         }
       })
       selectedMins = [...new Set(selectedMins)]
-      this.cullImpossibles(selectedMins)
+      if(remove) this.cullImpossibles(selectedMins)
     }
     ROCKARR.forEach(rock => {
       let confScore: number = 0
@@ -406,8 +406,8 @@ class RockLookUp extends Component<IProps, IState> {
     if (this.state.outputArr.length > 0) {
       return (
         <div>
-          {this.state.outputArr[this.state.selectedOutput].Rock.name}:
-          {this.state.outputArr[this.state.selectedOutput].Rock.description}
+          <p>{this.state.outputArr[this.state.selectedOutput].Rock.name}:</p>
+          <p>{this.state.outputArr[this.state.selectedOutput].Rock.description}</p>
         </div>
       )
     }
