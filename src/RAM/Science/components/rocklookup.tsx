@@ -252,21 +252,21 @@ class RockLookUp extends Component<IProps, IState> {
     let { s_Colors, s_Forms, s_Cleave } = this.state
     let possRock: Output[] = []
     let selectedMins: Minerals[] = []
-    if (s_Colors.length || s_Forms.length || s_Cleave.length) {
+    if (s_Colors.length >= 0 || s_Forms.length >= 0 || s_Cleave.length >= 0) {
       MINARR.forEach(mineral => {
         let hit: boolean = false
         s_Colors.forEach(color => {
-          if (mineral.colors.indexOf(color)) {
+          if (mineral.colors.indexOf(color) >= 0) {
             hit = true
           }
         })
         s_Forms.forEach(form => {
-          if (mineral.forms.indexOf(form)) {
+          if (mineral.forms.indexOf(form) >= 0) {
             hit = true
           }
         })
         s_Cleave.forEach(cleave => {
-          if (mineral.cleaveAndLuster.indexOf(cleave)) {
+          if (mineral.cleaveAndLuster.indexOf(cleave) >= 0) {
             hit = true
           }
         })
@@ -302,8 +302,8 @@ class RockLookUp extends Component<IProps, IState> {
     availCleave.forEach(cleave => {
       let isPoss: number = 0
       possibleMins.forEach(mineral => {
-        if (mineral.cleaveAndLuster.indexOf(cleave)) {
-          isPoss++
+        if (mineral.cleaveAndLuster.indexOf(cleave) >= 0) {
+          isPoss += 1
         }
       })
       if (isPoss === 0) {
@@ -313,8 +313,8 @@ class RockLookUp extends Component<IProps, IState> {
     availColors.forEach(color => {
       let isPoss: number = 0
       possibleMins.forEach(mineral => {
-        if (mineral.colors.indexOf(color)) {
-          isPoss++
+        if (mineral.colors.indexOf(color) >= 0) {
+          isPoss += 1
         }
       })
       if (isPoss === 0) {
@@ -324,8 +324,8 @@ class RockLookUp extends Component<IProps, IState> {
     availForms.forEach(form => {
       let isPoss: number = 0
       possibleMins.forEach(mineral => {
-        if (mineral.forms.indexOf(form)) {
-          isPoss++
+        if (mineral.forms.indexOf(form) >= 0) {
+          isPoss += 1
         }
       })
       if (isPoss === 0) {
@@ -404,7 +404,6 @@ class RockLookUp extends Component<IProps, IState> {
 
   possibleRocks(): JSX.Element | void {
     if (this.state.outputArr.length > 0) {
-      console.log("here dood")
       return (
         <div>
           {this.state.outputArr[this.state.selectedOutput].Rock.name}:
