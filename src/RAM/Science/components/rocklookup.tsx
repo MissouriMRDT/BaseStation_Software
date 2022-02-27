@@ -22,32 +22,26 @@ const container: CSS.Properties = {
   borderColor: "#990000",
   borderBottomWidth: "2px",
   borderStyle: "solid",
-  justifyContent: "center",
+  position: "absolute",
+  width: "calc(50% - 15.5px)",
+  minHeight: "400px",
 }
 
 const row: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
-  justifyContent: "center",
-  margin: "auto",
-  //lineHeight: "25px",
-  width: "98%",
 }
 
 const column: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
-  justifyContent: "center",
-  margin: "auto",
-  lineHeight: "25px",
 }
 
 const featureColumn: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
-  margin: "auto",
-  //lineHeight: "25px",
+  margin: "2.5px",
   width: "33%",
 }
 
@@ -231,8 +225,9 @@ class RockLookUp extends Component<IProps, IState> {
       outputArr: [],
       selectedOutput: 0,
     }
+    /*
     this.handleFeatureSubmit = this.handleFeatureSubmit.bind(this)
-    this.handleInputChange = this.handleInputChange.bind(this)
+    this.handleInputChange = this.handleInputChange.bind(this)*/
     this.handleFeatureSelect = this.handleFeatureSelect.bind(this)
     this.compareSelections = this.compareSelections.bind(this)
   }
@@ -252,22 +247,22 @@ class RockLookUp extends Component<IProps, IState> {
     let { s_Colors, s_Forms, s_Cleave } = this.state
     let possRock: Output[] = []
     let selectedMins: Minerals[] = []
-    if (s_Colors.length >= 0 || s_Forms.length >= 0 || s_Cleave.length >= 0) {
+    if (s_Colors.length > 0 || s_Forms.length > 0 || s_Cleave.length > 0) {
       MINARR.forEach(mineral => {
-        let hit: boolean = false
+        let hit: boolean = true
         s_Colors.forEach(color => {
-          if (mineral.colors.indexOf(color) >= 0) {
-            hit = true
+          if (mineral.colors.indexOf(color) == -1) {
+            hit = false
           }
         })
         s_Forms.forEach(form => {
-          if (mineral.forms.indexOf(form) >= 0) {
-            hit = true
+          if (mineral.forms.indexOf(form) == -1) {
+            hit = false
           }
         })
         s_Cleave.forEach(cleave => {
-          if (mineral.cleaveAndLuster.indexOf(cleave) >= 0) {
-            hit = true
+          if (mineral.cleaveAndLuster.indexOf(cleave) == -1) {
+            hit = false
           }
         })
         if (hit) {
@@ -275,7 +270,7 @@ class RockLookUp extends Component<IProps, IState> {
         }
       })
       selectedMins = [...new Set(selectedMins)]
-      if(remove) this.cullImpossibles(selectedMins)
+      if (remove) this.cullImpossibles(selectedMins)
     }
     ROCKARR.forEach(rock => {
       let confScore: number = 0
@@ -354,8 +349,10 @@ class RockLookUp extends Component<IProps, IState> {
       s_Forms.push(event.target.value)
       this.setState({ s_Forms, availForms }, () => this.compareSelections())
     }
+    this.setState({ selectedOutput: 0 })
   }
 
+  /*
   handleFeatureSubmit(event: any) {
     event.preventDefault()
   }
@@ -363,7 +360,7 @@ class RockLookUp extends Component<IProps, IState> {
   handleInputChange(event: any) {
     event.preventDefault()
     this.setState({ searchField: event.target.value })
-  }
+  }*/
 
   removeSelectedFeature(type: FeatureType, index: number): void {
     switch (type) {
@@ -405,21 +402,55 @@ class RockLookUp extends Component<IProps, IState> {
   possibleRocks(): JSX.Element | void {
     if (this.state.outputArr.length > 0) {
       return (
-        <div>
-          <p>{this.state.outputArr[this.state.selectedOutput].Rock.name}:</p>
-          <p>{this.state.outputArr[this.state.selectedOutput].Rock.description}</p>
+        <div style={{ ...row }}>
+          <div style={{ ...row, flexGrow: 1 }}>
+            <div style={{ ...column, flexGrow: 1, backgroundColor: "#ddd", width: "40%" }}>
+              <p style={{ fontWeight: "bold", textAlign: "center" }}>
+                {this.state.outputArr[this.state.selectedOutput].Rock.name}
+              </p>
+              <p style={{ textAlign: "center", justifyContent: "center" }}>
+                {this.state.outputArr[this.state.selectedOutput].Rock.description}
+              </p>
+            </div>
+            <img
+              style={{ width: "calc(60% - 62px)" }}
+              src={path.join(
+                __dirname,
+                `../assets/rockLookupAssets/images/${this.state.outputArr[this.state.selectedOutput].Rock.name}.jpg`
+              )}
+              alt={this.state.outputArr[this.state.selectedOutput].Rock.name}
+            ></img>
+          </div>
+          <div style={{ ...column, alignSelf: "right" }}>
+            <button
+              style={{ width: "62px", flexGrow: 1 }}
+              type={"button"}
+              onClick={() =>
+                this.setState({
+                  selectedOutput: Math.max(0, this.state.selectedOutput - 1)
+                })
+              }
+            >
+              ^^^
+            </button>
+            <p style={{ margin: "0 5 0 5", textAlign: "center" }}>
+              {this.state.selectedOutput + 1} / {this.state.outputArr.length}
+            </p>
+            <button
+              style={{ width: "62px", flexGrow: 1 }}
+              type={"button"}
+              onClick={() =>
+                this.setState({
+                  selectedOutput: Math.min(this.state.selectedOutput + 1, this.state.outputArr.length - 1),
+                })
+              }
+            >
+              vvv
+            </button>
+          </div>
         </div>
       )
     }
-    /*this.state.selectedOutput > 0 && this.state.outputArr.length > 0
-      ? () => {
-          return (
-            <button type={"button"} onClick={() => this.setState({ selectedOutput: this.state.selectedOutput - 1 })}>
-              ^^^
-            </button>
-          )
-        }
-      : null*/
   }
 
   render(): JSX.Element {
@@ -441,7 +472,7 @@ class RockLookUp extends Component<IProps, IState> {
               </div>*/}
           <div style={row}>
             <div style={featureColumn}>
-              <p>Colors</p>
+              <p style={{ textAlign: "center" }}>Colors</p>
               <select
                 size={10}
                 id={"ColorList"}
@@ -455,7 +486,7 @@ class RockLookUp extends Component<IProps, IState> {
               </select>
             </div>
             <div style={featureColumn}>
-              <p>Cleavage</p>
+              <p style={{ textAlign: "center" }}>Rock Cleavage</p>
               <select
                 size={10}
                 id={"CleaveList"}
@@ -469,7 +500,7 @@ class RockLookUp extends Component<IProps, IState> {
               </select>
             </div>
             <div style={featureColumn}>
-              <p>Forms</p>
+              <p style={{ textAlign: "center" }}>Forms</p>
               <select
                 size={10}
                 id={"FormList"}
@@ -529,37 +560,7 @@ class RockLookUp extends Component<IProps, IState> {
               <button onClick={() => this.clearSelectedFeatures()}>Clear</button>
             </div>
           </div>
-
-          <div style={column}>
-            <p>Possible Minerals:</p>
-            <div style={{ display: "flex", flexWrap: "wrap", flexDirection: "column" }}>
-              {/*this.state.outputArr.sort(outputCompare).map((output: Output) => {
-                return (
-                  <div title={output.Rock.description} style={{ ...column }}>
-                    <p>
-                      {output.Rock.name} - {output.ConfidenceScore}
-                    </p>
-                  </div>
-                )
-              })*/}
-
-              <button
-                type={"button"}
-                onClick={() =>
-                  this.setState({
-                    selectedOutput:
-                      this.state.selectedOutput > 0 ? this.state.selectedOutput - 1 : this.state.selectedOutput,
-                  })
-                }
-              >
-                ^^^
-              </button>
-              {this.possibleRocks()}
-              <button type={"button"} onClick={() => this.setState({ selectedOutput: this.state.selectedOutput + 1 })}>
-                vvv
-              </button>
-            </div>
-          </div>
+          {this.possibleRocks()}
         </div>
       </div>
     )

@@ -87,7 +87,7 @@ class Science extends Component<IProps, IState> {
         <ControlScheme configs={["Science"]} />
         <div style={row}>
           <Cameras defaultCamera={7} style={{ width: "50%", marginRight: "2.5px" }} />
-          <RockLookUp style={{ width: "50%", marginLeft: "2.5px"}}/>
+          <RockLookUp style={{ marginLeft: "2.5px"}}/>
         </div>
       </div>
     )
