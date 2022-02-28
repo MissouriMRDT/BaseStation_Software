@@ -416,7 +416,7 @@ class RockLookUp extends Component<IProps, IState> {
               style={{ width: "calc(60% - 62px)" }}
               src={path.join(
                 __dirname,
-                `../assets/rockLookupAssets/images/${this.state.outputArr[this.state.selectedOutput].Rock.name}.jpg`
+                `../assets/rockLookupAssets/images/${this.state.outputArr[this.state.selectedOutput].Rock.name}.png`
               )}
               alt={this.state.outputArr[this.state.selectedOutput].Rock.name}
             ></img>
