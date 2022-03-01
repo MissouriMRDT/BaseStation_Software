@@ -33,6 +33,10 @@ const column: CSS.Properties = {
   flexDirection: "column",
 }
 
+const button: CSS.Properties = {
+  margin: "5px",
+}
+
 interface RGBColor {
   r: number
   g: number
@@ -83,10 +87,16 @@ class Lighting extends Component<IProps, IState> {
         <div style={container}>
           <div style={column}>
             <ChromePicker color={this.state.color} onChangeComplete={(color: any) => this.colorChanged(color)} />
-            <div style={row}>
-              <button onClick={() => this.teleop()}>Teleop</button>
-              <button onClick={() => this.autonomy()}>Autonomy</button>
-              <button onClick={() => this.reachedGoal()}>Reached Goal</button>
+            <div style={{ ...row, justifyContent: "center" }}>
+              <button style={button} onClick={() => this.teleop()}>
+                Teleop
+              </button>
+              <button style={button} onClick={() => this.autonomy()}>
+                Autonomy
+              </button>
+              <button style={button} onClick={() => this.reachedGoal()}>
+                Goal
+              </button>
             </div>
           </div>
         </div>
