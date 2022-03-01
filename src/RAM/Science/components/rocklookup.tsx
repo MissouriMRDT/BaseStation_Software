@@ -486,7 +486,7 @@ class RockLookUp extends Component<IProps, IState> {
               </select>
             </div>
             <div style={featureColumn}>
-              <p style={{ textAlign: "center" }}>Rock Cleavage</p>
+              <p style={{ textAlign: "center" }}>Mineral Cleave/Luster</p>
               <select
                 size={10}
                 id={"CleaveList"}
@@ -500,7 +500,7 @@ class RockLookUp extends Component<IProps, IState> {
               </select>
             </div>
             <div style={featureColumn}>
-              <p style={{ textAlign: "center" }}>Forms</p>
+              <p style={{ textAlign: "center" }}>Forms/Habits</p>
               <select
                 size={10}
                 id={"FormList"}
