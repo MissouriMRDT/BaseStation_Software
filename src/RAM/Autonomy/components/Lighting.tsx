@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import CSS from "csstype"
 import { ChromePicker } from "react-color"
-import { rovecomm } from "../../../Core/RoveProtocol/Rovecomm"
+import { rovecomm, RovecommManifest } from "../../../Core/RoveProtocol/Rovecomm"
 
 const container: CSS.Properties = {
   display: "flex",
@@ -21,6 +21,20 @@ const label: CSS.Properties = {
   fontSize: "16px",
   zIndex: 1,
   color: "white",
+}
+
+const row: CSS.Properties = {
+  display: "flex",
+  flexDirection: "row",
+}
+
+const column: CSS.Properties = {
+  display: "flex",
+  flexDirection: "column",
+}
+
+const button: CSS.Properties = {
+  margin: "5px",
 }
 
 interface RGBColor {
@@ -51,12 +65,40 @@ class Lighting extends Component<IProps, IState> {
     rovecomm.sendCommand("LEDRGB", [color.r, color.g, color.b], true)
   }
 
+  teleop(): void {
+    rovecomm.sendCommand("StateDisplay", RovecommManifest.Multimedia.Enums.DISPLAYSTATE.Teleop)
+    console.log(RovecommManifest.Multimedia.Enums.DISPLAYSTATE.Teleop)
+  }
+
+  autonomy(): void {
+    rovecomm.sendCommand("StateDisplay", RovecommManifest.Multimedia.Enums.DISPLAYSTATE.Autonomy)
+    console.log(RovecommManifest.Multimedia.Enums.DISPLAYSTATE.Autonomy)
+  }
+
+  reachedGoal(): void {
+    rovecomm.sendCommand("StateDisplay", RovecommManifest.Multimedia.Enums.DISPLAYSTATE.Reached_Goal)
+    console.log(RovecommManifest.Multimedia.Enums.DISPLAYSTATE.Reached_Goal)
+  }
+
   render(): JSX.Element {
     return (
       <div style={this.props.style}>
         <div style={label}>Lighting</div>
         <div style={container}>
-          <ChromePicker color={this.state.color} onChangeComplete={(color: any) => this.colorChanged(color)} />
+          <div style={column}>
+            <ChromePicker color={this.state.color} onChangeComplete={(color: any) => this.colorChanged(color)} />
+            <div style={{ ...row, justifyContent: "center" }}>
+              <button style={button} onClick={() => this.teleop()}>
+                Teleop
+              </button>
+              <button style={button} onClick={() => this.autonomy()}>
+                Autonomy
+              </button>
+              <button style={button} onClick={() => this.reachedGoal()}>
+                Goal
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     )

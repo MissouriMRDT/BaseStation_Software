@@ -47,7 +47,7 @@ const blockLabel: CSS.Properties = {
 }
 
 const button: CSS.Properties = {
-  width: "80px",
+  width: "150px",
   height: "25px",
   alignSelf: "center",
   margin: "0 5px 0 5px",
@@ -166,7 +166,7 @@ class Heater extends Component<IProps, IState> {
                 <div style={{ ...row, ...(block.isOn ? onIndicator : offIndicator) }}>
                   <label style={blockLabel}>Block {index + 1}: </label>
                   <button style={button} onClick={() => this.toggleBlock(index)}>
-                    {block.temp}&#176; C
+                    {block.temp.toFixed(2)}&#176; C
                   </button>
                 </div>
               )

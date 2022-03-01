@@ -39,10 +39,15 @@ function science(): void {
   //Open scoop if *only* the OpenScoop button is pressed
   //Close scoop if *only* the CloseScoop button is pressed
   //If both are pressed, do nothing
-  if ("OpenScoop" in controllerInputs && !("CloseScoop" in controllerInputs)) {
-    rovecomm.sendCommand("ScoopGrabber", 180)
-  } else if (!("OpenScoop" in controllerInputs) && "CloseScoop" in controllerInputs) {
-    rovecomm.sendCommand("ScoopGrabber", 0)
+  if ("OpenScoop" in controllerInputs) {
+    if (controllerInputs.OpenScoop === 1) {
+      rovecomm.sendCommand("ScoopGrabber", 90)
+    }
+  }
+  else if ("CloseScoop" in controllerInputs) {
+    if(controllerInputs.CloseScoop === 1) {
+      rovecomm.sendCommand("ScoopGrabber", 0)
+    }
   }
 
   // All of the water send values are in one array, and we only want to send no power or half power
