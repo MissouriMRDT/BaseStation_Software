@@ -97,9 +97,13 @@ function fillFrom_R_Database(): Rocks[] {
 
 const MINPATH = path.join(__dirname, "../assets/rockLookupAssets/MineralDatabase.tsv")
 
-function fillFrom_M_Database(): Minerals[] {
+/**
+ * Loads the mineral data from the tsv defined by MINPATH
+ * @returns Map of minerals, empty map if database was not found
+ */
+function fillFrom_M_Database(): Map<string, Minerals> {
   if (fs.existsSync(MINPATH)) {
-    let mineralTable: Minerals[] = []
+    let mineralTable: Map<string, Minerals> = new Map()
     let filePull = fs
       .readFileSync(MINPATH)
       .toString()
@@ -107,7 +111,8 @@ function fillFrom_M_Database(): Minerals[] {
     filePull = filePull.slice(1, filePull.length) // gets rid of the sheet labels
     filePull.forEach(textLine => {
       const lineArr = textLine.split(/\t/)
-      mineralTable.push({
+      console.log("here")
+      mineralTable.set(lineArr[0], {
         name: lineArr[0],
         forms: lineArr[1].split("; "),
         cleaveAndLuster: lineArr[2].split("; "),
@@ -117,16 +122,16 @@ function fillFrom_M_Database(): Minerals[] {
     return mineralTable
   } else {
     console.error("Failed loading Mineral Table. File might not exist. Look in " + MINPATH)
-    return []
+    return new Map()
   }
 }
 
-const MINARR: Minerals[] = fillFrom_M_Database()
+const MINARR: Map<string, Minerals> = fillFrom_M_Database()
 const ROCKARR: Rocks[] = fillFrom_R_Database()
 
 function populateColors(): string[] {
   let colorList: string[] = []
-  MINARR.map(mineral => {
+  MINARR.forEach((mineral: Minerals) => {
     mineral.colors.map(color => {
       colorList.push(color)
     })
@@ -139,7 +144,7 @@ const COLORMASTER: string[] = populateColors()
 
 function populateForms(): string[] {
   let formList: string[] = []
-  MINARR.map(mineral => {
+  MINARR.forEach((mineral: Minerals) => {
     mineral.forms.map(form => {
       formList.push(form)
     })
@@ -152,7 +157,7 @@ const FORMMASTER: string[] = populateForms()
 
 function populateCleaves(): string[] {
   let cleaveList: string[] = []
-  MINARR.map(mineral => {
+  MINARR.forEach((mineral: Minerals) => {
     mineral.cleaveAndLuster.map(cleave => {
       cleaveList.push(cleave)
     })
@@ -270,7 +275,24 @@ class RockLookUp extends Component<IProps, IState> {
         }
       })
       selectedMins = [...new Set(selectedMins)]
-      //if (remove) this.cullImpossibles(selectedMins) //commented out until cullImpossibles is fixed since it culls too much
+      let additionalMins: Minerals[] = []
+      ROCKARR.forEach(rock => {
+        let hasMin: boolean = false
+        selectedMins.forEach(mineral => {
+          if (rock.ComMinerals.indexOf(mineral.name) >= 0) {
+            hasMin = true
+          }
+        })
+        if (hasMin) {
+          rock.ComMinerals.forEach((mineralName: string) => {
+            if (MINARR.has(mineralName)) {
+              let min = MINARR.get(mineralName)
+              if (min) additionalMins.push(min)
+            }
+          })
+        }
+      })
+      if (remove) this.cullImpossibles([...selectedMins, ...additionalMins])
     }
     ROCKARR.forEach(rock => {
       let confScore: number = 0
@@ -291,7 +313,8 @@ class RockLookUp extends Component<IProps, IState> {
     this.setState({ outputArr: possRock })
   }
 
-  cullImpossibles(possibleMins: Minerals[]): void { //Need to consider all minerals in all possible rocks, not just possible minerals
+  cullImpossibles(possibleMins: Minerals[]): void {
+    //Need to consider all minerals in all possible rocks, not just possible minerals
     let { availCleave, availColors, availForms } = this.state
 
     availCleave.forEach(cleave => {
@@ -427,7 +450,7 @@ class RockLookUp extends Component<IProps, IState> {
               type={"button"}
               onClick={() =>
                 this.setState({
-                  selectedOutput: Math.max(0, this.state.selectedOutput - 1)
+                  selectedOutput: Math.max(0, this.state.selectedOutput - 1),
                 })
               }
             >
