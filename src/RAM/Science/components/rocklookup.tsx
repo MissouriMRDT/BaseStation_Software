@@ -251,17 +251,17 @@ class RockLookUp extends Component<IProps, IState> {
       MINARR.forEach(mineral => {
         let hit: boolean = true
         s_Colors.forEach(color => {
-          if (mineral.colors.indexOf(color) == -1) {
+          if (mineral.colors.indexOf(color) === -1) {
             hit = false
           }
         })
         s_Forms.forEach(form => {
-          if (mineral.forms.indexOf(form) == -1) {
+          if (mineral.forms.indexOf(form) === -1) {
             hit = false
           }
         })
         s_Cleave.forEach(cleave => {
-          if (mineral.cleaveAndLuster.indexOf(cleave) == -1) {
+          if (mineral.cleaveAndLuster.indexOf(cleave) === -1) {
             hit = false
           }
         })
@@ -270,7 +270,7 @@ class RockLookUp extends Component<IProps, IState> {
         }
       })
       selectedMins = [...new Set(selectedMins)]
-      if (remove) this.cullImpossibles(selectedMins)
+      //if (remove) this.cullImpossibles(selectedMins) //commented out until cullImpossibles is fixed since it culls too much
     }
     ROCKARR.forEach(rock => {
       let confScore: number = 0
@@ -291,39 +291,39 @@ class RockLookUp extends Component<IProps, IState> {
     this.setState({ outputArr: possRock })
   }
 
-  cullImpossibles(possibleMins: Minerals[]): void {
+  cullImpossibles(possibleMins: Minerals[]): void { //Need to consider all minerals in all possible rocks, not just possible minerals
     let { availCleave, availColors, availForms } = this.state
 
     availCleave.forEach(cleave => {
-      let isPoss: number = 0
+      let isPoss: boolean = false
       possibleMins.forEach(mineral => {
         if (mineral.cleaveAndLuster.indexOf(cleave) >= 0) {
-          isPoss += 1
+          isPoss = true
         }
       })
-      if (isPoss === 0) {
+      if (!isPoss) {
         availCleave.splice(availCleave.indexOf(cleave), 1)
       }
     })
     availColors.forEach(color => {
-      let isPoss: number = 0
+      let isPoss: boolean = false
       possibleMins.forEach(mineral => {
         if (mineral.colors.indexOf(color) >= 0) {
-          isPoss += 1
+          isPoss = true
         }
       })
-      if (isPoss === 0) {
+      if (!isPoss) {
         availColors.splice(availColors.indexOf(color), 1)
       }
     })
     availForms.forEach(form => {
-      let isPoss: number = 0
+      let isPoss: boolean = false
       possibleMins.forEach(mineral => {
         if (mineral.forms.indexOf(form) >= 0) {
-          isPoss += 1
+          isPoss = true
         }
       })
-      if (isPoss === 0) {
+      if (!isPoss) {
         availForms.splice(availForms.indexOf(form), 1)
       }
     })
