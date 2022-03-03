@@ -435,14 +435,16 @@ class RockLookUp extends Component<IProps, IState> {
                 {this.state.outputArr[this.state.selectedOutput].Rock.description}
               </p>
             </div>
-            <img
-              style={{ width: "calc(60% - 62px)" }}
-              src={path.join(
-                __dirname,
-                `../assets/rockLookupAssets/images/${this.state.outputArr[this.state.selectedOutput].Rock.name}.png`
-              )}
-              alt={this.state.outputArr[this.state.selectedOutput].Rock.name}
-            ></img>
+            <div style={{ width: "calc(60% - 62px)", alignSelf: "center" }}>
+              <img
+                style={{ width: "100%" }}
+                src={path.join(
+                  __dirname,
+                  `../assets/rockLookupAssets/images/${this.state.outputArr[this.state.selectedOutput].Rock.name}.png`
+                )}
+                alt={this.state.outputArr[this.state.selectedOutput].Rock.name}
+              ></img>
+            </div>
           </div>
           <div style={{ ...column, alignSelf: "right" }}>
             <button
