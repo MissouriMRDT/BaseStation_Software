@@ -105,11 +105,12 @@ class Heater extends Component<IProps, IState> {
     rovecomm.on("HeaterEnabled", (data: any) => this.updateEnabled(data))
   }
 
-  updateEnabled(data: number): void {
+  updateEnabled(data: number[]): void {
     const { blocks } = this.state
     const bitmask = BitmaskUnpack(data[0], blocks.length)
     for (var i: number = 0; i < blocks.length; i++) {
-      blocks[i].isOn = Boolean(Number(bitmask[i]))
+      //subtracted from the length since we have to reverse the order of the block
+      blocks[(blocks.length - 1) - i].isOn = Boolean(Number(bitmask[i]))
     }
     this.setState({ blocks })
   }
@@ -138,9 +139,9 @@ class Heater extends Component<IProps, IState> {
     blocks[index].isOn = !blocks[index].isOn
 
     let bitmask = ""
-    blocks.forEach(block => {
-      bitmask += block.isOn ? "1" : "0"
-    })
+    for(let i: number = blocks.length - 1; i >= 0; i--) { //Reverse for-loop since the order of the blocks is reversed on the board
+      bitmask += blocks[i].isOn ? "1" : "0"
+    }
     rovecomm.sendCommand("HeaterToggle", [parseInt(bitmask, 2)])
   }
 
