@@ -61,7 +61,9 @@
       "BaseBend": { "buttonType": "joystick", "button": "left stick y" },
       "WristTwistMagnitude": { "buttonType": "button", "button": "LT" },
       "WristBendMagnitude": { "buttonType": "button", "button": "RT" },
-      "LaserToggle": { "buttonType": "button", "button": "start" }
+      "LaserToggle": { "buttonType": "button", "button": "start" },
+      "SolenoidOn": { "buttonType": "button", "button": "A" },
+      "SolenoidOff": { "buttonType": "button", "button": "Y" }
     }
   }
 }
