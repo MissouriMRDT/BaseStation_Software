@@ -49,31 +49,25 @@ const singleSelect: CSS.Properties = {
 }
 const buttons: CSS.Properties = {
   width: "30%",
-  margin: "5px",
+  margin: "2.5px",
   fontSize: "14px",
   lineHeight: "24px",
-  borderRadius: "20px",
-  outline: "none",
 }
 const modal: CSS.Properties = {
   position: "absolute",
-  width: "400px",
-  margin: "10px 50px",
+  width: "500px",
+  margin: "3px 10px",
   zIndex: 1,
-  backgroundColor: "rgba(255,255,255,0.9)",
+  backgroundColor: "white",
   border: "2px solid #990000",
   textAlign: "center",
-  borderRadius: "25px",
 }
 const modalButton: CSS.Properties = {
   width: "75px",
   lineHeight: "24px",
   color: "white",
   fontWeight: "bold",
-  borderRadius: "10px",
-  border: "none",
   margin: "10px",
-  outline: "none",
 }
 const scrollviewer: CSS.Properties = {
   display: "flex",
@@ -108,7 +102,6 @@ const colorButton: CSS.Properties = {
   width: "15%",
   fontSize: "0px",
   lineHeight: "20px",
-  borderRadius: "20px",
   outline: "none",
 }
 const filepath = path.join(__dirname, "../assets/Waypoints.json")
@@ -158,7 +151,7 @@ class Waypoints extends Component<IProps, IState> {
   }
 
   componentDidMount(): void {
-    /* When first built, we want to check the presets file if it exists
+    /** When first built, we want to check the presets file if it exists
      * and import all preset positions. If presets exist, we should also
      * default selected position to the first position. If file does not
      * exist, it isn't created until we attempt to store data
@@ -178,7 +171,7 @@ class Waypoints extends Component<IProps, IState> {
   }
 
   cascadeWaypoint(): void {
-    /* Function to be called on setState callback so that when setState has
+    /** Function to be called on setState callback so that when setState has
      * finished executing we can properly update the json file and trigger the
      * parent function from props. File is created now if it doesn't already exist
      */
@@ -189,8 +182,7 @@ class Waypoints extends Component<IProps, IState> {
   }
 
   store(name: string, coords: any): void {
-    /* Adds the new waypoint to the select box and updates the json file
-     */
+    // Adds the new waypoint to the select box and updates the json file
     // If selectedWaypoint is still an empty string, this is a good time
     // to update it to a useful starting value
     if (!name) {
@@ -242,12 +234,11 @@ class Waypoints extends Component<IProps, IState> {
     ThreeDRover.id += 1
   }
 
+  /** Deletes a selected stored position (if a position has been selected)
+   * and properly updates the json file (see store() for more detailed comments)
+   */
   remove(): void {
-    /* Deletes a selected stored position (if a position has been selected)
-     * and properly updates the json file (see store() for more detailed comments)
-     */
     const { storedWaypoints } = this.state
-
     // Since the selectedPosition is to be deleted, we want to grab a new
     // value. We grab the next key if one exists, or if not the previous key,
     // or if not default to ""
@@ -391,9 +382,8 @@ class Waypoints extends Component<IProps, IState> {
                 backgroundColor: waypointName === this.state.selectedWaypoint ? "lightblue" : "white",
               }
               return (
-                <button
+                <div
                   key={waypointName}
-                  type="button"
                   onClick={() => this.setState({ selectedWaypoint: waypointName })}
                   style={backgroundStyle}
                 >
@@ -425,7 +415,7 @@ class Waypoints extends Component<IProps, IState> {
                       onChange={() => this.checkBox(waypointName)}
                     />
                   </div>
-                </button>
+                </div>
               )
             })}
           </div>

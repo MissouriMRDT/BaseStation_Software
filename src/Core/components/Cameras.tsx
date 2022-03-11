@@ -3,8 +3,23 @@ import CSS from "csstype"
 import html2canvas from "html2canvas"
 import fs from "fs"
 
-import { RovecommManifest } from "../RoveProtocol/Rovecomm"
 import { windows } from "../Window"
+import no_cam_img from "../../../assets/no_cam_img.jpg"
+
+const cameraNumList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+const cam_ips = [
+  no_cam_img,
+  `http://192.168.1.141:8080/1/stream`,
+  `http://192.168.1.141:8080/2/stream`,
+  `http://192.168.1.141:8080/3/stream`,
+  `http://192.168.1.141:8080/4/stream`,
+  `http://192.168.1.142:8080/1/stream`,
+  `http://192.168.1.142:8080/2/stream`,
+  `http://192.168.1.142:8080/3/stream`,
+  `http://192.168.1.142:8080/4/stream`,
+  `http://192.168.1.139:8080/1/stream`,
+  `http://192.168.1.139:8080/2/stream`,
+]
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
@@ -19,7 +34,6 @@ const container: CSS.Properties = {
   borderBottomWidth: "2px",
   borderStyle: "solid",
   padding: "5px",
-  height: "calc(100% - 45px)",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -30,6 +44,10 @@ const label: CSS.Properties = {
   fontSize: "16px",
   zIndex: 1,
   color: "white",
+}
+const column: CSS.Properties = {
+  display: "flex",
+  flexDirection: "column",
 }
 const row: CSS.Properties = {
   display: "flex",
@@ -43,12 +61,10 @@ const cam: CSS.Properties = {
 interface IProps {
   defaultCamera: number
   style?: CSS.Properties
-  maxHeight?: number
 }
 
 interface IState {
   currentCamera: number
-  cameraIps: string[]
   rotation: number
   style: CSS.Properties
   id: string
@@ -62,21 +78,11 @@ class Cameras extends Component<IProps, IState> {
     super(props)
     this.state = {
       currentCamera: this.props.defaultCamera,
-      cameraIps: [RovecommManifest.Camera1.Ip, RovecommManifest.Camera2.Ip, RovecommManifest.Autonomy.Ip],
       rotation: 0,
       style: {},
       id: `Camera ${Cameras.id}`,
     }
     Cameras.id += 1
-  }
-
-  ConstructAddress() {
-    // Construct address looks at the camera's index to determine which IP should be used
-    // Then finds the relative camera number and returns the configured source url
-    const index = Math.floor((this.state.currentCamera - 1) / 4)
-    const camera = ((this.state.currentCamera - 1) % 4) + 1
-    const ip = this.state.cameraIps[index]
-    return `http://${ip}:8080/${camera}/stream`
   }
 
   rotate(): void {
@@ -171,38 +177,58 @@ class Cameras extends Component<IProps, IState> {
     fs.writeFileSync(filename, base64Image!, { encoding: "base64" })
   }
 
+  refresh(): void {
+    //changes camera to 0 feed (default no camera), then changes back to current camera
+    //uses setstate callback function to assure that the camera changes to 0 before changing it back
+    let curCam = this.state.currentCamera
+    this.setState({ currentCamera: 0 }, () => this.setState({ currentCamera: curCam }))
+  }
+
   render(): JSX.Element {
     return (
-      <div id="camera" style={{ ...this.props.style, maxHeight: `${this.props.maxHeight}px` }}>
+      <div id="camera" style={this.props.style}>
         <div style={label}>Cameras</div>
         <div style={container}>
-          <div style={row}>
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => {
-              return (
-                <button
-                  type="button"
-                  key={num}
-                  onClick={() => this.setState({ currentCamera: num })}
-                  style={{ flexGrow: 1 }}
-                >
-                  <h1 style={h1Style}>{num}</h1>
-                </button>
-              )
-            })}
-          </div>
-          <img
-            src={this.ConstructAddress()}
-            alt={`Camera ${this.state.currentCamera}`}
-            style={{ ...cam, ...this.state.style }}
-            id={this.state.id}
-          />
-          <div style={row}>
-            <button type="button" onClick={() => this.saveImage()} style={{ flexGrow: 1 }}>
-              Screenshot
-            </button>
-            <button type="button" onClick={() => this.rotate()} style={{ flexGrow: 1 }}>
-              Rotate
-            </button>
+          <div style={column}>
+            <div style={row}>
+              {cameraNumList.map(num => {
+                return (
+                  <button
+                    type="button"
+                    key={num}
+                    onClick={() => this.setState({ currentCamera: num })}
+                    style={{
+                      flexGrow: 1,
+                      borderWidth: this.state.currentCamera == num ? "medium" : "thin",
+                    }}
+                  >
+                    <h1 style={h1Style}>{num}</h1>
+                  </button>
+                )
+              })}
+            </div>
+            <img
+              src={cam_ips[this.state.currentCamera]}
+              alt={`Camera ${this.state.currentCamera}`}
+              style={{ ...cam, ...this.state.style }}
+              id={this.state.id}
+            />
+            <div style={row}>
+              <button type="button" onClick={() => this.saveImage()} style={{ width: "50%" }}>
+                Screenshot
+              </button>
+              <button type="button" onClick={() => this.rotate()} style={{ width: "50%" }}>
+                Rotate
+              </button>
+            </div>
+            <div style={row}>
+              <button type="button" onClick={() => this.setState({ currentCamera: 0 })} style={{ width: "50%" }}>
+                Stop Listening
+              </button>
+              <button type="button" onClick={() => this.refresh()} style={{ width: "50%" }}>
+                Refresh
+              </button>
+            </div>
           </div>
         </div>
       </div>

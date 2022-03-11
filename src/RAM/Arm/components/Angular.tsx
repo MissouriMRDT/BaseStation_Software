@@ -47,7 +47,6 @@ const buttons: CSS.Properties = {
   margin: "5px",
   fontSize: "14px",
   lineHeight: "24px",
-  borderRadius: "20px",
   outline: "none",
 }
 const modal: CSS.Properties = {
@@ -58,14 +57,12 @@ const modal: CSS.Properties = {
   backgroundColor: "rgba(255,255,255,0.9)",
   border: "2px solid #990000",
   textAlign: "center",
-  borderRadius: "25px",
 }
 const modalButton: CSS.Properties = {
   width: "75px",
   lineHeight: "24px",
   color: "white",
   fontWeight: "bold",
-  borderRadius: "10px",
   border: "none",
   margin: "10px",
 }

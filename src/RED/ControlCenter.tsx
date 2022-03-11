@@ -55,7 +55,7 @@ class ControlCenter extends Component<IProps, IState> {
       ronOpen: false,
       ramOpen: false,
       ridOpen: false,
-      fourthHeight: window.innerHeight / 4,
+      fourthHeight: 1920 / 4 - 10,
     }
     this.updateWaypoints = this.updateWaypoints.bind(this)
     this.updateCoords = this.updateCoords.bind(this)
@@ -132,8 +132,8 @@ class ControlCenter extends Component<IProps, IState> {
           <Power />
           <Drive />
           <div style={row}>
-            <ControlScheme style={{ flexGrow: 1, marginRight: "5px" }} configs={["Drive", "MainGimbal"]} />
-            <Gimbal />
+            <ControlScheme style={{ flexGrow: 1, marginRight: "5px", marginBottom: "5px" }} configs={["Drive", "MainGimbal"]} />
+            <Gimbal style={{ height: "100%" }}/>
           </div>
           <div style={row}>
             <button type="button" onClick={rovecomm.resubscribe} style={{ width: "100px" }}>
@@ -158,9 +158,9 @@ class ControlCenter extends Component<IProps, IState> {
             store={(name: string, coords: any) => this.waypointsInstance.store(name, coords)}
             name="controlCenterMap"
           />
-          <Cameras defaultCamera={1} maxHeight={this.state.fourthHeight} style={{ width: "100%" }} />
-          <Cameras defaultCamera={2} maxHeight={this.state.fourthHeight} style={{ width: "100%" }} />
-          <Cameras defaultCamera={3} maxHeight={this.state.fourthHeight} style={{ width: "100%" }} />
+          <Cameras defaultCamera={1} style={{ width: "100%" }} />
+          <Cameras defaultCamera={2} style={{ width: "100%" }} />
+          <Cameras defaultCamera={3} style={{ width: "100%" }} />
         </div>
       </div>
     )

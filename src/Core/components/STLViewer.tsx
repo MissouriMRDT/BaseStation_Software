@@ -36,8 +36,10 @@ class STLViewer extends Component<IProps, IState> {
     cameraY: 0,
     cameraZ: null,
     lights: [
-      [0, 5, 1],
-      [0, -5, 1],
+      [0, 1, 5],
+      [0, 1, -5],
+      [5, 1, 0],
+      [-5, 1, 0],
     ],
     lightColor: "#B92C2C",
     rotation: [0, 0, 0],

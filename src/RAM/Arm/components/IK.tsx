@@ -46,7 +46,6 @@ const buttons: CSS.Properties = {
   margin: "5px",
   fontSize: "14px",
   lineHeight: "24px",
-  borderRadius: "20px",
   outline: "none",
 }
 
