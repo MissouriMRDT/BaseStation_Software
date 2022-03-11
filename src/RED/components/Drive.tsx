@@ -16,6 +16,7 @@ const container: CSS.Properties = {
   borderStyle: "solid",
   flexWrap: "wrap",
   flexDirection: "column",
+  padding: "5px",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -30,19 +31,20 @@ const label: CSS.Properties = {
 const row: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
+  justifyContent: "space-between"
 }
 
 function scaleVector(thetaIn: number): number {
-  /* This function returns a value [-1, 1] based off of the value of theta
-   * This function really only makes sense with drive in mind - consider the case of the left wheel
-   * When theta = pi/2, we want to full send forward, so we return 1
-   * When theta = 0, we want to point turn clockwise, so we return -1
-   * To map any polar value in between, we can use 4*theta/pi - 1
-   * (note if theta = pi/2, 4*pi/2/pi-1 = 1; theta = 0, 4*0/pi-1 = -1; theta = pi/4, 4*pi/4/pi-1 = 0)
-   * When theta = 3pi/4, the left wheels should be going forward at full strength, while the right wheels adjust
-   * The bottom half of the unit circle is practically the same, with -1 when theta = -pi/4
-   * And anywhere -pi/2 <= theta <= 0 we use -4*theta/pi - 3 in order to get the same examples shown above
-   */
+  /** This function returns a value [-1, 1] based off of the value of theta
+    * This function really only makes sense with drive in mind - consider the case of the left wheel
+    * When theta = pi/2, we want to full send forward, so we return 1
+    * When theta = 0, we want to point turn clockwise, so we return -1
+    * To map any polar value in between, we can use 4*theta/pi - 1
+    * (note if theta = pi/2, 4*pi/2/pi-1 = 1; theta = 0, 4*0/pi-1 = -1; theta = pi/4, 4*pi/4/pi-1 = 0)
+    * When theta = 3pi/4, the left wheels should be going forward at full strength, while the right wheels adjust
+    * The bottom half of the unit circle is practically the same, with -1 when theta = -pi/4
+    * And anywhere -pi/2 <= theta <= 0 we use -4*theta/pi - 3 in order to get the same examples shown above
+    */
   const pi = Math.PI
   let theta = thetaIn
   if (theta < -pi) {
@@ -154,25 +156,25 @@ class Drive extends Component<IProps, IState> {
             <progress
               value={this.state.leftSpeed < 0 ? -this.state.leftSpeed : 0}
               max={maxSpeed}
-              style={{ transform: "rotate(180deg)" }}
+              style={{ transform: "rotate(180deg)", flexGrow: 1 }}
             />
-            <div style={{ width: "30%", textAlign: "center" }}>Left Speed: {this.state.leftSpeed}</div>
+            <div style={{ width: "150px", alignSelf: "center", textAlign: "center" }}>Left Speed: {this.state.leftSpeed}</div>
             <progress style={{ flexGrow: 1 }} value={this.state.leftSpeed > 0 ? this.state.leftSpeed : 0} max={1000} />
           </div>
           <div style={row}>
             <progress
               value={this.state.rightSpeed < 0 ? -this.state.rightSpeed : 0}
               max={maxSpeed}
-              style={{ transform: "rotate(180deg)" }}
+              style={{ transform: "rotate(180deg)", flexGrow: 1 }}
             />
-            <div style={{ width: "30%", textAlign: "center" }}>Right Speed: {this.state.rightSpeed}</div>
+            <div style={{ width: "150px", textAlign: "center" }}>Right Speed: {this.state.rightSpeed}</div>
             <progress
               style={{ flexGrow: 1 }}
               value={this.state.rightSpeed > 0 ? this.state.rightSpeed : 0}
               max={maxSpeed}
             />
           </div>
-          <div style={row}>
+          <div style={{ ...row, justifyContent: "center" }}>
             <div>
               Speed Limit:
               <input

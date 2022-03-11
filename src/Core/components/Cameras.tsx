@@ -6,12 +6,20 @@ import fs from "fs"
 import { windows } from "../Window"
 import no_cam_img from "../../../assets/no_cam_img.jpg"
 
-const cameraNumList = [1,2,3,4,5,6,7,8,9,10]
-const cam_ips = 
-[no_cam_img, `http://192.168.1.141:8080/1/stream`, `http://192.168.1.141:8080/2/stream`, `http://192.168.1.141:8080/3/stream`, 
-`http://192.168.1.141:8080/4/stream`, `http://192.168.1.142:8080/1/stream`, `http://192.168.1.142:8080/2/stream`, 
-`http://192.168.1.142:8080/3/stream`, `http://192.168.1.142:8080/4/stream`, `http://192.168.1.139:8080/1/stream`, 
-`http://192.168.1.139:8080/2/stream`]
+const cameraNumList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+const cam_ips = [
+  no_cam_img,
+  `http://192.168.1.141:8080/1/stream`,
+  `http://192.168.1.141:8080/2/stream`,
+  `http://192.168.1.141:8080/3/stream`,
+  `http://192.168.1.141:8080/4/stream`,
+  `http://192.168.1.142:8080/1/stream`,
+  `http://192.168.1.142:8080/2/stream`,
+  `http://192.168.1.142:8080/3/stream`,
+  `http://192.168.1.142:8080/4/stream`,
+  `http://192.168.1.139:8080/1/stream`,
+  `http://192.168.1.139:8080/2/stream`,
+]
 
 const h1Style: CSS.Properties = {
   fontFamily: "arial",
@@ -26,7 +34,6 @@ const container: CSS.Properties = {
   borderBottomWidth: "2px",
   borderStyle: "solid",
   padding: "5px",
-  height: "calc(100% - 45px)",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -38,11 +45,13 @@ const label: CSS.Properties = {
   zIndex: 1,
   color: "white",
 }
+const column: CSS.Properties = {
+  display: "flex",
+  flexDirection: "column",
+}
 const row: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
-  flexBasis: "0px",
-  flexWrap: "wrap",
 }
 
 const cam: CSS.Properties = {
@@ -52,7 +61,6 @@ const cam: CSS.Properties = {
 interface IProps {
   defaultCamera: number
   style?: CSS.Properties
-  maxHeight?: number
 }
 
 interface IState {
@@ -173,53 +181,55 @@ class Cameras extends Component<IProps, IState> {
     //changes camera to 0 feed (default no camera), then changes back to current camera
     //uses setstate callback function to assure that the camera changes to 0 before changing it back
     let curCam = this.state.currentCamera
-    this.setState({currentCamera : 0}, () => this.setState({currentCamera : curCam}))
+    this.setState({ currentCamera: 0 }, () => this.setState({ currentCamera: curCam }))
   }
 
   render(): JSX.Element {
     return (
-      <div id="camera" style={{ ...this.props.style, maxHeight: `${this.props.maxHeight}px` }}>
+      <div id="camera" style={this.props.style}>
         <div style={label}>Cameras</div>
         <div style={container}>
-          <div style={row}>
-            {cameraNumList.map(num => {
-              return (
-                <button
-                  type="button"
-                  key={num}
-                  onClick={() => this.setState({ currentCamera: num })}
-                  style={{
-                    flexGrow : 1, 
-                    //backgroundColor: num > 4 ? "white" : "#00ff00",
-                    borderWidth: this.state.currentCamera == num ? "medium" : "thin",
-                  }}
-                >
-                  <h1 style={h1Style}>{num}</h1>
-                </button>
-              )
-            })}
-          </div>
-          <img
-            src={cam_ips[this.state.currentCamera]}
-            alt={`Camera ${this.state.currentCamera}`}
-            style={{ ...cam, ...this.state.style }}
-            id={this.state.id}
-          />
-          <div style={row}>
-            <button type="button" onClick={() => this.saveImage()} style={{ flexGrow: 1 }}>
-              Screenshot
-            </button>
-            <button type="button" onClick={() => this.rotate()} style={{ flexGrow: 1 }}>
-              Rotate
-            </button>
-          </div>
-          <div style={row}>
-            <button type="button" onClick={() => this.setState({currentCamera : 0})} style={{ flexGrow: 1 }}>
-              Stop Listening
-            </button>
-            <button type="button" onClick={() => this.refresh()} style={{ flexGrow: 1 }}>
-              Refresh
-            </button>
+          <div style={column}>
+            <div style={row}>
+              {cameraNumList.map(num => {
+                return (
+                  <button
+                    type="button"
+                    key={num}
+                    onClick={() => this.setState({ currentCamera: num })}
+                    style={{
+                      flexGrow: 1,
+                      //backgroundColor: num > 4 ? "white" : "#00ff00",
+                      borderWidth: this.state.currentCamera == num ? "medium" : "thin",
+                    }}
+                  >
+                    <h1 style={h1Style}>{num}</h1>
+                  </button>
+                )
+              })}
+            </div>
+            <img
+              src={cam_ips[this.state.currentCamera]}
+              alt={`Camera ${this.state.currentCamera}`}
+              style={{ ...cam, ...this.state.style }}
+              id={this.state.id}
+            />
+            <div style={row}>
+              <button type="button" onClick={() => this.saveImage()} style={{ flexGrow: 1 }}>
+                Screenshot
+              </button>
+              <button type="button" onClick={() => this.rotate()} style={{ flexGrow: 1 }}>
+                Rotate
+              </button>
+            </div>
+            <div style={row}>
+              <button type="button" onClick={() => this.setState({ currentCamera: 0 })} style={{ flexGrow: 1 }}>
+                Stop Listening
+              </button>
+              <button type="button" onClick={() => this.refresh()} style={{ flexGrow: 1 }}>
+                Refresh
+              </button>
+            </div>
           </div>
         </div>
       </div>

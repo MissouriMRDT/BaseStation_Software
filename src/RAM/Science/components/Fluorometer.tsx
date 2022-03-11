@@ -34,8 +34,7 @@ const row: CSS.Properties = {
   width: "100%",
 }
 const componentBox: CSS.Properties = {
-  marginTop: "5px",
-  marginBottom: "5px",
+  margin: "3px 0 3px 0",
 }
 const button: CSS.Properties = {
   marginLeft: "15px",
@@ -50,11 +49,13 @@ const controlButton: CSS.Properties = {
 /** Will be merged with the row css if the Laser is off */
 const offIndicator: CSS.Properties = {
   backgroundColor: "#FF0000",
+  lineHeight: "27px",
 }
 
 /** Will be merged with the row css if the Laser is off */
 const onIndicator: CSS.Properties = {
   backgroundColor: "#00FF00",
+  lineHeight: "27px",
 }
 
 interface IProps {
@@ -186,9 +187,9 @@ class Fluorometer extends Component<IProps, IState> {
           <div style={componentBox}>
             {this.state.LasersPowered.map((value, index) => {
               return (
-                <div key={index} style={{ ...row, ...(value ? onIndicator : offIndicator) }}>
-                  <label style={{ alignSelf: "center", fontWeight: "bold" }}> Laser {index + 1}: </label>
-                  <button style={button} onClick={() => this.toggleLaser(index)}>
+                <div key={index} style={{ ...row, ...(value ? onIndicator : offIndicator), justifyContent: "space-between" }}>
+                  <label style={{ alignSelf: "center", fontWeight: "bold", marginLeft: "5px" }}> Laser {index + 1}: </label>
+                  <button style={{ ...button, marginRight: "5px" }} onClick={() => this.toggleLaser(index)}>
                     {value ? "Disable" : "Enable"}
                   </button>
                 </div>

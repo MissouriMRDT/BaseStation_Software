@@ -3,7 +3,6 @@ import React, { Component } from "react"
 import CSS from "csstype"
 import path from "path"
 import fs from "fs"
-import { float } from "html2canvas/dist/types/css/property-descriptors/float"
 
 const container: CSS.Properties = {
   display: "flex",
@@ -14,7 +13,6 @@ const container: CSS.Properties = {
   borderStyle: "solid",
   flexWrap: "wrap",
   flexDirection: "column",
-  height: "calc(100% - 40px)",
   padding: "5px",
 }
 const modal: CSS.Properties = {
@@ -38,7 +36,7 @@ const label: CSS.Properties = {
 const readoutDisplay: CSS.Properties = {
   fontSize: "16px",
   fontFamily: "arial",
-  padding: "6px 3px 3px 4px",
+  padding: "3px 3px 4.5px 0",
   marginRight: "2px",
   flex: 1,
 }
@@ -108,17 +106,19 @@ function controller(passedScheme: any, pos: any): any {
     if (navigator.getGamepads()[index] != null && passedScheme !== "") {
       for (const button in CONTROLLERINPUT[passedScheme].bindings) {
         if (CONTROLLERINPUT[passedScheme].bindings[button].buttonType === "button") {
-          controllerInputs[button] = navigator.getGamepads()[index]?.buttons[ // Button indexes from the controller
-            CONTROLLER[CONTROLLERINPUT[passedScheme].controller].button[ // object of buttons on this controller type
-              CONTROLLERINPUT[passedScheme].bindings[button].button // the desired button from this control scheme
-            ]
-          ].value
+          controllerInputs[button] =
+            navigator.getGamepads()[index]?.buttons[ // Button indexes from the controller
+              CONTROLLER[CONTROLLERINPUT[passedScheme].controller].button[ // object of buttons on this controller type
+                CONTROLLERINPUT[passedScheme].bindings[button].button // the desired button from this control scheme
+              ]
+            ].value
         } else {
-          controllerInputs[button] = navigator.getGamepads()[index]?.axes[ // axes indexes from the controller
-            CONTROLLER[CONTROLLERINPUT[passedScheme].controller].joystick[ // object of joystick on this controller type
-              CONTROLLERINPUT[passedScheme].bindings[button].button // the desired "button" from this control scheme
+          controllerInputs[button] =
+            navigator.getGamepads()[index]?.axes[ // axes indexes from the controller
+              CONTROLLER[CONTROLLERINPUT[passedScheme].controller].joystick[ // object of joystick on this controller type
+                CONTROLLERINPUT[passedScheme].bindings[button].button // the desired "button" from this control scheme
+              ]
             ]
-          ]
           // this checks to see if the current value of the axes are under the deadzone and will set
           // it to zero to prevent unwanted inputs when the controller is not being used
           if (controllerInputs[button] >= -DeadZone && controllerInputs[button] <= DeadZone) {
@@ -203,13 +203,11 @@ class ControlScheme extends Component<IProps, IState> {
         selectedImage = xboxController
         defaultScheme = scheme
         break
-      }
-      else{
+      } else {
         selectedImage = flightStick
         defaultScheme = scheme
         break
       }
-
     }
     this.setState(
       {
@@ -222,7 +220,7 @@ class ControlScheme extends Component<IProps, IState> {
             interval: clearInterval(this.state.functionality[config].interval),
           },
         },
-        image: selectedImage
+        image: selectedImage,
       },
       // this is a callback for when the setState finished updating it clears the set interval,
       // so that after setState is finished it is able to create a new interval and assign it
@@ -239,7 +237,7 @@ class ControlScheme extends Component<IProps, IState> {
                 ),
               },
             },
-            image:selectedImage
+            image: selectedImage,
           })
         }
       }
@@ -308,37 +306,42 @@ class ControlScheme extends Component<IProps, IState> {
     }
   }
 
-//now operates as a windowed modal
-  controlLayoutPreview(): JSX.Element{
+  //now operates as a windowed modal
+  controlLayoutPreview(): JSX.Element {
     return (
-      <div style={{...modal, ...row}}>
+      <div style={{ ...modal, ...row }}>
         {Object.keys(this.state.functionality).map(selectedController => {
           return (
             <div key={selectedController}>
               {this.state.functionality[selectedController].toggled === "On" ? (
-                  <div style={{ ...row, alignItems: "center", alignSelf: "auto" }}>
-                        <img src={this.state.image} alt={selectedController} />
-                        <div style ={{ flexDirection: "column"}}>
-                        <div>
-                          {selectedController} controlled with {this.state.functionality[selectedController].controller}:
-                        </div>
-                        {Object.keys(CONTROLLERINPUT[this.state.functionality[selectedController].scheme].bindings).map(
-                          bind => {
-                            return (
-                              <div key={bind}>
-                                {bind}:{" "}
-                                {CONTROLLERINPUT[this.state.functionality[selectedController].scheme].bindings[bind].button
-                                  ? CONTROLLERINPUT[this.state.functionality[selectedController].scheme].bindings[bind].button
-                                 : CONTROLLERINPUT[this.state.functionality[selectedController].scheme].bindings.buttonIndex}
-                             </div>
-                            )
-                          }
-                        )}
-                        </div>
-                <button type="button" onClick={() => this.setState({ controlPreviewModal: !this.state.controlPreviewModal })}>
-                  back
-                </button>
+                <div style={{ ...row, alignItems: "center", alignSelf: "auto" }}>
+                  <img src={this.state.image} alt={selectedController} />
+                  <div style={{ flexDirection: "column" }}>
+                    <div>
+                      {selectedController} controlled with {this.state.functionality[selectedController].controller}:
+                    </div>
+                    {Object.keys(CONTROLLERINPUT[this.state.functionality[selectedController].scheme].bindings).map(
+                      bind => {
+                        return (
+                          <div key={bind}>
+                            {bind}:{" "}
+                            {CONTROLLERINPUT[this.state.functionality[selectedController].scheme].bindings[bind].button
+                              ? CONTROLLERINPUT[this.state.functionality[selectedController].scheme].bindings[bind]
+                                  .button
+                              : CONTROLLERINPUT[this.state.functionality[selectedController].scheme].bindings
+                                  .buttonIndex}
+                          </div>
+                        )
+                      }
+                    )}
                   </div>
+                  <button
+                    type="button"
+                    onClick={() => this.setState({ controlPreviewModal: !this.state.controlPreviewModal })}
+                  >
+                    back
+                  </button>
+                </div>
               ) : null}
             </div>
           )
@@ -396,7 +399,7 @@ class ControlScheme extends Component<IProps, IState> {
           <button
             type="button"
             onClick={() => this.setState({ controlPreviewModal: !this.state.controlPreviewModal })}
-            style={{ width: "120px", marginLeft: "40%" }}
+            style={{ width: "120px", alignSelf: "center" }}
           >
             {this.state.controlPreviewModal ? "Hide Controls" : "Show Controls"}
           </button>

@@ -47,7 +47,6 @@ const button: CSS.Properties = {
   margin: "5px",
   fontSize: "16px",
   lineHeight: "24px",
-  borderRadius: "20px",
 }
 
 interface IProps {
