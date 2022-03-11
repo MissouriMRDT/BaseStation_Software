@@ -41,9 +41,15 @@ class Paint {
       this.mesh.material.dispose()
       this.scene.remove(this.grid)
     }
-    const directionalLightObj = this.scene.getObjectByName(DIRECTIONAL_LIGHT)
-    if (directionalLightObj) {
-      this.scene.remove(directionalLightObj)
+
+    let moreLights = true
+    while (moreLights) {
+      const directionalLightObj = this.scene.getObjectByName(DIRECTIONAL_LIGHT)
+      if (directionalLightObj) {
+        this.scene.remove(directionalLightObj)
+      } else {
+        moreLights = false
+      }
     }
 
     if (this.animationRequestId) {
