@@ -200,11 +200,7 @@ class ControlScheme extends Component<IProps, IState> {
         CONTROLLERINPUT[scheme].config === config &&
         event.target.value.indexOf(CONTROLLERINPUT[scheme].controller) >= 0
       ) {
-        selectedImage = xboxController
-        defaultScheme = scheme
-        break
-      } else {
-        selectedImage = flightStick
+        selectedImage = CONTROLLERINPUT[scheme].controller === "Xbox" ? xboxController : flightStick
         defaultScheme = scheme
         break
       }
@@ -313,7 +309,7 @@ class ControlScheme extends Component<IProps, IState> {
         {Object.keys(this.state.functionality).map(selectedController => {
           return (
             <div key={selectedController}>
-              {this.state.functionality[selectedController].toggled === "On" ? (
+              {(this.state.functionality[selectedController].toggled === "On" && CONTROLLERINPUT[this.state.functionality[selectedController].scheme]) ? (
                 <div style={{ ...row, alignItems: "center", alignSelf: "auto" }}>
                   <img src={this.state.image} alt={selectedController} />
                   <div style={{ flexDirection: "column" }}>
