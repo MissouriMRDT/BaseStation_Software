@@ -215,18 +215,18 @@ class Cameras extends Component<IProps, IState> {
               id={this.state.id}
             />
             <div style={row}>
-              <button type="button" onClick={() => this.saveImage()} style={{ flexGrow: 1 }}>
+              <button type="button" onClick={() => this.saveImage()} style={{ width: "50%" }}>
                 Screenshot
               </button>
-              <button type="button" onClick={() => this.rotate()} style={{ flexGrow: 1 }}>
+              <button type="button" onClick={() => this.rotate()} style={{ width: "50%" }}>
                 Rotate
               </button>
             </div>
             <div style={row}>
-              <button type="button" onClick={() => this.setState({ currentCamera: 0 })} style={{ flexGrow: 1 }}>
+              <button type="button" onClick={() => this.setState({ currentCamera: 0 })} style={{ width: "50%" }}>
                 Stop Listening
               </button>
-              <button type="button" onClick={() => this.refresh()} style={{ flexGrow: 1 }}>
+              <button type="button" onClick={() => this.refresh()} style={{ width: "50%" }}>
                 Refresh
               </button>
             </div>
