@@ -34,17 +34,17 @@ const row: CSS.Properties = {
   justifyContent: "space-between"
 }
 
+/** This function returns a value [-1, 1] based off of the value of theta
+  * This function really only makes sense with drive in mind - consider the case of the left wheel
+  * When theta = pi/2, we want to full send forward, so we return 1
+  * When theta = 0, we want to point turn clockwise, so we return -1
+  * To map any polar value in between, we can use 4*theta/pi - 1
+  * (note if theta = pi/2, 4*pi/2/pi-1 = 1; theta = 0, 4*0/pi-1 = -1; theta = pi/4, 4*pi/4/pi-1 = 0)
+  * When theta = 3pi/4, the left wheels should be going forward at full strength, while the right wheels adjust
+  * The bottom half of the unit circle is practically the same, with -1 when theta = -pi/4
+  * And anywhere -pi/2 <= theta <= 0 we use -4*theta/pi - 3 in order to get the same examples shown above
+  */
 function scaleVector(thetaIn: number): number {
-  /** This function returns a value [-1, 1] based off of the value of theta
-    * This function really only makes sense with drive in mind - consider the case of the left wheel
-    * When theta = pi/2, we want to full send forward, so we return 1
-    * When theta = 0, we want to point turn clockwise, so we return -1
-    * To map any polar value in between, we can use 4*theta/pi - 1
-    * (note if theta = pi/2, 4*pi/2/pi-1 = 1; theta = 0, 4*0/pi-1 = -1; theta = pi/4, 4*pi/4/pi-1 = 0)
-    * When theta = 3pi/4, the left wheels should be going forward at full strength, while the right wheels adjust
-    * The bottom half of the unit circle is practically the same, with -1 when theta = -pi/4
-    * And anywhere -pi/2 <= theta <= 0 we use -4*theta/pi - 3 in order to get the same examples shown above
-    */
   const pi = Math.PI
   let theta = thetaIn
   if (theta < -pi) {

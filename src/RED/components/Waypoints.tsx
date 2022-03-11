@@ -152,10 +152,10 @@ class Waypoints extends Component<IProps, IState> {
 
   componentDidMount(): void {
     /** When first built, we want to check the presets file if it exists
-      * and import all preset positions. If presets exist, we should also
-      * default selected position to the first position. If file does not
-      * exist, it isn't created until we attempt to store data
-      */
+     * and import all preset positions. If presets exist, we should also
+     * default selected position to the first position. If file does not
+     * exist, it isn't created until we attempt to store data
+     */
     if (fs.existsSync(filepath)) {
       const storedWaypoints = JSON.parse(fs.readFileSync(filepath).toString())
       const waypointKeys = Object.keys(storedWaypoints)
@@ -172,9 +172,9 @@ class Waypoints extends Component<IProps, IState> {
 
   cascadeWaypoint(): void {
     /** Function to be called on setState callback so that when setState has
-      * finished executing we can properly update the json file and trigger the
-      * parent function from props. File is created now if it doesn't already exist
-      */
+     * finished executing we can properly update the json file and trigger the
+     * parent function from props. File is created now if it doesn't already exist
+     */
     this.props.onWaypointChange(this.state.storedWaypoints)
     fs.writeFile(filepath, JSON.stringify(this.state.storedWaypoints, null, 2), err => {
       if (err) throw err
@@ -234,12 +234,11 @@ class Waypoints extends Component<IProps, IState> {
     ThreeDRover.id += 1
   }
 
+  /** Deletes a selected stored position (if a position has been selected)
+   * and properly updates the json file (see store() for more detailed comments)
+   */
   remove(): void {
-    /** Deletes a selected stored position (if a position has been selected)
-      * and properly updates the json file (see store() for more detailed comments)
-      */
     const { storedWaypoints } = this.state
-
     // Since the selectedPosition is to be deleted, we want to grab a new
     // value. We grab the next key if one exists, or if not the previous key,
     // or if not default to ""

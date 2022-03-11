@@ -199,7 +199,6 @@ class Cameras extends Component<IProps, IState> {
                     onClick={() => this.setState({ currentCamera: num })}
                     style={{
                       flexGrow: 1,
-                      //backgroundColor: num > 4 ? "white" : "#00ff00",
                       borderWidth: this.state.currentCamera == num ? "medium" : "thin",
                     }}
                   >
