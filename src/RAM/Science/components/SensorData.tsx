@@ -41,11 +41,6 @@ const buttonRow: CSS.Properties = {
 const buttons: CSS.Properties = {
   lineHeight: "20px",
   fontSize: "16px",
-  border: "none",
-  backgroundColor: "#990000",
-  borderRadius: "5px",
-  color: "white",
-  outline: "none",
 }
 const grid: CSS.Properties = {
   display: "grid",
