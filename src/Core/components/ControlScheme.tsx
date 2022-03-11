@@ -3,6 +3,7 @@ import React, { Component } from "react"
 import CSS from "csstype"
 import path from "path"
 import fs from "fs"
+import { float } from "html2canvas/dist/types/css/property-descriptors/float"
 
 const container: CSS.Properties = {
   display: "flex",
@@ -15,6 +16,14 @@ const container: CSS.Properties = {
   flexDirection: "column",
   height: "calc(100% - 40px)",
   padding: "5px",
+}
+const modal: CSS.Properties = {
+  zIndex: 2,
+  position: "absolute",
+  backgroundColor: "white",
+  borderStyle: "solid",
+  borderWidth: "2px",
+  borderColor: "black",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -131,7 +140,12 @@ interface IProps {
 
 interface IState {
   functionality: any
+  controlPreviewModal: boolean
+  image: string
 }
+
+const xboxController = path.join(__dirname, "../assets/xboxController.png")
+const flightStick = path.join(__dirname, "../assets/flightStick.png")
 
 class ControlScheme extends Component<IProps, IState> {
   constructor(props: Readonly<IProps>) {
@@ -164,6 +178,8 @@ class ControlScheme extends Component<IProps, IState> {
           interval: null,
         },
       },
+      controlPreviewModal: false,
+      image: xboxController,
     }
     this.schemeChange = this.schemeChange.bind(this)
     // detects if a controller disconnects
@@ -176,6 +192,7 @@ class ControlScheme extends Component<IProps, IState> {
   controllerChange(event: { target: { value: string } }, config: string): void {
     controllerInputs = {}
     let defaultScheme = ""
+    let selectedImage = ""
     // determines which scheme to select at default so that the default is not one that otherwise couldnt be used (if there is any available)
     // (such as diagonal drive for xbox controller)
     for (const scheme in CONTROLLERINPUT) {
@@ -183,9 +200,16 @@ class ControlScheme extends Component<IProps, IState> {
         CONTROLLERINPUT[scheme].config === config &&
         event.target.value.indexOf(CONTROLLERINPUT[scheme].controller) >= 0
       ) {
+        selectedImage = xboxController
         defaultScheme = scheme
         break
       }
+      else{
+        selectedImage = flightStick
+        defaultScheme = scheme
+        break
+      }
+
     }
     this.setState(
       {
@@ -198,6 +222,7 @@ class ControlScheme extends Component<IProps, IState> {
             interval: clearInterval(this.state.functionality[config].interval),
           },
         },
+        image: selectedImage
       },
       // this is a callback for when the setState finished updating it clears the set interval,
       // so that after setState is finished it is able to create a new interval and assign it
@@ -214,6 +239,7 @@ class ControlScheme extends Component<IProps, IState> {
                 ),
               },
             },
+            image:selectedImage
           })
         }
       }
@@ -282,6 +308,45 @@ class ControlScheme extends Component<IProps, IState> {
     }
   }
 
+//now operates as a windowed modal
+  controlLayoutPreview(): JSX.Element{
+    return (
+      <div style={{...modal, ...row}}>
+        {Object.keys(this.state.functionality).map(selectedController => {
+          return (
+            <div key={selectedController}>
+              {this.state.functionality[selectedController].toggled === "On" ? (
+                  <div style={{ ...row, alignItems: "center", alignSelf: "auto" }}>
+                        <img src={this.state.image} alt={selectedController} />
+                        <div style ={{ flexDirection: "column"}}>
+                        <div>
+                          {selectedController} controlled with {this.state.functionality[selectedController].controller}:
+                        </div>
+                        {Object.keys(CONTROLLERINPUT[this.state.functionality[selectedController].scheme].bindings).map(
+                          bind => {
+                            return (
+                              <div key={bind}>
+                                {bind}:{" "}
+                                {CONTROLLERINPUT[this.state.functionality[selectedController].scheme].bindings[bind].button
+                                  ? CONTROLLERINPUT[this.state.functionality[selectedController].scheme].bindings[bind].button
+                                 : CONTROLLERINPUT[this.state.functionality[selectedController].scheme].bindings.buttonIndex}
+                             </div>
+                            )
+                          }
+                        )}
+                        </div>
+                <button type="button" onClick={() => this.setState({ controlPreviewModal: !this.state.controlPreviewModal })}>
+                  back
+                </button>
+                  </div>
+              ) : null}
+            </div>
+          )
+        })}
+      </div>
+    )
+  }
+
   render(): JSX.Element {
     return (
       <div style={this.props.style}>
@@ -322,12 +387,20 @@ class ControlScheme extends Component<IProps, IState> {
                     else return null
                   })}
                 </select>
-                <button type="button" onClick={() => this.buttonToggle(config)}>
+                <button style={{ zIndex: 1 }} type="button" onClick={() => this.buttonToggle(config)}>
                   {this.state.functionality[config].toggled}
                 </button>
               </div>
             )
           })}
+          <button
+            type="button"
+            onClick={() => this.setState({ controlPreviewModal: !this.state.controlPreviewModal })}
+            style={{ width: "120px", marginLeft: "40%" }}
+          >
+            {this.state.controlPreviewModal ? "Hide Controls" : "Show Controls"}
+          </button>
+          {this.state.controlPreviewModal ? this.controlLayoutPreview() : null}
         </div>
       </div>
     )
