@@ -106,7 +106,7 @@ function decodePacket(dataType: number, dataCount: number, data: Buffer): number
   }
 }
 
-export function parse(packet: Buffer, rinfo?: any): void {
+export async function parse(packet: Buffer, rinfo?: any) {
   /*
    * Parse takes in a packet buffer and will call decodePacket and emit
    *  the rovecomm event with the proper dataId and that typed data
@@ -337,7 +337,7 @@ class Rovecomm extends EventEmitter {
      * Listens on the class UDP socket, always calling parse if it recieves anything,
      * and properly binding the socket to a port
      */
-    this.UDPSocket.on("message", (msg: Buffer, rinfo: any) => {
+    this.UDPSocket.on("message", async (msg: Buffer, rinfo: any) => {
       parse(msg, rinfo)
     })
     this.UDPSocket.bind(11000)
