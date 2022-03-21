@@ -22,11 +22,13 @@
   "updateRate": 100,
   "ethernetUDPPort": 11000,
   "subnetIP": [192, 168, 1],
+  "MACaddress": [222, 173, 190, 168, 1],
   "headerLength": 6,
   "RovecommManifest": {
     "Drive": {
       "Ip": "192.168.1.134",
       "Port": 11004,
+      "MAC": "222.173.190.168.1.134",
       "Commands": {
         "DriveLeftRight": {
           "dataId": 1000,
@@ -60,6 +62,7 @@
     "BMS": {
       "Ip": "192.168.1.133",
       "Port": 11003,
+      "MAC": "222.173.190.168.1.133",
       "Commands": {
         "BMSStop": {
           "dataId": 2000,
@@ -124,6 +127,7 @@
     "Power": {
       "Ip": "192.168.1.132",
       "Port": 11002,
+      "MAC": "222.173.190.168.1.132",
       "Commands": {
         "MotorBusEnable": {
           "dataId": 3000,
@@ -230,6 +234,7 @@
     "Blackbox": {
       "Ip": "192.168.1.146",
       "Port": 11015,
+      "MAC": "222.173.190.168.1.146",
       "Commands": {},
       "Telemetry": {
         "BlackboxListening": {
@@ -244,6 +249,7 @@
     "Nav": {
       "Ip": "192.168.1.136",
       "Port": 11006,
+      "MAC": "222.173.190.168.1.136",
       "Commands": {},
       "Telemetry": {
         "GPSLatLon": {
@@ -283,6 +289,7 @@
     "Gimbal": {
       "Ip": "192.168.1.135",
       "Port": 11005,
+      "MAC": "222.173.190.168.1.135",
       "Commands": {
         "LeftDriveGimbalIncrement": {
           "dataId": 6000,
@@ -321,6 +328,7 @@
     "Multimedia": {
       "Ip": "192.168.1.140",
       "Port": 11010,
+      "MAC": "222.173.190.168.1.140",
       "Commands": {
         "HeadlightIntensity": {
           "dataId": 7000,
@@ -360,6 +368,7 @@
     "Arm": {
       "Ip": "192.168.1.131",
       "Port": 11001,
+      "MAC": "222.173.190.168.1.131",
       "Commands": {
         "ArmVelocityControl": {
           "dataId": 8000,
@@ -496,6 +505,7 @@
     "ScienceActuation": {
       "Ip": "192.168.1.137",
       "Port": 11007,
+      "MAC": "222.173.190.168.1.137",
       "Commands": {
         "SensorAxis": {
           "dataId": 9000,
@@ -554,6 +564,7 @@
     "ScienceSensors": {
       "Ip": "192.168.1.138",
       "Port": 11008,
+      "MAC": "222.173.190.168.1.138",
       "Commands": {
         "FLasers": {
           "dataId": 10000,
@@ -575,11 +586,11 @@
           "dataCount": 3,
           "comments": "[PhotoDiode 1, 2, 3] (Wavelength)"
         },
-        "Methane": {
+        "CH3": {
           "dataId": 10101,
           "dataType": "FLOAT_T",
           "dataCount": 2,
-          "comments": "[Gass concentration %, Temperature (C)]"
+          "comments": "[Gas concentration (ppm), Temperature (C)]"
         },
         "CO2": {
           "dataId": 10102,
@@ -593,7 +604,7 @@
           "dataCount": 1,
           "comments": "[concentration (ppm)]"
         },
-        "CH3": {
+        "NO": {
           "dataId": 10104,
           "dataType": "FLOAT_T",
           "dataCount": 1,
@@ -611,6 +622,7 @@
     "Autonomy": {
       "Ip": "192.168.1.139",
       "Port": 11009,
+      "MAC": "222.173.190.168.1.139",
       "Commands": {
         "StartAutonomy": {
           "dataId": 11000,
@@ -674,6 +686,7 @@
     "Camera1": {
       "Ip": "192.168.1.141",
       "Port": 11011,
+      "MAC": "222.173.190.168.1.141",
       "Commands": {},
       "Telemetry": {},
       "Error": {}
@@ -681,6 +694,7 @@
     "Camera2": {
       "Ip": "192.168.1.142",
       "Port": 11012,
+      "MAC": "222.173.190.168.1.142",
       "Commands": {},
       "Telemetry": {},
       "Error": {}
@@ -688,6 +702,7 @@
     "PRController": {
       "Ip": "192.168.1.143",
       "Port": 11013,
+      "MAC": "222.173.190.168.1.143",
       "Commands": {},
       "Telemetry": {},
       "Error": {}
@@ -695,6 +710,7 @@
     "Heater": {
       "Ip": "192.168.1.144",
       "Port": 11014,
+      "MAC": "222.173.190.168.1.144",
       "Commands": {
         "HeaterToggle": {
           "dataId": 15000,
@@ -727,8 +743,9 @@
       }
     },
     "MicroPi": {
-      "Ip": "192.168.1.142",
+      "Ip": "192.168.1.145",
       "Port": 11015,
+      "MAC": "222.173.190.168.1.145",
       "Commands": {},
       "Telemetry": {},
       "Error": {}

@@ -69,6 +69,14 @@ function arm(): void {
     }
     rovecomm.sendCommand("GripperMove", Gripper)
   }
+
+  if ("SolenoidOn" in controllerInputs && "SolenoidOff" in controllerInputs) {
+    if (controllerInputs.SolenoidOn === 1) {
+      rovecomm.sendCommand("Solenoid", [1])
+    } else if (controllerInputs.SolenoidOff === 1) {
+      rovecomm.sendCommand("Solenoid", [0])
+    }
+  }
 }
 
 interface IProps {}

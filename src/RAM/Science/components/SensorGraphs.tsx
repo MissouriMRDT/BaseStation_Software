@@ -152,19 +152,19 @@ class SensorGraphs extends Component<IProps, IState> {
       crosshairValues: new Map(),
       sensors: this.getNewEmptyMap(),
       enabledSensors: new Map([
-        ["Methane", false],
+        ["CH3", false],
         ["CO2", false],
         ["Temperature", false],
         ["O2", false],
-        ["CH3", false],
+        ["NO", false],
         ["NO2", false],
       ]),
       crosshairPos: null,
     }
-    this.methane = this.methane.bind(this)
+    this.ch3 = this.ch3.bind(this)
     this.co2 = this.co2.bind(this)
     this.o2 = this.o2.bind(this)
-    this.ch3 = this.ch3.bind(this)
+    this.no = this.no.bind(this)
     this.no2 = this.no2.bind(this)
     this.sensorSelectionChanged = this.sensorSelectionChanged.bind(this)
     this.selectAll = this.selectAll.bind(this)
@@ -174,10 +174,10 @@ class SensorGraphs extends Component<IProps, IState> {
     this.onMouseLeave = this.onMouseLeave.bind(this)
     this.getNewEmptyMap = this.getNewEmptyMap.bind(this)
 
-    rovecomm.on("Methane", (data: any) => this.methane(data))
+    rovecomm.on("CH3", (data: any) => this.ch3(data))
     rovecomm.on("CO2", (data: any) => this.co2(data))
     rovecomm.on("O2", (data: any) => this.o2(data))
-    rovecomm.on("CH3", (data: any) => this.ch3(data))
+    rovecomm.on("NO", (data: any) => this.no(data))
     rovecomm.on("NO2", (data: any) => this.no2(data))
   }
 
@@ -296,9 +296,9 @@ class SensorGraphs extends Component<IProps, IState> {
     this.setState({ sensors })
   }
 
-  methane(data: any): void {
+  ch3(data: any): void {
     // the methane data packet is [methane concentration, temperature]
-    this.addData("Methane", data[0])
+    this.addData("CH3", data[0])
     this.addData("Temperature", data[1])
   }
 
@@ -310,8 +310,8 @@ class SensorGraphs extends Component<IProps, IState> {
     this.addData("O2", data[0])
   }
 
-  ch3(data: any): void {
-    this.addData("CH3", data[0])
+  no(data: any): void {
+    this.addData("NO", data[0])
   }
 
   no2(data: any): void {
@@ -326,9 +326,9 @@ class SensorGraphs extends Component<IProps, IState> {
   getNewEmptyMap(): Map<string, Sensor> {
     return new Map([
       [
-        "Methane",
+        "CH3",
         {
-          units: "%",
+          units: "ppm",
           graphLineColor: "#990000",
           graphLineType: "solid",
           values: [],
@@ -374,7 +374,7 @@ class SensorGraphs extends Component<IProps, IState> {
         },
       ],
       [
-        "CH3",
+        "NO",
         {
           units: "ppm",
           graphLineColor: "black",
