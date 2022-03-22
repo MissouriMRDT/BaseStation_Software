@@ -95,16 +95,30 @@ class StateDiagram extends Component<IProps, IState> {
     context.fill()
 
     context.beginPath()
-    context.moveTo(centerW, 150)
-    context.lineTo(centerW, 190)
+    context.moveTo(centerW + 10, 150)
+    context.lineTo(centerW + 10, 190)
     context.stroke()
 
-    text = "SearchPattern"
+    context.beginPath()
+    context.moveTo(centerW - 10, 151)
+    context.lineTo(centerW - 10, 169)
+    context.lineTo(centerW - 44, 170)
+    context.lineTo(centerW - 44, 189)
+    context.lineTo(centerW - 40, 184)
+    context.moveTo(centerW - 45, 189)
+    context.lineTo(centerW - 50, 184)
+    context.moveTo(centerW - 10, 151)
+    context.lineTo(centerW - 5, 156)
+    context.moveTo(centerW - 10, 151)
+    context.lineTo(centerW - 15, 156)
+    context.stroke()
+
+    text = "Avoidance"
     context.textBaseline = "middle"
     context.textAlign = "right"
     context.fillStyle = "black"
-    context.fillText(text, centerW - 25, 210)
-    context.rect(centerW - 20, 190, 40, 40)
+    context.fillText(text, centerW - 70, 210)
+    context.rect(centerW - 65, 190, 40, 40)
     context.stroke()
     context.fillStyle = data[0] === stateEnum[text] ? "green" : "white"
     context.fill()
@@ -112,6 +126,21 @@ class StateDiagram extends Component<IProps, IState> {
     context.beginPath()
     context.moveTo(centerW, 230)
     context.lineTo(centerW, 270)
+    context.stroke()
+
+    text = "SearchPattern"
+    context.textBaseline = "middle"
+    context.textAlign = "right"
+    context.fillStyle = "black"
+    context.fillText(text, centerW + 110, 210)
+    context.rect(centerW - 10, 190, 40, 40)
+    context.stroke()
+    context.fillStyle = data[0] === stateEnum[text] ? "green" : "white"
+    context.fill()
+
+    context.beginPath()
+    context.moveTo(centerW + 20, 230)
+    context.lineTo(centerW + 20, 270)
     context.stroke()
 
     text = "ApproachingMarker"
@@ -125,29 +154,29 @@ class StateDiagram extends Component<IProps, IState> {
     context.fill()
 
     context.beginPath()
-    context.moveTo(centerW + 20, 290)
-    context.lineTo(centerW + 40, 290)
-    context.lineTo(centerW + 40, 280)
-    context.lineTo(centerW + 20, 280)
-    context.lineTo(centerW + 25, 285)
-    context.moveTo(centerW + 20, 280)
-    context.lineTo(centerW + 25, 275)
+    context.moveTo(centerW + 30, 290)
+    context.lineTo(centerW + 50, 290)
+    context.lineTo(centerW + 50, 280)
+    context.lineTo(centerW + 30, 280)
+    context.lineTo(centerW + 35, 285)
+    context.moveTo(centerW + 30, 280)
+    context.lineTo(centerW + 35, 275)
+    context.stroke()
+
+    context.beginPath()
+    context.moveTo(centerW + 30, 290)
+    context.lineTo(centerW + 70, 290)
+    context.lineTo(centerW + 70, 220)
+    context.lineTo(centerW + 30, 220)
+    context.lineTo(centerW + 35, 225)
+    context.moveTo(centerW + 30, 220)
+    context.lineTo(centerW + 35, 215)
     context.stroke()
 
     context.beginPath()
     context.moveTo(centerW + 20, 290)
-    context.lineTo(centerW + 60, 290)
-    context.lineTo(centerW + 60, 220)
-    context.lineTo(centerW + 20, 220)
-    context.lineTo(centerW + 25, 225)
-    context.moveTo(centerW + 20, 220)
-    context.lineTo(centerW + 25, 215)
-    context.stroke()
-
-    context.beginPath()
-    context.moveTo(centerW + 20, 290)
-    context.lineTo(centerW + 80, 290)
-    context.lineTo(centerW + 80, 60)
+    context.lineTo(centerW + 115, 290)
+    context.lineTo(centerW + 115, 60)
     context.lineTo(centerW + 20, 60)
     context.lineTo(centerW + 25, 65)
     context.moveTo(centerW + 20, 60)
@@ -155,13 +184,13 @@ class StateDiagram extends Component<IProps, IState> {
     context.stroke()
 
     context.beginPath()
-    context.moveTo(centerW + 20, 210)
-    context.lineTo(centerW + 40, 210)
-    context.lineTo(centerW + 40, 200)
-    context.lineTo(centerW + 20, 200)
-    context.lineTo(centerW + 25, 205)
-    context.moveTo(centerW + 20, 200)
-    context.lineTo(centerW + 25, 195)
+    context.moveTo(centerW + 30, 200)
+    context.lineTo(centerW + 50, 200)
+    context.lineTo(centerW + 50, 190)
+    context.lineTo(centerW + 30, 190)
+    context.lineTo(centerW + 35, 195)
+    context.moveTo(centerW + 30, 190)
+    context.lineTo(centerW + 35, 185)
     context.stroke()
 
     context.beginPath()

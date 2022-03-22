@@ -51,8 +51,8 @@
     "config": "Arm",
     "controller": "Xbox",
     "bindings": {
-      "ElbowBend": { "buttonType": "joystick", "button": "right stick x" },
-      "ElbowTwist": { "buttonType": "joystick", "button": "right stick y" },
+      "ElbowBend": { "buttonType": "joystick", "button": "right stick y" },
+      "ElbowTwist": { "buttonType": "joystick", "button": "right stick x" },
       "WristBendDirection": { "buttonType": "button", "button": "RB" },
       "WristTwistDirection": { "buttonType": "button", "button": "LB" },
       "GripperOpen": { "buttonType": "button", "button": "B" },

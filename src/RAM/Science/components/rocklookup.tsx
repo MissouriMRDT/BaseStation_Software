@@ -23,7 +23,7 @@ const container: CSS.Properties = {
   borderBottomWidth: "2px",
   borderStyle: "solid",
   position: "absolute",
-  width: "calc(50% - 15.5px)",
+  width: "calc(50% - 19px)",
   minHeight: "400px",
 }
 
@@ -81,11 +81,11 @@ function fillFrom_R_Database(): Rocks[] {
     filePull = filePull.slice(1, filePull.length) // gets rid of the sheet labels
     filePull.forEach(textLine => {
       const lineArr = textLine.split(/\t/)
+      console.log(lineArr)
       rockTable.push({
         name: lineArr[0],
-        ReqMinerals: lineArr[1].split("; "),
-        ComMinerals: lineArr[2].split("; "),
-        description: lineArr[3],
+        minerals: lineArr[1].split("; "),
+        description: lineArr[2],
       })
     })
     return rockTable
@@ -177,8 +177,7 @@ interface Minerals {
 
 interface Rocks {
   name: string
-  ReqMinerals: string[]
-  ComMinerals: string[]
+  minerals: string[]
   description: string
 }
 
@@ -230,6 +229,7 @@ class RockLookUp extends Component<IProps, IState> {
       outputArr: [],
       selectedOutput: 0,
     }
+    console.log(ROCKARR)
     /*
     this.handleFeatureSubmit = this.handleFeatureSubmit.bind(this)
     this.handleInputChange = this.handleInputChange.bind(this)*/
@@ -279,12 +279,12 @@ class RockLookUp extends Component<IProps, IState> {
       ROCKARR.forEach(rock => {
         let hasMin: boolean = false
         selectedMins.forEach(mineral => {
-          if (rock.ComMinerals.indexOf(mineral.name) >= 0) {
+          if (rock.minerals.indexOf(mineral.name) >= 0) {
             hasMin = true
           }
         })
         if (hasMin) {
-          rock.ComMinerals.forEach((mineralName: string) => {
+          rock.minerals.forEach((mineralName: string) => {
             if (MINARR.has(mineralName)) {
               let min = MINARR.get(mineralName)
               if (min) additionalMins.push(min)
@@ -297,11 +297,8 @@ class RockLookUp extends Component<IProps, IState> {
     ROCKARR.forEach(rock => {
       let confScore: number = 0
       selectedMins.forEach(mineral => {
-        if (rock.ComMinerals.indexOf(mineral.name) >= 0) {
+        if (rock.minerals.indexOf(mineral.name) >= 0) {
           confScore += 1
-        }
-        if (rock.ReqMinerals.indexOf(mineral.name) >= 0) {
-          confScore += 2
         }
       })
       if (confScore > 0) {
@@ -543,40 +540,25 @@ class RockLookUp extends Component<IProps, IState> {
             <div style={tagList}>
               {this.state.s_Colors.map((tag: string, index: number) => {
                 return (
-                  <div style={tagStyle}>
+                  <div style={tagStyle} onClick={() => this.removeSelectedFeature(FeatureType.COLOR, index)}>
                     <p>{tag}</p>
-                    <p
-                      onClick={() => this.removeSelectedFeature(FeatureType.COLOR, index)}
-                      style={{ marginLeft: "10px", color: "red" }}
-                    >
-                      x
-                    </p>
+                    <p style={{ marginLeft: "10px", color: "red" }}>x</p>
                   </div>
                 )
               })}
               {this.state.s_Cleave.map((tag: string, index: number) => {
                 return (
-                  <div style={tagStyle}>
+                  <div style={tagStyle} onClick={() => this.removeSelectedFeature(FeatureType.CLEAVE, index)}>
                     <p>{tag}</p>
-                    <p
-                      onClick={() => this.removeSelectedFeature(FeatureType.CLEAVE, index)}
-                      style={{ marginLeft: "10px", color: "red" }}
-                    >
-                      x
-                    </p>
+                    <p style={{ marginLeft: "10px", color: "red" }}>x</p>
                   </div>
                 )
               })}
               {this.state.s_Forms.map((tag: string, index: number) => {
                 return (
-                  <div style={tagStyle}>
+                  <div style={tagStyle} onClick={() => this.removeSelectedFeature(FeatureType.FORM, index)}>
                     <p>{tag}</p>
-                    <p
-                      onClick={() => this.removeSelectedFeature(FeatureType.FORM, index)}
-                      style={{ marginLeft: "10px", color: "red" }}
-                    >
-                      x
-                    </p>
+                    <p style={{ marginLeft: "10px", color: "red" }}>x</p>
                   </div>
                 )
               })}
