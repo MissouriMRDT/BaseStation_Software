@@ -4,7 +4,7 @@ import html2canvas from "html2canvas"
 import fs from "fs"
 
 import { windows } from "../Window"
-import no_cam_img from "../../../assets/no_cam_img.jpg"
+import no_cam_img from "../../../assets/no_cam_img.png"
 
 const cameraNumList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 const cam_ips = [
