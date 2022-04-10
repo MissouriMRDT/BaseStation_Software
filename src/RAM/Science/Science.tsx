@@ -9,7 +9,6 @@ import ControlScheme, { controllerInputs } from "../../Core/components/ControlSc
 import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
 import Fluorometer from "./components/Fluorometer"
 
-
 const row: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
@@ -41,12 +40,12 @@ function science(): void {
   //If both are pressed, do nothing
   if ("OpenScoop" in controllerInputs) {
     if (controllerInputs.OpenScoop === 1) {
-      rovecomm.sendCommand("ScoopGrabber", 90)
+      rovecomm.sendCommand("ScoopGrabber", 0)
     }
   }
-  else if ("CloseScoop" in controllerInputs) {
-    if(controllerInputs.CloseScoop === 1) {
-      rovecomm.sendCommand("ScoopGrabber", 0)
+  if ("CloseScoop" in controllerInputs) {
+    if (controllerInputs.CloseScoop === 1) {
+      rovecomm.sendCommand("ScoopGrabber", 65)
     }
   }
 
@@ -87,12 +86,12 @@ class Science extends Component<IProps, IState> {
         <div style={{ ...row, marginBottom: "7px" }}>
           <SensorData style={{ width: "34%", marginRight: "5px" }} />
           <Heater style={{ width: "33%" }} />
-          <Fluorometer style={{ width: "33%", marginLeft: "5px" }}/>
+          <Fluorometer style={{ width: "33%", marginLeft: "5px" }} />
         </div>
         <ControlScheme configs={["Science"]} />
         <div style={row}>
           <Cameras defaultCamera={7} style={{ width: "50%", marginRight: "2.5px" }} />
-          <RockLookUp style={{ marginLeft: "2.5px"}}/>
+          <RockLookUp style={{ marginLeft: "2.5px" }} />
         </div>
       </div>
     )

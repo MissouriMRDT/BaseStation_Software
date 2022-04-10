@@ -81,7 +81,6 @@ function fillFrom_R_Database(): Rocks[] {
     filePull = filePull.slice(1, filePull.length) // gets rid of the sheet labels
     filePull.forEach(textLine => {
       const lineArr = textLine.split(/\t/)
-      console.log(lineArr)
       rockTable.push({
         name: lineArr[0],
         minerals: lineArr[1].split("; "),
@@ -111,7 +110,6 @@ function fillFrom_M_Database(): Map<string, Minerals> {
     filePull = filePull.slice(1, filePull.length) // gets rid of the sheet labels
     filePull.forEach(textLine => {
       const lineArr = textLine.split(/\t/)
-      console.log("here")
       mineralTable.set(lineArr[0], {
         name: lineArr[0],
         forms: lineArr[1].split("; "),
@@ -229,7 +227,6 @@ class RockLookUp extends Component<IProps, IState> {
       outputArr: [],
       selectedOutput: 0,
     }
-    console.log(ROCKARR)
     /*
     this.handleFeatureSubmit = this.handleFeatureSubmit.bind(this)
     this.handleInputChange = this.handleInputChange.bind(this)*/
