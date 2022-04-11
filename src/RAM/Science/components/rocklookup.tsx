@@ -274,21 +274,20 @@ class RockLookUp extends Component<IProps, IState> {
       selectedMins = [...new Set(selectedMins)]
       let additionalMins: Minerals[] = []
       ROCKARR.forEach(rock => {
-        let hasMin: boolean = false
+        let hasMin: boolean = true
         selectedMins.forEach(mineral => {
-          if (rock.minerals.indexOf(mineral.name) >= 0) {
-            hasMin = true
+          if (rock.minerals.indexOf(mineral.name) === -1) {
+            hasMin = false
           }
         })
         if (hasMin) {
           rock.minerals.forEach((mineralName: string) => {
-            if (MINARR.has(mineralName)) {
-              let min = MINARR.get(mineralName)
-              if (min) additionalMins.push(min)
-            }
+            let min = MINARR.get(mineralName)
+            if (min) additionalMins.push(min)
           })
         }
       })
+      additionalMins = [...new Set(additionalMins)]
       if (remove) this.cullImpossibles([...selectedMins, ...additionalMins])
     }
     ROCKARR.forEach(rock => {
@@ -308,7 +307,6 @@ class RockLookUp extends Component<IProps, IState> {
   }
 
   cullImpossibles(possibleMins: Minerals[]): void {
-    //Need to consider all minerals in all possible rocks, not just possible minerals
     let { availCleave, availColors, availForms } = this.state
 
     availCleave.forEach(cleave => {
