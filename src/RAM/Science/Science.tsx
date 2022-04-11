@@ -17,7 +17,6 @@ const column: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
 }
-const waterMotorMultiplier = 500
 const sensorMotorMultiplier = 500
 const scoopMotorMultiplier = 500
 
@@ -49,21 +48,13 @@ function science(): void {
     }
   }
 
-  // All of the water send values are in one array, and we only want to send no power or half power
-  // (full power is a bit too strong, and negative implies we are trying to suck water/air out of the
-  // test tubes into the chemical containers)
+  // Water controls are sent in one bitmasked value
   if ("Water1" in controllerInputs && "Water2" in controllerInputs && "Water3" in controllerInputs) {
-    const water = [0, 0, 0]
-    if (controllerInputs.Water1 === 1) {
-      water[0] = waterMotorMultiplier
-    }
-    if (controllerInputs.Water2 === 1) {
-      water[1] = waterMotorMultiplier
-    }
-    if (controllerInputs.Water3 === 1) {
-      water[2] = waterMotorMultiplier
-    }
-    rovecomm.sendCommand("Water", water)
+    let water = ""
+    water += controllerInputs.Water3
+    water += controllerInputs.Water2
+    water += controllerInputs.Water1
+    rovecomm.sendCommand("Water", parseInt(water, 2))
   }
 }
 

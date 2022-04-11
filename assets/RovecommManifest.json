@@ -353,6 +353,12 @@
           "dataType": "UINT8_T",
           "dataCount": 1,
           "comments": "[Teleop, Autonomy, Reached Goal] (enum)"
+        },
+        "Brightness": {
+          "dataId": 7004,
+          "dataType": "UINT8_T",
+          "dataCount": 1,
+          "comments": "Set Brightness (0-255)"
         }
       },
       "Telemetry": {},
@@ -362,6 +368,15 @@
           "Teleop": 0,
           "Autonomy": 1,
           "Reached_Goal": 2
+        },
+        "PATTERNS": {
+          "MRDT": 0,
+          "BELGIUM": 1,
+          "MERICA": 2,
+          "DIRT": 3,
+          "DOTA": 4,
+          "MCD": 5,
+          "WINDOWS": 6
         }
       }
     },
@@ -515,9 +530,9 @@
         },
         "Water": {
           "dataId": 9001,
-          "dataType": "UINT16_T",
-          "dataCount": 3,
-          "comments": "[Water 1, Water 2, Water 3] (0, 1000) (m%)"
+          "dataType": "UINT8_T",
+          "dataCount": 1,
+          "comments": "Water solenoid #[3, 2, 1] (0-Closed, 1-Open)"
         },
         "LimitSwitchOverride": {
           "dataId": 9002,
@@ -730,7 +745,7 @@
           "dataId": 15101,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "[1, 2, 3] (0-Disabled, 1-Enabled)"
+          "comments": "Heater #[3, 2, 1] (0-Disabled, 1-Enabled)"
         }
       },
       "Error": {
