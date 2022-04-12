@@ -237,9 +237,9 @@ class RockLookUp extends Component<IProps, IState> {
   reloadOptions(): void {
     this.setState(
       {
-        availCleave: JSON.parse(JSON.stringify(CLEAVEMASTER)),
-        availForms: JSON.parse(JSON.stringify(FORMMASTER)),
-        availColors: JSON.parse(JSON.stringify(COLORMASTER)),
+        availCleave: JSON.parse(JSON.stringify(CLEAVEMASTER)), //TODO - remove all already selected features
+        availForms: JSON.parse(JSON.stringify(FORMMASTER)), //TODO
+        availColors: JSON.parse(JSON.stringify(COLORMASTER)), //TODO
       },
       () => this.compareSelections(false)
     )
@@ -249,61 +249,70 @@ class RockLookUp extends Component<IProps, IState> {
     let { s_Colors, s_Forms, s_Cleave } = this.state
     let possRock: Output[] = []
     let selectedMins: Minerals[] = []
-    if (s_Colors.length > 0 || s_Forms.length > 0 || s_Cleave.length > 0) {
-      MINARR.forEach(mineral => {
-        let hit: boolean = true
-        s_Colors.forEach(color => {
-          if (mineral.colors.indexOf(color) === -1) {
-            hit = false
-          }
-        })
-        s_Forms.forEach(form => {
-          if (mineral.forms.indexOf(form) === -1) {
-            hit = false
-          }
-        })
-        s_Cleave.forEach(cleave => {
-          if (mineral.cleaveAndLuster.indexOf(cleave) === -1) {
-            hit = false
-          }
-        })
-        if (hit) {
-          selectedMins.push(mineral)
-        }
-      })
-      selectedMins = [...new Set(selectedMins)]
-      let additionalMins: Minerals[] = []
-      ROCKARR.forEach(rock => {
-        let hasMin: boolean = true
-        selectedMins.forEach(mineral => {
-          if (rock.minerals.indexOf(mineral.name) === -1) {
-            hasMin = false
-          }
-        })
-        if (hasMin) {
-          rock.minerals.forEach((mineralName: string) => {
-            let min = MINARR.get(mineralName)
-            if (min) additionalMins.push(min)
-          })
-        }
-      })
-      additionalMins = [...new Set(additionalMins)]
-      if (remove) this.cullImpossibles([...selectedMins, ...additionalMins])
-    }
+
     ROCKARR.forEach(rock => {
       let confScore: number = 0
-      selectedMins.forEach(mineral => {
-        if (rock.minerals.indexOf(mineral.name) >= 0) {
-          confScore += 1
+      let hit = true
+      s_Cleave.forEach(cleave => {
+        let cleaveHit = false
+        rock.minerals.forEach(mineral => {
+          let minObj = MINARR.get(mineral)
+          if (minObj) {
+            if (minObj.cleaveAndLuster.indexOf(cleave) >= 0) {
+              cleaveHit = true
+            }
+          }
+        })
+        if (!cleaveHit) {
+          hit = false
         }
       })
+      s_Forms.forEach(form => {
+        let formHit = false
+        rock.minerals.forEach(mineral => {
+          let minObj = MINARR.get(mineral)
+          if (minObj) {
+            if (minObj.forms.indexOf(form) >= 0) {
+              formHit = true
+            }
+          }
+        })
+        if (!formHit) {
+          hit = false
+        }
+      })
+      s_Colors.forEach(color => {
+        let colorHit = false
+        rock.minerals.forEach(mineral => {
+          let minObj = MINARR.get(mineral)
+          if (minObj) {
+            if (minObj.colors.indexOf(color) >= 0) {
+              colorHit = true
+            }
+          }
+        })
+        if (!colorHit) {
+          hit = false
+        }
+      })
+      if (hit) {
+        confScore += 1
+      }
       if (confScore > 0) {
         possRock.push({ Rock: rock, ConfidenceScore: confScore })
+        rock.minerals.forEach(mineral => {
+          let minObj = MINARR.get(mineral)
+          if (minObj) {
+            selectedMins.push(minObj)
+          }
+        })
       }
     })
     possRock = [...new Set(possRock)]
     possRock.sort(outputCompare)
     this.setState({ outputArr: possRock })
+    selectedMins = [...new Set(selectedMins)]
+    if (remove) this.cullImpossibles(selectedMins)
   }
 
   cullImpossibles(possibleMins: Minerals[]): void {
@@ -350,18 +359,39 @@ class RockLookUp extends Component<IProps, IState> {
       let { s_Colors, availColors } = this.state
       availColors.splice(availColors.indexOf(event.target.value), 1)
       s_Colors.push(event.target.value)
+
+      var elements = event.target.options
+
+      for (var i = 0; i < elements.length; i++) {
+        elements[i].selected = false
+      }
+
       this.setState({ s_Colors, availColors }, () => this.compareSelections())
     }
     if (event.target.id === "CleaveList") {
       let { s_Cleave, availCleave } = this.state
       availCleave.splice(availCleave.indexOf(event.target.value), 1)
       s_Cleave.push(event.target.value)
+
+      var elements = event.target.options
+
+      for (var i = 0; i < elements.length; i++) {
+        elements[i].selected = false
+      }
+
       this.setState({ s_Cleave, availCleave }, () => this.compareSelections())
     }
     if (event.target.id === "FormList") {
       let { s_Forms, availForms } = this.state
       availForms.splice(availForms.indexOf(event.target.value), 1)
       s_Forms.push(event.target.value)
+
+      var elements = event.target.options
+
+      for (var i = 0; i < elements.length; i++) {
+        elements[i].selected = false
+      }
+
       this.setState({ s_Forms, availForms }, () => this.compareSelections())
     }
     this.setState({ selectedOutput: 0 })
