@@ -44,7 +44,7 @@ function science(): void {
   }
   if ("CloseScoop" in controllerInputs) {
     if (controllerInputs.CloseScoop === 1) {
-      rovecomm.sendCommand("ScoopGrabber", 65)
+      rovecomm.sendCommand("ScoopGrabber", 1)
     }
   }
 
