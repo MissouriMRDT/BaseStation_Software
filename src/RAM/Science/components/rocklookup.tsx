@@ -208,9 +208,13 @@ interface IState {
   availCleave: string[]
   /** Selected Cleave */
   s_Cleave: string[]
+  availTextures: string[]
+  /** Selected Texture */
+  s_Texture: string[]
   searchField: string
   outputArr: Output[]
   selectedOutput: number
+  ifMicroscope: boolean
 }
 
 /**
@@ -234,9 +238,12 @@ class RockLookUp extends Component<IProps, IState> {
       s_Forms: [],
       availCleave: JSON.parse(JSON.stringify(CLEAVEMASTER)),
       s_Cleave: [],
+      availTextures: ["Amogus", "Sussy", "Baka"],
+      s_Texture: [],
       searchField: "WIP; Feature frozen",
       outputArr: [],
       selectedOutput: 0,
+      ifMicroscope: true
     }
     /*
     this.handleFeatureSubmit = this.handleFeatureSubmit.bind(this)
@@ -256,13 +263,30 @@ class RockLookUp extends Component<IProps, IState> {
     )
   }
 
+  getWeightedScore(rockObj: Rocks): number {
+    let { s_Colors, s_Forms, s_Cleave } = this.state
+
+    let numSelectedProps = s_Colors.length + s_Forms.length + s_Cleave.length
+    let rockObjTotalProps = 0
+
+    rockObj.minerals.forEach(mineral => {
+      console.log(MINARR.get(mineral))
+      console.log(mineral)
+      const currMineral = MINARR.get(mineral)
+      if (currMineral) {
+      rockObjTotalProps += (currMineral.forms.length + currMineral.colors.length + currMineral.cleaveAndLuster.length)}
+    })
+
+    return numSelectedProps / rockObjTotalProps
+  }
+
   compareSelections(remove: boolean = true) {
     let { s_Colors, s_Forms, s_Cleave } = this.state
     let possRock: Output[] = []
     let selectedMins: Minerals[] = []
 
     ROCKARR.forEach(rock => {
-      let confScore: number = 0
+      let numHits: number = 0
       let hit = true
       s_Cleave.forEach(cleave => {
         let cleaveHit = false
@@ -307,10 +331,10 @@ class RockLookUp extends Component<IProps, IState> {
         }
       })
       if (hit) {
-        confScore += 1
+        numHits += 1
       }
-      if (confScore > 0) {
-        possRock.push({ Rock: rock, ConfidenceScore: confScore })
+      if (numHits > 0) {
+        possRock.push({ Rock: rock, ConfidenceScore: this.getWeightedScore(rock) })
         rock.minerals.forEach(mineral => {
           let minObj = MINARR.get(mineral)
           if (minObj) {
@@ -404,6 +428,9 @@ class RockLookUp extends Component<IProps, IState> {
       }
 
       this.setState({ s_Forms, availForms }, () => this.compareSelections())
+    }
+    if (event.target.id === "TextureList") {
+      console.log("Yahahaha!! You found me!")
     }
     this.setState({ selectedOutput: 0 })
   }
@@ -558,17 +585,30 @@ class RockLookUp extends Component<IProps, IState> {
               </select>
             </div>
             <div style={featureColumn}>
-              <p style={{ textAlign: "center" }}>Forms/Habits</p>
+              <button
+                style={{ width: "auto", textAlign: "center", background: "white", borderWidth: "1px", maxHeight: "48px", marginBottom: "2px" }}
+                onClick={() => this.setState({ ifMicroscope: !this.state.ifMicroscope })}
+              >
+                <p style={{ display: "flex", flexDirection: "column", fontSize: "16px" }}>
+                  {this.state.ifMicroscope ? "Forms/Habits" : "Rock Textures"}
+                </p>
+              </button>
               <select
                 size={10}
-                id={"FormList"}
+                id={this.state.ifMicroscope ? "FormList" : "TextureList"}
                 onChange={event => {
                   this.handleFeatureSelect(event)
                 }}
               >
-                {this.state.availForms.map((formName: string) => {
-                  return <option value={formName}>{formName}</option>
-                })}
+                {this.state.ifMicroscope
+                  ? this.state.availForms.map((formName: string) => {
+                    return <option value={formName}>{formName}</option>
+                  })
+                  : this.state.availTextures.map((textureName: string) => {
+                    return <option value={textureName}>{textureName}</option>
+                  })
+                }
+
               </select>
             </div>
           </div>
