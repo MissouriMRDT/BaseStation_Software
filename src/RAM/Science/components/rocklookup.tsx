@@ -266,12 +266,10 @@ class RockLookUp extends Component<IProps, IState> {
   getWeightedScore(rockObj: Rocks): number {
     let { s_Colors, s_Forms, s_Cleave } = this.state
 
-    let numSelectedProps = s_Colors.length + s_Forms.length + s_Cleave.length
+    const numSelectedProps = s_Colors.length + s_Forms.length + s_Cleave.length
     let rockObjTotalProps = 0
 
     rockObj.minerals.forEach(mineral => {
-      console.log(MINARR.get(mineral))
-      console.log(mineral)
       const currMineral = MINARR.get(mineral)
       if (currMineral) {
       rockObjTotalProps += (currMineral.forms.length + currMineral.colors.length + currMineral.cleaveAndLuster.length)}

@@ -272,10 +272,10 @@ class Timer extends Component<IProps, IState> {
   removeListItem(ID: number): void {
     this.reset()
     let { parentMission, selectedMission } = this.state
-    console.log(ID)
+    // console.log(ID)
     if (ID % 100) {
       const index = this.findIndex(ID)
-      console.log(index)
+      // console.log(index)
       const oldTask = parentMission[index].childTasks.filter(i => i.id === ID)
       parentMission[index].setTime -= oldTask[0].setTime
       const newChildList = parentMission[index].childTasks.filter(i => i.id !== ID)

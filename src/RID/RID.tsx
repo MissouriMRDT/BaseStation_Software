@@ -226,7 +226,7 @@ class RoverImageryDisplay extends Component<IProps, IState> {
   }
 
   onSelect(value: string): void {
-    console.log(this.state, value)
+    // console.log(this.state, value)
     let submodule: JSX.Element = <p>Error loading {value}</p>
     switch (value) {
       case "Angular":

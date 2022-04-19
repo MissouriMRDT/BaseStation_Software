@@ -151,7 +151,7 @@ class Power extends Component<IProps, IState> {
     rovecomm.on("PackV_Meas", (data: number[]) => this.batteryListenHandler(data, "PackV_Meas"))
     rovecomm.on("Temp_Meas", (data: number[]) => this.batteryListenHandler(data, "Temp_Meas"))
     rovecomm.on("CellV_Meas", (data: number[]) => this.batteryListenHandler(data, "CellV_Meas"))
-    console.log(boardTelemetry)
+    // console.log(boardTelemetry)
   }
 
   /**
