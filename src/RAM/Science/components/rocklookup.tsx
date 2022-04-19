@@ -218,14 +218,13 @@ interface IState {
 }
 
 /**
- * TODO => 1. Make weight of possible rocks a ratio between selected attributes and total number of attributes
- *              - This will be what determines the "confidence score" for each possible rock in the output
- *         2. implement new rock attribute section
+ * TODO => 1. implement new rock attribute section
  *              - purpose is to make identification easier in the event we can't get a working microscope
  *              - options will come from the Rock Database
  *              - make modal selection column that takes the place of the Forms/Habits column if a check-box is selected
  *              - update algorithm to utilize new attribute list as if we were selecting entire minerals
  *              - maybe add a weight for the confidence score. Could still be a ratio because I've been told multiple rocks will have multiple of these descriptions
+ *              - CURRENTLY HAS PLACEHOLDERS
  */
 
 class RockLookUp extends Component<IProps, IState> {
