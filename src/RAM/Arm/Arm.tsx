@@ -49,7 +49,7 @@ function arm(): void {
 
   if ("BaseBend" in controllerInputs && "BaseTwist" in controllerInputs) {
     ArmBaseTwist = controllerInputs.BaseTwist * controlMultipliers.Base
-    ArmBaseBend = controllerInputs.BaseBend * controlMultipliers.Base
+    ArmBaseBend = -1 * controllerInputs.BaseBend * controlMultipliers.Base
     moveArm = true
   }
 
