@@ -12,7 +12,7 @@ const row: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
   flexGrow: 1,
-  justifyContent: "space-between"
+  justifyContent: "space-between",
 }
 const column: CSS.Properties = {
   display: "flex",
@@ -54,7 +54,7 @@ function arm(): void {
   }
 
   if (moveArm) {
-    const armValues = [ArmWristBend, ArmWristTwist, ArmElbowTwist, ArmElbowBend, ArmBaseTwist, ArmBaseBend]
+    const armValues = [ArmBaseTwist, ArmBaseBend, ArmElbowBend, ArmElbowTwist, ArmWristTwist, ArmWristBend]
     rovecomm.sendCommand("ArmVelocityControl", armValues)
   }
 
