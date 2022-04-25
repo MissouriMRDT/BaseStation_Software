@@ -139,19 +139,19 @@
           "dataId": 3001,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "Gimbal-Act, Aux_Logic (Aux1), Spare (Aux2), Multimedia, Science-Act (AuxLogic)"
+          "comments": "Aux"
         },
         "TwelveVLogicBusEnable": {
           "dataId": 3002,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "Gimbal-Log, Drive-Log, NetworkSwitch, Nav, Cam1, Cam2, BBB, Science-Sensor (Spare)"
+          "comments": "Gimbal, Drive, Multi, Nav, Cam1, Cam2, BBB, Spare"
         },
         "ThirtyVBusEnable": {
           "dataId": 3003,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "POE, TwelveVolt, Aux, Spare"
+          "comments": "Spare"
         }
       },
       "Telemetry": {
@@ -165,19 +165,19 @@
           "dataId": 3101,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "Gimbal-Act, Aux_Logic (Aux1), Spare (Aux2), Multimedia, Science-Act (AuxLogic)"
+          "comments": "Aux"
         },
         "TwelveVLogicBusEnabled": {
           "dataId": 3102,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "Gimbal-Log, Drive-Log, NetworkSwitch, Nav, Cam1, Cam2, BBB, Science-Sensor (Spare)"
+          "comments": "Gimbal, Drive, Multi, Nav, Cam1, Cam2, BBB, Spare"
         },
         "ThirtyVEnabled": {
           "dataId": 3103,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "POE, TwelveVolt, Aux, Spare"
+          "comments": "Spare"
         },
         "MotorBusCurrent": {
           "dataId": 3104,
@@ -188,20 +188,20 @@
         "TwelveVActBusCurrent": {
           "dataId": 3105,
           "dataType": "FLOAT_T",
-          "dataCount": 5,
-          "comments": "Gimbal-Act, Aux_Logic (Aux1), Spare (Aux2), Multimedia, Science-Act (AuxLogic)"
+          "dataCount": 1,
+          "comments": "Aux"
         },
         "TwelveVLogicBusCurrent": {
           "dataId": 3106,
           "dataType": "FLOAT_T",
           "dataCount": 8,
-          "comments": "Gimbal-Log, Drive-Log, NetworkSwitch, Nav, Cam1, Cam2, BBB, Science-Sensor (Spare)"
+          "comments": "Gimbal, Drive, Multi, Nav, Cam1, Cam2, BBB, Spare"
         },
         "ThirtyVBusCurrent": {
           "dataId": 3107,
           "dataType": "FLOAT_T",
           "dataCount": 4,
-          "comments": "POE, TwelveVolt, Aux, Spare"
+          "comments": "Spare"
         }
       },
       "Error": {
@@ -215,19 +215,19 @@
           "dataId": 3201,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "[(0-undermaxcurrent, 1-overcurrent)] [Gimbal-Act, Aux1(Aux_Logic on Board), Aux2(Spare on Board), Multimedia, Aux-Logic(Science-Act on board) (Bitmask)]"
+          "comments": "[(0-undermaxcurrent, 1-overcurrent)] [Aux (Bitmask)]"
         },
         "ThirtyVBusOverCurrent": {
           "dataId": 3202,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "[(0-undermaxcurrent, 1-overcurrent)] [POE, TwelveVolt, Aux, Spare (Bitmask)]"
+          "comments": "[(0-undermaxcurrent, 1-overcurrent)] [Spare (Bitmask)]"
         },
         "TwelveVLogicBusOverCurrent": {
           "dataId": 3203,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "[(0-undermaxcurrent, 1-overcurrent)] [Gimbal-Log, Drive-Log, NetworkSwitch, Nav, Cam1, Cam2, BBB, Spare(Science-Sensor on board) (Bitmask)]"
+          "comments": "[(0-undermaxcurrent, 1-overcurrent)] [Gimbal, Drive, Multi, Nav, Cam1, Cam2, BBB, Spare (Bitmask)]"
         }
       }
     },
