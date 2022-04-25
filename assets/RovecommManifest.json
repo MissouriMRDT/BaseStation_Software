@@ -451,12 +451,6 @@
           "dataCount": 1,
           "comments": "[Base Tilt Up, Base Tilt Down, Base Twist CW, Base Twist CCW, Elbow Tilt Up, Elbow Tilt Down, Elbow  Twist CW, Elbow  Twist CCW] (0-Turn off Limit Switch Override, 1-Turn on Limit Switch Override) (bitmasked)"
         },
-        "RebootODrive": {
-          "dataId": 8011,
-          "dataType": "UINT8_T",
-          "dataCount": 1,
-          "comments": "[1-Base, 2-Elbow, 3-Wrist]"
-        },
         "RequestJointPositions": {
           "dataId": 8012,
           "dataType": "UINT8_T",
