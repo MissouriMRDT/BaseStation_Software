@@ -524,9 +524,9 @@
         },
         "Water": {
           "dataId": 9001,
-          "dataType": "UINT8_T",
+          "dataType": "UINT16_T",
           "dataCount": 1,
-          "comments": "Water solenoid #[3, 2, 1] (0-Closed, 1-Open)"
+          "comments": "Water solenoid #[9, 8, 7, 6, 5, 4, 3, 2, 1] (0-Closed, 1-Open)"
         },
         "LimitSwitchOverride": {
           "dataId": 9002,
@@ -548,9 +548,15 @@
         },
         "ScoopGrabber": {
           "dataId": 9005,
-          "dataType": "INT16_T",
+          "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "[Position] (0,180) (degrees)"
+          "comments": "[Position] (0 Open, 1, Closed)"
+        },
+        "GotoPosition": {
+          "dataId": 9006,
+          "dataType": "UINT8_T",
+          "dataCount": 1,
+          "comments": "[Position] (0, Group 1, 2, or 3)"
         }
       },
       "Telemetry": {

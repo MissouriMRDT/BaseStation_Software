@@ -8,6 +8,7 @@ import RockLookUp from "./components/rocklookup"
 import ControlScheme, { controllerInputs } from "../../Core/components/ControlScheme"
 import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
 import Fluorometer from "./components/Fluorometer"
+import { control } from "leaflet"
 
 const row: CSS.Properties = {
   display: "flex",
@@ -40,21 +41,48 @@ function science(): void {
   if ("OpenScoop" in controllerInputs) {
     if (controllerInputs.OpenScoop === 1) {
       rovecomm.sendCommand("ScoopGrabber", 0)
+      console.log("Scoop Opened")
     }
   }
   if ("CloseScoop" in controllerInputs) {
     if (controllerInputs.CloseScoop === 1) {
       rovecomm.sendCommand("ScoopGrabber", 1)
+      console.log("Scoop Closed")
     }
   }
 
   // Water controls are sent in one bitmasked value
   if ("Water1" in controllerInputs && "Water2" in controllerInputs && "Water3" in controllerInputs) {
-    let water = ""
-    water += controllerInputs.Water3
-    water += controllerInputs.Water2
-    water += controllerInputs.Water1
-    rovecomm.sendCommand("Water", parseInt(water, 2))
+    if ("WaterGroup1" in controllerInputs && "WaterGroup2" in controllerInputs && "WaterGroup3" in controllerInputs) {
+      let water = ""
+      if (controllerInputs.WaterGroup1 === 1) {
+        water += controllerInputs.Water3
+        water += controllerInputs.Water2
+        water += controllerInputs.Water1
+      } else if (controllerInputs.WaterGroup2 === 1) {
+        water += controllerInputs.Water3
+        water += controllerInputs.Water2
+        water += controllerInputs.Water1
+        water += "000"
+      } else if (controllerInputs.WaterGroup3 === 1) {
+        water += controllerInputs.Water3
+        water += controllerInputs.Water2
+        water += controllerInputs.Water1
+        water += "000000"
+      } else {
+        for (let i = 0; i < 3; i++) {
+          water += controllerInputs.Water3
+        }
+        for (let i = 0; i < 3; i++) {
+          water += controllerInputs.Water2
+        }
+        for (let i = 0; i < 3; i++) {
+          water += controllerInputs.Water1
+        }
+      }
+      console.log(water)
+      rovecomm.sendCommand("Water", parseInt(water, 2))
+    }
   }
 }
 

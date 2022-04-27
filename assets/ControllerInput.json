@@ -41,10 +41,13 @@
       "Water1": { "buttonType": "button", "button": "X" },
       "Water2": { "buttonType": "button", "button": "Y" },
       "Water3": { "buttonType": "button", "button": "B" },
+      "WaterGroup1": { "buttonType": "button", "button": "dpad left"},
+      "WaterGroup2": { "buttonType": "button", "button": "dpad up"},
+      "WaterGroup3": { "buttonType": "button", "button": "dpad right"},
       "XoopAxis": { "buttonType": "joystick", "button": "right stick x" },
       "ZoopAxis": { "buttonType": "joystick", "button": "right stick y" },
-      "OpenScoop": { "buttonType": "button", "button": "dpad up" },
-      "CloseScoop": { "buttonType": "button", "button": "dpad down" }
+      "OpenScoop": { "buttonType": "button", "button": "LB" },
+      "CloseScoop": { "buttonType": "button", "button": "RB" }
     }
   },
   "ArmControls": {
