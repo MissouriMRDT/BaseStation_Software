@@ -64,6 +64,7 @@ enum FeatureType {
   COLOR,
   CLEAVE,
   FORM,
+  TEXTURE,
 }
 
 const ROCKPATH = path.join(__dirname, "../assets/rockLookupAssets/RockDatabase.tsv")
@@ -85,7 +86,9 @@ function fillFrom_R_Database(): Rocks[] {
         name: lineArr[0],
         minerals: lineArr[1].split("; "),
         description: lineArr[2],
+        texture: lineArr[3].split("; ")
       })
+
     })
     return rockTable
   } else {
@@ -166,6 +169,21 @@ function populateCleaves(): string[] {
 
 const CLEAVEMASTER: string[] = populateCleaves()
 
+function populateTextures(): string[] {
+  let TextureList: string[] = []
+  ROCKARR.forEach((rock: Rocks) => {
+    rock.texture.map(texture => {
+      if (texture != "") {
+        TextureList.push(texture)
+      }
+    })
+  })
+  TextureList.sort()
+  return [...new Set(TextureList)]
+}
+
+const TEXTUREMASTER: string[] = populateTextures()
+
 interface Minerals {
   name: string
   forms: string[]
@@ -177,6 +195,7 @@ interface Rocks {
   name: string
   minerals: string[]
   description: string
+  texture: string[]
 }
 
 interface Output {
@@ -237,7 +256,7 @@ class RockLookUp extends Component<IProps, IState> {
       s_Forms: [],
       availCleave: JSON.parse(JSON.stringify(CLEAVEMASTER)),
       s_Cleave: [],
-      availTextures: ["Amogus", "Sussy", "Baka"],
+      availTextures: JSON.parse(JSON.stringify(TEXTUREMASTER)),
       s_Texture: [],
       searchField: "WIP; Feature frozen",
       outputArr: [],
@@ -257,15 +276,16 @@ class RockLookUp extends Component<IProps, IState> {
         availCleave: JSON.parse(JSON.stringify(CLEAVEMASTER)), //TODO - remove all already selected features
         availForms: JSON.parse(JSON.stringify(FORMMASTER)), //TODO
         availColors: JSON.parse(JSON.stringify(COLORMASTER)), //TODO
+        availTextures: JSON.parse(JSON.stringify(TEXTUREMASTER))
       },
       () => this.compareSelections(false)
     )
   }
 
   getWeightedScore(rockObj: Rocks): number {
-    let { s_Colors, s_Forms, s_Cleave } = this.state
+    let { s_Colors, s_Forms, s_Cleave, s_Texture } = this.state
 
-    const numSelectedProps = s_Colors.length + s_Forms.length + s_Cleave.length
+    const numSelectedProps = s_Colors.length + s_Forms.length + s_Cleave.length + s_Texture.length
     let rockObjTotalProps = 0
 
     rockObj.minerals.forEach(mineral => {
@@ -273,12 +293,13 @@ class RockLookUp extends Component<IProps, IState> {
       if (currMineral) {
       rockObjTotalProps += (currMineral.forms.length + currMineral.colors.length + currMineral.cleaveAndLuster.length)}
     })
+    rockObjTotalProps += rockObj.texture.length
 
     return numSelectedProps / rockObjTotalProps
   }
 
   compareSelections(remove: boolean = true) {
-    let { s_Colors, s_Forms, s_Cleave } = this.state
+    let { s_Colors, s_Forms, s_Cleave, s_Texture } = this.state
     let possRock: Output[] = []
     let selectedMins: Minerals[] = []
 
@@ -324,6 +345,15 @@ class RockLookUp extends Component<IProps, IState> {
           }
         })
         if (!colorHit) {
+          hit = false
+        }
+      })
+      s_Texture.forEach(texture => {
+        let textureHit = false
+        if (rock.texture.indexOf(texture) >= 0) {
+          textureHit = true
+        }
+        if (!textureHit) {
           hit = false
         }
       })
@@ -427,7 +457,17 @@ class RockLookUp extends Component<IProps, IState> {
       this.setState({ s_Forms, availForms }, () => this.compareSelections())
     }
     if (event.target.id === "TextureList") {
-      console.log("Yahahaha!! You found me!")
+      let { s_Texture, availTextures } = this.state
+      availTextures.splice(availTextures.indexOf(event.target.value), 1)
+      s_Texture.push(event.target.value)
+
+      var elements = event.target.options
+
+      for (var i = 0; i < elements.length; i++) {
+        elements[i].selected = false
+      }
+
+      this.setState({ s_Texture, availTextures }, () => this.compareSelections())
     }
     this.setState({ selectedOutput: 0 })
   }
@@ -465,6 +505,13 @@ class RockLookUp extends Component<IProps, IState> {
         s_Forms.splice(index, 1)
         this.setState({ s_Forms, availForms }, () => this.reloadOptions())
         break
+      case FeatureType.TEXTURE:
+        let { availTextures, s_Texture } = this.state
+        availTextures.push(s_Texture[index])
+        availTextures.sort()
+        s_Texture.splice(index, 1)
+        this.setState({ s_Texture, availTextures }, () => this.reloadOptions())
+        break
     }
   }
 
@@ -474,6 +521,7 @@ class RockLookUp extends Component<IProps, IState> {
         s_Colors: [],
         s_Cleave: [],
         s_Forms: [],
+        s_Texture: [],
       },
       () => this.reloadOptions()
     )
@@ -630,6 +678,14 @@ class RockLookUp extends Component<IProps, IState> {
               {this.state.s_Forms.map((tag: string, index: number) => {
                 return (
                   <div style={tagStyle} onClick={() => this.removeSelectedFeature(FeatureType.FORM, index)}>
+                    <p>{tag}</p>
+                    <p style={{ marginLeft: "10px", color: "red" }}>x</p>
+                  </div>
+                )
+              })}
+              {this.state.s_Texture.map((tag: string, index: number) => {
+                return (
+                  <div style={tagStyle} onClick={() => this.removeSelectedFeature(FeatureType.TEXTURE, index)}>
                     <p>{tag}</p>
                     <p style={{ marginLeft: "10px", color: "red" }}>x</p>
                   </div>

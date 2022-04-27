@@ -68,23 +68,25 @@ MAPS.forEach(mapSet => {
   for (let y = lowerY; y <= upperY; y++) {
     fs.mkdir([directory, "/", z.toString(), "/", y.toString()].join(""), { recursive: true }, () => {})
     for (let x = lowerX; x <= upperX; x++) {
-      https.request(
-        [url, z.toString(), "/", y.toString(), "/", x.toString()].join(""),
-        response => {
-          var data = []
+      if (!fs.existsSync([directory, "/", z.toString(), "/", y.toString(), "/", x.toString()].join(""))) {
+        https.request(
+          [url, z.toString(), "/", y.toString(), "/", x.toString()].join(""),
+          response => {
+            var data = []
 
-          response.on("data", chunk => {
-            data.push(chunk)
-          })
+            response.on("data", chunk => {
+              data.push(chunk)
+            })
 
-          response.on("end", () => {
-            fs.writeFile(
-              [directory, "/", z.toString(), "/", y.toString(), "/", x.toString()].join(""),
-              Buffer.concat(data),
-              () => {}
-            )
-          })
-        }).end()
+            response.on("end", () => {
+              fs.writeFile(
+                [directory, "/", z.toString(), "/", y.toString(), "/", x.toString()].join(""),
+                Buffer.concat(data),
+                () => {}
+              )
+            })
+          }).end()
+      }
     }
   }
 })

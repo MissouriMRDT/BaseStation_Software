@@ -145,13 +145,13 @@
           "dataId": 3002,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "Gimbal, Drive, Multi, Nav, Cam1, Cam2, BBB, Spare"
+          "comments": "Gimbal, Drive, Multi, Nav, Cam1, Cam2, BBB, Spare 12V"
         },
         "ThirtyVBusEnable": {
           "dataId": 3003,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "Spare"
+          "comments": "Spare 30V"
         }
       },
       "Telemetry": {
@@ -171,13 +171,13 @@
           "dataId": 3102,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "Gimbal, Drive, Multi, Nav, Cam1, Cam2, BBB, Spare"
+          "comments": "Gimbal, Drive, Multi, Nav, Cam1, Cam2, BBB, Spare 12V"
         },
         "ThirtyVEnabled": {
           "dataId": 3103,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "Spare"
+          "comments": "Spare 30V"
         },
         "MotorBusCurrent": {
           "dataId": 3104,
@@ -195,13 +195,13 @@
           "dataId": 3106,
           "dataType": "FLOAT_T",
           "dataCount": 8,
-          "comments": "Gimbal, Drive, Multi, Nav, Cam1, Cam2, BBB, Spare"
+          "comments": "Gimbal, Drive, Multi, Nav, Cam1, Cam2, BBB, Spare 12V"
         },
         "ThirtyVBusCurrent": {
           "dataId": 3107,
           "dataType": "FLOAT_T",
           "dataCount": 4,
-          "comments": "Spare"
+          "comments": "Spare 30V"
         }
       },
       "Error": {

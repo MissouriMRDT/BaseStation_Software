@@ -43,7 +43,7 @@ const column: CSS.Properties = {
   flexGrow: 2,
 }
 const readoutContainter: CSS.Properties = {
-  height: "401px",
+  height: "301px",
   flexWrap: "wrap",
   margin: "1px",
 }
