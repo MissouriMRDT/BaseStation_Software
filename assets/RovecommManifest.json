@@ -557,6 +557,12 @@
           "dataType": "UINT8_T",
           "dataCount": 1,
           "comments": "[Position] (0, Group 1, 2, or 3)"
+        },
+        "IncrementalScoop": {
+          "dataId": 9007,
+          "dataType": "INT8_T",
+          "dataCount": 1,
+          "comments": "Degrees 0-180"
         }
       },
       "Telemetry": {
