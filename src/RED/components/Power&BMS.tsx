@@ -161,7 +161,7 @@ class Power extends Component<IProps, IState> {
    */
   boardListenHandlerAmp(data: number[], partList: string): void {
     const { boardTelemetry } = this.state
-    boardTelemetry[partList].forEach((part: string, index: number) => {
+    Object.keys(boardTelemetry[partList]).forEach((part: string, index: number) => {
       boardTelemetry[partList][part].value = data[index]
     })
     // The setState is kept until the end because of how the priority of state changes are handled.
@@ -176,10 +176,13 @@ class Power extends Component<IProps, IState> {
    */
   boardListenHandlerTog(data: number[], partList: string): void {
     const { boardTelemetry } = this.state
-    const bitmask = BitmaskUnpack(data[0], partList.length)
-    boardTelemetry[partList].forEach((part: string, index: number) => {
-      boardTelemetry[partList][part].enabled = Boolean(Number(bitmask[index]))
-    })
+    const bitmask = BitmaskUnpack(data[0], Object.keys(boardTelemetry[partList]).length)
+    Object.keys(boardTelemetry[partList])
+      .reverse() //Reverse to keep correct order for bitmap command
+      .forEach((part: string, index: number) => {
+        console.log(part + " " + index + " " + bitmask[index] + " " + partList.length)
+        boardTelemetry[partList][part].enabled = Boolean(Number(bitmask[index]))
+      })
     this.setState({ boardTelemetry })
   }
 
@@ -191,7 +194,7 @@ class Power extends Component<IProps, IState> {
   batteryListenHandler(data: number[], part: string): void {
     const { batteryTelemetry } = this.state
     if (data.length > 1) {
-      batteryTelemetry[part].forEach((cell: any, index: number) => {
+      Object.keys(batteryTelemetry[part]).forEach((cell: any, index: number) => {
         batteryTelemetry[part][cell].value = data[index]
       })
     } else {
@@ -233,9 +236,12 @@ class Power extends Component<IProps, IState> {
   packCommand(board: string): void {
     const { boardTelemetry } = this.state
     let newBitMask = ""
-    Object.keys(boardTelemetry[board]).forEach(bus => {
-      newBitMask += boardTelemetry[board][bus].enabled ? "1" : "0"
-    })
+    Object.keys(boardTelemetry[board])
+      .reverse() //Reverse to keep correct order for bitmap command
+      .forEach(bus => {
+        newBitMask += boardTelemetry[board][bus].enabled ? "1" : "0"
+      })
+    console.log(newBitMask)
     rovecomm.sendCommand(board, [parseInt(newBitMask, 2)])
   }
 
