@@ -36,7 +36,7 @@ const column: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
   flexGrow: 1,
-  justifyContent: "space-around"
+  justifyContent: "space-around",
 }
 const blockLabel: CSS.Properties = {
   width: "100%",
@@ -76,12 +76,16 @@ interface IProps {
 
 interface IState {
   blocks: HeaterBlock[]
+  UVPowered: boolean
+  WhiteLightPowered: boolean
 }
 
 class Heater extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props)
     this.state = {
+      UVPowered: false,
+      WhiteLightPowered: false,
       blocks: [
         {
           temp: -1,
@@ -101,8 +105,30 @@ class Heater extends Component<IProps, IState> {
     this.toggleBlock = this.toggleBlock.bind(this)
     this.updateEnabled = this.updateEnabled.bind(this)
     this.setAllBlocks = this.setAllBlocks.bind(this)
+    this.toggleWhiteLight = this.toggleWhiteLight.bind(this)
+    this.toggleUV = this.toggleUV.bind(this)
+    this.buildLightCommand = this.buildLightCommand.bind(this)
     rovecomm.on("ThermoValues", (data: any) => this.updateTemps(data))
     rovecomm.on("HeaterEnabled", (data: any) => this.updateEnabled(data))
+  }
+
+  buildLightCommand(UV: boolean, White: boolean): number {
+    let bitmask = ""
+    bitmask += UV ? "1" : "0"
+    bitmask += White ? "1" : "0"
+    return parseInt(bitmask, 2)
+  }
+
+  toggleWhiteLight(): void {
+    this.setState({ WhiteLightPowered: !this.state.WhiteLightPowered }, () => {
+      rovecomm.sendCommand("Lights", [this.buildLightCommand(this.state.UVPowered, this.state.WhiteLightPowered)])
+    })
+  }
+
+  toggleUV(): void {
+    this.setState({ UVPowered: !this.state.UVPowered }, () => {
+      rovecomm.sendCommand("Lights", [this.buildLightCommand(this.state.UVPowered, this.state.WhiteLightPowered)])
+    })
   }
 
   updateEnabled(data: number[]): void {
@@ -110,7 +136,7 @@ class Heater extends Component<IProps, IState> {
     const bitmask = BitmaskUnpack(data[0], blocks.length)
     for (var i: number = 0; i < blocks.length; i++) {
       //subtracted from the length since we have to reverse the order of the block
-      blocks[(blocks.length - 1) - i].isOn = Boolean(Number(bitmask[i]))
+      blocks[blocks.length - 1 - i].isOn = Boolean(Number(bitmask[i]))
     }
     this.setState({ blocks })
   }
@@ -139,7 +165,8 @@ class Heater extends Component<IProps, IState> {
     blocks[index].isOn = !blocks[index].isOn
 
     let bitmask = ""
-    for(let i: number = blocks.length - 1; i >= 0; i--) { //Reverse for-loop since the order of the blocks is reversed on the board
+    for (let i: number = blocks.length - 1; i >= 0; i--) {
+      //Reverse for-loop since the order of the blocks is reversed on the board
       bitmask += blocks[i].isOn ? "1" : "0"
     }
     rovecomm.sendCommand("HeaterToggle", [parseInt(bitmask, 2)])
@@ -179,6 +206,28 @@ class Heater extends Component<IProps, IState> {
               <button style={button} onClick={() => this.setAllBlocks(false)}>
                 Disable All
               </button>
+            </div>
+            <div style={row}>
+              <div>
+                <input
+                  type="checkbox"
+                  id="WhiteCheck"
+                  name="WhiteCheck"
+                  onChange={() => this.toggleWhiteLight()}
+                  checked={this.state.WhiteLightPowered}
+                />
+                <label htmlFor="WhiteCheck">White Light</label>
+              </div>
+              <div>
+                <input
+                  type="checkbox"
+                  id="UVCheck"
+                  name="UVChech"
+                  onChange={() => this.toggleUV()}
+                  checked={this.state.UVPowered}
+                />
+                <label htmlFor="UVCheck">UV Light</label>
+              </div>
             </div>
           </div>
         </div>
