@@ -180,7 +180,6 @@ class Power extends Component<IProps, IState> {
     Object.keys(boardTelemetry[partList])
       .reverse() //Reverse to keep correct order for bitmap command
       .forEach((part: string, index: number) => {
-        console.log(part + " " + index + " " + bitmask[index] + " " + partList.length)
         boardTelemetry[partList][part].enabled = Boolean(Number(bitmask[index]))
       })
     this.setState({ boardTelemetry })
@@ -241,7 +240,6 @@ class Power extends Component<IProps, IState> {
       .forEach(bus => {
         newBitMask += boardTelemetry[board][bus].enabled ? "1" : "0"
       })
-    console.log(newBitMask)
     rovecomm.sendCommand(board, [parseInt(newBitMask, 2)])
   }
 
