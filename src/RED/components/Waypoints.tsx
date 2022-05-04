@@ -384,7 +384,7 @@ class Waypoints extends Component<IProps, IState> {
               return (
                 <div
                   key={waypointName}
-                  onClick={() => this.setState({ selectedWaypoint: waypointName })}
+                  onClick={() => this.setState({ selectedWaypoint: waypointName }, this.cascadeWaypoint)}
                   style={backgroundStyle}
                 >
                   <span style={listSubEntry}>{waypoint.name}</span>
