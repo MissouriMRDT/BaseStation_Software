@@ -8,7 +8,6 @@ import RockLookUp from "./components/rocklookup"
 import ControlScheme, { controllerInputs } from "../../Core/components/ControlScheme"
 import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
 import Fluorometer from "./components/Fluorometer"
-import { control } from "leaflet"
 
 const row: CSS.Properties = {
   display: "flex",
@@ -41,13 +40,11 @@ function science(): void {
   if ("OpenScoop" in controllerInputs) {
     if (controllerInputs.OpenScoop === 1) {
       rovecomm.sendCommand("ScoopGrabber", 0)
-      console.log("Scoop Opened")
     }
   }
   if ("CloseScoop" in controllerInputs) {
     if (controllerInputs.CloseScoop === 1) {
       rovecomm.sendCommand("ScoopGrabber", 1)
-      console.log("Scoop Closed")
     }
   }
 
@@ -80,7 +77,6 @@ function science(): void {
           water += controllerInputs.Water1
         }
       }
-      console.log(water)
       rovecomm.sendCommand("Water", parseInt(water, 2))
     }
   }
