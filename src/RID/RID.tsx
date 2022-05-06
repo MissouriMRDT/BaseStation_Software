@@ -21,6 +21,7 @@ import CustomPackets from "../RON/components/CustomPackets"
 import PacketLogger from "../RON/components/PacketLogger"
 import PingGraph from "../RON/components/PingGraph"
 import Fluorometer from "../RAM/Science/components/Fluorometer"
+import RockLookUp from "../RAM/Science/components/rocklookup"
 
 const row: CSS.Properties = {
   display: "flex",
@@ -114,6 +115,7 @@ class RoverImageryDisplay extends Component<IProps, IState> {
             "PingGraph",
             "PingMap",
             "PingTool",
+            "RockLookup",
           ].map(component => {
             return (
               <option key={component} value={component}>
@@ -298,6 +300,9 @@ class RoverImageryDisplay extends Component<IProps, IState> {
         break
       case "PingTool":
         // We cannot currently support PingTool because we have no onDevicesChange handler
+        break
+      case "RockLookup":
+        submodule = <RockLookUp style={submod}></RockLookUp>
         break
       default:
         break

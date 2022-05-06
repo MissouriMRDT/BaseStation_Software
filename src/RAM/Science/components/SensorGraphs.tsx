@@ -352,7 +352,7 @@ class SensorGraphs extends Component<IProps, IState> {
       [
         "Temperature",
         {
-          units: "&#176;C",
+          units: "°C",
           graphLineColor: "yellow",
           graphLineType: "solid",
           values: [],
