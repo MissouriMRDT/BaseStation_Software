@@ -316,33 +316,18 @@ class Power extends Component<IProps, IState> {
           <div style={{ ...row, width: "100%" }}>
             <div style={ColorStyleConverter(this.state.batteryTelemetry.Temp_Meas.value, 30, 75, 115, 120, 0, readout)}>
               <h3 style={textPad}>Battery Temperature</h3>
-              <h3 style={textPad}>
-                {this.state.batteryTelemetry.Temp_Meas.value.toLocaleString(undefined, {
-                  minimumFractionDigits: 1,
-                  maximumFractionDigits: 1,
-                  minimumIntegerDigits: 2,
-                })}
-                °
-              </h3>
+              <h3 style={textPad}>{this.state.batteryTelemetry.Temp_Meas.value.toLocaleString(undefined)}°</h3>
             </div>
-            <div style={ColorStyleConverter(this.state.batteryTelemetry.PackI_Meas.value, 0, 15, 20, 120, 0, readout)}>
+            <div style={ColorStyleConverter(this.state.batteryTelemetry.PackI_Meas.value, 0, 15, 160, 120, 0, readout)}>
               <h3 style={textPad}>Total Pack Current</h3>
               <h3 style={textPad}>
-                {`${(this.state.batteryTelemetry.PackI_Meas.value / 1000).toLocaleString(undefined, {
-                  minimumFractionDigits: 1,
-                  maximumFractionDigits: 1,
-                  minimumIntegerDigits: 2,
-                })} A`}
+                {`${(this.state.batteryTelemetry.PackI_Meas.value / 1000).toLocaleString(undefined)} A`}
               </h3>
             </div>
             <div style={ColorStyleConverter(this.state.batteryTelemetry.PackV_Meas.value, 22, 28, 33, 0, 120, readout)}>
               <h3 style={textPad}>Total Pack Voltage</h3>
               <h3 style={textPad}>
-                {`${(this.state.batteryTelemetry.PackV_Meas.value / 1000).toLocaleString(undefined, {
-                  minimumFractionDigits: 1,
-                  maximumFractionDigits: 2,
-                  minimumIntegerDigits: 2,
-                })} V`}
+                {`${(this.state.batteryTelemetry.PackV_Meas.value).toLocaleString(undefined)} V`}
               </h3>
             </div>
           </div>
@@ -353,13 +338,7 @@ class Power extends Component<IProps, IState> {
                 return (
                   <div key={cell} style={ColorStyleConverter(value, 2.5, 3.1, 4.2, 0, 120, readout)}>
                     <h3 style={textPad}>{cell}</h3>
-                    <h3 style={textPad}>
-                      {`${(value / 1000).toLocaleString(undefined, {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                        minimumIntegerDigits: 1,
-                      })} V`}
-                    </h3>
+                    <h3 style={textPad}>{`${(value / 1000).toLocaleString(undefined)} V`}</h3>
                   </div>
                 )
               })}
