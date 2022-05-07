@@ -24,10 +24,14 @@
     "config": "MainGimbal",
     "controller": "Xbox",
     "bindings": {
-      "PanLeft": { "buttonType": "joystick", "button": "left stick x" },
-      "PanRight": { "buttonType": "joystick", "button": "right stick x" },
-      "TiltLeft": { "buttonType": "joystick", "button": "left stick y" },
-      "TiltRight": { "buttonType": "joystick", "button": "right stick y" },
+      "LeftMainPan": { "buttonType": "joystick", "button": "left stick x" },
+      "RightMainPan": { "buttonType": "joystick", "button": "right stick x" },
+      "LeftMainTilt": { "buttonType": "joystick", "button": "left stick y" },
+      "RightMainTilt": { "buttonType": "joystick", "button": "right stick y" },
+      "LeftDriveUp" : { "buttonType": "button", "button": "LB" },
+      "LeftDriveDown" : { "buttonType": "button", "button": "LT" },
+      "RightDriveUp" : { "buttonType": "button", "button": "RB" },
+      "RightDriveDown" : { "buttonType": "button", "button": "RT" },
       "MainGimbalSwitch": { "buttonType": "button", "button": "dpad up" },
       "DriveGimbalSwitch": { "buttonType": "button", "button": "dpad down" },
       "ButtonStartDebounced": { "buttonType": "button", "button": "start" }
