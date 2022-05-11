@@ -51,7 +51,9 @@
       "XoopAxis": { "buttonType": "joystick", "button": "right stick x" },
       "ZoopAxis": { "buttonType": "joystick", "button": "right stick y" },
       "OpenScoop": { "buttonType": "button", "button": "LB" },
-      "CloseScoop": { "buttonType": "button", "button": "RB" }
+      "CloseScoop": { "buttonType": "button", "button": "RB" },
+      "IncrementOpen": { "buttonType": "button", "button": "LT" },
+      "IncrementClose": { "buttonType": "button", "button": "RT" }
     }
   },
   "ArmControls": {

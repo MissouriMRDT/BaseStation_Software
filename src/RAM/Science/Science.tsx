@@ -19,6 +19,7 @@ const column: CSS.Properties = {
 }
 const sensorMotorMultiplier = 500
 const scoopMotorMultiplier = 500
+const scoopIncrementMult = 5
 
 function science(): void {
   // Z actuation of the science system is controlled by the left up/down thumbstick
@@ -46,6 +47,12 @@ function science(): void {
     if (controllerInputs.CloseScoop === 1) {
       rovecomm.sendCommand("ScoopGrabber", 1)
     }
+  }
+
+  if ("IncrementOpen" in controllerInputs && "IncrementClose" in controllerInputs) {
+    //Take the positive contribution from the open trigger and the negative contribution of the close trigger
+    let IncrementAmt = controllerInputs.IncrementOpen - controllerInputs.IncrementClose
+    rovecomm.sendCommand("IncrementScoop", IncrementAmt * scoopIncrementMult)
   }
 
   // Water controls are sent in one bitmasked value
