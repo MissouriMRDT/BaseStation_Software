@@ -229,6 +229,36 @@ class Heater extends Component<IProps, IState> {
                 <label htmlFor="UVCheck">UV Light</label>
               </div>
             </div>
+            <div style={row}>
+              <button
+                onClick={() => {
+                  rovecomm.sendCommand("GotoPosition", 0)
+                }}
+              >
+                Scooping Position
+              </button>
+              <button
+                onClick={() => {
+                  rovecomm.sendCommand("GotoPosition", 1)
+                }}
+              >
+                Sample 1
+              </button>
+              <button
+                onClick={() => {
+                  rovecomm.sendCommand("GotoPosition", 2)
+                }}
+              >
+                Sample 2
+              </button>
+              <button
+                onClick={() => {
+                  rovecomm.sendCommand("GotoPosition", 0)
+                }}
+              >
+                Sample 3
+              </button>
+            </div>
           </div>
         </div>
       </div>
