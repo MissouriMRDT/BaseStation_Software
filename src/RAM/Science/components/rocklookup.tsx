@@ -280,9 +280,9 @@ class RockLookUp extends Component<IProps, IState> {
   reloadOptions(): void {
     this.setState(
       {
-        availCleave: JSON.parse(JSON.stringify(CLEAVEMASTER)), //TODO - remove all already selected features
-        availForms: JSON.parse(JSON.stringify(FORMMASTER)), //TODO
-        availColors: JSON.parse(JSON.stringify(COLORMASTER)), //TODO
+        availCleave: JSON.parse(JSON.stringify(CLEAVEMASTER)),
+        availForms: JSON.parse(JSON.stringify(FORMMASTER)),
+        availColors: JSON.parse(JSON.stringify(COLORMASTER)),
         availTextures: JSON.parse(JSON.stringify(TEXTUREMASTER)),
       },
       () => this.compareSelections(true)
