@@ -118,7 +118,7 @@ class Fluorometer extends Component<IProps, IState> {
     if (!fs.existsSync("./ScienceSaveFiles")) {
       fs.mkdirSync("./ScienceSaveFiles")
     }
-    let csvText = "Laser1,Laser2,Laser3,UV Light,White Light,Diode1 (nm),Diode2 (nm),Diode3 (nm)\n"
+    let csvText = "Laser1,Laser2,Laser3,Diode1 (nm),Diode2 (nm),Diode3 (nm)\n"
     csvText += `${LasersPowered[0] ? "On" : "Off"},${LasersPowered[1] ? "On" : "Off"},${
       LasersPowered[2] ? "On" : "Off"
     },`
@@ -148,8 +148,14 @@ class Fluorometer extends Component<IProps, IState> {
           <div style={componentBox}>
             {this.state.LasersPowered.map((value, index) => {
               return (
-                <div key={index} style={{ ...row, ...(value ? onIndicator : offIndicator), justifyContent: "space-between" }}>
-                  <label style={{ alignSelf: "center", fontWeight: "bold", marginLeft: "5px" }}> Laser {index + 1}: </label>
+                <div
+                  key={index}
+                  style={{ ...row, ...(value ? onIndicator : offIndicator), justifyContent: "space-between" }}
+                >
+                  <label style={{ alignSelf: "center", fontWeight: "bold", marginLeft: "5px" }}>
+                    {" "}
+                    Laser {index + 1}:{" "}
+                  </label>
                   <button style={{ ...button, marginRight: "5px" }} onClick={() => this.toggleLaser(index)}>
                     {value ? "Disable" : "Enable"}
                   </button>

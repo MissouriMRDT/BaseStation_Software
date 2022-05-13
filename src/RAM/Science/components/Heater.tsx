@@ -222,7 +222,7 @@ class Heater extends Component<IProps, IState> {
                 <input
                   type="checkbox"
                   id="UVCheck"
-                  name="UVChech"
+                  name="UVCheck"
                   onChange={() => this.toggleUV()}
                   checked={this.state.UVPowered}
                 />

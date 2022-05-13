@@ -47,7 +47,9 @@ function science(): void {
   if ("IncrementOpen" in controllerInputs && "IncrementClose" in controllerInputs) {
     //Take the positive contribution from the open trigger and the negative contribution of the close trigger
     let IncrementAmt = controllerInputs.IncrementOpen - controllerInputs.IncrementClose
-    rovecomm.sendCommand("IncrementScoop", IncrementAmt * scoopIncrementMult)
+    if (IncrementAmt != 0) {
+      rovecomm.sendCommand("IncrementScoop", IncrementAmt * scoopIncrementMult)
+    }
   }
 
   // Water controls are sent in one bitmasked value
