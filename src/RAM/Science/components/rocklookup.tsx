@@ -285,7 +285,7 @@ class RockLookUp extends Component<IProps, IState> {
         availColors: JSON.parse(JSON.stringify(COLORMASTER)), //TODO
         availTextures: JSON.parse(JSON.stringify(TEXTUREMASTER)),
       },
-      () => this.compareSelections(false)
+      () => this.compareSelections(true)
     )
   }
 
@@ -374,46 +374,65 @@ class RockLookUp extends Component<IProps, IState> {
     possRock.sort(outputCompare)
     this.setState({ outputArr: possRock })
     selectedMins = [...new Set(selectedMins)]
-    if (remove) this.cullImpossibles(selectedMins)
+    if (remove) this.cullImpossibles(selectedMins, possRock)
   }
 
-  cullImpossibles(possibleMins: Mineral[]): void {
-    let { availCleave, availColors, availForms } = this.state
+  cullImpossibles(possibleMins: Mineral[], possibleRocks: Output[]): void {
+    let { availCleave, availColors, availForms, availTextures, s_Cleave, s_Forms, s_Colors, s_Texture } = this.state
 
     availCleave.forEach(cleave => {
       let isPoss: boolean = false
-      possibleMins.forEach(mineral => {
-        if (mineral.cleaveAndLuster.indexOf(cleave) >= 0) {
-          isPoss = true
-        }
-      })
+      if (s_Cleave.indexOf(cleave) == -1) {
+        possibleMins.forEach(mineral => {
+          if (mineral.cleaveAndLuster.indexOf(cleave) >= 0) {
+            isPoss = true
+          }
+        })
+      }
       if (!isPoss) {
         availCleave.splice(availCleave.indexOf(cleave), 1)
       }
     })
     availColors.forEach(color => {
       let isPoss: boolean = false
-      possibleMins.forEach(mineral => {
-        if (mineral.colors.indexOf(color) >= 0) {
-          isPoss = true
-        }
-      })
+      if (s_Colors.indexOf(color) == -1) {
+        possibleMins.forEach(mineral => {
+          if (mineral.colors.indexOf(color) >= 0) {
+            isPoss = true
+          }
+        })
+      }
       if (!isPoss) {
         availColors.splice(availColors.indexOf(color), 1)
       }
     })
     availForms.forEach(form => {
       let isPoss: boolean = false
-      possibleMins.forEach(mineral => {
-        if (mineral.forms.indexOf(form) >= 0) {
-          isPoss = true
-        }
-      })
+      if (s_Forms.indexOf(form) == -1) {
+        possibleMins.forEach(mineral => {
+          if (mineral.forms.indexOf(form) >= 0) {
+            isPoss = true
+          }
+        })
+      }
       if (!isPoss) {
         availForms.splice(availForms.indexOf(form), 1)
       }
     })
-    this.setState({ availCleave, availColors, availForms })
+    availTextures.forEach(texture => {
+      let isPoss: boolean = false
+      if (s_Texture.indexOf(texture) == -1) {
+        possibleRocks.forEach(out => {
+          if (out.Rock.textures.indexOf(texture) >= 0) {
+            isPoss = true
+          }
+        })
+      }
+      if (!isPoss) {
+        availTextures.splice(availTextures.indexOf(texture))
+      }
+    })
+    this.setState({ availCleave, availColors, availForms, availTextures })
   }
 
   handleFeatureSelect(event: any): void {
