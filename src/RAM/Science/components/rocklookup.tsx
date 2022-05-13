@@ -72,9 +72,9 @@ const ROCKPATH = path.join(__dirname, "../assets/rockLookupAssets/RockDatabase.t
 /**
  * Read the rock definitions from the tsv file
  */
-function fillFrom_R_Database(): Rocks[] {
+function fillFrom_R_Database(): Rock[] {
   if (fs.existsSync(ROCKPATH)) {
-    let rockTable: Rocks[] = []
+    let rockTable: Rock[] = []
     let filePull = fs
       .readFileSync(ROCKPATH)
       .toString()
@@ -86,9 +86,8 @@ function fillFrom_R_Database(): Rocks[] {
         name: lineArr[0],
         minerals: lineArr[1].split("; "),
         description: lineArr[2],
-        texture: lineArr[3].split("; ")
+        textures: lineArr[3].split("; "),
       })
-
     })
     return rockTable
   } else {
@@ -103,9 +102,9 @@ const MINPATH = path.join(__dirname, "../assets/rockLookupAssets/MineralDatabase
  * Loads the mineral data from the tsv defined by MINPATH
  * @returns Map of minerals, empty map if database was not found
  */
-function fillFrom_M_Database(): Map<string, Minerals> {
+function fillFrom_M_Database(): Map<string, Mineral> {
   if (fs.existsSync(MINPATH)) {
-    let mineralTable: Map<string, Minerals> = new Map()
+    let mineralTable: Map<string, Mineral> = new Map()
     let filePull = fs
       .readFileSync(MINPATH)
       .toString()
@@ -127,12 +126,12 @@ function fillFrom_M_Database(): Map<string, Minerals> {
   }
 }
 
-const MINARR: Map<string, Minerals> = fillFrom_M_Database()
-const ROCKARR: Rocks[] = fillFrom_R_Database()
+const MINARR: Map<string, Mineral> = fillFrom_M_Database()
+const ROCKARR: Rock[] = fillFrom_R_Database()
 
 function populateColors(): string[] {
   let colorList: string[] = []
-  MINARR.forEach((mineral: Minerals) => {
+  MINARR.forEach((mineral: Mineral) => {
     mineral.colors.map(color => {
       colorList.push(color)
     })
@@ -145,7 +144,7 @@ const COLORMASTER: string[] = populateColors()
 
 function populateForms(): string[] {
   let formList: string[] = []
-  MINARR.forEach((mineral: Minerals) => {
+  MINARR.forEach((mineral: Mineral) => {
     mineral.forms.map(form => {
       formList.push(form)
     })
@@ -158,7 +157,7 @@ const FORMMASTER: string[] = populateForms()
 
 function populateCleaves(): string[] {
   let cleaveList: string[] = []
-  MINARR.forEach((mineral: Minerals) => {
+  MINARR.forEach((mineral: Mineral) => {
     mineral.cleaveAndLuster.map(cleave => {
       cleaveList.push(cleave)
     })
@@ -171,8 +170,8 @@ const CLEAVEMASTER: string[] = populateCleaves()
 
 function populateTextures(): string[] {
   let TextureList: string[] = []
-  ROCKARR.forEach((rock: Rocks) => {
-    rock.texture.map(texture => {
+  ROCKARR.forEach((rock: Rock) => {
+    rock.textures.map(texture => {
       if (texture != "") {
         TextureList.push(texture)
       }
@@ -184,22 +183,22 @@ function populateTextures(): string[] {
 
 const TEXTUREMASTER: string[] = populateTextures()
 
-interface Minerals {
+interface Mineral {
   name: string
   forms: string[]
   cleaveAndLuster: string[]
   colors: string[]
 }
 
-interface Rocks {
+interface Rock {
   name: string
   minerals: string[]
   description: string
-  texture: string[]
+  textures: string[]
 }
 
 interface Output {
-  Rock: Rocks
+  Rock: Rock
   ConfidenceScore: number
 }
 
@@ -233,6 +232,8 @@ interface IState {
   searchField: string
   outputArr: Output[]
   selectedOutput: number
+  /** Whether or not we have access to a microscope. If not,
+   * we show the textures column instead of the forms and habitats column. */
   ifMicroscope: boolean
 }
 
@@ -261,13 +262,19 @@ class RockLookUp extends Component<IProps, IState> {
       searchField: "WIP; Feature frozen",
       outputArr: [],
       selectedOutput: 0,
-      ifMicroscope: true
+      ifMicroscope: true,
     }
     /*
     this.handleFeatureSubmit = this.handleFeatureSubmit.bind(this)
     this.handleInputChange = this.handleInputChange.bind(this)*/
     this.handleFeatureSelect = this.handleFeatureSelect.bind(this)
     this.compareSelections = this.compareSelections.bind(this)
+    this.reloadOptions = this.reloadOptions.bind(this)
+    this.getWeightedScore = this.getWeightedScore.bind(this)
+    this.cullImpossibles = this.cullImpossibles.bind(this)
+    this.removeSelectedFeature = this.removeSelectedFeature.bind(this)
+    this.clearSelectedFeatures = this.clearSelectedFeatures.bind(this)
+    this.possibleRocks = this.possibleRocks.bind(this)
   }
 
   reloadOptions(): void {
@@ -276,13 +283,13 @@ class RockLookUp extends Component<IProps, IState> {
         availCleave: JSON.parse(JSON.stringify(CLEAVEMASTER)), //TODO - remove all already selected features
         availForms: JSON.parse(JSON.stringify(FORMMASTER)), //TODO
         availColors: JSON.parse(JSON.stringify(COLORMASTER)), //TODO
-        availTextures: JSON.parse(JSON.stringify(TEXTUREMASTER))
+        availTextures: JSON.parse(JSON.stringify(TEXTUREMASTER)),
       },
       () => this.compareSelections(false)
     )
   }
 
-  getWeightedScore(rockObj: Rocks): number {
+  getWeightedScore(rockObj: Rock): number {
     let { s_Colors, s_Forms, s_Cleave, s_Texture } = this.state
 
     const numSelectedProps = s_Colors.length + s_Forms.length + s_Cleave.length + s_Texture.length
@@ -291,9 +298,10 @@ class RockLookUp extends Component<IProps, IState> {
     rockObj.minerals.forEach(mineral => {
       const currMineral = MINARR.get(mineral)
       if (currMineral) {
-      rockObjTotalProps += (currMineral.forms.length + currMineral.colors.length + currMineral.cleaveAndLuster.length)}
+        rockObjTotalProps += currMineral.forms.length + currMineral.colors.length + currMineral.cleaveAndLuster.length
+      }
     })
-    rockObjTotalProps += rockObj.texture.length
+    rockObjTotalProps += rockObj.textures.length
 
     return numSelectedProps / rockObjTotalProps
   }
@@ -301,10 +309,9 @@ class RockLookUp extends Component<IProps, IState> {
   compareSelections(remove: boolean = true) {
     let { s_Colors, s_Forms, s_Cleave, s_Texture } = this.state
     let possRock: Output[] = []
-    let selectedMins: Minerals[] = []
+    let selectedMins: Mineral[] = []
 
     ROCKARR.forEach(rock => {
-      let numHits: number = 0
       let hit = true
       s_Cleave.forEach(cleave => {
         let cleaveHit = false
@@ -349,18 +356,11 @@ class RockLookUp extends Component<IProps, IState> {
         }
       })
       s_Texture.forEach(texture => {
-        let textureHit = false
-        if (rock.texture.indexOf(texture) >= 0) {
-          textureHit = true
-        }
-        if (!textureHit) {
+        if (rock.textures.indexOf(texture) == -1) {
           hit = false
         }
       })
       if (hit) {
-        numHits += 1
-      }
-      if (numHits > 0) {
         possRock.push({ Rock: rock, ConfidenceScore: this.getWeightedScore(rock) })
         rock.minerals.forEach(mineral => {
           let minObj = MINARR.get(mineral)
@@ -377,7 +377,7 @@ class RockLookUp extends Component<IProps, IState> {
     if (remove) this.cullImpossibles(selectedMins)
   }
 
-  cullImpossibles(possibleMins: Minerals[]): void {
+  cullImpossibles(possibleMins: Mineral[]): void {
     let { availCleave, availColors, availForms } = this.state
 
     availCleave.forEach(cleave => {
@@ -631,7 +631,14 @@ class RockLookUp extends Component<IProps, IState> {
             </div>
             <div style={featureColumn}>
               <button
-                style={{ width: "auto", textAlign: "center", background: "white", borderWidth: "1px", maxHeight: "48px", marginBottom: "2px" }}
+                style={{
+                  width: "auto",
+                  textAlign: "center",
+                  background: "white",
+                  borderWidth: "1px",
+                  maxHeight: "48px",
+                  marginBottom: "2px",
+                }}
                 onClick={() => this.setState({ ifMicroscope: !this.state.ifMicroscope })}
               >
                 <p style={{ display: "flex", flexDirection: "column", fontSize: "16px" }}>
@@ -647,13 +654,11 @@ class RockLookUp extends Component<IProps, IState> {
               >
                 {this.state.ifMicroscope
                   ? this.state.availForms.map((formName: string) => {
-                    return <option value={formName}>{formName}</option>
-                  })
+                      return <option value={formName}>{formName}</option>
+                    })
                   : this.state.availTextures.map((textureName: string) => {
-                    return <option value={textureName}>{textureName}</option>
-                  })
-                }
-
+                      return <option value={textureName}>{textureName}</option>
+                    })}
               </select>
             </div>
           </div>
