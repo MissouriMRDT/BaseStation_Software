@@ -35,17 +35,12 @@ function science(): void {
     rovecomm.sendCommand("ZoopAxis", [controllerInputs.ZoopAxis * scoopMotorMultiplier])
   }
 
-  //Open scoop if *only* the OpenScoop button is pressed
-  //Close scoop if *only* the CloseScoop button is pressed
-  //If both are pressed, do nothing
-  if ("OpenScoop" in controllerInputs) {
-    if (controllerInputs.OpenScoop === 1) {
-      rovecomm.sendCommand("ScoopGrabber", 0)
-    }
-  }
-  if ("CloseScoop" in controllerInputs) {
+  //If both open and close scoop are pressed, close it
+  if ("OpenScoop" in controllerInputs && "CloseScoop" in controllerInputs) {
     if (controllerInputs.CloseScoop === 1) {
       rovecomm.sendCommand("ScoopGrabber", 1)
+    } else if (controllerInputs.OpenScoop === 1) {
+      rovecomm.sendCommand("ScoopGrabber", 0)
     }
   }
 
