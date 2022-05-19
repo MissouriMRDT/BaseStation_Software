@@ -62,7 +62,7 @@ class Lighting extends Component<IProps, IState> {
   colorChanged(newColor: any): void {
     const color = newColor.rgb
     this.setState({ color })
-    rovecomm.sendCommand("LEDRGB", [color.r, color.g, color.b], true)
+    rovecomm.sendCommand("LEDRGB", [color.r, color.g, color.b])
   }
 
   teleop(): void {
