@@ -139,19 +139,19 @@
           "dataId": 3001,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "Gimbal-Act, Aux_Logic (Aux1), Spare (Aux2), Multimedia, Science-Act (AuxLogic)"
+          "comments": "Aux"
         },
         "TwelveVLogicBusEnable": {
           "dataId": 3002,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "Gimbal-Log, Drive-Log, NetworkSwitch, Nav, Cam1, Cam2, BBB, Science-Sensor (Spare)"
+          "comments": "Gimbal, Drive, Multi, Nav, Cam1, Cam2, BBB, Spare 12V"
         },
         "ThirtyVBusEnable": {
           "dataId": 3003,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "POE, TwelveVolt, Aux, Spare"
+          "comments": "Spare 30V"
         }
       },
       "Telemetry": {
@@ -165,19 +165,19 @@
           "dataId": 3101,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "Gimbal-Act, Aux_Logic (Aux1), Spare (Aux2), Multimedia, Science-Act (AuxLogic)"
+          "comments": "Aux"
         },
         "TwelveVLogicBusEnabled": {
           "dataId": 3102,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "Gimbal-Log, Drive-Log, NetworkSwitch, Nav, Cam1, Cam2, BBB, Science-Sensor (Spare)"
+          "comments": "Gimbal, Drive, Multi, Nav, Cam1, Cam2, BBB, Spare 12V"
         },
         "ThirtyVEnabled": {
           "dataId": 3103,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "POE, TwelveVolt, Aux, Spare"
+          "comments": "Spare 30V"
         },
         "MotorBusCurrent": {
           "dataId": 3104,
@@ -188,20 +188,20 @@
         "TwelveVActBusCurrent": {
           "dataId": 3105,
           "dataType": "FLOAT_T",
-          "dataCount": 5,
-          "comments": "Gimbal-Act, Aux_Logic (Aux1), Spare (Aux2), Multimedia, Science-Act (AuxLogic)"
+          "dataCount": 1,
+          "comments": "Aux"
         },
         "TwelveVLogicBusCurrent": {
           "dataId": 3106,
           "dataType": "FLOAT_T",
           "dataCount": 8,
-          "comments": "Gimbal-Log, Drive-Log, NetworkSwitch, Nav, Cam1, Cam2, BBB, Science-Sensor (Spare)"
+          "comments": "Gimbal, Drive, Multi, Nav, Cam1, Cam2, BBB, Spare 12V"
         },
         "ThirtyVBusCurrent": {
           "dataId": 3107,
           "dataType": "FLOAT_T",
           "dataCount": 4,
-          "comments": "POE, TwelveVolt, Aux, Spare"
+          "comments": "Spare 30V"
         }
       },
       "Error": {
@@ -215,19 +215,19 @@
           "dataId": 3201,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "[(0-undermaxcurrent, 1-overcurrent)] [Gimbal-Act, Aux1(Aux_Logic on Board), Aux2(Spare on Board), Multimedia, Aux-Logic(Science-Act on board) (Bitmask)]"
+          "comments": "[(0-undermaxcurrent, 1-overcurrent)] [Aux (Bitmask)]"
         },
         "ThirtyVBusOverCurrent": {
           "dataId": 3202,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "[(0-undermaxcurrent, 1-overcurrent)] [POE, TwelveVolt, Aux, Spare (Bitmask)]"
+          "comments": "[(0-undermaxcurrent, 1-overcurrent)] [Spare (Bitmask)]"
         },
         "TwelveVLogicBusOverCurrent": {
           "dataId": 3203,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "[(0-undermaxcurrent, 1-overcurrent)] [Gimbal-Log, Drive-Log, NetworkSwitch, Nav, Cam1, Cam2, BBB, Spare(Science-Sensor on board) (Bitmask)]"
+          "comments": "[(0-undermaxcurrent, 1-overcurrent)] [Gimbal, Drive, Multi, Nav, Cam1, Cam2, BBB, Spare (Bitmask)]"
         }
       }
     },
@@ -353,6 +353,12 @@
           "dataType": "UINT8_T",
           "dataCount": 1,
           "comments": "[Teleop, Autonomy, Reached Goal] (enum)"
+        },
+        "Brightness": {
+          "dataId": 7004,
+          "dataType": "UINT8_T",
+          "dataCount": 1,
+          "comments": "Set Brightness (0-255)"
         }
       },
       "Telemetry": {},
@@ -362,6 +368,15 @@
           "Teleop": 0,
           "Autonomy": 1,
           "Reached_Goal": 2
+        },
+        "PATTERNS": {
+          "MRDT": 0,
+          "BELGIUM": 1,
+          "MERICA": 2,
+          "DIRT": 3,
+          "DOTA": 4,
+          "MCD": 5,
+          "WINDOWS": 6
         }
       }
     },
@@ -435,12 +450,6 @@
           "dataType": "UINT8_T",
           "dataCount": 1,
           "comments": "[Base Tilt Up, Base Tilt Down, Base Twist CW, Base Twist CCW, Elbow Tilt Up, Elbow Tilt Down, Elbow  Twist CW, Elbow  Twist CCW] (0-Turn off Limit Switch Override, 1-Turn on Limit Switch Override) (bitmasked)"
-        },
-        "RebootODrive": {
-          "dataId": 8011,
-          "dataType": "UINT8_T",
-          "dataCount": 1,
-          "comments": "[1-Base, 2-Elbow, 3-Wrist]"
         },
         "RequestJointPositions": {
           "dataId": 8012,
@@ -516,8 +525,8 @@
         "Water": {
           "dataId": 9001,
           "dataType": "UINT16_T",
-          "dataCount": 3,
-          "comments": "[Water 1, Water 2, Water 3] (0, 1000) (m%)"
+          "dataCount": 1,
+          "comments": "Water solenoid #[9, 8, 7, 6, 5, 4, 3, 2, 1] (0-Closed, 1-Open)"
         },
         "LimitSwitchOverride": {
           "dataId": 9002,
@@ -539,9 +548,21 @@
         },
         "ScoopGrabber": {
           "dataId": 9005,
-          "dataType": "INT16_T",
+          "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "[Position] (0,180) (degrees)"
+          "comments": "[Position] (0 Open, 1, Closed)"
+        },
+        "GotoPosition": {
+          "dataId": 9006,
+          "dataType": "UINT8_T",
+          "dataCount": 1,
+          "comments": "[Position] (0, Group 1, 2, or 3)"
+        },
+        "IncrementalScoop": {
+          "dataId": 9007,
+          "dataType": "INT8_T",
+          "dataCount": 1,
+          "comments": "Degrees 0-180"
         }
       },
       "Telemetry": {
@@ -730,7 +751,7 @@
           "dataId": 15101,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "[1, 2, 3] (0-Disabled, 1-Enabled)"
+          "comments": "Heater #[3, 2, 1] (0-Disabled, 1-Enabled)"
         }
       },
       "Error": {

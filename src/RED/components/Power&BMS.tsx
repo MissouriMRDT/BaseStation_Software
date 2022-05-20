@@ -43,7 +43,7 @@ const column: CSS.Properties = {
   flexGrow: 2,
 }
 const readoutContainter: CSS.Properties = {
-  height: "401px",
+  height: "301px",
   flexWrap: "wrap",
   margin: "1px",
 }
@@ -151,7 +151,7 @@ class Power extends Component<IProps, IState> {
     rovecomm.on("PackV_Meas", (data: number[]) => this.batteryListenHandler(data, "PackV_Meas"))
     rovecomm.on("Temp_Meas", (data: number[]) => this.batteryListenHandler(data, "Temp_Meas"))
     rovecomm.on("CellV_Meas", (data: number[]) => this.batteryListenHandler(data, "CellV_Meas"))
-    console.log(boardTelemetry)
+    // console.log(boardTelemetry)
   }
 
   /**
@@ -161,7 +161,7 @@ class Power extends Component<IProps, IState> {
    */
   boardListenHandlerAmp(data: number[], partList: string): void {
     const { boardTelemetry } = this.state
-    boardTelemetry[partList].forEach((part: string, index: number) => {
+    Object.keys(boardTelemetry[partList]).forEach((part: string, index: number) => {
       boardTelemetry[partList][part].value = data[index]
     })
     // The setState is kept until the end because of how the priority of state changes are handled.
@@ -176,10 +176,12 @@ class Power extends Component<IProps, IState> {
    */
   boardListenHandlerTog(data: number[], partList: string): void {
     const { boardTelemetry } = this.state
-    const bitmask = BitmaskUnpack(data[0], partList.length)
-    boardTelemetry[partList].forEach((part: string, index: number) => {
-      boardTelemetry[partList][part].enabled = Boolean(Number(bitmask[index]))
-    })
+    const bitmask = BitmaskUnpack(data[0], Object.keys(boardTelemetry[partList]).length)
+    Object.keys(boardTelemetry[partList])
+      .reverse() //Reverse to keep correct order for bitmap command
+      .forEach((part: string, index: number) => {
+        boardTelemetry[partList][part].enabled = Boolean(Number(bitmask[index]))
+      })
     this.setState({ boardTelemetry })
   }
 
@@ -191,7 +193,7 @@ class Power extends Component<IProps, IState> {
   batteryListenHandler(data: number[], part: string): void {
     const { batteryTelemetry } = this.state
     if (data.length > 1) {
-      batteryTelemetry[part].forEach((cell: any, index: number) => {
+      Object.keys(batteryTelemetry[part]).forEach((cell: any, index: number) => {
         batteryTelemetry[part][cell].value = data[index]
       })
     } else {
@@ -233,9 +235,11 @@ class Power extends Component<IProps, IState> {
   packCommand(board: string): void {
     const { boardTelemetry } = this.state
     let newBitMask = ""
-    Object.keys(boardTelemetry[board]).forEach(bus => {
-      newBitMask += boardTelemetry[board][bus].enabled ? "1" : "0"
-    })
+    Object.keys(boardTelemetry[board])
+      .reverse() //Reverse to keep correct order for bitmap command
+      .forEach(bus => {
+        newBitMask += boardTelemetry[board][bus].enabled ? "1" : "0"
+      })
     rovecomm.sendCommand(board, [parseInt(newBitMask, 2)])
   }
 
@@ -312,33 +316,18 @@ class Power extends Component<IProps, IState> {
           <div style={{ ...row, width: "100%" }}>
             <div style={ColorStyleConverter(this.state.batteryTelemetry.Temp_Meas.value, 30, 75, 115, 120, 0, readout)}>
               <h3 style={textPad}>Battery Temperature</h3>
-              <h3 style={textPad}>
-                {this.state.batteryTelemetry.Temp_Meas.value.toLocaleString(undefined, {
-                  minimumFractionDigits: 1,
-                  maximumFractionDigits: 1,
-                  minimumIntegerDigits: 2,
-                })}
-                °
-              </h3>
+              <h3 style={textPad}>{this.state.batteryTelemetry.Temp_Meas.value.toLocaleString(undefined)}°</h3>
             </div>
-            <div style={ColorStyleConverter(this.state.batteryTelemetry.PackI_Meas.value, 0, 15, 20, 120, 0, readout)}>
+            <div style={ColorStyleConverter(this.state.batteryTelemetry.PackI_Meas.value, 0, 15, 160, 120, 0, readout)}>
               <h3 style={textPad}>Total Pack Current</h3>
               <h3 style={textPad}>
-                {`${(this.state.batteryTelemetry.PackI_Meas.value / 1000).toLocaleString(undefined, {
-                  minimumFractionDigits: 1,
-                  maximumFractionDigits: 1,
-                  minimumIntegerDigits: 2,
-                })} A`}
+                {`${(this.state.batteryTelemetry.PackI_Meas.value / 1000).toLocaleString(undefined)} A`}
               </h3>
             </div>
             <div style={ColorStyleConverter(this.state.batteryTelemetry.PackV_Meas.value, 22, 28, 33, 0, 120, readout)}>
               <h3 style={textPad}>Total Pack Voltage</h3>
               <h3 style={textPad}>
-                {`${(this.state.batteryTelemetry.PackV_Meas.value / 1000).toLocaleString(undefined, {
-                  minimumFractionDigits: 1,
-                  maximumFractionDigits: 2,
-                  minimumIntegerDigits: 2,
-                })} V`}
+                {`${(this.state.batteryTelemetry.PackV_Meas.value).toLocaleString(undefined)} V`}
               </h3>
             </div>
           </div>
@@ -349,13 +338,7 @@ class Power extends Component<IProps, IState> {
                 return (
                   <div key={cell} style={ColorStyleConverter(value, 2.5, 3.1, 4.2, 0, 120, readout)}>
                     <h3 style={textPad}>{cell}</h3>
-                    <h3 style={textPad}>
-                      {`${(value / 1000).toLocaleString(undefined, {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                        minimumIntegerDigits: 1,
-                      })} V`}
-                    </h3>
+                    <h3 style={textPad}>{`${(value / 1000).toLocaleString(undefined)} V`}</h3>
                   </div>
                 )
               })}

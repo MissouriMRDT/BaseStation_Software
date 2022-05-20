@@ -4,21 +4,21 @@ import html2canvas from "html2canvas"
 import fs from "fs"
 
 import { windows } from "../Window"
-import no_cam_img from "../../../assets/no_cam_img.jpg"
+import no_cam_img from "../../../assets/no_cam_img.png"
 
 const cameraNumList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 const cam_ips = [
   no_cam_img,
-  `http://192.168.1.141:8080/1/stream`,
-  `http://192.168.1.141:8080/2/stream`,
-  `http://192.168.1.141:8080/3/stream`,
-  `http://192.168.1.141:8080/4/stream`,
-  `http://192.168.1.142:8080/1/stream`,
-  `http://192.168.1.142:8080/2/stream`,
-  `http://192.168.1.142:8080/3/stream`,
-  `http://192.168.1.142:8080/4/stream`,
-  `http://192.168.1.139:8080/1/stream`,
-  `http://192.168.1.139:8080/2/stream`,
+  `http://192.168.1.141:1181/stream.mjpg`,
+  `http://192.168.1.141:1182/stream.mjpg`,
+  `http://192.168.1.141:1183/stream.mjpg`,
+  `http://192.168.1.141:1184/stream.mjpg`,
+  `http://192.168.1.142:1181/stream.mjpg`,
+  `http://192.168.1.142:1182/stream.mjpg`,
+  `http://192.168.1.142:1183/stream.mjpg`,
+  `http://192.168.1.142:1184/stream.mjpg`,
+  `http://192.168.1.139:1181/stream.mjpg`,
+  `http://192.168.1.139:1182/stream.mjpg`,
 ]
 
 const h1Style: CSS.Properties = {

@@ -272,10 +272,10 @@ class Timer extends Component<IProps, IState> {
   removeListItem(ID: number): void {
     this.reset()
     let { parentMission, selectedMission } = this.state
-    console.log(ID)
+    // console.log(ID)
     if (ID % 100) {
       const index = this.findIndex(ID)
-      console.log(index)
+      // console.log(index)
       const oldTask = parentMission[index].childTasks.filter(i => i.id === ID)
       parentMission[index].setTime -= oldTask[0].setTime
       const newChildList = parentMission[index].childTasks.filter(i => i.id !== ID)
@@ -651,21 +651,28 @@ class Timer extends Component<IProps, IState> {
             <div>
               <input
                 value={this.state.nameInput}
+                id="TaskNameInput"
                 onChange={e => this.handleChange(e, "name")}
                 placeholder="Task Name"
               />
-              <input value={this.state.timeInput} onChange={e => this.handleChange(e, "time")} placeholder="HH:MM:SS" />
-              <input type="submit" value="Submit" />
+              <input
+                value={this.state.timeInput}
+                id="TaskTimeInput"
+                onChange={e => this.handleChange(e, "time")}
+                placeholder="HH:MM:SS"
+              />
+              <input type="submit" id="NewTaskSubmit" value="Submit" />
             </div>
           ) : null}
           {this.state.missionInputOpen ? (
             <div>
               <input
                 value={this.state.nameInput}
+                id="MissionNameInput"
                 onChange={e => this.handleChange(e, "name")}
                 placeholder="Mission Name"
               />
-              <input type="submit" value="Submit" />
+              <input type="submit" id="NewMissionSubmit" value="Submit" />
             </div>
           ) : null}
           <div
@@ -683,6 +690,7 @@ class Timer extends Component<IProps, IState> {
                   <input
                     type="radio"
                     value={mission.id}
+                    id={mission.id.toString()}
                     checked={this.state.selectedMission === mission.id}
                     onChange={() => {
                       // Reset is called to reset the time differences in the time split menu.
@@ -700,7 +708,12 @@ class Timer extends Component<IProps, IState> {
                     <div style={{ wordWrap: "break-word" }}>{mission.title}</div>
                     {packOutput(mission.setTime)}
                   </div>
-                  <button type="button" onClick={() => this.removeListItem(mission.id)} style={trashButtons}>
+                  <button
+                    type="button"
+                    id={(mission.id * 5).toString()}
+                    onClick={() => this.removeListItem(mission.id)}
+                    style={trashButtons}
+                  >
                     <img src={TrashCanIcon} alt="Trash Can Icon" />
                   </button>
                   <div style={{ width: "63%", maxWidth: "63%" }}>

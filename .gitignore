@@ -5,6 +5,9 @@
 Screenshots
 assets/maps
 
+# Science data
+ScienceSaveFiles/
+
 # User-specific files
 *.suo
 *.user

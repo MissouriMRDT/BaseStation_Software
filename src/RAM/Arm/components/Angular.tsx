@@ -156,7 +156,7 @@ class Angular extends Component<IProps, IState> {
      * and send the proper rovecomm packet
      */
     rovecomm.sendCommand(
-      "ArmMoveToAngle",
+      "ArmMoveToPosition",
       Object.values(this.state.jointValues).map(function (x: string) {
         return x ? parseFloat(x) : 0
       })

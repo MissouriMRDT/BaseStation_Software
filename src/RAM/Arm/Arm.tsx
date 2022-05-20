@@ -12,7 +12,7 @@ const row: CSS.Properties = {
   display: "flex",
   flexDirection: "row",
   flexGrow: 1,
-  justifyContent: "space-between"
+  justifyContent: "space-between",
 }
 const column: CSS.Properties = {
   display: "flex",
@@ -49,12 +49,12 @@ function arm(): void {
 
   if ("BaseBend" in controllerInputs && "BaseTwist" in controllerInputs) {
     ArmBaseTwist = controllerInputs.BaseTwist * controlMultipliers.Base
-    ArmBaseBend = controllerInputs.BaseBend * controlMultipliers.Base
+    ArmBaseBend = -1 * controllerInputs.BaseBend * controlMultipliers.Base
     moveArm = true
   }
 
   if (moveArm) {
-    const armValues = [ArmWristBend, ArmWristTwist, ArmElbowTwist, ArmElbowBend, ArmBaseTwist, ArmBaseBend]
+    const armValues = [ArmBaseTwist, ArmBaseBend, ArmElbowBend, ArmElbowTwist, ArmWristTwist, ArmWristBend]
     rovecomm.sendCommand("ArmVelocityControl", armValues)
   }
 

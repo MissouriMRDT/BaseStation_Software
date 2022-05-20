@@ -67,10 +67,6 @@ interface IState {
   DiodeValues: number[]
   /** Holds which lasers are enabled */
   LasersPowered: boolean[]
-  /** If UV light is on */
-  UVPowered: boolean
-  /** If White Light is on */
-  WhiteLightPowered: boolean
 }
 
 class Fluorometer extends Component<IProps, IState> {
@@ -79,13 +75,8 @@ class Fluorometer extends Component<IProps, IState> {
     this.state = {
       DiodeValues: [0, 0, 0],
       LasersPowered: [false, false, false],
-      UVPowered: false,
-      WhiteLightPowered: false,
     }
     this.updateDiodeVals = this.updateDiodeVals.bind(this)
-    this.toggleWhiteLight = this.toggleWhiteLight.bind(this)
-    this.toggleUV = this.toggleUV.bind(this)
-    this.buildLightCommand = this.buildLightCommand.bind(this)
     this.buildLaserCommand = this.buildLaserCommand.bind(this)
     this.exportData = this.exportData.bind(this)
 
@@ -100,31 +91,12 @@ class Fluorometer extends Component<IProps, IState> {
     this.setState({ DiodeValues: [data[0], data[1], data[2]] })
   }
 
-  buildLightCommand(UV: boolean, White: boolean): number {
-    let bitmask = ""
-    bitmask += UV ? "1" : "0"
-    bitmask += White ? "1" : "0"
-    return parseInt(bitmask, 2)
-  }
-
   buildLaserCommand(Lasers: boolean[]): number {
     let bitmask = ""
     bitmask += Lasers[0] ? "1" : "0"
     bitmask += Lasers[1] ? "1" : "0"
     bitmask += Lasers[2] ? "1" : "0"
     return parseInt(bitmask, 2)
-  }
-
-  toggleWhiteLight(): void {
-    this.setState({ WhiteLightPowered: !this.state.WhiteLightPowered }, () => {
-      rovecomm.sendCommand("Lights", [this.buildLightCommand(this.state.UVPowered, this.state.WhiteLightPowered)])
-    })
-  }
-
-  toggleUV(): void {
-    this.setState({ UVPowered: !this.state.UVPowered }, () => {
-      rovecomm.sendCommand("Lights", [this.buildLightCommand(this.state.UVPowered, this.state.WhiteLightPowered)])
-    })
   }
 
   toggleLaser(index: number): void {
@@ -141,16 +113,15 @@ class Fluorometer extends Component<IProps, IState> {
     const timestamp = new Date().toISOString().replaceAll(/[:\-TZ]/g, ".")
     const EXPORT_FILE = `./ScienceSaveFiles/Fluormeter-${timestamp}.csv`
 
-    const { DiodeValues, LasersPowered, UVPowered, WhiteLightPowered } = this.state
+    const { DiodeValues, LasersPowered } = this.state
 
     if (!fs.existsSync("./ScienceSaveFiles")) {
       fs.mkdirSync("./ScienceSaveFiles")
     }
-    let csvText = "Laser1,Laser2,Laser3,UV Light,White Light,Diode1 (nm),Diode2 (nm),Diode3 (nm)\n"
+    let csvText = "Laser1,Laser2,Laser3,Diode1 (nm),Diode2 (nm),Diode3 (nm)\n"
     csvText += `${LasersPowered[0] ? "On" : "Off"},${LasersPowered[1] ? "On" : "Off"},${
       LasersPowered[2] ? "On" : "Off"
     },`
-    csvText += `${UVPowered ? "On" : "Off"},${WhiteLightPowered ? "On" : "Off"},`
     csvText += `${DiodeValues[0]},${DiodeValues[1]},${DiodeValues[2]},\n`
 
     fs.writeFile(EXPORT_FILE, csvText, err => {
@@ -163,16 +134,6 @@ class Fluorometer extends Component<IProps, IState> {
       <div id="Flurometer" style={this.props.style}>
         <div style={label}>Fluorometer</div>
         <div style={container}>
-          <div style={row}>
-            <div>
-              <input type="checkbox" id="WhiteCheck" name="WhiteCheck" onChange={() => this.toggleWhiteLight()} checked={this.state.WhiteLightPowered}/>
-              <label htmlFor="WhiteCheck">White Light</label>
-            </div>
-            <div>
-              <input type="checkbox" id="UVCheck" name="UVChech" onChange={() => this.toggleUV()} checked={this.state.UVPowered}/>
-              <label htmlFor="UVCheck">UV Light</label>
-            </div>
-          </div>
           <div style={componentBox}>
             {this.state.DiodeValues.map((value, index) => {
               return (
@@ -187,8 +148,14 @@ class Fluorometer extends Component<IProps, IState> {
           <div style={componentBox}>
             {this.state.LasersPowered.map((value, index) => {
               return (
-                <div key={index} style={{ ...row, ...(value ? onIndicator : offIndicator), justifyContent: "space-between" }}>
-                  <label style={{ alignSelf: "center", fontWeight: "bold", marginLeft: "5px" }}> Laser {index + 1}: </label>
+                <div
+                  key={index}
+                  style={{ ...row, ...(value ? onIndicator : offIndicator), justifyContent: "space-between" }}
+                >
+                  <label style={{ alignSelf: "center", fontWeight: "bold", marginLeft: "5px" }}>
+                    {" "}
+                    Laser {index + 1}:{" "}
+                  </label>
                   <button style={{ ...button, marginRight: "5px" }} onClick={() => this.toggleLaser(index)}>
                     {value ? "Disable" : "Enable"}
                   </button>

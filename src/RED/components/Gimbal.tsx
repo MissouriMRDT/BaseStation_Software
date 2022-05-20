@@ -46,10 +46,8 @@ class Gimbal extends Component<IProps, IState> {
       // Controlling will be "none" by default, then set to "main" or "drive", and image will update to match
       controlling: "none",
       image: NotConnected,
-      interval: setInterval(() => this.gimbal(), 100)
+      interval: setInterval(() => this.gimbal(), 100),
     }
-
-
   }
 
   componentWillUnmount() {
@@ -69,29 +67,36 @@ class Gimbal extends Component<IProps, IState> {
       image = DownArrow
     }
     if (
-      "PanLeft" in controllerInputs &&
-      "TiltLeft" in controllerInputs &&
-      "PanRight" in controllerInputs &&
-      "TiltRight" in controllerInputs
+      "LeftMainPan" in controllerInputs &&
+      "RightMainPan" in controllerInputs &&
+      "LeftMainTilt" in controllerInputs &&
+      "RightMainTilt" in controllerInputs &&
+      "LeftDriveUp" in controllerInputs &&
+      "LeftDriveDown" in controllerInputs &&
+      "RightDriveUp" in controllerInputs &&
+      "RightDriveDown" in controllerInputs
     ) {
       // The multiples defined below are for Valkyries mounting positions, and the * 5 is just a small constant to tweak how quickly they respond
       // to controller input
       if (controlling === "Main") {
-        rovecomm.sendCommand("LeftMainGimbalIncrement", [controllerInputs.PanLeft * 5, controllerInputs.TiltLeft * 5])
+        rovecomm.sendCommand("LeftMainGimbalIncrement", [
+          controllerInputs.LeftMainPan * 5,
+          controllerInputs.LeftMainTilt * 5])
         rovecomm.sendCommand("RightMainGimbalIncrement", [
-          controllerInputs.PanRight * 5,
-          controllerInputs.TiltRight * 5,
+          controllerInputs.RightMainPan * 5,
+          controllerInputs.RightMainTilt * 5,
         ])
-      } else if (controlling === "Drive") {
-        // The drive gimbals currently take tilt, then pan and discard pan since they only tilt
         rovecomm.sendCommand("LeftDriveGimbalIncrement", [
-          controllerInputs.PanLeft * -5,
-          controllerInputs.TiltLeft * -5,
+          (controllerInputs.LeftDriveUp ? -1 : controllerInputs.LeftDriveDown) * 5,
+          0,
         ])
         rovecomm.sendCommand("RightDriveGimbalIncrement", [
-          controllerInputs.PanRight * 5,
-          controllerInputs.TiltRight * 5,
+          (controllerInputs.RightDriveUp ? 1 : -controllerInputs.RightDriveDown) * 5,
+          0,
         ])
+        console.log(controllerInputs.RightDriveUp)
+      } else if (controlling === "Drive") {
+        // The drive gimbals currently take tilt, then pan and discard pan since they only tilt
       }
     }
     this.setState({

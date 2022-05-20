@@ -4,6 +4,7 @@ import SensorData from "./components/SensorData"
 import SensorGraphs from "./components/SensorGraphs"
 import Heater from "./components/Heater"
 import Cameras from "../../Core/components/Cameras"
+import RockLookUp from "./components/rocklookup"
 import ControlScheme, { controllerInputs } from "../../Core/components/ControlScheme"
 import { rovecomm } from "../../Core/RoveProtocol/Rovecomm"
 import Fluorometer from "./components/Fluorometer"
@@ -16,10 +17,9 @@ const column: CSS.Properties = {
   display: "flex",
   flexDirection: "column",
 }
-
-const waterMotorMultiplier = 500
 const sensorMotorMultiplier = 500
 const scoopMotorMultiplier = 500
+const scoopIncrementMult = 5
 
 function science(): void {
   // Z actuation of the science system is controlled by the left up/down thumbstick
@@ -35,30 +35,54 @@ function science(): void {
     rovecomm.sendCommand("ZoopAxis", [controllerInputs.ZoopAxis * scoopMotorMultiplier])
   }
 
-  //Open scoop if *only* the OpenScoop button is pressed
-  //Close scoop if *only* the CloseScoop button is pressed
-  //If both are pressed, do nothing
-  if ("OpenScoop" in controllerInputs && !("CloseScoop" in controllerInputs)) {
-    rovecomm.sendCommand("ScoopGrabber", 180)
-  } else if (!("OpenScoop" in controllerInputs) && "CloseScoop" in controllerInputs) {
-    rovecomm.sendCommand("ScoopGrabber", 0)
+  //If both open and close scoop are pressed, close it
+  if ("OpenScoop" in controllerInputs && "CloseScoop" in controllerInputs) {
+    if (controllerInputs.CloseScoop === 1) {
+      rovecomm.sendCommand("ScoopGrabber", 1)
+    } else if (controllerInputs.OpenScoop === 1) {
+      rovecomm.sendCommand("ScoopGrabber", 0)
+    }
   }
 
-  // All of the water send values are in one array, and we only want to send no power or half power
-  // (full power is a bit too strong, and negative implies we are trying to suck water/air out of the
-  // test tubes into the chemical containers)
+  if ("IncrementOpen" in controllerInputs && "IncrementClose" in controllerInputs) {
+    //Take the positive contribution from the open trigger and the negative contribution of the close trigger
+    let IncrementAmt = controllerInputs.IncrementOpen - controllerInputs.IncrementClose
+    if (IncrementAmt != 0) {
+      rovecomm.sendCommand("IncrementScoop", IncrementAmt * scoopIncrementMult)
+    }
+  }
+
+  // Water controls are sent in one bitmasked value
   if ("Water1" in controllerInputs && "Water2" in controllerInputs && "Water3" in controllerInputs) {
-    const water = [0, 0, 0]
-    if (controllerInputs.Water1 === 1) {
-      water[0] = waterMotorMultiplier
+    if ("WaterGroup1" in controllerInputs && "WaterGroup2" in controllerInputs && "WaterGroup3" in controllerInputs) {
+      let water = ""
+      if (controllerInputs.WaterGroup1 === 1) {
+        water += controllerInputs.Water3
+        water += controllerInputs.Water2
+        water += controllerInputs.Water1
+      } else if (controllerInputs.WaterGroup2 === 1) {
+        water += controllerInputs.Water3
+        water += controllerInputs.Water2
+        water += controllerInputs.Water1
+        water += "000"
+      } else if (controllerInputs.WaterGroup3 === 1) {
+        water += controllerInputs.Water3
+        water += controllerInputs.Water2
+        water += controllerInputs.Water1
+        water += "000000"
+      } else {
+        for (let i = 0; i < 3; i++) {
+          water += controllerInputs.Water3
+        }
+        for (let i = 0; i < 3; i++) {
+          water += controllerInputs.Water2
+        }
+        for (let i = 0; i < 3; i++) {
+          water += controllerInputs.Water1
+        }
+      }
+      rovecomm.sendCommand("Water", parseInt(water, 2))
     }
-    if (controllerInputs.Water2 === 1) {
-      water[1] = waterMotorMultiplier
-    }
-    if (controllerInputs.Water3 === 1) {
-      water[2] = waterMotorMultiplier
-    }
-    rovecomm.sendCommand("Water", water)
   }
 }
 
@@ -81,12 +105,12 @@ class Science extends Component<IProps, IState> {
         <div style={{ ...row, marginBottom: "7px" }}>
           <SensorData style={{ width: "34%", marginRight: "5px" }} />
           <Heater style={{ width: "33%" }} />
-          <Fluorometer style={{ width: "33%", marginLeft: "5px" }}/>
+          <Fluorometer style={{ width: "33%", marginLeft: "5px" }} />
         </div>
         <ControlScheme configs={["Science"]} />
         <div style={row}>
           <Cameras defaultCamera={7} style={{ width: "50%", marginRight: "2.5px" }} />
-          <Cameras defaultCamera={8} style={{ width: "50%", marginLeft: "2.5px" }} />
+          <RockLookUp style={{ marginLeft: "2.5px" }} />
         </div>
       </div>
     )
