@@ -53,8 +53,21 @@ function arm(): void {
     moveArm = true
   }
 
+  if (Math.abs(ArmBaseBend) > Math.abs(ArmBaseTwist)) {
+    ArmBaseTwist = 0
+  } else {
+    ArmBaseBend = 0
+  }
+
+  if (Math.abs(ArmElbowBend) > Math.abs(ArmElbowTwist)) {
+    ArmElbowTwist = 0
+  } else {
+    ArmElbowBend = 0
+  }
+
   if (moveArm) {
     const armValues = [ArmBaseTwist, ArmBaseBend, ArmElbowBend, ArmElbowTwist, ArmWristTwist, ArmWristBend]
+    console.log(armValues)
     rovecomm.sendCommand("ArmVelocityControl", armValues)
   }
 
