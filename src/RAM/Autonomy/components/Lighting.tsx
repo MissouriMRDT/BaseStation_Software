@@ -49,6 +49,7 @@ interface IProps {
 }
 interface IState {
   color: RGBColor
+  brightInput: string
 }
 
 class Lighting extends Component<IProps, IState> {
@@ -56,7 +57,15 @@ class Lighting extends Component<IProps, IState> {
     super(props)
     this.state = {
       color: { r: 255, g: 255, b: 255, a: 0 },
+      brightInput: "",
     }
+    this.teleop = this.teleop.bind(this)
+    this.autonomy = this.teleop.bind(this)
+    this.reachedGoal = this.reachedGoal.bind(this)
+  }
+
+  handleEdit(event: any): void {
+    this.setState({ brightInput: event.target.value })
   }
 
   colorChanged(newColor: any): void {
@@ -88,14 +97,31 @@ class Lighting extends Component<IProps, IState> {
           <div style={column}>
             <ChromePicker color={this.state.color} onChangeComplete={(color: any) => this.colorChanged(color)} />
             <div style={{ ...row, justifyContent: "center" }}>
-              <button style={button} onClick={() => this.teleop()}>
+              <button style={button} onClick={() => this.teleop}>
                 Teleop
               </button>
-              <button style={button} onClick={() => this.autonomy()}>
+              <button style={button} onClick={() => this.autonomy}>
                 Autonomy
               </button>
-              <button style={button} onClick={() => this.reachedGoal()}>
+              <button style={button} onClick={() => this.reachedGoal}>
                 Goal
+              </button>
+            </div>
+            <div style={{ ...row, justifyContent: "center", marginBottom: "5px" }}>
+              <input
+                style={{ width: "50px" }}
+                id="bright"
+                value={this.state.brightInput}
+                onChange={e => this.handleEdit(e)}
+              ></input>
+              <button
+                type="button"
+                onClick={() => {
+                  if (Number(this.state.brightInput) >= 0 && Number(this.state.brightInput) <= 124)
+                    rovecomm.sendCommand("Brightness", this.state.brightInput)
+                }}
+              >
+                Set Brightness
               </button>
             </div>
           </div>

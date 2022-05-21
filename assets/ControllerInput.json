@@ -28,10 +28,10 @@
       "RightMainPan": { "buttonType": "joystick", "button": "right stick x" },
       "LeftMainTilt": { "buttonType": "joystick", "button": "left stick y" },
       "RightMainTilt": { "buttonType": "joystick", "button": "right stick y" },
-      "LeftDriveUp" : { "buttonType": "button", "button": "LB" },
-      "LeftDriveDown" : { "buttonType": "button", "button": "LT" },
-      "RightDriveUp" : { "buttonType": "button", "button": "RB" },
-      "RightDriveDown" : { "buttonType": "button", "button": "RT" },
+      "LeftDriveUp": { "buttonType": "button", "button": "LB" },
+      "LeftDriveDown": { "buttonType": "button", "button": "LT" },
+      "RightDriveUp": { "buttonType": "button", "button": "RB" },
+      "RightDriveDown": { "buttonType": "button", "button": "RT" },
       "MainGimbalSwitch": { "buttonType": "button", "button": "dpad up" },
       "DriveGimbalSwitch": { "buttonType": "button", "button": "dpad down" },
       "ButtonStartDebounced": { "buttonType": "button", "button": "start" }
@@ -45,9 +45,9 @@
       "Water1": { "buttonType": "button", "button": "X" },
       "Water2": { "buttonType": "button", "button": "Y" },
       "Water3": { "buttonType": "button", "button": "B" },
-      "WaterGroup1": { "buttonType": "button", "button": "dpad left"},
-      "WaterGroup2": { "buttonType": "button", "button": "dpad up"},
-      "WaterGroup3": { "buttonType": "button", "button": "dpad right"},
+      "WaterGroup1": { "buttonType": "button", "button": "dpad left" },
+      "WaterGroup2": { "buttonType": "button", "button": "dpad up" },
+      "WaterGroup3": { "buttonType": "button", "button": "dpad right" },
       "XoopAxis": { "buttonType": "joystick", "button": "right stick x" },
       "ZoopAxis": { "buttonType": "joystick", "button": "right stick y" },
       "OpenScoop": { "buttonType": "button", "button": "LB" },
@@ -73,6 +73,23 @@
       "LaserToggle": { "buttonType": "button", "button": "start" },
       "SolenoidOn": { "buttonType": "button", "button": "A" },
       "SolenoidOff": { "buttonType": "button", "button": "Y" }
+    }
+  },
+  "ArmControlsCLOSED": {
+    "config": "Arm",
+    "controller": "Xbox",
+    "bindings": {
+      "Up/Down": { "buttonType": "joystick", "button": "left stick y" },
+      "Left/Right": { "buttonType": "joystick", "button": "left stick x" },
+      "Forward/Backward": { "buttonType": "joystick", "button": "right stick y" },
+      "TiltLeft/Right": { "buttonType": "joystick", "button": "right stick x" },
+      "PitchUp": { "buttonType": "button", "button": "A" },
+      "PitchDown": { "buttonType": "button", "button": "Y" },
+      "LaserToggle": { "buttonType": "button", "button": "start" },
+      "GripperOpen": { "buttonType": "button", "button": "B" },
+      "GripperClose": { "buttonType": "button", "button": "X" },
+      "SolenoidOn": { "buttonType": "button", "button": "dpad up" },
+      "SolenoidOff": { "buttonType": "button", "button": "dpad down" }
     }
   }
 }
