@@ -29,15 +29,13 @@ function arm(): void {
   let ArmBaseBend = 0
   let moveArm = false
 
-  if ("WristBendDirection" in controllerInputs && "WristBendMagnitude" in controllerInputs) {
-    const direction = controllerInputs.WristBendDirection === 1 ? -1 : 1
-    ArmWristBend = direction * controllerInputs.WristBendMagnitude * controlMultipliers.Wrist
+  if ("WristBendLeft" in controllerInputs && "WristBendRight" in controllerInputs) {
+    ArmWristBend = (controllerInputs.WristBendLeft - controllerInputs.WristBendRight) * controlMultipliers.Wrist
     moveArm = true
   }
 
-  if ("WristTwistDirection" in controllerInputs && "WristTwistMagnitude" in controllerInputs) {
-    const direction = controllerInputs.WristTwistDirection === 1 ? -1 : 1
-    ArmWristTwist = direction * controllerInputs.WristTwistMagnitude * controlMultipliers.Wrist
+  if ("WristTwistLeft" in controllerInputs && "WristTwistRight" in controllerInputs) {
+    ArmWristTwist = (controllerInputs.WristTwistLeft - controllerInputs.WristTwistRight) * controlMultipliers.Wrist
     moveArm = true
   }
 
@@ -49,7 +47,7 @@ function arm(): void {
 
   if ("BaseBend" in controllerInputs && "BaseTwist" in controllerInputs) {
     ArmBaseTwist = controllerInputs.BaseTwist * controlMultipliers.Base
-    ArmBaseBend = -1 * controllerInputs.BaseBend * controlMultipliers.Base
+    ArmBaseBend = controllerInputs.BaseBend * controlMultipliers.Base
     moveArm = true
   }
 
