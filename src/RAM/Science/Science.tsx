@@ -48,7 +48,7 @@ function science(): void {
     //Take the positive contribution from the open trigger and the negative contribution of the close trigger
     let IncrementAmt = controllerInputs.IncrementOpen - controllerInputs.IncrementClose
     if (IncrementAmt != 0) {
-      rovecomm.sendCommand("IncrementScoop", IncrementAmt * scoopIncrementMult)
+      rovecomm.sendCommand("IncrementalScoop", IncrementAmt * scoopIncrementMult)
     }
   }
 
