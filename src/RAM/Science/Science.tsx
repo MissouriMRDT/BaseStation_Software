@@ -102,16 +102,16 @@ class Science extends Component<IProps, IState> {
     return (
       <div style={column}>
         <SensorGraphs />
-        <div style={{ ...row, marginBottom: "7px" }}>
-          <SensorData style={{ width: "34%", marginRight: "5px" }} />
-          <Heater style={{ width: "33%" }} />
-          <Fluorometer style={{ width: "33%", marginLeft: "5px" }} />
-        </div>
-        <ControlScheme configs={["Science"]} />
-        <div style={row}>
-          <Cameras defaultCamera={7} style={{ width: "50%", marginRight: "2.5px" }} />
+        <div style={{ ...row }}>
+          <div style={{ ...column, marginRight: "2.5px", width: "50%" }}>
+            <SensorData />
+            <Heater />
+            <ControlScheme configs={["Science"]} />
+          </div>
           <RockLookUp style={{ marginLeft: "2.5px" }} />
+          {/*<Fluorometer style={{ width: "33%", marginLeft: "5px" }} />*/}
         </div>
+        <Cameras defaultCamera={7} />
       </div>
     )
   }

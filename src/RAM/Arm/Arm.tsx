@@ -118,6 +118,7 @@ class Arm extends Component<IProps, IState> {
         </div>
         <ControlMultipliers />
         <ControlScheme configs={["Arm"]} />
+        <Cameras defaultCamera={7} />
       </div>
     )
   }

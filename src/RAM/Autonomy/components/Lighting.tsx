@@ -59,9 +59,6 @@ class Lighting extends Component<IProps, IState> {
       color: { r: 255, g: 255, b: 255, a: 0 },
       brightInput: "",
     }
-    this.teleop = this.teleop.bind(this)
-    this.autonomy = this.teleop.bind(this)
-    this.reachedGoal = this.reachedGoal.bind(this)
   }
 
   handleEdit(event: any): void {
@@ -97,13 +94,13 @@ class Lighting extends Component<IProps, IState> {
           <div style={column}>
             <ChromePicker color={this.state.color} onChangeComplete={(color: any) => this.colorChanged(color)} />
             <div style={{ ...row, justifyContent: "center" }}>
-              <button style={button} onClick={() => this.teleop}>
+              <button style={button} onClick={() => this.teleop()}>
                 Teleop
               </button>
-              <button style={button} onClick={() => this.autonomy}>
+              <button style={button} onClick={() => this.autonomy()}>
                 Autonomy
               </button>
-              <button style={button} onClick={() => this.reachedGoal}>
+              <button style={button} onClick={() => this.reachedGoal()}>
                 Goal
               </button>
             </div>

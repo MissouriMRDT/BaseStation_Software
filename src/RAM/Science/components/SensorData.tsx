@@ -13,8 +13,6 @@ const container: CSS.Properties = {
   borderBottomWidth: "2px",
   borderStyle: "solid",
   justifyContent: "center",
-  height: "calc(100% - 40px)",
-  padding: "5px",
 }
 const label: CSS.Properties = {
   marginTop: "-10px",
@@ -30,13 +28,14 @@ const row: CSS.Properties = {
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
-  margin: "5px 25px",
+  marginLeft: "10px",
+  marginRight: "10px",
 }
 const buttonRow: CSS.Properties = {
   display: "flex",
   alignItems: "center",
   justifyContent: "space-around",
-  margin: "10px 50px",
+  margin: "5px 50px",
 }
 const buttons: CSS.Properties = {
   lineHeight: "20px",
@@ -165,7 +164,7 @@ class SensorData extends Component<IProps, IState> {
       <div id="SensorData" style={this.props.style}>
         <div style={label}>Sensor Data</div>
         <div style={container}>
-            <div style={row}>
+            <div style={{ ...row, marginTop: "3px" }}>
               <div>CH3 Concentration:</div>
               <div>
                 {this.state.ch3.toLocaleString(undefined, {

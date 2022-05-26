@@ -11,7 +11,6 @@ const container: CSS.Properties = {
   borderColor: "#990000",
   borderBottomWidth: "2px",
   borderStyle: "solid",
-  height: "calc(100% - 40px)",
   padding: "5px",
 }
 const label: CSS.Properties = {
