@@ -1,64 +1,61 @@
 module.exports = {
-  extends: [
-    "erb",
-    "plugin:react/recommended",
-    "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended",
-    "prettier/@typescript-eslint",
-    "plugin:prettier/recommended",
-  ],
+  extends: ['erb', 'prettier'],
   rules: {
+    eqeqeq: 'warn',
     // A temporary hack related to IDE not resolving correct package.json
-    "import/no-extraneous-dependencies": "off",
-    "react/jsx-one-expression-per-line": "off",
-    "react/destructuring-assignment": "off",
-    "@typescript-eslint/no-empty-interface": "off",
-    "react/no-access-state-in-setstate": "off",
-    "no-restricted-syntax": "off",
-    "no-plusplus": "off",
-    "react/jsx-curly-newline": "off",
-    "jsx-a11y/no-autofocus": "off",
-    "func-names": "off",
-    "no-else-return": "off",
-    "react/static-property-placement": "off",
-    semi: [2, "never"],
-    "react/jsx-filename-extension": [1, { extensions: [".js", ".jsx", ".ts", ".tsx"] }],
-    "import/extensions": [
-      "error",
-      "ignorePackages",
+    'import/no-extraneous-dependencies': 'off',
+    'no-console': 'off',
+    'no-else-return': 'warn',
+    'no-plusplus': ['warn', { allowForLoopAfterthoughts: true }],
+    'prefer-destructuring': 'off',
+    'react/button-has-type': 'off',
+    'react/destructuring-assignment': 'off',
+    'react/jsx-curly-newline': 'off',
+    'react/no-array-index-key': 'warn',
+    'prettier/prettier': 'error',
+    'react/static-property-placement': ['warn', 'static getter'],
+    '@typescript-eslint/no-empty-interface': 'off',
+    '@typescript-eslint/naming-convention': [
+      'error',
       {
-        js: "never",
-        jsx: "never",
-        ts: "never",
-        tsx: "never",
+        selector: 'default',
+        format: ['camelCase'],
+        leadingUnderscore: 'allow',
+        trailingUnderscore: 'allow',
+      },
+      {
+        selector: 'variable',
+        format: ['camelCase', 'UPPER_CASE'],
+        leadingUnderscore: 'allow',
+        trailingUnderscore: 'allow',
+      },
+      {
+        selector: 'typeLike',
+        format: ['PascalCase'],
       },
     ],
-    "react/prop-types": 0,
-    "import/prefer-default-export": 0,
-    "react/no-danger": 0,
+
+    'jsx-a11y/click-events-have-key-events': 'off',
+    'jsx-a11y/no-static-element-interactions': 'off',
   },
-  plugins: ["react", "@typescript-eslint", "prettier"],
-  parser: "@typescript-eslint/parser",
+  plugins: ['react', '@typescript-eslint', 'prettier'],
   parserOptions: {
     ecmaVersion: 2020,
-    sourceType: "module",
-    project: "./tsconfig.json",
+    sourceType: 'module',
+    project: './tsconfig.json',
     tsconfigRootDir: __dirname,
     createDefaultProgram: true,
-    ecmaFeatures: {
-      jsx: true, // Allows for the parsing of JSX
-    },
   },
   settings: {
-    "import/resolver": {
+    'import/resolver': {
       // See https://github.com/benmosher/eslint-plugin-import/issues/1396#issuecomment-575727774 for line below
       node: {},
       webpack: {
-        config: require.resolve("./.erb/configs/webpack.config.eslint.js"),
+        config: require.resolve('./.erb/configs/webpack.config.eslint.js'),
       },
     },
-    "import/parsers": {
-      "@typescript-eslint/parser": [".ts", ".tsx"],
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts', '.tsx'],
     },
   },
-}
+};

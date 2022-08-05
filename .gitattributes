@@ -5,6 +5,10 @@
 *.ico binary
 *.obj binary
 *.stl binary
+*.exe   binary
+*.jpg   binary
+*.jpeg  binary
+*.icns  binary
 
 # Custom for Visual Studio
 *.cs     diff=csharp

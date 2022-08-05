@@ -13,6 +13,7 @@
     "start": "yarn maps && node -r @babel/register ./.erb/scripts/CheckPortInUse.js && cross-env yarn start:renderer",
     "start:main": "cross-env NODE_ENV=development electron -r ./.erb/scripts/BabelRegister ./src/main.dev.ts",
     "start:renderer": "cross-env NODE_ENV=development webpack serve --config ./.erb/configs/webpack.config.renderer.dev.babel.js",
+    "test": "jest",
     "maps": "node getmaps.mjs"
   },
   "lint-staged": {
@@ -20,13 +21,13 @@
       "cross-env NODE_ENV=development eslint --cache"
     ],
     "{*.json,.{babelrc,eslintrc,prettierrc}}": [
-      "prettier --ignore-path .eslintignore  --write"
+      "prettier --ignore-path .eslintignore --parser json --write"
     ],
     "*.{css,scss}": [
-      "prettier --ignore-path .eslintignore --write"
+      "prettier --ignore-path .eslintignore --single-quote --write"
     ],
     "*.{html,md,yml}": [
-      "prettier --ignore-path .eslintignore --write"
+      "prettier --ignore-path .eslintignore --single-quote --write"
     ]
   },
   "build": {
@@ -116,6 +117,27 @@
     "educational"
   ],
   "homepage": "https://github.com/MissouriMRDT/BaseStation_Software",
+  "jest": {
+    "testURL": "http://localhost/",
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/.erb/mocks/fileMock.js",
+      "\\.(css|less|sass|scss)$": "identity-obj-proxy"
+    },
+    "moduleFileExtensions": [
+      "js",
+      "jsx",
+      "ts",
+      "tsx",
+      "json"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "src/node_modules"
+    ],
+    "setupFiles": [
+      "./.erb/scripts/CheckBuildsExist.js"
+    ]
+  },
   "devDependencies": {
     "@babel/core": "^7.16.0",
     "@babel/plugin-proposal-class-properties": "^7.16.0",
@@ -142,11 +164,13 @@
     "@babel/register": "^7.16.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
     "@teamsupercell/typings-for-css-modules-loader": "^2.5.1",
+    "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.7",
     "@types/double-ended-queue": "^2.1.1",
     "@types/enzyme": "^3.10.10",
     "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/history": "4.7.6",
+    "@types/jest": "^26.0.15",
     "@types/leaflet": "^1.7.5",
     "@types/node": "14.14.10",
     "@types/react": "^16.14.20",
@@ -159,6 +183,7 @@
     "@typescript-eslint/parser": "^4.33.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",
+    "babel-jest": "^26.1.0",
     "babel-loader": "^8.2.3",
     "babel-plugin-dev-expression": "^0.2.3",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
@@ -182,18 +207,20 @@
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-airbnb-typescript": "^12.3.1",
     "eslint-config-erb": "^4.0.0-alpha.0",
-    "eslint-config-prettier": "^6.11.0",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-import-resolver-webpack": "^0.13.2",
     "eslint-plugin-compat": "^3.13.0",
     "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-jest": "^24.1.3",
     "eslint-plugin-jsx-a11y": "6.4.1",
-    "eslint-plugin-prettier": "^3.4.1",
+    "eslint-plugin-prettier": "^4.2.0",
     "eslint-plugin-promise": "^4.3.1",
     "eslint-plugin-react": "^7.27.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "file-loader": "^6.0.0",
     "husky": "^4.3.8",
     "identity-obj-proxy": "^3.0.0",
+    "jest": "^26.1.0",
     "lint-staged": "^10.5.4",
     "mini-css-extract-plugin": "^1.6.2",
     "opencollective-postinstall": "^2.0.3",
@@ -256,7 +283,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npx lint-staged"
+      "pre-commit": "lint-staged"
     }
   }
 }

@@ -1,9 +1,14 @@
 {
-	"folders": [
-		{
-			"name": "BaseStation_Software",
-			"path": "."
-		}
-	],
-	"settings": {}
+  "folders": [
+    {
+      "name": "BaseStation_Software",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "eslint.packageManager": "yarn",
+    "eslint.alwaysShowStatus": true,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }
