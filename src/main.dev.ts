@@ -31,10 +31,7 @@ if (process.env.NODE_ENV === 'production') {
   sourceMapSupport.install();
 }
 
-if (
-  process.env.NODE_ENV === 'development' ||
-  process.env.DEBUG_PROD === 'true'
-) {
+if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
   require('electron-debug')();
 }
 
@@ -52,10 +49,7 @@ const installExtensions = async () => {
 };
 
 const createWindow = async () => {
-  if (
-    process.env.NODE_ENV === 'development' ||
-    process.env.DEBUG_PROD === 'true'
-  ) {
+  if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
     await installExtensions();
   }
 
@@ -103,25 +97,22 @@ const createWindow = async () => {
   menuBuilder.buildMenu();
 
   // Open urls in the user's browser
-  mainWindow.webContents.on(
-    'new-window',
-    (event, _url, frameName, _disposition, options) => {
-      // This is the name we chose for our window. You can have multiple names for
-      // multiple windows and each have their options
-      if (frameName === 'NewWindowComponent ') {
-        event.preventDefault();
-        Object.assign(options, {
-          // This will prevent interactions with the mainWindow
-          parent: mainWindow,
-          width: 300,
-          height: 300,
-          icon: getAssetPath('icon.png'),
-          // You can also set `left` and `top` positions
-        });
-        event.newGuest = new BrowserWindow(options);
-      }
+  mainWindow.webContents.on('new-window', (event, _url, frameName, _disposition, options) => {
+    // This is the name we chose for our window. You can have multiple names for
+    // multiple windows and each have their options
+    if (frameName === 'NewWindowComponent ') {
+      event.preventDefault();
+      Object.assign(options, {
+        // This will prevent interactions with the mainWindow
+        parent: mainWindow,
+        width: 300,
+        height: 300,
+        icon: getAssetPath('icon.png'),
+        // You can also set `left` and `top` positions
+      });
+      event.newGuest = new BrowserWindow(options);
     }
-  );
+  });
 
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line

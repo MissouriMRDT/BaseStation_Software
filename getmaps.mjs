@@ -1,7 +1,8 @@
-import fs from "fs"
-import https from "https"
-var url = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/"
-var directory = "./assets/maps"
+import fs from 'fs';
+import https from 'https';
+
+const url = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/';
+const directory = './assets/maps';
 /**
  * To cache a new map location, you will need to manually discover the range of tiles you need to cache.
  * The way I did this was to open the developer console and go to the desired area which wasn't saved and
@@ -11,7 +12,7 @@ var directory = "./assets/maps"
  * process, it shouldn't have to be done often.
  */
 // prettier-ignore
-var MAPS = [
+const MAPS = [
     // Common
     [[0, 0, 0], [0, 0, 0]],
     [[1, 0, 0], [1, 1, 0]],
@@ -51,39 +52,39 @@ var MAPS = [
     [[19, 201475, 100785], [19, 201485, 100795]]
 ];
 
-fs.mkdir(directory, { recursive: true }, err => {
+fs.mkdir(directory, { recursive: true }, (err) => {
   if (err) {
-    return console.error(err)
+    return console.error(err);
   }
-})
-MAPS.forEach(mapSet => {
-  let lower = mapSet[0]
-  let upper = mapSet[1]
-  let z = lower[0]
-  let lowerY = lower[1]
-  let lowerX = lower[2]
-  let upperY = upper[1]
-  let upperX = upper[2]
-  fs.mkdir([directory, "/", z.toString()].join(""), { recursive: true }, () => {})
+});
+MAPS.forEach((mapSet) => {
+  const lower = mapSet[0];
+  const upper = mapSet[1];
+  const z = lower[0];
+  const lowerY = lower[1];
+  const lowerX = lower[2];
+  const upperY = upper[1];
+  const upperX = upper[2];
+  fs.mkdir([directory, '/', z.toString()].join(''), { recursive: true }, () => {});
   for (let y = lowerY; y <= upperY; y++) {
-    fs.mkdir([directory, "/", z.toString(), "/", y.toString()].join(""), { recursive: true }, () => {})
+    fs.mkdir([directory, '/', z.toString(), '/', y.toString()].join(''), { recursive: true }, () => {});
     for (let x = lowerX; x <= upperX; x++) {
-      let filename = [z.toString(), "/", y.toString(), "/", x.toString()].join("")
-      if (!fs.existsSync([directory, "/", filename].join(""))) {
+      const filename = [z.toString(), '/', y.toString(), '/', x.toString()].join('');
+      if (!fs.existsSync([directory, '/', filename].join(''))) {
         https
-          .request([url, filename].join(""), response => {
-            var data = []
+          .request([url, filename].join(''), (response) => {
+            const data = [];
 
-            response.on("data", chunk => {
-              data.push(chunk)
-            })
+            response.on('data', (chunk) => {
+              data.push(chunk);
+            });
 
-            response.on("end", () => {
-              fs.writeFile([directory, "/", filename].join(""), Buffer.concat(data), () => {})
-            })
+            response.on('end', () => {
+              fs.writeFile([directory, '/', filename].join(''), Buffer.concat(data), () => {});
+            });
           })
-          .end()
+          .end();
       }
     }
   }
-})
+});
