@@ -1837,6 +1837,13 @@
   dependencies:
     "@types/node" "*"
 
+"@types/halogenium@^2.3.1":
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/@types/halogenium/-/halogenium-2.3.1.tgz#fb8879e516cb19b2eb38edb4291c0d38c88caabd"
+  integrity sha512-BqT1V++SYWUuRGw1j/E72zBOfUemlC9jcBrotHsimn+Uu4UdDe2jCNcWLB0YAeLYP6UEQV1nRqwnnF8mRRPYMw==
+  dependencies:
+    "@types/react" "*"
+
 "@types/history@4.7.6":
   version "4.7.6"
   resolved "https://registry.yarnpkg.com/@types/history/-/history-4.7.6.tgz#ed8fc802c45b8e8f54419c2d054e55c9ea344356"
@@ -1982,6 +1989,13 @@
   resolved "https://registry.yarnpkg.com/@types/q/-/q-1.5.5.tgz#75a2a8e7d8ab4b230414505d92335d1dcb53a6df"
   integrity sha512-L28j2FcJfSZOnL1WBjDYp2vUHCeIFlyYI/53EwD/rKUBQ7MtUUfbQWiyKJGpcnv4/WgrhWsFKrcPstcAt/J0tQ==
 
+"@types/react-beautiful-dnd@^13.1.2":
+  version "13.1.2"
+  resolved "https://registry.yarnpkg.com/@types/react-beautiful-dnd/-/react-beautiful-dnd-13.1.2.tgz#510405abb09f493afdfd898bf83995dc6385c130"
+  integrity sha512-+OvPkB8CdE/bGdXKyIhc/Lm2U7UAYCCJgsqmopFmh9gbAudmslkI8eOrPDjg4JhwSE6wytz4a3/wRjKtovHVJg==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-color@^3.0.6":
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/@types/react-color/-/react-color-3.0.6.tgz#602fed023802b2424e7cd6ff3594ccd3d5055f9a"
@@ -2030,6 +2044,13 @@
   integrity sha512-C4cN7C2uSSGOYelp2XfdtJb5TsCP+QiZ+0Bm4U3ZfUswN8oN9O/l86XO/OvBSFCmWY7w75fzsQvZ50eGkFN34A==
   dependencies:
     "@types/react" "^16"
+
+"@types/react-vis@^1.11.11":
+  version "1.11.11"
+  resolved "https://registry.yarnpkg.com/@types/react-vis/-/react-vis-1.11.11.tgz#2cc53acfb3a1f617572ac662982dc9fa3f985ba9"
+  integrity sha512-hmm0sPseBNp4hFqQuvR7Tte5k3QmSf2rhZmn5An31rZeuv69pyq16ZcbSS91XMgRdAfC+GA33OvCZq624d9ncg==
+  dependencies:
+    "@types/react" "*"
 
 "@types/react@*":
   version "17.0.38"
