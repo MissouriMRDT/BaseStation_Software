@@ -1,90 +1,94 @@
-import React, { Component } from "react"
-import CSS from "csstype"
-import { rovecomm } from "../../../Core/RoveProtocol/Rovecomm"
+import React, { Component } from 'react';
+import CSS from 'csstype';
+import { rovecomm } from '../../../Core/RoveProtocol/Rovecomm';
 
 const h1Style: CSS.Properties = {
-  fontFamily: "arial",
-  fontSize: "12px",
-  width: "10%",
-}
+  fontFamily: 'arial',
+  fontSize: '12px',
+  width: '10%',
+};
 const container: CSS.Properties = {
-  display: "flex",
-  flexDirection: "column",
-  fontFamily: "arial",
-  borderTopWidth: "28px",
-  borderColor: "#990000",
-  borderBottomWidth: "2px",
-  borderStyle: "solid",
-}
+  display: 'flex',
+  flexDirection: 'column',
+  fontFamily: 'arial',
+  borderTopWidth: '28px',
+  borderColor: '#990000',
+  borderBottomWidth: '2px',
+  borderStyle: 'solid',
+};
 const axes: CSS.Properties = {
-  display: "grid",
-  gridRowStart: "2 & {}",
-  grid: "repeat(3, 28px) / auto-flow dense",
-  margin: "10px 0px",
-}
+  display: 'grid',
+  gridRowStart: '2 & {}',
+  grid: 'repeat(3, 28px) / auto-flow dense',
+  margin: '10px 0px',
+};
 const label: CSS.Properties = {
-  marginTop: "-10px",
-  position: "relative",
-  top: "24px",
-  left: "3px",
-  fontFamily: "arial",
-  fontSize: "16px",
+  marginTop: '-10px',
+  position: 'relative',
+  top: '24px',
+  left: '3px',
+  fontFamily: 'arial',
+  fontSize: '16px',
   zIndex: 1,
-  color: "white",
-}
+  color: 'white',
+};
 const row: CSS.Properties = {
-  display: "flex",
-  flexDirection: "row",
-  justifyContent: "space-around",
-  margin: "0px 10px",
-}
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'space-around',
+  margin: '0px 10px',
+};
 const input: CSS.Properties = {
-  width: "75%",
-}
+  width: '75%',
+};
 const buttons: CSS.Properties = {
-  width: "40%",
-  margin: "5px",
-  fontSize: "14px",
-  lineHeight: "24px",
-  outline: "none",
-}
+  width: '40%',
+  margin: '5px',
+  fontSize: '14px',
+  lineHeight: '24px',
+  outline: 'none',
+};
 
 function getPosition(): void {
   // Unlike most telemetry, arm joint positions are only sent when requested
-  rovecomm.sendCommand("RequestAxesPositions", [1])
+  rovecomm.sendCommand('RequestAxesPositions', [1]);
 }
 
 interface IProps {
-  style?: CSS.Properties
+  style?: CSS.Properties;
 }
 
 interface IState {
   IKValues: {
-    X: string,
-    Y: string,
-    Z: string,
-    Pitch: string,
-    Yaw: string,
-    Roll: string
-  }
+    X: string;
+    Y: string;
+    Z: string;
+    Pitch: string;
+    Yaw: string;
+    Roll: string;
+  };
 }
 
 class IK extends Component<IProps, IState> {
+  static defaultProps = {
+    style: {},
+  };
+
   constructor(props: IProps) {
-    super(props)
+    super(props);
     this.state = {
       IKValues: {
-        X: "",
-        Y: "",
-        Z: "",
-        Pitch: "",
-        Yaw: "",
-        Roll: "",
+        X: '',
+        Y: '',
+        Z: '',
+        Pitch: '',
+        Yaw: '',
+        Roll: '',
       },
-    }
-    this.setPosition = this.setPosition.bind(this)
+    };
+    this.setPosition = this.setPosition.bind(this);
 
-    rovecomm.on("IKCoordinates", (data: any) => this.updatePosition(data))
+    rovecomm.on('IKCoordinates', (data: any) => this.updatePosition(data));
   }
 
   setPosition(): void {
@@ -93,18 +97,18 @@ class IK extends Component<IProps, IState> {
      * and send the proper rovecomm packet
      */
     rovecomm.sendCommand(
-      "ArmMoveIK",
+      'ArmMoveIK',
       Object.values(this.state.IKValues).map((x: string) => {
-        return x ? parseFloat(x) : 0
+        return x ? parseFloat(x) : 0;
       })
-    )
+    );
   }
 
   updatePosition(data: any): void {
     /* Function to update displayed IKValues when a new position is recieved */
-    const [X, Y, Z, Pitch, Yaw, Roll] = data
-    const IKValues = { X, Y, Z, Pitch, Yaw, Roll }
-    this.setState({ IKValues })
+    const [X, Y, Z, Pitch, Yaw, Roll] = data;
+    const IKValues = { X, Y, Z, Pitch, Yaw, Roll };
+    this.setState({ IKValues });
   }
 
   axisChange(event: { target: { value: string } }, axis: string): void {
@@ -113,21 +117,21 @@ class IK extends Component<IProps, IState> {
      * or returns undefined if there is no match
      */
     // Regex filters for 0 or 1 negative sign, 0+ digits, 0 or 1 decimal, followed by 0+ more digits
-    const cleansedValue = event.target.value.match(/^-?\d*\.?\d*/)
+    const cleansedValue = event.target.value.match(/^-?\d*\.?\d*/);
 
-    let value = ""
+    let value = '';
     if (cleansedValue) {
       // Leading semicolon helps ensure [value] isn't taken as an index
       // but properly used for array destructuring
-      ;[value] = cleansedValue
+      [value] = cleansedValue;
     }
 
-    this.setState({
+    this.setState((prevState) => ({
       IKValues: {
-        ...this.state.IKValues,
+        ...prevState.IKValues,
         [axis]: value,
       },
-    })
+    }));
   }
 
   render(): JSX.Element {
@@ -136,18 +140,18 @@ class IK extends Component<IProps, IState> {
         <div style={label}>IK</div>
         <div style={container}>
           <div style={axes}>
-            {Object.keys(this.state.IKValues).map(axis => {
+            {Object.keys(this.state.IKValues).map((axis) => {
               return (
                 <div key={axis} style={row}>
                   <h1 style={h1Style}>{axis}</h1>
                   <input
                     type="text"
                     style={input}
-                    value={this.state.IKValues[axis] || ""}
-                    onChange={e => this.axisChange(e, axis)}
+                    value={this.state.IKValues[axis] || ''}
+                    onChange={(e) => this.axisChange(e, axis)}
                   />
                 </div>
-              )
+              );
             })}
           </div>
           <div style={row}>
@@ -160,8 +164,8 @@ class IK extends Component<IProps, IState> {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default IK
+export default IK;
