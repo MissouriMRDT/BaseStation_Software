@@ -186,17 +186,17 @@ class Angular extends Component<IProps, IState> {
     }
 
     this.setState(
-      {
+      (prevState) => ({
         selectedPosition,
         addingPosition: false,
         positionName: '', // reset name in modal text box for next use
         storedPositions: {
           // Spread to ensure all currently stored positions are kept
           // but the newest position is added
-          ...this.state.storedPositions,
-          [this.state.positionName]: this.state.jointValues,
+          ...prevState.storedPositions,
+          [prevState.positionName]: prevState.jointValues,
         },
-      },
+      }),
       () => {
         // function callback so that when setState has finished executing
         // we can properly update the json file. File is created if now if

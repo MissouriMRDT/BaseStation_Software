@@ -92,12 +92,12 @@ class ControlMultipliers extends Component<IProps, IState> {
      * an exported variable to be used by the rest of the Arm system.
      */
     this.setState(
-      {
+      (prevState) => ({
         controlMultipliers: {
-          ...this.state.controlMultipliers,
+          ...prevState.controlMultipliers,
           [multiplier]: parseInt(event.target.value, 10),
         },
-      },
+      }),
       () => {
         controlMultipliers = this.state.controlMultipliers;
       }

@@ -84,7 +84,7 @@ interface IProps {
 
 interface IState {
   devices: any;
-  pingInterval: any;
+  pingInterval: NodeJS.Timeout;
 }
 
 // For colorConverter

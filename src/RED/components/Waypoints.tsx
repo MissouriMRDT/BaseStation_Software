@@ -218,7 +218,7 @@ class Waypoints extends Component<IProps, IState> {
     }
 
     this.setState(
-      {
+      (prevState) => ({
         addingWaypoint: false,
         newWaypointName: '',
         newWaypointCoords: {
@@ -229,10 +229,10 @@ class Waypoints extends Component<IProps, IState> {
         storedWaypoints: {
           // Spread to ensure all currently stored waypoint are kept
           // but the newest waypoint is added
-          ...this.state.storedWaypoints,
+          ...prevState.storedWaypoints,
           [ThreeDRover.id]: newWaypoint,
         },
-      },
+      }),
       this.cascadeWaypoint
     );
     ThreeDRover.id += 1;
@@ -300,46 +300,46 @@ class Waypoints extends Component<IProps, IState> {
 
   checkBox(waypoint: string): void {
     this.setState(
-      {
+      (prevState) => ({
         storedWaypoints: {
-          ...this.state.storedWaypoints,
+          ...prevState.storedWaypoints,
           [waypoint]: {
-            ...this.state.storedWaypoints[waypoint],
-            onMap: !this.state.storedWaypoints[waypoint].onMap,
+            ...prevState.storedWaypoints[waypoint],
+            onMap: !prevState.storedWaypoints[waypoint].onMap,
           },
         },
-      },
+      }),
       this.cascadeWaypoint
     );
   }
 
   colorChanged(color: any, waypoint: string): void {
     this.setState(
-      {
+      (prevState) => ({
         storedWaypoints: {
-          ...this.state.storedWaypoints,
+          ...prevState.storedWaypoints,
           [waypoint]: {
-            ...this.state.storedWaypoints[waypoint],
+            ...prevState.storedWaypoints[waypoint],
             color: color.hex,
             colorPicker: false,
           },
         },
-      },
+      }),
       this.cascadeWaypoint
     );
   }
 
   openPicker(waypoint: string): void {
     this.setState(
-      {
+      (prevState) => ({
         storedWaypoints: {
-          ...this.state.storedWaypoints,
+          ...prevState.storedWaypoints,
           [waypoint]: {
-            ...this.state.storedWaypoints[waypoint],
+            ...prevState.storedWaypoints[waypoint],
             colorPicker: true,
           },
         },
-      },
+      }),
       this.cascadeWaypoint
     );
   }

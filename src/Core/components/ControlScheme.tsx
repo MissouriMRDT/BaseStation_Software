@@ -210,18 +210,18 @@ class ControlScheme extends Component<IProps, IState> {
       }
     }
     this.setState(
-      {
+      (prevState) => ({
         functionality: {
-          ...this.state.functionality,
+          ...prevState.functionality,
           [config]: {
-            ...this.state.functionality[config],
+            ...prevState.functionality[config],
             controller: event.target.value,
             scheme: defaultScheme,
-            interval: clearInterval(this.state.functionality[config].interval),
+            interval: clearInterval(prevState.functionality[config].interval),
           },
         },
         image: selectedImage,
-      },
+      }),
       // this is a callback for when the setState finished updating it clears the set interval,
       // so that after setState is finished it is able to create a new interval and assign it
       () => {
@@ -247,16 +247,16 @@ class ControlScheme extends Component<IProps, IState> {
   schemeChange(event: { target: { value: string } }, config: string): void {
     controllerInputs = {};
     this.setState(
-      {
+      (prevState) => ({
         functionality: {
-          ...this.state.functionality,
+          ...prevState.functionality,
           [config]: {
-            ...this.state.functionality[config],
+            ...prevState.functionality[config],
             scheme: event.target.value,
-            interval: clearInterval(this.state.functionality[config].interval),
+            interval: clearInterval(prevState.functionality[config].interval),
           },
         },
-      },
+      }),
       () => {
         if (this.state.functionality[config].toggled === 'On') {
           this.setState((prevState) => ({

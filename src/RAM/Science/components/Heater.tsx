@@ -133,15 +133,23 @@ class Heater extends Component<IProps, IState> {
   }
 
   toggleWhiteLight(): void {
-    this.setState({ WhiteLightPowered: !this.state.WhiteLightPowered }, () => {
-      rovecomm.sendCommand('Lights', [Heater.buildLightCommand(this.state.UVPowered, this.state.WhiteLightPowered)]);
-    });
+    this.setState(
+      (prevState) => ({
+        WhiteLightPowered: !prevState.WhiteLightPowered,
+      }),
+      () => {
+        rovecomm.sendCommand('Lights', [Heater.buildLightCommand(this.state.UVPowered, this.state.WhiteLightPowered)]);
+      }
+    );
   }
 
   toggleUV(): void {
-    this.setState({ UVPowered: !this.state.UVPowered }, () => {
-      rovecomm.sendCommand('Lights', [Heater.buildLightCommand(this.state.UVPowered, this.state.WhiteLightPowered)]);
-    });
+    this.setState(
+      (prevState) => ({ UVPowered: !prevState.UVPowered }),
+      () => {
+        rovecomm.sendCommand('Lights', [Heater.buildLightCommand(this.state.UVPowered, this.state.WhiteLightPowered)]);
+      }
+    );
   }
 
   updateEnabled(data: number[]): void {
