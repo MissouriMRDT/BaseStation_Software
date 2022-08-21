@@ -5,16 +5,16 @@ so that index positions remain consistent between the rover and basestation.
 */
 export function BitmaskUnpack(data: number, listLength: number): string {
   // .toString(2) takes the number and converts it to a binary string
-  const startBit = data.toString(2)
+  const startBit = data.toString(2);
   // "difference" is important because BitmaskUnpack only adds enough zeros to
   // make the lengths of the referenceList and bitmask equal
-  const difference = listLength - startBit.length
-  let returnBitString = ""
+  const difference = listLength - startBit.length;
+  let returnBitString = '';
   for (let i = 0; i < difference; i++) {
-    returnBitString += "0"
+    returnBitString += '0';
   }
   for (let i = 0; i < startBit.length; i++) {
-    returnBitString += startBit[i]
+    returnBitString += startBit[i];
   }
-  return returnBitString
+  return returnBitString;
 }

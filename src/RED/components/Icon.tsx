@@ -1,6 +1,6 @@
-import L from "leaflet"
-import React from "react"
-import ReactDOMServer from "react-dom/server"
+import L from 'leaflet';
+import React from 'react';
+import ReactDOMServer from 'react-dom/server';
 
 export default function icon(color: string): L.DivIcon {
   return L.divIcon({
@@ -30,5 +30,5 @@ export default function icon(color: string): L.DivIcon {
         </g>
       </svg>
     ),
-  })
+  });
 }

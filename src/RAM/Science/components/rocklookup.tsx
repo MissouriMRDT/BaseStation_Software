@@ -1,64 +1,64 @@
-import React, { Component } from "react"
-import CSS from "csstype"
-import path from "path"
-import fs from "fs"
+import React, { Component } from 'react';
+import CSS from 'csstype';
+import path from 'path';
+import fs from 'fs';
 
 const label: CSS.Properties = {
-  color: "white",
-  fontFamily: "arial",
-  fontSize: "16px",
-  position: "relative",
-  marginTop: "-10px",
-  top: "24px",
-  left: "3px",
+  color: 'white',
+  fontFamily: 'arial',
+  fontSize: '16px',
+  position: 'relative',
+  marginTop: '-10px',
+  top: '24px',
+  left: '3px',
   zIndex: 1,
-}
+};
 
 const container: CSS.Properties = {
-  display: "flex",
-  flexDirection: "column",
-  fontFamily: "arial",
-  borderTopWidth: "28px",
-  borderColor: "#990000",
-  borderBottomWidth: "2px",
-  borderStyle: "solid",
-  position: "absolute",
-  width: "calc(50% - 19px)",
-  minHeight: "400px",
-}
+  display: 'flex',
+  flexDirection: 'column',
+  fontFamily: 'arial',
+  borderTopWidth: '28px',
+  borderColor: '#990000',
+  borderBottomWidth: '2px',
+  borderStyle: 'solid',
+  position: 'absolute',
+  width: 'calc(50% - 19px)',
+  minHeight: '400px',
+};
 
 const row: CSS.Properties = {
-  display: "flex",
-  flexDirection: "row",
-}
+  display: 'flex',
+  flexDirection: 'row',
+};
 
 const column: CSS.Properties = {
-  display: "flex",
-  flexDirection: "column",
-}
+  display: 'flex',
+  flexDirection: 'column',
+};
 
 const featureColumn: CSS.Properties = {
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-  margin: "2.5px",
-  width: "33%",
-}
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  margin: '2.5px',
+  width: '33%',
+};
 
 const tagList: CSS.Properties = {
-  display: "flex",
-  flexDirection: "row",
-  flexWrap: "wrap",
-}
+  display: 'flex',
+  flexDirection: 'row',
+  flexWrap: 'wrap',
+};
 
 const tagStyle: CSS.Properties = {
-  display: "flex",
-  flexDirection: "row",
-  border: "1px solid black",
-  margin: "5px",
-  lineHeight: ".1",
-  padding: "0 5px 0 5px",
-}
+  display: 'flex',
+  flexDirection: 'row',
+  border: '1px solid black',
+  margin: '5px',
+  lineHeight: '.1',
+  padding: '0 5px 0 5px',
+};
 
 enum FeatureType {
   COLOR,
@@ -67,204 +67,274 @@ enum FeatureType {
   TEXTURE,
 }
 
-const ROCKPATH = path.join(__dirname, "../assets/rockLookupAssets/RockDatabase.tsv")
+const ROCKPATH = path.join(__dirname, '../assets/rockLookupAssets/RockDatabase.tsv');
 
 /**
  * Read the rock definitions from the tsv file
  */
-function fillFrom_R_Database(): Rock[] {
+function fillFromRDatabase(): Rock[] {
   if (fs.existsSync(ROCKPATH)) {
-    let rockTable: Rock[] = []
+    const rockTable: Rock[] = [];
     let filePull = fs
       .readFileSync(ROCKPATH)
       .toString()
-      .split(/\r\n|\n\r|\n|\r/)
-    filePull = filePull.slice(1, filePull.length) // gets rid of the sheet labels
-    filePull.forEach(textLine => {
-      const lineArr = textLine.split(/\t/)
+      .split(/\r\n|\n\r|\n|\r/);
+    filePull = filePull.slice(1, filePull.length); // gets rid of the sheet labels
+    filePull.forEach((textLine) => {
+      const lineArr = textLine.split(/\t/);
       rockTable.push({
         name: lineArr[0],
-        minerals: lineArr[1].split("; "),
+        minerals: lineArr[1].split('; '),
         description: lineArr[2],
-        textures: lineArr[3].split("; "),
-      })
-    })
-    return rockTable
-  } else {
-    console.error("Failed loading Rock Table. File might not exist. Look in " + ROCKPATH)
-    return []
+        textures: lineArr[3].split('; '),
+      });
+    });
+    return rockTable;
   }
+  console.error(`Failed loading Rock Table. File might not exist. Look in ${ROCKPATH}`);
+  return [];
 }
 
-const MINPATH = path.join(__dirname, "../assets/rockLookupAssets/MineralDatabase.tsv")
+const MINPATH = path.join(__dirname, '../assets/rockLookupAssets/MineralDatabase.tsv');
 
 /**
  * Loads the mineral data from the tsv defined by MINPATH
  * @returns Map of minerals, empty map if database was not found
  */
-function fillFrom_M_Database(): Map<string, Mineral> {
+function fillFromMDatabase(): Map<string, Mineral> {
   if (fs.existsSync(MINPATH)) {
-    let mineralTable: Map<string, Mineral> = new Map()
+    const mineralTable: Map<string, Mineral> = new Map();
     let filePull = fs
       .readFileSync(MINPATH)
       .toString()
-      .split(/\r\n|\n\r|\n|\r/)
-    filePull = filePull.slice(1, filePull.length) // gets rid of the sheet labels
-    filePull.forEach(textLine => {
-      const lineArr = textLine.split(/\t/)
+      .split(/\r\n|\n\r|\n|\r/);
+    filePull = filePull.slice(1, filePull.length); // gets rid of the sheet labels
+    filePull.forEach((textLine) => {
+      const lineArr = textLine.split(/\t/);
       mineralTable.set(lineArr[0], {
         name: lineArr[0],
-        forms: lineArr[1].split("; "),
-        cleaveAndLuster: lineArr[2].split("; "),
-        colors: lineArr[3].split("; "),
-      })
-    })
-    return mineralTable
-  } else {
-    console.error("Failed loading Mineral Table. File might not exist. Look in " + MINPATH)
-    return new Map()
+        forms: lineArr[1].split('; '),
+        cleaveAndLuster: lineArr[2].split('; '),
+        colors: lineArr[3].split('; '),
+      });
+    });
+    return mineralTable;
   }
+  console.error(`Failed loading Mineral Table. File might not exist. Look in ${MINPATH}`);
+  return new Map();
 }
 
-const MINARR: Map<string, Mineral> = fillFrom_M_Database()
-const ROCKARR: Rock[] = fillFrom_R_Database()
+const MINARR: Map<string, Mineral> = fillFromMDatabase();
+const ROCKARR: Rock[] = fillFromRDatabase();
 
 function populateColors(): string[] {
-  let colorList: string[] = []
+  const colorList: string[] = [];
   MINARR.forEach((mineral: Mineral) => {
-    mineral.colors.map(color => {
-      colorList.push(color)
-    })
-  })
-  colorList.sort()
-  return [...new Set(colorList)]
+    mineral.colors.forEach((color) => {
+      colorList.push(color);
+    });
+  });
+  colorList.sort();
+  return [...new Set(colorList)];
 }
 
-const COLORMASTER: string[] = populateColors()
+const COLORMASTER: string[] = populateColors();
 
 function populateForms(): string[] {
-  let formList: string[] = []
+  const formList: string[] = [];
   MINARR.forEach((mineral: Mineral) => {
-    mineral.forms.map(form => {
-      formList.push(form)
-    })
-  })
-  formList.sort()
-  return [...new Set(formList)]
+    mineral.forms.forEach((form) => {
+      formList.push(form);
+    });
+  });
+  formList.sort();
+  return [...new Set(formList)];
 }
 
-const FORMMASTER: string[] = populateForms()
+const FORMMASTER: string[] = populateForms();
 
 function populateCleaves(): string[] {
-  let cleaveList: string[] = []
+  const cleaveList: string[] = [];
   MINARR.forEach((mineral: Mineral) => {
-    mineral.cleaveAndLuster.map(cleave => {
-      cleaveList.push(cleave)
-    })
-  })
-  cleaveList.sort()
-  return [...new Set(cleaveList)]
+    mineral.cleaveAndLuster.forEach((cleave) => {
+      cleaveList.push(cleave);
+    });
+  });
+  cleaveList.sort();
+  return [...new Set(cleaveList)];
 }
 
-const CLEAVEMASTER: string[] = populateCleaves()
+const CLEAVEMASTER: string[] = populateCleaves();
 
 function populateTextures(): string[] {
-  let TextureList: string[] = []
+  const TextureList: string[] = [];
   ROCKARR.forEach((rock: Rock) => {
-    rock.textures.map(texture => {
-      if (texture != "") {
-        TextureList.push(texture)
+    rock.textures.forEach((texture) => {
+      if (texture !== '') {
+        TextureList.push(texture);
       }
-    })
-  })
-  TextureList.sort()
-  return [...new Set(TextureList)]
+    });
+  });
+  TextureList.sort();
+  return [...new Set(TextureList)];
 }
 
-const TEXTUREMASTER: string[] = populateTextures()
+const TEXTUREMASTER: string[] = populateTextures();
 
 interface Mineral {
-  name: string
-  forms: string[]
-  cleaveAndLuster: string[]
-  colors: string[]
+  name: string;
+  forms: string[];
+  cleaveAndLuster: string[];
+  colors: string[];
 }
 
 interface Rock {
-  name: string
-  minerals: string[]
-  description: string
-  textures: string[]
+  name: string;
+  minerals: string[];
+  description: string;
+  textures: string[];
 }
 
 interface Output {
-  Rock: Rock
-  ConfidenceScore: number
+  Rock: Rock;
+  ConfidenceScore: number;
 }
 
-var outputCompare = (out1: Output, out2: Output) => {
+const outputCompare = (out1: Output, out2: Output) => {
   if (out1.ConfidenceScore > out2.ConfidenceScore) {
-    return -1
+    return -1;
   }
   if (out1.ConfidenceScore < out2.ConfidenceScore) {
-    return 1
+    return 1;
   }
-  return 0
-}
+  return 0;
+};
 
 interface IProps {
-  style?: CSS.Properties
+  style?: CSS.Properties;
 }
 
 interface IState {
-  availColors: string[]
+  availColors: string[];
   /** Selected Colors */
-  s_Colors: string[]
-  availForms: string[]
+  sColors: string[];
+  availForms: string[];
   /** Selected Forms */
-  s_Forms: string[]
-  availCleave: string[]
+  sForms: string[];
+  availCleave: string[];
   /** Selected Cleave */
-  s_Cleave: string[]
-  availTextures: string[]
+  sCleave: string[];
+  availTextures: string[];
   /** Selected Texture */
-  s_Texture: string[]
-  searchField: string
-  outputArr: Output[]
-  selectedOutput: number
+  sTexture: string[];
+  outputArr: Output[];
+  selectedOutput: number;
   /** Whether or not we have access to a microscope. If not,
    * we show the textures column instead of the forms and habitats column. */
-  ifMicroscope: boolean
+  ifMicroscope: boolean;
 }
 
 class RockLookUp extends Component<IProps, IState> {
+  static defaultProps = {
+    style: {},
+  };
+
   constructor(props: Readonly<IProps>) {
-    super(props)
+    super(props);
     this.state = {
       availColors: JSON.parse(JSON.stringify(COLORMASTER)),
-      s_Colors: [],
+      sColors: [],
       availForms: JSON.parse(JSON.stringify(FORMMASTER)),
-      s_Forms: [],
+      sForms: [],
       availCleave: JSON.parse(JSON.stringify(CLEAVEMASTER)),
-      s_Cleave: [],
+      sCleave: [],
       availTextures: JSON.parse(JSON.stringify(TEXTUREMASTER)),
-      s_Texture: [],
-      searchField: "WIP; Feature frozen",
+      sTexture: [],
       outputArr: [],
       selectedOutput: 0,
       ifMicroscope: true,
+    };
+    this.handleFeatureSelect = this.handleFeatureSelect.bind(this);
+    this.compareSelections = this.compareSelections.bind(this);
+    this.reloadOptions = this.reloadOptions.bind(this);
+    this.getWeightedScore = this.getWeightedScore.bind(this);
+    this.cullImpossibles = this.cullImpossibles.bind(this);
+    this.removeSelectedFeature = this.removeSelectedFeature.bind(this);
+    this.clearSelectedFeatures = this.clearSelectedFeatures.bind(this);
+    this.possibleRocks = this.possibleRocks.bind(this);
+  }
+
+  handleFeatureSelect(event: any): void {
+    if (event.target.id === 'ColorList') {
+      const { sColors, availColors } = this.state;
+      availColors.splice(availColors.indexOf(event.target.value), 1);
+      sColors.push(event.target.value);
+
+      const elements = event.target.options;
+
+      for (let i = 0; i < elements.length; i++) {
+        elements[i].selected = false;
+      }
+
+      this.setState({ sColors, availColors }, () => this.compareSelections());
     }
-    /*
-    this.handleFeatureSubmit = this.handleFeatureSubmit.bind(this)
-    this.handleInputChange = this.handleInputChange.bind(this)*/
-    this.handleFeatureSelect = this.handleFeatureSelect.bind(this)
-    this.compareSelections = this.compareSelections.bind(this)
-    this.reloadOptions = this.reloadOptions.bind(this)
-    this.getWeightedScore = this.getWeightedScore.bind(this)
-    this.cullImpossibles = this.cullImpossibles.bind(this)
-    this.removeSelectedFeature = this.removeSelectedFeature.bind(this)
-    this.clearSelectedFeatures = this.clearSelectedFeatures.bind(this)
-    this.possibleRocks = this.possibleRocks.bind(this)
+    if (event.target.id === 'CleaveList') {
+      const { sCleave, availCleave } = this.state;
+      availCleave.splice(availCleave.indexOf(event.target.value), 1);
+      sCleave.push(event.target.value);
+
+      const elements = event.target.options;
+
+      for (let i = 0; i < elements.length; i++) {
+        elements[i].selected = false;
+      }
+
+      this.setState({ sCleave, availCleave }, () => this.compareSelections());
+    }
+    if (event.target.id === 'FormList') {
+      const { sForms, availForms } = this.state;
+      availForms.splice(availForms.indexOf(event.target.value), 1);
+      sForms.push(event.target.value);
+
+      const elements = event.target.options;
+
+      for (let i = 0; i < elements.length; i++) {
+        elements[i].selected = false;
+      }
+
+      this.setState({ sForms, availForms }, () => this.compareSelections());
+    }
+    if (event.target.id === 'TextureList') {
+      const { sTexture, availTextures } = this.state;
+      availTextures.splice(availTextures.indexOf(event.target.value), 1);
+      sTexture.push(event.target.value);
+
+      const elements = event.target.options;
+
+      for (let i = 0; i < elements.length; i++) {
+        elements[i].selected = false;
+      }
+
+      this.setState({ sTexture, availTextures }, () => this.compareSelections());
+    }
+    this.setState({ selectedOutput: 0 });
+  }
+
+  getWeightedScore(rockObj: Rock): number {
+    const { sColors, sForms, sCleave, sTexture } = this.state;
+
+    const numSelectedProps = sColors.length + sForms.length + sCleave.length + sTexture.length;
+    let rockObjTotalProps = 0;
+
+    rockObj.minerals.forEach((mineral) => {
+      const currMineral = MINARR.get(mineral);
+      if (currMineral) {
+        rockObjTotalProps += currMineral.forms.length + currMineral.colors.length + currMineral.cleaveAndLuster.length;
+      }
+    });
+    rockObjTotalProps += rockObj.textures.length;
+
+    return numSelectedProps / rockObjTotalProps;
   }
 
   reloadOptions(): void {
@@ -276,264 +346,187 @@ class RockLookUp extends Component<IProps, IState> {
         availTextures: JSON.parse(JSON.stringify(TEXTUREMASTER)),
       },
       () => this.compareSelections(true)
-    )
+    );
   }
 
-  getWeightedScore(rockObj: Rock): number {
-    let { s_Colors, s_Forms, s_Cleave, s_Texture } = this.state
+  compareSelections(remove = true) {
+    const { sColors, sForms, sCleave, sTexture } = this.state;
+    let possRock: Output[] = [];
+    let selectedMins: Mineral[] = [];
 
-    const numSelectedProps = s_Colors.length + s_Forms.length + s_Cleave.length + s_Texture.length
-    let rockObjTotalProps = 0
-
-    rockObj.minerals.forEach(mineral => {
-      const currMineral = MINARR.get(mineral)
-      if (currMineral) {
-        rockObjTotalProps += currMineral.forms.length + currMineral.colors.length + currMineral.cleaveAndLuster.length
-      }
-    })
-    rockObjTotalProps += rockObj.textures.length
-
-    return numSelectedProps / rockObjTotalProps
-  }
-
-  compareSelections(remove: boolean = true) {
-    let { s_Colors, s_Forms, s_Cleave, s_Texture } = this.state
-    let possRock: Output[] = []
-    let selectedMins: Mineral[] = []
-
-    ROCKARR.forEach(rock => {
-      let hit = true
-      s_Cleave.forEach(cleave => {
-        let cleaveHit = false
-        rock.minerals.forEach(mineral => {
-          let minObj = MINARR.get(mineral)
+    ROCKARR.forEach((rock) => {
+      let hit = true;
+      sCleave.forEach((cleave) => {
+        let cleaveHit = false;
+        rock.minerals.forEach((mineral) => {
+          const minObj = MINARR.get(mineral);
           if (minObj) {
             if (minObj.cleaveAndLuster.indexOf(cleave) >= 0) {
-              cleaveHit = true
+              cleaveHit = true;
             }
           }
-        })
+        });
         if (!cleaveHit) {
-          hit = false
+          hit = false;
         }
-      })
-      s_Forms.forEach(form => {
-        let formHit = false
-        rock.minerals.forEach(mineral => {
-          let minObj = MINARR.get(mineral)
+      });
+      sForms.forEach((form) => {
+        let formHit = false;
+        rock.minerals.forEach((mineral) => {
+          const minObj = MINARR.get(mineral);
           if (minObj) {
             if (minObj.forms.indexOf(form) >= 0) {
-              formHit = true
+              formHit = true;
             }
           }
-        })
+        });
         if (!formHit) {
-          hit = false
+          hit = false;
         }
-      })
-      s_Colors.forEach(color => {
-        let colorHit = false
-        rock.minerals.forEach(mineral => {
-          let minObj = MINARR.get(mineral)
+      });
+      sColors.forEach((color) => {
+        let colorHit = false;
+        rock.minerals.forEach((mineral) => {
+          const minObj = MINARR.get(mineral);
           if (minObj) {
             if (minObj.colors.indexOf(color) >= 0) {
-              colorHit = true
+              colorHit = true;
             }
           }
-        })
+        });
         if (!colorHit) {
-          hit = false
+          hit = false;
         }
-      })
-      s_Texture.forEach(texture => {
-        if (rock.textures.indexOf(texture) == -1) {
-          hit = false
+      });
+      sTexture.forEach((texture) => {
+        if (rock.textures.indexOf(texture) === -1) {
+          hit = false;
         }
-      })
+      });
       if (hit) {
-        possRock.push({ Rock: rock, ConfidenceScore: this.getWeightedScore(rock) })
-        rock.minerals.forEach(mineral => {
-          let minObj = MINARR.get(mineral)
+        possRock.push({ Rock: rock, ConfidenceScore: this.getWeightedScore(rock) });
+        rock.minerals.forEach((mineral) => {
+          const minObj = MINARR.get(mineral);
           if (minObj) {
-            selectedMins.push(minObj)
+            selectedMins.push(minObj);
           }
-        })
+        });
       }
-    })
-    possRock = [...new Set(possRock)]
-    possRock.sort(outputCompare)
-    this.setState({ outputArr: possRock })
-    selectedMins = [...new Set(selectedMins)]
-    if (remove) this.cullImpossibles(selectedMins, possRock)
+    });
+    possRock = [...new Set(possRock)];
+    possRock.sort(outputCompare);
+    this.setState({ outputArr: possRock });
+    selectedMins = [...new Set(selectedMins)];
+    if (remove) this.cullImpossibles(selectedMins, possRock);
   }
 
   cullImpossibles(possibleMins: Mineral[], possibleRocks: Output[]): void {
-    let { availCleave, availColors, availForms, availTextures, s_Cleave, s_Forms, s_Colors, s_Texture } = this.state
+    const { availCleave, availColors, availForms, availTextures, sCleave, sForms, sColors, sTexture } = this.state;
 
-    availCleave.forEach(cleave => {
-      let isPoss: boolean = false
-      if (s_Cleave.indexOf(cleave) == -1) {
-        possibleMins.forEach(mineral => {
+    availCleave.forEach((cleave) => {
+      let isPoss = false;
+      if (sCleave.indexOf(cleave) === -1) {
+        possibleMins.forEach((mineral) => {
           if (mineral.cleaveAndLuster.indexOf(cleave) >= 0) {
-            isPoss = true
+            isPoss = true;
           }
-        })
+        });
       }
       if (!isPoss) {
-        availCleave.splice(availCleave.indexOf(cleave), 1)
+        availCleave.splice(availCleave.indexOf(cleave), 1);
       }
-    })
-    availColors.forEach(color => {
-      let isPoss: boolean = false
-      if (s_Colors.indexOf(color) == -1) {
-        possibleMins.forEach(mineral => {
+    });
+    availColors.forEach((color) => {
+      let isPoss = false;
+      if (sColors.indexOf(color) === -1) {
+        possibleMins.forEach((mineral) => {
           if (mineral.colors.indexOf(color) >= 0) {
-            isPoss = true
+            isPoss = true;
           }
-        })
+        });
       }
       if (!isPoss) {
-        availColors.splice(availColors.indexOf(color), 1)
+        availColors.splice(availColors.indexOf(color), 1);
       }
-    })
-    availForms.forEach(form => {
-      let isPoss: boolean = false
-      if (s_Forms.indexOf(form) == -1) {
-        possibleMins.forEach(mineral => {
+    });
+    availForms.forEach((form) => {
+      let isPoss = false;
+      if (sForms.indexOf(form) === -1) {
+        possibleMins.forEach((mineral) => {
           if (mineral.forms.indexOf(form) >= 0) {
-            isPoss = true
+            isPoss = true;
           }
-        })
+        });
       }
       if (!isPoss) {
-        availForms.splice(availForms.indexOf(form), 1)
+        availForms.splice(availForms.indexOf(form), 1);
       }
-    })
-    availTextures.forEach(texture => {
-      let isPoss: boolean = false
-      if (s_Texture.indexOf(texture) == -1) {
-        possibleRocks.forEach(out => {
+    });
+    availTextures.forEach((texture) => {
+      let isPoss = false;
+      if (sTexture.indexOf(texture) === -1) {
+        possibleRocks.forEach((out) => {
           if (out.Rock.textures.indexOf(texture) >= 0) {
-            isPoss = true
+            isPoss = true;
           }
-        })
+        });
       }
       if (!isPoss) {
-        availTextures.splice(availTextures.indexOf(texture))
+        availTextures.splice(availTextures.indexOf(texture));
       }
-    })
-    this.setState({ availCleave, availColors, availForms, availTextures })
+    });
+    this.setState({ availCleave, availColors, availForms, availTextures });
   }
-
-  handleFeatureSelect(event: any): void {
-    if (event.target.id === "ColorList") {
-      let { s_Colors, availColors } = this.state
-      availColors.splice(availColors.indexOf(event.target.value), 1)
-      s_Colors.push(event.target.value)
-
-      var elements = event.target.options
-
-      for (var i = 0; i < elements.length; i++) {
-        elements[i].selected = false
-      }
-
-      this.setState({ s_Colors, availColors }, () => this.compareSelections())
-    }
-    if (event.target.id === "CleaveList") {
-      let { s_Cleave, availCleave } = this.state
-      availCleave.splice(availCleave.indexOf(event.target.value), 1)
-      s_Cleave.push(event.target.value)
-
-      var elements = event.target.options
-
-      for (var i = 0; i < elements.length; i++) {
-        elements[i].selected = false
-      }
-
-      this.setState({ s_Cleave, availCleave }, () => this.compareSelections())
-    }
-    if (event.target.id === "FormList") {
-      let { s_Forms, availForms } = this.state
-      availForms.splice(availForms.indexOf(event.target.value), 1)
-      s_Forms.push(event.target.value)
-
-      var elements = event.target.options
-
-      for (var i = 0; i < elements.length; i++) {
-        elements[i].selected = false
-      }
-
-      this.setState({ s_Forms, availForms }, () => this.compareSelections())
-    }
-    if (event.target.id === "TextureList") {
-      let { s_Texture, availTextures } = this.state
-      availTextures.splice(availTextures.indexOf(event.target.value), 1)
-      s_Texture.push(event.target.value)
-
-      var elements = event.target.options
-
-      for (var i = 0; i < elements.length; i++) {
-        elements[i].selected = false
-      }
-
-      this.setState({ s_Texture, availTextures }, () => this.compareSelections())
-    }
-    this.setState({ selectedOutput: 0 })
-  }
-
-  /*
-  handleFeatureSubmit(event: any) {
-    event.preventDefault()
-  }
-
-  handleInputChange(event: any) {
-    event.preventDefault()
-    this.setState({ searchField: event.target.value })
-  }*/
 
   removeSelectedFeature(type: FeatureType, index: number): void {
     switch (type) {
-      case FeatureType.COLOR:
-        let { availColors, s_Colors } = this.state
-        availColors.push(s_Colors[index])
-        availColors.sort()
-        s_Colors.splice(index, 1)
-        this.setState({ s_Colors, availColors }, () => this.reloadOptions())
-        break
-      case FeatureType.CLEAVE:
-        let { availCleave, s_Cleave } = this.state
-        availCleave.push(s_Cleave[index])
-        availCleave.sort()
-        s_Cleave.splice(index, 1)
-        this.setState({ s_Cleave, availCleave }, () => this.reloadOptions())
-        break
-      case FeatureType.FORM:
-        let { availForms, s_Forms } = this.state
-        availForms.push(s_Forms[index])
-        availForms.sort()
-        s_Forms.splice(index, 1)
-        this.setState({ s_Forms, availForms }, () => this.reloadOptions())
-        break
-      case FeatureType.TEXTURE:
-        let { availTextures, s_Texture } = this.state
-        availTextures.push(s_Texture[index])
-        availTextures.sort()
-        s_Texture.splice(index, 1)
-        this.setState({ s_Texture, availTextures }, () => this.reloadOptions())
-        break
+      case FeatureType.COLOR: {
+        const { availColors, sColors } = this.state;
+        availColors.push(sColors[index]);
+        availColors.sort();
+        sColors.splice(index, 1);
+        this.setState({ sColors, availColors }, () => this.reloadOptions());
+        break;
+      }
+      case FeatureType.CLEAVE: {
+        const { availCleave, sCleave } = this.state;
+        availCleave.push(sCleave[index]);
+        availCleave.sort();
+        sCleave.splice(index, 1);
+        this.setState({ sCleave, availCleave }, () => this.reloadOptions());
+        break;
+      }
+      case FeatureType.FORM: {
+        const { availForms, sForms } = this.state;
+        availForms.push(sForms[index]);
+        availForms.sort();
+        sForms.splice(index, 1);
+        this.setState({ sForms, availForms }, () => this.reloadOptions());
+        break;
+      }
+      case FeatureType.TEXTURE: {
+        const { availTextures, sTexture } = this.state;
+        availTextures.push(sTexture[index]);
+        availTextures.sort();
+        sTexture.splice(index, 1);
+        this.setState({ sTexture, availTextures }, () => this.reloadOptions());
+        break;
+      }
+      default:
+        break;
     }
   }
 
   clearSelectedFeatures(): void {
     this.setState(
       {
-        s_Colors: [],
-        s_Cleave: [],
-        s_Forms: [],
-        s_Texture: [],
+        sColors: [],
+        sCleave: [],
+        sForms: [],
+        sTexture: [],
       },
       () => this.reloadOptions()
-    )
+    );
   }
 
   possibleRocks(): JSX.Element | void {
@@ -541,54 +534,54 @@ class RockLookUp extends Component<IProps, IState> {
       return (
         <div style={{ ...row }}>
           <div style={{ ...row, flexGrow: 1 }}>
-            <div style={{ ...column, flexGrow: 1, backgroundColor: "#ddd", width: "40%" }}>
-              <p style={{ fontWeight: "bold", textAlign: "center" }}>
+            <div style={{ ...column, flexGrow: 1, backgroundColor: '#ddd', width: '40%' }}>
+              <p style={{ fontWeight: 'bold', textAlign: 'center' }}>
                 {this.state.outputArr[this.state.selectedOutput].Rock.name}
               </p>
-              <p style={{ textAlign: "center", justifyContent: "center" }}>
+              <p style={{ textAlign: 'center', justifyContent: 'center' }}>
                 {this.state.outputArr[this.state.selectedOutput].Rock.description}
               </p>
             </div>
-            <div style={{ width: "calc(60% - 62px)", alignSelf: "center" }}>
+            <div style={{ width: 'calc(60% - 62px)', alignSelf: 'center' }}>
               <img
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 src={path.join(
                   __dirname,
                   `../assets/rockLookupAssets/images/${this.state.outputArr[this.state.selectedOutput].Rock.name}.png`
                 )}
                 alt={this.state.outputArr[this.state.selectedOutput].Rock.name}
-              ></img>
+              />
             </div>
           </div>
-          <div style={{ ...column, alignSelf: "right" }}>
+          <div style={{ ...column, alignSelf: 'right' }}>
             <button
-              style={{ width: "62px", flexGrow: 1 }}
-              type={"button"}
+              style={{ width: '62px', flexGrow: 1 }}
+              type="button"
               onClick={() =>
-                this.setState({
-                  selectedOutput: Math.max(0, this.state.selectedOutput - 1),
-                })
+                this.setState((prevState) => ({
+                  selectedOutput: Math.max(0, prevState.selectedOutput - 1),
+                }))
               }
             >
               ^^^
             </button>
-            <p style={{ margin: "0 5 0 5", textAlign: "center" }}>
+            <p style={{ margin: '0 5 0 5', textAlign: 'center' }}>
               {this.state.selectedOutput + 1} / {this.state.outputArr.length}
             </p>
             <button
-              style={{ width: "62px", flexGrow: 1 }}
-              type={"button"}
+              style={{ width: '62px', flexGrow: 1 }}
+              type="button"
               onClick={() =>
-                this.setState({
-                  selectedOutput: Math.min(this.state.selectedOutput + 1, this.state.outputArr.length - 1),
-                })
+                this.setState((prevState) => ({
+                  selectedOutput: Math.min(prevState.selectedOutput + 1, prevState.outputArr.length - 1),
+                }))
               }
             >
               vvv
             </button>
           </div>
         </div>
-      )
+      );
     }
   }
 
@@ -597,113 +590,121 @@ class RockLookUp extends Component<IProps, IState> {
       <div style={this.props.style}>
         <div style={label}>Rock Lookup</div>
         <div style={container}>
-          {/*<div style={row}>
-            <form onSubmit={e => this.handleFeatureSubmit(e)}>
-              <input
-                type="text"
-                name="newTag"
-                onChange={e => {
-                  this.handleInputChange(e)
-                }}
-              />
-              <input type="submit" value={this.state.searchField} />
-            </form>
-              </div>*/}
           <div style={row}>
             <div style={featureColumn}>
-              <p style={{ textAlign: "center" }}>Colors</p>
+              <p style={{ textAlign: 'center' }}>Colors</p>
               <select
                 size={10}
-                id={"ColorList"}
-                onChange={event => {
-                  this.handleFeatureSelect(event)
+                id="ColorList"
+                onChange={(event) => {
+                  this.handleFeatureSelect(event);
                 }}
               >
                 {this.state.availColors.map((colorName: string) => {
-                  return <option value={colorName}>{colorName}</option>
+                  return (
+                    <option key={colorName} value={colorName}>
+                      {colorName}
+                    </option>
+                  );
                 })}
               </select>
             </div>
             <div style={featureColumn}>
-              <p style={{ textAlign: "center" }}>Mineral Cleave/Luster</p>
+              <p style={{ textAlign: 'center' }}>Mineral Cleave/Luster</p>
               <select
                 size={10}
-                id={"CleaveList"}
-                onChange={event => {
-                  this.handleFeatureSelect(event)
+                id="CleaveList"
+                onChange={(event) => {
+                  this.handleFeatureSelect(event);
                 }}
               >
                 {this.state.availCleave.map((cleaveName: string) => {
-                  return <option value={cleaveName}>{cleaveName}</option>
+                  return (
+                    <option key={cleaveName} value={cleaveName}>
+                      {cleaveName}
+                    </option>
+                  );
                 })}
               </select>
             </div>
             <div style={featureColumn}>
               <button
                 style={{
-                  width: "auto",
-                  textAlign: "center",
-                  background: "white",
-                  borderWidth: "1px",
-                  maxHeight: "48px",
-                  marginBottom: "2px",
+                  width: 'auto',
+                  textAlign: 'center',
+                  background: 'white',
+                  borderWidth: '1px',
+                  maxHeight: '48px',
+                  marginBottom: '2px',
                 }}
-                onClick={() => this.setState({ ifMicroscope: !this.state.ifMicroscope })}
+                onClick={() => this.setState((prevState) => ({ ifMicroscope: !prevState.ifMicroscope }))}
               >
-                <p style={{ display: "flex", flexDirection: "column", fontSize: "16px" }}>
-                  {this.state.ifMicroscope ? "Forms/Habits" : "Rock Textures"}
+                <p style={{ display: 'flex', flexDirection: 'column', fontSize: '16px' }}>
+                  {this.state.ifMicroscope ? 'Forms/Habits' : 'Rock Textures'}
                 </p>
               </button>
               <select
                 size={10}
-                id={this.state.ifMicroscope ? "FormList" : "TextureList"}
-                onChange={event => {
-                  this.handleFeatureSelect(event)
+                id={this.state.ifMicroscope ? 'FormList' : 'TextureList'}
+                onChange={(event) => {
+                  this.handleFeatureSelect(event);
                 }}
               >
                 {this.state.ifMicroscope
                   ? this.state.availForms.map((formName: string) => {
-                      return <option value={formName}>{formName}</option>
+                      return (
+                        <option key={formName} value={formName}>
+                          {formName}
+                        </option>
+                      );
                     })
                   : this.state.availTextures.map((textureName: string) => {
-                      return <option value={textureName}>{textureName}</option>
+                      return (
+                        <option key={textureName} value={textureName}>
+                          {textureName}
+                        </option>
+                      );
                     })}
               </select>
             </div>
           </div>
           <div style={column}>
             <div style={tagList}>
-              {this.state.s_Colors.map((tag: string, index: number) => {
+              {this.state.sColors.map((tag: string, index: number) => {
                 return (
-                  <div style={tagStyle} onClick={() => this.removeSelectedFeature(FeatureType.COLOR, index)}>
+                  <div key={tag} style={tagStyle} onClick={() => this.removeSelectedFeature(FeatureType.COLOR, index)}>
                     <p>{tag}</p>
-                    <p style={{ marginLeft: "10px", color: "red" }}>x</p>
+                    <p style={{ marginLeft: '10px', color: 'red' }}>x</p>
                   </div>
-                )
+                );
               })}
-              {this.state.s_Cleave.map((tag: string, index: number) => {
+              {this.state.sCleave.map((tag: string, index: number) => {
                 return (
-                  <div style={tagStyle} onClick={() => this.removeSelectedFeature(FeatureType.CLEAVE, index)}>
+                  <div key={tag} style={tagStyle} onClick={() => this.removeSelectedFeature(FeatureType.CLEAVE, index)}>
                     <p>{tag}</p>
-                    <p style={{ marginLeft: "10px", color: "red" }}>x</p>
+                    <p style={{ marginLeft: '10px', color: 'red' }}>x</p>
                   </div>
-                )
+                );
               })}
-              {this.state.s_Forms.map((tag: string, index: number) => {
+              {this.state.sForms.map((tag: string, index: number) => {
                 return (
-                  <div style={tagStyle} onClick={() => this.removeSelectedFeature(FeatureType.FORM, index)}>
+                  <div key={tag} style={tagStyle} onClick={() => this.removeSelectedFeature(FeatureType.FORM, index)}>
                     <p>{tag}</p>
-                    <p style={{ marginLeft: "10px", color: "red" }}>x</p>
+                    <p style={{ marginLeft: '10px', color: 'red' }}>x</p>
                   </div>
-                )
+                );
               })}
-              {this.state.s_Texture.map((tag: string, index: number) => {
+              {this.state.sTexture.map((tag: string, index: number) => {
                 return (
-                  <div style={tagStyle} onClick={() => this.removeSelectedFeature(FeatureType.TEXTURE, index)}>
+                  <div
+                    key={tag}
+                    style={tagStyle}
+                    onClick={() => this.removeSelectedFeature(FeatureType.TEXTURE, index)}
+                  >
                     <p>{tag}</p>
-                    <p style={{ marginLeft: "10px", color: "red" }}>x</p>
+                    <p style={{ marginLeft: '10px', color: 'red' }}>x</p>
                   </div>
-                )
+                );
               })}
             </div>
             <div style={column}>
@@ -713,8 +714,8 @@ class RockLookUp extends Component<IProps, IState> {
           {this.possibleRocks()}
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default RockLookUp
+export default RockLookUp;

@@ -1,96 +1,100 @@
-import React, { Component } from "react"
-import CSS from "csstype"
-import { rovecomm } from "../../../Core/RoveProtocol/Rovecomm"
+import React, { Component } from 'react';
+import CSS from 'csstype';
+import { rovecomm } from '../../../Core/RoveProtocol/Rovecomm';
 
 const container: CSS.Properties = {
-  display: "flex",
-  fontFamily: "arial",
-  borderTopWidth: "30px",
-  borderColor: "#990000",
-  borderBottomWidth: "2px",
-  borderStyle: "solid",
-  flexWrap: "wrap",
-  justifyContent: "center",
-}
+  display: 'flex',
+  fontFamily: 'arial',
+  borderTopWidth: '30px',
+  borderColor: '#990000',
+  borderBottomWidth: '2px',
+  borderStyle: 'solid',
+  flexWrap: 'wrap',
+  justifyContent: 'center',
+};
 const label: CSS.Properties = {
-  marginTop: "-10px",
-  position: "relative",
-  top: "24px",
-  left: "3px",
-  fontFamily: "arial",
-  fontSize: "16px",
+  marginTop: '-10px',
+  position: 'relative',
+  top: '24px',
+  left: '3px',
+  fontFamily: 'arial',
+  fontSize: '16px',
   zIndex: 1,
-  color: "white",
-}
+  color: 'white',
+};
 const row: CSS.Properties = {
-  display: "flex",
-  flexDirection: "row",
-}
+  display: 'flex',
+  flexDirection: 'row',
+};
 const button: CSS.Properties = {
-  fontFamily: "arial",
+  fontFamily: 'arial',
   flexGrow: 1,
-  margin: "5px",
-  fontSize: "14px",
-  lineHeight: "24px",
-  borderWidth: "2px",
-}
+  margin: '5px',
+  fontSize: '14px',
+  lineHeight: '24px',
+  borderWidth: '2px',
+};
 
 function startAutonomy(): void {
-  rovecomm.sendCommand("StartAutonomy", [1])
+  rovecomm.sendCommand('StartAutonomy', [1]);
 }
 function stopAutonomy(): void {
-  rovecomm.sendCommand("DisableAutonomy", [1])
+  rovecomm.sendCommand('DisableAutonomy', [1]);
 }
 function clearWaypoints(): void {
-  rovecomm.emit("AutonomyActivity", "-------- Clearing Autonomy's waypoints --------")
-  rovecomm.sendCommand("ClearWaypoints", [1])
+  rovecomm.emit('AutonomyActivity', "-------- Clearing Autonomy's waypoints --------");
+  rovecomm.sendCommand('ClearWaypoints', [1]);
 }
 
 interface IProps {
-  style?: CSS.Properties
-  selectedWaypoint: any
+  style?: CSS.Properties;
+  selectedWaypoint: any;
 }
 interface IState {}
 
 class Controls extends Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props)
-    this.state = {}
+  static defaultProps = {
+    style: {},
+  };
 
-    this.addPositionLeg = this.addPositionLeg.bind(this)
-    this.addMarkerLeg = this.addMarkerLeg.bind(this)
-    this.addGateLeg = this.addGateLeg.bind(this)
+  constructor(props: IProps) {
+    super(props);
+    this.state = {};
+
+    this.addPositionLeg = this.addPositionLeg.bind(this);
+    this.addMarkerLeg = this.addMarkerLeg.bind(this);
+    this.addGateLeg = this.addGateLeg.bind(this);
   }
 
   addPositionLeg(): void {
     rovecomm.emit(
-      "AutonomyActivity",
+      'AutonomyActivity',
       `Sending Position (
        Lat: ${this.props.selectedWaypoint.latitude.toFixed(7)}
        Lon: ${this.props.selectedWaypoint.longitude.toFixed(7)})`
-    )
-    rovecomm.sendCommand("AddPositionLeg", [
+    );
+    rovecomm.sendCommand('AddPositionLeg', [
       this.props.selectedWaypoint.latitude,
       this.props.selectedWaypoint.longitude,
-    ])
+    ]);
   }
 
   addMarkerLeg(): void {
     rovecomm.emit(
-      "AutonomyActivity",
+      'AutonomyActivity',
       `Sending Marker (Lat: ${this.props.selectedWaypoint.latitude.toFixed(7)}
        Lon: ${this.props.selectedWaypoint.longitude.toFixed(7)})`
-    )
-    rovecomm.sendCommand("AddMarkerLeg", [this.props.selectedWaypoint.latitude, this.props.selectedWaypoint.longitude])
+    );
+    rovecomm.sendCommand('AddMarkerLeg', [this.props.selectedWaypoint.latitude, this.props.selectedWaypoint.longitude]);
   }
 
   addGateLeg(): void {
     rovecomm.emit(
-      "AutonomyActivity",
+      'AutonomyActivity',
       `Sending Gate (Lat: ${this.props.selectedWaypoint.latitude.toFixed(7)}
        Lon: ${this.props.selectedWaypoint.longitude.toFixed(7)})`
-    )
-    rovecomm.sendCommand("AddGateLeg", [this.props.selectedWaypoint.latitude, this.props.selectedWaypoint.longitude])
+    );
+    rovecomm.sendCommand('AddGateLeg', [this.props.selectedWaypoint.latitude, this.props.selectedWaypoint.longitude]);
   }
 
   render(): JSX.Element {
@@ -120,8 +124,8 @@ class Controls extends Component<IProps, IState> {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default Controls
+export default Controls;

@@ -1,54 +1,54 @@
-import React, { Component } from "react"
-import CSS from "csstype"
-import Arm from "./Arm/Arm"
-import Autonomy from "./Autonomy/Autonomy"
-import Science from "./Science/Science"
+import React, { Component } from 'react';
+import CSS from 'csstype';
+import Arm from './Arm/Arm';
+import Autonomy from './Autonomy/Autonomy';
+import Science from './Science/Science';
 
 const RON: CSS.Properties = {
-  height: "100%",
-  width: "100%",
-}
+  height: '100%',
+  width: '100%',
+};
 const row: CSS.Properties = {
-  display: "flex",
-  flexDirection: "row",
-  justifyContent: "space-around",
-}
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'space-around',
+};
 const buttons: CSS.Properties = {
-  border: "none",
-  background: "none",
-  fontSize: "42px",
-  fontFamily: "times new roman",
-  fontWeight: "bold",
-  outline: "none",
-}
+  border: 'none',
+  background: 'none',
+  fontSize: '42px',
+  fontFamily: 'times new roman',
+  fontWeight: 'bold',
+  outline: 'none',
+};
 
 interface IProps {
-  selectedWaypoint: any
+  selectedWaypoint: any;
 }
 
 interface IState {
-  displayed: string
+  displayed: string;
 }
 
 class RoverAttachmentManager extends Component<IProps, IState> {
   constructor(props: IProps) {
-    super(props)
+    super(props);
     this.state = {
-      displayed: "Arm",
-    }
+      displayed: 'Arm',
+    };
   }
 
   screenChange(screen: string): void {
     this.setState({
       displayed: screen,
-    })
+    });
   }
 
   render(): JSX.Element {
     return (
       <div style={RON}>
         <div style={row}>
-          {["Arm", "Science", "Autonomy"].map(screen => {
+          {['Arm', 'Science', 'Autonomy'].map((screen) => {
             return (
               <button
                 type="button"
@@ -56,19 +56,19 @@ class RoverAttachmentManager extends Component<IProps, IState> {
                 onClick={() => this.screenChange(screen)}
                 style={{
                   ...buttons,
-                  color: this.state.displayed === screen ? "#990000" : "gray",
+                  color: this.state.displayed === screen ? '#990000' : 'gray',
                 }}
               >
                 {screen}
               </button>
-            )
+            );
           })}
         </div>
-        {this.state.displayed === "Arm" && <Arm />}
-        {this.state.displayed === "Science" && <Science />}
-        {this.state.displayed === "Autonomy" && <Autonomy selectedWaypoint={this.props.selectedWaypoint} />}
+        {this.state.displayed === 'Arm' && <Arm />}
+        {this.state.displayed === 'Science' && <Science />}
+        {this.state.displayed === 'Autonomy' && <Autonomy selectedWaypoint={this.props.selectedWaypoint} />}
       </div>
-    )
+    );
   }
 }
-export default RoverAttachmentManager
+export default RoverAttachmentManager;

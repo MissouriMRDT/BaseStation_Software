@@ -1,218 +1,220 @@
-import React, { Component } from "react"
-import CSS from "csstype"
-import { exec } from "child_process"
-import { rovecomm, RovecommManifest, NetworkDevices } from "../../Core/RoveProtocol/Rovecomm"
-import { ColorStyleConverter } from "../../Core/ColorConverter"
+import React, { Component } from 'react';
+import CSS from 'csstype';
+import { exec } from 'child_process';
+import { rovecomm, RovecommManifest, NetworkDevices } from '../../Core/RoveProtocol/Rovecomm';
+import { ColorStyleConverter } from '../../Core/ColorConverter';
 
 const h1Style: CSS.Properties = {
-  fontFamily: "arial",
-  fontSize: "18px",
-  fontWeight: "bold",
-  textAlign: "center",
-  margin: "5px 0px",
-}
+  fontFamily: 'arial',
+  fontSize: '18px',
+  fontWeight: 'bold',
+  textAlign: 'center',
+  margin: '5px 0px',
+};
 const container: CSS.Properties = {
-  display: "flex",
-  flexDirection: "column",
-  flexWrap: "wrap",
-  fontFamily: "arial",
-  borderTopWidth: "28px",
-  borderColor: "#990000",
-  borderBottomWidth: "2px",
-  borderStyle: "solid",
-  padding: "5px",
-}
+  display: 'flex',
+  flexDirection: 'column',
+  flexWrap: 'wrap',
+  fontFamily: 'arial',
+  borderTopWidth: '28px',
+  borderColor: '#990000',
+  borderBottomWidth: '2px',
+  borderStyle: 'solid',
+  padding: '5px',
+};
 const label: CSS.Properties = {
-  marginTop: "-10px",
-  position: "relative",
-  top: "24px",
-  left: "3px",
-  fontFamily: "arial",
-  fontSize: "16px",
+  marginTop: '-10px',
+  position: 'relative',
+  top: '24px',
+  left: '3px',
+  fontFamily: 'arial',
+  fontSize: '16px',
   zIndex: 1,
-  color: "white",
-}
+  color: 'white',
+};
 let selectbox: CSS.Properties = {
-  display: "flex",
-  flexDirection: "row",
-  width: "100%",
-  margin: "2.5px",
-  justifyContent: "space-between",
-}
+  display: 'flex',
+  flexDirection: 'row',
+  width: '100%',
+  margin: '2.5px',
+  justifyContent: 'space-between',
+};
 let labelbox: CSS.Properties = {
-  display: "flex",
-  flexDirection: "row",
-  margin: "2.5px",
-  justifyContent: "space-between",
-  width: "100%",
-  textAlign: "start",
-}
-const auto: CSS.Properties = {
-}
+  display: 'flex',
+  flexDirection: 'row',
+  margin: '2.5px',
+  justifyContent: 'space-between',
+  width: '100%',
+  textAlign: 'start',
+};
+const auto: CSS.Properties = {};
 const name: CSS.Properties = {
-  width: "50%",
-  display: "block",
-  textOverflow: "ellipsis",
-  overflow: "hidden",
-  whiteSpace: "nowrap",
-}
+  width: '50%',
+  display: 'block',
+  textOverflow: 'ellipsis',
+  overflow: 'hidden',
+  whiteSpace: 'nowrap',
+};
 const num: CSS.Properties = {
-  width: "10%",
-  textAlign: "center",
-  display: "block",
-  textOverflow: "ellipsis",
-  overflow: "hidden",
-  whiteSpace: "nowrap",
-}
+  width: '10%',
+  textAlign: 'center',
+  display: 'block',
+  textOverflow: 'ellipsis',
+  overflow: 'hidden',
+  whiteSpace: 'nowrap',
+};
 const buttonText: CSS.Properties = {
-  display: "block",
-  textOverflow: "ellipsis",
-  overflow: "hidden",
-  whiteSpace: "nowrap",
-}
+  display: 'block',
+  textOverflow: 'ellipsis',
+  overflow: 'hidden',
+  whiteSpace: 'nowrap',
+};
 const but: CSS.Properties = {
-  width: "18%",
-}
+  width: '18%',
+};
 const hid: CSS.Properties = {
-  width: "19%",
-  visibility: "hidden",
-}
+  width: '19%',
+  visibility: 'hidden',
+};
 
 interface IProps {
-  style?: CSS.Properties
-  onDevicesChange: (devices: any) => void
+  style?: CSS.Properties;
+  onDevicesChange: (devices: any) => void;
 }
 
 interface IState {
-  devices: any
-  pingInterval: any
+  devices: any;
+  pingInterval: NodeJS.Timeout;
 }
 
 // For colorConverter
-const min = 0
-const cutoff = 45
-const max = 100
-const greenHue = 120
-const redHue = 360
+const min = 0;
+const cutoff = 45;
+const max = 100;
+const greenHue = 120;
+const redHue = 360;
 
 class PingTool extends Component<IProps, IState> {
+  static defaultProps = {
+    style: {},
+  };
+
   constructor(props: IProps) {
-    super(props)
-    const devices = {}
-    Object.keys(NetworkDevices).forEach(device => {
-      devices[device] = { autoPing: false, ping: -1 }
-    })
-    Object.keys(RovecommManifest).forEach(board => {
-      devices[board] = { autoPing: false, ping: -1 }
-    })
+    super(props);
+    const devices = {};
+    Object.keys(NetworkDevices).forEach((device) => {
+      devices[device] = { autoPing: false, ping: -1 };
+    });
+    Object.keys(RovecommManifest).forEach((board) => {
+      devices[board] = { autoPing: false, ping: -1 };
+    });
     this.state = {
       devices,
       pingInterval: setInterval(() => {
-        this.props.onDevicesChange(this.state.devices)
+        this.props.onDevicesChange(this.state.devices);
         for (const device in this.state.devices) {
           if (this.state.devices[device].autoPing) {
-            this.ICMP(device)
+            this.ICMP(device);
           }
         }
       }, 1000),
-    }
-    this.ICMP = this.ICMP.bind(this)
-    this.Rove = this.Rove.bind(this)
-    this.AutoPing = this.AutoPing.bind(this)
-    this.AutoPingAll = this.AutoPingAll.bind(this)
+    };
+    this.ICMP = this.ICMP.bind(this);
+    this.Rove = this.Rove.bind(this);
+    this.AutoPing = this.AutoPing.bind(this);
+    this.AutoPingAll = this.AutoPingAll.bind(this);
   }
 
   componentWillUnmount() {
-    clearInterval(this.state.pingInterval)
+    clearInterval(this.state.pingInterval);
   }
 
   ICMP(device: string): void {
     // If device is not a network device, it must be a board
-    let deviceInfo = NetworkDevices[device]
+    let deviceInfo = NetworkDevices[device];
     if (deviceInfo === undefined) {
-      deviceInfo = RovecommManifest[device]
+      deviceInfo = RovecommManifest[device];
     }
-    const ip = deviceInfo.Ip
+    const ip = deviceInfo.Ip;
 
     // Ping command is slightly different for windows/unix
-    let pingCommand = ""
-    if (process.platform === "win32") {
-      pingCommand = `ping -n 1 ${ip}`
+    let pingCommand = '';
+    if (process.platform === 'win32') {
+      pingCommand = `ping -n 1 ${ip}`;
     } else {
-      pingCommand = `ping -c 1 ${ip}`
+      pingCommand = `ping -c 1 ${ip}`;
     }
 
     exec(pingCommand, (error, stdout, stderr) => {
       // -1 means not reachable
-      let delay = -1
+      let delay = -1;
       if (error) {
-        console.log(`error: ${error.message}`)
+        console.log(`error: ${error.message}`);
       } else if (stderr) {
-        console.log(`stderr: ${stderr}`)
-      } else if (stdout.indexOf("unreachable") === -1) {
+        console.log(`stderr: ${stderr}`);
+      } else if (stdout.indexOf('unreachable') === -1) {
         // On Windows, failed ping is not necessarily an error
         // Windows Ex. 'Reply from 8.8.8.8: bytes=32 time=26ms TTL=110'
         // Unix Ex. '64 bytes from 8.8.8.8: icmp_seq=0 ttl=110 time=387.477 ms'
         // They may also return "time<1ms", which we will treat as =1ms
-        const start = stdout.indexOf("time") + 5
-        const end = stdout.indexOf("ms")
-        delay = Math.round(parseFloat(stdout.substring(start, end)))
+        const start = stdout.indexOf('time') + 5;
+        const end = stdout.indexOf('ms');
+        delay = Math.round(parseFloat(stdout.substring(start, end)));
       }
-      this.setState({
+      this.setState((prevState) => ({
         devices: {
-          ...this.state.devices,
+          ...prevState.devices,
           [device]: {
-            ...this.state.devices[device],
+            ...prevState.devices[device],
             ping: delay,
           },
         },
-      })
-    })
+      }));
+    });
   }
 
   // eslint-disable-next-line class-methods-use-this
   Rove(device: string): void {
-    rovecomm.ping(device)
+    rovecomm.ping(device);
   }
 
   AutoPing(device: string): void {
-    const autoPing = !this.state.devices[device].autoPing
-    this.setState({
+    this.setState((prevState) => ({
       devices: {
-        ...this.state.devices,
+        ...prevState.devices,
         [device]: {
-          ...this.state.devices[device],
-          autoPing,
+          ...prevState.devices[device],
+          autoPing: !prevState.devices[device].autoPing,
         },
       },
-    })
+    }));
   }
 
   AutoPingAll(): void {
-    const { devices } = this.state
+    const { devices } = this.state;
     for (const device in devices) {
       if (Object.prototype.hasOwnProperty.call(devices, device)) {
-        devices[device].autoPing = true
+        devices[device].autoPing = true;
       }
     }
     this.setState({
       devices,
-    })
-    this.props.onDevicesChange(devices)
+    });
+    this.props.onDevicesChange(devices);
   }
 
   render(): JSX.Element {
-    selectbox = { ...selectbox }
-    labelbox = { ...selectbox }
+    selectbox = { ...selectbox };
+    labelbox = { ...selectbox };
     return (
       <div style={{ ...this.props.style }}>
         <div style={label}>Ping Tool</div>
         <div style={container}>
           {[
-            { category: "Network", list: NetworkDevices, rove: hid },
-            { category: "Boards", list: RovecommManifest, rove: but },
-          ].map(item => {
-            const { category, list, rove } = item
+            { category: 'Network', list: NetworkDevices, rove: hid },
+            { category: 'Boards', list: RovecommManifest, rove: but },
+          ].map((item) => {
+            const { category, list, rove } = item;
             return (
               <div key={category}>
                 <div style={h1Style}>{category}</div>
@@ -224,9 +226,9 @@ class PingTool extends Component<IProps, IState> {
                   <div style={hid}>ICMP</div>
                   <div style={hid}>Rove</div>
                 </div>
-                {Object.keys(list).map(device => {
-                  const { Ip } = list[device]
-                  const { ping } = this.state.devices[device]
+                {Object.keys(list).map((device) => {
+                  const { Ip } = list[device];
+                  const { ping } = this.state.devices[device];
                   return (
                     <div style={selectbox} key={device}>
                       <input
@@ -235,9 +237,16 @@ class PingTool extends Component<IProps, IState> {
                         checked={this.state.devices[device].autoPing}
                         onChange={() => this.AutoPing(device)}
                       />
-                      <div style={{ ...ColorStyleConverter(ping, min, cutoff, max, greenHue, redHue, name), paddingLeft: "3%"}}>{device}</div>
+                      <div
+                        style={{
+                          ...ColorStyleConverter(ping, min, cutoff, max, greenHue, redHue, name),
+                          paddingLeft: '3%',
+                        }}
+                      >
+                        {device}
+                      </div>
                       <div style={ColorStyleConverter(ping, min, cutoff, max, greenHue, redHue, num)}>
-                        {Ip.split(".")[3]}
+                        {Ip.split('.')[3]}
                       </div>
                       <div style={ColorStyleConverter(ping, min, cutoff, max, greenHue, redHue, num)}>
                         {this.state.devices[device].ping}
@@ -249,18 +258,18 @@ class PingTool extends Component<IProps, IState> {
                         <div style={buttonText}>Rove</div>
                       </button>
                     </div>
-                  )
+                  );
                 })}
               </div>
-            )
+            );
           })}
           <button type="button" onClick={this.AutoPingAll}>
             Auto Ping All
           </button>
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default PingTool
+export default PingTool;

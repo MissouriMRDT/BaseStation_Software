@@ -1,45 +1,45 @@
-import React, { Component } from "react"
-import CSS from "csstype"
-import CustomPackets from "./components/CustomPackets"
-import PingGraph from "./components/PingGraph"
-import PingTool from "./components/PingTool"
-import PacketLogger from "./components/PacketLogger"
-import PingMap from "./components/PingMap"
+import React, { Component } from 'react';
+import CSS from 'csstype';
+import CustomPackets from './components/CustomPackets';
+import PingGraph from './components/PingGraph';
+import PingTool from './components/PingTool';
+import PacketLogger from './components/PacketLogger';
+import PingMap from './components/PingMap';
 
 const row: CSS.Properties = {
-  display: "flex",
-  flexDirection: "row",
-}
+  display: 'flex',
+  flexDirection: 'row',
+};
 const column: CSS.Properties = {
-  display: "flex",
-  flexDirection: "column",
+  display: 'flex',
+  flexDirection: 'column',
   flexGrow: 1,
-  marginRight: "5px",
-}
+  marginRight: '5px',
+};
 
 interface IProps {}
 
 interface IState {
-  devices: any
+  devices: any;
 }
 
 class RoverOverviewOfNetwork extends Component<IProps, IState> {
   constructor(props: any) {
-    super(props)
+    super(props);
     this.state = {
       devices: {},
-    }
-    this.updateDevices = this.updateDevices.bind(this)
+    };
+    this.updateDevices = this.updateDevices.bind(this);
   }
 
   updateDevices(devices: any) {
-    this.setState({ devices })
+    this.setState({ devices });
   }
 
   render(): JSX.Element {
     return (
       <div>
-        <PingGraph devices={this.state.devices} style={{marginRight: "5px"}} />
+        <PingGraph devices={this.state.devices} style={{ marginRight: '5px' }} />
         <div style={row}>
           <div style={column}>
             <PingMap devices={this.state.devices} />
@@ -51,7 +51,7 @@ class RoverOverviewOfNetwork extends Component<IProps, IState> {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
-export default RoverOverviewOfNetwork
+export default RoverOverviewOfNetwork;
