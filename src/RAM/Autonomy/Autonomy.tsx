@@ -5,6 +5,7 @@ import Controls from './components/Controls';
 import StateDiagram from './components/StateDiagram';
 import Activity from './components/Activity';
 import Lighting from './components/Lighting';
+import DrivePower from './components/DrivePower';
 
 const row: CSS.Properties = {
   display: 'flex',
@@ -43,6 +44,9 @@ class Autonomy extends Component<IProps, IState> {
         <div style={row}>
           <Cameras defaultCamera={9} style={{ flex: 1, marginRight: '2.5px' }} />
           <Cameras defaultCamera={10} style={{ flex: 1, marginLeft: '2.5px' }} />
+        </div>
+        <div>
+          <DrivePower style={{ flex: 1, marginRight: '5px' }} />
         </div>
       </div>
     );
