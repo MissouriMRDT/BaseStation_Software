@@ -7,8 +7,6 @@ const container: CSS.Properties = {
   fontFamily: 'arial',
   height: '100px',
   width: '150px',
-  top: '24px',
-  left: '3px',
   borderColor: '#990000',
   borderStyle: 'solid',
   borderTopWidth: '30px',
@@ -23,6 +21,8 @@ const label: CSS.Properties = {
   fontFamily: 'arial',
   fontSize: '16px',
   color: '#ffffff',
+  top: '24px',
+  left: '3px',
 };
 
 interface IProps {}
