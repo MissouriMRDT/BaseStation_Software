@@ -38,6 +38,9 @@ const label: CSS.Properties = {
 const row: CSS.Properties = {
   display: 'flex',
   flexDirection: 'row',
+  justifyContent: 'space-around',
+  alignItems: 'center',
+  margin: '5px',
 };
 const slider: CSS.Properties = {
   background: '#990000',
@@ -54,6 +57,7 @@ interface IProps {
 interface IState {
   drivePower: {
     Max: number;
+    Min: number;
   };
 }
 
@@ -67,6 +71,7 @@ class Controls extends Component<IProps, IState> {
     this.state = {
       drivePower: {
         Max: 250,
+        Min: 50,
       },
     };
   }
