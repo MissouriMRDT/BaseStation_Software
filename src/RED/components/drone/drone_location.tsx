@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { rovecomm } from '../../../Core/RoveProtocol/Rovecomm';
 
 const container: CSS.Properties = {
