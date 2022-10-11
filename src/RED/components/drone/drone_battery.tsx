@@ -5,8 +5,8 @@ import { rovecomm } from '../../../Core/RoveProtocol/Rovecomm';
 const container: CSS.Properties = {
   display: 'grid',
   fontFamily: 'arial',
-  // height: '100px'
-  width: '150px',
+  height: '108px',
+  width: '204px',
   borderColor: '#990000',
   borderStyle: 'solid',
   borderTopWidth: '30px',
@@ -56,7 +56,7 @@ class DroneBattery extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div>
+      <div style={{ marginLeft: '15px' }}>
         <div style={label}>Drone Battery</div>
         <div style={container}>
           <div>Level: {this.state.level}%</div>

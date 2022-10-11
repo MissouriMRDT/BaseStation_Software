@@ -16,6 +16,8 @@ import ControlScheme from '../Core/components/ControlScheme';
 import Drive from './components/Drive';
 import Gimbal from './components/Gimbal';
 import ThreeDRover from '../Core/components/ThreeDRover';
+import DroneLocation from './components/drone/drone_location';
+import DroneBattery from './components/drone/drone_battery';
 
 const row: CSS.Properties = {
   display: 'flex',
@@ -115,6 +117,10 @@ class ControlCenter extends Component<IProps, IState> {
           <div style={row}>
             <GPS onCoordsChange={this.updateCoords} style={{ flexGrow: 1, marginRight: '5px', width: '60%' }} />
             <ThreeDRover style={{ width: '40%' }} />
+          </div>
+          <div style={{ ...row, width: '60%' }}>
+            <DroneLocation />
+            <DroneBattery />
           </div>
           <div style={{ ...row, height: '200px' }}>
             <Waypoints
