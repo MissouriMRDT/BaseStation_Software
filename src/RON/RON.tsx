@@ -5,6 +5,7 @@ import PingGraph from './components/PingGraph';
 import PingTool from './components/PingTool';
 import PacketLogger from './components/PacketLogger';
 import PingMap from './components/PingMap';
+import SentPacketLogger from './components/SentPacketLogger';
 
 const row: CSS.Properties = {
   display: 'flex',
@@ -44,6 +45,7 @@ class RoverOverviewOfNetwork extends Component<IProps, IState> {
           <div style={column}>
             <PingMap devices={this.state.devices} />
             <PacketLogger />
+            <SentPacketLogger />
           </div>
           <div style={column}>
             <CustomPackets />

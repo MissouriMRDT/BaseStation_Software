@@ -10,6 +10,7 @@ const h1Style: CSS.Properties = {
   fontSize: '18px',
   margin: '5px 0px',
 };
+
 const container: CSS.Properties = {
   display: 'flex',
   flexDirection: 'column',
@@ -59,7 +60,7 @@ interface IState {
   columns: any;
 }
 
-class PacketLogger extends Component<IProps, IState> {
+class SentPacketLogger extends Component<IProps, IState> {
   static defaultProps = {
     style: {},
   };
@@ -94,13 +95,14 @@ class PacketLogger extends Component<IProps, IState> {
     };
     this.boardChange = this.boardChange.bind(this);
     this.addData = this.addData.bind(this);
-    rovecomm.on(this.state.board, (data: any) => this.addData(data));
+    // rovecomm.on(this.state.board, (data: any) => this.addData(data));
+    rovecomm.on('BasestationCommand', (data: any) => this.addData(data));
   }
 
   boardChange(event: { target: { value: string } }): void {
     const board = event.target.value;
     rovecomm.removeAllListeners(this.state.board);
-    rovecomm.on(board, (data: any) => this.addData(data));
+
     this.setState({
       board,
       data: [],
@@ -113,7 +115,7 @@ class PacketLogger extends Component<IProps, IState> {
 
   exportPacket(): void {
     fs.writeFile(
-      'packetLog.csv',
+      'SentPacket.csv',
       this.state.data
         .map((temp: any) => {
           return `${temp.name}, ${temp.dataId}, ${temp.time}, ${temp.dataType}, ${temp.dataCount}, ${temp.data.join(
@@ -133,7 +135,7 @@ class PacketLogger extends Component<IProps, IState> {
   render(): JSX.Element {
     return (
       <div style={{ ...this.props.style }}>
-        <div style={label}>Received Packet Logger</div>
+        <div style={label}>Sent Packet Logger</div>
         <div style={container}>
           <div style={selectbox}>
             <div style={h1Style}>Board:</div>
@@ -155,7 +157,7 @@ class PacketLogger extends Component<IProps, IState> {
             defaultPageSize={10}
             resizable={false}
             showPageSizeOptions={false}
-            style={{ textAlign: 'center', margin: 'auto' }}
+            style={{ textAlign: 'center', margin: 'auto' }} // <button type="button" style={buttons} onClick={() => this.receivePackets()}></button>
           />
           <button type="button" style={buttons} onClick={() => this.exportPacket()}>
             Save Data
@@ -166,4 +168,4 @@ class PacketLogger extends Component<IProps, IState> {
   }
 }
 
-export default PacketLogger;
+export default SentPacketLogger;

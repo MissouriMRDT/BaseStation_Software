@@ -515,6 +515,15 @@ class Rovecomm extends EventEmitter {
     } else {
       this.sendTCP(packet, destinationIp, port);
     }
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    rovecomm.emit('BasestationCommand', {
+      name: dataIdStr,
+      dataId,
+      time: new Date().toLocaleTimeString(),
+      dataType,
+      dataCount,
+      data,
+    });
   }
 
   async resubscribe() {
