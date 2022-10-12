@@ -5,7 +5,6 @@ import { rovecomm } from '../../../Core/RoveProtocol/Rovecomm';
 const container: CSS.Properties = {
   display: 'grid',
   fontFamily: 'arial',
-  width: '312px',
   borderColor: '#990000',
   borderStyle: 'solid',
   borderTopWidth: '30px',
@@ -65,7 +64,7 @@ class DroneLocation extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div>
+      <div style={{ width: '60%' }}>
         <div style={label}>Drone Location</div>
         <div style={container}>
           <div>Roll: {this.state.roll}</div>

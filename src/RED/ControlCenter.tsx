@@ -118,7 +118,7 @@ class ControlCenter extends Component<IProps, IState> {
             <GPS onCoordsChange={this.updateCoords} style={{ flexGrow: 1, marginRight: '5px', width: '60%' }} />
             <ThreeDRover style={{ width: '40%' }} />
           </div>
-          <div style={{ ...row, width: '60%' }}>
+          <div style={row}>
             <DroneLocation />
             <DroneBattery />
           </div>

@@ -6,7 +6,6 @@ const container: CSS.Properties = {
   display: 'grid',
   fontFamily: 'arial',
   height: '108px',
-  width: '204px',
   borderColor: '#990000',
   borderStyle: 'solid',
   borderTopWidth: '30px',
@@ -56,7 +55,7 @@ class DroneBattery extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div style={{ marginLeft: '15px' }}>
+      <div style={{ marginLeft: '5px', width: '40%' }}>
         <div style={label}>Drone Battery</div>
         <div style={container}>
           <div>Level: {this.state.level}%</div>
