@@ -95,6 +95,7 @@ class Science extends Component<IProps, IState> {
             <RockLookUp style={{ marginLeft: '2.5px' }} />
           </div>
         </div>
+        <Fluorometer />
         <Cameras defaultCamera={7} />
       </div>
     );

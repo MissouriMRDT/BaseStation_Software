@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
 import fs from 'fs';
+import { FlexibleWidthXYPlot, XAxis, YAxis, HorizontalGridLines, LineSeries } from 'react-vis';
 import { rovecomm } from '../../../Core/RoveProtocol/Rovecomm';
 
 const container: CSS.Properties = {
@@ -137,6 +138,18 @@ class Fluorometer extends Component<IProps, IState> {
       <div id="Flurometer" style={this.props.style}>
         <div style={label}>Fluorometer</div>
         <div style={container}>
+          <FlexibleWidthXYPlot height={300}>
+            <HorizontalGridLines style={{ fill: 'none' }} />
+            <LineSeries
+              data={[
+                { x: 1, y: 10 },
+                { x: 2, y: 5 },
+                { x: 3, y: 15 },
+              ]}
+            />
+            <XAxis />
+            <YAxis />
+          </FlexibleWidthXYPlot>
           <div style={componentBox}>
             {this.state.DiodeValues.map((value, index) => {
               return (
