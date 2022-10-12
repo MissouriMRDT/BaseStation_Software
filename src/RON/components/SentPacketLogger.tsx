@@ -55,7 +55,6 @@ interface IProps {
 }
 
 interface IState {
-  board: string;
   data: any;
   columns: any;
 }
@@ -68,7 +67,6 @@ class SentPacketLogger extends Component<IProps, IState> {
   constructor(props: any) {
     super(props);
     this.state = {
-      board: 'Drive',
       data: [],
       columns: [
         { Header: 'Name', accessor: 'name', width: '100' },
@@ -93,20 +91,8 @@ class SentPacketLogger extends Component<IProps, IState> {
         },
       ],
     };
-    this.boardChange = this.boardChange.bind(this);
     this.addData = this.addData.bind(this);
-    // rovecomm.on(this.state.board, (data: any) => this.addData(data));
     rovecomm.on('BasestationCommand', (data: any) => this.addData(data));
-  }
-
-  boardChange(event: { target: { value: string } }): void {
-    const board = event.target.value;
-    rovecomm.removeAllListeners(this.state.board);
-
-    this.setState({
-      board,
-      data: [],
-    });
   }
 
   addData(newData: any): void {
@@ -137,18 +123,6 @@ class SentPacketLogger extends Component<IProps, IState> {
       <div style={{ ...this.props.style }}>
         <div style={label}>Sent Packet Logger</div>
         <div style={container}>
-          <div style={selectbox}>
-            <div style={h1Style}>Board:</div>
-            <select value={this.state.board} onChange={(e) => this.boardChange(e)} style={selector}>
-              {Object.keys(RovecommManifest).map((item) => {
-                return (
-                  <option key={item} value={item}>
-                    {item}
-                  </option>
-                );
-              })}
-            </select>
-          </div>
           <ReactTable
             className="-striped"
             data={this.state.data}
