@@ -17,13 +17,12 @@ const value: CSS.Properties = {
 };
 const container: CSS.Properties = {
   display: 'flex',
+  flexDirection: 'column',
   fontFamily: 'arial',
-  borderTopWidth: '30px',
+  borderTopWidth: '28px',
   borderColor: '#990000',
   borderBottomWidth: '2px',
   borderStyle: 'solid',
-  flexWrap: 'wrap',
-  justifyContent: 'center',
 };
 const label: CSS.Properties = {
   marginTop: '-10px',
@@ -44,7 +43,7 @@ const row: CSS.Properties = {
 };
 const slider: CSS.Properties = {
   background: '#990000',
-  width: '400px',
+  width: '40%',
   WebkitAppearance: 'none',
   appearance: 'none',
   height: '6px',
@@ -61,7 +60,7 @@ interface IState {
   };
 }
 
-class Controls extends Component<IProps, IState> {
+class DrivePower extends Component<IProps, IState> {
   static defaultProps = {
     style: {},
   };
@@ -77,10 +76,6 @@ class Controls extends Component<IProps, IState> {
   }
 
   sliderChange(event: { target: { value: string } }, multiplier: string): void {
-    /* When the slider changes, update the cooresponding multiplier in state.
-     * We use state multiplier for display reasons, but then write that to
-     * an exported variable to be used by the rest of the Arm system.
-     */
     this.setState((prevState) => ({
       drivePower: {
         ...prevState.drivePower,
@@ -116,4 +111,4 @@ class Controls extends Component<IProps, IState> {
   }
 }
 
-export default Controls;
+export default DrivePower;
