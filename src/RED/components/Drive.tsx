@@ -2,18 +2,9 @@ import React, { Component } from 'react';
 import CSS from 'csstype';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
 import { controllerInputs } from '../../Core/components/ControlScheme';
+import { Container } from '../../Core/components/CssConstants';
 
-const container: CSS.Properties = {
-  display: 'flex',
-  fontFamily: 'arial',
-  borderTopWidth: '30px',
-  borderColor: '#990000',
-  borderBottomWidth: '2px',
-  borderStyle: 'solid',
-  flexWrap: 'wrap',
-  flexDirection: 'column',
-  padding: '5px',
-};
+const container: CSS.Properties = Container();
 const label: CSS.Properties = {
   marginTop: '-10px',
   position: 'relative',
@@ -176,7 +167,7 @@ class Drive extends Component<IProps, IState> {
               Speed Limit:
               <input
                 type="text"
-                style={{ marginLeft: '5px' }}
+                style={{ marginLeft: '5px', backgroundColor: '#404040', color: 'white' }}
                 value={this.state.speedLimit || ''}
                 onChange={this.speedLimitChange}
               />

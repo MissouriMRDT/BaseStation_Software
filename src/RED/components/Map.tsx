@@ -2,21 +2,13 @@ import React, { Component } from 'react';
 import CSS from 'csstype';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import { LatLngTuple } from 'leaflet';
+import { Container,  Button } from '../../Core/components/CssConstants';
 
 import icon from './Icon';
 import compassNeedle from './CompassNeedle';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
 
-const container: CSS.Properties = {
-  display: 'flex',
-  flexDirection: 'row',
-  fontFamily: 'arial',
-  borderTopWidth: '28px',
-  borderColor: '#990000',
-  borderBottomWidth: '2px',
-  borderStyle: 'solid',
-  height: 'calc(100% - 35px)',
-};
+const container: CSS.Properties = Container();
 const label: CSS.Properties = {
   marginTop: '-10px',
   position: 'relative',

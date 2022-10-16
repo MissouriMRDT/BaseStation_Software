@@ -3,17 +3,9 @@ import CSS from 'csstype';
 import path from 'path';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
 import { controllerInputs } from '../../Core/components/ControlScheme';
+import { Container } from '../../Core/components/CssConstants';
 
-const container: CSS.Properties = {
-  display: 'flex',
-  fontFamily: 'arial',
-  borderTopWidth: '30px',
-  borderColor: '#990000',
-  borderBottomWidth: '2px',
-  borderStyle: 'solid',
-  flexWrap: 'wrap',
-  flexDirection: 'column',
-};
+const container: CSS.Properties = Container();
 const label: CSS.Properties = {
   marginTop: '-10px',
   position: 'relative',

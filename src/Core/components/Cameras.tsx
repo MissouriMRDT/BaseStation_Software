@@ -34,6 +34,9 @@ const container: CSS.Properties = {
   borderBottomWidth: '2px',
   borderStyle: 'solid',
   padding: '5px',
+  borderRadius: '5px',
+  backgroundColor: '#333333',
+  color: 'white',
 };
 const label: CSS.Properties = {
   marginTop: '-10px',

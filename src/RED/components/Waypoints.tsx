@@ -4,23 +4,14 @@ import fs from 'fs';
 import { TwitterPicker } from 'react-color';
 import path from 'path';
 import ThreeDRover from '../../Core/components/ThreeDRover';
+import { Container, Button } from '../../Core/components/CssConstants';
 
 const title: CSS.Properties = {
   fontFamily: 'arial',
   width: '25%',
   textAlign: 'center',
 };
-const container: CSS.Properties = {
-  display: 'flex',
-  flexDirection: 'column',
-  flexGrow: 1,
-  fontFamily: 'arial',
-  borderTopWidth: '28px',
-  borderColor: '#990000',
-  borderBottomWidth: '2px',
-  borderStyle: 'solid',
-  marginBottom: '5px',
-};
+const container: CSS.Properties = Container();
 const label: CSS.Properties = {
   marginTop: '-10px',
   position: 'relative',
@@ -47,12 +38,7 @@ const singleSelect: CSS.Properties = {
   lineHeight: '20px',
   fontSize: '16px',
 };
-const buttons: CSS.Properties = {
-  width: '30%',
-  margin: '2.5px',
-  fontSize: '14px',
-  lineHeight: '24px',
-};
+const buttons: CSS.Properties = Button();
 const modal: CSS.Properties = {
   position: 'absolute',
   width: '500px',
@@ -383,7 +369,7 @@ class Waypoints extends Component<IProps, IState> {
               const waypoint = this.state.storedWaypoints[waypointName];
               const backgroundStyle = {
                 ...listEntry,
-                backgroundColor: waypointName === this.state.selectedWaypoint ? 'lightblue' : 'white',
+                backgroundColor: waypointName === this.state.selectedWaypoint ? 'darkblue' : '#333333',
               };
               return (
                 <div

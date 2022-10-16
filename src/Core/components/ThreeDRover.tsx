@@ -16,6 +16,9 @@ const container: CSS.Properties = {
   padding: '5px',
   alignItems: 'center',
   height: 'calc(100% - 47px)',
+  borderRadius: '5px',
+  backgroundColor: '#333333',
+  color: 'white',
 };
 const label: CSS.Properties = {
   marginTop: '-10px',

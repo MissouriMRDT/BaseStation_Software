@@ -14,6 +14,9 @@ const container: CSS.Properties = {
   flexWrap: 'wrap',
   flexDirection: 'column',
   padding: '5px',
+  borderRadius: '5px',
+  backgroundColor: '#333333',
+  color: 'white',
 };
 const modal: CSS.Properties = {
   zIndex: 2,

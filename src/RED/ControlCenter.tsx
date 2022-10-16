@@ -16,6 +16,8 @@ import ControlScheme from '../Core/components/ControlScheme';
 import Drive from './components/Drive';
 import Gimbal from './components/Gimbal';
 import ThreeDRover from '../Core/components/ThreeDRover';
+import { DarkModeToggle } from '../Core/components/DarkMode';
+import { Container, Button } from '../Core/components/CssConstants';
 
 const row: CSS.Properties = {
   display: 'flex',
@@ -32,7 +34,8 @@ const column: CSS.Properties = {
   marginRight: '5px',
 };
 
-interface IProps {}
+const container: CSS.Properties = Container();
+const button: CSS.Properties = Button();
 
 interface IState {
   storedWaypoints: any;
@@ -137,17 +140,20 @@ class ControlCenter extends Component<IProps, IState> {
             />
             <Gimbal style={{ height: '100%' }} />
           </div>
+          <div style={{ ...row }}>
+            <DarkModeToggle />
+          </div>
           <div style={row}>
-            <button type="button" onClick={rovecomm.resubscribe} style={{ width: '100px' }}>
+            <button type="button" style={button} onClick={rovecomm.resubscribe}>
               Resubscribe All
             </button>
-            <button type="button" onClick={() => this.setState({ ronOpen: true })}>
+            <button type="button" style={button} onClick={() => this.setState({ ronOpen: true })}>
               Open Rover Overview of Network
             </button>
-            <button type="button" onClick={() => this.setState({ ramOpen: true })}>
+            <button type="button" style={button} onClick={() => this.setState({ ramOpen: true })}>
               Open Rover Attachment Manager
             </button>
-            <button type="button" onClick={() => this.setState({ ridOpen: true })}>
+            <button type="button" style={button} onClick={() => this.setState({ ridOpen: true })}>
               Open Rover Imagery Display
             </button>
           </div>

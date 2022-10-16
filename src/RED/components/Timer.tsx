@@ -7,6 +7,7 @@ import fs from 'fs';
 import ProgressBar from '../../Core/ProgressBar';
 import TrashCanIcon from '../../../assets/icons/TrashCanIcon.png';
 import ListReorderIcon from '../../../assets/icons/ListReorderIcon.png';
+import { Container, Button } from '../../Core/components/CssConstants';
 
 const label: CSS.Properties = {
   color: 'white',
@@ -18,11 +19,7 @@ const label: CSS.Properties = {
   left: '3px',
   zIndex: 1,
 };
-const mainButtons: CSS.Properties = {
-  height: '50px',
-  width: '100%',
-  fontSize: '30px',
-};
+const mainButtons: CSS.Properties = Button();
 const trashButtons: CSS.Properties = {
   padding: 'auto',
   width: '40px',
@@ -32,15 +29,7 @@ const ulStyle: CSS.Properties = {
   listStyleType: 'none',
   paddingLeft: '0px',
 };
-const container: CSS.Properties = {
-  fontFamily: 'arial',
-  textAlign: 'center',
-  borderTopWidth: '28px',
-  borderColor: '#990000',
-  borderBottomWidth: '2px',
-  borderStyle: 'solid',
-  padding: '5px',
-};
+const container: CSS.Properties = Container();
 const timeRead: CSS.Properties = {
   display: 'flex',
   flexDirection: 'row',
@@ -942,10 +931,30 @@ class Timer extends Component<IProps, IState> {
               </button>
             </div>
             <div style={{ ...column, flexGrow: 1 }}>
-              <button type="button" style={{ height: '20px' }} onClick={() => this.setState({ advOptionsOpen: true })}>
+              <button
+                type="button"
+                style={{
+                  fontSize: '23px',
+                  backgroundColor: '#404040',
+                  color: 'white',
+                  borderColor: '#990000',
+                  borderRadius: '5px',
+                }}
+                onClick={() => this.setState({ advOptionsOpen: true })}
+              >
                 Advanced Options
               </button>
-              <button type="button" style={{ height: '30px', fontSize: '23px' }} onClick={() => this.reset()}>
+              <button
+                type="button"
+                style={{
+                  fontSize: '23px',
+                  backgroundColor: '#404040',
+                  color: 'white',
+                  borderColor: '#990000',
+                  borderRadius: '5px',
+                }}
+                onClick={() => this.reset()}
+              >
                 RESET
               </button>
             </div>

@@ -3,6 +3,7 @@ import CSS from 'csstype';
 import { rovecomm, RovecommManifest } from '../../Core/RoveProtocol/Rovecomm';
 import { ColorStyleConverter } from '../../Core/ColorConverter';
 import { BitmaskUnpack } from '../../Core/BitmaskUnpack';
+import { Container, Button } from '../../Core/components/CssConstants';
 
 const label: CSS.Properties = {
   marginTop: '-10px',
@@ -18,20 +19,7 @@ const textPad: CSS.Properties = {
   paddingLeft: '10px',
   paddingRight: '10px',
 };
-const mainContainer: CSS.Properties = {
-  display: 'flex',
-  flexWrap: 'wrap',
-  flexDirection: 'column',
-  flexGrow: 1,
-  fontFamily: 'arial',
-  borderTopWidth: '28px',
-  borderColor: '#990000',
-  borderBottomWidth: '2px',
-  borderStyle: 'solid',
-  padding: '5px',
-  fontSize: '10px',
-  lineHeight: '10px',
-};
+const mainContainer: CSS.Properties = Container();
 const row: CSS.Properties = {
   display: 'flex',
   flexDirection: 'row',
@@ -64,11 +52,7 @@ const cellReadoutContainer: CSS.Properties = {
   display: 'grid',
   gridTemplateColumns: 'auto auto auto auto',
 };
-const btnStyle: CSS.Properties = {
-  width: '70px',
-  cursor: 'pointer',
-};
-
+const btnStyle: CSS.Properties = Button();
 /**
  * The specific function of turnOffReboot() originates from how the control boards
  * on the rover are programmed. If turnOffReboot() gets passed "0", the rover turns off.
