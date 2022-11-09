@@ -19,7 +19,12 @@ const label: CSS.Properties = {
   left: '3px',
   zIndex: 1,
 };
-const mainButtons: CSS.Properties = Button();
+const importedButtons: CSS.Properties = Button();
+const mainButtons: CSS.Properties = {
+  height: '50px',
+  width: '100%',
+  fontSize: '30px',
+};
 const trashButtons: CSS.Properties = {
   padding: 'auto',
   width: '40px',
@@ -30,6 +35,15 @@ const ulStyle: CSS.Properties = {
   paddingLeft: '0px',
 };
 const container: CSS.Properties = Container();
+const localContainer: CSS.Properties = {
+  fontFamily: 'arial',
+  textAlign: 'center',
+  borderTopWidth: '28px',
+  borderColor: '#990000',
+  borderBottomWidth: '2px',
+  borderStyle: 'solid',
+  padding: '5px',
+};
 const timeRead: CSS.Properties = {
   display: 'flex',
   flexDirection: 'row',
@@ -492,21 +506,29 @@ class Timer extends Component<IProps, IState> {
 
   advancedOptionsMenu(): JSX.Element {
     return (
-      <div style={Modal}>
+      <div style={{ ...Modal, ...container }}>
         <p>Advanced Options</p>
         <div>
-          <button type="button" onClick={() => this.previousTask()}>
+          <button type="button" onClick={() => this.previousTask()} style={importedButtons}>
             Prev Task
           </button>
-          <button type="button" onClick={() => this.setState({ timeSplitOpen: true, advOptionsOpen: false })}>
+          <button
+            type="button"
+            onClick={() => this.setState({ timeSplitOpen: true, advOptionsOpen: false })}
+            style={importedButtons}
+          >
             Open Split
           </button>
-          <button type="button" onClick={() => this.setState({ rmvAddOptionOpen: true, advOptionsOpen: false })}>
+          <button
+            type="button"
+            onClick={() => this.setState({ rmvAddOptionOpen: true, advOptionsOpen: false })}
+            style={importedButtons}
+          >
             Show/Edit List
           </button>
         </div>
         <div>
-          <button type="button" onClick={() => this.setState({ advOptionsOpen: false })}>
+          <button type="button" onClick={() => this.setState({ advOptionsOpen: false })} style={importedButtons}>
             back
           </button>
         </div>
@@ -526,6 +548,7 @@ class Timer extends Component<IProps, IState> {
           maxHeight: '150px',
           overflowY: 'scroll',
           overflow: 'auto',
+          ...container,
         }}
       >
         {this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks.map((task) => {
@@ -563,7 +586,7 @@ class Timer extends Component<IProps, IState> {
 
   timeSplitMenu(): JSX.Element {
     return (
-      <div id="Time Split Menu" style={splitMainMenu}>
+      <div id="Time Split Menu" style={{ ...splitMainMenu, ...container }}>
         {/* Large title at the top of the time split menu. */}
         <div style={timeSplitTitle}>Time Splitter</div>
 
@@ -578,13 +601,17 @@ class Timer extends Component<IProps, IState> {
               display: 'flex',
             }}
           >
-            <div>{this.state.parentMission[this.findIndex(this.state.selectedMission)].title}</div>
-            <div>{packOutput(this.state.parentMission[this.findIndex(this.state.selectedMission)].setTime)}</div>
+            <div style={container}>{this.state.parentMission[this.findIndex(this.state.selectedMission)].title}</div>
+            <div style={container}>
+              {packOutput(this.state.parentMission[this.findIndex(this.state.selectedMission)].setTime)}
+            </div>
           </div>
 
           {/* This block will print out the task list, along with its respected target times. If the
              currently selected mission has no tasks, then do not attempt to render any task data. */}
-          <div>{this.isTaskListEmpty(this.state.selectedMission) ? 'No Tasks Listed' : this.taskDifferenceList()}</div>
+          <div style={container}>
+            {this.isTaskListEmpty(this.state.selectedMission) ? 'No Tasks Listed' : this.taskDifferenceList()}
+          </div>
         </div>
 
         <div style={{ ...timeSplitMissionTitle, paddingTop: '5px', justifyContent: 'space-between', display: 'flex' }}>
@@ -602,7 +629,7 @@ class Timer extends Component<IProps, IState> {
         <div>
           <button
             type="button"
-            style={{ height: '50px', width: 'auto', fontSize: '30px' }}
+            style={{ height: '50px', width: 'auto', fontSize: '30px', ...importedButtons }}
             onClick={() => this.saveDifferences()}
           >
             Save Differences
@@ -610,12 +637,17 @@ class Timer extends Component<IProps, IState> {
         </div>
 
         <div>
-          <button type="button" onClick={() => this.setState({ timeSplitOpen: false, advOptionsOpen: true })}>
+          <button
+            type="button"
+            onClick={() => this.setState({ timeSplitOpen: false, advOptionsOpen: true })}
+            style={importedButtons}
+          >
             back
           </button>
           <button
             type="button"
             onClick={() => this.setState({ timeSplitOpen: false, advOptionsOpen: false, rmvAddOptionOpen: false })}
+            style={importedButtons}
           >
             close all
           </button>
@@ -626,19 +658,21 @@ class Timer extends Component<IProps, IState> {
 
   editMenu(): JSX.Element {
     return (
-      <div style={{ ...Modal, zIndex: 7 }}>
+      <div style={{ ...Modal, zIndex: 7, ...container }}>
         <p>Edit Task List</p>
         <form onSubmit={this.handleSubmit}>
           <div>
             <button
               type="button"
               onClick={() => this.setState((prevState) => ({ missionInputOpen: !prevState.missionInputOpen }))}
+              style={importedButtons}
             >
               Add Mission
             </button>
             <button
               type="button"
               onClick={() => this.setState((prevState) => ({ taskInputOpen: !prevState.taskInputOpen }))}
+              style={importedButtons}
             >
               Add Task
             </button>
@@ -708,7 +742,7 @@ class Timer extends Component<IProps, IState> {
                     type="button"
                     id={(mission.id * 5).toString()}
                     onClick={() => this.removeListItem(mission.id)}
-                    style={trashButtons}
+                    style={{ ...trashButtons, ...importedButtons }}
                   >
                     <img src={TrashCanIcon} alt="Trash Can Icon" />
                   </button>
@@ -748,7 +782,11 @@ class Timer extends Component<IProps, IState> {
                                                   placeholder={packOutput(subTask.setTime)}
                                                   style={{ width: '60%' }}
                                                 />
-                                                <button type="button" onClick={() => this.handleEdit(subTask.id)}>
+                                                <button
+                                                  type="button"
+                                                  onClick={() => this.handleEdit(subTask.id)}
+                                                  style={importedButtons}
+                                                >
                                                   save
                                                 </button>
                                               </div>
@@ -756,7 +794,7 @@ class Timer extends Component<IProps, IState> {
                                               <div>
                                                 {packOutput(subTask.setTime)}
                                                 <button
-                                                  style={{ margin: '2px' }}
+                                                  style={{ margin: '2px', ...importedButtons }}
                                                   type="button"
                                                   onClick={() => this.setState({ chosenEdit: subTask.id })}
                                                 >
@@ -768,7 +806,7 @@ class Timer extends Component<IProps, IState> {
                                           <button
                                             type="button"
                                             onClick={() => this.removeListItem(subTask.id)}
-                                            style={trashButtons}
+                                            style={{ ...trashButtons, ...importedButtons }}
                                           >
                                             <img src={TrashCanIcon} alt="Trash Can Icon" />
                                           </button>
@@ -790,12 +828,17 @@ class Timer extends Component<IProps, IState> {
             })}
           </div>
         </form>
-        <button type="button" onClick={() => this.setState({ rmvAddOptionOpen: false, advOptionsOpen: true })}>
+        <button
+          type="button"
+          onClick={() => this.setState({ rmvAddOptionOpen: false, advOptionsOpen: true })}
+          style={importedButtons}
+        >
           back
         </button>
         <button
           type="button"
           onClick={() => this.setState({ rmvAddOptionOpen: false, advOptionsOpen: false, timeSplitOpen: false })}
+          style={importedButtons}
         >
           close all
         </button>
@@ -805,7 +848,7 @@ class Timer extends Component<IProps, IState> {
 
   startMenu(): JSX.Element {
     return (
-      <div style={{ ...Modal, width: '50%' }}>
+      <div style={{ ...Modal, width: '50%', ...container }}>
         <div style={{ paddingTop: '5px' }}>Select Mission:</div>
         <div style={{ ...column, padding: '5px' }}>
           {this.state.parentMission.map((mission) => {
@@ -813,7 +856,7 @@ class Timer extends Component<IProps, IState> {
               <div key={mission.id} style={row}>
                 <button
                   type="button"
-                  style={{ width: '100%' }}
+                  style={{ width: '100%', ...importedButtons }}
                   onClick={() => this.setState({ selectedMission: mission.id, startMenuOpen: false })}
                 >
                   {mission.title}
@@ -823,7 +866,7 @@ class Timer extends Component<IProps, IState> {
           })}
         </div>
         <div style={{ paddingBottom: '2px' }}>
-          <button type="button" onClick={() => this.setState({ startMenuOpen: false })}>
+          <button type="button" onClick={() => this.setState({ startMenuOpen: false })} style={importedButtons}>
             close
           </button>
         </div>
@@ -835,7 +878,7 @@ class Timer extends Component<IProps, IState> {
     return (
       <div id="Primary Container">
         <div style={label}>Timer</div>
-        <div style={{ ...container, ...column }}>
+        <div style={{ ...container, ...column, ...localContainer }}>
           <div id="TotalTimeContainer" style={{ ...column, marginTop: '-2.5%', width: '98%' }}>
             <p style={{ marginBottom: '0px', fontSize: '15px', marginTop: '10px', fontWeight: 'bold' }}>
               {this.state.parentMission[this.findIndex(this.state.selectedMission)].title}
@@ -926,7 +969,11 @@ class Timer extends Component<IProps, IState> {
             }}
           >
             <div style={{ flexGrow: 3, width: '33%' }}>
-              <button type="button" style={mainButtons} onClick={() => this.handleStartStop()}>
+              <button
+                type="button"
+                style={{ ...mainButtons, ...importedButtons }}
+                onClick={() => this.handleStartStop()}
+              >
                 {this.state.isCounting ? <div>STOP</div> : <div>START</div>}
               </button>
             </div>
@@ -934,11 +981,8 @@ class Timer extends Component<IProps, IState> {
               <button
                 type="button"
                 style={{
-                  fontSize: '23px',
-                  backgroundColor: '#404040',
-                  color: 'white',
-                  borderColor: '#990000',
-                  borderRadius: '5px',
+                  height: '20px',
+                  ...importedButtons,
                 }}
                 onClick={() => this.setState({ advOptionsOpen: true })}
               >
@@ -947,11 +991,9 @@ class Timer extends Component<IProps, IState> {
               <button
                 type="button"
                 style={{
+                  height: '30px',
                   fontSize: '23px',
-                  backgroundColor: '#404040',
-                  color: 'white',
-                  borderColor: '#990000',
-                  borderRadius: '5px',
+                  ...importedButtons,
                 }}
                 onClick={() => this.reset()}
               >
@@ -959,7 +1001,7 @@ class Timer extends Component<IProps, IState> {
               </button>
             </div>
             <div style={{ flexGrow: 3, width: '33%' }}>
-              <button type="button" style={mainButtons} onClick={() => this.loadNextTask()}>
+              <button type="button" style={{ ...mainButtons, ...importedButtons }} onClick={() => this.loadNextTask()}>
                 {this.state.currentTask !==
                 this.state.parentMission[this.findIndex(this.state.selectedMission)].childTasks.length - 1 ? (
                   <div>NEXT TASK</div>

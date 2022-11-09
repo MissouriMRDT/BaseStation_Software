@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
-import { getCurrentTheme } from '../../Core/Components/DarkMode';
+import { Container } from '../../Core/components/CssConstants';
 // import { Packet } from "../../Core/RoveProtocol/Packet"
 
 const h1Style: CSS.Properties = {
@@ -11,44 +11,19 @@ const h1Style: CSS.Properties = {
   marginBlockStart: '0',
   marginBlockEnd: '0',
 };
-
-function Container(): CSS.Properties {
-  let temp: CSS.Properties;
-  if (getCurrentTheme() === 'dark') {
-    temp = {
-      display: 'grid',
-      fontFamily: 'arial',
-      borderTopWidth: '28px',
-      borderColor: '#990000',
-      borderBottomWidth: '2px',
-      borderStyle: 'solid',
-      gridRowStart: '2 & {}',
-      grid: 'repeat(4, 36px) / auto-flow dense',
-      padding: '5px',
-      height: 'calc(100% - 47px)',
-      borderRadius: '5px',
-      backgroundColor: '#333333',
-      color: 'white',
-    };
-  } else {
-    temp = {
-      display: 'grid',
-      fontFamily: 'arial',
-      borderTopWidth: '28px',
-      borderColor: '#990000',
-      borderBottomWidth: '2px',
-      borderStyle: 'solid',
-      gridRowStart: '2 & {}',
-      grid: 'repeat(4, 36px) / auto-flow dense',
-      padding: '5px',
-      height: 'calc(100% - 47px)',
-      borderRadius: '5px',
-    };
-  }
-  return temp;
-}
-
 const container: CSS.Properties = Container();
+const localContainer: CSS.Properties = {
+  display: 'grid',
+  fontFamily: 'arial',
+  borderTopWidth: '28px',
+  borderColor: '#990000',
+  borderBottomWidth: '2px',
+  borderStyle: 'solid',
+  gridRowStart: '2 & {}',
+  grid: 'repeat(4, 36px) / auto-flow dense',
+  padding: '5px',
+  height: 'calc(100% - 47px)',
+};
 const label: CSS.Properties = {
   marginTop: '-10px',
   position: 'relative',
@@ -134,7 +109,7 @@ class GPS extends Component<IProps, IState> {
     return (
       <div style={this.props.style}>
         <div style={label}>GPS</div>
-        <div style={container}>
+        <div style={{ ...container, ...localContainer }}>
           {[
             { title: 'Current Lat.', value: this.state.currentLat.toFixed(7) },
             { title: 'Current Lon.', value: this.state.currentLon.toFixed(7) },

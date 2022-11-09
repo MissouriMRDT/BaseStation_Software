@@ -3,11 +3,13 @@ import CSS from 'csstype';
 import Arm from './Arm/Arm';
 import Autonomy from './Autonomy/Autonomy';
 import Science from './Science/Science';
+import { Container } from '../Core/components/CssConstants';
 
 const RON: CSS.Properties = {
   height: '100%',
   width: '100%',
 };
+const ColorToggle: CSS.Properties = Container();
 const row: CSS.Properties = {
   display: 'flex',
   flexDirection: 'row',
@@ -46,7 +48,7 @@ class RoverAttachmentManager extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div style={RON}>
+      <div style={{ ...RON, ...ColorToggle }}>
         <div style={row}>
           {['Arm', 'Science', 'Autonomy'].map((screen) => {
             return (

@@ -33,10 +33,7 @@ const column: CSS.Properties = {
   flexShrink: 1,
   marginRight: '5px',
 };
-
-const container: CSS.Properties = Container();
 const button: CSS.Properties = Button();
-
 interface IState {
   storedWaypoints: any;
   currentCoords: { lat: number; lon: number };
@@ -144,7 +141,7 @@ class ControlCenter extends Component<IProps, IState> {
             <DarkModeToggle />
           </div>
           <div style={row}>
-            <button type="button" style={button} onClick={rovecomm.resubscribe}>
+            <button type="button" style={{ ...button, width: '100px' }} onClick={rovecomm.resubscribe}>
               Resubscribe All
             </button>
             <button type="button" style={button} onClick={() => this.setState({ ronOpen: true })}>

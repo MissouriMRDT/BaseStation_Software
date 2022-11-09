@@ -6,6 +6,16 @@ import { controllerInputs } from '../../Core/components/ControlScheme';
 import { Container } from '../../Core/components/CssConstants';
 
 const container: CSS.Properties = Container();
+const localContainer: CSS.Properties = {
+  display: 'flex',
+  fontFamily: 'arial',
+  borderTopWidth: '30px',
+  borderColor: '#990000',
+  borderBottomWidth: '2px',
+  borderStyle: 'solid',
+  flexWrap: 'wrap',
+  flexDirection: 'column',
+};
 const label: CSS.Properties = {
   marginTop: '-10px',
   position: 'relative',
@@ -106,7 +116,7 @@ class Gimbal extends Component<IProps, IState> {
     return (
       <div style={this.props.style}>
         <div style={label}>Gimbal</div>
-        <div style={container}>
+        <div style={{ ...container, ...localContainer }}>
           <img src={this.state.image} alt={this.state.controlling} />
         </div>
       </div>

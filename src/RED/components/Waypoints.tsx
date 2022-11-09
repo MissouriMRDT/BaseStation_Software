@@ -12,6 +12,17 @@ const title: CSS.Properties = {
   textAlign: 'center',
 };
 const container: CSS.Properties = Container();
+const localContainer: CSS.Properties = {
+  display: 'flex',
+  flexDirection: 'column',
+  flexGrow: 1,
+  fontFamily: 'arial',
+  borderTopWidth: '28px',
+  borderColor: '#990000',
+  borderBottomWidth: '2px',
+  borderStyle: 'solid',
+  marginBottom: '5px',
+};
 const label: CSS.Properties = {
   marginTop: '-10px',
   position: 'relative',
@@ -334,7 +345,7 @@ class Waypoints extends Component<IProps, IState> {
     return (
       <div style={this.props.style}>
         <div style={label}>Waypoints</div>
-        <div style={container}>
+        <div style={{ ...container, ...localContainer }}>
           <div style={row}>
             <button type="button" style={buttons} onClick={() => this.setState({ addingWaypoint: true })}>
               Add Waypoint

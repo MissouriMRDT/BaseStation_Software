@@ -5,6 +5,17 @@ import { controllerInputs } from '../../Core/components/ControlScheme';
 import { Container } from '../../Core/components/CssConstants';
 
 const container: CSS.Properties = Container();
+const localContainer: CSS.Properties = {
+  display: 'flex',
+  fontFamily: 'arial',
+  borderTopWidth: '30px',
+  borderColor: '#990000',
+  borderBottomWidth: '2px',
+  borderStyle: 'solid',
+  flexWrap: 'wrap',
+  flexDirection: 'column',
+  padding: '5px',
+};
 const label: CSS.Properties = {
   marginTop: '-10px',
   position: 'relative',
@@ -137,7 +148,7 @@ class Drive extends Component<IProps, IState> {
     return (
       <div style={this.props.style}>
         <div style={label}>Drive</div>
-        <div style={container}>
+        <div style={{ ...container, ...localContainer }}>
           <div style={row}>
             <progress
               value={this.state.leftSpeed < 0 ? -this.state.leftSpeed : 0}
@@ -167,7 +178,7 @@ class Drive extends Component<IProps, IState> {
               Speed Limit:
               <input
                 type="text"
-                style={{ marginLeft: '5px', backgroundColor: '#404040', color: 'white' }}
+                style={{ marginLeft: '5px', backgroundColor: '#990000', color: 'white' }}
                 value={this.state.speedLimit || ''}
                 onChange={this.speedLimitChange}
               />

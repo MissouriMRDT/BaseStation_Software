@@ -3,8 +3,9 @@ import React, { Component } from 'react';
 import CSS from 'csstype';
 import path from 'path';
 import fs from 'fs';
+import { Container, BlockButton, Selector } from './CssConstants';
 
-const container: CSS.Properties = {
+const localContainer: CSS.Properties = {
   display: 'flex',
   fontFamily: 'arial',
   borderTopWidth: '30px',
@@ -14,10 +15,10 @@ const container: CSS.Properties = {
   flexWrap: 'wrap',
   flexDirection: 'column',
   padding: '5px',
-  borderRadius: '5px',
-  backgroundColor: '#333333',
-  color: 'white',
 };
+const container: CSS.Properties = Container();
+const button: CSS.Properties = BlockButton();
+const selector: CSS.Properties = Selector();
 const modal: CSS.Properties = {
   zIndex: 2,
   position: 'absolute',
@@ -344,6 +345,7 @@ class ControlScheme extends Component<IProps, IState> {
                     onClick={() =>
                       this.setState((prevState) => ({ controlPreviewModal: !prevState.controlPreviewModal }))
                     }
+                    style={button}
                   >
                     back
                   </button>
@@ -360,7 +362,7 @@ class ControlScheme extends Component<IProps, IState> {
     return (
       <div style={this.props.style}>
         <div style={label}>Control Scheme</div>
-        <div style={container}>
+        <div style={{ ...container, ...localContainer }}>
           {this.props.configs.map((config) => {
             return (
               <div key={config} style={row}>
@@ -368,7 +370,7 @@ class ControlScheme extends Component<IProps, IState> {
                 <select
                   value={this.state.functionality[config].controller}
                   onChange={(e) => this.controllerChange(e, config)}
-                  style={{ flex: 1 }}
+                  style={{ flex: 1, ...selector }}
                 >
                   {['Xbox 1', 'Xbox 2', 'Xbox 3', 'Flight Stick'].map((controllerSelect) => {
                     return (
@@ -381,7 +383,7 @@ class ControlScheme extends Component<IProps, IState> {
                 <select
                   value={this.state.functionality[config].scheme}
                   onChange={(e) => this.schemeChange(e, config)}
-                  style={{ flex: 1 }}
+                  style={{ flex: 1, ...selector }}
                 >
                   {Object.keys(CONTROLLERINPUT).map((scheme) => {
                     if (
@@ -396,7 +398,7 @@ class ControlScheme extends Component<IProps, IState> {
                     return null;
                   })}
                 </select>
-                <button style={{ zIndex: 1 }} type="button" onClick={() => this.buttonToggle(config)}>
+                <button style={{ zIndex: 1, ...button }} type="button" onClick={() => this.buttonToggle(config)}>
                   {this.state.functionality[config].toggled}
                 </button>
               </div>
@@ -405,7 +407,7 @@ class ControlScheme extends Component<IProps, IState> {
           <button
             type="button"
             onClick={() => this.setState((prevState) => ({ controlPreviewModal: !prevState.controlPreviewModal }))}
-            style={{ width: '120px', alignSelf: 'center' }}
+            style={{ width: '120px', alignSelf: 'center', ...button }}
           >
             {this.state.controlPreviewModal ? 'Hide Controls' : 'Show Controls'}
           </button>

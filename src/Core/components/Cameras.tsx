@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import CSS from 'csstype';
 import html2canvas from 'html2canvas';
 import fs from 'fs';
+import { Container, Button } from './CssConstants';
 
 import { windows } from '../Window';
 import no_cam_img from '../../../assets/no_cam_img.png';
@@ -25,7 +26,8 @@ const h1Style: CSS.Properties = {
   fontFamily: 'arial',
   fontSize: '12px',
 };
-const container: CSS.Properties = {
+const container: CSS.Properties = Container();
+const localContainer: CSS.Properties = {
   display: 'flex',
   flexDirection: 'column',
   fontFamily: 'arial',
@@ -34,10 +36,8 @@ const container: CSS.Properties = {
   borderBottomWidth: '2px',
   borderStyle: 'solid',
   padding: '5px',
-  borderRadius: '5px',
-  backgroundColor: '#333333',
-  color: 'white',
 };
+const button: CSS.Properties = Button();
 const label: CSS.Properties = {
   marginTop: '-10px',
   position: 'relative',
@@ -195,7 +195,7 @@ class Cameras extends Component<IProps, IState> {
     return (
       <div id="camera" style={this.props.style}>
         <div style={label}>Cameras</div>
-        <div style={container}>
+        <div style={{ ...container, ...localContainer }}>
           <div style={column}>
             <div style={row}>
               {cameraNumList.map((num) => {
@@ -207,6 +207,7 @@ class Cameras extends Component<IProps, IState> {
                     style={{
                       flexGrow: 1,
                       borderWidth: this.state.currentCamera === num ? 'medium' : 'thin',
+                      ...button,
                     }}
                   >
                     <h1 style={h1Style}>{num}</h1>
@@ -221,18 +222,22 @@ class Cameras extends Component<IProps, IState> {
               id={this.state.id}
             />
             <div style={row}>
-              <button type="button" onClick={() => this.saveImage()} style={{ width: '50%' }}>
+              <button type="button" onClick={() => this.saveImage()} style={{ width: '50%', ...button }}>
                 Screenshot
               </button>
-              <button type="button" onClick={() => this.rotate()} style={{ width: '50%' }}>
+              <button type="button" onClick={() => this.rotate()} style={{ width: '50%', ...button }}>
                 Rotate
               </button>
             </div>
             <div style={row}>
-              <button type="button" onClick={() => this.setState({ currentCamera: 0 })} style={{ width: '50%' }}>
+              <button
+                type="button"
+                onClick={() => this.setState({ currentCamera: 0 })}
+                style={{ width: '50%', ...button }}
+              >
                 Stop Listening
               </button>
-              <button type="button" onClick={() => this.refresh()} style={{ width: '50%' }}>
+              <button type="button" onClick={() => this.refresh()} style={{ width: '50%', ...button }}>
                 Refresh
               </button>
             </div>

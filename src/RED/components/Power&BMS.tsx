@@ -19,7 +19,21 @@ const textPad: CSS.Properties = {
   paddingLeft: '10px',
   paddingRight: '10px',
 };
-const mainContainer: CSS.Properties = Container();
+const container: CSS.Properties = Container();
+const mainContainer: CSS.Properties = {
+  display: 'flex',
+  flexWrap: 'wrap',
+  flexDirection: 'column',
+  flexGrow: 1,
+  fontFamily: 'arial',
+  borderTopWidth: '28px',
+  borderColor: '#990000',
+  borderBottomWidth: '2px',
+  borderStyle: 'solid',
+  padding: '5px',
+  fontSize: '10px',
+  lineHeight: '10px',
+};
 const row: CSS.Properties = {
   display: 'flex',
   flexDirection: 'row',
@@ -239,7 +253,7 @@ class Power extends Component<IProps, IState> {
     return (
       <div style={this.props.style}>
         <div style={label}>Power and BMS</div>
-        <div style={mainContainer}>
+        <div style={{ ...container, ...mainContainer }}>
           <div style={{ ...column, ...readoutContainter }}>
             {Object.keys(this.state.boardTelemetry).map((board: string) => {
               return (
@@ -274,7 +288,7 @@ class Power extends Component<IProps, IState> {
               onClick={() => {
                 this.allMotorToggle(true);
               }}
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: 'pointer', ...btnStyle }}
             >
               Enable All Motors
             </button>
@@ -283,14 +297,14 @@ class Power extends Component<IProps, IState> {
               onClick={() => {
                 this.allMotorToggle(false);
               }}
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: 'pointer', ...btnStyle }}
             >
               Disable All Motors
             </button>
-            <button type="button" onClick={() => turnOffReboot(5)} style={{ cursor: 'pointer' }}>
+            <button type="button" onClick={() => turnOffReboot(5)} style={{ cursor: 'pointer', ...btnStyle }}>
               REBOOT
             </button>
-            <button type="button" onClick={() => turnOffReboot(0)} style={{ cursor: 'pointer' }}>
+            <button type="button" onClick={() => turnOffReboot(0)} style={{ cursor: 'pointer', ...btnStyle }}>
               SHUT DOWN
             </button>
           </div>

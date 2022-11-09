@@ -4,8 +4,10 @@ import path from 'path';
 import { rovecomm } from '../RoveProtocol/Rovecomm';
 import STLViewer from './STLViewer';
 import { windows } from '../Window';
+import { Container, Button } from './CssConstants';
 
-const container: CSS.Properties = {
+const container: CSS.Properties = Container();
+const localContainer: CSS.Properties = {
   display: 'flex',
   flexDirection: 'column',
   fontFamily: 'arial',
@@ -16,9 +18,6 @@ const container: CSS.Properties = {
   padding: '5px',
   alignItems: 'center',
   height: 'calc(100% - 47px)',
-  borderRadius: '5px',
-  backgroundColor: '#333333',
-  color: 'white',
 };
 const label: CSS.Properties = {
   marginTop: '-10px',
@@ -102,7 +101,7 @@ class ThreeDRover extends Component<IProps, IState> {
     return (
       <div style={this.props.style}>
         <div style={label}>3D Rover</div>
-        <div style={container} id={this.state.id}>
+        <div style={{ ...container, ...localContainer }} id={this.state.id}>
           <STLViewer
             model={ROVER_FILE}
             modelColor="#B92C2C"
