@@ -32,7 +32,6 @@ if (fs.existsSync(filepath)) {
   SystemPackets = manifest.SystemPackets;
   NetworkDevices = manifest.NetworkDevices;
   ethernetUDPPort = manifest.ethernetUDPPort;
-  console.log(typeof RovecommManifest);
 }
 
 // There is a fundamental implementation difference between these required imports
