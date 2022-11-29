@@ -3,6 +3,7 @@ import CSS from 'csstype';
 import Arm from './Arm/Arm';
 import Autonomy from './Autonomy/Autonomy';
 import Science from './Science/Science';
+import Drone from './Drone/Drone';
 
 const RON: CSS.Properties = {
   height: '100%',
@@ -48,7 +49,7 @@ class RoverAttachmentManager extends Component<IProps, IState> {
     return (
       <div style={RON}>
         <div style={row}>
-          {['Arm', 'Science', 'Autonomy'].map((screen) => {
+          {['Arm', 'Science', 'Autonomy', 'Drone'].map((screen) => {
             return (
               <button
                 type="button"
@@ -67,6 +68,7 @@ class RoverAttachmentManager extends Component<IProps, IState> {
         {this.state.displayed === 'Arm' && <Arm />}
         {this.state.displayed === 'Science' && <Science />}
         {this.state.displayed === 'Autonomy' && <Autonomy selectedWaypoint={this.props.selectedWaypoint} />}
+        {this.state.displayed === 'Drone' && <Drone selectedWaypoint={this.props.selectedWaypoint} />}
       </div>
     );
   }
