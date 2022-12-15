@@ -135,23 +135,17 @@
           "dataCount": 1,
           "comments": "M1, M2, M3, M4, M5, M6, Spare"
         },
-        "TwelveVActBusEnable": {
+        "HighBusEnable": {
           "dataId": 3001,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "Aux"
+          "comments": "Aux, Spare High"
         },
-        "TwelveVLogicBusEnable": {
+        "LowBusEnable": {
           "dataId": 3002,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "Gimbal, Drive, Multi, Nav, Cam1, Cam2, BBB, Spare 12V"
-        },
-        "ThirtyVBusEnable": {
-          "dataId": 3003,
-          "dataType": "UINT8_T",
-          "dataCount": 1,
-          "comments": "Spare 30V"
+          "comments": "Gimbal, Drive, Multi, Nav, Cam, BBB, Spare Low"
         }
       },
       "Telemetry": {
@@ -161,47 +155,35 @@
           "dataCount": 1,
           "comments": "M1, M2, M3, M4, M5, M6, Spare"
         },
-        "TwelveVActBusEnabled": {
+        "HighBusEnabled": {
           "dataId": 3101,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "Aux"
+          "comments": "Aux, Spare High"
         },
-        "TwelveVLogicBusEnabled": {
+        "LowBusEnabled": {
           "dataId": 3102,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "Gimbal, Drive, Multi, Nav, Cam1, Cam2, BBB, Spare 12V"
-        },
-        "ThirtyVEnabled": {
-          "dataId": 3103,
-          "dataType": "UINT8_T",
-          "dataCount": 1,
-          "comments": "Spare 30V"
+          "comments": "Gimbal, Drive, Multi, Nav, Cam, BBB, Spare Low"
         },
         "MotorBusCurrent": {
-          "dataId": 3104,
+          "dataId": 3103,
           "dataType": "FLOAT_T",
           "dataCount": 7,
           "comments": "M1, M2, M3, M4, M5, M6, Spare"
         },
-        "TwelveVActBusCurrent": {
+        "HighBusCurrent": {
+          "dataId": 3104,
+          "dataType": "FLOAT_T",
+          "dataCount": 2,
+          "comments": "Aux, Spare High"
+        },
+        "LowBusCurrent": {
           "dataId": 3105,
           "dataType": "FLOAT_T",
-          "dataCount": 1,
-          "comments": "Aux"
-        },
-        "TwelveVLogicBusCurrent": {
-          "dataId": 3106,
-          "dataType": "FLOAT_T",
-          "dataCount": 8,
-          "comments": "Gimbal, Drive, Multi, Nav, Cam1, Cam2, BBB, Spare 12V"
-        },
-        "ThirtyVBusCurrent": {
-          "dataId": 3107,
-          "dataType": "FLOAT_T",
-          "dataCount": 4,
-          "comments": "Spare 30V"
+          "dataCount": 7,
+          "comments": "Gimbal, Drive, Multi, Nav, Cam, BBB, Spare Low"
         }
       },
       "Error": {
@@ -211,23 +193,17 @@
           "dataCount": 1,
           "comments": "[(0-undermaxcurrent, 1-overcurrent)] [M1, M2, M3, M4, M5, M6, Spare (Bitmask)]"
         },
-        "TwelveVActBusOverCurrent": {
+        "HighBusOverCurrent": {
           "dataId": 3201,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "[(0-undermaxcurrent, 1-overcurrent)] [Aux (Bitmask)]"
+          "comments": "[(0-undermaxcurrent, 1-overcurrent)] [Aux, Spare High (Bitmask)]"
         },
-        "ThirtyVBusOverCurrent": {
+        "LowBusOverCurrent": {
           "dataId": 3202,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "[(0-undermaxcurrent, 1-overcurrent)] [Spare (Bitmask)]"
-        },
-        "TwelveVLogicBusOverCurrent": {
-          "dataId": 3203,
-          "dataType": "UINT8_T",
-          "dataCount": 1,
-          "comments": "[(0-undermaxcurrent, 1-overcurrent)] [Gimbal, Drive, Multi, Nav, Cam1, Cam2, BBB, Spare (Bitmask)]"
+          "comments": "[(0-undermaxcurrent, 1-overcurrent)] [Gimbal, Drive, Multi, Nav, Cam, BBB, Spare Low (Bitmask)]"
         }
       }
     },
@@ -272,7 +248,7 @@
         },
         "SatelliteCountData": {
           "dataId": 5103,
-          "dataType": "UINT16_T",
+          "dataType": "UINT8_T",
           "dataCount": 1,
           "comments": "[Number of satellites]"
         }
@@ -294,26 +270,26 @@
         "LeftDriveGimbalIncrement": {
           "dataId": 6000,
           "dataType": "INT16_T",
-          "dataCount": 2,
-          "comments": "[Pan, Tilt](degrees 0-180)"
+          "dataCount": 1,
+          "comments": "[Tilt](degrees -180-180)"
         },
         "RightDriveGimbalIncrement": {
           "dataId": 6001,
           "dataType": "INT16_T",
-          "dataCount": 2,
-          "comments": "[Pan, Tilt](degrees 0-180)"
+          "dataCount": 1,
+          "comments": "[Tilt](degrees -180-180)"
         },
         "LeftMainGimbalIncrement": {
           "dataId": 6002,
           "dataType": "INT16_T",
           "dataCount": 2,
-          "comments": "[Pan, Tilt](degrees 0-180)"
+          "comments": "[Pan, Tilt](degrees -180-180)"
         },
         "RightMainGimbalIncrement": {
           "dataId": 6003,
           "dataType": "INT16_T",
           "dataCount": 2,
-          "comments": "[Pan, Tilt](degrees 0-180)"
+          "comments": "[Pan, Tilt](degrees -180-180)"
         },
         "InitiateTestRoutine": {
           "dataId": 6004,
@@ -330,32 +306,26 @@
       "Port": 11010,
       "MAC": "222.173.190.168.1.140",
       "Commands": {
-        "HeadlightIntensity": {
-          "dataId": 7000,
-          "dataType": "UINT8_T",
-          "dataCount": 1,
-          "comments": "Headlight intensity for the front of rover"
-        },
         "LEDRGB": {
-          "dataId": 7001,
+          "dataId": 7000,
           "dataType": "UINT8_T",
           "dataCount": 3,
           "comments": "[R, G, B] (0, 255)"
         },
         "LEDPatterns": {
-          "dataId": 7002,
+          "dataId": 7001,
           "dataType": "UINT8_T",
           "dataCount": 1,
           "comments": "[Pattern] (Enum)"
         },
         "StateDisplay": {
-          "dataId": 7003,
+          "dataId": 7002,
           "dataType": "UINT8_T",
           "dataCount": 1,
           "comments": "[Teleop, Autonomy, Reached Goal] (enum)"
         },
         "Brightness": {
-          "dataId": 7004,
+          "dataId": 7003,
           "dataType": "UINT8_T",
           "dataCount": 1,
           "comments": "Set Brightness (0-255)"
@@ -524,9 +494,9 @@
         },
         "Water": {
           "dataId": 9001,
-          "dataType": "UINT16_T",
+          "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "Water solenoid #[9, 8, 7, 6, 5, 4, 3, 2, 1] (0-Closed, 1-Open)"
+          "comments": "Water solenoid group #[3, 2, 1] (0-Closed, 1-Open)"
         },
         "LimitSwitchOverride": {
           "dataId": 9002,
@@ -680,6 +650,12 @@
           "dataType": "UINT8_T",
           "dataCount": 1,
           "comments": ""
+        },
+        "SetMaxSpeed": {
+          "dataId": 11006,
+          "dataType": "UINT16_T",
+          "dataCount": 1,
+          "comments": ""
         }
       },
       "Telemetry": {
@@ -704,26 +680,10 @@
       },
       "Error": {}
     },
-    "Camera1": {
+    "Camera": {
       "Ip": "192.168.1.141",
       "Port": 11011,
       "MAC": "222.173.190.168.1.141",
-      "Commands": {},
-      "Telemetry": {},
-      "Error": {}
-    },
-    "Camera2": {
-      "Ip": "192.168.1.142",
-      "Port": 11012,
-      "MAC": "222.173.190.168.1.142",
-      "Commands": {},
-      "Telemetry": {},
-      "Error": {}
-    },
-    "PRController": {
-      "Ip": "192.168.1.143",
-      "Port": 11013,
-      "MAC": "222.173.190.168.1.143",
       "Commands": {},
       "Telemetry": {},
       "Error": {}
@@ -762,23 +722,16 @@
           "comments": "Bitmask (1-Overheated, 0-not overheated)"
         }
       }
-    },
-    "MicroPi": {
-      "Ip": "192.168.1.145",
-      "Port": 11015,
-      "MAC": "222.173.190.168.1.145",
-      "Commands": {},
-      "Telemetry": {},
-      "Error": {}
     }
   },
   "NetworkDevices": {
     "BasestationSwitch": { "Ip": "192.168.1.80" },
+    "RoverSwitch": { "Ip": "192.168.1.81" },
     "Rover900MHzRocket": { "Ip": "192.168.1.82" },
     "Basestation900MHzRocket": { "Ip": "192.168.1.83" },
     "Rover5GHzRocket": { "Ip": "192.168.1.84" },
     "Basestation5GHzRocket": { "Ip": "192.168.1.85" },
     "Rover2_4GHzRocket": { "Ip": "192.168.1.86" },
-    "GrandStream": { "Ip": "192.168.1.226" }
+    "Basestation2_4GHzRocket": { "Ip": "192.168.1.87"}
   }
 }
