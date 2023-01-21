@@ -14,33 +14,33 @@ const button: CSS.Properties = {
 };
 const filepath = path.join(__dirname, '../assets/ThemeState.json');
 
-interface IProps {}
-
-interface IState {
-  currentTheme: string;
+interface IProps {
+  themeCallback: any;
 }
+
+interface IState {}
 
 export class DarkModeToggle extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
-    let storedTheme = 'light';
-    if (fs.existsSync(filepath)) {
-      storedTheme = JSON.parse(fs.readFileSync(filepath).toString());
-      if (storedTheme === '') {
-        fs.writeFile(filepath, JSON.stringify('light'), (err) => {
-          if (err) throw err;
-        });
-        storedTheme = 'light';
-      }
-    }
-    this.state = {
-      currentTheme: storedTheme,
-    };
-    if (this.state.currentTheme === 'light') {
-      document.body.style.backgroundColor = 'white';
-    } else {
-      document.body.style.backgroundColor = '#252525';
-    }
+    // let storedTheme = 'light';
+    // if (fs.existsSync(filepath)) {
+    //   storedTheme = JSON.parse(fs.readFileSync(filepath).toString());
+    //   if (storedTheme === '') {
+    //     fs.writeFile(filepath, JSON.stringify('light'), (err) => {
+    //       if (err) throw err;
+    //     });
+    //     storedTheme = 'light';
+    //   }
+    // }
+    // this.state = {
+    //   theme: storedTheme,
+    // };
+    // if (this.props.theme === 'light') {
+    //   document.body.style.backgroundColor = 'white';
+    // } else {
+    //   document.body.style.backgroundColor = '#252525';
+    // }
     this.toggle = this.toggle.bind(this);
   }
 
@@ -54,28 +54,7 @@ export class DarkModeToggle extends React.Component<IProps, IState> {
   // }
 
   toggle(): void {
-    let currentTheme: string;
-    if (this.state.currentTheme === 'light') {
-      currentTheme = 'dark';
-      fs.writeFile(filepath, JSON.stringify('dark'), (err) => {
-        if (err) throw err;
-      });
-      this.setState({
-        currentTheme,
-      });
-      document.body.style.backgroundColor = '#252525';
-      console.log('set state to dark mode');
-    } else {
-      currentTheme = 'light';
-      fs.writeFile(filepath, JSON.stringify('light'), (err) => {
-        if (err) throw err;
-      });
-      this.setState({
-        currentTheme,
-      });
-      document.body.style.backgroundColor = 'white';
-      console.log('set state to light mode');
-    }
+    this.props.themeCallback();
     // window.location.reload();
   }
 
@@ -90,8 +69,4 @@ export class DarkModeToggle extends React.Component<IProps, IState> {
   }
 }
 
-const props = {};
-export function getCurrentTheme(): string {
-  const currTheme = new DarkModeToggle(props);
-  return currTheme.state.currentTheme;
-}
+export default DarkModeToggle;
