@@ -76,7 +76,7 @@ export class DarkModeToggle extends React.Component<IProps, IState> {
       document.body.style.backgroundColor = 'white';
       console.log('set state to light mode');
     }
-    window.location.reload();
+    // window.location.reload();
   }
 
   render(): JSX.Element {

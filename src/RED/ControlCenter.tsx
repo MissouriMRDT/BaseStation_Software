@@ -17,7 +17,7 @@ import Drive from './components/Drive';
 import Gimbal from './components/Gimbal';
 import ThreeDRover from '../Core/components/ThreeDRover';
 import { DarkModeToggle } from '../Core/components/DarkMode';
-import { Container, Button } from '../Core/components/CssConstants';
+import { DButton, LButton } from '../Core/components/CssConstants';
 
 const row: CSS.Properties = {
   display: 'flex',
@@ -26,6 +26,10 @@ const row: CSS.Properties = {
   flexGrow: 1,
   justifyContent: 'space-between',
 };
+function getRow(): CSS.Properties {
+  return row;
+}
+
 const column: CSS.Properties = {
   display: 'flex',
   flexDirection: 'column',
@@ -33,7 +37,15 @@ const column: CSS.Properties = {
   flexShrink: 1,
   marginRight: '5px',
 };
-const button: CSS.Properties = Button();
+// const button: CSS.Properties = Button();
+function button(theme: string): CSS.Properties {
+  if (theme === 'light') {
+    return LButton;
+  }
+  return DButton;
+}
+
+interface IProps {}
 interface IState {
   storedWaypoints: any;
   currentCoords: { lat: number; lon: number };
@@ -41,6 +53,7 @@ interface IState {
   ramOpen: boolean;
   ridOpen: boolean;
   fourthHeight: number;
+  theme: string;
 }
 
 class ControlCenter extends Component<IProps, IState> {
@@ -55,11 +68,33 @@ class ControlCenter extends Component<IProps, IState> {
       ramOpen: false,
       ridOpen: false,
       fourthHeight: 1920 / 4 - 10,
+      theme: 'light',
     };
     this.updateWaypoints = this.updateWaypoints.bind(this);
     this.updateCoords = this.updateCoords.bind(this);
 
     window.addEventListener('resize', () => this.setState({ fourthHeight: window.innerHeight / 4 }));
+  }
+
+  setTheme(): void {
+    let currentTheme: string;
+    if (this.state.theme === 'light') {
+      currentTheme = 'dark';
+      // fs.writeFile(filepath, JSON.stringify('dark'), (err) => {
+      //   if (err) throw err;
+      // });
+      this.setState({ theme: currentTheme });
+      // document.body.style.backgroundColor = '#252525';
+      console.log('set state to dark mode');
+    } else {
+      currentTheme = 'light';
+      // fs.writeFile(filepath, JSON.stringify('light'), (err) => {
+      //   if (err) throw err;
+      // });
+      this.setState({ theme: currentTheme });
+      // document.body.style.backgroundColor = 'white';
+      console.log('set state to light mode');
+    }
   }
 
   updateWaypoints(storedWaypoints: any): void {
@@ -76,7 +111,7 @@ class ControlCenter extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div style={row}>
+      <div style={getRow()}>
         {
           // onClose will be fired when the new window is closed
           // everything inside NewWindowComponent is considered props.children and will be
@@ -107,7 +142,11 @@ class ControlCenter extends Component<IProps, IState> {
           // displayed in a new window
           this.state.ridOpen && (
             <NewWindowComponent onClose={() => this.setState({ ridOpen: false })} name="Rover Imagery Display">
-              <RoverImageryDisplay rowcol="" style={{ width: '100%', height: '100%' }} store={() => {}} />
+              <RoverImageryDisplay
+                rowcol=""
+                style={{ width: '100%', height: '100%', backgroundColor: '#404040' }}
+                store={() => {}}
+              />
             </NewWindowComponent>
           )
         }
@@ -138,19 +177,23 @@ class ControlCenter extends Component<IProps, IState> {
             <Gimbal style={{ height: '100%' }} />
           </div>
           <div style={{ ...row }}>
-            <DarkModeToggle />
+            <DarkModeToggle themeCallback={this.setTheme} />
           </div>
           <div style={row}>
-            <button type="button" style={{ ...button, width: '100px' }} onClick={rovecomm.resubscribe}>
+            <button
+              type="button"
+              style={{ ...button(this.state.theme), width: '100px' }}
+              onClick={rovecomm.resubscribe}
+            >
               Resubscribe All
             </button>
-            <button type="button" style={button} onClick={() => this.setState({ ronOpen: true })}>
+            <button type="button" style={button(this.state.theme)} onClick={() => this.setState({ ronOpen: true })}>
               Open Rover Overview of Network
             </button>
-            <button type="button" style={button} onClick={() => this.setState({ ramOpen: true })}>
+            <button type="button" style={button(this.state.theme)} onClick={() => this.setState({ ramOpen: true })}>
               Open Rover Attachment Manager
             </button>
-            <button type="button" style={button} onClick={() => this.setState({ ridOpen: true })}>
+            <button type="button" style={button(this.state.theme)} onClick={() => this.setState({ ridOpen: true })}>
               Open Rover Imagery Display
             </button>
           </div>
