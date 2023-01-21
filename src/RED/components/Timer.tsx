@@ -7,7 +7,7 @@ import fs from 'fs';
 import ProgressBar from '../../Core/ProgressBar';
 import TrashCanIcon from '../../../assets/icons/TrashCanIcon.png';
 import ListReorderIcon from '../../../assets/icons/ListReorderIcon.png';
-import { Container, Button } from '../../Core/components/CssConstants';
+import { LContainer, DContainer, LButton, DButton } from '../../Core/components/CssConstants';
 
 const label: CSS.Properties = {
   color: 'white',
@@ -19,7 +19,12 @@ const label: CSS.Properties = {
   left: '3px',
   zIndex: 1,
 };
-const importedButtons: CSS.Properties = Button();
+function importedButtons(theme: string): CSS.Properties {
+  if (theme === 'light') {
+    return LButton;
+  }
+  return DButton;
+}
 const mainButtons: CSS.Properties = {
   height: '50px',
   width: '100%',
@@ -34,7 +39,12 @@ const ulStyle: CSS.Properties = {
   listStyleType: 'none',
   paddingLeft: '0px',
 };
-const container: CSS.Properties = Container();
+function container(theme: string): CSS.Properties {
+  if (theme === 'light') {
+    return LContainer;
+  }
+  return DContainer;
+}
 const localContainer: CSS.Properties = {
   fontFamily: 'arial',
   textAlign: 'center',
@@ -169,6 +179,7 @@ interface IState {
   currentTaskTime: number;
   isCounting: boolean;
   delta: number;
+  theme: string;
 }
 
 class Timer extends Component<IProps, IState> {
@@ -191,6 +202,7 @@ class Timer extends Component<IProps, IState> {
       currentTaskTime: 0,
       isCounting: false,
       delta: 0,
+      theme: 'light',
     };
     this.startTimer = this.startTimer.bind(this);
     this.countDown = this.countDown.bind(this);
@@ -269,6 +281,19 @@ class Timer extends Component<IProps, IState> {
       parentMission[relevantMission].childTasks.splice(result.destination.index, 0, reorderedItem);
       this.setState({ parentMission });
       this.saveJSON();
+    }
+  }
+
+  setTheme(): void {
+    let currentTheme: string;
+    if (this.state.theme === 'light') {
+      currentTheme = 'dark';
+      this.setState({ theme: currentTheme });
+      console.log('set state to dark mode');
+    } else {
+      currentTheme = 'light';
+      this.setState({ theme: currentTheme });
+      console.log('set state to light mode');
     }
   }
 

@@ -2,9 +2,14 @@ import React, { Component } from 'react';
 import CSS from 'csstype';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
 import { controllerInputs } from '../../Core/components/ControlScheme';
-import { Container } from '../../Core/components/CssConstants';
+import { LContainer, DContainer } from '../../Core/components/CssConstants';
 
-const container: CSS.Properties = Container();
+function container(theme: string): CSS.Properties {
+  if (theme === 'light') {
+    return LContainer;
+  }
+  return DContainer;
+}
 const localContainer: CSS.Properties = {
   display: 'flex',
   fontFamily: 'arial',
@@ -65,6 +70,7 @@ interface IState {
   leftSpeed: number;
   rightSpeed: number;
   speedLimit: number;
+  theme: string;
 }
 class Drive extends Component<IProps, IState> {
   static defaultProps = {
@@ -77,10 +83,24 @@ class Drive extends Component<IProps, IState> {
       leftSpeed: 0,
       rightSpeed: 0,
       speedLimit: 300,
+      theme: 'light',
     };
 
     this.speedLimitChange = this.speedLimitChange.bind(this);
     setInterval(() => this.drive(), 100);
+  }
+
+  setTheme(): void {
+    let currentTheme: string;
+    if (this.state.theme === 'light') {
+      currentTheme = 'dark';
+      this.setState({ theme: currentTheme });
+      console.log('set state to dark mode');
+    } else {
+      currentTheme = 'light';
+      this.setState({ theme: currentTheme });
+      console.log('set state to light mode');
+    }
   }
 
   drive(): void {
@@ -148,7 +168,7 @@ class Drive extends Component<IProps, IState> {
     return (
       <div style={this.props.style}>
         <div style={label}>Drive</div>
-        <div style={{ ...container, ...localContainer }}>
+        <div style={{ ...container(this.state.theme), ...localContainer }}>
           <div style={row}>
             <progress
               value={this.state.leftSpeed < 0 ? -this.state.leftSpeed : 0}

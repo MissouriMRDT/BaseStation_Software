@@ -1,5 +1,4 @@
 import CSS from 'csstype';
-import { getCurrentTheme } from './DarkMode';
 
 export const DContainer: CSS.Properties = {
   borderRadius: '5px',

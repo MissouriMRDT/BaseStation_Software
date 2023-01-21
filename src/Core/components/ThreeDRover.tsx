@@ -4,9 +4,14 @@ import path from 'path';
 import { rovecomm } from '../RoveProtocol/Rovecomm';
 import STLViewer from './STLViewer';
 import { windows } from '../Window';
-import { Container, Button } from './CssConstants';
+import { LContainer, DContainer } from './CssConstants';
 
-const container: CSS.Properties = Container();
+function container(theme: string): CSS.Properties {
+  if (theme === 'light') {
+    return LContainer;
+  }
+  return DContainer;
+}
 const localContainer: CSS.Properties = {
   display: 'flex',
   flexDirection: 'column',
@@ -42,6 +47,7 @@ interface IState {
   id: string;
   width: number;
   height: number;
+  theme: string;
 }
 
 class ThreeDRover extends Component<IProps, IState> {
@@ -59,6 +65,7 @@ class ThreeDRover extends Component<IProps, IState> {
       id: `3DRover_${ThreeDRover.id}`,
       width: 300,
       height: 150,
+      theme: 'light',
     };
 
     ThreeDRover.id += 1;
@@ -68,6 +75,27 @@ class ThreeDRover extends Component<IProps, IState> {
 
   componentDidMount() {
     this.findWidth();
+  }
+
+  setTheme(): void {
+    let currentTheme: string;
+    if (this.state.theme === 'light') {
+      currentTheme = 'dark';
+      // fs.writeFile(filepath, JSON.stringify('dark'), (err) => {
+      //   if (err) throw err;
+      // });
+      this.setState({ theme: currentTheme });
+      // document.body.style.backgroundColor = '#252525';
+      console.log('set state to dark mode');
+    } else {
+      currentTheme = 'light';
+      // fs.writeFile(filepath, JSON.stringify('light'), (err) => {
+      //   if (err) throw err;
+      // });
+      this.setState({ theme: currentTheme });
+      // document.body.style.backgroundColor = 'white';
+      console.log('set state to light mode');
+    }
   }
 
   imuData(data: any) {
@@ -101,7 +129,7 @@ class ThreeDRover extends Component<IProps, IState> {
     return (
       <div style={this.props.style}>
         <div style={label}>3D Rover</div>
-        <div style={{ ...container, ...localContainer }} id={this.state.id}>
+        <div style={{ ...container(this.state.theme), ...localContainer }} id={this.state.id}>
           <STLViewer
             model={ROVER_FILE}
             modelColor="#B92C2C"

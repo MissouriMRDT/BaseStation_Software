@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import CSS from 'csstype';
 import html2canvas from 'html2canvas';
 import fs from 'fs';
-import { Container, Button } from './CssConstants';
+import { LContainer, DContainer, DButton, LButton } from './CssConstants';
 
 import { windows } from '../Window';
 import no_cam_img from '../../../assets/no_cam_img.png';
@@ -26,7 +26,14 @@ const h1Style: CSS.Properties = {
   fontFamily: 'arial',
   fontSize: '12px',
 };
-const container: CSS.Properties = Container();
+
+function container(theme: string): CSS.Properties {
+  if (theme === 'light') {
+    return LContainer;
+  }
+  return DContainer;
+}
+
 const localContainer: CSS.Properties = {
   display: 'flex',
   flexDirection: 'column',
@@ -37,7 +44,14 @@ const localContainer: CSS.Properties = {
   borderStyle: 'solid',
   padding: '5px',
 };
-const button: CSS.Properties = Button();
+
+function button(theme: string): CSS.Properties {
+  if (theme === 'light') {
+    return LButton;
+  }
+  return DButton;
+}
+
 const label: CSS.Properties = {
   marginTop: '-10px',
   position: 'relative',
@@ -71,6 +85,7 @@ interface IState {
   rotation: number;
   style: CSS.Properties;
   id: string;
+  theme: string;
 }
 
 class Cameras extends Component<IProps, IState> {
@@ -88,8 +103,22 @@ class Cameras extends Component<IProps, IState> {
       rotation: 0,
       style: {},
       id: `Camera ${Cameras.id}`,
+      theme: 'light',
     };
     Cameras.id += 1;
+  }
+
+  setTheme(): void {
+    let currentTheme: string;
+    if (this.state.theme === 'light') {
+      currentTheme = 'dark';
+      this.setState({ theme: currentTheme });
+      console.log('set state to dark mode');
+    } else {
+      currentTheme = 'light';
+      this.setState({ theme: currentTheme });
+      console.log('set state to light mode');
+    }
   }
 
   rotate(): void {
@@ -195,7 +224,7 @@ class Cameras extends Component<IProps, IState> {
     return (
       <div id="camera" style={this.props.style}>
         <div style={label}>Cameras</div>
-        <div style={{ ...container, ...localContainer }}>
+        <div style={{ ...container(this.state.theme), ...localContainer }}>
           <div style={column}>
             <div style={row}>
               {cameraNumList.map((num) => {
@@ -222,10 +251,14 @@ class Cameras extends Component<IProps, IState> {
               id={this.state.id}
             />
             <div style={row}>
-              <button type="button" onClick={() => this.saveImage()} style={{ width: '50%', ...button }}>
+              <button
+                type="button"
+                onClick={() => this.saveImage()}
+                style={{ width: '50%', ...button(this.state.theme) }}
+              >
                 Screenshot
               </button>
-              <button type="button" onClick={() => this.rotate()} style={{ width: '50%', ...button }}>
+              <button type="button" onClick={() => this.rotate()} style={{ width: '50%', ...button(this.state.theme) }}>
                 Rotate
               </button>
             </div>
@@ -233,11 +266,15 @@ class Cameras extends Component<IProps, IState> {
               <button
                 type="button"
                 onClick={() => this.setState({ currentCamera: 0 })}
-                style={{ width: '50%', ...button }}
+                style={{ width: '50%', ...button(this.state.theme) }}
               >
                 Stop Listening
               </button>
-              <button type="button" onClick={() => this.refresh()} style={{ width: '50%', ...button }}>
+              <button
+                type="button"
+                onClick={() => this.refresh()}
+                style={{ width: '50%', ...button(this.state.theme) }}
+              >
                 Refresh
               </button>
             </div>

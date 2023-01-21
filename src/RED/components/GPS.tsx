@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
-import { Container } from '../../Core/components/CssConstants';
+import { DContainer, LContainer } from '../../Core/components/CssConstants';
 // import { Packet } from "../../Core/RoveProtocol/Packet"
 
 const h1Style: CSS.Properties = {
@@ -11,7 +11,12 @@ const h1Style: CSS.Properties = {
   marginBlockStart: '0',
   marginBlockEnd: '0',
 };
-const container: CSS.Properties = Container();
+function container(theme: string): CSS.Properties {
+  if (theme === 'light') {
+    return LContainer;
+  }
+  return DContainer;
+}
 const localContainer: CSS.Properties = {
   display: 'grid',
   fontFamily: 'arial',
@@ -49,6 +54,7 @@ interface IState {
   roll: number;
   distance: number;
   quality: number;
+  theme: string;
 }
 class GPS extends Component<IProps, IState> {
   static defaultProps = {
@@ -66,12 +72,26 @@ class GPS extends Component<IProps, IState> {
       roll: 0,
       distance: 0,
       quality: 0,
+      theme: 'light',
     };
 
     rovecomm.on('GPSLatLon', (data: any) => this.GPSLatLon(data));
     rovecomm.on('IMUData', (data: any) => this.IMUData(data));
     rovecomm.on('LidarData', (data: any) => this.LidarData(data));
     rovecomm.on('SatelliteCountData', (data: any) => this.SatelliteCountData(data));
+  }
+
+  setTheme(): void {
+    let currentTheme: string;
+    if (this.state.theme === 'light') {
+      currentTheme = 'dark';
+      this.setState({ theme: currentTheme });
+      console.log('set state to dark mode');
+    } else {
+      currentTheme = 'light';
+      this.setState({ theme: currentTheme });
+      console.log('set state to light mode');
+    }
   }
 
   GPSLatLon(data: any) {
@@ -109,7 +129,7 @@ class GPS extends Component<IProps, IState> {
     return (
       <div style={this.props.style}>
         <div style={label}>GPS</div>
-        <div style={{ ...container, ...localContainer }}>
+        <div style={{ ...container(this.state.theme), ...localContainer }}>
           {[
             { title: 'Current Lat.', value: this.state.currentLat.toFixed(7) },
             { title: 'Current Lon.', value: this.state.currentLon.toFixed(7) },

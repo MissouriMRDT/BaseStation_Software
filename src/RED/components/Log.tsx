@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
-import { Container } from '../../Core/components/CssConstants';
+import { DContainer, LContainer } from '../../Core/components/CssConstants';
 
-const container: CSS.Properties = Container();
+function container(theme: string): CSS.Properties {
+  if (theme === 'light') {
+    return LContainer;
+  }
+  return DContainer;
+}
 const localContainer: CSS.Properties = {
   display: 'grid',
   fontFamily: 'arial',
@@ -33,6 +38,7 @@ interface IProps {
 
 interface IState {
   ConsoleText: string;
+  theme: string;
 }
 
 class Log extends Component<IProps, IState> {
@@ -44,8 +50,22 @@ class Log extends Component<IProps, IState> {
     super(props);
     this.state = {
       ConsoleText: '',
+      theme: 'light',
     };
     rovecomm.on('all', (data: any) => this.Log(data));
+  }
+
+  setTheme(): void {
+    let currentTheme: string;
+    if (this.state.theme === 'light') {
+      currentTheme = 'dark';
+      this.setState({ theme: currentTheme });
+      console.log('set state to dark mode');
+    } else {
+      currentTheme = 'light';
+      this.setState({ theme: currentTheme });
+      console.log('set state to light mode');
+    }
   }
 
   Log(data: string): void {
@@ -58,7 +78,7 @@ class Log extends Component<IProps, IState> {
     return (
       <div style={this.props.style}>
         <div style={label}>Console</div>
-        <div style={{ ...container, ...localContainer }}>{this.state.ConsoleText}</div>
+        <div style={{ ...container(this.state.theme), ...localContainer }}>{this.state.ConsoleText}</div>
       </div>
     );
   }

@@ -3,13 +3,18 @@ import CSS from 'csstype';
 import Arm from './Arm/Arm';
 import Autonomy from './Autonomy/Autonomy';
 import Science from './Science/Science';
-import { Container } from '../Core/components/CssConstants';
+import { LContainer, DContainer } from '../Core/components/CssConstants';
 
 const RON: CSS.Properties = {
   height: '100%',
   width: '100%',
 };
-const ColorToggle: CSS.Properties = Container();
+function ColorToggle(theme: string): CSS.Properties {
+  if (theme === 'light') {
+    return LContainer;
+  }
+  return DContainer;
+}
 const row: CSS.Properties = {
   display: 'flex',
   flexDirection: 'row',
@@ -30,6 +35,7 @@ interface IProps {
 
 interface IState {
   displayed: string;
+  theme: string;
 }
 
 class RoverAttachmentManager extends Component<IProps, IState> {
@@ -37,7 +43,21 @@ class RoverAttachmentManager extends Component<IProps, IState> {
     super(props);
     this.state = {
       displayed: 'Arm',
+      theme: 'light',
     };
+  }
+
+  setTheme(): void {
+    let currentTheme: string;
+    if (this.state.theme === 'light') {
+      currentTheme = 'dark';
+      this.setState({ theme: currentTheme });
+      console.log('set state to dark mode');
+    } else {
+      currentTheme = 'light';
+      this.setState({ theme: currentTheme });
+      console.log('set state to light mode');
+    }
   }
 
   screenChange(screen: string): void {
@@ -48,7 +68,7 @@ class RoverAttachmentManager extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div style={{ ...RON, ...ColorToggle }}>
+      <div style={{ ...RON, ...ColorToggle(this.state.theme) }}>
         <div style={row}>
           {['Arm', 'Science', 'Autonomy'].map((screen) => {
             return (
