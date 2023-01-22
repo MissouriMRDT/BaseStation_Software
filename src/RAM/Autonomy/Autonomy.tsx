@@ -17,6 +17,7 @@ const column: CSS.Properties = {
 
 interface IProps {
   selectedWaypoint: any;
+  theme: string;
 }
 
 interface IState {}
@@ -32,7 +33,11 @@ class Autonomy extends Component<IProps, IState> {
       <div style={{ ...column }}>
         <div style={{ ...row, justifyContent: 'space-between', flex: 1 }}>
           <div style={{ ...column, flex: 1 }}>
-            <Controls style={{ marginRight: '5px', flexWrap: 'wrap' }} selectedWaypoint={this.props.selectedWaypoint} />
+            <Controls
+              style={{ marginRight: '5px', flexWrap: 'wrap' }}
+              selectedWaypoint={this.props.selectedWaypoint}
+              theme={this.props.theme}
+            />
             <div style={{ ...row, marginRight: '5px', flexGrow: 1 }}>
               <Activity style={{ flex: 1, marginRight: '5px' }} />
               <Lighting />
@@ -41,8 +46,8 @@ class Autonomy extends Component<IProps, IState> {
           <StateDiagram />
         </div>
         <div style={row}>
-          <Cameras defaultCamera={9} style={{ flex: 1, marginRight: '2.5px' }} />
-          <Cameras defaultCamera={10} style={{ flex: 1, marginLeft: '2.5px' }} />
+          <Cameras defaultCamera={9} style={{ flex: 1, marginRight: '2.5px' }} theme={this.props.theme} />
+          <Cameras defaultCamera={10} style={{ flex: 1, marginLeft: '2.5px' }} theme={this.props.theme} />
         </div>
       </div>
     );

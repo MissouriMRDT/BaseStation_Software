@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
+import { BrowserWindow } from 'electron';
 import Arm from './Arm/Arm';
 import Autonomy from './Autonomy/Autonomy';
 import Science from './Science/Science';
-import { LContainer, DContainer } from '../Core/components/CssConstants';
 
 const RON: CSS.Properties = {
   height: '100%',
   width: '100%',
 };
-function ColorToggle(theme: string): CSS.Properties {
-  if (theme === 'light') {
-    return LContainer;
-  }
-  return DContainer;
-}
+// function ColorToggle(theme: string): CSS.Properties {
+//   if (theme === 'light') {
+//     return LContainer;
+//   }
+//   return DContainer;
+// }
 const row: CSS.Properties = {
   display: 'flex',
   flexDirection: 'row',
@@ -31,11 +31,11 @@ const buttons: CSS.Properties = {
 
 interface IProps {
   selectedWaypoint: any;
+  theme: string;
 }
 
 interface IState {
   displayed: string;
-  theme: string;
 }
 
 class RoverAttachmentManager extends Component<IProps, IState> {
@@ -43,22 +43,21 @@ class RoverAttachmentManager extends Component<IProps, IState> {
     super(props);
     this.state = {
       displayed: 'Arm',
-      theme: 'light',
     };
   }
 
-  setTheme(): void {
-    let currentTheme: string;
-    if (this.state.theme === 'light') {
-      currentTheme = 'dark';
-      this.setState({ theme: currentTheme });
-      console.log('set state to dark mode');
-    } else {
-      currentTheme = 'light';
-      this.setState({ theme: currentTheme });
-      console.log('set state to light mode');
-    }
-  }
+  // setTheme(): void {
+  //   let currentTheme: string;
+  //   if (this.state.theme === 'light') {
+  //     currentTheme = 'dark';
+  //     this.setState({ theme: currentTheme });
+  //     console.log('set state to dark mode');
+  //   } else {
+  //     currentTheme = 'light';
+  //     this.setState({ theme: currentTheme });
+  //     console.log('set state to light mode');
+  //   }
+  // }
 
   screenChange(screen: string): void {
     this.setState({
@@ -66,9 +65,18 @@ class RoverAttachmentManager extends Component<IProps, IState> {
     });
   }
 
+  themeChange(theme: string): string {
+    if (theme === 'light') {
+      document.body.style.backgroundColor = 'white';
+      return this.props.theme;
+    }
+    document.body.style.backgroundColor = '#252525';
+    return this.props.theme;
+  }
+
   render(): JSX.Element {
     return (
-      <div style={{ ...RON, ...ColorToggle(this.state.theme) }}>
+      <div style={RON}>
         <div style={row}>
           {['Arm', 'Science', 'Autonomy'].map((screen) => {
             return (
@@ -86,9 +94,14 @@ class RoverAttachmentManager extends Component<IProps, IState> {
             );
           })}
         </div>
+        <div>
+          <button onClick={() => this.themeChange('dark')}>Change Background Color</button>
+        </div>
         {this.state.displayed === 'Arm' && <Arm />}
         {this.state.displayed === 'Science' && <Science />}
-        {this.state.displayed === 'Autonomy' && <Autonomy selectedWaypoint={this.props.selectedWaypoint} />}
+        {this.state.displayed === 'Autonomy' && (
+          <Autonomy selectedWaypoint={this.props.selectedWaypoint} theme={this.themeChange(this.props.theme)} />
+        )}
       </div>
     );
   }

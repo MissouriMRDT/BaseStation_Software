@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
 import { rovecomm } from '../../../Core/RoveProtocol/Rovecomm';
+import { button, container } from '../../../Core/components/CssConstants';
 
-const container: CSS.Properties = {
+const localcontainer: CSS.Properties = {
   display: 'flex',
   fontFamily: 'arial',
   borderTopWidth: '30px',
@@ -26,7 +27,7 @@ const row: CSS.Properties = {
   display: 'flex',
   flexDirection: 'row',
 };
-const button: CSS.Properties = {
+const localbutton: CSS.Properties = {
   fontFamily: 'arial',
   flexGrow: 1,
   margin: '5px',
@@ -49,6 +50,7 @@ function clearWaypoints(): void {
 interface IProps {
   style?: CSS.Properties;
   selectedWaypoint: any;
+  theme: string;
 }
 interface IState {}
 
@@ -101,25 +103,25 @@ class Controls extends Component<IProps, IState> {
     return (
       <div style={this.props.style}>
         <div style={label}>Controls</div>
-        <div style={container}>
+        <div style={{ ...container(this.props.theme), ...localcontainer }}>
           <div style={row}>
-            <button type="button" onClick={startAutonomy} style={button}>
-              <h1 style={button}>Start Autonomy</h1>
+            <button type="button" onClick={startAutonomy} style={{ ...button(this.props.theme), ...localbutton }}>
+              <h1 style={{ ...button(this.props.theme), ...localbutton }}>Start Autonomy</h1>
             </button>
-            <button type="button" onClick={stopAutonomy} style={button}>
-              <h1 style={button}>Stop Autonomy</h1>
+            <button type="button" onClick={stopAutonomy} style={{ ...button(this.props.theme), ...localbutton }}>
+              <h1 style={{ ...button(this.props.theme), ...localbutton }}>Stop Autonomy</h1>
             </button>
-            <button type="button" onClick={this.addPositionLeg} style={button}>
-              <h1 style={button}>Add Position Leg</h1>
+            <button type="button" onClick={this.addPositionLeg} style={{ ...button(this.props.theme), ...localbutton }}>
+              <h1 style={{ ...button(this.props.theme), ...localbutton }}>Add Position Leg</h1>
             </button>
-            <button type="button" onClick={this.addMarkerLeg} style={button}>
-              <h1 style={button}>Add Marker Leg</h1>
+            <button type="button" onClick={this.addMarkerLeg} style={{ ...button(this.props.theme), ...localbutton }}>
+              <h1 style={{ ...button(this.props.theme), ...localbutton }}>Add Marker Leg</h1>
             </button>
-            <button type="button" onClick={this.addGateLeg} style={button}>
-              <h1 style={button}>Add Gate Leg</h1>
+            <button type="button" onClick={this.addGateLeg} style={{ ...button(this.props.theme), ...localbutton }}>
+              <h1 style={{ ...button(this.props.theme), ...localbutton }}>Add Gate Leg</h1>
             </button>
-            <button type="button" onClick={clearWaypoints} style={button}>
-              <h1 style={button}>Clear Waypoints</h1>
+            <button type="button" onClick={clearWaypoints} style={{ ...button(this.props.theme), ...localbutton }}>
+              <h1 style={{ ...button(this.props.theme), ...localbutton }}>Clear Waypoints</h1>
             </button>
           </div>
         </div>

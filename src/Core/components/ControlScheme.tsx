@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import CSS from 'csstype';
 import path from 'path';
 import fs from 'fs';
-import { LContainer, DContainer, BlockButton, Selector } from './CssConstants';
+import { container, blockbutton, selector } from './CssConstants';
 import Lighting from '../../RAM/Autonomy/components/Lighting';
 
 const localContainer: CSS.Properties = {
@@ -17,26 +17,26 @@ const localContainer: CSS.Properties = {
   flexDirection: 'column',
   padding: '5px',
 };
-function container(theme: string): CSS.Properties {
-  if (theme === 'light') {
-    return LContainer;
-  }
-  return DContainer;
-}
+// function container(theme: string): CSS.Properties {
+//   if (theme === 'light') {
+//     return LContainer;
+//   }
+//   return DContainer;
+// }
 
-function button(theme: string): CSS.Properties {
-  if (theme === 'light') {
-    return {};
-  }
-  return BlockButton;
-}
+// function button(theme: string): CSS.Properties {
+//   if (theme === 'light') {
+//     return {};
+//   }
+//   return BlockButton;
+// }
 
-function selector(theme: string): CSS.Properties {
-  if (theme === 'light') {
-    return {};
-  }
-  return Selector;
-}
+// function selector(theme: string): CSS.Properties {
+//   if (theme === 'light') {
+//     return {};
+//   }
+//   return Selector;
+// }
 
 const modal: CSS.Properties = {
   zIndex: 2,
@@ -159,13 +159,13 @@ function controller(passedScheme: any, pos: any): any {
 interface IProps {
   style?: CSS.Properties;
   configs: string[];
+  theme: string;
 }
 
 interface IState {
   functionality: any;
   controlPreviewModal: boolean;
   image: string;
-  theme: string;
 }
 
 const xboxController = path.join(__dirname, '../assets/xboxController.png');
@@ -208,34 +208,12 @@ class ControlScheme extends Component<IProps, IState> {
       },
       controlPreviewModal: false,
       image: xboxController,
-      theme: 'light',
     };
     this.schemeChange = this.schemeChange.bind(this);
     // detects if a controller disconnects
     window.addEventListener('gamepaddisconnected', function (e) {
       console.log('Gamepad disconnected from index %d: %s', e.gamepad.index, e.gamepad.id);
     });
-  }
-
-  setTheme(): void {
-    let currentTheme: string;
-    if (this.state.theme === 'light') {
-      currentTheme = 'dark';
-      // fs.writeFile(filepath, JSON.stringify('dark'), (err) => {
-      //   if (err) throw err;
-      // });
-      this.setState({ theme: currentTheme });
-      // document.body.style.backgroundColor = '#252525';
-      console.log('set state to dark mode');
-    } else {
-      currentTheme = 'light';
-      // fs.writeFile(filepath, JSON.stringify('light'), (err) => {
-      //   if (err) throw err;
-      // });
-      this.setState({ theme: currentTheme });
-      // document.body.style.backgroundColor = 'white';
-      console.log('set state to light mode');
-    }
   }
 
   // takes in the controllers scheme and the position in the array of controllers to determin which controller it is
@@ -405,7 +383,7 @@ class ControlScheme extends Component<IProps, IState> {
     return (
       <div style={this.props.style}>
         <div style={label}>Control Scheme</div>
-        <div style={{ ...container(this.state.theme), ...localContainer }}>
+        <div style={{ ...container(this.props.theme), ...localContainer }}>
           {this.props.configs.map((config) => {
             return (
               <div key={config} style={row}>
@@ -413,7 +391,7 @@ class ControlScheme extends Component<IProps, IState> {
                 <select
                   value={this.state.functionality[config].controller}
                   onChange={(e) => this.controllerChange(e, config)}
-                  style={{ flex: 1, ...selector(this.state.theme) }}
+                  style={{ flex: 1, ...selector(this.props.theme) }}
                 >
                   {['Xbox 1', 'Xbox 2', 'Xbox 3', 'Flight Stick'].map((controllerSelect) => {
                     return (
@@ -426,7 +404,7 @@ class ControlScheme extends Component<IProps, IState> {
                 <select
                   value={this.state.functionality[config].scheme}
                   onChange={(e) => this.schemeChange(e, config)}
-                  style={{ flex: 1, ...selector(this.state.theme) }}
+                  style={{ flex: 1, ...selector(this.props.theme) }}
                 >
                   {Object.keys(CONTROLLERINPUT).map((scheme) => {
                     if (
@@ -442,7 +420,7 @@ class ControlScheme extends Component<IProps, IState> {
                   })}
                 </select>
                 <button
-                  style={{ zIndex: 1, ...button(this.state.theme) }}
+                  style={{ zIndex: 1, ...blockbutton(this.props.theme) }}
                   type="button"
                   onClick={() => this.buttonToggle(config)}
                 >
@@ -454,7 +432,7 @@ class ControlScheme extends Component<IProps, IState> {
           <button
             type="button"
             onClick={() => this.setState((prevState) => ({ controlPreviewModal: !prevState.controlPreviewModal }))}
-            style={{ width: '120px', alignSelf: 'center', ...button(this.state.theme) }}
+            style={{ width: '120px', alignSelf: 'center', ...blockbutton(this.props.theme) }}
           >
             {this.state.controlPreviewModal ? 'Hide Controls' : 'Show Controls'}
           </button>

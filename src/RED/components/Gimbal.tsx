@@ -3,14 +3,14 @@ import CSS from 'csstype';
 import path from 'path';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
 import { controllerInputs } from '../../Core/components/ControlScheme';
-import { LContainer, DContainer } from '../../Core/components/CssConstants';
+import { container } from '../../Core/components/CssConstants';
 
-function container(theme: string): CSS.Properties {
-  if (theme === 'light') {
-    return LContainer;
-  }
-  return DContainer;
-}
+// function container(theme: string): CSS.Properties {
+//   if (theme === 'light') {
+//     return LContainer;
+//   }
+//   return DContainer;
+// }
 const localContainer: CSS.Properties = {
   display: 'flex',
   fontFamily: 'arial',
@@ -34,12 +34,12 @@ const label: CSS.Properties = {
 
 interface IProps {
   style?: CSS.Properties;
+  theme: string;
 }
 interface IState {
   controlling: string;
   image: string;
   interval: NodeJS.Timeout;
-  theme: string;
 }
 
 // Dynamic paths to import images used to indicate which gimbal is being controlled
@@ -59,25 +59,11 @@ class Gimbal extends Component<IProps, IState> {
       controlling: 'none',
       image: NotConnected,
       interval: setInterval(() => this.gimbal(), 100),
-      theme: 'light',
     };
   }
 
   componentWillUnmount() {
     clearInterval(this.state.interval);
-  }
-
-  setTheme(): void {
-    let currentTheme: string;
-    if (this.state.theme === 'light') {
-      currentTheme = 'dark';
-      this.setState({ theme: currentTheme });
-      console.log('set state to dark mode');
-    } else {
-      currentTheme = 'light';
-      this.setState({ theme: currentTheme });
-      console.log('set state to light mode');
-    }
   }
 
   gimbal(): void {
@@ -136,7 +122,7 @@ class Gimbal extends Component<IProps, IState> {
     return (
       <div style={this.props.style}>
         <div style={label}>Gimbal</div>
-        <div style={{ ...container(this.state.theme), ...localContainer }}>
+        <div style={{ ...container(this.props.theme), ...localContainer }}>
           <img src={this.state.image} alt={this.state.controlling} />
         </div>
       </div>

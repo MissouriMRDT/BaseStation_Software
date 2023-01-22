@@ -4,19 +4,19 @@ import fs from 'fs';
 import { TwitterPicker } from 'react-color';
 import path from 'path';
 import ThreeDRover from '../../Core/components/ThreeDRover';
-import { LContainer, DContainer, LButton, DButton } from '../../Core/components/CssConstants';
+import { container, button } from '../../Core/components/CssConstants';
 
 const title: CSS.Properties = {
   fontFamily: 'arial',
   width: '25%',
   textAlign: 'center',
 };
-function container(theme: string): CSS.Properties {
-  if (theme === 'light') {
-    return LContainer;
-  }
-  return DContainer;
-}
+// function container(theme: string): CSS.Properties {
+//   if (theme === 'light') {
+//     return LContainer;
+//   }
+//   return DContainer;
+// }
 const localContainer: CSS.Properties = {
   display: 'flex',
   flexDirection: 'column',
@@ -54,12 +54,12 @@ const singleSelect: CSS.Properties = {
   lineHeight: '20px',
   fontSize: '16px',
 };
-function buttons(theme: string): CSS.Properties {
-  if (theme === 'light') {
-    return LButton;
-  }
-  return DButton;
-}
+// function buttons(theme: string): CSS.Properties {
+//   if (theme === 'light') {
+//     return LButton;
+//   }
+//   return DButton;
+// }
 const modal: CSS.Properties = {
   position: 'absolute',
   width: '500px',
@@ -126,6 +126,7 @@ interface IProps {
   style?: CSS.Properties;
   onWaypointChange: (storedWaypoints: any) => void;
   currentCoords: { lat: number; lon: number };
+  theme: string;
 }
 
 interface IState {
@@ -135,7 +136,6 @@ interface IState {
   coordinateFormat: string;
   newWaypointName: string;
   newWaypointCoords: any;
-  theme: string;
 }
 
 class Waypoints extends Component<IProps, IState> {
@@ -157,7 +157,6 @@ class Waypoints extends Component<IProps, IState> {
         lon: '',
       },
       coordinateFormat: 'LatLon',
-      theme: 'light',
     };
     this.store = this.store.bind(this);
     this.remove = this.remove.bind(this);
@@ -180,19 +179,6 @@ class Waypoints extends Component<IProps, IState> {
       }
 
       ThreeDRover.id = parseInt(waypointKeys[waypointCount - 1], 10) + 1;
-    }
-  }
-
-  setTheme(): void {
-    let currentTheme: string;
-    if (this.state.theme === 'light') {
-      currentTheme = 'dark';
-      this.setState({ theme: currentTheme });
-      console.log('set state to dark mode');
-    } else {
-      currentTheme = 'light';
-      this.setState({ theme: currentTheme });
-      console.log('set state to light mode');
     }
   }
 
@@ -370,23 +356,23 @@ class Waypoints extends Component<IProps, IState> {
     return (
       <div style={this.props.style}>
         <div style={label}>Waypoints</div>
-        <div style={{ ...container(this.state.theme), ...localContainer }}>
+        <div style={{ ...container(this.props.theme), ...localContainer }}>
           <div style={row}>
             <button
               type="button"
-              style={buttons(this.state.theme)}
+              style={button(this.props.theme)}
               onClick={() => this.setState({ addingWaypoint: true })}
             >
               Add Waypoint
             </button>
             <button
               type="button"
-              style={buttons(this.state.theme)}
+              style={button(this.props.theme)}
               onClick={() => this.store(new Date().toLocaleTimeString(), this.props.currentCoords)}
             >
               Save Current
             </button>
-            <button type="button" style={buttons(this.state.theme)} onClick={this.remove}>
+            <button type="button" style={button(this.props.theme)} onClick={this.remove}>
               Remove Selected
             </button>
           </div>

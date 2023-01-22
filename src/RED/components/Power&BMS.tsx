@@ -3,7 +3,7 @@ import CSS from 'csstype';
 import { rovecomm, RovecommManifest } from '../../Core/RoveProtocol/Rovecomm';
 import { ColorStyleConverter } from '../../Core/ColorConverter';
 import { BitmaskUnpack } from '../../Core/BitmaskUnpack';
-import { LContainer, DContainer, DButton, LButton } from '../../Core/components/CssConstants';
+import { container, button } from '../../Core/components/CssConstants';
 
 const label: CSS.Properties = {
   marginTop: '-10px',
@@ -19,12 +19,12 @@ const textPad: CSS.Properties = {
   paddingLeft: '10px',
   paddingRight: '10px',
 };
-function container(theme: string): CSS.Properties {
-  if (theme === 'light') {
-    return LContainer;
-  }
-  return DContainer;
-}
+// function container(theme: string): CSS.Properties {
+//   if (theme === 'light') {
+//     return LContainer;
+//   }
+//   return DContainer;
+// }
 const mainContainer: CSS.Properties = {
   display: 'flex',
   flexWrap: 'wrap',
@@ -71,12 +71,12 @@ const cellReadoutContainer: CSS.Properties = {
   display: 'grid',
   gridTemplateColumns: 'auto auto auto auto',
 };
-function btnStyle(theme: string): CSS.Properties {
-  if (theme === 'light') {
-    return LButton;
-  }
-  return DButton;
-}
+// function button(theme: string): CSS.Properties {
+//   if (theme === 'light') {
+//     return LButton;
+//   }
+//   return DButton;
+// }
 /**
  * The specific function of turnOffReboot() originates from how the control boards
  * on the rover are programmed. If turnOffReboot() gets passed "0", the rover turns off.
@@ -92,12 +92,12 @@ function turnOffReboot(time: number): void {
 
 interface IProps {
   style?: CSS.Properties;
+  theme: string;
 }
 
 interface IState {
   boardTelemetry: any;
   batteryTelemetry: any;
-  theme: string;
 }
 
 class Power extends Component<IProps, IState> {
@@ -130,7 +130,6 @@ class Power extends Component<IProps, IState> {
     this.state = {
       boardTelemetry,
       batteryTelemetry,
-      theme: 'light',
     };
 
     /**
@@ -170,19 +169,6 @@ class Power extends Component<IProps, IState> {
     rovecomm.on('Temp_Meas', (data: number[]) => this.batteryListenHandler(data, 'Temp_Meas'));
     rovecomm.on('CellV_Meas', (data: number[]) => this.batteryListenHandler(data, 'CellV_Meas'));
     // console.log(boardTelemetry)
-  }
-
-  setTheme(): void {
-    let currentTheme: string;
-    if (this.state.theme === 'light') {
-      currentTheme = 'dark';
-      this.setState({ theme: currentTheme });
-      console.log('set state to dark mode');
-    } else {
-      currentTheme = 'light';
-      this.setState({ theme: currentTheme });
-      console.log('set state to light mode');
-    }
   }
 
   /**
@@ -278,7 +264,7 @@ class Power extends Component<IProps, IState> {
     return (
       <div style={this.props.style}>
         <div style={label}>Power and BMS</div>
-        <div style={{ ...container(this.state.theme), ...mainContainer }}>
+        <div style={{ ...container(this.props.theme), ...mainContainer }}>
           <div style={{ ...column, ...readoutContainter }}>
             {Object.keys(this.state.boardTelemetry).map((board: string) => {
               return (
@@ -290,7 +276,7 @@ class Power extends Component<IProps, IState> {
                         <button
                           type="button"
                           onClick={() => this.buttonToggle(board, bus)}
-                          style={btnStyle(this.state.theme)}
+                          style={button(this.props.theme)}
                         >
                           {enabled ? 'Enabled' : 'Disabled'}
                         </button>
@@ -317,7 +303,7 @@ class Power extends Component<IProps, IState> {
               onClick={() => {
                 this.allMotorToggle(true);
               }}
-              style={{ cursor: 'pointer', ...btnStyle(this.state.theme) }}
+              style={{ cursor: 'pointer', ...button(this.props.theme) }}
             >
               Enable All Motors
             </button>
@@ -326,21 +312,21 @@ class Power extends Component<IProps, IState> {
               onClick={() => {
                 this.allMotorToggle(false);
               }}
-              style={{ cursor: 'pointer', ...btnStyle(this.state.theme) }}
+              style={{ cursor: 'pointer', ...button(this.props.theme) }}
             >
               Disable All Motors
             </button>
             <button
               type="button"
               onClick={() => turnOffReboot(5)}
-              style={{ cursor: 'pointer', ...btnStyle(this.state.theme) }}
+              style={{ cursor: 'pointer', ...button(this.props.theme) }}
             >
               REBOOT
             </button>
             <button
               type="button"
               onClick={() => turnOffReboot(0)}
-              style={{ cursor: 'pointer', ...btnStyle(this.state.theme) }}
+              style={{ cursor: 'pointer', ...button(this.props.theme) }}
             >
               SHUT DOWN
             </button>

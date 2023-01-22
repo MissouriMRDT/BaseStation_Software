@@ -11,6 +11,7 @@ export const windows: any = { RED: window };
 interface IProps {
   onClose: any;
   name: string;
+  theme: string;
 }
 
 interface IState {}

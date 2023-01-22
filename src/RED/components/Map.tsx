@@ -2,19 +2,18 @@ import React, { Component } from 'react';
 import CSS from 'csstype';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import { LatLngTuple } from 'leaflet';
-import { DContainer, LContainer } from '../../Core/components/CssConstants';
+import { container } from '../../Core/components/CssConstants';
 
 import icon from './Icon';
 import compassNeedle from './CompassNeedle';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
 
-function container(theme: string): CSS.Properties {
-  if (theme === 'light') {
-    return LContainer;
-  }
-  return DContainer;
-}
-
+// function container(theme: string): CSS.Properties {
+//   if (theme === 'light') {
+//     return LContainer;
+//   }
+//   return DContainer;
+// }
 const localContainer: CSS.Properties = {
   display: 'flex',
   flexDirection: 'row',
@@ -46,6 +45,7 @@ interface IProps {
   currentCoords: { lat: number; lon: number };
   store: (name: string, coords: any) => void;
   name: string;
+  theme: string;
 }
 
 interface IState {
@@ -54,7 +54,6 @@ interface IState {
   zoom: number;
   maxZoom: number;
   heading: number;
-  theme: string;
 }
 
 class Map extends Component<IProps, IState> {
@@ -71,38 +70,13 @@ class Map extends Component<IProps, IState> {
       zoom: 15,
       maxZoom: 19,
       heading: 0,
-      theme: 'light',
     };
 
     rovecomm.on('IMUData', (data: any) => this.IMUData(data));
   }
 
-  setTheme(): void {
-    let currentTheme: string;
-    if (this.state.theme === 'light') {
-      currentTheme = 'dark';
-      this.setState({ theme: currentTheme });
-      console.log('set state to dark mode');
-    } else {
-      currentTheme = 'light';
-      this.setState({ theme: currentTheme });
-      console.log('set state to light mode');
-    }
-  }
-
   IMUData(data: any): void {
-    this.setState({setTheme(): void {
-      let currentTheme: string;
-      if (this.state.theme === 'light') {
-        currentTheme = 'dark';
-        this.setState({ theme: currentTheme });
-        console.log('set state to dark mode');
-      } else {
-        currentTheme = 'light';
-        this.setState({ theme: currentTheme });
-        console.log('set state to light mode');
-      }
-    }
+    this.setState({
       heading: data[1],
     });
   }
@@ -112,7 +86,7 @@ class Map extends Component<IProps, IState> {
     return (
       <div style={this.props.style}>
         <div style={label}>Map</div>
-        <div style={{ ...container(this.state.theme), ...localContainer }}>
+        <div style={{ ...container(this.props.theme), ...localContainer }}>
           <div style={mapStyle}>
             <MapContainer
               style={mapStyle}

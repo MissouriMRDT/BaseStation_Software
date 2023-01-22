@@ -26,9 +26,6 @@ const row: CSS.Properties = {
   flexGrow: 1,
   justifyContent: 'space-between',
 };
-function getRow(): CSS.Properties {
-  return row;
-}
 
 const column: CSS.Properties = {
   display: 'flex',
@@ -72,6 +69,7 @@ class ControlCenter extends Component<IProps, IState> {
     };
     this.updateWaypoints = this.updateWaypoints.bind(this);
     this.updateCoords = this.updateCoords.bind(this);
+    this.setTheme = this.setTheme.bind(this);
 
     window.addEventListener('resize', () => this.setState({ fourthHeight: window.innerHeight / 4 }));
   }
@@ -80,19 +78,13 @@ class ControlCenter extends Component<IProps, IState> {
     let currentTheme: string;
     if (this.state.theme === 'light') {
       currentTheme = 'dark';
-      // fs.writeFile(filepath, JSON.stringify('dark'), (err) => {
-      //   if (err) throw err;
-      // });
       this.setState({ theme: currentTheme });
-      // document.body.style.backgroundColor = '#252525';
+      document.body.style.backgroundColor = '#252525';
       console.log('set state to dark mode');
     } else {
       currentTheme = 'light';
-      // fs.writeFile(filepath, JSON.stringify('light'), (err) => {
-      //   if (err) throw err;
-      // });
       this.setState({ theme: currentTheme });
-      // document.body.style.backgroundColor = 'white';
+      document.body.style.backgroundColor = 'white';
       console.log('set state to light mode');
     }
   }
@@ -111,7 +103,7 @@ class ControlCenter extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div style={getRow()}>
+      <div style={row}>
         {
           // onClose will be fired when the new window is closed
           // everything inside NewWindowComponent is considered props.children and will be
@@ -132,6 +124,7 @@ class ControlCenter extends Component<IProps, IState> {
                 selectedWaypoint={
                   this.waypointsInstance.state.storedWaypoints[this.waypointsInstance.state.selectedWaypoint]
                 }
+                theme={this.state.theme}
               />
             </NewWindowComponent>
           )
@@ -152,8 +145,12 @@ class ControlCenter extends Component<IProps, IState> {
         }
         <div style={{ ...column, width: '60%' }}>
           <div style={row}>
-            <GPS onCoordsChange={this.updateCoords} style={{ flexGrow: 1, marginRight: '5px', width: '60%' }} />
-            <ThreeDRover style={{ width: '40%' }} />
+            <GPS
+              onCoordsChange={this.updateCoords}
+              style={{ flexGrow: 1, marginRight: '5px', width: '60%' }}
+              theme={this.state.theme}
+            />
+            <ThreeDRover style={{ width: '40%' }} theme={this.state.theme} />
           </div>
           <div style={{ ...row, height: '200px' }}>
             <Waypoints
@@ -163,18 +160,19 @@ class ControlCenter extends Component<IProps, IState> {
                 this.waypointsInstance = instance;
               }}
               style={{ flexGrow: 1 }}
+              theme={this.state.theme}
             />
           </div>
-          <Timer timer={undefined} />
-          <Log />
-          <Power />
-          <Drive />
+          <Log theme={this.state.theme}/>
+          <Power theme={this.state.theme} />
+          <Drive theme={this.state.theme} />
           <div style={row}>
             <ControlScheme
               style={{ flexGrow: 1, marginRight: '5px', marginBottom: '5px' }}
               configs={['Drive', 'MainGimbal']}
+              theme={this.state.theme}
             />
-            <Gimbal style={{ height: '100%' }} />
+            <Gimbal style={{ height: '100%' }} theme={this.state.theme} />
           </div>
           <div style={{ ...row }}>
             <DarkModeToggle themeCallback={this.setTheme} />
@@ -205,10 +203,11 @@ class ControlCenter extends Component<IProps, IState> {
             currentCoords={this.state.currentCoords}
             store={(name: string, coords: any) => this.waypointsInstance.store(name, coords)}
             name="controlCenterMap"
+            theme={this.state.theme}
           />
-          <Cameras defaultCamera={1} style={{ width: '100%' }} />
-          <Cameras defaultCamera={2} style={{ width: '100%' }} />
-          <Cameras defaultCamera={3} style={{ width: '100%' }} />
+          <Cameras defaultCamera={1} style={{ width: '100%' }} theme={this.state.theme} />
+          <Cameras defaultCamera={2} style={{ width: '100%' }} theme={this.state.theme} />
+          <Cameras defaultCamera={3} style={{ width: '100%' }} theme={this.state.theme} />
         </div>
       </div>
     );
