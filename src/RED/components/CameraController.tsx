@@ -57,7 +57,14 @@ class CameraController extends Component<IProps, IState> {
         <div style={label}>Camera Controller</div>
         <div style={container}>
           <div style={row}>
-            <button onClick={() => rovecam.call('rover')}>test</button>
+            <button onClick={() => rovecam.call('rover')}>Call</button>
+            <button
+              onClick={() => {
+                console.log(rovecam.conn);
+              }}
+            >
+              test
+            </button>
           </div>
         </div>
       </div>
