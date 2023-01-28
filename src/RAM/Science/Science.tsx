@@ -52,38 +52,54 @@ function science(): void {
     }
   }
 
-  // Water controls are sent in one bitmasked value
-  if ('Water1' in controllerInputs && 'Water2' in controllerInputs && 'Water3' in controllerInputs) {
-    if ('WaterGroup1' in controllerInputs && 'WaterGroup2' in controllerInputs && 'WaterGroup3' in controllerInputs) {
-      let water = '';
-      if (controllerInputs.WaterGroup1 === 1) {
-        water += controllerInputs.Water3;
-        water += controllerInputs.Water2;
-        water += controllerInputs.Water1;
-      } else if (controllerInputs.WaterGroup2 === 1) {
-        water += controllerInputs.Water3;
-        water += controllerInputs.Water2;
-        water += controllerInputs.Water1;
-        water += '000';
-      } else if (controllerInputs.WaterGroup3 === 1) {
-        water += controllerInputs.Water3;
-        water += controllerInputs.Water2;
-        water += controllerInputs.Water1;
-        water += '000000';
-      } else {
-        for (let i = 0; i < 3; i++) {
-          water += controllerInputs.Water3;
-        }
-        for (let i = 0; i < 3; i++) {
-          water += controllerInputs.Water2;
-        }
-        for (let i = 0; i < 3; i++) {
-          water += controllerInputs.Water1;
-        }
-      }
-      rovecomm.sendCommand('Water', parseInt(water, 2));
+  if ('WaterLeft' in controllerInputs && 'WaterRight' in controllerInputs) {
+    if (controllerInputs.WaterLeft === 1) {
+      rovecomm.sendCommand('WaterSelector', [-1]);
+    } else if (controllerInputs.WaterRight === 1) {
+      rovecomm.sendCommand('WaterSelector', [1]);
     }
   }
+
+  if ('WaterPump' in controllerInputs) {
+    if (controllerInputs.WaterPump === 1) {
+      rovecomm.sendCommand('WaterPump', [1]);
+    } else {
+      rovecomm.sendCommand('WaterPump', [0]);
+    }
+  }
+
+  // Water controls are sent in one bitmasked value
+  // if ('Water1' in controllerInputs && 'Water2' in controllerInputs && 'Water3' in controllerInputs) {
+  //   if ('WaterGroup1' in controllerInputs && 'WaterGroup2' in controllerInputs && 'WaterGroup3' in controllerInputs) {
+  //     let water = '';
+  //     if (controllerInputs.WaterGroup1 === 1) {
+  //       water += controllerInputs.Water3;
+  //       water += controllerInputs.Water2;
+  //       water += controllerInputs.Water1;
+  //     } else if (controllerInputs.WaterGroup2 === 1) {
+  //       water += controllerInputs.Water3;
+  //       water += controllerInputs.Water2;
+  //       water += controllerInputs.Water1;
+  //       water += '000';
+  //     } else if (controllerInputs.WaterGroup3 === 1) {
+  //       water += controllerInputs.Water3;
+  //       water += controllerInputs.Water2;
+  //       water += controllerInputs.Water1;
+  //       water += '000000';
+  //     } else {
+  //       for (let i = 0; i < 3; i++) {
+  //         water += controllerInputs.Water3;
+  //       }
+  //       for (let i = 0; i < 3; i++) {
+  //         water += controllerInputs.Water2;
+  //       }
+  //       for (let i = 0; i < 3; i++) {
+  //         water += controllerInputs.Water1;
+  //       }
+  //     }
+  //     rovecomm.sendCommand('Water', parseInt(water, 2));
+  //   }
+  // }
 }
 
 interface IProps {}
@@ -106,9 +122,11 @@ class Science extends Component<IProps, IState> {
           <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>
             <SensorData />
             <Heater />
-            <ControlScheme configs={['Science']} />
           </div>
-          <RockLookUp style={{ marginLeft: '2.5px' }} />
+          <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>
+            <ControlScheme configs={['Science']} />
+            <RockLookUp style={{ marginLeft: '2.5px' }} />
+          </div>
         </div>
         <Cameras defaultCamera={7} />
       </div>

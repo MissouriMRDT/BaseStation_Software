@@ -65,6 +65,7 @@ interface IState {
     Elbow: number;
     Wrist: number;
     Gripper: number;
+    EndEffector: number;
   };
 }
 
@@ -81,6 +82,7 @@ class ControlMultipliers extends Component<IProps, IState> {
         Elbow: 500,
         Wrist: 500,
         Gripper: 500,
+        EndEffector: 500,
       },
     };
     controlMultipliers = this.state.controlMultipliers;

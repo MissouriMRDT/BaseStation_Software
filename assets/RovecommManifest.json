@@ -397,11 +397,11 @@
           "dataCount": 1,
           "comments": "[1-enable, 0-disable]"
         },
-        "Solenoid": {
+        "EndEffector": {
           "dataId": 8007,
-          "dataType": "UINT8_T",
+          "dataType": "INT16_T",
           "dataCount": 1,
-          "comments": "[1-enable, 0-disable]"
+          "comments": "[Power] (-1000, 1000) (m%)"
         },
         "GripperMove": {
           "dataId": 8008,
@@ -492,47 +492,59 @@
           "dataCount": 1,
           "comments": "[Power] (-1000, 1000) (m%)"
         },
-        "Water": {
+        "WaterSelector": {
           "dataId": 9001,
+          "dataType": "INT8_T",
+          "dataCount": 1,
+          "comments": "Sign of value determines direction"
+        },
+        "WaterPump": {
+          "dataId": 9002,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "Water solenoid group #[3, 2, 1] (0-Closed, 1-Open)"
+          "comments": "Water pump (0-Off, 1-Pump)"
         },
         "LimitSwitchOverride": {
-          "dataId": 9002,
+          "dataId": 9003,
           "dataType": "UINT8_T",
           "dataCount": 1,
           "comments": "[Zoop-axis Top, Zoop-axis Bottom, Xoop-axis Left, Xoop-axis Right, Sensor Axis Top, Sensor Axis Bottom] (0-Turn off Limit Switch Override, 1-Turn on Limit Switch Override) (bitmasked)"
         },
         "XoopAxis": {
-          "dataId": 9003,
-          "dataType": "INT16_T",
-          "dataCount": 1,
-          "comments": "[Power] (-1000, 1000) (m%)"
-        },
-        "ZoopAxis": {
           "dataId": 9004,
           "dataType": "INT16_T",
           "dataCount": 1,
           "comments": "[Power] (-1000, 1000) (m%)"
         },
-        "ScoopGrabber": {
+        "ZoopAxis": {
           "dataId": 9005,
+          "dataType": "INT16_T",
+          "dataCount": 1,
+          "comments": "[Power] (-1000, 1000) (m%)"
+        },
+        "ScoopGrabber": {
+          "dataId": 9006,
           "dataType": "UINT8_T",
           "dataCount": 1,
           "comments": "[Position] (0 Open, 1, Closed)"
         },
         "GotoPosition": {
-          "dataId": 9006,
+          "dataId": 9007,
           "dataType": "UINT8_T",
           "dataCount": 1,
           "comments": "[Position] (0, Group 1, 2, or 3)"
         },
         "IncrementalScoop": {
-          "dataId": 9007,
+          "dataId": 9008,
           "dataType": "INT8_T",
           "dataCount": 1,
           "comments": "Degrees 0-180"
+        },
+        "BumpScoop": {
+          "dataId": 9009,
+          "dataType": "UINT8_T",
+          "dataCount": 1,
+          "comments": "Quickly barely open and close the scoop"
         }
       },
       "Telemetry": {
@@ -557,27 +569,27 @@
       "Port": 11008,
       "MAC": "222.173.190.168.1.138",
       "Commands": {
-        "FLasers": {
+        "FluorometerLEDs": {
           "dataId": 10000,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "[Laser 1, 2 ,3] (0-Disable, 1-Enable)"
+          "comments": "[Wavelengths: 1, 2, 3, 4] (0-Disable, 1-Enable)"
         },
-        "Lights": {
+        "MicroscopeServo": {
           "dataId": 10001,
-          "dataType": "UINT8_T",
+          "dataType": "INT8_T",
           "dataCount": 1,
-          "comments": "[UV, White] (0-Disable, 1-Enable)"
+          "comments": "Sign of value determines direction"
         }
       },
       "Telemetry": {
         "FluorometerData": {
           "dataId": 10100,
           "dataType": "FLOAT_T",
-          "dataCount": 3,
-          "comments": "[PhotoDiode 1, 2, 3] (Wavelength)"
+          "dataCount": 3648,
+          "comments": "Diode readings from sensor"
         },
-        "CH3": {
+        "CH4": {
           "dataId": 10101,
           "dataType": "FLOAT_T",
           "dataCount": 2,
@@ -595,7 +607,7 @@
           "dataCount": 1,
           "comments": "[concentration (ppm)]"
         },
-        "NO": {
+        "NH3": {
           "dataId": 10104,
           "dataType": "FLOAT_T",
           "dataCount": 1,
@@ -695,7 +707,7 @@
       "Commands": {
         "HeaterToggle": {
           "dataId": 15000,
-          "dataType": "UINT8_T",
+          "dataType": "UINT16_T",
           "dataCount": 1,
           "comments": "Bitmask (1-ON, 0-OFF)"
         }
@@ -704,23 +716,52 @@
         "ThermoValues": {
           "dataId": 15100,
           "dataType": "FLOAT_T",
-          "dataCount": 3,
-          "comments": "[1, 2, 3] (degrees C)"
+          "dataCount": 12,
+          "comments": "[1, 2, 3...] (degrees C)"
         },
         "HeaterEnabled": {
           "dataId": 15101,
-          "dataType": "UINT8_T",
+          "dataType": "UINT16_T",
           "dataCount": 1,
-          "comments": "Heater #[3, 2, 1] (0-Disabled, 1-Enabled)"
+          "comments": "Heater #[...3, 2, 1] (0-Disabled, 1-Enabled)"
         }
       },
       "Error": {
         "Overheat": {
           "dataId": 15200,
-          "dataType": "UINT8_T",
+          "dataType": "UINT16_T",
           "dataCount": 1,
           "comments": "Bitmask (1-Overheated, 0-not overheated)"
         }
+      }
+    },
+    "SignalStack": {
+      "Ip": "192.168.1.145",
+      "Port": 11015,
+      "MAC": "222.173.190.168.1.145",
+      "Commands": {
+        "SignalsRotate": {
+          "dataId": 16000,
+          "dataType": "INT16_T",
+          "dataCount": 1,
+          "comments": "[Power] (-1000, 1000) (m%)"
+        }
+      },
+      "Telemetry": {
+        "SignalsPosition": {
+          "dataId": 16100,
+          "dataType": "DOUBLE_T",
+          "dataCount": 2,
+          "comments": "[Lat, Long] [(-90, 90), (-180, 180)] (deg)"
+        },
+        "SignalsDirection": {
+          "dataId": 16101,
+          "dataType": "FLOAT_T",
+          "dataCount": 1,
+          "comments": "[Heading] [ 0, 360 ]"
+        }
+      },
+      "Error": {
       }
     }
   },
