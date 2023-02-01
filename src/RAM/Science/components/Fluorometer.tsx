@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
 import fs from 'fs';
-import { FlexibleWidthXYPlot, XAxis, YAxis, HorizontalGridLines, LineSeries } from 'react-vis';
 import { rovecomm } from '../../../Core/RoveProtocol/Rovecomm';
+import { XYPlot } from 'react-vis';
+import { HorizontalGridLines } from 'react-vis';
+import { XAxis } from 'react-vis';
+import { YAxis } from 'react-vis';
+import { LineSeries } from 'react-vis';
+import { Crosshair } from 'react-vis';
 
 const container: CSS.Properties = {
   display: 'flex',
@@ -68,6 +73,12 @@ interface IState {
   DiodeValues: number[];
   /** Holds which lasers are enabled */
   LasersPowered: boolean[];
+
+  data: {
+    x: number;
+    y: number;
+  }[];
+
 }
 
 class Fluorometer extends Component<IProps, IState> {
@@ -88,6 +99,11 @@ class Fluorometer extends Component<IProps, IState> {
     this.state = {
       DiodeValues: [0, 0, 0],
       LasersPowered: [false, false, false],
+      data: [
+        { x: 1, y: 1 },
+        { x: 2, y: 4 },
+        { x: 7, y: 3 },
+      ],
     };
     this.updateDiodeVals = this.updateDiodeVals.bind(this);
     this.exportData = this.exportData.bind(this);
@@ -99,6 +115,7 @@ class Fluorometer extends Component<IProps, IState> {
    * Updates the wavelengths received from the Rover.
    * @param data float array of length 3 with the new data
    */
+  // eslint-disable-next-line react/sort-comp
   updateDiodeVals(data: number[]): void {
     this.setState({ DiodeValues: [data[0], data[1], data[2]] });
   }
@@ -138,48 +155,18 @@ class Fluorometer extends Component<IProps, IState> {
       <div id="Flurometer" style={this.props.style}>
         <div style={label}>Fluorometer</div>
         <div style={container}>
-          <FlexibleWidthXYPlot height={300}>
-            <HorizontalGridLines style={{ fill: 'none' }} />
-            <LineSeries
-              data={[
-                { x: 1, y: 10 },
-                { x: 2, y: 5 },
-                { x: 3, y: 15 },
-              ]}
-            />
-            <XAxis />
-            <YAxis />
-          </FlexibleWidthXYPlot>
           <div style={componentBox}>
-            {this.state.DiodeValues.map((value, index) => {
-              return (
-                <div key={index} style={row}>
-                  Diode {index + 1}: {value.toFixed(3)} nm
-                </div>
-              );
-            })}
-          </div>
-          <div style={componentBox}>
-            {this.state.LasersPowered.map((value, index) => {
-              return (
-                <div
-                  key={index}
-                  style={{ ...row, ...(value ? onIndicator : offIndicator), justifyContent: 'space-between' }}
-                >
-                  <p style={{ alignSelf: 'center', fontWeight: 'bold', marginLeft: '5px' }}> Laser {index + 1}: </p>
-                  <button style={{ ...button, marginRight: '5px' }} onClick={() => this.toggleLaser(index)}>
-                    {value ? 'Disable' : 'Enable'}
-                  </button>
-                </div>
-              );
-            })}
-          </div>
-          <div style={componentBox}>
-            <div style={row}>
-              <button style={controlButton} onClick={() => this.exportData()}>
-                Export
-              </button>
-            </div>
+            <XYPlot
+              margin={{ top: 10, bottom: 10 }}
+              width={window.document.documentElement.clientWidth - 50}
+              height={300}
+              xType="time"
+            >
+              <HorizontalGridLines style={{ fill: 'none' }} />
+              <LineSeries data={this.state.data} style={{ fill: 'none' }} strokeWidth="6" color="blue" />
+              <XAxis />
+              <YAxis />
+            </XYPlot>
           </div>
         </div>
       </div>
