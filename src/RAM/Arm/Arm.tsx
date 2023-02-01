@@ -81,12 +81,16 @@ function arm(): void {
     rovecomm.sendCommand('GripperMove', Gripper);
   }
 
-  if ('SolenoidOn' in controllerInputs && 'SolenoidOff' in controllerInputs) {
-    if (controllerInputs.SolenoidOn === 1) {
-      rovecomm.sendCommand('Solenoid', [1]);
-    } else if (controllerInputs.SolenoidOff === 1) {
-      rovecomm.sendCommand('Solenoid', [0]);
+  if ('EndEffectorOn' in controllerInputs && 'EndEffectorOff' in controllerInputs) {
+    let EndEffector = 0;
+    if (controllerInputs.EndEffectorOn === 1) {
+      EndEffector = 1 * controlMultipliers.EndEffector;
+    } else if (controllerInputs.EndEffectorOff === 1) {
+      EndEffector = -1 * controlMultipliers.EndEffector;
+    } else {
+      EndEffector = 0;
     }
+    rovecomm.sendCommand('EndEffector', EndEffector);
   }
 }
 

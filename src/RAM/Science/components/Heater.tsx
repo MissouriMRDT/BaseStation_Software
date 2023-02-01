@@ -28,8 +28,8 @@ const row: CSS.Properties = {
   flexDirection: 'row',
   flexGrow: 1,
   justifyContent: 'space-around',
-  lineHeight: '25px',
-  margin: '2.5px',
+  height: '30px',
+  marginTop: '5px',
 };
 const column: CSS.Properties = {
   display: 'flex',
@@ -96,20 +96,7 @@ class Heater extends Component<IProps, IState> {
     this.state = {
       UVPowered: false,
       WhiteLightPowered: false,
-      blocks: [
-        {
-          temp: -1,
-          isOn: false,
-        },
-        {
-          temp: -1,
-          isOn: false,
-        },
-        {
-          temp: -1,
-          isOn: false,
-        },
-      ],
+      blocks: new Array(12).fill({ temp: -1, isOn: false }).flat(),
     };
     this.updateTemps = this.updateTemps.bind(this);
     this.toggleBlock = this.toggleBlock.bind(this);
