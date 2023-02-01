@@ -67,39 +67,6 @@ function science(): void {
       rovecomm.sendCommand('WaterPump', [0]);
     }
   }
-
-  // Water controls are sent in one bitmasked value
-  // if ('Water1' in controllerInputs && 'Water2' in controllerInputs && 'Water3' in controllerInputs) {
-  //   if ('WaterGroup1' in controllerInputs && 'WaterGroup2' in controllerInputs && 'WaterGroup3' in controllerInputs) {
-  //     let water = '';
-  //     if (controllerInputs.WaterGroup1 === 1) {
-  //       water += controllerInputs.Water3;
-  //       water += controllerInputs.Water2;
-  //       water += controllerInputs.Water1;
-  //     } else if (controllerInputs.WaterGroup2 === 1) {
-  //       water += controllerInputs.Water3;
-  //       water += controllerInputs.Water2;
-  //       water += controllerInputs.Water1;
-  //       water += '000';
-  //     } else if (controllerInputs.WaterGroup3 === 1) {
-  //       water += controllerInputs.Water3;
-  //       water += controllerInputs.Water2;
-  //       water += controllerInputs.Water1;
-  //       water += '000000';
-  //     } else {
-  //       for (let i = 0; i < 3; i++) {
-  //         water += controllerInputs.Water3;
-  //       }
-  //       for (let i = 0; i < 3; i++) {
-  //         water += controllerInputs.Water2;
-  //       }
-  //       for (let i = 0; i < 3; i++) {
-  //         water += controllerInputs.Water1;
-  //       }
-  //     }
-  //     rovecomm.sendCommand('Water', parseInt(water, 2));
-  //   }
-  // }
 }
 
 interface IProps {}

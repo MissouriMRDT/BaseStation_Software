@@ -97,20 +97,6 @@ class Heater extends Component<IProps, IState> {
       UVPowered: false,
       WhiteLightPowered: false,
       blocks: new Array(12).fill({ temp: -1, isOn: false }).flat(),
-      // [
-      //   {
-      //     temp: -1,
-      //     isOn: false,
-      //   },
-      //   {
-      //     temp: -1,
-      //     isOn: false,
-      //   },
-      //   {
-      //     temp: -1,
-      //     isOn: false,
-      //   },
-      // ],
     };
     this.updateTemps = this.updateTemps.bind(this);
     this.toggleBlock = this.toggleBlock.bind(this);
