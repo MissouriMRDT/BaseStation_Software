@@ -12,7 +12,6 @@ const container: CSS.Properties = {
   borderStyle: 'solid',
   padding: '5px',
   alignItems: 'flex-start',
-  width: `40%`,
 };
 const label: CSS.Properties = {
   marginTop: '-10px',
@@ -31,10 +30,9 @@ interface IProps {
 
 const stateEnum = {
   Idle: 0,
-  Navigating: 1,
-  Cruising: 2,
-  Searching: 3,
-  Gate: 4,
+  Cruising: 1,
+  Searching: 2,
+  Gate: 3,
 };
 
 interface IState {}
@@ -56,9 +54,9 @@ class DroneState extends Component<IProps, IState> {
     });
   }
 
-  // componentDidMount() {
-  //   this.updateDiagram([-1]);
-  // }
+  componentDidMount() {
+    this.updateDiagram(0);
+  }
 
   updateDiagram(mode: number): void {
     let text;
@@ -72,73 +70,78 @@ class DroneState extends Component<IProps, IState> {
     context.font = '12px Arial';
 
     text = 'Idle';
-    context.rect(centerW - 64, 55, 160, 50);
+    context.rect(centerW - 80, 25, 160, 50);
     context.fillStyle = mode === stateEnum.Idle ? 'green' : 'white';
     context.fill();
     context.textBaseline = 'middle';
     context.textAlign = 'left';
     context.fillStyle = 'black';
-    context.fillText(text, centerW, 80);
+    context.fillText(text, centerW - 10, 50);
     context.stroke();
 
     context.beginPath();
-    context.moveTo(centerW, 105);
-    context.lineTo(centerW, 125);
+    context.moveTo(centerW, 75);
+    context.lineTo(centerW, 95);
     context.stroke();
 
     text = 'Cruising';
-    context.rect(centerW - 64, 125, 128, 50);
+    context.rect(centerW - 64, 95, 128, 50);
     context.fillStyle = mode === stateEnum.Cruising ? 'green' : 'white';
     context.fill();
     context.textBaseline = 'middle';
     context.textAlign = 'left';
     context.fillStyle = 'black';
-    context.fillText(text, centerW, 150);
+    context.fillText(text, centerW - 23, 120);
     context.stroke();
 
     context.beginPath();
-    context.moveTo(centerW, 175);
-    context.lineTo(centerW, 195);
+    context.moveTo(centerW, 145);
+    context.lineTo(centerW, 165);
     context.stroke();
 
     text = 'Searching';
-    context.rect(centerW - 9, 195, 128, 50);
+    context.rect(centerW - 64, 165, 128, 50);
     context.fillStyle = mode === stateEnum.Searching ? 'green' : 'white';
     context.fill();
     context.textBaseline = 'middle';
     context.textAlign = 'left';
     context.fillStyle = 'black';
-    context.fillText(text, centerW, 220);
+    context.fillText(text, centerW - 25, 190);
+    context.stroke();
+
+    context.beginPath();
+    context.moveTo(centerW, 215);
+    context.lineTo(centerW, 235);
     context.stroke();
 
     text = 'Gate Flying';
-    context.rect(centerW - 49, 245, 128, 50);
+    context.rect(centerW - 64, 235, 128, 50);
     context.fillStyle = mode === stateEnum.Gate ? 'green' : 'white';
     context.fill();
     context.textBaseline = 'middle';
     context.textAlign = 'left';
     context.fillStyle = 'black';
-    context.fillText(text, centerW, 270);
+    context.fillText(text, centerW - 30, 260);
     context.stroke();
 
     context.beginPath();
-    context.moveTo(centerW, 295);
-    context.lineTo(centerW, 335);
-    context.moveTo(centerW, 335);
-    context.lineTo(centerW + 145, 335);
-    context.moveTo(centerW + 145, 335);
-    context.lineTo(centerW + 145, 135);
-    context.moveTo(centerW + 145, 135);
-    context.lineTo(centerW + 83, 135);
+    context.moveTo(centerW, 285);
+    context.lineTo(centerW, 315);
+    context.moveTo(centerW, 315);
+    context.lineTo(centerW + 140, 315);
+    context.moveTo(centerW + 140, 315);
+    context.lineTo(centerW + 140, 50);
+    context.moveTo(centerW + 140, 50);
+    context.lineTo(centerW + 82, 50);
     context.stroke();
 
     context.beginPath();
     context.moveTo(centerW + 64, 270);
     context.lineTo(centerW + 106, 270);
     context.moveTo(centerW + 106, 270);
-    context.lineTo(centerW + 106, 127);
-    context.moveTo(centerW + 106, 127);
-    context.lineTo(centerW + 64, 127);
+    context.lineTo(centerW + 106, 120);
+    context.moveTo(centerW + 106, 120);
+    context.lineTo(centerW + 64, 120);
     context.stroke();
   }
 
@@ -149,9 +152,6 @@ class DroneState extends Component<IProps, IState> {
         <div style={container}>
           <canvas ref={this.canvasRef} width={window.document.documentElement.clientWidth / 4 + 15} height={400} />
         </div>
-        <button type="button" onClick={() => this.updateDiagram(0)}>
-          Force Update
-        </button>
       </div>
     );
   }
