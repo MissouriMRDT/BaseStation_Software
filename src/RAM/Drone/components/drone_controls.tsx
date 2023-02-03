@@ -4,12 +4,14 @@ import { rovecomm } from '../../../Core/RoveProtocol/Rovecomm';
 
 const container: CSS.Properties = {
   display: 'flex',
+  flexDirection: 'column',
   fontFamily: 'arial',
   borderTopWidth: '30px',
   borderColor: '#990000',
   borderBottomWidth: '2px',
   borderStyle: 'solid',
   flexWrap: 'wrap',
+  overflow: 'scroll',
   justifyContent: 'center',
 };
 const label: CSS.Properties = {
@@ -33,6 +35,7 @@ const button: CSS.Properties = {
   fontSize: '14px',
   lineHeight: '24px',
   borderWidth: '2px',
+  height: '40px',
 };
 
 function startAutonomy(): void {

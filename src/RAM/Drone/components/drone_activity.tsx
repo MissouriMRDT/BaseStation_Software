@@ -12,7 +12,7 @@ const container: CSS.Properties = {
   borderStyle: 'solid',
   whiteSpace: 'pre-wrap',
   overflow: 'scroll',
-  height: 'calc(100% - 40px)',
+  height: '283px',
 };
 const label: CSS.Properties = {
   marginTop: '-10px',

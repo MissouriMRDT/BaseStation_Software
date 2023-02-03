@@ -12,6 +12,7 @@ const container: CSS.Properties = {
   borderStyle: 'solid',
   padding: '5px',
   alignItems: 'flex-start',
+  height: '83.5%',
 };
 const label: CSS.Properties = {
   marginTop: '-10px',
@@ -65,7 +66,7 @@ class DroneState extends Component<IProps, IState> {
     const context = canvas.getContext('2d');
     context.clearRect(0, 0, canvas.width, canvas.height);
 
-    const centerW = context.canvas.width / 2;
+    const centerW = context.canvas.width / 4;
 
     context.font = '12px Arial';
 
