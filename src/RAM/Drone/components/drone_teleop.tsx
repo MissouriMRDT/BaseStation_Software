@@ -10,7 +10,6 @@ const container: CSS.Properties = {
   borderBottomWidth: '2px',
   borderStyle: 'solid',
   flexDirection: 'column',
-  width: '40%',
 };
 const label: CSS.Properties = {
   marginTop: '-10px',
@@ -23,21 +22,19 @@ const label: CSS.Properties = {
   color: 'white',
 };
 
+const button: CSS.Properties = {
+  fontFamily: 'arial',
+  flexGrow: 1,
+  margin: '5px',
+  fontSize: '14px',
+  lineHeight: '24px',
+  borderWidth: '2px',
+  height: '40px',
+};
 const row: CSS.Properties = {
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
-};
-
-/* const column: CSS.Properties = {
-  display: 'flex',
-  flexDirection: 'column',
-}; */
-
-const button: CSS.Properties = {
-  margin: '10px',
-  width: '40',
-  height: '25px',
 };
 
 interface IProps {
@@ -65,16 +62,6 @@ class DroneTeleop extends Component<IProps, IState> {
     rovecomm.sendCommand('droneStateDisplay', RovecommManifest.Mulitmedia.Enums.DISPLAYSTATE.reached_Goal);
   }
 
-  static incZedAngle(prevState: IState, amount: number): void {
-    const angle = amount + prevState.zedAngle <= 45.0 ? prevState.zedAngle + amount : 45.0;
-    rovecomm.sendCommand('droneZedAngle', angle);
-  }
-
-  static decZedAngle(prevState: IState, amount: number): void {
-    const angle = amount - prevState.zedAngle >= 0 ? prevState.zedAngle - amount : 0.0;
-    rovecomm.sendCommand('droneZedAngle', angle);
-  }
-
   constructor(props: IProps) {
     super(props);
     this.state = {
@@ -87,50 +74,83 @@ class DroneTeleop extends Component<IProps, IState> {
     rovecomm.sendCommand('droneZedAngle', angle);
   }
 
+  incZedAngle(prevState: IState, amount: number): void {
+    const angle = prevState.zedAngle + amount <= 45.0 ? prevState.zedAngle + amount : 45.0;
+    rovecomm.sendCommand('droneZedAngle', angle);
+    this.setZedAngle(angle);
+  }
+
+  decZedAngle(prevState: IState, amount: number): void {
+    const angle = prevState.zedAngle - amount >= 0 ? prevState.zedAngle - amount : 0.0;
+    rovecomm.sendCommand('droneZedAngle', angle);
+    this.setZedAngle(angle);
+  }
+
   render(): JSX.Element {
     return (
       <div style={this.props.style}>
         <div style={label}>Zed/Teleop Controls</div>
         <div style={container}>
-          <div style={{ ...row, marginLeft: '14px' }}>
-            <div style={{ ...button, width: '80px' }} onClick={DroneTeleop.teleop}>
+          <div style={{ ...row, marginLeft: '5px', marginTop: '10px', marginBottom: '10px' }}>
+            <button type="button" style={{ ...button, width: '80px' }} onClick={DroneTeleop.teleop}>
               Teleop
-            </div>
-            <div style={{ ...button, width: '80px' }} onClick={DroneTeleop.autonomy}>
+            </button>
+            <button type="button" style={{ ...button, width: '80px' }} onClick={DroneTeleop.autonomy}>
               Autonomy
-            </div>
-            <div style={{ ...button, width: '80px' }} onClick={DroneTeleop.reachedGoal}>
+            </button>
+            <button type="button" style={{ ...button, width: '80px' }} onClick={DroneTeleop.reachedGoal}>
               Goal
-            </div>
+            </button>
           </div>
-          <div style={{ ...row, marginLeft: '14px' }}>
+          <div style={{ ...row, marginLeft: '10px', marginTop: '10px', marginBottom: '10px' }}>
             <div> Zed Angle: {this.state.zedAngle}°</div>
           </div>
-          <div style={{ ...row, marginLeft: '14px' }}>
-            <div style={{ ...button, width: '40px' }} onClick={() => DroneTeleop.decZedAngle(this.state, 10)}>
+          <div style={{ ...row, marginLeft: '5px', marginTop: '10px', marginBottom: '10px' }}>
+            <button type="button" style={{ ...button, width: '40px' }} onClick={() => this.decZedAngle(this.state, 10)}>
               -10
-            </div>
-            <div
+            </button>
+            <button
+              type="button"
               style={{ ...button, width: '40px', paddingLeft: '10px' }}
-              onClick={() => DroneTeleop.decZedAngle(this.state, 5)}
+              onClick={() => this.decZedAngle(this.state, 5)}
             >
               -5
-            </div>
-            <div style={{ ...button, width: '80px', paddingLeft: '15px' }} onClick={() => this.setZedAngle(0.0)}>
-              Reset Angle
-            </div>
-            <div
+            </button>
+            <button
+              type="button"
               style={{ ...button, width: '40px', paddingLeft: '15px' }}
-              onClick={() => DroneTeleop.incZedAngle(this.state, 5)}
+              onClick={() => this.decZedAngle(this.state, 1)}
+            >
+              -1
+            </button>
+            <button
+              type="button"
+              style={{ ...button, width: '80px', paddingLeft: '15px', fontSize: '12px' }}
+              onClick={() => this.setZedAngle(0.0)}
+            >
+              Reset Angle
+            </button>
+            <button
+              type="button"
+              style={{ ...button, width: '40px', paddingLeft: '15px' }}
+              onClick={() => this.incZedAngle(this.state, 1)}
+            >
+              1
+            </button>
+            <button
+              type="button"
+              style={{ ...button, width: '40px', paddingLeft: '15px' }}
+              onClick={() => this.incZedAngle(this.state, 5)}
             >
               5
-            </div>
-            <div
+            </button>
+            <button
+              type="button"
               style={{ ...button, width: '40px', paddingLeft: '10px' }}
-              onClick={() => DroneTeleop.incZedAngle(this.state, 10)}
+              onClick={() => this.incZedAngle(this.state, 10)}
             >
               10
-            </div>
+            </button>
           </div>
         </div>
       </div>
