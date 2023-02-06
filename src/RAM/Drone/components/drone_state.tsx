@@ -66,7 +66,7 @@ class DroneState extends Component<IProps, IState> {
     const context = canvas.getContext('2d');
     context.clearRect(0, 0, canvas.width, canvas.height);
 
-    const centerW = context.canvas.width / 2;
+    const centerW = context.canvas.width / 4;
 
     context.font = '12px Arial';
 
