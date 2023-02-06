@@ -3,6 +3,7 @@ import CSS from 'csstype';
 import DroneControls from './components/drone_controls';
 import DroneState from './components/drone_state';
 import DroneActivity from './components/drone_activity';
+import DroneTeleop from './components/drone_teleop';
 
 const row: CSS.Properties = {
   display: 'flex',
@@ -27,18 +28,17 @@ class Drone extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div style={{ ...column }}>
-        <div style={{ ...row, justifyContent: 'space-between', flex: 1 }}>
-          <div style={{ ...row, flex: 1 }}>
-            <DroneControls
-              style={{ marginRight: '5px', flexWrap: 'wrap' }}
-              selectedWaypoint={this.props.selectedWaypoint}
-            />
-            <DroneState />
-          </div>
-          <div style={row}>
-            <DroneActivity />
-          </div>
+      <div style={row}>
+        <div style={{ ...column, flex: 1 }}>
+          <DroneControls
+            style={{ marginRight: '5px', flexWrap: 'wrap' }}
+            selectedWaypoint={this.props.selectedWaypoint}
+          />
+          <DroneActivity style={{ marginRight: '5px' }} />
+          <DroneTeleop style={{ marginRight: '5px' }} />
+        </div>
+        <div style={{ ...column, width: '20%' }}>
+          <DroneState />
         </div>
       </div>
     );
