@@ -72,13 +72,12 @@ interface IState {
   /** Holds the last sent values of the diodes */
   DiodeValues: number[];
   /** Holds which lasers are enabled */
-  LasersPowered: boolean[];
+  LedStatus: boolean[];
 
   data: {
     x: number;
     y: number;
   }[];
-
 }
 
 class Fluorometer extends Component<IProps, IState> {
@@ -86,11 +85,12 @@ class Fluorometer extends Component<IProps, IState> {
     style: {},
   };
 
-  static buildLaserCommand(Lasers: boolean[]): number {
+  static buildLedCommand(LED: boolean[]): number {
     let bitmask = '';
-    bitmask += Lasers[0] ? '1' : '0';
-    bitmask += Lasers[1] ? '1' : '0';
-    bitmask += Lasers[2] ? '1' : '0';
+    bitmask += LED[0] ? '1' : '0';
+    bitmask += LED[1] ? '1' : '0';
+    bitmask += LED[2] ? '1' : '0';
+    bitmask += LED[3] ? '1' : '0';
     return parseInt(bitmask, 2);
   }
 
@@ -98,7 +98,7 @@ class Fluorometer extends Component<IProps, IState> {
     super(props);
     this.state = {
       DiodeValues: [0, 0, 0],
-      LasersPowered: [false, false, false],
+      LedStatus: [false, false, false, false],
       data: [
         { x: 1, y: 1 },
         { x: 2, y: 4 },
@@ -116,15 +116,22 @@ class Fluorometer extends Component<IProps, IState> {
    * @param data float array of length 3 with the new data
    */
   // eslint-disable-next-line react/sort-comp
-  updateDiodeVals(data: number[]): void {
-    this.setState({ DiodeValues: [data[0], data[1], data[2]] });
+  updateDiodeVals(dataInput: number[]): void {
+    this.setState({
+      DiodeValues: dataInput,
+      data: dataInput.map((value: number, index: number) => {
+        return { x: index, y: value };
+      }),
+    });
   }
 
-  toggleLaser(index: number): void {
-    const { LasersPowered } = this.state;
-    LasersPowered[index] = !LasersPowered[index];
-    rovecomm.sendCommand('FLasers', [Fluorometer.buildLaserCommand(LasersPowered)]);
-    this.setState({ LasersPowered });
+  toggleLed(index: number): void {
+    const { LedStatus } = this.state;
+    LedStatus[index] = !LedStatus[index];
+    this.setState({
+      LedStatus,
+    });
+    rovecomm.sendCommand('FlurometerLEDs', Fluorometer.buildLedCommand(LedStatus));
   }
 
   exportData(): void {
@@ -167,6 +174,20 @@ class Fluorometer extends Component<IProps, IState> {
               <XAxis />
               <YAxis />
             </XYPlot>
+            {this.state.LedStatus.map((value, index) => {
+              return (
+                <label key={index} style={{ marginLeft: '5px' }} htmlFor="LedToggle">
+                  <input
+                    type="checkbox"
+                    id="LedToggle"
+                    name="LedToggle"
+                    checked={value}
+                    onChange={() => this.toggleLed(index)}
+                  />
+                  led#{index + 1}
+                </label>
+              );
+            })}
           </div>
         </div>
       </div>
