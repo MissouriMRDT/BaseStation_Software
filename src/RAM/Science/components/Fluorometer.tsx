@@ -3,6 +3,7 @@ import CSS from 'csstype';
 import fs from 'fs';
 import { rovecomm } from '../../../Core/RoveProtocol/Rovecomm';
 import { XYPlot } from 'react-vis';
+import { VerticalGridLines } from 'react-vis';
 import { HorizontalGridLines } from 'react-vis';
 import { XAxis } from 'react-vis';
 import { YAxis } from 'react-vis';
@@ -48,6 +49,11 @@ const button: CSS.Properties = {
   alignSelf: 'center',
 };
 
+const overlay: CSS.Properties = {
+  width: '200px',
+  color: 'black',
+};
+
 const controlButton: CSS.Properties = {
   // margin: "5px",
 };
@@ -78,6 +84,8 @@ interface IState {
     x: number;
     y: number;
   }[];
+
+  crosshairPos: number | null;
 }
 
 class Fluorometer extends Component<IProps, IState> {
@@ -104,9 +112,12 @@ class Fluorometer extends Component<IProps, IState> {
         { x: 2, y: 4 },
         { x: 7, y: 3 },
       ],
+      crosshairPos: null,
     };
     this.updateDiodeVals = this.updateDiodeVals.bind(this);
     this.exportData = this.exportData.bind(this);
+    this.onNearestX = this.onNearestX.bind(this);
+    this.onMouseLeave = this.onMouseLeave.bind(this);
 
     rovecomm.on('FluorometerData', (data: any) => this.updateDiodeVals(data));
   }
@@ -123,6 +134,14 @@ class Fluorometer extends Component<IProps, IState> {
         return { x: index, y: value };
       }),
     });
+  }
+
+  onMouseLeave(): void {
+    this.setState({ crosshairPos: null });
+  }
+
+  onNearestX(index: number): void {
+    this.setState({ crosshairPos: index });
   }
 
   toggleLed(index: number): void {
@@ -157,6 +176,26 @@ class Fluorometer extends Component<IProps, IState> {
     });
   }
 
+  crosshair(): JSX.Element | null {
+    const { crosshairPos } = this.state;
+
+    // If we were able to find a reading at a time, then go ahead and display the crosshair
+    // The heading will be that time as a string, and then if the key exists in crosshairValues
+    // then we want to display its y value
+    if (crosshairPos) {
+      return (
+        <Crosshair values={[this.state.data[crosshairPos]]}>
+          <div style={overlay}>
+            <h3 style={{ borderStyle: 'solid', width: '30%', textAlign: 'center', backgroundColor: 'white' }}>
+              {this.state.data[crosshairPos].y}
+            </h3>
+          </div>
+        </Crosshair>
+      );
+    }
+    return null;
+  }
+
   render(): JSX.Element {
     return (
       <div id="Flurometer" style={this.props.style}>
@@ -164,15 +203,22 @@ class Fluorometer extends Component<IProps, IState> {
         <div style={container}>
           <div style={componentBox}>
             <XYPlot
-              margin={{ top: 10, bottom: 10 }}
+              margin={{ top: 10, bottom: 50 }}
               width={window.document.documentElement.clientWidth - 50}
               height={300}
-              xType="time"
             >
+              <VerticalGridLines style={{ fill: 'none' }} />
               <HorizontalGridLines style={{ fill: 'none' }} />
-              <LineSeries data={this.state.data} style={{ fill: 'none' }} strokeWidth="6" color="blue" />
+              <LineSeries
+                data={this.state.data}
+                style={{ fill: 'none' }}
+                strokeWidth="6"
+                color="blue"
+                onNearestX={(_datapoint: any, event: any) => this.onNearestX(event.index)}
+              />
               <XAxis />
               <YAxis />
+              {this.crosshair()}
             </XYPlot>
             {this.state.LedStatus.map((value, index) => {
               return (
