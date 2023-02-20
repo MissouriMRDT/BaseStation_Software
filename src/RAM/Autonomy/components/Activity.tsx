@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
 import { rovecomm } from '../../../Core/RoveProtocol/Rovecomm';
+import { container, boxStyle } from '../../../Core/components/CssConstants';
 
-const container: CSS.Properties = {
+const Container: CSS.Properties = {
   display: 'flex',
   flexDirection: 'column',
   fontFamily: 'arial',
@@ -27,6 +28,7 @@ const label: CSS.Properties = {
 
 interface IProps {
   style?: CSS.Properties;
+  theme: string;
 }
 
 interface IState {
@@ -43,7 +45,7 @@ class Activity extends Component<IProps, IState> {
     super(props);
     this.state = {
       ActivityText: '',
-      backgroundColor: 'white',
+      backgroundColor: boxStyle(this.props.theme),
     };
 
     this.ReachedMarker = this.ReachedMarker.bind(this);
@@ -53,30 +55,38 @@ class Activity extends Component<IProps, IState> {
     rovecomm.on('ReachedMarker', this.ReachedMarker);
   }
 
-  Log(data: string): void {
-    this.setState((prevState) => ({
-      ActivityText: `${prevState.ActivityText}${new Date().toLocaleTimeString()}: ${data} \n`,
-    }));
+  componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any): void {
+    if (this.props.theme !== prevProps.theme) {
+      this.setState({ backgroundColor: boxStyle(this.props.theme) });
+    }
   }
 
   ReachedMarker(): void {
     this.setState({ backgroundColor: 'green' });
     this.Log('Reached waypoint!');
     const reachInterval = setInterval(() => {
-      this.setState((prevState) => ({ backgroundColor: prevState.backgroundColor === 'green' ? 'white' : 'green' }));
+      this.setState((prevState) => ({
+        backgroundColor: prevState.backgroundColor === 'green' ? boxStyle(this.props.theme) : 'green',
+      }));
     }, 250);
 
     setTimeout(() => {
       clearInterval(reachInterval);
-      this.setState({ backgroundColor: 'white' });
+      this.setState({ backgroundColor: boxStyle(this.props.theme) });
     }, 4000);
+  }
+
+  Log(data: string): void {
+    this.setState((prevState) => ({
+      ActivityText: `${prevState.ActivityText}${new Date().toLocaleTimeString()}: ${data} \n`,
+    }));
   }
 
   render(): JSX.Element {
     return (
       <div style={this.props.style}>
         <div style={label}>Autonomy Activity</div>
-        <div style={{ ...container, backgroundColor: this.state.backgroundColor }}>{this.state.ActivityText}</div>
+        <div style={{ ...Container, backgroundColor: this.state.backgroundColor }}>{this.state.ActivityText}</div>
       </div>
     );
   }

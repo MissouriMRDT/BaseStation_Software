@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import CSS from 'csstype';
 import { ChromePicker } from 'react-color';
 import { rovecomm, RovecommManifest } from '../../../Core/RoveProtocol/Rovecomm';
+import { boxStyle, textStyle, container, button } from '../../../Core/components/CssConstants';
 
-const container: CSS.Properties = {
+const Container: CSS.Properties = {
   display: 'flex',
   fontFamily: 'arial',
   borderTopWidth: '28px',
@@ -33,7 +34,7 @@ const column: CSS.Properties = {
   flexDirection: 'column',
 };
 
-const button: CSS.Properties = {
+const Button: CSS.Properties = {
   margin: '5px',
 };
 
@@ -46,6 +47,7 @@ interface RGBColor {
 
 interface IProps {
   style?: CSS.Properties;
+  theme: string;
 }
 interface IState {
   color: RGBColor;
@@ -94,23 +96,27 @@ class Lighting extends Component<IProps, IState> {
     return (
       <div style={this.props.style}>
         <div style={label}>Lighting</div>
-        <div style={container}>
+        <div style={{ ...Container, ...container(this.props.theme) }}>
           <div style={column}>
             <ChromePicker color={this.state.color} onChangeComplete={(color: any) => this.colorChanged(color)} />
             <div style={{ ...row, justifyContent: 'center' }}>
-              <button style={button} onClick={Lighting.teleop}>
+              <button style={{ ...Button, ...button(this.props.theme) }} onClick={Lighting.teleop}>
                 Teleop
               </button>
-              <button style={button} onClick={Lighting.autonomy}>
+              <button style={{ ...Button, ...button(this.props.theme) }} onClick={Lighting.autonomy}>
                 Autonomy
               </button>
-              <button style={button} onClick={Lighting.reachedGoal}>
+              <button style={{ ...Button, ...button(this.props.theme) }} onClick={Lighting.reachedGoal}>
                 Goal
               </button>
             </div>
             <div style={{ ...row, justifyContent: 'center', marginBottom: '5px' }}>
               <input
-                style={{ width: '50px' }}
+                style={{
+                  width: '50px',
+                  backgroundColor: boxStyle(this.props.theme),
+                  color: textStyle(this.props.theme),
+                }}
                 id="bright"
                 value={this.state.brightInput}
                 onChange={(e) => this.handleEdit(e)}
@@ -121,6 +127,7 @@ class Lighting extends Component<IProps, IState> {
                   if (Number(this.state.brightInput) >= 0 && Number(this.state.brightInput) <= 124)
                     rovecomm.sendCommand('Brightness', this.state.brightInput);
                 }}
+                style={button(this.props.theme)}
               >
                 Set Brightness
               </button>

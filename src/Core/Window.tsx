@@ -34,19 +34,13 @@ export default class NewWindowComponent extends Component<IProps, IState> {
   private externalWindow: Window | null = null;
   // When the component mounts, Open a new window
 
-  constructor(props: IProps) {
-    super(props);
-    this.state = {
-      theme: 'light',
-    };
-  }
-
   // When the component mounts, Open a new window
   componentDidMount(): void {
     // The second argument in window.open is optional and can be set to whichever
     // value you want. You will notice the use of this value when we modify the main
     // electron.js file
     this.externalWindow = window.open('', this.props.name);
+    this.colorTheme(this.props.theme);
 
     this.reactTableLink.type = 'text/css';
     this.reactTableLink.rel = 'stylesheet';
@@ -84,8 +78,9 @@ export default class NewWindowComponent extends Component<IProps, IState> {
   colorTheme(theme: string): void {
     if (theme === 'light') {
       this.externalWindow.document.body.style.backgroundColor = 'white';
+    } else {
+      this.externalWindow.document.body.style.backgroundColor = '#252525';
     }
-    this.externalWindow.document.body.style.backgroundColor = '#252525';
   }
 
   render(): JSX.Element {

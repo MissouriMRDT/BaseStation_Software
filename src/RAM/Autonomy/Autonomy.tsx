@@ -39,8 +39,8 @@ class Autonomy extends Component<IProps, IState> {
               theme={this.props.theme}
             />
             <div style={{ ...row, marginRight: '5px', flexGrow: 1 }}>
-              <Activity style={{ flex: 1, marginRight: '5px' }} />
-              <Lighting />
+              <Activity style={{ flex: 1, marginRight: '5px' }} theme={this.props.theme} />
+              <Lighting theme={this.props.theme} />
             </div>
           </div>
           <StateDiagram theme={this.props.theme} />
