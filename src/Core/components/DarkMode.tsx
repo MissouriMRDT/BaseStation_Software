@@ -13,7 +13,6 @@ const button: CSS.Properties = {
 
 interface IProps {
   themeCallback: any;
-  componentTheme: string;
 }
 
 interface IState {}

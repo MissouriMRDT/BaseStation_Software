@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
 import { rovecomm } from '../../../Core/RoveProtocol/Rovecomm';
+import { container, textStyle, boxStyle } from '../../../Core/components/CssConstants';
 
-const container: CSS.Properties = {
+const Container: CSS.Properties = {
   display: 'flex',
   flexDirection: 'column',
   fontFamily: 'arial',
@@ -29,6 +30,7 @@ const label: CSS.Properties = {
 
 interface IProps {
   style?: CSS.Properties;
+  theme: string;
 }
 
 interface IState {}
@@ -61,6 +63,10 @@ class StateDiagram extends Component<IProps, IState> {
     this.updateStateDiagram([-1]);
   }
 
+  componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any): void {
+    this.updateStateDiagram([-1]);
+  }
+
   updateStateDiagram(data: any): void {
     let text;
 
@@ -75,11 +81,11 @@ class StateDiagram extends Component<IProps, IState> {
     text = 'Idle';
     context.textBaseline = 'middle';
     context.textAlign = 'right';
-    context.fillStyle = 'black';
+    context.fillStyle = textStyle(this.props.theme);
     context.fillText(text, centerW - 25, 50);
     context.beginPath();
     context.rect(centerW - 20, 30, 40, 40);
-    context.fillStyle = data[0] === stateEnum[text] ? 'green' : 'white';
+    context.fillStyle = data[0] === stateEnum[text] ? 'green' : boxStyle(this.props.theme);
     context.fill();
     context.stroke();
 
@@ -91,11 +97,11 @@ class StateDiagram extends Component<IProps, IState> {
     text = 'Navigating';
     context.textBaseline = 'middle';
     context.textAlign = 'right';
-    context.fillStyle = 'black';
+    context.fillStyle = textStyle(this.props.theme);
     context.fillText(text, centerW - 25, 130);
     context.rect(centerW - 20, 110, 40, 40);
     context.stroke();
-    context.fillStyle = data[0] === stateEnum[text] ? 'green' : 'white';
+    context.fillStyle = data[0] === stateEnum[text] ? 'green' : boxStyle(this.props.theme);
     context.fill();
 
     context.beginPath();
@@ -120,11 +126,11 @@ class StateDiagram extends Component<IProps, IState> {
     text = 'Avoidance';
     context.textBaseline = 'middle';
     context.textAlign = 'right';
-    context.fillStyle = 'black';
+    context.fillStyle = textStyle(this.props.theme);
     context.fillText(text, centerW - 70, 210);
     context.rect(centerW - 65, 190, 40, 40);
     context.stroke();
-    context.fillStyle = data[0] === stateEnum[text] ? 'green' : 'white';
+    context.fillStyle = data[0] === stateEnum[text] ? 'green' : boxStyle(this.props.theme);
     context.fill();
 
     context.beginPath();
@@ -135,11 +141,11 @@ class StateDiagram extends Component<IProps, IState> {
     text = 'SearchPattern';
     context.textBaseline = 'middle';
     context.textAlign = 'right';
-    context.fillStyle = 'black';
+    context.fillStyle = textStyle(this.props.theme);
     context.fillText(text, centerW + 110, 210);
     context.rect(centerW - 10, 190, 40, 40);
     context.stroke();
-    context.fillStyle = data[0] === stateEnum[text] ? 'green' : 'white';
+    context.fillStyle = data[0] === stateEnum[text] ? 'green' : boxStyle(this.props.theme);
     context.fill();
 
     context.beginPath();
@@ -150,11 +156,11 @@ class StateDiagram extends Component<IProps, IState> {
     text = 'ApproachingMarker';
     context.textBaseline = 'middle';
     context.textAlign = 'right';
-    context.fillStyle = 'black';
+    context.fillStyle = textStyle(this.props.theme);
     context.fillText(text, centerW - 25, 290);
     context.rect(centerW - 20, 270, 40, 40);
     context.stroke();
-    context.fillStyle = data[0] === stateEnum[text] ? 'green' : 'white';
+    context.fillStyle = data[0] === stateEnum[text] ? 'green' : boxStyle(this.props.theme);
     context.fill();
 
     context.beginPath();
@@ -212,7 +218,7 @@ class StateDiagram extends Component<IProps, IState> {
     return (
       <div style={this.props.style}>
         <div style={label}>State Diagram</div>
-        <div style={container}>
+        <div style={{ ...container(this.props.theme), ...Container }}>
           <canvas ref={this.canvasRef} width={window.document.documentElement.clientWidth / 4 + 15} height={400} />
         </div>
       </div>

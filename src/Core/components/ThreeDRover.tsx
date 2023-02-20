@@ -103,6 +103,13 @@ class ThreeDRover extends Component<IProps, IState> {
     }
   }
 
+  backgroundColor(): string {
+    if (this.props.theme === 'light') {
+      return '#FFFFFF';
+    }
+    return '#333333';
+  }
+
   render(): JSX.Element {
     return (
       <div style={this.props.style}>
@@ -111,7 +118,7 @@ class ThreeDRover extends Component<IProps, IState> {
           <STLViewer
             model={ROVER_FILE}
             modelColor="#B92C2C"
-            backgroundColor="#FFFFFF"
+            backgroundColor={this.backgroundColor()}
             rotate={false}
             rotation={this.state.imuData}
             orbitControls

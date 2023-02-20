@@ -14,7 +14,9 @@ interface IProps {
   theme: string;
 }
 
-interface IState {}
+interface IState {
+  theme: string;
+}
 
 export default class NewWindowComponent extends Component<IProps, IState> {
   // Create a container <div> for the window
@@ -31,6 +33,13 @@ export default class NewWindowComponent extends Component<IProps, IState> {
   // This will keep a reference of the window
   private externalWindow: Window | null = null;
   // When the component mounts, Open a new window
+
+  constructor(props: IProps) {
+    super(props);
+    this.state = {
+      theme: 'light',
+    };
+  }
 
   // When the component mounts, Open a new window
   componentDidMount(): void {
@@ -64,6 +73,19 @@ export default class NewWindowComponent extends Component<IProps, IState> {
         delete windows[this.props.name];
       };
     }
+  }
+
+  componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any): void {
+    if (this.props.theme !== prevProps.theme) {
+      this.colorTheme(this.props.theme);
+    }
+  }
+
+  colorTheme(theme: string): void {
+    if (theme === 'light') {
+      this.externalWindow.document.body.style.backgroundColor = 'white';
+    }
+    this.externalWindow.document.body.style.backgroundColor = '#252525';
   }
 
   render(): JSX.Element {

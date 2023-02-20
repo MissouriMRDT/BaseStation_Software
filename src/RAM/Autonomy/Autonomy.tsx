@@ -43,7 +43,7 @@ class Autonomy extends Component<IProps, IState> {
               <Lighting />
             </div>
           </div>
-          <StateDiagram />
+          <StateDiagram theme={this.props.theme} />
         </div>
         <div style={row}>
           <Cameras defaultCamera={9} style={{ flex: 1, marginRight: '2.5px' }} theme={this.props.theme} />

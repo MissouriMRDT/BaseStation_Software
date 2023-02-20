@@ -109,7 +109,11 @@ class ControlCenter extends Component<IProps, IState> {
           // everything inside NewWindowComponent is considered props.children and will be
           // displayed in a new window
           this.state.ronOpen && (
-            <NewWindowComponent onClose={() => this.setState({ ronOpen: false })} name="Rover Overview of Network">
+            <NewWindowComponent
+              onClose={() => this.setState({ ronOpen: false })}
+              name="Rover Overview of Network"
+              theme={this.state.theme}
+            >
               <RoverOverviewOfNetwork />
             </NewWindowComponent>
           )
@@ -119,7 +123,11 @@ class ControlCenter extends Component<IProps, IState> {
           // everything inside NewWindowComponent is considered props.children and will be
           // displayed in a new window
           this.state.ramOpen && (
-            <NewWindowComponent onClose={() => this.setState({ ramOpen: false })} name="Rover Attachment Manager">
+            <NewWindowComponent
+              onClose={() => this.setState({ ramOpen: false })}
+              name="Rover Attachment Manager"
+              theme={this.state.theme}
+            >
               <RoverAttachmentManager
                 selectedWaypoint={
                   this.waypointsInstance.state.storedWaypoints[this.waypointsInstance.state.selectedWaypoint]
@@ -134,7 +142,11 @@ class ControlCenter extends Component<IProps, IState> {
           // everything inside NewWindowComponent is considered props.children and will be
           // displayed in a new window
           this.state.ridOpen && (
-            <NewWindowComponent onClose={() => this.setState({ ridOpen: false })} name="Rover Imagery Display">
+            <NewWindowComponent
+              onClose={() => this.setState({ ridOpen: false })}
+              name="Rover Imagery Display"
+              theme={this.state.theme}
+            >
               <RoverImageryDisplay
                 rowcol=""
                 style={{ width: '100%', height: '100%', backgroundColor: '#404040' }}
@@ -163,7 +175,7 @@ class ControlCenter extends Component<IProps, IState> {
               theme={this.state.theme}
             />
           </div>
-          <Log theme={this.state.theme}/>
+          <Log theme={this.state.theme} />
           <Power theme={this.state.theme} />
           <Drive theme={this.state.theme} />
           <div style={row}>

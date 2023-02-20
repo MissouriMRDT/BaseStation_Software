@@ -69,3 +69,23 @@ export function selector(theme: string) {
       return Selector;
   }
 }
+
+export function textStyle(theme: string): string {
+  switch (theme) {
+    default:
+    case 'light':
+      return 'black';
+    case 'dark':
+      return 'white';
+  }
+}
+
+export function boxStyle(theme: string): string {
+  switch (theme) {
+    default:
+    case 'light':
+      return 'white';
+    case 'dark':
+      return '#404040';
+  }
+}

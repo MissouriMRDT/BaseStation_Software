@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
-import { BrowserWindow } from 'electron';
 import Arm from './Arm/Arm';
 import Autonomy from './Autonomy/Autonomy';
 import Science from './Science/Science';
+import { container } from '../Core/components/CssConstants';
 
-const RON: CSS.Properties = {
-  height: '100%',
-  width: '100%',
-};
+const RON: CSS.Properties = {};
 // function ColorToggle(theme: string): CSS.Properties {
 //   if (theme === 'light') {
 //     return LContainer;
@@ -65,15 +62,6 @@ class RoverAttachmentManager extends Component<IProps, IState> {
     });
   }
 
-  themeChange(theme: string): string {
-    if (theme === 'light') {
-      document.body.style.backgroundColor = 'white';
-      return this.props.theme;
-    }
-    document.body.style.backgroundColor = '#252525';
-    return this.props.theme;
-  }
-
   render(): JSX.Element {
     return (
       <div style={RON}>
@@ -94,13 +82,10 @@ class RoverAttachmentManager extends Component<IProps, IState> {
             );
           })}
         </div>
-        <div>
-          <button onClick={() => this.themeChange('dark')}>Change Background Color</button>
-        </div>
         {this.state.displayed === 'Arm' && <Arm />}
         {this.state.displayed === 'Science' && <Science />}
         {this.state.displayed === 'Autonomy' && (
-          <Autonomy selectedWaypoint={this.props.selectedWaypoint} theme={this.themeChange(this.props.theme)} />
+          <Autonomy selectedWaypoint={this.props.selectedWaypoint} theme={this.props.theme} />
         )}
       </div>
     );
