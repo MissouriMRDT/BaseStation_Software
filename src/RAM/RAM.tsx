@@ -83,7 +83,7 @@ class RoverAttachmentManager extends Component<IProps, IState> {
           })}
         </div>
         {this.state.displayed === 'Arm' && <Arm />}
-        {this.state.displayed === 'Science' && <Science />}
+        {this.state.displayed === 'Science' && <Science theme={this.props.theme}/>}
         {this.state.displayed === 'Autonomy' && (
           <Autonomy selectedWaypoint={this.props.selectedWaypoint} theme={this.props.theme} />
         )}

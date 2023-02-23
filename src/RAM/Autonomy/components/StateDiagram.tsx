@@ -81,6 +81,7 @@ class StateDiagram extends Component<IProps, IState> {
     text = 'Idle';
     context.textBaseline = 'middle';
     context.textAlign = 'right';
+    context.strokeStyle = textStyle(this.props.theme);
     context.fillStyle = textStyle(this.props.theme);
     context.fillText(text, centerW - 25, 50);
     context.beginPath();

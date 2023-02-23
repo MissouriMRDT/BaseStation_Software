@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
 import fs from 'fs';
+import { container, button } from '../../../Core/components/CssConstants';
 
 import { rovecomm } from '../../../Core/RoveProtocol/Rovecomm';
 
-const container: CSS.Properties = {
+const Container: CSS.Properties = {
   display: 'flex',
   flexDirection: 'column',
   fontFamily: 'arial',
@@ -44,6 +45,7 @@ const buttons: CSS.Properties = {
 
 interface IProps {
   style?: CSS.Properties;
+  theme: string;
 }
 
 interface IState {
@@ -167,7 +169,7 @@ class SensorData extends Component<IProps, IState> {
     return (
       <div id="SensorData" style={this.props.style}>
         <div style={label}>Sensor Data</div>
-        <div style={container}>
+        <div style={{ ...Container, ...container(this.props.theme) }}>
           <div style={{ ...row, marginTop: '3px' }}>
             <div>CH3 Concentration:</div>
             <div>
@@ -226,10 +228,10 @@ class SensorData extends Component<IProps, IState> {
           <div style={row} />
           <div style={buttonRow}>
             <p>Save Sensor Data</p>
-            <button type="button" onClick={this.fileStart} style={buttons}>
+            <button type="button" onClick={this.fileStart} style={{ ...buttons, ...button(this.props.theme) }}>
               Start
             </button>
-            <button type="button" onClick={this.fileStop} style={buttons}>
+            <button type="button" onClick={this.fileStop} style={{ ...buttons, ...button(this.props.theme) }}>
               Stop
             </button>
           </div>

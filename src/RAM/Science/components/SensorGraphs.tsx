@@ -4,6 +4,7 @@ import CSS from 'csstype';
 import html2canvas from 'html2canvas';
 import { XYPlot, XAxis, YAxis, HorizontalGridLines, LineSeries, DiscreteColorLegend, Crosshair } from 'react-vis';
 import fs from 'fs';
+import { container, button, selector } from '../../../Core/components/CssConstants';
 
 import { rovecomm } from '../../../Core/RoveProtocol/Rovecomm';
 import { windows } from '../../../Core/Window';
@@ -28,7 +29,7 @@ type Sensor = {
   min: number;
 };
 
-const container: CSS.Properties = {
+const Container: CSS.Properties = {
   display: 'flex',
   flexDirection: 'column',
   fontFamily: 'arial',
@@ -67,7 +68,7 @@ const selectbox: CSS.Properties = {
   margin: '2.5px',
   justifyContent: 'space-around',
 };
-const selector: CSS.Properties = {
+const Selector: CSS.Properties = {
   display: 'flex',
   flexDirection: 'row',
   margin: '2.5px',
@@ -127,6 +128,7 @@ function saveImage(): void {
 
 interface IProps {
   style?: CSS.Properties;
+  theme: string;
 }
 
 interface IState {
@@ -441,18 +443,22 @@ class SensorGraphs extends Component<IProps, IState> {
     return (
       <div id="SensorGraph" style={this.props.style}>
         <div style={label}>Sensor Graphs</div>
-        <div style={container}>
+        <div style={{ ...Container, ...container(this.props.theme) }}>
           <div style={buttonrow}>
-            <button type="button" onClick={this.selectAll}>
+            <button type="button" onClick={this.selectAll} style={button(this.props.theme)}>
               Select All
             </button>
-            <button type="button" onClick={this.deselectAll}>
+            <button type="button" onClick={this.deselectAll} style={button(this.props.theme)}>
               Deselect All
             </button>
-            <button type="button" onClick={saveImage}>
+            <button type="button" onClick={saveImage} style={button(this.props.theme)}>
               Export Graph
             </button>
-            <button type="button" onClick={() => this.setState({ sensors: SensorGraphs.getNewEmptyMap() })}>
+            <button
+              type="button"
+              onClick={() => this.setState({ sensors: SensorGraphs.getNewEmptyMap() })}
+              style={button(this.props.theme)}
+            >
               Clear Data
             </button>
           </div>
@@ -460,7 +466,7 @@ class SensorGraphs extends Component<IProps, IState> {
             <div style={selectbox}>
               {[...this.state.enabledSensors].map(([sensorName, val]) => {
                 return (
-                  <div key={undefined} style={selector}>
+                  <div key={undefined} style={{ ...selector(this.props.theme), ...Selector }}>
                     <input
                       type="checkbox"
                       id={sensorName}

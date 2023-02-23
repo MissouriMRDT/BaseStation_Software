@@ -334,7 +334,7 @@ class ControlScheme extends Component<IProps, IState> {
   // now operates as a windowed modal
   controlLayoutPreview(): JSX.Element {
     return (
-      <div style={{ ...modal, ...row }}>
+      <div style={{ ...modal, ...row, ...container(this.props.theme) }}>
         {Object.keys(this.state.functionality).map((selectedController) => {
           return (
             <div key={selectedController}>
@@ -366,7 +366,7 @@ class ControlScheme extends Component<IProps, IState> {
                     onClick={() =>
                       this.setState((prevState) => ({ controlPreviewModal: !prevState.controlPreviewModal }))
                     }
-                    style={button(this.state.theme)}
+                    style={blockbutton(this.props.theme)}
                   >
                     back
                   </button>

@@ -86,7 +86,9 @@ function science(): void {
   }
 }
 
-interface IProps {}
+interface IProps {
+  theme: string;
+}
 
 interface IState {}
 
@@ -101,16 +103,16 @@ class Science extends Component<IProps, IState> {
   render(): JSX.Element {
     return (
       <div style={column}>
-        <SensorGraphs />
+        <SensorGraphs theme={this.props.theme} />
         <div style={{ ...row }}>
           <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>
-            <SensorData />
+            <SensorData theme={this.props.theme} />
             <Heater />
-            <ControlScheme configs={['Science']} />
+            <ControlScheme configs={['Science']} theme={this.props.theme} />
           </div>
           <RockLookUp style={{ marginLeft: '2.5px' }} />
         </div>
-        <Cameras defaultCamera={7} />
+        <Cameras defaultCamera={7} theme={this.props.theme} />
       </div>
     );
   }

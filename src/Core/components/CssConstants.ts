@@ -56,7 +56,7 @@ export function blockbutton(theme: string): CSS.Properties {
 }
 
 export const Selector: CSS.Properties = {
-  backgroundColor: '#404040',
+  backgroundColor: '#333333',
   color: 'white',
 };
 
