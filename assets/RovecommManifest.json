@@ -692,10 +692,18 @@
       },
       "Error": {}
     },
-    "Camera": {
+    "Camera1": {
       "Ip": "192.168.1.141",
       "Port": 11011,
       "MAC": "222.173.190.168.1.141",
+      "Commands": {},
+      "Telemetry": {},
+      "Error": {}
+    },
+    "Camera2": {
+      "Ip": "192.168.1.142",
+      "Port": 11012,
+      "MAC": "222.173.190.168.1.142",
       "Commands": {},
       "Telemetry": {},
       "Error": {}
