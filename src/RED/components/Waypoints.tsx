@@ -4,7 +4,7 @@ import fs from 'fs';
 import { TwitterPicker } from 'react-color';
 import path from 'path';
 import ThreeDRover from '../../Core/components/ThreeDRover';
-import { container, button } from '../../Core/components/CssConstants';
+import { container, button, highlight } from '../../Core/components/CssConstants';
 
 const title: CSS.Properties = {
   fontFamily: 'arial',
@@ -395,7 +395,7 @@ class Waypoints extends Component<IProps, IState> {
               const waypoint = this.state.storedWaypoints[waypointName];
               const backgroundStyle = {
                 ...listEntry,
-                backgroundColor: waypointName === this.state.selectedWaypoint ? 'darkblue' : '#333333',
+                backgroundColor: waypointName === this.state.selectedWaypoint ? highlight(this.props.theme) : '#333333',
               };
               return (
                 <div

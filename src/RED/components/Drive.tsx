@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import CSS from 'csstype';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
 import { controllerInputs } from '../../Core/components/ControlScheme';
-import { container } from '../../Core/components/CssConstants';
+import { boxStyle, container, textStyle } from '../../Core/components/CssConstants';
 
 // function container(theme: string): CSS.Properties {
 //   if (theme === 'light') {
@@ -184,7 +184,11 @@ class Drive extends Component<IProps, IState> {
               Speed Limit:
               <input
                 type="text"
-                style={{ marginLeft: '5px', backgroundColor: '#990000', color: 'white' }}
+                style={{
+                  marginLeft: '5px',
+                  backgroundColor: boxStyle(this.props.theme),
+                  color: textStyle(this.props.theme),
+                }}
                 value={this.state.speedLimit || ''}
                 onChange={this.speedLimitChange}
               />

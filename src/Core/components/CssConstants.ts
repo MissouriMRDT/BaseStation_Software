@@ -89,3 +89,23 @@ export function boxStyle(theme: string): string {
       return '#404040';
   }
 }
+
+export function highlight(theme: string): string {
+  switch (theme) {
+    default:
+    case 'light':
+      return 'lightblue';
+    case 'dark':
+      return 'darkblue';
+  }
+}
+
+export function hslswitch(theme: string): number {
+  switch (theme) {
+    default:
+    case 'light':
+      return 50;
+    case 'dark':
+      return 25;
+  }
+}
