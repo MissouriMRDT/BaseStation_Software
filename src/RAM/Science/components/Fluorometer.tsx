@@ -107,13 +107,17 @@ class Fluorometer extends Component<IProps, IState> {
     this.state = {
       DiodeValues: [0, 0, 0],
       LedStatus: [false, false, false, false],
-      data: [
-        { x: 1, y: 1 },
-        { x: 2, y: 4 },
-        { x: 7, y: 3 },
-      ],
+      data: [{ x: 0, y: 0 }],
+
       crosshairPos: null,
     };
+    let count = 1;
+    while (count !== 3000) {
+      // eslint-disable-next-line no-empty
+      if (count % 100 === 0) {
+      }
+      count++;
+    }
     this.updateDiodeVals = this.updateDiodeVals.bind(this);
     this.exportData = this.exportData.bind(this);
     this.onNearestX = this.onNearestX.bind(this);
