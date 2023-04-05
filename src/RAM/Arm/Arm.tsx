@@ -3,7 +3,6 @@ import CSS from 'csstype';
 import ControlMultipliers, { controlMultipliers } from './components/ControlMultipliers';
 import IK from './components/IK';
 import Angular from './components/Angular';
-import Cameras from '../../Core/components/Cameras';
 import ControlScheme, { controllerInputs } from '../../Core/components/ControlScheme';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
 import ControlFeatures from './components/ControlFeatures';
@@ -116,13 +115,8 @@ class Arm extends Component<IProps, IState> {
             <ControlFeatures style={{ height: '100%' }} />
           </div>
         </div>
-        <div style={row}>
-          <Cameras defaultCamera={5} style={{ width: '50%', marginRight: '2.5px' }} />
-          <Cameras defaultCamera={6} style={{ width: '50%', marginLeft: '2.5px' }} />
-        </div>
         <ControlMultipliers />
         <ControlScheme configs={['Arm']} />
-        <Cameras defaultCamera={7} />
       </div>
     );
   }

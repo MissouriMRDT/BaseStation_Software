@@ -3,7 +3,6 @@ import CSS from 'csstype';
 import SensorData from './components/SensorData';
 import SensorGraphs from './components/SensorGraphs';
 import Heater from './components/Heater';
-import Cameras from '../../Core/components/Cameras';
 import RockLookUp from './components/rocklookup';
 import ControlScheme, { controllerInputs } from '../../Core/components/ControlScheme';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
@@ -95,7 +94,6 @@ class Science extends Component<IProps, IState> {
             <RockLookUp style={{ marginLeft: '2.5px' }} />
           </div>
         </div>
-        <Cameras defaultCamera={7} />
       </div>
     );
   }
