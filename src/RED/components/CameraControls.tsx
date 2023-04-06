@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import CSS from 'csstype';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
 import { BitmaskUnpack } from '../../Core/BitmaskUnpack';
-import { throwStatement } from '@babel/types';
 
 const h1Style: CSS.Properties = {
   fontFamily: 'arial',
