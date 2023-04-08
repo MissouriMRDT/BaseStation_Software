@@ -29,25 +29,39 @@ function arm(): void {
   let ArmBaseBend = 0;
   let moveArm = false;
 
+  // J5
   if ('WristBendLeft' in controllerInputs && 'WristBendRight' in controllerInputs) {
-    ArmWristBend = (controllerInputs.WristBendLeft - controllerInputs.WristBendRight) * controlMultipliers.Wrist;
+    ArmWristBend = (controllerInputs.WristBendLeft - controllerInputs.WristBendRight) * controlMultipliers.J5;
     moveArm = true;
   }
 
+  // J6
   if ('WristTwistLeft' in controllerInputs && 'WristTwistRight' in controllerInputs) {
-    ArmWristTwist = (controllerInputs.WristTwistLeft - controllerInputs.WristTwistRight) * controlMultipliers.Wrist;
+    ArmWristTwist = (controllerInputs.WristTwistLeft - controllerInputs.WristTwistRight) * controlMultipliers.J6;
     moveArm = true;
   }
 
-  if ('ElbowBend' in controllerInputs && 'ElbowTwist' in controllerInputs) {
-    ArmElbowBend = controllerInputs.ElbowBend * controlMultipliers.Elbow;
-    ArmElbowTwist = controllerInputs.ElbowTwist * controlMultipliers.Elbow;
+  // J3
+  if ('ElbowBend' in controllerInputs) {
+    ArmElbowBend = controllerInputs.ElbowBend * controlMultipliers.J3;
     moveArm = true;
   }
 
-  if ('BaseBend' in controllerInputs && 'BaseTwist' in controllerInputs) {
-    ArmBaseTwist = controllerInputs.BaseTwist * controlMultipliers.Base;
-    ArmBaseBend = controllerInputs.BaseBend * controlMultipliers.Base;
+  // J4
+  if ('ElbowTwist' in controllerInputs) {
+    ArmElbowTwist = controllerInputs.ElbowTwist * controlMultipliers.J4;
+    moveArm = true;
+  }
+
+  // J2
+  if ('BaseBend' in controllerInputs) {
+    ArmBaseBend = controllerInputs.BaseBend * controlMultipliers.J2;
+    moveArm = true;
+  }
+
+  // J1
+  if ('BaseTwist' in controllerInputs) {
+    ArmBaseTwist = controllerInputs.BaseTwist * controlMultipliers.J1;
     moveArm = true;
   }
 
