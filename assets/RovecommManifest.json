@@ -1,4 +1,5 @@
 {
+  "ManifestFormatVersion": 3,
   "DataTypes": {
     "INT8_T": 0,
     "UINT8_T": 1,
@@ -21,14 +22,12 @@
   },
   "updateRate": 100,
   "ethernetUDPPort": 11000,
-  "subnetIP": [192, 168, 1],
-  "MACaddress": [222, 173, 190, 168, 1],
+  "ethernetTCPPort": 12000,
+  "MACaddressPrefix": [222, 173],
   "headerLength": 6,
   "RovecommManifest": {
     "Drive": {
       "Ip": "192.168.1.134",
-      "Port": 11004,
-      "MAC": "222.173.190.168.1.134",
       "Commands": {
         "DriveLeftRight": {
           "dataId": 1000,
@@ -61,8 +60,6 @@
     },
     "BMS": {
       "Ip": "192.168.1.133",
-      "Port": 11003,
-      "MAC": "222.173.190.168.1.133",
       "Commands": {
         "BMSStop": {
           "dataId": 2000,
@@ -126,8 +123,6 @@
     },
     "Power": {
       "Ip": "192.168.1.132",
-      "Port": 11002,
-      "MAC": "222.173.190.168.1.132",
       "Commands": {
         "MotorBusEnable": {
           "dataId": 3000,
@@ -209,8 +204,6 @@
     },
     "Blackbox": {
       "Ip": "192.168.1.146",
-      "Port": 11015,
-      "MAC": "222.173.190.168.1.146",
       "Commands": {},
       "Telemetry": {
         "BlackboxListening": {
@@ -224,8 +217,6 @@
     },
     "Nav": {
       "Ip": "192.168.1.136",
-      "Port": 11006,
-      "MAC": "222.173.190.168.1.136",
       "Commands": {},
       "Telemetry": {
         "GPSLatLon": {
@@ -251,6 +242,12 @@
           "dataType": "UINT8_T",
           "dataCount": 1,
           "comments": "[Number of satellites]"
+        },
+        "AccelerometerData": {
+          "dataId": 5104,
+          "dataType": "FLOAT_T",
+          "dataCount": 3,
+          "comments": "[xAxis, yAxis, zAxis] Accel in m/s^2"
         }
       },
       "Error": {
@@ -264,8 +261,6 @@
     },
     "Gimbal": {
       "Ip": "192.168.1.135",
-      "Port": 11005,
-      "MAC": "222.173.190.168.1.135",
       "Commands": {
         "LeftDriveGimbalIncrement": {
           "dataId": 6000,
@@ -303,8 +298,6 @@
     },
     "Multimedia": {
       "Ip": "192.168.1.140",
-      "Port": 11010,
-      "MAC": "222.173.190.168.1.140",
       "Commands": {
         "LEDRGB": {
           "dataId": 7000,
@@ -352,8 +345,6 @@
     },
     "Arm": {
       "Ip": "192.168.1.131",
-      "Port": 11001,
-      "MAC": "222.173.190.168.1.131",
       "Commands": {
         "ArmVelocityControl": {
           "dataId": 8000,
@@ -483,8 +474,6 @@
     },
     "ScienceActuation": {
       "Ip": "192.168.1.137",
-      "Port": 11007,
-      "MAC": "222.173.190.168.1.137",
       "Commands": {
         "SensorAxis": {
           "dataId": 9000,
@@ -566,8 +555,6 @@
     },
     "ScienceSensors": {
       "Ip": "192.168.1.138",
-      "Port": 11008,
-      "MAC": "222.173.190.168.1.138",
       "Commands": {
         "FluorometerLEDs": {
           "dataId": 10000,
@@ -580,12 +567,18 @@
           "dataType": "INT8_T",
           "dataCount": 1,
           "comments": "Sign of value determines direction"
+        },
+        "ReqFluorometer": {
+          "dataId": 10002,
+          "dataType": "UINT8_T",
+          "dataCount": 1,
+          "comments": "Request a new Fluorometer reading"
         }
       },
       "Telemetry": {
         "FluorometerData": {
           "dataId": 10100,
-          "dataType": "FLOAT_T",
+          "dataType": "UINT16_T",
           "dataCount": 3648,
           "comments": "Diode readings from sensor"
         },
@@ -624,8 +617,6 @@
     },
     "Autonomy": {
       "Ip": "192.168.1.139",
-      "Port": 11009,
-      "MAC": "222.173.190.168.1.139",
       "Commands": {
         "StartAutonomy": {
           "dataId": 11000,
@@ -694,24 +685,45 @@
     },
     "Camera1": {
       "Ip": "192.168.1.141",
-      "Port": 11011,
-      "MAC": "222.173.190.168.1.141",
-      "Commands": {},
-      "Telemetry": {},
-      "Error": {}
+      "Commands": {
+        "ChangeCameras": {
+          "dataId": 12000,
+          "dataType": "UINT8_T",
+          "dataCount": 2,
+          "comments": "Change which camera a feed is looking at. [0] is the feed, [1] is the camera to view."
+        }
+      },
+      "Telemetry": {
+        "AvailableCameras": {
+          "dataId": 12100,
+          "dataType": "UINT8_T",
+          "dataCount": 1,
+          "comments": "Bitmask values for which cameras are able to stream. LSB is Camera 0, MSB is Camera 7."
+        },
+        "StreamingCameras": {
+          "dataId": 12101,
+          "dataType": "UINT8_T",
+          "dataCount": 4,
+          "comments": "Which cameras the system is currently streaming on each port"
+        }
+      },
+      "Error": {
+        "CameraUnavailable": {
+          "dataId": 12200,
+          "dataType": "UINT8_T",
+          "dataCount": 1,
+          "comments": "Camera has errored and stopped streaming. [0] is ID of camera as an integer (not bitmask)."
+        }
+      }
     },
     "Camera2": {
       "Ip": "192.168.1.142",
-      "Port": 11012,
-      "MAC": "222.173.190.168.1.142",
       "Commands": {},
       "Telemetry": {},
       "Error": {}
     },
     "Heater": {
       "Ip": "192.168.1.144",
-      "Port": 11014,
-      "MAC": "222.173.190.168.1.144",
       "Commands": {
         "HeaterToggle": {
           "dataId": 15000,
@@ -745,8 +757,6 @@
     },
     "SignalStack": {
       "Ip": "192.168.1.145",
-      "Port": 11015,
-      "MAC": "222.173.190.168.1.145",
       "Commands": {
         "SignalsRotate": {
           "dataId": 16000,
