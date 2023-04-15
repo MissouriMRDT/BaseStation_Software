@@ -1,5 +1,5 @@
 {
-  "ManifestFormatVersion": 3,
+  "ManifestSpecVersion": 3,
   "DataTypes": {
     "INT8_T": 0,
     "UINT8_T": 1,
@@ -27,7 +27,7 @@
   "headerLength": 6,
   "RovecommManifest": {
     "Drive": {
-      "Ip": "192.168.1.134",
+      "Ip": "192.168.2.103",
       "Commands": {
         "DriveLeftRight": {
           "dataId": 1000,
@@ -59,7 +59,7 @@
       "Error": {}
     },
     "BMS": {
-      "Ip": "192.168.1.133",
+      "Ip": "192.168.2.100",
       "Commands": {
         "BMSStop": {
           "dataId": 2000,
@@ -122,7 +122,7 @@
       }
     },
     "Power": {
-      "Ip": "192.168.1.132",
+      "Ip": "192.168.2.101",
       "Commands": {
         "MotorBusEnable": {
           "dataId": 3000,
@@ -203,7 +203,7 @@
       }
     },
     "Blackbox": {
-      "Ip": "192.168.1.146",
+      "Ip": "192.168.2.102",
       "Commands": {},
       "Telemetry": {
         "BlackboxListening": {
@@ -216,7 +216,7 @@
       "Error": {}
     },
     "Nav": {
-      "Ip": "192.168.1.136",
+      "Ip": "192.168.2.104",
       "Commands": {},
       "Telemetry": {
         "GPSLatLon": {
@@ -260,7 +260,7 @@
       }
     },
     "Gimbal": {
-      "Ip": "192.168.1.135",
+      "Ip": "192.168.2.106",
       "Commands": {
         "LeftDriveGimbalIncrement": {
           "dataId": 6000,
@@ -297,7 +297,7 @@
       "Error": {}
     },
     "Multimedia": {
-      "Ip": "192.168.1.140",
+      "Ip": "192.168.2.105",
       "Commands": {
         "LEDRGB": {
           "dataId": 7000,
@@ -344,7 +344,7 @@
       }
     },
     "Arm": {
-      "Ip": "192.168.1.131",
+      "Ip": "192.168.2.107",
       "Commands": {
         "ArmVelocityControl": {
           "dataId": 8000,
@@ -473,7 +473,7 @@
       }
     },
     "ScienceActuation": {
-      "Ip": "192.168.1.137",
+      "Ip": "192.168.2.108",
       "Commands": {
         "SensorAxis": {
           "dataId": 9000,
@@ -554,7 +554,7 @@
       }
     },
     "ScienceSensors": {
-      "Ip": "192.168.1.138",
+      "Ip": "192.168.3.101",
       "Commands": {
         "FluorometerLEDs": {
           "dataId": 10000,
@@ -616,7 +616,7 @@
       "Error": {}
     },
     "Autonomy": {
-      "Ip": "192.168.1.139",
+      "Ip": "192.168.3.100",
       "Commands": {
         "StartAutonomy": {
           "dataId": 11000,
@@ -684,7 +684,7 @@
       "Error": {}
     },
     "Camera1": {
-      "Ip": "192.168.1.141",
+      "Ip": "192.168.4.100",
       "Commands": {
         "ChangeCameras": {
           "dataId": 12000,
@@ -717,13 +717,13 @@
       }
     },
     "Camera2": {
-      "Ip": "192.168.1.142",
+      "Ip": "192.168.4.101",
       "Commands": {},
       "Telemetry": {},
       "Error": {}
     },
     "Heater": {
-      "Ip": "192.168.1.144",
+      "Ip": "192.168.2.109",
       "Commands": {
         "HeaterToggle": {
           "dataId": 15000,
@@ -756,7 +756,7 @@
       }
     },
     "SignalStack": {
-      "Ip": "192.168.1.145",
+      "Ip": "192.168.3.102",
       "Commands": {
         "SignalsRotate": {
           "dataId": 16000,
@@ -784,13 +784,13 @@
     }
   },
   "NetworkDevices": {
-    "BasestationSwitch": { "Ip": "192.168.1.80" },
-    "RoverSwitch": { "Ip": "192.168.1.81" },
-    "Rover900MHzRocket": { "Ip": "192.168.1.82" },
-    "Basestation900MHzRocket": { "Ip": "192.168.1.83" },
-    "Rover5GHzRocket": { "Ip": "192.168.1.84" },
-    "Basestation5GHzRocket": { "Ip": "192.168.1.85" },
-    "Rover2_4GHzRocket": { "Ip": "192.168.1.86" },
-    "Basestation2_4GHzRocket": { "Ip": "192.168.1.87"}
+    "BasestationSwitch": { "Ip": "192.168.126.1" },
+    "RoverSwitch": { "Ip": "192.168.126.2" },
+    "Rover900MHzRocket": { "Ip": "192.168.126.11" },
+    "Basestation900MHzRocket": { "Ip": "192.168.126.10" },
+    "Rover5GHzRocket": { "Ip": "192.168.126.31" },
+    "Basestation5GHzRocket": { "Ip": "192.168.126.30" },
+    "Rover2_4GHzRocket": { "Ip": "192.168.126.21" },
+    "Basestation2_4GHzRocket": { "Ip": "192.168.126.20"}
   }
 }
