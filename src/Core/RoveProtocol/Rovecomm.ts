@@ -309,9 +309,10 @@ class Rovecomm extends EventEmitter {
     };
 
     // Handle Timeout errors from attempting to connect to things that don't exist.
+    // Handle Conn Refused from jetsons that aren't listening
     newSocket.RCSocket.on('error', (e) => {
       console.log(e);
-      if (!e.message.includes('connect ETIMEDOUT')) {
+      if (!e.message.includes('connect ETIMEDOUT') && !e.message.includes('connect ECONNREFUSED')) {
         throw new Error(e.message);
       }
     });
