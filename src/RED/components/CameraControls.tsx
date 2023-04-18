@@ -74,12 +74,15 @@ class CameraControls extends Component<IProps, IState> {
       AvailableCams: new Array(MAX_CAMS).fill(false).flat(),
       SelectedCams: new Array(NUM_CAMS).fill(-1).flat(),
     };
+    this.setAvailable = this.setAvailable.bind(this);
+    this.setStreaming = this.setStreaming.bind(this);
     rovecomm.on('AvailableCameras', this.setAvailable);
     rovecomm.on('StreamingCameras', this.setStreaming);
   }
 
-  setAvailable(data: number): void {
-    const available = BitmaskUnpack(data, 8).split('').reverse().map(Number).map(Boolean);
+  setAvailable(data: number[]): void {
+    const available = BitmaskUnpack(data[0], 8).split('').reverse().map(Number).map(Boolean);
+    console.log(available);
     this.setState({ AvailableCams: available });
   }
 
