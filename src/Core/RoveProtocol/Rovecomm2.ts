@@ -9,7 +9,7 @@ import { parse } from './Rovecomm';
 export let dataSizes: any = [];
 export let DataTypes: any = {};
 const filepath = path.join(__dirname, '../assets/RovecommManifest.json');
-const VersionNumber = 2;
+export const VersionNumber = 2;
 const headerLength = 5;
 
 if (fs.existsSync(filepath)) {
