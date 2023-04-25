@@ -11,7 +11,7 @@ export let DataTypes: any = {};
 const headerLength = 6;
 
 const filepath = path.join(__dirname, '../assets/RovecommManifest.json');
-export const VersionNumber = 25;
+export const VersionNumber = 3;
 
 if (fs.existsSync(filepath)) {
   const manifest = JSON.parse(fs.readFileSync(filepath).toString());
