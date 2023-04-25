@@ -144,16 +144,10 @@ class Power extends Component<IProps, IState> {
      */
     rovecomm.on('MotorBusEnabled', (data: number[]) => this.boardListenHandlerTog(data, 'MotorBusEnable'));
     rovecomm.on('MotorBusCurrent', (data: number[]) => this.boardListenHandlerAmp(data, 'MotorBusEnable'));
-    rovecomm.on('TwelveVActBusEnabled', (data: number[]) => this.boardListenHandlerTog(data, 'TwelveVActBusEnable'));
-    rovecomm.on('TwelveVActBusCurrent', (data: number[]) => this.boardListenHandlerAmp(data, 'TwelveVActBusEnable'));
-    rovecomm.on('TwelveVLogicBusEnabled', (data: number[]) =>
-      this.boardListenHandlerTog(data, 'TwelveVLogicBusEnable')
-    );
-    rovecomm.on('TwelveVLogicBusCurrent', (data: number[]) =>
-      this.boardListenHandlerAmp(data, 'TwelveVLogicBusEnable')
-    );
-    rovecomm.on('ThirtyVEnabled', (data: number[]) => this.boardListenHandlerTog(data, 'ThirtyVBusEnable'));
-    rovecomm.on('ThirtyVCurrent', (data: number[]) => this.boardListenHandlerAmp(data, 'ThirtyVBusEnable'));
+    rovecomm.on('HighBusEnabled', (data: number[]) => this.boardListenHandlerTog(data, 'HighBusEnable'));
+    rovecomm.on('HighBusCurrent', (data: number[]) => this.boardListenHandlerAmp(data, 'HighBusEnable'));
+    rovecomm.on('LowBusEnabled', (data: number[]) => this.boardListenHandlerTog(data, 'LowBusEnable'));
+    rovecomm.on('LowBusCurrent', (data: number[]) => this.boardListenHandlerAmp(data, 'LowBusEnable'));
 
     rovecomm.on('PackI_Meas', (data: number[]) => this.batteryListenHandler(data, 'PackI_Meas'));
     rovecomm.on('PackV_Meas', (data: number[]) => this.batteryListenHandler(data, 'PackV_Meas'));

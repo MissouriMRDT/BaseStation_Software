@@ -61,10 +61,14 @@ interface IProps {
 
 interface IState {
   controlMultipliers: {
-    Base: number;
-    Elbow: number;
-    Wrist: number;
+    J1: number;
+    J2: number;
+    J3: number;
+    J4: number;
+    J5: number;
+    J6: number;
     Gripper: number;
+    EndEffector: number;
   };
 }
 
@@ -77,10 +81,14 @@ class ControlMultipliers extends Component<IProps, IState> {
     super(props);
     this.state = {
       controlMultipliers: {
-        Base: 500,
-        Elbow: 500,
-        Wrist: 500,
+        J1: 500,
+        J2: 500,
+        J3: 500,
+        J4: 500,
+        J5: 500,
+        J6: 500,
         Gripper: 500,
+        EndEffector: 500,
       },
     };
     controlMultipliers = this.state.controlMultipliers;
