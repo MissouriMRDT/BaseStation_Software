@@ -84,7 +84,7 @@ class ControlFeatures extends Component<IProps, IState> {
 
   limitOverride(): void {
     // we send 1 when false and 0 when true because we are about to toggle the bool
-    rovecomm.sendCommand('LimitSwitchOverride', this.state.overridden ? 0 : 1);
+    rovecomm.sendCommand('LimitSwitchOverride', this.state.overridden ? 0 : 65535);
     this.setState((prevState) => ({ overridden: !prevState.overridden }));
   }
 
