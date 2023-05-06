@@ -1,14 +1,7 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
-import fs from 'fs';
+import { XYPlot, VerticalGridLines, HorizontalGridLines, XAxis, YAxis, LineSeries, Crosshair } from 'react-vis';
 import { rovecomm } from '../../../Core/RoveProtocol/Rovecomm';
-import { XYPlot } from 'react-vis';
-import { VerticalGridLines } from 'react-vis';
-import { HorizontalGridLines } from 'react-vis';
-import { XAxis } from 'react-vis';
-import { YAxis } from 'react-vis';
-import { LineSeries } from 'react-vis';
-import { Crosshair } from 'react-vis';
 
 const container: CSS.Properties = {
   display: 'flex',
@@ -75,8 +68,6 @@ interface IProps {
 }
 
 interface IState {
-  /** Holds the last sent values of the diodes */
-  DiodeValues: number[];
   /** Holds which lasers are enabled */
   LedStatus: boolean[];
 
@@ -105,39 +96,39 @@ class Fluorometer extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      DiodeValues: [0, 0, 0],
       LedStatus: [false, false, false, false],
       data: [{ x: 0, y: 0 }],
 
       crosshairPos: null,
     };
-    let count = 1;
-    while (count !== 3000) {
-      // eslint-disable-next-line no-empty
-      if (count % 100 === 0) {
-      }
-      count++;
-    }
     this.updateDiodeVals = this.updateDiodeVals.bind(this);
-    this.exportData = this.exportData.bind(this);
+    // this.exportData = this.exportData.bind(this);
     this.onNearestX = this.onNearestX.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
 
-    rovecomm.on('FluorometerData', (data: any) => this.updateDiodeVals(data));
+    // Call updateDiodeValues with the new data and the index of that data
+    rovecomm.on('FluorometerData1', (data: number[]) => this.updateDiodeVals(0, data));
+    rovecomm.on('FluorometerData2', (data: number[]) => this.updateDiodeVals(500, data));
+    rovecomm.on('FluorometerData3', (data: number[]) => this.updateDiodeVals(1000, data));
+    rovecomm.on('FluorometerData4', (data: number[]) => this.updateDiodeVals(1500, data));
+    rovecomm.on('FluorometerData5', (data: number[]) => this.updateDiodeVals(2000, data));
+    rovecomm.on('FluorometerData6', (data: number[]) => this.updateDiodeVals(2500, data));
+    rovecomm.on('FluorometerData7', (data: number[]) => this.updateDiodeVals(3000, data));
+    rovecomm.on('FluorometerData8', (data: number[]) => this.updateDiodeVals(3500, data));
   }
 
   /**
    * Updates the wavelengths received from the Rover.
-   * @param data float array of length 3 with the new data
+   * @param index integer value that tells where this segment goes in data
+   * @param dataInput float array of length 3 with the new data
    */
   // eslint-disable-next-line react/sort-comp
-  updateDiodeVals(dataInput: number[]): void {
-    this.setState({
-      DiodeValues: dataInput,
-      data: dataInput.map((value: number, index: number) => {
-        return { x: index, y: value };
-      }),
+  updateDiodeVals(index: number, dataInput: number[]): void {
+    const newData = dataInput.map((value: number, ndx: number) => {
+      return { x: index + ndx, y: value };
     });
+
+    this.setState((prevState) => ({ data: prevState.data.splice(index, index === 3500 ? 148 : 500, ...newData) }));
   }
 
   onMouseLeave(): void {
@@ -157,6 +148,7 @@ class Fluorometer extends Component<IProps, IState> {
     rovecomm.sendCommand('FlurometerLEDs', Fluorometer.buildLedCommand(LedStatus));
   }
 
+  /*
   exportData(): void {
     // ISO string will be fromatted YYYY-MM-DDTHH:MM:SS:sssZ
     // this regex will convert all -,T,:,Z to . (which covers to . for .csv)
@@ -164,21 +156,21 @@ class Fluorometer extends Component<IProps, IState> {
     const timestamp = new Date().toISOString().replaceAll(/[:\-TZ]/g, '.');
     const EXPORT_FILE = `./ScienceSaveFiles/Fluormeter-${timestamp}.csv`;
 
-    const { DiodeValues, LasersPowered } = this.state;
+    const { DiodeValues, LedStatus } = this.state;
 
     if (!fs.existsSync('./ScienceSaveFiles')) {
       fs.mkdirSync('./ScienceSaveFiles');
     }
     let csvText = 'Laser1,Laser2,Laser3,Diode1 (nm),Diode2 (nm),Diode3 (nm)\n';
-    csvText += `${LasersPowered[0] ? 'On' : 'Off'},${LasersPowered[1] ? 'On' : 'Off'},${
-      LasersPowered[2] ? 'On' : 'Off'
+    csvText += `${LedStatus[0] ? 'On' : 'Off'},${LedStatus[1] ? 'On' : 'Off'},${LedStatus[2] ? 'On' : 'Off'},${
+      LedStatus[3] ? 'On' : 'Off'
     },`;
     csvText += `${DiodeValues[0]},${DiodeValues[1]},${DiodeValues[2]},\n`;
 
     fs.writeFile(EXPORT_FILE, csvText, (err) => {
       if (err) throw err;
     });
-  }
+  } */
 
   crosshair(): JSX.Element | null {
     const { crosshairPos } = this.state;
@@ -238,6 +230,13 @@ class Fluorometer extends Component<IProps, IState> {
                 </label>
               );
             })}
+            <button
+              onClick={() => {
+                rovecomm.sendCommand('ReqFluorometer', 1);
+              }}
+            >
+              Request Reading
+            </button>
           </div>
         </div>
       </div>
