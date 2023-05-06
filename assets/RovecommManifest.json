@@ -454,6 +454,12 @@
           "dataType": "UINT8_T",
           "dataCount": 1,
           "comments": "Quickly barely open and close the scoop"
+        },
+        "MicroscopeFocus": {
+          "dataId": 9010,
+          "dataType": "INT16_T",
+          "dataCount": 1,
+          "comments": "Motor speed value (-1000,1000)"
         }
       },
       "Telemetry": {
@@ -482,14 +488,8 @@
           "dataCount": 1,
           "comments": "[Wavelengths: 1, 2, 3, 4] (0-Disable, 1-Enable)"
         },
-        "MicroscopeServo": {
-          "dataId": 10001,
-          "dataType": "INT8_T",
-          "dataCount": 1,
-          "comments": "Sign of value determines direction"
-        },
         "ReqFluorometer": {
-          "dataId": 10002,
+          "dataId": 10001,
           "dataType": "UINT8_T",
           "dataCount": 1,
           "comments": "Request a new Fluorometer reading"
