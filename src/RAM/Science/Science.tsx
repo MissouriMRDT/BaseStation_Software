@@ -20,6 +20,7 @@ const column: CSS.Properties = {
 const sensorMotorMultiplier = 500;
 const scoopMotorMultiplier = 500;
 const scoopIncrementMult = 5;
+const microscopeMult = 100;
 
 function science(): void {
   // Z actuation of the science system is controlled by the left up/down thumbstick
@@ -46,7 +47,7 @@ function science(): void {
 
   if ('IncrementOpen' in controllerInputs && 'IncrementClose' in controllerInputs) {
     // Take the positive contribution from the open trigger and the negative contribution of the close trigger
-    const IncrementAmt = controllerInputs.IncrementOpen - controllerInputs.IncrementClose;
+    const IncrementAmt = controllerInputs.IncrementClose - controllerInputs.IncrementOpen;
     if (IncrementAmt !== 0) {
       rovecomm.sendCommand('IncrementalScoop', IncrementAmt * scoopIncrementMult);
     }
@@ -65,6 +66,14 @@ function science(): void {
       rovecomm.sendCommand('WaterPump', [1]);
     } else {
       rovecomm.sendCommand('WaterPump', [0]);
+    }
+  }
+
+  if ('MicroscopeFocusPlus' in controllerInputs && 'MicroscopeFocusMinus' in controllerInputs) {
+    if (controllerInputs.MicroscopeFocusPlus === 1) {
+      rovecomm.sendCommand('MicroscopeFocus', microscopeMult);
+    } else if (controllerInputs.MicroscopeFocusMinus === 1) {
+      rovecomm.sendCommand('MicroscopeFocus', -microscopeMult);
     }
   }
 }

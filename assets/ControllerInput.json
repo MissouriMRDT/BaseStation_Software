@@ -50,7 +50,9 @@
       "OpenScoop": { "buttonType": "button", "button": "LB" },
       "CloseScoop": { "buttonType": "button", "button": "RB" },
       "IncrementOpen": { "buttonType": "button", "button": "LT" },
-      "IncrementClose": { "buttonType": "button", "button": "RT" }
+      "IncrementClose": { "buttonType": "button", "button": "RT" },
+      "MicroscopeFocusPlus": { "buttonType": "button", "button": "B" },
+      "MicroscopeFocusMinus": { "buttonType": "button", "button": "X" }
     }
   },
   "ArmControls": {

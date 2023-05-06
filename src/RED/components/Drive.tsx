@@ -101,12 +101,12 @@ class Drive extends Component<IProps, IState> {
       leftSpeed = 50 * direction;
       rightSpeed = 50 * direction;
 
-      rovecomm.sendCommand('DriveLeftRight', [leftSpeed, rightSpeed]);
+      rovecomm.sendCommand('DriveLeftRight', [leftSpeed / 1000.0, rightSpeed / 1000.0]);
     } else if ('LeftSpeed' in controllerInputs && 'RightSpeed' in controllerInputs) {
       leftSpeed = Math.round(controllerInputs.LeftSpeed * speedMultiplier);
       rightSpeed = Math.round(controllerInputs.RightSpeed * speedMultiplier);
 
-      rovecomm.sendCommand('DriveLeftRight', [leftSpeed, rightSpeed]);
+      rovecomm.sendCommand('DriveLeftRight', [leftSpeed / 1000.0, rightSpeed / 1000.0]);
     } else if ('VectorX' in controllerInputs && 'VectorY' in controllerInputs && 'Throttle' in controllerInputs) {
       const x = controllerInputs.VectorX;
       const y = controllerInputs.VectorY;
@@ -124,7 +124,7 @@ class Drive extends Component<IProps, IState> {
 
       leftSpeed = Math.round(leftSpeed * speedMultiplier);
       rightSpeed = Math.round(rightSpeed * speedMultiplier);
-      rovecomm.sendCommand('DriveLeftRight', [leftSpeed, rightSpeed]);
+      rovecomm.sendCommand('DriveLeftRight', [leftSpeed / 1000.0, rightSpeed / 1000.0]);
     }
     this.setState({
       leftSpeed,

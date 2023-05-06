@@ -148,6 +148,8 @@ class Power extends Component<IProps, IState> {
     rovecomm.on('HighBusCurrent', (data: number[]) => this.boardListenHandlerAmp(data, 'HighBusEnable'));
     rovecomm.on('LowBusEnabled', (data: number[]) => this.boardListenHandlerTog(data, 'LowBusEnable'));
     rovecomm.on('LowBusCurrent', (data: number[]) => this.boardListenHandlerAmp(data, 'LowBusEnable'));
+    rovecomm.on('TwelveVBusEnabled', (data: number[]) => this.boardListenHandlerTog(data, 'TwelveVBusEnable'));
+    rovecomm.on('TwelveVBusCurrent', (data: number[]) => this.boardListenHandlerAmp(data, 'TwelveVBusEnable'));
 
     rovecomm.on('PackI_Meas', (data: number[]) => this.batteryListenHandler(data, 'PackI_Meas'));
     rovecomm.on('PackV_Meas', (data: number[]) => this.batteryListenHandler(data, 'PackV_Meas'));
