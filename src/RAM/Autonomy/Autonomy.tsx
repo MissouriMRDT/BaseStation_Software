@@ -34,6 +34,7 @@ class Autonomy extends Component<IProps, IState> {
         <div style={{ ...row, justifyContent: 'space-between', flex: 1 }}>
           <div style={{ ...column, flex: 1 }}>
             <Controls style={{ marginRight: '5px', flexWrap: 'wrap' }} selectedWaypoint={this.props.selectedWaypoint} />
+            <DrivePower style={{ flex: 1, marginRight: '5px' }} />
             <div style={{ ...row, marginRight: '5px', flexGrow: 1 }}>
               <Activity style={{ flex: 1, marginRight: '5px' }} />
               <Lighting />
@@ -44,9 +45,6 @@ class Autonomy extends Component<IProps, IState> {
         <div style={row}>
           <Cameras defaultCamera={9} style={{ flex: 1, marginRight: '2.5px' }} />
           <Cameras defaultCamera={10} style={{ flex: 1, marginLeft: '2.5px' }} />
-        </div>
-        <div>
-          <DrivePower style={{ flex: 1, marginRight: '5px' }} />
         </div>
       </div>
     );

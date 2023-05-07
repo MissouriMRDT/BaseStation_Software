@@ -54,10 +54,7 @@ interface IProps {
   style?: CSS.Properties;
 }
 interface IState {
-  drivePower: {
-    Max: number;
-    Min: number;
-  };
+  max: number;
 }
 
 class DrivePower extends Component<IProps, IState> {
@@ -68,20 +65,12 @@ class DrivePower extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      drivePower: {
-        Max: 250,
-        Min: 50,
-      },
+      max: 300,
     };
   }
 
-  sliderChange(event: { target: { value: string } }, multiplier: string): void {
-    this.setState((prevState) => ({
-      drivePower: {
-        ...prevState.drivePower,
-        [multiplier]: parseInt(event.target.value, 10),
-      },
-    }));
+  sliderChange(event: { target: { value: string } }): void {
+    this.setState({ max: parseInt(event.target.value, 10) });
   }
 
   render(): JSX.Element {
@@ -89,22 +78,19 @@ class DrivePower extends Component<IProps, IState> {
       <div style={this.props.style}>
         <div style={label}>Drive Power</div>
         <div style={container}>
-          {Object.keys(this.state.drivePower).map((multipliers) => {
-            return (
-              <div key={multipliers} style={row}>
-                <div style={header}>{multipliers} Control Multiplier</div>
-                <div style={value}>{this.state.drivePower[multipliers]}</div>
-                <input
-                  type="range"
-                  min="50"
-                  max="1000"
-                  value={this.state.drivePower[multipliers]}
-                  style={slider}
-                  onChange={(e) => this.sliderChange(e, multipliers)}
-                />
-              </div>
-            );
-          })}
+          <div style={row}>
+            <div style={header}>Autonomy Max Speed</div>
+            <div style={value}>{this.state.max}</div>
+            <input
+              type="range"
+              min="100"
+              max="1000"
+              value={this.state.max}
+              style={slider}
+              onChange={(e) => this.sliderChange(e)}
+            />
+            <button onClick={() => rovecomm.sendCommand('SetMaxSpeed', this.state.max)}>Send</button>
+          </div>
         </div>
       </div>
     );
