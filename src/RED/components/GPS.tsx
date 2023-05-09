@@ -42,37 +42,52 @@ interface IState {
   currentLat: number;
   currentLon: number;
   satelliteCount: number;
-  pitch: number;
+  // pitch: number;
   yaw: number;
-  roll: number;
-  distance: number;
-  quality: number;
+  // roll: number;
+  horizontalAccur: number;
+  verticalAccur: number;
+  headingAccur: number;
+  // distance: number;
+  // quality: number;
 }
 class GPS extends Component<IProps, IState> {
   static defaultProps = {
     style: {},
   };
 
-  constructor(props: any) {
+  constructor(props: IProps) {
     super(props);
     this.state = {
       currentLat: 0,
       currentLon: 0,
       satelliteCount: 0,
-      pitch: 0,
+      // pitch: 0,
       yaw: 0,
-      roll: 0,
-      distance: 0,
-      quality: 0,
+      // roll: 0,
+      horizontalAccur: 0,
+      verticalAccur: 0,
+      headingAccur: 0,
+      // distance: 0,
+      // quality: 0,
     };
 
-    rovecomm.on('GPSLatLon', (data: any) => this.GPSLatLon(data));
-    rovecomm.on('IMUData', (data: any) => this.IMUData(data));
-    rovecomm.on('LidarData', (data: any) => this.LidarData(data));
-    rovecomm.on('SatelliteCountData', (data: any) => this.SatelliteCountData(data));
+    rovecomm.on('GPSLatLon', (data: number[]) => this.GPSLatLon(data));
+    rovecomm.on('IMUData', (data: number[]) => this.IMUData(data));
+    // rovecomm.on('LidarData', (data: number[]) => this.LidarData(data));
+    rovecomm.on('SatelliteCountData', (data: number[]) => this.SatelliteCountData(data));
+    rovecomm.on('AccuracyData', (data: number[]) => this.accurData(data));
   }
 
-  GPSLatLon(data: any) {
+  accurData(data: number[]): void {
+    this.setState({
+      horizontalAccur: data[0],
+      verticalAccur: data[1],
+      headingAccur: data[2],
+    });
+  }
+
+  GPSLatLon(data: number[]) {
     const currentLat = data[0];
     const currentLon = data[1];
     this.setState({
@@ -82,26 +97,28 @@ class GPS extends Component<IProps, IState> {
     this.props.onCoordsChange(currentLat, currentLon);
   }
 
-  SatelliteCountData(data: any) {
+  SatelliteCountData(data: number[]) {
     this.setState({
       satelliteCount: data[0],
     });
   }
 
-  IMUData(data: any) {
+  IMUData(data: number[]) {
     this.setState({
-      pitch: data[0],
+      // pitch: data[0],
       yaw: data[1],
-      roll: data[2],
+      // roll: data[2],
     });
   }
 
-  LidarData(data: any) {
+  /*
+  LidarData(data: number[]) {
     this.setState({
       distance: data[0],
       quality: data[1],
     });
   }
+  */
 
   render(): JSX.Element {
     return (
@@ -112,11 +129,14 @@ class GPS extends Component<IProps, IState> {
             { title: 'Current Lat.', value: this.state.currentLat.toFixed(7) },
             { title: 'Current Lon.', value: this.state.currentLon.toFixed(7) },
             { title: 'Satellite Count', value: this.state.satelliteCount.toFixed(0) },
-            { title: 'Distance', value: this.state.distance.toFixed(3) },
-            { title: 'Quality', value: this.state.quality.toFixed(3) },
-            { title: 'Pitch', value: this.state.pitch.toFixed(3) },
+            // { title: 'Distance', value: this.state.distance.toFixed(3) },
+            // { title: 'Quality', value: this.state.quality.toFixed(3) },
+            // { title: 'Pitch', value: this.state.pitch.toFixed(3) },
             { title: 'Yaw', value: this.state.yaw.toFixed(3) },
-            { title: 'Roll', value: this.state.roll.toFixed(3) },
+            // { title: 'Roll', value: this.state.roll.toFixed(3) },
+            { title: 'Pos. Acc', value: this.state.horizontalAccur.toFixed(3) },
+            { title: 'Alt. Acc', value: this.state.verticalAccur.toFixed(3) },
+            { title: 'Comp. Acc', value: this.state.headingAccur.toFixed(3) },
           ].map((datum) => {
             const { title, value } = datum;
             return (
