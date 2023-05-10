@@ -104,7 +104,10 @@ class Fluorometer extends Component<IProps, IState> {
     bitmask += LED[2] ? '1' : '0';
     bitmask += LED[1] ? '1' : '0';
     bitmask += LED[0] ? '1' : '0';
-    return parseInt(bitmask, 2);
+    console.log(bitmask);
+    const num = parseInt(bitmask, 2);
+    console.log(num);
+    return num;
   }
 
   static rollingAverage(arr: number[], N: number): number[] {
@@ -124,16 +127,6 @@ class Fluorometer extends Component<IProps, IState> {
 
     return result;
   }
-
-  /*
-  static simpleRollingAvg(index: number, data: number[], window: number) {
-    const range = data.slice(index - window / 2, index + window / 2);
-    const sum = range.reduce((acc, num) => {
-      return acc + num;
-    }, 0);
-    return sum / window;
-  }
-  */
 
   constructor(props: IProps) {
     super(props);
@@ -177,23 +170,23 @@ class Fluorometer extends Component<IProps, IState> {
     this.setState({ crosshairPos: index });
   }
 
-  calculateRelExtrema(): {
+  calculateRelExtrema(arr: number[]): {
     mins: { x: number; intensity: number }[];
     maxs: { x: number; intensity: number }[];
   } {
     return {
-      mins: this.calcRelMins(),
-      maxs: this.calcRelMaxs(),
+      mins: this.calcRelMins(arr),
+      maxs: this.calcRelMaxs(arr),
     };
   }
 
-  calcRelMins(): { x: number; intensity: number }[] {
+  // eslint-disable-next-line class-methods-use-this
+  calcRelMins(arr: number[]): { x: number; intensity: number }[] {
     let peakI: number | undefined;
-    const { intensities } = this.state;
-    const peaksI: number[] = intensities.reduce((peaks: number[], _val, i) => {
-      if (intensities[i + 1] < intensities[i]) {
+    const peaksI: number[] = arr.reduce((peaks: number[], _val, i) => {
+      if (arr[i + 1] < arr[i]) {
         peakI = i + 1;
-      } else if (intensities[i + 1] > intensities[i]) {
+      } else if (arr[i + 1] > arr[i]) {
         if (peakI) {
           peaks.push(peakI);
           peakI = undefined;
@@ -202,17 +195,17 @@ class Fluorometer extends Component<IProps, IState> {
       return peaks;
     }, []);
     return peaksI.map((val) => {
-      return { x: 350 + val * 0.08121278, intensity: intensities[val] };
+      return { x: 350 + val * 0.08121278, intensity: arr[val] };
     });
   }
 
-  calcRelMaxs(): { x: number; intensity: number }[] {
+  // eslint-disable-next-line class-methods-use-this
+  calcRelMaxs(arr: number[]): { x: number; intensity: number }[] {
     let peakI: number;
-    const { intensities } = this.state;
-    const peaksI: number[] = intensities.reduce((peaks: number[], _val, i) => {
-      if (intensities[i + 1] > intensities[i]) {
+    const peaksI: number[] = arr.reduce((peaks: number[], _val, i) => {
+      if (arr[i + 1] > arr[i]) {
         peakI = i + 1;
-      } else if (intensities[i + 1] < intensities[i]) {
+      } else if (arr[i + 1] < arr[i]) {
         if (!Number.isNaN(peakI)) {
           peaks.push(peakI);
           peakI = NaN;
@@ -221,7 +214,7 @@ class Fluorometer extends Component<IProps, IState> {
       return peaks;
     }, []);
     return peaksI.map((val) => {
-      return { x: 350 + val * 0.08121278, intensity: intensities[val] };
+      return { x: 350 + val * 0.08121278, intensity: arr[val] };
     });
   }
 
@@ -249,18 +242,18 @@ class Fluorometer extends Component<IProps, IState> {
 
   updateGraphValues(): void {
     const { intensities } = this.state;
-    const avgd = Fluorometer.rollingAverage(intensities, 150);
+    const avgd = Fluorometer.rollingAverage(intensities, 75);
 
     const maxIntensity = Math.max(...avgd);
 
     const normalizedData = avgd.map((value: number, ndx: number) => {
-      return { x: 350 + ndx * 0.08121278, y: value };
+      return { x: 350 + ndx * 0.08121278, y: value / maxIntensity };
     });
 
     this.setState({
       graphData: normalizedData,
       maxIntensity,
-      relExtrema: this.calculateRelExtrema(),
+      // relExtrema: this.calculateRelExtrema(avgd),
     });
   }
 
@@ -327,6 +320,7 @@ class Fluorometer extends Component<IProps, IState> {
               margin={{ top: 10, bottom: 50 }}
               width={window.document.documentElement.clientWidth - 50}
               height={300}
+              yDomain={[0, 1]}
             >
               <VerticalGridLines style={{ fill: 'none' }} />
               <HorizontalGridLines style={{ fill: 'none' }} />
@@ -365,7 +359,7 @@ class Fluorometer extends Component<IProps, IState> {
               >
                 Request Reading
               </button>
-              <div style={column}>
+              {/* <div style={column}>
                 <p>Relative Mins</p>
                 {this.state.relExtrema.mins.map((val, ndx) => {
                   return (
@@ -384,7 +378,7 @@ class Fluorometer extends Component<IProps, IState> {
                     </p>
                   );
                 })}
-              </div>
+              </div> */}
               <p>Max Intensity: {this.state.maxIntensity}</p>
             </div>
           </div>
