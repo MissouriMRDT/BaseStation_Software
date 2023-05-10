@@ -33,6 +33,12 @@ const row: CSS.Properties = {
   marginTop: '5px',
   width: '100%',
 };
+const column: CSS.Properties = {
+  display: 'flex',
+  flexDirection: 'column',
+  flexGrow: 1,
+  justifyContent: 'space-around',
+};
 const componentBox: CSS.Properties = {
   margin: '3px 0 3px 0',
 };
@@ -45,10 +51,6 @@ const button: CSS.Properties = {
 const overlay: CSS.Properties = {
   width: '200px',
   color: 'black',
-};
-
-const controlButton: CSS.Properties = {
-  // margin: "5px",
 };
 
 /** Will be merged with the row css if the Laser is off */
@@ -71,10 +73,19 @@ interface IState {
   /** Holds which lasers are enabled */
   LedStatus: boolean[];
 
-  data: {
+  intensities: number[];
+
+  maxIntensity: number;
+
+  graphData: {
     x: number;
     y: number;
   }[];
+
+  relExtrema: {
+    mins: { x: number; intensity: number }[];
+    maxs: { x: number; intensity: number }[];
+  };
 
   crosshairPos: number | null;
 }
@@ -90,14 +101,31 @@ class Fluorometer extends Component<IProps, IState> {
     bitmask += LED[1] ? '1' : '0';
     bitmask += LED[2] ? '1' : '0';
     bitmask += LED[3] ? '1' : '0';
+    bitmask += LED[4] ? '1' : '0';
     return parseInt(bitmask, 2);
   }
+  /*
+  static simpleRollingAvg(index: number, data: number[], window: number) {
+    const range = data.slice(index - window / 2, index + window / 2);
+    const sum = range.reduce((acc, num) => {
+      return acc + num;
+    }, 0);
+    return sum / window;
+  }
+  */
 
   constructor(props: IProps) {
     super(props);
     this.state = {
-      LedStatus: [false, false, false, false],
-      data: [{ x: 0, y: 0 }],
+      LedStatus: [false, false, false, false, false],
+      intensities: new Array(3648).fill(0).flat(),
+      graphData: [{ x: 0, y: 0 }],
+      maxIntensity: 0,
+
+      relExtrema: {
+        mins: [],
+        maxs: [],
+      },
 
       crosshairPos: null,
     };
@@ -105,6 +133,9 @@ class Fluorometer extends Component<IProps, IState> {
     // this.exportData = this.exportData.bind(this);
     this.onNearestX = this.onNearestX.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
+    this.calculateRelExtrema = this.calculateRelExtrema.bind(this);
+    this.calcRelMins = this.calcRelMins.bind(this);
+    this.calcRelMaxs = this.calcRelMaxs.bind(this);
 
     // Call updateDiodeValues with the new data and the index of that data
     rovecomm.on('FluorometerData1', (data: number[]) => this.updateDiodeVals(0, data));
@@ -117,20 +148,6 @@ class Fluorometer extends Component<IProps, IState> {
     rovecomm.on('FluorometerData8', (data: number[]) => this.updateDiodeVals(3500, data));
   }
 
-  /**
-   * Updates the wavelengths received from the Rover.
-   * @param index integer value that tells where this segment goes in data
-   * @param dataInput float array of length 3 with the new data
-   */
-  // eslint-disable-next-line react/sort-comp
-  updateDiodeVals(index: number, dataInput: number[]): void {
-    const newData = dataInput.map((value: number, ndx: number) => {
-      return { x: index + ndx, y: value };
-    });
-
-    this.setState((prevState) => ({ data: prevState.data.splice(index, index === 3500 ? 148 : 500, ...newData) }));
-  }
-
   onMouseLeave(): void {
     this.setState({ crosshairPos: null });
   }
@@ -139,13 +156,102 @@ class Fluorometer extends Component<IProps, IState> {
     this.setState({ crosshairPos: index });
   }
 
+  calculateRelExtrema(): {
+    mins: { x: number; intensity: number }[];
+    maxs: { x: number; intensity: number }[];
+  } {
+    return {
+      mins: this.calcRelMins(),
+      maxs: this.calcRelMaxs(),
+    };
+  }
+
+  calcRelMins(): { x: number; intensity: number }[] {
+    let peakI: number | undefined;
+    const { intensities } = this.state;
+    const peaksI: number[] = intensities.reduce((peaks: number[], _val, i) => {
+      if (intensities[i + 1] < intensities[i]) {
+        peakI = i + 1;
+      } else if (intensities[i + 1] > intensities[i]) {
+        if (peakI) {
+          peaks.push(peakI);
+          peakI = undefined;
+        }
+      }
+      return peaks;
+    }, []);
+    return peaksI.map((val) => {
+      return { x: 350 + val * 0.08121278, intensity: intensities[val] };
+    });
+  }
+
+  calcRelMaxs(): { x: number; intensity: number }[] {
+    let peakI: number;
+    const { intensities } = this.state;
+    const peaksI: number[] = intensities.reduce((peaks: number[], _val, i) => {
+      if (intensities[i + 1] > intensities[i]) {
+        peakI = i + 1;
+      } else if (intensities[i + 1] < intensities[i]) {
+        if (!Number.isNaN(peakI)) {
+          peaks.push(peakI);
+          peakI = NaN;
+        }
+      }
+      return peaks;
+    }, []);
+    return peaksI.map((val) => {
+      return { x: 350 + val * 0.08121278, intensity: intensities[val] };
+    });
+  }
+
+  /**
+   * Updates the wavelengths received from the Rover.
+   * @param index integer value that tells where this segment goes in data
+   * @param dataInput uint16 array with the new data
+   */
+  updateDiodeVals(index: number, dataInput: number[]): void {
+    this.setState(
+      (prevState) => {
+        const updatedInts = [
+          ...prevState.intensities.slice(0, index),
+          ...dataInput,
+          ...prevState.intensities.slice(index + 500),
+        ];
+        // prevState.intensities.splice(index, index === 3500 ? 148 : 500, ...dataInput);
+        return { intensities: updatedInts };
+      },
+      () => {
+        this.updateGraphValues();
+      }
+    );
+  }
+
+  updateGraphValues(): void {
+    const { intensities } = this.state;
+    /* const avgd = intensities.map((_value, index, arr) => {
+      return Fluorometer.simpleRollingAvg(index, arr, 150);
+    }); */
+
+    const maxIntensity = Math.max(...intensities);
+
+    const normalizedData = intensities.map((value: number, ndx: number) => {
+      return { x: 350 + ndx * 0.08121278, y: value / maxIntensity };
+    });
+
+    this.setState({
+      graphData: normalizedData,
+      maxIntensity,
+      relExtrema: this.calculateRelExtrema(),
+    });
+  }
+
   toggleLed(index: number): void {
     const { LedStatus } = this.state;
     LedStatus[index] = !LedStatus[index];
     this.setState({
       LedStatus,
     });
-    rovecomm.sendCommand('FlurometerLEDs', Fluorometer.buildLedCommand(LedStatus));
+    rovecomm.sendCommand('FluorometerLEDs', Fluorometer.buildLedCommand(LedStatus));
   }
 
   /*
@@ -180,10 +286,10 @@ class Fluorometer extends Component<IProps, IState> {
     // then we want to display its y value
     if (crosshairPos) {
       return (
-        <Crosshair values={[this.state.data[crosshairPos]]}>
+        <Crosshair values={[this.state.graphData[crosshairPos]]}>
           <div style={overlay}>
             <h3 style={{ borderStyle: 'solid', width: '30%', textAlign: 'center', backgroundColor: 'white' }}>
-              {this.state.data[crosshairPos].y}
+              {this.state.graphData[crosshairPos].y}
             </h3>
           </div>
         </Crosshair>
@@ -206,7 +312,7 @@ class Fluorometer extends Component<IProps, IState> {
               <VerticalGridLines style={{ fill: 'none' }} />
               <HorizontalGridLines style={{ fill: 'none' }} />
               <LineSeries
-                data={this.state.data}
+                data={this.state.graphData}
                 style={{ fill: 'none' }}
                 strokeWidth="6"
                 color="blue"
@@ -216,27 +322,52 @@ class Fluorometer extends Component<IProps, IState> {
               <YAxis />
               {this.crosshair()}
             </XYPlot>
-            {this.state.LedStatus.map((value, index) => {
-              return (
-                <label key={index} style={{ marginLeft: '5px' }} htmlFor="LedToggle">
-                  <input
-                    type="checkbox"
-                    id="LedToggle"
-                    name="LedToggle"
-                    checked={value}
-                    onChange={() => this.toggleLed(index)}
-                  />
-                  led#{index + 1}
-                </label>
-              );
-            })}
-            <button
-              onClick={() => {
-                rovecomm.sendCommand('ReqFluorometer', 1);
-              }}
-            >
-              Request Reading
-            </button>
+            <div style={row}>
+              <div style={column}>
+                {this.state.LedStatus.map((value, index) => {
+                  return (
+                    <label key={index} htmlFor="LedToggle">
+                      <input
+                        type="checkbox"
+                        id="LedToggle"
+                        name="LedToggle"
+                        checked={value}
+                        onChange={() => this.toggleLed(index)}
+                      />
+                      led#{index + 1}
+                    </label>
+                  );
+                })}
+              </div>
+              <button
+                onClick={() => {
+                  rovecomm.sendCommand('ReqFluorometer', 1);
+                }}
+              >
+                Request Reading
+              </button>
+              <div style={column}>
+                <p>Relative Mins</p>
+                {this.state.relExtrema.mins.map((val, ndx) => {
+                  return (
+                    <p key={ndx} style={{ margin: '1px' }}>
+                      x={val.x.toFixed(3)}, intensity={val.intensity.toFixed(3)}
+                    </p>
+                  );
+                })}
+              </div>
+              <div style={column}>
+                <p>Relative Maxs</p>
+                {this.state.relExtrema.maxs.map((val, ndx) => {
+                  return (
+                    <p key={ndx} style={{ margin: '1px' }}>
+                      x={val.x.toFixed(3)}, intensity={val.intensity.toFixed(3)}
+                    </p>
+                  );
+                })}
+              </div>
+              <p>Max Intensity: {this.state.maxIntensity}</p>
+            </div>
           </div>
         </div>
       </div>

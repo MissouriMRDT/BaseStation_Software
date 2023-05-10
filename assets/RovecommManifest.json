@@ -539,7 +539,7 @@
           "comments": "Diode readings from sensor"
         },
         "FluorometerData8": {
-          "dataId": 10101,
+          "dataId": 10107,
           "dataType": "UINT16_T",
           "dataCount": 148,
           "comments": "Diode readings from sensor"
