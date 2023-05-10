@@ -69,6 +69,8 @@ interface IProps {
   style?: CSS.Properties;
 }
 
+const LEDNames = ['265nm', '275nm', '280nm', '310nm', '365nm'];
+
 interface IState {
   /** Holds which lasers are enabled */
   LedStatus: boolean[];
@@ -97,13 +99,32 @@ class Fluorometer extends Component<IProps, IState> {
 
   static buildLedCommand(LED: boolean[]): number {
     let bitmask = '';
-    bitmask += LED[0] ? '1' : '0';
-    bitmask += LED[1] ? '1' : '0';
-    bitmask += LED[2] ? '1' : '0';
-    bitmask += LED[3] ? '1' : '0';
     bitmask += LED[4] ? '1' : '0';
+    bitmask += LED[3] ? '1' : '0';
+    bitmask += LED[2] ? '1' : '0';
+    bitmask += LED[1] ? '1' : '0';
+    bitmask += LED[0] ? '1' : '0';
     return parseInt(bitmask, 2);
   }
+
+  static rollingAverage(arr: number[], N: number): number[] {
+    const result: number[] = [];
+
+    for (let i = 0; i < arr.length; i++) {
+      let sum = 0;
+      let count = 0;
+
+      for (let j = i; j > Math.max(i - N, -1); j--) {
+        sum += arr[j];
+        count += 1;
+      }
+
+      result.push(sum / count);
+    }
+
+    return result;
+  }
+
   /*
   static simpleRollingAvg(index: number, data: number[], window: number) {
     const range = data.slice(index - window / 2, index + window / 2);
@@ -228,14 +249,12 @@ class Fluorometer extends Component<IProps, IState> {
 
   updateGraphValues(): void {
     const { intensities } = this.state;
-    /* const avgd = intensities.map((_value, index, arr) => {
-      return Fluorometer.simpleRollingAvg(index, arr, 150);
-    }); */
+    const avgd = Fluorometer.rollingAverage(intensities, 150);
 
-    const maxIntensity = Math.max(...intensities);
+    const maxIntensity = Math.max(...avgd);
 
-    const normalizedData = intensities.map((value: number, ndx: number) => {
-      return { x: 350 + ndx * 0.08121278, y: value / maxIntensity };
+    const normalizedData = avgd.map((value: number, ndx: number) => {
+      return { x: 350 + ndx * 0.08121278, y: value };
     });
 
     this.setState({
@@ -334,7 +353,7 @@ class Fluorometer extends Component<IProps, IState> {
                         checked={value}
                         onChange={() => this.toggleLed(index)}
                       />
-                      led#{index + 1}
+                      {LEDNames[index]}
                     </label>
                   );
                 })}
