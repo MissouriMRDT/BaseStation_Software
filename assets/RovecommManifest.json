@@ -747,36 +747,41 @@
           "dataCount": 2,
           "comments": "[Pan, Tilt](degrees -180-180)"
         },
-        "InitiateTestRoutine": {
+        "BackDriveGimbalIncrement": {
           "dataId": 17007,
+          "dataType": "INT16_T",
+          "dataCount": 1,
+          "comments": "[Tilt](degrees -180-180)"
+        },
+        "InitiateTestRoutine": {
+          "dataId": 17008,
           "dataType": "UINT8_T",
           "dataCount": 1,
           "comments": ""
         },
         "LEDRGB": {
-          "dataId": 17008,
+          "dataId": 17009,
           "dataType": "UINT8_T",
           "dataCount": 3,
           "comments": "[R, G, B] (0, 255)"
         },
         "LEDPatterns": {
-          "dataId": 17009,
+          "dataId": 17010,
           "dataType": "UINT8_T",
           "dataCount": 1,
           "comments": "[Pattern] (Enum)"
         },
         "StateDisplay": {
-          "dataId": 17010,
+          "dataId": 17011,
           "dataType": "UINT8_T",
           "dataCount": 1,
           "comments": "[Teleop, Autonomy, Reached Goal] (enum)"
         },
         "Brightness": {
-          "dataId": 17011,
+          "dataId": 17012,
           "dataType": "UINT8_T",
           "dataCount": 1,
           "comments": "Set Brightness (0-255)"
-        }
       },
       "Telemetry": {
         "DriveSpeeds": {
