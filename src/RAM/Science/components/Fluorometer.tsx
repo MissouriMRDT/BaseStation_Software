@@ -1,12 +1,6 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
 import fs from 'fs';
-=======
->>>>>>> 10264294cc862fedc139cb51b33237082195dd31
->>>>>>> Stashed changes
 import { XYPlot, VerticalGridLines, HorizontalGridLines, XAxis, YAxis, LineSeries, Crosshair } from 'react-vis';
 import { rovecomm } from '../../../Core/RoveProtocol/Rovecomm';
 
@@ -71,41 +65,6 @@ const onIndicator: CSS.Properties = {
   backgroundColor: '#00FF00',
   lineHeight: '27px',
 };
-
-function findRelex(curr: number, next: number, data: number[], relex: number[], isincreasing: boolean): number[] {
-  let nextIncreasing: boolean;
-  nextIncreasing = false;
-  if (next >= data.length) {
-    relex.push(data[next]);
-    return relex;
-  }
-  if (curr === 0) {
-    if (data[curr] > data[next]) {
-      relex.push(data[curr]);
-      return findRelex(curr + 1, next + 1, data, relex, false);
-    }
-    relex.push(data[curr]);
-    return findRelex(curr + 1, next + 1, data, relex, true);
-  }
-  if (data[curr] > data[next] && isincreasing) {
-    relex.push(data[curr]);
-    nextIncreasing = false;
-  }
-  if (data[curr] < data[next] && !isincreasing) {
-    relex.push(data[curr]);
-    nextIncreasing = true;
-  }
-  return findRelex(curr + 1, next + 1, data, relex, nextIncreasing);
-}
-
-function csvToSpec(dataInput: number[]): number[] {
-  const absMax: number = Math.max(...dataInput);
-  const normalizedData: number[] = [];
-  dataInput.forEach((item) => {
-    normalizedData.push(item / absMax);
-  });
-  return findRelex(0, 1, normalizedData, [], false);
-}
 
 interface IProps {
   style?: CSS.Properties;
@@ -192,10 +151,6 @@ class Fluorometer extends Component<IProps, IState> {
     this.calculateRelExtrema = this.calculateRelExtrema.bind(this);
     this.calcRelMins = this.calcRelMins.bind(this);
     this.calcRelMaxs = this.calcRelMaxs.bind(this);
-
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
     rovecomm.on('FluorometerData', (data: any) => this.updateDiodeVals(data));
   }
 
@@ -212,8 +167,6 @@ class Fluorometer extends Component<IProps, IState> {
         return { x: index, y: value };
       }),
     });
-=======
->>>>>>> Stashed changes
     // Call updateDiodeValues with the new data and the index of that data
     rovecomm.on('FluorometerData1', (data: number[]) => this.updateDiodeVals(0, data));
     rovecomm.on('FluorometerData2', (data: number[]) => this.updateDiodeVals(500, data));
@@ -223,10 +176,6 @@ class Fluorometer extends Component<IProps, IState> {
     rovecomm.on('FluorometerData6', (data: number[]) => this.updateDiodeVals(2500, data));
     rovecomm.on('FluorometerData7', (data: number[]) => this.updateDiodeVals(3000, data));
     rovecomm.on('FluorometerData8', (data: number[]) => this.updateDiodeVals(3500, data));
-<<<<<<< Updated upstream
-=======
->>>>>>> 10264294cc862fedc139cb51b33237082195dd31
->>>>>>> Stashed changes
   }
 
   onMouseLeave(): void {
