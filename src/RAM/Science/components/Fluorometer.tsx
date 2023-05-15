@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
-import fs from 'fs';
 import { XYPlot, VerticalGridLines, HorizontalGridLines, XAxis, YAxis, LineSeries, Crosshair } from 'react-vis';
 import { rovecomm } from '../../../Core/RoveProtocol/Rovecomm';
 
@@ -151,22 +150,7 @@ class Fluorometer extends Component<IProps, IState> {
     this.calculateRelExtrema = this.calculateRelExtrema.bind(this);
     this.calcRelMins = this.calcRelMins.bind(this);
     this.calcRelMaxs = this.calcRelMaxs.bind(this);
-    rovecomm.on('FluorometerData', (data: any) => this.updateDiodeVals(data));
-  }
 
-  /**
-   * Updates the wavelengths received from the Rover.
-   * @param data float array of length 3 with the new data
-   */
-  // eslint-disable-next-line react/sort-comp
-  updateDiodeVals(dataInput: number[]): void {
-    const modifiedData: number[] = csvToSpec(dataInput);
-    this.setState({
-      DiodeValues: modifiedData,
-      data: modifiedData.map((value: number, index: number) => {
-        return { x: index, y: value };
-      }),
-    });
     // Call updateDiodeValues with the new data and the index of that data
     rovecomm.on('FluorometerData1', (data: number[]) => this.updateDiodeVals(0, data));
     rovecomm.on('FluorometerData2', (data: number[]) => this.updateDiodeVals(500, data));
