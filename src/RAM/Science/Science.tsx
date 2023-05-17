@@ -78,6 +78,10 @@ function science(): void {
       rovecomm.sendCommand('MicroscopeFocus', -microscopeMult);
     }
   }
+
+  if ('DropSample' in controllerInputs) {
+    rovecomm.sendCommand('ScoopGrabber', 2);
+  }
 }
 
 interface IProps {}

@@ -435,7 +435,7 @@
           "dataId": 9006,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "[Position] (0 Open, 1, Closed)"
+          "comments": "[Position] (0 Open, 1 Closed, 2 Drop)"
         },
         "GotoPosition": {
           "dataId": 9007,
