@@ -158,6 +158,7 @@ class Heater extends Component<IProps, IState> {
 
     for (let i = 0; i < this.state.blocks.length; i++) {
       blocks[i].temp = temps[i];
+      console.log(blocks[i].temp);
     }
 
     this.setState({ blocks });

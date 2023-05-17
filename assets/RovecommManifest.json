@@ -441,7 +441,7 @@
           "dataId": 9007,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "[Position] (0, Group 1, 2, or 3)"
+          "comments": "[Position] (0, 1 - 6, 7)"
         },
         "IncrementalScoop": {
           "dataId": 9008,
@@ -465,7 +465,7 @@
       "Telemetry": {
         "EncoderPositions": {
           "dataId": 9100,
-          "dataType": "UINT16_T",
+          "dataType": "FLOAT_T",
           "dataCount": 3,
           "comments": "[scoop z-pos, scoop x-pos, sensor z-axis] (absolute position 0-360)"
         }

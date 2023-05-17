@@ -135,7 +135,9 @@ class Arm extends Component<IProps, IState> {
           <Cameras defaultCamera={6} style={{ width: '50%', marginLeft: '2.5px' }} />
         </div>
         <ControlMultipliers />
-        <ControlScheme configs={['Arm']} />
+        <div style={row}>
+          <ControlScheme configs={['Arm']} style={{ width: '50%', marginRight: '2.5px' }} />
+        </div>
         <Cameras defaultCamera={7} />
       </div>
     );

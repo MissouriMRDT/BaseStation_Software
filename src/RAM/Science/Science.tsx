@@ -8,6 +8,8 @@ import RockLookUp from './components/rocklookup';
 import ControlScheme, { controllerInputs } from '../../Core/components/ControlScheme';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
 import Fluorometer from './components/Fluorometer';
+import ClosedLoopControls from './components/ClosedLoopControls';
+import EncoderPositions from './components/EncoderPositions';
 
 const row: CSS.Properties = {
   display: 'flex',
@@ -101,9 +103,11 @@ class Science extends Component<IProps, IState> {
           </div>
           <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>
             <ControlScheme configs={['Science']} />
+            <EncoderPositions style={{ width: '50%', marginRight: '2.5px', marginLeft: '2.5px' }} />
             <RockLookUp style={{ marginLeft: '2.5px' }} />
           </div>
         </div>
+        <ClosedLoopControls />
         <Cameras defaultCamera={7} />
       </div>
     );
