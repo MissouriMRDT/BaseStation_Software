@@ -79,7 +79,9 @@ class Gimbal extends Component<IProps, IState> {
       'LeftDriveUp' in controllerInputs &&
       'LeftDriveDown' in controllerInputs &&
       'RightDriveUp' in controllerInputs &&
-      'RightDriveDown' in controllerInputs
+      'RightDriveDown' in controllerInputs &&
+      'BackDriveUp' in controllerInputs &&
+      'BackDriveDown' in controllerInputs
     ) {
       // The multiples defined below are for Valkyries mounting positions, and the * 5 is just a small constant to tweak how quickly they respond
       // to controller input
@@ -98,6 +100,9 @@ class Gimbal extends Component<IProps, IState> {
       rovecomm.sendCommand('RightDriveGimbalIncrement', [
         (controllerInputs.RightDriveUp ? 1 : -controllerInputs.RightDriveDown) * 5,
         0,
+      ]);
+      rovecomm.sendCommand('BackDriveGimbalIncrement', [
+        (controllerInputs.BackDriveUp ? 1 : -controllerInputs.BackDriveDown) * 5,
       ]);
     }
     this.setState({
