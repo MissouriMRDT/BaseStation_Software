@@ -103,7 +103,6 @@ class Gimbal extends Component<IProps, IState> {
       ]);
       rovecomm.sendCommand('BackDriveGimbalIncrement', [
         (controllerInputs.BackDriveUp ? 1 : -controllerInputs.BackDriveDown) * 5,
-        0,
       ]);
     }
     this.setState({

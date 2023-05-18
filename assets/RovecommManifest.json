@@ -435,13 +435,13 @@
           "dataId": 9006,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "[Position] (0 Open, 1, Closed)"
+          "comments": "[Position] (0 Open, 1 Closed, 2 Drop)"
         },
         "GotoPosition": {
           "dataId": 9007,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "[Position] (0, Group 1, 2, or 3)"
+          "comments": "[Position] (0, 1 - 6, 7)"
         },
         "IncrementalScoop": {
           "dataId": 9008,
@@ -465,7 +465,7 @@
       "Telemetry": {
         "EncoderPositions": {
           "dataId": 9100,
-          "dataType": "UINT16_T",
+          "dataType": "FLOAT_T",
           "dataCount": 3,
           "comments": "[scoop z-pos, scoop x-pos, sensor z-axis] (absolute position 0-360)"
         }
@@ -496,41 +496,53 @@
         }
       },
       "Telemetry": {
-        "FluorometerData": {
+        "FluorometerData1": {
           "dataId": 10100,
           "dataType": "UINT16_T",
-          "dataCount": 3648,
+          "dataCount": 500,
           "comments": "Diode readings from sensor"
         },
-        "CH4": {
+        "FluorometerData2": {
           "dataId": 10101,
-          "dataType": "FLOAT_T",
-          "dataCount": 2,
-          "comments": "[Gas concentration (ppm), Temperature (C)]"
+          "dataType": "UINT16_T",
+          "dataCount": 500,
+          "comments": "Diode readings from sensor"
         },
-        "CO2": {
+        "FluorometerData3": {
           "dataId": 10102,
           "dataType": "UINT16_T",
-          "dataCount": 1,
-          "comments": "[CO2 Concentration (ppm)]"
+          "dataCount": 500,
+          "comments": "Diode readings from sensor"
         },
-        "O2": {
+        "FluorometerData4": {
           "dataId": 10103,
-          "dataType": "FLOAT_T",
-          "dataCount": 1,
-          "comments": "[concentration (ppm)]"
+          "dataType": "UINT16_T",
+          "dataCount": 500,
+          "comments": "Diode readings from sensor"
         },
-        "NH3": {
+        "FluorometerData5": {
           "dataId": 10104,
-          "dataType": "FLOAT_T",
-          "dataCount": 1,
-          "comments": "[concentration (ppm)]"
+          "dataType": "UINT16_T",
+          "dataCount": 500,
+          "comments": "Diode readings from sensor"
         },
-        "NO2": {
+        "FluorometerData6": {
           "dataId": 10105,
           "dataType": "UINT16_T",
-          "dataCount": 1,
-          "comments": "[ NO2 volume (ppm)]"
+          "dataCount": 500,
+          "comments": "Diode readings from sensor"
+        },
+        "FluorometerData7": {
+          "dataId": 10106,
+          "dataType": "UINT16_T",
+          "dataCount": 500,
+          "comments": "Diode readings from sensor"
+        },
+        "FluorometerData8": {
+          "dataId": 10107,
+          "dataType": "UINT16_T",
+          "dataCount": 148,
+          "comments": "Diode readings from sensor"
         }
       },
       "Error": {}
@@ -782,6 +794,7 @@
           "dataType": "UINT8_T",
           "dataCount": 1,
           "comments": "Set Brightness (0-255)"
+        }
       },
       "Telemetry": {
         "DriveSpeeds": {
