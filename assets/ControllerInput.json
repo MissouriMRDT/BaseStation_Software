@@ -32,8 +32,10 @@
       "LeftDriveDown": { "buttonType": "button", "button": "LT" },
       "RightDriveUp": { "buttonType": "button", "button": "RB" },
       "RightDriveDown": { "buttonType": "button", "button": "RT" },
-      "MainGimbalSwitch": { "buttonType": "button", "button": "dpad up" },
-      "DriveGimbalSwitch": { "buttonType": "button", "button": "dpad down" },
+      "MainGimbalSwitch": { "buttonType": "button", "button": "dpad left" },
+      "DriveGimbalSwitch": { "buttonType": "button", "button": "dpad right" },
+      "BackDriveUp": { "buttonType": "button", "button": "dpad up" },
+      "BackDriveDown": { "buttonType": "button", "button": "dpad down" },
       "ButtonStartDebounced": { "buttonType": "button", "button": "start" }
     }
   },
