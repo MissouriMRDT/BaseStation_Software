@@ -322,14 +322,14 @@
         },
         "EndEffector": {
           "dataId": 8007,
-          "dataType": "INT16_T",
+          "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "[Power] (-1000, 1000) (m%)"
+          "comments": "0: retract, 1: extend"
         },
         "GripperMove": {
           "dataId": 8008,
           "dataType": "INT16_T",
-          "dataCount": 1,
+          "dataCount": 2,
           "comments": "[Power] (-1000, 1000) (m%)"
         },
         "WatchdogOverride": {

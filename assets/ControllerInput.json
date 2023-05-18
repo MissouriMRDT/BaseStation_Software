@@ -73,8 +73,7 @@
       "WristTwistLeft": { "buttonType": "button", "button": "LT" },
       "WristTwistRight": { "buttonType": "button", "button": "RT" },
       "LaserToggle": { "buttonType": "button", "button": "start" },
-      "EndEffectorOn": { "buttonType": "button", "button": "A" },
-      "EndEffectorOff": { "buttonType": "button", "button": "Y" }
+      "EndEffectorOn": { "buttonType": "button", "button": "A" }
     }
   },
   "ArmControlsCLOSED": {
