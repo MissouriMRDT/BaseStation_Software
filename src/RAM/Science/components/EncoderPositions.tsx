@@ -61,7 +61,7 @@ class EncoderPositions extends Component<IProps, IState> {
     rovecomm.on('EncoderPositions', (data: any) => this.updateEncoderValues(data));
   }
 
-  updateEncoderValues(data: any): void {
+  updateEncoderValues(data: number[]): void {
     const updatedPositions = {
     scoopz: data[0],
     scoopx: data[1],

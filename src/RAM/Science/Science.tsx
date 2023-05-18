@@ -80,7 +80,9 @@ function science(): void {
   }
 
   if ('DropSample' in controllerInputs) {
-    rovecomm.sendCommand('ScoopGrabber', 2);
+    if (controllerInputs.DropSample === 1) {
+      rovecomm.sendCommand('ScoopGrabber', 2);
+    }
   }
 }
 

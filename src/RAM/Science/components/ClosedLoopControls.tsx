@@ -45,7 +45,7 @@ interface IProps {
 }
 
 interface IState {
-  packetStream: string;
+  packetStream: boolean;
   currentPacket: number;
 }
 
@@ -57,7 +57,7 @@ class ClosedLoopControls extends Component<IProps, IState> {
   constructor(props:IProps) {
     super(props);
     this.state = {
-      packetStream: 'off',
+      packetStream: false,
       currentPacket: 0,
     }
     this.updatePacketStream = this.updatePacketStream.bind(this);
@@ -67,19 +67,19 @@ class ClosedLoopControls extends Component<IProps, IState> {
 
   updatePacketStream() {
     switch(this.state.packetStream) {
-      case 'off': {
-        this.setState({ packetStream: 'on' });
+      case false: {
+        this.setState({ packetStream: true });
         break;
       }
       default:
-        this.setState({ packetStream: 'off' });
+        this.setState({ packetStream: false });
         break;
     }
   }
 
   sendPositionData() {
     switch (this.state.packetStream) {
-      case 'on': {
+      case true: {
         rovecomm.sendCommand('GotoPosition', this.state.currentPacket);
         break;
       }
@@ -97,7 +97,7 @@ class ClosedLoopControls extends Component<IProps, IState> {
         <div style={label}>Closed Loop</div>
         <div style={container}>
           <div style={column}>
-            <button onClick={() => this.updatePacketStream()}>{this.state.packetStream}</button>
+            <button onClick={() => this.updatePacketStream()}>{this.state.packetStream ? "On" : "Off"}</button>
             <div style={row}>
               {packetNumList.map((num) => {
                 return (
