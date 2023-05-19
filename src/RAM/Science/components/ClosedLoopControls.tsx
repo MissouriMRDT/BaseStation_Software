@@ -66,27 +66,12 @@ class ClosedLoopControls extends Component<IProps, IState> {
   }
 
   updatePacketStream() {
-    switch(this.state.packetStream) {
-      case false: {
-        this.setState({ packetStream: true });
-        break;
-      }
-      default:
-        this.setState({ packetStream: false });
-        break;
-    }
+    this.setState((prevState) => ({packetStream: !prevState.packetStream}));
   }
 
   sendPositionData() {
-    switch (this.state.packetStream) {
-      case true: {
-        rovecomm.sendCommand('GotoPosition', this.state.currentPacket);
-        break;
-      }
-      default: {
-        break;
-      }
-      
+    if (this.state.packetStream) {
+      rovecomm.sendCommand('GotoPosition', this.state.currentPacket);
     }
     
   }

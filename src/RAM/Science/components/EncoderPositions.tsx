@@ -58,7 +58,7 @@ class EncoderPositions extends Component<IProps, IState> {
       },
     };
     this.updateEncoderValues = this.updateEncoderValues.bind(this);
-    rovecomm.on('EncoderPositions', (data: any) => this.updateEncoderValues(data));
+    rovecomm.on('EncoderPositions', (data: number[]) => this.updateEncoderValues(data));
   }
 
   updateEncoderValues(data: number[]): void {

@@ -108,29 +108,24 @@ class Arm extends Component<IProps, IState> {
     if ('GripperOpen' in controllerInputs && 'GripperClose' in controllerInputs) {
       let Gripper1 = 0;
       let Gripper2 = 0;
-      switch (this.state.gripperToggle) {
-        case true: {
-          if (controllerInputs.GripperOpen === 1) {
-            Gripper2 = 1 * controlMultipliers.Gripper;
-          } else if (controllerInputs.GripperClose === 1) {
-            Gripper2 = -1 * controlMultipliers.Gripper;
-          } else {
-            Gripper2 = 0;
-          }
-          console.log(`Moving Gripper 2`);
-          break;
+      if (this.state.gripperToggle) {
+        if (controllerInputs.GripperOpen === 1) {
+          Gripper2 = 1 * controlMultipliers.Gripper;
+        } else if (controllerInputs.GripperClose === 1) {
+          Gripper2 = -1 * controlMultipliers.Gripper;
+        } else {
+          Gripper2 = 0;
         }
-        default: {
-          if (controllerInputs.GripperOpen === 1) {
-            Gripper1 = 1 * controlMultipliers.Gripper;
-          } else if (controllerInputs.GripperClose === 1) {
-            Gripper1 = -1 * controlMultipliers.Gripper;
-          } else {
-            Gripper1 = 0;
-          }
-          console.log(`Moving Gripper 1`);
-          break;
+        console.log(`Moving Gripper 2`);
+      } else {
+        if (controllerInputs.GripperOpen === 1) {
+          Gripper1 = 1 * controlMultipliers.Gripper;
+        } else if (controllerInputs.GripperClose === 1) {
+          Gripper1 = -1 * controlMultipliers.Gripper;
+        } else {
+          Gripper1 = 0;
         }
+        console.log(`Moving Gripper 1`);
       }
       rovecomm.sendCommand('GripperMove', [Gripper1, Gripper2]);
     }
@@ -151,14 +146,13 @@ class Arm extends Component<IProps, IState> {
           <Angular style={{ flex: 1, marginRight: '2.5px' }} />
           <div style={{ ...column, flex: 1, marginLeft: '2.5px' }}>
             <IK />
-            <ControlFeatures style={{ height: '100%' }} />
+            <ControlFeatures gripperCallBack={this.setGripper} style={{ height: '100%' }} />
           </div>
         </div>
         <div style={row}>
           <Cameras defaultCamera={5} style={{ width: '50%', marginRight: '2.5px' }} />
           <Cameras defaultCamera={6} style={{ width: '50%', marginLeft: '2.5px' }} />
         </div>
-        <GripperToggle GripperCallback={this.setGripper} />
         <ControlMultipliers />
         <div style={row}>
           <ControlScheme configs={['Arm']} style={{ width: '50%', marginRight: '2.5px' }} />

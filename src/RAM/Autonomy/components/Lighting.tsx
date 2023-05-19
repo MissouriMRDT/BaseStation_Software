@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
 import { ChromePicker } from 'react-color';
-import { rovecomm } from '../../../Core/RoveProtocol/Rovecomm';
+import { RovecommManifest, rovecomm } from '../../../Core/RoveProtocol/Rovecomm';
 
 const container: CSS.Properties = {
   display: 'flex',
@@ -58,17 +58,17 @@ class Lighting extends Component<IProps, IState> {
   };
 
   static teleop(): void {
-    rovecomm.sendCommand('StateDisplay', 0);
+    rovecomm.sendCommand('StateDisplay', RovecommManifest.Core.Enums.DISPLAYSTATE.Teleop);
     // console.log(RovecommManifest.Multimedia.Enums.DISPLAYSTATE.Teleop);
   }
 
   static autonomy(): void {
-    rovecomm.sendCommand('StateDisplay', 1);
+    rovecomm.sendCommand('StateDisplay', RovecommManifest.Core.Enums.DISPLAYSTATE.Autonomy);
     // console.log(RovecommManifest.Multimedia.Enums.DISPLAYSTATE.Autonomy);
   }
 
   static reachedGoal(): void {
-    rovecomm.sendCommand('StateDisplay', 2);
+    rovecomm.sendCommand('StateDisplay', RovecommManifest.Core.Enums.DISPLAYSTATE.Reached_Goal);
     // console.log(RovecommManifest.Multimedia.Enums.DISPLAYSTATE.Reached_Goal);
   }
 
