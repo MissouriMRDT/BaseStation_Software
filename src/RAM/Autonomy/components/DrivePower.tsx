@@ -91,6 +91,10 @@ class DrivePower extends Component<IProps, IState> {
             />
             <button onClick={() => rovecomm.sendCommand('SetMaxSpeed', this.state.max)}>Send</button>
           </div>
+          <div style={row}>
+            <button onClick={() => rovecomm.sendCommand('SetWatchdogMode', 0)}>Teleop Watchdog</button>
+            <button onClick={() => rovecomm.sendCommand('SetWatchdogMode', 1)}>Autonomy Watchdog</button>
+          </div>
         </div>
       </div>
     );

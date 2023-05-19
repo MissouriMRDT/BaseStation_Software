@@ -598,7 +598,7 @@
           "dataId": 11100,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "Enum (Idle, Navigating, SearchPattern, Approaching Marker)"
+          "comments": "Enum (AUTONOMYSTATE)"
         },
         "ReachedMarker": {
           "dataId": 11101,
@@ -613,7 +613,19 @@
           "comments": "String version of most current error log"
         }
       },
-      "Error": {}
+      "Error": {},
+      "Enums": {
+        "AUTONOMYSTATE": {
+          "Idle": 0,
+          "Navigating": 1,
+          "SearchPattern": 2,
+          "ApproachingMarker": 3,
+          "ApproachingGate": 4,
+          "Avoidance": 5,
+          "Reversing": 6,
+          "Stuck": 7
+        }
+      }
     },
     "Camera1": {
       "Ip": "192.168.4.100",
@@ -794,6 +806,12 @@
           "dataType": "UINT8_T",
           "dataCount": 1,
           "comments": "Set Brightness (0-255)"
+        },
+        "SetWatchdogMode": {
+          "dataId": 17013,
+          "dataType": "UINT8_T",
+          "dataCount": 1,
+          "comments": "0: Teleop, 1: Autonomy"
         }
       },
       "Telemetry": {
