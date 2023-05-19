@@ -794,6 +794,12 @@
           "dataType": "UINT8_T",
           "dataCount": 1,
           "comments": "Set Brightness (0-255)"
+        },
+        "SetWatchdogMode": {
+          "dataId": 17013,
+          "dataType": "UINT8_T",
+          "dataCount": 1,
+          "comments": "0: Teleop, 1: Autonomy"
         }
       },
       "Telemetry": {
