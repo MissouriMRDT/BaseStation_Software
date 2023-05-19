@@ -101,18 +101,18 @@ class Science extends Component<IProps, IState> {
   render(): JSX.Element {
     return (
       <div style={column}>
-        <SensorGraphs />
+        <Fluorometer />
         <div style={{ ...row }}>
           <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>
-            <SensorData />
             <Heater />
           </div>
           <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>
             <ControlScheme configs={['Science']} />
             <EncoderPositions style={{ width: '50%', marginRight: '2.5px', marginLeft: '2.5px' }} />
-            <RockLookUp style={{ marginLeft: '2.5px' }} />
+            <Cameras defaultCamera={8} />
           </div>
         </div>
+
         <ClosedLoopControls />
         <Cameras defaultCamera={7} />
       </div>
