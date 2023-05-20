@@ -90,6 +90,8 @@ interface IState {
   };
 
   crosshairPos: number | null;
+
+  SHPeriod: number;
 }
 
 class Fluorometer extends Component<IProps, IState> {
@@ -142,6 +144,8 @@ class Fluorometer extends Component<IProps, IState> {
       },
 
       crosshairPos: null,
+
+      SHPeriod: 200,
     };
     this.updateDiodeVals = this.updateDiodeVals.bind(this);
     // this.exportData = this.exportData.bind(this);
@@ -150,6 +154,8 @@ class Fluorometer extends Component<IProps, IState> {
     this.calculateRelExtrema = this.calculateRelExtrema.bind(this);
     this.calcRelMins = this.calcRelMins.bind(this);
     this.calcRelMaxs = this.calcRelMaxs.bind(this);
+    this.changeSHPeriod = this.changeSHPeriod.bind(this);
+    this.requestData = this.requestData.bind(this);
 
     // Call updateDiodeValues with the new data and the index of that data
     rovecomm.on('FluorometerData1', (data: number[]) => this.updateDiodeVals(0, data));
@@ -310,6 +316,21 @@ class Fluorometer extends Component<IProps, IState> {
     return null;
   }
 
+  changeSHPeriod(event: { target: { value: string } }): void {
+    const SHPeriod = parseInt(event.target.value, 10);
+    this.setState({ SHPeriod });
+  }
+
+  requestData(): void {
+    if (this.state.SHPeriod > 10000) {
+      rovecomm.sendCommand('ReqFluorometer', 10000);
+    } else if (this.state.SHPeriod < 20) {
+      rovecomm.sendCommand('ReqFluorometer', 20);
+    } else {
+      rovecomm.sendCommand('ReqFluorometer', this.state.SHPeriod);
+    }
+  }
+
   render(): JSX.Element {
     return (
       <div id="Flurometer" style={this.props.style}>
@@ -352,9 +373,15 @@ class Fluorometer extends Component<IProps, IState> {
                   );
                 })}
               </div>
+              <input
+                type="text"
+                value={this.state.SHPeriod || ''}
+                style={{ textAlign: 'center' }}
+                onChange={this.changeSHPeriod}
+              />
               <button
                 onClick={() => {
-                  rovecomm.sendCommand('ReqFluorometer', 1);
+                  this.requestData();
                 }}
               >
                 Request Reading

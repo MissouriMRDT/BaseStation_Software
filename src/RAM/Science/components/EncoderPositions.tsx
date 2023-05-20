@@ -37,8 +37,8 @@ interface IProps {
 
 interface IState {
   encoderPositions: {
-    scoopz: number,
     scoopx: number,
+    scoopz: number,
     sensorz: number
   }
 }
@@ -52,8 +52,8 @@ class EncoderPositions extends Component<IProps, IState> {
     super(props);
     this.state = {
       encoderPositions: {
-        scoopz: 0,
         scoopx: 0,
+        scoopz: 0,
         sensorz: 0,
       },
     };
@@ -63,8 +63,8 @@ class EncoderPositions extends Component<IProps, IState> {
 
   updateEncoderValues(data: number[]): void {
     const updatedPositions = {
-    scoopz: data[0],
-    scoopx: data[1],
+    scoopx: data[0],
+    scoopz: data[1],
     sensorz: data[2],
     };
     this.setState({ encoderPositions: updatedPositions})

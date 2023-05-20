@@ -158,7 +158,7 @@ class Heater extends Component<IProps, IState> {
 
     for (let i = 0; i < this.state.blocks.length; i++) {
       blocks[i].temp = temps[i];
-      console.log(blocks[i].temp);
+      // console.log(blocks[i].temp);
     }
 
     this.setState({ blocks });
@@ -194,6 +194,7 @@ class Heater extends Component<IProps, IState> {
                   <button style={button} onClick={() => this.toggleBlock(index)}>
                     {block.temp.toFixed(2)}&#176; C
                   </button>
+                  <input style={{ width: '25%' }} />
                 </div>
               );
             })}

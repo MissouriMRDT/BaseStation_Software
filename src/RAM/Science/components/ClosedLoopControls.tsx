@@ -58,7 +58,7 @@ class ClosedLoopControls extends Component<IProps, IState> {
     super(props);
     this.state = {
       packetStream: false,
-      currentPacket: 0,
+      currentPacket: 7,
     }
     this.updatePacketStream = this.updatePacketStream.bind(this);
 
@@ -72,8 +72,8 @@ class ClosedLoopControls extends Component<IProps, IState> {
   sendPositionData() {
     if (this.state.packetStream) {
       rovecomm.sendCommand('GotoPosition', this.state.currentPacket);
+      console.log('packet value:', this.state.currentPacket);
     }
-    
   }
 
   render(): JSX.Element {
@@ -85,6 +85,13 @@ class ClosedLoopControls extends Component<IProps, IState> {
             <button onClick={() => this.updatePacketStream()}>{this.state.packetStream ? "On" : "Off"}</button>
             <div style={row}>
               {packetNumList.map((num) => {
+                let buttonText: any = num;
+                if (num === 0) {
+                  buttonText = 'Ground';
+                } else if (num === 7) {
+                  buttonText = 'Calibrate';
+                }
+                // I know this is weird but people on science thought this wasn't verbose enough. Feel free to suggest something different.
                 return (
                   <button
                     type="button" 
@@ -95,11 +102,12 @@ class ClosedLoopControls extends Component<IProps, IState> {
                       borderWidth: this.state.currentPacket === num ? 'medium' : 'thin',
                     }}
                   >
-                    {num}
+                    {buttonText}
                   </button>
                 )
               })}
             </div>
+            WARNING!! MAKE SURE TO CALIBRATE FIRST
           </div>
         </div>
       </div>

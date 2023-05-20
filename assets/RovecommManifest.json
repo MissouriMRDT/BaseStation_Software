@@ -490,7 +490,7 @@
         },
         "ReqFluorometer": {
           "dataId": 10001,
-          "dataType": "UINT8_T",
+          "dataType": "UINT16_T",
           "dataCount": 1,
           "comments": "Request a new Fluorometer reading"
         }
@@ -674,6 +674,12 @@
           "dataType": "UINT16_T",
           "dataCount": 1,
           "comments": "Bitmask (1-ON, 0-OFF)"
+        },
+        "SetTemperature": {
+          "dataId": 15001,
+          "dataType": "FLOAT_T",
+          "dataCount": 12,
+          "comments": "[1, 2, 3...] (degrees C)"
         }
       },
       "Telemetry": {
