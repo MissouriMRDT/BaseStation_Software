@@ -671,7 +671,7 @@
       "Commands": {
         "HeaterToggle": {
           "dataId": 15000,
-          "dataType": "UINT16_T",
+          "dataType": "UINT8_T",
           "dataCount": 1,
           "comments": "Bitmask (1-ON, 0-OFF)"
         },

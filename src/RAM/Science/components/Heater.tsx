@@ -194,7 +194,6 @@ class Heater extends Component<IProps, IState> {
                   <button style={button} onClick={() => this.toggleBlock(index)}>
                     {block.temp.toFixed(2)}&#176; C
                   </button>
-                  <input style={{ width: '25%' }} />
                 </div>
               );
             })}
