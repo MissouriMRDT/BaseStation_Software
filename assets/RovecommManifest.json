@@ -490,7 +490,7 @@
         },
         "ReqFluorometer": {
           "dataId": 10001,
-          "dataType": "UINT16_T",
+          "dataType": "UINT8_T",
           "dataCount": 1,
           "comments": "Request a new Fluorometer reading"
         }
@@ -671,15 +671,15 @@
       "Commands": {
         "HeaterToggle": {
           "dataId": 15000,
-          "dataType": "UINT8_T",
+          "dataType": "UINT16_T",
           "dataCount": 1,
           "comments": "Bitmask (1-ON, 0-OFF)"
         },
-        "SetTemperature": {
+        "HeaterSetTemp" :{
           "dataId": 15001,
           "dataType": "FLOAT_T",
           "dataCount": 12,
-          "comments": "[1, 2, 3...] (degrees C)"
+          "comments": "Sets target temperature for the heaters"
         }
       },
       "Telemetry": {
