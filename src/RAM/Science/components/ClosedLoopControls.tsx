@@ -22,7 +22,7 @@ const container: CSS.Properties = {
   borderColor: '#990000',
   borderBottomWidth: '2px',
   borderStyle: 'solid',
-  padding: '5px'
+  padding: '5px',
 };
 
 const row: CSS.Properties = {
@@ -45,8 +45,10 @@ interface IProps {
 }
 
 interface IState {
+  packetType: string;
   packetStream: boolean;
   currentPacket: number;
+  possiblePackets: number[];
 }
 
 class ClosedLoopControls extends Component<IProps, IState> {
@@ -54,26 +56,42 @@ class ClosedLoopControls extends Component<IProps, IState> {
     style: {},
   };
 
-  constructor(props:IProps) {
+  constructor(props: IProps) {
     super(props);
     this.state = {
+      packetType: 'Scoop',
       packetStream: false,
       currentPacket: 7,
-    }
+      possiblePackets: [0, 1, 2, 3, 4, 5, 6, 7],
+    };
     this.updatePacketStream = this.updatePacketStream.bind(this);
+    this.changePacketType = this.changePacketType.bind(this);
 
     setInterval(() => this.sendPositionData(), 100);
   }
 
-  updatePacketStream() {
-    this.setState((prevState) => ({packetStream: !prevState.packetStream}));
+  updatePacketStream(): void {
+    this.setState((prevState) => ({ packetStream: !prevState.packetStream }));
   }
 
-  sendPositionData() {
+  sendPositionData(): void {
     if (this.state.packetStream) {
-      rovecomm.sendCommand('GotoPosition', this.state.currentPacket);
-      console.log('packet value:', this.state.currentPacket);
+      if (this.state.packetType === 'Scoop') {
+        rovecomm.sendCommand('GotoPosition', this.state.currentPacket);
+      } else if (this.state.packetType === 'Multiplexor') {
+        rovecomm.sendCommand('WaterPosition', this.state.currentPacket);
+      }
+      console.log(this.state.packetType, this.state.currentPacket);
     }
+  }
+
+  changePacketType(event: { target: { value: string } }): void {
+    if (event.target.value === 'Scoop') {
+      this.setState({ possiblePackets: [...Array(8)].map((_, index) => index) });
+    } else if (event.target.value === 'Multiplexor') {
+      this.setState({ possiblePackets: [...Array(13)].map((_, index) => index) });
+    }
+    this.setState({ packetType: event.target.value });
   }
 
   render(): JSX.Element {
@@ -82,19 +100,36 @@ class ClosedLoopControls extends Component<IProps, IState> {
         <div style={label}>Closed Loop</div>
         <div style={container}>
           <div style={column}>
-            <button onClick={() => this.updatePacketStream()}>{this.state.packetStream ? "On" : "Off"}</button>
             <div style={row}>
-              {packetNumList.map((num) => {
+              <select value={this.state.packetType} onChange={(e) => this.changePacketType(e)} style={{ flex: 1 }}>
+                {['Scoop', 'Multiplexor'].map((packetSelect) => {
+                  return (
+                    <option value={packetSelect} key={packetSelect}>
+                      {packetSelect}
+                    </option>
+                  );
+                })}
+              </select>
+              <button onClick={() => this.updatePacketStream()} style={{ flex: 1 }}>
+                {this.state.packetStream ? 'On' : 'Off'}
+              </button>
+            </div>
+            <div style={row}>
+              {this.state.possiblePackets.map((num) => {
                 let buttonText: any = num;
                 if (num === 0) {
-                  buttonText = 'Ground';
-                } else if (num === 7) {
+                  if (this.state.packetType === 'Scoop') {
+                    buttonText = 'Ground';
+                  } else if (this.state.packetType === 'Multiplexor') {
+                    buttonText = 'Calibrate';
+                  }
+                } else if (this.state.packetType === 'Scoop' && num === 7) {
                   buttonText = 'Calibrate';
                 }
                 // I know this is weird but people on science thought this wasn't verbose enough. Feel free to suggest something different.
                 return (
                   <button
-                    type="button" 
+                    type="button"
                     key={num}
                     onClick={() => this.setState({ currentPacket: num })}
                     style={{
@@ -104,7 +139,7 @@ class ClosedLoopControls extends Component<IProps, IState> {
                   >
                     {buttonText}
                   </button>
-                )
+                );
               })}
             </div>
             WARNING!! MAKE SURE TO CALIBRATE FIRST
@@ -115,4 +150,4 @@ class ClosedLoopControls extends Component<IProps, IState> {
   }
 }
 
-export default ClosedLoopControls
+export default ClosedLoopControls;

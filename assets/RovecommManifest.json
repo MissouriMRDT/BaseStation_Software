@@ -460,6 +460,12 @@
           "dataType": "INT16_T",
           "dataCount": 1,
           "comments": "Motor speed value (-1000,1000)"
+        },
+         "WaterPosition": {
+          "dataId": 9011,
+          "dataType": "UINT8_T",
+          "dataCount": 1,
+          "comment": "[Position] (0, 1-12)"
         }
       },
       "Telemetry": {
