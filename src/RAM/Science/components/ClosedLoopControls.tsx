@@ -38,8 +38,6 @@ const column: CSS.Properties = {
   flexDirection: 'column',
 };
 
-const packetNumList = [0, 1, 2, 3, 4, 5, 6, 7];
-
 interface IProps {
   style?: CSS.Properties;
 }

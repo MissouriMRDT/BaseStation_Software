@@ -37,10 +37,11 @@ interface IProps {
 
 interface IState {
   encoderPositions: {
-    scoopx: number,
-    scoopz: number,
-    sensorz: number
-  }
+    scoopx: number;
+    scoopz: number;
+    sensorz: number;
+    multiplexor: number;
+  };
 }
 
 class EncoderPositions extends Component<IProps, IState> {
@@ -48,13 +49,14 @@ class EncoderPositions extends Component<IProps, IState> {
     style: {},
   };
 
-  constructor(props:IProps) {
+  constructor(props: IProps) {
     super(props);
     this.state = {
       encoderPositions: {
         scoopx: 0,
         scoopz: 0,
         sensorz: 0,
+        multiplexor: 0,
       },
     };
     this.updateEncoderValues = this.updateEncoderValues.bind(this);
@@ -62,12 +64,13 @@ class EncoderPositions extends Component<IProps, IState> {
   }
 
   updateEncoderValues(data: number[]): void {
-    const updatedPositions = {
-    scoopx: data[0],
-    scoopz: data[1],
-    sensorz: data[2],
-    };
-    this.setState({ encoderPositions: updatedPositions})
+    this.setState((prevState) => {
+      const updatedEncoderPositions = { ...prevState.encoderPositions };
+      Object.keys(updatedEncoderPositions).forEach((key, index) => {
+        updatedEncoderPositions[key] = data[index];
+      });
+      return { encoderPositions: updatedEncoderPositions };
+    });
   }
 
   render(): JSX.Element {

@@ -201,9 +201,6 @@ class Heater extends Component<IProps, IState> {
               );
             })}
             <div style={row}>
-              <button style={button} onClick={() => this.setAllBlocks(true)}>
-                Enable All
-              </button>
               <button style={button} onClick={() => this.setAllBlocks(false)}>
                 Disable All
               </button>
@@ -233,36 +230,6 @@ class Heater extends Component<IProps, IState> {
                   UV Light
                 </label>
               </div>
-            </div>
-            <div style={row}>
-              <button
-                onClick={() => {
-                  rovecomm.sendCommand('GotoPosition', 0);
-                }}
-              >
-                Scooping Position
-              </button>
-              <button
-                onClick={() => {
-                  rovecomm.sendCommand('GotoPosition', 1);
-                }}
-              >
-                Sample 1
-              </button>
-              <button
-                onClick={() => {
-                  rovecomm.sendCommand('GotoPosition', 2);
-                }}
-              >
-                Sample 2
-              </button>
-              <button
-                onClick={() => {
-                  rovecomm.sendCommand('GotoPosition', 0);
-                }}
-              >
-                Sample 3
-              </button>
             </div>
           </div>
         </div>

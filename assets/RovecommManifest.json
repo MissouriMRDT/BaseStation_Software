@@ -465,15 +465,15 @@
           "dataId": 9011,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comment": "[Position] (0, 1-12)"
+          "comments": "[Position] (0, 1-12)"
         }
       },
       "Telemetry": {
         "EncoderPositions": {
           "dataId": 9100,
           "dataType": "FLOAT_T",
-          "dataCount": 3,
-          "comments": "[scoop z-pos, scoop x-pos, sensor z-axis] (absolute position 0-360)"
+          "dataCount": 4,
+          "comments": "[scoop z-pos, scoop x-pos, sensor z-axis, multiplexor] (absolute position 0-360)"
         }
       },
       "Error": {
