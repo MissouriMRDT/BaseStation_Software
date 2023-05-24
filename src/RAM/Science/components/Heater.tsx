@@ -77,6 +77,7 @@ interface IState {
   blocks: HeaterBlock[];
   UVPowered: boolean;
   WhiteLightPowered: boolean;
+  targetTemperature: number[];
 }
 
 class Heater extends Component<IProps, IState> {
@@ -100,6 +101,7 @@ class Heater extends Component<IProps, IState> {
         .fill(0)
         .map(() => ({ temp: -1, isOn: false }))
         .flat(),
+      targetTemperature: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20],
     };
     this.updateTemps = this.updateTemps.bind(this);
     this.toggleBlock = this.toggleBlock.bind(this);
@@ -107,6 +109,7 @@ class Heater extends Component<IProps, IState> {
     this.setAllBlocks = this.setAllBlocks.bind(this);
     this.toggleWhiteLight = this.toggleWhiteLight.bind(this);
     this.toggleUV = this.toggleUV.bind(this);
+    this.setTargetTemperature = this.setTargetTemperature.bind(this);
     rovecomm.on('ThermoValues', (data: any) => this.updateTemps(data));
     rovecomm.on('HeaterEnabled', (data: any) => this.updateEnabled(data));
   }
@@ -120,6 +123,21 @@ class Heater extends Component<IProps, IState> {
     let bitmask = powered ? '1' : '0';
     bitmask = bitmask.repeat(this.state.blocks.length);
     rovecomm.sendCommand('HeaterToggle', [parseInt(bitmask, 2)]);
+  }
+
+  setTargetTemperature(index: number, event: { target: { value: string } }): void {
+    let setTemp: number = parseInt(event.target.value, 10);
+    this.setState((prevState) => {
+      const targetTemperature = [...prevState.targetTemperature];
+      if (setTemp < 0 || Number.isNaN(setTemp)) {
+        setTemp = 0;
+      } else if (setTemp > 105) {
+        setTemp = 105;
+      }
+      targetTemperature[index] = setTemp;
+      console.log(targetTemperature);
+      return { targetTemperature };
+    });
   }
 
   toggleWhiteLight(): void {
@@ -197,10 +215,23 @@ class Heater extends Component<IProps, IState> {
                   <button style={button} onClick={() => this.toggleBlock(index)}>
                     {block.temp.toFixed(2)}&#176; C
                   </button>
+                  <input
+                    type="text"
+                    value={this.state.targetTemperature[index]}
+                    style={{ ...button, width: '15%' }}
+                    onChange={(event) => this.setTargetTemperature(index, event)}
+                  />
+                  <p style={{ alignSelf: 'center', marginRight: '5px', marginLeft: '2px' }}>&#176;C</p>
                 </div>
               );
             })}
             <div style={row}>
+              <button
+                style={button}
+                onClick={() => rovecomm.sendCommand('HeaterSetTemp', this.state.targetTemperature)}
+              >
+                Set Temperature
+              </button>
               <button style={button} onClick={() => this.setAllBlocks(false)}>
                 Disable All
               </button>

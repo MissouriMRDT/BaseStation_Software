@@ -322,13 +322,14 @@ class Fluorometer extends Component<IProps, IState> {
   }
 
   requestData(): void {
-    if (this.state.SHPeriod > 10000) {
-      rovecomm.sendCommand('ReqFluorometer', 10000);
+    if (this.state.SHPeriod > 255) {
+      rovecomm.sendCommand('ReqFluorometer', 255);
     } else if (this.state.SHPeriod < 20) {
       rovecomm.sendCommand('ReqFluorometer', 20);
     } else {
       rovecomm.sendCommand('ReqFluorometer', this.state.SHPeriod);
     }
+    console.log('requesting fluorometer', this.state.SHPeriod);
   }
 
   render(): JSX.Element {
@@ -348,7 +349,7 @@ class Fluorometer extends Component<IProps, IState> {
               <LineSeries
                 data={this.state.graphData}
                 style={{ fill: 'none' }}
-                strokeWidth="6"
+                strokeWidth="2"
                 color="blue"
                 onNearestX={(_datapoint: any, event: any) => this.onNearestX(event.index)}
               />
