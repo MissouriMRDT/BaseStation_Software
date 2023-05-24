@@ -96,7 +96,10 @@ class Heater extends Component<IProps, IState> {
     this.state = {
       UVPowered: false,
       WhiteLightPowered: false,
-      blocks: new Array(12).fill({ temp: -1, isOn: false }).flat(),
+      blocks: new Array(12)
+        .fill(0)
+        .map(() => ({ temp: -1, isOn: false }))
+        .flat(),
     };
     this.updateTemps = this.updateTemps.bind(this);
     this.toggleBlock = this.toggleBlock.bind(this);
@@ -144,7 +147,7 @@ class Heater extends Component<IProps, IState> {
     const bitmask = BitmaskUnpack(data[0], blocks.length);
     for (let i = 0; i < blocks.length; i++) {
       // subtracted from the length since we have to reverse the order of the block
-      blocks[blocks.length - 1 - i].isOn = Boolean(Number(bitmask[i]));
+      blocks[blocks.length - 1 - i].isOn = Boolean(Number(bitmask[i])).valueOf();
     }
     this.setState({ blocks });
   }
