@@ -134,7 +134,7 @@ class Fluorometer extends Component<IProps, IState> {
     super(props);
     this.state = {
       LedStatus: [false, false, false, false, false],
-      intensities: new Array(3648).fill(0).flat(),
+      intensities: new Array(215).fill(0).flat(),
       graphData: [{ x: 0, y: 0 }],
       maxIntensity: 0,
 
@@ -158,14 +158,7 @@ class Fluorometer extends Component<IProps, IState> {
     this.requestData = this.requestData.bind(this);
 
     // Call updateDiodeValues with the new data and the index of that data
-    rovecomm.on('FluorometerData1', (data: number[]) => this.updateDiodeVals(0, data));
-    rovecomm.on('FluorometerData2', (data: number[]) => this.updateDiodeVals(500, data));
-    rovecomm.on('FluorometerData3', (data: number[]) => this.updateDiodeVals(1000, data));
-    rovecomm.on('FluorometerData4', (data: number[]) => this.updateDiodeVals(1500, data));
-    rovecomm.on('FluorometerData5', (data: number[]) => this.updateDiodeVals(2000, data));
-    rovecomm.on('FluorometerData6', (data: number[]) => this.updateDiodeVals(2500, data));
-    rovecomm.on('FluorometerData7', (data: number[]) => this.updateDiodeVals(3000, data));
-    rovecomm.on('FluorometerData8', (data: number[]) => this.updateDiodeVals(3500, data));
+    rovecomm.on('FluorometerData', (data: number[]) => this.updateDiodeVals(0, data));
   }
 
   onMouseLeave(): void {
@@ -235,7 +228,7 @@ class Fluorometer extends Component<IProps, IState> {
         const updatedInts = [
           ...prevState.intensities.slice(0, index),
           ...dataInput,
-          ...prevState.intensities.slice(index + 500),
+          ...prevState.intensities.slice(index + 215),
         ];
         // prevState.intensities.splice(index, index === 3500 ? 148 : 500, ...dataInput);
         return { intensities: updatedInts };

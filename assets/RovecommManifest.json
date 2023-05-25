@@ -502,52 +502,10 @@
         }
       },
       "Telemetry": {
-        "FluorometerData1": {
+        "FluorometerData": {
           "dataId": 10100,
           "dataType": "UINT16_T",
-          "dataCount": 500,
-          "comments": "Diode readings from sensor"
-        },
-        "FluorometerData2": {
-          "dataId": 10101,
-          "dataType": "UINT16_T",
-          "dataCount": 500,
-          "comments": "Diode readings from sensor"
-        },
-        "FluorometerData3": {
-          "dataId": 10102,
-          "dataType": "UINT16_T",
-          "dataCount": 500,
-          "comments": "Diode readings from sensor"
-        },
-        "FluorometerData4": {
-          "dataId": 10103,
-          "dataType": "UINT16_T",
-          "dataCount": 500,
-          "comments": "Diode readings from sensor"
-        },
-        "FluorometerData5": {
-          "dataId": 10104,
-          "dataType": "UINT16_T",
-          "dataCount": 500,
-          "comments": "Diode readings from sensor"
-        },
-        "FluorometerData6": {
-          "dataId": 10105,
-          "dataType": "UINT16_T",
-          "dataCount": 500,
-          "comments": "Diode readings from sensor"
-        },
-        "FluorometerData7": {
-          "dataId": 10106,
-          "dataType": "UINT16_T",
-          "dataCount": 500,
-          "comments": "Diode readings from sensor"
-        },
-        "FluorometerData8": {
-          "dataId": 10107,
-          "dataType": "UINT16_T",
-          "dataCount": 148,
+          "dataCount": 215,
           "comments": "Diode readings from sensor"
         }
       },
