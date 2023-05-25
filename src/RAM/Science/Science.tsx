@@ -22,7 +22,7 @@ const column: CSS.Properties = {
 const sensorMotorMultiplier = 500;
 const scoopMotorMultiplier = 500;
 const scoopIncrementMult = 5;
-const microscopeMult = 100;
+const microscopeMult = 500;
 
 function science(): void {
   // Z actuation of the science system is controlled by the left up/down thumbstick
@@ -57,17 +57,19 @@ function science(): void {
 
   if ('WaterLeft' in controllerInputs && 'WaterRight' in controllerInputs) {
     if (controllerInputs.WaterLeft === 1) {
-      rovecomm.sendCommand('WaterSelector', [-1]);
+      rovecomm.sendCommand('WaterSelector', [90]);
     } else if (controllerInputs.WaterRight === 1) {
-      rovecomm.sendCommand('WaterSelector', [1]);
+      rovecomm.sendCommand('WaterSelector', [-90]);
+    } else {
+      rovecomm.sendCommand('WaterSelector', [0]);
     }
   }
 
   if ('WaterPump' in controllerInputs) {
     if (controllerInputs.WaterPump === 1) {
-      rovecomm.sendCommand('WaterPump', [1]);
+      rovecomm.sendCommand('MicroscopeFocus', microscopeMult);
     } else {
-      rovecomm.sendCommand('WaterPump', [0]);
+      rovecomm.sendCommand('MicroscopeFocus', -microscopeMult);
     }
   }
 
@@ -75,7 +77,7 @@ function science(): void {
     if (controllerInputs.MicroscopeFocusPlus === 1) {
       rovecomm.sendCommand('MicroscopeFocus', microscopeMult);
     } else if (controllerInputs.MicroscopeFocusMinus === 1) {
-      rovecomm.sendCommand('MicroscopeFocus', -microscopeMult);
+      rovecomm.sendCommand('MicroscopeFocus', [0]);
     }
   }
 
