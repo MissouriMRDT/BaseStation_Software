@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
 import { XYPlot, VerticalGridLines, HorizontalGridLines, XAxis, YAxis, LineSeries, Crosshair } from 'react-vis';
+import html2canvas from 'html2canvas';
+import fs from 'fs';
 import { rovecomm } from '../../../Core/RoveProtocol/Rovecomm';
+import { windows } from '../../../Core/Window';
 
 const container: CSS.Properties = {
   display: 'flex',
@@ -65,6 +68,54 @@ const onIndicator: CSS.Properties = {
   lineHeight: '27px',
 };
 
+function downloadURL(imgData: string): void {
+  const filename = `./Screenshots/${new Date()
+    .toISOString()
+    // ISO string will be fromatted YYYY-MM-DDTHH:MM:SS:sssZ
+    // this regex will convert all -,T,:,Z to . (which covers to . for .csv)
+    .replaceAll(/[:\-TZ]/g, '.')}Fluorometer.png`;
+
+  if (!fs.existsSync('./Screenshots')) {
+    fs.mkdirSync('./Screenshots');
+  }
+
+  const base64Image = imgData.replace('image/png', 'image/octet-stream').split(';base64,').pop();
+  if (base64Image) fs.writeFileSync(filename, base64Image, { encoding: 'base64' });
+}
+
+function saveImage(): void {
+  // Search through all the windows for Fluorometer
+  let graph;
+  let thisWindow;
+  for (const win of Object.keys(windows)) {
+    if (windows[win].document.getElementById('Fluorometer')) {
+      // When found, store the graph and the window it was in
+      thisWindow = windows[win];
+      graph = thisWindow.document.getElementById('Fluorometer');
+      break;
+    }
+  }
+
+  // If the graph isn't found, throw an error
+  if (!graph) {
+    throw new Error("The element 'Fluorometer' wasn't found");
+  }
+
+  // If the graph is found, convert its html into a canvas to be downloaded
+  html2canvas(graph, {
+    scrollX: 0,
+    scrollY: -thisWindow.scrollY - 38,
+  }) // We subtract 38 to make up for the 28 pixel top border and the -10 top margin
+    .then((canvas: any) => {
+      const imgData = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+      downloadURL(imgData);
+      return null;
+    })
+    .catch((error: any) => {
+      console.error(error);
+    });
+}
+
 interface IProps {
   style?: CSS.Properties;
 }
@@ -92,6 +143,8 @@ interface IState {
   crosshairPos: number | null;
 
   SHPeriod: number;
+
+  enableLEDToggle: boolean;
 }
 
 class Fluorometer extends Component<IProps, IState> {
@@ -134,7 +187,7 @@ class Fluorometer extends Component<IProps, IState> {
     super(props);
     this.state = {
       LedStatus: [false, false, false, false, false],
-      intensities: new Array(215).fill(0).flat(),
+      intensities: new Array(255).fill(0).flat(),
       graphData: [{ x: 0, y: 0 }],
       maxIntensity: 0,
 
@@ -146,6 +199,8 @@ class Fluorometer extends Component<IProps, IState> {
       crosshairPos: null,
 
       SHPeriod: 200,
+
+      enableLEDToggle: false,
     };
     this.updateDiodeVals = this.updateDiodeVals.bind(this);
     // this.exportData = this.exportData.bind(this);
@@ -194,7 +249,7 @@ class Fluorometer extends Component<IProps, IState> {
       return peaks;
     }, []);
     return peaksI.map((val) => {
-      return { x: 350 + val * 0.08121278, intensity: arr[val] };
+      return { x: 350 + val * 0.061428571, intensity: arr[val] };
     });
   }
 
@@ -257,12 +312,14 @@ class Fluorometer extends Component<IProps, IState> {
   }
 
   toggleLed(index: number): void {
-    const { LedStatus } = this.state;
-    LedStatus[index] = !LedStatus[index];
-    this.setState({
-      LedStatus,
-    });
-    rovecomm.sendCommand('FluorometerLEDs', Fluorometer.buildLedCommand(LedStatus));
+    if (this.state.enableLEDToggle) {
+      const { LedStatus } = this.state;
+      LedStatus[index] = !LedStatus[index];
+      this.setState({
+        LedStatus,
+      });
+      rovecomm.sendCommand('FluorometerLEDs', Fluorometer.buildLedCommand(LedStatus));
+    }
   }
 
   /*
@@ -327,11 +384,12 @@ class Fluorometer extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div id="Flurometer" style={this.props.style}>
+      <div id="Fluorometer" style={this.props.style}>
         <div style={label}>Fluorometer</div>
         <div style={container}>
           <div style={componentBox}>
             <XYPlot
+              id="plot"
               margin={{ top: 10, bottom: 50 }}
               width={window.document.documentElement.clientWidth - 50}
               height={300}
@@ -366,20 +424,25 @@ class Fluorometer extends Component<IProps, IState> {
                     </label>
                   );
                 })}
+                <button onClick={() => this.setState((prevState) => ({ enableLEDToggle: !prevState.enableLEDToggle }))}>
+                  LED Toggle: {this.state.enableLEDToggle ? 'on' : 'off'}
+                </button>
               </div>
-              <input
-                type="text"
-                value={this.state.SHPeriod || ''}
-                style={{ textAlign: 'center' }}
-                onChange={this.changeSHPeriod}
-              />
-              <button
-                onClick={() => {
-                  this.requestData();
-                }}
-              >
-                Request Reading
-              </button>
+              <div style={{ ...row, justifyContent: 'end' }}>
+                <input
+                  type="text"
+                  value={this.state.SHPeriod || ''}
+                  style={{ textAlign: 'center' }}
+                  onChange={this.changeSHPeriod}
+                />
+                <button
+                  onClick={() => {
+                    this.requestData();
+                  }}
+                >
+                  Request Reading
+                </button>
+              </div>
               {/* <div style={column}>
                 <p>Relative Mins</p>
                 {this.state.relExtrema.mins.map((val, ndx) => {
@@ -400,7 +463,10 @@ class Fluorometer extends Component<IProps, IState> {
                   );
                 })}
               </div> */}
+            </div>
+            <div>
               <p>Max Intensity: {this.state.maxIntensity}</p>
+              <button onClick={saveImage}>Export Graph</button>
             </div>
           </div>
         </div>

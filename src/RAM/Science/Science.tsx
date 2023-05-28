@@ -65,19 +65,19 @@ function science(): void {
     }
   }
 
-  if ('WaterPump' in controllerInputs) {
-    if (controllerInputs.WaterPump === 1) {
-      rovecomm.sendCommand('MicroscopeFocus', microscopeMult);
-    } else {
-      rovecomm.sendCommand('MicroscopeFocus', -microscopeMult);
-    }
-  }
+  // if ('WaterPump' in controllerInputs) {
+  //   if (controllerInputs.WaterPump === 1) {
+  //     rovecomm.sendCommand('MicroscopeFocus', microscopeMult);
+  //   }
+  // }
 
   if ('MicroscopeFocusPlus' in controllerInputs && 'MicroscopeFocusMinus' in controllerInputs) {
     if (controllerInputs.MicroscopeFocusPlus === 1) {
       rovecomm.sendCommand('MicroscopeFocus', microscopeMult);
+      console.log('on');
     } else if (controllerInputs.MicroscopeFocusMinus === 1) {
       rovecomm.sendCommand('MicroscopeFocus', [0]);
+      console.log('off');
     }
   }
 
