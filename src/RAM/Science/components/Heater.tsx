@@ -195,7 +195,7 @@ class Heater extends Component<IProps, IState> {
     blocks[index].isOn = !blocks[index].isOn;
 
     let bitmask = '';
-    for (let i: number = blocks.length - 1; i >= 0; i--) {
+    for (let i = 0; i < blocks.length; i++) {
       // Reverse for-loop since the order of the blocks is reversed on the board
       bitmask += blocks[i].isOn ? '1' : '0';
     }
