@@ -187,7 +187,7 @@ class Fluorometer extends Component<IProps, IState> {
     super(props);
     this.state = {
       LedStatus: [false, false, false, false, false],
-      intensities: new Array(255).fill(0).flat(),
+      intensities: new Array(215).fill(0).flat(),
       graphData: [{ x: 0, y: 0 }],
       maxIntensity: 0,
 
@@ -296,12 +296,13 @@ class Fluorometer extends Component<IProps, IState> {
 
   updateGraphValues(): void {
     const { intensities } = this.state;
-    const avgd = Fluorometer.rollingAverage(intensities, 75);
+    const avgd = Fluorometer.rollingAverage(intensities, 1);
+    console.log(intensities.length);
 
     const maxIntensity = Math.max(...avgd);
 
     const normalizedData = avgd.map((value: number, ndx: number) => {
-      return { x: 350 + ndx * 0.08121278, y: value / maxIntensity };
+      return { x: 350 + ndx * 1.63, y: Math.abs(value / maxIntensity - 1) };
     });
 
     this.setState({
@@ -372,13 +373,7 @@ class Fluorometer extends Component<IProps, IState> {
   }
 
   requestData(): void {
-    if (this.state.SHPeriod > 255) {
-      rovecomm.sendCommand('ReqFluorometer', 255);
-    } else if (this.state.SHPeriod < 20) {
-      rovecomm.sendCommand('ReqFluorometer', 20);
-    } else {
-      rovecomm.sendCommand('ReqFluorometer', this.state.SHPeriod);
-    }
+    rovecomm.sendCommand('ReqFluorometer', 1);
     console.log('requesting fluorometer', this.state.SHPeriod);
   }
 
@@ -393,7 +388,8 @@ class Fluorometer extends Component<IProps, IState> {
               margin={{ top: 10, bottom: 50 }}
               width={window.document.documentElement.clientWidth - 50}
               height={300}
-              yDomain={[0, 1]}
+              yDomain={[-0.1, 2]}
+              xDomain={[350, 710]}
             >
               <VerticalGridLines style={{ fill: 'none' }} />
               <HorizontalGridLines style={{ fill: 'none' }} />
@@ -429,12 +425,6 @@ class Fluorometer extends Component<IProps, IState> {
                 </button>
               </div>
               <div style={{ ...row, justifyContent: 'end' }}>
-                <input
-                  type="text"
-                  value={this.state.SHPeriod || ''}
-                  style={{ textAlign: 'center' }}
-                  onChange={this.changeSHPeriod}
-                />
                 <button
                   onClick={() => {
                     this.requestData();
