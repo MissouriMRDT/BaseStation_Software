@@ -162,11 +162,13 @@ class Heater extends Component<IProps, IState> {
 
   updateEnabled(data: number[]): void {
     const { blocks } = this.state;
+    console.log(data);
     const bitmask = BitmaskUnpack(data[0], blocks.length);
     for (let i = 0; i < blocks.length; i++) {
       // subtracted from the length since we have to reverse the order of the block
-      blocks[blocks.length - 1 - i].isOn = Boolean(Number(bitmask[i])).valueOf();
+      blocks[i].isOn = Boolean(Number(bitmask[i])).valueOf();
     }
+    console.log(bitmask);
     this.setState({ blocks });
   }
 
