@@ -109,11 +109,11 @@ class Map extends Component<IProps, IState> {
                 if (waypoint.onMap === true) {
                   return (
                     <div>
-                      <Marker key={waypoint.name} position={post} icon={icon(waypoint.color)}>
+                      <Marker key={waypoint.name} position={post} icon={icon(waypoint.color)} zIndexOffset={10}>
                         <Popup>{waypoint.name}</Popup>
                       </Marker>
-                      {waypoint.displayRadius ? (
-                        <Circle center={post} radius={20} pathOptions={{ fillColor: 'blue' }} />
+                      {waypoint.displayRadius > 0 ? (
+                        <Circle center={post} radius={waypoint.displayRadius} pathOptions={{ fillColor: 'blue' }} />
                       ) : null}
                     </div>
                   );

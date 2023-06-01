@@ -39,6 +39,10 @@ const row: CSS.Properties = {
   fontSize: '16px',
   lineHeight: '20px',
 };
+const column: CSS.Properties = {
+  display: 'flex',
+  flexDirection: 'column',
+};
 const input: CSS.Properties = {
   width: '30%',
 };
@@ -104,6 +108,29 @@ const colorButton: CSS.Properties = {
   lineHeight: '20px',
   outline: 'none',
 };
+const slider: CSS.Properties = {
+  background: '#990000',
+  width: '40%',
+  WebkitAppearance: 'none',
+  appearance: 'none',
+  height: '6px',
+  outline: 'none',
+  marginLeft: '10px',
+  marginRight: '10px',
+};
+const value: CSS.Properties = {
+  fontFamily: 'arial',
+  fontSize: '16px',
+  lineHeight: '22px',
+  width: '10%',
+  textAlign: 'center',
+};
+const radiusRow: CSS.Properties = {
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  margin: '5px',
+};
 const filepath = path.join(__dirname, '../assets/Waypoints.json');
 
 interface Waypoint {
@@ -113,7 +140,7 @@ interface Waypoint {
   color: string;
   colorPicker: boolean;
   onMap: boolean;
-  displayRadius: boolean;
+  displayRadius: number;
 }
 
 interface IProps {
@@ -129,7 +156,7 @@ interface IState {
   coordinateFormat: string;
   newWaypointName: string;
   newWaypointCoords: any;
-  displayRadius: boolean;
+  displayRadius: number;
 }
 
 class Waypoints extends Component<IProps, IState> {
@@ -151,10 +178,11 @@ class Waypoints extends Component<IProps, IState> {
         lon: '',
       },
       coordinateFormat: 'LatLon',
-      displayRadius: false,
+      displayRadius: 0,
     };
     this.store = this.store.bind(this);
     this.remove = this.remove.bind(this);
+    this.sliderChange = this.sliderChange.bind(this);
   }
 
   componentDidMount(): void {
@@ -196,7 +224,7 @@ class Waypoints extends Component<IProps, IState> {
       return;
     }
     let newWaypoint: Waypoint;
-    const radius: boolean = this.state.displayRadius;
+    const radius: number = this.state.displayRadius;
     if (this.state.coordinateFormat === 'LatLon') {
       newWaypoint = {
         name,
@@ -254,6 +282,10 @@ class Waypoints extends Component<IProps, IState> {
     // or if not default to ""
     const waypoints = Object.keys(storedWaypoints);
     const index = waypoints.indexOf(this.state.selectedWaypoint);
+    if (waypoints.length <= 1) {
+      console.log('you cant lol');
+      return;
+    }
     let newSelectedWaypoint: string;
     if (waypoints.length > index + 1) {
       newSelectedWaypoint = waypoints[index + 1];
@@ -350,32 +382,52 @@ class Waypoints extends Component<IProps, IState> {
     );
   }
 
+  sliderChange(event: { target: { value: string } }): void {
+    this.setState({ displayRadius: parseInt(event.target.value, 10) });
+  }
+
   render(): JSX.Element {
     return (
       <div style={this.props.style}>
         <div style={label}>Waypoints</div>
         <div style={container}>
-          <div style={row}>
-            <button type="button" style={buttons} onClick={() => this.setState({ addingWaypoint: true })}>
-              Add Waypoint
-            </button>
-            <button
-              type="button"
-              style={buttons}
-              onClick={() => this.store(new Date().toLocaleTimeString(), this.props.currentCoords)}
-            >
-              Save Current
-            </button>
-            <button type="button" style={buttons} onClick={this.remove}>
-              Remove Selected
-            </button>
-            <button
-              type="button"
-              style={{ ...buttons, width: '15%' }}
-              onClick={() => this.setState((prevState) => ({ displayRadius: !prevState.displayRadius }))}
-            >
-              Radius: {this.state.displayRadius ? 'on' : 'off'}
-            </button>
+          <div style={column}>
+            <div style={row}>
+              <button type="button" style={buttons} onClick={() => this.setState({ addingWaypoint: true })}>
+                Add Waypoint
+              </button>
+              <button
+                type="button"
+                style={buttons}
+                onClick={() => this.store(new Date().toLocaleTimeString(), this.props.currentCoords)}
+              >
+                Save Current
+              </button>
+              <button type="button" style={buttons} onClick={this.remove}>
+                Remove Selected
+              </button>
+            </div>
+            <div style={radiusRow}>
+              <input
+                type="text"
+                value={this.state.displayRadius || '0'}
+                onChange={(e) =>
+                  this.setState({
+                    displayRadius: Number.isNaN(parseInt(e.target.value, 10)) ? 0 : parseInt(e.target.value, 10),
+                  })
+                }
+                style={value}
+              />
+              <input
+                type="range"
+                min="0"
+                max="250"
+                value={this.state.displayRadius}
+                style={slider}
+                onChange={(e) => this.sliderChange(e)}
+              />
+              <button onClick={() => this.setState({ displayRadius: 0 })}>Off</button>
+            </div>
           </div>
           <div
             style={{
