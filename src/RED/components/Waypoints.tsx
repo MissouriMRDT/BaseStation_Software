@@ -113,6 +113,7 @@ interface Waypoint {
   color: string;
   colorPicker: boolean;
   onMap: boolean;
+  displayRadius: boolean;
 }
 
 interface IProps {
@@ -128,6 +129,7 @@ interface IState {
   coordinateFormat: string;
   newWaypointName: string;
   newWaypointCoords: any;
+  displayRadius: boolean;
 }
 
 class Waypoints extends Component<IProps, IState> {
@@ -149,6 +151,7 @@ class Waypoints extends Component<IProps, IState> {
         lon: '',
       },
       coordinateFormat: 'LatLon',
+      displayRadius: false,
     };
     this.store = this.store.bind(this);
     this.remove = this.remove.bind(this);
@@ -193,6 +196,7 @@ class Waypoints extends Component<IProps, IState> {
       return;
     }
     let newWaypoint: Waypoint;
+    const radius: boolean = this.state.displayRadius;
     if (this.state.coordinateFormat === 'LatLon') {
       newWaypoint = {
         name,
@@ -201,6 +205,7 @@ class Waypoints extends Component<IProps, IState> {
         color: 'black',
         colorPicker: false,
         onMap: true,
+        displayRadius: radius,
       };
     } else {
       newWaypoint = {
@@ -214,6 +219,7 @@ class Waypoints extends Component<IProps, IState> {
         color: 'black',
         colorPicker: false,
         onMap: true,
+        displayRadius: radius,
       };
     }
 
@@ -362,6 +368,13 @@ class Waypoints extends Component<IProps, IState> {
             </button>
             <button type="button" style={buttons} onClick={this.remove}>
               Remove Selected
+            </button>
+            <button
+              type="button"
+              style={{ ...buttons, width: '15%' }}
+              onClick={() => this.setState((prevState) => ({ displayRadius: !prevState.displayRadius }))}
+            >
+              Radius: {this.state.displayRadius ? 'on' : 'off'}
             </button>
           </div>
           <div

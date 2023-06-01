@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
-import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
+import { MapContainer, Marker, Popup, ScaleControl, TileLayer, Circle } from 'react-leaflet';
 import { LatLngTuple } from 'leaflet';
 
 import icon from './Icon';
@@ -46,6 +46,7 @@ interface IState {
   zoom: number;
   maxZoom: number;
   heading: number;
+  isRockGarden: boolean;
 }
 
 class Map extends Component<IProps, IState> {
@@ -62,6 +63,7 @@ class Map extends Component<IProps, IState> {
       zoom: 15,
       maxZoom: 19,
       heading: 0,
+      isRockGarden: true,
     };
 
     rovecomm.on('IMUData', (data: any) => this.IMUData(data));
@@ -106,13 +108,19 @@ class Map extends Component<IProps, IState> {
                 const post: LatLngTuple = [waypoint.latitude, waypoint.longitude];
                 if (waypoint.onMap === true) {
                   return (
-                    <Marker key={waypoint.name} position={post} icon={icon(waypoint.color)}>
-                      <Popup>{waypoint.name}</Popup>
-                    </Marker>
+                    <div>
+                      <Marker key={waypoint.name} position={post} icon={icon(waypoint.color)}>
+                        <Popup>{waypoint.name}</Popup>
+                      </Marker>
+                      {waypoint.displayRadius ? (
+                        <Circle center={post} radius={20} pathOptions={{ fillColor: 'blue' }} />
+                      ) : null}
+                    </div>
                   );
                 }
                 return null;
               })}
+              <ScaleControl position="topleft" />
             </MapContainer>
           </div>
         </div>
