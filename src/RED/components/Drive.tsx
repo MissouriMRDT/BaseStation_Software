@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
-import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
+import { rovecomm, RovecommManifest } from '../../Core/RoveProtocol/Rovecomm';
 import { controllerInputs } from '../../Core/components/ControlScheme';
 
 const container: CSS.Properties = {
@@ -101,11 +101,13 @@ class Drive extends Component<IProps, IState> {
       leftSpeed = 50 * direction;
       rightSpeed = 50 * direction;
 
+      rovecomm.sendCommand('StateDisplay', RovecommManifest.Core.Enums.DISPLAYSTATE.Teleop);
       rovecomm.sendCommand('DriveLeftRight', [leftSpeed / 1000.0, rightSpeed / 1000.0]);
     } else if ('LeftSpeed' in controllerInputs && 'RightSpeed' in controllerInputs) {
       leftSpeed = Math.round(controllerInputs.LeftSpeed * speedMultiplier);
       rightSpeed = Math.round(controllerInputs.RightSpeed * speedMultiplier);
 
+      rovecomm.sendCommand('StateDisplay', RovecommManifest.Core.Enums.DISPLAYSTATE.Teleop);
       rovecomm.sendCommand('DriveLeftRight', [leftSpeed / 1000.0, rightSpeed / 1000.0]);
     } else if ('VectorX' in controllerInputs && 'VectorY' in controllerInputs && 'Throttle' in controllerInputs) {
       const x = controllerInputs.VectorX;
@@ -124,6 +126,8 @@ class Drive extends Component<IProps, IState> {
 
       leftSpeed = Math.round(leftSpeed * speedMultiplier);
       rightSpeed = Math.round(rightSpeed * speedMultiplier);
+
+      rovecomm.sendCommand('StateDisplay', RovecommManifest.Core.Enums.DISPLAYSTATE.Teleop);
       rovecomm.sendCommand('DriveLeftRight', [leftSpeed / 1000.0, rightSpeed / 1000.0]);
     }
     this.setState({
