@@ -228,8 +228,8 @@ class Waypoints extends Component<IProps, IState> {
     if (this.state.coordinateFormat === 'LatLon') {
       newWaypoint = {
         name,
-        latitude: parseFloat(coords.lat),
-        longitude: parseFloat(coords.lon),
+        latitude: Number.isNaN(parseFloat(coords.lat)) ? 0 : parseFloat(coords.lat),
+        longitude: Number.isNaN(parseFloat(coords.lon)) ? 0 : parseFloat(coords.lon),
         color: 'black',
         colorPicker: false,
         onMap: true,
@@ -408,6 +408,7 @@ class Waypoints extends Component<IProps, IState> {
               </button>
             </div>
             <div style={radiusRow}>
+              <div style={{ ...value, width: '20%' }}>Point Radius:</div>
               <input
                 type="text"
                 value={this.state.displayRadius || '0'}

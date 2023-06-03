@@ -46,7 +46,6 @@ interface IState {
   zoom: number;
   maxZoom: number;
   heading: number;
-  isRockGarden: boolean;
 }
 
 class Map extends Component<IProps, IState> {
@@ -63,7 +62,6 @@ class Map extends Component<IProps, IState> {
       zoom: 15,
       maxZoom: 19,
       heading: 0,
-      isRockGarden: true,
     };
 
     rovecomm.on('IMUData', (data: any) => this.IMUData(data));
@@ -113,7 +111,7 @@ class Map extends Component<IProps, IState> {
                         <Popup>{waypoint.name}</Popup>
                       </Marker>
                       {waypoint.displayRadius > 0 ? (
-                        <Circle center={post} radius={waypoint.displayRadius} pathOptions={{ fillColor: 'blue' }} />
+                        <Circle center={post} radius={waypoint.displayRadius} pathOptions={{ color: waypoint.color }} />
                       ) : null}
                     </div>
                   );
