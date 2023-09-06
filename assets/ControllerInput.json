@@ -1,0 +1,96 @@
+{
+  "TankDrive": {
+    "config": "Drive",
+    "controller": "Xbox",
+    "bindings": {
+      "LeftSpeed": { "buttonType": "joystick", "button": "left stick y" },
+      "LeftDirection": { "buttonType": "joystick", "button": "left stick x" },
+      "RightSpeed": { "buttonType": "joystick", "button": "right stick y" },
+      "RightDirection": { "buttonType": "joystick", "button": "right stick x" }
+    }
+  },
+  "VectorDrive": {
+    "config": "Drive",
+    "controller": "Flight Stick",
+    "bindings": {
+      "VectorX": { "buttonType": "joystick", "button": "x joystick" },
+      "VectorY": { "buttonType": "joystick", "button": "y joystick" },
+      "Throttle": { "buttonType": "joystick", "button": "throttle" },
+      "ForwardBump": { "buttonType": "button", "button": "top right" },
+      "BackwardBump": { "buttonType": "button", "button": "middle left" }
+    }
+  },
+  "Gimbal": {
+    "config": "MainGimbal",
+    "controller": "Xbox",
+    "bindings": {
+      "LeftMainPan": { "buttonType": "joystick", "button": "left stick x" },
+      "RightMainPan": { "buttonType": "joystick", "button": "right stick x" },
+      "LeftMainTilt": { "buttonType": "joystick", "button": "left stick y" },
+      "RightMainTilt": { "buttonType": "joystick", "button": "right stick y" },
+      "LeftDriveUp": { "buttonType": "button", "button": "LB" },
+      "LeftDriveDown": { "buttonType": "button", "button": "LT" },
+      "RightDriveUp": { "buttonType": "button", "button": "RB" },
+      "RightDriveDown": { "buttonType": "button", "button": "RT" },
+      "MainGimbalSwitch": { "buttonType": "button", "button": "dpad left" },
+      "DriveGimbalSwitch": { "buttonType": "button", "button": "dpad right" },
+      "BackDriveUp": { "buttonType": "button", "button": "dpad up" },
+      "BackDriveDown": { "buttonType": "button", "button": "dpad down" },
+      "ButtonStartDebounced": { "buttonType": "button", "button": "start" }
+    }
+  },
+  "ScienceControls": {
+    "config": "Science",
+    "controller": "Xbox",
+    "bindings": {
+      "SensorAxis": { "buttonType": "joystick", "button": "left stick y" },
+      "WaterPump": { "buttonType": "button", "button": "A" },
+      "WaterLeft": { "buttonType": "button", "button": "dpad left" },
+      "WaterRight": { "buttonType": "button", "button": "dpad right" },
+      "XoopAxis": { "buttonType": "joystick", "button": "right stick x" },
+      "ZoopAxis": { "buttonType": "joystick", "button": "right stick y" },
+      "OpenScoop": { "buttonType": "button", "button": "LB" },
+      "CloseScoop": { "buttonType": "button", "button": "RB" },
+      "IncrementOpen": { "buttonType": "button", "button": "LT" },
+      "IncrementClose": { "buttonType": "button", "button": "RT" },
+      "MicroscopeFocusPlus": { "buttonType": "button", "button": "B" },
+      "MicroscopeFocusMinus": { "buttonType": "button", "button": "X" },
+      "DropSample": { "buttonType": "button", "button": "Y"}
+    }
+  },
+  "ArmControls": {
+    "config": "Arm",
+    "controller": "Xbox",
+    "bindings": {
+      "ElbowBend": { "buttonType": "joystick", "button": "right stick y" },
+      "ElbowTwist": { "buttonType": "joystick", "button": "right stick x" },
+      "WristBendRight": { "buttonType": "button", "button": "RB" },
+      "WristBendLeft": { "buttonType": "button", "button": "LB" },
+      "GripperOpen": { "buttonType": "button", "button": "B" },
+      "GripperClose": { "buttonType": "button", "button": "X" },
+      "BaseTwist": { "buttonType": "joystick", "button": "left stick x" },
+      "BaseBend": { "buttonType": "joystick", "button": "left stick y" },
+      "WristTwistLeft": { "buttonType": "button", "button": "LT" },
+      "WristTwistRight": { "buttonType": "button", "button": "RT" },
+      "LaserToggle": { "buttonType": "button", "button": "start" },
+      "EndEffectorOn": { "buttonType": "button", "button": "A" }
+    }
+  },
+  "ArmControlsCLOSED": {
+    "config": "Arm",
+    "controller": "Xbox",
+    "bindings": {
+      "Up/Down": { "buttonType": "joystick", "button": "left stick y" },
+      "Left/Right": { "buttonType": "joystick", "button": "left stick x" },
+      "Forward/Backward": { "buttonType": "joystick", "button": "right stick y" },
+      "TiltLeft/Right": { "buttonType": "joystick", "button": "right stick x" },
+      "PitchUp": { "buttonType": "button", "button": "A" },
+      "PitchDown": { "buttonType": "button", "button": "Y" },
+      "LaserToggle": { "buttonType": "button", "button": "start" },
+      "GripperOpen": { "buttonType": "button", "button": "B" },
+      "GripperClose": { "buttonType": "button", "button": "X" },
+      "EndEffectorOn": { "buttonType": "button", "button": "dpad up" },
+      "EndEffectorOff": { "buttonType": "button", "button": "dpad down" }
+    }
+  }
+}
