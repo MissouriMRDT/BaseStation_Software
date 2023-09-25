@@ -56,7 +56,6 @@ class ControlCenter extends Component<IProps, IState> {
     this.updateWaypoints = this.updateWaypoints.bind(this);
     this.updateCoords = this.updateCoords.bind(this);
 
-    window.addEventListener('resize', () => this.setState({ fourthHeight: window.innerHeight / 4 }));
   }
 
   updateWaypoints(storedWaypoints: any): void {
@@ -80,17 +79,17 @@ class ControlCenter extends Component<IProps, IState> {
             {/* <ThreeDRover style={{ width: '40%' }} /> */}
           </div>
           <div style={{ ...row, height: '250px' }}>
-            <Waypoints
+            {/* <Waypoints
               onWaypointChange={this.updateWaypoints}
               currentCoords={this.state.currentCoords}
               ref={(instance) => {
                 this.waypointsInstance = instance;
               }}
               style={{ flexGrow: 1 }}
-            />
+            /> */}
           </div>
           {/* <Timer timer={undefined} /> */}
-          <Log />
+          {/* <Log />
           <Power />
           <Drive />
           <div style={row}>
@@ -122,7 +121,7 @@ class ControlCenter extends Component<IProps, IState> {
             currentCoords={this.state.currentCoords}
             store={(name: string, coords: any) => this.waypointsInstance.store(name, coords)}
             name="controlCenterMap"
-          />
+          /> */}
           {/* <Cameras defaultCamera={1} style={{ width: '100%' }} />
           <Cameras defaultCamera={2} style={{ width: '100%' }} />
           <Cameras defaultCamera={3} style={{ width: '100%' }} /> */}

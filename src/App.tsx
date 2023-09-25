@@ -48,7 +48,9 @@ class App extends Component<IProps, IState> {
             <Route
               path="/"
               element={
-                <ControlCenter/>
+                <div>
+                  <ControlCenter />
+                </div>
               }
             />
           </Routes>
