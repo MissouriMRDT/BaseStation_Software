@@ -3,7 +3,7 @@ import CSS from 'csstype';
 import fs from 'fs';
 import { TwitterPicker } from 'react-color';
 import path from 'path';
-import ThreeDRover from '../../Core/components/ThreeDRover';
+//import ThreeDRover from '../../Core/components/ThreeDRover';
 
 const title: CSS.Properties = {
   fontFamily: 'arial',

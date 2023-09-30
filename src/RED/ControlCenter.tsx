@@ -7,7 +7,7 @@ import Log from './components/Log';
 import Map from './components/Map';
 import Waypoints from './components/Waypoints';
 // import Cameras from '../Core/components/Cameras';
-// import Timer from './components/Timer';
+import Timer from './components/Timer';
 import Power from './components/Power&BMS';
 import ControlScheme from '../Core/components/ControlScheme';
 import Drive from './components/Drive';
@@ -56,6 +56,7 @@ class ControlCenter extends Component<IProps, IState> {
     this.updateWaypoints = this.updateWaypoints.bind(this);
     this.updateCoords = this.updateCoords.bind(this);
 
+    window.addEventListener('resize', () => this.setState({ fourthHeight: window.innerHeight / 4 }));
   }
 
   updateWaypoints(storedWaypoints: any): void {
@@ -89,16 +90,16 @@ class ControlCenter extends Component<IProps, IState> {
             /> */}
           </div>
           {/* <Timer timer={undefined} /> */}
-          {/* <Log />
-          <Power />
+          <Log /> 
+          {/* <Power /> */}
           <Drive />
-          <div style={row}>
+          {/* <div style={row}>
             <ControlScheme
               style={{ flexGrow: 1, marginRight: '5px', marginBottom: '5px' }}
               configs={['Drive', 'MainGimbal']}
-            />
-            <Gimbal style={{ height: '100%' }} />
-          </div>
+            /> */}
+            {/* <Gimbal style={{ height: '100%' }} /> */}
+          {/*</div>
           <div style={row}>
             <button type="button" onClick={rovecomm.resubscribe} style={{ width: '100px' }}>
               Resubscribe All
@@ -114,14 +115,14 @@ class ControlCenter extends Component<IProps, IState> {
             </button>
           </div>
         </div>
-        <div style={{ ...column, width: '40%' }}>
-          <Map
+        <div style={{ ...column, width: '40%' }}>*/}
+          {/* <Map
             style={{ minHeight: `${this.state.fourthHeight / 1.25}px` }}
             storedWaypoints={this.state.storedWaypoints}
             currentCoords={this.state.currentCoords}
             store={(name: string, coords: any) => this.waypointsInstance.store(name, coords)}
             name="controlCenterMap"
-          /> */}
+          />  */}
           {/* <Cameras defaultCamera={1} style={{ width: '100%' }} />
           <Cameras defaultCamera={2} style={{ width: '100%' }} />
           <Cameras defaultCamera={3} style={{ width: '100%' }} /> */}

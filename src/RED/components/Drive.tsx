@@ -81,60 +81,60 @@ class Drive extends Component<IProps, IState> {
     setInterval(() => this.drive(), 100);
   }
 
-  drive(): void {
-    /* This function is called every 100ms, takes input from the controllerInputs vector, and sends the proper
-     * commands to drive the left and right motors in tank drive. If being controlled via traditional tank
-     * drive, "LeftSpeed" and "RightSpeed" will exist as keys of controllerInputs, and be the values to be sent
-     * If we are in flightstick vector drive, the X, Y, and throttle positions will be keys of controllerInputs
-     * and will be translated to proper left/right speeds (largely by the scaleVector function)
-     * The appropriate values for left/right speeds are [-1000, 1000], but X/Y/Throttle will be [-1,1]
-     */
-    let leftSpeed = 0;
-    let rightSpeed = 0;
-    // Speed limit set by the GUI. If controller indicates 50% speed, thats 50% of the speedLimit, a value 0-1000
-    let speedMultiplier = this.state.speedLimit;
-    if (
-      ('ForwardBump' in controllerInputs && controllerInputs.ForwardBump === 1) ||
-      ('BackwardBump' in controllerInputs && controllerInputs.BackwardBump === 1)
-    ) {
-      const direction = controllerInputs.ForwardBump === 1 ? 1 : -1;
-      leftSpeed = 50 * direction;
-      rightSpeed = 50 * direction;
+  // drive(): void {
+  //   /* This function is called every 100ms, takes input from the controllerInputs vector, and sends the proper
+  //    * commands to drive the left and right motors in tank drive. If being controlled via traditional tank
+  //    * drive, "LeftSpeed" and "RightSpeed" will exist as keys of controllerInputs, and be the values to be sent
+  //    * If we are in flightstick vector drive, the X, Y, and throttle positions will be keys of controllerInputs
+  //    * and will be translated to proper left/right speeds (largely by the scaleVector function)
+  //    * The appropriate values for left/right speeds are [-1000, 1000], but X/Y/Throttle will be [-1,1]
+  //    */
+  //   let leftSpeed = 0;
+  //   let rightSpeed = 0;
+  //   // Speed limit set by the GUI. If controller indicates 50% speed, thats 50% of the speedLimit, a value 0-1000
+    // let speedMultiplier = this.state.speedLimit;
+    // if (
+    //   ('ForwardBump' in controllerInputs && controllerInputs.ForwardBump === 1) ||
+    //   ('BackwardBump' in controllerInputs && controllerInputs.BackwardBump === 1)
+    // ) {
+    //   const direction = controllerInputs.ForwardBump === 1 ? 1 : -1;
+    //   leftSpeed = 50 * direction;
+    //   rightSpeed = 50 * direction;
 
-      rovecomm.sendCommand('StateDisplay', RovecommManifest.Core.Enums.DISPLAYSTATE.Teleop);
-      rovecomm.sendCommand('DriveLeftRight', [leftSpeed / 1000.0, rightSpeed / 1000.0]);
-    } else if ('LeftSpeed' in controllerInputs && 'RightSpeed' in controllerInputs) {
-      leftSpeed = Math.round(controllerInputs.LeftSpeed * speedMultiplier);
-      rightSpeed = Math.round(controllerInputs.RightSpeed * speedMultiplier);
+      //rovecomm.sendCommand('StateDisplay', RovecommManifest.Core.Enums.DISPLAYSTATE.Teleop);
+      //rovecomm.sendCommand('DriveLeftRight', [leftSpeed / 1000.0, rightSpeed / 1000.0]);
+    // } else if ('LeftSpeed' in controllerInputs && 'RightSpeed' in controllerInputs) {
+    //   leftSpeed = Math.round(controllerInputs.LeftSpeed * speedMultiplier);
+    //   rightSpeed = Math.round(controllerInputs.RightSpeed * speedMultiplier);
 
-      rovecomm.sendCommand('StateDisplay', RovecommManifest.Core.Enums.DISPLAYSTATE.Teleop);
-      rovecomm.sendCommand('DriveLeftRight', [leftSpeed / 1000.0, rightSpeed / 1000.0]);
-    } else if ('VectorX' in controllerInputs && 'VectorY' in controllerInputs && 'Throttle' in controllerInputs) {
-      const x = controllerInputs.VectorX;
-      const y = controllerInputs.VectorY;
-      // Computes the angle between the positive x axis and the vector (VectorX, VectorY)
-      const theta = Math.atan2(y, x);
-      // We base our speed off the value of the larger vector component
-      const r = Math.max(Math.abs(x), Math.abs(y));
-      // Scale vector is explained in terms of the left wheels, and the right wheels can be thought of as
-      // a reflection over the y axis, which is easiest obtained by adjusting the angle 90deg and inverting the result
-      leftSpeed = r * scaleVector(theta);
-      rightSpeed = -1 * r * scaleVector(theta - Math.PI / 2);
-      // We want the throttle to be seen as 0% when all the way down, and 100% when all the way up, but throttle
-      // has values [-1, 1], so if we (throttle + 1) /2, we get [0,1]
-      speedMultiplier *= (controllerInputs.Throttle + 1) / 2;
+      //rovecomm.sendCommand('StateDisplay', RovecommManifest.Core.Enums.DISPLAYSTATE.Teleop);
+      //rovecomm.sendCommand('DriveLeftRight', [leftSpeed / 1000.0, rightSpeed / 1000.0]);
+    // } else if ('VectorX' in controllerInputs && 'VectorY' in controllerInputs && 'Throttle' in controllerInputs) {
+    //   const x = controllerInputs.VectorX;
+    //   const y = controllerInputs.VectorY;
+    //   // Computes the angle between the positive x axis and the vector (VectorX, VectorY)
+    //   const theta = Math.atan2(y, x);
+    //   // We base our speed off the value of the larger vector component
+    //   const r = Math.max(Math.abs(x), Math.abs(y));
+    //   // Scale vector is explained in terms of the left wheels, and the right wheels can be thought of as
+    //   // a reflection over the y axis, which is easiest obtained by adjusting the angle 90deg and inverting the result
+    //   leftSpeed = r * scaleVector(theta);
+    //   rightSpeed = -1 * r * scaleVector(theta - Math.PI / 2);
+    //   // We want the throttle to be seen as 0% when all the way down, and 100% when all the way up, but throttle
+    //   // has values [-1, 1], so if we (throttle + 1) /2, we get [0,1]
+    //   speedMultiplier *= (controllerInputs.Throttle + 1) / 2;
 
-      leftSpeed = Math.round(leftSpeed * speedMultiplier);
-      rightSpeed = Math.round(rightSpeed * speedMultiplier);
+    //   leftSpeed = Math.round(leftSpeed * speedMultiplier);
+    //   rightSpeed = Math.round(rightSpeed * speedMultiplier);
 
-      rovecomm.sendCommand('StateDisplay', RovecommManifest.Core.Enums.DISPLAYSTATE.Teleop);
-      rovecomm.sendCommand('DriveLeftRight', [leftSpeed / 1000.0, rightSpeed / 1000.0]);
-    }
-    this.setState({
-      leftSpeed,
-      rightSpeed,
-    });
-  }
+    //   //rovecomm.sendCommand('StateDisplay', RovecommManifest.Core.Enums.DISPLAYSTATE.Teleop);
+    //   //rovecomm.sendCommand('DriveLeftRight', [leftSpeed / 1000.0, rightSpeed / 1000.0]);
+    // }
+    // this.setState({
+    //   leftSpeed,
+    //   rightSpeed,
+    // });
+  // }
 
   speedLimitChange(event: { target: { value: string } }): void {
     let speedLimit = parseInt(event.target.value, 10);

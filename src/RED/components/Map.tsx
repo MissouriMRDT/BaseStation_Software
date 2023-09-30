@@ -64,7 +64,7 @@ class Map extends Component<IProps, IState> {
       heading: 0,
     };
 
-    rovecomm.on('IMUData', (data: any) => this.IMUData(data));
+    //rovecomm.on('IMUData', (data: any) => this.IMUData(data));
   }
 
   IMUData(data: any): void {
