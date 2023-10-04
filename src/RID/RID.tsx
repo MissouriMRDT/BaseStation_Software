@@ -5,7 +5,6 @@ import Map from '../RED/components/Map';
 import ThreeDRover from '../Core/components/ThreeDRover';
 import Angular from '../RAM/Arm/components/Angular';
 import ControlFeatures from '../RAM/Arm/components/ControlFeatures';
-import ControlMultipliers from '../RAM/Arm/components/ControlMultipliers';
 import IK from '../RAM/Arm/components/IK';
 import Activity from '../RAM/Autonomy/components/Activity';
 import StateDiagram from '../RAM/Autonomy/components/StateDiagram';
@@ -90,7 +89,6 @@ class RoverImageryDisplay extends Component<IProps, IState> {
           {[
             'Angular',
             'ControlFeatures',
-            'ControlMultipliers',
             'IK',
             'Activity',
             'Controls',
@@ -248,9 +246,6 @@ class RoverImageryDisplay extends Component<IProps, IState> {
         break;
       case 'ControlFeatures':
         submodule = <ControlFeatures style={submod} />;
-        break;
-      case 'ControlMultipliers':
-        submodule = <ControlMultipliers style={submod} />;
         break;
       case 'IK':
         console.log('IK');

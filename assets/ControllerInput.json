@@ -92,5 +92,17 @@
       "EndEffectorOn": { "buttonType": "button", "button": "dpad up" },
       "EndEffectorOff": { "buttonType": "button", "button": "dpad down" }
     }
+  },
+  "ControlMultipliers": {
+    "config": "ControlMultipliers",
+    "controller": "Xbox",
+    "bindings": {
+      "Multiplier1": { "buttonType": "joystick", "button": "left stick x" },
+      "Multiplier2": { "buttonType": "joystick", "button": "left stick y" },
+      "Multiplier3": { "buttonType": "joystick", "button": "right stick x" },
+      "Multiplier4": { "buttonType": "joystick", "button": "right stick y" },
+      "MultiplierX": { "buttonType": "button", "button": "X" },
+      "MultiplierY": { "buttonType": "button", "button": "Y" }
+    }
   }
 }
