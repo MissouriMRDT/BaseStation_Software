@@ -69,7 +69,7 @@ function controller(passedScheme: any, pos: any): any {
   return setInterval(() => {
     // if navigator.getGampads()[pos] == flight stick
     let index: number;
-    let deadZone = 0.05; // xbox one controller
+    let deadZone = 0.075; // xbox one controller
     const controllerList = [];
     for (let i = 0; i < 4; i++) {
       if (navigator.getGamepads()[i] != null) {

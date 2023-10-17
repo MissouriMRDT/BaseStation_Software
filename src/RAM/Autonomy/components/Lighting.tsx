@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
 import { ChromePicker } from 'react-color';
-import { rovecomm, RovecommManifest } from '../../../Core/RoveProtocol/Rovecomm';
+import { RovecommManifest, rovecomm } from '../../../Core/RoveProtocol/Rovecomm';
 
 const container: CSS.Properties = {
   display: 'flex',
@@ -58,18 +58,18 @@ class Lighting extends Component<IProps, IState> {
   };
 
   static teleop(): void {
-    rovecomm.sendCommand('StateDisplay', RovecommManifest.Multimedia.Enums.DISPLAYSTATE.Teleop);
-    console.log(RovecommManifest.Multimedia.Enums.DISPLAYSTATE.Teleop);
+    rovecomm.sendCommand('StateDisplay', RovecommManifest.Core.Enums.DISPLAYSTATE.Teleop);
+    // console.log(RovecommManifest.Multimedia.Enums.DISPLAYSTATE.Teleop);
   }
 
   static autonomy(): void {
-    rovecomm.sendCommand('StateDisplay', RovecommManifest.Multimedia.Enums.DISPLAYSTATE.Autonomy);
-    console.log(RovecommManifest.Multimedia.Enums.DISPLAYSTATE.Autonomy);
+    rovecomm.sendCommand('StateDisplay', RovecommManifest.Core.Enums.DISPLAYSTATE.Autonomy);
+    // console.log(RovecommManifest.Multimedia.Enums.DISPLAYSTATE.Autonomy);
   }
 
   static reachedGoal(): void {
-    rovecomm.sendCommand('StateDisplay', RovecommManifest.Multimedia.Enums.DISPLAYSTATE.Reached_Goal);
-    console.log(RovecommManifest.Multimedia.Enums.DISPLAYSTATE.Reached_Goal);
+    rovecomm.sendCommand('StateDisplay', RovecommManifest.Core.Enums.DISPLAYSTATE.Reached_Goal);
+    // console.log(RovecommManifest.Multimedia.Enums.DISPLAYSTATE.Reached_Goal);
   }
 
   constructor(props: IProps) {

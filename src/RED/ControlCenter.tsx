@@ -116,7 +116,7 @@ class ControlCenter extends Component<IProps, IState> {
             <GPS onCoordsChange={this.updateCoords} style={{ flexGrow: 1, marginRight: '5px', width: '60%' }} />
             <ThreeDRover style={{ width: '40%' }} />
           </div>
-          <div style={{ ...row, height: '200px' }}>
+          <div style={{ ...row, height: '250px' }}>
             <Waypoints
               onWaypointChange={this.updateWaypoints}
               currentCoords={this.state.currentCoords}
