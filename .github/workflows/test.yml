@@ -25,7 +25,8 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows-latest] # Possible values: [ubuntu-latest, windows-latest, macOS-latest]
-        node: [16.x]
+        node: [16]
+        test: [lint, tsc, tests]
 
     runs-on: ${{ matrix.os }}
 
@@ -46,17 +47,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Run Lint
-        run: yarn lint
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Run TypeScript
-        run: yarn tsc
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Run Tests
-        run: yarn test
+      - name: Run ${{ matrix.test }}
+        run: |
+          yarn package
+          yarn ${{ matrix.test }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
