@@ -1,34 +1,62 @@
 name: Test
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+    branches:
+      - dev
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: read
+  packages: read
+  id-token: write
+
+concurrency:
+  group: 'test'
+  cancel-in-progress: false
 
 jobs:
-  release:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest] # Possible values: [ubuntu-latest, windows-latest, macOS-latest]
+        node: [16.x]
+
     runs-on: ${{ matrix.os }}
 
-    strategy:
-      matrix:
-        #os: [macos-latest, windows-latest, ubuntu-latest]
-        os: [windows-latest]
-
     steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v1
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
       - name: Install Node.js, NPM and Yarn
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: ${{ matrix.node }}
 
-      - name: yarn install
-        run: |
-          yarn install --frozen-lockfile --network-timeout 300000
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile --network-timeout 300000
 
-      - name: yarn test
+      - name: Build Package
+        run: yarn package
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          yarn package
-          yarn lint
-          yarn tsc
-          yarn test
+
+      - name: Run Lint
+        run: yarn lint
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run TypeScript
+        run: yarn tsc
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run Tests
+        run: yarn test
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
