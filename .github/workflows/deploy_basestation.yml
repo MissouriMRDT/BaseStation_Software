@@ -47,22 +47,23 @@ jobs:
           echo ${{  github.ref_name }} >> $GITHUB_ENV
 
       - name: Rename Package
-        run: mv "release/RED Setup 2.3.0.exe" "release/RED Setup ${{  github.ref_name }}.exe"
+        run: mv "release/RED Setup 2.3.0.exe" "RED.${{  github.ref_name }}.Installer.exe"
 
-      - uses: vimtor/action-zip@v1.1
+      - name: Create Zip
+        uses: vimtor/action-zip@v1.1
         with:
           files: 'release/win-unpacked/'
           recursive: true
-          dest: 'release release/RED Unpacked ${{  github.ref_name }}.zip'
+          dest: 'RED.${{  github.ref_name }}.Unpacked.zip'
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          draft: false
-          prerelease: false
+          draft: true
+          prerelease: true
           name: '${{  github.ref_name }}'
           files: |
-            'release/RED Setup ${{  github.ref_name }}.exe'
-            'release/RED Unpacked ${{  github.ref_name }}.zip'
+            "RED.${{  github.ref_name }}.Installer.exe"
+            "RED.${{  github.ref_name }}.Unpacked.zip"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
