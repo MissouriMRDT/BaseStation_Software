@@ -29,39 +29,43 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Node.js, NPM and Yarn
-        uses: actions/setup-node@v1
-        with:
-          node-version: 16
+      #   - name: Install Node.js, NPM and Yarn
+      #     uses: actions/setup-node@v1
+      #     with:
+      #       node-version: 16
 
-      - name: Install Yarn Packages
-        run: |
-          yarn install --frozen-lockfile --network-timeout 300000
+      #   - name: Install Yarn Packages
+      #     run: |
+      #       yarn install --frozen-lockfile --network-timeout 300000
 
-      - name: Build Package
-        run: yarn package
+      #   - name: Build Package
+      #     run: yarn package
 
       - name: Determine Version
         id: version
-        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+        run: |
+          echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+          echo ${{  github.ref_name }}
+          echo "or"
+          echo ${{ env.RELEASE_VERSION }}
 
-      - name: Rename Package
-        run: mv "release/RED Setup 2.3.0.exe" "release/RED Setup ${{ env.RELEASE_VERSION }}.exe"
+    #   - name: Rename Package
+    #     run: mv "release/RED Setup 2.3.0.exe" "release/RED Setup ${{ env.RELEASE_VERSION }}.exe"
 
-      - uses: vimtor/action-zip@v1.1
-        with:
-          files: 'release/win-unpacked/'
-          recursive: true
-          dest: 'release release/RED Unpacked ${{ env.RELEASE_VERSION }}.zip'
+    #   - uses: vimtor/action-zip@v1.1
+    #     with:
+    #       files: 'release/win-unpacked/'
+    #       recursive: true
+    #       dest: 'release release/RED Unpacked ${{ env.RELEASE_VERSION }}.zip'
 
-      - name: Create Release
-        uses: softprops/action-gh-release@v1
-        with:
-          draft: false
-          prerelease: false
-          name: '${{ env.RELEASE_VERSION }}'
-          files: |
-            'release/RED Setup ${{ env.RELEASE_VERSION }}.exe'
-            'release/RED Unpacked ${{ env.RELEASE_VERSION }}.zip'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   - name: Create Release
+    #     uses: softprops/action-gh-release@v1
+    #     with:
+    #       draft: false
+    #       prerelease: false
+    #       name: '${{ env.RELEASE_VERSION }}'
+    #       files: |
+    #         'release/RED Setup ${{ env.RELEASE_VERSION }}.exe'
+    #         'release/RED Unpacked ${{ env.RELEASE_VERSION }}.zip'
+    #     env:
+    #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
