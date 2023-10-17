@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
-import ControlMultipliers, { controlMultipliers } from './components/ControlMultipliers';
 import IK from './components/IK';
 import Angular from './components/Angular';
 import Cameras from '../../Core/components/Cameras';
@@ -27,6 +26,15 @@ interface IState {
   gripperToggle: boolean;
 }
 
+let MultiplierJ1: number;
+let MultiplierJ2: number;
+let MultiplierJ3: number;
+let MultiplierJ4: number;
+let MultiplierJ5: number;
+let MultiplierJ6: number;
+let MultiplierGripper: number;
+let MultiplierEndEffector: number;
+
 class Arm extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
@@ -51,41 +59,55 @@ class Arm extends Component<IProps, IState> {
     let ArmBaseBend = 0;
     let moveArm = false;
 
+    if (controllerInputs.MultiplierY) {
+      MultiplierJ1 = controllerInputs.Multiplier1;
+      MultiplierJ2 = controllerInputs.Multiplier2;
+      MultiplierJ3 = controllerInputs.Multiplier3;
+      MultiplierJ4 = controllerInputs.Multiplier4;
+    } else if (controllerInputs.MultiplierX) {
+      MultiplierJ5 = controllerInputs.Multiplier1;
+      MultiplierJ6 = controllerInputs.Multiplier2;
+      MultiplierGripper = controllerInputs.Multiplier3;
+      MultiplierEndEffector = controllerInputs.Multiplier4;
+    }
+
     // J5
     if ('WristBendLeft' in controllerInputs && 'WristBendRight' in controllerInputs) {
-      ArmWristBend = (controllerInputs.WristBendLeft - controllerInputs.WristBendRight) * controlMultipliers.J5;
+      ArmWristBend = (controllerInputs.WristBendLeft - controllerInputs.WristBendRight) * MultiplierJ5;
       moveArm = true;
     }
 
     // J6
     if ('WristTwistLeft' in controllerInputs && 'WristTwistRight' in controllerInputs) {
-      ArmWristTwist = (controllerInputs.WristTwistLeft - controllerInputs.WristTwistRight) * controlMultipliers.J6;
+      ArmWristTwist = (controllerInputs.WristTwistLeft - controllerInputs.WristTwistRight) * MultiplierJ6;
       moveArm = true;
     }
 
     // J3
     if ('ElbowBend' in controllerInputs) {
-      ArmElbowBend = controllerInputs.ElbowBend * controlMultipliers.J3;
+      ArmElbowBend = controllerInputs.ElbowBend * MultiplierJ3;
       moveArm = true;
     }
 
     // J4
     if ('ElbowTwist' in controllerInputs) {
-      ArmElbowTwist = controllerInputs.ElbowTwist * controlMultipliers.J4;
+      ArmElbowTwist = controllerInputs.ElbowTwist * MultiplierJ4;
       moveArm = true;
     }
 
     // J2
     if ('BaseBend' in controllerInputs) {
-      ArmBaseBend = controllerInputs.BaseBend * controlMultipliers.J2;
+      ArmBaseBend = controllerInputs.BaseBend * MultiplierJ2;
       moveArm = true;
     }
 
+
     // J1
     if ('BaseTwist' in controllerInputs) {
-      ArmBaseTwist = controllerInputs.BaseTwist * controlMultipliers.J1;
+      ArmBaseTwist = controllerInputs.BaseTwist * MultiplierJ1;
       moveArm = true;
     }
+
 
     if (Math.abs(ArmBaseBend) > Math.abs(ArmBaseTwist)) {
       ArmBaseTwist = 0;
@@ -110,18 +132,18 @@ class Arm extends Component<IProps, IState> {
       let Gripper2 = 0;
       if (this.state.gripperToggle) {
         if (controllerInputs.GripperOpen === 1) {
-          Gripper2 = 1 * controlMultipliers.Gripper;
+          Gripper2 = 1 * MultiplierGripper;
         } else if (controllerInputs.GripperClose === 1) {
-          Gripper2 = -1 * controlMultipliers.Gripper;
+          Gripper2 = -1 * MultiplierGripper;
         } else {
           Gripper2 = 0;
         }
         console.log('Moving Gripper 2');
       } else {
         if (controllerInputs.GripperOpen === 1) {
-          Gripper1 = 1 * controlMultipliers.Gripper;
+          Gripper1 = 1 * MultiplierGripper;
         } else if (controllerInputs.GripperClose === 1) {
-          Gripper1 = -1 * controlMultipliers.Gripper;
+          Gripper1 = -1 * MultiplierGripper;
         } else {
           Gripper1 = 0;
         }
@@ -153,7 +175,6 @@ class Arm extends Component<IProps, IState> {
           <Cameras defaultCamera={5} style={{ width: '50%', marginRight: '2.5px' }} />
           <Cameras defaultCamera={6} style={{ width: '50%', marginLeft: '2.5px' }} />
         </div>
-        <ControlMultipliers />
         <div style={row}>
           <ControlScheme configs={['Arm']} style={{ width: '50%', marginRight: '2.5px' }} />
         </div>
