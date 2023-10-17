@@ -95,9 +95,9 @@ function controller(passedScheme: any, pos: any): any {
       case 'Xbox 3':
         index = FLIGHT_STICK_INDEX !== -1 && FLIGHT_STICK_INDEX <= 2 ? 3 : 2;
         break;
-        case 'Xbox 4':
-          index = FLIGHT_STICK_INDEX !== -1 && FLIGHT_STICK_INDEX <= 3 ? 4 : 3;
-          break;
+      case 'Xbox 4':
+        index = FLIGHT_STICK_INDEX !== -1 && FLIGHT_STICK_INDEX <= 3 ? 4 : 3;
+        break;
       case 'Flight Stick': // Logitech Extreme 3D
         index = FLIGHT_STICK_INDEX;
         deadZone = 0.1;

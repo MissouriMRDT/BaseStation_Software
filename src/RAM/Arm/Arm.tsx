@@ -37,12 +37,12 @@ function arm(): void {
   let ArmBaseBend = 0;
   let moveArm = false;
 
-  if(controllerInputs.MultiplierY){
+  if (controllerInputs.MultiplierY) {
     MultiplierJ1 = controllerInputs.Multiplier1;
     MultiplierJ2 = controllerInputs.Multiplier2;
     MultiplierJ3 = controllerInputs.Multiplier3;
     MultiplierJ4 = controllerInputs.Multiplier4;
-  }else if(controllerInputs.MultiplierX){
+  } else if (controllerInputs.MultiplierX) {
     MultiplierJ5 = controllerInputs.Multiplier1;
     MultiplierJ6 = controllerInputs.Multiplier2;
     MultiplierGripper = controllerInputs.Multiplier3;
