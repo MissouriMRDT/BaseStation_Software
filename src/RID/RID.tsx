@@ -51,6 +51,7 @@ interface IProps {
 interface IState {
   storedWaypoints: any;
   currentCoords: { lat: number; lon: number };
+  droneCoords: { lat: number; lon: number };
   display: any;
   displayed: string; // Active condidition of what should be displayed
 }
@@ -126,6 +127,7 @@ class RoverImageryDisplay extends Component<IProps, IState> {
     this.state = {
       storedWaypoints: {},
       currentCoords: { lat: 0, lon: 0 },
+      droneCoords: { lat: 0, lon: 0 },
       display: <div style={{ ...this.props.style, backgroundColor: 'E0E0E0' }}>{this.buttons}</div>,
       // Set displayed to the passed in default if there is one, or default to "none"
       displayed: this.props.displayed ? this.props.displayed : 'none',
@@ -193,6 +195,8 @@ class RoverImageryDisplay extends Component<IProps, IState> {
             style={submod}
             storedWaypoints={prevState.storedWaypoints}
             currentCoords={prevState.currentCoords}
+            // to shut warning message up
+            droneCoords={prevState.droneCoords}
             store={(name: string, coords: any) => this.props.store(name, coords)}
             name="RIDmap"
           />

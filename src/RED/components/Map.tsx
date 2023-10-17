@@ -36,6 +36,7 @@ interface IProps {
   style?: CSS.Properties;
   storedWaypoints: any;
   currentCoords: { lat: number; lon: number };
+  droneCoords: { lat: number; lon: number };
   store: (name: string, coords: any) => void;
   name: string;
 }
@@ -65,9 +66,16 @@ class Map extends Component<IProps, IState> {
     };
 
     rovecomm.on('IMUData', (data: any) => this.IMUData(data));
+    rovecomm.on('droneIMUData', (data: any) => this.droneIMUData(data));
   }
 
   IMUData(data: any): void {
+    this.setState({
+      heading: data[1],
+    });
+  }
+
+  droneIMUData(data: any): void {
     this.setState({
       heading: data[1],
     });
