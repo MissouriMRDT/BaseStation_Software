@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
-import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
+import { MapContainer, Marker, Popup, ScaleControl, TileLayer, Circle } from 'react-leaflet';
 import { LatLngTuple } from 'leaflet';
 
 import icon from './Icon';
@@ -106,13 +106,19 @@ class Map extends Component<IProps, IState> {
                 const post: LatLngTuple = [waypoint.latitude, waypoint.longitude];
                 if (waypoint.onMap === true) {
                   return (
-                    <Marker key={waypoint.name} position={post} icon={icon(waypoint.color)}>
-                      <Popup>{waypoint.name}</Popup>
-                    </Marker>
+                    <div>
+                      <Marker key={waypoint.name} position={post} icon={icon(waypoint.color)}>
+                        <Popup>{waypoint.name}</Popup>
+                      </Marker>
+                      {waypoint.displayRadius > 0 ? (
+                        <Circle center={post} radius={waypoint.displayRadius} pathOptions={{ color: waypoint.color }} />
+                      ) : null}
+                    </div>
                   );
                 }
                 return null;
               })}
+              <ScaleControl position="topleft" />
             </MapContainer>
           </div>
         </div>

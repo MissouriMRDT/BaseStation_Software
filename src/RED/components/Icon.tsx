@@ -30,5 +30,6 @@ export default function icon(color: string): L.DivIcon {
         </g>
       </svg>
     ),
+    iconAnchor: [14, 41],
   });
 }

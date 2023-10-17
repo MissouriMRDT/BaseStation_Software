@@ -54,7 +54,8 @@
       "IncrementOpen": { "buttonType": "button", "button": "LT" },
       "IncrementClose": { "buttonType": "button", "button": "RT" },
       "MicroscopeFocusPlus": { "buttonType": "button", "button": "B" },
-      "MicroscopeFocusMinus": { "buttonType": "button", "button": "X" }
+      "MicroscopeFocusMinus": { "buttonType": "button", "button": "X" },
+      "DropSample": { "buttonType": "button", "button": "Y"}
     }
   },
   "ArmControls": {
@@ -72,8 +73,7 @@
       "WristTwistLeft": { "buttonType": "button", "button": "LT" },
       "WristTwistRight": { "buttonType": "button", "button": "RT" },
       "LaserToggle": { "buttonType": "button", "button": "start" },
-      "EndEffectorOn": { "buttonType": "button", "button": "A" },
-      "EndEffectorOff": { "buttonType": "button", "button": "Y" }
+      "EndEffectorOn": { "buttonType": "button", "button": "A" }
     }
   },
   "ArmControlsCLOSED": {
