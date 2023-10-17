@@ -32,8 +32,9 @@ jobs:
           yarn lint
           yarn tsc
           yarn test
+          ls
 
-      - name: produce executable
-        run: |
-          npm install electron-packager --save-dev
-          electron-packager src RED --platform=win32 --arch=x86_64
+      # - name: produce executable
+      #   run: |
+      #     npm install electron-packager --save-dev
+      #     electron-packager src RED --platform=win32 --arch=x86_64
