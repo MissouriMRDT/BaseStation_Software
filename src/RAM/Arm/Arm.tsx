@@ -116,7 +116,7 @@ class Arm extends Component<IProps, IState> {
         } else {
           Gripper2 = 0;
         }
-        console.log(`Moving Gripper 2`);
+        console.log('Moving Gripper 2');
       } else {
         if (controllerInputs.GripperOpen === 1) {
           Gripper1 = 1 * controlMultipliers.Gripper;
@@ -125,7 +125,7 @@ class Arm extends Component<IProps, IState> {
         } else {
           Gripper1 = 0;
         }
-        console.log(`Moving Gripper 1`);
+        console.log('Moving Gripper 1');
       }
       rovecomm.sendCommand('GripperMove', [Gripper1, Gripper2]);
     }
