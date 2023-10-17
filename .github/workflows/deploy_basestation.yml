@@ -1,0 +1,67 @@
+name: Build and Create BaseStation Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: read
+  packages: read
+  id-token: write
+
+concurrency:
+  group: 'create-release'
+  cancel-in-progress: false
+
+jobs:
+  build-and-publish:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+
+      - name: Install Yarn Packages
+        run: |
+          yarn install --frozen-lockfile --network-timeout 300000
+
+      - name: Build Package
+        run: yarn package
+
+      - name: Determine Version
+        id: version
+        run: 'echo ::set-output name=version::${GITHUB_REF#refs/tags/}'
+
+      - name: Rename Package
+        run: mv "release/RED Setup 2.3.0.exe" "release/RED Setup ${{ steps.version.outputs.version }}.exe"
+
+      - uses: vimtor/action-zip@v1.1
+        with:
+          files: 'release/win-unpacked/'
+          recursive: true
+          dest: 'release release/RED Unpacked ${{ steps.version.outputs.version }}.zip'
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: false
+          prerelease: false
+          name: '${{ steps.version.outputs.version }}'
+          files: |
+            'release/RED Setup ${{ steps.version.outputs.version }}.exe'
+            'release/RED Unpacked ${{ steps.version.outputs.version }}.zip'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
