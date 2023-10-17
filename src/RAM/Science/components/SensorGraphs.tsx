@@ -158,7 +158,7 @@ class SensorGraphs extends Component<IProps, IState> {
   static getNewEmptyMap(): Map<string, Sensor> {
     return new Map([
       [
-        'CH3',
+        'CH4',
         {
           units: 'ppm',
           graphLineColor: '#990000',
@@ -206,7 +206,7 @@ class SensorGraphs extends Component<IProps, IState> {
         },
       ],
       [
-        'NO',
+        'NH3',
         {
           units: 'ppm',
           graphLineColor: 'black',
@@ -238,19 +238,19 @@ class SensorGraphs extends Component<IProps, IState> {
       crosshairValues: new Map(),
       sensors: SensorGraphs.getNewEmptyMap(),
       enabledSensors: new Map([
-        ['CH3', false],
+        ['CH4', false],
         ['CO2', false],
         ['Temperature', false],
         ['O2', false],
-        ['NO', false],
+        ['NH3', false],
         ['NO2', false],
       ]),
       crosshairPos: null,
     };
-    this.ch3 = this.ch3.bind(this);
+    this.ch4 = this.ch4.bind(this);
     this.co2 = this.co2.bind(this);
     this.o2 = this.o2.bind(this);
-    this.no = this.no.bind(this);
+    this.nh3 = this.nh3.bind(this);
     this.no2 = this.no2.bind(this);
     this.sensorSelectionChanged = this.sensorSelectionChanged.bind(this);
     this.selectAll = this.selectAll.bind(this);
@@ -259,10 +259,10 @@ class SensorGraphs extends Component<IProps, IState> {
     this.onNearestX = this.onNearestX.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
 
-    rovecomm.on('CH3', (data: any) => this.ch3(data));
+    rovecomm.on('CH4', (data: any) => this.ch4(data));
     rovecomm.on('CO2', (data: any) => this.co2(data));
     rovecomm.on('O2', (data: any) => this.o2(data));
-    rovecomm.on('NO', (data: any) => this.no(data));
+    rovecomm.on('NH3', (data: any) => this.nh3(data));
     rovecomm.on('NO2', (data: any) => this.no2(data));
   }
 
@@ -290,9 +290,9 @@ class SensorGraphs extends Component<IProps, IState> {
     this.setState({ crosshairValues, crosshairPos: list[index].x });
   }
 
-  ch3(data: any): void {
+  ch4(data: any): void {
     // the methane data packet is [methane concentration, temperature]
-    this.addData('CH3', data[0]);
+    this.addData('CH4', data[0]);
     this.addData('Temperature', data[1]);
   }
 
@@ -304,8 +304,8 @@ class SensorGraphs extends Component<IProps, IState> {
     this.addData('O2', data[0]);
   }
 
-  no(data: any): void {
-    this.addData('NO', data[0]);
+  nh3(data: any): void {
+    this.addData('nh3', data[0]);
   }
 
   no2(data: any): void {

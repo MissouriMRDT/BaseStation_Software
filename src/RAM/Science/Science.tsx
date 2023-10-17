@@ -20,6 +20,7 @@ const column: CSS.Properties = {
 const sensorMotorMultiplier = 500;
 const scoopMotorMultiplier = 500;
 const scoopIncrementMult = 5;
+const microscopeMult = 100;
 
 function science(): void {
   // Z actuation of the science system is controlled by the left up/down thumbstick
@@ -46,42 +47,33 @@ function science(): void {
 
   if ('IncrementOpen' in controllerInputs && 'IncrementClose' in controllerInputs) {
     // Take the positive contribution from the open trigger and the negative contribution of the close trigger
-    const IncrementAmt = controllerInputs.IncrementOpen - controllerInputs.IncrementClose;
+    const IncrementAmt = controllerInputs.IncrementClose - controllerInputs.IncrementOpen;
     if (IncrementAmt !== 0) {
       rovecomm.sendCommand('IncrementalScoop', IncrementAmt * scoopIncrementMult);
     }
   }
 
-  // Water controls are sent in one bitmasked value
-  if ('Water1' in controllerInputs && 'Water2' in controllerInputs && 'Water3' in controllerInputs) {
-    if ('WaterGroup1' in controllerInputs && 'WaterGroup2' in controllerInputs && 'WaterGroup3' in controllerInputs) {
-      let water = '';
-      if (controllerInputs.WaterGroup1 === 1) {
-        water += controllerInputs.Water3;
-        water += controllerInputs.Water2;
-        water += controllerInputs.Water1;
-      } else if (controllerInputs.WaterGroup2 === 1) {
-        water += controllerInputs.Water3;
-        water += controllerInputs.Water2;
-        water += controllerInputs.Water1;
-        water += '000';
-      } else if (controllerInputs.WaterGroup3 === 1) {
-        water += controllerInputs.Water3;
-        water += controllerInputs.Water2;
-        water += controllerInputs.Water1;
-        water += '000000';
-      } else {
-        for (let i = 0; i < 3; i++) {
-          water += controllerInputs.Water3;
-        }
-        for (let i = 0; i < 3; i++) {
-          water += controllerInputs.Water2;
-        }
-        for (let i = 0; i < 3; i++) {
-          water += controllerInputs.Water1;
-        }
-      }
-      rovecomm.sendCommand('Water', parseInt(water, 2));
+  if ('WaterLeft' in controllerInputs && 'WaterRight' in controllerInputs) {
+    if (controllerInputs.WaterLeft === 1) {
+      rovecomm.sendCommand('WaterSelector', [-1]);
+    } else if (controllerInputs.WaterRight === 1) {
+      rovecomm.sendCommand('WaterSelector', [1]);
+    }
+  }
+
+  if ('WaterPump' in controllerInputs) {
+    if (controllerInputs.WaterPump === 1) {
+      rovecomm.sendCommand('WaterPump', [1]);
+    } else {
+      rovecomm.sendCommand('WaterPump', [0]);
+    }
+  }
+
+  if ('MicroscopeFocusPlus' in controllerInputs && 'MicroscopeFocusMinus' in controllerInputs) {
+    if (controllerInputs.MicroscopeFocusPlus === 1) {
+      rovecomm.sendCommand('MicroscopeFocus', microscopeMult);
+    } else if (controllerInputs.MicroscopeFocusMinus === 1) {
+      rovecomm.sendCommand('MicroscopeFocus', -microscopeMult);
     }
   }
 }
@@ -106,9 +98,11 @@ class Science extends Component<IProps, IState> {
           <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>
             <SensorData />
             <Heater />
-            <ControlScheme configs={['Science']} />
           </div>
-          <RockLookUp style={{ marginLeft: '2.5px' }} />
+          <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>
+            <ControlScheme configs={['Science']} />
+            <RockLookUp style={{ marginLeft: '2.5px' }} />
+          </div>
         </div>
         <Cameras defaultCamera={7} />
       </div>

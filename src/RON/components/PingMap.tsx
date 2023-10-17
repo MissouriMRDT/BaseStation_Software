@@ -214,10 +214,10 @@ class PingMap extends Component<IProps, IState> {
       context.fillText(board, coords.x, coords.y + 17);
     }
     context.beginPath();
-    context.fillStyle =
-      this.props.devices.GrandStream.ping === -1
-        ? 'white'
-        : ColorConverter(this.props.devices.GrandStream.ping, min, cutoff, max, greenHue, redHue);
+    context.fillStyle = 'white';
+    // this.props.devices.GrandStream.ping === -1
+    //   ? 'white'
+    //   : ColorConverter(this.props.devices.GrandStream.ping, min, cutoff, max, greenHue, redHue);
     context.rect(centerW - 20, 380, 40, 40);
     context.stroke();
     context.fill();
