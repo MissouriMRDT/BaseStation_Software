@@ -63,7 +63,7 @@ jobs:
           prerelease: true
           name: '${{  github.ref_name }}'
           files: |
-            "RED.${{  github.ref_name }}.Installer.exe"
-            "RED.${{  github.ref_name }}.Unpacked.zip"
+            RED.${{  github.ref_name }}.Installer.exe
+            RED.${{  github.ref_name }}.Unpacked.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
