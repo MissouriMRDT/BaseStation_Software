@@ -42,12 +42,7 @@ jobs:
       - name: Install Dependencies
         run: yarn install --frozen-lockfile --network-timeout 300000
 
-      - name: Build Package
-        run: yarn package
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Run ${{ matrix.test }}
+      - name: Build and Run ${{ matrix.test }}
         run: |
           yarn package
           yarn ${{ matrix.test }}
