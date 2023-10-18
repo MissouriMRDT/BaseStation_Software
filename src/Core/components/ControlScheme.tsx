@@ -133,6 +133,11 @@ function controller(passedScheme: any, pos: any): any {
         }
       }
     }
+    if (navigator.getGamepads()[index] == null && passedScheme !== '') {
+      for (const button in CONTROLLERINPUT[passedScheme].bindings) {
+        controllerInputs[button] = 0;
+      }
+    }
   }, 50);
 }
 
