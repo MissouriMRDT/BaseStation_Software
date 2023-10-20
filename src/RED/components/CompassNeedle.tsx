@@ -4,7 +4,7 @@ import ReactDOMServer from 'react-dom/server';
 
 export default function compassNeedle(yaw: number): L.DivIcon {
   return L.divIcon({
-    iconAnchor: [30, 5],
+    iconAnchor: [37.5, 37.5],
     className: yaw.toString(),
     html: ReactDOMServer.renderToString(
       <svg
