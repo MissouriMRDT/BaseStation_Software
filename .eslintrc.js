@@ -18,6 +18,13 @@ module.exports = {
     'prettier/prettier': 'error',
     'react/static-property-placement': ['warn', 'static public field'],
     '@typescript-eslint/no-empty-interface': 'off',
+    // eslint-disable-next-line no-dupe-keys
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'auto',
+      },
+    ],
     '@typescript-eslint/naming-convention': [
       'error',
       {

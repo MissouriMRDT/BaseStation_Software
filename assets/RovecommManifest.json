@@ -322,14 +322,14 @@
         },
         "EndEffector": {
           "dataId": 8007,
-          "dataType": "INT16_T",
+          "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "[Power] (-1000, 1000) (m%)"
+          "comments": "0: retract, 1: extend"
         },
         "GripperMove": {
           "dataId": 8008,
           "dataType": "INT16_T",
-          "dataCount": 1,
+          "dataCount": 2,
           "comments": "[Power] (-1000, 1000) (m%)"
         },
         "WatchdogOverride": {
@@ -460,14 +460,20 @@
           "dataType": "INT16_T",
           "dataCount": 1,
           "comments": "Motor speed value (-1000,1000)"
+        },
+         "WaterPosition": {
+          "dataId": 9011,
+          "dataType": "UINT8_T",
+          "dataCount": 1,
+          "comments": "[Position] (0, 1-12)"
         }
       },
       "Telemetry": {
         "EncoderPositions": {
           "dataId": 9100,
           "dataType": "FLOAT_T",
-          "dataCount": 3,
-          "comments": "[scoop z-pos, scoop x-pos, sensor z-axis] (absolute position 0-360)"
+          "dataCount": 4,
+          "comments": "[scoop z-pos, scoop x-pos, sensor z-axis, multiplexor] (absolute position 0-360)"
         }
       },
       "Error": {
@@ -496,52 +502,10 @@
         }
       },
       "Telemetry": {
-        "FluorometerData1": {
+        "FluorometerData": {
           "dataId": 10100,
           "dataType": "UINT16_T",
-          "dataCount": 500,
-          "comments": "Diode readings from sensor"
-        },
-        "FluorometerData2": {
-          "dataId": 10101,
-          "dataType": "UINT16_T",
-          "dataCount": 500,
-          "comments": "Diode readings from sensor"
-        },
-        "FluorometerData3": {
-          "dataId": 10102,
-          "dataType": "UINT16_T",
-          "dataCount": 500,
-          "comments": "Diode readings from sensor"
-        },
-        "FluorometerData4": {
-          "dataId": 10103,
-          "dataType": "UINT16_T",
-          "dataCount": 500,
-          "comments": "Diode readings from sensor"
-        },
-        "FluorometerData5": {
-          "dataId": 10104,
-          "dataType": "UINT16_T",
-          "dataCount": 500,
-          "comments": "Diode readings from sensor"
-        },
-        "FluorometerData6": {
-          "dataId": 10105,
-          "dataType": "UINT16_T",
-          "dataCount": 500,
-          "comments": "Diode readings from sensor"
-        },
-        "FluorometerData7": {
-          "dataId": 10106,
-          "dataType": "UINT16_T",
-          "dataCount": 500,
-          "comments": "Diode readings from sensor"
-        },
-        "FluorometerData8": {
-          "dataId": 10107,
-          "dataType": "UINT16_T",
-          "dataCount": 148,
+          "dataCount": 215,
           "comments": "Diode readings from sensor"
         }
       },
@@ -598,7 +562,7 @@
           "dataId": 11100,
           "dataType": "UINT8_T",
           "dataCount": 1,
-          "comments": "Enum (Idle, Navigating, SearchPattern, Approaching Marker)"
+          "comments": "Enum (AUTONOMYSTATE)"
         },
         "ReachedMarker": {
           "dataId": 11101,
@@ -613,7 +577,19 @@
           "comments": "String version of most current error log"
         }
       },
-      "Error": {}
+      "Error": {},
+      "Enums": {
+        "AUTONOMYSTATE": {
+          "Idle": 0,
+          "Navigating": 1,
+          "SearchPattern": 2,
+          "ApproachingMarker": 3,
+          "ApproachingGate": 4,
+          "Avoidance": 5,
+          "Reversing": 6,
+          "Stuck": 7
+        }
+      }
     },
     "Camera1": {
       "Ip": "192.168.4.100",
@@ -662,6 +638,12 @@
           "dataType": "UINT16_T",
           "dataCount": 1,
           "comments": "Bitmask (1-ON, 0-OFF)"
+        },
+        "HeaterSetTemp" :{
+          "dataId": 15001,
+          "dataType": "FLOAT_T",
+          "dataCount": 12,
+          "comments": "Sets target temperature for the heaters"
         }
       },
       "Telemetry": {
@@ -794,6 +776,12 @@
           "dataType": "UINT8_T",
           "dataCount": 1,
           "comments": "Set Brightness (0-255)"
+        },
+        "SetWatchdogMode": {
+          "dataId": 17013,
+          "dataType": "UINT8_T",
+          "dataCount": 1,
+          "comments": "0: Teleop, 1: Autonomy"
         }
       },
       "Telemetry": {
