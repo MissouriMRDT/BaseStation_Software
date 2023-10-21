@@ -51,6 +51,7 @@ const button: CSS.Properties = {
 
 interface IProps {
   style?: CSS.Properties;
+  gripperCallBack: any;
 }
 
 interface IState {
@@ -58,6 +59,7 @@ interface IState {
   tool: number;
   laserOn: boolean;
   sendInterval: NodeJS.Timeout;
+  gripperState: boolean;
 }
 
 class ControlFeatures extends Component<IProps, IState> {
@@ -72,7 +74,9 @@ class ControlFeatures extends Component<IProps, IState> {
       tool: 0,
       laserOn: false,
       sendInterval: setInterval(() => rovecomm.sendCommand('Lasers', this.state.laserOn ? [1] : [0]), 1000),
+      gripperState: false,
     };
+    this.toggleGripper = this.toggleGripper.bind(this);
   }
 
   /** Called by React when the component is destroyed
@@ -90,6 +94,12 @@ class ControlFeatures extends Component<IProps, IState> {
 
   toggleLasers(): void {
     this.setState((prevState) => ({ laserOn: !prevState.laserOn }));
+  }
+
+  toggleGripper(): void {
+    this.props.gripperCallBack();
+    console.log('changing gripper state');
+    this.setState((prevState) => ({ gripperState: !prevState.gripperState }));
   }
 
   render(): JSX.Element {
@@ -118,6 +128,9 @@ class ControlFeatures extends Component<IProps, IState> {
               />
               Laser Power
             </label>
+            <button onClick={() => this.toggleGripper()}>
+              Gripper Toggle: {this.state.gripperState ? 'Gripper 2' : 'Gripper 1'}
+            </button>
           </div>
         </div>
       </div>
