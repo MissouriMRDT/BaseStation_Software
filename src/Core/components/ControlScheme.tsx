@@ -69,7 +69,7 @@ function controller(passedScheme: any, pos: any): any {
   return setInterval(() => {
     // if navigator.getGampads()[pos] == flight stick
     let index: number;
-    let deadZone = 0.05; // xbox one controller
+    let deadZone = 0.075; // xbox one controller
     const controllerList = [];
     for (let i = 0; i < 4; i++) {
       if (navigator.getGamepads()[i] != null) {
@@ -94,6 +94,9 @@ function controller(passedScheme: any, pos: any): any {
         break;
       case 'Xbox 3':
         index = FLIGHT_STICK_INDEX !== -1 && FLIGHT_STICK_INDEX <= 2 ? 3 : 2;
+        break;
+      case 'Xbox 4':
+        index = FLIGHT_STICK_INDEX !== -1 && FLIGHT_STICK_INDEX <= 3 ? 4 : 3;
         break;
       case 'Flight Stick': // Logitech Extreme 3D
         index = FLIGHT_STICK_INDEX;
@@ -179,6 +182,12 @@ class ControlScheme extends Component<IProps, IState> {
           toggled: 'Off',
           scheme: 'ArmControls',
           controller: 'Xbox 3',
+          interval: null,
+        },
+        ControlMultipliers: {
+          toggled: 'Off',
+          scheme: 'ControlMultipliers',
+          controller: 'Xbox 4',
           interval: null,
         },
       },
@@ -367,7 +376,7 @@ class ControlScheme extends Component<IProps, IState> {
                   onChange={(e) => this.controllerChange(e, config)}
                   style={{ flex: 1 }}
                 >
-                  {['Xbox 1', 'Xbox 2', 'Xbox 3', 'Flight Stick'].map((controllerSelect) => {
+                  {['Xbox 1', 'Xbox 2', 'Xbox 3', 'Xbox 4', 'Flight Stick'].map((controllerSelect) => {
                     return (
                       <option value={controllerSelect} key={controllerSelect}>
                         {controllerSelect}
