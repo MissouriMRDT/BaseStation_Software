@@ -28,11 +28,11 @@ const label: CSS.Properties = {
   zIndex: 1,
   color: 'white',
 };
-const row: CSS.Properties = {
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-};
+// const row: CSS.Properties = {
+//   display: 'flex',
+//   flexDirection: 'row',
+//   justifyContent: 'space-between',
+// };
 const buttonRow: CSS.Properties = {
   display: 'flex',
   flexDirection: 'row',

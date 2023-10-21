@@ -111,12 +111,10 @@ class Science extends Component<IProps, IState> {
           <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>
             <ControlScheme configs={['Science']} />
             <EncoderPositions style={{ width: '50%', marginRight: '2.5px', marginLeft: '2.5px' }} />
-            <Cameras defaultCamera={8} />
           </div>
         </div>
 
         <ClosedLoopControls />
-        <Cameras defaultCamera={7} />
       </div>
     );
   }
