@@ -32,8 +32,10 @@
       "LeftDriveDown": { "buttonType": "button", "button": "LT" },
       "RightDriveUp": { "buttonType": "button", "button": "RB" },
       "RightDriveDown": { "buttonType": "button", "button": "RT" },
-      "MainGimbalSwitch": { "buttonType": "button", "button": "dpad up" },
-      "DriveGimbalSwitch": { "buttonType": "button", "button": "dpad down" },
+      "MainGimbalSwitch": { "buttonType": "button", "button": "dpad left" },
+      "DriveGimbalSwitch": { "buttonType": "button", "button": "dpad right" },
+      "BackDriveUp": { "buttonType": "button", "button": "dpad up" },
+      "BackDriveDown": { "buttonType": "button", "button": "dpad down" },
       "ButtonStartDebounced": { "buttonType": "button", "button": "start" }
     }
   },
@@ -50,7 +52,10 @@
       "OpenScoop": { "buttonType": "button", "button": "LB" },
       "CloseScoop": { "buttonType": "button", "button": "RB" },
       "IncrementOpen": { "buttonType": "button", "button": "LT" },
-      "IncrementClose": { "buttonType": "button", "button": "RT" }
+      "IncrementClose": { "buttonType": "button", "button": "RT" },
+      "MicroscopeFocusPlus": { "buttonType": "button", "button": "B" },
+      "MicroscopeFocusMinus": { "buttonType": "button", "button": "X" },
+      "DropSample": { "buttonType": "button", "button": "Y"}
     }
   },
   "ArmControls": {
@@ -68,8 +73,7 @@
       "WristTwistLeft": { "buttonType": "button", "button": "LT" },
       "WristTwistRight": { "buttonType": "button", "button": "RT" },
       "LaserToggle": { "buttonType": "button", "button": "start" },
-      "EndEffectorOn": { "buttonType": "button", "button": "A" },
-      "EndEffectorOff": { "buttonType": "button", "button": "Y" }
+      "EndEffectorOn": { "buttonType": "button", "button": "A" }
     }
   },
   "ArmControlsCLOSED": {
@@ -87,6 +91,18 @@
       "GripperClose": { "buttonType": "button", "button": "X" },
       "EndEffectorOn": { "buttonType": "button", "button": "dpad up" },
       "EndEffectorOff": { "buttonType": "button", "button": "dpad down" }
+    }
+  },
+  "ControlMultipliers": {
+    "config": "ControlMultipliers",
+    "controller": "Xbox",
+    "bindings": {
+      "Multiplier1": { "buttonType": "joystick", "button": "left stick x" },
+      "Multiplier2": { "buttonType": "joystick", "button": "left stick y" },
+      "Multiplier3": { "buttonType": "joystick", "button": "right stick x" },
+      "Multiplier4": { "buttonType": "joystick", "button": "right stick y" },
+      "MultiplierX": { "buttonType": "button", "button": "X" },
+      "MultiplierY": { "buttonType": "button", "button": "Y" }
     }
   }
 }

@@ -98,9 +98,10 @@ class Power extends Component<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
+    // eslint-disable-next-line @typescript-eslint/no-shadow
     const { Power, BMS } = RovecommManifest;
-    const boardTelemetry = {};
-    const batteryTelemetry = {};
+    const boardTelemetry: Record<string, any> = {};
+    const batteryTelemetry: Record<string, any> = {};
     Object.keys(Power.Commands).forEach((Bus: string) => {
       boardTelemetry[Bus] = {};
       Power.Commands[Bus].comments.split(', ').forEach((component: any) => {
@@ -148,6 +149,8 @@ class Power extends Component<IProps, IState> {
     rovecomm.on('HighBusCurrent', (data: number[]) => this.boardListenHandlerAmp(data, 'HighBusEnable'));
     rovecomm.on('LowBusEnabled', (data: number[]) => this.boardListenHandlerTog(data, 'LowBusEnable'));
     rovecomm.on('LowBusCurrent', (data: number[]) => this.boardListenHandlerAmp(data, 'LowBusEnable'));
+    rovecomm.on('TwelveVBusEnabled', (data: number[]) => this.boardListenHandlerTog(data, 'TwelveVBusEnable'));
+    rovecomm.on('TwelveVBusCurrent', (data: number[]) => this.boardListenHandlerAmp(data, 'TwelveVBusEnable'));
 
     rovecomm.on('PackI_Meas', (data: number[]) => this.batteryListenHandler(data, 'PackI_Meas'));
     rovecomm.on('PackV_Meas', (data: number[]) => this.batteryListenHandler(data, 'PackV_Meas'));
