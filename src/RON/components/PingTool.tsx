@@ -101,7 +101,7 @@ class PingTool extends Component<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
-    const devices = {};
+    const devices: Record<string, { autoPing: boolean; ping: number }> = {};
     Object.keys(NetworkDevices).forEach((device) => {
       devices[device] = { autoPing: false, ping: -1 };
     });

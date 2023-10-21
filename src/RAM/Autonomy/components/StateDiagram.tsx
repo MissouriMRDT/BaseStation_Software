@@ -33,7 +33,7 @@ interface IProps {
 
 interface IState {}
 
-const stateEnum = {
+const stateEnum: Record<string, number> = {
   Idle: 0,
   Navigating: 1,
   SearchPattern: 2,
