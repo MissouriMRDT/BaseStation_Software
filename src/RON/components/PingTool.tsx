@@ -56,7 +56,7 @@ const name: CSS.Properties = {
   whiteSpace: 'nowrap',
 };
 const num: CSS.Properties = {
-  width: '10%',
+  width: '20%',
   textAlign: 'center',
   display: 'block',
   textOverflow: 'ellipsis',
@@ -101,7 +101,7 @@ class PingTool extends Component<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
-    const devices = {};
+    const devices: Record<string, { autoPing: boolean; ping: number }> = {};
     Object.keys(NetworkDevices).forEach((device) => {
       devices[device] = { autoPing: false, ping: -1 };
     });
@@ -167,6 +167,7 @@ class PingTool extends Component<IProps, IState> {
           [device]: {
             ...prevState.devices[device],
             ping: delay,
+            autoPing: delay !== -1,
           },
         },
       }));
@@ -246,7 +247,7 @@ class PingTool extends Component<IProps, IState> {
                         {device}
                       </div>
                       <div style={ColorStyleConverter(ping, min, cutoff, max, greenHue, redHue, num)}>
-                        {Ip.split('.')[3]}
+                        {`${Ip.split('.')[2]}.${Ip.split('.')[3]}`}
                       </div>
                       <div style={ColorStyleConverter(ping, min, cutoff, max, greenHue, redHue, num)}>
                         {this.state.devices[device].ping}

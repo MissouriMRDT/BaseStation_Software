@@ -35,9 +35,9 @@ interface IState {
 }
 
 // Dynamic paths to import images used to indicate which gimbal is being controlled
-const NotConnected = path.join(__dirname, '../assets/NotConnected.png');
+// const NotConnected = path.join(__dirname, '../assets/NotConnected.png');
 const UpArrow = path.join(__dirname, '../assets/UpArrow.png');
-const DownArrow = path.join(__dirname, '../assets/DownArrow.png');
+// const DownArrow = path.join(__dirname, '../assets/DownArrow.png');
 
 class Gimbal extends Component<IProps, IState> {
   static defaultProps = {
@@ -48,8 +48,8 @@ class Gimbal extends Component<IProps, IState> {
     super(props);
     this.state = {
       // Controlling will be "none" by default, then set to "main" or "drive", and image will update to match
-      controlling: 'none',
-      image: NotConnected,
+      controlling: 'Main',
+      image: UpArrow,
       interval: setInterval(() => this.gimbal(), 100),
     };
   }
@@ -66,10 +66,11 @@ class Gimbal extends Component<IProps, IState> {
     if ('MainGimbalSwitch' in controllerInputs && controllerInputs.MainGimbalSwitch === 1) {
       controlling = 'Main';
       image = UpArrow;
-    } else if ('DriveGimbalSwitch' in controllerInputs && controllerInputs.DriveGimbalSwitch === 1) {
-      controlling = 'Drive';
-      image = DownArrow;
     }
+    // else if ('DriveGimbalSwitch' in controllerInputs && controllerInputs.DriveGimbalSwitch === 1) {
+    //  controlling = 'Drive';
+    //  image = DownArrow;
+    // }
     if (
       'LeftMainPan' in controllerInputs &&
       'RightMainPan' in controllerInputs &&
@@ -78,31 +79,31 @@ class Gimbal extends Component<IProps, IState> {
       'LeftDriveUp' in controllerInputs &&
       'LeftDriveDown' in controllerInputs &&
       'RightDriveUp' in controllerInputs &&
-      'RightDriveDown' in controllerInputs
+      'RightDriveDown' in controllerInputs &&
+      'BackDriveUp' in controllerInputs &&
+      'BackDriveDown' in controllerInputs
     ) {
       // The multiples defined below are for Valkyries mounting positions, and the * 5 is just a small constant to tweak how quickly they respond
       // to controller input
-      if (controlling === 'Main') {
-        rovecomm.sendCommand('LeftMainGimbalIncrement', [
-          controllerInputs.LeftMainPan * 5,
-          controllerInputs.LeftMainTilt * 5,
-        ]);
-        rovecomm.sendCommand('RightMainGimbalIncrement', [
-          controllerInputs.RightMainPan * 5,
-          controllerInputs.RightMainTilt * 5,
-        ]);
-        rovecomm.sendCommand('LeftDriveGimbalIncrement', [
-          (controllerInputs.LeftDriveUp ? -1 : controllerInputs.LeftDriveDown) * 5,
-          0,
-        ]);
-        rovecomm.sendCommand('RightDriveGimbalIncrement', [
-          (controllerInputs.RightDriveUp ? 1 : -controllerInputs.RightDriveDown) * 5,
-          0,
-        ]);
-        console.log(controllerInputs.RightDriveUp);
-      } else if (controlling === 'Drive') {
-        // The drive gimbals currently take tilt, then pan and discard pan since they only tilt
-      }
+      rovecomm.sendCommand('LeftMainGimbalIncrement', [
+        controllerInputs.LeftMainPan * 5,
+        controllerInputs.LeftMainTilt * 5,
+      ]);
+      rovecomm.sendCommand('RightMainGimbalIncrement', [
+        controllerInputs.RightMainPan * 5,
+        controllerInputs.RightMainTilt * 5,
+      ]);
+      rovecomm.sendCommand('LeftDriveGimbalIncrement', [
+        (controllerInputs.LeftDriveUp ? -1 : controllerInputs.LeftDriveDown) * 5,
+        0,
+      ]);
+      rovecomm.sendCommand('RightDriveGimbalIncrement', [
+        (controllerInputs.RightDriveUp ? 1 : -controllerInputs.RightDriveDown) * 5,
+        0,
+      ]);
+      rovecomm.sendCommand('BackDriveGimbalIncrement', [
+        (controllerInputs.BackDriveUp ? 1 : -controllerInputs.BackDriveDown) * 5,
+      ]);
     }
     this.setState({
       controlling,

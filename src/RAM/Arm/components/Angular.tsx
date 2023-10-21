@@ -90,6 +90,7 @@ function toggleTelem(): void {
 }
 
 interface Joint {
+  [key: string]: string;
   J1: string;
   J2: string;
   J3: string;
@@ -104,7 +105,7 @@ interface IProps {
 
 interface IState {
   jointValues: Joint;
-  storedPositions: any;
+  storedPositions: Record<string, Joint>;
   selectedPosition: string;
   addingPosition: boolean;
   positionName: string;

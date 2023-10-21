@@ -1,0 +1,78 @@
+name: Build and Create BaseStation Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: read
+  packages: read
+  id-token: write
+
+concurrency:
+  group: 'create-release'
+  cancel-in-progress: false
+
+jobs:
+  build-and-publish:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest] # Possible values: [ubuntu-latest, windows-latest, macOS-latest]
+        node: [16.x]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install Yarn Packages
+        run: yarn install --frozen-lockfile --network-timeout 300000
+
+      - name: Build Package
+        run: yarn package
+
+      - name: Determine Version
+        id: version
+        run: echo ${{ github.ref_name }} >> $GITHUB_ENV
+
+      - name: Rename Package
+        run: mv "release/RED Setup 2.3.0.exe" "RED.${{ github.ref_name }}.Installer.exe"
+
+      - name: Create Zip
+        uses: vimtor/action-zip@v1.1
+        with:
+          files: 'release/win-unpacked/'
+          recursive: true
+          dest: 'RED.${{ github.ref_name }}.Unpacked.zip'
+
+      - name: Create Release
+        if: ${{ github.event_name != 'workflow_dispatch' }}
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: true
+          prerelease: true
+          name: '${{ github.ref_name }}'
+          files: |
+            RED.${{ github.ref_name }}.Installer.exe
+            RED.${{ github.ref_name }}.Unpacked.zip
+            env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Artifact
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: RED.${{ github.ref_name }}
+          path: |
+            RED.${{ github.ref_name }}.Installer.exe
+            RED.${{ github.ref_name }}.Unpacked.zip

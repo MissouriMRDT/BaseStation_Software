@@ -10,9 +10,7 @@ import path from 'path';
 // Make sure header length is correct in the manifest for the appropriate
 // rovecomm (5 for rovecomm2, 6 for rovecomm2.5)
 /* eslint-disable import/no-cycle */
-import { parseHeader, createHeader, TCPParseWrapper } from './Rovecomm25';
-
-const VersionNumber = 25;
+import { parseHeader, createHeader, TCPParseWrapper, VersionNumber } from './Rovecomm3';
 
 export let RovecommManifest: any = {};
 export let dataSizes: number[] = [];
@@ -21,6 +19,7 @@ export let headerLength = 0;
 export let SystemPackets: any = {};
 export let NetworkDevices: any = {};
 let ethernetUDPPort = 11000;
+let ethernetTCPPort = 12000;
 const filepath = path.join(__dirname, '../assets/RovecommManifest.json');
 
 if (fs.existsSync(filepath)) {
@@ -32,7 +31,7 @@ if (fs.existsSync(filepath)) {
   SystemPackets = manifest.SystemPackets;
   NetworkDevices = manifest.NetworkDevices;
   ethernetUDPPort = manifest.ethernetUDPPort;
-  console.log(typeof RovecommManifest);
+  ethernetTCPPort = manifest.ethernetTCPPort;
 }
 
 // There is a fundamental implementation difference between these required imports
@@ -416,7 +415,7 @@ class Rovecomm extends EventEmitter {
       if (Object.prototype.hasOwnProperty.call(RovecommManifest, board)) {
         if (dataIdStr in RovecommManifest[board].Commands) {
           destinationIp = RovecommManifest[board].Ip;
-          port = RovecommManifest[board].Port;
+          port = ethernetTCPPort;
           dataType = RovecommManifest[board].Commands[dataIdStr].dataType;
           dataId = RovecommManifest[board].Commands[dataIdStr].dataId;
           found = true;
@@ -548,7 +547,7 @@ class Rovecomm extends EventEmitter {
     await new Promise((resolve) => setTimeout(() => resolve(true), 300));
     for (const board in RovecommManifest) {
       if (Object.prototype.hasOwnProperty.call(RovecommManifest, board)) {
-        this.createTCPConnection(RovecommManifest[board].Port, RovecommManifest[board].Ip);
+        this.createTCPConnection(ethernetTCPPort, RovecommManifest[board].Ip);
       }
     }
   }

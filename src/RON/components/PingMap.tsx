@@ -92,12 +92,14 @@ class PingMap extends Component<IProps, IState> {
 
     context.beginPath();
     context.moveTo(centerW, 70);
-    context.lineTo(centerW - 40, 110);
+    context.lineTo(centerW - 60, 110);
     context.moveTo(centerW, 70);
-    context.lineTo(centerW + 40, 110);
+    context.lineTo(centerW, 110);
+    context.moveTo(centerW, 70);
+    context.lineTo(centerW + 60, 110);
     context.stroke();
 
-    context.rect(centerW - 60, 110, 40, 40);
+    context.rect(centerW - 80, 110, 40, 40);
     context.stroke();
     context.fillStyle =
       this.props.devices.Basestation5GHzRocket.ping === -1
@@ -108,9 +110,22 @@ class PingMap extends Component<IProps, IState> {
     context.textBaseline = 'middle';
     context.textAlign = 'right';
     context.fillStyle = 'black';
-    context.fillText(text, centerW - 65, 130);
+    context.fillText(text, centerW - 85, 130);
 
-    context.rect(centerW + 20, 110, 40, 40);
+    context.rect(centerW - 20, 110, 40, 40);
+    context.stroke();
+    context.fillStyle =
+      this.props.devices.Basestation2_4GHzRocket.ping === -1
+        ? 'white'
+        : ColorConverter(this.props.devices.Basestation2_4GHzRocket.ping, min, cutoff, max, greenHue, redHue);
+    context.fill();
+    text = '2GHz';
+    context.textBaseline = 'middle';
+    context.textAlign = 'right';
+    context.fillStyle = 'black';
+    context.fillText(text, centerW + 15, 170);
+
+    context.rect(centerW + 40, 110, 40, 40);
     context.stroke();
     context.fillStyle =
       this.props.devices.Basestation900MHzRocket.ping === -1
@@ -121,26 +136,34 @@ class PingMap extends Component<IProps, IState> {
     context.textBaseline = 'middle';
     context.textAlign = 'left';
     context.fillStyle = 'black';
-    context.fillText(text, centerW + 65, 130);
+    context.fillText(text, centerW + 85, 130);
 
     context.beginPath();
-    context.moveTo(centerW - 40, 150);
+    context.moveTo(centerW - 60, 150);
     for (let i = 0; i < 150; i++) {
       const x = 20 - 20 * Math.sin(i * 2 * Math.PI * (2 / 150));
-      context.lineTo(x + centerW - 60, i + 150);
+      context.lineTo(x + centerW - 80, i + 150);
     }
     context.stroke();
 
     context.beginPath();
-    context.moveTo(centerW + 40, 150);
+    context.moveTo(centerW, 150);
+    for (let i = 0; i < 150; i++) {
+      const x = 20 - 20 * Math.sin(i * 2 * Math.PI * (2 / 150));
+      context.lineTo(x + centerW - 20, i + 150);
+    }
+    context.stroke();
+
+    context.beginPath();
+    context.moveTo(centerW + 60, 150);
     for (let i = 0; i < 150; i++) {
       const x = 20 - 20 * Math.sin(i * 2 * Math.PI * (1 / 150));
-      context.lineTo(x + centerW + 20, i + 150);
+      context.lineTo(x + centerW + 40, i + 150);
     }
     context.stroke();
 
     context.beginPath();
-    context.arc(centerW - 40, 320, 20, 0, 2 * Math.PI);
+    context.arc(centerW - 60, 320, 20, 0, 2 * Math.PI);
     context.fillStyle =
       this.props.devices.Rover5GHzRocket.ping === -1
         ? 'white'
@@ -151,10 +174,24 @@ class PingMap extends Component<IProps, IState> {
     context.textBaseline = 'middle';
     context.textAlign = 'right';
     context.fillStyle = 'black';
-    context.fillText(text, centerW - 65, 320);
+    context.fillText(text, centerW - 85, 320);
 
     context.beginPath();
-    context.arc(centerW + 40, 320, 20, 0, 2 * Math.PI);
+    context.arc(centerW, 320, 20, 0, 2 * Math.PI);
+    context.fillStyle =
+      this.props.devices.Rover2_4GHzRocket.ping === -1
+        ? 'white'
+        : ColorConverter(this.props.devices.Rover2_4GHzRocket.ping, min, cutoff, max, greenHue, redHue);
+    context.fill();
+    context.stroke();
+    text = '2GHz';
+    context.textBaseline = 'middle';
+    context.textAlign = 'right';
+    context.fillStyle = 'black';
+    context.fillText(text, centerW + 10, 280);
+
+    context.beginPath();
+    context.arc(centerW + 60, 320, 20, 0, 2 * Math.PI);
     context.fillStyle =
       this.props.devices.Rover900MHzRocket.ping === -1
         ? 'white'
@@ -165,12 +202,14 @@ class PingMap extends Component<IProps, IState> {
     context.textBaseline = 'middle';
     context.textAlign = 'left';
     context.fillStyle = 'black';
-    context.fillText(text, centerW + 65, 320);
+    context.fillText(text, centerW + 85, 320);
 
     context.beginPath();
-    context.moveTo(centerW - 40, 340);
+    context.moveTo(centerW - 60, 340);
     context.lineTo(centerW, 380);
-    context.moveTo(centerW + 40, 340);
+    context.moveTo(centerW, 340);
+    context.lineTo(centerW, 380);
+    context.moveTo(centerW + 60, 340);
     context.lineTo(centerW, 380);
     context.stroke();
 
@@ -214,10 +253,10 @@ class PingMap extends Component<IProps, IState> {
       context.fillText(board, coords.x, coords.y + 17);
     }
     context.beginPath();
-    context.fillStyle =
-      this.props.devices.GrandStream.ping === -1
-        ? 'white'
-        : ColorConverter(this.props.devices.GrandStream.ping, min, cutoff, max, greenHue, redHue);
+    context.fillStyle = 'white';
+    // this.props.devices.GrandStream.ping === -1
+    //   ? 'white'
+    //   : ColorConverter(this.props.devices.GrandStream.ping, min, cutoff, max, greenHue, redHue);
     context.rect(centerW - 20, 380, 40, 40);
     context.stroke();
     context.fill();

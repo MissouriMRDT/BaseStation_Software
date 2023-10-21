@@ -98,9 +98,10 @@ class Power extends Component<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
+    // eslint-disable-next-line @typescript-eslint/no-shadow
     const { Power, BMS } = RovecommManifest;
-    const boardTelemetry = {};
-    const batteryTelemetry = {};
+    const boardTelemetry: Record<string, any> = {};
+    const batteryTelemetry: Record<string, any> = {};
     Object.keys(Power.Commands).forEach((Bus: string) => {
       boardTelemetry[Bus] = {};
       Power.Commands[Bus].comments.split(', ').forEach((component: any) => {
@@ -144,16 +145,12 @@ class Power extends Component<IProps, IState> {
      */
     rovecomm.on('MotorBusEnabled', (data: number[]) => this.boardListenHandlerTog(data, 'MotorBusEnable'));
     rovecomm.on('MotorBusCurrent', (data: number[]) => this.boardListenHandlerAmp(data, 'MotorBusEnable'));
-    rovecomm.on('TwelveVActBusEnabled', (data: number[]) => this.boardListenHandlerTog(data, 'TwelveVActBusEnable'));
-    rovecomm.on('TwelveVActBusCurrent', (data: number[]) => this.boardListenHandlerAmp(data, 'TwelveVActBusEnable'));
-    rovecomm.on('TwelveVLogicBusEnabled', (data: number[]) =>
-      this.boardListenHandlerTog(data, 'TwelveVLogicBusEnable')
-    );
-    rovecomm.on('TwelveVLogicBusCurrent', (data: number[]) =>
-      this.boardListenHandlerAmp(data, 'TwelveVLogicBusEnable')
-    );
-    rovecomm.on('ThirtyVEnabled', (data: number[]) => this.boardListenHandlerTog(data, 'ThirtyVBusEnable'));
-    rovecomm.on('ThirtyVCurrent', (data: number[]) => this.boardListenHandlerAmp(data, 'ThirtyVBusEnable'));
+    rovecomm.on('HighBusEnabled', (data: number[]) => this.boardListenHandlerTog(data, 'HighBusEnable'));
+    rovecomm.on('HighBusCurrent', (data: number[]) => this.boardListenHandlerAmp(data, 'HighBusEnable'));
+    rovecomm.on('LowBusEnabled', (data: number[]) => this.boardListenHandlerTog(data, 'LowBusEnable'));
+    rovecomm.on('LowBusCurrent', (data: number[]) => this.boardListenHandlerAmp(data, 'LowBusEnable'));
+    rovecomm.on('TwelveVBusEnabled', (data: number[]) => this.boardListenHandlerTog(data, 'TwelveVBusEnable'));
+    rovecomm.on('TwelveVBusCurrent', (data: number[]) => this.boardListenHandlerAmp(data, 'TwelveVBusEnable'));
 
     rovecomm.on('PackI_Meas', (data: number[]) => this.batteryListenHandler(data, 'PackI_Meas'));
     rovecomm.on('PackV_Meas', (data: number[]) => this.batteryListenHandler(data, 'PackV_Meas'));
