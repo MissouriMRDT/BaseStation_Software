@@ -1,6 +1,6 @@
 version: 2
 updates:
-  - labels: dependencies
+  - labels: [dependencies]
     package-ecosystem: npm
     directory: /
     schedule:
@@ -8,7 +8,7 @@ updates:
     target:
       version: '>= 1.0.0'
 
-  - labels: dependencies
+  - labels: [dependencies]
     package-ecosystem: bundler
     directory: /
     schedule:
@@ -16,7 +16,7 @@ updates:
     target:
       update-type: 'widen'
 
-  - labels: dependencies
+  - labels: [dependencies]
     package-ecosystem: composer
     directory: /
     schedule:
@@ -24,7 +24,7 @@ updates:
     target:
       update-type: 'increase'
 
-  - labels: dependencies
+  - labels: [dependencies]
     package-ecosystem: maven
     directory: /
     schedule:
@@ -32,7 +32,7 @@ updates:
     target:
       version: '>= 1.0.0'
 
-  - labels: dependencies
+  - labels: [dependencies]
     package-ecosystem: mix
     directory: /
     schedule:
@@ -40,7 +40,7 @@ updates:
     target:
       version: '>= 1.0.0'
 
-  - labels: dependencies
+  - labels: [dependencies]
     package-ecosystem: cargo
     directory: /
     schedule:
@@ -48,7 +48,7 @@ updates:
     target:
       version: '>= 1.0.0'
 
-  - labels: dependencies
+  - labels: [dependencies]
     package-ecosystem: gradle
     directory: /
     schedule:
@@ -56,7 +56,7 @@ updates:
     target:
       version: '>= 1.0.0'
 
-  - labels: dependencies
+  - labels: [dependencies]
     package-ecosystem: nuget
     directory: /
     schedule:
@@ -64,7 +64,7 @@ updates:
     target:
       version: '>= 1.0.0'
 
-  - labels: dependencies
+  - labels: [dependencies]
     package-ecosystem: gomod
     directory: /
     schedule:
@@ -72,7 +72,7 @@ updates:
     target:
       version: '>= 1.0.0'
 
-  - labels: dependencies
+  - labels: [dependencies]
     package-ecosystem: docker
     directory: /
     schedule:
@@ -80,7 +80,7 @@ updates:
     target:
       update-type: 'widen'
 
-  - labels: dependencies
+  - labels: [dependencies]
     package-ecosystem: elm
     directory: /
     schedule:
@@ -88,7 +88,7 @@ updates:
     target:
       version: '>= 1.0.0'
 
-  - labels: dependencies
+  - labels: [dependencies]
     package-ecosystem: gitsubmodule
     directory: /
     schedule:
@@ -96,7 +96,7 @@ updates:
     target:
       update-type: 'increase'
 
-  - labels: dependencies
+  - labels: [dependencies]
     package-ecosystem: github-actions
     directory: /
     schedule:
@@ -104,7 +104,7 @@ updates:
     target:
       version: '>= 1.0.0'
 
-  - labels: dependencies
+  - labels: [dependencies]
     package-ecosystem: pip
     directory: /
     schedule:
@@ -112,7 +112,7 @@ updates:
     target:
       update-type: 'increase'
 
-  - labels: dependencies
+  - labels: [dependencies]
     package-ecosystem: terraform
     directory: /
     schedule:
@@ -120,7 +120,7 @@ updates:
     target:
       version: '>= 1.0.0'
 
-  - labels: dependencies
+  - labels: [dependencies]
     package-ecosystem: pub
     directory: /
     schedule:
@@ -128,7 +128,7 @@ updates:
     target:
       version: '>= 1.0.0'
 
-  - labels: dependencies
+  - labels: [dependencies]
     package-ecosystem: swift
     directory: /
     schedule:
