@@ -1,11 +1,137 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
-# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
-
 version: 2
 updates:
-  - package-ecosystem: '' # See documentation for possible values
-    directory: '/' # Location of package manifests
+  - labels: dependencies
+    package-ecosystem: npm
+    directory: /
     schedule:
-      interval: 'weekly'
+      interval: daily
+    target:
+      version: '>= 1.0.0'
+
+  - labels: dependencies
+    package-ecosystem: bundler
+    directory: /
+    schedule:
+      interval: daily
+    target:
+      update-type: 'widen'
+
+  - labels: dependencies
+    package-ecosystem: composer
+    directory: /
+    schedule:
+      interval: daily
+    target:
+      update-type: 'increase'
+
+  - labels: dependencies
+    package-ecosystem: maven
+    directory: /
+    schedule:
+      interval: daily
+    target:
+      version: '>= 1.0.0'
+
+  - labels: dependencies
+    package-ecosystem: mix
+    directory: /
+    schedule:
+      interval: daily
+    target:
+      version: '>= 1.0.0'
+
+  - labels: dependencies
+    package-ecosystem: cargo
+    directory: /
+    schedule:
+      interval: daily
+    target:
+      version: '>= 1.0.0'
+
+  - labels: dependencies
+    package-ecosystem: gradle
+    directory: /
+    schedule:
+      interval: daily
+    target:
+      version: '>= 1.0.0'
+
+  - labels: dependencies
+    package-ecosystem: nuget
+    directory: /
+    schedule:
+      interval: daily
+    target:
+      version: '>= 1.0.0'
+
+  - labels: dependencies
+    package-ecosystem: gomod
+    directory: /
+    schedule:
+      interval: daily
+    target:
+      version: '>= 1.0.0'
+
+  - labels: dependencies
+    package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: daily
+    target:
+      update-type: 'widen'
+
+  - labels: dependencies
+    package-ecosystem: elm
+    directory: /
+    schedule:
+      interval: daily
+    target:
+      version: '>= 1.0.0'
+
+  - labels: dependencies
+    package-ecosystem: gitsubmodule
+    directory: /
+    schedule:
+      interval: daily
+    target:
+      update-type: 'increase'
+
+  - labels: dependencies
+    package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: daily
+    target:
+      version: '>= 1.0.0'
+
+  - labels: dependencies
+    package-ecosystem: pip
+    directory: /
+    schedule:
+      interval: daily
+    target:
+      update-type: 'increase'
+
+  - labels: dependencies
+    package-ecosystem: terraform
+    directory: /
+    schedule:
+      interval: daily
+    target:
+      version: '>= 1.0.0'
+
+  - labels: dependencies
+    package-ecosystem: pub
+    directory: /
+    schedule:
+      interval: daily
+    target:
+      version: '>= 1.0.0'
+
+  - labels: dependencies
+    package-ecosystem: swift
+    directory: /
+    schedule:
+      interval: daily
+    target:
+      version: '>= 1.0.0'
