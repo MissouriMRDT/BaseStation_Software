@@ -5,133 +5,99 @@ updates:
     directory: /
     schedule:
       interval: daily
-    target:
-      version: '>= 1.0.0'
 
   - labels: [dependencies]
     package-ecosystem: bundler
     directory: /
     schedule:
       interval: daily
-    target:
-      update-type: 'widen'
 
   - labels: [dependencies]
     package-ecosystem: composer
     directory: /
     schedule:
       interval: daily
-    target:
-      update-type: 'increase'
 
   - labels: [dependencies]
     package-ecosystem: maven
     directory: /
     schedule:
       interval: daily
-    target:
-      version: '>= 1.0.0'
 
   - labels: [dependencies]
     package-ecosystem: mix
     directory: /
     schedule:
       interval: daily
-    target:
-      version: '>= 1.0.0'
 
   - labels: [dependencies]
     package-ecosystem: cargo
     directory: /
     schedule:
       interval: daily
-    target:
-      version: '>= 1.0.0'
 
   - labels: [dependencies]
     package-ecosystem: gradle
     directory: /
     schedule:
       interval: daily
-    target:
-      version: '>= 1.0.0'
 
   - labels: [dependencies]
     package-ecosystem: nuget
     directory: /
     schedule:
       interval: daily
-    target:
-      version: '>= 1.0.0'
 
   - labels: [dependencies]
     package-ecosystem: gomod
     directory: /
     schedule:
       interval: daily
-    target:
-      version: '>= 1.0.0'
 
   - labels: [dependencies]
     package-ecosystem: docker
     directory: /
     schedule:
       interval: daily
-    target:
-      update-type: 'widen'
 
   - labels: [dependencies]
     package-ecosystem: elm
     directory: /
     schedule:
       interval: daily
-    target:
-      version: '>= 1.0.0'
 
   - labels: [dependencies]
     package-ecosystem: gitsubmodule
     directory: /
     schedule:
       interval: daily
-    target:
-      update-type: 'increase'
 
   - labels: [dependencies]
     package-ecosystem: github-actions
     directory: /
     schedule:
       interval: daily
-    target:
-      version: '>= 1.0.0'
 
   - labels: [dependencies]
     package-ecosystem: pip
     directory: /
     schedule:
       interval: daily
-    target:
-      update-type: 'increase'
 
   - labels: [dependencies]
     package-ecosystem: terraform
     directory: /
     schedule:
       interval: daily
-    target:
-      version: '>= 1.0.0'
 
   - labels: [dependencies]
     package-ecosystem: pub
     directory: /
     schedule:
       interval: daily
-    target:
-      version: '>= 1.0.0'
 
   - labels: [dependencies]
     package-ecosystem: swift
     directory: /
     schedule:
       interval: daily
-    target:
-      version: '>= 1.0.0'
