@@ -485,6 +485,8 @@ class SensorGraphs extends Component<IProps, IState> {
             {[...this.state.sensors].map(([name, sensor]) => {
               return (
                 this.state.enabledSensors.get(name) &&
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
                 sensor.values !== [] && (
                   <LineSeries
                     data={
