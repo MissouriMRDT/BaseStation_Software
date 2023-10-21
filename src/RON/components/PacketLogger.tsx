@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import CSS from 'csstype';
 import ReactTable from 'react-table-v6';
 import fs from 'fs';
-// import "../../node_modules/react-table-v6/react-table.css"
 import { rovecomm, RovecommManifest } from '../../Core/RoveProtocol/Rovecomm';
 
 const h1Style: CSS.Properties = {
@@ -47,6 +46,7 @@ const buttons: CSS.Properties = {
   fontFamily: 'arial',
   lineHeight: '20px',
   fontSize: '16px',
+  width: '100%',
 };
 
 interface IProps {
