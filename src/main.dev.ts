@@ -68,7 +68,7 @@ const createWindow = async () => {
     icon: getAssetPath('icon.png'),
     webPreferences: {
       nodeIntegration: true,
-      nativeWindowOpen: true,
+      // nativeWindowOpen: true,
       contextIsolation: false,
     },
   });
@@ -97,6 +97,9 @@ const createWindow = async () => {
   menuBuilder.buildMenu();
 
   // Open urls in the user's browser
+  // Remove this if your app does not use auto updates
+  // eslint-disable-next-line
+  // @ts-ignore
   mainWindow.webContents.on('new-window', (event, _url, frameName, _disposition, options) => {
     // This is the name we chose for our window. You can have multiple names for
     // multiple windows and each have their options

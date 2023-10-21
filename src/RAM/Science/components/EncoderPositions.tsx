@@ -37,6 +37,7 @@ interface IProps {
 
 interface IState {
   encoderPositions: {
+    [key: string]: number;
     scoopx: number;
     scoopz: number;
     sensorz: number;
@@ -65,7 +66,7 @@ class EncoderPositions extends Component<IProps, IState> {
 
   updateEncoderValues(data: number[]): void {
     this.setState((prevState) => {
-      const updatedEncoderPositions = { ...prevState.encoderPositions };
+      const updatedEncoderPositions: any = { ...prevState.encoderPositions };
       Object.keys(updatedEncoderPositions).forEach((key, index) => {
         updatedEncoderPositions[key] = data[index];
       });
