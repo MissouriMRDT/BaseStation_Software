@@ -15,10 +15,6 @@ permissions:
   packages: read
   id-token: write
 
-concurrency:
-  group: 'test'
-  cancel-in-progress: false
-
 jobs:
   test:
     strategy:
