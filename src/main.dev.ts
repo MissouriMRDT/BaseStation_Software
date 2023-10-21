@@ -68,7 +68,7 @@ const createWindow = async () => {
     icon: getAssetPath('icon.png'),
     webPreferences: {
       nodeIntegration: true,
-      nativeWindowOpen: true,
+      // nativeWindowOpen: true,
       contextIsolation: false,
     },
   });
