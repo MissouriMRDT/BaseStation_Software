@@ -98,9 +98,10 @@ class Power extends Component<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
+    // eslint-disable-next-line @typescript-eslint/no-shadow
     const { Power, BMS } = RovecommManifest;
-    const boardTelemetry = {};
-    const batteryTelemetry = {};
+    const boardTelemetry: Record<string, any> = {};
+    const batteryTelemetry: Record<string, any> = {};
     Object.keys(Power.Commands).forEach((Bus: string) => {
       boardTelemetry[Bus] = {};
       Power.Commands[Bus].comments.split(', ').forEach((component: any) => {
