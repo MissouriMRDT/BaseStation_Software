@@ -60,6 +60,7 @@ interface IProps {
 
 interface IState {
   IKValues: {
+    [key: string]: string;
     X: string;
     Y: string;
     Z: string;
