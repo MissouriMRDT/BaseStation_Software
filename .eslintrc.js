@@ -48,7 +48,7 @@ module.exports = {
     'jsx-a11y/click-events-have-key-events': 'off',
     'jsx-a11y/no-static-element-interactions': 'off',
   },
-  plugins: ['react', '@typescript-eslint', 'prettier'],
+  plugins: ['react', '@typescript-eslint', 'prettier', 'import'],
   parserOptions: {
     ecmaVersion: 2020,
     sourceType: 'module',
