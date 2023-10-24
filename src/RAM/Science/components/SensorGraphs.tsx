@@ -485,9 +485,7 @@ class SensorGraphs extends Component<IProps, IState> {
             {[...this.state.sensors].map(([name, sensor]) => {
               return (
                 this.state.enabledSensors.get(name) &&
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                sensor.values !== [] && (
+                sensor.values.length > 0 (
                   <LineSeries
                     data={
                       // If there's more than one graph enabled, use the normalized values
