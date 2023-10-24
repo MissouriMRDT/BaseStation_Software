@@ -485,7 +485,7 @@ class SensorGraphs extends Component<IProps, IState> {
             {[...this.state.sensors].map(([name, sensor]) => {
               return (
                 this.state.enabledSensors.get(name) &&
-                sensor.values.length > 0 (
+                sensor.values.length > 0 && (
                   <LineSeries
                     data={
                       // If there's more than one graph enabled, use the normalized values
