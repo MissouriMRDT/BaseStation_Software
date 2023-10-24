@@ -204,7 +204,7 @@ THREE.STLLoader.prototype = {
     while ((result = patternFace.exec(data)) !== null) {
       text = result[0];
       patternNormal =
-        /normal[\s]+([\-+]?[0-9]+\.?[0-9]*([eE][\-+]?[0-9]+)?)+[\s]+([\-+]?[0-9]*\.?[0-9]+([eE][\-+]?[0-9]+)?)+[\s]+([\-+]?[0-9]*\.?[0-9]+([eE][\-+]?[0-9]+)?)+/g;
+        /normal\s+([+-]?\d+(\.\d*)?(?:[eE][+-]?\d+)?)\s+([+-]?\d+(\.\d*)?(?:[eE][+-]?\d+)?)\s+([+-]?\d+(\.\d*)?(?:[eE][+-]?\d+)?)/g;
 
       while ((result = patternNormal.exec(text)) !== null) {
         normal = new THREE.Vector3(parseFloat(result[1]), parseFloat(result[3]), parseFloat(result[5]));
