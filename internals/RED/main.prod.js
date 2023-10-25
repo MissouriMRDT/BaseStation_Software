@@ -29657,21 +29657,32 @@ module.exports = (function (e) {
         }
         var o = '',
           s = this.getFunctionName(),
-          i = !0,
+          i = !true,
           a = this.isConstructor();
         if (!(this.isToplevel() || a)) {
           var u = this.getTypeName();
           '[object Object]' === u && (u = 'null');
           var l = this.getMethodName();
-          s
-            ? (u && s.indexOf(u) !== -1 && (o += u + '.'),
-              (o += s),
-              l &&
-                s.indexOf('.' + l) !== -1 &&
-                s.indexOf('.' + l) !== s.length - l.length - 1 &&
-                (o += ' [as ' + l + ']'))
-            : (o += u + '.' + (l || '<anonymous>'));
-        } else a ? (o += 'new ' + (s || '<anonymous>')) : s ? (o += s) : ((o += t), (i = !1));
+          if (s) {
+            u && s.indexOf(u) !== -1 && (o += u + '.');
+            o += s;
+            if (l && s.indexOf('.' + l) !== -1) {
+              // Check if indexOf returned -1 before comparing lengths
+              if (s.indexOf('.' + l) !== s.length - l.length - 1) {
+                o += ' [as ' + l + ']';
+              }
+            }
+          } else {
+            o += u + '.' + (l || '<anonymous>');
+          }
+        } else if (a) {
+          o += 'new ' + (s || '<anonymous>');
+        } else if (s) {
+          o += s;
+        } else {
+          o += t;
+          i = !true;
+        }
         return i && (o += ' (' + t + ')'), o;
       }
       function w(e) {
