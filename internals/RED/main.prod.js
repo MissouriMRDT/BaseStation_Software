@@ -10622,7 +10622,7 @@ module.exports = (function (e) {
       templateText: function (e) {
         var t = e[0];
         if ('string' != typeof t) return e;
-        if (t.lastIndexOf('{text}') === t.length - 6)
+        if (t.lastIndexOf('{text}') != -1 && t.lastIndexOf('{text}') === t.length - 6)
           return (e[0] = t.replace(/\s?{text}/, '')), '' === e[0] && e.shift(), e;
         var n = t.split('{text}'),
           r = [];
@@ -15675,7 +15675,8 @@ module.exports = (function (e) {
       );
     }
     function u(e) {
-      return !e.includes('s3.amazonaws.com');
+      const regex = /s3\.amazonaws\.com/;
+      return !regex.test(e);
     }
     Object.defineProperty(t, '__esModule', { value: !0 }),
       (t.isUrlProbablySupportMultiRangeRequests = u),
@@ -29663,9 +29664,12 @@ module.exports = (function (e) {
           '[object Object]' === u && (u = 'null');
           var l = this.getMethodName();
           s
-            ? (u && 0 != s.indexOf(u) && (o += u + '.'),
+            ? (u && s.indexOf(u) !== -1 && (o += u + '.'),
               (o += s),
-              l && s.indexOf('.' + l) != s.length - l.length - 1 && (o += ' [as ' + l + ']'))
+              l &&
+                s.indexOf('.' + l) !== -1 &&
+                s.indexOf('.' + l) !== s.length - l.length - 1 &&
+                (o += ' [as ' + l + ']'))
             : (o += u + '.' + (l || '<anonymous>'));
         } else a ? (o += 'new ' + (s || '<anonymous>')) : s ? (o += s) : ((o += t), (i = !1));
         return i && (o += ' (' + t + ')'), o;
