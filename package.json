@@ -190,7 +190,7 @@
     "babel-loader": "^8.2.3",
     "babel-plugin-dev-expression": "^0.2.3",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
-    "browserslist-config-erb": "^0.0.1",
+    "browserslist-config-erb": "^0.0.3",
     "chalk": "^4.1.2",
     "concurrently": "^6.4.0",
     "core-js": "^3.33.1",
