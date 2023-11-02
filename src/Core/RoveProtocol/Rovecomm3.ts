@@ -6,8 +6,9 @@ import path from 'path';
 /* eslint-disable import/no-cycle */
 import { parse } from './Rovecomm';
 
-export let dataSizes: any = [];
-export let DataTypes: any = {};
+export let dataSizes: number[] = [];
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export let DataTypes: { [key: string]: number } = {};
 const headerLength = 6;
 
 const filepath = path.join(__dirname, '../assets/RovecommManifest.json');
@@ -24,16 +25,16 @@ interface TCPSocket {
   RCDeque: Deque<any>;
 }
 
-export function createHeader(dataId: number, dataCount: number, dataType: string) {
+export function createHeader(dataId: number, dataCount: number, dataType: number) {
   const headerBuffer = Buffer.allocUnsafe(headerLength);
   headerBuffer.writeUInt8(VersionNumber, 0);
   headerBuffer.writeUInt16BE(dataId, 1);
   headerBuffer.writeUInt16BE(dataCount, 3);
-  headerBuffer.writeUInt8(DataTypes[dataType], 5);
+  headerBuffer.writeUInt8(dataType, 5);
   return headerBuffer;
 }
 
-export function parseHeader(packet: any) {
+export function parseHeader(packet: Buffer) {
   const header = {
     version: packet.readUInt8(0),
     dataId: packet.readUInt16BE(1),
