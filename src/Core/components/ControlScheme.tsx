@@ -410,6 +410,11 @@ class ControlScheme extends Component<IProps, IState> {
                 <button style={{ zIndex: 1 }} type="button" onClick={() => this.buttonToggle(config)}>
                   {this.state.functionality[config].toggled}
                 </button>
+                {window.addEventListener('gamepaddisconnected', (e) => {
+                  if (this.state.functionality[config].toggled === "On" && this.state.functionality[config].controller === "Xbox 1" && e.gamepad.index === 0) {
+                     this.buttonToggle(config);
+                  }
+                })}
               </div>
             );
           })}
