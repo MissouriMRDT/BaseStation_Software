@@ -14,10 +14,10 @@ import { parseHeader, createHeader, TCPParseWrapper, VersionNumber } from './Rov
 
 export let RovecommManifest: any = {};
 export let dataSizes: number[] = [];
-export let DataTypes: any = {};
+export let DataTypes: { [key: string]: number } = {};
 export let headerLength = 0;
-export let SystemPackets: any = {};
-export let NetworkDevices: any = {};
+export let SystemPackets: { [key: string]: number } = {};
+export let NetworkDevices: { [key: string]: { Ip: string } } = {};
 let ethernetUDPPort = 11000;
 let ethernetTCPPort = 12000;
 const filepath = path.join(__dirname, '../assets/RovecommManifest.json');

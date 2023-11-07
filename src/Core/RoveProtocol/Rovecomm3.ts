@@ -7,7 +7,6 @@ import path from 'path';
 import { parse } from './Rovecomm';
 
 export let dataSizes: number[] = [];
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export let DataTypes: { [key: string]: number } = {};
 const headerLength = 6;
 

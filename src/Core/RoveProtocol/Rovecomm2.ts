@@ -7,7 +7,7 @@ import path from 'path';
 import { parse } from './Rovecomm';
 
 export let dataSizes: number[] = [];
-export let DataTypes: any = {};
+export let DataTypes: { [key: string]: number } = {};
 const filepath = path.join(__dirname, '../assets/RovecommManifest.json');
 export const VersionNumber = 2;
 const headerLength = 5;

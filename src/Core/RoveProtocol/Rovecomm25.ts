@@ -6,8 +6,8 @@ import path from 'path';
 /* eslint-disable import/no-cycle */
 import { parse } from './Rovecomm';
 
-export let dataSizes: any = [];
-export let DataTypes: any = {};
+export let dataSizes: number[] = [];
+export let DataTypes: { [key: string]: number } = {};
 const headerLength = 6;
 
 const filepath = path.join(__dirname, '../assets/RovecommManifest.json');
