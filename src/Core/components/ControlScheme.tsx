@@ -411,7 +411,19 @@ class ControlScheme extends Component<IProps, IState> {
                   {this.state.functionality[config].toggled}
                 </button>
                 {window.addEventListener('gamepaddisconnected', (e) => {
-                  if (this.state.functionality[config].toggled === "On" && this.state.functionality[config].controller === "Xbox 1" && e.gamepad.index === 0) {
+                  if (this.state.functionality[config].toggled === 'On' && this.state.functionality[config].controller === 'Xbox 1' && e.gamepad.index === 0) {
+                     this.buttonToggle(config);
+                  }
+                  else if (this.state.functionality[config].toggled === 'On' && this.state.functionality[config].controller === 'Xbox 2' && e.gamepad.index === 1) {
+                     this.buttonToggle(config);
+                  }
+                  else if (this.state.functionality[config].toggled === 'On' && this.state.functionality[config].controller === 'Xbox 3' && e.gamepad.index === 2) {
+                     this.buttonToggle(config);
+                  }
+                  else if (this.state.functionality[config].toggled === 'On' && this.state.functionality[config].controller === 'Xbox 4' && e.gamepad.index === 3) {
+                     this.buttonToggle(config);
+                  }
+                  else if (this.state.functionality[config].toggled === 'On' && this.state.functionality[config].controller === 'Flight Stick' && e.gamepad.index === 4) {
                      this.buttonToggle(config);
                   }
                 })}
