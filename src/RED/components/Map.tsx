@@ -34,9 +34,18 @@ const mapStyle: CSS.Properties = {
 
 interface IProps {
   style?: CSS.Properties;
-  storedWaypoints: any;
+  storedWaypoints: {
+    [key: string]: {
+      onMap: boolean;
+      color: string;
+      name: string;
+      latitude: number;
+      longitude: number;
+      displayRadius: number;
+    };
+  };
   currentCoords: { lat: number; lon: number };
-  store: (name: string, coords: any) => void;
+  store: (name: string, coords: { lat: number; lon: number }) => void;
   name: string;
 }
 
@@ -64,10 +73,10 @@ class Map extends Component<IProps, IState> {
       heading: 0,
     };
 
-    rovecomm.on('IMUData', (data: any) => this.IMUData(data));
+    rovecomm.on('IMUData', (data: number[]) => this.IMUData(data));
   }
 
-  IMUData(data: any): void {
+  IMUData(data: number[]): void {
     this.setState({
       heading: data[1],
     });
