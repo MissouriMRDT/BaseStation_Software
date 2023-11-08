@@ -7,7 +7,7 @@
 
 [Mars Rover Design Team](https://marsrover.mst.edu/)
 
-<img alt="MS&T Logo" src="https://brand.mst.edu/media/universityadvancement/communications/images/logos/logo/Logo_356.jpg" width="15%" />
+<img alt="MS&T Logo" src="https://brand.mst.edu/media/universityadvancement/brand/logos/Missouri-S&T_PrimaryLogo_Forest_RGB.png" width="15%" />
 
 [Missouri University of Science and Technology](https://www.mst.edu/)
 

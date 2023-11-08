@@ -95,6 +95,8 @@ class Map extends Component<IProps, IState> {
               center={position}
               zoom={this.state.zoom}
               maxZoom={this.state.maxZoom}
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
               whenReady={(map: any): void =>
                 map.target.on('click', (e: { latlng: { lat: number; lng: number } }) => {
                   this.props.store(new Date().toLocaleTimeString(), {

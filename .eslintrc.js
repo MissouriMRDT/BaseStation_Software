@@ -18,6 +18,13 @@ module.exports = {
     'prettier/prettier': 'error',
     'react/static-property-placement': ['warn', 'static public field'],
     '@typescript-eslint/no-empty-interface': 'off',
+    // eslint-disable-next-line no-dupe-keys
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'auto',
+      },
+    ],
     '@typescript-eslint/naming-convention': [
       'error',
       {
@@ -41,7 +48,7 @@ module.exports = {
     'jsx-a11y/click-events-have-key-events': 'off',
     'jsx-a11y/no-static-element-interactions': 'off',
   },
-  plugins: ['react', '@typescript-eslint', 'prettier'],
+  plugins: ['react', '@typescript-eslint', 'prettier', 'import'],
   parserOptions: {
     ecmaVersion: 2020,
     sourceType: 'module',

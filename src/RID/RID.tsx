@@ -18,7 +18,7 @@ import Log from '../RED/components/Log';
 import Power from '../RED/components/Power&BMS';
 import CustomPackets from '../RON/components/CustomPackets';
 import PacketLogger from '../RON/components/PacketLogger';
-import PingGraph from '../RON/components/PingGraph';
+// import PingGraph from '../RON/components/PingGraph';
 import Fluorometer from '../RAM/Science/components/Fluorometer';
 import RockLookUp from '../RAM/Science/components/rocklookup';
 
@@ -248,7 +248,7 @@ class RoverImageryDisplay extends Component<IProps, IState> {
         submodule = <Angular style={submod} />;
         break;
       case 'ControlFeatures':
-        submodule = <ControlFeatures style={submod} />;
+        submodule = <ControlFeatures style={submod} gripperCallBack={undefined} />;
         break;
       case 'IK':
         console.log('IK');

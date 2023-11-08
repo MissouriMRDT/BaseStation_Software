@@ -6,7 +6,6 @@ import Cameras from '../../Core/components/Cameras';
 import ControlScheme, { controllerInputs } from '../../Core/components/ControlScheme';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
 import ControlFeatures from './components/ControlFeatures';
-import GripperToggle from './components/GripperToggle';
 
 const row: CSS.Properties = {
   display: 'flex',
@@ -33,7 +32,7 @@ let MultiplierJ4: number;
 let MultiplierJ5: number;
 let MultiplierJ6: number;
 let MultiplierGripper: number;
-let MultiplierEndEffector: number;
+// let MultiplierEndEffector: number;
 
 class Arm extends Component<IProps, IState> {
   constructor(props: IProps) {
@@ -68,7 +67,7 @@ class Arm extends Component<IProps, IState> {
       MultiplierJ5 = controllerInputs.Multiplier1;
       MultiplierJ6 = controllerInputs.Multiplier2;
       MultiplierGripper = controllerInputs.Multiplier3;
-      MultiplierEndEffector = controllerInputs.Multiplier4;
+      // MultiplierEndEffector = controllerInputs.Multiplier4;
     }
 
     // J5
@@ -101,13 +100,11 @@ class Arm extends Component<IProps, IState> {
       moveArm = true;
     }
 
-
     // J1
     if ('BaseTwist' in controllerInputs) {
       ArmBaseTwist = controllerInputs.BaseTwist * MultiplierJ1;
       moveArm = true;
     }
-
 
     if (Math.abs(ArmBaseBend) > Math.abs(ArmBaseTwist)) {
       ArmBaseTwist = 0;

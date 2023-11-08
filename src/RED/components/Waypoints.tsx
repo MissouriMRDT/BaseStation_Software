@@ -553,9 +553,13 @@ class Waypoints extends Component<IProps, IState> {
                   type="button"
                   style={{ ...modalButton, backgroundColor: 'red' }}
                   onClick={() =>
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
                     this.setState((prevState) => ({
                       addingWaypoint: false,
                       newWaypoint: {
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
                         ...prevState.newWaypoint,
                         name: '',
                       },
