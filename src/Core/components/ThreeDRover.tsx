@@ -61,14 +61,14 @@ class ThreeDRover extends Component<IProps, IState> {
 
     ThreeDRover.id += 1;
 
-    rovecomm.on('IMUData', (data: any) => this.imuData(data));
+    rovecomm.on('IMUData', (data: number[]) => this.imuData(data));
   }
 
   componentDidMount() {
     this.findWidth();
   }
 
-  imuData(data: any) {
+  imuData(data: number[]) {
     // We discard the yaw of the rover because it makes it harder to tell if the
     // rotation of the rover is worriesome, which is the main point of the graphic
     // IMU data is in degrees but STL viewer needs radians
