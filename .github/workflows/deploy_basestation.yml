@@ -22,7 +22,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows-latest] # Possible values: [ubuntu-latest, windows-latest, macOS-latest]
-        node: [16.x]
+        node: [18.x]
 
     runs-on: ${{ matrix.os }}
 
