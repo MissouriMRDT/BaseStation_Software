@@ -86,31 +86,31 @@ class SensorData extends Component<IProps, IState> {
     this.fileStart = this.fileStart.bind(this);
     this.fileStop = this.fileStop.bind(this);
 
-    rovecomm.on('CH3', (data: any) => this.ch3(data));
-    rovecomm.on('CO2', (data: any) => this.co2(data));
-    rovecomm.on('O2', (data: any) => this.o2(data));
-    rovecomm.on('NO', (data: any) => this.no(data));
-    rovecomm.on('NO2', (data: any) => this.no2(data));
+    rovecomm.on('CH3', (data: number[]) => this.ch3(data));
+    rovecomm.on('CO2', (data: number[]) => this.co2(data));
+    rovecomm.on('O2', (data: number[]) => this.o2(data));
+    rovecomm.on('NO', (data: number[]) => this.no(data));
+    rovecomm.on('NO2', (data: number[]) => this.no2(data));
   }
 
-  ch3(data: any): void {
+  ch3(data: number[]): void {
     const [ch3, temperature] = data;
     this.setState({ ch3, temperature });
   }
 
-  co2(data: any): void {
+  co2(data: number[]): void {
     this.setState({ co2: data[0] });
   }
 
-  o2(data: any): void {
+  o2(data: number[]): void {
     this.setState({ o2: data[0] });
   }
 
-  no2(data: any): void {
+  no2(data: number[]): void {
     this.setState({ no2: data[0] });
   }
 
-  no(data: any): void {
+  no(data: number[]): void {
     this.setState({ no: data[0] });
   }
 

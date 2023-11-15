@@ -114,7 +114,7 @@ class ClosedLoopControls extends Component<IProps, IState> {
             </div>
             <div style={row}>
               {this.state.possiblePackets.map((num) => {
-                let buttonText: any = num;
+                let buttonText = String(num);
                 if (num === 0) {
                   if (this.state.packetType === 'Scoop') {
                     buttonText = 'Ground';

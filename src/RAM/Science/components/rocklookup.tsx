@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { ChangeEvent, Component } from 'react';
 import CSS from 'csstype';
 import path from 'path';
 import fs from 'fs';
@@ -264,7 +264,7 @@ class RockLookUp extends Component<IProps, IState> {
     this.possibleRocks = this.possibleRocks.bind(this);
   }
 
-  handleFeatureSelect(event: any): void {
+  handleFeatureSelect(event: ChangeEvent<HTMLSelectElement>): void {
     if (event.target.id === 'ColorList') {
       const { sColors, availColors } = this.state;
       availColors.splice(availColors.indexOf(event.target.value), 1);

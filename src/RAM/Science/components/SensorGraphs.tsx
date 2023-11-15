@@ -115,12 +115,12 @@ function saveImage(): void {
     scrollX: 0,
     scrollY: -thisWindow.scrollY - 38,
   }) // We subtract 38 to make up for the 28 pixel top border and the -10 top margin
-    .then((canvas: any) => {
+    .then((canvas: HTMLCanvasElement) => {
       const imgData = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
       downloadURL(imgData);
       return null;
     })
-    .catch((error: any) => {
+    .catch((error: Error) => {
       console.error(error);
     });
 }
@@ -259,11 +259,11 @@ class SensorGraphs extends Component<IProps, IState> {
     this.onNearestX = this.onNearestX.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
 
-    rovecomm.on('CH4', (data: any) => this.ch4(data));
-    rovecomm.on('CO2', (data: any) => this.co2(data));
-    rovecomm.on('O2', (data: any) => this.o2(data));
-    rovecomm.on('NH3', (data: any) => this.nh3(data));
-    rovecomm.on('NO2', (data: any) => this.no2(data));
+    rovecomm.on('CH4', (data: number[]) => this.ch4(data));
+    rovecomm.on('CO2', (data: number[]) => this.co2(data));
+    rovecomm.on('O2', (data: number[]) => this.o2(data));
+    rovecomm.on('NH3', (data: number[]) => this.nh3(data));
+    rovecomm.on('NO2', (data: number[]) => this.no2(data));
   }
 
   /**
@@ -290,25 +290,25 @@ class SensorGraphs extends Component<IProps, IState> {
     this.setState({ crosshairValues, crosshairPos: list[index].x });
   }
 
-  ch4(data: any): void {
+  ch4(data: number[]): void {
     // the methane data packet is [methane concentration, temperature]
     this.addData('CH4', data[0]);
     this.addData('Temperature', data[1]);
   }
 
-  co2(data: any): void {
+  co2(data: number[]): void {
     this.addData('CO2', data[0]);
   }
 
-  o2(data: any): void {
+  o2(data: number[]): void {
     this.addData('O2', data[0]);
   }
 
-  nh3(data: any): void {
+  nh3(data: number[]): void {
     this.addData('nh3', data[0]);
   }
 
-  no2(data: any): void {
+  no2(data: number[]): void {
     this.addData('NO2', data[0]);
   }
 

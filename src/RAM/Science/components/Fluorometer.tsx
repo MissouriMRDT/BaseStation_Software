@@ -106,12 +106,12 @@ function saveImage(): void {
     scrollX: 0,
     scrollY: -thisWindow.scrollY - 38,
   }) // We subtract 38 to make up for the 28 pixel top border and the -10 top margin
-    .then((canvas: any) => {
+    .then((canvas: HTMLCanvasElement) => {
       const imgData = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
       downloadURL(imgData);
       return null;
     })
-    .catch((error: any) => {
+    .catch((error: Error) => {
       console.error(error);
     });
 }

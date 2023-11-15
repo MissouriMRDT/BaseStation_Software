@@ -110,8 +110,8 @@ class Heater extends Component<IProps, IState> {
     this.toggleWhiteLight = this.toggleWhiteLight.bind(this);
     this.toggleUV = this.toggleUV.bind(this);
     this.setTargetTemperature = this.setTargetTemperature.bind(this);
-    rovecomm.on('ThermoValues', (data: any) => this.updateTemps(data));
-    rovecomm.on('HeaterEnabled', (data: any) => this.updateEnabled(data));
+    rovecomm.on('ThermoValues', (data: number[]) => this.updateTemps(data));
+    rovecomm.on('HeaterEnabled', (data: number[]) => this.updateEnabled(data));
   }
 
   /**

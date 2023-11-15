@@ -66,7 +66,13 @@ class EncoderPositions extends Component<IProps, IState> {
 
   updateEncoderValues(data: number[]): void {
     this.setState((prevState) => {
-      const updatedEncoderPositions: any = { ...prevState.encoderPositions };
+      const updatedEncoderPositions: {
+        [key: string]: number;
+        scoopx: number;
+        scoopz: number;
+        sensorz: number;
+        multiplexor: number;
+      } = { ...prevState.encoderPositions };
       Object.keys(updatedEncoderPositions).forEach((key, index) => {
         updatedEncoderPositions[key] = data[index];
       });
