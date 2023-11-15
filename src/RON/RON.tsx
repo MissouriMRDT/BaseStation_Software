@@ -20,7 +20,7 @@ const column: CSS.Properties = {
 interface IProps {}
 
 interface IState {
-  devices: any;
+  devices: Record<string, { autoPing: boolean; ping: number }>;
 }
 
 class RoverOverviewOfNetwork extends Component<IProps, IState> {
@@ -32,7 +32,7 @@ class RoverOverviewOfNetwork extends Component<IProps, IState> {
     this.updateDevices = this.updateDevices.bind(this);
   }
 
-  updateDevices(devices: any) {
+  updateDevices(devices: Record<string, { autoPing: boolean; ping: number }>) {
     this.setState({ devices });
   }
 

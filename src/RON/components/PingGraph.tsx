@@ -50,7 +50,7 @@ interface IState {
     y: number;
   }[];
   board: string;
-  interval: any;
+  interval: NodeJS.Timeout;
 }
 
 class PingGraph extends Component<IProps, IState> {
