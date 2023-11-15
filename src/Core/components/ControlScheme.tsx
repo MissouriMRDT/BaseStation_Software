@@ -133,6 +133,11 @@ function controller(passedScheme: any, pos: any): any {
         }
       }
     }
+    if (navigator.getGamepads()[index] == null && passedScheme !== '') {
+      for (const button in CONTROLLERINPUT[passedScheme].bindings) {
+        controllerInputs[button] = 0;
+      }
+    }
   }, 50);
 }
 
@@ -405,6 +410,23 @@ class ControlScheme extends Component<IProps, IState> {
                 <button style={{ zIndex: 1 }} type="button" onClick={() => this.buttonToggle(config)}>
                   {this.state.functionality[config].toggled}
                 </button>
+                {window.addEventListener('gamepaddisconnected', (e) => {
+                  if (this.state.functionality[config].toggled === 'On' && this.state.functionality[config].controller === 'Xbox 1' && e.gamepad.index === 0) {
+                     this.buttonToggle(config);
+                  }
+                  else if (this.state.functionality[config].toggled === 'On' && this.state.functionality[config].controller === 'Xbox 2' && e.gamepad.index === 1) {
+                     this.buttonToggle(config);
+                  }
+                  else if (this.state.functionality[config].toggled === 'On' && this.state.functionality[config].controller === 'Xbox 3' && e.gamepad.index === 2) {
+                     this.buttonToggle(config);
+                  }
+                  else if (this.state.functionality[config].toggled === 'On' && this.state.functionality[config].controller === 'Xbox 4' && e.gamepad.index === 3) {
+                     this.buttonToggle(config);
+                  }
+                  else if (this.state.functionality[config].toggled === 'On' && this.state.functionality[config].controller === 'Flight Stick' && e.gamepad.index === 4) {
+                     this.buttonToggle(config);
+                  }
+                })}
               </div>
             );
           })}
