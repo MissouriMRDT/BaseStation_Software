@@ -87,8 +87,12 @@ interface IProps {
 }
 
 interface IState {
-  boardTelemetry: any;
+  boardTelemetry: { [key: string]: BoardTelemetryComponent };
   batteryTelemetry: any;
+}
+
+interface BoardTelemetryComponent {
+  [key: string]: { enabled: boolean; value: number };
 }
 
 class Power extends Component<IProps, IState> {
@@ -100,11 +104,11 @@ class Power extends Component<IProps, IState> {
     super(props);
     // eslint-disable-next-line @typescript-eslint/no-shadow
     const { Power, BMS } = RovecommManifest;
-    const boardTelemetry: Record<string, any> = {};
+    const boardTelemetry: Record<string, BoardTelemetryComponent> = {};
     const batteryTelemetry: Record<string, any> = {};
     Object.keys(Power.Commands).forEach((Bus: string) => {
       boardTelemetry[Bus] = {};
-      Power.Commands[Bus].comments.split(', ').forEach((component: any) => {
+      Power.Commands[Bus].comments.split(', ').forEach((component: string) => {
         boardTelemetry[Bus][component] = { enabled: true, value: 0 };
       });
     });
@@ -112,7 +116,7 @@ class Power extends Component<IProps, IState> {
       batteryTelemetry[measGroup] = {};
       const tmpList = BMS.Telemetry[measGroup].comments.split(', ');
       if (tmpList.length > 1) {
-        tmpList.forEach((cell: any) => {
+        tmpList.forEach((cell: string) => {
           batteryTelemetry[measGroup][cell] = { value: 0 };
         });
       } else {
@@ -198,7 +202,7 @@ class Power extends Component<IProps, IState> {
   batteryListenHandler(data: number[], part: string): void {
     const { batteryTelemetry } = this.state;
     if (data.length > 1) {
-      Object.keys(batteryTelemetry[part]).forEach((cell: any, index: number) => {
+      Object.keys(batteryTelemetry[part]).forEach((cell: string, index: number) => {
         batteryTelemetry[part][cell].value = data[index];
       });
     } else {
