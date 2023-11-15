@@ -96,7 +96,7 @@ class Power extends Component<IProps, IState> {
     style: {},
   };
 
-  constructor(props: IProps) {
+  constructor(props: Readonly<IProps> | IProps) {
     super(props);
     // eslint-disable-next-line @typescript-eslint/no-shadow
     const { Power, BMS } = RovecommManifest;

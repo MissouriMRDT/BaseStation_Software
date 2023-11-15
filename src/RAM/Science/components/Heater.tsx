@@ -92,7 +92,7 @@ class Heater extends Component<IProps, IState> {
     return parseInt(bitmask, 2);
   }
 
-  constructor(props: IProps) {
+  constructor(props: Readonly<IProps> | IProps) {
     super(props);
     this.state = {
       UVPowered: false,

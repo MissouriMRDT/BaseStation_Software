@@ -44,7 +44,7 @@ class Gimbal extends Component<IProps, IState> {
     style: {},
   };
 
-  constructor(props: IProps) {
+  constructor(props: Readonly<IProps> | IProps) {
     super(props);
     this.state = {
       // Controlling will be "none" by default, then set to "main" or "drive", and image will update to match

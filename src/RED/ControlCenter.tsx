@@ -46,7 +46,7 @@ interface IState {
 class ControlCenter extends Component<IProps, IState> {
   waypointsInstance: any;
 
-  constructor(props: IProps) {
+  constructor(props: Readonly<IProps> | IProps) {
     super(props);
     this.state = {
       storedWaypoints: {},

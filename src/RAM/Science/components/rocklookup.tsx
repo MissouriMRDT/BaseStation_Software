@@ -239,7 +239,7 @@ class RockLookUp extends Component<IProps, IState> {
     style: {},
   };
 
-  constructor(props: Readonly<IProps>) {
+  constructor(props: Readonly<IProps> | IProps) {
     super(props);
     this.state = {
       availColors: JSON.parse(JSON.stringify(COLORMASTER)),

@@ -50,7 +50,7 @@ class ThreeDRover extends Component<IProps, IState> {
 
   static id = 0;
 
-  constructor(props: IProps) {
+  constructor(props: Readonly<IProps> | IProps) {
     super(props);
     this.state = {
       imuData: [0, 0, 0],

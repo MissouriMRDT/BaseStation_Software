@@ -155,7 +155,7 @@ class ControlScheme extends Component<IProps, IState> {
     style: {},
   };
 
-  constructor(props: Readonly<IProps>) {
+  constructor(props: Readonly<IProps> | IProps) {
     super(props);
     this.state = {
       functionality: {

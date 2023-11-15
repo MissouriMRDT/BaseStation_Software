@@ -93,7 +93,7 @@ interface IProps {}
 interface IState {}
 
 class Science extends Component<IProps, IState> {
-  constructor(props: IProps) {
+  constructor(props: Readonly<IProps> | IProps) {
     super(props);
     this.state = {};
 

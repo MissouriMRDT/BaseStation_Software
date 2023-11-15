@@ -49,7 +49,7 @@ class StateDiagram extends Component<IProps, IState> {
 
   canvasRef: any;
 
-  constructor(props: IProps) {
+  constructor(props: Readonly<IProps> | IProps) {
     super(props);
     this.state = {};
 

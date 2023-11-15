@@ -63,7 +63,7 @@ class RoverImageryDisplay extends Component<IProps, IState> {
     displayed: 'Camera',
   };
 
-  constructor(props: IProps) {
+  constructor(props: Readonly<IProps> | IProps) {
     super(props);
 
     // Buttons is a recurring div that is displayed with every choice, and used in many

@@ -35,7 +35,7 @@ let MultiplierGripper: number;
 // let MultiplierEndEffector: number;
 
 class Arm extends Component<IProps, IState> {
-  constructor(props: IProps) {
+  constructor(props: Readonly<IProps> | IProps) {
     super(props);
     this.state = {
       gripperToggle: false,

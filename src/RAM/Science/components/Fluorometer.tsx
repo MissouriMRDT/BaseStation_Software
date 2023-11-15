@@ -178,7 +178,7 @@ class Fluorometer extends Component<IProps, IState> {
     return result;
   }
 
-  constructor(props: IProps) {
+  constructor(props: Readonly<IProps> | IProps) {
     super(props);
     this.state = {
       LedStatus: [false, false, false, false, false],

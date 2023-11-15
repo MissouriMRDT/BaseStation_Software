@@ -31,7 +31,7 @@ interface IState {
 }
 
 class RoverAttachmentManager extends Component<IProps, IState> {
-  constructor(props: IProps) {
+  constructor(props: Readonly<IProps> | IProps) {
     super(props);
     this.state = {
       displayed: 'Arm',

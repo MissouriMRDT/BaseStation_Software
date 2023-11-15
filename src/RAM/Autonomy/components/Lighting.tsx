@@ -72,7 +72,7 @@ class Lighting extends Component<IProps, IState> {
     // console.log(RovecommManifest.Multimedia.Enums.DISPLAYSTATE.Reached_Goal);
   }
 
-  constructor(props: IProps) {
+  constructor(props: Readonly<IProps> | IProps) {
     super(props);
     this.state = {
       color: { r: 255, g: 255, b: 255, a: 0 },

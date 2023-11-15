@@ -24,7 +24,7 @@ interface IState {
 }
 
 class RoverOverviewOfNetwork extends Component<IProps, IState> {
-  constructor(props: any) {
+  constructor(props: Readonly<IProps> | IProps) {
     super(props);
     this.state = {
       devices: {},

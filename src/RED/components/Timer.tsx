@@ -169,7 +169,7 @@ interface IState {
 }
 
 class Timer extends Component<IProps, IState> {
-  constructor(props: IProps) {
+  constructor(props: Readonly<IProps> | IProps) {
     super(props);
     this.state = {
       startMenuOpen: true,
