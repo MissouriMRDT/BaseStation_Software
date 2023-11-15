@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { Component } from 'react';
+import React, { ChangeEvent, Component } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import CSS from 'csstype';
 import path from 'path';
@@ -195,7 +195,7 @@ class Timer extends Component<IProps, IState> {
     this.handleOnDragEnd = this.handleOnDragEnd.bind(this);
   }
 
-  handleChange(event: any, type: string): void {
+  handleChange(event: ChangeEvent<HTMLInputElement>, type: string): void {
     switch (type) {
       case 'name': {
         this.setState({ nameInput: event.target.value });
@@ -236,7 +236,7 @@ class Timer extends Component<IProps, IState> {
     this.saveJSON();
   }
 
-  handleSubmit(event: any): void {
+  handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
     event.preventDefault();
     this.addListItem(this.state.timeInput, this.state.selectedMission, this.state.nameInput);
     this.setState({ timeInput: '', nameInput: '' });

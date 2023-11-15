@@ -133,7 +133,7 @@ const radiusRow: CSS.Properties = {
 };
 const filepath = path.join(__dirname, '../assets/Waypoints.json');
 
-interface Waypoint {
+export interface Waypoint {
   name: string;
   latitude: number;
   longitude: number;
