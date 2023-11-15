@@ -145,7 +145,7 @@ export interface Waypoint {
 
 interface IProps {
   style?: CSS.Properties;
-  onWaypointChange: (storedWaypoints: any) => void;
+  onWaypointChange: (storedWaypoints: Waypoint) => void;
   currentCoords: { lat: number; lon: number };
 }
 

@@ -63,7 +63,7 @@ class ControlCenter extends Component<IProps, IState> {
     window.addEventListener('resize', () => this.setState({ fourthHeight: window.innerHeight / 4 }));
   }
 
-  updateWaypoints(storedWaypoints: { [key: string]: Waypoint }): void {
+  updateWaypoints(storedWaypoints: any): void {
     this.setState({
       storedWaypoints,
     });
