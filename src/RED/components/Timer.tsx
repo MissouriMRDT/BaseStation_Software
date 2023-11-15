@@ -105,7 +105,7 @@ const FILEPATH = path.join(__dirname, '../assets/TaskList.json');
 const DIFFPATH = path.join(__dirname, '../assets/Differences.txt');
 let taskList: any;
 
-let timer: any = 0;
+let timer = 0;
 
 if (fs.existsSync(FILEPATH)) {
   taskList = JSON.parse(fs.readFileSync(FILEPATH).toString());
@@ -146,7 +146,7 @@ interface Mission extends Task {
 }
 
 interface IProps {
-  timer: any;
+  timer: number;
 }
 
 interface IState {
