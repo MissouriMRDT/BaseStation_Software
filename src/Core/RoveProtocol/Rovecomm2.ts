@@ -32,7 +32,7 @@ export function createHeader(dataId: number, dataCount: number, dataType: string
   return headerBuffer;
 }
 
-export function parseHeader(packet: any) {
+export function parseHeader(packet: Buffer) {
   const header = {
     version: packet.readUInt8(0),
     dataId: packet.readUInt16BE(1),

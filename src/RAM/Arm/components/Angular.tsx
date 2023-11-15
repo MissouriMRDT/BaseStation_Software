@@ -304,7 +304,7 @@ class Angular extends Component<IProps, IState> {
             size={5}
             style={selector}
           >
-            {Object.keys(this.state.storedPositions).map((position: any) => {
+            {Object.keys(this.state.storedPositions).map((position: string) => {
               return (
                 <option key={position} value={position}>
                   {position}

@@ -43,7 +43,7 @@ interface IProps {
   style?: CSS.Properties;
   rowcol: string;
   onMerge?: (display: string) => void;
-  store: (name: string, coords: any) => void;
+  store: (name: string, coords: { lat: number; lon: number }) => void;
   displayed?: string; // Initial conditition of what should be displayed
 }
 
@@ -191,7 +191,7 @@ class RoverImageryDisplay extends Component<IProps, IState> {
             style={submod}
             storedWaypoints={prevState.storedWaypoints}
             currentCoords={prevState.currentCoords}
-            store={(name: string, coords: any) => this.props.store(name, coords)}
+            store={(name: string, coords: { lat: number; lon: number }) => this.props.store(name, coords)}
             name="RIDmap"
           />
         </div>

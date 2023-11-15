@@ -133,7 +133,7 @@ const radiusRow: CSS.Properties = {
 };
 const filepath = path.join(__dirname, '../assets/Waypoints.json');
 
-interface Waypoint {
+export interface Waypoint {
   name: string;
   latitude: number;
   longitude: number;
@@ -145,7 +145,7 @@ interface Waypoint {
 
 interface IProps {
   style?: CSS.Properties;
-  onWaypointChange: (storedWaypoints: any) => void;
+  onWaypointChange: (storedWaypoints: Waypoint) => void;
   currentCoords: { lat: number; lon: number };
 }
 
@@ -216,7 +216,7 @@ class Waypoints extends Component<IProps, IState> {
     });
   }
 
-  store(name: string, coords: any): void {
+  store(name: string, coords: { lat: number; lon: number }): void {
     // Adds the new waypoint to the select box and updates the json file
     // If selectedWaypoint is still an empty string, this is a good time
     // to update it to a useful starting value

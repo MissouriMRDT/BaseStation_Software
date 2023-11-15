@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { Component } from 'react';
+import React, { ChangeEvent, Component } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import CSS from 'csstype';
 import path from 'path';
@@ -105,7 +105,7 @@ const FILEPATH = path.join(__dirname, '../assets/TaskList.json');
 const DIFFPATH = path.join(__dirname, '../assets/Differences.txt');
 let taskList: any;
 
-let timer: any = 0;
+let timer = 0;
 
 if (fs.existsSync(FILEPATH)) {
   taskList = JSON.parse(fs.readFileSync(FILEPATH).toString());
@@ -146,7 +146,7 @@ interface Mission extends Task {
 }
 
 interface IProps {
-  timer: any;
+  timer: number;
 }
 
 interface IState {
@@ -195,7 +195,7 @@ class Timer extends Component<IProps, IState> {
     this.handleOnDragEnd = this.handleOnDragEnd.bind(this);
   }
 
-  handleChange(event: any, type: string): void {
+  handleChange(event: ChangeEvent<HTMLInputElement>, type: string): void {
     switch (type) {
       case 'name': {
         this.setState({ nameInput: event.target.value });
@@ -236,7 +236,7 @@ class Timer extends Component<IProps, IState> {
     this.saveJSON();
   }
 
-  handleSubmit(event: any): void {
+  handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
     event.preventDefault();
     this.addListItem(this.state.timeInput, this.state.selectedMission, this.state.nameInput);
     this.setState({ timeInput: '', nameInput: '' });

@@ -4,7 +4,7 @@ import { rovecomm } from '../Core/RoveProtocol/Rovecomm';
 import GPS from './components/GPS';
 import Log from './components/Log';
 import Map from './components/Map';
-import Waypoints from './components/Waypoints';
+import Waypoints, { Waypoint } from './components/Waypoints';
 import NewWindowComponent from '../Core/Window';
 import RoverOverviewOfNetwork from '../RON/RON';
 import RoverAttachmentManager from '../RAM/RAM';
@@ -35,7 +35,8 @@ const column: CSS.Properties = {
 interface IProps {}
 
 interface IState {
-  storedWaypoints: any;
+  storedWaypoints: { [key: string]: Waypoint };
+
   currentCoords: { lat: number; lon: number };
   ronOpen: boolean;
   ramOpen: boolean;
@@ -68,7 +69,7 @@ class ControlCenter extends Component<IProps, IState> {
     });
   }
 
-  updateCoords(lat: any, lon: any): void {
+  updateCoords(lat: number, lon: number): void {
     this.setState({
       currentCoords: { lat, lon },
     });
@@ -157,7 +158,7 @@ class ControlCenter extends Component<IProps, IState> {
             style={{ minHeight: `${this.state.fourthHeight / 1.25}px` }}
             storedWaypoints={this.state.storedWaypoints}
             currentCoords={this.state.currentCoords}
-            store={(name: string, coords: any) => this.waypointsInstance.store(name, coords)}
+            store={(name: string, coords: { lat: number; lon: number }) => this.waypointsInstance.store(name, coords)}
             name="controlCenterMap"
           />
           <Cameras defaultCamera={1} style={{ width: '100%' }} />
