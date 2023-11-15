@@ -79,11 +79,11 @@ const hid: CSS.Properties = {
 
 interface IProps {
   style?: CSS.Properties;
-  onDevicesChange: (devices: any) => void;
+  onDevicesChange: (devices: Record<string, { autoPing: boolean; ping: number }>) => void;
 }
 
 interface IState {
-  devices: any;
+  devices: Record<string, { autoPing: boolean; ping: number }>;
   pingInterval: NodeJS.Timeout;
 }
 

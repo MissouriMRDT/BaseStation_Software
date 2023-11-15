@@ -26,7 +26,7 @@ const label: CSS.Properties = {
 };
 
 interface IProps {
-  devices: any;
+  devices: Record<string, { autoPing: boolean; ping: number }>;
   style?: CSS.Properties;
 }
 
