@@ -54,14 +54,14 @@ class StateDiagram extends Component<IProps, IState> {
     this.state = {};
 
     this.canvasRef = React.createRef();
-    rovecomm.on('CurrentState', (data: any) => this.updateStateDiagram(data));
+    rovecomm.on('CurrentState', (data: number[]) => this.updateStateDiagram(data));
   }
 
   componentDidMount() {
     this.updateStateDiagram([-1]);
   }
 
-  updateStateDiagram(data: any): void {
+  updateStateDiagram(data: number[]): void {
     let text;
 
     const canvas = this.canvasRef.current;

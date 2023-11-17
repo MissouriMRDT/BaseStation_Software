@@ -388,7 +388,7 @@ class Fluorometer extends Component<IProps, IState> {
                 style={{ fill: 'none' }}
                 strokeWidth="2"
                 color="blue"
-                onNearestX={(_datapoint: any, event: any) => this.onNearestX(event.index)}
+                onNearestX={(_datapoint: number, event: any) => this.onNearestX(event.index)}
               />
               <XAxis />
               <YAxis />

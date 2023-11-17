@@ -3,6 +3,7 @@ import CSS from 'csstype';
 import Arm from './Arm/Arm';
 import Autonomy from './Autonomy/Autonomy';
 import Science from './Science/Science';
+import { Waypoint } from '../RED/components/Waypoints';
 
 const RON: CSS.Properties = {
   height: '100%',
@@ -23,7 +24,7 @@ const buttons: CSS.Properties = {
 };
 
 interface IProps {
-  selectedWaypoint: any;
+  selectedWaypoint: Waypoint;
 }
 
 interface IState {

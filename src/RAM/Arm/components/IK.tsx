@@ -89,7 +89,7 @@ class IK extends Component<IProps, IState> {
     };
     this.setPosition = this.setPosition.bind(this);
 
-    rovecomm.on('IKCoordinates', (data: any) => this.updatePosition(data));
+    rovecomm.on('IKCoordinates', (data: string[]) => this.updatePosition(data));
   }
 
   setPosition(): void {
@@ -105,7 +105,7 @@ class IK extends Component<IProps, IState> {
     );
   }
 
-  updatePosition(data: any): void {
+  updatePosition(data: string[]): void {
     /* Function to update displayed IKValues when a new position is recieved */
     const [X, Y, Z, Pitch, Yaw, Roll] = data;
     const IKValues = { X, Y, Z, Pitch, Yaw, Roll };

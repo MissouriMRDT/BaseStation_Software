@@ -498,7 +498,7 @@ class SensorGraphs extends Component<IProps, IState> {
                     strokeWidth="6"
                     color={sensor.graphLineColor}
                     strokeStyle={sensor.graphLineType}
-                    onNearestX={(_datapoint: any, event: any) => this.onNearestX(event.index, sensor.values, name)}
+                    onNearestX={(_datapoint: number, event: any) => this.onNearestX(event.index, sensor.values, name)}
                   />
                 )
               );

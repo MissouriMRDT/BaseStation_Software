@@ -137,7 +137,7 @@ class Angular extends Component<IProps, IState> {
     this.recall = this.recall.bind(this);
     this.delete = this.delete.bind(this);
 
-    rovecomm.on('JointAngles', (data: any) => this.updatePosition(data));
+    rovecomm.on('JointAngles', (data: string[]) => this.updatePosition(data));
   }
 
   componentDidMount(): void {
@@ -168,7 +168,7 @@ class Angular extends Component<IProps, IState> {
     );
   }
 
-  updatePosition(data: any): void {
+  updatePosition(data: string[]): void {
     /* Function to update displayed jointValues when a new position is recieved */
     const [J1, J2, J3, J4, J5, J6] = data;
     const jointValues = { J1, J2, J3, J4, J5, J6 };

@@ -51,7 +51,7 @@ const button: CSS.Properties = {
 
 interface IProps {
   style?: CSS.Properties;
-  gripperCallBack: any;
+  gripperCallBack: CallableFunction;
 }
 
 interface IState {

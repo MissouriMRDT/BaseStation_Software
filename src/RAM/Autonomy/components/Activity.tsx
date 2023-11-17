@@ -49,7 +49,7 @@ class Activity extends Component<IProps, IState> {
     this.ReachedMarker = this.ReachedMarker.bind(this);
     this.Log = this.Log.bind(this);
 
-    rovecomm.on('CurrentLog', (data: any) => this.Log(data));
+    rovecomm.on('CurrentLog', (data: string) => this.Log(data));
     rovecomm.on('ReachedMarker', this.ReachedMarker);
   }
 

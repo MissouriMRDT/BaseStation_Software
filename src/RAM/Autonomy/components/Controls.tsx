@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
 import { rovecomm } from '../../../Core/RoveProtocol/Rovecomm';
+import { Waypoint } from '../../../RED/components/Waypoints';
 
 const container: CSS.Properties = {
   display: 'flex',
@@ -48,7 +49,7 @@ function clearWaypoints(): void {
 
 interface IProps {
   style?: CSS.Properties;
-  selectedWaypoint: any;
+  selectedWaypoint: Waypoint;
 }
 interface IState {}
 

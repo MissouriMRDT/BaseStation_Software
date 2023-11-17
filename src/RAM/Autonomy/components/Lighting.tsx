@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { ChangeEvent, Component } from 'react';
 import CSS from 'csstype';
-import { ChromePicker } from 'react-color';
+import { ChromePicker, ColorResult, RGBColor } from 'react-color';
 import { RovecommManifest, rovecomm } from '../../../Core/RoveProtocol/Rovecomm';
 
 const container: CSS.Properties = {
@@ -36,13 +36,6 @@ const column: CSS.Properties = {
 const button: CSS.Properties = {
   margin: '5px',
 };
-
-interface RGBColor {
-  r: number;
-  g: number;
-  b: number;
-  a: number;
-}
 
 interface IProps {
   style?: CSS.Properties;
@@ -80,11 +73,11 @@ class Lighting extends Component<IProps, IState> {
     };
   }
 
-  handleEdit(event: any): void {
+  handleEdit(event: ChangeEvent<HTMLInputElement>): void {
     this.setState({ brightInput: event.target.value });
   }
 
-  colorChanged(newColor: any): void {
+  colorChanged(newColor: ColorResult): void {
     const color = newColor.rgb;
     this.setState({ color });
     rovecomm.sendCommand('LEDRGB', [color.r, color.g, color.b]);
@@ -96,7 +89,10 @@ class Lighting extends Component<IProps, IState> {
         <div style={label}>Lighting</div>
         <div style={container}>
           <div style={column}>
-            <ChromePicker color={this.state.color} onChangeComplete={(color: any) => this.colorChanged(color)} />
+            <ChromePicker
+              color={this.state.color}
+              onChangeComplete={(color: ColorResult) => this.colorChanged(color)}
+            />
             <div style={{ ...row, justifyContent: 'center' }}>
               <button style={button} onClick={Lighting.teleop}>
                 Teleop

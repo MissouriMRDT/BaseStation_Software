@@ -6,6 +6,7 @@ import StateDiagram from './components/StateDiagram';
 import Activity from './components/Activity';
 import Lighting from './components/Lighting';
 import DrivePower from './components/DrivePower';
+import { Waypoint } from '../../RED/components/Waypoints';
 
 const row: CSS.Properties = {
   display: 'flex',
@@ -17,7 +18,7 @@ const column: CSS.Properties = {
 };
 
 interface IProps {
-  selectedWaypoint: any;
+  selectedWaypoint: Waypoint;
 }
 
 interface IState {}
