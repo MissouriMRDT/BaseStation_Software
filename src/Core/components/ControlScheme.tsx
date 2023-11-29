@@ -49,22 +49,28 @@ const row: CSS.Properties = {
 // eslint-disable-next-line import/no-mutable-exports
 export let controllerInputs: any = {};
 
+interface ControlInputType {
+  config: string;
+  controller: string;
+  bindings: { [key: string]: { [key: string]: string } };
+}
+
 // Input configuration file
 const inputJSON = path.join(__dirname, '../assets/ControllerInput.json');
-let CONTROLLERINPUT: any = {};
+let CONTROLLERINPUT: { [key: string]: ControlInputType };
 if (fs.existsSync(inputJSON)) {
   CONTROLLERINPUT = JSON.parse(fs.readFileSync(inputJSON).toString());
 }
 
 // Mappings between controller buttons' names and their indexes
 const controllerJSON = path.join(__dirname, '../assets/Controller.json');
-let CONTROLLER: any = {};
+let CONTROLLER: { [key: string]: { [key: string]: { [key: string]: number } } } = {};
 if (fs.existsSync(controllerJSON)) {
   CONTROLLER = JSON.parse(fs.readFileSync(controllerJSON).toString());
 }
 
 // passedScheme is the current scheme that is selected, pos is the position in the list of controllers that are connected
-function controller(passedScheme: any, pos: any): any {
+function controller(passedScheme: string, pos: string): any {
   controllerInputs = {};
   return setInterval(() => {
     // if navigator.getGampads()[pos] == flight stick
@@ -134,6 +140,7 @@ function controller(passedScheme: any, pos: any): any {
       }
     }
     if (navigator.getGamepads()[index] == null && passedScheme !== '') {
+      // eslint-disable-next-line guard-for-in
       for (const button in CONTROLLERINPUT[passedScheme].bindings) {
         controllerInputs[button] = 0;
       }
@@ -201,7 +208,7 @@ class ControlScheme extends Component<IProps, IState> {
     };
     this.schemeChange = this.schemeChange.bind(this);
     // detects if a controller disconnects
-    window.addEventListener('gamepaddisconnected', function (e) {
+    window.addEventListener('gamepaddisconnected', function logDisconnect(e) {
       console.log('Gamepad disconnected from index %d: %s', e.gamepad.index, e.gamepad.id);
     });
   }

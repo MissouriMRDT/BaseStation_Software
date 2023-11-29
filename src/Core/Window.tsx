@@ -9,7 +9,7 @@ const leafletJS = path.join(__dirname, '../assets/leaflet.js');
 export const windows: any = { RED: window };
 
 interface IProps {
-  onClose: any;
+  onClose: CallableFunction;
   name: string;
 }
 
