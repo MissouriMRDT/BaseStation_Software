@@ -48,9 +48,18 @@ interface IProps {
 }
 
 interface IState {
-  storedWaypoints: any;
+  storedWaypoints: {
+    [key: string]: {
+      onMap: boolean;
+      color: string;
+      name: string;
+      latitude: number;
+      longitude: number;
+      displayRadius: number;
+    };
+  };
   currentCoords: { lat: number; lon: number };
-  display: any;
+  display: React.ReactNode;
   displayed: string; // Active condidition of what should be displayed
 }
 
