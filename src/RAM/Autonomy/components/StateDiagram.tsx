@@ -47,7 +47,7 @@ class StateDiagram extends Component<IProps, IState> {
     style: {},
   };
 
-  canvasRef: any;
+  canvasRef: React.RefObject<HTMLCanvasElement>;
 
   constructor(props: Readonly<IProps> | IProps) {
     super(props);
@@ -65,7 +65,15 @@ class StateDiagram extends Component<IProps, IState> {
     let text;
 
     const canvas = this.canvasRef.current;
+    if (canvas === null) {
+      return;
+    }
+
     const context = canvas.getContext('2d');
+    if (context === null) {
+      return;
+    }
+
     context.clearRect(0, 0, canvas.width, canvas.height);
 
     const centerW = context.canvas.width / 2;
