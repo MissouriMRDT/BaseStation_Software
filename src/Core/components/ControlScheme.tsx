@@ -72,7 +72,7 @@ function controller(passedScheme: any, pos: any): any {
     let deadZone = 0.075; // xbox one controller
     const controllerList = [];
     for (let i = 0; i < 4; i++) {
-      if (navigator.getGamepads()[i] != null) {
+      if (navigator.getGamepads()[i] !== null) {
         controllerList.push(navigator.getGamepads()[i]?.id);
       }
     }
@@ -106,7 +106,7 @@ function controller(passedScheme: any, pos: any): any {
         return;
     }
     // buttonType will either return if it is a button (such as a,b, start, etc) or if it is a axes of controller (such as left stick x axis)
-    if (navigator.getGamepads()[index] != null && passedScheme !== '') {
+    if (navigator.getGamepads()[index] !== null && passedScheme !== '') {
       for (const button in CONTROLLERINPUT[passedScheme].bindings) {
         if (CONTROLLERINPUT[passedScheme].bindings[button].buttonType === 'button') {
           controllerInputs[button] =
@@ -133,7 +133,7 @@ function controller(passedScheme: any, pos: any): any {
         }
       }
     }
-    if (navigator.getGamepads()[index] == null && passedScheme !== '') {
+    if (navigator.getGamepads()[index] === null && passedScheme !== '') {
       for (const button in CONTROLLERINPUT[passedScheme].bindings) {
         controllerInputs[button] = 0;
       }
