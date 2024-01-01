@@ -251,7 +251,7 @@
     "electron-debug": "^3.1.0",
     "electron-log": "^5.0.0",
     "electron-updater": "^4.3.9",
-    "follow-redirects": "^1.14.8",
+    "follow-redirects": "^1.15.4",
     "halogenium": "^2.3.0",
     "history": "^5.1.0",
     "html2canvas": "^1.3.2",
