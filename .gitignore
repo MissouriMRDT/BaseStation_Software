@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+release/*
+.erb/*
+*.csv
+Screenshots/*
+src/main.prod.js
+src/main.prod.js.LICENSE.txt
+.eslintcache
