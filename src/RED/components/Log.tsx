@@ -43,7 +43,7 @@ class Log extends Component<IProps, IState> {
     this.state = {
       ConsoleText: '',
     };
-    //rovecomm.on('all', (data: any) => this.Log(data));
+    rovecomm.on('all', (data: any) => this.Log(data));
   }
 
   Log(data: string): void {

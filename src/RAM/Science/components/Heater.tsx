@@ -174,14 +174,13 @@ class Heater extends Component<IProps, IState> {
 
   /**
    * Updates the temperatures shown on the component
-   * @param temps a three value array of temps in degrees C
+   * @param temps an array of temps in degrees C of the same length as state.blocks
    */
   updateTemps(temps: number[]): void {
     const { blocks } = this.state;
 
-    for (let i = 0; i < this.state.blocks.length; i++) {
-      blocks[i].temp = temps[i];
-      // console.log(blocks[i].temp);
+    for (let i = 0; i < blocks.length; i++) {
+      blocks[i].temp = temps[blocks.length - 1 - i];
     }
 
     this.setState({ blocks });
@@ -198,7 +197,6 @@ class Heater extends Component<IProps, IState> {
 
     let bitmask = '';
     for (let i = 0; i < blocks.length; i++) {
-      // Reverse for-loop since the order of the blocks is reversed on the board
       bitmask += blocks[i].isOn ? '1' : '0';
     }
     rovecomm.sendCommand('HeaterToggle', [parseInt(bitmask, 2)]);

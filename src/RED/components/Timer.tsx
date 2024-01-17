@@ -5,8 +5,8 @@ import CSS from 'csstype';
 import path from 'path';
 import fs from 'fs';
 import ProgressBar from '../../Core/ProgressBar';
-import TrashCanIcon from '../../../public/TrashCanIcon.png';
-import ListReorderIcon from '../../../public/ListReorderIcon.png';
+import TrashCanIcon from '../../../assets/icons/TrashCanIcon.png';
+import ListReorderIcon from '../../../assets/icons/ListReorderIcon.png';
 
 const label: CSS.Properties = {
   color: 'white',

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
 import path from 'path';
-// import { rovecomm } from '../RoveProtocol/Rovecomm';
+import { rovecomm } from '../RoveProtocol/Rovecomm';
 import STLViewer from './STLViewer';
-// import { windows } from '../Window';
+import { windows } from '../Window';
 
 const container: CSS.Properties = {
   display: 'flex',
@@ -80,7 +80,7 @@ class ThreeDRover extends Component<IProps, IState> {
 
   findWidth() {
     for (const win of Object.keys(windows)) {
-      if (document.getElementById(this.state.id)) {
+      if (windows[win].document.getElementById(this.state.id)) {
         if (
           this.state.width !== windows[win].document.getElementById(this.state.id).clientWidth - 10 ||
           this.state.height !== windows[win].document.getElementById(this.state.id).clientHeight - 12

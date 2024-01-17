@@ -1,27 +1,32 @@
-# React + TypeScript + Vite
+# Rover Engagement Display (RED)
+*A telemetry and command interface for operating a remote, embedded system.*
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
 
-Currently, two official plugins are available:
+<img alt="Mars Rover Design Team Logo" src="https://avatars.githubusercontent.com/u/3443325?s=200&v=4" width="15%" />
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+[Mars Rover Design Team](https://marsrover.mst.edu/)
 
-## Expanding the ESLint configuration
+<img alt="MS&T Logo" src="https://brand.mst.edu/media/universityadvancement/brand/logos/Missouri-S&T_PrimaryLogo_Forest_RGB.png" width="15%" />
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+[Missouri University of Science and Technology](https://www.mst.edu/)
 
-- Configure the top-level `parserOptions` property like this:
+---
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
+## Introduction
+RED is a standalone application utilizing ReactJS built on an Electron boilerplate.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Three additional windows launch from one initial window, with each window serving one or more separate roles.
+
+- [RED - Rover Engagement Display](link)
+- [RAM - Rover Attachment Manager](link)
+- [RON - Rover Overview ~of~ Network](link)
+- [RID - Rover Imagery Display](link)
+
+---
+
+## RED - Rover Engagement Display
+
+The main window of the application, wherein many of the primary components for controlling the rover are organized.
+- IMU (inertial measurement unit) and raw GPS readout; displays the numerical orientation, heading, and gps position of the rover
+- Waypoints

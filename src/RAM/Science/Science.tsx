@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
-import SensorData from './components/SensorData';
-import SensorGraphs from './components/SensorGraphs';
+// import SensorData from './components/SensorData';
+// import SensorGraphs from './components/SensorGraphs';
 import Heater from './components/Heater';
 import Cameras from '../../Core/components/Cameras';
-import RockLookUp from './components/rocklookup';
+// import RockLookUp from './components/rocklookup';
 import ControlScheme, { controllerInputs } from '../../Core/components/ControlScheme';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
 import Fluorometer from './components/Fluorometer';

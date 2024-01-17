@@ -1,0 +1,10 @@
+# These are supported funding model platforms
+
+#github: [Missouri_MRDT]
+#patreon: amilajack
+#open_collective: electron-react-boilerplate-594
+custom:
+  [
+    'https://www.redbubble.com/people/missourimrdt/shop',
+    'https://marsrover.mst.edu/sponsors/',
+  ]

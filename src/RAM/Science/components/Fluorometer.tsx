@@ -45,28 +45,28 @@ const column: CSS.Properties = {
 const componentBox: CSS.Properties = {
   margin: '3px 0 3px 0',
 };
-const button: CSS.Properties = {
-  marginLeft: '15px',
-  width: '60px',
-  alignSelf: 'center',
-};
+// const button: CSS.Properties = {
+//   marginLeft: '15px',
+//   width: '60px',
+//   alignSelf: 'center',
+// };
 
 const overlay: CSS.Properties = {
   width: '200px',
   color: 'black',
 };
 
-/** Will be merged with the row css if the Laser is off */
-const offIndicator: CSS.Properties = {
-  backgroundColor: '#FF0000',
-  lineHeight: '27px',
-};
+// /** Will be merged with the row css if the Laser is off */
+// const offIndicator: CSS.Properties = {
+//   backgroundColor: '#FF0000',
+//   lineHeight: '27px',
+// };
 
-/** Will be merged with the row css if the Laser is off */
-const onIndicator: CSS.Properties = {
-  backgroundColor: '#00FF00',
-  lineHeight: '27px',
-};
+// /** Will be merged with the row css if the Laser is off */
+// const onIndicator: CSS.Properties = {
+//   backgroundColor: '#00FF00',
+//   lineHeight: '27px',
+// };
 
 function downloadURL(imgData: string): void {
   const filename = `./Screenshots/${new Date()
@@ -135,11 +135,6 @@ interface IState {
     y: number;
   }[];
 
-  relExtrema: {
-    mins: { x: number; intensity: number }[];
-    maxs: { x: number; intensity: number }[];
-  };
-
   crosshairPos: number | null;
 
   SHPeriod: number;
@@ -190,11 +185,6 @@ class Fluorometer extends Component<IProps, IState> {
       intensities: new Array(215).fill(0).flat(),
       graphData: [{ x: 0, y: 0 }],
       maxIntensity: 0,
-
-      relExtrema: {
-        mins: [],
-        maxs: [],
-      },
 
       crosshairPos: null,
 

@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "editorconfig.editorconfig",
+    "msjsdiag.debugger-for-chrome",
+    "eamodio.gitlens",
+    "ms-vsliveshare.vsliveshare",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint"
+  ]
+}
