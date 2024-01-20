@@ -1,22 +1,31 @@
 {
   "version": "0.2.0",
   "configurations": [
+
+    {
+      "name": "Firefox Debugger",
+      "type": "firefox",
+      "request": "launch",
+      "reAttach": true,
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/src",
+      "profile": "Debugger",
+    },
+    
     {
       "name": "Electron: Main",
       "type": "node",
       "request": "launch",
-      "protocol": "inspector",
       "runtimeExecutable": "yarn",
       "runtimeArgs": ["start:main --inspect=5858 --remote-debugging-port=9223"],
       "preLaunchTask": "Start Webpack Dev"
     },
     {
       "name": "Electron: Renderer",
-      "type": "chrome",
+      "type": "firefox",
       "request": "attach",
       "port": 9223,
-      "webRoot": "${workspaceFolder}",
-      "timeout": 15000
+      "webRoot": "${workspaceFolder}/src",
     }
   ],
   "compounds": [
