@@ -104,7 +104,7 @@ function saveImage(): void {
   // If the graph is found, convert its html into a canvas to be downloaded
   html2canvas(graph, {
     scrollX: 0,
-    scrollY: -thisWindow.scrollY - 38,
+    scrollY: -(thisWindow as Window).scrollY - 38,
   }) // We subtract 38 to make up for the 28 pixel top border and the -10 top margin
     .then((canvas: HTMLCanvasElement) => {
       const imgData = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
