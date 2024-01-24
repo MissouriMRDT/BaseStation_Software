@@ -29,3 +29,4 @@ Screenshots/*
 src/main.prod.js
 src/main.prod.js.LICENSE.txt
 .eslintcache
+assets/maps/
