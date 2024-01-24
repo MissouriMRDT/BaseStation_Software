@@ -6,7 +6,7 @@ const reactTable = path.join(__dirname, '../assets/react-table.css');
 const reactVis = path.join(__dirname, '../assets/react-vis.css');
 const leafletStyle = path.join(__dirname, '../assets/leaflet.css');
 const leafletJS = path.join(__dirname, '../assets/leaflet.js');
-export const windows: any = { RED: window };
+export const windows: { [key: string]: Window } = { RED: window };
 
 interface IProps {
   onClose: CallableFunction;
