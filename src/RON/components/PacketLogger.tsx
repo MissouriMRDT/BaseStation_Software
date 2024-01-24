@@ -49,7 +49,7 @@ interface IProps {
 interface IState {
   board: string;
   data: any;
-  columns: any;
+  columns: { Header: string; accessor: string; width: string; Cell?: any }[];
 }
 
 class PacketLogger extends Component<IProps, IState> {
