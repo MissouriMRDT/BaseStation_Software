@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, HTMLProps } from 'react';
 import CSS from 'csstype';
 import { MapContainer, Marker, Popup, ScaleControl, TileLayer, Circle } from 'react-leaflet';
 import { LatLngTuple } from 'leaflet';
@@ -96,7 +96,7 @@ class Map extends Component<IProps, IState> {
               maxZoom={this.state.maxZoom}
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
-              whenReady={(map: any): void =>
+              whenReady={(map: HTMLProps): void =>
                 map.target.on('click', (e: { latlng: { lat: number; lng: number } }) => {
                   this.props.store(new Date().toLocaleTimeString(), {
                     lat: e.latlng.lat,
