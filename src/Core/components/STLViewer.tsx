@@ -20,7 +20,7 @@ interface IProps {
   lightColor?: string;
   rotation?: number[];
   rotationSpeeds?: number[];
-  model?: any;
+  model?: string;
   zoom?: number;
 }
 
