@@ -5,10 +5,15 @@ import fs from 'fs';
 import path from 'path';
 /* eslint-disable import/no-cycle */
 import { parse } from './Rovecomm';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 export let dataSizes: any = [];
 export let DataTypes: any = {};
 const headerLength = 6;
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const filepath = path.join(__dirname, '../../assets/RovecommManifest.json');
 export const VersionNumber = 3;

@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
-import { rovecomm } from '../Core/RoveProtocol/Rovecomm';
+// import { rovecomm } from '../Core/RoveProtocol/Rovecomm';
 import GPS from './components/GPS';
-import Log from './components/Log';
-import Map from './components/Map';
-import Waypoints from './components/Waypoints';
-import NewWindowComponent from '../Core/Window';
-import RoverOverviewOfNetwork from '../RON/RON';
-import RoverAttachmentManager from '../RAM/RAM';
-import RoverImageryDisplay from '../RID/RID';
-import Cameras from '../Core/components/Cameras';
-import Timer from './components/Timer';
-import Power from './components/Power&BMS';
-import ControlScheme from '../Core/components/ControlScheme';
-import Drive from './components/Drive';
-import Gimbal from './components/Gimbal';
+// import Log from './components/Log';
+// import Map from './components/Map';
+// import Waypoints from './components/Waypoints';
+// import NewWindowComponent from '../Core/Window';
+// import RoverOverviewOfNetwork from '../RON/RON';
+// import RoverAttachmentManager from '../RAM/RAM';
+// import RoverImageryDisplay from '../RID/RID';
+// import Cameras from '../Core/components/Cameras';
+// import Timer from './components/Timer';
+// import Power from './components/Power&BMS';
+// import ControlScheme from '../Core/components/ControlScheme';
+// import Drive from './components/Drive';
+// import Gimbal from './components/Gimbal';
 // import ThreeDRover from '../Core/components/ThreeDRover';
 
 const row: CSS.Properties = {
@@ -59,7 +59,7 @@ class ControlCenter extends Component<IProps, IState> {
     this.updateWaypoints = this.updateWaypoints.bind(this);
     this.updateCoords = this.updateCoords.bind(this);
 
-    window.addEventListener('resize', () => this.setState({ fourthHeight: window.innerHeight / 4 }));
+    // window.addEventListener('resize', () => this.setState({ fourthHeight: window.innerHeight / 4 }));
   }
 
   updateWaypoints(storedWaypoints: any): void {
@@ -93,9 +93,9 @@ class ControlCenter extends Component<IProps, IState> {
             /> */}
           </div>
           {/* <Timer timer={undefined} /> */}
-          <Log /> 
+          {/* <Log />  */}
           {/* <Power /> */}
-          <Drive />
+          {/* <Drive /> */}
           {/* <div style={row}>
             <ControlScheme
               style={{ flexGrow: 1, marginRight: '5px', marginBottom: '5px' }}
@@ -131,8 +131,8 @@ class ControlCenter extends Component<IProps, IState> {
           <Cameras defaultCamera={3} style={{ width: '100%' }} /> */}
         </div>
       </div>
-    );
-  }
+    )
+  };
 }
 
 export default ControlCenter;

@@ -43,18 +43,7 @@ class App extends Component<IProps, IState> {
   render(): JSX.Element {
     return (
       <>
-        <BrowserRouter>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <div>
-                  <ControlCenter />
-                </div>
-              }
-            />
-          </Routes>
-        </BrowserRouter>
+        <ControlCenter />
       </>
     );
   }

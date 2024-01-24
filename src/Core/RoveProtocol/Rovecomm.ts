@@ -4,6 +4,8 @@ import { Socket as netSocket } from 'net';
 import Deque from 'double-ended-queue';
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 // Change these 25s to 2s to use rovecomm2 instead. Eventually, this should
 // be done programatically, but currently there is no rover select.
@@ -20,6 +22,9 @@ export let SystemPackets: any = {};
 export let NetworkDevices: any = {};
 let ethernetUDPPort = 11000;
 let ethernetTCPPort = 12000;
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const filepath = path.join(__dirname, '../../assets/RovecommManifest.json');
 
 if (fs.existsSync(filepath)) {
@@ -37,9 +42,9 @@ if (fs.existsSync(filepath)) {
 // There is a fundamental implementation difference between these required imports
 // and the traditional typescript imports.
 /* eslint-disable @typescript-eslint/no-var-requires */
-const dgram = require('dgram');
-const net = require('net');
-const EventEmitter = require('events');
+import dgram from 'dgram';
+import net from 'net';
+import EventEmitter from 'events';
 
 // List of dataIds which are known to be conflicting with the current manifest
 const reject: number[] = [];
