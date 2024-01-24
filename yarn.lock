@@ -1945,10 +1945,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/halogenium@^2.3.1":
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/@types/halogenium/-/halogenium-2.3.1.tgz#fb8879e516cb19b2eb38edb4291c0d38c88caabd"
-  integrity sha512-BqT1V++SYWUuRGw1j/E72zBOfUemlC9jcBrotHsimn+Uu4UdDe2jCNcWLB0YAeLYP6UEQV1nRqwnnF8mRRPYMw==
+"@types/halogenium@^2.3.4":
+  version "2.3.4"
+  resolved "https://registry.yarnpkg.com/@types/halogenium/-/halogenium-2.3.4.tgz#289f79527b26d5da0af6abf37b3438e4933b1438"
+  integrity sha512-lch8ki8lqhZTOguujE1ry9lIjavu+aSMVp+VROa/yYRMfU8NtRLfdD10B47bKkOOV4nMOTr0nYpi+wo1VbLmjw==
   dependencies:
     "@types/react" "*"
 
