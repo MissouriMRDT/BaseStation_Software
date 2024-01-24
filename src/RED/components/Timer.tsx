@@ -103,7 +103,27 @@ const timeSplitTitle: CSS.Properties = {
 
 const FILEPATH = path.join(__dirname, '../assets/TaskList.json');
 const DIFFPATH = path.join(__dirname, '../assets/Differences.txt');
-let taskList: any;
+
+interface ChildTask {
+  title: string;
+  id: number;
+  setTime: number;
+  difference: number;
+}
+
+interface ParentTask {
+  title: string;
+  id: number;
+  setTime: number;
+  difference: number;
+  childTasks: ChildTask[];
+}
+
+interface TaskList {
+  ParentTasks: ParentTask[];
+}
+
+let taskList: TaskList;
 
 let timer = 0;
 
