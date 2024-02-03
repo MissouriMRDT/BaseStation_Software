@@ -31,6 +31,7 @@ let MultiplierJ4: number;
 let MultiplierJ5: number;
 let MultiplierJ6: number;
 let MultiplierGripper: number;
+// let MultiplierEndEffector: number;
 
 class Arm extends Component<IProps, IState> {
   constructor(props: IProps) {
@@ -65,6 +66,7 @@ class Arm extends Component<IProps, IState> {
       MultiplierJ5 = controllerInputs.Multiplier1;
       MultiplierJ6 = controllerInputs.Multiplier2;
       MultiplierGripper = controllerInputs.Multiplier3;
+      // MultiplierEndEffector = controllerInputs.Multiplier4;
     }
 
     // J5
