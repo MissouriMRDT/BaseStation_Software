@@ -269,7 +269,9 @@
     "react-vis": "^1.11.7",
     "regenerator-runtime": "^0.13.9",
     "source-map-support": "^0.5.20",
-    "styled-components": "^5.3.3"
+    "styled-components": "^5.3.3",
+    "ffmpeg-stream": "^0.7.0",
+    "video.js": "^8.10.0"
   },
   "devEngines": {
     "node": ">=10.x",

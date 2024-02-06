@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
-import { BitmaskUnpack } from '../../Core/BitmaskUnpack';
+import videojs from 'video.js'
 
-const h1Style: CSS.Properties = {
-  fontFamily: 'arial',
-  fontSize: '12px',
-};
 const container: CSS.Properties = {
   display: 'flex',
   fontFamily: 'arial',
@@ -28,67 +24,51 @@ const label: CSS.Properties = {
   zIndex: 1,
   color: 'white',
 };
-// const row: CSS.Properties = {
-//   display: 'flex',
-//   flexDirection: 'row',
-//   justifyContent: 'space-between',
-// };
-const buttonRow: CSS.Properties = {
-  display: 'flex',
-  flexDirection: 'row',
-};
 
 interface IProps {
   style?: CSS.Properties;
+  autoplay: boolean,
+  controls: boolean,
+  sources: object[]
 }
-
-/** Number of simultaneous camera streams */
-const NUM_CAMS = 4;
-/** Number of cameras that can be attached to Jetson */
-const MAX_CAMS = 8;
 
 interface IState {
-  /** Which cameras have been marked as able to stream */
-  AvailableCams: boolean[];
-  /** Cameras that are currently streaming starting at port 5000 */
-  SelectedCams: number[];
 }
 
-/**
- * Send the Rovecomm command to switch a port to view a given camera.
- * Port is which feed will be switched.
- * The new feed will stream at port (5000 + portId)
- */
-function switchFeed(portId: number, newCam: number): void {
-  rovecomm.sendCommand('ChangeCameras', [portId, newCam]);
-}
+// ffmpeg -f mpegts -i udp://169.254.144.138:1234 -c:v libx264 -crf 21 -f hls -hls_time 4 -hls_playlist_type event %TEMP%\stream.m3u8
+// this is the ffmpeg command (IP may need to be changed)^
+// the src needs to be changed below to whatever your %TEMP% is.
+// I know, this code is all jank, I just want it up on the git repository.
 
 class CameraControls extends Component<IProps, IState> {
   static defaultProps = {
     style: {},
+    autoplay: true,
+    controls: true,
+    sources: [{
+      src: 'C:\\Users\\rfboe\\AppData\\Local\\Temp\\stream.m3u8',
+      type: 'application/x-mpegURL'
+    }]
   };
+
+  player: any;
+  videoNode: any;
 
   constructor(props: IProps) {
     super(props);
-    this.state = {
-      AvailableCams: new Array(MAX_CAMS).fill(false).flat(),
-      SelectedCams: new Array(NUM_CAMS).fill(-1).flat(),
-    };
-    this.setAvailable = this.setAvailable.bind(this);
-    this.setStreaming = this.setStreaming.bind(this);
-    rovecomm.on('AvailableCameras', this.setAvailable);
-    rovecomm.on('StreamingCameras', this.setStreaming);
+    this.state = {};
   }
 
-  setAvailable(data: number[]): void {
-    const available = BitmaskUnpack(data[0], 8).split('').reverse().map(Number).map(Boolean);
-    console.log(available);
-    this.setState({ AvailableCams: available });
+  componentDidMount() {
+    this.player = videojs(this.videoNode, this.props, () => {
+      videojs.log('onPlayerReady', this);
+    });
   }
 
-  /** Tells Basestation which cameras the Jetson is currently streaming to which port */
-  setStreaming(data: number[]): void {
-    this.setState({ SelectedCams: data });
+  componentWillUnmount() {
+    if (this.player) {
+      this.player.dispose();
+    }
   }
 
   render(): JSX.Element {
@@ -96,31 +76,9 @@ class CameraControls extends Component<IProps, IState> {
       <div style={this.props.style}>
         <div style={label}>Camera Controls</div>
         <div style={container}>
-          {/* This will be removed. Currently tests receiving rovecomm packets. */}
-          <button onClick={() => this.setStreaming([5, 1, 1, 0])}>Test</button>
-          {this.state.SelectedCams.map((val, ndx) => {
-            return (
-              <div key={`Cam${ndx}`} style={buttonRow}>
-                <p>Port 500{ndx}</p>
-                {this.state.AvailableCams.map((isAvail, avNdx) => {
-                  return (
-                    <button
-                      type="button"
-                      onClick={() => switchFeed(ndx, avNdx)}
-                      key={avNdx}
-                      style={{
-                        flexGrow: 1,
-                        borderWidth: val === avNdx ? 'medium' : 'thin',
-                        backgroundColor: isAvail ? '#00FF00' : '#FF0000',
-                      }}
-                    >
-                      <h1 style={h1Style}>{avNdx + 1}</h1>
-                    </button>
-                  );
-                })}
-              </div>
-            );
-          })}
+          <div data-vjs-player>
+            <video ref={node => this.videoNode = node} className="video-js"></video>
+          </div>
         </div>
       </div>
     );
