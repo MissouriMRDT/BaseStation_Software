@@ -44,7 +44,6 @@ class CameraControls extends Component<IProps, IState> {
   static defaultProps = {
     style: {},
     autoplay: true,
-    controls: true,
     sources: [
       {
         src: 'C:\\Users\\rfboe\\AppData\\Local\\Temp\\stream.m3u8',
@@ -83,7 +82,7 @@ class CameraControls extends Component<IProps, IState> {
             <video
               ref={(node) => (this.videoNode = node)}
               className="video-js"
-              style={{ backgroundColor: 'black' }}
+              style={{ backgroundColor: 'black', overflow: 'hidden' }}
             ></video>
           </div>
         </div>
