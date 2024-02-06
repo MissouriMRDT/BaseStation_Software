@@ -35,9 +35,12 @@ interface IProps {
 interface IState {
 }
 
-// ffmpeg -f mpegts -i udp://169.254.144.138:1234 -c:v libx264 -crf 21 -f hls -hls_time 4 -hls_playlist_type event %TEMP%\stream.m3u8
-// this is the ffmpeg command (IP may need to be changed)^
-// the src needs to be changed below to whatever your %TEMP% is.
+// this is the ffmpeg command (IP may need to be changed):
+
+// ffmpeg -flags low_delay^
+//  -f mpegts -i udp://169.254.144.138:1234^
+//  -f mp4 -listen 1 -movflags frag_keyframe+empty_moov http://localhost:2234
+
 // I know, this code is all jank, I just want it up on the git repository.
 
 class CameraControls extends Component<IProps, IState> {
@@ -46,8 +49,9 @@ class CameraControls extends Component<IProps, IState> {
     autoplay: true,
     controls: true,
     sources: [{
-      src: 'C:\\Users\\rfboe\\AppData\\Local\\Temp\\stream.m3u8',
-      type: 'application/x-mpegURL'
+      src: 'http://localhost:2234',
+      // type: 'application/x-mpegURL'
+      type: 'video/mp4'
     }]
   };
 
