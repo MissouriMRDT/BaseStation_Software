@@ -43,16 +43,19 @@ interface IState {}
 
 // I know, this code is all jank, I just want it up on the git repository.
 
+// CameraControls: represents a single camera view w/ controls. should be contained under a CamerasContainer
 class CameraControls extends Component<IProps, IState> {
   static defaultProps = {
     style: {},
     autoplay: true,
     controls: true,
-    sources: [{
-      src: 'http://localhost:2234',
-      // type: 'application/x-mpegURL'
-      type: 'video/mp4'
-    }]
+    sources: [
+      {
+        src: 'http://localhost:2234',
+        // type: 'application/x-mpegURL'
+        type: 'video/mp4',
+      },
+    ],
   };
 
   player: any;
@@ -79,15 +82,12 @@ class CameraControls extends Component<IProps, IState> {
   render(): JSX.Element {
     return (
       <div style={this.props.style}>
-        <div style={label}>Camera Controls</div>
-        <div style={container}>
-          <div data-vjs-player>
-            <video
-              ref={(node) => (this.videoNode = node)}
-              className="video-js"
-              style={{ backgroundColor: 'black', overflow: 'hidden' }}
-            ></video>
-          </div>
+        <div data-vjs-player>
+          <video
+            ref={(node) => (this.videoNode = node)}
+            className="video-js"
+            style={{ backgroundColor: 'black', overflow: 'hidden', display: 'block'}}
+          ></video>
         </div>
       </div>
     );
