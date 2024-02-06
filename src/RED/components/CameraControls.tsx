@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
-import videojs from 'video.js'
+import videojs from 'video.js';
 
 const container: CSS.Properties = {
   display: 'flex',
@@ -27,13 +27,13 @@ const label: CSS.Properties = {
 
 interface IProps {
   style?: CSS.Properties;
-  autoplay: boolean,
-  controls: boolean,
-  sources: object[]
+  autoplay: boolean;
+  controls: boolean;
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  sources: object[];
 }
 
-interface IState {
-}
+interface IState {}
 
 // this is the ffmpeg command (IP may need to be changed):
 
@@ -56,6 +56,7 @@ class CameraControls extends Component<IProps, IState> {
   };
 
   player: any;
+
   videoNode: any;
 
   constructor(props: IProps) {
@@ -81,7 +82,11 @@ class CameraControls extends Component<IProps, IState> {
         <div style={label}>Camera Controls</div>
         <div style={container}>
           <div data-vjs-player>
-            <video ref={node => this.videoNode = node} className="video-js"></video>
+            <video
+              ref={(node) => (this.videoNode = node)}
+              className="video-js"
+              style={{ backgroundColor: 'black', overflow: 'hidden' }}
+            ></video>
           </div>
         </div>
       </div>
