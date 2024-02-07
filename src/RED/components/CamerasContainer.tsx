@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import CSS from 'csstype';
 import CameraControls from './CameraControls';
 import { createPortal } from 'react-dom';
+import 'video.js/dist/video-js.css';
 
 const container: CSS.Properties = {
-  display: 'flex',
+  display: 'grid',
   fontFamily: 'arial',
   borderTopWidth: '30px',
   borderColor: '#990000',
   borderBottomWidth: '2px',
   borderStyle: 'solid',
-  flexWrap: 'wrap',
-  flexDirection: 'column',
+  gridTemplateColumns: "auto auto",
   padding: '5px',
 };
 const label: CSS.Properties = {
@@ -53,6 +53,7 @@ class CamerasContainer extends Component<IProps, IState> {
           <CameraControls passedFileSource={'http://localhost:2234'} />
           <CameraControls passedFileSource={'http://localhost:2234'} />
           <CameraControls passedFileSource={'http://localhost:2234'} />
+          <button>test</button>
         </div>
       </div>
     );

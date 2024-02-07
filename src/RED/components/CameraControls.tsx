@@ -2,17 +2,15 @@ import React, { Component } from 'react';
 import CSS from 'csstype';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
 import videojs from 'video.js';
+import 'video.js/dist/video-js.css';
 
 const container: CSS.Properties = {
-  display: 'flex',
   fontFamily: 'arial',
   borderTopWidth: '30px',
   borderColor: '#990000',
   borderBottomWidth: '2px',
   borderStyle: 'solid',
-  flexWrap: 'wrap',
-  flexDirection: 'column',
-  padding: '5px',
+  margin: '5px',
 };
 const label: CSS.Properties = {
   marginTop: '-10px',
@@ -24,6 +22,15 @@ const label: CSS.Properties = {
   zIndex: 1,
   color: 'white',
 };
+
+const controlContainer: CSS.Properties = {
+  display: "grid",
+  width: "250px",
+  marginLeft: "5px",
+  gridTemplateColumns: "12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%",
+  cursor: "pointer"
+}
+
 
 interface IProps {
   style?: CSS.Properties;
@@ -49,7 +56,7 @@ class CameraControls extends Component<IProps, IState> {
   static defaultProps = {
     style: {},
     autoplay: true,
-    controls: true,
+    controls: false,
     sources: [
       {
         // src is passed through CamerasController.tsx
@@ -95,9 +102,37 @@ class CameraControls extends Component<IProps, IState> {
           <video
             ref={(node) => (this.videoNode = node)}
             className="video-js"
-            style={{ backgroundColor: 'black', overflow: 'hidden', display: 'block' }}
+            style={{ backgroundColor: "black", overflow: 'hidden', display: 'block', width: "250px", margin: "5px"}}
           ></video>
+
         </div>
+        <div style={controlContainer}>
+            <button type="button" style={{cursor: "pointer"}}>
+              1
+            </button>
+            <button type="button">
+              2
+            </button>
+            <button>
+              3
+            </button>
+            <button>
+              4
+            </button>
+            <button>
+              5
+            </button>
+            <button>
+              6
+            </button>
+            <button>
+              7
+            </button>
+            <button>
+              8
+            </button>
+          </div>
+          <button type="button" onClick={() => {console.log("Clicked 1234")}}>1234</button>
       </div>
     );
   }

@@ -17,6 +17,7 @@ import Gimbal from './components/Gimbal';
 import ThreeDRover from '../Core/components/ThreeDRover';
 import CameraControls from './components/CameraControls';
 import CamerasContainer from './components/CamerasContainer';
+import 'video.js/dist/video-js.css';
 
 const row: CSS.Properties = {
   display: 'flex',
@@ -161,6 +162,7 @@ class ControlCenter extends Component<IProps, IState> {
             store={(name: string, coords: any) => this.waypointsInstance.store(name, coords)}
             name="controlCenterMap"
           />
+
           <CamerasContainer />
         </div>
       </div>
