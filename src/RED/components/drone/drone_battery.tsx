@@ -28,6 +28,7 @@ interface IProps {}
 
 interface IState {
   maxBatVolt: number;
+  voltage: number;
   level: number;
   temperature: number;
 }
@@ -38,6 +39,7 @@ class DroneBattery extends Component<IProps, IState> {
     this.state = {
       maxBatVolt: 0,
       level: 0,
+      voltage: 0,
       temperature: 0,
     };
 
@@ -47,10 +49,11 @@ class DroneBattery extends Component<IProps, IState> {
   }
 
   updateData(data: number[]) {
-    const celsius: number = Math.round(data[0] - -273.15);
+    //const celsius: number = Math.round(data[0] - -273.15);
     // eslint-disable-next-line react/no-access-state-in-setstate
-    const percentLevel: number = Math.round((data[1] / this.state.maxBatVolt) * 100);
-    this.setState({ level: percentLevel, temperature: celsius });
+    // may not be needed
+    // const percentLevel: number = Math.round((data[2] / this.state.maxBatVolt) * 100);
+    this.setState({ voltage: data[1] });
   }
 
   render(): JSX.Element {
@@ -59,6 +62,7 @@ class DroneBattery extends Component<IProps, IState> {
         <div style={label}>Drone Battery</div>
         <div style={container}>
           <div>Level: {this.state.level}%</div>
+          <div>Voltage: {this.state.voltage}</div>
           <div>Temperature: {this.state.temperature}</div>
         </div>
       </div>

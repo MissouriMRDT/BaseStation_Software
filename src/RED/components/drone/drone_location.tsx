@@ -46,19 +46,27 @@ class DroneLocation extends Component<IProps, IState> {
       lat: 0,
     };
     // Not Implemented
-    /* rovecomm.on('droneGPS', (data: number[]) => {
-            this.updateLocation(data);
-        }) */
+    rovecomm.on('droneLocation', (data: number[]) => {
+      this.updateLocation(data);
+    });
+    rovecomm.on('droneOrientation', (data: number[]) => {
+      this.updateOrientation(data);
+    });
   }
 
   updateLocation(data: number[]) {
     this.setState({
       alt: data[0],
-      roll: data[1],
-      pitch: data[2],
-      yaw: data[3],
-      long: data[4],
-      lat: data[5],
+      long: data[1],
+      lat: data[2],
+    });
+  }
+
+  updateOrientation(data: number[]) {
+    this.setState({
+      pitch: data[0],
+      yaw: data[1],
+      roll: data[2],
     });
   }
 
