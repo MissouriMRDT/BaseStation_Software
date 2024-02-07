@@ -810,6 +810,30 @@
           "WINDOWS": 6
         }
       }
+    },
+    "Drone": {
+      "Ip": "x.x.x.x",
+      "Commands": {},
+      "Telemetry": {
+        "droneVoltage": {
+          "dataId": 18100,
+          "dataType": "UINT8_T",
+          "dataCount": 1,
+          "comments": "get voltage reading from drone battery"
+        },
+        "droneLocation": {
+          "dataId": 18101,
+          "dataType": "FLOAT_T",
+          "dataCount": 3,
+          "comments": "get location data from drone. [altitude, longitude, latitude]"
+        },
+        "droneOrientation": {
+          "dataId": 18102,
+          "dataType": "UINT8_T",
+          "dataCount": 3,
+          "comments": "get orientation data from drone. [pitch, yaw, roll]"
+        }
+      }
     }
   },
   "NetworkDevices": {
