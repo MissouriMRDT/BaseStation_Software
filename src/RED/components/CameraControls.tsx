@@ -30,7 +30,8 @@ interface IProps {
   autoplay: boolean;
   controls: boolean;
   // eslint-disable-next-line @typescript-eslint/ban-types
-  sources: object[];
+  sources: { src: string; type: string }[];
+  passedFileSource: string;
 }
 
 interface IState {}
@@ -51,7 +52,8 @@ class CameraControls extends Component<IProps, IState> {
     controls: true,
     sources: [
       {
-        src: 'http://localhost:2234',
+        // src is passed through CamerasController.tsx
+        src: '',
         // type: 'application/x-mpegURL'
         type: 'video/mp4',
       },
@@ -65,6 +67,7 @@ class CameraControls extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {};
+    props.sources[0].src = props.passedFileSource;
   }
 
   componentDidMount() {
@@ -86,7 +89,7 @@ class CameraControls extends Component<IProps, IState> {
           <video
             ref={(node) => (this.videoNode = node)}
             className="video-js"
-            style={{ backgroundColor: 'black', overflow: 'hidden', display: 'block'}}
+            style={{ backgroundColor: 'black', overflow: 'hidden', display: 'block' }}
           ></video>
         </div>
       </div>

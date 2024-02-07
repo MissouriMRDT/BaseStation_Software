@@ -48,9 +48,11 @@ class CamerasContainer extends Component<IProps, IState> {
       <div style={this.props.style}>
         <div style={label}> Camera Controls </div>
         <div style={container}>
-          <CameraControls />
-          <CameraControls />
-          <CameraControls />
+          {/* All cameras currently listen to the same stream. TODO Set cameras to different streams */}
+          <CameraControls passedFileSource={'http://localhost:2234'} />
+          <CameraControls passedFileSource={'http://localhost:2234'} />
+          <CameraControls passedFileSource={'http://localhost:2234'} />
+          <CameraControls passedFileSource={'http://localhost:2234'} />
         </div>
       </div>
     );
