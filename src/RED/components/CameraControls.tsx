@@ -71,9 +71,15 @@ class CameraControls extends Component<IProps, IState> {
   }
 
   componentDidMount() {
+    // create video Player
     this.player = videojs(this.videoNode, this.props, () => {
       videojs.log('onPlayerReady', this);
     });
+
+    // liveTracker will consider itself "not live" if more than 2 seconds behind (default is 15 seconds)
+    this.player.liveTracker.options.liveTolerance = 2;
+    // force liveTracker to catch up when we start listening to stream
+    this.player.liveTracker.seekToLiveEdge();
   }
 
   componentWillUnmount() {
