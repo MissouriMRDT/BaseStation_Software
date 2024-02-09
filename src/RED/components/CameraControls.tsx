@@ -58,7 +58,7 @@ class CameraControls extends Component<IProps, IState> {
     controls: false,
     sources: [
       {
-        // src is passed through CamerasController.tsx
+        // src is passed through CamerasContainer.tsx
         src: '',
         // type: 'application/x-mpegURL'
         type: 'video/mp4',
@@ -101,7 +101,13 @@ class CameraControls extends Component<IProps, IState> {
           <video
             ref={(node) => (this.videoNode = node)}
             className="video-js"
-            style={{ backgroundColor: "black", overflow: 'hidden', display: 'block', width: "250px", margin: "5px"}}
+            style={{
+              backgroundColor: 'black',
+              overflow: 'hidden',
+              display: 'block',
+              width: '250px',
+              margin: '5px',
+            }}
           ></video>
 
         </div>

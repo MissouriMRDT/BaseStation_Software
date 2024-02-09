@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
 import CameraControls from './CameraControls';
-import { createPortal } from 'react-dom';
 
 const container: CSS.Properties = {
   display: 'grid',
@@ -10,7 +9,7 @@ const container: CSS.Properties = {
   borderColor: '#990000',
   borderBottomWidth: '2px',
   borderStyle: 'solid',
-  gridTemplateColumns: "auto auto",
+  gridTemplateColumns: 'auto auto',
   padding: '5px',
 };
 const label: CSS.Properties = {
@@ -47,11 +46,10 @@ class CamerasContainer extends Component<IProps, IState> {
       <div style={this.props.style}>
         <div style={label}> Camera Controls </div>
         <div style={container}>
-          {/* All cameras currently listen to the same stream. TODO Set cameras to different streams */}
           <CameraControls passedFileSource={'http://localhost:2234'} />
-          <CameraControls passedFileSource={'http://localhost:2234'} />
-          <CameraControls passedFileSource={'http://localhost:2234'} />
-          <CameraControls passedFileSource={'http://localhost:2234'} />
+          {/* <CameraControls passedFileSource={'http://localhost:2235'} />
+          <CameraControls passedFileSource={'http://localhost:2236'} />
+          <CameraControls passedFileSource={'http://localhost:2237'} /> */}
           <button>test</button>
         </div>
       </div>
