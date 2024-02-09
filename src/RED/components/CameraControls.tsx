@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import CSS from 'csstype';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
 import videojs from 'video.js';
-import 'video.js/dist/video-js.css';
 
 const container: CSS.Properties = {
   fontFamily: 'arial',

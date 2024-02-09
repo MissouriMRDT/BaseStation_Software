@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import CSS from 'csstype';
 import CameraControls from './CameraControls';
 import { createPortal } from 'react-dom';
-import 'video.js/dist/video-js.css';
 
 const container: CSS.Properties = {
   display: 'grid',
