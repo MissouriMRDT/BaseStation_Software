@@ -163,7 +163,7 @@
     "@babel/preset-typescript": "^7.23.2",
     "@babel/register": "^7.16.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
-    "@teamsupercell/typings-for-css-modules-loader": "^2.5.1",
+    "@teamsupercell/typings-for-css-modules-loader": "^2.5.2",
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.7",
     "@types/double-ended-queue": "^2.1.1",
