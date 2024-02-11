@@ -47,7 +47,7 @@ jobs:
 
       - name: Extract Reference Name
         id: extract_ref_name
-        run: echo “ref_name=$(echo ${{ github.ref_name }} | cut -d '/' -f 2)" >> $GITHUB_ENV
+        run: echo "ref_name=$(echo ${{ github.ref_name }} | cut -d '/' -f 2)" >> $GITHUB_ENV
 
       - name: Rename Package
         run: mv release/RED*.exe "RED.${{ github.ref_name }}.Installer.exe"
