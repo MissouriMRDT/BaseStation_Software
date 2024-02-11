@@ -45,7 +45,7 @@ jobs:
         id: version
         run: echo ${{ github.ref_name }} >> $GITHUB_ENV
 
-      - name: Rename Package
+      - name: Extract Reference Name
         id: extract_ref_name
         run: echo “ref_name=$(echo ${{ github.ref_name }} | cut -d '/' -f 2)" >> $GITHUB_ENV
 
