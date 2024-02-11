@@ -46,7 +46,7 @@ jobs:
         run: echo ${{ github.ref_name }} >> $GITHUB_ENV
 
       - name: Rename Package
-        run: mv "release/RED Setup 2.3.0.exe" "RED.${{ github.ref_name }}.Installer.exe"
+        run: mv "release/RED*.exe" "RED.${{ github.ref_name }}.Installer.exe"
 
       - name: Create Zip
         uses: vimtor/action-zip@v1.1
