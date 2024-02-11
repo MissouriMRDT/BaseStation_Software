@@ -47,7 +47,9 @@ jobs:
 
       - name: Rename Package
         run: |
-          for file in release/RED*.exe; do mv "$file" "RED.${{ github.ref_name }}.Installer.exe done
+          for file in release/RED*.exe; do
+            mv "$file" "RED.bug/fix-release-file"
+          done
 
       - name: Create Zip
         uses: vimtor/action-zip@v1.1
