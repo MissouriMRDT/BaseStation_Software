@@ -73,14 +73,14 @@ class ControlFeatures extends Component<IProps, IState> {
       overridden: false,
       tool: 0,
       laserOn: false,
-      sendInterval: setInterval(() => rovecomm.sendCommand('Lasers', this.state.laserOn ? [1] : [0]), 1000),
+      sendInterval: setInterval(() => rovecomm.sendCommand('Laser', this.state.laserOn ? [1] : [0]), 1000),
       gripperState: false,
     };
     this.toggleGripper = this.toggleGripper.bind(this);
   }
 
   /** Called by React when the component is destroyed
-   *  We want to stop sending the lasers command when the arm isn't being controlled.
+   *  We want to stop sending the Laser command when the arm isn't being controlled.
    */
   componentWillUnmount() {
     clearInterval(this.state.sendInterval);

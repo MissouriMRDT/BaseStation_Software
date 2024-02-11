@@ -203,7 +203,7 @@ class Fluorometer extends Component<IProps, IState> {
     this.requestData = this.requestData.bind(this);
 
     // Call updateDiodeValues with the new data and the index of that data
-    rovecomm.on('FluorometerData', (data: number[]) => this.updateDiodeVals(0, data));
+    rovecomm.on('Reading', (data: number[]) => this.updateDiodeVals(0, data));
   }
 
   onMouseLeave(): void {
@@ -309,7 +309,7 @@ class Fluorometer extends Component<IProps, IState> {
       this.setState({
         LedStatus,
       });
-      rovecomm.sendCommand('FluorometerLEDs', Fluorometer.buildLedCommand(LedStatus));
+      rovecomm.sendCommand('EnableLEDs', Fluorometer.buildLedCommand(LedStatus));
     }
   }
 
@@ -363,7 +363,7 @@ class Fluorometer extends Component<IProps, IState> {
   }
 
   requestData(): void {
-    rovecomm.sendCommand('ReqFluorometer', 1);
+    rovecomm.sendCommand('RequestReading', 1);
     console.log('requesting fluorometer', this.state.SHPeriod);
   }
 

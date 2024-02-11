@@ -143,19 +143,13 @@ class Power extends Component<IProps, IState> {
      *   IS APPLYING THAT VALUE TO THE NAME FROM THE COMMANDS OBJECT
      * # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
      */
-    rovecomm.on('MotorBusEnabled', (data: number[]) => this.boardListenHandlerTog(data, 'MotorBusEnable'));
-    rovecomm.on('MotorBusCurrent', (data: number[]) => this.boardListenHandlerAmp(data, 'MotorBusEnable'));
-    rovecomm.on('HighBusEnabled', (data: number[]) => this.boardListenHandlerTog(data, 'HighBusEnable'));
-    rovecomm.on('HighBusCurrent', (data: number[]) => this.boardListenHandlerAmp(data, 'HighBusEnable'));
-    rovecomm.on('LowBusEnabled', (data: number[]) => this.boardListenHandlerTog(data, 'LowBusEnable'));
-    rovecomm.on('LowBusCurrent', (data: number[]) => this.boardListenHandlerAmp(data, 'LowBusEnable'));
-    rovecomm.on('TwelveVBusEnabled', (data: number[]) => this.boardListenHandlerTog(data, 'TwelveVBusEnable'));
-    rovecomm.on('TwelveVBusCurrent', (data: number[]) => this.boardListenHandlerAmp(data, 'TwelveVBusEnable'));
+    rovecomm.on('', (data: number[]) => this.boardListenHandlerTog(data, 'EnableBus'));
+    rovecomm.on('BusCurrent', (data: number[]) => this.boardListenHandlerAmp(data, 'EnableBus'));
 
-    rovecomm.on('PackI_Meas', (data: number[]) => this.batteryListenHandler(data, 'PackI_Meas'));
-    rovecomm.on('PackV_Meas', (data: number[]) => this.batteryListenHandler(data, 'PackV_Meas'));
-    rovecomm.on('Temp_Meas', (data: number[]) => this.batteryListenHandler(data, 'Temp_Meas'));
-    rovecomm.on('CellV_Meas', (data: number[]) => this.batteryListenHandler(data, 'CellV_Meas'));
+    rovecomm.on('PackCurrent', (data: number[]) => this.batteryListenHandler(data, 'PackCurrent'));
+    rovecomm.on('PackVoltage', (data: number[]) => this.batteryListenHandler(data, 'PackVoltage'));
+    rovecomm.on('PackTemp', (data: number[]) => this.batteryListenHandler(data, 'PackTemp'));
+    rovecomm.on('CellVoltage', (data: number[]) => this.batteryListenHandler(data, 'CellVoltage'));
     // console.log(boardTelemetry)
   }
 
@@ -227,10 +221,10 @@ class Power extends Component<IProps, IState> {
    */
   allMotorToggle(button: boolean): void {
     const { boardTelemetry } = this.state;
-    Object.keys(boardTelemetry.MotorBusEnable).forEach((motor: string) => {
-      boardTelemetry.MotorBusEnable[motor].enabled = button;
+    Object.keys(boardTelemetry.EnableBus).forEach((motor: string) => {
+      boardTelemetry.EnableBus[motor].enabled = button;
     });
-    this.setState({ boardTelemetry }, () => this.packCommand('MotorBusEnable'));
+    this.setState({ boardTelemetry }, () => this.packCommand('EnableBus'));
   }
 
   /**
@@ -319,25 +313,27 @@ class Power extends Component<IProps, IState> {
             -------------------------------------------------
           </h3>
           <div style={{ ...row, width: '100%' }}>
-            <div style={ColorStyleConverter(this.state.batteryTelemetry.Temp_Meas.value, 30, 75, 115, 120, 0, readout)}>
+            <div style={ColorStyleConverter(this.state.batteryTelemetry.PackTemp.value, 30, 75, 115, 120, 0, readout)}>
               <h3 style={textPad}>Battery Temperature</h3>
-              <h3 style={textPad}>{this.state.batteryTelemetry.Temp_Meas.value.toLocaleString(undefined)}°</h3>
+              <h3 style={textPad}>{this.state.batteryTelemetry.PackTemp.value.toLocaleString(undefined)}°</h3>
             </div>
-            <div style={ColorStyleConverter(this.state.batteryTelemetry.PackI_Meas.value, 0, 15, 160, 120, 0, readout)}>
+            <div style={ColorStyleConverter(this.state.batteryTelemetry.PackTemp.value, 0, 15, 160, 120, 0, readout)}>
               <h3 style={textPad}>Total Pack Current</h3>
               <h3 style={textPad}>
-                {`${(this.state.batteryTelemetry.PackI_Meas.value / 1000).toLocaleString(undefined)} A`}
+                {`${(this.state.batteryTelemetry.PackCurrent.value / 1000).toLocaleString(undefined)} A`}
               </h3>
             </div>
-            <div style={ColorStyleConverter(this.state.batteryTelemetry.PackV_Meas.value, 22, 28, 33, 0, 120, readout)}>
+            <div
+              style={ColorStyleConverter(this.state.batteryTelemetry.PackVoltage.value, 22, 28, 33, 0, 120, readout)}
+            >
               <h3 style={textPad}>Total Pack Voltage</h3>
-              <h3 style={textPad}>{`${this.state.batteryTelemetry.PackV_Meas.value.toLocaleString(undefined)} V`}</h3>
+              <h3 style={textPad}>{`${this.state.batteryTelemetry.PackVoltage.value.toLocaleString(undefined)} V`}</h3>
             </div>
           </div>
           <div style={{ ...row, width: '100%' }}>
             <div style={{ ...cellReadoutContainer, width: '100%' }}>
-              {Object.keys(this.state.batteryTelemetry.CellV_Meas).map((cell) => {
-                const { value } = this.state.batteryTelemetry.CellV_Meas[cell];
+              {Object.keys(this.state.batteryTelemetry.CellVoltage).map((cell) => {
+                const { value } = this.state.batteryTelemetry.CellVoltage[cell];
                 return (
                   <div key={cell} style={ColorStyleConverter(value, 2.5, 3.1, 4.2, 0, 120, readout)}>
                     <h3 style={textPad}>{cell}</h3>

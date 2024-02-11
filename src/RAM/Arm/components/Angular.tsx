@@ -79,14 +79,14 @@ const filepath = path.join(__dirname, '../assets/AngularPresets.json');
 
 function getPosition(): void {
   // Unlike most telemetry, arm joint positions are only sent when requested
-  rovecomm.sendCommand('RequestJointPositions', [1]);
+  rovecomm.sendCommand('RequestPositions', [1]);
 }
 
 function toggleTelem(): void {
   // Some arm systems allow toggling an incoming stream of arm telemetry
   // When enabled, entering text into the textfields to set position will
   // become practically impossible
-  rovecomm.sendCommand('TogglePositionTelem', [1]);
+  rovecomm.sendCommand('RequestCoordinates', [1]);
 }
 
 interface Joint {
@@ -137,7 +137,7 @@ class Angular extends Component<IProps, IState> {
     this.recall = this.recall.bind(this);
     this.delete = this.delete.bind(this);
 
-    rovecomm.on('JointAngles', (data: any) => this.updatePosition(data));
+    rovecomm.on('Positions', (data: any) => this.updatePosition(data));
   }
 
   componentDidMount(): void {
@@ -161,7 +161,7 @@ class Angular extends Component<IProps, IState> {
      * and send the proper rovecomm packet
      */
     rovecomm.sendCommand(
-      'ArmMoveToPosition',
+      'SetPosition',
       Object.values(this.state.jointValues).map((x: string) => {
         return x ? parseFloat(x) : 0;
       })

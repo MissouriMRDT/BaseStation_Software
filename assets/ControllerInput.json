@@ -43,19 +43,19 @@
     "config": "Science",
     "controller": "Xbox",
     "bindings": {
-      "SensorAxis": { "buttonType": "joystick", "button": "left stick y" },
-      "WaterPump": { "buttonType": "button", "button": "A" },
+      "ScoopAxis_OpenLoop": { "buttonType": "joystick", "button": "left stick y" },
+      "ScoopAxis_SetPosition": { "buttonType": "button", "button": "A" },
       "WaterLeft": { "buttonType": "button", "button": "dpad left" },
       "WaterRight": { "buttonType": "button", "button": "dpad right" },
-      "XoopAxis": { "buttonType": "joystick", "button": "right stick x" },
-      "ZoopAxis": { "buttonType": "joystick", "button": "right stick y" },
+      "ScoopAxis_IncrementPosition": { "buttonType": "joystick", "button": "right stick x" },
+      "SensorAxis_IncrementPosition": { "buttonType": "joystick", "button": "right stick y" },
       "OpenScoop": { "buttonType": "button", "button": "LB" },
       "CloseScoop": { "buttonType": "button", "button": "RB" },
       "IncrementOpen": { "buttonType": "button", "button": "LT" },
       "IncrementClose": { "buttonType": "button", "button": "RT" },
       "MicroscopeFocusPlus": { "buttonType": "button", "button": "B" },
       "MicroscopeFocusMinus": { "buttonType": "button", "button": "X" },
-      "DropSample": { "buttonType": "button", "button": "Y"}
+      "DropSample": { "buttonType": "button", "button": "Y" }
     }
   },
   "ArmControls": {

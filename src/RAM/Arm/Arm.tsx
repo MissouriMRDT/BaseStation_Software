@@ -121,7 +121,7 @@ class Arm extends Component<IProps, IState> {
     if (moveArm) {
       const armValues = [ArmBaseTwist, ArmBaseBend, ArmElbowBend, ArmElbowTwist, ArmWristTwist, ArmWristBend];
       console.log(armValues);
-      rovecomm.sendCommand('ArmVelocityControl', armValues);
+      rovecomm.sendCommand('OpenLoop', armValues);
     }
 
     if ('GripperOpen' in controllerInputs && 'GripperClose' in controllerInputs) {
@@ -146,15 +146,15 @@ class Arm extends Component<IProps, IState> {
         }
         console.log('Moving Gripper 1');
       }
-      rovecomm.sendCommand('GripperMove', [Gripper1, Gripper2]);
+      rovecomm.sendCommand('Gripper', [Gripper1, Gripper2]);
     }
 
     if ('EndEffectorOn' in controllerInputs) {
-      let EndEffector = 0;
+      let Solenoid = 0;
       if (controllerInputs.EndEffectorOn === 1) {
-        EndEffector = 1;
+        Solenoid = 1;
       }
-      rovecomm.sendCommand('EndEffector', EndEffector);
+      rovecomm.sendCommand('Solenoid', Solenoid);
     }
   }
 

@@ -26,24 +26,28 @@ const microscopeMult = 500;
 
 function science(): void {
   // Z actuation of the science system is controlled by the left up/down thumbstick
-  if ('SensorAxis' in controllerInputs) {
-    rovecomm.sendCommand('SensorAxis', [controllerInputs.SensorAxis * sensorMotorMultiplier]);
+  if ('ScoopAxis_OpenLoop' in controllerInputs) {
+    rovecomm.sendCommand('ScoopAxis_OpenLoop', [controllerInputs.ScoopAxis_OpenLoop * sensorMotorMultiplier]);
   }
 
-  if ('XoopAxis' in controllerInputs) {
-    rovecomm.sendCommand('XoopAxis', [controllerInputs.XoopAxis * scoopMotorMultiplier]);
+  if ('ScoopAxis_IncrementPosition' in controllerInputs) {
+    rovecomm.sendCommand('ScoopAxis_IncrementPosition', [
+      controllerInputs.ScoopAxis_IncrementPosition * scoopMotorMultiplier,
+    ]);
   }
 
-  if ('ZoopAxis' in controllerInputs) {
-    rovecomm.sendCommand('ZoopAxis', [controllerInputs.ZoopAxis * scoopMotorMultiplier]);
+  if ('SensorAxis_IncrementPosition' in controllerInputs) {
+    rovecomm.sendCommand('SensorAxis_IncrementPosition', [
+      controllerInputs.SensorAxis_IncrementPosition * scoopMotorMultiplier,
+    ]);
   }
 
   // If both open and close scoop are pressed, close it
   if ('OpenScoop' in controllerInputs && 'CloseScoop' in controllerInputs) {
     if (controllerInputs.CloseScoop === 1) {
-      rovecomm.sendCommand('ScoopGrabber', 1);
+      rovecomm.sendCommand('LimitSwitchOverride', 1);
     } else if (controllerInputs.OpenScoop === 1) {
-      rovecomm.sendCommand('ScoopGrabber', 0);
+      rovecomm.sendCommand('LimitSwitchOverride', 0);
     }
   }
 
@@ -51,39 +55,39 @@ function science(): void {
     // Take the positive contribution from the open trigger and the negative contribution of the close trigger
     const IncrementAmt = controllerInputs.IncrementClose - controllerInputs.IncrementOpen;
     if (IncrementAmt !== 0) {
-      rovecomm.sendCommand('IncrementalScoop', IncrementAmt * scoopIncrementMult);
+      rovecomm.sendCommand('Microscope', IncrementAmt * scoopIncrementMult);
     }
   }
 
   if ('WaterLeft' in controllerInputs && 'WaterRight' in controllerInputs) {
     if (controllerInputs.WaterLeft === 1) {
-      rovecomm.sendCommand('WaterSelector', [90]);
+      rovecomm.sendCommand('SensorAxis_OpenLoop', [90]);
     } else if (controllerInputs.WaterRight === 1) {
-      rovecomm.sendCommand('WaterSelector', [-90]);
+      rovecomm.sendCommand('SensorAxis_OpenLoop', [-90]);
     } else {
-      rovecomm.sendCommand('WaterSelector', [0]);
+      rovecomm.sendCommand('SensorAxis_OpenLoop', [0]);
     }
   }
 
-  // if ('WaterPump' in controllerInputs) {
-  //   if (controllerInputs.WaterPump === 1) {
-  //     rovecomm.sendCommand('MicroscopeFocus', microscopeMult);
+  // if ('ScoopAxis_SetPosition' in controllerInputs) {
+  //   if (controllerInputs.ScoopAxis_SetPosition === 1) {
+  //     rovecomm.sendCommand('WatchdogOverride', microscopeMult);
   //   }
   // }
 
   if ('MicroscopeFocusPlus' in controllerInputs && 'MicroscopeFocusMinus' in controllerInputs) {
     if (controllerInputs.MicroscopeFocusPlus === 1) {
-      rovecomm.sendCommand('MicroscopeFocus', microscopeMult);
+      rovecomm.sendCommand('WatchdogOverride', microscopeMult);
       console.log('on');
     } else if (controllerInputs.MicroscopeFocusMinus === 1) {
-      rovecomm.sendCommand('MicroscopeFocus', [0]);
+      rovecomm.sendCommand('WatchdogOverride', [0]);
       console.log('off');
     }
   }
 
   if ('DropSample' in controllerInputs) {
     if (controllerInputs.DropSample === 1) {
-      rovecomm.sendCommand('ScoopGrabber', 2);
+      rovecomm.sendCommand('LimitSwitchOverride', 2);
     }
   }
 }
