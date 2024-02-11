@@ -20,7 +20,7 @@ export let SystemPackets: any = {};
 export let NetworkDevices: any = {};
 let ethernetUDPPort = 11000;
 let ethernetTCPPort = 12000;
-const filepath = path.join(__dirname, '../assets/RovecommManifest.json');
+const filepath = path.join(__dirname, '../assets/manifest/manifest.json');
 
 if (fs.existsSync(filepath)) {
   const manifest = JSON.parse(fs.readFileSync(filepath).toString());
