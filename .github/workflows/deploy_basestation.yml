@@ -99,7 +99,7 @@ jobs:
       - name: Extract Artifacts
         run: |
           ls -l
-          unzip RED.${{ needs.build.outputs.extract_ref_name }}.*
+          tar -xzvf RED.${{ needs.build.outputs.extract_ref_name }}.*
 
       - name: List Files
         run: ls -l
