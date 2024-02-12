@@ -56,7 +56,7 @@ jobs:
 
       # Temp Debug to see if the ref_name is extracted correctly
       - name: Temp Debug
-        run: echo ${{ steps.extract_ref_name.outputs.ref_name }}
+        run: echo "Result: ${{ steps.extract_ref_name.outputs.ref_name }}"
 
       # Install the Yarn packages. The --frozen-lockfile flag ensures that the lockfile is not updated.
       - name: Install Yarn Packages
