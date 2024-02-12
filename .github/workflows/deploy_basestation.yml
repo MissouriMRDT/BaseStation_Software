@@ -52,7 +52,8 @@ jobs:
       # If running on a tag, the reference name is the tag name.
       - name: Extract Reference Name
         id: extract_ref_name
-        run: echo "ref_name=$(echo ${{ github.ref_name }} | awk -F/ '{print $NF}')" >> $GITHUB_OUTPUT
+        run: echo "ref_name=$(echo $(basename "${{ github.ref_name }}"))" >> $GITHUB_OUTPUT
+        # run: echo "ref_name=$(echo ${{ github.ref_name }} | awk -F/ '{print $NF}')" >> $GITHUB_OUTPUT
 
       - name: Debug
         run: echo "${{ steps.extract_ref_name.outputs.ref_name }}"
