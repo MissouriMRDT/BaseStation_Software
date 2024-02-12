@@ -22,7 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows, ubuntu] # Possible values: [ubuntu-latest, windows-latest, macOS-latest]
+        os: [windows, ubuntu, macOS] # Possible values: [ubuntu-latest, windows-latest, macOS-latest]
         ext: [AppImage, exe]
         exclude:
           - os: windows
