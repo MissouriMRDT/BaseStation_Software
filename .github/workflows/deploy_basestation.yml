@@ -95,8 +95,6 @@ jobs:
     steps:
       - name: Download Artifact
         uses: actions/download-artifact@v4
-        with:
-          name: RED.${{ needs.build.outputs.extract_ref_name }}.*
 
       - name: List Files
         run: ls -l
