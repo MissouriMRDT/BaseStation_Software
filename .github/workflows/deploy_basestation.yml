@@ -22,7 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows] # Possible values: [ubuntu-latest, windows-latest, macOS-latest]
+        os: [windows, ubuntu] # Possible values: [ubuntu-latest, windows-latest, macOS-latest]
         node: [18.x]
 
     runs-on: ${{ matrix.os }}-latest
@@ -99,11 +99,6 @@ jobs:
       # Download the artifacts from the build job.
       - name: Download Artifact
         uses: actions/download-artifact@v2
-        with:
-          name: |
-            RED.${{ steps.extract_ref_name.outputs.ref_name }}.windows
-# RED.${{ steps.extract_ref_name.outputs.ref_name }}.linux
-# RED.${{ steps.extract_ref_name.outputs.ref_name }}.macOS
 
       # Create a release on GitHub.
       - name: Create Release
@@ -113,11 +108,7 @@ jobs:
           prerelease: true
           name: '${{ steps.extract_ref_name.outputs.ref_name }}'
           files: |
-            RED.${{ steps.extract_ref_name.outputs.ref_name }}.windows.Installer.exe
-            RED.${{ steps.extract_ref_name.outputs.ref_name }}.windows.Unpacked.zip
-# RED.${{ steps.extract_ref_name.outputs.ref_name }}.linux.Installer.exe
-# RED.${{ steps.extract_ref_name.outputs.ref_name }}.linux.Unpacked.zip
-# RED.${{ steps.extract_ref_name.outputs.ref_name }}.macOS.Installer.exe
-# RED.${{ steps.extract_ref_name.outputs.ref_name }}.macOS.Unpacked.zip
+            RED.${{ steps.extract_ref_name.outputs.ref_name }}.*.Installer.exe
+            RED.${{ steps.extract_ref_name.outputs.ref_name }}.*.Unpacked.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
