@@ -68,7 +68,6 @@ jobs:
           ls -l release
           mv release/RED*.${{ matrix.ext }} "RED.${{ steps.extract_ref_name.outputs.ref_name }}.${{ matrix.os }}.Installer.${{ matrix.ext }}"
 
-
       # Create a zip file of the unpacked package.
       - name: Create Zip
         uses: vimtor/action-zip@v1.1
@@ -89,22 +88,26 @@ jobs:
     outputs:
       extract_ref_name: ${{ steps.extract_ref_name.outputs.ref_name }}
 
+  # Create a release on GitHub. The release is created with the artifacts from the build job.
+  # The release is created as a draft and a prerelease. The release notes are generated from the commit messages.
+  # The release is created only if the build job is successful and the event is not a workflow_dispatch event.
   publish:
     needs: build
     runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'workflow_dispatch' }}
 
     steps:
+      # Download the artifacts from the build job.
       - name: Download Artifact
         uses: actions/download-artifact@v4
 
-      - name: List Files
-        run: ls -lR
-
+      # Copy the files to the release directory.
       - name: Copy Files to Release
         run: |
           mkdir -p release/
           for dir in RED.*.*; do if [ -d "$dir" ]; then cp -r "$dir"/* release/; fi; done
 
+      # Create a release on GitHub. The release is created with the artifacts from the build job.
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
