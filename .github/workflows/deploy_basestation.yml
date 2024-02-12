@@ -23,6 +23,12 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows, ubuntu] # Possible values: [ubuntu-latest, windows-latest, macOS-latest]
+        ext: [AppImage, exe]
+        exclude:
+          - os: windows
+            ext: AppImage
+          - os: ubuntu
+            ext: exe
         node: [18.x]
 
     runs-on: ${{ matrix.os }}-latest
@@ -48,17 +54,6 @@ jobs:
         id: extract_ref_name
         run: echo "::set-output name=ref_name::$(basename "${{ github.ref_name }}")"
 
-      - name: Extract File Extension
-        id: extract_file_extension
-        run: |
-          if [[ "${{ matrix.os }}" == "ubuntu" ]]; then
-            echo "::set-output name=extention::AppImage"
-          elif [[ "${{ matrix.os }}" == "windows" ]]; then
-            echo "::set-output name=extention::exe"
-          else
-            echo "::set-output name=extention::"
-          fi
-
       # Install the Yarn packages. The --frozen-lockfile flag ensures that the lockfile is not updated.
       - name: Install Yarn Packages
         run: yarn install --frozen-lockfile --network-timeout 300000
@@ -71,7 +66,7 @@ jobs:
       - name: Rename Package
         run: |
           ls -l release
-          mv release/RED*.${{ steps.extract_file_extension.outputs.extention }} "RED.${{ steps.extract_ref_name.outputs.ref_name }}.${{ matrix.os }}.Installer.${{ steps.extract_file_extension.outputs.extention }}"
+          mv release/RED*.${{ matrix.ext }} "RED.${{ steps.extract_ref_name.outputs.ref_name }}.${{ matrix.os }}.Installer.${{ matrix.ext }}"
 
 
       # Create a zip file of the unpacked package.
@@ -89,7 +84,7 @@ jobs:
         with:
           name: RED.${{ steps.extract_ref_name.outputs.ref_name }}.${{ matrix.os }}
           path: |
-            RED.${{ steps.extract_ref_name.outputs.ref_name }}.${{ matrix.os }}.Installer.${{ steps.extract_file_extension.outputs.extention }}
+            RED.${{ steps.extract_ref_name.outputs.ref_name }}.${{ matrix.os }}.Installer.${{ matrix.ext }}
             RED.${{ steps.extract_ref_name.outputs.ref_name }}.${{ matrix.os }}.Unpacked.zip
   
   # In the event of a push, create a release. It takes the artifacts from the build matrix and turns
