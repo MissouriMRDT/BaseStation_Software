@@ -52,7 +52,11 @@ jobs:
       # If running on a tag, the reference name is the tag name.
       - name: Extract Reference Name
         id: extract_ref_name
-        run: echo "ref_name=$(${{ github.ref_name }} | cut -d '/' -f 2)" >> $GITHUB_OUTPUT
+        run: echo "ref_name=$(echo ${{ github.ref_name }} | awk -F/ '{print $NF})" >> $GITHUB_OUTPUT
+
+      # Temp Debug to see if the ref_name is extracted correctly
+      - name: Temp Debug
+        run: echo ${{ steps.extract_ref_name.outputs.ref_name }}
 
       # Install the Yarn packages. The --frozen-lockfile flag ensures that the lockfile is not updated.
       - name: Install Yarn Packages
