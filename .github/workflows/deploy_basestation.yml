@@ -58,7 +58,9 @@ jobs:
 
       # Rename the package to include the reference name and the OS.
       - name: Rename Package
-        run: mv release/RED*.exe "RED.${{ steps.extract_ref_name.outputs.ref_name }}.${{ matrix.os }}.Installer.exe"
+        run: |
+          ls -l release
+          mv release/RED*.exe "RED.${{ steps.extract_ref_name.outputs.ref_name }}.${{ matrix.os }}.Installer.exe"
 
       # Create a zip file of the unpacked package.
       - name: Create Zip
