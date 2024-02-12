@@ -60,7 +60,7 @@ jobs:
       # If running on a tag, the reference name is the tag name.
       - name: Extract Reference Name
         id: extract_ref_name
-        run: echo "ref_name=$(${{ github.ref_name }} | awk -F/ '{print $NF})" >> $GITHUB_OUTPUT
+        run: echo "ref_name=$(${{ github.ref_name }} | cut -d '/' -f 2)" >> $GITHUB_OUTPUT
 
       # Rename the package to include the reference name and the OS.
       - name: Rename Package
