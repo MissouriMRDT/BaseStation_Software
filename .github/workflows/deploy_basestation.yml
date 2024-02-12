@@ -20,36 +20,32 @@ jobs:
   # Build the package for the current OS and create a zip file of the unpacked package.
   build:
     strategy:
+      # Don't cancel the workflow if one of the matrix operations fails.
       fail-fast: false
+
+      # The matrix is used to build the package for different OSes and create a zip file of the unpacked package.
+      # Allowed Combinations:
+      #   - Windows: exe, win-unpacked
+      #   - Ubuntu: AppImage, linux-unpacked
+      # Unfortunatly, the matrix doesn't have a cleaner way to exclude combinations. So, we have to list all the
+      # combinations that we want to exclude.
+      # In the future, if we want to add support for macOS, we can add the following combinations:
+      #   - macOS: dmg, mac
+      # At the moment the team doesn't have any macOS hardware so it isn't worth the runner minutes to add support for it.
       matrix:
-        os: [windows, ubuntu, macOS] # Possible values: [ubuntu-latest, windows-latest, macOS-latest]
-        ext: [exe, AppImage, dmg]
-        unpacked: [win-unpacked, linux-unpacked, mac]
+        os: [windows, ubuntu]
+        ext: [exe, AppImage]
+        unpacked: [win-unpacked, linux-unpacked]
         exclude:
           - os:  windows
             ext:  exe
             unpacked:  linux-unpacked
           - os:  windows
-            ext:  exe
-            unpacked:  mac
-          - os:  windows
             ext:  AppImage
             unpacked:  win-unpacked
           - os:  windows
             ext:  AppImage
             unpacked:  linux-unpacked
-          - os:  windows
-            ext:  AppImage
-            unpacked:  mac
-          - os:  windows
-            ext:  dmg
-            unpacked:  win-unpacked
-          - os:  windows
-            ext:  dmg
-            unpacked:  linux-unpacked
-          - os:  windows
-            ext:  dmg
-            unpacked:  mac
           - os:  ubuntu
             ext:  exe
             unpacked:  win-unpacked
@@ -57,47 +53,8 @@ jobs:
             ext:  exe
             unpacked:  linux-unpacked
           - os:  ubuntu
-            ext:  exe
-            unpacked:  mac
-          - os:  ubuntu
             ext:  AppImage
             unpacked:  win-unpacked
-          - os:  ubuntu
-            ext:  AppImage
-            unpacked:  mac
-          - os:  ubuntu
-            ext:  dmg
-            unpacked:  win-unpacked
-          - os:  ubuntu
-            ext:  dmg
-            unpacked:  linux-unpacked
-          - os:  ubuntu
-            ext:  dmg
-            unpacked:  mac
-          - os:  macOS
-            ext:  exe
-            unpacked:  win-unpacked
-          - os:  macOS
-            ext:  exe
-            unpacked:  linux-unpacked
-          - os:  macOS
-            ext:  exe
-            unpacked:  mac
-          - os:  macOS
-            ext:  AppImage
-            unpacked:  win-unpacked
-          - os:  macOS
-            ext:  AppImage
-            unpacked:  linux-unpacked
-          - os:  macOS
-            ext:  AppImage
-            unpacked:  mac
-          - os:  macOS
-            ext:  dmg
-            unpacked:  win-unpacked
-          - os:  macOS
-            ext:  dmg
-            unpacked:  linux-unpacked
         node: [18.x]
 
     runs-on: ${{ matrix.os }}-latest
@@ -133,9 +90,7 @@ jobs:
 
       # Rename the package to include the reference name and the OS.
       - name: Rename Package
-        run: |
-          ls -l release
-          mv release/RED*.${{ matrix.ext }} "RED.${{ steps.extract_ref_name.outputs.ref_name }}.${{ matrix.os }}.Installer.${{ matrix.ext }}"
+        run: mv release/RED*.${{ matrix.ext }} "RED.${{ steps.extract_ref_name.outputs.ref_name }}.${{ matrix.os }}.Installer.${{ matrix.ext }}"
 
       # Create a zip file of the unpacked package.
       - name: Create Zip
