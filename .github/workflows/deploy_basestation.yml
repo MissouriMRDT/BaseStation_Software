@@ -23,12 +23,18 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows, ubuntu, macOS] # Possible values: [ubuntu-latest, windows-latest, macOS-latest]
-        ext: [AppImage, exe]
+        ext: [exe, AppImage, dmg]
+        unpacked: [win-unpacked, linux-unpacked, mac]
         exclude:
           - os: windows
-            ext: AppImage
+            ext: [AppImage, dmg]
+            unpacked: [linux-unpacked, mac]
           - os: ubuntu
-            ext: exe
+            ext: [exe, dmg]
+            unpacked: [win-unpacked, mac]
+          - os: macOS
+            ext: [AppImage, exe]
+            unpacked: [win-unpacked, linux-unpacked]
         node: [18.x]
 
     runs-on: ${{ matrix.os }}-latest
@@ -72,7 +78,7 @@ jobs:
       - name: Create Zip
         uses: vimtor/action-zip@v1.1
         with:
-          files: 'release/win-unpacked/'
+          files: 'release/${{ matrix.unpacked }}/'
           recursive: true
           dest: 'RED.${{ steps.extract_ref_name.outputs.ref_name }}.${{ matrix.os }}.Unpacked.zip'
 
