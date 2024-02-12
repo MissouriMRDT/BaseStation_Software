@@ -99,7 +99,7 @@ class RoverImageryDisplay extends Component<IProps, IState> {
             'Drive',
             'Gimbal',
             'GPS',
-            'Flourometer',
+            'Fluorometer',
             'Lighting',
             'Log',
             'Power',
