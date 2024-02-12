@@ -54,14 +54,14 @@ jobs:
       - name: Rename Package
         run: |
           ls -l release
-          mv release/RED*.exe "RED.${{ github.ref_name }}.Installer.exe"
+          mv release/RED*.exe "RED.${{ steps.extract_ref_name.outputs.ref_name }}.Installer.exe"
 
       - name: Create Zip
         uses: vimtor/action-zip@v1.1
         with:
           files: 'release/win-unpacked/'
           recursive: true
-          dest: 'RED.${{ github.ref_name }}.Unpacked.zip'
+          dest: 'RED.${{ steps.extract_ref_name.outputs.ref_name }}.Unpacked.zip'
 
       - name: Create Release
         if: ${{ github.event_name != 'workflow_dispatch' }}
@@ -69,10 +69,10 @@ jobs:
         with:
           draft: true
           prerelease: true
-          name: '${{ github.ref_name }}'
+          name: '${{ steps.extract_ref_name.outputs.ref_name }}'
           files: |
-            RED.${{ github.ref_name }}.Installer.exe
-            RED.${{ github.ref_name }}.Unpacked.zip
+            RED.${{ steps.extract_ref_name.outputs.ref_name }}.Installer.exe
+            RED.${{ steps.extract_ref_name.outputs.ref_name }}.Unpacked.zip
             env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -80,7 +80,7 @@ jobs:
         if: ${{ github.event_name == 'workflow_dispatch' }}
         uses: actions/upload-artifact@v4
         with:
-          name: RED.${{ github.ref_name }}
+          name: RED.${{ steps.extract_ref_name.outputs.ref_name }}
           path: |
-            RED.${{ github.ref_name }}.Installer.exe
-            RED.${{ github.ref_name }}.Unpacked.zip
+            RED.${{ steps.extract_ref_name.outputs.ref_name }}.Installer.exe
+            RED.${{ steps.extract_ref_name.outputs.ref_name }}}.Unpacked.zip
