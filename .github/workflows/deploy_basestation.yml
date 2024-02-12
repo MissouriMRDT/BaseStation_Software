@@ -48,6 +48,17 @@ jobs:
         id: extract_ref_name
         run: echo "::set-output name=ref_name::$(basename "${{ github.ref_name }}")"
 
+      - name: Extract File Extension
+        id: extract_file_extension
+        run: |
+          if [[ "${{ matrix.os }}" == "ubuntu" ]]; then
+            echo "::set-output name=extention::AppImage"
+          elif [[ "${{ matrix.os }}" == "windows" ]]; then
+            echo "::set-output name=extention::exe"
+          else
+            echo "::set-output name=extention::"
+          fi
+
       # Install the Yarn packages. The --frozen-lockfile flag ensures that the lockfile is not updated.
       - name: Install Yarn Packages
         run: yarn install --frozen-lockfile --network-timeout 300000
@@ -60,7 +71,8 @@ jobs:
       - name: Rename Package
         run: |
           ls -l release
-          mv release/RED*.exe "RED.${{ steps.extract_ref_name.outputs.ref_name }}.${{ matrix.os }}.Installer.exe"
+          mv release/RED*.${{ steps.extract_file_extension.outputs.extention }} "RED.${{ steps.extract_ref_name.outputs.ref_name }}.${{ matrix.os }}.Installer.${{ steps.extract_file_extension.outputs.extention }}"
+
 
       # Create a zip file of the unpacked package.
       - name: Create Zip
@@ -77,7 +89,7 @@ jobs:
         with:
           name: RED.${{ steps.extract_ref_name.outputs.ref_name }}.${{ matrix.os }}
           path: |
-            RED.${{ steps.extract_ref_name.outputs.ref_name }}.${{ matrix.os }}.Installer.exe
+            RED.${{ steps.extract_ref_name.outputs.ref_name }}.${{ matrix.os }}.Installer.${{ steps.extract_file_extension.outputs.extention }}
             RED.${{ steps.extract_ref_name.outputs.ref_name }}.${{ matrix.os }}.Unpacked.zip
   
   # In the event of a push, create a release. It takes the artifacts from the build matrix and turns
@@ -104,7 +116,7 @@ jobs:
           prerelease: true
           name: '${{ steps.extract_ref_name.outputs.ref_name }}'
           files: |
-            RED.${{ steps.extract_ref_name.outputs.ref_name }}.*.Installer.exe
+            RED.${{ steps.extract_ref_name.outputs.ref_name }}.*.Installer.*
             RED.${{ steps.extract_ref_name.outputs.ref_name }}.*.Unpacked.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
