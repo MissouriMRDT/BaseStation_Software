@@ -54,6 +54,9 @@ jobs:
         id: extract_ref_name
         run: echo "ref_name=$(echo ${{ github.ref_name }} | awk -F/ '{print $NF}')" >> $GITHUB_OUTPUT
 
+      - name: Debug
+        run: echo "${{ steps.extract_ref_name.outputs.ref_name }}"
+
       # Install the Yarn packages. The --frozen-lockfile flag ensures that the lockfile is not updated.
       - name: Install Yarn Packages
         run: yarn install --frozen-lockfile --network-timeout 300000
