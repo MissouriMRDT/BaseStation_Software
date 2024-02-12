@@ -47,10 +47,12 @@ jobs:
 
       - name: Extract Reference Name
         id: extract_ref_name
-        run: echo "ref_name=$(echo ${{ github.ref_name }} | cut -d '/' -f 2)" >> $GITHUB_ENV
+        run: echo "ref_name=$(echo ${{ github.ref_name }} | cut -d '/' -f 2)" >> $GITHUB_OUTPUT
 
       - name: Rename Package
-        run: mv release/RED*.exe "RED.${{ github.ref_name }}.Installer.exe"
+        run: |
+          ls -l release
+          mv release/RED*.exe "RED.${{ github.ref_name }}.Installer.exe"
 
       - name: Create Zip
         uses: vimtor/action-zip@v1.1
