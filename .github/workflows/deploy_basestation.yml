@@ -27,14 +27,41 @@ jobs:
         unpacked: [win-unpacked, linux-unpacked, mac]
         exclude:
           - os: windows
-            ext: [AppImage, dmg]
-            unpacked: [linux-unpacked, mac]
+            ext: AppImage
+            unpacked: linux-unpacked
+          - os: windows
+            ext: dmg
+            unpacked: mac
+          - os: windows
+            ext: dmg
+            unpacked: linux-unpacked
+          - os: windows
+            ext: AppImage
+            unpacked: mac
           - os: ubuntu
-            ext: [exe, dmg]
-            unpacked: [win-unpacked, mac]
+            ext: exe
+            unpacked: win-unpacked
+          - os: ubuntu
+            ext: dmg
+            unpacked: mac
+          - os: ubuntu
+            ext: dmg
+            unpacked: win-unpacked
+          - os: ubuntu
+            ext: exe
+            unpacked: mac
           - os: macOS
-            ext: [AppImage, exe]
-            unpacked: [win-unpacked, linux-unpacked]
+            ext: exe
+            unpacked: win-unpacked
+          - os: macOS
+            ext: AppImage
+            unpacked: linux-unpacked
+          - os: macOS
+            ext: exe
+            unpacked: linux-unpacked
+          - os: macOS
+            ext: AppImage
+            unpacked: win-unpacked
         node: [18.x]
 
     runs-on: ${{ matrix.os }}-latest
