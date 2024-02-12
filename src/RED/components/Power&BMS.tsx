@@ -143,7 +143,7 @@ class Power extends Component<IProps, IState> {
      *   IS APPLYING THAT VALUE TO THE NAME FROM THE COMMANDS OBJECT
      * # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
      */
-    rovecomm.on('', (data: number[]) => this.boardListenHandlerTog(data, 'EnableBus'));
+    rovecomm.on('EnableBus', (data: number[]) => this.boardListenHandlerTog(data, 'EnableBus'));
     rovecomm.on('BusCurrent', (data: number[]) => this.boardListenHandlerAmp(data, 'EnableBus'));
 
     rovecomm.on('PackCurrent', (data: number[]) => this.batteryListenHandler(data, 'PackCurrent'));
