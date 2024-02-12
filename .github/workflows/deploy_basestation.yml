@@ -96,6 +96,11 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@v4
 
+      - name: Extract Artifacts
+        run: |
+          ls -l
+          unzip RED.${{ needs.build.outputs.extract_ref_name }}.*
+
       - name: List Files
         run: ls -l
   
