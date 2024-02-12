@@ -26,42 +26,78 @@ jobs:
         ext: [exe, AppImage, dmg]
         unpacked: [win-unpacked, linux-unpacked, mac]
         exclude:
-          - os: windows
-            ext: AppImage
-            unpacked: linux-unpacked
-          - os: windows
-            ext: dmg
-            unpacked: mac
-          - os: windows
-            ext: dmg
-            unpacked: linux-unpacked
-          - os: windows
-            ext: AppImage
-            unpacked: mac
-          - os: ubuntu
-            ext: exe
-            unpacked: win-unpacked
-          - os: ubuntu
-            ext: dmg
-            unpacked: mac
-          - os: ubuntu
-            ext: dmg
-            unpacked: win-unpacked
-          - os: ubuntu
-            ext: exe
-            unpacked: mac
-          - os: macOS
-            ext: exe
-            unpacked: win-unpacked
-          - os: macOS
-            ext: AppImage
-            unpacked: linux-unpacked
-          - os: macOS
-            ext: exe
-            unpacked: linux-unpacked
-          - os: macOS
-            ext: AppImage
-            unpacked: win-unpacked
+          - os:  windows
+            ext:  exe
+            unpacked:  linux-unpacked
+          - os:  windows
+            ext:  exe
+            unpacked:  mac
+          - os:  windows
+            ext:  AppImage
+            unpacked:  win-unpacked
+          - os:  windows
+            ext:  AppImage
+            unpacked:  linux-unpacked
+          - os:  windows
+            ext:  AppImage
+            unpacked:  mac
+          - os:  windows
+            ext:  dmg
+            unpacked:  win-unpacked
+          - os:  windows
+            ext:  dmg
+            unpacked:  linux-unpacked
+          - os:  windows
+            ext:  dmg
+            unpacked:  mac
+          - os:  ubuntu
+            ext:  exe
+            unpacked:  win-unpacked
+          - os:  ubuntu
+            ext:  exe
+            unpacked:  linux-unpacked
+          - os:  ubuntu
+            ext:  exe
+            unpacked:  mac
+          - os:  ubuntu
+            ext:  AppImage
+            unpacked:  win-unpacked
+          - os:  ubuntu
+            ext:  AppImage
+            unpacked:  mac
+          - os:  ubuntu
+            ext:  dmg
+            unpacked:  win-unpacked
+          - os:  ubuntu
+            ext:  dmg
+            unpacked:  linux-unpacked
+          - os:  ubuntu
+            ext:  dmg
+            unpacked:  mac
+          - os:  macOS
+            ext:  exe
+            unpacked:  win-unpacked
+          - os:  macOS
+            ext:  exe
+            unpacked:  linux-unpacked
+          - os:  macOS
+            ext:  exe
+            unpacked:  mac
+          - os:  macOS
+            ext:  AppImage
+            unpacked:  win-unpacked
+          - os:  macOS
+            ext:  AppImage
+            unpacked:  linux-unpacked
+          - os:  macOS
+            ext:  AppImage
+            unpacked:  mac
+          - os:  macOS
+            ext:  dmg
+            unpacked:  win-unpacked
+          - os:  macOS
+            ext:  dmg
+            unpacked:  linux-unpacked
         node: [18.x]
 
     runs-on: ${{ matrix.os }}-latest
