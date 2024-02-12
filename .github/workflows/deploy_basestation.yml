@@ -41,14 +41,6 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
-      # Install the Yarn packages. The --frozen-lockfile flag ensures that the lockfile is not updated.
-      - name: Install Yarn Packages
-        run: yarn install --frozen-lockfile --network-timeout 300000
-
-      # Build the package. The package is built for the current OS.
-      - name: Build Package
-        run: yarn package
-
       # Determine the version of the package. If running on a branch, the version is the branch name.
       # If running on a tag, the version is the tag name.
       - name: Determine Version
@@ -61,6 +53,14 @@ jobs:
       - name: Extract Reference Name
         id: extract_ref_name
         run: echo "ref_name=$(${{ github.ref_name }} | cut -d '/' -f 2)" >> $GITHUB_OUTPUT
+
+      # Install the Yarn packages. The --frozen-lockfile flag ensures that the lockfile is not updated.
+      - name: Install Yarn Packages
+        run: yarn install --frozen-lockfile --network-timeout 300000
+
+      # Build the package. The package is built for the current OS.
+      - name: Build Package
+        run: yarn package
 
       # Rename the package to include the reference name and the OS.
       - name: Rename Package
