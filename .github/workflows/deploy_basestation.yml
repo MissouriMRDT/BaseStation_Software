@@ -86,6 +86,16 @@ jobs:
           path: |
             RED.${{ steps.extract_ref_name.outputs.ref_name }}.${{ matrix.os }}.Installer.${{ matrix.ext }}
             RED.${{ steps.extract_ref_name.outputs.ref_name }}.${{ matrix.os }}.Unpacked.zip
+
+  temp:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v2
+
+      - name: List Files
+        run: ls -l
   
   # In the event of a push, create a release. It takes the artifacts from the build matrix and turns
   # them into a release. The release is a draft and a pre-release by default and is not published.
