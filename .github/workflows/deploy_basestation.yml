@@ -96,13 +96,13 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@v4
 
-      - name: Extract Artifacts
-        run: |
-          ls -l
-          tar -xzvf RED.${{ needs.build.outputs.extract_ref_name }}.*
+      # - name: Extract Artifacts
+      #   run: |
+      #     ls -l
+      #     tar -xzvf RED.${{ needs.build.outputs.extract_ref_name }}.*
 
       - name: List Files
-        run: ls -l
+        run: ls -lR
   
   # publish:
   #   needs: build
