@@ -37,13 +37,6 @@ const column: CSS.Properties = {
   flexGrow: 1,
   justifyContent: 'space-around',
 };
-const blockLabel: CSS.Properties = {
-  width: '100%',
-  justifyContent: 'space-around',
-  alignSelf: 'center',
-  marginLeft: '5px',
-  fontWeight: 'bold',
-};
 
 const button: CSS.Properties = {
   width: '500px',
