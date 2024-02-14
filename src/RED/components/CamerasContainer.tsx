@@ -46,7 +46,7 @@ class CamerasContainer extends Component<IProps, IState> {
       <div style={this.props.style}>
         <div style={label}> Camera Controls </div>
         <div style={container}>
-          <CameraControls passedFileSource={'http://localhost:2234'} />
+          <CameraControls hlsUrl={'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8'} />
           {/* <CameraControls passedFileSource={'http://localhost:2235'} />
           <CameraControls passedFileSource={'http://localhost:2236'} />
           <CameraControls passedFileSource={'http://localhost:2237'} /> */}
