@@ -289,7 +289,7 @@ class Angular extends Component<IProps, IState> {
               );
             })}
           </div>
-          <div style={row}>
+          {/* <div style={row}>
             <button type="button" style={buttons} onClick={getPosition}>
               Get Position
             </button>
@@ -299,7 +299,7 @@ class Angular extends Component<IProps, IState> {
             <button type="button" style={buttons} onClick={toggleTelem}>
               Toggle Auto Telem
             </button>
-          </div>
+          </div> */}
           <select
             value={this.state.selectedPosition}
             onChange={(e) => this.setState({ selectedPosition: e.target.value })}

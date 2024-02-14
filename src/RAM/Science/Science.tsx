@@ -26,7 +26,6 @@ const proboscisMotorMultiplier = 500;
 let microscopePosition = 0;
 
 function science(): void {
-
   // Update controller inputs for these packets: LimitSwitchOverride (BUTTON), WatchdogOverride (BUTTON), and EnvironmentalData (GRAPH)
   if ('ScoopAxis_OpenLoop' in controllerInputs) {
     rovecomm.sendCommand('ScoopAxis_OpenLoop', controllerInputs.ScoopAxis_OpenLoop * scoopMotorMultiplier);
@@ -38,28 +37,22 @@ function science(): void {
 
   if ('AugerUp' in controllerInputs) {
     rovecomm.sendCommand('Auger', augerMotorMultiplier);
-  }
-  else if ('AugerDown' in controllerInputs) {
+  } else if ('AugerDown' in controllerInputs) {
     rovecomm.sendCommand('Auger', -augerMotorMultiplier);
-  }
-  else rovecomm.sendCommand('Auger', 0);
+  } else rovecomm.sendCommand('Auger', 0);
 
   if ('ProboscisPlus' in controllerInputs) {
     rovecomm.sendCommand('Proboscis', proboscisMotorMultiplier);
-  }
-  else if ('ProboscisMinus' in controllerInputs) {
+  } else if ('ProboscisMinus' in controllerInputs) {
     rovecomm.sendCommand('Proboscis', -proboscisMotorMultiplier);
-  }
-  else rovecomm.sendCommand('Proboscis', 0);
+  } else rovecomm.sendCommand('Proboscis', 0);
 
   if ('MicroscopePlus' in controllerInputs && microscopePosition < 180) {
-    microscopePosition+=5;
+    microscopePosition += 5;
+  } else if ('MicroscopeMinus' in controllerInputs && microscopePosition > 0) {
+    microscopePosition -= 5;
   }
-  else if ('MicroscopeMinus' in controllerInputs && microscopePosition > 0) {
-    microscopePosition-=5;
-  }
-  rovecomm.sendCommand('Microscope', microscopePosition)
-
+  rovecomm.sendCommand('Microscope', microscopePosition);
 
   // 2023 Science System
 
