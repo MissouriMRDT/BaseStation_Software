@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
-import videojs from 'video.js';
 
 import Hls from 'hls.js';
 
@@ -66,8 +65,6 @@ class CameraControls extends Component<IProps, IState> {
   }
 
   componentDidMount() {
-    console.log('HLS DATA INCOMING');
-    console.log(this.hlsUrl);
     // create video Player
     const video = this.player;
     const hls = new Hls();
