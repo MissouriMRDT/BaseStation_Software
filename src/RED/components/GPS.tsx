@@ -71,10 +71,9 @@ class GPS extends Component<IProps, IState> {
       // distance: 0,
       // quality: 0,
     };
-
+    // Check to make sure these packets are actually needed
     rovecomm.on('GPSLatLon', (data: number[]) => this.GPSLatLon(data));
     rovecomm.on('IMUData', (data: number[]) => this.IMUData(data));
-    // rovecomm.on('LidarData', (data: number[]) => this.LidarData(data));
     rovecomm.on('SatelliteCountData', (data: number[]) => this.SatelliteCountData(data));
     rovecomm.on('AccuracyData', (data: number[]) => this.accurData(data));
   }
@@ -110,15 +109,6 @@ class GPS extends Component<IProps, IState> {
       // roll: data[2],
     });
   }
-
-  /*
-  LidarData(data: number[]) {
-    this.setState({
-      distance: data[0],
-      quality: data[1],
-    });
-  }
-  */
 
   render(): JSX.Element {
     return (

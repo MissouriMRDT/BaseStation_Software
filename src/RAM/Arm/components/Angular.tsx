@@ -77,17 +77,17 @@ const selector: CSS.Properties = {
 
 const filepath = path.join(__dirname, '../assets/AngularPresets.json');
 
-function getPosition(): void {
-  // Unlike most telemetry, arm joint positions are only sent when requested
-  rovecomm.sendCommand('RequestPositions', [1]);
-}
+// function getPosition(): void {
+//   // Unlike most telemetry, arm joint positions are only sent when requested
+//   rovecomm.sendCommand('RequestPositions', [1]);
+// }
 
-function toggleTelem(): void {
-  // Some arm systems allow toggling an incoming stream of arm telemetry
-  // When enabled, entering text into the textfields to set position will
-  // become practically impossible
-  rovecomm.sendCommand('RequestCoordinates', [1]);
-}
+// function toggleTelem(): void {
+//   // Some arm systems allow toggling an incoming stream of arm telemetry
+//   // When enabled, entering text into the textfields to set position will
+//   // become practically impossible
+//   rovecomm.sendCommand('RequestCoordinates', [1]);
+// }
 
 interface Joint {
   [key: string]: string;
@@ -138,6 +138,8 @@ class Angular extends Component<IProps, IState> {
     this.delete = this.delete.bind(this);
 
     rovecomm.on('Positions', (data: any) => this.updatePosition(data));
+    // Maybe add a listener for coordinates
+    // Add LimitSwitchTriggered listener
   }
 
   componentDidMount(): void {

@@ -143,14 +143,16 @@ class Power extends Component<IProps, IState> {
      *   IS APPLYING THAT VALUE TO THE NAME FROM THE COMMANDS OBJECT
      * # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
      */
-    rovecomm.on('EnableBus', (data: number[]) => this.boardListenHandlerTog(data, 'EnableBus'));
-    rovecomm.on('BusCurrent', (data: number[]) => this.boardListenHandlerAmp(data, 'EnableBus'));
+    // Later, add functionality to have EnableBus and DisableBus buttons for the boards that can toggle
+    rovecomm.on('SetBus', (data: number[]) => this.boardListenHandlerTog(data, 'SetBus'));
+    rovecomm.on('BusCurrent', (data: number[]) => this.boardListenHandlerAmp(data, 'BusCurrent'));
 
+    // Add Reboot, EStop, and Suicide button
     rovecomm.on('PackCurrent', (data: number[]) => this.batteryListenHandler(data, 'PackCurrent'));
     rovecomm.on('PackVoltage', (data: number[]) => this.batteryListenHandler(data, 'PackVoltage'));
     rovecomm.on('PackTemp', (data: number[]) => this.batteryListenHandler(data, 'PackTemp'));
     rovecomm.on('CellVoltage', (data: number[]) => this.batteryListenHandler(data, 'CellVoltage'));
-    // console.log(boardTelemetry)
+    // Add Error Handling notification
   }
 
   /**

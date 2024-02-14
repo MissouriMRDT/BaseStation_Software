@@ -44,19 +44,13 @@
     "controller": "Xbox",
     "bindings": {
       "ScoopAxis_OpenLoop": { "buttonType": "joystick", "button": "left stick y" },
-      "ScoopAxis_SetPosition": { "buttonType": "button", "button": "A" },
-      "WaterLeft": { "buttonType": "button", "button": "dpad left" },
-      "WaterRight": { "buttonType": "button", "button": "dpad right" },
-      "ScoopAxis_IncrementPosition": { "buttonType": "joystick", "button": "right stick x" },
-      "SensorAxis_IncrementPosition": { "buttonType": "joystick", "button": "right stick y" },
-      "OpenScoop": { "buttonType": "button", "button": "LB" },
-      "CloseScoop": { "buttonType": "button", "button": "RB" },
-      "IncrementOpen": { "buttonType": "button", "button": "LT" },
-      "IncrementClose": { "buttonType": "button", "button": "RT" },
-      "MicroscopeFocusPlus": { "buttonType": "button", "button": "B" },
-      "MicroscopeFocusMinus": { "buttonType": "button", "button": "X" },
-      "DropSample": { "buttonType": "button", "button": "Y" }
-    }
+      "SensorAxis_OpenLoop": { "buttonType": "joystick", "button": "right stick y" },
+      "AugerUp": { "buttonType": "button", "button": "dpad up" },
+      "AugerDown": { "buttonType": "button", "button": "dpad down" },
+      "ProboscisPlus": { "buttonType": "button", "button": "RB" },
+      "ProboscisMinus": { "buttonType": "button", "button": "LB" },
+      "MicroscopePlus": { "buttonType": "button", "button": "dpad right" },
+      "MicroscopeMinus": { "buttonType": "button", "button": "dpad left" }
   },
   "ArmControls": {
     "config": "Arm",
