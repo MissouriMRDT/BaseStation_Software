@@ -10,6 +10,7 @@ import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
 import Fluorometer from './components/Fluorometer';
 import ClosedLoopControls from './components/ClosedLoopControls';
 import EncoderPositions from './components/EncoderPositions';
+import OverrideSwitches from './components/OverrideSwitches';
 
 const row: CSS.Properties = {
   display: 'flex',
@@ -147,6 +148,7 @@ class Science extends Component<IProps, IState> {
 
         <ClosedLoopControls />
         <Cameras defaultCamera={7} />
+        <OverrideSwitches />
       </div>
     );
   }
