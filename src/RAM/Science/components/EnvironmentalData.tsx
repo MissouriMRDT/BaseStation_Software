@@ -383,7 +383,7 @@ class EnvironmentalData extends Component<IProps, IState> {
             <div style={selectbox}>
               {[...this.state.enabledSensors].map(([sensorName, val]) => {
                 return (
-                  <div key={undefined} style={selector}>
+                  <div key={sensorName} style={selector}>
                     <input
                       type="checkbox"
                       id={sensorName}
@@ -410,6 +410,7 @@ class EnvironmentalData extends Component<IProps, IState> {
                 this.state.enabledSensors.get(name) &&
                 sensor.values.length > 0 && (
                   <LineSeries
+                    key={name}
                     data={
                       // If there's more than one graph enabled, use the normalized values
                       // Gets the values from the enabledSensors, then filters them for truthy values

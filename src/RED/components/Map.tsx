@@ -108,7 +108,7 @@ class Map extends Component<IProps, IState> {
                 const post: LatLngTuple = [waypoint.latitude, waypoint.longitude];
                 if (waypoint.onMap === true) {
                   return (
-                    <div>
+                    <div key={waypoint.name}>
                       <Marker key={waypoint.name} position={post} icon={icon(waypoint.color)}>
                         <Popup>{waypoint.name}</Popup>
                       </Marker>
