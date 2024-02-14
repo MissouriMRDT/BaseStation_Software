@@ -44,33 +44,68 @@ const button: CSS.Properties = {
   alignSelf: 'center',
   margin: '0 5px 0 5px',
 };
+const ToggleButton: CSS.Properties = {
+  width: '200px',
+  height: '100px',
+  alignSelf: 'left',
+  margin: '0 5px 0 5px',
+};
 
 interface IProps {
   style?: CSS.Properties;
 }
 
+const SwitchNames = ['ScoopAxis+', 'ScoopAxis-', 'SensorAxis+', 'SensorAxis-'];
+
 interface IState {
   LimitSwitchOverride: boolean;
   WatchdogOverride: boolean;
+  LimitSwitchStatus: boolean[];
 }
 
-let limitSwitchToggle = false;
 let watchdogToggle = false;
 
 class OverrideSwitches extends Component<IProps, IState> {
-  toggleLimitSwitch = (): boolean => {
-    limitSwitchToggle = !limitSwitchToggle;
-    this.setState({ LimitSwitchOverride: limitSwitchToggle });
-    console.log('Limit Switch Override: ' + limitSwitchToggle);
-    return limitSwitchToggle;
-  };
+  static buildLimitSwitchCommand(LimitSwitch: boolean[]): number {
+    let bitmask = '';
+    bitmask += LimitSwitch[3] ? '1' : '0';
+    bitmask += LimitSwitch[2] ? '1' : '0';
+    bitmask += LimitSwitch[1] ? '1' : '0';
+    bitmask += LimitSwitch[0] ? '1' : '0';
+    // console.log(bitmask);
+    const num = parseInt(bitmask, 2);
+    // console.log(num);
+    return num;
+  }
 
-  toggleWatchdog = (): boolean => {
+  constructor(props: IProps) {
+    super(props);
+    this.state = {
+      LimitSwitchOverride: false,
+      WatchdogOverride: false,
+      LimitSwitchStatus: [false, false, false, false],
+    };
+    this.toggleLimitSwitch = this.toggleLimitSwitch.bind(this);
+    this.toggleWatchdog = this.toggleWatchdog.bind(this);
+  }
+
+  toggleLimitSwitch(index: number): void {
+    if (this.state.LimitSwitchOverride) {
+      const { LimitSwitchStatus } = this.state;
+      LimitSwitchStatus[index] = !LimitSwitchStatus[index];
+      this.setState({
+        LimitSwitchStatus,
+      });
+      rovecomm.sendCommand('LimitSwitchOverride', OverrideSwitches.buildLimitSwitchCommand(LimitSwitchStatus));
+    }
+  }
+
+  toggleWatchdog(): boolean {
     watchdogToggle = !watchdogToggle;
     this.setState({ WatchdogOverride: watchdogToggle });
-    console.log('Watchdog Override: ' + watchdogToggle);
+    // console.log('Watchdog Override: ' + watchdogToggle);
     return watchdogToggle;
-  };
+  }
 
   render(): JSX.Element {
     return (
@@ -79,12 +114,30 @@ class OverrideSwitches extends Component<IProps, IState> {
         <div style={container}>
           <div style={column}>
             <div style={row}>
-              <button
-                style={button}
-                onClick={() => rovecomm.sendCommand('LimitSwitchOverride', this.toggleLimitSwitch())}
-              >
-                {`Limit Switch Override: ${limitSwitchToggle ? 'On' : 'Off'}`}
-              </button>
+              <div style={column}>
+                {this.state.LimitSwitchStatus.map((value, index) => {
+                  return (
+                    <label key={index} htmlFor="LimitToggle">
+                      <input
+                        type="checkbox"
+                        id="LimitToggle"
+                        name="LimitToggle"
+                        checked={value}
+                        onChange={() => this.toggleLimitSwitch(index)}
+                      />
+                      {SwitchNames[index]}
+                    </label>
+                  );
+                })}
+                <button
+                  style={ToggleButton}
+                  onClick={() =>
+                    this.setState((prevState) => ({ LimitSwitchOverride: !prevState.LimitSwitchOverride }))
+                  }
+                >
+                  Limit Switch Toggle: {this.state.LimitSwitchOverride ? 'on' : 'off'}
+                </button>
+              </div>
               <button style={button} onClick={() => rovecomm.sendCommand('WatchdogOverride', this.toggleWatchdog())}>
                 {`Watchdog Override: ${watchdogToggle ? 'On' : 'Off'}`}
               </button>

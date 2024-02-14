@@ -27,7 +27,7 @@ const proboscisMotorMultiplier = 500;
 let microscopePosition = 0;
 
 function science(): void {
-  // Update controller inputs for these packets: LimitSwitchOverride (BUTTON), WatchdogOverride (BUTTON), and EnvironmentalData (GRAPH)
+  // Update controller inputs for these packets: EnvironmentalData (GRAPH)
   if ('ScoopAxis_OpenLoop' in controllerInputs) {
     rovecomm.sendCommand('ScoopAxis_OpenLoop', controllerInputs.ScoopAxis_OpenLoop * scoopMotorMultiplier);
   }
