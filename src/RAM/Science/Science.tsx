@@ -2,15 +2,17 @@ import React, { Component } from 'react';
 import CSS from 'csstype';
 // import SensorData from './components/SensorData';
 // import SensorGraphs from './components/SensorGraphs';
-import Heater from './components/Heater';
-import Cameras from '../../Core/components/Cameras';
+// import Heater from './components/Heater';
+// import Cameras from '../../Core/components/Cameras';
 // import RockLookUp from './components/rocklookup';
 import ControlScheme, { controllerInputs } from '../../Core/components/ControlScheme';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
-import Fluorometer from './components/Fluorometer';
+// import Fluorometer from './components/Fluorometer';
 import ClosedLoopControls from './components/ClosedLoopControls';
 import EncoderPositions from './components/EncoderPositions';
 import OverrideSwitches from './components/OverrideSwitches';
+import EnvironmentalData from './components/EnvironmentalData';
+// import SensorGraphs from './components/SensorGraphs';
 
 const row: CSS.Properties = {
   display: 'flex',
@@ -134,21 +136,30 @@ class Science extends Component<IProps, IState> {
   render(): JSX.Element {
     return (
       <div style={column}>
-        <Fluorometer />
+        {/* <SensorGraphs /> */}
+        {/* <Fluorometer /> */}
+        <EnvironmentalData />
         <div style={{ ...row }}>
-          <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>
-            <Heater />
-          </div>
-          <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>
+          {/* <div style={{ ...column, marginRight: '2.5px', width: '50%' }}><Heater /></div> */}
+          <div style={{ ...column, marginRight: '2.5px', width: '100%' }}>
             <ControlScheme configs={['Science']} />
-            <EncoderPositions style={{ width: '50%', marginRight: '2.5px', marginLeft: '2.5px' }} />
-            <Cameras defaultCamera={8} />
           </div>
         </div>
-
-        <ClosedLoopControls />
-        <Cameras defaultCamera={7} />
-        <OverrideSwitches />
+        <div style={{ ...row }}>
+          <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>
+            <EncoderPositions style={{ width: '80%', marginRight: '2.5px', marginLeft: '2.5px' }} />
+            {/* <Cameras defaultCamera={8} /> */}
+          </div>
+          <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>
+            <OverrideSwitches style={{ width: '100%' }} />
+          </div>
+        </div>
+        <div style={{ ...row }}>
+          <div style={{ ...column, marginRight: '2.5px', width: '100%' }}>
+            <ClosedLoopControls />
+          </div>
+        </div>
+        {/* <Cameras defaultCamera={7} /> */}
       </div>
     );
   }
