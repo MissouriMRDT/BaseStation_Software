@@ -94,7 +94,7 @@ jobs:
 
       # Create a zip file of the unpacked package.
       - name: Create Zip
-        uses: vimtor/action-zip@v1.1
+        uses: vimtor/action-zip@v1.2
         with:
           files: 'release/${{ matrix.unpacked }}/'
           recursive: true
@@ -133,7 +133,7 @@ jobs:
 
       # Create a release on GitHub. The release is created with the artifacts from the build job.
       - name: Create Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v0.1.15
         with:
           draft: true
           prerelease: true
