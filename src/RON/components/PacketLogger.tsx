@@ -60,7 +60,7 @@ class PacketLogger extends Component<IProps, IState> {
   constructor(props: any) {
     super(props);
     this.state = {
-      board: 'Drive',
+      board: 'Core',
       data: [],
       columns: [
         { Header: 'Name', accessor: 'name', width: '100' },
