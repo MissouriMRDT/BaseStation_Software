@@ -46,6 +46,7 @@ const readoutContainter: CSS.Properties = {
   height: '301px',
   flexWrap: 'wrap',
   margin: '1px',
+  marginBottom: '200px',
 };
 const readout: CSS.Properties = {
   display: 'flex',
