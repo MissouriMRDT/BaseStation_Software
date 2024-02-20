@@ -46,7 +46,7 @@ const readoutContainter: CSS.Properties = {
   height: '301px',
   flexWrap: 'wrap',
   margin: '1px',
-  marginBottom: '200px',
+  marginBottom: '175px',
 };
 const readout: CSS.Properties = {
   display: 'flex',
@@ -104,11 +104,18 @@ class Power extends Component<IProps, IState> {
     const boardTelemetry: Record<string, any> = {};
     const batteryTelemetry: Record<string, any> = {};
     Object.keys(Power.Commands).forEach((Bus: string) => {
-      boardTelemetry[Bus] = {};
-      Power.Commands[Bus].comments.split(', ').forEach((component: any) => {
-        boardTelemetry[Bus][component] = { enabled: true, value: 0 };
-      });
+      if (Bus === 'SetBus') {
+        // Check if the command is 'SetBus'
+        boardTelemetry[Bus] = {};
+        Power.Commands[Bus].comments.split(', ').forEach((component: any) => {
+          const componentName = component.split(' ')[0]; // Extract the first part of the comment
+          if (!componentName.toLowerCase().includes('enable') && !componentName.toLowerCase().includes('disable')) {
+            boardTelemetry[Bus][componentName] = { enabled: true, value: 0 };
+          }
+        });
+      }
     });
+
     Object.keys(BMS.Telemetry).forEach((measGroup: string) => {
       batteryTelemetry[measGroup] = {};
       const tmpList = BMS.Telemetry[measGroup].comments.split(', ');
@@ -224,10 +231,10 @@ class Power extends Component<IProps, IState> {
    */
   allMotorToggle(button: boolean): void {
     const { boardTelemetry } = this.state;
-    Object.keys(boardTelemetry.EnableBus).forEach((motor: string) => {
-      boardTelemetry.EnableBus[motor].enabled = button;
+    Object.keys(boardTelemetry.SetBus).forEach((motor: string) => {
+      boardTelemetry.SetBus[motor].enabled = button;
     });
-    this.setState({ boardTelemetry }, () => this.packCommand('EnableBus'));
+    this.setState({ boardTelemetry }, () => this.packCommand('SetBus'));
   }
 
   /**

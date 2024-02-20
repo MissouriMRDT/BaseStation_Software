@@ -143,31 +143,29 @@ class ControlCenter extends Component<IProps, IState> {
             <Cameras defaultCamera={3} style={{ width: '100%' }} />
           </div>
         </div>
-        <div style={row}>
-          <div style={{ ...column, width: '100%' }}>
-            <Power />
-            <Drive />
-            <div style={row}>
-              <ControlScheme
-                style={{ flexGrow: 1, marginRight: '5px', marginBottom: '5px' }}
-                configs={['Drive', 'MainGimbal', 'ControlMultipliers']}
-              />
-              <Gimbal style={{ height: '100%' }} />
-            </div>
-            <div style={row}>
-              <button type="button" onClick={rovecomm.resubscribe} style={{ width: '100px' }}>
-                Resubscribe All
-              </button>
-              <button type="button" onClick={() => this.setState({ ronOpen: true })}>
-                Open Rover Overview of Network
-              </button>
-              <button type="button" onClick={() => this.setState({ ramOpen: true })}>
-                Open Rover Attachment Manager
-              </button>
-              <button type="button" onClick={() => this.setState({ ridOpen: true })}>
-                Open Rover Imagery Display
-              </button>
-            </div>
+        <div style={{ ...column, width: '60%' }}>
+          <Power />
+          <Drive />
+          <div style={row}>
+            <ControlScheme
+              style={{ flexGrow: 1, marginRight: '5px', marginBottom: '5px' }}
+              configs={['Drive', 'MainGimbal', 'ControlMultipliers']}
+            />
+            <Gimbal style={{ height: '100%' }} />
+          </div>
+          <div style={row}>
+            <button type="button" onClick={rovecomm.resubscribe} style={{ width: '100px' }}>
+              Resubscribe All
+            </button>
+            <button type="button" onClick={() => this.setState({ ronOpen: true })}>
+              Open Rover Overview of Network
+            </button>
+            <button type="button" onClick={() => this.setState({ ramOpen: true })}>
+              Open Rover Attachment Manager
+            </button>
+            <button type="button" onClick={() => this.setState({ ridOpen: true })}>
+              Open Rover Imagery Display
+            </button>
           </div>
         </div>
       </div>
