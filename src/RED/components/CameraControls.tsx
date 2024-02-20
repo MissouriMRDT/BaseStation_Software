@@ -1,29 +1,7 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
-import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
 
 import Hls from 'hls.js';
-
-const { useEffect, useState } = React;
-
-const container: CSS.Properties = {
-  fontFamily: 'arial',
-  borderTopWidth: '30px',
-  borderColor: '#990000',
-  borderBottomWidth: '2px',
-  borderStyle: 'solid',
-  margin: '5px',
-};
-const label: CSS.Properties = {
-  marginTop: '-10px',
-  position: 'relative',
-  top: '24px',
-  left: '3px',
-  fontFamily: 'arial',
-  fontSize: '16px',
-  zIndex: 1,
-  color: 'white',
-};
 
 const controlContainer: CSS.Properties = {
   display: 'grid',
