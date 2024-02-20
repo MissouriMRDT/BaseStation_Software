@@ -322,9 +322,7 @@ class Power extends Component<IProps, IState> {
             </div>
             <div style={ColorStyleConverter(this.state.batteryTelemetry.PackTemp.value, 0, 15, 160, 120, 0, readout)}>
               <h3 style={textPad}>Total Pack Current</h3>
-              <h3 style={textPad}>
-                {`${(this.state.batteryTelemetry.PackCurrent.value / 1000).toLocaleString(undefined)} A`}
-              </h3>
+              <h3 style={textPad}>{`${this.state.batteryTelemetry.PackCurrent.value.toLocaleString(undefined)} A`}</h3>
             </div>
             <div
               style={ColorStyleConverter(this.state.batteryTelemetry.PackVoltage.value, 22, 28, 33, 0, 120, readout)}
@@ -340,7 +338,7 @@ class Power extends Component<IProps, IState> {
                 return (
                   <div key={cell} style={ColorStyleConverter(value, 2.5, 3.1, 4.2, 0, 120, readout)}>
                     <h3 style={textPad}>{cell}</h3>
-                    <h3 style={textPad}>{`${(value / 1000).toLocaleString(undefined)} V`}</h3>
+                    <h3 style={textPad}>{`${value.toLocaleString(undefined)} V`}</h3>
                   </div>
                 );
               })}
