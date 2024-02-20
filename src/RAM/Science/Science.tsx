@@ -29,7 +29,6 @@ const proboscisMotorMultiplier = 500;
 let microscopePosition = 0;
 
 function science(): void {
-  // Update controller inputs for these packets: EnvironmentalData (GRAPH)
   if ('ScoopAxis_OpenLoop' in controllerInputs) {
     if (controllerInputs.ScoopAxis_OpenLoop !== 0) {
       rovecomm.sendCommand('ScoopAxis_OpenLoop', controllerInputs.ScoopAxis_OpenLoop * scoopMotorMultiplier);
