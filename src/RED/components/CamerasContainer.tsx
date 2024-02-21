@@ -42,7 +42,7 @@ async function startFFMPEG(input: string, output:string) {
 
 interface IProps {
   style?: CSS.Properties;
-  cams: CameraControls[];
+  sources: string[];
 }
 
 interface IState {}
@@ -53,7 +53,12 @@ class CamerasContainer extends Component<IProps, IState> {
 
   static defaultProps = {
     style: {},
-    cams: [],
+    sources: [
+      'assets\\tmpVideo\\stream.m3u8',
+      'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8',
+      'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8',
+      'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8',
+    ],
   };
 
   constructor(props: IProps) {
@@ -78,10 +83,11 @@ class CamerasContainer extends Component<IProps, IState> {
         <div style={label}> Camera Controls </div>
         <div style={container}>
           {/* source will eventually be something like: assets\tmpVideo\stream.m3u8 */}
-          <CameraControls hlsUrl={path.join(this.folder, 'stream.m3u8')} />
-          {/* <CameraControls hlsUrl={'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8'} />
-          <CameraControls hlsUrl={'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8'} />
-          <CameraControls hlsUrl={'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8'} /> */}
+          {/* <CameraControls hlsUrl={path.join(this.folder, 'stream.m3u8')} /> */}
+          <CameraControls sources={this.props.sources} startSource={0} />
+          <CameraControls sources={this.props.sources} startSource={1} />
+          <CameraControls sources={this.props.sources} startSource={2} />
+          <CameraControls sources={this.props.sources} startSource={3} />
         </div>
       </div>
     );
