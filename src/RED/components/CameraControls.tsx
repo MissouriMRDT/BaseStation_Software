@@ -23,7 +23,7 @@ interface IState {}
 
 // ffmpeg -flags low_delay^
 //  -i "D:media\videos\Danger 5\S1 E1 - I Danced For Hitler.mkv"^
-//  -f hls C:\Users\rfboe\Documents\GitHub\BaseStation_Software\assets\tmpVideo\stream.m3u8
+//  -f hls -hls_flags delete_segments C:\Users\rfboe\Documents\GitHub\BaseStation_Software\assets\tmpVideo\stream.m3u8
 
 // I know, this code is all jank, I just want it up on the git repository.
 
