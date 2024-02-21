@@ -81,8 +81,12 @@ class CameraControls extends Component<IProps, IState> {
     return (
       <div style={this.props.style}>
         <div>
-        <div>
-          <video style={{"width": "250px", "backgroundColor": "black", "marginLeft": "5px"}}
+        <div data-vjs-player>
+          <video
+            className="videoCanvas"
+            ref={(player) => (this.player = player)}
+            autoPlay={true}
+            style={{ width: '320px' }}
           ></video>
         </div>
         <div style={cameraSelectionContainer}>
