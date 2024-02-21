@@ -49,9 +49,10 @@ class CameraControls extends Component<IProps, IState> {
     autoplay: true,
     controls: true,
     sources: [{
-      src: 'http://localhost:2234',
-      // type: 'application/x-mpegURL'
-      type: 'video/mp4'
+      // src: 'http://localhost:2234',
+      src: 'assets\\tmpVideo\\stream.m3u8',
+      type: 'application/x-mpegURL'
+      // type: 'video/mp4'
     }]
   };
 
