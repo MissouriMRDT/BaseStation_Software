@@ -11,13 +11,40 @@ const controlContainer: CSS.Properties = {
   cursor: 'pointer',
 };
 
+const cameraSelectionContainer: CSS.Properties = {
+  display: "grid",
+  width: "250px",
+  marginLeft: "5px",
+  gridTemplateColumns: "12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%",
+  cursor: "pointer"
+}
+
+const rotationContainer: CSS.Properties = {
+  display: "grid",
+  width: "250px",
+  marginLeft: "5px",
+  gridTemplateColumns: "33.33% 33.33% 33.33%",
+  cursor: "pointer"
+}
+
+const videoContainerStyle: CSS.Properties = {
+  width: '320px',
+  height: '320px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  overflow: 'hidden',
+};
+
 interface IProps {
   style?: CSS.Properties;
   // eslint-disable-next-line @typescript-eslint/ban-types
   hlsUrl: string;
 }
 
-interface IState {}
+interface IState {
+  rotationAngle: number;
+}
 
 // this is the ffmpeg command (IP may need to be changed):
 
@@ -38,9 +65,10 @@ class CameraControls extends Component<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
-    this.state = {};
+    this.state = {rotationAngle: 0,};
     this.hlsUrl = props.hlsUrl;
     // props.sources[0].src = props.passedFileSource;
+    
   }
 
   componentDidMount() {
@@ -61,37 +89,70 @@ class CameraControls extends Component<IProps, IState> {
     // }
   }
 
+
+  rotateVideo = (angle: number) => {
+    if (angle === 0) {
+      this.setState({ rotationAngle: 0 });
+    } else {
+      this.setState((prevState) => ({
+        rotationAngle: prevState.rotationAngle + angle,
+      }));
+    }
+  };
+
   render(): JSX.Element {
+    const { rotationAngle } = this.state;
+    const videoStyle = {
+      width: '320px',
+      transform: `rotate(${rotationAngle}deg)`,
+      transformOrigin: 'center',
+    };
     return (
       <div style={this.props.style}>
+        <div>
+        <div style={videoContainerStyle}>
         <div data-vjs-player>
           <video
             className="videoCanvas"
             ref={(player) => (this.player = player)}
             autoPlay={true}
-            style={{ width: '320px' }}
+            style={videoStyle}
           ></video>
         </div>
-        <div style={controlContainer}>
-          <button type="button" style={{ cursor: 'pointer' }}>
-            1
-          </button>
-          <button type="button">2</button>
-          <button>3</button>
-          <button>4</button>
-          <button>5</button>
-          <button>6</button>
-          <button>7</button>
-          <button>8</button>
         </div>
-        <button
-          type="button"
-          onClick={() => {
-            console.log('Clicked 1234');
-          }}
-        >
-          1234
-        </button>
+        <div style={cameraSelectionContainer}>
+            <button type="button" style={{cursor: "pointer"}}>
+              1
+            </button>
+            <button type="button">
+              2
+            </button>
+            <button>
+              3
+            </button>
+            <button>
+              4
+            </button>
+            <button>
+              5
+            </button>
+            <button>
+              6
+            </button>
+            <button>
+              7
+            </button>
+            <button>
+              8
+            </button>
+          </div>
+<div style={rotationContainer}>
+          <button onClick={() => this.rotateVideo(0)}>Reset</button>
+          <button onClick={() => this.rotateVideo(90)}>Rotate 90</button>
+          <button onClick={() => this.rotateVideo(180)}>Rotate 180</button>
+        </div>
+        </div>
+        
       </div>
     );
   }
