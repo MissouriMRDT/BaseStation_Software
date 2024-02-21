@@ -30,23 +30,20 @@ let microscopePosition = 0;
 
 function science(): void {
   if ('ScoopAxis_OpenLoop' in controllerInputs) {
-    if (controllerInputs.ScoopAxis_OpenLoop !== 0) {
-      rovecomm.sendCommand('ScoopAxis_OpenLoop', controllerInputs.ScoopAxis_OpenLoop * scoopMotorMultiplier);
-    }
+    rovecomm.sendCommand('ScoopAxis_OpenLoop', controllerInputs.ScoopAxis_OpenLoop * scoopMotorMultiplier);
   }
 
   if ('SensorAxis_OpenLoop' in controllerInputs) {
-    if (controllerInputs.SensorAxis_OpenLoop !== 0) {
-      rovecomm.sendCommand('SensorAxis_OpenLoop', controllerInputs.SensorAxis_OpenLoop * sensorMotorMultiplier);
-    }
+    rovecomm.sendCommand('SensorAxis_OpenLoop', controllerInputs.SensorAxis_OpenLoop * sensorMotorMultiplier);
   }
 
   if ('AugerUp' in controllerInputs && 'AugerDown' in controllerInputs) {
     if (controllerInputs.AugerUp === 1) {
       rovecomm.sendCommand('Auger', augerMotorMultiplier);
-    }
-    if (controllerInputs.AugerDown === 1) {
+    } else if (controllerInputs.AugerDown === 1) {
       rovecomm.sendCommand('Auger', -augerMotorMultiplier);
+    } else {
+      rovecomm.sendCommand('Auger', 0);
     }
   }
 
@@ -55,6 +52,8 @@ function science(): void {
       rovecomm.sendCommand('Proboscis', proboscisMotorMultiplier);
     } else if (controllerInputs.ProboscisMinus === 1) {
       rovecomm.sendCommand('Proboscis', -proboscisMotorMultiplier);
+    } else {
+      rovecomm.sendCommand('Proboscis', 0);
     }
   }
 
@@ -62,8 +61,7 @@ function science(): void {
     if (controllerInputs.MicroscopePlus === 1 && microscopePosition < 180) {
       microscopePosition += 5;
       rovecomm.sendCommand('Microscope', microscopePosition);
-    }
-    if (controllerInputs.MicroscopeMinus === 1 && microscopePosition > 0) {
+    } else if (controllerInputs.MicroscopeMinus === 1 && microscopePosition > 0) {
       microscopePosition -= 5;
       rovecomm.sendCommand('Microscope', microscopePosition);
     }
