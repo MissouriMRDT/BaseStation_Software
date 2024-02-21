@@ -46,14 +46,6 @@ interface IState {
   rotationAngle: number;
 }
 
-// this is the ffmpeg command (IP may need to be changed):
-
-// ffmpeg -flags low_delay^
-//  -i "D:media\videos\Danger 5\S1 E1 - I Danced For Hitler.mkv"^
-//  -f hls -hls_flags delete_segments C:\Users\rfboe\Documents\GitHub\BaseStation_Software\assets\tmpVideo\stream.m3u8
-
-// I know, this code is all jank, I just want it up on the git repository.
-
 // CameraControls: represents a single camera view w/ controls. should be contained under a CamerasContainer
 class CameraControls extends Component<IProps, IState> {
 

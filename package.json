@@ -271,7 +271,6 @@
     "source-map-support": "^0.5.20",
     "styled-components": "^5.3.3",
     "ffmpeg-stream": "^0.7.0",
-    "video.js": "^8.10.0",
     "hls.js": "^0.8.5"
   },
   "devEngines": {

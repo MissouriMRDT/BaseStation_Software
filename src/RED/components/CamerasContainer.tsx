@@ -3,7 +3,8 @@ import CSS from 'csstype';
 import CameraControls from './CameraControls';
 
 const path = require('path');
-const fs = require('fs');
+const { Converter } = require("ffmpeg-stream")
+const { readdir, unlinkSync } = require("fs")
 
 const container: CSS.Properties = {
   display: 'grid',
@@ -26,6 +27,19 @@ const label: CSS.Properties = {
   color: 'white',
 };
 
+async function startFFMPEG(input: string, output:string) {
+  const converter = new Converter()
+ 
+  converter.createInputFromFile(input, {});
+  converter.createOutputToFile(output, {
+    f: 'hls',
+    hls_flags: 'delete_segments'
+  });
+
+  // start processing
+  await converter.run()
+}
+
 interface IProps {
   style?: CSS.Properties;
   cams: CameraControls[];
@@ -47,14 +61,15 @@ class CamerasContainer extends Component<IProps, IState> {
     this.state = {};
 
     this.folder = path.join(__dirname, '..\\assets\\tmpVideo\\');
-    // fs.readdir(this.folder, (err: ErrnoException | null, files: string[]) => {
-    //   if (err) throw err;
+    readdir(this.folder, (err: ErrnoException | null, files: string[]) => {
+      if (err) throw err;
       
-    //   for (const file of files) {
-    //       fs.unlinkSync(path.join(this.folder, file));
-    //   }
+      for (const file of files) {
+        unlinkSync(path.join(this.folder, file));
+      }
       
-    // });
+      startFFMPEG('D:media\\videos\\Danger 5\\S1 E1 - I Danced For Hitler.mkv', path.join(this.folder, 'stream.m3u8'));
+    }, );
   }
 
   render(): JSX.Element {
