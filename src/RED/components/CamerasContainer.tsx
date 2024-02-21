@@ -46,6 +46,7 @@ class CamerasContainer extends Component<IProps, IState> {
       <div style={this.props.style}>
         <div style={label}> Camera Controls </div>
         <div style={container}>
+          {/* source will eventually be something like: assets\tmpVideo\stream.m3u8 */}
           <CameraControls hlsUrl={'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8'} />
           {/* <CameraControls hlsUrl={'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8'} />
           <CameraControls hlsUrl={'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8'} />

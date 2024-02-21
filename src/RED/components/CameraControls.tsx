@@ -22,8 +22,8 @@ interface IState {}
 // this is the ffmpeg command (IP may need to be changed):
 
 // ffmpeg -flags low_delay^
-//  -f mpegts -i udp://169.254.144.138:1234^
-//  -f mp4 -listen 1 -movflags frag_keyframe+empty_moov http://localhost:2234
+//  -i "D:media\videos\Danger 5\S1 E1 - I Danced For Hitler.mkv"^
+//  -f hls C:\Users\rfboe\Documents\GitHub\BaseStation_Software\assets\tmpVideo\stream.m3u8
 
 // I know, this code is all jank, I just want it up on the git repository.
 
