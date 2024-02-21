@@ -33,7 +33,9 @@ interface IProps {
   hlsUrl: string;
 }
 
-interface IState {}
+interface IState {
+  rotationAngle: number;
+}
 
 // this is the ffmpeg command (IP may need to be changed):
 
@@ -54,9 +56,10 @@ class CameraControls extends Component<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
-    this.state = {};
+    this.state = {rotationAngle: 0,};
     this.hlsUrl = props.hlsUrl;
     // props.sources[0].src = props.passedFileSource;
+    
   }
 
   componentDidMount() {
@@ -77,7 +80,19 @@ class CameraControls extends Component<IProps, IState> {
     // }
   }
 
+
+  rotateVideo = (angle: number) => {
+    this.setState((prevState) => ({
+      rotationAngle: prevState.rotationAngle + angle,
+    }));
+  };
+
   render(): JSX.Element {
+    const { rotationAngle } = this.state;
+    const videoStyle = {
+      width: '320px',
+      transform: `rotate(${rotationAngle}deg)`,
+    };
     return (
       <div style={this.props.style}>
         <div>
@@ -86,7 +101,7 @@ class CameraControls extends Component<IProps, IState> {
             className="videoCanvas"
             ref={(player) => (this.player = player)}
             autoPlay={true}
-            style={{ width: '320px' }}
+            style={videoStyle}
           ></video>
         </div>
         <div style={cameraSelectionContainer}>
@@ -115,17 +130,11 @@ class CameraControls extends Component<IProps, IState> {
               8
             </button>
           </div>
-          <div style={rotationContainer}>
-            <button>
-              Reset
-            </button>
-            <button>
-              Rotate 90
-            </button>
-            <button>
-              Rotate 180
-            </button>
-          </div>
+<div style={rotationContainer}>
+          <button onClick={() => this.rotateVideo(0)}>Reset</button>
+          <button onClick={() => this.rotateVideo(90)}>Rotate 90</button>
+          <button onClick={() => this.rotateVideo(180)}>Rotate 180</button>
+        </div>
         </div>
         
       </div>
