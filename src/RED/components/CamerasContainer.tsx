@@ -72,6 +72,7 @@ class CamerasContainer extends Component<IProps, IState> {
           <CameraControls sources={this.props.sources} startSource={0} />
           <CameraControls sources={this.props.sources} startSource={1} />
           <CameraControls sources={this.props.sources} startSource={2} />
+          <CameraControls sources={this.props.sources} startSource={3} />
         </div>
       </div>
     );
