@@ -82,9 +82,13 @@ class CameraControls extends Component<IProps, IState> {
 
 
   rotateVideo = (angle: number) => {
-    this.setState((prevState) => ({
-      rotationAngle: prevState.rotationAngle + angle,
-    }));
+    if (angle === 0) {
+      this.setState({ rotationAngle: 0 });
+    } else {
+      this.setState((prevState) => ({
+        rotationAngle: prevState.rotationAngle + angle,
+      }));
+    }
   };
 
   render(): JSX.Element {
