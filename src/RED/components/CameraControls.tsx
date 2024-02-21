@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import CSS from 'csstype';
 
 import Hls from 'hls.js';
+import { setSource } from 'video.js/dist/types/tech/middleware';
 
 const controlContainer: CSS.Properties = {
   display: 'grid',
@@ -12,20 +13,20 @@ const controlContainer: CSS.Properties = {
 };
 
 const cameraSelectionContainer: CSS.Properties = {
-  display: "grid",
-  width: "250px",
-  marginLeft: "5px",
-  gridTemplateColumns: "12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%",
-  cursor: "pointer"
-}
+  display: 'grid',
+  width: '250px',
+  marginLeft: '5px',
+  gridTemplateColumns: '12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%',
+  cursor: 'pointer',
+};
 
 const rotationContainer: CSS.Properties = {
-  display: "grid",
-  width: "250px",
-  marginLeft: "5px",
-  gridTemplateColumns: "33.33% 33.33% 33.33%",
-  cursor: "pointer"
-}
+  display: 'grid',
+  width: '250px',
+  marginLeft: '5px',
+  gridTemplateColumns: '33.33% 33.33% 33.33%',
+  cursor: 'pointer',
+};
 
 const videoContainerStyle: CSS.Properties = {
   width: '320px',
@@ -39,11 +40,13 @@ const videoContainerStyle: CSS.Properties = {
 interface IProps {
   style?: CSS.Properties;
   // eslint-disable-next-line @typescript-eslint/ban-types
-  hlsUrl: string;
+  sources: string[];
+  startSource: number;
 }
 
 interface IState {
   rotationAngle: number;
+  currentSource: number;
 }
 
 // this is the ffmpeg command (IP may need to be changed):
@@ -56,31 +59,24 @@ interface IState {
 
 // CameraControls: represents a single camera view w/ controls. should be contained under a CamerasContainer
 class CameraControls extends Component<IProps, IState> {
-
   static defaultProps = {};
 
   player: any;
 
-  hlsUrl: string;
+  hls: any;
+
+  sources: string[];
 
   constructor(props: IProps) {
     super(props);
-    this.state = {rotationAngle: 0,};
-    this.hlsUrl = props.hlsUrl;
+    this.state = { rotationAngle: 0, currentSource: props.startSource };
+    this.sources = props.sources;
     // props.sources[0].src = props.passedFileSource;
-    
   }
 
   componentDidMount() {
-    // create video Player
-    const video = this.player;
-    const hls = new Hls();
-
-    hls.loadSource(this.hlsUrl);
-    hls.attachMedia(video);
-    hls.on(Hls.Events.MANIFEST_PARSED, function () {
-      video.play();
-    });
+    this.hls = new Hls();
+    this.setSource(this.state.currentSource);
   }
 
   componentWillUnmount() {
@@ -88,7 +84,6 @@ class CameraControls extends Component<IProps, IState> {
     //   this.player.dispose();
     // }
   }
-
 
   rotateVideo = (angle: number) => {
     if (angle === 0) {
@@ -100,6 +95,21 @@ class CameraControls extends Component<IProps, IState> {
     }
   };
 
+  setSource(newSource: number) {
+    const video = this.player;
+    this.hls.destroy();
+    this.hls = new Hls();
+
+    this.setState({ currentSource: newSource });
+
+    this.hls.loadSource(this.sources[newSource]);
+    this.hls.attachMedia(video);
+
+    this.hls.on(Hls.Events.MANIFEST_PARSED, function () {
+      video.play();
+    });
+  }
+
   render(): JSX.Element {
     const { rotationAngle } = this.state;
     const videoStyle = {
@@ -110,49 +120,32 @@ class CameraControls extends Component<IProps, IState> {
     return (
       <div style={this.props.style}>
         <div>
-        <div style={videoContainerStyle}>
-        <div data-vjs-player>
-          <video
-            className="videoCanvas"
-            ref={(player) => (this.player = player)}
-            autoPlay={true}
-            style={videoStyle}
-          ></video>
-        </div>
-        </div>
-        <div style={cameraSelectionContainer}>
-            <button type="button" style={{cursor: "pointer"}}>
-              1
-            </button>
-            <button type="button">
-              2
-            </button>
-            <button>
-              3
-            </button>
-            <button>
-              4
-            </button>
-            <button>
-              5
-            </button>
-            <button>
-              6
-            </button>
-            <button>
-              7
-            </button>
-            <button>
-              8
-            </button>
+          <div style={videoContainerStyle}>
+            <div data-vjs-player>
+              <video
+                className="videoCanvas"
+                ref={(player) => (this.player = player)}
+                autoPlay={true}
+                style={videoStyle}
+              ></video>
+            </div>
           </div>
-<div style={rotationContainer}>
-          <button onClick={() => this.rotateVideo(0)}>Reset</button>
-          <button onClick={() => this.rotateVideo(90)}>Rotate 90</button>
-          <button onClick={() => this.rotateVideo(180)}>Rotate 180</button>
+          <div style={cameraSelectionContainer}>
+            <button onClick={() => this.setSource(0)}>1</button>
+            <button onClick={() => this.setSource(1)}>2</button>
+            <button onClick={() => this.setSource(2)}>3</button>
+            <button onClick={() => this.setSource(3)}>4</button>
+            <button onClick={() => this.setSource(4)}>5</button>
+            <button onClick={() => this.setSource(5)}>6</button>
+            <button onClick={() => this.setSource(6)}>7</button>
+            <button onClick={() => this.setSource(7)}>8</button>
+          </div>
+          <div style={rotationContainer}>
+            <button onClick={() => this.rotateVideo(0)}>Reset</button>
+            <button onClick={() => this.rotateVideo(90)}>Rotate 90</button>
+            <button onClick={() => this.rotateVideo(180)}>Rotate 180</button>
+          </div>
         </div>
-        </div>
-        
       </div>
     );
   }
