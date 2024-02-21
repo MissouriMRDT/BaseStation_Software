@@ -11,6 +11,22 @@ const controlContainer: CSS.Properties = {
   cursor: 'pointer',
 };
 
+const cameraSelectionContainer: CSS.Properties = {
+  display: "grid",
+  width: "250px",
+  marginLeft: "5px",
+  gridTemplateColumns: "12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%",
+  cursor: "pointer"
+}
+
+const rotationContainer: CSS.Properties = {
+  display: "grid",
+  width: "250px",
+  marginLeft: "5px",
+  gridTemplateColumns: "33.33% 33.33% 33.33%",
+  cursor: "pointer"
+}
+
 interface IProps {
   style?: CSS.Properties;
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -64,34 +80,50 @@ class CameraControls extends Component<IProps, IState> {
   render(): JSX.Element {
     return (
       <div style={this.props.style}>
-        <div data-vjs-player>
-          <video
-            className="videoCanvas"
-            ref={(player) => (this.player = player)}
-            autoPlay={true}
-            style={{ width: '320px' }}
+        <div>
+        <div>
+          <video style={{"width": "250px", "backgroundColor": "black", "marginLeft": "5px"}}
           ></video>
         </div>
-        <div style={controlContainer}>
-          <button type="button" style={{ cursor: 'pointer' }}>
-            1
-          </button>
-          <button type="button">2</button>
-          <button>3</button>
-          <button>4</button>
-          <button>5</button>
-          <button>6</button>
-          <button>7</button>
-          <button>8</button>
+        <div style={cameraSelectionContainer}>
+            <button type="button" style={{cursor: "pointer"}}>
+              1
+            </button>
+            <button type="button">
+              2
+            </button>
+            <button>
+              3
+            </button>
+            <button>
+              4
+            </button>
+            <button>
+              5
+            </button>
+            <button>
+              6
+            </button>
+            <button>
+              7
+            </button>
+            <button>
+              8
+            </button>
+          </div>
+          <div style={rotationContainer}>
+            <button>
+              Reset
+            </button>
+            <button>
+              Rotate 90
+            </button>
+            <button>
+              Rotate 180
+            </button>
+          </div>
         </div>
-        <button
-          type="button"
-          onClick={() => {
-            console.log('Clicked 1234');
-          }}
-        >
-          1234
-        </button>
+        
       </div>
     );
   }

@@ -51,7 +51,6 @@ class CamerasContainer extends Component<IProps, IState> {
           {/* <CameraControls hlsUrl={'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8'} />
           <CameraControls hlsUrl={'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8'} />
           <CameraControls hlsUrl={'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8'} /> */}
-          <button>test</button>
         </div>
       </div>
     );
