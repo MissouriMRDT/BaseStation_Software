@@ -1,36 +1,20 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
-import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
-import videojs from 'video.js';
 
-const container: CSS.Properties = {
-  display: 'flex',
-  fontFamily: 'arial',
-  borderTopWidth: '30px',
-  borderColor: '#990000',
-  borderBottomWidth: '2px',
-  borderStyle: 'solid',
-  flexWrap: 'wrap',
-  flexDirection: 'column',
-  padding: '5px',
-};
-const label: CSS.Properties = {
-  marginTop: '-10px',
-  position: 'relative',
-  top: '24px',
-  left: '3px',
-  fontFamily: 'arial',
-  fontSize: '16px',
-  zIndex: 1,
-  color: 'white',
+import Hls from 'hls.js';
+
+const controlContainer: CSS.Properties = {
+  display: 'grid',
+  width: '250px',
+  marginLeft: '5px',
+  gridTemplateColumns: '12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%',
+  cursor: 'pointer',
 };
 
 interface IProps {
   style?: CSS.Properties;
-  autoplay: boolean;
-  controls: boolean;
   // eslint-disable-next-line @typescript-eslint/ban-types
-  sources: object[];
+  hlsUrl: string;
 }
 
 interface IState {}
@@ -43,53 +27,71 @@ interface IState {}
 
 // I know, this code is all jank, I just want it up on the git repository.
 
+// CameraControls: represents a single camera view w/ controls. should be contained under a CamerasContainer
 class CameraControls extends Component<IProps, IState> {
-  static defaultProps = {
-    style: {},
-    autoplay: true,
-    controls: true,
-    sources: [{
-      // src: 'http://localhost:2234',
-      src: 'assets\\tmpVideo\\stream.m3u8',
-      type: 'application/x-mpegURL'
-      // type: 'video/mp4'
-    }]
-  };
+
+  static defaultProps = {};
 
   player: any;
 
-  videoNode: any;
+  hlsUrl: string;
 
   constructor(props: IProps) {
     super(props);
     this.state = {};
+    this.hlsUrl = props.hlsUrl;
+    // props.sources[0].src = props.passedFileSource;
   }
 
   componentDidMount() {
-    this.player = videojs(this.videoNode, this.props, () => {
-      videojs.log('onPlayerReady', this);
+    // create video Player
+    const video = this.player;
+    const hls = new Hls();
+
+    hls.loadSource(this.hlsUrl);
+    hls.attachMedia(video);
+    hls.on(Hls.Events.MANIFEST_PARSED, function () {
+      video.play();
     });
   }
 
   componentWillUnmount() {
-    if (this.player) {
-      this.player.dispose();
-    }
+    // if (this.player) {
+    //   this.player.dispose();
+    // }
   }
 
   render(): JSX.Element {
     return (
       <div style={this.props.style}>
-        <div style={label}>Camera Controls</div>
-        <div style={container}>
-          <div data-vjs-player>
-            <video
-              ref={(node) => (this.videoNode = node)}
-              className="video-js"
-              style={{ backgroundColor: 'black', overflow: 'hidden' }}
-            ></video>
-          </div>
+        <div data-vjs-player>
+          <video
+            className="videoCanvas"
+            ref={(player) => (this.player = player)}
+            autoPlay={true}
+            style={{ width: '320px' }}
+          ></video>
         </div>
+        <div style={controlContainer}>
+          <button type="button" style={{ cursor: 'pointer' }}>
+            1
+          </button>
+          <button type="button">2</button>
+          <button>3</button>
+          <button>4</button>
+          <button>5</button>
+          <button>6</button>
+          <button>7</button>
+          <button>8</button>
+        </div>
+        <button
+          type="button"
+          onClick={() => {
+            console.log('Clicked 1234');
+          }}
+        >
+          1234
+        </button>
       </div>
     );
   }

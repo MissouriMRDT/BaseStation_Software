@@ -6546,6 +6546,13 @@ history@^5.1.0:
   dependencies:
     "@babel/runtime" "^7.7.6"
 
+hls.js@^0.8.5:
+  version "0.8.9"
+  resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-0.8.9.tgz#db367cc99ce5b0976ea3e059a1d044d7b0790697"
+  integrity sha512-dquXM5LSBkg1cbFHaDJjUSMGIrVdho6OMdoviFybeEF19kYMpO0cpakv3jUAPqG6jKegjDGaTkOM9Ws5p878Cg==
+  dependencies:
+    url-toolkit "^2.0.1"
+
 hoek@4.2.1:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/hoek/-/hoek-4.2.1.tgz#9634502aa12c445dd5a7c5734b572bb8738aacbb"
@@ -12135,7 +12142,7 @@ url-parse@^1.5.10:
     querystringify "^2.1.1"
     requires-port "^1.0.0"
 
-url-toolkit@^2.2.1:
+url-toolkit@^2.0.1, url-toolkit@^2.2.1:
   version "2.2.5"
   resolved "https://registry.yarnpkg.com/url-toolkit/-/url-toolkit-2.2.5.tgz#58406b18e12c58803e14624df5e374f638b0f607"
   integrity sha512-mtN6xk+Nac+oyJ/PrI7tzfmomRVNFIWKUbG8jdYFt52hxbiReFAXIjYskvu64/dvuW71IcB7lV8l0HvZMac6Jg==
