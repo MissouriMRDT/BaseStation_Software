@@ -27,6 +27,15 @@ const rotationContainer: CSS.Properties = {
   cursor: "pointer"
 }
 
+const videoContainerStyle: CSS.Properties = {
+  width: '320px',
+  height: '320px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  overflow: 'hidden',
+};
+
 interface IProps {
   style?: CSS.Properties;
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -96,10 +105,12 @@ class CameraControls extends Component<IProps, IState> {
     const videoStyle = {
       width: '320px',
       transform: `rotate(${rotationAngle}deg)`,
+      transformOrigin: 'center',
     };
     return (
       <div style={this.props.style}>
         <div>
+        <div style={videoContainerStyle}>
         <div data-vjs-player>
           <video
             className="videoCanvas"
@@ -107,6 +118,7 @@ class CameraControls extends Component<IProps, IState> {
             autoPlay={true}
             style={videoStyle}
           ></video>
+        </div>
         </div>
         <div style={cameraSelectionContainer}>
             <button type="button" style={{cursor: "pointer"}}>
