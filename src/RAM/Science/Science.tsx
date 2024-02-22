@@ -12,6 +12,9 @@ import ClosedLoopControls from './components/ClosedLoopControls';
 import EncoderPositions from './components/EncoderPositions';
 import OverrideSwitches from './components/OverrideSwitches';
 import EnvironmentalData from './components/EnvironmentalData';
+import Raman from './components/Raman';
+import { format } from 'path';
+import { textAlign } from 'html2canvas/dist/types/css/property-descriptors/text-align';
 // import SensorGraphs from './components/SensorGraphs';
 
 const row: CSS.Properties = {
@@ -21,6 +24,9 @@ const row: CSS.Properties = {
 const column: CSS.Properties = {
   display: 'flex',
   flexDirection: 'column',
+};
+const button: CSS.Properties = {
+  margin: '5px',
 };
 const sensorMotorMultiplier = 500;
 const scoopMotorMultiplier = 500;
@@ -133,22 +139,38 @@ function science(): void {
 
 interface IProps {}
 
-interface IState {}
+interface IState {
+  selectedTab: string;
+}
 
 class Science extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
-    this.state = {};
+    this.state = {
+      selectedTab: 'environmental', // Default tab is 'environmental'
+    };
 
     setInterval(() => science(), 100);
   }
 
+  handleTabChange = (tab: string) => {
+    this.setState({ selectedTab: tab });
+  };
+
   render(): JSX.Element {
+    const { selectedTab } = this.state;
     return (
       <div style={column}>
-        {/* <SensorGraphs /> */}
-        {/* <Fluorometer /> */}
-        <EnvironmentalData />
+        {selectedTab === 'environmental' && <EnvironmentalData />}
+        {selectedTab === 'raman' && <Raman />}
+        <div style={{ ...row, justifyContent: 'center', marginTop: '10px' }}>
+          <button style={button} onClick={() => this.handleTabChange('environmental')}>
+            Environmental Data
+          </button>
+          <button style={button} onClick={() => this.handleTabChange('raman')}>
+            Raman (NOT IMPLEMENTED)
+          </button>
+        </div>
         <div style={{ ...row }}>
           {/* <div style={{ ...column, marginRight: '2.5px', width: '50%' }}><Heater /></div> */}
           <div style={{ ...column, marginRight: '2.5px', width: '100%' }}>
@@ -165,9 +187,7 @@ class Science extends Component<IProps, IState> {
           </div>
         </div>
         <div style={{ ...row }}>
-          <div style={{ ...column, marginRight: '2.5px', width: '100%' }}>
-            <ClosedLoopControls />
-          </div>
+          <div style={{ ...column, marginRight: '2.5px', width: '100%' }}>{/* <ClosedLoopControls /> */}</div>
         </div>
         {/* <Cameras defaultCamera={7} /> */}
       </div>

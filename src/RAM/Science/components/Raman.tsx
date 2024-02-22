@@ -82,7 +82,7 @@ function downloadURL(imgData: string): void {
     .toISOString()
     // ISO string will be fromatted YYYY-MM-DDTHH:MM:SS:sssZ
     // this regex will convert all -,T,:,Z to . (which covers to . for .csv)
-    .replaceAll(/[:\-TZ]/g, '.')}EnvironmentalData.png`;
+    .replaceAll(/[:\-TZ]/g, '.')}Raman.png`;
 
   if (!fs.existsSync('./Screenshots')) {
     fs.mkdirSync('./Screenshots');
@@ -93,21 +93,21 @@ function downloadURL(imgData: string): void {
 }
 
 function saveImage(): void {
-  // Search through all the windows for EnvironmentalData
+  // Search through all the windows for Raman
   let graph;
   let thisWindow;
   for (const win of Object.keys(windows)) {
-    if (windows[win].document.getElementById('EnvironmentalData')) {
+    if (windows[win].document.getElementById('Raman')) {
       // When found, store the graph and the window it was in
       thisWindow = windows[win];
-      graph = thisWindow.document.getElementById('EnvironmentalData');
+      graph = thisWindow.document.getElementById('Raman');
       break;
     }
   }
 
   // If the graph isn't found, throw an error
   if (!graph) {
-    throw new Error("The element 'EnvironmentalData' wasn't found");
+    throw new Error("The element 'Raman' wasn't found");
   }
 
   // If the graph is found, convert its html into a canvas to be downloaded
@@ -145,7 +145,7 @@ interface IState {
   crosshairPos: Date | null;
 }
 
-class EnvironmentalData extends Component<IProps, IState> {
+class Raman extends Component<IProps, IState> {
   static defaultProps = {
     style: {},
   };
@@ -158,7 +158,7 @@ class EnvironmentalData extends Component<IProps, IState> {
   static getNewEmptyMap(): Map<string, Sensor> {
     return new Map([
       [
-        'Humidity',
+        'Test',
         {
           units: '%',
           graphLineColor: 'orange',
@@ -170,7 +170,7 @@ class EnvironmentalData extends Component<IProps, IState> {
         },
       ],
       [
-        'Temperature',
+        'Test2',
         {
           units: '°C',
           graphLineColor: 'blue',
@@ -188,14 +188,14 @@ class EnvironmentalData extends Component<IProps, IState> {
     super(props);
     this.state = {
       crosshairValues: new Map(),
-      sensors: EnvironmentalData.getNewEmptyMap(),
+      sensors: Raman.getNewEmptyMap(),
       enabledSensors: new Map([
-        ['Humidity', false],
-        ['Temperature', false],
+        ['Test', false],
+        ['Test2', false],
       ]),
       crosshairPos: null,
     };
-    this.EnvironmentalData = this.EnvironmentalData.bind(this);
+    this.Raman = this.Raman.bind(this);
     this.sensorSelectionChanged = this.sensorSelectionChanged.bind(this);
     this.selectAll = this.selectAll.bind(this);
     this.deselectAll = this.deselectAll.bind(this);
@@ -203,7 +203,7 @@ class EnvironmentalData extends Component<IProps, IState> {
     this.onNearestX = this.onNearestX.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
 
-    rovecomm.on('EnvironmentalData', (data: any) => this.EnvironmentalData(data));
+    rovecomm.on('Raman', (data: any) => this.Raman(data));
   }
 
   /**
@@ -230,7 +230,7 @@ class EnvironmentalData extends Component<IProps, IState> {
     this.setState({ crosshairValues, crosshairPos: list[index].x });
   }
 
-  EnvironmentalData(data: any): void {
+  Raman(data: any): void {
     this.addData('Temperature', data[0]);
     this.addData('Humidity', data[1]);
   }
@@ -362,8 +362,8 @@ class EnvironmentalData extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div id="EnvironmentalData" style={this.props.style}>
-        <div style={label}>Environmental Data</div>
+      <div id="Raman" style={this.props.style}>
+        <div style={label}>Raman</div>
         <div style={container}>
           <div style={buttonrow}>
             <button type="button" onClick={this.selectAll}>
@@ -375,7 +375,7 @@ class EnvironmentalData extends Component<IProps, IState> {
             <button type="button" onClick={saveImage}>
               Export Graph
             </button>
-            <button type="button" onClick={() => this.setState({ sensors: EnvironmentalData.getNewEmptyMap() })}>
+            <button type="button" onClick={() => this.setState({ sensors: Raman.getNewEmptyMap() })}>
               Clear Data
             </button>
           </div>
@@ -450,4 +450,4 @@ class EnvironmentalData extends Component<IProps, IState> {
   }
 }
 
-export default EnvironmentalData;
+export default Raman;
