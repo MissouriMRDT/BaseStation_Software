@@ -8,13 +8,10 @@ import CSS from 'csstype';
 import ControlScheme, { controllerInputs } from '../../Core/components/ControlScheme';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
 // import Fluorometer from './components/Fluorometer';
-import ClosedLoopControls from './components/ClosedLoopControls';
 import EncoderPositions from './components/EncoderPositions';
 import OverrideSwitches from './components/OverrideSwitches';
 import EnvironmentalData from './components/EnvironmentalData';
 import Raman from './components/Raman';
-import { format } from 'path';
-import { textAlign } from 'html2canvas/dist/types/css/property-descriptors/text-align';
 // import SensorGraphs from './components/SensorGraphs';
 
 const row: CSS.Properties = {
