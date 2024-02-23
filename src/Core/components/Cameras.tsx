@@ -5,6 +5,9 @@ import fs from 'fs';
 
 import { windows } from '../Window';
 import no_cam_img from '../../../assets/no_cam_img.png';
+import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
+//import { Stitcher } from 'opencv4nodejs';
+import * as cv from 'opencv4nodejs';
 
 const cameraNumList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const CAM_IPS = [
@@ -87,6 +90,38 @@ class Cameras extends Component<IProps, IState> {
       id: `Camera ${Cameras.id}`,
     };
     Cameras.id += 1;
+    this.takePano = this.takePano.bind(this);
+  }
+
+  rotateGimbal90(direction: boolean) {
+    if (direction) {
+      rovecomm.sendCommand('LeftMainGimbalIncrement', [90, 0]);
+    } else {
+      rovecomm.sendCommand('LeftMainGimbalIncrement', [-90, 0]);
+    }
+  }
+
+  takePano() {
+    const stitcher = new cv.Stitcher();
+    // zero angle (for now spam left)
+    this.rotateGimbal90(false);
+    this.rotateGimbal90(false);
+    this.rotateGimbal90(false);
+    const img1 = this.saveImageToVariable();
+    this.rotateGimbal90(true);
+    const img2 = this.saveImageToVariable();
+    this.rotateGimbal90(true);
+    const img3 = this.saveImageToVariable();
+    const images = [cv.imread(img1), cv.imread(img2), cv.imread(img3)];
+    const features = stitcher.detectAndMatchFeatures(images);
+    const homographies = stitcher.estimateHomographies(features);
+    const warpedImages = stitcher.warpImages(images, homographies);
+    const stitchedImage = stitcher.blendImages(warpedImages);
+    cv.imshow('Stitched Image', stitchedImage);
+    cv.waitKey(0);
+    cv.imwrite('./stitched_image.jpg', stitchedImage);
+    // stitch image
+    // print image
   }
 
   rotate(): void {
@@ -120,6 +155,43 @@ class Cameras extends Component<IProps, IState> {
     }
 
     this.setState({ rotation, style: { transform } });
+  }
+
+  saveImageToVariable(): void {
+    // Initial handler to start saving an image of the camera feed
+
+    // Look through all of the window documents for the current camera feed
+    let camera;
+    let thisWindow;
+    for (const win of Object.keys(windows)) {
+      if (windows[win].document.getElementById(this.state.id)) {
+        thisWindow = windows[win];
+        camera = thisWindow.document.getElementById(this.state.id);
+        break;
+      }
+    }
+
+    if (!camera) {
+      throw new Error(`The element '${camera}' wasn't found`);
+    }
+
+    // Then use package to turn the html into a canvas, which when complete calls downloadURL
+    // to save it as an image
+    // NOTE: This package seems to have issues with the dynamic nature of the camera feeds, and
+    // is only able to return the html for the first few seconds of operation
+    html2canvas(camera, {
+      scrollX: 0,
+      scrollY: -thisWindow.scrollY,
+      useCORS: true,
+      allowTaint: true,
+    })
+      .then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        return imgData;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   saveImage(): void {
@@ -231,6 +303,9 @@ class Cameras extends Component<IProps, IState> {
               </button>
               <button type="button" onClick={() => this.refresh()} style={{ width: '50%' }}>
                 Refresh
+              </button>
+              <button type="button" onClick={() => this.takePano()} style={{ width: '50%' }}>
+                Take Pano
               </button>
             </div>
           </div>

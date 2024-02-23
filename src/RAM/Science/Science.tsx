@@ -3,7 +3,7 @@ import CSS from 'csstype';
 // import SensorData from './components/SensorData';
 // import SensorGraphs from './components/SensorGraphs';
 // import Heater from './components/Heater';
-// import Cameras from '../../Core/components/Cameras';
+import Cameras from '../../Core/components/Cameras';
 // import RockLookUp from './components/rocklookup';
 import ControlScheme, { controllerInputs } from '../../Core/components/ControlScheme';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
@@ -186,7 +186,7 @@ class Science extends Component<IProps, IState> {
         <div style={{ ...row }}>
           <div style={{ ...column, marginRight: '2.5px', width: '100%' }}>{/* <ClosedLoopControls /> */}</div>
         </div>
-        {/* <Cameras defaultCamera={7} /> */}
+        <Cameras defaultCamera={7} />
       </div>
     );
   }
