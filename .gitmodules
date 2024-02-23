@@ -1,0 +1,4 @@
+[submodule "assets/manifest"]
+	path = assets/manifest
+	url = https://github.com/missourimrdt/rovecomm_base
+	branch = embedded-2024
