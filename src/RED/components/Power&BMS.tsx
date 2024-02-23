@@ -332,7 +332,7 @@ class Power extends Component<IProps, IState> {
               <h3 style={textPad}>{`${this.state.batteryTelemetry.PackCurrent.value.toLocaleString(undefined)} A`}</h3>
             </div>
             <div
-              style={ColorStyleConverter(this.state.batteryTelemetry.PackVoltage.value, 22, 28, 33, 0, 120, readout)}
+              style={ColorStyleConverter(this.state.batteryTelemetry.PackVoltage.value, 15, 21.6, 25, 0, 120, readout)}
             >
               <h3 style={textPad}>Total Pack Voltage</h3>
               <h3 style={textPad}>{`${this.state.batteryTelemetry.PackVoltage.value.toLocaleString(undefined)} V`}</h3>
