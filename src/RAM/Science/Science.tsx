@@ -25,10 +25,10 @@ const column: CSS.Properties = {
 const button: CSS.Properties = {
   margin: '5px',
 };
-const sensorMotorMultiplier = 500;
-const scoopMotorMultiplier = 500;
+const sensorMotorMultiplier = 1000;
+const scoopMotorMultiplier = 1000;
 const augerMotorMultiplier = 1000;
-const proboscisMotorMultiplier = 500;
+const proboscisMotorMultiplier = 1000;
 let microscopePosition = 0;
 
 function science(): void {
