@@ -153,7 +153,7 @@ class Power extends Component<IProps, IState> {
      */
     // Later, add functionality to have EnableBus and DisableBus buttons for the boards that can toggle
     rovecomm.on('SetBus', (data: number[]) => this.boardListenHandlerTog(data, 'SetBus'));
-    rovecomm.on('BusCurrent', (data: number[]) => this.boardListenHandlerAmp(data, 'BusCurrent'));
+    rovecomm.on('BusCurrent', (data: number[]) => this.boardListenHandlerAmp(data, 'SetBus'));
 
     // Add Reboot, EStop, and Suicide button
     rovecomm.on('PackCurrent', (data: number[]) => this.batteryListenHandler(data, 'PackCurrent'));
@@ -170,6 +170,8 @@ class Power extends Component<IProps, IState> {
    */
   boardListenHandlerAmp(data: number[], partList: string): void {
     const { boardTelemetry } = this.state;
+    console.log(boardTelemetry);
+    console.log(boardTelemetry[partList]);
     Object.keys(boardTelemetry[partList]).forEach((part: string, index: number) => {
       boardTelemetry[partList][part].value = data[index];
     });
