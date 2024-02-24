@@ -2,12 +2,9 @@ import React, { Component } from 'react';
 import CSS from 'csstype';
 import html2canvas from 'html2canvas';
 import fs from 'fs';
-
 import { windows } from '../Window';
 import no_cam_img from '../../../assets/no_cam_img.png';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
-//import { Stitcher } from 'opencv4nodejs';
-import * as cv from 'opencv4nodejs';
 
 const cameraNumList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const CAM_IPS = [
@@ -102,24 +99,15 @@ class Cameras extends Component<IProps, IState> {
   }
 
   takePano() {
-    const stitcher = new cv.Stitcher();
     // zero angle (for now spam left)
     this.rotateGimbal90(false);
     this.rotateGimbal90(false);
     this.rotateGimbal90(false);
-    const img1 = this.saveImageToVariable();
+    //const img1 = this.saveImageToVariable();
     this.rotateGimbal90(true);
-    const img2 = this.saveImageToVariable();
+    //const img2 = this.saveImageToVariable();
     this.rotateGimbal90(true);
-    const img3 = this.saveImageToVariable();
-    const images = [cv.imread(img1), cv.imread(img2), cv.imread(img3)];
-    const features = stitcher.detectAndMatchFeatures(images);
-    const homographies = stitcher.estimateHomographies(features);
-    const warpedImages = stitcher.warpImages(images, homographies);
-    const stitchedImage = stitcher.blendImages(warpedImages);
-    cv.imshow('Stitched Image', stitchedImage);
-    cv.waitKey(0);
-    cv.imwrite('./stitched_image.jpg', stitchedImage);
+    //const img3 = this.saveImageToVariable();
     // stitch image
     // print image
   }
