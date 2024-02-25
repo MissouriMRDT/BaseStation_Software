@@ -25,14 +25,14 @@ interface IState {
   gripperToggle: boolean;
 }
 
-const MultiplierX = 1000;
-const MultiplierY1 = 1000;
-const MultiplierY2 = 1000;
-const MultiplierZ = 1000;
-const MultiplierPitch = 1000;
-const MultiplierR1 = 1000;
-const MultiplierR2 = 1000;
-const MultiplierGripper = 1000;
+let MultiplierX = 500;
+let MultiplierY1 = 500;
+let MultiplierY2 = 500;
+let MultiplierZ = 500;
+let MultiplierPitch = 500;
+let MultiplierR1 = 500;
+let MultiplierR2 = 500;
+let MultiplierGripper = 500;
 // let MultiplierEndEffector: number;
 
 class Arm extends Component<IProps, IState> {
