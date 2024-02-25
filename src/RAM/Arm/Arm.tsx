@@ -25,14 +25,14 @@ interface IState {
   gripperToggle: boolean;
 }
 
-let MultiplierX = 1;
-let MultiplierY1 = 1;
-let MultiplierY2 = 1;
-let MultiplierZ = 1;
-let MultiplierPitch = 1;
-let MultiplierR1 = 1;
-let MultiplierR2 = 1;
-let MultiplierGripper = 1;
+const MultiplierX = 1000;
+const MultiplierY1 = 1000;
+const MultiplierY2 = 1000;
+const MultiplierZ = 1000;
+const MultiplierPitch = 1000;
+const MultiplierR1 = 1000;
+const MultiplierR2 = 1000;
+const MultiplierGripper = 1000;
 // let MultiplierEndEffector: number;
 
 class Arm extends Component<IProps, IState> {
@@ -60,20 +60,19 @@ class Arm extends Component<IProps, IState> {
     let R2 = 0;
     let moveArm = false;
 
-    if (controllerInputs.MultiplierY) {
-      MultiplierX = controllerInputs.Multiplier1;
-      MultiplierY1 = controllerInputs.Multiplier2;
-      MultiplierY2 = controllerInputs.Multiplier3;
-      MultiplierZ = controllerInputs.Multiplier4;
-    } else if (controllerInputs.MultiplierX) {
-      MultiplierPitch = controllerInputs.Multiplier1;
-      MultiplierR1 = controllerInputs.Multiplier2;
-      MultiplierR2 = controllerInputs.Multiplier3;
-      MultiplierGripper = controllerInputs.Multiplier4;
-    }
+    // if (controllerInputs.MultiplierY) {
+    //   MultiplierX = controllerInputs.Multiplier1;
+    //   MultiplierY1 = controllerInputs.Multiplier2;
+    //   MultiplierY2 = controllerInputs.Multiplier3;
+    //   MultiplierZ = controllerInputs.Multiplier4;
+    // } else if (controllerInputs.MultiplierX) {
+    //   MultiplierPitch = controllerInputs.Multiplier1;
+    //   MultiplierR1 = controllerInputs.Multiplier2;
+    //   MultiplierR2 = controllerInputs.Multiplier3;
+    //   MultiplierGripper = controllerInputs.Multiplier4;
+    // }
 
     if ('WristPitchPlus' in controllerInputs && 'WristPitchMinus' in controllerInputs) {
-      console.log('WristPitch');
       Pitch = (controllerInputs.WristPitchPlus - controllerInputs.WristPitchMinus) * MultiplierPitch;
       moveArm = true;
     }
