@@ -75,7 +75,7 @@ class ClosedLoopControls extends Component<IProps, IState> {
   sendPositionData(): void {
     if (this.state.packetStream) {
       if (this.state.packetType === 'Scoop') {
-        rovecomm.sendCommand('Auger', this.state.currentPacket);
+        rovecomm.sendCommand('Auger', 'Science', this.state.currentPacket);
       } else if (this.state.packetType === 'Multiplexor') {
       }
       console.log(this.state.packetType, this.state.currentPacket);

@@ -96,7 +96,11 @@ class OverrideSwitches extends Component<IProps, IState> {
       this.setState({
         LimitSwitchStatus,
       });
-      rovecomm.sendCommand('LimitSwitchOverride', OverrideSwitches.buildLimitSwitchCommand(LimitSwitchStatus));
+      rovecomm.sendCommand(
+        'LimitSwitchOverride',
+        'Science',
+        OverrideSwitches.buildLimitSwitchCommand(LimitSwitchStatus)
+      );
     }
   }
 
@@ -138,7 +142,10 @@ class OverrideSwitches extends Component<IProps, IState> {
                   Limit Switch Toggle: {this.state.LimitSwitchOverride ? 'on' : 'off'}
                 </button>
               </div>
-              <button style={button} onClick={() => rovecomm.sendCommand('WatchdogOverride', this.toggleWatchdog())}>
+              <button
+                style={button}
+                onClick={() => rovecomm.sendCommand('WatchdogOverride', 'Science', this.toggleWatchdog())}
+              >
                 {`Watchdog Override: ${watchdogToggle ? 'On' : 'Off'}`}
               </button>
             </div>

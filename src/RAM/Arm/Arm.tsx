@@ -25,14 +25,14 @@ interface IState {
   gripperToggle: boolean;
 }
 
-let MultiplierX = 500;
-let MultiplierY1 = 500;
-let MultiplierY2 = 500;
-let MultiplierZ = 500;
-let MultiplierPitch = 500;
-let MultiplierR1 = 500;
-let MultiplierR2 = 500;
-let MultiplierGripper = 500;
+let MultiplierX = 1000;
+let MultiplierY1 = 1000;
+let MultiplierY2 = 1000;
+let MultiplierZ = 1000;
+let MultiplierPitch = 1000;
+let MultiplierR1 = 1000;
+let MultiplierR2 = 1000;
+let MultiplierGripper = 1000;
 // let MultiplierEndEffector: number;
 
 class Arm extends Component<IProps, IState> {
@@ -118,7 +118,7 @@ class Arm extends Component<IProps, IState> {
     if (moveArm) {
       const armValues = [X, Y1, Y2, Z, Pitch, R1, R2];
       console.log(armValues);
-      rovecomm.sendCommand('OpenLoop', armValues);
+      rovecomm.sendCommand('OpenLoop', 'Arm', armValues);
     }
 
     if ('GripperOpen' in controllerInputs && 'GripperClose' in controllerInputs) {
@@ -131,11 +131,11 @@ class Arm extends Component<IProps, IState> {
         Gripper1 = 0;
       }
       console.log('Moving Gripper 1');
-      rovecomm.sendCommand('Gripper', Gripper1);
+      rovecomm.sendCommand('Gripper', 'Arm', Gripper1);
     }
 
     if ('Solenoid' in controllerInputs) {
-      rovecomm.sendCommand('Solenoid', controllerInputs.Solenoid);
+      rovecomm.sendCommand('Solenoid', 'Arm', controllerInputs.Solenoid);
     }
   }
 

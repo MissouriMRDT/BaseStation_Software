@@ -89,11 +89,11 @@ class DrivePower extends Component<IProps, IState> {
               style={slider}
               onChange={(e) => this.sliderChange(e)}
             />
-            <button onClick={() => rovecomm.sendCommand('SetMaxSpeed', this.state.max)}>Send</button>
+            <button onClick={() => rovecomm.sendCommand('SetMaxSpeed', 'Autonomy', this.state.max)}>Send</button>
           </div>
           <div style={row}>
-            <button onClick={() => rovecomm.sendCommand('SetWatchdogMode', 0)}>Teleop Watchdog</button>
-            <button onClick={() => rovecomm.sendCommand('SetWatchdogMode', 1)}>Autonomy Watchdog</button>
+            <button onClick={() => rovecomm.sendCommand('SetWatchdogMode', 'Autonomy', 0)}>Teleop Watchdog</button>
+            <button onClick={() => rovecomm.sendCommand('SetWatchdogMode', 'Autonomy', 1)}>Autonomy Watchdog</button>
           </div>
         </div>
       </div>

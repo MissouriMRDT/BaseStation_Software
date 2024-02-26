@@ -92,9 +92,9 @@ class Cameras extends Component<IProps, IState> {
 
   rotateGimbal90(direction: boolean) {
     if (direction) {
-      rovecomm.sendCommand('LeftMainGimbalIncrement', [90, 0]);
+      rovecomm.sendCommand('LeftMainGimbalIncrement', 'Core', [90, 0]);
     } else {
-      rovecomm.sendCommand('LeftMainGimbalIncrement', [-90, 0]);
+      rovecomm.sendCommand('LeftMainGimbalIncrement', 'Core', [-90, 0]);
     }
   }
 

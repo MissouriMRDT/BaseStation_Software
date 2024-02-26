@@ -80,7 +80,7 @@ const btnStyle: CSS.Properties = {
  * @param time if time = 0, Rover turns off. Otherwise it power cycles for 'time' seconds
  */
 function turnOffReboot(time: number): void {
-  rovecomm.sendCommand('BMSStop', [time]);
+  rovecomm.sendCommand('BMSStop', 'BMS', [time]);
 }
 
 interface IProps {
@@ -218,11 +218,11 @@ class Power extends Component<IProps, IState> {
    * @param board the object that the bus object is a child of
    * @param bus the object that is getting toggled by the Enable/Disable button
    */
-  buttonToggle(board: string, bus: string): void {
-    const { boardTelemetry } = this.state;
-    boardTelemetry[board][bus].enabled = !this.state.boardTelemetry[board][bus].enabled;
-    this.setState({ boardTelemetry }, () => this.packCommand(board));
-  }
+  // buttonToggle(board: string, bus: string): void {
+  //   const { boardTelemetry } = this.state;
+  //   boardTelemetry[board][bus].enabled = !this.state.boardTelemetry[board][bus].enabled;
+  //   this.setState({ boardTelemetry }, () => this.packCommand(board));
+  // }
 
   /**
    * To simultaneously simplify code and to assure ALL the motors get enabled in case the
@@ -231,28 +231,28 @@ class Power extends Component<IProps, IState> {
    * @desc Takes true or false and attempts to apply that to every motor object. After reassigning the state objects, it sends a bitmasked command to the rover
    * @param button True or false depending on which button is pressed
    */
-  allMotorToggle(button: boolean): void {
-    const { boardTelemetry } = this.state;
-    Object.keys(boardTelemetry.SetBus).forEach((motor: string) => {
-      boardTelemetry.SetBus[motor].enabled = button;
-    });
-    this.setState({ boardTelemetry }, () => this.packCommand('SetBus'));
-  }
+  // allMotorToggle(button: boolean): void {
+  //   const { boardTelemetry } = this.state;
+  //   Object.keys(boardTelemetry.SetBus).forEach((motor: string) => {
+  //     boardTelemetry.SetBus[motor].enabled = button;
+  //   });
+  //   this.setState({ boardTelemetry }, () => this.packCommand('SetBus'));
+  // }
 
   /**
    * @desc gets called any time a bus needs to be toggled. Takes the array of booleans and translates it to a bitmasked integer which then gets sent to the relevant board.
    * @param board corresponds to the board that is being sent the toggle command
    */
-  packCommand(board: string): void {
-    const { boardTelemetry } = this.state;
-    let newBitMask = '';
-    Object.keys(boardTelemetry[board])
-      .reverse() // Reverse to keep correct order for bitmap command
-      .forEach((bus) => {
-        newBitMask += boardTelemetry[board][bus].enabled ? '1' : '0';
-      });
-    rovecomm.sendCommand(board, [parseInt(newBitMask, 2)]);
-  }
+  // packCommand(board: string): void {
+  //   const { boardTelemetry } = this.state;
+  //   let newBitMask = '';
+  //   Object.keys(boardTelemetry[board])
+  //     .reverse() // Reverse to keep correct order for bitmap command
+  //     .forEach((bus) => {
+  //       newBitMask += boardTelemetry[board][bus].enabled ? '1' : '0';
+  //     });
+  //   rovecomm.sendCommand(board, [parseInt(newBitMask, 2)]);
+  // }
 
   render(): JSX.Element {
     return (
@@ -267,9 +267,9 @@ class Power extends Component<IProps, IState> {
                     const { enabled, value } = this.state.boardTelemetry[board][bus];
                     return (
                       <div key={bus} style={row}>
-                        <button type="button" onClick={() => this.buttonToggle(board, bus)} style={btnStyle}>
+                        {/* <button type="button" onClick={() => this.buttonToggle(board, bus)} style={btnStyle}>
                           {enabled ? 'Enabled' : 'Disabled'}
-                        </button>
+                        </button> */}
                         <div style={ColorStyleConverter(value, 0, 7, 15, 120, 0, readout)}>
                           <h3 style={textPad}>{bus}</h3>
                           <h3 style={textPad}>
@@ -288,7 +288,7 @@ class Power extends Component<IProps, IState> {
             })}
           </div>
           <div style={{ ...row, ...btnArray, gridTemplateColumns: 'auto auto' }}>
-            <button
+            {/* <button
               type="button"
               onClick={() => {
                 this.allMotorToggle(true);
@@ -296,8 +296,8 @@ class Power extends Component<IProps, IState> {
               style={{ cursor: 'pointer' }}
             >
               Enable All Motors
-            </button>
-            <button
+            </button> */}
+            {/* <button
               type="button"
               onClick={() => {
                 this.allMotorToggle(false);
@@ -305,7 +305,7 @@ class Power extends Component<IProps, IState> {
               style={{ cursor: 'pointer' }}
             >
               Disable All Motors
-            </button>
+            </button> */}
             <button type="button" onClick={() => turnOffReboot(5)} style={{ cursor: 'pointer' }}>
               REBOOT
             </button>

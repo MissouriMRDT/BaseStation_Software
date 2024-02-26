@@ -36,14 +36,14 @@ const button: CSS.Properties = {
 };
 
 function startAutonomy(): void {
-  rovecomm.sendCommand('StartAutonomy', [1]);
+  rovecomm.sendCommand('StartAutonomy', 'Autonomy', [1]);
 }
 function stopAutonomy(): void {
-  rovecomm.sendCommand('DisableAutonomy', [1]);
+  rovecomm.sendCommand('DisableAutonomy', 'Autonomy', [1]);
 }
 function clearWaypoints(): void {
   rovecomm.emit('AutonomyActivity', "-------- Clearing Autonomy's waypoints --------");
-  rovecomm.sendCommand('ClearWaypoints', [1]);
+  rovecomm.sendCommand('ClearWaypoints', 'Autonomy', [1]);
 }
 
 interface IProps {
@@ -73,7 +73,7 @@ class Controls extends Component<IProps, IState> {
        Lat: ${this.props.selectedWaypoint.latitude.toFixed(7)}
        Lon: ${this.props.selectedWaypoint.longitude.toFixed(7)})`
     );
-    rovecomm.sendCommand('AddPositionLeg', [
+    rovecomm.sendCommand('AddPositionLeg', 'Autonomy', [
       this.props.selectedWaypoint.latitude,
       this.props.selectedWaypoint.longitude,
     ]);
@@ -85,7 +85,10 @@ class Controls extends Component<IProps, IState> {
       `Sending Marker (Lat: ${this.props.selectedWaypoint.latitude.toFixed(7)}
        Lon: ${this.props.selectedWaypoint.longitude.toFixed(7)})`
     );
-    rovecomm.sendCommand('AddMarkerLeg', [this.props.selectedWaypoint.latitude, this.props.selectedWaypoint.longitude]);
+    rovecomm.sendCommand('AddMarkerLeg', 'Autonomy', [
+      this.props.selectedWaypoint.latitude,
+      this.props.selectedWaypoint.longitude,
+    ]);
   }
 
   addGateLeg(): void {
@@ -94,7 +97,10 @@ class Controls extends Component<IProps, IState> {
       `Sending Gate (Lat: ${this.props.selectedWaypoint.latitude.toFixed(7)}
        Lon: ${this.props.selectedWaypoint.longitude.toFixed(7)})`
     );
-    rovecomm.sendCommand('AddGateLeg', [this.props.selectedWaypoint.latitude, this.props.selectedWaypoint.longitude]);
+    rovecomm.sendCommand('AddGateLeg', 'Autonomy', [
+      this.props.selectedWaypoint.latitude,
+      this.props.selectedWaypoint.longitude,
+    ]);
   }
 
   render(): JSX.Element {

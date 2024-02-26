@@ -33,40 +33,44 @@ let microscopePosition = 0;
 
 function science(): void {
   if ('ScoopAxis_OpenLoop' in controllerInputs) {
-    rovecomm.sendCommand('ScoopAxis_OpenLoop', controllerInputs.ScoopAxis_OpenLoop * scoopMotorMultiplier);
+    rovecomm.sendCommand('ScoopAxis_OpenLoop', 'Science', controllerInputs.ScoopAxis_OpenLoop * scoopMotorMultiplier);
   }
 
   if ('SensorAxis_OpenLoop' in controllerInputs) {
-    rovecomm.sendCommand('SensorAxis_OpenLoop', controllerInputs.SensorAxis_OpenLoop * sensorMotorMultiplier);
+    rovecomm.sendCommand(
+      'SensorAxis_OpenLoop',
+      'Science',
+      controllerInputs.SensorAxis_OpenLoop * sensorMotorMultiplier
+    );
   }
 
   if ('AugerUp' in controllerInputs && 'AugerDown' in controllerInputs) {
     if (controllerInputs.AugerUp === 1) {
-      rovecomm.sendCommand('Auger', augerMotorMultiplier);
+      rovecomm.sendCommand('Auger', 'Science', augerMotorMultiplier);
     } else if (controllerInputs.AugerDown === 1) {
-      rovecomm.sendCommand('Auger', -augerMotorMultiplier);
+      rovecomm.sendCommand('Auger', 'Science', -augerMotorMultiplier);
     } else {
-      rovecomm.sendCommand('Auger', 0);
+      rovecomm.sendCommand('Auger', 'Science', 0);
     }
   }
 
   if ('ProboscisPlus' in controllerInputs && 'ProboscisMinus' in controllerInputs) {
     if (controllerInputs.ProboscisPlus === 1) {
-      rovecomm.sendCommand('Proboscis', proboscisMotorMultiplier);
+      rovecomm.sendCommand('Proboscis', 'Science', proboscisMotorMultiplier);
     } else if (controllerInputs.ProboscisMinus === 1) {
-      rovecomm.sendCommand('Proboscis', -proboscisMotorMultiplier);
+      rovecomm.sendCommand('Proboscis', 'Science', -proboscisMotorMultiplier);
     } else {
-      rovecomm.sendCommand('Proboscis', 0);
+      rovecomm.sendCommand('Proboscis', 'Science', 0);
     }
   }
 
   if ('MicroscopePlus' in controllerInputs && 'MicroscopeMinus' in controllerInputs) {
     if (controllerInputs.MicroscopePlus === 1 && microscopePosition < 180) {
       microscopePosition += 5;
-      rovecomm.sendCommand('Microscope', microscopePosition);
+      rovecomm.sendCommand('Microscope', 'Science', microscopePosition);
     } else if (controllerInputs.MicroscopeMinus === 1 && microscopePosition > 0) {
       microscopePosition -= 5;
-      rovecomm.sendCommand('Microscope', microscopePosition);
+      rovecomm.sendCommand('Microscope', 'Science', microscopePosition);
     }
   }
 

@@ -73,7 +73,7 @@ class ControlFeatures extends Component<IProps, IState> {
       overridden: false,
       tool: 0,
       laserOn: false,
-      sendInterval: setInterval(() => rovecomm.sendCommand('Laser', this.state.laserOn ? [1] : [0]), 1000),
+      sendInterval: setInterval(() => rovecomm.sendCommand('Laser', 'Arm', this.state.laserOn ? [1] : [0]), 1000),
       gripperState: false,
     };
     this.toggleGripper = this.toggleGripper.bind(this);
@@ -88,7 +88,7 @@ class ControlFeatures extends Component<IProps, IState> {
 
   limitOverride(): void {
     // we send 1 when false and 0 when true because we are about to toggle the bool
-    rovecomm.sendCommand('LimitSwitchOverride', this.state.overridden ? 0 : 65535);
+    rovecomm.sendCommand('LimitSwitchOverride', 'Arm', this.state.overridden ? 0 : 65535);
     this.setState((prevState) => ({ overridden: !prevState.overridden }));
   }
 

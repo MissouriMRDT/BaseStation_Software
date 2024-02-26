@@ -164,6 +164,7 @@ class Angular extends Component<IProps, IState> {
      */
     rovecomm.sendCommand(
       'SetPosition',
+      'Arm',
       Object.values(this.state.jointValues).map((x: string) => {
         return x ? parseFloat(x) : 0;
       })

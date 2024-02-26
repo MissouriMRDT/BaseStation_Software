@@ -309,7 +309,7 @@ class Fluorometer extends Component<IProps, IState> {
       this.setState({
         LedStatus,
       });
-      rovecomm.sendCommand('EnableLEDs', Fluorometer.buildLedCommand(LedStatus));
+      rovecomm.sendCommand('EnableLEDs', 'Science', Fluorometer.buildLedCommand(LedStatus));
     }
   }
 
@@ -363,7 +363,7 @@ class Fluorometer extends Component<IProps, IState> {
   }
 
   requestData(): void {
-    rovecomm.sendCommand('RequestReading', 1);
+    rovecomm.sendCommand('RequestReading', 'Science', 1);
     console.log('requesting fluorometer', this.state.SHPeriod);
   }
 

@@ -114,7 +114,7 @@ class CustomPackets extends Component<IProps, IState> {
   }
 
   sendCommand(): void {
-    rovecomm.sendCommand(this.state.command, this.state.value);
+    rovecomm.sendCommand(this.state.command, this.state.board, this.state.value);
   }
 
   render(): JSX.Element {
