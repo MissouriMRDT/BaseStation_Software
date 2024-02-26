@@ -60,17 +60,17 @@ class Arm extends Component<IProps, IState> {
     let R2 = 0;
     let moveArm = false;
 
-    // if (controllerInputs.MultiplierY) {
-    //   MultiplierX = controllerInputs.Multiplier1;
-    //   MultiplierY1 = controllerInputs.Multiplier2;
-    //   MultiplierY2 = controllerInputs.Multiplier3;
-    //   MultiplierZ = controllerInputs.Multiplier4;
-    // } else if (controllerInputs.MultiplierX) {
-    //   MultiplierPitch = controllerInputs.Multiplier1;
-    //   MultiplierR1 = controllerInputs.Multiplier2;
-    //   MultiplierR2 = controllerInputs.Multiplier3;
-    //   MultiplierGripper = controllerInputs.Multiplier4;
-    // }
+    if (controllerInputs.MultiplierY) {
+      MultiplierX = controllerInputs.Multiplier1;
+      MultiplierY1 = controllerInputs.Multiplier2;
+      MultiplierY2 = controllerInputs.Multiplier3;
+      MultiplierZ = controllerInputs.Multiplier4;
+    } else if (controllerInputs.MultiplierX) {
+      MultiplierPitch = controllerInputs.Multiplier1;
+      MultiplierR1 = controllerInputs.Multiplier2;
+      MultiplierR2 = controllerInputs.Multiplier3;
+      MultiplierGripper = controllerInputs.Multiplier4;
+    }
 
     if ('WristPitchPlus' in controllerInputs && 'WristPitchMinus' in controllerInputs) {
       Pitch = (controllerInputs.WristPitchPlus - controllerInputs.WristPitchMinus) * MultiplierPitch;
@@ -134,8 +134,8 @@ class Arm extends Component<IProps, IState> {
       rovecomm.sendCommand('Gripper', 'Arm', Gripper1);
     }
 
-    if ('Solenoid' in controllerInputs) {
-      rovecomm.sendCommand('Solenoid', 'Arm', controllerInputs.Solenoid);
+    if ('SolenoidOn' in controllerInputs) {
+      rovecomm.sendCommand('Solenoid', 'Arm', controllerInputs.SolenoidOn);
     }
   }
 

@@ -65,10 +65,6 @@ const cellReadoutContainer: CSS.Properties = {
   display: 'grid',
   gridTemplateColumns: 'auto auto auto auto',
 };
-const btnStyle: CSS.Properties = {
-  width: '70px',
-  cursor: 'pointer',
-};
 
 /**
  * The specific function of turnOffReboot() originates from how the control boards
@@ -264,7 +260,7 @@ class Power extends Component<IProps, IState> {
               return (
                 <div key={board} style={{ ...column }}>
                   {Object.keys(this.state.boardTelemetry[board]).map((bus: string) => {
-                    const { enabled, value } = this.state.boardTelemetry[board][bus];
+                    const { value } = this.state.boardTelemetry[board][bus];
                     return (
                       <div key={bus} style={row}>
                         {/* <button type="button" onClick={() => this.buttonToggle(board, bus)} style={btnStyle}>
