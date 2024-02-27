@@ -47,6 +47,7 @@ interface IState {
   zoom: number;
   maxZoom: number;
   heading: number;
+  basestationPos: { lat: number; long: number };
   signalsPos: { lat: number; long: number };
   signalsDir: number;
 }
@@ -65,13 +66,14 @@ class Map extends Component<IProps, IState> {
       zoom: 15,
       maxZoom: 19,
       heading: 0,
+      basestationPos: { lat: 0, long: 0 },
       signalsPos: { lat: 0, long: 0 },
       signalsDir: 0,
     };
 
-    rovecomm.on('IMUData', (data: any) => this.IMUData(data));
-    rovecomm.on('SignalsPosition', (data: number[]) => this.SignalsPosUpdate(data));
-    rovecomm.on('SignalsDirection', (data: number) => this.SignalsDirection(data));
+    rovecomm.on('CompassAngle', (data: number) => this.IMUData(data));
+    rovecomm.on('SetGPSTarget', (data: number[]) => this.SignalsPosUpdate(data));
+    rovecomm.on('SetAngleTarget', (data: number) => this.SignalsDirection(data));
   }
 
   SignalsDirection(data: number): void {
@@ -79,12 +81,12 @@ class Map extends Component<IProps, IState> {
   }
 
   SignalsPosUpdate(data: number[]): void {
-    this.setState({ signalsPos: { lat: data[0], long: data[1] } });
+    this.setState({ basestationPos: { lat: data[0], long: data[1] }, signalsPos: { lat: data[2], long: data[3] } });
   }
 
-  IMUData(data: any): void {
+  IMUData(data: number): void {
     this.setState({
-      heading: data[1],
+      heading: data,
     });
   }
 

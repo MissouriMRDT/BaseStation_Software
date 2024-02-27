@@ -101,5 +101,12 @@
       "MultiplierX": { "buttonType": "button", "button": "X" },
       "MultiplierY": { "buttonType": "button", "button": "Y" }
     }
+  },
+  "SignalStack": {
+    "config": "SignalStack",
+    "controller": "Xbox",
+    "bindings": {
+      "Pan": { "buttonType": "joystick", "button": "left stick x" }
+    }
   }
 }
