@@ -6,6 +6,7 @@ import { LatLngTuple } from 'leaflet';
 import icon from './Icon';
 import compassNeedle from './CompassNeedle';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
+import signalsMapOverlay from './SignalsMapOverlay';
 
 const container: CSS.Properties = {
   display: 'flex',
@@ -46,6 +47,8 @@ interface IState {
   zoom: number;
   maxZoom: number;
   heading: number;
+  signalsPos: { lat: number; long: number };
+  signalsDir: number;
 }
 
 class Map extends Component<IProps, IState> {
@@ -62,9 +65,21 @@ class Map extends Component<IProps, IState> {
       zoom: 15,
       maxZoom: 19,
       heading: 0,
+      signalsPos: { lat: 0, long: 0 },
+      signalsDir: 0,
     };
 
     rovecomm.on('IMUData', (data: any) => this.IMUData(data));
+    rovecomm.on('SignalsPosition', (data: number[]) => this.SignalsPosUpdate(data));
+    rovecomm.on('SignalsDirection', (data: number) => this.SignalsDirection(data));
+  }
+
+  SignalsDirection(data: number): void {
+    this.setState({ signalsDir: data });
+  }
+
+  SignalsPosUpdate(data: number[]): void {
+    this.setState({ signalsPos: { lat: data[0], long: data[1] } });
   }
 
   IMUData(data: any): void {
@@ -103,6 +118,11 @@ class Map extends Component<IProps, IState> {
                   icon={compassNeedle(this.state.heading)}
                 />
               )}
+              {
+                /*this.state.signalsPos.lat && this.state.signalsPos.long*/ true && (
+                  <Marker position={[37.951631, -91.770001]} icon={signalsMapOverlay(this.state.signalsDir)} />
+                )
+              }
               {Object.keys(this.props.storedWaypoints).map((waypointName: string) => {
                 const waypoint = this.props.storedWaypoints[waypointName];
                 const post: LatLngTuple = [waypoint.latitude, waypoint.longitude];
