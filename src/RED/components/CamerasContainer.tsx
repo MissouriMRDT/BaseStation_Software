@@ -3,8 +3,8 @@ import CSS from 'csstype';
 import CameraControls from './CameraControls';
 
 const path = require('path');
-const { Converter } = require("ffmpeg-stream")
-const { readdir, unlinkSync } = require("fs")
+const { Converter } = require('ffmpeg-stream');
+const { readdir, unlinkSync } = require('fs');
 
 const container: CSS.Properties = {
   display: 'grid',
@@ -27,17 +27,17 @@ const label: CSS.Properties = {
   color: 'white',
 };
 
-async function startFFMPEG(input: string, output:string) {
-  const converter = new Converter()
- 
+async function startFFMPEG(input: string, output: string) {
+  const converter = new Converter();
+
   converter.createInputFromFile(input, {});
   converter.createOutputToFile(output, {
     f: 'hls',
-    hls_flags: 'delete_segments'
+    hls_flags: 'delete_segments',
   });
 
   // start processing
-  await converter.run()
+  await converter.run();
 }
 
 interface IProps {
@@ -51,6 +51,8 @@ class CamerasContainer extends Component<IProps, IState> {
   folder: string;
 
   sources: string[];
+
+  cameraIPs: string[];
 
   static defaultProps = {
     style: {},
@@ -68,6 +70,17 @@ class CamerasContainer extends Component<IProps, IState> {
       'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8',
       'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8',
     ];
+
+    this.cameraIPs = [
+      '192.168.4.100:1181',
+      '192.168.4.100:1182',
+      '192.168.4.100:1183',
+      '192.168.4.100:1184',
+      '192.168.4.101:1181',
+      '192.168.4.101:1182',
+      '192.168.4.101:1183',
+      '192.168.4.101:1184',
+    ];
     // fs.readdir(this.folder, (err: ErrnoException | null, files: string[]) => {
     //   if (err) throw err;
     readdir(this.folder, (err: ErrnoException | null, files: string[]) => {
@@ -77,7 +90,23 @@ class CamerasContainer extends Component<IProps, IState> {
         unlinkSync(path.join(this.folder, file));
       }
 
-      startFFMPEG('D:media\\videos\\Danger 5\\S1 E1 - I Danced For Hitler.mkv', path.join(this.folder, 'stream.m3u8'));
+      // cam streaming ips
+      // 192.168.4.100:1181
+      // 192.168.4.100:1182
+      // 192.168.4.100:1183
+      // 192.168.4.100:1184
+      // 192.168.4.101:1181
+      // 192.168.4.101:1182
+      // 192.168.4.101:1183
+      // 192.168.4.101:1184
+
+      // basestation ip
+      // 192.168.100.10
+      // for (let i = 0; i < this.cameraIPs.length; i++) {
+      //   startFFMPEG('udp://' + this.cameraIPs[i], path.join(this.folder, 'stream' + i + '.m3u8'));
+      // }
+
+      startFFMPEG('udp://169.254.144.138:1181', path.join(this.folder, 'stream.m3u8'));
     });
   }
 
