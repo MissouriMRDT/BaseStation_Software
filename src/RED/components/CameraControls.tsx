@@ -93,9 +93,12 @@ class CameraControls extends Component<IProps, IState> {
     this.hls.destroy();
     this.hls = new Hls({
       maxBufferLength: 1,
+      maxMaxBufferLength: 2,
+      maxBufferSize: 1000,
       maxLiveSyncPlaybackRate: 2,
       liveDurationInfinity: true,
-      liveSyncDuration: 3,
+      liveSyncDurationCount: 2,
+      liveMaxLatencyDurationCount: 5,
     });
     console.log('maxBufferLength: ' + this.hls.config.maxBufferLength);
     this.setState({ currentSource: newSource });
