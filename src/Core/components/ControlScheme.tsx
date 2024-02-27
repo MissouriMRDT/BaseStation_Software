@@ -69,7 +69,7 @@ function controller(passedScheme: any, pos: any): any {
   return setInterval(() => {
     // if navigator.getGampads()[pos] == flight stick
     let index: number;
-    let deadZone = 0.05; // xbox one controller
+    let deadZone = 0.075; // xbox one controller
     const controllerList = [];
     for (let i = 0; i < 4; i++) {
       if (navigator.getGamepads()[i] != null) {
@@ -94,6 +94,9 @@ function controller(passedScheme: any, pos: any): any {
         break;
       case 'Xbox 3':
         index = FLIGHT_STICK_INDEX !== -1 && FLIGHT_STICK_INDEX <= 2 ? 3 : 2;
+        break;
+      case 'Xbox 4':
+        index = FLIGHT_STICK_INDEX !== -1 && FLIGHT_STICK_INDEX <= 3 ? 4 : 3;
         break;
       case 'Flight Stick': // Logitech Extreme 3D
         index = FLIGHT_STICK_INDEX;
@@ -128,6 +131,11 @@ function controller(passedScheme: any, pos: any): any {
             controllerInputs[button] *= -1;
           }
         }
+      }
+    }
+    if (navigator.getGamepads()[index] == null && passedScheme !== '') {
+      for (const button in CONTROLLERINPUT[passedScheme].bindings) {
+        controllerInputs[button] = 0;
       }
     }
   }, 50);
@@ -179,6 +187,12 @@ class ControlScheme extends Component<IProps, IState> {
           toggled: 'Off',
           scheme: 'ArmControls',
           controller: 'Xbox 3',
+          interval: null,
+        },
+        ControlMultipliers: {
+          toggled: 'Off',
+          scheme: 'ControlMultipliers',
+          controller: 'Xbox 4',
           interval: null,
         },
       },
@@ -367,7 +381,7 @@ class ControlScheme extends Component<IProps, IState> {
                   onChange={(e) => this.controllerChange(e, config)}
                   style={{ flex: 1 }}
                 >
-                  {['Xbox 1', 'Xbox 2', 'Xbox 3', 'Flight Stick'].map((controllerSelect) => {
+                  {['Xbox 1', 'Xbox 2', 'Xbox 3', 'Xbox 4', 'Flight Stick'].map((controllerSelect) => {
                     return (
                       <option value={controllerSelect} key={controllerSelect}>
                         {controllerSelect}
@@ -396,6 +410,39 @@ class ControlScheme extends Component<IProps, IState> {
                 <button style={{ zIndex: 1 }} type="button" onClick={() => this.buttonToggle(config)}>
                   {this.state.functionality[config].toggled}
                 </button>
+                {window.addEventListener('gamepaddisconnected', (e) => {
+                  if (
+                    this.state.functionality[config].toggled === 'On' &&
+                    this.state.functionality[config].controller === 'Xbox 1' &&
+                    e.gamepad.index === 0
+                  ) {
+                    this.buttonToggle(config);
+                  } else if (
+                    this.state.functionality[config].toggled === 'On' &&
+                    this.state.functionality[config].controller === 'Xbox 2' &&
+                    e.gamepad.index === 1
+                  ) {
+                    this.buttonToggle(config);
+                  } else if (
+                    this.state.functionality[config].toggled === 'On' &&
+                    this.state.functionality[config].controller === 'Xbox 3' &&
+                    e.gamepad.index === 2
+                  ) {
+                    this.buttonToggle(config);
+                  } else if (
+                    this.state.functionality[config].toggled === 'On' &&
+                    this.state.functionality[config].controller === 'Xbox 4' &&
+                    e.gamepad.index === 3
+                  ) {
+                    this.buttonToggle(config);
+                  } else if (
+                    this.state.functionality[config].toggled === 'On' &&
+                    this.state.functionality[config].controller === 'Flight Stick' &&
+                    e.gamepad.index === 4
+                  ) {
+                    this.buttonToggle(config);
+                  }
+                })}
               </div>
             );
           })}

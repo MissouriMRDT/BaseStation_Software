@@ -9,14 +9,14 @@ import no_cam_img from '../../../assets/no_cam_img.png';
 const cameraNumList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const CAM_IPS = [
   no_cam_img,
-  `http://192.168.1.141:1181/stream.mjpg`,
-  `http://192.168.1.141:1182/stream.mjpg`,
-  `http://192.168.1.141:1183/stream.mjpg`,
-  `http://192.168.1.141:1184/stream.mjpg`,
-  `http://192.168.1.142:1181/stream.mjpg`,
-  `http://192.168.1.142:1182/stream.mjpg`,
-  `http://192.168.1.142:1183/stream.mjpg`,
-  `http://192.168.1.142:1184/stream.mjpg`,
+  `http://192.168.4.100:1181/stream.mjpg`,
+  `http://192.168.4.100:1182/stream.mjpg`,
+  `http://192.168.4.100:1183/stream.mjpg`,
+  `http://192.168.4.100:1184/stream.mjpg`,
+  `http://192.168.4.101:1181/stream.mjpg`,
+  `http://192.168.4.101:1182/stream.mjpg`,
+  `http://192.168.4.101:1183/stream.mjpg`,
+  `http://192.168.4.101:1184/stream.mjpg`,
   `http://192.168.1.139:1181/stream.mjpg`,
   `http://192.168.1.139:1182/stream.mjpg`,
 ];

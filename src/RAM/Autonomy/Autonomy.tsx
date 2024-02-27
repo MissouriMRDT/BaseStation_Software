@@ -5,6 +5,7 @@ import Controls from './components/Controls';
 import StateDiagram from './components/StateDiagram';
 import Activity from './components/Activity';
 import Lighting from './components/Lighting';
+import DrivePower from './components/DrivePower';
 
 const row: CSS.Properties = {
   display: 'flex',
@@ -33,6 +34,7 @@ class Autonomy extends Component<IProps, IState> {
         <div style={{ ...row, justifyContent: 'space-between', flex: 1 }}>
           <div style={{ ...column, flex: 1 }}>
             <Controls style={{ marginRight: '5px', flexWrap: 'wrap' }} selectedWaypoint={this.props.selectedWaypoint} />
+            <DrivePower style={{ flex: 1, marginRight: '5px' }} />
             <div style={{ ...row, marginRight: '5px', flexGrow: 1 }}>
               <Activity style={{ flex: 1, marginRight: '5px' }} />
               <Lighting />
