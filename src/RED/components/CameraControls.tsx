@@ -85,13 +85,19 @@ class CameraControls extends Component<IProps, IState> {
         rotationAngle: prevState.rotationAngle + angle,
       }));
     }
+    console.log(this.hls.latency);
   };
 
   setSource(newSource: number) {
     const video = this.player;
     this.hls.destroy();
-    this.hls = new Hls();
-
+    this.hls = new Hls({
+      maxBufferLength: 1,
+      maxLiveSyncPlaybackRate: 2,
+      liveDurationInfinity: true,
+      liveSyncDuration: 3,
+    });
+    console.log('maxBufferLength: ' + this.hls.config.maxBufferLength);
     this.setState({ currentSource: newSource });
 
     this.hls.loadSource(this.sources[newSource]);
