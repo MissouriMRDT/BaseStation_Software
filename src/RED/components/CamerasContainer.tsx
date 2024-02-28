@@ -39,7 +39,9 @@ async function startFFMPEG(input: string, output: string) {
     g: '8',
     segment_time: '0.5',
     probesize: '32',
-    // flags: 'low_delay',
+    flags: 'low_delay',
+    preset: 'ultrafast',
+    tune: 'zerolatency',
   });
 
   // start processing
