@@ -30,16 +30,16 @@ const label: CSS.Properties = {
 async function startFFMPEG(input: string, output: string) {
   const converter = new Converter();
 
-  converter.createInputFromFile(input, {
-    g: '10',
-  });
+  converter.createInputFromFile(input, {});
   converter.createOutputToFile(output, {
     f: 'hls',
     hls_flags: 'delete_segments',
-    hls_time: '1',
-    force_key_frames: 'expr:if(isnan(prev_forced_n),1,eq(n,prev_forced_n+$GOP))',
-    g: '10',
-    segment_time: '1',
+    hls_time: '0.5',
+    force_key_frames: 'expr:if(isnan(prev_forced_n),1,eq(n,prev_forced_n+8))',
+    g: '8',
+    segment_time: '0.5',
+    probesize: '32',
+    // flags: 'low_delay',
   });
 
   // start processing

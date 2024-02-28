@@ -85,7 +85,7 @@ class CameraControls extends Component<IProps, IState> {
         rotationAngle: prevState.rotationAngle + angle,
       }));
     }
-    console.log(this.hls.latency);
+    console.log(this.player.playbackRate);
   };
 
   setSource(newSource: number) {
@@ -93,13 +93,14 @@ class CameraControls extends Component<IProps, IState> {
     this.hls.destroy();
     this.hls = new Hls({
       maxBufferLength: 1,
-      maxMaxBufferLength: 2,
-      maxBufferSize: 1000,
+      maxMaxBufferLength: 1,
+      maxBufferSize: 100, // in bytes
       maxLiveSyncPlaybackRate: 2,
       liveDurationInfinity: true,
-      liveSyncDurationCount: 2,
-      liveMaxLatencyDurationCount: 5,
+      liveSyncDurationCount: 1,
+      liveMaxLatencyDurationCount: 2,
     });
+
     console.log('maxBufferLength: ' + this.hls.config.maxBufferLength);
     this.setState({ currentSource: newSource });
 
