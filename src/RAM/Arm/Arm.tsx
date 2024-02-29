@@ -140,10 +140,12 @@ class Arm extends Component<IProps, IState> {
     }
 
     if ('LaserToggle' in controllerInputs) {
-      if (LaserToggle === 1) {
-        LaserToggle = 0;
-      } else {
-        LaserToggle = 1;
+      if (controllerInputs.LaserToggle === 1) {
+        if (LaserToggle === 1) {
+          LaserToggle = 0;
+        } else {
+          LaserToggle = 1;
+        }
       }
       rovecomm.sendCommand('Laser', 'Arm', LaserToggle);
     }

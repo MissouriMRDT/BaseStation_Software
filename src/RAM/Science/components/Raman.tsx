@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
 import { XYPlot, VerticalGridLines, HorizontalGridLines, XAxis, YAxis, LineSeries, Crosshair } from 'react-vis';
-import html2canvas from 'html2canvas';
-import fs from 'fs';
+// import html2canvas from 'html2canvas';
+// import fs from 'fs';
 import { rovecomm } from '../../../Core/RoveProtocol/Rovecomm';
-import { windows } from '../../../Core/Window';
+// import { windows } from '../../../Core/Window';
 
 const container: CSS.Properties = {
   display: 'flex',
@@ -56,53 +56,53 @@ const overlay: CSS.Properties = {
   color: 'black',
 };
 
-function downloadURL(imgData: string): void {
-  const filename = `./Screenshots/${new Date()
-    .toISOString()
-    // ISO string will be fromatted YYYY-MM-DDTHH:MM:SS:sssZ
-    // this regex will convert all -,T,:,Z to . (which covers to . for .csv)
-    .replaceAll(/[:\-TZ]/g, '.')}Raman.png`;
+// function downloadURL(imgData: string): void {
+//   const filename = `./Screenshots/${new Date()
+//     .toISOString()
+//     // ISO string will be fromatted YYYY-MM-DDTHH:MM:SS:sssZ
+//     // this regex will convert all -,T,:,Z to . (which covers to . for .csv)
+//     .replaceAll(/[:\-TZ]/g, '.')}Raman.png`;
 
-  if (!fs.existsSync('./Screenshots')) {
-    fs.mkdirSync('./Screenshots');
-  }
+//   if (!fs.existsSync('./Screenshots')) {
+//     fs.mkdirSync('./Screenshots');
+//   }
 
-  const base64Image = imgData.replace('image/png', 'image/octet-stream').split(';base64,').pop();
-  if (base64Image) fs.writeFileSync(filename, base64Image, { encoding: 'base64' });
-}
+//   const base64Image = imgData.replace('image/png', 'image/octet-stream').split(';base64,').pop();
+//   if (base64Image) fs.writeFileSync(filename, base64Image, { encoding: 'base64' });
+// }
 
-function saveImage(): void {
-  // Search through all the windows for Raman
-  let graph;
-  let thisWindow;
-  for (const win of Object.keys(windows)) {
-    if (windows[win].document.getElementById('Raman')) {
-      // When found, store the graph and the window it was in
-      thisWindow = windows[win];
-      graph = thisWindow.document.getElementById('Raman');
-      break;
-    }
-  }
+// function saveImage(): void {
+//   // Search through all the windows for Raman
+//   let graph;
+//   let thisWindow;
+//   for (const win of Object.keys(windows)) {
+//     if (windows[win].document.getElementById('Raman')) {
+//       // When found, store the graph and the window it was in
+//       thisWindow = windows[win];
+//       graph = thisWindow.document.getElementById('Raman');
+//       break;
+//     }
+//   }
 
-  // If the graph isn't found, throw an error
-  if (!graph) {
-    throw new Error("The element 'Raman' wasn't found");
-  }
+//   // If the graph isn't found, throw an error
+//   if (!graph) {
+//     throw new Error("The element 'Raman' wasn't found");
+//   }
 
-  // If the graph is found, convert its html into a canvas to be downloaded
-  html2canvas(graph, {
-    scrollX: 0,
-    scrollY: -thisWindow.scrollY - 38,
-  }) // We subtract 38 to make up for the 28 pixel top border and the -10 top margin
-    .then((canvas: any) => {
-      const imgData = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
-      downloadURL(imgData);
-      return null;
-    })
-    .catch((error: any) => {
-      console.error(error);
-    });
-}
+//   // If the graph is found, convert its html into a canvas to be downloaded
+//   html2canvas(graph, {
+//     scrollX: 0,
+//     scrollY: -thisWindow.scrollY - 38,
+//   }) // We subtract 38 to make up for the 28 pixel top border and the -10 top margin
+//     .then((canvas: any) => {
+//       const imgData = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+//       downloadURL(imgData);
+//       return null;
+//     })
+//     .catch((error: any) => {
+//       console.error(error);
+//     });
+// }
 
 interface IProps {
   style?: CSS.Properties;
@@ -126,7 +126,7 @@ interface IState {
   enableLED: boolean;
 }
 
-const LEDWavelength = 532; //nm
+// const LEDWavelength = 532; //nm
 
 class Raman extends Component<IProps, IState> {
   static defaultProps = {
