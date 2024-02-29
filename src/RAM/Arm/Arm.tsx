@@ -59,6 +59,7 @@ class Arm extends Component<IProps, IState> {
     let R1 = 0;
     let R2 = 0;
     let moveArm = false;
+    let LaserToggle = 0;
 
     if (controllerInputs.MultiplierY) {
       MultiplierX = controllerInputs.Multiplier1;
@@ -136,6 +137,15 @@ class Arm extends Component<IProps, IState> {
 
     if ('SolenoidOn' in controllerInputs) {
       rovecomm.sendCommand('Solenoid', 'Arm', controllerInputs.SolenoidOn);
+    }
+
+    if ('LaserToggle' in controllerInputs) {
+      if (LaserToggle === 1) {
+        LaserToggle = 0;
+      } else {
+        LaserToggle = 1;
+      }
+      rovecomm.sendCommand('Laser', 'Arm', LaserToggle);
     }
   }
 
