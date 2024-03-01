@@ -111,9 +111,9 @@ class PacketLogger extends Component<IProps, IState> {
     this.setState((prevState) => ({ data: [newData].concat(prevState.data) }));
   }
 
-  exportData(board): void {
+  exportData(board: string): void {
     // Convert the data to CSV format
-    const csvData = this.state.data.map((row) => Object.values(row).join(',')).join('\n');
+    const csvData = this.state.data.map((row: number) => Object.values(row).join(',')).join('\n');
 
     // ISO string will be formatted YYYY-MM-DDTHH:MM:SS:sssZ
     // this regex will convert all -,T:,Z to . (which covers to . for .csv)

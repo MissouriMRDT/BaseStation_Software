@@ -12,7 +12,6 @@ import EncoderPositions from './components/EncoderPositions';
 import OverrideSwitches from './components/OverrideSwitches';
 import EnvironmentalData from './components/EnvironmentalData';
 import Raman from './components/Raman';
-import Science1 from './components/Science1';
 // import SensorGraphs from './components/SensorGraphs';
 
 const row: CSS.Properties = {
@@ -165,16 +164,12 @@ class Science extends Component<IProps, IState> {
       <div style={column}>
         {selectedTab === 'environmental' && <EnvironmentalData />}
         {selectedTab === 'raman' && <Raman />}
-        {selectedTab === 'Science 1' && <Science1 />}
         <div style={{ ...row, justifyContent: 'center', marginTop: '10px' }}>
           <button style={button} onClick={() => this.handleTabChange('environmental')}>
             Environmental Data
           </button>
           <button style={button} onClick={() => this.handleTabChange('raman')}>
             Raman
-          </button>
-          <button style={button} onClick={() => this.handleTabChange('Science 1')}>
-            Salt Water
           </button>
         </div>
         <div style={{ ...row }}>

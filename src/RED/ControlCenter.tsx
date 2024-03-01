@@ -16,7 +16,7 @@ import ControlScheme from '../Core/components/ControlScheme';
 import Drive from './components/Drive';
 import Gimbal from './components/Gimbal';
 import ThreeDRover from '../Core/components/ThreeDRover';
-import SignalStack from './components/SignalStack';
+// import SignalStack from './components/SignalStack';
 
 const row: CSS.Properties = {
   display: 'flex',
@@ -139,7 +139,7 @@ class ControlCenter extends Component<IProps, IState> {
               store={(name: string, coords: any) => this.waypointsInstance.store(name, coords)}
               name="controlCenterMap"
             />
-            <SignalStack style={{ width: '20%' }} />
+            {/* <SignalStack style={{ width: '20%' }} /> */}
             <Cameras defaultCamera={1} style={{ width: '100%' }} />
             <Cameras defaultCamera={2} style={{ width: '100%' }} />
             <Cameras defaultCamera={3} style={{ width: '100%' }} />
