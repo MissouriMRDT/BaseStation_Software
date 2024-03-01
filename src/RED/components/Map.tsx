@@ -5,7 +5,7 @@ import { LatLngTuple } from 'leaflet';
 
 import icon from './Icon';
 import compassNeedle from './CompassNeedle';
-// import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
+import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
 import signalsMapOverlay from './SignalsMapOverlay';
 
 const container: CSS.Properties = {
@@ -71,7 +71,7 @@ class Map extends Component<IProps, IState> {
       signalsDir: 0,
     };
 
-    // rovecomm.on('CompassAngle', (data: number) => this.IMUData(data));
+    rovecomm.on('IMUData', (data: number) => this.IMUData(data));
     // rovecomm.on('SetGPSTarget', (data: number[]) => this.SignalsPosUpdate(data));
     // rovecomm.on('SetAngleTarget', (data: number) => this.SignalsDirection(data));
   }
