@@ -51,9 +51,6 @@ interface IState {
   headingAccur: number;
   // distance: number;
   // quality: number;
-  latitude: number;
-  longitude: number;
-  altitude: number;
 }
 class GPS extends Component<IProps, IState> {
   static defaultProps = {
@@ -75,12 +72,9 @@ class GPS extends Component<IProps, IState> {
       headingAccur: 0,
       // distance: 0,
       // quality: 0,
-      latitude: 37.84992821740202,
-      longitude: -91.70361173264494,
-      altitude: 345.82848284850632,
     };
     // Check to make sure these packets are actually needed
-    rovecomm.on('GPSLatLonAlt', () => this.GPSLatLonAlt());
+    rovecomm.on('GPSLatLonAlt', (data: number[]) => this.GPSLatLonAlt(data));
     rovecomm.on('IMUData', (data: number[]) => this.IMUData(data));
     rovecomm.on('SatelliteCountData', (data: number[]) => this.SatelliteCountData(data));
     rovecomm.on('AccuracyData', (data: number[]) => this.accurData(data));
@@ -94,13 +88,10 @@ class GPS extends Component<IProps, IState> {
     });
   }
 
-  GPSLatLonAlt() {
-    const Lat = this.state.latitude + (Math.random() - 0.5) * 1;
-    const Lon = this.state.longitude + (Math.random() - 0.5) * 1;
-    const Alt = this.state.altitude + (Math.random() - 0.5) * 1;
-    const currentLat = Lat;
-    const currentLon = Lon;
-    const currentAlt = Alt;
+  GPSLatLonAlt(data: number[]) {
+    const currentLat = data[0];
+    const currentLon = data[1];
+    const currentAlt = data[2];
     this.setState({
       currentLat,
       currentLon,
