@@ -5,7 +5,7 @@ import CameraControls from './CameraControls';
 
 const path = require('path');
 const { Converter } = require('ffmpeg-stream');
-const { readdir, unlinkSync } = require('fs');
+const { readdir, unlinkSync, existsSync, mkdirSync } = require('fs');
 
 const container: CSS.Properties = {
   display: 'grid',
@@ -71,6 +71,9 @@ class CamerasContainer extends Component<IProps, IState> {
     this.state = {};
 
     this.folder = path.join(__dirname, '..\\assets\\tmpVideo\\');
+    if (!existsSync(this.folder)){
+      mkdirSync(this.folder);
+    }
 
     this.sources = [
       path.join(this.folder, 'stream.m3u8'),
