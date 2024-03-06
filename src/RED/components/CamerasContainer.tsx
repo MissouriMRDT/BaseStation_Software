@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import React, { Component } from 'react';
 import CSS from 'csstype';
 import CameraControls from './CameraControls';
@@ -88,8 +89,7 @@ class CamerasContainer extends Component<IProps, IState> {
       '192.168.4.101:1183',
       '192.168.4.101:1184',
     ];
-    // fs.readdir(this.folder, (err: ErrnoException | null, files: string[]) => {
-    //   if (err) throw err;
+
     readdir(this.folder, (err: ErrnoException | null, files: string[]) => {
       if (err) throw err;
 
@@ -109,6 +109,7 @@ class CamerasContainer extends Component<IProps, IState> {
 
       // basestation ip
       // 192.168.100.10
+
       // for (let i = 0; i < this.cameraIPs.length; i++) {
       //   startFFMPEG('udp://' + this.cameraIPs[i], path.join(this.folder, 'stream' + i + '.m3u8'));
       // }
@@ -122,8 +123,6 @@ class CamerasContainer extends Component<IProps, IState> {
       <div style={this.props.style}>
         <div style={label}> Camera Controls </div>
         <div style={container}>
-          {/* source will eventually be something like: assets\tmpVideo\stream.m3u8 */}
-          {/* <CameraControls hlsUrl={path.join(this.folder, 'stream.m3u8')} /> */}
           <CameraControls sources={this.sources} startSource={0} />
           <CameraControls sources={this.sources} startSource={1} />
           <CameraControls sources={this.sources} startSource={2} />

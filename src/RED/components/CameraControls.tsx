@@ -52,7 +52,7 @@ interface IState {
 class CameraControls extends Component<IProps, IState> {
   static defaultProps = {};
 
-  player: any;
+  player: HTMLVideoElement | null = null;
 
   hls: any;
 
@@ -105,7 +105,7 @@ class CameraControls extends Component<IProps, IState> {
     this.hls.attachMedia(video);
 
     this.hls.on(Hls.Events.MANIFEST_PARSED, function () {
-      video.play();
+      video?.play();
     });
   }
 
