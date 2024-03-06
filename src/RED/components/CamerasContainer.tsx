@@ -14,7 +14,6 @@ const container: CSS.Properties = {
   borderBottomWidth: '2px',
   borderStyle: 'solid',
   gridTemplateColumns: 'auto auto',
-  padding: '5px',
 };
 const label: CSS.Properties = {
   marginTop: '-10px',
@@ -26,7 +25,9 @@ const label: CSS.Properties = {
   zIndex: 1,
   color: 'white',
 };
-
+const videoStyle: CSS.Properties = {
+  border: '2px solid #990000',
+};
 async function startFFMPEG(input: string, output: string) {
   const converter = new Converter();
 
@@ -125,10 +126,10 @@ class CamerasContainer extends Component<IProps, IState> {
         <div style={container}>
           {/* source will eventually be something like: assets\tmpVideo\stream.m3u8 */}
           {/* <CameraControls hlsUrl={path.join(this.folder, 'stream.m3u8')} /> */}
-          <CameraControls sources={this.sources} startSource={0} />
-          <CameraControls sources={this.sources} startSource={1} />
-          <CameraControls sources={this.sources} startSource={2} />
-          <CameraControls sources={this.sources} startSource={3} />
+          <CameraControls style={videoStyle} sources={this.sources} startSource={0} />
+          <CameraControls style={videoStyle} sources={this.sources} startSource={1} />
+          <CameraControls style={videoStyle} sources={this.sources} startSource={2} />
+          <CameraControls style={videoStyle} sources={this.sources} startSource={3} />
         </div>
       </div>
     );

@@ -6,31 +6,27 @@ import { setSource } from 'video.js/dist/types/tech/middleware';
 
 const controlContainer: CSS.Properties = {
   display: 'grid',
-  width: '250px',
-  marginLeft: '5px',
+  width: '100%',
   gridTemplateColumns: '12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%',
   cursor: 'pointer',
 };
 
 const cameraSelectionContainer: CSS.Properties = {
   display: 'grid',
-  width: '250px',
-  marginLeft: '5px',
+  width: '100%',
   gridTemplateColumns: '12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%',
   cursor: 'pointer',
 };
 
 const rotationContainer: CSS.Properties = {
   display: 'grid',
-  width: '250px',
-  marginLeft: '5px',
+  width: '100%',
   gridTemplateColumns: '33.33% 33.33% 33.33%',
   cursor: 'pointer',
 };
 
 const videoContainerStyle: CSS.Properties = {
-  width: '320px',
-  height: '320px',
+  width: '100%',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
@@ -47,6 +43,7 @@ interface IProps {
 interface IState {
   rotationAngle: number;
   currentSource: number;
+  width: number;
 }
 
 // CameraControls: represents a single camera view w/ controls. should be contained under a CamerasContainer
@@ -61,7 +58,7 @@ class CameraControls extends Component<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
-    this.state = { rotationAngle: 0, currentSource: props.startSource };
+    this.state = { rotationAngle: 0, currentSource: props.startSource, width: 0};
     this.sources = props.sources;
     // props.sources[0].src = props.passedFileSource;
   }
@@ -69,15 +66,25 @@ class CameraControls extends Component<IProps, IState> {
   componentDidMount() {
     this.hls = new Hls();
     this.setSource(this.state.currentSource);
+    this.updateWidth();
+    window.addEventListener('resize', this.updateWidth);
   }
 
   componentWillUnmount() {
     // if (this.player) {
     //   this.player.dispose();
     // }
+    window.removeEventListener('resize', this.updateWidth);
+  }
+
+  updateWidth = () => {
+    if (this.player) {
+      this.videoContainerRef.style.height = `${this.player.clientWidth}px`
+    }
   }
 
   rotateVideo = (angle: number) => {
+    console.log(this.state.width)
     if (angle === 0) {
       this.setState({ rotationAngle: 0 });
     } else {
@@ -85,7 +92,6 @@ class CameraControls extends Component<IProps, IState> {
         rotationAngle: prevState.rotationAngle + angle,
       }));
     }
-    console.log(this.player.playbackRate);
   };
 
   setSource(newSource: number) {
@@ -115,14 +121,14 @@ class CameraControls extends Component<IProps, IState> {
   render(): JSX.Element {
     const { rotationAngle } = this.state;
     const videoStyle = {
-      width: '320px',
+      width: '100%',
       transform: `rotate(${rotationAngle}deg)`,
       transformOrigin: 'center',
     };
     return (
       <div style={this.props.style}>
         <div>
-          <div style={videoContainerStyle}>
+          <div style={videoContainerStyle} ref={(videoContainerRef) => (this.videoContainerRef = videoContainerRef)}>
             <div data-vjs-player>
               <video
                 className="videoCanvas"
