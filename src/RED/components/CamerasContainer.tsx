@@ -55,7 +55,6 @@ interface IProps {
 interface IState {}
 
 class CamerasContainer extends Component<IProps, IState> {
-
   folder: string;
 
   sources: string[];

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import CSS from 'csstype';
 
 import Hls from 'hls.js';
-import { setSource } from 'video.js/dist/types/tech/middleware';
 
 const controlContainer: CSS.Properties = {
   display: 'grid',
@@ -85,7 +84,6 @@ class CameraControls extends Component<IProps, IState> {
         rotationAngle: prevState.rotationAngle + angle,
       }));
     }
-    console.log(this.player.playbackRate);
   };
 
   setSource(newSource: number) {
@@ -101,7 +99,6 @@ class CameraControls extends Component<IProps, IState> {
       liveMaxLatencyDurationCount: 2,
     });
 
-    console.log('maxBufferLength: ' + this.hls.config.maxBufferLength);
     this.setState({ currentSource: newSource });
 
     this.hls.loadSource(this.sources[newSource]);
