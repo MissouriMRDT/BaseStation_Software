@@ -72,7 +72,7 @@ class CamerasContainer extends Component<IProps, IState> {
     this.state = {};
 
     this.folder = path.join(__dirname, '..\\assets\\tmpVideo\\');
-    if (!existsSync(this.folder)){
+    if (!existsSync(this.folder)) {
       mkdirSync(this.folder);
     }
 
@@ -94,22 +94,12 @@ class CamerasContainer extends Component<IProps, IState> {
       '192.168.4.101:1184',
     ];
 
-    readdir(this.folder, (err: ErrnoException | null, files: string[]) => {
+    readdir(this.folder, (err: Error | null, files: string[]) => {
       if (err) throw err;
 
       for (const file of files) {
         unlinkSync(path.join(this.folder, file));
       }
-
-      // cam streaming ips
-      // 192.168.4.100:1181
-      // 192.168.4.100:1182
-      // 192.168.4.100:1183
-      // 192.168.4.100:1184
-      // 192.168.4.101:1181
-      // 192.168.4.101:1182
-      // 192.168.4.101:1183
-      // 192.168.4.101:1184
 
       // basestation ip
       // 192.168.100.10
@@ -127,8 +117,6 @@ class CamerasContainer extends Component<IProps, IState> {
       <div style={this.props.style}>
         <div style={label}> Camera Controls </div>
         <div style={container}>
-          {/* source will eventually be something like: assets\tmpVideo\stream.m3u8 */}
-          {/* <CameraControls hlsUrl={path.join(this.folder, 'stream.m3u8')} /> */}
           <CameraControls style={videoStyle} sources={this.sources} startSource={0} />
           <CameraControls style={videoStyle} sources={this.sources} startSource={1} />
           <CameraControls style={videoStyle} sources={this.sources} startSource={2} />

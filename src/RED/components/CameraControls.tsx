@@ -3,13 +3,6 @@ import CSS from 'csstype';
 
 import Hls from 'hls.js';
 
-const controlContainer: CSS.Properties = {
-  display: 'grid',
-  width: '100%',
-  gridTemplateColumns: '12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%',
-  cursor: 'pointer',
-};
-
 const cameraSelectionContainer: CSS.Properties = {
   display: 'grid',
   width: '100%',
@@ -55,9 +48,11 @@ class CameraControls extends Component<IProps, IState> {
 
   sources: string[];
 
+  videoContainerRef!: HTMLDivElement | null;
+
   constructor(props: IProps) {
     super(props);
-    this.state = { rotationAngle: 0, currentSource: props.startSource, width: 0};
+    this.state = { rotationAngle: 0, currentSource: props.startSource, width: 0 };
     this.sources = props.sources;
     // props.sources[0].src = props.passedFileSource;
   }
@@ -78,12 +73,13 @@ class CameraControls extends Component<IProps, IState> {
 
   updateWidth = () => {
     if (this.player) {
-      this.videoContainerRef.style.height = `${this.player.clientWidth}px`
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      this.videoContainerRef!.style.height = `${this.player.clientWidth}px`;
     }
-  }
+  };
 
   rotateVideo = (angle: number) => {
-    console.log(this.state.width)
+    console.log(this.state.width);
     if (angle === 0) {
       this.setState({ rotationAngle: 0 });
     } else {
