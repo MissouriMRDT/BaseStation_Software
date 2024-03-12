@@ -112,7 +112,7 @@ class CameraControls extends Component<IProps, IState> {
 
       if (playPromise !== undefined) {
         playPromise
-          .then((_) => {
+          .then(() => {
             return;
           })
           .catch((error) => {});
