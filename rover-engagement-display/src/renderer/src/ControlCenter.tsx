@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import CSS from 'csstype'
 // import { rovecomm } from '../Core/RoveProtocol/Rovecomm';
-// import GPS from './components/GPS'
-import { ipcRenderer } from 'electron'
+import GPS from './components/GPS'
 // import Log from './components/Log';
 // import Map from './components/Map';
 // import Waypoints from './components/Waypoints';
@@ -125,10 +124,10 @@ class ControlCenter extends Component<IProps, IState> {
             >
               Test Packet
             </button>
-            {/* <GPS
+            <GPS
               onCoordsChange={this.updateCoords}
               style={{ flexGrow: 1, marginRight: '5px', width: '60%' }}
-            /> */}
+            />
             {/* <ThreeDRover style={{ width: '40%' }} /> */}
           </div>
           <div style={{ ...row, height: '250px' }}>

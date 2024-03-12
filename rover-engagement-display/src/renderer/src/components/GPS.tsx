@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
-import { rovecomm } from "../../../main/Core/RoveProtocol/Rovecomm"
+// import { rovecomm } from "../../../main/Core/RoveProtocol/Rovecomm"
 // import { Packet } from "../../Core/RoveProtocol/Packet"
 
 const h1Style: CSS.Properties = {
@@ -72,28 +72,21 @@ class GPS extends Component<IProps, IState> {
       // quality: 0,
     };
 
-    rovecomm.on('GPSLatLon', (data: number[]) => this.GPSLatLon(data));
-    rovecomm.on('IMUData', (data: number[]) => this.IMUData(data));
+
+    // rovecomm.on('GPSLatLon', (data: number[]) => this.GPSLatLon(data));
+    // rovecomm.on('IMUData', (data: number[]) => this.IMUData(data));
     // rovecomm.on('LidarData', (data: number[]) => this.LidarData(data));
-    rovecomm.on('SatelliteCountData', (data: number[]) => this.SatelliteCountData(data));
-    rovecomm.on('AccuracyData', (data: number[]) => this.accurData(data));
+    // rovecomm.on('SatelliteCountData', (data: number[]) => this.SatelliteCountData(data));
+    // rovecomm.on('AccuracyData', (data: number[]) => this.accurData(data));
     // this.on()
   }
 
-  // on = async () => {
-  //   const qpslatlon = window.api.rovecomm.on('GPSLatLon', (data: number[]) =>
-  //     this.GPSLatLon(data)
-  //   )
-  //   const imudata = window.api.rovecomm.on('IMUData', (data: number[]) => this.IMUData(data))
-  //   // rovecomm.on('LidarData', (data: number[]) => this.LidarData(data));
-  //   const satellitecountdata = window.api.rovecomm.on('SatelliteCountData', (data: number[]) =>
-  //     this.SatelliteCountData(data)
-  //   )
-  //   const accuracydata = window.api.rovecomm.on('AccuracyData', (data: number[]) =>
-  //     this.accurData(data)
-  //   )
-  //   console.log("help")
-  // }
+  on = () => {
+    window.electron.ipcRenderer.on(`rovecomm.incoming.GPSLatLon`, (_, data)=> {
+      this.GPSLatLon(data)
+    })
+    window.electron.ipcRenderer.send('rovecomm.on', "GPSLatLon")
+  }
 
   accurData(data: number[]): void {
     this.setState({
