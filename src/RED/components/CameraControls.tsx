@@ -107,8 +107,16 @@ class CameraControls extends Component<IProps, IState> {
     this.hls.loadSource(this.sources[newSource]);
     this.hls.attachMedia(video);
 
-    this.hls.on(Hls.Events.MANIFEST_PARSED, function () {
-      video?.play();
+    this.hls.on(Hls.Events.MANIFEST_PARSED, () => {
+      const playPromise = video?.play();
+
+      if (playPromise !== undefined) {
+        playPromise
+          .then((_) => {
+            return;
+          })
+          .catch((error) => {});
+      }
     });
   }
 
