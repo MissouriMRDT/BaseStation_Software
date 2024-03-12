@@ -47,7 +47,11 @@ async function startFFMPEG(input: string, output: string) {
   });
 
   // start processing
-  await converter.run();
+  try {
+    await converter.run();
+  } catch {
+    console.log('UDP Bind Failed on port ' + input);
+  }
 }
 
 interface IProps {
