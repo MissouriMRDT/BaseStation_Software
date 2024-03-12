@@ -81,10 +81,14 @@ class CamerasContainer extends Component<IProps, IState> {
     }
 
     this.sources = [
-      path.join(this.folder, 'stream.m3u8'),
-      'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8',
-      'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8',
-      'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8',
+      path.join(this.folder, 'stream0_.m3u8'),
+      path.join(this.folder, 'stream1_.m3u8'),
+      path.join(this.folder, 'stream2_.m3u8'),
+      path.join(this.folder, 'stream3_.m3u8'),
+      path.join(this.folder, 'stream4_.m3u8'),
+      path.join(this.folder, 'stream5_.m3u8'),
+      path.join(this.folder, 'stream6_.m3u8'),
+      path.join(this.folder, 'stream7_.m3u8'),
     ];
 
     this.cameraIPs = [
@@ -108,11 +112,11 @@ class CamerasContainer extends Component<IProps, IState> {
       // basestation ip
       // 192.168.100.10
 
-      // for (let i = 0; i < this.cameraIPs.length; i++) {
-      //   startFFMPEG('udp://' + this.cameraIPs[i], path.join(this.folder, 'stream' + i + '.m3u8'));
-      // }
+      for (let i = 0; i < this.cameraIPs.length; i++) {
+        startFFMPEG('udp://' + this.cameraIPs[i], path.join(this.folder, 'stream' + i + '_.m3u8'));
+      }
 
-      startFFMPEG('udp://169.254.144.138:1181', path.join(this.folder, 'stream.m3u8'));
+      // startFFMPEG('udp://169.254.144.138:1181', path.join(this.folder, 'stream.m3u8'));
     });
   }
 
