@@ -36,14 +36,14 @@ const button: CSS.Properties = {
 };
 
 function startAutonomy(): void {
-  rovecomm.sendCommand('StartAutonomy', [1]);
+  rovecomm.sendCommand('StartAutonomy', 'Autonomy', [1]);
 }
 function stopAutonomy(): void {
-  rovecomm.sendCommand('DisableAutonomy', [1]);
+  rovecomm.sendCommand('DisableAutonomy', 'Autonomy', [1]);
 }
 function clearWaypoints(): void {
   rovecomm.emit('AutonomyActivity', "-------- Clearing Autonomy's waypoints --------");
-  rovecomm.sendCommand('ClearWaypoints', [1]);
+  rovecomm.sendCommand('ClearWaypoints', 'Autonomy', [1]);
 }
 
 interface IProps {
@@ -63,7 +63,7 @@ class Controls extends Component<IProps, IState> {
 
     this.addPositionLeg = this.addPositionLeg.bind(this);
     this.addMarkerLeg = this.addMarkerLeg.bind(this);
-    this.addGateLeg = this.addGateLeg.bind(this);
+    this.AddObjectLeg = this.AddObjectLeg.bind(this);
   }
 
   addPositionLeg(): void {
@@ -73,7 +73,7 @@ class Controls extends Component<IProps, IState> {
        Lat: ${this.props.selectedWaypoint.latitude.toFixed(7)}
        Lon: ${this.props.selectedWaypoint.longitude.toFixed(7)})`
     );
-    rovecomm.sendCommand('AddPositionLeg', [
+    rovecomm.sendCommand('AddPositionLeg', 'Autonomy', [
       this.props.selectedWaypoint.latitude,
       this.props.selectedWaypoint.longitude,
     ]);
@@ -85,16 +85,22 @@ class Controls extends Component<IProps, IState> {
       `Sending Marker (Lat: ${this.props.selectedWaypoint.latitude.toFixed(7)}
        Lon: ${this.props.selectedWaypoint.longitude.toFixed(7)})`
     );
-    rovecomm.sendCommand('AddMarkerLeg', [this.props.selectedWaypoint.latitude, this.props.selectedWaypoint.longitude]);
+    rovecomm.sendCommand('AddMarkerLeg', 'Autonomy', [
+      this.props.selectedWaypoint.latitude,
+      this.props.selectedWaypoint.longitude,
+    ]);
   }
 
-  addGateLeg(): void {
+  AddObjectLeg(): void {
     rovecomm.emit(
       'AutonomyActivity',
       `Sending Gate (Lat: ${this.props.selectedWaypoint.latitude.toFixed(7)}
        Lon: ${this.props.selectedWaypoint.longitude.toFixed(7)})`
     );
-    rovecomm.sendCommand('AddGateLeg', [this.props.selectedWaypoint.latitude, this.props.selectedWaypoint.longitude]);
+    rovecomm.sendCommand('AddObjectLeg', 'Autonomy', [
+      this.props.selectedWaypoint.latitude,
+      this.props.selectedWaypoint.longitude,
+    ]);
   }
 
   render(): JSX.Element {
@@ -115,8 +121,8 @@ class Controls extends Component<IProps, IState> {
             <button type="button" onClick={this.addMarkerLeg} style={button}>
               <h1 style={button}>Add Marker Leg</h1>
             </button>
-            <button type="button" onClick={this.addGateLeg} style={button}>
-              <h1 style={button}>Add Gate Leg</h1>
+            <button type="button" onClick={this.AddObjectLeg} style={button}>
+              <h1 style={button}>Add Object Leg</h1>
             </button>
             <button type="button" onClick={clearWaypoints} style={button}>
               <h1 style={button}>Clear Waypoints</h1>

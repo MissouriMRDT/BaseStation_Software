@@ -214,6 +214,11 @@ class PingMap extends Component<IProps, IState> {
     context.stroke();
 
     const boards = Object.keys(RovecommManifest);
+    const baseStationSwitchBoardLocation = [
+      { x: centerW + 100, y: 70 },
+      { x: centerW - 100, y: 70 },
+      { x: centerW + 60, y: 70 },
+    ];
     const locations = [
       { x: centerW - 20, y: 540 },
       { x: centerW + 20, y: 540 },
@@ -231,26 +236,64 @@ class PingMap extends Component<IProps, IState> {
       { x: centerW + 150, y: 380 },
       { x: centerW, y: 590 },
     ];
+    let baseStationIteration = 0;
+    let signalStackIteration = 0;
     for (let i = 0; i < locations.length && i < boards.length; i++) {
-      const coords = locations[i];
+      const coords = locations[signalStackIteration];
       const board = boards[i];
-      context.fillStyle =
-        this.props.devices[board].ping === -1
-          ? 'white'
-          : ColorConverter(this.props.devices[board].ping, min, cutoff, max, greenHue, redHue);
-      context.beginPath();
-      context.moveTo(centerW, 400);
-      context.lineTo(coords.x, coords.y);
-      context.stroke();
-      context.moveTo(20 * Math.cos((1 / 6) * Math.PI) + coords.x, 20 * Math.sin((1 / 6) * Math.PI) + coords.y);
-      context.lineTo(20 * Math.cos((5 / 6) * Math.PI) + coords.x, 20 * Math.sin((5 / 6) * Math.PI) + coords.y);
-      context.lineTo(20 * Math.cos((9 / 6) * Math.PI) + coords.x, 20 * Math.sin((9 / 6) * Math.PI) + coords.y);
-      context.lineTo(20 * Math.cos((1 / 6) * Math.PI) + coords.x, 20 * Math.sin((1 / 6) * Math.PI) + coords.y);
-      context.stroke();
-      context.fill();
-      context.fillStyle = 'black';
-      context.textAlign = 'center';
-      context.fillText(board, coords.x, coords.y + 17);
+      // make all boards with ip's with the third octet of 100 branch from the basestation switch
+      if (RovecommManifest[board].Ip.split('.')[2] === '100') {
+        const baseStationCoords = baseStationSwitchBoardLocation[baseStationIteration];
+        baseStationIteration += 1;
+        context.fillStyle =
+          this.props.devices[board].ping === -1
+            ? 'white'
+            : ColorConverter(this.props.devices[board].ping, min, cutoff, max, greenHue, redHue);
+        context.beginPath();
+        context.moveTo(centerW, 70);
+        context.lineTo(baseStationCoords.x, baseStationCoords.y);
+        context.stroke();
+        context.moveTo(
+          20 * Math.cos((1 / 6) * Math.PI) + baseStationCoords.x,
+          20 * Math.sin((1 / 6) * Math.PI) + baseStationCoords.y
+        );
+        context.lineTo(
+          20 * Math.cos((5 / 6) * Math.PI) + baseStationCoords.x,
+          20 * Math.sin((5 / 6) * Math.PI) + baseStationCoords.y
+        );
+        context.lineTo(
+          20 * Math.cos((9 / 6) * Math.PI) + baseStationCoords.x,
+          20 * Math.sin((9 / 6) * Math.PI) + baseStationCoords.y
+        );
+        context.lineTo(
+          20 * Math.cos((1 / 6) * Math.PI) + baseStationCoords.x,
+          20 * Math.sin((1 / 6) * Math.PI) + baseStationCoords.y
+        );
+        context.stroke();
+        context.fill();
+        context.fillStyle = 'black';
+        context.textAlign = 'center';
+        context.fillText(board, baseStationCoords.x, baseStationCoords.y + 17);
+      } else {
+        signalStackIteration += 1;
+        context.fillStyle =
+          this.props.devices[board].ping === -1
+            ? 'white'
+            : ColorConverter(this.props.devices[board].ping, min, cutoff, max, greenHue, redHue);
+        context.beginPath();
+        context.moveTo(centerW, 400);
+        context.lineTo(coords.x, coords.y);
+        context.stroke();
+        context.moveTo(20 * Math.cos((1 / 6) * Math.PI) + coords.x, 20 * Math.sin((1 / 6) * Math.PI) + coords.y);
+        context.lineTo(20 * Math.cos((5 / 6) * Math.PI) + coords.x, 20 * Math.sin((5 / 6) * Math.PI) + coords.y);
+        context.lineTo(20 * Math.cos((9 / 6) * Math.PI) + coords.x, 20 * Math.sin((9 / 6) * Math.PI) + coords.y);
+        context.lineTo(20 * Math.cos((1 / 6) * Math.PI) + coords.x, 20 * Math.sin((1 / 6) * Math.PI) + coords.y);
+        context.stroke();
+        context.fill();
+        context.fillStyle = 'black';
+        context.textAlign = 'center';
+        context.fillText(board, coords.x, coords.y + 17);
+      }
     }
     context.beginPath();
     context.fillStyle = 'white';

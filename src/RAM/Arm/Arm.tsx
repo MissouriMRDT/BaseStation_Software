@@ -25,13 +25,14 @@ interface IState {
   gripperToggle: boolean;
 }
 
-let MultiplierJ1: number;
-let MultiplierJ2: number;
-let MultiplierJ3: number;
-let MultiplierJ4: number;
-let MultiplierJ5: number;
-let MultiplierJ6: number;
-let MultiplierGripper: number;
+let MultiplierX = 1000;
+let MultiplierY1 = 1000;
+let MultiplierY2 = 1000;
+let MultiplierZ = 1000;
+let MultiplierPitch = 1000;
+let MultiplierR1 = 1000;
+let MultiplierR2 = 1000;
+let MultiplierGripper = 1000;
 // let MultiplierEndEffector: number;
 
 class Arm extends Component<IProps, IState> {
@@ -50,111 +51,103 @@ class Arm extends Component<IProps, IState> {
   }
 
   arm(): void {
-    let ArmWristBend = 0;
-    let ArmWristTwist = 0;
-    let ArmElbowTwist = 0;
-    let ArmElbowBend = 0;
-    let ArmBaseTwist = 0;
-    let ArmBaseBend = 0;
+    let X = 0;
+    let Y1 = 0;
+    let Y2 = 0;
+    let Z = 0;
+    let Pitch = 0;
+    let R1 = 0;
+    let R2 = 0;
     let moveArm = false;
+    let LaserToggle = 0;
 
     if (controllerInputs.MultiplierY) {
-      MultiplierJ1 = controllerInputs.Multiplier1;
-      MultiplierJ2 = controllerInputs.Multiplier2;
-      MultiplierJ3 = controllerInputs.Multiplier3;
-      MultiplierJ4 = controllerInputs.Multiplier4;
+      MultiplierX = controllerInputs.Multiplier1;
+      MultiplierY1 = controllerInputs.Multiplier2;
+      MultiplierY2 = controllerInputs.Multiplier3;
+      MultiplierZ = controllerInputs.Multiplier4;
     } else if (controllerInputs.MultiplierX) {
-      MultiplierJ5 = controllerInputs.Multiplier1;
-      MultiplierJ6 = controllerInputs.Multiplier2;
-      MultiplierGripper = controllerInputs.Multiplier3;
-      // MultiplierEndEffector = controllerInputs.Multiplier4;
+      MultiplierPitch = controllerInputs.Multiplier1;
+      MultiplierR1 = controllerInputs.Multiplier2;
+      MultiplierR2 = controllerInputs.Multiplier3;
+      MultiplierGripper = controllerInputs.Multiplier4;
     }
 
-    // J5
-    if ('WristBendLeft' in controllerInputs && 'WristBendRight' in controllerInputs) {
-      ArmWristBend = (controllerInputs.WristBendLeft - controllerInputs.WristBendRight) * MultiplierJ5;
+    if ('WristPitchPlus' in controllerInputs && 'WristPitchMinus' in controllerInputs) {
+      Pitch = (controllerInputs.WristPitchPlus - controllerInputs.WristPitchMinus) * MultiplierPitch;
       moveArm = true;
     }
 
-    // J6
-    if ('WristTwistLeft' in controllerInputs && 'WristTwistRight' in controllerInputs) {
-      ArmWristTwist = (controllerInputs.WristTwistLeft - controllerInputs.WristTwistRight) * MultiplierJ6;
+    if ('Roll1Plus' in controllerInputs && 'Roll1Minus' in controllerInputs) {
+      R1 = (controllerInputs.Roll1Plus - controllerInputs.Roll1Minus) * MultiplierR1;
+      moveArm = true;
+    }
+    if ('Roll2Plus' in controllerInputs && 'Roll2Minus' in controllerInputs) {
+      R2 = (controllerInputs.Roll2Plus - controllerInputs.Roll2Minus) * MultiplierR2;
       moveArm = true;
     }
 
-    // J3
-    if ('ElbowBend' in controllerInputs) {
-      ArmElbowBend = controllerInputs.ElbowBend * MultiplierJ3;
+    if ('XAxis' in controllerInputs) {
+      X = controllerInputs.XAxis * MultiplierX;
+      moveArm = true;
+    }
+    if ('Y1Axis' in controllerInputs) {
+      Y1 = controllerInputs.Y1Axis * MultiplierY1;
+      moveArm = true;
+    }
+    if ('Y2Axis' in controllerInputs) {
+      Y2 = controllerInputs.Y2Axis * MultiplierY2;
+      moveArm = true;
+    }
+    if ('ZAxis' in controllerInputs) {
+      Z = controllerInputs.ZAxis * MultiplierZ;
       moveArm = true;
     }
 
-    // J4
-    if ('ElbowTwist' in controllerInputs) {
-      ArmElbowTwist = controllerInputs.ElbowTwist * MultiplierJ4;
-      moveArm = true;
-    }
-
-    // J2
-    if ('BaseBend' in controllerInputs) {
-      ArmBaseBend = controllerInputs.BaseBend * MultiplierJ2;
-      moveArm = true;
-    }
-
-    // J1
-    if ('BaseTwist' in controllerInputs) {
-      ArmBaseTwist = controllerInputs.BaseTwist * MultiplierJ1;
-      moveArm = true;
-    }
-
-    if (Math.abs(ArmBaseBend) > Math.abs(ArmBaseTwist)) {
-      ArmBaseTwist = 0;
+    if (Math.abs(X) > Math.abs(Y1)) {
+      Y1 = 0;
     } else {
-      ArmBaseBend = 0;
+      X = 0;
     }
 
-    if (Math.abs(ArmElbowBend) > Math.abs(ArmElbowTwist)) {
-      ArmElbowTwist = 0;
+    if (Math.abs(Y2) > Math.abs(Z)) {
+      Z = 0;
     } else {
-      ArmElbowBend = 0;
+      Y2 = 0;
     }
 
     if (moveArm) {
-      const armValues = [ArmBaseTwist, ArmBaseBend, ArmElbowBend, ArmElbowTwist, ArmWristTwist, ArmWristBend];
+      const armValues = [X, Y1, Y2, Z, Pitch, R1, R2];
       console.log(armValues);
-      rovecomm.sendCommand('ArmVelocityControl', armValues);
+      rovecomm.sendCommand('OpenLoop', 'Arm', armValues);
     }
 
     if ('GripperOpen' in controllerInputs && 'GripperClose' in controllerInputs) {
       let Gripper1 = 0;
-      let Gripper2 = 0;
-      if (this.state.gripperToggle) {
-        if (controllerInputs.GripperOpen === 1) {
-          Gripper2 = 1 * MultiplierGripper;
-        } else if (controllerInputs.GripperClose === 1) {
-          Gripper2 = -1 * MultiplierGripper;
-        } else {
-          Gripper2 = 0;
-        }
-        console.log('Moving Gripper 2');
+      if (controllerInputs.GripperOpen === 1) {
+        Gripper1 = 1 * MultiplierGripper;
+      } else if (controllerInputs.GripperClose === 1) {
+        Gripper1 = -1 * MultiplierGripper;
       } else {
-        if (controllerInputs.GripperOpen === 1) {
-          Gripper1 = 1 * MultiplierGripper;
-        } else if (controllerInputs.GripperClose === 1) {
-          Gripper1 = -1 * MultiplierGripper;
-        } else {
-          Gripper1 = 0;
-        }
-        console.log('Moving Gripper 1');
+        Gripper1 = 0;
       }
-      rovecomm.sendCommand('GripperMove', [Gripper1, Gripper2]);
+      console.log('Moving Gripper 1');
+      rovecomm.sendCommand('Gripper', 'Arm', Gripper1);
     }
 
-    if ('EndEffectorOn' in controllerInputs) {
-      let EndEffector = 0;
-      if (controllerInputs.EndEffectorOn === 1) {
-        EndEffector = 1;
+    if ('SolenoidOn' in controllerInputs) {
+      rovecomm.sendCommand('Solenoid', 'Arm', controllerInputs.SolenoidOn);
+    }
+
+    if ('LaserToggle' in controllerInputs) {
+      if (controllerInputs.LaserToggle === 1) {
+        if (LaserToggle === 1) {
+          LaserToggle = 0;
+        } else {
+          LaserToggle = 1;
+        }
       }
-      rovecomm.sendCommand('EndEffector', EndEffector);
+      rovecomm.sendCommand('Laser', 'Arm', LaserToggle);
     }
   }
 

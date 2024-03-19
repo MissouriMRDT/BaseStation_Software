@@ -20,7 +20,7 @@ export let SystemPackets: any = {};
 export let NetworkDevices: any = {};
 let ethernetUDPPort = 11000;
 let ethernetTCPPort = 12000;
-const filepath = path.join(__dirname, '../assets/RovecommManifest.json');
+const filepath = path.join(__dirname, '../assets/manifest/manifest.json');
 
 if (fs.existsSync(filepath)) {
   const manifest = JSON.parse(fs.readFileSync(filepath).toString());
@@ -387,7 +387,7 @@ class Rovecomm extends EventEmitter {
   }
 
   // While most "any" variable types have been removed, data really can be almost any type
-  sendCommand(dataIdStr: string, dataIn: any, reliability = false): void {
+  sendCommand(dataIdStr: string, boardName: string, dataIn: any, reliability = false): void {
     /*
      * Takes a dataIdString, data, and optional reliability (to determine)
      * UDP or TCP, properly types the data according to the type in the manifest
@@ -409,18 +409,14 @@ class Rovecomm extends EventEmitter {
     // Boolean to keep track of if the dataId was found
     let found = false;
 
-    // Here we loop through all of the Boards in the manifest,
     // looking specifically if this dataId is a known Command of the board
-    for (const board in RovecommManifest) {
-      if (Object.prototype.hasOwnProperty.call(RovecommManifest, board)) {
-        if (dataIdStr in RovecommManifest[board].Commands) {
-          destinationIp = RovecommManifest[board].Ip;
-          port = ethernetTCPPort;
-          dataType = RovecommManifest[board].Commands[dataIdStr].dataType;
-          dataId = RovecommManifest[board].Commands[dataIdStr].dataId;
-          found = true;
-          break;
-        }
+    if (Object.prototype.hasOwnProperty.call(RovecommManifest, boardName)) {
+      if (dataIdStr in RovecommManifest[boardName].Commands) {
+        destinationIp = RovecommManifest[boardName].Ip;
+        port = ethernetTCPPort;
+        dataType = RovecommManifest[boardName].Commands[dataIdStr].dataType;
+        dataId = RovecommManifest[boardName].Commands[dataIdStr].dataId;
+        found = true;
       }
     }
     if (found === false) {

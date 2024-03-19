@@ -46,6 +46,7 @@ const readoutContainter: CSS.Properties = {
   height: '301px',
   flexWrap: 'wrap',
   margin: '1px',
+  marginBottom: '175px',
 };
 const readout: CSS.Properties = {
   display: 'flex',
@@ -64,10 +65,6 @@ const cellReadoutContainer: CSS.Properties = {
   display: 'grid',
   gridTemplateColumns: 'auto auto auto auto',
 };
-const btnStyle: CSS.Properties = {
-  width: '70px',
-  cursor: 'pointer',
-};
 
 /**
  * The specific function of turnOffReboot() originates from how the control boards
@@ -79,7 +76,7 @@ const btnStyle: CSS.Properties = {
  * @param time if time = 0, Rover turns off. Otherwise it power cycles for 'time' seconds
  */
 function turnOffReboot(time: number): void {
-  rovecomm.sendCommand('BMSStop', [time]);
+  rovecomm.sendCommand('BMSStop', 'BMS', [time]);
 }
 
 interface IProps {
@@ -103,11 +100,18 @@ class Power extends Component<IProps, IState> {
     const boardTelemetry: Record<string, any> = {};
     const batteryTelemetry: Record<string, any> = {};
     Object.keys(Power.Commands).forEach((Bus: string) => {
-      boardTelemetry[Bus] = {};
-      Power.Commands[Bus].comments.split(', ').forEach((component: any) => {
-        boardTelemetry[Bus][component] = { enabled: true, value: 0 };
-      });
+      if (Bus === 'SetBus') {
+        // Check if the command is 'SetBus'
+        boardTelemetry[Bus] = {};
+        Power.Commands[Bus].comments.split(', ').forEach((component: any) => {
+          const componentName = component.split(' ')[0]; // Extract the first part of the comment
+          if (!componentName.toLowerCase().includes('enable') && !componentName.toLowerCase().includes('disable')) {
+            boardTelemetry[Bus][componentName] = { enabled: true, value: 0 };
+          }
+        });
+      }
     });
+
     Object.keys(BMS.Telemetry).forEach((measGroup: string) => {
       batteryTelemetry[measGroup] = {};
       const tmpList = BMS.Telemetry[measGroup].comments.split(', ');
@@ -143,20 +147,16 @@ class Power extends Component<IProps, IState> {
      *   IS APPLYING THAT VALUE TO THE NAME FROM THE COMMANDS OBJECT
      * # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
      */
-    rovecomm.on('MotorBusEnabled', (data: number[]) => this.boardListenHandlerTog(data, 'MotorBusEnable'));
-    rovecomm.on('MotorBusCurrent', (data: number[]) => this.boardListenHandlerAmp(data, 'MotorBusEnable'));
-    rovecomm.on('HighBusEnabled', (data: number[]) => this.boardListenHandlerTog(data, 'HighBusEnable'));
-    rovecomm.on('HighBusCurrent', (data: number[]) => this.boardListenHandlerAmp(data, 'HighBusEnable'));
-    rovecomm.on('LowBusEnabled', (data: number[]) => this.boardListenHandlerTog(data, 'LowBusEnable'));
-    rovecomm.on('LowBusCurrent', (data: number[]) => this.boardListenHandlerAmp(data, 'LowBusEnable'));
-    rovecomm.on('TwelveVBusEnabled', (data: number[]) => this.boardListenHandlerTog(data, 'TwelveVBusEnable'));
-    rovecomm.on('TwelveVBusCurrent', (data: number[]) => this.boardListenHandlerAmp(data, 'TwelveVBusEnable'));
+    // Later, add functionality to have EnableBus and DisableBus buttons for the boards that can toggle
+    rovecomm.on('SetBus', (data: number[]) => this.boardListenHandlerTog(data, 'SetBus'));
+    rovecomm.on('BusCurrent', (data: number[]) => this.boardListenHandlerAmp(data, 'SetBus'));
 
-    rovecomm.on('PackI_Meas', (data: number[]) => this.batteryListenHandler(data, 'PackI_Meas'));
-    rovecomm.on('PackV_Meas', (data: number[]) => this.batteryListenHandler(data, 'PackV_Meas'));
-    rovecomm.on('Temp_Meas', (data: number[]) => this.batteryListenHandler(data, 'Temp_Meas'));
-    rovecomm.on('CellV_Meas', (data: number[]) => this.batteryListenHandler(data, 'CellV_Meas'));
-    // console.log(boardTelemetry)
+    // Add Reboot, EStop, and Suicide button
+    rovecomm.on('PackCurrent', (data: number[]) => this.batteryListenHandler(data, 'PackCurrent'));
+    rovecomm.on('PackVoltage', (data: number[]) => this.batteryListenHandler(data, 'PackVoltage'));
+    rovecomm.on('PackTemp', (data: number[]) => this.batteryListenHandler(data, 'PackTemp'));
+    rovecomm.on('CellVoltage', (data: number[]) => this.batteryListenHandler(data, 'CellVoltage'));
+    // Add Error Handling notification
   }
 
   /**
@@ -166,6 +166,8 @@ class Power extends Component<IProps, IState> {
    */
   boardListenHandlerAmp(data: number[], partList: string): void {
     const { boardTelemetry } = this.state;
+    console.log(boardTelemetry);
+    console.log(boardTelemetry[partList]);
     Object.keys(boardTelemetry[partList]).forEach((part: string, index: number) => {
       boardTelemetry[partList][part].value = data[index];
     });
@@ -212,11 +214,11 @@ class Power extends Component<IProps, IState> {
    * @param board the object that the bus object is a child of
    * @param bus the object that is getting toggled by the Enable/Disable button
    */
-  buttonToggle(board: string, bus: string): void {
-    const { boardTelemetry } = this.state;
-    boardTelemetry[board][bus].enabled = !this.state.boardTelemetry[board][bus].enabled;
-    this.setState({ boardTelemetry }, () => this.packCommand(board));
-  }
+  // buttonToggle(board: string, bus: string): void {
+  //   const { boardTelemetry } = this.state;
+  //   boardTelemetry[board][bus].enabled = !this.state.boardTelemetry[board][bus].enabled;
+  //   this.setState({ boardTelemetry }, () => this.packCommand(board));
+  // }
 
   /**
    * To simultaneously simplify code and to assure ALL the motors get enabled in case the
@@ -225,28 +227,28 @@ class Power extends Component<IProps, IState> {
    * @desc Takes true or false and attempts to apply that to every motor object. After reassigning the state objects, it sends a bitmasked command to the rover
    * @param button True or false depending on which button is pressed
    */
-  allMotorToggle(button: boolean): void {
-    const { boardTelemetry } = this.state;
-    Object.keys(boardTelemetry.MotorBusEnable).forEach((motor: string) => {
-      boardTelemetry.MotorBusEnable[motor].enabled = button;
-    });
-    this.setState({ boardTelemetry }, () => this.packCommand('MotorBusEnable'));
-  }
+  // allMotorToggle(button: boolean): void {
+  //   const { boardTelemetry } = this.state;
+  //   Object.keys(boardTelemetry.SetBus).forEach((motor: string) => {
+  //     boardTelemetry.SetBus[motor].enabled = button;
+  //   });
+  //   this.setState({ boardTelemetry }, () => this.packCommand('SetBus'));
+  // }
 
   /**
    * @desc gets called any time a bus needs to be toggled. Takes the array of booleans and translates it to a bitmasked integer which then gets sent to the relevant board.
    * @param board corresponds to the board that is being sent the toggle command
    */
-  packCommand(board: string): void {
-    const { boardTelemetry } = this.state;
-    let newBitMask = '';
-    Object.keys(boardTelemetry[board])
-      .reverse() // Reverse to keep correct order for bitmap command
-      .forEach((bus) => {
-        newBitMask += boardTelemetry[board][bus].enabled ? '1' : '0';
-      });
-    rovecomm.sendCommand(board, [parseInt(newBitMask, 2)]);
-  }
+  // packCommand(board: string): void {
+  //   const { boardTelemetry } = this.state;
+  //   let newBitMask = '';
+  //   Object.keys(boardTelemetry[board])
+  //     .reverse() // Reverse to keep correct order for bitmap command
+  //     .forEach((bus) => {
+  //       newBitMask += boardTelemetry[board][bus].enabled ? '1' : '0';
+  //     });
+  //   rovecomm.sendCommand(board, [parseInt(newBitMask, 2)]);
+  // }
 
   render(): JSX.Element {
     return (
@@ -258,12 +260,12 @@ class Power extends Component<IProps, IState> {
               return (
                 <div key={board} style={{ ...column }}>
                   {Object.keys(this.state.boardTelemetry[board]).map((bus: string) => {
-                    const { enabled, value } = this.state.boardTelemetry[board][bus];
+                    const { value } = this.state.boardTelemetry[board][bus];
                     return (
                       <div key={bus} style={row}>
-                        <button type="button" onClick={() => this.buttonToggle(board, bus)} style={btnStyle}>
+                        {/* <button type="button" onClick={() => this.buttonToggle(board, bus)} style={btnStyle}>
                           {enabled ? 'Enabled' : 'Disabled'}
-                        </button>
+                        </button> */}
                         <div style={ColorStyleConverter(value, 0, 7, 15, 120, 0, readout)}>
                           <h3 style={textPad}>{bus}</h3>
                           <h3 style={textPad}>
@@ -282,7 +284,7 @@ class Power extends Component<IProps, IState> {
             })}
           </div>
           <div style={{ ...row, ...btnArray, gridTemplateColumns: 'auto auto' }}>
-            <button
+            {/* <button
               type="button"
               onClick={() => {
                 this.allMotorToggle(true);
@@ -290,8 +292,8 @@ class Power extends Component<IProps, IState> {
               style={{ cursor: 'pointer' }}
             >
               Enable All Motors
-            </button>
-            <button
+            </button> */}
+            {/* <button
               type="button"
               onClick={() => {
                 this.allMotorToggle(false);
@@ -299,7 +301,7 @@ class Power extends Component<IProps, IState> {
               style={{ cursor: 'pointer' }}
             >
               Disable All Motors
-            </button>
+            </button> */}
             <button type="button" onClick={() => turnOffReboot(5)} style={{ cursor: 'pointer' }}>
               REBOOT
             </button>
@@ -319,29 +321,29 @@ class Power extends Component<IProps, IState> {
             -------------------------------------------------
           </h3>
           <div style={{ ...row, width: '100%' }}>
-            <div style={ColorStyleConverter(this.state.batteryTelemetry.Temp_Meas.value, 30, 75, 115, 120, 0, readout)}>
+            <div style={ColorStyleConverter(this.state.batteryTelemetry.PackTemp.value, 30, 75, 115, 120, 0, readout)}>
               <h3 style={textPad}>Battery Temperature</h3>
-              <h3 style={textPad}>{this.state.batteryTelemetry.Temp_Meas.value.toLocaleString(undefined)}°</h3>
+              <h3 style={textPad}>{this.state.batteryTelemetry.PackTemp.value.toLocaleString(undefined)}°</h3>
             </div>
-            <div style={ColorStyleConverter(this.state.batteryTelemetry.PackI_Meas.value, 0, 15, 160, 120, 0, readout)}>
+            <div style={ColorStyleConverter(this.state.batteryTelemetry.PackTemp.value, 0, 15, 160, 120, 0, readout)}>
               <h3 style={textPad}>Total Pack Current</h3>
-              <h3 style={textPad}>
-                {`${(this.state.batteryTelemetry.PackI_Meas.value / 1000).toLocaleString(undefined)} A`}
-              </h3>
+              <h3 style={textPad}>{`${this.state.batteryTelemetry.PackCurrent.value.toLocaleString(undefined)} A`}</h3>
             </div>
-            <div style={ColorStyleConverter(this.state.batteryTelemetry.PackV_Meas.value, 22, 28, 33, 0, 120, readout)}>
+            <div
+              style={ColorStyleConverter(this.state.batteryTelemetry.PackVoltage.value, 15, 21.6, 25, 0, 120, readout)}
+            >
               <h3 style={textPad}>Total Pack Voltage</h3>
-              <h3 style={textPad}>{`${this.state.batteryTelemetry.PackV_Meas.value.toLocaleString(undefined)} V`}</h3>
+              <h3 style={textPad}>{`${this.state.batteryTelemetry.PackVoltage.value.toLocaleString(undefined)} V`}</h3>
             </div>
           </div>
           <div style={{ ...row, width: '100%' }}>
             <div style={{ ...cellReadoutContainer, width: '100%' }}>
-              {Object.keys(this.state.batteryTelemetry.CellV_Meas).map((cell) => {
-                const { value } = this.state.batteryTelemetry.CellV_Meas[cell];
+              {Object.keys(this.state.batteryTelemetry.CellVoltage).map((cell) => {
+                const { value } = this.state.batteryTelemetry.CellVoltage[cell];
                 return (
                   <div key={cell} style={ColorStyleConverter(value, 2.5, 3.1, 4.2, 0, 120, readout)}>
                     <h3 style={textPad}>{cell}</h3>
-                    <h3 style={textPad}>{`${(value / 1000).toLocaleString(undefined)} V`}</h3>
+                    <h3 style={textPad}>{`${value.toLocaleString(undefined)} V`}</h3>
                   </div>
                 );
               })}

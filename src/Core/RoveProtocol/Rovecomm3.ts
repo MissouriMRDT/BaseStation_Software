@@ -10,7 +10,7 @@ export let dataSizes: any = [];
 export let DataTypes: any = {};
 const headerLength = 6;
 
-const filepath = path.join(__dirname, '../assets/RovecommManifest.json');
+const filepath = path.join(__dirname, '../assets/manifest/manifest.json');
 export const VersionNumber = 3;
 
 if (fs.existsSync(filepath)) {
