@@ -36,7 +36,7 @@ interface IProps {
 }
 
 interface IState {
-  encoderPositions: {
+  Positions: {
     [key: string]: number;
     scoopx: number;
     scoopz: number;
@@ -45,7 +45,7 @@ interface IState {
   };
 }
 
-class EncoderPositions extends Component<IProps, IState> {
+class Positions extends Component<IProps, IState> {
   static defaultProps = {
     style: {},
   };
@@ -53,7 +53,7 @@ class EncoderPositions extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      encoderPositions: {
+      Positions: {
         scoopx: 0,
         scoopz: 0,
         sensorz: 0,
@@ -61,16 +61,16 @@ class EncoderPositions extends Component<IProps, IState> {
       },
     };
     this.updateEncoderValues = this.updateEncoderValues.bind(this);
-    rovecomm.on('EncoderPositions', (data: number[]) => this.updateEncoderValues(data));
+    rovecomm.on('Positions', (data: number[]) => this.updateEncoderValues(data));
   }
 
   updateEncoderValues(data: number[]): void {
     this.setState((prevState) => {
-      const updatedEncoderPositions: any = { ...prevState.encoderPositions };
+      const updatedEncoderPositions: any = { ...prevState.Positions };
       Object.keys(updatedEncoderPositions).forEach((key, index) => {
         updatedEncoderPositions[key] = data[index];
       });
-      return { encoderPositions: updatedEncoderPositions };
+      return { Positions: updatedEncoderPositions };
     });
   }
 
@@ -79,10 +79,10 @@ class EncoderPositions extends Component<IProps, IState> {
       <div style={this.props.style}>
         <div style={label}>Encoder Positions</div>
         <div style={container}>
-          {Object.keys(this.state.encoderPositions).map((position) => {
+          {Object.keys(this.state.Positions).map((position) => {
             return (
               <div key={position} style={row}>
-                {position}: {this.state.encoderPositions[position]}
+                {position}: {this.state.Positions[position]}
               </div>
             );
           })}
@@ -92,4 +92,4 @@ class EncoderPositions extends Component<IProps, IState> {
   }
 }
 
-export default EncoderPositions;
+export default Positions;
