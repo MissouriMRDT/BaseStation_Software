@@ -63,7 +63,7 @@ class Controls extends Component<IProps, IState> {
 
     this.addPositionLeg = this.addPositionLeg.bind(this);
     this.addMarkerLeg = this.addMarkerLeg.bind(this);
-    this.addGateLeg = this.addGateLeg.bind(this);
+    this.AddObjectLeg = this.AddObjectLeg.bind(this);
   }
 
   addPositionLeg(): void {
@@ -91,13 +91,13 @@ class Controls extends Component<IProps, IState> {
     ]);
   }
 
-  addGateLeg(): void {
+  AddObjectLeg(): void {
     rovecomm.emit(
       'AutonomyActivity',
       `Sending Gate (Lat: ${this.props.selectedWaypoint.latitude.toFixed(7)}
        Lon: ${this.props.selectedWaypoint.longitude.toFixed(7)})`
     );
-    rovecomm.sendCommand('AddGateLeg', 'Autonomy', [
+    rovecomm.sendCommand('AddObjectLeg', 'Autonomy', [
       this.props.selectedWaypoint.latitude,
       this.props.selectedWaypoint.longitude,
     ]);
@@ -121,8 +121,8 @@ class Controls extends Component<IProps, IState> {
             <button type="button" onClick={this.addMarkerLeg} style={button}>
               <h1 style={button}>Add Marker Leg</h1>
             </button>
-            <button type="button" onClick={this.addGateLeg} style={button}>
-              <h1 style={button}>Add Gate Leg</h1>
+            <button type="button" onClick={this.AddObjectLeg} style={button}>
+              <h1 style={button}>Add Object Leg</h1>
             </button>
             <button type="button" onClick={clearWaypoints} style={button}>
               <h1 style={button}>Clear Waypoints</h1>
