@@ -140,10 +140,7 @@ class ControlCenter extends Component<IProps, IState> {
               store={(name: string, coords: any) => this.waypointsInstance.store(name, coords)}
               name="controlCenterMap"
             />
-            {/* <SignalStack style={{ width: '20%' }} /> */}
-            <Cameras defaultCamera={1} style={{ width: '100%' }} />
-            <Cameras defaultCamera={2} style={{ width: '100%' }} />
-            <Cameras defaultCamera={3} style={{ width: '100%' }} />
+            <CamerasContainer />
           </div>
         </div>
         <div style={{ ...column, width: '60%' }}>
@@ -170,17 +167,6 @@ class ControlCenter extends Component<IProps, IState> {
               Open Rover Imagery Display
             </button>
           </div>
-        </div>
-        <div style={{ ...column, width: '40%' }}>
-          <Map
-            style={{ minHeight: `${this.state.fourthHeight / 1.25}px` }}
-            storedWaypoints={this.state.storedWaypoints}
-            currentCoords={this.state.currentCoords}
-            store={(name: string, coords: any) => this.waypointsInstance.store(name, coords)}
-            name="controlCenterMap"
-          />
-
-          <CamerasContainer />
         </div>
       </div>
     );
