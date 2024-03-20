@@ -73,7 +73,7 @@ function downloadURL(imgData: string): void {
     .toISOString()
     // ISO string will be fromatted YYYY-MM-DDTHH:MM:SS:sssZ
     // this regex will convert all -,T,:,Z to . (which covers to . for .csv)
-    .replaceAll(/[:\-TZ]/g, '.')}Fluorometer.png`;
+    .replaceAll(/[:\-TZ]/g, '.')}Reflectance.png`;
 
   if (!fs.existsSync('./Screenshots')) {
     fs.mkdirSync('./Screenshots');
@@ -84,21 +84,21 @@ function downloadURL(imgData: string): void {
 }
 
 function saveImage(): void {
-  // Search through all the windows for Fluorometer
+  // Search through all the windows for Reflectance
   let graph;
   let thisWindow;
   for (const win of Object.keys(windows)) {
-    if (windows[win].document.getElementById('Fluorometer')) {
+    if (windows[win].document.getElementById('Reflectance')) {
       // When found, store the graph and the window it was in
       thisWindow = windows[win];
-      graph = thisWindow.document.getElementById('Fluorometer');
+      graph = thisWindow.document.getElementById('Reflectance');
       break;
     }
   }
 
   // If the graph isn't found, throw an error
   if (!graph) {
-    throw new Error("The element 'Fluorometer' wasn't found");
+    throw new Error("The element 'Reflectance' wasn't found");
   }
 
   // If the graph is found, convert its html into a canvas to be downloaded
@@ -120,7 +120,7 @@ interface IProps {
   style?: CSS.Properties;
 }
 
-const LEDNames = ['265nm', '275nm', '280nm', '310nm', '365nm'];
+const LEDNames = ['400nm', '465nm', '522nm', '530nm'];
 
 interface IState {
   /** Holds which lasers are enabled */
@@ -142,14 +142,13 @@ interface IState {
   enableLEDToggle: boolean;
 }
 
-class Fluorometer extends Component<IProps, IState> {
+class Reflectance extends Component<IProps, IState> {
   static defaultProps = {
     style: {},
   };
 
   static buildLedCommand(LED: boolean[]): number {
     let bitmask = '';
-    bitmask += LED[4] ? '1' : '0';
     bitmask += LED[3] ? '1' : '0';
     bitmask += LED[2] ? '1' : '0';
     bitmask += LED[1] ? '1' : '0';
@@ -181,7 +180,7 @@ class Fluorometer extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      LedStatus: [false, false, false, false, false],
+      LedStatus: [false, false, false, false],
       intensities: new Array(215).fill(0).flat(),
       graphData: [{ x: 0, y: 0 }],
       maxIntensity: 0,
@@ -286,7 +285,7 @@ class Fluorometer extends Component<IProps, IState> {
 
   updateGraphValues(): void {
     const { intensities } = this.state;
-    const avgd = Fluorometer.rollingAverage(intensities, 1);
+    const avgd = Reflectance.rollingAverage(intensities, 1);
     console.log(intensities.length);
 
     const maxIntensity = Math.max(...avgd);
@@ -309,7 +308,7 @@ class Fluorometer extends Component<IProps, IState> {
       this.setState({
         LedStatus,
       });
-      rovecomm.sendCommand('EnableLEDs', 'Science', Fluorometer.buildLedCommand(LedStatus));
+      rovecomm.sendCommand('EnableLEDs', 'Science', Reflectance.buildLedCommand(LedStatus));
     }
   }
 
@@ -364,13 +363,13 @@ class Fluorometer extends Component<IProps, IState> {
 
   requestData(): void {
     rovecomm.sendCommand('RequestReading', 'Science', 1);
-    console.log('requesting fluorometer', this.state.SHPeriod);
+    console.log('requesting Reflectance', this.state.SHPeriod);
   }
 
   render(): JSX.Element {
     return (
-      <div id="Fluorometer" style={this.props.style}>
-        <div style={label}>Fluorometer</div>
+      <div id="Reflectance" style={this.props.style}>
+        <div style={label}>Reflectance</div>
         <div style={container}>
           <div style={componentBox}>
             <XYPlot
@@ -455,4 +454,4 @@ class Fluorometer extends Component<IProps, IState> {
   }
 }
 
-export default Fluorometer;
+export default Reflectance;

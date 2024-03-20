@@ -7,7 +7,7 @@ import Cameras from '../../Core/components/Cameras';
 // import RockLookUp from './components/rocklookup';
 import ControlScheme, { controllerInputs } from '../../Core/components/ControlScheme';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
-// import Fluorometer from './components/Fluorometer';
+import Reflectance from './components/Reflectance';
 import EncoderPositions from './components/EncoderPositions';
 import OverrideSwitches from './components/OverrideSwitches';
 import EnvironmentalData from './components/EnvironmentalData';
@@ -164,12 +164,20 @@ class Science extends Component<IProps, IState> {
       <div style={column}>
         {selectedTab === 'environmental' && <EnvironmentalData />}
         {selectedTab === 'raman' && <Raman />}
+        {selectedTab === 'reflectance' && (
+          <div>
+            <Reflectance />
+          </div>
+        )}
         <div style={{ ...row, justifyContent: 'center', marginTop: '10px' }}>
           <button style={button} onClick={() => this.handleTabChange('environmental')}>
             Environmental Data
           </button>
           <button style={button} onClick={() => this.handleTabChange('raman')}>
             Raman
+          </button>
+          <button style={button} onClick={() => this.handleTabChange('reflectance')}>
+            Reflectance
           </button>
         </div>
         <div style={{ ...row }}>
