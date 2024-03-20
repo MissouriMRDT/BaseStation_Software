@@ -121,6 +121,8 @@ interface IProps {
 }
 
 const LEDNames = ['400nm', '465nm', '522nm', '530nm'];
+const minWavelength = 340;
+const maxWavelength = 850;
 
 interface IState {
   /** Holds which lasers are enabled */
@@ -159,24 +161,6 @@ class Reflectance extends Component<IProps, IState> {
     return num;
   }
 
-  static rollingAverage(arr: number[], N: number): number[] {
-    const result: number[] = [];
-
-    for (let i = 0; i < arr.length; i++) {
-      let sum = 0;
-      let count = 0;
-
-      for (let j = i; j > Math.max(i - N, -1); j--) {
-        sum += arr[j];
-        count += 1;
-      }
-
-      result.push(sum / count);
-    }
-
-    return result;
-  }
-
   constructor(props: IProps) {
     super(props);
     this.state = {
@@ -195,14 +179,14 @@ class Reflectance extends Component<IProps, IState> {
     // this.exportData = this.exportData.bind(this);
     this.onNearestX = this.onNearestX.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
-    this.calculateRelExtrema = this.calculateRelExtrema.bind(this);
-    this.calcRelMins = this.calcRelMins.bind(this);
-    this.calcRelMaxs = this.calcRelMaxs.bind(this);
+    // this.calculateRelExtrema = this.calculateRelExtrema.bind(this);
+    // this.calcRelMins = this.calcRelMins.bind(this);
+    // this.calcRelMaxs = this.calcRelMaxs.bind(this);
     this.changeSHPeriod = this.changeSHPeriod.bind(this);
     this.requestData = this.requestData.bind(this);
 
     // Call updateDiodeValues with the new data and the index of that data
-    rovecomm.on('Reading', (data: number[]) => this.updateDiodeVals(0, data));
+    rovecomm.on('Reading', (data: number[]) => this.updateDiodeVals(data));
   }
 
   onMouseLeave(): void {
@@ -213,90 +197,74 @@ class Reflectance extends Component<IProps, IState> {
     this.setState({ crosshairPos: index });
   }
 
-  calculateRelExtrema(arr: number[]): {
-    mins: { x: number; intensity: number }[];
-    maxs: { x: number; intensity: number }[];
-  } {
-    return {
-      mins: this.calcRelMins(arr),
-      maxs: this.calcRelMaxs(arr),
-    };
-  }
+  // calculateRelExtrema(arr: number[]): {
+  //   mins: { x: number; intensity: number }[];
+  //   maxs: { x: number; intensity: number }[];
+  // } {
+  //   return {
+  //     mins: this.calcRelMins(arr),
+  //     maxs: this.calcRelMaxs(arr),
+  //   };
+  // }
 
   // eslint-disable-next-line class-methods-use-this
-  calcRelMins(arr: number[]): { x: number; intensity: number }[] {
-    let peakI: number | undefined;
-    const peaksI: number[] = arr.reduce((peaks: number[], _val, i) => {
-      if (arr[i + 1] < arr[i]) {
-        peakI = i + 1;
-      } else if (arr[i + 1] > arr[i]) {
-        if (peakI) {
-          peaks.push(peakI);
-          peakI = undefined;
-        }
-      }
-      return peaks;
-    }, []);
-    return peaksI.map((val) => {
-      return { x: 350 + val * 0.061428571, intensity: arr[val] };
-    });
-  }
+  // calcRelMins(arr: number[]): { x: number; intensity: number }[] {
+  //   let peakI: number | undefined;
+  //   const peaksI: number[] = arr.reduce((peaks: number[], _val, i) => {
+  //     if (arr[i + 1] < arr[i]) {
+  //       peakI = i + 1;
+  //     } else if (arr[i + 1] > arr[i]) {
+  //       if (peakI) {
+  //         peaks.push(peakI);
+  //         peakI = undefined;
+  //       }
+  //     }
+  //     return peaks;
+  //   }, []);
+  //   return peaksI.map((val) => {
+  //     return { x: 350 + val * 0.061428571, intensity: arr[val] };
+  //   });
+  // }
 
   // eslint-disable-next-line class-methods-use-this
-  calcRelMaxs(arr: number[]): { x: number; intensity: number }[] {
-    let peakI: number;
-    const peaksI: number[] = arr.reduce((peaks: number[], _val, i) => {
-      if (arr[i + 1] > arr[i]) {
-        peakI = i + 1;
-      } else if (arr[i + 1] < arr[i]) {
-        if (!Number.isNaN(peakI)) {
-          peaks.push(peakI);
-          peakI = NaN;
-        }
-      }
-      return peaks;
-    }, []);
-    return peaksI.map((val) => {
-      return { x: 350 + val * 0.08121278, intensity: arr[val] };
-    });
-  }
+  // calcRelMaxs(arr: number[]): { x: number; intensity: number }[] {
+  //   let peakI: number;
+  //   const xFactor = (maxWavelength - minWavelength) / intensity.length;
+  //   const peaksI: number[] = arr.reduce((peaks: number[], _val, i) => {
+  //     if (arr[i + 1] > arr[i]) {
+  //       peakI = i + 1;
+  //     } else if (arr[i + 1] < arr[i]) {
+  //       if (!Number.isNaN(peakI)) {
+  //         peaks.push(peakI);
+  //         peakI = NaN;
+  //       }
+  //     }
+  //     return peaks;
+  //   }, []);
+  //   return peaksI.map((val) => {
+  //     return { x: xFactor, intensity: arr[val] };
+  //   });
+  // }
 
   /**
    * Updates the wavelengths received from the Rover.
    * @param index integer value that tells where this segment goes in data
    * @param dataInput uint16 array with the new data
    */
-  updateDiodeVals(index: number, dataInput: number[]): void {
-    this.setState(
-      (prevState) => {
-        const updatedInts = [
-          ...prevState.intensities.slice(0, index),
-          ...dataInput,
-          ...prevState.intensities.slice(index + 215),
-        ];
-        // prevState.intensities.splice(index, index === 3500 ? 148 : 500, ...dataInput);
-        return { intensities: updatedInts };
-      },
-      () => {
-        this.updateGraphValues();
-      }
-    );
+  updateDiodeVals(dataInput: number[]): void {
+    this.setState({ intensities: dataInput }, () => {
+      this.updateGraphValues();
+    });
   }
 
   updateGraphValues(): void {
     const { intensities } = this.state;
-    const avgd = Reflectance.rollingAverage(intensities, 1);
     console.log(intensities.length);
 
-    const maxIntensity = Math.max(...avgd);
-
-    const normalizedData = avgd.map((value: number, ndx: number) => {
-      return { x: 350 + ndx * 1.63, y: Math.abs(value / maxIntensity - 1) };
-    });
+    const maxIntensity = Math.max(...intensities);
 
     this.setState({
-      graphData: normalizedData,
-      maxIntensity,
+      graphData: maxIntensity,
       // relExtrema: this.calculateRelExtrema(avgd),
     });
   }
@@ -308,7 +276,7 @@ class Reflectance extends Component<IProps, IState> {
       this.setState({
         LedStatus,
       });
-      rovecomm.sendCommand('EnableLEDs', 'Science', Reflectance.buildLedCommand(LedStatus));
+      rovecomm.sendCommand('EnableLEDs', 'ReflectanceSpectrometer', Reflectance.buildLedCommand(LedStatus));
     }
   }
 
@@ -362,7 +330,7 @@ class Reflectance extends Component<IProps, IState> {
   }
 
   requestData(): void {
-    rovecomm.sendCommand('RequestReading', 'Science', 1);
+    rovecomm.sendCommand('RequestReading', 'ReflectanceSpectrometer', 1);
     console.log('requesting Reflectance', this.state.SHPeriod);
   }
 
@@ -378,7 +346,7 @@ class Reflectance extends Component<IProps, IState> {
               width={window.document.documentElement.clientWidth - 50}
               height={300}
               yDomain={[-0.1, 2]}
-              xDomain={[350, 710]}
+              xDomain={[minWavelength, maxWavelength]}
             >
               <VerticalGridLines style={{ fill: 'none' }} />
               <HorizontalGridLines style={{ fill: 'none' }} />
