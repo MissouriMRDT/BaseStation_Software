@@ -27,20 +27,20 @@ const label: CSS.Properties = {
 interface IProps {}
 
 interface IState {
-  maxBatVolt: number;
+  //maxBatVolt: number;
   voltage: number;
-  level: number;
-  temperature: number;
+  //level: number;
+  //temperature: number;
 }
 
 class DroneBattery extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      maxBatVolt: 0,
-      level: 0,
+      //maxBatVolt: 0,
+      //level: 0,
       voltage: 0,
-      temperature: 0,
+      //temperature: 0,
     };
 
     rovecomm.on('droneBattery', (data: number[]) => {
@@ -61,9 +61,7 @@ class DroneBattery extends Component<IProps, IState> {
       <div style={{ marginLeft: '5px', width: '40%' }}>
         <div style={label}>Drone Battery</div>
         <div style={container}>
-          <div>Level: {this.state.level}%</div>
           <div>Voltage: {this.state.voltage}</div>
-          <div>Temperature: {this.state.temperature}</div>
         </div>
       </div>
     );
