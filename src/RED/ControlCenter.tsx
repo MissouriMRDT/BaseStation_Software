@@ -16,8 +16,7 @@ import ControlScheme from '../Core/components/ControlScheme';
 import Drive from './components/Drive';
 import Gimbal from './components/Gimbal';
 import ThreeDRover from '../Core/components/ThreeDRover';
-import DroneLocation from './components/drone/drone_location';
-import DroneBattery from './components/drone/drone_battery';
+
 
 const row: CSS.Properties = {
   display: 'flex',
@@ -39,7 +38,6 @@ interface IProps {}
 interface IState {
   storedWaypoints: any;
   currentCoords: { lat: number; lon: number };
-  droneCoords: { lat: number; lon: number };
   ronOpen: boolean;
   ramOpen: boolean;
   ridOpen: boolean;
@@ -54,7 +52,6 @@ class ControlCenter extends Component<IProps, IState> {
     this.state = {
       storedWaypoints: {},
       currentCoords: { lat: 0, lon: 0 },
-      droneCoords: { lat: 0, lon: 0 },
       ronOpen: false,
       ramOpen: false,
       ridOpen: false,
@@ -120,10 +117,6 @@ class ControlCenter extends Component<IProps, IState> {
             <GPS onCoordsChange={this.updateCoords} style={{ flexGrow: 1, marginRight: '5px', width: '60%' }} />
             <ThreeDRover style={{ width: '40%' }} />
           </div>
-          <div style={row}>
-            <DroneLocation />
-            <DroneBattery />
-          </div>
           <div style={{ ...row, height: '200px' }}>
             <Waypoints
               onWaypointChange={this.updateWaypoints}
@@ -165,7 +158,6 @@ class ControlCenter extends Component<IProps, IState> {
             style={{ minHeight: `${this.state.fourthHeight / 1.25}px` }}
             storedWaypoints={this.state.storedWaypoints}
             currentCoords={this.state.currentCoords}
-            droneCoords={this.state.droneCoords}
             store={(name: string, coords: any) => this.waypointsInstance.store(name, coords)}
             name="controlCenterMap"
           />

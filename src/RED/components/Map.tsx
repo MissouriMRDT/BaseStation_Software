@@ -36,7 +36,6 @@ interface IProps {
   style?: CSS.Properties;
   storedWaypoints: any;
   currentCoords: { lat: number; lon: number };
-  droneCoords: { lat: number; lon: number };
   store: (name: string, coords: any) => void;
   name: string;
 }
@@ -47,7 +46,6 @@ interface IState {
   zoom: number;
   maxZoom: number;
   heading: number;
-  droneHeading: number;
 }
 
 class Map extends Component<IProps, IState> {
@@ -64,7 +62,6 @@ class Map extends Component<IProps, IState> {
       zoom: 15,
       maxZoom: 19,
       heading: 0,
-      droneHeading: 0,
     };
 
     rovecomm.on('IMUData', (data: any) => this.IMUData(data));
@@ -111,12 +108,6 @@ class Map extends Component<IProps, IState> {
                 <Marker
                   position={[this.props.currentCoords.lat, this.props.currentCoords.lon]}
                   icon={compassNeedle(this.state.heading)}
-                />
-              )}
-              {this.props.droneCoords.lat && this.props.droneCoords.lon && (
-                <Marker
-                  position={[this.props.droneCoords.lat, this.props.droneCoords.lon]}
-                  icon={compassNeedle(this.state.droneHeading)}
                 />
               )}
               {Object.keys(this.props.storedWaypoints).map((waypointName: string) => {
