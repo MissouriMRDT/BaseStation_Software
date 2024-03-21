@@ -3,7 +3,6 @@ import CSS from 'csstype';
 import fs from 'fs';
 import { TwitterPicker } from 'react-color';
 import path from 'path';
-import ThreeDRover from '../../Core/components/ThreeDRover';
 
 const title: CSS.Properties = {
   fontFamily: 'arial',
@@ -201,7 +200,7 @@ class Waypoints extends Component<IProps, IState> {
         this.props.onWaypointChange(storedWaypoints);
       }
 
-      ThreeDRover.id = parseInt(waypointKeys[waypointCount - 1], 10) + 1;
+      Waypoints.id = parseInt(waypointKeys[waypointCount - 1], 10) + 1;
     }
   }
 
@@ -264,12 +263,12 @@ class Waypoints extends Component<IProps, IState> {
           // Spread to ensure all currently stored waypoint are kept
           // but the newest waypoint is added
           ...prevState.storedWaypoints,
-          [ThreeDRover.id]: newWaypoint,
+          [Waypoints.id]: newWaypoint,
         },
       }),
       this.cascadeWaypoint
     );
-    ThreeDRover.id += 1;
+    Waypoints.id += 1;
   }
 
   /** Deletes a selected stored position (if a position has been selected)
