@@ -65,7 +65,7 @@ class DrivePower extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      max: 300,
+      max: 400,
     };
   }
 
@@ -80,20 +80,20 @@ class DrivePower extends Component<IProps, IState> {
         <div style={container}>
           <div style={row}>
             <div style={header}>Autonomy Max Speed</div>
-            <div style={value}>{this.state.max}</div>
+            <div style={value}>{this.state.max / 10}%</div>
             <input
               type="range"
-              min="100"
+              min="0"
               max="1000"
               value={this.state.max}
               style={slider}
               onChange={(e) => this.sliderChange(e)}
             />
-            <button onClick={() => rovecomm.sendCommand('SetMaxSpeed', this.state.max)}>Send</button>
+            <button onClick={() => rovecomm.sendCommand('SetMaxSpeed', 'Autonomy', this.state.max / 1000)}>Send</button>
           </div>
           <div style={row}>
-            <button onClick={() => rovecomm.sendCommand('SetWatchdogMode', 0)}>Teleop Watchdog</button>
-            <button onClick={() => rovecomm.sendCommand('SetWatchdogMode', 1)}>Autonomy Watchdog</button>
+            <button onClick={() => rovecomm.sendCommand('SetWatchdogMode', 'Autonomy', 0)}>Teleop Watchdog</button>
+            <button onClick={() => rovecomm.sendCommand('SetWatchdogMode', 'Autonomy', 1)}>Autonomy Watchdog</button>
           </div>
         </div>
       </div>

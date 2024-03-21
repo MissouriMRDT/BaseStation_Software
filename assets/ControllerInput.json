@@ -43,37 +43,34 @@
     "config": "Science",
     "controller": "Xbox",
     "bindings": {
-      "SensorAxis": { "buttonType": "joystick", "button": "left stick y" },
-      "WaterPump": { "buttonType": "button", "button": "A" },
-      "WaterLeft": { "buttonType": "button", "button": "dpad left" },
-      "WaterRight": { "buttonType": "button", "button": "dpad right" },
-      "XoopAxis": { "buttonType": "joystick", "button": "right stick x" },
-      "ZoopAxis": { "buttonType": "joystick", "button": "right stick y" },
-      "OpenScoop": { "buttonType": "button", "button": "LB" },
-      "CloseScoop": { "buttonType": "button", "button": "RB" },
-      "IncrementOpen": { "buttonType": "button", "button": "LT" },
-      "IncrementClose": { "buttonType": "button", "button": "RT" },
-      "MicroscopeFocusPlus": { "buttonType": "button", "button": "B" },
-      "MicroscopeFocusMinus": { "buttonType": "button", "button": "X" },
-      "DropSample": { "buttonType": "button", "button": "Y"}
+      "ScoopAxis_OpenLoop": { "buttonType": "joystick", "button": "left stick y" },
+      "SensorAxis_OpenLoop": { "buttonType": "joystick", "button": "right stick y" },
+      "AugerUp": { "buttonType": "button", "button": "dpad up" },
+      "AugerDown": { "buttonType": "button", "button": "dpad down" },
+      "ProboscisPlus": { "buttonType": "button", "button": "RB" },
+      "ProboscisMinus": { "buttonType": "button", "button": "LB" },
+      "MicroscopePlus": { "buttonType": "button", "button": "dpad right" },
+      "MicroscopeMinus": { "buttonType": "button", "button": "dpad left" }
     }
   },
   "ArmControls": {
     "config": "Arm",
     "controller": "Xbox",
     "bindings": {
-      "ElbowBend": { "buttonType": "joystick", "button": "right stick y" },
-      "ElbowTwist": { "buttonType": "joystick", "button": "right stick x" },
-      "WristBendRight": { "buttonType": "button", "button": "RB" },
-      "WristBendLeft": { "buttonType": "button", "button": "LB" },
+      "Y1Axis": { "buttonType": "joystick", "button": "right stick y" },
+      "XAxis": { "buttonType": "joystick", "button": "right stick x" },
+      "ZAxis": { "buttonType": "joystick", "button": "left stick x" },
+      "Y2Axis": { "buttonType": "joystick", "button": "left stick y" },
+      "WristPitchPlus": { "buttonType": "button", "button": "RB" },
+      "WristPitchMinus": { "buttonType": "button", "button": "LB" },
+      "Roll1Plus": { "buttonType": "button", "button": "dpad up" },
+      "Roll1Minus": { "buttonType": "button", "button": "dpad down" },
+      "Roll2Plus": { "buttonType": "button", "button": "dpad right" },
+      "Roll2Minus": { "buttonType": "button", "button": "dpad left" },
       "GripperOpen": { "buttonType": "button", "button": "B" },
       "GripperClose": { "buttonType": "button", "button": "X" },
-      "BaseTwist": { "buttonType": "joystick", "button": "left stick x" },
-      "BaseBend": { "buttonType": "joystick", "button": "left stick y" },
-      "WristTwistLeft": { "buttonType": "button", "button": "LT" },
-      "WristTwistRight": { "buttonType": "button", "button": "RT" },
       "LaserToggle": { "buttonType": "button", "button": "start" },
-      "EndEffectorOn": { "buttonType": "button", "button": "A" }
+      "SolenoidOn": { "buttonType": "button", "button": "A" }
     }
   },
   "ArmControlsCLOSED": {
@@ -103,6 +100,13 @@
       "Multiplier4": { "buttonType": "joystick", "button": "right stick y" },
       "MultiplierX": { "buttonType": "button", "button": "X" },
       "MultiplierY": { "buttonType": "button", "button": "Y" }
+    }
+  },
+  "SignalStack": {
+    "config": "SignalStack",
+    "controller": "Xbox",
+    "bindings": {
+      "Pan": { "buttonType": "joystick", "button": "left stick x" }
     }
   }
 }

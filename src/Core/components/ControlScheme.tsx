@@ -195,6 +195,12 @@ class ControlScheme extends Component<IProps, IState> {
           controller: 'Xbox 4',
           interval: null,
         },
+        SignalStack: {
+          toggled: 'Off',
+          scheme: 'SignalStack',
+          controller: 'Xbox 4',
+          interval: null,
+        },
       },
       controlPreviewModal: false,
       image: xboxController,

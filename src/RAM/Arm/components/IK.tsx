@@ -51,7 +51,7 @@ const buttons: CSS.Properties = {
 
 function getPosition(): void {
   // Unlike most telemetry, arm joint positions are only sent when requested
-  rovecomm.sendCommand('RequestAxesPositions', [1]);
+  rovecomm.sendCommand('ToggleTelemetry', 'Arm', [1]);
 }
 
 interface IProps {
@@ -89,7 +89,7 @@ class IK extends Component<IProps, IState> {
     };
     this.setPosition = this.setPosition.bind(this);
 
-    rovecomm.on('IKCoordinates', (data: any) => this.updatePosition(data));
+    rovecomm.on('WatchdogStatus', (data: any) => this.updatePosition(data));
   }
 
   setPosition(): void {
@@ -98,7 +98,8 @@ class IK extends Component<IProps, IState> {
      * and send the proper rovecomm packet
      */
     rovecomm.sendCommand(
-      'ArmMoveIK',
+      'SetIK',
+      'Arm',
       Object.values(this.state.IKValues).map((x: string) => {
         return x ? parseFloat(x) : 0;
       })
