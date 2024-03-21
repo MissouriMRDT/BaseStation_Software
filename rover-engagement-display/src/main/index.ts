@@ -38,10 +38,6 @@ function createWindow(): void {
   }
 }
 
-function sendResponse(data: string) {
-  mainWindow.webContents.sendCommand('rovecomm.response', data)
-}
-
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
@@ -60,12 +56,14 @@ app.whenReady().then(() => {
   ipcMain.on('ping', () => console.log('pong'))
   ipcMain.on('rovecomm.sendCommand', (_, dataIdStr: string, dataIn: any, reliability = false) => {
     rovecomm.sendCommand(dataIdStr, dataIn, reliability)
-    console.log(`Sending packet: ${dataIdStr}`)
+    // console.log(`Sending packet: ${dataIdStr}`)
   })
 
   ipcMain.on('rovecomm.on', (event, packetID) =>{
+    console.log(`awaiting ${packetID}`);
     rovecomm.on(packetID, (data: any)=>{
-      event.reply(`rovecomm.incoming.${packetID}`, data)
+      console.log(`Recieved new packet: ${packetID}`);
+      event.reply(`rovecomm.incoming.${packetID}`, data);
     })
   })
 
