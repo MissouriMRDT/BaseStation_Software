@@ -261,10 +261,10 @@ class Reflectance extends Component<IProps, IState> {
     const { intensities } = this.state;
     console.log(intensities.length);
 
-    const maxIntensity = Math.max(...intensities);
+    // const maxIntensity = Math.max(...intensities);
 
     this.setState({
-      graphData: maxIntensity,
+      // graphData: maxIntensity,
       // relExtrema: this.calculateRelExtrema(avgd),
     });
   }
