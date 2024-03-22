@@ -44,6 +44,8 @@ function createWindow(): void {
 app.whenReady().then(() => {
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron')
+  const test: boolean= process.env.TEST_LOCAL === 'true';
+  console.log(`test local: ${test}`);
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
@@ -54,16 +56,19 @@ app.whenReady().then(() => {
 
   // IPC test
   ipcMain.on('ping', () => console.log('pong'))
-  ipcMain.on('rovecomm.sendCommand', (_, dataIdStr: string, dataIn: any, reliability = false) => {
-    rovecomm.sendCommand(dataIdStr, dataIn, reliability)
-    // console.log(`Sending packet: ${dataIdStr}`)
-  })
+  ipcMain.on(
+    'rovecomm.sendCommand',
+    (_, dataIdStr: string, boardName: string, dataIn: any, reliability = false) => {
+      console.log(`Sending packet: ${dataIdStr}, Board name: ${boardName}`)
+      rovecomm.sendCommand(dataIdStr, boardName, dataIn, reliability)
+    }
+  )
 
-  ipcMain.on('rovecomm.on', (event, packetID) =>{
-    console.log(`awaiting ${packetID}`);
-    rovecomm.on(packetID, (data: any)=>{
-      console.log(`Recieved new packet: ${packetID}`);
-      event.reply(`rovecomm.incoming.${packetID}`, data);
+  ipcMain.on('rovecomm.on', (event, packetID) => {
+    console.log(`awaiting ${packetID}`)
+    rovecomm.on(packetID, (data: any) => {
+      console.log(`Recieved new packet: ${packetID}`)
+      event.reply(`rovecomm.incoming.${packetID}`, data)
     })
   })
 

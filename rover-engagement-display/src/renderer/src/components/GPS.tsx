@@ -78,14 +78,17 @@ class GPS extends Component<IProps, IState> {
     // rovecomm.on('LidarData', (data: number[]) => this.LidarData(data));
     // rovecomm.on('SatelliteCountData', (data: number[]) => this.SatelliteCountData(data));
     // rovecomm.on('AccuracyData', (data: number[]) => this.accurData(data));
-    // this.on()
+    this.on = this.on.bind(this);
+    this.on();
   }
 
   on = () => {
-    window.electron.ipcRenderer.on(`rovecomm.incoming.GPSLatLon`, (_, data)=> {
-      this.GPSLatLon(data)
+    console.log("Starting rovecomm event listeners");
+    window.electron.ipcRenderer.on(`rovecomm.incoming.GPSLatLonAlt`, (_, data)=> {
+      console.log("got packet");
+      this.GPSLatLon(data);
     })
-    window.electron.ipcRenderer.send('rovecomm.on', "GPSLatLon")
+    window.electron.ipcRenderer.send('rovecomm.on', "GPSLatLonAlt");
   }
 
   accurData(data: number[]): void {

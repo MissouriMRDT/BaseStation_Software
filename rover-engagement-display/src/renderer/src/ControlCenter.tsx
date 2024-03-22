@@ -118,7 +118,12 @@ class ControlCenter extends Component<IProps, IState> {
           <div style={row}>
             <button
               onClick={() => {
-                window.electron.ipcRenderer.send('rovecomm.sendCommand', 'DriveLeftRight', [0.5, 0.5])
+                window.electron.ipcRenderer.send(
+                  'rovecomm.sendCommand',
+                  'DriveLeftRight',
+                  'Core',
+                  [0.5, 0.5]
+                )
                 console.log('why')
               }}
             >
