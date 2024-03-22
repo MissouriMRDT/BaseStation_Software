@@ -3,6 +3,9 @@
 	url = https://github.com/missourimrdt/rovecomm_base
 	branch = embedded-2024
 [submodule "RoveComm-TypeScript"]
-	path = RoveComm-TypeScript
+	path = rover-engagement-display/src/main/Core/RoveComm-TypeScript
 	url = https://github.com/MissouriMRDT/RoveComm-TypeScript
 	branch = new-basestation-support
+[submodule "rover-engagement-display/src/main/Core/RoveComm-TypeScript"]
+	path = rover-engagement-display/src/main/Core/RoveComm-TypeScript
+	url = https://github.com/MissouriMRDT/RoveComm-TypeScript
