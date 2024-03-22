@@ -2,3 +2,7 @@
 	path = assets/manifest
 	url = https://github.com/missourimrdt/rovecomm_base
 	branch = embedded-2024
+[submodule "RoveComm-TypeScript"]
+	path = RoveComm-TypeScript
+	url = https://github.com/MissouriMRDT/RoveComm-TypeScript
+	branch = new-basestation-support

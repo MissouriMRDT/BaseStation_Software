@@ -41,6 +41,7 @@ interface IProps {
 interface IState {
   currentLat: number;
   currentLon: number;
+  currentAlt: number;
   satelliteCount: number;
   // pitch: number;
   yaw: number;
@@ -61,6 +62,7 @@ class GPS extends Component<IProps, IState> {
     this.state = {
       currentLat: 0,
       currentLon: 0,
+      currentAlt: 0,
       satelliteCount: 0,
       // pitch: 0,
       yaw: 0,
@@ -85,8 +87,7 @@ class GPS extends Component<IProps, IState> {
   on = () => {
     console.log("Starting rovecomm event listeners");
     window.electron.ipcRenderer.on(`rovecomm.incoming.GPSLatLonAlt`, (_, data)=> {
-      console.log("got packet");
-      this.GPSLatLon(data);
+      this.GPSLatLonAlt(data);
     })
     window.electron.ipcRenderer.send('rovecomm.on', "GPSLatLonAlt");
   }
@@ -99,12 +100,14 @@ class GPS extends Component<IProps, IState> {
     });
   }
 
-  GPSLatLon(data: number[]) {
+  GPSLatLonAlt(data: number[]) {
     const currentLat = data[0];
     const currentLon = data[1];
+    const currentAlt = data[2];
     this.setState({
       currentLat,
       currentLon,
+      currentAlt
     });
     this.props.onCoordsChange(currentLat, currentLon);
   }
@@ -140,6 +143,7 @@ class GPS extends Component<IProps, IState> {
           {[
             { title: 'Current Lat.', value: this.state.currentLat.toFixed(7) },
             { title: 'Current Lon.', value: this.state.currentLon.toFixed(7) },
+            { title: 'Current Alt.', value: this.state.currentAlt.toFixed(7) },
             { title: 'Satellite Count', value: this.state.satelliteCount.toFixed(0) },
             // { title: 'Distance', value: this.state.distance.toFixed(3) },
             // { title: 'Quality', value: this.state.quality.toFixed(3) },
@@ -148,20 +152,20 @@ class GPS extends Component<IProps, IState> {
             // { title: 'Roll', value: this.state.roll.toFixed(3) },
             { title: 'Pos. Acc', value: this.state.horizontalAccur.toFixed(3) },
             { title: 'Alt. Acc', value: this.state.verticalAccur.toFixed(3) },
-            { title: 'Comp. Acc', value: this.state.headingAccur.toFixed(3) },
+            { title: 'Comp. Acc', value: this.state.headingAccur.toFixed(3) }
           ].map((datum) => {
-            const { title, value } = datum;
+            const { title, value } = datum
             return (
               <div key={title}>
                 <p style={h1Style}>
                   {title}: {value}
                 </p>
               </div>
-            );
+            )
           })}
         </div>
       </div>
-    );
+    )
   }
 }
 
