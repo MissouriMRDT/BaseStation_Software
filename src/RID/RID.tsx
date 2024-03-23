@@ -19,7 +19,7 @@ import Power from '../RED/components/Power&BMS';
 import CustomPackets from '../RON/components/CustomPackets';
 import PacketLogger from '../RON/components/PacketLogger';
 // import PingGraph from '../RON/components/PingGraph';
-import Fluorometer from '../RAM/Science/components/Fluorometer';
+import Reflectance from '../RAM/Science/components/Reflectance';
 import RockLookUp from '../RAM/Science/components/rocklookup';
 
 const row: CSS.Properties = {
@@ -98,7 +98,7 @@ class RoverImageryDisplay extends Component<IProps, IState> {
             'Drive',
             'Gimbal',
             'GPS',
-            'Fluorometer',
+            'Reflectance',
             'Lighting',
             'Log',
             'Power',
@@ -265,8 +265,8 @@ class RoverImageryDisplay extends Component<IProps, IState> {
       case 'SensorGraphs':
         submodule = <SensorGraphs style={submod} />;
         break;
-      case 'Fluorometer':
-        submodule = <Fluorometer style={submod} />;
+      case 'Reflectance':
+        submodule = <Reflectance style={submod} />;
         break;
       case 'Drive':
         submodule = <Drive style={submod} />;

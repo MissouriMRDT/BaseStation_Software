@@ -7,7 +7,7 @@ import Cameras from '../../Core/components/Cameras';
 // import RockLookUp from './components/rocklookup';
 import ControlScheme, { controllerInputs } from '../../Core/components/ControlScheme';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
-// import Fluorometer from './components/Fluorometer';
+import Reflectance from './components/Reflectance';
 import EncoderPositions from './components/EncoderPositions';
 import OverrideSwitches from './components/OverrideSwitches';
 import EnvironmentalData from './components/EnvironmentalData';
@@ -33,44 +33,48 @@ let microscopePosition = 0;
 
 function science(): void {
   if ('ScoopAxis_OpenLoop' in controllerInputs) {
-    rovecomm.sendCommand('ScoopAxis_OpenLoop', 'Science', controllerInputs.ScoopAxis_OpenLoop * scoopMotorMultiplier);
+    rovecomm.sendCommand(
+      'ScoopAxis_OpenLoop',
+      'ScienceActuation',
+      controllerInputs.ScoopAxis_OpenLoop * scoopMotorMultiplier
+    );
   }
 
   if ('SensorAxis_OpenLoop' in controllerInputs) {
     rovecomm.sendCommand(
       'SensorAxis_OpenLoop',
-      'Science',
+      'ScienceActuation',
       controllerInputs.SensorAxis_OpenLoop * sensorMotorMultiplier
     );
   }
 
   if ('AugerUp' in controllerInputs && 'AugerDown' in controllerInputs) {
     if (controllerInputs.AugerUp === 1) {
-      rovecomm.sendCommand('Auger', 'Science', augerMotorMultiplier);
+      rovecomm.sendCommand('Auger', 'ScienceActuation', augerMotorMultiplier);
     } else if (controllerInputs.AugerDown === 1) {
-      rovecomm.sendCommand('Auger', 'Science', -augerMotorMultiplier);
+      rovecomm.sendCommand('Auger', 'ScienceActuation', -augerMotorMultiplier);
     } else {
-      rovecomm.sendCommand('Auger', 'Science', 0);
+      rovecomm.sendCommand('Auger', 'ScienceActuation', 0);
     }
   }
 
   if ('ProboscisPlus' in controllerInputs && 'ProboscisMinus' in controllerInputs) {
     if (controllerInputs.ProboscisPlus === 1) {
-      rovecomm.sendCommand('Proboscis', 'Science', proboscisMotorMultiplier);
+      rovecomm.sendCommand('Proboscis', 'ScienceActuation', proboscisMotorMultiplier);
     } else if (controllerInputs.ProboscisMinus === 1) {
-      rovecomm.sendCommand('Proboscis', 'Science', -proboscisMotorMultiplier);
+      rovecomm.sendCommand('Proboscis', 'ScienceActuation', -proboscisMotorMultiplier);
     } else {
-      rovecomm.sendCommand('Proboscis', 'Science', 0);
+      rovecomm.sendCommand('Proboscis', 'ScienceActuation', 0);
     }
   }
 
   if ('MicroscopePlus' in controllerInputs && 'MicroscopeMinus' in controllerInputs) {
     if (controllerInputs.MicroscopePlus === 1 && microscopePosition < 180) {
       microscopePosition += 5;
-      rovecomm.sendCommand('Microscope', 'Science', microscopePosition);
+      rovecomm.sendCommand('Microscope', 'ScienceActuation', microscopePosition);
     } else if (controllerInputs.MicroscopeMinus === 1 && microscopePosition > 0) {
       microscopePosition -= 5;
-      rovecomm.sendCommand('Microscope', 'Science', microscopePosition);
+      rovecomm.sendCommand('Microscope', 'ScienceActuation', microscopePosition);
     }
   }
 
@@ -164,12 +168,20 @@ class Science extends Component<IProps, IState> {
       <div style={column}>
         {selectedTab === 'environmental' && <EnvironmentalData />}
         {selectedTab === 'raman' && <Raman />}
+        {selectedTab === 'reflectance' && (
+          <div>
+            <Reflectance />
+          </div>
+        )}
         <div style={{ ...row, justifyContent: 'center', marginTop: '10px' }}>
           <button style={button} onClick={() => this.handleTabChange('environmental')}>
             Environmental Data
           </button>
           <button style={button} onClick={() => this.handleTabChange('raman')}>
             Raman
+          </button>
+          <button style={button} onClick={() => this.handleTabChange('reflectance')}>
+            Reflectance
           </button>
         </div>
         <div style={{ ...row }}>
