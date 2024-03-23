@@ -45,7 +45,6 @@ class DroneLocation extends Component<IProps, IState> {
       long: 0,
       lat: 0,
     };
-    // Not Implemented
     rovecomm.on('droneLocation', (data: number[]) => {
       this.updateLocation(data);
     });

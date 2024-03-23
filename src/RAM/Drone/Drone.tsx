@@ -4,7 +4,7 @@ import DroneBattery from './components/drone_battery';
 import DroneCamera from './components/drone_camera';
 import DroneLocation from './components/drone_location';
 // import DroneMap from './components/drone_map';
-// import ThreeDdrone from './components/ThreeD_drone';
+import ThreeDdrone from './components/ThreeD_drone';
 
 const row: CSS.Properties = {
   display: 'flex',
@@ -25,20 +25,24 @@ interface IProps {
   selectedWaypoint: any;
 }
 
-interface IState {}
+interface IState {
+  // fourthHeight: number;
+}
 
 class Drone extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
-    this.state = {};
+    this.state = {
+      // fourthHeight: 640 / 4 - 10,
+    };
   }
 
   render(): JSX.Element {
     return (
       <div style={column}>
         <div style={row}>
-          {/* <DroneMap style={{ marginRight: '5px', flexWrap: 'wrap' }}/> */}
-          {/* <ThreeDdrone/> */}
+          {/* <DroneMap style={{ minHeight: '${this.state.fourthHeight / 2}px' }}/> */}
+          <ThreeDdrone/>
         </div>
         <div style={row}>
           <DroneLocation/>
