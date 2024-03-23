@@ -85,23 +85,23 @@ class Gimbal extends Component<IProps, IState> {
     ) {
       // The multiples defined below are for Valkyries mounting positions, and the * 5 is just a small constant to tweak how quickly they respond
       // to controller input
-      rovecomm.sendCommand('LeftMainGimbalIncrement', [
+      rovecomm.sendCommand('LeftMainGimbalIncrement', 'Core', [
         controllerInputs.LeftMainPan * 5,
         controllerInputs.LeftMainTilt * 5,
       ]);
-      rovecomm.sendCommand('RightMainGimbalIncrement', [
+      rovecomm.sendCommand('RightMainGimbalIncrement', 'Core', [
         controllerInputs.RightMainPan * 5,
         controllerInputs.RightMainTilt * 5,
       ]);
-      rovecomm.sendCommand('LeftDriveGimbalIncrement', [
+      rovecomm.sendCommand('LeftDriveGimbalIncrement', 'Core', [
         (controllerInputs.LeftDriveUp ? -1 : controllerInputs.LeftDriveDown) * 5,
         0,
       ]);
-      rovecomm.sendCommand('RightDriveGimbalIncrement', [
+      rovecomm.sendCommand('RightDriveGimbalIncrement', 'Core', [
         (controllerInputs.RightDriveUp ? 1 : -controllerInputs.RightDriveDown) * 5,
         0,
       ]);
-      rovecomm.sendCommand('BackDriveGimbalIncrement', [
+      rovecomm.sendCommand('BackDriveGimbalIncrement', 'Core', [
         (controllerInputs.BackDriveUp ? 1 : -controllerInputs.BackDriveDown) * 5,
       ]);
     }

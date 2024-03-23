@@ -6,6 +6,7 @@ import { LatLngTuple } from 'leaflet';
 import icon from './Icon';
 import compassNeedle from './CompassNeedle';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
+import signalsMapOverlay from './SignalsMapOverlay';
 
 const container: CSS.Properties = {
   display: 'flex',
@@ -46,6 +47,9 @@ interface IState {
   zoom: number;
   maxZoom: number;
   heading: number;
+  basestationPos: { lat: number; long: number };
+  signalsPos: { lat: number; long: number };
+  signalsDir: number;
 }
 
 class Map extends Component<IProps, IState> {
@@ -62,15 +66,27 @@ class Map extends Component<IProps, IState> {
       zoom: 15,
       maxZoom: 19,
       heading: 0,
+      basestationPos: { lat: 0, long: 0 },
+      signalsPos: { lat: 0, long: 0 },
+      signalsDir: 0,
     };
 
-    rovecomm.on('IMUData', (data: any) => this.IMUData(data));
-    rovecomm.on('droneIMUData', (data: any) => this.droneIMUData(data));
+    rovecomm.on('IMUData', (data: number) => this.IMUData(data));
+    // rovecomm.on('SetGPSTarget', (data: number[]) => this.SignalsPosUpdate(data));
+    // rovecomm.on('SetAngleTarget', (data: number) => this.SignalsDirection(data));
   }
 
-  IMUData(data: any): void {
+  SignalsDirection(data: number): void {
+    this.setState({ signalsDir: data });
+  }
+
+  SignalsPosUpdate(data: number[]): void {
+    this.setState({ basestationPos: { lat: data[0], long: data[1] }, signalsPos: { lat: data[2], long: data[3] } });
+  }
+
+  IMUData(data: number): void {
     this.setState({
-      heading: data[1],
+      heading: data,
     });
   }
 
@@ -110,12 +126,17 @@ class Map extends Component<IProps, IState> {
                   icon={compassNeedle(this.state.heading)}
                 />
               )}
+              {
+                /*this.state.signalsPos.lat && this.state.signalsPos.long*/ true && (
+                  <Marker position={[37.951631, -91.770001]} icon={signalsMapOverlay(this.state.signalsDir)} />
+                )
+              }
               {Object.keys(this.props.storedWaypoints).map((waypointName: string) => {
                 const waypoint = this.props.storedWaypoints[waypointName];
                 const post: LatLngTuple = [waypoint.latitude, waypoint.longitude];
                 if (waypoint.onMap === true) {
                   return (
-                    <div>
+                    <div key={waypoint.name}>
                       <Marker key={waypoint.name} position={post} icon={icon(waypoint.color)}>
                         <Popup>{waypoint.name}</Popup>
                       </Marker>

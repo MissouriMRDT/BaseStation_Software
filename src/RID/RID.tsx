@@ -8,7 +8,7 @@ import ControlFeatures from '../RAM/Arm/components/ControlFeatures';
 import IK from '../RAM/Arm/components/IK';
 import Activity from '../RAM/Autonomy/components/Activity';
 import StateDiagram from '../RAM/Autonomy/components/StateDiagram';
-import Heater from '../RAM/Science/components/Heater';
+// import Heater from '../RAM/Science/components/Heater';
 import SensorData from '../RAM/Science/components/SensorData';
 import SensorGraphs from '../RAM/Science/components/SensorGraphs';
 import Drive from '../RED/components/Drive';
@@ -94,13 +94,12 @@ class RoverImageryDisplay extends Component<IProps, IState> {
             'Activity',
             'Controls',
             'StateDiagram',
-            'Heater',
             'SensorData',
             'SensorGraphs',
             'Drive',
             'Gimbal',
             'GPS',
-            'Flourometer',
+            'Fluorometer',
             'Lighting',
             'Log',
             'Power',
@@ -262,9 +261,6 @@ class RoverImageryDisplay extends Component<IProps, IState> {
         break;
       case 'StateDiagram':
         submodule = <StateDiagram style={submod} />;
-        break;
-      case 'Heater':
-        submodule = <Heater style={submod} />;
         break;
       case 'SensorData':
         submodule = <SensorData style={submod} />;

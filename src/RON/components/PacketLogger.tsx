@@ -3,6 +3,7 @@ import CSS from 'csstype';
 import ReactTable from 'react-table-v6';
 // import "../../node_modules/react-table-v6/react-table.css"
 import { rovecomm, RovecommManifest } from '../../Core/RoveProtocol/Rovecomm';
+import fs from 'fs';
 
 const h1Style: CSS.Properties = {
   fontFamily: 'arial',
@@ -30,6 +31,12 @@ const label: CSS.Properties = {
   fontSize: '16px',
   zIndex: 1,
   color: 'white',
+};
+const button: CSS.Properties = {
+  width: '50%',
+  height: '30px',
+  margin: '5px',
+  fontSize: '16px',
 };
 const selectbox: CSS.Properties = {
   display: 'flex',
@@ -60,7 +67,7 @@ class PacketLogger extends Component<IProps, IState> {
   constructor(props: any) {
     super(props);
     this.state = {
-      board: 'Drive',
+      board: 'Core',
       data: [],
       columns: [
         { Header: 'Name', accessor: 'name', width: '100' },
@@ -104,6 +111,26 @@ class PacketLogger extends Component<IProps, IState> {
     this.setState((prevState) => ({ data: [newData].concat(prevState.data) }));
   }
 
+  exportData(board: string): void {
+    // Convert the data to CSV format
+    const csvData = this.state.data.map((row: number) => Object.values(row).join(',')).join('\n');
+
+    // ISO string will be formatted YYYY-MM-DDTHH:MM:SS:sssZ
+    // this regex will convert all -,T:,Z to . (which covers to . for .csv)
+    // Date format is consistent with the SensorData csv
+    const timestamp = new Date().toISOString().replaceAll(/[:\-TZ]/g, '.');
+    const EXPORT_FILE = `./PacketLogger/${board}-${timestamp}.csv`;
+
+    if (!fs.existsSync('./PacketLogger')) {
+      fs.mkdirSync('./PacketLogger');
+    }
+
+    // Write the CSV data to a file
+    fs.writeFile(EXPORT_FILE, csvData, (err) => {
+      if (err) throw err;
+    });
+  }
+
   render(): JSX.Element {
     return (
       <div style={{ ...this.props.style }}>
@@ -131,6 +158,9 @@ class PacketLogger extends Component<IProps, IState> {
             showPageSizeOptions={false}
             style={{ textAlign: 'center', margin: 'auto' }}
           />
+          <button style={button} onClick={() => this.exportData(this.state.board)}>
+            Export Data
+          </button>
         </div>
       </div>
     );

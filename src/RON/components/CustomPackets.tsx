@@ -67,7 +67,7 @@ class CustomPackets extends Component<IProps, IState> {
   constructor(props: any) {
     super(props);
     this.state = {
-      board: 'Drive',
+      board: 'Core',
       command: 'DriveLeftRight',
       value: [0, 0],
       count: 2,
@@ -114,7 +114,7 @@ class CustomPackets extends Component<IProps, IState> {
   }
 
   sendCommand(): void {
-    rovecomm.sendCommand(this.state.command, this.state.value);
+    rovecomm.sendCommand(this.state.command, this.state.board, this.state.value);
   }
 
   render(): JSX.Element {
