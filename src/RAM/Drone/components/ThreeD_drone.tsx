@@ -30,7 +30,6 @@ const label: CSS.Properties = {
 
 interface IProps {
   style?: CSS.Properties;
-  zoom?: number;
   //droneOrientation: { pitch: number; yaw: number; roll: number };
 }
 
@@ -41,6 +40,7 @@ interface IState {
   id: string;
   width: number;
   height: number;
+  zoom: number;
 }
 
 const MODEL = path.join(__dirname, '../assets/drone.stl');
@@ -59,12 +59,17 @@ class ThreeDdrone extends Component<IProps, IState> {
       pitch: 0,
       yaw: 0,
       roll: 0,
+      zoom: 15,
       id: `3Ddrone_${ThreeDdrone.id}`,
       width: 300,
       height: 150,
     };
 
     rovecomm.on('droneOrientation', (data: number[]) => this.droneData(data));
+  }
+
+  componentDidMount(): void {
+    this.findWidth();
   }
 
   droneData(data: any) {
@@ -99,7 +104,7 @@ class ThreeDdrone extends Component<IProps, IState> {
     return (
       <div style={this.props.style}>
         <div style={label}>3D Drone</div>
-        <div style={container} id={this.state.id} />
+        <div style={container} id={this.state.id}>
         <STLViewer
           model={MODEL}
           modelColor="#B92C2C"
@@ -109,8 +114,9 @@ class ThreeDdrone extends Component<IProps, IState> {
           orbitControls
           width={this.state.width}
           height={this.state.height}
-          zoom={this.props.zoom}
+          zoom={this.state.zoom}
         />
+        </div>
       </div>
     );
   }
