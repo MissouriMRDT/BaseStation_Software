@@ -1,20 +1,11 @@
 {
-  "1": {
-    "name": "SDELC",
-    "latitude": 37.951631,
-    "longitude": -91.777713,
-    "color": "#9900ef",
+  "10": {
+    "name": "12:36:30 AM",
+    "latitude": 37.95126634978389,
+    "longitude": -91.77352486476626,
+    "color": "black",
     "colorPicker": false,
     "onMap": true,
-    "displayRadius": false
-  },
-  "2": {
-    "name": "MDRS",
-    "latitude": 38.406426,
-    "longitude": -110.791919,
-    "color": "#8ed1fc",
-    "colorPicker": false,
-    "onMap": true,
-    "displayRadius": false
+    "displayRadius": 88
   }
 }

@@ -15,7 +15,7 @@ import Power from './components/Power&BMS';
 import ControlScheme from '../Core/components/ControlScheme';
 import Drive from './components/Drive';
 import Gimbal from './components/Gimbal';
-import Accelerometer  from '../Core/components/Accelerometer';
+import Accelerometer from '../Core/components/Accelerometer';
 
 const row: CSS.Properties = {
   display: 'flex',
@@ -115,7 +115,7 @@ class ControlCenter extends Component<IProps, IState> {
           <div style={row}>
             <GPS onCoordsChange={this.updateCoords} style={{ flexGrow: 1, marginRight: '5px', width: '60%' }} />
             {/* <ThreeDRover style={{ width: '40%' }} /> */}
-            <Accelerometer style={{width: '40%'}}></Accelerometer>
+            <Accelerometer style={{ width: '40%' }}></Accelerometer>
           </div>
           <div style={{ ...row, height: '250px' }}>
             <Waypoints
