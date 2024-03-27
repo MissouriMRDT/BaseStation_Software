@@ -134,7 +134,7 @@ class ControlCenter extends Component<IProps, IState> {
           <div style={row}>
             <ControlScheme
               style={{ flexGrow: 1, marginRight: '5px', marginBottom: '5px' }}
-              configs={['Drive', 'MainGimbal', 'ControlMultipliers']}
+              configs={['Drive', 'MainGimbal', 'ControlMultipliers', 'SignalStack']}
             />
             <Gimbal style={{ height: '100%' }} />
           </div>
@@ -152,18 +152,6 @@ class ControlCenter extends Component<IProps, IState> {
               Open Rover Imagery Display
             </button>
           </div>
-        </div>
-        <div style={{ ...column, width: '40%' }}>
-          <Map
-            style={{ minHeight: `${this.state.fourthHeight / 1.25}px` }}
-            storedWaypoints={this.state.storedWaypoints}
-            currentCoords={this.state.currentCoords}
-            store={(name: string, coords: any) => this.waypointsInstance.store(name, coords)}
-            name="controlCenterMap"
-          />
-          <Cameras defaultCamera={1} style={{ width: '100%' }} />
-          <Cameras defaultCamera={2} style={{ width: '100%' }} />
-          <Cameras defaultCamera={3} style={{ width: '100%' }} />
         </div>
       </div>
     );

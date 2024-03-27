@@ -77,17 +77,17 @@ const selector: CSS.Properties = {
 
 const filepath = path.join(__dirname, '../assets/AngularPresets.json');
 
-function getPosition(): void {
-  // Unlike most telemetry, arm joint positions are only sent when requested
-  rovecomm.sendCommand('RequestJointPositions', [1]);
-}
+// function getPosition(): void {
+//   // Unlike most telemetry, arm joint positions are only sent when requested
+//   rovecomm.sendCommand('RequestPositions', [1]);
+// }
 
-function toggleTelem(): void {
-  // Some arm systems allow toggling an incoming stream of arm telemetry
-  // When enabled, entering text into the textfields to set position will
-  // become practically impossible
-  rovecomm.sendCommand('TogglePositionTelem', [1]);
-}
+// function toggleTelem(): void {
+//   // Some arm systems allow toggling an incoming stream of arm telemetry
+//   // When enabled, entering text into the textfields to set position will
+//   // become practically impossible
+//   rovecomm.sendCommand('RequestCoordinates', [1]);
+// }
 
 interface Joint {
   [key: string]: string;
@@ -137,7 +137,9 @@ class Angular extends Component<IProps, IState> {
     this.recall = this.recall.bind(this);
     this.delete = this.delete.bind(this);
 
-    rovecomm.on('JointAngles', (data: any) => this.updatePosition(data));
+    rovecomm.on('Positions', (data: any) => this.updatePosition(data));
+    // Maybe add a listener for coordinates
+    // Add LimitSwitchTriggered listener
   }
 
   componentDidMount(): void {
@@ -161,7 +163,8 @@ class Angular extends Component<IProps, IState> {
      * and send the proper rovecomm packet
      */
     rovecomm.sendCommand(
-      'ArmMoveToPosition',
+      'SetPosition',
+      'Arm',
       Object.values(this.state.jointValues).map((x: string) => {
         return x ? parseFloat(x) : 0;
       })
@@ -287,7 +290,7 @@ class Angular extends Component<IProps, IState> {
               );
             })}
           </div>
-          <div style={row}>
+          {/* <div style={row}>
             <button type="button" style={buttons} onClick={getPosition}>
               Get Position
             </button>
@@ -297,7 +300,7 @@ class Angular extends Component<IProps, IState> {
             <button type="button" style={buttons} onClick={toggleTelem}>
               Toggle Auto Telem
             </button>
-          </div>
+          </div> */}
           <select
             value={this.state.selectedPosition}
             onChange={(e) => this.setState({ selectedPosition: e.target.value })}

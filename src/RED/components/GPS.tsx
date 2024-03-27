@@ -34,13 +34,14 @@ const label: CSS.Properties = {
 };
 
 interface IProps {
-  onCoordsChange: (lat: number, lon: number) => void;
+  onCoordsChange: (lat: number, lon: number, alt: number) => void;
   style?: CSS.Properties;
 }
 
 interface IState {
   currentLat: number;
   currentLon: number;
+  currentAlt: number;
   satelliteCount: number;
   // pitch: number;
   yaw: number;
@@ -61,6 +62,7 @@ class GPS extends Component<IProps, IState> {
     this.state = {
       currentLat: 0,
       currentLon: 0,
+      currentAlt: 0,
       satelliteCount: 0,
       // pitch: 0,
       yaw: 0,
@@ -71,10 +73,9 @@ class GPS extends Component<IProps, IState> {
       // distance: 0,
       // quality: 0,
     };
-
-    rovecomm.on('GPSLatLon', (data: number[]) => this.GPSLatLon(data));
+    // Check to make sure these packets are actually needed
+    rovecomm.on('GPSLatLonAlt', (data: number[]) => this.GPSLatLonAlt(data));
     rovecomm.on('IMUData', (data: number[]) => this.IMUData(data));
-    // rovecomm.on('LidarData', (data: number[]) => this.LidarData(data));
     rovecomm.on('SatelliteCountData', (data: number[]) => this.SatelliteCountData(data));
     rovecomm.on('AccuracyData', (data: number[]) => this.accurData(data));
   }
@@ -87,14 +88,16 @@ class GPS extends Component<IProps, IState> {
     });
   }
 
-  GPSLatLon(data: number[]) {
+  GPSLatLonAlt(data: number[]) {
     const currentLat = data[0];
     const currentLon = data[1];
+    const currentAlt = data[2];
     this.setState({
       currentLat,
       currentLon,
+      currentAlt,
     });
-    this.props.onCoordsChange(currentLat, currentLon);
+    this.props.onCoordsChange(currentLat, currentLon, currentAlt);
   }
 
   SatelliteCountData(data: number[]) {
@@ -111,15 +114,6 @@ class GPS extends Component<IProps, IState> {
     });
   }
 
-  /*
-  LidarData(data: number[]) {
-    this.setState({
-      distance: data[0],
-      quality: data[1],
-    });
-  }
-  */
-
   render(): JSX.Element {
     return (
       <div style={this.props.style}>
@@ -128,6 +122,7 @@ class GPS extends Component<IProps, IState> {
           {[
             { title: 'Current Lat.', value: this.state.currentLat.toFixed(7) },
             { title: 'Current Lon.', value: this.state.currentLon.toFixed(7) },
+            { title: 'Current Alt.', value: this.state.currentAlt.toFixed(7) },
             { title: 'Satellite Count', value: this.state.satelliteCount.toFixed(0) },
             // { title: 'Distance', value: this.state.distance.toFixed(3) },
             // { title: 'Quality', value: this.state.quality.toFixed(3) },
