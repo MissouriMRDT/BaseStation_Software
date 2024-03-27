@@ -9,8 +9,9 @@ import path from 'path';
 import { useGLTF, useAnimations, useTexture } from '@react-three/drei'
 import { GLTF } from 'three-stdlib'
 
-const ROVER_FILE = path.join(__dirname, '../assets/models/rover_preview.glb');
-const TEXTURE_FILE = path.join(__dirname, '../assets/models/tex01.png');
+const MODELS_PATH = path.join(__dirname, '../assets/models');
+const ROVER_FILE = path.join(MODELS_PATH, 'rover_preview.glb');
+const TEXTURE_FILE = path.join(MODELS_PATH, 'tex01.png');
 
 type GLTFResult = GLTF & {
   nodes: {

@@ -5,7 +5,7 @@ import { rovecomm } from '../RoveProtocol/Rovecomm';
 import { ArrowHelperProps, Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader';
-import { BufferGeometry, Euler, Quaternion, Vector3 } from 'three';
+import { BufferGeometry, Group, Vector3 } from 'three';
 import { RoverScene } from './RoverScene';
 
 const container: CSS.Properties = {
@@ -32,8 +32,9 @@ const label: CSS.Properties = {
   color: 'white',
 };
 
-export const MODELS_PATH = path.join(__dirname, '../assets/models');
+const MODELS_PATH = path.join(__dirname, '../assets/models');
 
+const DANGER_ANGLE = 50 * Math.PI / 180;
 const negativeY = new Vector3(0, -1, 0);
 
 interface IProps {
@@ -43,7 +44,9 @@ interface IProps {
 
 interface IState {
   downVector: Vector3;
-  rotation: Euler;
+  displayPitch: number;
+  displayRoll: number;
+  color: '#B92C2C' | '#363636'
   width: number;
   height: number;
   file: string;
@@ -57,13 +60,16 @@ class Accelerometer extends Component<IProps, IState> {
   };
 
   private arrowRef: React.RefObject<ArrowHelperProps>;
+  private roverRef: React.RefObject<Group>;
   private showUpdate = false;
 
   constructor(props: IProps) {
     super(props);
     this.state = {
       downVector: new Vector3(0, -1, 0),
-      rotation: new Euler(),
+      displayPitch: 0,
+      displayRoll: 0,
+      color: '#363636',
       width: 300,
       height: 150,
       file: path.join(MODELS_PATH, 'rover.stl')
@@ -75,12 +81,13 @@ class Accelerometer extends Component<IProps, IState> {
     });
 
     this.arrowRef = React.createRef();
-    setTimeout(()=>{this.showUpdate = true; this.forceUpdate()}, 30000);
+    this.roverRef = React.createRef();
+    setTimeout(()=>{this.showUpdate = true; this.forceUpdate()}, 1000);
   }
 
   loadGeometry(): void {
+    this.state.geometry?.dispose();
     if (this.state.file.endsWith('.stl')) {
-      this.state.geometry?.dispose();
       const loader = new STLLoader();
       loader.load(this.state.file, (geo) => {
         geo.center();
@@ -109,12 +116,17 @@ class Accelerometer extends Component<IProps, IState> {
   // We use a quaternion to represent the axis and angle, then convert it to euler angles.
   calcRotation(): void {
     const normalizedDown = this.state.downVector.clone().normalize();
-    const axisAround = normalizedDown.clone().cross(negativeY);
+    const axisAround = normalizedDown.clone().cross(negativeY).normalize();
     const angleAround = normalizedDown.angleTo(negativeY);
-    const q = new Quaternion().setFromAxisAngle(axisAround, angleAround);
-    const e = new Euler().setFromQuaternion(q);
-    this.setState({ rotation: e });
-    this.arrowRef.current?.setDirection(normalizedDown);
+    let roll = Math.round(Math.asin(normalizedDown.x) / Math.PI * 180);
+    let pitch = Math.round(Math.asin(normalizedDown.z) / Math.PI * 180);
+    if (normalizedDown.y > 0) {
+      roll = 180 - roll;
+      pitch = 180 - pitch;
+    }
+    this.setState({ displayPitch: pitch, displayRoll: roll, color: angleAround > DANGER_ANGLE ? '#B92C2C' : '#363636' });
+    this.arrowRef.current?.setDirection!(normalizedDown);
+    this.roverRef.current?.setRotationFromAxisAngle(axisAround, angleAround)
   }
 
   render(): JSX.Element {
@@ -142,15 +154,15 @@ class Accelerometer extends Component<IProps, IState> {
                   ref={this.arrowRef}
                 />
               </group>
-              {this.state.file.endsWith('.glb') ? (
-                <RoverScene rotation={this.state.rotation} position-y={-1} scale={2} />
-              ) : (
-                <group>
-                  <mesh geometry={this.state.geometry} rotation={this.state.rotation} scale={0.08} castShadow>
-                    <meshLambertMaterial color={'#B92C2C'} />
+              <group ref={this.roverRef}>
+                {this.state.file.endsWith('.glb') ? (
+                  <RoverScene position-y={-1} scale={2} />
+                ) : (
+                  <mesh geometry={this.state.geometry} scale={0.08} castShadow>
+                    <meshLambertMaterial color={this.state.color} />
                   </mesh>
-                </group>
-              )}
+                )}
+              </group>
               <mesh position-y={-3} rotation-x={-Math.PI * 0.5} scale={50} receiveShadow>
                 <planeGeometry />
                 <meshStandardMaterial color={'#c1c1c1'} />
@@ -212,7 +224,8 @@ class Accelerometer extends Component<IProps, IState> {
               this.calcRotation();
             }}
           />
-          <div>{`downVec: <${String(Object.values(this.state.downVector))}>`}</div>
+          <div>{`down: <${String(Object.values(this.state.downVector))}>`}</div>
+          <div>{`pitch: ${this.state.displayPitch}°, roll: ${this.state.displayRoll}°`}</div>
         </div>
         { this.state.file.endsWith('.stl') && this.showUpdate &&
           <div 
