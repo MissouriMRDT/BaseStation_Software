@@ -82,7 +82,7 @@ class Accelerometer extends Component<IProps, IState> {
 
     this.arrowRef = React.createRef();
     this.roverRef = React.createRef();
-    setTimeout(()=>{this.showUpdate = true; this.forceUpdate()}, 1000);
+    setTimeout(()=>{this.showUpdate = true; this.forceUpdate()}, 30000);
   }
 
   loadGeometry(): void {
@@ -156,7 +156,7 @@ class Accelerometer extends Component<IProps, IState> {
               </group>
               <group ref={this.roverRef}>
                 {this.state.file.endsWith('.glb') ? (
-                  <RoverScene position-y={-1} scale={2} />
+                  <RoverScene position-y={-2} scale={2.5} />
                 ) : (
                   <mesh geometry={this.state.geometry} scale={0.08} castShadow>
                     <meshLambertMaterial color={this.state.color} />
@@ -229,7 +229,7 @@ class Accelerometer extends Component<IProps, IState> {
         </div>
         { this.state.file.endsWith('.stl') && this.showUpdate &&
           <div 
-            style={{backgroundColor: 'lightgreen', padding: '10px', border: '2px solid green', borderRadius: '5px', cursor: 'pointer', fontFamily: 'Comic Sans MS', fontSize: '.7em'}}
+            style={{backgroundColor: 'lightgreen', padding: '10px', border: '2px solid green', borderRadius: '5px', cursor: 'pointer', fontFamily: 'Comic Sans MS', fontSize: '.9em'}}
             onClick={() => this.setState({file: path.join(MODELS_PATH, 'rover_preview.glb')})}  
           >
             <span>Hey! 3D Rover got an upgrade! 👀</span><br/>
