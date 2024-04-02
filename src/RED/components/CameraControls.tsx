@@ -141,14 +141,19 @@ class CameraControls extends Component<IProps, IState> {
             </div>
           </div>
           <div style={cameraSelectionContainer}>
-            <button onClick={() => this.setSource(0)}>1</button>
-            <button onClick={() => this.setSource(1)}>2</button>
-            <button onClick={() => this.setSource(2)}>3</button>
-            <button onClick={() => this.setSource(3)}>4</button>
-            <button onClick={() => this.setSource(4)}>5</button>
-            <button onClick={() => this.setSource(5)}>6</button>
-            <button onClick={() => this.setSource(6)}>7</button>
-            <button onClick={() => this.setSource(7)}>8</button>
+            {Array.from({ length: 8 }, (_, i) => (
+            <button
+              key={i}
+              onClick={() => this.setSource(i)}
+              style={{
+                backgroundColor: this.state.currentSource === i ? 'gray' : '#EFEFEF',
+                borderRadius: '2px',
+                border: '1px solid gray',
+              }}
+            >
+              {i + 1}
+            </button>
+          ))}
           </div>
           <div style={rotationContainer}>
             <button onClick={() => this.rotateVideo(0)}>Reset</button>
