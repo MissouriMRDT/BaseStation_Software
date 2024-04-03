@@ -36,7 +36,7 @@ const label: CSS.Properties = {
 
 const MODELS_PATH = path.join(__dirname, '../assets/models');
 
-const DANGER_ANGLE = 50 * Math.PI / 180;
+const DANGER_ANGLE = (50 * Math.PI) / 180;
 const negativeY = new Vector3(0, -1, 0);
 const positiveY = new Vector3(0, 1, 0);
 
@@ -62,7 +62,9 @@ class Accelerometer extends Component<IProps, IState> {
   };
 
   private arrowRef: React.RefObject<ArrowHelperProps>;
+
   private roverRef: React.RefObject<Group>;
+
   private showUpdate = false;
 
   constructor(props: IProps) {
@@ -83,7 +85,10 @@ class Accelerometer extends Component<IProps, IState> {
 
     this.arrowRef = React.createRef();
     this.roverRef = React.createRef();
-    setTimeout(()=>{this.showUpdate = true; this.forceUpdate()}, 30000);
+    setTimeout(() => {
+      this.showUpdate = true;
+      this.forceUpdate();
+    }, 30000);
   }
 
   loadGeometry(): void {
@@ -102,7 +107,7 @@ class Accelerometer extends Component<IProps, IState> {
     this.loadGeometry();
   }
 
-  componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any): void {
+  componentDidUpdate(_prevProps: Readonly<IProps>, prevState: Readonly<IState>): void {
     if (prevState.file !== this.state.file) {
       this.loadGeometry();
     }
@@ -112,23 +117,27 @@ class Accelerometer extends Component<IProps, IState> {
     this.state.geometry?.dispose();
   }
 
-  // We must rotate the rover such that downVector would point to <0, -1, 0> if it underwent the same rotation. 
+  // We must rotate the rover such that downVector would point to <0, -1, 0> if it underwent the same rotation.
   // We find the axis to rotate it around by crossing downVector with <0, -1, 0>,
   // We use a quaternion to represent the axis and angle, then convert it to euler angles.
   calcRotation(): void {
     const normalizedDown = this.state.downVector.clone().normalize();
     const axisAround = normalizedDown.clone().cross(negativeY).normalize();
     const angleAround = normalizedDown.angleTo(negativeY);
-    let roll = Math.round(Math.asin(normalizedDown.x) / Math.PI * 180);
-    let pitch = Math.round(Math.asin(normalizedDown.z) / Math.PI * 180);
+    let roll = Math.round((Math.asin(normalizedDown.x) / Math.PI) * 180);
+    let pitch = Math.round((Math.asin(normalizedDown.z) / Math.PI) * 180);
     if (normalizedDown.y > 0) {
       roll = 180 - roll;
       pitch = 180 - pitch;
     }
-    this.setState({ displayPitch: pitch, displayRoll: roll, color: angleAround > DANGER_ANGLE ? '#B92C2C' : '#363636' });
-    this.arrowRef.current?.setDirection!(normalizedDown);
+    this.setState({
+      displayPitch: pitch,
+      displayRoll: roll,
+      color: angleAround > DANGER_ANGLE ? '#B92C2C' : '#363636',
+    });
+    this.arrowRef.current?.setDirection?.(normalizedDown);
     if (normalizedDown.equals(positiveY)) this.roverRef.current?.setRotationFromEuler(new Euler(0, 0, Math.PI));
-    else this.roverRef.current?.setRotationFromAxisAngle(axisAround, angleAround)
+    else this.roverRef.current?.setRotationFromAxisAngle(axisAround, angleAround);
   }
 
   render(): JSX.Element {
@@ -149,7 +158,7 @@ class Accelerometer extends Component<IProps, IState> {
               <group>
                 <mesh position={[0, 3, 0]}>
                   <boxGeometry />
-                  <meshBasicMaterial color={'black'}/>
+                  <meshBasicMaterial color={'black'} />
                 </mesh>
                 <arrowHelper
                   args={[this.state.downVector, new Vector3(0, 3, 0), 2, 'green', 0.3, 0.3]}
@@ -172,12 +181,23 @@ class Accelerometer extends Component<IProps, IState> {
               <OrbitControls enablePan={false} minDistance={3} maxDistance={8} />
             </Suspense>
           </Canvas>
-        <span 
-          style={{ backgroundColor: '#f1f1f1', opacity:'50%', padding:'0.1em', color:'#c1c1c1', cursor:'pointer', position:'absolute', bottom:0, right:0 }} 
-          onClick={()=>this.setState({showManualControls: !this.state.showManualControls})}
-        ><small>{this.state.showManualControls ? 'Hide' : 'Show'} Debug Controls</small></span>
+          <span
+            style={{
+              backgroundColor: '#f1f1f1',
+              opacity: '50%',
+              padding: '0.1em',
+              color: '#c1c1c1',
+              cursor: 'pointer',
+              position: 'absolute',
+              bottom: 0,
+              right: 0,
+            }}
+            onClick={() => this.setState({ showManualControls: !this.state.showManualControls })}
+          >
+            <small>{this.state.showManualControls ? 'Hide' : 'Show'} Debug Controls</small>
+          </span>
         </div>
-        { this.state.showManualControls &&
+        {this.state.showManualControls && (
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <label>set manually</label>
             <input
@@ -203,7 +223,9 @@ class Accelerometer extends Component<IProps, IState> {
               step="0.05"
               value={this.state.downVector.x}
               onChange={(event) => {
-                this.setState((prevState) => ({ downVector: prevState.downVector.setX(parseFloat(event.target.value)) }));
+                this.setState((prevState) => ({
+                  downVector: prevState.downVector.setX(parseFloat(event.target.value)),
+                }));
                 this.calcRotation();
               }}
             />
@@ -215,7 +237,9 @@ class Accelerometer extends Component<IProps, IState> {
               step="0.05"
               value={this.state.downVector.y}
               onChange={(event) => {
-                this.setState((prevState) => ({ downVector: prevState.downVector.setY(parseFloat(event.target.value)) }));
+                this.setState((prevState) => ({
+                  downVector: prevState.downVector.setY(parseFloat(event.target.value)),
+                }));
                 this.calcRotation();
               }}
             />
@@ -227,23 +251,37 @@ class Accelerometer extends Component<IProps, IState> {
               step="0.05"
               value={this.state.downVector.z}
               onChange={(event) => {
-                this.setState((prevState) => ({ downVector: prevState.downVector.setZ(parseFloat(event.target.value)) }));
+                this.setState((prevState) => ({
+                  downVector: prevState.downVector.setZ(parseFloat(event.target.value)),
+                }));
                 this.calcRotation();
               }}
             />
             <div>{`down: <${String(Object.values(this.state.downVector))}>`}</div>
             <div>{`pitch: ${this.state.displayPitch}°, roll: ${this.state.displayRoll}°`}</div>
           </div>
-        }
-        { this.state.file.endsWith('.stl') && this.showUpdate &&
-          <div 
-            style={{backgroundColor: 'lightgreen', padding: '10px', marginTop:10, border: '2px solid green', borderRadius: '5px', cursor: 'pointer', fontFamily: 'Comic Sans MS', fontSize: '.9em'}}
-            onClick={() => this.setState({file: path.join(MODELS_PATH, 'rover_preview.glb')})}  
+        )}
+        {this.state.file.endsWith('.stl') && this.showUpdate && (
+          <div
+            style={{
+              backgroundColor: 'lightgreen',
+              padding: '10px',
+              marginTop: 10,
+              border: '2px solid green',
+              borderRadius: '5px',
+              cursor: 'pointer',
+              fontFamily: 'Comic Sans MS',
+              fontSize: '.9em',
+            }}
+            onClick={() => this.setState({ file: path.join(MODELS_PATH, 'rover_preview.glb') })}
           >
-            <span>Hey! 3D Rover got an upgrade! 👀</span><br/>
-            <span>Click <strong>here</strong> to check our our new .GLTF support!</span>
+            <span>Hey! 3D Rover got an upgrade! 👀</span>
+            <br />
+            <span>
+              Click <strong>here</strong> to check our our new .GLTF support!
+            </span>
           </div>
-        }
+        )}
       </div>
     );
   }
