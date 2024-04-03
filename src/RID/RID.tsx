@@ -172,7 +172,7 @@ class RoverImageryDisplay extends Component<IProps, IState> {
       display: (
         <div style={{ flexGrow: 1, height: '100%' }}>
           {this.buttons}
-          <Accelerometer style={submod} zoom={30} />
+          <Accelerometer style={submod} />
         </div>
       ),
       displayed: '3D Rover',

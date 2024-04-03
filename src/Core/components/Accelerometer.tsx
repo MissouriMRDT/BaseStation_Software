@@ -5,7 +5,7 @@ import { rovecomm } from '../RoveProtocol/Rovecomm';
 import { ArrowHelperProps, Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader';
-import { BufferGeometry, Group, Vector3 } from 'three';
+import { BufferGeometry, Euler, Group, Vector3 } from 'three';
 import { RoverScene } from './RoverScene';
 
 const container: CSS.Properties = {
@@ -18,7 +18,9 @@ const container: CSS.Properties = {
   borderStyle: 'solid',
   padding: '0px',
   alignItems: 'center',
-  height: 'calc(100% - 47px)',
+  //height: '20vw',
+  aspectRatio: '16 / 9',
+  position: 'relative',
   overflow: 'hidden',
 };
 const label: CSS.Properties = {
@@ -36,27 +38,27 @@ const MODELS_PATH = path.join(__dirname, '../assets/models');
 
 const DANGER_ANGLE = 50 * Math.PI / 180;
 const negativeY = new Vector3(0, -1, 0);
+const positiveY = new Vector3(0, 1, 0);
 
 interface IProps {
   style?: CSS.Properties;
-  zoom?: number;
 }
 
 interface IState {
   downVector: Vector3;
   displayPitch: number;
   displayRoll: number;
-  color: '#B92C2C' | '#363636'
-  width: number;
-  height: number;
+  color: '#B92C2C' | '#363636';
   file: string;
   geometry?: BufferGeometry;
+  showManualControls: boolean;
 }
 
 class Accelerometer extends Component<IProps, IState> {
   static defaultProps: IProps = {
-    zoom: 20,
     style: {},
+    // width: 300,
+    // height: 150
   };
 
   private arrowRef: React.RefObject<ArrowHelperProps>;
@@ -70,9 +72,8 @@ class Accelerometer extends Component<IProps, IState> {
       displayPitch: 0,
       displayRoll: 0,
       color: '#363636',
-      width: 300,
-      height: 150,
-      file: path.join(MODELS_PATH, 'rover.stl')
+      file: path.join(MODELS_PATH, 'rover.stl'),
+      showManualControls: false,
     };
 
     rovecomm.on('AccelerometerData', (data: number[]) => {
@@ -126,14 +127,15 @@ class Accelerometer extends Component<IProps, IState> {
     }
     this.setState({ displayPitch: pitch, displayRoll: roll, color: angleAround > DANGER_ANGLE ? '#B92C2C' : '#363636' });
     this.arrowRef.current?.setDirection!(normalizedDown);
-    this.roverRef.current?.setRotationFromAxisAngle(axisAround, angleAround)
+    if (normalizedDown.equals(positiveY)) this.roverRef.current?.setRotationFromEuler(new Euler(0, 0, Math.PI));
+    else this.roverRef.current?.setRotationFromAxisAngle(axisAround, angleAround)
   }
 
   render(): JSX.Element {
     return (
       <div style={this.props.style}>
         <div style={label}>3D Rover</div>
-        <div style={{ ...container, width: this.state.width, height: this.state.height }}>
+        <div style={{ ...container }}>
           <Canvas shadows>
             <Suspense
               fallback={
@@ -170,66 +172,72 @@ class Accelerometer extends Component<IProps, IState> {
               <OrbitControls enablePan={false} minDistance={3} maxDistance={8} />
             </Suspense>
           </Canvas>
+        <span 
+          style={{ backgroundColor: '#f1f1f1', opacity:'50%', padding:'0.1em', color:'#c1c1c1', cursor:'pointer', position:'absolute', bottom:0, right:0 }} 
+          onClick={()=>this.setState({showManualControls: !this.state.showManualControls})}
+        ><small>{this.state.showManualControls ? 'Hide' : 'Show'} Debug Controls</small></span>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <label>set manually</label>
-          <input
-            type="text"
-            onChange={(event) => {
-              this.setState({
-                downVector: new Vector3(
-                  ...event.target.value
-                    .split(',')
-                    .map((tok) => tok.trim())
-                    .map((el) => parseFloat(el))
-                    .slice(0, 3)
-                ),
-              });
-              this.calcRotation();
-            }}
-          />
-          <label>set x</label>
-          <input
-            type="range"
-            min="-1"
-            max="1"
-            step="0.05"
-            value={this.state.downVector.x}
-            onChange={(event) => {
-              this.setState((prevState) => ({ downVector: prevState.downVector.setX(parseFloat(event.target.value)) }));
-              this.calcRotation();
-            }}
-          />
-          <label>set y</label>
-          <input
-            type="range"
-            min="-1"
-            max="1"
-            step="0.05"
-            value={this.state.downVector.y}
-            onChange={(event) => {
-              this.setState((prevState) => ({ downVector: prevState.downVector.setY(parseFloat(event.target.value)) }));
-              this.calcRotation();
-            }}
-          />
-          <label>set z</label>
-          <input
-            type="range"
-            min="-1"
-            max="1"
-            step="0.05"
-            value={this.state.downVector.z}
-            onChange={(event) => {
-              this.setState((prevState) => ({ downVector: prevState.downVector.setZ(parseFloat(event.target.value)) }));
-              this.calcRotation();
-            }}
-          />
-          <div>{`down: <${String(Object.values(this.state.downVector))}>`}</div>
-          <div>{`pitch: ${this.state.displayPitch}°, roll: ${this.state.displayRoll}°`}</div>
-        </div>
+        { this.state.showManualControls &&
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <label>set manually</label>
+            <input
+              type="text"
+              onChange={(event) => {
+                this.setState({
+                  downVector: new Vector3(
+                    ...event.target.value
+                      .split(',')
+                      .map((tok) => tok.trim())
+                      .map((el) => parseFloat(el))
+                      .slice(0, 3)
+                  ),
+                });
+                this.calcRotation();
+              }}
+            />
+            <label>set x</label>
+            <input
+              type="range"
+              min="-1"
+              max="1"
+              step="0.05"
+              value={this.state.downVector.x}
+              onChange={(event) => {
+                this.setState((prevState) => ({ downVector: prevState.downVector.setX(parseFloat(event.target.value)) }));
+                this.calcRotation();
+              }}
+            />
+            <label>set y</label>
+            <input
+              type="range"
+              min="-1"
+              max="1"
+              step="0.05"
+              value={this.state.downVector.y}
+              onChange={(event) => {
+                this.setState((prevState) => ({ downVector: prevState.downVector.setY(parseFloat(event.target.value)) }));
+                this.calcRotation();
+              }}
+            />
+            <label>set z</label>
+            <input
+              type="range"
+              min="-1"
+              max="1"
+              step="0.05"
+              value={this.state.downVector.z}
+              onChange={(event) => {
+                this.setState((prevState) => ({ downVector: prevState.downVector.setZ(parseFloat(event.target.value)) }));
+                this.calcRotation();
+              }}
+            />
+            <div>{`down: <${String(Object.values(this.state.downVector))}>`}</div>
+            <div>{`pitch: ${this.state.displayPitch}°, roll: ${this.state.displayRoll}°`}</div>
+          </div>
+        }
         { this.state.file.endsWith('.stl') && this.showUpdate &&
           <div 
-            style={{backgroundColor: 'lightgreen', padding: '10px', border: '2px solid green', borderRadius: '5px', cursor: 'pointer', fontFamily: 'Comic Sans MS', fontSize: '.9em'}}
+            style={{backgroundColor: 'lightgreen', padding: '10px', marginTop:10, border: '2px solid green', borderRadius: '5px', cursor: 'pointer', fontFamily: 'Comic Sans MS', fontSize: '.9em'}}
             onClick={() => this.setState({file: path.join(MODELS_PATH, 'rover_preview.glb')})}  
           >
             <span>Hey! 3D Rover got an upgrade! 👀</span><br/>
