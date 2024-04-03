@@ -15,7 +15,7 @@ import Power from './components/Power&BMS';
 import ControlScheme from '../Core/components/ControlScheme';
 import Drive from './components/Drive';
 import Gimbal from './components/Gimbal';
-import Accelerometer from '../Core/components/Accelerometer';
+import ThreeDRover from '../Core/components/ThreeDRover';
 
 const row: CSS.Properties = {
   display: 'flex',
@@ -114,7 +114,7 @@ class ControlCenter extends Component<IProps, IState> {
         <div style={{ ...column, width: '60%' }}>
           <div style={row}>
             <GPS onCoordsChange={this.updateCoords} style={{ flexGrow: 1, marginRight: '5px', width: '60%' }} />
-            <Accelerometer style={{ width: '40%' }} />
+            <ThreeDRover style={{ width: '40%' }} />
           </div>
           <div style={{ ...row, height: '250px' }}>
             <Waypoints
@@ -133,7 +133,7 @@ class ControlCenter extends Component<IProps, IState> {
           <div style={row}>
             <ControlScheme
               style={{ flexGrow: 1, marginRight: '5px', marginBottom: '5px' }}
-              configs={['Drive', 'MainGimbal', 'ControlMultipliers', 'SignalStack']}
+              configs={['Drive', 'MainGimbal', 'ControlMultipliers']}
             />
             <Gimbal style={{ height: '100%' }} />
           </div>
@@ -151,6 +151,18 @@ class ControlCenter extends Component<IProps, IState> {
               Open Rover Imagery Display
             </button>
           </div>
+        </div>
+        <div style={{ ...column, width: '40%' }}>
+          <Map
+            style={{ minHeight: `${this.state.fourthHeight / 1.25}px` }}
+            storedWaypoints={this.state.storedWaypoints}
+            currentCoords={this.state.currentCoords}
+            store={(name: string, coords: any) => this.waypointsInstance.store(name, coords)}
+            name="controlCenterMap"
+          />
+          <Cameras defaultCamera={1} style={{ width: '100%' }} />
+          <Cameras defaultCamera={2} style={{ width: '100%' }} />
+          <Cameras defaultCamera={3} style={{ width: '100%' }} />
         </div>
       </div>
     );
