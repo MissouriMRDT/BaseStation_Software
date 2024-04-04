@@ -88,7 +88,7 @@ class Accelerometer extends Component<IProps, IState> {
     setTimeout(() => {
       this.showUpdate = true;
       this.forceUpdate();
-    }, 30000);
+    }, 10000);
   }
 
   loadGeometry(): void {
@@ -271,10 +271,17 @@ class Accelerometer extends Component<IProps, IState> {
               borderRadius: '5px',
               cursor: 'pointer',
               fontFamily: 'Comic Sans MS',
-              fontSize: '.9em',
+              fontSize: '.8em',
             }}
             onClick={() => this.setState({ file: path.join(MODELS_PATH, 'rover_preview.glb') })}
           >
+            <div 
+              style={{cursor: 'pointer', float:'right', fontWeight:'bolder', color:'green'}}
+              onClick={(event) => {
+                event.stopPropagation();
+                this.showUpdate = false;
+                this.forceUpdate();
+              }}>X</div>
             <span>Hey! 3D Rover got an upgrade! 👀</span>
             <br />
             <span>
