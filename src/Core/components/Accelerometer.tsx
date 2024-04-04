@@ -275,13 +275,16 @@ class Accelerometer extends Component<IProps, IState> {
             }}
             onClick={() => this.setState({ file: path.join(MODELS_PATH, 'rover_preview.glb') })}
           >
-            <div 
-              style={{cursor: 'pointer', float:'right', fontWeight:'bolder', color:'green'}}
+            <div
+              style={{ cursor: 'pointer', float: 'right', fontWeight: 'bolder', color: 'green' }}
               onClick={(event) => {
                 event.stopPropagation();
                 this.showUpdate = false;
                 this.forceUpdate();
-              }}>X</div>
+              }}
+            >
+              X
+            </div>
             <span>Hey! 3D Rover got an upgrade! 👀</span>
             <br />
             <span>
