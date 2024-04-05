@@ -8,10 +8,9 @@ import Cameras from '../../Core/components/Cameras';
 import ControlScheme, { controllerInputs } from '../../Core/components/ControlScheme';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
 import Reflectance from './components/Reflectance';
-import EncoderPositions from './components/EncoderPositions';
-import OverrideSwitches from './components/OverrideSwitches';
 import EnvironmentalData from './components/EnvironmentalData';
 import Raman from './components/Raman';
+import ScienceGraphs from './components/ScienceGraphs';
 // import SensorGraphs from './components/SensorGraphs';
 
 const row: CSS.Properties = {
@@ -77,69 +76,6 @@ function science(): void {
       rovecomm.sendCommand('Microscope', 'ScienceActuation', microscopePosition);
     }
   }
-
-  // 2023 Science System
-
-  // if ('ScoopAxis_IncrementPosition' in controllerInputs) {
-  //   rovecomm.sendCommand('ScoopAxis_IncrementPosition', [
-  //     controllerInputs.ScoopAxis_IncrementPosition * scoopMotorMultiplier,
-  //   ]);
-  // }
-
-  // if ('SensorAxis_IncrementPosition' in controllerInputs) {
-  //   rovecomm.sendCommand('SensorAxis_IncrementPosition', [
-  //     controllerInputs.SensorAxis_IncrementPosition * scoopMotorMultiplier,
-  //   ]);
-  // }
-
-  // // If both open and close scoop are pressed, close it
-  // if ('OpenScoop' in controllerInputs && 'CloseScoop' in controllerInputs) {
-  //   if (controllerInputs.CloseScoop === 1) {
-  //     rovecomm.sendCommand('LimitSwitchOverride', 1);
-  //   } else if (controllerInputs.OpenScoop === 1) {
-  //     rovecomm.sendCommand('LimitSwitchOverride', 0);
-  //   }
-  // }
-
-  // if ('IncrementOpen' in controllerInputs && 'IncrementClose' in controllerInputs) {
-  //   // Take the positive contribution from the open trigger and the negative contribution of the close trigger
-  //   const IncrementAmt = controllerInputs.IncrementClose - controllerInputs.IncrementOpen;
-  //   if (IncrementAmt !== 0) {
-  //     rovecomm.sendCommand('Microscope', IncrementAmt * scoopIncrementMult);
-  //   }
-  // }
-
-  // if ('WaterLeft' in controllerInputs && 'WaterRight' in controllerInputs) {
-  //   if (controllerInputs.WaterLeft === 1) {
-  //     rovecomm.sendCommand('SensorAxis_OpenLoop', [90]);
-  //   } else if (controllerInputs.WaterRight === 1) {
-  //     rovecomm.sendCommand('SensorAxis_OpenLoop', [-90]);
-  //   } else {
-  //     rovecomm.sendCommand('SensorAxis_OpenLoop', [0]);
-  //   }
-  // }
-
-  // // if ('ScoopAxis_SetPosition' in controllerInputs) {
-  // //   if (controllerInputs.ScoopAxis_SetPosition === 1) {
-  // //     rovecomm.sendCommand('WatchdogOverride', microscopeMult);
-  // //   }
-  // // }
-
-  // if ('MicroscopePlus' in controllerInputs && 'MicroscopeMinus' in controllerInputs) {
-  //   if (controllerInputs.MicroscopePlus === 1) {
-  //     rovecomm.sendCommand('WatchdogOverride', microscopeMult);
-  //     console.log('on');
-  //   } else if (controllerInputs.MicroscopeMinus === 1) {
-  //     rovecomm.sendCommand('WatchdogOverride', [0]);
-  //     console.log('off');
-  //   }
-  // }
-
-  // if ('DropSample' in controllerInputs) {
-  //   if (controllerInputs.DropSample === 1) {
-  //     rovecomm.sendCommand('LimitSwitchOverride', 2);
-  //   }
-  // }
 }
 
 interface IProps {}
@@ -186,23 +122,30 @@ class Science extends Component<IProps, IState> {
         </div>
         <div style={{ ...row }}>
           {/* <div style={{ ...column, marginRight: '2.5px', width: '50%' }}><Heater /></div> */}
-          <div style={{ ...column, marginRight: '2.5px', width: '100%' }}>
-            <ControlScheme configs={['Science']} />
-          </div>
+          <div style={{ ...column, marginRight: '2.5px', width: '100%' }}></div>
         </div>
         <div style={{ ...row }}>
           <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>
-            <EncoderPositions style={{ width: '80%', marginRight: '2.5px', marginLeft: '2.5px' }} />
+            {/* <EncoderPositions style={{ width: '80%', marginRight: '2.5px', marginLeft: '2.5px' }} /> */}
+            <Cameras defaultCamera={8} />
             {/* <Cameras defaultCamera={8} /> */}
           </div>
           <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>
-            <OverrideSwitches style={{ width: '100%' }} />
+            {/* <OverrideSwitches style={{ width: '100%' }} /> */}
+            <Cameras defaultCamera={8} />
           </div>
         </div>
-        <div style={{ ...row }}>
-          <div style={{ ...column, marginRight: '2.5px', width: '100%' }}>{/* <ClosedLoopControls /> */}</div>
+        <div style={{ ...column }}>
+          <ControlScheme configs={['Science']} />
         </div>
-        <Cameras defaultCamera={7} />
+        <div style={{ ...row }}>
+          <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>
+            <ScienceGraphs />
+          </div>
+          <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>
+            <ScienceGraphs />
+          </div>
+        </div>
       </div>
     );
   }

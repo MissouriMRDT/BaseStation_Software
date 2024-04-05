@@ -120,7 +120,6 @@ interface IProps {
   style?: CSS.Properties;
 }
 
-const LEDNames = ['400nm', '465nm', '522nm', '530nm'];
 const minWavelength = 340;
 const maxWavelength = 850;
 
@@ -148,18 +147,6 @@ class Reflectance extends Component<IProps, IState> {
   static defaultProps = {
     style: {},
   };
-
-  static buildLedCommand(LED: boolean[]): number {
-    let bitmask = '';
-    bitmask += LED[3] ? '1' : '0';
-    bitmask += LED[2] ? '1' : '0';
-    bitmask += LED[1] ? '1' : '0';
-    bitmask += LED[0] ? '1' : '0';
-    console.log(bitmask);
-    const num = parseInt(bitmask, 2);
-    console.log(num);
-    return num;
-  }
 
   constructor(props: IProps) {
     super(props);
@@ -269,17 +256,6 @@ class Reflectance extends Component<IProps, IState> {
     });
   }
 
-  toggleLed(index: number): void {
-    if (this.state.enableLEDToggle) {
-      const { LedStatus } = this.state;
-      LedStatus[index] = !LedStatus[index];
-      this.setState({
-        LedStatus,
-      });
-      rovecomm.sendCommand('EnableLEDs', 'ReflectanceSpectrometer', Reflectance.buildLedCommand(LedStatus));
-    }
-  }
-
   /*
   exportData(): void {
     // ISO string will be fromatted YYYY-MM-DDTHH:MM:SS:sssZ
@@ -362,58 +338,20 @@ class Reflectance extends Component<IProps, IState> {
               {this.crosshair()}
             </XYPlot>
             <div style={row}>
-              <div style={column}>
-                {this.state.LedStatus.map((value, index) => {
-                  return (
-                    <label key={index} htmlFor="LedToggle">
-                      <input
-                        type="checkbox"
-                        id="LedToggle"
-                        name="LedToggle"
-                        checked={value}
-                        onChange={() => this.toggleLed(index)}
-                      />
-                      {LEDNames[index]}
-                    </label>
-                  );
-                })}
-                <button onClick={() => this.setState((prevState) => ({ enableLEDToggle: !prevState.enableLEDToggle }))}>
-                  LED Toggle: {this.state.enableLEDToggle ? 'on' : 'off'}
-                </button>
+              <div style={{ ...row, justifyContent: 'center' }}>
+                <div style={{ ...column, margin: '0 100px 0 100px' }}>
+                  <button
+                    onClick={() => {
+                      this.requestData();
+                    }}
+                  >
+                    Request Reading
+                  </button>
+                </div>
+                <div style={{ ...column, margin: '0 100px 0 100px' }}>
+                  <button onClick={saveImage}>Export Graph</button>
+                </div>
               </div>
-              <div style={{ ...row, justifyContent: 'end' }}>
-                <button
-                  onClick={() => {
-                    this.requestData();
-                  }}
-                >
-                  Request Reading
-                </button>
-              </div>
-              {/* <div style={column}>
-                <p>Relative Mins</p>
-                {this.state.relExtrema.mins.map((val, ndx) => {
-                  return (
-                    <p key={ndx} style={{ margin: '1px' }}>
-                      x={val.x.toFixed(3)}, intensity={val.intensity.toFixed(3)}
-                    </p>
-                  );
-                })}
-              </div>
-              <div style={column}>
-                <p>Relative Maxs</p>
-                {this.state.relExtrema.maxs.map((val, ndx) => {
-                  return (
-                    <p key={ndx} style={{ margin: '1px' }}>
-                      x={val.x.toFixed(3)}, intensity={val.intensity.toFixed(3)}
-                    </p>
-                  );
-                })}
-              </div> */}
-            </div>
-            <div>
-              <p>Max Intensity: {this.state.maxIntensity}</p>
-              <button onClick={saveImage}>Export Graph</button>
             </div>
           </div>
         </div>
