@@ -90,6 +90,12 @@ class Map extends Component<IProps, IState> {
     });
   }
 
+  droneIMUData(data: any): void {
+    this.setState({
+      heading: data[1],
+    });
+  }
+
   render(): JSX.Element {
     const position: LatLngTuple = [this.state.centerLat, this.state.centerLon];
     return (
