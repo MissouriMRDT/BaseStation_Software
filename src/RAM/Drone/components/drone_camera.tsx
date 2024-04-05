@@ -18,17 +18,17 @@ const container: CSS.Properties = {
   height: '100%',
 };
 
-const button: CSS.Properties = {
-  fontFamily: 'arial',
-  flexGrow: 1,
-  margin: '5px',
-  fontSize: '14px',
-  lineHeight: '24px',
-  borderWidth: '2px',
-  height: '40px',
-  marginTop: '10px',
-  marginBottom: '10px',
-};
+// const button: CSS.Properties = {
+//   fontFamily: 'arial',
+//   flexGrow: 1,
+//   margin: '5px',
+//   fontSize: '14px',
+//   lineHeight: '24px',
+//   borderWidth: '2px',
+//   height: '40px',
+//   marginTop: '10px',
+//   marginBottom: '10px',
+// };
 
 const label: CSS.Properties = {
   position: 'relative',
@@ -76,10 +76,10 @@ class DroneCamera extends Component<IProps, IState> {
     };
   }
 
-  refresh(): void {
-    const curCam = this.state.currentCamera;
-    this.setState({ currentCamera: 0 }, () => this.setState({ currentCamera: curCam }));
-  }
+  // refresh(): void {
+  //   const curCam = this.state.currentCamera;
+  //   this.setState({ currentCamera: 0 }, () => this.setState({ currentCamera: curCam }));
+  // }
 
   componentDidMount(): void {
     this.setState({ currentCamera: 1 });
@@ -99,9 +99,9 @@ class DroneCamera extends Component<IProps, IState> {
               />
             </div>
             <div style={row}>
-              <button type="button" style={button} onClick={this.refresh}>
+              {/* <button type="button" style={button} onClick={this.refresh}>
                 Refresh
-              </button>
+              </button> */}
             </div>
           </div>
         </div>

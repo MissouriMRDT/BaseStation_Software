@@ -36,12 +36,6 @@ const row: CSS.Properties = {
   marginTop: '5px',
   width: '100%',
 };
-const column: CSS.Properties = {
-  display: 'flex',
-  flexDirection: 'column',
-  flexGrow: 1,
-  justifyContent: 'space-around',
-};
 const componentBox: CSS.Properties = {
   margin: '3px 0 3px 0',
 };

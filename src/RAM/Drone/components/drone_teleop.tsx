@@ -51,15 +51,15 @@ class DroneTeleop extends Component<IProps, IState> {
   };
 
   static teleop(): void {
-    rovecomm.sendCommand('droneStateDisplay', RovecommManifest.Multimedia.Enums.DISPLAYSTATE.Teleop);
+    rovecomm.sendCommand('droneStateDisplay', 'Drone', RovecommManifest.Multimedia.Enums.DISPLAYSTATE.Teleop);
   }
 
   static autonomy(): void {
-    rovecomm.sendCommand('droneStateDisplay', RovecommManifest.Multimedia.Enums.DISPLAYSTATE.Autonomy);
+    rovecomm.sendCommand('droneStateDisplay', 'Drone', RovecommManifest.Multimedia.Enums.DISPLAYSTATE.Autonomy);
   }
 
   static reachedGoal(): void {
-    rovecomm.sendCommand('droneStateDisplay', RovecommManifest.Mulitmedia.Enums.DISPLAYSTATE.reached_Goal);
+    rovecomm.sendCommand('droneStateDisplay', 'Drone', RovecommManifest.Mulitmedia.Enums.DISPLAYSTATE.reached_Goal);
   }
 
   constructor(props: IProps) {
@@ -71,18 +71,18 @@ class DroneTeleop extends Component<IProps, IState> {
 
   setZedAngle(angle: number): void {
     this.setState({ zedAngle: angle });
-    rovecomm.sendCommand('droneZedAngle', angle);
+    rovecomm.sendCommand('droneZedAngle', 'Drone', angle);
   }
 
   incZedAngle(prevState: IState, amount: number): void {
     const angle = prevState.zedAngle + amount <= 45.0 ? prevState.zedAngle + amount : 45.0;
-    rovecomm.sendCommand('droneZedAngle', angle);
+    rovecomm.sendCommand('droneZedAngle', 'Drone', angle);
     this.setZedAngle(angle);
   }
 
   decZedAngle(prevState: IState, amount: number): void {
     const angle = prevState.zedAngle - amount >= 0 ? prevState.zedAngle - amount : 0.0;
-    rovecomm.sendCommand('droneZedAngle', angle);
+    rovecomm.sendCommand('droneZedAngle', 'Drone', angle);
     this.setZedAngle(angle);
   }
 

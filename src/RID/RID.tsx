@@ -192,7 +192,7 @@ class RoverImageryDisplay extends Component<IProps, IState> {
             style={submod}
             storedWaypoints={prevState.storedWaypoints}
             currentCoords={prevState.currentCoords}
-            droneCoords={prevState.droneCoords}
+            // droneCoords={prevState.droneCoords}
             store={(name: string, coords: any) => this.props.store(name, coords)}
             name="RIDmap"
           />

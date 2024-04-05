@@ -39,14 +39,14 @@ const button: CSS.Properties = {
 };
 
 function startAutonomy(): void {
-  rovecomm.sendCommand('droneStartAutonomy', [1]);
+  rovecomm.sendCommand('droneStartAutonomy', 'Drone', [1]);
 }
 function stopAutonomy(): void {
-  rovecomm.sendCommand('droneDisableAutonomy', [1]);
+  rovecomm.sendCommand('droneDisableAutonomy', 'Drone', [1]);
 }
 function clearWaypoints(): void {
   rovecomm.emit('droneAutonomyActivity', "-------- Clearing Autonomy's waypoints --------");
-  rovecomm.sendCommand('droneClearWaypoints', [1]);
+  rovecomm.sendCommand('droneClearWaypoints', 'Drone', [1]);
 }
 
 interface IProps {
@@ -76,7 +76,7 @@ class DroneControls extends Component<IProps, IState> {
          Lat: ${this.props.selectedWaypoint.latitude.toFixed(7)}
          Lon: ${this.props.selectedWaypoint.longitude.toFixed(7)})`
     );
-    rovecomm.sendCommand('droneAddPositionLeg', [
+    rovecomm.sendCommand('droneAddPositionLeg', 'Drone', [
       this.props.selectedWaypoint.latitude,
       this.props.selectedWaypoint.longitude,
     ]);
@@ -88,7 +88,7 @@ class DroneControls extends Component<IProps, IState> {
       `Sending Marker (Lat: ${this.props.selectedWaypoint.latitude.toFixed(7)}
          Lon: ${this.props.selectedWaypoint.longitude.toFixed(7)})`
     );
-    rovecomm.sendCommand('droneAddMarkerLeg', [
+    rovecomm.sendCommand('droneAddMarkerLeg', 'Drone', [
       this.props.selectedWaypoint.latitude,
       this.props.selectedWaypoint.longitude,
     ]);
@@ -100,7 +100,7 @@ class DroneControls extends Component<IProps, IState> {
       `Sending Gate (Lat: ${this.props.selectedWaypoint.latitude.toFixed(7)}
          Lon: ${this.props.selectedWaypoint.longitude.toFixed(7)})`
     );
-    rovecomm.sendCommand('droneAddGateLeg', [
+    rovecomm.sendCommand('droneAddGateLeg', 'Drone', [
       this.props.selectedWaypoint.latitude,
       this.props.selectedWaypoint.longitude,
     ]);
