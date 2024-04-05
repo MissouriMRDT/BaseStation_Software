@@ -11,6 +11,7 @@ import Reflectance from './components/Reflectance';
 import EnvironmentalData from './components/EnvironmentalData';
 import Raman from './components/Raman';
 import ScienceGraphs from './components/ScienceGraphs';
+import FTIR from './components/FTIR';
 // import SensorGraphs from './components/SensorGraphs';
 
 const row: CSS.Properties = {
@@ -104,11 +105,8 @@ class Science extends Component<IProps, IState> {
       <div style={column}>
         {selectedTab === 'environmental' && <EnvironmentalData />}
         {selectedTab === 'raman' && <Raman />}
-        {selectedTab === 'reflectance' && (
-          <div>
-            <Reflectance />
-          </div>
-        )}
+        {selectedTab === 'reflectance' && <Reflectance />}
+        {selectedTab === 'FTIR' && <FTIR />}
         <div style={{ ...row, justifyContent: 'center', marginTop: '10px' }}>
           <button style={button} onClick={() => this.handleTabChange('environmental')}>
             Environmental Data
@@ -119,19 +117,18 @@ class Science extends Component<IProps, IState> {
           <button style={button} onClick={() => this.handleTabChange('reflectance')}>
             Reflectance
           </button>
+          <button style={button} onClick={() => this.handleTabChange('FTIR')}>
+            FTIR
+          </button>
         </div>
         <div style={{ ...row }}>
-          {/* <div style={{ ...column, marginRight: '2.5px', width: '50%' }}><Heater /></div> */}
           <div style={{ ...column, marginRight: '2.5px', width: '100%' }}></div>
         </div>
         <div style={{ ...row }}>
           <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>
-            {/* <EncoderPositions style={{ width: '80%', marginRight: '2.5px', marginLeft: '2.5px' }} /> */}
             <Cameras defaultCamera={8} />
-            {/* <Cameras defaultCamera={8} /> */}
           </div>
           <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>
-            {/* <OverrideSwitches style={{ width: '100%' }} /> */}
             <Cameras defaultCamera={8} />
           </div>
         </div>
