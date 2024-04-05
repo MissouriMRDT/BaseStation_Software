@@ -272,21 +272,14 @@ class FTIR extends Component<IProps, IState> {
               <YAxis />
               {this.crosshair()}
             </XYPlot>
-            <div style={row}>
-              <div style={column}>
-                <button onClick={() => this.setLED(!this.state.enableLED)}>
-                  LED: {this.state.enableLED ? 'on' : 'off'}
-                </button>
-              </div>
-              <div style={{ ...row, justifyContent: 'end' }}>
-                <button
-                  onClick={() => {
-                    this.requestData(); //TODO make a counter variable or a text box to tweak the number of aquisitions
-                  }}
-                >
-                  Request Reading
-                </button>
-              </div>
+            <div style={{ ...row, justifyContent: 'end' }}>
+              <button
+                onClick={() => {
+                  this.requestData(); //TODO make a counter variable or a text box to tweak the number of aquisitions
+                }}
+              >
+                Request Reading
+              </button>
             </div>
           </div>
         </div>
