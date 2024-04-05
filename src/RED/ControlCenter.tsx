@@ -18,7 +18,6 @@ import Gimbal from './components/Gimbal';
 import ThreeDRover from '../Core/components/ThreeDRover';
 // import SignalStack from './components/SignalStack';
 
-
 const row: CSS.Properties = {
   display: 'flex',
   flexDirection: 'row',

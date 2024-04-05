@@ -3,10 +3,7 @@ import CSS from 'csstype';
 
 import no_cam_img from '../../../../assets/no_cam_img.png';
 
-const CAM_IPS = [
-    no_cam_img,
-    'https://x.x.x.x:xxxx/steam.mjpg',
-];
+const CAM_IPS = [no_cam_img, 'https://x.x.x.x:xxxx/steam.mjpg'];
 
 const container: CSS.Properties = {
   display: 'flex',
@@ -30,7 +27,7 @@ const button: CSS.Properties = {
   borderWidth: '2px',
   height: '40px',
   marginTop: '10px',
-  marginBottom: '10px'
+  marginBottom: '10px',
 };
 
 const label: CSS.Properties = {
@@ -60,7 +57,7 @@ const cam: CSS.Properties = {
 };
 
 interface IProps {
-    style?: CSS.Properties;
+  style?: CSS.Properties;
 }
 
 interface IState {
@@ -68,47 +65,48 @@ interface IState {
 }
 
 class DroneCamera extends Component<IProps, IState> {
-    
-    static defaultProps = {
-        style: {},
-    }
+  static defaultProps = {
+    style: {},
+  };
 
-    constructor(props: IProps) {
-        super(props);
-        this.state = {
-          currentCamera: 0,
-        };
-    }
+  constructor(props: IProps) {
+    super(props);
+    this.state = {
+      currentCamera: 0,
+    };
+  }
 
-    refresh(): void {
-        const curCam = this.state.currentCamera;
-        this.setState({ currentCamera: 0 }, () => this.setState({ currentCamera: curCam }));
-    }
+  refresh(): void {
+    const curCam = this.state.currentCamera;
+    this.setState({ currentCamera: 0 }, () => this.setState({ currentCamera: curCam }));
+  }
 
-    componentDidMount(): void {
-      this.setState({ currentCamera: 1 });
-    }
+  componentDidMount(): void {
+    this.setState({ currentCamera: 1 });
+  }
 
   render(): JSX.Element {
     return (
       <div style={{ width: '100%' }}>
         <div style={label}>Drone Camera</div>
-          <div style={container}>
-            <div style={{ ...column, }}>
-              <div style={row}>
-                <img
-                  src={CAM_IPS[this.state.currentCamera]} 
-                  alt={'Drone Camera'} 
-                  style={{ ...cam, /*...this.state.style*/ }} 
-                />
-              </div>
-              <div style={row}>
-                <button type='button' style={button} onClick={this.refresh}>Refresh</button>
-              </div>
+        <div style={container}>
+          <div style={{ ...column }}>
+            <div style={row}>
+              <img
+                src={CAM_IPS[this.state.currentCamera]}
+                alt={'Drone Camera'}
+                style={{ ...cam /*...this.state.style*/ }}
+              />
+            </div>
+            <div style={row}>
+              <button type="button" style={button} onClick={this.refresh}>
+                Refresh
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 

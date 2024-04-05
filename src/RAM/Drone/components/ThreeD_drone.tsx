@@ -105,17 +105,17 @@ class ThreeDdrone extends Component<IProps, IState> {
       <div style={this.props.style}>
         <div style={label}>3D Drone</div>
         <div style={container} id={this.state.id}>
-        <STLViewer
-          model={MODEL}
-          modelColor="#B92C2C"
-          backgroundColor="#FFFFFF"
-          rotate={false}
-          rotation={[this.state.pitch, this.state.yaw, this.state.roll]}
-          orbitControls
-          width={this.state.width}
-          height={this.state.height}
-          zoom={this.state.zoom}
-        />
+          <STLViewer
+            model={MODEL}
+            modelColor="#B92C2C"
+            backgroundColor="#FFFFFF"
+            rotate={false}
+            rotation={[this.state.pitch, this.state.yaw, this.state.roll]}
+            orbitControls
+            width={this.state.width}
+            height={this.state.height}
+            zoom={this.state.zoom}
+          />
         </div>
       </div>
     );

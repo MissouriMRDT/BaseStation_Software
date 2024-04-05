@@ -42,14 +42,14 @@ class Drone extends Component<IProps, IState> {
       <div style={column}>
         <div style={row}>
           {/* <DroneMap style={{ minHeight: '${this.state.fourthHeight / 2}px' }}/> */}
-          <ThreeDdrone/>
+          <ThreeDdrone />
         </div>
         <div style={row}>
-          <DroneLocation/>
-          <DroneBattery/>
+          <DroneLocation />
+          <DroneBattery />
         </div>
         <div /* style={{ ...row, width: '100%' }} */>
-          <DroneCamera/>
+          <DroneCamera />
         </div>
       </div>
     );
