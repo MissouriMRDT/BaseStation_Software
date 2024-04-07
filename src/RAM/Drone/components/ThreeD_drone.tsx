@@ -59,10 +59,10 @@ class ThreeDdrone extends Component<IProps, IState> {
       pitch: 0,
       yaw: 0,
       roll: 0,
-      zoom: 15,
+      zoom: 20,
       id: `3Ddrone_${ThreeDdrone.id}`,
       width: 300,
-      height: 150,
+      height: 300,
     };
 
     rovecomm.on('droneOrientation', (data: number[]) => this.droneData(data));
