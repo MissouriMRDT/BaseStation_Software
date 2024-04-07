@@ -28,7 +28,9 @@ interface IProps {}
 
 interface IState {
   //maxBatVolt: number;
-  voltage: number;
+  speed: number;
+  Altitude: number;
+  SignalStrength: number;
   //level: number;
   //temperature: number;
 }
