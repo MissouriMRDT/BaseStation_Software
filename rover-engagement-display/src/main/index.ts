@@ -3,16 +3,9 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import path from 'path'
-
-const manifestPath =
-  'rover_engagement_display/src/main/Core/RoveComm-TypeScript/manifest/manifest.json'
-process.env.ROVECOMM = path.join(__dirname, '../../../' + manifestPath)
-
 import { rovecomm } from './Core/RoveComm-TypeScript/RoveProtocol/Rovecomm'
 
 function createWindow(): void {
-
-
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 900,
