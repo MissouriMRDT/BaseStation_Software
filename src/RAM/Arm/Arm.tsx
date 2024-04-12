@@ -157,7 +157,7 @@ class Arm extends Component<IProps, IState> {
         <div style={row}>
           <Angular style={{ flex: 1, marginRight: '2.5px' }} />
           <div style={{ ...column, flex: 1, marginLeft: '2.5px' }}>
-            <IK />
+            {/* <IK /> */}
             <ControlFeatures gripperCallBack={this.setGripper} style={{ height: '100%' }} />
           </div>
         </div>
@@ -166,9 +166,8 @@ class Arm extends Component<IProps, IState> {
           <Cameras defaultCamera={6} style={{ width: '50%', marginLeft: '2.5px' }} />
         </div>
         <div style={row}>
-          <ControlScheme configs={['Arm']} style={{ width: '50%', marginRight: '2.5px' }} />
+          <ControlScheme configs={['Arm']} style={{ width: '100%', marginRight: '2.5px' }} />
         </div>
-        <Cameras defaultCamera={7} />
       </div>
     );
   }

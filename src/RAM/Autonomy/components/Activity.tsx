@@ -49,19 +49,19 @@ class Activity extends Component<IProps, IState> {
     this.ReachedMarker = this.ReachedMarker.bind(this);
     this.Log = this.Log.bind(this);
 
-    rovecomm.on('CurrentLog', (data: any) => this.Log(data));
+    rovecomm.on('CurrentLog', (data: any[]) => this.Log(data));
     rovecomm.on('ReachedMarker', this.ReachedMarker);
   }
 
-  Log(data: string): void {
-    this.setState((prevState) => ({
-      ActivityText: `${prevState.ActivityText}${new Date().toLocaleTimeString()}: ${data} \n`,
+  Log(data: string[]): void {
+    this.setState(() => ({
+      ActivityText: data + '\n',
     }));
   }
 
   ReachedMarker(): void {
     this.setState({ backgroundColor: 'green' });
-    this.Log('Reached waypoint!');
+    this.Log(['Reached waypoint!']);
     const reachInterval = setInterval(() => {
       this.setState((prevState) => ({ backgroundColor: prevState.backgroundColor === 'green' ? 'white' : 'green' }));
     }, 250);

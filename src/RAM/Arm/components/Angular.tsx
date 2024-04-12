@@ -91,12 +91,12 @@ const filepath = path.join(__dirname, '../assets/AngularPresets.json');
 
 interface Joint {
   [key: string]: string;
-  J1: string;
-  J2: string;
-  J3: string;
-  J4: string;
-  J5: string;
-  J6: string;
+  X: string;
+  Y: string;
+  Z: string;
+  Pitch: string;
+  Roll1: string;
+  Roll2: string;
 }
 
 interface IProps {
@@ -120,12 +120,12 @@ class Angular extends Component<IProps, IState> {
     super(props);
     this.state = {
       jointValues: {
-        J1: '',
-        J2: '',
-        J3: '',
-        J4: '',
-        J5: '',
-        J6: '',
+        X: '',
+        Y: '',
+        Z: '',
+        Pitch: '',
+        Roll1: '',
+        Roll2: '',
       },
       storedPositions: {},
       selectedPosition: '',
@@ -173,8 +173,8 @@ class Angular extends Component<IProps, IState> {
 
   updatePosition(data: any): void {
     /* Function to update displayed jointValues when a new position is recieved */
-    const [J1, J2, J3, J4, J5, J6] = data;
-    const jointValues = { J1, J2, J3, J4, J5, J6 };
+    const [X, Y, Z, Pitch, Roll1, Roll2] = data;
+    const jointValues = { X, Y, Z, Pitch, Roll1, Roll2 };
     this.setState({ jointValues });
   }
 
