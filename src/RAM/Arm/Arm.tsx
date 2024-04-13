@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
-import IK from './components/IK';
 import Angular from './components/Angular';
 import Cameras from '../../Core/components/Cameras';
 import ControlScheme, { controllerInputs } from '../../Core/components/ControlScheme';
