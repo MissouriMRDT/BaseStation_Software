@@ -3,6 +3,7 @@ import CSS from 'csstype';
 import fs from 'fs';
 import path from 'path';
 import { rovecomm } from '../../../Core/RoveProtocol/Rovecomm';
+import gripperState from './ControlFeatures';
 
 const h1Style: CSS.Properties = {
   fontFamily: 'arial',
@@ -77,17 +78,17 @@ const selector: CSS.Properties = {
 
 const filepath = path.join(__dirname, '../assets/AngularPresets.json');
 
-// function getPosition(): void {
-//   // Unlike most telemetry, arm joint positions are only sent when requested
-//   rovecomm.sendCommand('RequestPositions', [1]);
-// }
+function getPosition(): void {
+  // Unlike most telemetry, arm joint positions are only sent when requested
+  rovecomm.sendCommand('RequestPositions', 'Arm', [1]);
+}
 
-// function toggleTelem(): void {
-//   // Some arm systems allow toggling an incoming stream of arm telemetry
-//   // When enabled, entering text into the textfields to set position will
-//   // become practically impossible
-//   rovecomm.sendCommand('RequestCoordinates', [1]);
-// }
+function toggleTelem(): void {
+  // Some arm systems allow toggling an incoming stream of arm telemetry
+  // When enabled, entering text into the textfields to set position will
+  // become practically impossible
+  rovecomm.sendCommand('RequestCoordinates', 'Arm', [1]);
+}
 
 interface Joint {
   [key: string]: string;
@@ -95,8 +96,7 @@ interface Joint {
   Y: string;
   Z: string;
   Pitch: string;
-  Roll1: string;
-  Roll2: string;
+  Roll: string;
 }
 
 interface IProps {
@@ -124,8 +124,7 @@ class Angular extends Component<IProps, IState> {
         Y: '',
         Z: '',
         Pitch: '',
-        Roll1: '',
-        Roll2: '',
+        Roll: '',
       },
       storedPositions: {},
       selectedPosition: '',
@@ -162,19 +161,45 @@ class Angular extends Component<IProps, IState> {
      * convert them from strings to floats (or empty string to 0)
      * and send the proper rovecomm packet
      */
-    rovecomm.sendCommand(
-      'SetPosition',
-      'Arm',
-      Object.values(this.state.jointValues).map((x: string) => {
-        return x ? parseFloat(x) : 0;
-      })
-    );
+    if (!gripperState) {
+      const data = {
+        X: this.state.jointValues.X,
+        Y: this.state.jointValues.Y,
+        Z: this.state.jointValues.Z,
+        Pitch: this.state.jointValues.Pitch,
+        Roll1: this.state.jointValues.Roll,
+        Roll2: '',
+      };
+      rovecomm.sendCommand(
+        'SetPosition',
+        'Arm',
+        Object.values(data).map((x: string) => {
+          return x ? parseFloat(x) : 0;
+        })
+      );
+    } else {
+      const data = {
+        X: this.state.jointValues.X,
+        Y: this.state.jointValues.Y,
+        Z: this.state.jointValues.Z,
+        Pitch: this.state.jointValues.Pitch,
+        Roll1: '',
+        Roll2: this.state.jointValues.Roll,
+      };
+      rovecomm.sendCommand(
+        'SetPosition',
+        'Arm',
+        Object.values(data).map((x: string) => {
+          return x ? parseFloat(x) : 0;
+        })
+      );
+    }
   }
 
   updatePosition(data: any): void {
     /* Function to update displayed jointValues when a new position is recieved */
-    const [X, Y, Z, Pitch, Roll1, Roll2] = data;
-    const jointValues = { X, Y, Z, Pitch, Roll1, Roll2 };
+    const [X, Y, Z, Pitch, Roll] = data;
+    const jointValues = { X, Y, Z, Pitch, Roll };
     this.setState({ jointValues });
   }
 
@@ -290,7 +315,7 @@ class Angular extends Component<IProps, IState> {
               );
             })}
           </div>
-          {/* <div style={row}>
+          <div style={row}>
             <button type="button" style={buttons} onClick={getPosition}>
               Get Position
             </button>
@@ -300,7 +325,7 @@ class Angular extends Component<IProps, IState> {
             <button type="button" style={buttons} onClick={toggleTelem}>
               Toggle Auto Telem
             </button>
-          </div> */}
+          </div>
           <select
             value={this.state.selectedPosition}
             onChange={(e) => this.setState({ selectedPosition: e.target.value })}

@@ -22,6 +22,7 @@ interface IProps {}
 
 interface IState {
   gripperToggle: boolean;
+  gripperCam: number;
 }
 
 let MultiplierX = 1000;
@@ -39,6 +40,7 @@ class Arm extends Component<IProps, IState> {
     super(props);
     this.state = {
       gripperToggle: false,
+      gripperCam: 7,
     };
     this.setGripper = this.setGripper.bind(this);
     this.arm = this.arm.bind(this);
@@ -47,6 +49,13 @@ class Arm extends Component<IProps, IState> {
 
   setGripper() {
     this.setState((prevState) => ({ gripperToggle: !prevState.gripperToggle }));
+    if (this.state.gripperToggle) {
+      this.setState({ gripperCam: 7 });
+      console.log(this.state.gripperCam);
+    } else {
+      this.setState({ gripperCam: 8 });
+      console.log(this.state.gripperCam);
+    }
   }
 
   arm(): void {
@@ -77,13 +86,24 @@ class Arm extends Component<IProps, IState> {
       moveArm = true;
     }
 
-    if ('Roll1Plus' in controllerInputs && 'Roll1Minus' in controllerInputs) {
-      R1 = (controllerInputs.Roll1Plus - controllerInputs.Roll1Minus) * MultiplierR1;
-      moveArm = true;
+    if ('GripperToggle' in controllerInputs) {
+      if (controllerInputs.GripperToggle === 1) {
+        this.setGripper();
+      }
     }
-    if ('Roll2Plus' in controllerInputs && 'Roll2Minus' in controllerInputs) {
-      R2 = (controllerInputs.Roll2Plus - controllerInputs.Roll2Minus) * MultiplierR2;
-      moveArm = true;
+
+    if (!this.state.gripperToggle) {
+      if ('RollPlus' in controllerInputs && 'RollMinus' in controllerInputs) {
+        R1 = (controllerInputs.RollPlus - controllerInputs.RollMinus) * MultiplierR1;
+        R2 = 0;
+        moveArm = true;
+      }
+    } else {
+      if ('RollPlus' in controllerInputs && 'RollMinus' in controllerInputs) {
+        R2 = (controllerInputs.RollPlus - controllerInputs.RollMinus) * MultiplierR2;
+        R1 = 0;
+        moveArm = true;
+      }
     }
 
     if ('XAxis' in controllerInputs) {
@@ -121,17 +141,30 @@ class Arm extends Component<IProps, IState> {
       rovecomm.sendCommand('OpenLoop', 'Arm', armValues);
     }
 
-    if ('GripperOpen' in controllerInputs && 'GripperClose' in controllerInputs) {
-      let Gripper1 = 0;
-      if (controllerInputs.GripperOpen === 1) {
-        Gripper1 = 1 * MultiplierGripper;
-      } else if (controllerInputs.GripperClose === 1) {
-        Gripper1 = -1 * MultiplierGripper;
-      } else {
-        Gripper1 = 0;
+    if (!this.state.gripperToggle) {
+      if ('GripperOpen' in controllerInputs && 'GripperClose' in controllerInputs) {
+        let Gripper1 = 0;
+        if (controllerInputs.GripperOpen === 1) {
+          Gripper1 = 1 * MultiplierGripper;
+        } else if (controllerInputs.GripperClose === 1) {
+          Gripper1 = -1 * MultiplierGripper;
+        } else {
+          Gripper1 = 0;
+        }
+        rovecomm.sendCommand('Gripper', 'Arm', Gripper1);
       }
-      console.log('Moving Gripper 1');
-      rovecomm.sendCommand('Gripper', 'Arm', Gripper1);
+    } else {
+      if ('GripperOpen' in controllerInputs && 'GripperClose' in controllerInputs) {
+        let Gripper2 = 0;
+        if (controllerInputs.GripperOpen === 1) {
+          Gripper2 = 1 * MultiplierGripper;
+        } else if (controllerInputs.GripperClose === 1) {
+          Gripper2 = -1 * MultiplierGripper;
+        } else {
+          Gripper2 = 0;
+        }
+        rovecomm.sendCommand('Gripper2', 'Arm', Gripper2);
+      }
     }
 
     if ('SolenoidOn' in controllerInputs) {
@@ -157,7 +190,11 @@ class Arm extends Component<IProps, IState> {
           <Angular style={{ flex: 1, marginRight: '2.5px' }} />
           <div style={{ ...column, flex: 1, marginLeft: '2.5px' }}>
             {/* <IK /> */}
-            <ControlFeatures gripperCallBack={this.setGripper} style={{ height: '100%' }} />
+            <ControlFeatures
+              gripperCallBack={this.setGripper}
+              gripperToggle={this.state.gripperToggle}
+              style={{ height: '100%' }}
+            />
           </div>
         </div>
         <div style={row}>
@@ -167,6 +204,7 @@ class Arm extends Component<IProps, IState> {
         <div style={row}>
           <ControlScheme configs={['Arm']} style={{ width: '100%', marginRight: '2.5px' }} />
         </div>
+        <Cameras defaultCamera={7} cameraToggle={true} gripperCam={this.state.gripperCam} />
       </div>
     );
   }

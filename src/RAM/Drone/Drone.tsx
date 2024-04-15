@@ -7,7 +7,7 @@ import DroneData from './components/drone_data';
 // import DroneMap from './components/drone_map';
 import ThreeDdrone from './components/ThreeD_drone';
 import Cameras from '../../Core/components/Cameras';
-import Map from '../../RED/components/Map';
+// import Map from '../../RED/components/Map';
 
 const row: CSS.Properties = {
   display: 'flex',
@@ -62,13 +62,13 @@ class Drone extends Component<IProps, IState> {
             <ThreeDdrone />
           </div>
           <div style={{ ...column, width: '50%' }}>
-            <Map
+            {/* <Map
               style={{ minHeight: `${this.state.fourthHeight / 1.25}px` }}
               storedWaypoints={this.state.storedWaypoints}
               currentCoords={this.state.currentCoords}
               store={(name: string, coords: any) => this.waypointsInstance.store(name, coords)}
               name="controlCenterMap"
-            />
+            /> */}
           </div>
         </div>
         <div style={row}>
