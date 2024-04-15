@@ -18,7 +18,7 @@ const container: CSS.Properties = {
   borderBottomWidth: '2px',
   borderStyle: 'solid',
   gridRowStart: '2 & {}',
-  grid: 'repeat(4, 36px) / auto-flow dense',
+  grid: 'repeat(5, auto) / auto-flow dense',
   padding: '5px',
   height: 'calc(100% - 47px)',
 };
@@ -49,6 +49,8 @@ interface IState {
   horizontalAccur: number;
   verticalAccur: number;
   headingAccur: number;
+  fixType: number;
+  isDiff: number;
   // distance: number;
   // quality: number;
 }
@@ -70,6 +72,8 @@ class GPS extends Component<IProps, IState> {
       horizontalAccur: 0,
       verticalAccur: 0,
       headingAccur: 0,
+      fixType: 4,
+      isDiff: 1,
       // distance: 0,
       // quality: 0,
     };
@@ -85,6 +89,8 @@ class GPS extends Component<IProps, IState> {
       horizontalAccur: data[0],
       verticalAccur: data[1],
       headingAccur: data[2],
+      fixType: data[3],
+      isDiff: data[4],
     });
   }
 
@@ -115,6 +121,15 @@ class GPS extends Component<IProps, IState> {
   }
 
   render(): JSX.Element {
+    const fixTypeTitles = [
+      'No Fix',
+      'Dead Reckoning Only',
+      '2D Fix',
+      '3D Fix',
+      'GNSS Dead Reckoning Combined',
+      'Time Only',
+    ];
+
     return (
       <div style={this.props.style}>
         <div style={label}>GPS</div>
@@ -132,13 +147,16 @@ class GPS extends Component<IProps, IState> {
             { title: 'Pos. Acc', value: this.state.horizontalAccur.toFixed(3) },
             { title: 'Alt. Acc', value: this.state.verticalAccur.toFixed(3) },
             { title: 'Comp. Acc', value: this.state.headingAccur.toFixed(3) },
+            { title: 'Fix Type', value: fixTypeTitles[this.state.fixType] },
+            {
+              title: 'GPS',
+              value: this.state.isDiff === 1 ? 'Differential GPS' : 'GNSS',
+            },
           ].map((datum) => {
             const { title, value } = datum;
             return (
               <div key={title}>
-                <p style={h1Style}>
-                  {title}: {value}
-                </p>
+                <p style={h1Style}>{value ? `${title}: ${value}` : title} </p>
               </div>
             );
           })}
