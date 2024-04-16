@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
-
-import Hls from 'hls.js';
+import JSMpeg from '@cycjimmy/jsmpeg-player';
 
 const cameraSelectionContainer: CSS.Properties = {
   display: 'grid',
@@ -42,23 +41,25 @@ interface IState {
 class CameraControls extends Component<IProps, IState> {
   static defaultProps = {};
 
-  player: HTMLVideoElement | null = null;
-
-  hls: any;
+  src: string;
 
   sources: string[];
+
+  player: any;
 
   videoContainerRef!: HTMLDivElement | null;
 
   constructor(props: IProps) {
     super(props);
     this.state = { rotationAngle: 0, currentSource: props.startSource, width: 0 };
+
     this.sources = props.sources;
-    // props.sources[0].src = props.passedFileSource;
+    this.src = 'ws://127.0.0.1:8082/';
   }
 
   componentDidMount() {
-    this.hls = new Hls();
+    console.log('bruh momentos');
+    require('child_process').fork('src/RED/components/WebsocketRelay.js cam 8081 8082');
     this.setSource(this.state.currentSource);
     this.updateWidth();
     window.addEventListener('resize', this.updateWidth);
@@ -72,10 +73,10 @@ class CameraControls extends Component<IProps, IState> {
   }
 
   updateWidth = () => {
-    if (this.player) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      this.videoContainerRef!.style.height = `${this.player.clientWidth}px`;
-    }
+    // if (this.player) {
+    //   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    //   // this.videoContainerRef!.style.height = `${this.videoContainerRef.clientWidth}px`;
+    // }
   };
 
   rotateVideo = (angle: number) => {
@@ -90,33 +91,9 @@ class CameraControls extends Component<IProps, IState> {
   };
 
   setSource(newSource: number) {
-    const video = this.player;
-    this.hls.destroy();
-    this.hls = new Hls({
-      maxBufferLength: 1,
-      maxMaxBufferLength: 1,
-      maxBufferSize: 100, // in bytes
-      maxLiveSyncPlaybackRate: 2,
-      liveDurationInfinity: true,
-      liveSyncDurationCount: 1,
-      liveMaxLatencyDurationCount: 2,
-    });
-
     this.setState({ currentSource: newSource });
-
-    this.hls.loadSource(this.sources[newSource]);
-    this.hls.attachMedia(video);
-
-    this.hls.on(Hls.Events.MANIFEST_PARSED, () => {
-      const playPromise = video?.play();
-
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            return;
-          })
-          .catch((error) => {});
-      }
+    this.player = new JSMpeg.VideoElement(document.getElementById('video-canvas'), this.src, {
+      canvas: document.getElementById('video-canvas'),
     });
   }
 
@@ -132,28 +109,23 @@ class CameraControls extends Component<IProps, IState> {
         <div>
           <div style={videoContainerStyle} ref={(videoContainerRef) => (this.videoContainerRef = videoContainerRef)}>
             <div data-vjs-player>
-              <video
-                className="videoCanvas"
-                ref={(player) => (this.player = player)}
-                autoPlay={true}
-                style={videoStyle}
-              ></video>
+              <canvas id="video-canvas"></canvas>
             </div>
           </div>
           <div style={cameraSelectionContainer}>
             {Array.from({ length: 8 }, (_, i) => (
-            <button
-              key={i}
-              onClick={() => this.setSource(i)}
-              style={{
-                backgroundColor: this.state.currentSource === i ? 'gray' : '#EFEFEF',
-                borderRadius: '2px',
-                border: '1px solid gray',
-              }}
-            >
-              {i + 1}
-            </button>
-          ))}
+              <button
+                key={i}
+                onClick={() => this.setSource(i)}
+                style={{
+                  backgroundColor: this.state.currentSource === i ? 'gray' : '#EFEFEF',
+                  borderRadius: '2px',
+                  border: '1px solid gray',
+                }}
+              >
+                {i + 1}
+              </button>
+            ))}
           </div>
           <div style={rotationContainer}>
             <button onClick={() => this.rotateVideo(0)}>Reset</button>

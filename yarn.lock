@@ -1184,6 +1184,11 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
+"@cycjimmy/jsmpeg-player@^6.0.5":
+  version "6.0.5"
+  resolved "https://registry.yarnpkg.com/@cycjimmy/jsmpeg-player/-/jsmpeg-player-6.0.5.tgz#ab4a9a2eb915894eeba8ca6e39aca3e66d1609b6"
+  integrity sha512-bVNHQ7VN9ecKT5AI/6RC7zpW/y4ca68a9txeR5Wiin+jKpUn/7buMe+5NPub89A8NNeNnKPQfrD2+c76ch36mA==
+
 "@develar/schema-utils@~2.6.5":
   version "2.6.5"
   resolved "https://registry.yarnpkg.com/@develar/schema-utils/-/schema-utils-2.6.5.tgz#3ece22c5838402419a6e0425f85742b961d9b6c6"
@@ -6495,13 +6500,6 @@ history@^5.1.0:
   dependencies:
     "@babel/runtime" "^7.7.6"
 
-hls.js@^0.8.5:
-  version "0.8.9"
-  resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-0.8.9.tgz#db367cc99ce5b0976ea3e059a1d044d7b0790697"
-  integrity sha512-dquXM5LSBkg1cbFHaDJjUSMGIrVdho6OMdoviFybeEF19kYMpO0cpakv3jUAPqG6jKegjDGaTkOM9Ws5p878Cg==
-  dependencies:
-    url-toolkit "^2.0.1"
-
 hoek@4.2.1:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/hoek/-/hoek-4.2.1.tgz#9634502aa12c445dd5a7c5734b572bb8738aacbb"
@@ -7846,6 +7844,11 @@ jsesc@~0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/jsesc/-/jsesc-0.5.0.tgz#e7dee66e35d6fc16f710fe91d5cf69f70f08911d"
   integrity sha512-uZz5UnB7u4T9LvwmFqXii7pZSouaRPorGs5who1Ip7VO0wxanFvBL7GkM6dTHlgX+jhBApRetaWpnDabOeTcnA==
+
+jsmpeg@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/jsmpeg/-/jsmpeg-1.0.0.tgz#7e41516d748720e06336392eeb951709ae532442"
+  integrity sha512-wlBKWVJ93NRJaCfrJ1KAgpMvZBLzpZxH3wnC1Yj7DudMDa/5hHeL1HfvW48ndR8GlI4irrqCXuOGhgayP9EbHw==
 
 json-buffer@3.0.1, json-buffer@~3.0.1:
   version "3.0.1"
@@ -12028,11 +12031,6 @@ url-parse@^1.5.10:
     querystringify "^2.1.1"
     requires-port "^1.0.0"
 
-url-toolkit@^2.0.1:
-  version "2.2.5"
-  resolved "https://registry.yarnpkg.com/url-toolkit/-/url-toolkit-2.2.5.tgz#58406b18e12c58803e14624df5e374f638b0f607"
-  integrity sha512-mtN6xk+Nac+oyJ/PrI7tzfmomRVNFIWKUbG8jdYFt52hxbiReFAXIjYskvu64/dvuW71IcB7lV8l0HvZMac6Jg==
-
 url@^0.11.0:
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/url/-/url-0.11.0.tgz#3838e97cfc60521eb73c525a8e55bfdd9e2e28f1"
@@ -12500,7 +12498,7 @@ ws@^6.2.1:
   dependencies:
     async-limiter "~1.0.0"
 
-ws@^7.3.1, ws@^7.4.6:
+ws@^7.0.0, ws@^7.3.1, ws@^7.4.6:
   version "7.5.9"
   resolved "https://registry.yarnpkg.com/ws/-/ws-7.5.9.tgz#54fa7db29f4c7cec68b1ddd3a89de099942bb591"
   integrity sha512-F+P9Jil7UiSKSkppIiD94dN07AwvFixvLIj1Og1Rl9GGMuNipJnV9JzjD6XuqmAeiswGvUmNLjr5cFuXwNS77Q==

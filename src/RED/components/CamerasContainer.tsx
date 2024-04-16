@@ -126,9 +126,9 @@ class CamerasContainer extends Component<IProps, IState> {
         <div style={label}> Camera Controls </div>
         <div style={container}>
           <CameraControls style={videoStyle} sources={this.sources} startSource={0} />
-          <CameraControls style={videoStyle} sources={this.sources} startSource={1} />
+          {/* <CameraControls style={videoStyle} sources={this.sources} startSource={1} />
           <CameraControls style={videoStyle} sources={this.sources} startSource={2} />
-          <CameraControls style={videoStyle} sources={this.sources} startSource={3} />
+          <CameraControls style={videoStyle} sources={this.sources} startSource={3} /> */}
         </div>
       </div>
     );
