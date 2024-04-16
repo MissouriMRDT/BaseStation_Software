@@ -76,7 +76,7 @@ const cellReadoutContainer: CSS.Properties = {
  * @param time if time = 0, Rover turns off. Otherwise it power cycles for 'time' seconds
  */
 function turnOffReboot(time: number): void {
-  rovecomm.sendCommand('BMSStop', 'BMS', [time]);
+  rovecomm.sendCommand('Reboot', 'PMS', [time]);
 }
 
 interface IProps {
