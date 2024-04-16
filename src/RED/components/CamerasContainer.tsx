@@ -34,16 +34,15 @@ async function startFFMPEG(input: string, output: string) {
 
   converter.createInputFromFile(input, {});
   converter.createOutputToFile(output, {
-    f: 'hls',
-    hls_flags: 'delete_segments',
-    hls_time: '0.5',
-    force_key_frames: 'expr:if(isnan(prev_forced_n),1,eq(n,prev_forced_n+8))',
-    g: '8',
-    segment_time: '0.5',
+    f: 'mpegts',
+    s: '320x240',
     probesize: '32',
     flags: 'low_delay',
     preset: 'ultrafast',
     tune: 'zerolatency',
+    codec: 'mpeg1video',
+    b: '1000k',
+    bf: '0',
   });
 
   // start processing
@@ -81,14 +80,14 @@ class CamerasContainer extends Component<IProps, IState> {
     }
 
     this.sources = [
-      path.join(this.folder, 'stream0_.m3u8'),
-      path.join(this.folder, 'stream1_.m3u8'),
-      path.join(this.folder, 'stream2_.m3u8'),
-      path.join(this.folder, 'stream3_.m3u8'),
-      path.join(this.folder, 'stream4_.m3u8'),
-      path.join(this.folder, 'stream5_.m3u8'),
-      path.join(this.folder, 'stream6_.m3u8'),
-      path.join(this.folder, 'stream7_.m3u8'),
+      'ws://127.0.0.1:8082/cam',
+      'ws://127.0.0.1:8084/cam',
+      'ws://127.0.0.1:8086/cam',
+      'ws://127.0.0.1:8088/cam',
+      'ws://127.0.0.1:8090/cam',
+      'ws://127.0.0.1:8092/cam',
+      'ws://127.0.0.1:8094/cam',
+      'ws://127.0.0.1:8096/cam',
     ];
 
     this.cameraIPs = [
@@ -113,10 +112,13 @@ class CamerasContainer extends Component<IProps, IState> {
       // 192.168.100.10
 
       for (let i = 0; i < this.cameraIPs.length; i++) {
-        startFFMPEG('udp://' + this.cameraIPs[i], path.join(this.folder, 'stream' + i + '_.m3u8'));
+        startFFMPEG('udp://' + this.cameraIPs[i], this.sources[i]);
+        require('child_process').fork(String.raw`src\RED\components\WebsocketRelay.js`, [
+          'cam',
+          8081 + i * 2,
+          8082 + i * 2,
+        ]);
       }
-
-      // startFFMPEG('udp://169.254.144.138:1181', path.join(this.folder, 'stream.m3u8'));
     });
   }
 
@@ -126,9 +128,9 @@ class CamerasContainer extends Component<IProps, IState> {
         <div style={label}> Camera Controls </div>
         <div style={container}>
           <CameraControls style={videoStyle} sources={this.sources} startSource={0} />
-          {/* <CameraControls style={videoStyle} sources={this.sources} startSource={1} />
+          <CameraControls style={videoStyle} sources={this.sources} startSource={1} />
           <CameraControls style={videoStyle} sources={this.sources} startSource={2} />
-          <CameraControls style={videoStyle} sources={this.sources} startSource={3} /> */}
+          <CameraControls style={videoStyle} sources={this.sources} startSource={3} />
         </div>
       </div>
     );

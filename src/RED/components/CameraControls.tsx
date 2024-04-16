@@ -55,11 +55,10 @@ class CameraControls extends Component<IProps, IState> {
     this.state = { rotationAngle: 0, currentSource: props.startSource, width: 0 };
 
     this.sources = props.sources;
-    this.src = 'ws://127.0.0.1:8082/';
+    this.src = this.sources[props.startSource];
   }
 
   componentDidMount() {
-    require('child_process').fork(String.raw`src\RED\components\WebsocketRelay.js`, ['cam', '8081', '8082']);
     this.setSource(this.state.currentSource);
     this.updateWidth();
     window.addEventListener('resize', this.updateWidth);
@@ -93,8 +92,9 @@ class CameraControls extends Component<IProps, IState> {
   setSource(newSource: number) {
     this.setState({ currentSource: newSource });
     this.player?.destroy();
-    this.player = new JSMpeg.VideoElement(document.getElementById('video-canvas'), this.src, {
-      canvas: document.getElementById('video-canvas'),
+    this.src = this.sources[newSource];
+    this.player = new JSMpeg.VideoElement(document.getElementById('video-canvas' + this.props.startSource), this.src, {
+      canvas: document.getElementById('video-canvas' + this.props.startSource),
     });
   }
 
@@ -102,6 +102,7 @@ class CameraControls extends Component<IProps, IState> {
     const { rotationAngle } = this.state;
     const videoStyle = {
       width: '100%',
+      height: '100%',
       transform: `rotate(${rotationAngle}deg)`,
       transformOrigin: 'center',
     };
@@ -110,7 +111,12 @@ class CameraControls extends Component<IProps, IState> {
         <div>
           <div style={videoContainerStyle} ref={(videoContainerRef) => (this.videoContainerRef = videoContainerRef)}>
             <div data-vjs-player>
-              <canvas id="video-canvas"></canvas>
+              <canvas
+                id={'video-canvas' + this.props.startSource}
+                style={videoStyle}
+                width="640px"
+                height="480px"
+              ></canvas>
             </div>
           </div>
           <div style={cameraSelectionContainer}>
