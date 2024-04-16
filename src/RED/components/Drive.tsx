@@ -168,9 +168,9 @@ class Drive extends Component<IProps, IState> {
           rightSpeed = -speedMultiplier;
         }
       }
-
+      console.log('Drive:', leftSpeed, rightSpeed);
       rovecomm.sendCommand('StateDisplay', 'Core', RovecommManifest.Core.Enums.DISPLAYSTATE.Teleop);
-      rovecomm.sendCommand('DriveLeftRight', 'Core', [leftSpeed, rightSpeed]);
+      rovecomm.sendCommand('DriveLeftRight', 'Core', [leftSpeed / 1000.0, rightSpeed / 1000.0]);
     }
     this.setState({
       leftSpeed,
