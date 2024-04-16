@@ -9,6 +9,17 @@
       "RightDirection": { "buttonType": "joystick", "button": "right stick x" }
     }
   },
+  "RocketLeague": {
+    "config": "Drive",
+    "controller": "Xbox",
+    "bindings": {
+      "Drive": { "buttonType": "button", "button": "RT" },
+      "Reverse": { "buttonType": "button", "button": "LT" },
+      "Steer": { "buttonType": "joystick", "button": "left stick x" },
+      "PointTurnLeft": { "buttonType": "button", "button": "dpad left" },
+      "PointTurnRight": { "buttonType": "button", "button": "dpad right" }
+    }
+  },
   "VectorDrive": {
     "config": "Drive",
     "controller": "Flight Stick",

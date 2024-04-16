@@ -170,6 +170,12 @@ class ControlScheme extends Component<IProps, IState> {
           controller: 'Xbox 1',
           interval: null,
         },
+        RocketLeague: {
+          toggled: 'Off',
+          scheme: 'RocketLeague',
+          controller: 'Xbox 1',
+          interval: null,
+        },
         MainGimbal: {
           toggled: 'Off',
           scheme: 'Gimbal',

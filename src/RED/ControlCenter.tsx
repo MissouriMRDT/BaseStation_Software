@@ -10,7 +10,6 @@ import RoverOverviewOfNetwork from '../RON/RON';
 import RoverAttachmentManager from '../RAM/RAM';
 import RoverImageryDisplay from '../RID/RID';
 import Cameras from '../Core/components/Cameras';
-import Timer from './components/Timer';
 import Power from './components/Power&BMS';
 import ControlScheme from '../Core/components/ControlScheme';
 import Drive from './components/Drive';
@@ -128,7 +127,6 @@ class ControlCenter extends Component<IProps, IState> {
                 style={{ flexGrow: 1 }}
               />
             </div>
-            <Timer timer={undefined} />
             <Log />
           </div>
           <div style={{ ...column, width: '40%' }}>
