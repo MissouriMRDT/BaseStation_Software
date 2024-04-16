@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
 import JSMpeg from '@cycjimmy/jsmpeg-player';
+import { utilityProcess } from 'electron/main';
 
 const cameraSelectionContainer: CSS.Properties = {
   display: 'grid',
@@ -58,8 +59,7 @@ class CameraControls extends Component<IProps, IState> {
   }
 
   componentDidMount() {
-    console.log('bruh momentos');
-    require('child_process').fork('src/RED/components/WebsocketRelay.js cam 8081 8082');
+    require('child_process').fork(String.raw`src\RED\components\WebsocketRelay.js`, ['cam', '8081', '8082']);
     this.setSource(this.state.currentSource);
     this.updateWidth();
     window.addEventListener('resize', this.updateWidth);
@@ -92,6 +92,7 @@ class CameraControls extends Component<IProps, IState> {
 
   setSource(newSource: number) {
     this.setState({ currentSource: newSource });
+    this.player?.destroy();
     this.player = new JSMpeg.VideoElement(document.getElementById('video-canvas'), this.src, {
       canvas: document.getElementById('video-canvas'),
     });
