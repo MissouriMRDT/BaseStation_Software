@@ -32,15 +32,17 @@ const videoStyle: CSS.Properties = {
 async function startFFMPEG(input: string, output: string) {
   const converter = new Converter();
 
-  converter.createInputFromFile(input, {});
+  converter.createInputFromFile(input, {
+    f: 'mpegts',
+  });
   converter.createOutputToFile(output, {
     f: 'mpegts',
     s: '320x240',
-    probesize: '32',
-    flags: 'low_delay',
-    preset: 'ultrafast',
-    tune: 'zerolatency',
-    codec: 'mpeg1video',
+    // probesize: '32',
+    // flags: 'low_delay',
+    // preset: 'ultrafast',
+    // tune: 'zerolatency',
+    codec: ' mpeg1video',
     b: '1000k',
     bf: '0',
   });
@@ -64,6 +66,8 @@ class CamerasContainer extends Component<IProps, IState> {
 
   sources: string[];
 
+  inSources: string[];
+
   cameraIPs: string[];
 
   static defaultProps = {
@@ -78,6 +82,17 @@ class CamerasContainer extends Component<IProps, IState> {
     if (!existsSync(this.folder)) {
       mkdirSync(this.folder);
     }
+
+    this.inSources = [
+      'ws://127.0.0.1:8081/cam',
+      'ws://127.0.0.1:8083/cam',
+      'ws://127.0.0.1:8085/cam',
+      'ws://127.0.0.1:8087/cam',
+      'ws://127.0.0.1:8089/cam',
+      'ws://127.0.0.1:8091/cam',
+      'ws://127.0.0.1:8093/cam',
+      'ws://127.0.0.1:8095/cam',
+    ];
 
     this.sources = [
       'ws://127.0.0.1:8082/cam',
@@ -112,12 +127,12 @@ class CamerasContainer extends Component<IProps, IState> {
       // 192.168.100.10
 
       for (let i = 0; i < this.cameraIPs.length; i++) {
-        startFFMPEG('udp://' + this.cameraIPs[i], this.sources[i]);
         require('child_process').fork(String.raw`src\RED\components\WebsocketRelay.js`, [
           'cam',
           8081 + i * 2,
           8082 + i * 2,
         ]);
+        startFFMPEG('udp://' + this.cameraIPs[i], this.inSources[i]);
       }
     });
   }
