@@ -45,11 +45,6 @@ const column: CSS.Properties = {
 const componentBox: CSS.Properties = {
   margin: '3px 0 3px 0',
 };
-// const button: CSS.Properties = {
-//   marginLeft: '15px',
-//   width: '60px',
-//   alignSelf: 'center',
-// };
 
 const overlay: CSS.Properties = {
   width: '200px',
@@ -125,11 +120,6 @@ const maxWavelength = 850;
 
 interface IState {
   /** Holds which lasers are enabled */
-  LedStatus: boolean[];
-
-  intensities: number[];
-
-  maxIntensity: number;
 
   graphData: {
     x: number;
@@ -137,10 +127,6 @@ interface IState {
   }[];
 
   crosshairPos: number | null;
-
-  SHPeriod: number;
-
-  enableLEDToggle: boolean;
 }
 
 class Reflectance extends Component<IProps, IState> {
@@ -151,29 +137,15 @@ class Reflectance extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      LedStatus: [false, false, false, false],
-      intensities: new Array(215).fill(0).flat(),
       graphData: [{ x: 0, y: 0 }],
-      maxIntensity: 0,
 
       crosshairPos: null,
-
-      SHPeriod: 200,
-
-      enableLEDToggle: false,
     };
-    this.updateDiodeVals = this.updateDiodeVals.bind(this);
-    // this.exportData = this.exportData.bind(this);
     this.onNearestX = this.onNearestX.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
-    // this.calculateRelExtrema = this.calculateRelExtrema.bind(this);
-    // this.calcRelMins = this.calcRelMins.bind(this);
-    // this.calcRelMaxs = this.calcRelMaxs.bind(this);
-    this.changeSHPeriod = this.changeSHPeriod.bind(this);
     this.requestData = this.requestData.bind(this);
 
-    // Call updateDiodeValues with the new data and the index of that data
-    rovecomm.on('Reading', (data: number[]) => this.updateDiodeVals(data));
+    rovecomm.on('Reading', (data: number[]) => this.updateGraphValues(data));
   }
 
   onMouseLeave(): void {
@@ -184,101 +156,14 @@ class Reflectance extends Component<IProps, IState> {
     this.setState({ crosshairPos: index });
   }
 
-  // calculateRelExtrema(arr: number[]): {
-  //   mins: { x: number; intensity: number }[];
-  //   maxs: { x: number; intensity: number }[];
-  // } {
-  //   return {
-  //     mins: this.calcRelMins(arr),
-  //     maxs: this.calcRelMaxs(arr),
-  //   };
-  // }
-
-  // eslint-disable-next-line class-methods-use-this
-  // calcRelMins(arr: number[]): { x: number; intensity: number }[] {
-  //   let peakI: number | undefined;
-  //   const peaksI: number[] = arr.reduce((peaks: number[], _val, i) => {
-  //     if (arr[i + 1] < arr[i]) {
-  //       peakI = i + 1;
-  //     } else if (arr[i + 1] > arr[i]) {
-  //       if (peakI) {
-  //         peaks.push(peakI);
-  //         peakI = undefined;
-  //       }
-  //     }
-  //     return peaks;
-  //   }, []);
-  //   return peaksI.map((val) => {
-  //     return { x: 350 + val * 0.061428571, intensity: arr[val] };
-  //   });
-  // }
-
-  // eslint-disable-next-line class-methods-use-this
-  // calcRelMaxs(arr: number[]): { x: number; intensity: number }[] {
-  //   let peakI: number;
-  //   const xFactor = (maxWavelength - minWavelength) / intensity.length;
-  //   const peaksI: number[] = arr.reduce((peaks: number[], _val, i) => {
-  //     if (arr[i + 1] > arr[i]) {
-  //       peakI = i + 1;
-  //     } else if (arr[i + 1] < arr[i]) {
-  //       if (!Number.isNaN(peakI)) {
-  //         peaks.push(peakI);
-  //         peakI = NaN;
-  //       }
-  //     }
-  //     return peaks;
-  //   }, []);
-  //   return peaksI.map((val) => {
-  //     return { x: xFactor, intensity: arr[val] };
-  //   });
-  // }
-
-  /**
-   * Updates the wavelengths received from the Rover.
-   * @param index integer value that tells where this segment goes in data
-   * @param dataInput uint16 array with the new data
-   */
-  updateDiodeVals(dataInput: number[]): void {
-    this.setState({ intensities: dataInput }, () => {
-      this.updateGraphValues();
-    });
-  }
-
-  updateGraphValues(): void {
-    const { intensities } = this.state;
-    console.log(intensities.length);
-
-    // const maxIntensity = Math.max(...intensities);
-
-    this.setState({
-      // graphData: maxIntensity,
-      // relExtrema: this.calculateRelExtrema(avgd),
-    });
-  }
-
-  /*
-  exportData(): void {
-    // ISO string will be fromatted YYYY-MM-DDTHH:MM:SS:sssZ
-    // this regex will convert all -,T,:,Z to . (which covers to . for .csv)
-    // Date format is consistent with the SensorData csv
-    const timestamp = new Date().toISOString().replaceAll(/[:\-TZ]/g, '.');
-    const EXPORT_FILE = `./ScienceSaveFiles/Fluormeter-${timestamp}.csv`;
-
-    const { DiodeValues, LedStatus } = this.state;
-
-    if (!fs.existsSync('./ScienceSaveFiles')) {
-      fs.mkdirSync('./ScienceSaveFiles');
+  updateGraphValues(data: number[]): void {
+    const xScale = (maxWavelength - minWavelength) / 288;
+    const tempGraph = [];
+    for (let i = 1; i < data.length + 1; i++) {
+      tempGraph.push({ x: i * xScale + minWavelength, y: data[i] });
     }
-    let csvText = 'Laser1,Laser2,Laser3,Diode1 (nm),Diode2 (nm),Diode3 (nm)\n';
-    csvText += `${LedStatus[0] ? 'On' : 'Off'},${LedStatus[1] ? 'On' : 'Off'},${LedStatus[2] ? 'On' : 'Off'},${
-      LedStatus[3] ? 'On' : 'Off'
-    },`;
-    csvText += `${DiodeValues[0]},${DiodeValues[1]},${DiodeValues[2]},\n`;
-
-    fs.writeFile(EXPORT_FILE, csvText, (err) => {
-      if (err) throw err;
-    });
-  } */
+    this.setState({ graphData: tempGraph });
+  }
 
   crosshair(): JSX.Element | null {
     const { crosshairPos } = this.state;
@@ -300,14 +185,9 @@ class Reflectance extends Component<IProps, IState> {
     return null;
   }
 
-  changeSHPeriod(event: { target: { value: string } }): void {
-    const SHPeriod = parseInt(event.target.value, 10);
-    this.setState({ SHPeriod });
-  }
-
   requestData(): void {
     rovecomm.sendCommand('RequestReading', 'ReflectanceSpectrometer', 1);
-    console.log('requesting Reflectance', this.state.SHPeriod);
+    console.log('requesting Reflectance');
   }
 
   render(): JSX.Element {
@@ -321,7 +201,7 @@ class Reflectance extends Component<IProps, IState> {
               margin={{ top: 10, bottom: 50 }}
               width={window.document.documentElement.clientWidth - 50}
               height={300}
-              yDomain={[-0.1, 2]}
+              yDomain={[0, 255]}
               xDomain={[minWavelength, maxWavelength]}
             >
               <VerticalGridLines style={{ fill: 'none' }} />
