@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
 import { XYPlot, VerticalGridLines, HorizontalGridLines, XAxis, YAxis, LineSeries, Crosshair } from 'react-vis';
-// import html2canvas from 'html2canvas';
-// import fs from 'fs';
+import html2canvas from 'html2canvas';
+import fs from 'fs';
 import { rovecomm } from '../../../Core/RoveProtocol/Rovecomm';
-// import { windows } from '../../../Core/Window';
+import { windows } from '../../../Core/Window';
 
 const container: CSS.Properties = {
   display: 'flex',
@@ -56,53 +56,56 @@ const overlay: CSS.Properties = {
   color: 'black',
 };
 
-// function downloadURL(imgData: string): void {
-//   const filename = `./Screenshots/${new Date()
-//     .toISOString()
-//     // ISO string will be fromatted YYYY-MM-DDTHH:MM:SS:sssZ
-//     // this regex will convert all -,T,:,Z to . (which covers to . for .csv)
-//     .replaceAll(/[:\-TZ]/g, '.')}Raman.png`;
+const minWavelength = 400;
+const maxWavelength = 700;
 
-//   if (!fs.existsSync('./Screenshots')) {
-//     fs.mkdirSync('./Screenshots');
-//   }
+function downloadURL(imgData: string): void {
+  const filename = `./Screenshots/${new Date()
+    .toISOString()
+    // ISO string will be fromatted YYYY-MM-DDTHH:MM:SS:sssZ
+    // this regex will convert all -,T,:,Z to . (which covers to . for .csv)
+    .replaceAll(/[:\-TZ]/g, '.')}Raman.png`;
 
-//   const base64Image = imgData.replace('image/png', 'image/octet-stream').split(';base64,').pop();
-//   if (base64Image) fs.writeFileSync(filename, base64Image, { encoding: 'base64' });
-// }
+  if (!fs.existsSync('./Screenshots')) {
+    fs.mkdirSync('./Screenshots');
+  }
 
-// function saveImage(): void {
-//   // Search through all the windows for Raman
-//   let graph;
-//   let thisWindow;
-//   for (const win of Object.keys(windows)) {
-//     if (windows[win].document.getElementById('Raman')) {
-//       // When found, store the graph and the window it was in
-//       thisWindow = windows[win];
-//       graph = thisWindow.document.getElementById('Raman');
-//       break;
-//     }
-//   }
+  const base64Image = imgData.replace('image/png', 'image/octet-stream').split(';base64,').pop();
+  if (base64Image) fs.writeFileSync(filename, base64Image, { encoding: 'base64' });
+}
 
-//   // If the graph isn't found, throw an error
-//   if (!graph) {
-//     throw new Error("The element 'Raman' wasn't found");
-//   }
+function saveImage(): void {
+  // Search through all the windows for Raman
+  let graph;
+  let thisWindow;
+  for (const win of Object.keys(windows)) {
+    if (windows[win].document.getElementById('Raman')) {
+      // When found, store the graph and the window it was in
+      thisWindow = windows[win];
+      graph = thisWindow.document.getElementById('Raman');
+      break;
+    }
+  }
 
-//   // If the graph is found, convert its html into a canvas to be downloaded
-//   html2canvas(graph, {
-//     scrollX: 0,
-//     scrollY: -thisWindow.scrollY - 38,
-//   }) // We subtract 38 to make up for the 28 pixel top border and the -10 top margin
-//     .then((canvas: any) => {
-//       const imgData = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
-//       downloadURL(imgData);
-//       return null;
-//     })
-//     .catch((error: any) => {
-//       console.error(error);
-//     });
-// }
+  // If the graph isn't found, throw an error
+  if (!graph) {
+    throw new Error("The element 'Raman' wasn't found");
+  }
+
+  // If the graph is found, convert its html into a canvas to be downloaded
+  html2canvas(graph, {
+    scrollX: 0,
+    scrollY: -thisWindow.scrollY - 38,
+  }) // We subtract 38 to make up for the 28 pixel top border and the -10 top margin
+    .then((canvas: any) => {
+      const imgData = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+      downloadURL(imgData);
+      return null;
+    })
+    .catch((error: any) => {
+      console.error(error);
+    });
+}
 
 interface IProps {
   style?: CSS.Properties;
@@ -151,10 +154,10 @@ class Raman extends Component<IProps, IState> {
     this.requestData = this.requestData.bind(this);
 
     rovecomm.on('CCDReading_Part1', (data: number[]) => this.processReading(1, 0, 500, data));
-    rovecomm.on('CCDReading_Part2', (data: number[]) => this.processReading(2, 501, 1000, data));
-    rovecomm.on('CCDReading_Part3', (data: number[]) => this.processReading(3, 1001, 1500, data));
-    rovecomm.on('CCDReading_Part4', (data: number[]) => this.processReading(4, 1501, 2000, data));
-    rovecomm.on('CCDReading_Part5', (data: number[]) => this.processReading(5, 2001, 2048, data));
+    rovecomm.on('CCDReading_Part2', (data: number[]) => this.processReading(2, 500, 1000, data));
+    rovecomm.on('CCDReading_Part3', (data: number[]) => this.processReading(3, 1000, 1500, data));
+    rovecomm.on('CCDReading_Part4', (data: number[]) => this.processReading(4, 1500, 2000, data));
+    rovecomm.on('CCDReading_Part5', (data: number[]) => this.processReading(5, 2000, 2048, data));
   }
 
   processReading(packetID: number, startIndex: number, endIndex: number, data: number[]) {
@@ -208,10 +211,10 @@ class Raman extends Component<IProps, IState> {
 
   updateGraphValues(): void {
     const data = this.state.data;
-
+    const xScale = (maxWavelength - minWavelength) / 2048;
     //TODO do the map from ccd pixel to wavelength here, as well as normalizing intensity of wavelengths from ccd datasheet
     const dataToDisplay = data.map((value: number, index: number) => {
-      return { x: 0 + index * 1, y: value };
+      return { x: index * xScale + minWavelength, y: value };
     });
 
     this.setState({
@@ -263,7 +266,7 @@ class Raman extends Component<IProps, IState> {
               width={window.document.documentElement.clientWidth - 50}
               height={300}
               yDomain={[0, 1023]} //TODO determine these values
-              xDomain={[0, 2047]}
+              xDomain={[minWavelength, maxWavelength]}
             >
               <VerticalGridLines style={{ fill: 'none' }} />
               <HorizontalGridLines style={{ fill: 'none' }} />
@@ -292,6 +295,9 @@ class Raman extends Component<IProps, IState> {
                 >
                   Request Reading
                 </button>
+              </div>
+              <div style={{ ...column, margin: '0 100px 0 100px' }}>
+                <button onClick={saveImage}>Export Graph</button>
               </div>
             </div>
           </div>
