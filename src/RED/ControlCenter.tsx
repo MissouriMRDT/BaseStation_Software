@@ -11,7 +11,7 @@ import RoverAttachmentManager from '../RAM/RAM';
 import RoverImageryDisplay from '../RID/RID';
 import Cameras from '../Core/components/Cameras';
 import Timer from './components/Timer';
-import Power from './components/Power&BMS';
+import Power from './components/PMS';
 import ControlScheme from '../Core/components/ControlScheme';
 import Drive from './components/Drive';
 import Gimbal from './components/Gimbal';
