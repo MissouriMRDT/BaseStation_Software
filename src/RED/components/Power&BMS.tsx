@@ -3,6 +3,7 @@ import CSS from 'csstype';
 import { rovecomm, RovecommManifest } from '../../Core/RoveProtocol/Rovecomm';
 import { ColorStyleConverter } from '../../Core/ColorConverter';
 import { BitmaskUnpack } from '../../Core/BitmaskUnpack';
+import { read } from 'fs';
 
 const label: CSS.Properties = {
   marginTop: '-10px',
@@ -35,18 +36,15 @@ const mainContainer: CSS.Properties = {
 const row: CSS.Properties = {
   display: 'flex',
   flexDirection: 'row',
-  flexGrow: 2,
 };
 const column: CSS.Properties = {
   display: 'flex',
   flexDirection: 'column',
-  flexGrow: 2,
 };
 const readoutContainter: CSS.Properties = {
-  height: '301px',
+  height: 'auto',
   flexWrap: 'wrap',
-  margin: '1px',
-  marginBottom: '175px',
+  marginBottom: '10px',
 };
 const readout: CSS.Properties = {
   display: 'flex',
@@ -56,14 +54,13 @@ const readout: CSS.Properties = {
   fontFamily: 'arial',
 };
 const btnArray: CSS.Properties = {
-  display: 'grid',
-  gridTemplateColumns: '105px 130px 105px',
+  display: 'flex',
   justifyContent: 'center',
-  gridTemplateRows: '25px',
+  gap: '5px',
 };
 const cellReadoutContainer: CSS.Properties = {
   display: 'grid',
-  gridTemplateColumns: 'auto auto auto auto',
+  gridTemplateColumns: 'auto auto auto',
 };
 
 /**
@@ -75,8 +72,16 @@ const cellReadoutContainer: CSS.Properties = {
  * is probably not enough time. ¯\_(ツ)_/¯
  * @param time if time = 0, Rover turns off. Otherwise it power cycles for 'time' seconds
  */
-function turnOffReboot(time: number): void {
-  rovecomm.sendCommand('Reboot', 'PMS', [time]);
+function reboot(): void {
+  rovecomm.sendCommand('Reboot', 'PMS', 1);
+}
+
+function EStop(): void {
+  rovecomm.sendCommand('EStop', 'PMS', 1);
+}
+
+function suicide(): void {
+  rovecomm.sendCommand('Suicide', 'PMS', 1);
 }
 
 interface IProps {
@@ -85,7 +90,10 @@ interface IProps {
 
 interface IState {
   boardTelemetry: any;
-  batteryTelemetry: any;
+  auxCurrent: number;
+  packCurrent: number;
+  packVoltage: number;
+  cellVoltages: number[];
 }
 
 class Power extends Component<IProps, IState> {
@@ -96,37 +104,24 @@ class Power extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     // eslint-disable-next-line @typescript-eslint/no-shadow
-    const { Power, BMS } = RovecommManifest;
+    const { PMS } = RovecommManifest;
     const boardTelemetry: Record<string, any> = {};
-    const batteryTelemetry: Record<string, any> = {};
-    Object.keys(Power.Commands).forEach((Bus: string) => {
+    Object.keys(PMS.Commands).forEach((Bus: string) => {
       if (Bus === 'SetBus') {
         // Check if the command is 'SetBus'
         boardTelemetry[Bus] = {};
-        Power.Commands[Bus].comments.split(', ').forEach((component: any) => {
+        PMS.Commands[Bus].comments.split(', ').forEach((component: any) => {
           const componentName = component.split(' ')[0]; // Extract the first part of the comment
-          if (!componentName.toLowerCase().includes('enable') && !componentName.toLowerCase().includes('disable')) {
-            boardTelemetry[Bus][componentName] = { enabled: true, value: 0 };
+          const cleanedComponentName = componentName.replace(/^\[|\]$/g, ''); // Remove [ from the beginning and ] from the end
+          if (
+            !cleanedComponentName.toLowerCase().includes('enable') &&
+            !cleanedComponentName.toLowerCase().includes('disable')
+          ) {
+            boardTelemetry[Bus][cleanedComponentName] = { enabled: true, value: 0 };
           }
         });
       }
     });
-
-    Object.keys(BMS.Telemetry).forEach((measGroup: string) => {
-      batteryTelemetry[measGroup] = {};
-      const tmpList = BMS.Telemetry[measGroup].comments.split(', ');
-      if (tmpList.length > 1) {
-        tmpList.forEach((cell: any) => {
-          batteryTelemetry[measGroup][cell] = { value: 0 };
-        });
-      } else {
-        batteryTelemetry[measGroup] = { value: 0 };
-      }
-    });
-    this.state = {
-      boardTelemetry,
-      batteryTelemetry,
-    };
 
     /**
      * bit of awkwardness with the board telemetry listeners:
@@ -152,10 +147,10 @@ class Power extends Component<IProps, IState> {
     rovecomm.on('BusCurrent', (data: number[]) => this.boardListenHandlerAmp(data, 'SetBus'));
 
     // Add Reboot, EStop, and Suicide button
-    rovecomm.on('PackCurrent', (data: number[]) => this.batteryListenHandler(data, 'PackCurrent'));
-    rovecomm.on('PackVoltage', (data: number[]) => this.batteryListenHandler(data, 'PackVoltage'));
-    rovecomm.on('PackTemp', (data: number[]) => this.batteryListenHandler(data, 'PackTemp'));
-    rovecomm.on('CellVoltage', (data: number[]) => this.batteryListenHandler(data, 'CellVoltage'));
+    rovecomm.on('PackCurrent', (data: number) => this.setState({ packCurrent: data }));
+    rovecomm.on('AuxCurrent', (data: number) => this.setState({ auxCurrent: data }));
+    rovecomm.on('PackVoltage', (data: number) => this.setState({ packVoltage: data }));
+    rovecomm.on('CellVoltage', (data: number[]) => this.setState({ cellVoltages: data }));
     // Add Error Handling notification
   }
 
@@ -190,23 +185,6 @@ class Power extends Component<IProps, IState> {
         boardTelemetry[partList][part].enabled = Boolean(Number(bitmask[index]));
       });
     this.setState({ boardTelemetry });
-  }
-
-  /**
-   * @desc takes voltage data from rovecomm and applies those values to the corresponding state object in batteryTelemetry
-   * @param data is an array of voltage values. If the array size is >1, it assigns those values to the battery cell objects
-   * @param part name of the object to assign values to
-   */
-  batteryListenHandler(data: number[], part: string): void {
-    const { batteryTelemetry } = this.state;
-    if (data.length > 1) {
-      Object.keys(batteryTelemetry[part]).forEach((cell: any, index: number) => {
-        batteryTelemetry[part][cell].value = data[index];
-      });
-    } else {
-      batteryTelemetry[part].value = data[0];
-    }
-    this.setState({ batteryTelemetry });
   }
 
   /**
@@ -253,7 +231,7 @@ class Power extends Component<IProps, IState> {
   render(): JSX.Element {
     return (
       <div style={this.props.style}>
-        <div style={label}>Power and BMS</div>
+        <div style={label}>PMS</div>
         <div style={mainContainer}>
           <div style={{ ...column, ...readoutContainter }}>
             {Object.keys(this.state.boardTelemetry).map((board: string) => {
@@ -283,7 +261,12 @@ class Power extends Component<IProps, IState> {
               );
             })}
           </div>
-          <div style={{ ...row, ...btnArray, gridTemplateColumns: 'auto auto' }}>
+          <div
+            style={{
+              ...row,
+              ...btnArray,
+            }}
+          >
             {/* <button
               type="button"
               onClick={() => {
@@ -302,11 +285,14 @@ class Power extends Component<IProps, IState> {
             >
               Disable All Motors
             </button> */}
-            <button type="button" onClick={() => turnOffReboot(5)} style={{ cursor: 'pointer' }}>
+            <button type="button" onClick={() => reboot()} style={{ cursor: 'pointer' }}>
               REBOOT
             </button>
-            <button type="button" onClick={() => turnOffReboot(0)} style={{ cursor: 'pointer' }}>
-              SHUT DOWN
+            <button type="button" onClick={() => EStop()} style={{ cursor: 'pointer' }}>
+              E-STOP
+            </button>
+            <button type="button" onClick={() => suicide()} style={{ cursor: 'pointer' }}>
+              SUICIDE
             </button>
           </div>
           <h3
@@ -321,29 +307,22 @@ class Power extends Component<IProps, IState> {
             -------------------------------------------------
           </h3>
           <div style={{ ...row, width: '100%' }}>
-            <div style={ColorStyleConverter(this.state.batteryTelemetry.PackTemp.value, 30, 75, 115, 120, 0, readout)}>
-              <h3 style={textPad}>Battery Temperature</h3>
-              <h3 style={textPad}>{this.state.batteryTelemetry.PackTemp.value.toLocaleString(undefined)}°</h3>
-            </div>
-            <div style={ColorStyleConverter(this.state.batteryTelemetry.PackTemp.value, 0, 15, 160, 120, 0, readout)}>
+            <div style={readout}>
               <h3 style={textPad}>Total Pack Current</h3>
-              <h3 style={textPad}>{`${this.state.batteryTelemetry.PackCurrent.value.toLocaleString(undefined)} A`}</h3>
+              <h3 style={textPad}>{`${this.state.packCurrent} A`}</h3>
             </div>
-            <div
-              style={ColorStyleConverter(this.state.batteryTelemetry.PackVoltage.value, 15, 21.6, 25, 0, 120, readout)}
-            >
+            <div style={ColorStyleConverter(this.state.packVoltage, 15, 21.6, 25, 0, 120, readout)}>
               <h3 style={textPad}>Total Pack Voltage</h3>
-              <h3 style={textPad}>{`${this.state.batteryTelemetry.PackVoltage.value.toLocaleString(undefined)} V`}</h3>
+              <h3 style={textPad}>{`${this.state.packVoltage.toLocaleString(undefined)} V`}</h3>
             </div>
           </div>
           <div style={{ ...row, width: '100%' }}>
             <div style={{ ...cellReadoutContainer, width: '100%' }}>
-              {Object.keys(this.state.batteryTelemetry.CellVoltage).map((cell) => {
-                const { value } = this.state.batteryTelemetry.CellVoltage[cell];
+              {this.state.cellVoltages.map((cell, i) => {
                 return (
-                  <div key={cell} style={ColorStyleConverter(value, 2.5, 3.1, 4.2, 0, 120, readout)}>
+                  <div key={i} style={ColorStyleConverter(i, 2.5, 3.1, 4.2, 0, 120, readout)}>
                     <h3 style={textPad}>{cell}</h3>
-                    <h3 style={textPad}>{`${value.toLocaleString(undefined)} V`}</h3>
+                    <h3 style={textPad}>{`${i.toLocaleString(undefined)} V`}</h3>
                   </div>
                 );
               })}
