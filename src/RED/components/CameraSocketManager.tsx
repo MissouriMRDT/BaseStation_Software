@@ -69,7 +69,7 @@ class CameraSocketManager extends Component<IProps, IState> {
     // 192.168.100.10
 
     for (let i = 0; i < this.cameraIPs.length; i++) {
-      require('child_process').fork(String.raw`C:\Users\xxsup\Developer\BaseStation_Software\src\RED\components\WebsocketRelay.js`, [
+      require('child_process').fork(String.raw`src\RED\components\WebsocketRelay.js`, [
         'cam',
         8081 + i * 2,
         8082 + i * 2,
