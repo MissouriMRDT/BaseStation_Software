@@ -199,7 +199,7 @@ class Power extends Component<IProps, IState> {
                       });
                     }}
                   >
-                    {this.state.busStatus[bus as BusType] !== 'pending' 
+                    {this.state.busStatus[bus as BusType] !== 'pending'
                       ? this.state.busStatus[bus as BusType] === 'disabled'
                         ? 'Enable'
                         : 'Disable'
@@ -239,6 +239,7 @@ class Power extends Component<IProps, IState> {
           <div style={readoutContainer}>
             {this.state.cellVoltages.map((voltage, i) => {
               return (
+                // eslint-disable-next-line react/no-array-index-key
                 <div key={i} style={ColorStyleConverter(voltage, 2.5, 3.1, 4.2, 0, 120, cellReadout)}>
                   <div>C{i}</div>
                   <div>{voltage} V</div>
