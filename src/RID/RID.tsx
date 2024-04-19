@@ -21,6 +21,7 @@ import PacketLogger from '../RON/components/PacketLogger';
 // import PingGraph from '../RON/components/PingGraph';
 import Reflectance from '../RAM/Science/components/Reflectance';
 import RockLookUp from '../RAM/Science/components/rocklookup';
+import CamerasContainer from '../RED/components/CamerasContainer';
 
 const row: CSS.Properties = {
   display: 'flex',
@@ -160,7 +161,7 @@ class RoverImageryDisplay extends Component<IProps, IState> {
       display: (
         <div style={{ flexGrow: 1, height: '100%' }}>
           {this.buttons}
-          <Cameras defaultCamera={cam} style={submod} />
+          <CamerasContainer camAmount={0} canvasWidth={640} canvasHeight={480} />
         </div>
       ),
       displayed: 'Camera',

@@ -3,7 +3,7 @@ import CSS from 'csstype';
 // import SensorData from './components/SensorData';
 // import SensorGraphs from './components/SensorGraphs';
 // import Heater from './components/Heater';
-import Cameras from '../../Core/components/Cameras';
+// import Cameras from '../../Core/components/Cameras';
 // import RockLookUp from './components/rocklookup';
 import ControlScheme, { controllerInputs } from '../../Core/components/ControlScheme';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
@@ -12,6 +12,9 @@ import EnvironmentalData from './components/EnvironmentalData';
 import Raman from './components/Raman';
 import ScienceGraphs from './components/ScienceGraphs';
 import FTIR from './components/FTIR';
+import CamerasContainer from '../../RED/components/CamerasContainer';
+import EncoderPositions from './components/EncoderPositions';
+import Cameras from '../../Core/components/Cameras';
 // import SensorGraphs from './components/SensorGraphs';
 
 const row: CSS.Properties = {
@@ -126,7 +129,9 @@ class Science extends Component<IProps, IState> {
         </div>
         <div style={{ ...row }}>
           <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>
-            <Cameras defaultCamera={8} />
+            <EncoderPositions style={{ width: '80%', marginRight: '2.5px', marginLeft: '2.5px' }} />
+            <CamerasContainer camAmount={7} canvasWidth={640} canvasHeight={480} />
+            {/* <Cameras defaultCamera={8} /> */}
           </div>
           <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>
             <Cameras defaultCamera={8} />
