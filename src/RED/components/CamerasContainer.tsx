@@ -12,6 +12,7 @@ const container: CSS.Properties = {
   borderStyle: 'solid',
   gridTemplateColumns: 'auto auto',
 };
+
 const label: CSS.Properties = {
   marginTop: '-10px',
   position: 'relative',
@@ -22,6 +23,7 @@ const label: CSS.Properties = {
   zIndex: 1,
   color: 'white',
 };
+
 const videoStyle: CSS.Properties = {
   border: '2px solid #990000',
 };
@@ -73,24 +75,28 @@ class CamerasContainer extends Component<IProps, IState> {
             startSource={0}
             canvasWidth={this.props.canvasWidth}
             canvasHeight={this.props.canvasHeight}
+            labelName={''}
           />
           <CameraControls
             style={videoStyle}
             startSource={1}
             canvasWidth={this.props.canvasWidth}
             canvasHeight={this.props.canvasHeight}
+            labelName={''}
           />
           <CameraControls
             style={videoStyle}
             startSource={2}
             canvasWidth={this.props.canvasWidth}
             canvasHeight={this.props.canvasHeight}
+            labelName={''}
           />
           <CameraControls
             style={videoStyle}
             startSource={3}
             canvasWidth={this.props.canvasWidth}
             canvasHeight={this.props.canvasHeight}
+            labelName={''}
           />
         </div>
       </div>

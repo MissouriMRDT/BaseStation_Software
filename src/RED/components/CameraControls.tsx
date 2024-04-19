@@ -24,11 +24,32 @@ const videoContainerStyle: CSS.Properties = {
   overflow: 'hidden',
 };
 
+const label: CSS.Properties = {
+  marginTop: '-10px',
+  position: 'relative',
+  top: '24px',
+  left: '3px',
+  fontFamily: 'arial',
+  fontSize: '16px',
+  zIndex: 1,
+  color: 'white',
+};
+
+const container: CSS.Properties = {
+  fontFamily: 'arial',
+  borderTopWidth: '30px',
+  borderColor: '#990000',
+  borderBottomWidth: '2px',
+  borderStyle: 'solid',
+  display: 'block',
+};
+
 interface IProps {
   style?: CSS.Properties;
   startSource: number;
   canvasWidth: number;
   canvasHeight: number;
+  labelName: string;
 }
 
 interface IState {
@@ -116,9 +137,11 @@ class CameraControls extends Component<IProps, IState> {
       transform: `rotate(${rotationAngle}deg)`,
       transformOrigin: 'center',
     };
+
     return (
       <div style={this.props.style}>
-        <div>
+        <div style={this.props.labelName !== '' ? label : {}}> {this.props.labelName} </div>
+        <div style={this.props.labelName !== '' ? container : {}}>
           <div style={videoContainerStyle} ref={(videoContainerRef) => (this.videoContainerRef = videoContainerRef)}>
             <div data-vjs-player>
               <canvas ref={(canvas) => (this.canvas = canvas)} style={videoStyle} width="640px" height="480px"></canvas>

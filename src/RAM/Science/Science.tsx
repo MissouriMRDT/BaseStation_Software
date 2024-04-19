@@ -131,7 +131,7 @@ class Science extends Component<IProps, IState> {
             <CamerasContainer camAmount={7} canvasWidth={640} canvasHeight={480} />
           </div>
           <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>
-            <CameraControls canvasWidth={640} canvasHeight={480} startSource={7}></CameraControls>
+            <CameraControls canvasWidth={640} canvasHeight={480} startSource={7} labelName={'Camera'}></CameraControls>
           </div>
         </div>
         <div style={{ ...column }}>
