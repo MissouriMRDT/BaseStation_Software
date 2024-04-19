@@ -5,7 +5,7 @@ import CameraControls from './CameraControls';
 
 const path = require('path');
 const { Converter } = require('ffmpeg-stream');
-const { readdir, unlinkSync, existsSync, mkdirSync } = require('fs');
+require('fs');
 
 const container: CSS.Properties = {
   display: 'grid',
@@ -39,10 +39,6 @@ async function startFFMPEG(input: string, output: string) {
   converter.createOutputToFile(output, {
     f: 'mpegts',
     s: '320x240',
-    // probesize: '32',
-    // flags: 'low_delay',
-    // preset: 'ultrafast',
-    // tune: 'zerolatency',
     'codec:v': 'mpeg1video',
     'b:v': '1000k',
     bf: '0',
@@ -63,9 +59,7 @@ interface IProps {
 interface IState {}
 
 class CamerasContainer extends Component<IProps, IState> {
-  folder: string;
-
-  sources: string[];
+  outSources: string[];
 
   inSources: string[];
 
@@ -79,11 +73,6 @@ class CamerasContainer extends Component<IProps, IState> {
     super(props);
     this.state = {};
 
-    this.folder = path.join(__dirname, '..\\assets\\tmpVideo\\');
-    if (!existsSync(this.folder)) {
-      mkdirSync(this.folder);
-    }
-
     this.inSources = [
       'http://127.0.0.1:8081/cam',
       'http://127.0.0.1:8083/cam',
@@ -95,7 +84,7 @@ class CamerasContainer extends Component<IProps, IState> {
       'http://127.0.0.1:8095/cam',
     ];
 
-    this.sources = [
+    this.outSources = [
       'ws://127.0.0.1:8082/cam',
       'ws://127.0.0.1:8084/cam',
       'ws://127.0.0.1:8086/cam',
@@ -117,25 +106,17 @@ class CamerasContainer extends Component<IProps, IState> {
       '192.168.4.101:1188',
     ];
 
-    readdir(this.folder, (err: Error | null, files: string[]) => {
-      if (err) throw err;
+    // basestation ip
+    // 192.168.100.10
 
-      for (const file of files) {
-        unlinkSync(path.join(this.folder, file));
-      }
-
-      // basestation ip
-      // 192.168.100.10
-
-      for (let i = 0; i < this.cameraIPs.length; i++) {
-        require('child_process').fork(String.raw`src\RED\components\WebsocketRelay.js`, [
-          'cam',
-          8081 + i * 2,
-          8082 + i * 2,
-        ]);
-        startFFMPEG('udp://' + this.cameraIPs[i], this.inSources[i]);
-      }
-    });
+    for (let i = 0; i < this.cameraIPs.length; i++) {
+      require('child_process').fork(String.raw`src\RED\components\WebsocketRelay.js`, [
+        'cam',
+        8081 + i * 2,
+        8082 + i * 2,
+      ]);
+      startFFMPEG('udp://' + this.cameraIPs[i], this.inSources[i]);
+    }
   }
 
   render(): JSX.Element {
@@ -143,10 +124,10 @@ class CamerasContainer extends Component<IProps, IState> {
       <div style={this.props.style}>
         <div style={label}> Camera Controls </div>
         <div style={container}>
-          <CameraControls style={videoStyle} sources={this.sources} startSource={0} />
-          <CameraControls style={videoStyle} sources={this.sources} startSource={1} />
-          <CameraControls style={videoStyle} sources={this.sources} startSource={2} />
-          <CameraControls style={videoStyle} sources={this.sources} startSource={3} />
+          <CameraControls style={videoStyle} sources={this.outSources} startSource={0} />
+          <CameraControls style={videoStyle} sources={this.outSources} startSource={1} />
+          <CameraControls style={videoStyle} sources={this.outSources} startSource={2} />
+          <CameraControls style={videoStyle} sources={this.outSources} startSource={3} />
         </div>
       </div>
     );
