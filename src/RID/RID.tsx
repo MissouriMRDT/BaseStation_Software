@@ -154,7 +154,7 @@ class RoverImageryDisplay extends Component<IProps, IState> {
     }
   }
 
-  onClickCamera(cam = 1) {
+  onClickCamera() {
     // Inside the RID component, renders the controls and a camera feed (cam 1 by default)
     this.setState({
       display: (

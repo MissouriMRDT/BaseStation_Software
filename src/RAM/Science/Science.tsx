@@ -13,7 +13,6 @@ import Raman from './components/Raman';
 import ScienceGraphs from './components/ScienceGraphs';
 import FTIR from './components/FTIR';
 import CamerasContainer from '../../RED/components/CamerasContainer';
-import EncoderPositions from './components/EncoderPositions';
 import CameraControls from '../../RED/components/CameraControls';
 // import SensorGraphs from './components/SensorGraphs';
 
