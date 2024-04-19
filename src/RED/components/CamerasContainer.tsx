@@ -34,6 +34,7 @@ async function startFFMPEG(input: string, output: string) {
 
   converter.createInputFromFile(input, {
     f: 'mpegts',
+    codec: 'mpeg1video',
   });
   converter.createOutputToFile(output, {
     f: 'mpegts',
@@ -42,16 +43,16 @@ async function startFFMPEG(input: string, output: string) {
     // flags: 'low_delay',
     // preset: 'ultrafast',
     // tune: 'zerolatency',
-    codec: ' mpeg1video',
-    b: '1000k',
+    'codec:v': 'mpeg1video',
+    'b:v': '1000k',
     bf: '0',
   });
 
   // start processing
   try {
     await converter.run();
-  } catch {
-    console.log('UDP Bind Failed on port ' + input);
+  } catch (e: any) {
+    console.log('UDP Bind Failed on port ' + input + ' with error ' + e);
   }
 }
 
@@ -84,14 +85,14 @@ class CamerasContainer extends Component<IProps, IState> {
     }
 
     this.inSources = [
-      'ws://127.0.0.1:8081/cam',
-      'ws://127.0.0.1:8083/cam',
-      'ws://127.0.0.1:8085/cam',
-      'ws://127.0.0.1:8087/cam',
-      'ws://127.0.0.1:8089/cam',
-      'ws://127.0.0.1:8091/cam',
-      'ws://127.0.0.1:8093/cam',
-      'ws://127.0.0.1:8095/cam',
+      'http://127.0.0.1:8081/cam',
+      'http://127.0.0.1:8083/cam',
+      'http://127.0.0.1:8085/cam',
+      'http://127.0.0.1:8087/cam',
+      'http://127.0.0.1:8089/cam',
+      'http://127.0.0.1:8091/cam',
+      'http://127.0.0.1:8093/cam',
+      'http://127.0.0.1:8095/cam',
     ];
 
     this.sources = [
@@ -106,7 +107,7 @@ class CamerasContainer extends Component<IProps, IState> {
     ];
 
     this.cameraIPs = [
-      '192.168.4.100:1181',
+      '127.0.0.1:1181',
       '192.168.4.100:1182',
       '192.168.4.100:1183',
       '192.168.4.100:1184',

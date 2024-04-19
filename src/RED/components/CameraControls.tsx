@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
 import JSMpeg from '@cycjimmy/jsmpeg-player';
-import { utilityProcess } from 'electron/main';
 
 const cameraSelectionContainer: CSS.Properties = {
   display: 'grid',
