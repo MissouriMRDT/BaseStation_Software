@@ -107,7 +107,7 @@ class CamerasContainer extends Component<IProps, IState> {
     ];
 
     this.cameraIPs = [
-      '127.0.0.1:1181',
+      '192.168.4.100:1181',
       '192.168.4.100:1182',
       '192.168.4.100:1183',
       '192.168.4.100:1184',

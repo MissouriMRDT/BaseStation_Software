@@ -47,6 +47,8 @@ class CameraControls extends Component<IProps, IState> {
 
   player: any;
 
+  canvas!: HTMLCanvasElement | null;
+
   videoContainerRef!: HTMLDivElement | null;
 
   constructor(props: IProps) {
@@ -55,6 +57,7 @@ class CameraControls extends Component<IProps, IState> {
 
     this.sources = props.sources;
     this.src = this.sources[props.startSource];
+    this.canvas = document.createElement('canvas');
   }
 
   componentDidMount() {
@@ -92,14 +95,14 @@ class CameraControls extends Component<IProps, IState> {
     this.setState({ currentSource: newSource });
     this.player?.destroy();
     this.src = this.sources[newSource];
-    this.player = new JSMpeg.VideoElement(document.getElementById('video-canvas' + this.props.startSource), this.src, {
-      canvas: document.getElementById('video-canvas' + this.props.startSource),
+    this.player = new JSMpeg.VideoElement(this.canvas, this.src, {
+      canvas: this.canvas,
     });
   }
 
   render(): JSX.Element {
     const { rotationAngle } = this.state;
-    const videoStyle = {
+    const videoStyle: CSS.Properties = {
       width: '100%',
       height: '100%',
       transform: `rotate(${rotationAngle}deg)`,
@@ -110,12 +113,7 @@ class CameraControls extends Component<IProps, IState> {
         <div>
           <div style={videoContainerStyle} ref={(videoContainerRef) => (this.videoContainerRef = videoContainerRef)}>
             <div data-vjs-player>
-              <canvas
-                id={'video-canvas' + this.props.startSource}
-                style={videoStyle}
-                width="640px"
-                height="480px"
-              ></canvas>
+              <canvas ref={(canvas) => (this.canvas = canvas)} style={videoStyle} width="640px" height="480px"></canvas>
             </div>
           </div>
           <div style={cameraSelectionContainer}>
