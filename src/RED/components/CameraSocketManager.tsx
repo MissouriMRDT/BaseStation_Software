@@ -1,3 +1,4 @@
+import path from 'path';
 import React from 'react';
 import { Component } from 'react';
 
@@ -69,7 +70,7 @@ class CameraSocketManager extends Component<IProps, IState> {
     // 192.168.100.10
 
     for (let i = 0; i < this.cameraIPs.length; i++) {
-      require('child_process').fork(String.raw`src\RED\components\WebsocketRelay.js`, [
+      require('child_process').fork(path.join(__dirname, String.raw`\RED\components\WebsocketRelay.js`), [
         'cam',
         8081 + i * 2,
         8082 + i * 2,
