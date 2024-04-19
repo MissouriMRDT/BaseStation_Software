@@ -17,6 +17,7 @@ import Gimbal from './components/Gimbal';
 import ThreeDRover from '../Core/components/ThreeDRover';
 import CameraControls from './components/CameraControls';
 import CamerasContainer from './components/CamerasContainer';
+import CameraSocketManager from './components/CameraSocketManager';
 // import SignalStack from './components/SignalStack';
 
 const row: CSS.Properties = {
@@ -140,6 +141,7 @@ class ControlCenter extends Component<IProps, IState> {
               store={(name: string, coords: any) => this.waypointsInstance.store(name, coords)}
               name="controlCenterMap"
             />
+            <CameraSocketManager />
             <CamerasContainer />
           </div>
         </div>
