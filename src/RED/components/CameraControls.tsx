@@ -163,7 +163,7 @@ class CameraControls extends Component<IProps, IState> {
             ))}
           </div>
           <div style={rotationContainer}>
-            <button onClick={() => this.rotateVideo(0)}>Reset</button>
+            <button onClick={() => this.rotateVideo(0)}>Reset Rotation</button>
             <button onClick={() => this.rotateVideo(90)}>Rotate 90</button>
             <button onClick={() => this.rotateVideo(180)}>Rotate 180</button>
           </div>
