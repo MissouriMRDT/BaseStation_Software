@@ -205,7 +205,6 @@ class Arm extends Component<IProps, IState> {
           <ControlScheme configs={['Arm']} style={{ width: '100%', marginRight: '2.5px' }} />
         </div>
         <CameraControls startSource={7} canvasWidth={640} canvasHeight={480}></CameraControls>
-        <ControlScheme configs={['Arm']} style={{ width: '50%', marginRight: '2.5px' }} />
       </div>
     );
   }
