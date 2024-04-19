@@ -31,23 +31,27 @@ const btnArray: CSS.Properties = {
   justifyContent: 'center',
   gap: '5px',
 };
-const readoutContainer: CSS.Properties = {
+const cellReadoutContainer: CSS.Properties = {
   width: '100%',
   display: 'grid',
-  gridTemplateColumns: '1fr 1fr 1fr 200px',
+  gridTemplateColumns: '1fr 1fr 1fr minmax(90px, 200px)',
   gap: '2px',
 };
 const busReadoutContainer: CSS.Properties = {
   width: '100%',
   display: 'grid',
-  gridTemplateColumns: '2fr 1fr 200px',
-  gridTemplateAreas: `'Motors non-aux-current pack'
-                      'Core   non-aux-current pack'
-                      'Aux    aux-current     pack'`,
-  justifyItems: 'stretch',
-  alignItems: 'stretch',
+  gridTemplateColumns: '2fr 1fr minmax(90px, 200px)',
+  gridTemplateAreas: `'Motors non-aux-current pack-current'
+                      'Core   non-aux-current pack-current'
+                      'Aux    aux-current     pack-current'`,
   rowGap: '5px',
   columnGap: '2px',
+};
+const miscReadoutContainer: CSS.Properties = {
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'space-evenly',
+  alignItems: 'center',
 };
 const readout: CSS.Properties = {
   fontFamily: 'arial',
@@ -73,9 +77,17 @@ const busReadout: CSS.Properties = {
   alignItems: 'center',
   gap: '10px',
 };
-const busCurrentReadout: CSS.Properties = {
+const coreCurrentReadout: CSS.Properties = {
   ...cellReadout,
-  backgroundColor: 'lightgray',
+  gridArea: 'non-aux-current',
+};
+const auxCurrentReadout: CSS.Properties = {
+  ...cellReadout,
+  gridArea: 'aux-current',
+};
+const packCurrentReadout: CSS.Properties = {
+  ...cellReadout,
+  gridArea: 'pack-current',
 };
 
 const MOTOR_ENABLE_BIT = 1 << 0;
@@ -125,8 +137,7 @@ interface IState {
     Core: BusStatus;
     Aux: BusStatus;
   };
-
-  // miscCurrents: number[]; // unused for now
+  miscCurrents: number[];
 }
 
 type BusType = keyof IState['busStatus'];
@@ -148,6 +159,7 @@ class Power extends Component<IProps, IState> {
         Core: 'pending',
         Aux: 'pending',
       },
+      miscCurrents: [0, 0, 0],
     };
 
     rovecomm.on('PackCurrent', (data: number) => this.setState({ packCurrent: data }));
@@ -164,6 +176,12 @@ class Power extends Component<IProps, IState> {
         },
       })
     );
+
+    rovecomm.on('MiscCurrent', (data: number[]) => this.setState({ miscCurrents: data }));
+  }
+
+  coreCurrent() {
+    return this.state.packCurrent - this.state.auxCurrent;
   }
 
   render(): JSX.Element {
@@ -208,47 +226,32 @@ class Power extends Component<IProps, IState> {
                 </div>
               );
             })}
-            <div
-              style={ColorStyleConverter(this.state.packCurrent - this.state.auxCurrent, 5, 30, 40, 120, 0, {
-                ...busCurrentReadout,
-                gridArea: 'non-aux-current',
-              })}
-            >
+            <div style={ColorStyleConverter(this.coreCurrent(), 5, 30, 40, 120, 0, coreCurrentReadout)}>
               <div>Core Current:</div>
-              <div>{this.state.packCurrent - this.state.auxCurrent} A</div>
+              <div>{this.coreCurrent()} A</div>
             </div>
-            <div
-              style={ColorStyleConverter(this.state.auxCurrent, 2, 10, 15, 120, 0, {
-                ...busCurrentReadout,
-                gridArea: 'aux-current',
-              })}
-            >
+            <div style={ColorStyleConverter(this.state.auxCurrent, 2, 10, 15, 120, 0, auxCurrentReadout)}>
               <div>Aux Current:</div>
               <div>{this.state.auxCurrent} A</div>
             </div>
-            <div
-              style={ColorStyleConverter(this.state.packCurrent, 5, 40, 50, 120, 0, {
-                ...busCurrentReadout,
-                gridArea: 'pack',
-              })}
-            >
+            <div style={ColorStyleConverter(this.state.packCurrent, 5, 40, 50, 120, 0, packCurrentReadout)}>
               <div>Pack Current:</div>
               <div>{this.state.packCurrent} A</div>
             </div>
           </div>
-          <div style={readoutContainer}>
+          <div style={cellReadoutContainer}>
             {this.state.cellVoltages.map((voltage, i) => {
               return (
                 // eslint-disable-next-line react/no-array-index-key
                 <div key={i} style={ColorStyleConverter(voltage, 2.5, 3.1, 4.2, 0, 120, cellReadout)}>
-                  <div>C{i}</div>
+                  <div>{`C${i + 1}`}</div>
                   <div>{voltage} V</div>
                 </div>
               );
             })}
             <div style={ColorStyleConverter(this.state.packVoltage, 15, 21.6, 25, 0, 120, packReadout)}>
               <div>Pack Voltage:</div>
-              <div>{`${this.state.packVoltage} V`}</div>
+              <div>{this.state.packVoltage} V</div>
             </div>
           </div>
           <hr style={{ borderTop: '2px dashed #990000', width: '100%' }} />
@@ -264,6 +267,13 @@ class Power extends Component<IProps, IState> {
             </button>
           </div>
           <hr style={{ borderTop: '2px dashed #990000', width: '100%' }} />
+          <div style={miscReadoutContainer}>
+            <div style={{ padding: '0.5em' }}>External Current Sensing</div>
+            {this.state.miscCurrents.map((current, i) => {
+              // eslint-disable-next-line react/no-array-index-key
+              return <div key={i} style={readout}>{`C${i + 1}: ${current} A`}</div>;
+            })}
+          </div>
         </div>
       </div>
     );
