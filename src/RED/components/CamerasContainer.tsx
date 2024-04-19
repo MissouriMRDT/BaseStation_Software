@@ -38,8 +38,6 @@ interface IProps {
 interface IState {}
 
 class CamerasContainer extends Component<IProps, IState> {
-  outSources: string[];
-
   cameraIPs: string[];
 
   static defaultProps = {
@@ -49,17 +47,6 @@ class CamerasContainer extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {};
-
-    this.outSources = [
-      'ws://127.0.0.1:8082/cam',
-      'ws://127.0.0.1:8084/cam',
-      'ws://127.0.0.1:8086/cam',
-      'ws://127.0.0.1:8088/cam',
-      'ws://127.0.0.1:8090/cam',
-      'ws://127.0.0.1:8092/cam',
-      'ws://127.0.0.1:8094/cam',
-      'ws://127.0.0.1:8096/cam',
-    ];
 
     this.cameraIPs = [
       '192.168.4.100:1181',
@@ -83,28 +70,24 @@ class CamerasContainer extends Component<IProps, IState> {
         <div style={container}>
           <CameraControls
             style={videoStyle}
-            sources={this.outSources}
             startSource={0}
             canvasWidth={this.props.canvasWidth}
             canvasHeight={this.props.canvasHeight}
           />
           <CameraControls
             style={videoStyle}
-            sources={this.outSources}
             startSource={1}
             canvasWidth={this.props.canvasWidth}
             canvasHeight={this.props.canvasHeight}
           />
           <CameraControls
             style={videoStyle}
-            sources={this.outSources}
             startSource={2}
             canvasWidth={this.props.canvasWidth}
             canvasHeight={this.props.canvasHeight}
           />
           <CameraControls
             style={videoStyle}
-            sources={this.outSources}
             startSource={3}
             canvasWidth={this.props.canvasWidth}
             canvasHeight={this.props.canvasHeight}

@@ -14,7 +14,7 @@ import ScienceGraphs from './components/ScienceGraphs';
 import FTIR from './components/FTIR';
 import CamerasContainer from '../../RED/components/CamerasContainer';
 import EncoderPositions from './components/EncoderPositions';
-import Cameras from '../../Core/components/Cameras';
+import CameraControls from '../../RED/components/CameraControls';
 // import SensorGraphs from './components/SensorGraphs';
 
 const row: CSS.Properties = {
@@ -131,10 +131,9 @@ class Science extends Component<IProps, IState> {
           <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>
             <EncoderPositions style={{ width: '80%', marginRight: '2.5px', marginLeft: '2.5px' }} />
             <CamerasContainer camAmount={7} canvasWidth={640} canvasHeight={480} />
-            {/* <Cameras defaultCamera={8} /> */}
           </div>
           <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>
-            <Cameras defaultCamera={8} />
+            <CameraControls canvasWidth={640} canvasHeight={480} startSource={7}></CameraControls>
           </div>
         </div>
         <div style={{ ...column }}>

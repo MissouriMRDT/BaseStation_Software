@@ -198,15 +198,12 @@ class Arm extends Component<IProps, IState> {
           </div>
         </div>
         <div style={row}>
-          {/* <Cameras defaultCamera={5} style={{ width: '50%', marginRight: '2.5px' }} />
-          <Cameras defaultCamera={6} style={{ width: '50%', marginLeft: '2.5px' }} /> */}
           <CameraControls startSource={5} canvasWidth={640} canvasHeight={480}></CameraControls>
           <CameraControls startSource={6} canvasWidth={640} canvasHeight={480}></CameraControls>
         </div>
         <div style={row}>
           <ControlScheme configs={['Arm']} style={{ width: '100%', marginRight: '2.5px' }} />
         </div>
-        {/* <Cameras defaultCamera={7} cameraToggle={true} gripperCam={this.state.gripperCam} /> */}
         <CameraControls startSource={7} canvasWidth={640} canvasHeight={480}></CameraControls>
         <ControlScheme configs={['Arm']} style={{ width: '50%', marginRight: '2.5px' }} />
       </div>

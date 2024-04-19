@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
-import Cameras from '../Core/components/Cameras';
 import Map from '../RED/components/Map';
 import ThreeDRover from '../Core/components/ThreeDRover';
 import Angular from '../RAM/Arm/components/Angular';
@@ -161,7 +160,7 @@ class RoverImageryDisplay extends Component<IProps, IState> {
       display: (
         <div style={{ flexGrow: 1, height: '100%' }}>
           {this.buttons}
-          <CamerasContainer camAmount={0} canvasWidth={640} canvasHeight={480} />
+          <CamerasContainer camAmount={0} canvasWidth={640 * 4} canvasHeight={480 * 4} />
         </div>
       ),
       displayed: 'Camera',

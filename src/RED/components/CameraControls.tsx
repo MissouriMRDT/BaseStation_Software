@@ -26,8 +26,6 @@ const videoContainerStyle: CSS.Properties = {
 
 interface IProps {
   style?: CSS.Properties;
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  sources: string[];
   startSource: number;
   canvasWidth: number;
   canvasHeight: number;
@@ -45,7 +43,16 @@ class CameraControls extends Component<IProps, IState> {
 
   src: string;
 
-  sources: string[];
+  sources = [
+    'ws://127.0.0.1:8082/cam',
+    'ws://127.0.0.1:8084/cam',
+    'ws://127.0.0.1:8086/cam',
+    'ws://127.0.0.1:8088/cam',
+    'ws://127.0.0.1:8090/cam',
+    'ws://127.0.0.1:8092/cam',
+    'ws://127.0.0.1:8094/cam',
+    'ws://127.0.0.1:8096/cam',
+  ];
 
   player: any;
 
@@ -57,8 +64,7 @@ class CameraControls extends Component<IProps, IState> {
     super(props);
     this.state = { rotationAngle: 0, currentSource: props.startSource, width: 0 };
 
-    this.sources = props.sources;
-    this.src = this.sources[props.startSource];
+    this.src = this.sources[0];
     this.canvas = document.createElement('canvas');
   }
 
