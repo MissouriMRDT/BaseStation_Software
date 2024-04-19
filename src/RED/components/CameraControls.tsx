@@ -29,6 +29,8 @@ interface IProps {
   // eslint-disable-next-line @typescript-eslint/ban-types
   sources: string[];
   startSource: number;
+  canvasWidth: number;
+  canvasHeight: number;
 }
 
 interface IState {

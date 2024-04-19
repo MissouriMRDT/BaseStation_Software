@@ -182,7 +182,7 @@ class Science extends Component<IProps, IState> {
         <div style={{ ...row }}>
           <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>
             <EncoderPositions style={{ width: '80%', marginRight: '2.5px', marginLeft: '2.5px' }} />
-            <CamerasContainer />
+            <CamerasContainer camAmount={0} canvasWidth={640} canvasHeight={480} />
             {/* <Cameras defaultCamera={8} /> */}
           </div>
           <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>

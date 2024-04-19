@@ -28,6 +28,11 @@ const videoStyle: CSS.Properties = {
 
 interface IProps {
   style?: CSS.Properties;
+
+  // TODO cam amount does nothing
+  camAmount: number;
+  canvasWidth: number;
+  canvasHeight: number;
 }
 
 interface IState {}
@@ -76,10 +81,34 @@ class CamerasContainer extends Component<IProps, IState> {
       <div style={this.props.style}>
         <div style={label}> Camera Controls </div>
         <div style={container}>
-          <CameraControls style={videoStyle} sources={this.outSources} startSource={0} />
-          <CameraControls style={videoStyle} sources={this.outSources} startSource={1} />
-          <CameraControls style={videoStyle} sources={this.outSources} startSource={2} />
-          <CameraControls style={videoStyle} sources={this.outSources} startSource={3} />
+          <CameraControls
+            style={videoStyle}
+            sources={this.outSources}
+            startSource={0}
+            canvasWidth={this.props.canvasWidth}
+            canvasHeight={this.props.canvasHeight}
+          />
+          <CameraControls
+            style={videoStyle}
+            sources={this.outSources}
+            startSource={1}
+            canvasWidth={this.props.canvasWidth}
+            canvasHeight={this.props.canvasHeight}
+          />
+          <CameraControls
+            style={videoStyle}
+            sources={this.outSources}
+            startSource={2}
+            canvasWidth={this.props.canvasWidth}
+            canvasHeight={this.props.canvasHeight}
+          />
+          <CameraControls
+            style={videoStyle}
+            sources={this.outSources}
+            startSource={3}
+            canvasWidth={this.props.canvasWidth}
+            canvasHeight={this.props.canvasHeight}
+          />
         </div>
       </div>
     );

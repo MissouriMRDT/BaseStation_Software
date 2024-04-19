@@ -159,7 +159,7 @@ class RoverImageryDisplay extends Component<IProps, IState> {
       display: (
         <div style={{ flexGrow: 1, height: '100%' }}>
           {this.buttons}
-          <CamerasContainer />
+          <CamerasContainer camAmount={0} canvasWidth={640} canvasHeight={480} />
         </div>
       ),
       displayed: 'Camera',

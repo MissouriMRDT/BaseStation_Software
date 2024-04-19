@@ -142,7 +142,7 @@ class ControlCenter extends Component<IProps, IState> {
               name="controlCenterMap"
             />
             <CameraSocketManager />
-            <CamerasContainer />
+            <CamerasContainer camAmount={4} canvasWidth={640} canvasHeight={480} />
           </div>
         </div>
         <div style={{ ...column, width: '60%' }}>
