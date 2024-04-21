@@ -138,18 +138,26 @@ class Drive extends Component<IProps, IState> {
           leftSpeed = x;
           rightSpeed = x;
           if (steer !== 0) {
-            const angle = Math.round(steer / 2);
+            const angle = Math.round(steer / 1.5);
             if (steer > 0) {
-              leftSpeed = Math.round(leftSpeed - angle);
+              if (leftSpeed - angle < 0) {
+                leftSpeed = 0;
+              } else {
+                leftSpeed = Math.round(leftSpeed - angle);
+              }
             } else if (steer < 0) {
-              rightSpeed = Math.round(rightSpeed + angle);
+              if (rightSpeed + angle < 0) {
+                rightSpeed = 0;
+              } else {
+                rightSpeed = Math.round(rightSpeed + angle);
+              }
             }
           }
         } else if (y > 0) {
           leftSpeed = -y;
           rightSpeed = -y;
           if (steer !== 0) {
-            const angle = Math.round(steer / 2);
+            const angle = Math.round(steer / 1.5);
             if (steer > 0) {
               leftSpeed = Math.round(leftSpeed + angle);
             } else if (steer < 0) {
