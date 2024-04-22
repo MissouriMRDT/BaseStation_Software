@@ -34,16 +34,18 @@ const btnArray: CSS.Properties = {
 const cellReadoutContainer: CSS.Properties = {
   width: '100%',
   display: 'grid',
-  gridTemplateColumns: '1fr 1fr 1fr minmax(90px, 200px)',
+  gridArea: 'cells',
+  gridTemplateColumns: '1fr 1fr 1fr',
   gap: '2px',
 };
 const busReadoutContainer: CSS.Properties = {
   width: '100%',
   display: 'grid',
-  gridTemplateColumns: '2fr 1fr minmax(90px, 200px)',
+  gridTemplateColumns: '1fr 1fr 1fr',
   gridTemplateAreas: `'Motors non-aux-current pack-current'
                       'Core   non-aux-current pack-current'
-                      'Aux    aux-current     pack-current'`,
+                      'Aux    aux-current     pack-current'
+                      'cells  cells           pack-voltage'`,
   rowGap: '5px',
   columnGap: '2px',
 };
@@ -55,7 +57,7 @@ const miscReadoutContainer: CSS.Properties = {
 };
 const readout: CSS.Properties = {
   fontFamily: 'arial',
-  fontSize: '10pt',
+  fontSize: '12pt',
   padding: '0.5em 1.2em',
   fontWeight: 'bold',
 };
@@ -67,8 +69,7 @@ const cellReadout: CSS.Properties = {
 };
 const packReadout: CSS.Properties = {
   ...cellReadout,
-  gridRow: '1 / span 2',
-  gridColumn: '-2 / -1',
+  gridArea: 'pack-voltage',
 };
 const busReadout: CSS.Properties = {
   ...readout,
@@ -226,32 +227,32 @@ class Power extends Component<IProps, IState> {
                 </div>
               );
             })}
-            <div style={ColorStyleConverter(this.coreCurrent(), 5, 30, 40, 120, 0, coreCurrentReadout)}>
+            <div style={ColorStyleConverter(this.coreCurrent(), 0.5, 7.2, 30, 120, 0, coreCurrentReadout)}>
               <div>Core Current:</div>
-              <div>{this.coreCurrent()} A</div>
+              <div>{this.coreCurrent().toFixed(2)} A</div>
             </div>
-            <div style={ColorStyleConverter(this.state.auxCurrent, 2, 10, 15, 120, 0, auxCurrentReadout)}>
+            <div style={ColorStyleConverter(this.state.auxCurrent, 0.5, 5, 15, 120, 0, auxCurrentReadout)}>
               <div>Aux Current:</div>
-              <div>{this.state.auxCurrent} A</div>
+              <div>{Number(this.state.auxCurrent).toFixed(2)} A</div>
             </div>
-            <div style={ColorStyleConverter(this.state.packCurrent, 5, 40, 50, 120, 0, packCurrentReadout)}>
+            <div style={ColorStyleConverter(this.state.packCurrent, 0.5, 9.5, 45, 120, 0, packCurrentReadout)}>
               <div>Pack Current:</div>
-              <div>{this.state.packCurrent} A</div>
+              <div>{Number(this.state.packCurrent).toFixed(2)} A</div>
             </div>
-          </div>
-          <div style={cellReadoutContainer}>
-            {this.state.cellVoltages.map((voltage, i) => {
-              return (
-                // eslint-disable-next-line react/no-array-index-key
-                <div key={i} style={ColorStyleConverter(voltage, 2.5, 3.1, 4.2, 0, 120, cellReadout)}>
-                  <div>{`C${i + 1}`}</div>
-                  <div>{voltage} V</div>
-                </div>
-              );
-            })}
+            <div style={cellReadoutContainer}>
+              {this.state.cellVoltages.map((voltage, i) => {
+                return (
+                  // eslint-disable-next-line react/no-array-index-key
+                  <div key={i} style={ColorStyleConverter(voltage, 2.5, 3.1, 4.2, 0, 120, cellReadout)}>
+                    <div>{`C${i + 1}`}</div>
+                    <div>{voltage.toFixed(2)} V</div>
+                  </div>
+                );
+              })}
+            </div>
             <div style={ColorStyleConverter(this.state.packVoltage, 15, 21.6, 25, 0, 120, packReadout)}>
               <div>Pack Voltage:</div>
-              <div>{this.state.packVoltage} V</div>
+              <div>{Number(this.state.packVoltage).toFixed(2)} V</div>
             </div>
           </div>
           <hr style={{ borderTop: '2px dashed #990000', width: '100%' }} />
@@ -271,7 +272,7 @@ class Power extends Component<IProps, IState> {
             <div style={{ padding: '0.5em' }}>External Current Sensing</div>
             {this.state.miscCurrents.map((current, i) => {
               // eslint-disable-next-line react/no-array-index-key
-              return <div key={i} style={readout}>{`C${i + 1}: ${current} A`}</div>;
+              return <div key={i} style={readout}>{`C${i + 1}: ${current.toFixed(2)} A`}</div>;
             })}
           </div>
         </div>
