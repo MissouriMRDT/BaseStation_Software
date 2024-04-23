@@ -73,7 +73,6 @@ class CameraSocketManager extends Component<IProps, IState> {
 
     for (let i = 0; i < this.cameraIPs.length; i++) {
       require('child_process').fork(path.join(__dirname, '../assets/WebsocketRelay.js'), [
-        path.join(__dirname, '../node_modules/ws/index.js'),
         'cam',
         8081 + i * 2,
         8082 + i * 2,
@@ -83,7 +82,7 @@ class CameraSocketManager extends Component<IProps, IState> {
   }
 
   render(): JSX.Element {
-    return <div></div>;
+    return <div>{/* <p>{path.join(__dirname, '../node_modules/ws/index.js')}</p> */}</div>;
   }
 }
 export default CameraSocketManager;
