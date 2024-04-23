@@ -72,8 +72,11 @@ class CameraSocketManager extends Component<IProps, IState> {
     // 192.168.100.10
 
     for (let i = 0; i < this.cameraIPs.length; i++) {
-      console.log(path.join(__dirname, String.raw`\RED\components\WebsocketRelay.js`));
-      require('child_process').fork(path.join(__dirname, 'WebsocketRelay.js'), ['cam', 8081 + i * 2, 8082 + i * 2]);
+      require('child_process').fork(path.join(__dirname, String.raw`\RED\components\WebsocketRelay.js`), [
+        'cam',
+        8081 + i * 2,
+        8082 + i * 2,
+      ]);
       startFFMPEG('udp://' + this.cameraIPs[i], this.inSources[i]);
     }
   }
