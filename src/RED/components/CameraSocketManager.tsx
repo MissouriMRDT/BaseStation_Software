@@ -72,6 +72,7 @@ class CameraSocketManager extends Component<IProps, IState> {
     // 192.168.100.10
 
     for (let i = 0; i < this.cameraIPs.length; i++) {
+      console.log(path.join(__dirname, '../assets/WebsocketRelay.js'));
       require('child_process').fork(path.join(__dirname, '../assets/WebsocketRelay.js'), [
         'cam',
         8081 + i * 2,
@@ -82,7 +83,11 @@ class CameraSocketManager extends Component<IProps, IState> {
   }
 
   render(): JSX.Element {
-    return <div></div>;
+    return (
+      <div>
+        <p> {path.join(__dirname, '../assets/WebsocketRelay.js')} </p>
+      </div>
+    );
   }
 }
 export default CameraSocketManager;
