@@ -41,8 +41,7 @@
       "main.prod.js",
       "main.prod.js.map",
       "package.json",
-      "assets/",
-      "src/RED/components/WebsocketRelay.js"
+      "assets/"
     ],
     "afterSign": ".erb/scripts/Notarize.js",
     "mac": {
