@@ -9,8 +9,6 @@ import NewWindowComponent from '../Core/Window';
 import RoverOverviewOfNetwork from '../RON/RON';
 import RoverAttachmentManager from '../RAM/RAM';
 import RoverImageryDisplay from '../RID/RID';
-import Cameras from '../Core/components/Cameras';
-import Timer from './components/Timer';
 import Power from './components/PMS';
 import ControlScheme from '../Core/components/ControlScheme';
 import Drive from './components/Drive';
