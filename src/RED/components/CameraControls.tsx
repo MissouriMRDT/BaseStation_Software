@@ -126,7 +126,10 @@ class CameraControls extends Component<IProps, IState> {
     this.src = this.sources[newSource];
     this.player = new JSMpeg.VideoElement(this.canvas, this.src, {
       canvas: this.canvas,
+      audio: false,
     });
+    this.player.player.pauseWhenHidden = false;
+    this.player.player.videoBufferSize = 4 * 1024;
   }
 
   render(): JSX.Element {

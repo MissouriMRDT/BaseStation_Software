@@ -77,7 +77,7 @@ class CameraSocketManager extends Component<IProps, IState> {
         8081 + i * 2,
         8082 + i * 2,
       ]);
-      startFFMPEG('udp://' + this.cameraIPs[i], this.inSources[i]);
+      startFFMPEG('udp://' + this.cameraIPs[i] + '?buffer_size=2000"&"fifo_size=1024', this.inSources[i]);
     }
   }
 
