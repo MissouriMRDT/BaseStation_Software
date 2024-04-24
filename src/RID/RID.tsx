@@ -14,7 +14,7 @@ import Drive from '../RED/components/Drive';
 import Gimbal from '../RED/components/Gimbal';
 import Lighting from '../RAM/Autonomy/components/Lighting';
 import Log from '../RED/components/Log';
-import Power from '../RED/components/Power&BMS';
+import Power from '../RED/components/PMS';
 import CustomPackets from '../RON/components/CustomPackets';
 import PacketLogger from '../RON/components/PacketLogger';
 // import PingGraph from '../RON/components/PingGraph';
