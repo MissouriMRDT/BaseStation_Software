@@ -117,6 +117,7 @@ interface IProps {
 
 const minWavelength = 340;
 const maxWavelength = 850;
+const maxintegrationTime = 6000;
 
 interface IState {
   /** Holds which lasers are enabled */
@@ -127,6 +128,7 @@ interface IState {
   }[];
 
   crosshairPos: number | null;
+  integrationTime: number;
 }
 
 class Reflectance extends Component<IProps, IState> {
@@ -140,10 +142,12 @@ class Reflectance extends Component<IProps, IState> {
       graphData: [{ x: 0, y: 0 }],
 
       crosshairPos: null,
+      integrationTime: 0,
     };
     this.onNearestX = this.onNearestX.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
     this.requestData = this.requestData.bind(this);
+    this.integrationTimeChange = this.integrationTimeChange.bind(this);
 
     rovecomm.on('Reading', (data: number[]) => this.updateGraphValues(data));
   }
@@ -186,8 +190,18 @@ class Reflectance extends Component<IProps, IState> {
   }
 
   requestData(): void {
-    rovecomm.sendCommand('RequestReading', 'ReflectanceSpectrometer', 1);
+    rovecomm.sendCommand('RequestReading', 'ReflectanceSpectrometer', this.state.integrationTime);
     console.log('requesting Reflectance');
+  }
+
+  integrationTimeChange(event: { target: { value: string } }): void {
+    let integrationTime = parseInt(event.target.value);
+    if (integrationTime < 0) {
+      integrationTime = 0;
+    } else if (integrationTime > maxintegrationTime) {
+      integrationTime = maxintegrationTime;
+    }
+    this.setState({ integrationTime });
   }
 
   render(): JSX.Element {
@@ -227,6 +241,15 @@ class Reflectance extends Component<IProps, IState> {
                   >
                     Request Reading
                   </button>
+                </div>
+                <div>
+                  Integration Time (ms):
+                  <input
+                    type="text"
+                    style={{ marginLeft: '5px' }}
+                    value={this.state.integrationTime || ''}
+                    onChange={this.integrationTimeChange}
+                  />
                 </div>
                 <div style={{ ...column, margin: '0 100px 0 100px' }}>
                   <button onClick={saveImage}>Export Graph</button>
