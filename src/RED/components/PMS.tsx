@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import CSS from 'csstype';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
 import { ColorStyleConverter } from '../../Core/ColorConverter';
-import Log from './Log';
+// import Log from './Log';
 
 const label: CSS.Properties = {
   marginTop: '-10px',
