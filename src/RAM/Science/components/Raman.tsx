@@ -58,6 +58,7 @@ const overlay: CSS.Properties = {
 
 const minWavelength = 400;
 const maxWavelength = 700;
+const maxintegrationTime = 6000;
 
 function downloadURL(imgData: string): void {
   const filename = `./Screenshots/${new Date()
@@ -127,6 +128,7 @@ interface IState {
   crosshairPos: number | null;
 
   enableLED: boolean;
+  integrationTime: number;
 }
 
 // const LEDWavelength = 532; //nm
@@ -146,12 +148,14 @@ class Raman extends Component<IProps, IState> {
       crosshairPos: null,
 
       enableLED: false,
+      integrationTime: 0,
     };
     // this.exportData = this.exportData.bind(this);
     this.processReading = this.processReading.bind(this);
     this.onNearestX = this.onNearestX.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
     this.requestData = this.requestData.bind(this);
+    this.integrationTimeChange = this.integrationTimeChange.bind(this);
 
     rovecomm.on('CCDReading_Part1', (data: number[]) => this.processReading(1, 0, 500, data));
     rovecomm.on('CCDReading_Part2', (data: number[]) => this.processReading(2, 500, 1000, data));
@@ -250,8 +254,18 @@ class Raman extends Component<IProps, IState> {
       };
     });
 
-    rovecomm.sendCommand('RequestReading', 'RamanSpectrometer', 1);
+    rovecomm.sendCommand('RequestReading', 'RamanSpectrometer', this.state.integrationTime);
     console.log(`Requesting Raman Reading`);
+  }
+
+  integrationTimeChange(event: { target: { value: string } }): void {
+    let integrationTime = parseInt(event.target.value);
+    if (integrationTime < 0) {
+      integrationTime = 0;
+    } else if (integrationTime > maxintegrationTime) {
+      integrationTime = maxintegrationTime;
+    }
+    this.setState({ integrationTime });
   }
 
   render(): JSX.Element {
@@ -295,6 +309,15 @@ class Raman extends Component<IProps, IState> {
                 >
                   Request Reading
                 </button>
+                <div>
+                  Integration Time (ms):
+                  <input
+                    type="text"
+                    style={{ marginLeft: '5px' }}
+                    value={this.state.integrationTime || ''}
+                    onChange={this.integrationTimeChange}
+                  />
+                </div>
               </div>
               <div style={{ ...column, margin: '0 100px 0 100px' }}>
                 <button onClick={saveImage}>Export Graph</button>
