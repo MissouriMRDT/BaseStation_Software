@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import CSS from 'csstype';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
 import { ColorStyleConverter } from '../../Core/ColorConverter';
+import Log from './Log';
 
 const label: CSS.Properties = {
   marginTop: '-10px',
@@ -97,9 +98,12 @@ const AUX_ENABLE_BIT = 1 << 2;
 
 const ENABLE_BITS = [MOTOR_ENABLE_BIT, CORE_ENABLE_BIT, AUX_ENABLE_BIT];
 
+const TELEMETRY_TIMEOUT = 10_000; // milliseconds
+
 // power cycle everything (including network switch)
 function reboot(): void {
-  rovecomm.sendCommand('Reboot', 'PMS', 1);
+  if (window.confirm('Are you sure you want to do this? It will take a few minutes to reboot the network switch.'))
+    rovecomm.sendCommand('Reboot', 'PMS', 1);
 }
 
 // turn everything off except for network
@@ -139,6 +143,7 @@ interface IState {
     Aux: BusStatus;
   };
   miscCurrents: number[];
+  telemetryTimeoutId: NodeJS.Timeout | null;
 }
 
 type BusType = keyof IState['busStatus'];
@@ -161,28 +166,71 @@ class Power extends Component<IProps, IState> {
         Aux: 'pending',
       },
       miscCurrents: [0, 0, 0],
+      telemetryTimeoutId: null,
+    };
+    const onPmsTimeout = () => {
+      console.log(`${new Date().toLocaleTimeString()} Warning: stopped receiving packets from PMS!`);
+      this.setState({
+        auxCurrent: 0,
+        packCurrent: 0,
+        packVoltage: 0,
+        cellVoltages: [0, 0, 0, 0, 0, 0],
+        busStatus: { Motors: 'pending', Core: 'pending', Aux: 'pending' },
+        miscCurrents: [0, 0, 0],
+        telemetryTimeoutId: null,
+      });
+    };
+    const telemetryCallback = () => {
+      if (this.state.telemetryTimeoutId !== null) {
+        clearTimeout(this.state.telemetryTimeoutId);
+      }
+      this.setState({
+        telemetryTimeoutId: setTimeout(onPmsTimeout, TELEMETRY_TIMEOUT),
+      });
     };
 
-    rovecomm.on('PackCurrent', (data: number) => this.setState({ packCurrent: data }));
-    rovecomm.on('AuxCurrent', (data: number) => this.setState({ auxCurrent: data }));
-    rovecomm.on('PackVoltage', (data: number) => this.setState({ packVoltage: data }));
-    rovecomm.on('CellVoltage', (data: number[]) => this.setState({ cellVoltages: data }));
+    rovecomm.on('PackCurrent', (data: number) => {
+      this.setState({ packCurrent: data });
+      telemetryCallback();
+    });
+    rovecomm.on('AuxCurrent', (data: number) => {
+      this.setState({ auxCurrent: data });
+      telemetryCallback();
+    });
+    rovecomm.on('PackVoltage', (data: number) => {
+      this.setState({ packVoltage: data });
+      telemetryCallback();
+    });
+    rovecomm.on('CellVoltage', (data: number[]) => {
+      this.setState({ cellVoltages: data });
+      telemetryCallback();
+    });
 
-    rovecomm.on('BusStatus', (data: number) =>
+    rovecomm.on('BusStatus', (data: number) => {
       this.setState({
         busStatus: {
           Motors: data & MOTOR_ENABLE_BIT ? 'enabled' : 'disabled',
           Core: data & CORE_ENABLE_BIT ? 'enabled' : 'disabled',
           Aux: data & AUX_ENABLE_BIT ? 'enabled' : 'disabled',
         },
-      })
-    );
+      });
+      telemetryCallback();
+    });
 
-    rovecomm.on('MiscCurrent', (data: number[]) => this.setState({ miscCurrents: data }));
+    rovecomm.on('MiscCurrent', (data: number[]) => {
+      this.setState({ miscCurrents: data });
+      telemetryCallback();
+    });
   }
 
   coreCurrent() {
     return this.state.packCurrent - this.state.auxCurrent;
+  }
+
+  componentWillUnmount(): void {
+    if (this.state.telemetryTimeoutId !== null) {
+      clearTimeout(this.state.telemetryTimeoutId);
+    }
   }
 
   render(): JSX.Element {
