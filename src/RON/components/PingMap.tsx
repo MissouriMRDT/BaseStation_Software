@@ -296,14 +296,14 @@ class PingMap extends Component<IProps, IState> {
       }
     }
     context.beginPath();
-    context.fillStyle = 'white';
-    // this.props.devices.GrandStream.ping === -1
-    //   ? 'white'
-    //   : ColorConverter(this.props.devices.GrandStream.ping, min, cutoff, max, greenHue, redHue);
+    context.fillStyle =
+      this.props.devices.RoverSwitch.ping === -1
+        ? 'white'
+        : ColorConverter(this.props.devices.RoverSwitch.ping, min, cutoff, max, greenHue, redHue);
     context.rect(centerW - 20, 380, 40, 40);
     context.stroke();
     context.fill();
-    text = 'Router';
+    text = 'Rover';
     context.textBaseline = 'middle';
     context.fillStyle = 'black';
     context.textAlign = 'center';
