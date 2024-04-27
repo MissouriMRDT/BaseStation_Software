@@ -157,11 +157,11 @@ class Raman extends Component<IProps, IState> {
     this.requestData = this.requestData.bind(this);
     this.integrationTimeChange = this.integrationTimeChange.bind(this);
 
-    rovecomm.on('CCDReading_Part1', (data: number[]) => this.processReading(1, 0, 500, data));
-    rovecomm.on('CCDReading_Part2', (data: number[]) => this.processReading(2, 500, 1000, data));
-    rovecomm.on('CCDReading_Part3', (data: number[]) => this.processReading(3, 1000, 1500, data));
-    rovecomm.on('CCDReading_Part4', (data: number[]) => this.processReading(4, 1500, 2000, data));
-    rovecomm.on('CCDReading_Part5', (data: number[]) => this.processReading(5, 2000, 2048, data));
+    rovecomm.on('RamanReading_Part1', (data: number[]) => this.processReading(1, 0, 500, data));
+    rovecomm.on('RamanReading_Part2', (data: number[]) => this.processReading(2, 500, 1000, data));
+    rovecomm.on('RamanReading_Part3', (data: number[]) => this.processReading(3, 1000, 1500, data));
+    rovecomm.on('RamanReading_Part4', (data: number[]) => this.processReading(4, 1500, 2000, data));
+    rovecomm.on('RamanReading_Part5', (data: number[]) => this.processReading(5, 2000, 2048, data));
   }
 
   processReading(packetID: number, startIndex: number, endIndex: number, data: number[]) {
@@ -201,7 +201,7 @@ class Raman extends Component<IProps, IState> {
 
   setLED(enable: boolean) {
     this.setState({ enableLED: enable }, () => {
-      rovecomm.sendCommand('EnableLEDs', 'RamanSpectrometer', Raman.sendLEDCommand(enable));
+      rovecomm.sendCommand('EnableLEDs', 'Instruments', Raman.sendLEDCommand(enable));
     });
   }
 
@@ -254,7 +254,7 @@ class Raman extends Component<IProps, IState> {
       };
     });
 
-    rovecomm.sendCommand('RequestReading', 'RamanSpectrometer', this.state.integrationTime);
+    rovecomm.sendCommand('RequestRamanReading', 'Instruments', this.state.integrationTime);
     console.log(`Requesting Raman Reading`);
   }
 

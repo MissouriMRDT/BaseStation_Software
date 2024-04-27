@@ -149,7 +149,7 @@ class Reflectance extends Component<IProps, IState> {
     this.requestData = this.requestData.bind(this);
     this.integrationTimeChange = this.integrationTimeChange.bind(this);
 
-    rovecomm.on('Reading', (data: number[]) => this.updateGraphValues(data));
+    rovecomm.on('ReflectanceReading', (data: number[]) => this.updateGraphValues(data));
   }
 
   onMouseLeave(): void {
@@ -190,7 +190,7 @@ class Reflectance extends Component<IProps, IState> {
   }
 
   requestData(): void {
-    rovecomm.sendCommand('RequestReading', 'ReflectanceSpectrometer', this.state.integrationTime);
+    rovecomm.sendCommand('RequestReflectanceReading', 'Instruments', this.state.integrationTime);
     console.log('requesting Reflectance');
   }
 
