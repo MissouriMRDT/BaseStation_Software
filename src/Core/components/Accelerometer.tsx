@@ -18,8 +18,6 @@ const container: CSS.Properties = {
   borderStyle: 'solid',
   padding: '0px',
   alignItems: 'center',
-  //height: '20vw',
-  aspectRatio: '16 / 9',
   position: 'relative',
   overflow: 'hidden',
 };
@@ -45,7 +43,7 @@ interface IProps {
 }
 
 interface IState {
-  downVector: Vector3;
+  upVector: Vector3;
   displayPitch: number;
   displayRoll: number;
   color: '#B92C2C' | '#363636';
@@ -57,8 +55,6 @@ interface IState {
 class Accelerometer extends Component<IProps, IState> {
   static defaultProps: IProps = {
     style: {},
-    // width: 300,
-    // height: 150
   };
 
   private arrowRef: React.RefObject<ArrowHelperProps>;
@@ -70,7 +66,7 @@ class Accelerometer extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      downVector: new Vector3(0, -1, 0),
+      upVector: new Vector3(0, 1, 0),
       displayPitch: 0,
       displayRoll: 0,
       color: '#363636',
@@ -79,7 +75,9 @@ class Accelerometer extends Component<IProps, IState> {
     };
 
     rovecomm.on('AccelerometerData', (data: number[]) => {
-      this.setState({ downVector: new Vector3(...data) });
+      // CoreBoard: y-forward, z-up, x-right
+      // ThreeJS (WebGL): -z-forward, y-up, x-right
+      this.setState({ upVector: new Vector3(data[0], data[2], -data[1]) });
       this.calcRotation();
     });
 
@@ -117,16 +115,16 @@ class Accelerometer extends Component<IProps, IState> {
     this.state.geometry?.dispose();
   }
 
-  // We must rotate the rover such that downVector would point to <0, -1, 0> if it underwent the same rotation.
-  // We find the axis to rotate it around by crossing downVector with <0, -1, 0>,
+  // We must rotate the rover such that upVector would point to <0, -1, 0> if it underwent the same rotation.
+  // We find the axis to rotate it around by crossing upVector with <0, -1, 0>,
   // We use a quaternion to represent the axis and angle, then convert it to euler angles.
   calcRotation(): void {
-    const normalizedDown = this.state.downVector.clone().normalize();
-    const axisAround = normalizedDown.clone().cross(negativeY).normalize();
-    const angleAround = normalizedDown.angleTo(negativeY);
-    let roll = Math.round((Math.asin(normalizedDown.x) / Math.PI) * 180);
-    let pitch = Math.round((Math.asin(normalizedDown.z) / Math.PI) * 180);
-    if (normalizedDown.y > 0) {
+    const normalizedUp = this.state.upVector.clone().normalize();
+    const axisAround = normalizedUp.clone().cross(positiveY).normalize();
+    const angleAround = normalizedUp.angleTo(positiveY);
+    let roll = Math.round((Math.asin(normalizedUp.x) / Math.PI) * 180);
+    let pitch = Math.round((Math.asin(normalizedUp.z) / Math.PI) * 180);
+    if (normalizedUp.y < 0) {
       roll = 180 - roll;
       pitch = 180 - pitch;
     }
@@ -135,8 +133,8 @@ class Accelerometer extends Component<IProps, IState> {
       displayRoll: roll,
       color: angleAround > DANGER_ANGLE ? '#B92C2C' : '#363636',
     });
-    this.arrowRef.current?.setDirection?.(normalizedDown);
-    if (normalizedDown.equals(positiveY)) this.roverRef.current?.setRotationFromEuler(new Euler(0, 0, Math.PI));
+    this.arrowRef.current?.setDirection?.(normalizedUp);
+    if (normalizedUp.equals(negativeY)) this.roverRef.current?.setRotationFromEuler(new Euler(0, 0, Math.PI));
     else this.roverRef.current?.setRotationFromAxisAngle(axisAround, angleAround);
   }
 
@@ -144,7 +142,7 @@ class Accelerometer extends Component<IProps, IState> {
     return (
       <div style={this.props.style}>
         <div style={label}>3D Rover</div>
-        <div style={{ ...container }}>
+        <div style={container}>
           <Canvas shadows>
             <Suspense
               fallback={
@@ -155,19 +153,21 @@ class Accelerometer extends Component<IProps, IState> {
             >
               <directionalLight position-y={2} intensity={Math.PI * 0.5} castShadow />
               <ambientLight intensity={0.1 * Math.PI} />
-              <group>
-                <mesh position={[0, 3, 0]}>
-                  <boxGeometry />
-                  <meshBasicMaterial color={'black'} />
-                </mesh>
-                <arrowHelper
-                  args={[this.state.downVector, new Vector3(0, 3, 0), 2, 'green', 0.3, 0.3]}
-                  ref={this.arrowRef}
-                />
-              </group>
+              {this.state.showManualControls && (
+                <group>
+                  <mesh position={[0, 3, 0]}>
+                    <boxGeometry />
+                    <meshBasicMaterial color={'black'} />
+                  </mesh>
+                  <arrowHelper
+                    args={[this.state.upVector, new Vector3(0, 3, 0), 2, 'green', 0.3, 0.3]}
+                    ref={this.arrowRef}
+                  />
+                </group>
+              )}
               <group ref={this.roverRef}>
                 {this.state.file.endsWith('.glb') ? (
-                  <RoverScene position-y={-2} scale={2.5} />
+                  <RoverScene position-y={-2} rotation-y={Math.PI} scale={2} />
                 ) : (
                   <mesh geometry={this.state.geometry} scale={0.08} castShadow>
                     <meshLambertMaterial color={this.state.color} />
@@ -204,7 +204,7 @@ class Accelerometer extends Component<IProps, IState> {
               type="text"
               onChange={(event) => {
                 this.setState({
-                  downVector: new Vector3(
+                  upVector: new Vector3(
                     ...event.target.value
                       .split(',')
                       .map((tok) => tok.trim())
@@ -221,10 +221,10 @@ class Accelerometer extends Component<IProps, IState> {
               min="-1"
               max="1"
               step="0.05"
-              value={this.state.downVector.x}
+              value={this.state.upVector.x}
               onChange={(event) => {
                 this.setState((prevState) => ({
-                  downVector: prevState.downVector.setX(parseFloat(event.target.value)),
+                  upVector: prevState.upVector.setX(parseFloat(event.target.value)),
                 }));
                 this.calcRotation();
               }}
@@ -235,10 +235,10 @@ class Accelerometer extends Component<IProps, IState> {
               min="-1"
               max="1"
               step="0.05"
-              value={this.state.downVector.y}
+              value={this.state.upVector.y}
               onChange={(event) => {
                 this.setState((prevState) => ({
-                  downVector: prevState.downVector.setY(parseFloat(event.target.value)),
+                  upVector: prevState.upVector.setY(parseFloat(event.target.value)),
                 }));
                 this.calcRotation();
               }}
@@ -249,15 +249,15 @@ class Accelerometer extends Component<IProps, IState> {
               min="-1"
               max="1"
               step="0.05"
-              value={this.state.downVector.z}
+              value={this.state.upVector.z}
               onChange={(event) => {
                 this.setState((prevState) => ({
-                  downVector: prevState.downVector.setZ(parseFloat(event.target.value)),
+                  upVector: prevState.upVector.setZ(parseFloat(event.target.value)),
                 }));
                 this.calcRotation();
               }}
             />
-            <div>{`down: <${String(Object.values(this.state.downVector))}>`}</div>
+            <div>{`down: <${String(Object.values(this.state.upVector))}>`}</div>
             <div>{`pitch: ${this.state.displayPitch}°, roll: ${this.state.displayRoll}°`}</div>
           </div>
         )}
