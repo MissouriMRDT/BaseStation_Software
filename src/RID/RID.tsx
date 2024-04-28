@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
-import Cameras from '../Core/components/Cameras';
 import Map from '../RED/components/Map';
 import Accelerometer from '../Core/components/Accelerometer';
 import Angular from '../RAM/Arm/components/Angular';
@@ -15,12 +14,13 @@ import Drive from '../RED/components/Drive';
 import Gimbal from '../RED/components/Gimbal';
 import Lighting from '../RAM/Autonomy/components/Lighting';
 import Log from '../RED/components/Log';
-import Power from '../RED/components/Power&BMS';
+import Power from '../RED/components/PMS';
 import CustomPackets from '../RON/components/CustomPackets';
 import PacketLogger from '../RON/components/PacketLogger';
 // import PingGraph from '../RON/components/PingGraph';
-import Fluorometer from '../RAM/Science/components/Fluorometer';
+import Reflectance from '../RAM/Science/components/Reflectance';
 import RockLookUp from '../RAM/Science/components/rocklookup';
+import CamerasContainer from '../RED/components/CamerasContainer';
 
 const row: CSS.Properties = {
   display: 'flex',
@@ -50,6 +50,7 @@ interface IProps {
 interface IState {
   storedWaypoints: any;
   currentCoords: { lat: number; lon: number };
+  droneCoords: { lat: number; lon: number };
   display: any;
   displayed: string; // Active condidition of what should be displayed
 }
@@ -98,7 +99,7 @@ class RoverImageryDisplay extends Component<IProps, IState> {
             'Drive',
             'Gimbal',
             'GPS',
-            'Fluorometer',
+            'Reflectance',
             'Lighting',
             'Log',
             'Power',
@@ -123,6 +124,7 @@ class RoverImageryDisplay extends Component<IProps, IState> {
     this.state = {
       storedWaypoints: {},
       currentCoords: { lat: 0, lon: 0 },
+      droneCoords: { lat: 0, lon: 0 },
       display: <div style={{ ...this.props.style, backgroundColor: 'E0E0E0' }}>{this.buttons}</div>,
       // Set displayed to the passed in default if there is one, or default to "none"
       displayed: this.props.displayed ? this.props.displayed : 'none',
@@ -152,13 +154,13 @@ class RoverImageryDisplay extends Component<IProps, IState> {
     }
   }
 
-  onClickCamera(cam = 1) {
+  onClickCamera() {
     // Inside the RID component, renders the controls and a camera feed (cam 1 by default)
     this.setState({
       display: (
         <div style={{ flexGrow: 1, height: '100%' }}>
           {this.buttons}
-          <Cameras defaultCamera={cam} style={submod} />
+          <CamerasContainer camAmount={0} canvasWidth={640 * 4} canvasHeight={480 * 4} />
         </div>
       ),
       displayed: 'Camera',
@@ -190,6 +192,7 @@ class RoverImageryDisplay extends Component<IProps, IState> {
             style={submod}
             storedWaypoints={prevState.storedWaypoints}
             currentCoords={prevState.currentCoords}
+            // droneCoords={prevState.droneCoords}
             store={(name: string, coords: any) => this.props.store(name, coords)}
             name="RIDmap"
           />
@@ -265,8 +268,8 @@ class RoverImageryDisplay extends Component<IProps, IState> {
       case 'SensorGraphs':
         submodule = <SensorGraphs style={submod} />;
         break;
-      case 'Fluorometer':
-        submodule = <Fluorometer style={submod} />;
+      case 'Reflectance':
+        submodule = <Reflectance style={submod} />;
         break;
       case 'Drive':
         submodule = <Drive style={submod} />;

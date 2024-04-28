@@ -58,7 +58,7 @@ export function RoverScene(props: JSX.IntrinsicElements['group']) {
   Object.values(nodes).forEach((node) => (node.castShadow = true));
   //console.log(nodes, materials, animations, actions)
   return (
-    <group ref={group} {...props} dispose={null}>
+    <group ref={group} {...props}>
       <group name="Scene">
         <group name="skeleton">
           <primitive object={nodes.Bone} />

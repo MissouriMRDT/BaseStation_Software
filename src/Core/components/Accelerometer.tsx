@@ -169,7 +169,7 @@ class Accelerometer extends Component<IProps, IState> {
                 {this.state.file.endsWith('.glb') ? (
                   <RoverScene position-y={-2} rotation-y={Math.PI} scale={2} />
                 ) : (
-                  <mesh geometry={this.state.geometry} scale={0.08} castShadow>
+                  <mesh geometry={this.state.geometry} dispose={null} scale={0.08} castShadow>
                     <meshLambertMaterial color={this.state.color} />
                   </mesh>
                 )}

@@ -71,7 +71,7 @@ class Map extends Component<IProps, IState> {
       signalsDir: 0,
     };
 
-    rovecomm.on('IMUData', (data: number) => this.IMUData(data));
+    rovecomm.on('CompassData', (data: number) => this.CompassData(data));
     // rovecomm.on('SetGPSTarget', (data: number[]) => this.SignalsPosUpdate(data));
     // rovecomm.on('SetAngleTarget', (data: number) => this.SignalsDirection(data));
   }
@@ -84,11 +84,17 @@ class Map extends Component<IProps, IState> {
     this.setState({ basestationPos: { lat: data[0], long: data[1] }, signalsPos: { lat: data[2], long: data[3] } });
   }
 
-  IMUData(data: number): void {
+  CompassData(data: number): void {
     this.setState({
       heading: data,
     });
   }
+
+  // droneIMUData(data: any): void {
+  //   this.setState({
+  //     heading: data[1],
+  //   });
+  // }
 
   render(): JSX.Element {
     const position: LatLngTuple = [this.state.centerLat, this.state.centerLon];

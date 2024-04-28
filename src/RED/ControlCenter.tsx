@@ -9,13 +9,14 @@ import NewWindowComponent from '../Core/Window';
 import RoverOverviewOfNetwork from '../RON/RON';
 import RoverAttachmentManager from '../RAM/RAM';
 import RoverImageryDisplay from '../RID/RID';
-import Cameras from '../Core/components/Cameras';
-import Timer from './components/Timer';
-import Power from './components/Power&BMS';
+import Power from './components/PMS';
 import ControlScheme from '../Core/components/ControlScheme';
 import Drive from './components/Drive';
 import Gimbal from './components/Gimbal';
 import Accelerometer from '../Core/components/Accelerometer';
+import CamerasContainer from './components/CamerasContainer';
+import CameraSocketManager from './components/CameraSocketManager';
+// import SignalStack from './components/SignalStack';
 
 const row: CSS.Properties = {
   display: 'flex',
@@ -76,64 +77,78 @@ class ControlCenter extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div style={row}>
-        {
-          // onClose will be fired when the new window is closed
-          // everything inside NewWindowComponent is considered props.children and will be
-          // displayed in a new window
-          this.state.ronOpen && (
-            <NewWindowComponent onClose={() => this.setState({ ronOpen: false })} name="Rover Overview of Network">
-              <RoverOverviewOfNetwork />
-            </NewWindowComponent>
-          )
-        }
-        {
-          // onClose will be fired when the new window is closed
-          // everything inside NewWindowComponent is considered props.children and will be
-          // displayed in a new window
-          this.state.ramOpen && (
-            <NewWindowComponent onClose={() => this.setState({ ramOpen: false })} name="Rover Attachment Manager">
-              <RoverAttachmentManager
-                selectedWaypoint={
-                  this.waypointsInstance.state.storedWaypoints[this.waypointsInstance.state.selectedWaypoint]
-                }
+      <div>
+        <div style={row}>
+          {
+            // onClose will be fired when the new window is closed
+            // everything inside NewWindowComponent is considered props.children and will be
+            // displayed in a new window
+            this.state.ronOpen && (
+              <NewWindowComponent onClose={() => this.setState({ ronOpen: false })} name="Rover Overview of Network">
+                <RoverOverviewOfNetwork />
+              </NewWindowComponent>
+            )
+          }
+          {
+            // onClose will be fired when the new window is closed
+            // everything inside NewWindowComponent is considered props.children and will be
+            // displayed in a new window
+            this.state.ramOpen && (
+              <NewWindowComponent onClose={() => this.setState({ ramOpen: false })} name="Rover Attachment Manager">
+                <RoverAttachmentManager
+                  selectedWaypoint={
+                    this.waypointsInstance.state.storedWaypoints[this.waypointsInstance.state.selectedWaypoint]
+                  }
+                />
+              </NewWindowComponent>
+            )
+          }
+          {
+            // onClose will be fired when the new window is closed
+            // everything inside NewWindowComponent is considered props.children and will be
+            // displayed in a new window
+            this.state.ridOpen && (
+              <NewWindowComponent onClose={() => this.setState({ ridOpen: false })} name="Rover Imagery Display">
+                <RoverImageryDisplay rowcol="" style={{ width: '100%', height: '100%' }} store={() => {}} />
+              </NewWindowComponent>
+            )
+          }
+          <div style={{ ...column, width: '60%' }}>
+            <div style={row}>
+              <GPS onCoordsChange={this.updateCoords} style={{ marginRight: '5px', width: '60%' }} />
+              <Accelerometer style={{ width: '40%' }} />
+            </div>
+            <div style={{ ...row, height: '250px' }}>
+              <Waypoints
+                onWaypointChange={this.updateWaypoints}
+                currentCoords={this.state.currentCoords}
+                ref={(instance) => {
+                  this.waypointsInstance = instance;
+                }}
+                style={{ flexGrow: 1 }}
               />
-            </NewWindowComponent>
-          )
-        }
-        {
-          // onClose will be fired when the new window is closed
-          // everything inside NewWindowComponent is considered props.children and will be
-          // displayed in a new window
-          this.state.ridOpen && (
-            <NewWindowComponent onClose={() => this.setState({ ridOpen: false })} name="Rover Imagery Display">
-              <RoverImageryDisplay rowcol="" style={{ width: '100%', height: '100%' }} store={() => {}} />
-            </NewWindowComponent>
-          )
-        }
-        <div style={{ ...column, width: '60%' }}>
-          <div style={row}>
-            <GPS onCoordsChange={this.updateCoords} style={{ flexGrow: 1, marginRight: '5px', width: '60%' }} />
-            <Accelerometer style={{ width: '40%' }} />
+            </div>
+            <Log />
           </div>
-          <div style={{ ...row, height: '250px' }}>
-            <Waypoints
-              onWaypointChange={this.updateWaypoints}
+          <div style={{ ...column, width: '40%' }}>
+            <Map
+              style={{ minHeight: `${this.state.fourthHeight / 1.25}px` }}
+              storedWaypoints={this.state.storedWaypoints}
               currentCoords={this.state.currentCoords}
-              ref={(instance) => {
-                this.waypointsInstance = instance;
-              }}
-              style={{ flexGrow: 1 }}
+              store={(name: string, coords: any) => this.waypointsInstance.store(name, coords)}
+              name="controlCenterMap"
             />
+            <CameraSocketManager />
+            <CamerasContainer camAmount={4} canvasWidth={640} canvasHeight={480} />
           </div>
-          <Timer timer={undefined} />
-          <Log />
+        </div>
+        <div style={{ ...column, width: '60%' }}>
           <Power />
           <Drive />
           <div style={row}>
             <ControlScheme
               style={{ flexGrow: 1, marginRight: '5px', marginBottom: '5px' }}
-              configs={['Drive', 'MainGimbal', 'ControlMultipliers']}
+              configs={['Drive', 'MainGimbal', 'ControlMultipliers', 'SignalStack']}
             />
             <Gimbal style={{ height: '100%' }} />
           </div>
@@ -151,18 +166,6 @@ class ControlCenter extends Component<IProps, IState> {
               Open Rover Imagery Display
             </button>
           </div>
-        </div>
-        <div style={{ ...column, width: '40%' }}>
-          <Map
-            style={{ minHeight: `${this.state.fourthHeight / 1.25}px` }}
-            storedWaypoints={this.state.storedWaypoints}
-            currentCoords={this.state.currentCoords}
-            store={(name: string, coords: any) => this.waypointsInstance.store(name, coords)}
-            name="controlCenterMap"
-          />
-          <Cameras defaultCamera={1} style={{ width: '100%' }} />
-          <Cameras defaultCamera={2} style={{ width: '100%' }} />
-          <Cameras defaultCamera={3} style={{ width: '100%' }} />
         </div>
       </div>
     );
