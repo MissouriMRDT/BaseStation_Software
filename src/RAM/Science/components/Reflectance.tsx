@@ -117,7 +117,7 @@ interface IProps {
 
 const minWavelength = 340;
 const maxWavelength = 850;
-const maxintegrationTime = 6000;
+const maxintegrationTime = 60000;
 
 interface IState {
   /** Holds which lasers are enabled */

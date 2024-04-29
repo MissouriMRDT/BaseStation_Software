@@ -58,7 +58,7 @@ const overlay: CSS.Properties = {
 
 const minWavelength = 400;
 const maxWavelength = 700;
-const maxintegrationTime = 6000;
+const maxintegrationTime = 60000;
 
 function downloadURL(imgData: string): void {
   const filename = `./Screenshots/${new Date()

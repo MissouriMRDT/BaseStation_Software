@@ -91,7 +91,7 @@ class Science extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      selectedTab: 'environmental', // Default tab is 'environmental'
+      selectedTab: 'raman', // Default tab is 'raman'
     };
 
     setInterval(() => science(), 100);
@@ -105,14 +105,10 @@ class Science extends Component<IProps, IState> {
     const { selectedTab } = this.state;
     return (
       <div style={column}>
-        {selectedTab === 'environmental' && <EnvironmentalData />}
         {selectedTab === 'raman' && <Raman />}
         {selectedTab === 'reflectance' && <Reflectance />}
         {selectedTab === 'FTIR' && <FTIR />}
         <div style={{ ...row, justifyContent: 'center', marginTop: '10px' }}>
-          <button style={button} onClick={() => this.handleTabChange('environmental')}>
-            Environmental Data
-          </button>
           <button style={button} onClick={() => this.handleTabChange('raman')}>
             Raman
           </button>
@@ -124,7 +120,9 @@ class Science extends Component<IProps, IState> {
           </button>
         </div>
         <div style={{ ...row }}>
-          <div style={{ ...column, marginRight: '2.5px', width: '100%' }}></div>
+          <div style={{ ...column, marginRight: '2.5px', width: '100%' }}>
+            <EnvironmentalData />
+          </div>
         </div>
         <div style={{ ...row }}>
           <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>
