@@ -49,7 +49,7 @@ class RoverAttachmentManager extends Component<IProps, IState> {
     return (
       <div style={RON}>
         <div style={row}>
-          {['Arm', 'Science', 'Autonomy', 'Drone'].map((screen) => {
+          {['Arm', 'Science', 'Autonomy'].map((screen) => {
             return (
               <button
                 type="button"
