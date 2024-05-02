@@ -45,17 +45,11 @@ const column: CSS.Properties = {
 const componentBox: CSS.Properties = {
   margin: '3px 0 3px 0',
 };
-// const button: CSS.Properties = {
-//   marginLeft: '15px',
-//   width: '60px',
-//   alignSelf: 'center',
-// };
 
 const overlay: CSS.Properties = {
   width: '200px',
   color: 'black',
 };
-
 const minWavelength = 400;
 const maxWavelength = 700;
 const maxintegrationTime = 60000;
@@ -295,20 +289,13 @@ class Raman extends Component<IProps, IState> {
               <YAxis />
               {this.crosshair()}
             </XYPlot>
-            <div style={row}>
-              <div style={column}>
-                <button onClick={() => this.setLED(!this.state.enableLED)}>
-                  LED: {this.state.enableLED ? 'on' : 'off'}
-                </button>
-              </div>
-              <div style={{ ...row, justifyContent: 'end' }}>
-                <button
-                  onClick={() => {
-                    this.requestData(); //TODO make a counter variable or a text box to tweak the number of aquisitions
-                  }}
-                >
-                  Request Reading
-                </button>
+            <div style={{ ...row }}>
+              <div style={{ ...row, justifyContent: 'center' }}>
+                <div>
+                  <button onClick={() => this.setLED(!this.state.enableLED)}>
+                    LED: {this.state.enableLED ? 'on' : 'off'}
+                  </button>
+                </div>
                 <div>
                   Integration Time (ms):
                   <input
@@ -318,9 +305,18 @@ class Raman extends Component<IProps, IState> {
                     onChange={this.integrationTimeChange}
                   />
                 </div>
-              </div>
-              <div style={{ ...column, margin: '0 100px 0 100px' }}>
-                <button onClick={saveImage}>Export Graph</button>
+                <div>
+                  <button
+                    onClick={() => {
+                      this.requestData(); //TODO make a counter variable or a text box to tweak the number of aquisitions
+                    }}
+                  >
+                    Request Reading
+                  </button>
+                </div>
+                <div>
+                  <button onClick={saveImage}>Export Graph</button>
+                </div>
               </div>
             </div>
           </div>

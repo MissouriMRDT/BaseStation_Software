@@ -231,7 +231,7 @@ class Reflectance extends Component<IProps, IState> {
               <YAxis />
               {this.crosshair()}
             </XYPlot>
-            <div style={row}>
+            <div style={{ ...row }}>
               <div style={{ ...row, justifyContent: 'center' }}>
                 <div style={{ ...column, margin: '0 100px 0 100px' }}>
                   <button
