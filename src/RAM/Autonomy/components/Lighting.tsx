@@ -87,7 +87,7 @@ class Lighting extends Component<IProps, IState> {
   colorChanged(newColor: any): void {
     const color = newColor.rgb;
     this.setState({ color });
-    rovecomm.sendCommand('LEDRGB', 'Autonomy', [color.r, color.g, color.b]);
+    rovecomm.sendCommand('LEDRGB', 'Core', [color.r, color.g, color.b]);
   }
 
   render(): JSX.Element {

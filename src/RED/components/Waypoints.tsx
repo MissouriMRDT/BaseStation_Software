@@ -408,7 +408,7 @@ class Waypoints extends Component<IProps, IState> {
               </button>
             </div>
             <div style={radiusRow}>
-              <div style={{ ...value, width: '20%' }}>Point Radius:</div>
+              <div style={{ ...value, width: '20%' }}>Point Radius (m):</div>
               <input
                 type="text"
                 value={this.state.displayRadius || '0'}

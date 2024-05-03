@@ -107,7 +107,7 @@ class Science extends Component<IProps, IState> {
       <div style={column}>
         {selectedTab === 'raman' && <Raman />}
         {selectedTab === 'reflectance' && <Reflectance />}
-        {selectedTab === 'FTIR' && <FTIR />}
+        {/* {selectedTab === 'FTIR' && <FTIR />} */}
         <div style={{ ...row, justifyContent: 'center', marginTop: '10px' }}>
           <button style={button} onClick={() => this.handleTabChange('raman')}>
             Raman
@@ -115,9 +115,9 @@ class Science extends Component<IProps, IState> {
           <button style={button} onClick={() => this.handleTabChange('reflectance')}>
             Reflectance
           </button>
-          <button style={button} onClick={() => this.handleTabChange('FTIR')}>
+          {/* <button style={button} onClick={() => this.handleTabChange('FTIR')}>
             FTIR
-          </button>
+          </button> */}
         </div>
         <div style={{ ...row }}>
           <div style={{ ...column, marginRight: '2.5px', width: '100%' }}>

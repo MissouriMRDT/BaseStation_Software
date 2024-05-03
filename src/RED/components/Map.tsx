@@ -6,7 +6,7 @@ import { LatLngTuple } from 'leaflet';
 import icon from './Icon';
 import compassNeedle from './CompassNeedle';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
-import signalsMapOverlay from './SignalsMapOverlay';
+// import signalsMapOverlay from './SignalsMapOverlay';
 
 const container: CSS.Properties = {
   display: 'flex',
@@ -62,7 +62,7 @@ class Map extends Component<IProps, IState> {
     this.state = {
       // Default map to near the SDELC
       centerLat: 37.951631,
-      centerLon: -91.770001,
+      centerLon: -91.777713,
       zoom: 15,
       maxZoom: 19,
       heading: 0,
@@ -127,9 +127,9 @@ class Map extends Component<IProps, IState> {
                 />
               )}
               {
-                /*this.state.signalsPos.lat && this.state.signalsPos.long*/ true && (
-                  <Marker position={[37.951631, -91.770001]} icon={signalsMapOverlay(this.state.signalsDir)} />
-                )
+                // /*this.state.signalsPos.lat && this.state.signalsPos.long*/ true && (
+                //   <Marker position={[37.951631, -91.770001]} icon={signalsMapOverlay(this.state.signalsDir)} />
+                // )
               }
               {Object.keys(this.props.storedWaypoints).map((waypointName: string) => {
                 const waypoint = this.props.storedWaypoints[waypointName];
