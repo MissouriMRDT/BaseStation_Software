@@ -11,7 +11,7 @@ import Reflectance from './components/Reflectance';
 import EnvironmentalData from './components/EnvironmentalData';
 import Raman from './components/Raman';
 import ScienceGraphs from './components/ScienceGraphs';
-import FTIR from './components/FTIR';
+// import FTIR from './components/FTIR';
 import CamerasContainer from '../../RED/components/CamerasContainer';
 import CameraControls from '../../RED/components/CameraControls';
 // import SensorGraphs from './components/SensorGraphs';
