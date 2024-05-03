@@ -185,6 +185,29 @@ class Raman extends Component<IProps, IState> {
     }
   }
 
+  exportDataCSV(): void {
+    const csvData = this.state.graphData
+      .map((data) => {
+        return `${data.x},${data.y}`;
+      })
+      .join('\n');
+
+    // ISO string will be formatted YYYY-MM-DDTHH:MM:SS:sssZ
+    // this regex will convert all -,T:,Z to . (which covers to . for .csv)
+    // Date format is consistent with the SensorData csv
+    const timestamp = new Date().toISOString().replaceAll(/[:\-TZ]/g, '.');
+    const EXPORT_FILE = `./RamanCSV/${timestamp}.csv`;
+
+    if (!fs.existsSync('./RamanCSV')) {
+      fs.mkdirSync('./RamanCSV');
+    }
+
+    // Write the CSV data to a file
+    fs.writeFile(EXPORT_FILE, csvData, (err) => {
+      if (err) throw err;
+    });
+  }
+
   onMouseLeave(): void {
     this.setState({ crosshairPos: null });
   }
@@ -324,7 +347,8 @@ class Raman extends Component<IProps, IState> {
                 <button onClick={() => this.setState({ minX: 533, maxX: 650 })}>Reset Graph</button>
               </div>
               <div>
-                <button onClick={saveImage}>Export Graph</button>
+                <button onClick={saveImage}>Export Graph to PNG</button>
+                <button onClick={() => this.exportDataCSV()}>Export Data to CSV</button>
               </div>
             </div>
           </div>
