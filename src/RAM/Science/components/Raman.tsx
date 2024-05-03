@@ -6,7 +6,7 @@ import fs from 'fs';
 import { rovecomm } from '../../../Core/RoveProtocol/Rovecomm';
 import { windows } from '../../../Core/Window';
 
-const minWavelength = 533;
+const minWavelength = 532;
 const maxWavelength = 650;
 const maxintegrationTime = 60000;
 
@@ -139,8 +139,8 @@ class Raman extends Component<IProps, IState> {
       crosshairPos: null,
       enableLED: false,
       integrationTime: 0,
-      minX: 533,
-      maxX: 650,
+      minX: this.wavelengthToWavenumber(minWavelength),
+      maxX: Math.round(this.wavelengthToWavenumber(maxWavelength)),
       enableLEDToggle: false,
     };
 
@@ -216,11 +216,17 @@ class Raman extends Component<IProps, IState> {
     this.setState({ crosshairPos: index });
   }
 
+  wavelengthToWavenumber(wavelength: number): number {
+    return 10 ** 7 * (1 / minWavelength - 1 / wavelength);
+  }
+
   updateGraphValues(): void {
     const data = this.state.data;
     const xScale = (maxWavelength - minWavelength) / 2048;
+    const maxY = Math.max(...data);
+    const minY = Math.min(...data);
     const dataToDisplay = data.map((value: number, index: number) => {
-      return { x: index * xScale + minWavelength, y: value };
+      return { x: this.wavelengthToWavenumber(index * xScale + minWavelength), y: (maxY - value) / (maxY - minY) };
     });
 
     this.setState({
@@ -274,7 +280,7 @@ class Raman extends Component<IProps, IState> {
               margin={{ top: 10, bottom: 50 }}
               width={window.document.documentElement.clientWidth - 50}
               height={300}
-              yDomain={[0, 1023]}
+              yDomain={[0, 1]}
               xDomain={[this.state.minX, this.state.maxX]}
             >
               <VerticalGridLines style={{ fill: 'none' }} />
@@ -344,7 +350,16 @@ class Raman extends Component<IProps, IState> {
                 />
               </div>
               <div>
-                <button onClick={() => this.setState({ minX: 533, maxX: 650 })}>Reset Graph</button>
+                <button
+                  onClick={() =>
+                    this.setState({
+                      minX: this.wavelengthToWavenumber(minWavelength),
+                      maxX: Math.round(this.wavelengthToWavenumber(maxWavelength)),
+                    })
+                  }
+                >
+                  Reset Graph
+                </button>
               </div>
               <div>
                 <button onClick={saveImage}>Export Graph to PNG</button>
