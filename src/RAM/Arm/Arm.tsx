@@ -30,8 +30,7 @@ let MultiplierY1 = 1000;
 let MultiplierY2 = 1000;
 let MultiplierZ = 1000;
 let MultiplierPitch = 1000;
-let MultiplierR1 = 1000;
-let MultiplierR2 = 1000;
+let MultiplierR = 1000;
 let MultiplierGripper = 1000;
 // let MultiplierEndEffector: number;
 
@@ -64,8 +63,7 @@ class Arm extends Component<IProps, IState> {
     let Y2 = 0;
     let Z = 0;
     let Pitch = 0;
-    let R1 = 0;
-    let R2 = 0;
+    let R = 0;
     let moveArm = false;
     let LaserToggle = 0;
 
@@ -76,9 +74,8 @@ class Arm extends Component<IProps, IState> {
       MultiplierZ = controllerInputs.Multiplier4;
     } else if (controllerInputs.MultiplierX) {
       MultiplierPitch = controllerInputs.Multiplier1;
-      MultiplierR1 = controllerInputs.Multiplier2;
-      MultiplierR2 = controllerInputs.Multiplier3;
-      MultiplierGripper = controllerInputs.Multiplier4;
+      MultiplierR = controllerInputs.Multiplier2;
+      MultiplierGripper = controllerInputs.Multiplier3;
     }
 
     if ('WristPitchPlus' in controllerInputs && 'WristPitchMinus' in controllerInputs) {
@@ -94,14 +91,12 @@ class Arm extends Component<IProps, IState> {
 
     if (!this.state.gripperToggle) {
       if ('RollPlus' in controllerInputs && 'RollMinus' in controllerInputs) {
-        R1 = (controllerInputs.RollPlus - controllerInputs.RollMinus) * MultiplierR1;
-        R2 = 0;
+        R = (controllerInputs.RollPlus - controllerInputs.RollMinus) * MultiplierR;
         moveArm = true;
       }
     } else {
       if ('RollPlus' in controllerInputs && 'RollMinus' in controllerInputs) {
-        R2 = (controllerInputs.RollPlus - controllerInputs.RollMinus) * MultiplierR2;
-        R1 = 0;
+        R = (controllerInputs.RollPlus - controllerInputs.RollMinus) * MultiplierR;
         moveArm = true;
       }
     }
@@ -136,35 +131,21 @@ class Arm extends Component<IProps, IState> {
     }
 
     if (moveArm) {
-      const armValues = [X, Y1, Y2, Z, Pitch, R1, R2];
+      const armValues = [X, Y1, Y2, Z, Pitch, R];
       console.log(armValues);
       rovecomm.sendCommand('OpenLoop', 'Arm', armValues);
     }
 
-    if (!this.state.gripperToggle) {
-      if ('GripperOpen' in controllerInputs && 'GripperClose' in controllerInputs) {
-        let Gripper1 = 0;
-        if (controllerInputs.GripperOpen === 1) {
-          Gripper1 = 1 * MultiplierGripper;
-        } else if (controllerInputs.GripperClose === 1) {
-          Gripper1 = -1 * MultiplierGripper;
-        } else {
-          Gripper1 = 0;
-        }
-        rovecomm.sendCommand('Gripper', 'Arm', Gripper1);
+    if ('GripperOpen' in controllerInputs && 'GripperClose' in controllerInputs) {
+      let Gripper = 0;
+      if (controllerInputs.GripperOpen === 1) {
+        Gripper = 1 * MultiplierGripper;
+      } else if (controllerInputs.GripperClose === 1) {
+        Gripper = -1 * MultiplierGripper;
+      } else {
+        Gripper = 0;
       }
-    } else {
-      if ('GripperOpen' in controllerInputs && 'GripperClose' in controllerInputs) {
-        let Gripper2 = 0;
-        if (controllerInputs.GripperOpen === 1) {
-          Gripper2 = 1 * MultiplierGripper;
-        } else if (controllerInputs.GripperClose === 1) {
-          Gripper2 = -1 * MultiplierGripper;
-        } else {
-          Gripper2 = 0;
-        }
-        rovecomm.sendCommand('Gripper2', 'Arm', Gripper2);
-      }
+      rovecomm.sendCommand('Gripper', 'Arm', Gripper);
     }
 
     if ('SolenoidOn' in controllerInputs) {
