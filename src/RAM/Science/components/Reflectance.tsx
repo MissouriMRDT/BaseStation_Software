@@ -152,6 +152,29 @@ class Reflectance extends Component<IProps, IState> {
     rovecomm.on('ReflectanceReading', (data: number[]) => this.updateGraphValues(data));
   }
 
+  exportDataCSV(): void {
+    const csvData = this.state.graphData
+      .map((data) => {
+        return `${data.x},${data.y}`;
+      })
+      .join('\n');
+
+    // ISO string will be formatted YYYY-MM-DDTHH:MM:SS:sssZ
+    // this regex will convert all -,T:,Z to . (which covers to . for .csv)
+    // Date format is consistent with the SensorData csv
+    const timestamp = new Date().toISOString().replaceAll(/[:\-TZ]/g, '.');
+    const EXPORT_FILE = `./ReflectanceCSV/${timestamp}.csv`;
+
+    if (!fs.existsSync('./ReflectanceCSV')) {
+      fs.mkdirSync('./ReflectanceCSV');
+    }
+
+    // Write the CSV data to a file
+    fs.writeFile(EXPORT_FILE, csvData, (err) => {
+      if (err) throw err;
+    });
+  }
+
   onMouseLeave(): void {
     this.setState({ crosshairPos: null });
   }
@@ -252,7 +275,8 @@ class Reflectance extends Component<IProps, IState> {
                   />
                 </div>
                 <div style={{ ...column, margin: '0 100px 0 100px' }}>
-                  <button onClick={saveImage}>Export Graph</button>
+                  <button onClick={saveImage}>Export Graph to PNG</button>
+                  <button onClick={() => this.exportDataCSV()}>Export Data to CSV</button>
                 </div>
               </div>
             </div>
