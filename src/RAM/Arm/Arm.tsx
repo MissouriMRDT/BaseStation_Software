@@ -30,7 +30,7 @@ let MultiplierY1 = 1000;
 let MultiplierY2 = 1000;
 let MultiplierZ = 1000;
 let MultiplierPitch = 1000;
-let MultiplierR = 1000;
+let MultiplierR = 500;
 let MultiplierGripper = 1000;
 // let MultiplierEndEffector: number;
 
@@ -48,12 +48,15 @@ class Arm extends Component<IProps, IState> {
 
   setGripper() {
     this.setState((prevState) => ({ gripperToggle: !prevState.gripperToggle }));
+    rovecomm.sendCommand('SelectGripper', 'Arm', this.state.gripperToggle ? [1] : [0]);
     if (this.state.gripperToggle) {
       this.setState({ gripperCam: 7 });
       console.log(this.state.gripperCam);
+      MultiplierR = 500;
     } else {
       this.setState({ gripperCam: 8 });
       console.log(this.state.gripperCam);
+      MultiplierR = 1000;
     }
   }
 
