@@ -29,7 +29,7 @@ let MultiplierX = 1000;
 let MultiplierY1 = 1000;
 let MultiplierY2 = 1000;
 let MultiplierZ = 1000;
-let MultiplierPitch = 1000;
+let MultiplierPitch = 500;
 let MultiplierR = 500;
 let MultiplierGripper = 1000;
 // let MultiplierEndEffector: number;
