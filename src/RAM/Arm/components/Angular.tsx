@@ -167,8 +167,7 @@ class Angular extends Component<IProps, IState> {
         Y: this.state.jointValues.Y,
         Z: this.state.jointValues.Z,
         Pitch: this.state.jointValues.Pitch,
-        Roll1: this.state.jointValues.Roll,
-        Roll2: '',
+        Roll: this.state.jointValues.Roll,
       };
       rovecomm.sendCommand(
         'SetPosition',
@@ -183,8 +182,7 @@ class Angular extends Component<IProps, IState> {
         Y: this.state.jointValues.Y,
         Z: this.state.jointValues.Z,
         Pitch: this.state.jointValues.Pitch,
-        Roll1: '',
-        Roll2: this.state.jointValues.Roll,
+        Roll: this.state.jointValues.Roll,
       };
       rovecomm.sendCommand(
         'SetPosition',
