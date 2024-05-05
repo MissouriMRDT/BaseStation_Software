@@ -46,7 +46,15 @@ class Arm extends Component<IProps, IState> {
     setInterval(() => this.arm(), 100);
   }
 
+  isGripperToggling = false;
+
   setGripper() {
+    if (this.isGripperToggling) {
+      return;
+    }
+
+    this.isGripperToggling = true;
+
     this.setState((prevState) => ({ gripperToggle: !prevState.gripperToggle }));
     rovecomm.sendCommand('SelectGripper', 'Arm', this.state.gripperToggle ? [1] : [0]);
     if (this.state.gripperToggle) {
@@ -58,6 +66,10 @@ class Arm extends Component<IProps, IState> {
       console.log(this.state.gripperCam);
       MultiplierR = 1000;
     }
+
+    setTimeout(() => {
+      this.isGripperToggling = false;
+    }, 300); // 300ms delay
   }
 
   arm(): void {
@@ -92,16 +104,9 @@ class Arm extends Component<IProps, IState> {
       }
     }
 
-    if (!this.state.gripperToggle) {
-      if ('RollPlus' in controllerInputs && 'RollMinus' in controllerInputs) {
-        R = (controllerInputs.RollPlus - controllerInputs.RollMinus) * MultiplierR;
-        moveArm = true;
-      }
-    } else {
-      if ('RollPlus' in controllerInputs && 'RollMinus' in controllerInputs) {
-        R = (controllerInputs.RollPlus - controllerInputs.RollMinus) * MultiplierR;
-        moveArm = true;
-      }
+    if ('RollPlus' in controllerInputs && 'RollMinus' in controllerInputs) {
+      R = (controllerInputs.RollPlus - controllerInputs.RollMinus) * MultiplierR;
+      moveArm = true;
     }
 
     if ('XAxis' in controllerInputs) {
