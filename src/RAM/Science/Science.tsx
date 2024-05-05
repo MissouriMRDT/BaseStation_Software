@@ -12,7 +12,6 @@ import EnvironmentalData from './components/EnvironmentalData';
 import Raman from './components/Raman';
 import ScienceGraphs from './components/ScienceGraphs';
 // import FTIR from './components/FTIR';
-import CamerasContainer from '../../RED/components/CamerasContainer';
 import CameraControls from '../../RED/components/CameraControls';
 import LEDs from './components/LEDs';
 // import SensorGraphs from './components/SensorGraphs';
@@ -119,7 +118,7 @@ class Science extends Component<IProps, IState> {
         </div>
         <div style={{ ...row }}>
           <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>
-            <CamerasContainer camAmount={7} canvasWidth={640} canvasHeight={480} />
+            <CameraControls canvasWidth={640} canvasHeight={480} startSource={7} labelName={'Camera'}></CameraControls>
           </div>
           <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>
             <CameraControls canvasWidth={640} canvasHeight={480} startSource={7} labelName={'Camera'}></CameraControls>

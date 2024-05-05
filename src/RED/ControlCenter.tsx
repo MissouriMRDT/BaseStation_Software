@@ -14,8 +14,8 @@ import ControlScheme from '../Core/components/ControlScheme';
 import Drive from './components/Drive';
 import Gimbal from './components/Gimbal';
 // import ThreeDRover from '../Core/components/ThreeDRover';
-import CamerasContainer from './components/CamerasContainer';
 import CameraSocketManager from './components/CameraSocketManager';
+import CameraControls from './components/CameraControls';
 // import SignalStack from './components/SignalStack';
 
 const row: CSS.Properties = {
@@ -139,7 +139,30 @@ class ControlCenter extends Component<IProps, IState> {
               name="controlCenterMap"
             />
             <CameraSocketManager />
-            <CamerasContainer camAmount={4} canvasWidth={640} canvasHeight={480} />
+            <CameraControls
+              canvasWidth={640}
+              canvasHeight={480}
+              startSource={0}
+              labelName={'Camera 1'}
+            ></CameraControls>
+            <CameraControls
+              canvasWidth={640}
+              canvasHeight={480}
+              startSource={1}
+              labelName={'Camera 2'}
+            ></CameraControls>
+            <CameraControls
+              canvasWidth={640}
+              canvasHeight={480}
+              startSource={2}
+              labelName={'Camera 3'}
+            ></CameraControls>
+            <CameraControls
+              canvasWidth={640}
+              canvasHeight={480}
+              startSource={3}
+              labelName={'Camera 4'}
+            ></CameraControls>
           </div>
         </div>
         <div style={{ ...column, width: '60%' }}>
