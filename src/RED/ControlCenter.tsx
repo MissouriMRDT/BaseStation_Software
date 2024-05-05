@@ -115,8 +115,8 @@ class ControlCenter extends Component<IProps, IState> {
           }
           <div style={{ ...column, width: '60%' }}>
             <div style={row}>
-              <GPS onCoordsChange={this.updateCoords} style={{ marginRight: '5px', width: '60%' }} />
-              <ThreeDRover style={{ width: '40%' }} />
+              <GPS onCoordsChange={this.updateCoords} style={{ marginRight: '5px', width: '100%' }} />
+              {/* <ThreeDRover style={{ width: '40%' }} /> */}
             </div>
             <div style={{ ...row, height: '250px' }}>
               <Waypoints
