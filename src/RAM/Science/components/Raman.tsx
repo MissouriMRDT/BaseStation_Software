@@ -9,6 +9,7 @@ import { windows } from '../../../Core/Window';
 const minWavelength = 532;
 const maxWavelength = 650;
 const maxintegrationTime = 60000;
+let prevData = new Array(2048).fill(0).flat();
 
 const label: CSS.Properties = {
   marginTop: '-10px',
@@ -196,13 +197,16 @@ class Raman extends Component<IProps, IState> {
     const xScale = (maxWavelength - minWavelength) / 2048;
     const maxY = Math.max(...data);
     const minY = Math.min(...data);
+    for (let i = 0; i < data.length; i++) {
+      data[i] -= prevData[i];
+    }
     const dataToDisplay = data.map((value: number, index: number) => {
       return { x: this.wavelengthToWavenumber(index * xScale + minWavelength), y: (maxY - value) / (maxY - minY) };
     });
-
     this.setState({
       graphData: dataToDisplay,
     });
+    prevData = data;
   }
 
   crosshair(): JSX.Element | null {
