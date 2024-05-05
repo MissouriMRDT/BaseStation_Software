@@ -14,13 +14,6 @@ const container: CSS.Properties = {
   whiteSpace: 'pre-wrap',
   padding: '5px',
 };
-const row: CSS.Properties = {
-  marginTop: '-10px',
-  position: 'relative',
-  fontFamily: 'arial',
-  fontSize: '16px',
-  color: 'black',
-};
 const label: CSS.Properties = {
   marginTop: '-10px',
   position: 'relative',
