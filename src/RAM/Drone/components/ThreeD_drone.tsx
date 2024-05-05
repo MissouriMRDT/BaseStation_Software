@@ -17,8 +17,9 @@ const container: CSS.Properties = {
   borderBottomWidth: '2px',
   borderStyle: 'solid',
   padding: '0px',
+  //height: 'calc(100% - 47px)',
   alignItems: 'center',
-  height: 'calc(100% - 47px)',
+  overflow: 'hidden',
 };
 const label: CSS.Properties = {
   marginTop: '-10px',
@@ -30,7 +31,12 @@ const label: CSS.Properties = {
   zIndex: 1,
   color: 'white',
 };
-
+const canvasContainer: CSS.Properties = {
+  position: 'relative',
+  width: '100%',
+  height: '100%',
+  minHeight: '400px',
+};
 interface IProps {
   style?: CSS.Properties;
   //droneOrientation: { pitch: number; yaw: number; roll: number };
@@ -68,12 +74,13 @@ class ThreeDdrone extends Component<IProps, IState> {
     };
 
     rovecomm.on('droneOrientation', (data: number[]) => this.droneData(data));
+
+    this.resizeCallback.bind(this);
+    this.setResizeCallbacks();
   }
 
   componentDidMount(): void {
-    console.log('loading geometry');
     this.loadGeometry();
-    console.log('finding width');
     this.findWidth();
   }
 
@@ -88,19 +95,33 @@ class ThreeDdrone extends Component<IProps, IState> {
     this.setState({ pitch: a, yaw: b, roll: c });
   }
 
+  resizeCallback = () => this.findWidth();
+
+  setResizeCallbacks() {
+    for (const win of Object.keys(windows)) {
+      windows[win].addEventListener('resize', this.resizeCallback);
+    }
+    this.findWidth();
+  }
+
+  removeResizeCallbacks() {
+    for (const win of Object.keys(windows)) {
+      windows[win].removeEventListener('resize', this.resizeCallback);
+    }
+    this.findWidth();
+  }
+
   findWidth() {
     for (const win of Object.keys(windows)) {
-      if (windows[win].document.getElementById(this.state.id)) {
-        if (
-          this.state.width !== windows[win].document.getElementById(this.state.id).clientWidth - 10 ||
-          this.state.height !== windows[win].document.getElementById(this.state.id).clientHeight - 12
-        ) {
-          windows[win].addEventListener('resize', () => this.findWidth());
-          this.setState((prevState) => ({
-            width: windows[win].document.getElementById(prevState.id).clientWidth - 10,
-            height: windows[win].document.getElementById(prevState.id).clientHeight - 12,
-          }));
-        }
+      if (
+        windows[win].document.getElementById(this.state.id) &&
+        (windows[win].document.getElementById(this.state.id).clientWidth !== this.state.width ||
+          windows[win].document.getElementById(this.state.id).clientHeight !== this.state.height)
+      ) {
+        this.setState((prevState) => ({
+          width: windows[win].document.getElementById(prevState.id).clientWidth,
+          height: windows[win].document.getElementById(prevState.id).clientHeight,
+        }));
       }
     }
   }
@@ -118,22 +139,25 @@ class ThreeDdrone extends Component<IProps, IState> {
 
   componentWillUnmount(): void {
     this.state.geometry?.dispose();
+    this.removeResizeCallbacks();
   }
 
   render(): JSX.Element {
     return (
       <div style={this.props.style}>
         <div style={label}>3D Drone</div>
-        <div style={container} id={this.state.id}>
-          <div style={{ width: this.state.width, height: this.state.height }}>
-            <Canvas>
-              <group rotation={new Euler(this.state.pitch, this.state.yaw, this.state.roll)}>
-                <mesh geometry={this.state.geometry}>
-                  <meshLambertMaterial color="#B92C2C" />
-                </mesh>
-              </group>
-              <OrbitControls enablePan={false} minDistance={3} maxDistance={8} />
-            </Canvas>
+        <div style={container}>
+          <div style={canvasContainer} id={this.state.id}>
+            <div style={{ width: this.state.width, height: this.state.height, position: 'absolute', top: '0px' }}>
+              <Canvas>
+                <group rotation={new Euler(this.state.pitch, this.state.yaw, this.state.roll)}>
+                  <mesh geometry={this.state.geometry}>
+                    <meshLambertMaterial color="#B92C2C" />
+                  </mesh>
+                </group>
+                <OrbitControls enablePan={false} minDistance={3} maxDistance={8} />
+              </Canvas>
+            </div>
           </div>
         </div>
       </div>

@@ -7,18 +7,24 @@ import { OrbitControls } from '@react-three/drei';
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader';
 import { BufferGeometry, Euler, Group, Vector3 } from 'three';
 import { RoverScene } from './RoverScene';
+import { windows } from '../Window';
 
+const containerContainers: CSS.Properties = {
+  display: 'flex',
+  flexDirection: 'column',
+};
 const container: CSS.Properties = {
   display: 'flex',
   flexDirection: 'column',
+  flexGrow: '3',
   fontFamily: 'arial',
   borderTopWidth: '28px',
   borderColor: '#990000',
   borderBottomWidth: '2px',
   borderStyle: 'solid',
   padding: '0px',
+  //height: 'calc(100% - 47px)',
   alignItems: 'center',
-  position: 'relative',
   overflow: 'hidden',
 };
 const label: CSS.Properties = {
@@ -30,6 +36,16 @@ const label: CSS.Properties = {
   fontSize: '16px',
   zIndex: 1,
   color: 'white',
+};
+const canvasContainer: CSS.Properties = {
+  position: 'relative',
+  flexGrow: '1',
+  flexBasis: '200px',
+  width: '100%',
+};
+const debugContainer: CSS.Properties = {
+  flexGrow: 'auto',
+  width: '100%',
 };
 
 const MODELS_PATH = path.join(__dirname, '../assets/models');
@@ -43,6 +59,9 @@ interface IProps {
 }
 
 interface IState {
+  id: string;
+  width: number;
+  height: number;
   upVector: Vector3;
   displayPitch: number;
   displayRoll: number;
@@ -50,6 +69,7 @@ interface IState {
   file: string;
   geometry?: BufferGeometry;
   showManualControls: boolean;
+  showUpdateBox: boolean;
 }
 
 class Accelerometer extends Component<IProps, IState> {
@@ -61,17 +81,21 @@ class Accelerometer extends Component<IProps, IState> {
 
   private roverRef: React.RefObject<Group>;
 
-  private showUpdate = false;
+  static id = 0;
 
   constructor(props: IProps) {
     super(props);
     this.state = {
+      id: `3D_Rover${Accelerometer.id++}`,
+      width: 300,
+      height: 300,
       upVector: new Vector3(0, 1, 0),
       displayPitch: 0,
       displayRoll: 0,
       color: '#363636',
       file: path.join(MODELS_PATH, 'rover.stl'),
       showManualControls: false,
+      showUpdateBox: false,
     };
 
     rovecomm.on('AccelerometerData', (data: number[]) => {
@@ -83,9 +107,12 @@ class Accelerometer extends Component<IProps, IState> {
 
     this.arrowRef = React.createRef();
     this.roverRef = React.createRef();
+
+    this.resizeCallback.bind(this);
+    this.setResizeCallbacks();
+
     setTimeout(() => {
-      this.showUpdate = true;
-      this.forceUpdate();
+      this.setState({ showUpdateBox: true });
     }, 10000);
   }
 
@@ -103,16 +130,24 @@ class Accelerometer extends Component<IProps, IState> {
 
   componentDidMount(): void {
     this.loadGeometry();
+    this.findWidth();
   }
 
   componentDidUpdate(_prevProps: Readonly<IProps>, prevState: Readonly<IState>): void {
     if (prevState.file !== this.state.file) {
       this.loadGeometry();
     }
+    if (
+      prevState.showManualControls !== this.state.showManualControls ||
+      prevState.showUpdateBox !== this.state.showUpdateBox
+    ) {
+      this.findWidth();
+    }
   }
 
   componentWillUnmount(): void {
     this.state.geometry?.dispose();
+    this.removeResizeCallbacks();
   }
 
   // We must rotate the rover such that upVector would point to <0, -1, 0> if it underwent the same rotation.
@@ -138,130 +173,167 @@ class Accelerometer extends Component<IProps, IState> {
     else this.roverRef.current?.setRotationFromAxisAngle(axisAround, angleAround);
   }
 
+  resizeCallback = () => this.findWidth();
+
+  setResizeCallbacks() {
+    for (const win of Object.keys(windows)) {
+      windows[win].addEventListener('resize', this.resizeCallback);
+    }
+    this.findWidth();
+  }
+
+  removeResizeCallbacks() {
+    for (const win of Object.keys(windows)) {
+      windows[win].removeEventListener('resize', this.resizeCallback);
+    }
+    this.findWidth();
+  }
+
+  findWidth() {
+    for (const win of Object.keys(windows)) {
+      if (
+        windows[win].document.getElementById(this.state.id) &&
+        (windows[win].document.getElementById(this.state.id).clientWidth !== this.state.width ||
+          windows[win].document.getElementById(this.state.id).clientHeight !== this.state.height)
+      ) {
+        this.setState((prevState) => ({
+          width: windows[win].document.getElementById(prevState.id).clientWidth,
+          height: windows[win].document.getElementById(prevState.id).clientHeight,
+        }));
+      }
+    }
+  }
+
   render(): JSX.Element {
     return (
-      <div style={this.props.style}>
+      <div style={{ ...this.props.style, ...containerContainers }}>
         <div style={label}>3D Rover</div>
         <div style={container}>
-          <Canvas shadows>
-            <Suspense
-              fallback={
-                <mesh>
-                  <boxGeometry args={[1, 1, 1]} />
-                </mesh>
-              }
-            >
-              <directionalLight position-y={2} intensity={Math.PI * 0.5} castShadow />
-              <ambientLight intensity={0.1 * Math.PI} />
-              {this.state.showManualControls && (
-                <group>
-                  <mesh position={[0, 3, 0]}>
-                    <boxGeometry />
-                    <meshBasicMaterial color={'black'} />
+          <div style={canvasContainer} id={this.state.id}>
+            <div style={{ width: this.state.width, height: this.state.height, position: 'absolute', top: '0px' }}>
+              <Canvas shadows>
+                <Suspense
+                  fallback={
+                    <mesh>
+                      <boxGeometry args={[1, 1, 1]} />
+                    </mesh>
+                  }
+                >
+                  <directionalLight position-y={2} intensity={Math.PI * 0.5} castShadow />
+                  <ambientLight intensity={0.1 * Math.PI} />
+                  {this.state.showManualControls && (
+                    <group>
+                      <mesh position={[0, 3, 0]}>
+                        <boxGeometry />
+                        <meshBasicMaterial color={'black'} />
+                      </mesh>
+                      <arrowHelper
+                        args={[this.state.upVector, new Vector3(0, 3, 0), 2, 'green', 0.3, 0.3]}
+                        ref={this.arrowRef}
+                      />
+                    </group>
+                  )}
+                  <group ref={this.roverRef}>
+                    {this.state.file.endsWith('.glb') ? (
+                      <RoverScene position-y={-2} rotation-y={Math.PI} scale={2} />
+                    ) : (
+                      <mesh geometry={this.state.geometry} dispose={null} scale={0.08} castShadow>
+                        <meshLambertMaterial color={this.state.color} />
+                      </mesh>
+                    )}
+                  </group>
+                  <mesh position-y={-3} rotation-x={-Math.PI * 0.5} scale={50} receiveShadow>
+                    <planeGeometry />
+                    <meshStandardMaterial color={'#c1c1c1'} />
                   </mesh>
-                  <arrowHelper
-                    args={[this.state.upVector, new Vector3(0, 3, 0), 2, 'green', 0.3, 0.3]}
-                    ref={this.arrowRef}
-                  />
-                </group>
-              )}
-              <group ref={this.roverRef}>
-                {this.state.file.endsWith('.glb') ? (
-                  <RoverScene position-y={-2} rotation-y={Math.PI} scale={2} />
-                ) : (
-                  <mesh geometry={this.state.geometry} dispose={null} scale={0.08} castShadow>
-                    <meshLambertMaterial color={this.state.color} />
-                  </mesh>
-                )}
-              </group>
-              <mesh position-y={-3} rotation-x={-Math.PI * 0.5} scale={50} receiveShadow>
-                <planeGeometry />
-                <meshStandardMaterial color={'#c1c1c1'} />
-              </mesh>
-              <OrbitControls enablePan={false} minDistance={3} maxDistance={8} />
-            </Suspense>
-          </Canvas>
-          <span
-            style={{
-              backgroundColor: '#f1f1f1',
-              opacity: '50%',
-              padding: '0.1em',
-              color: '#c1c1c1',
-              cursor: 'pointer',
-              position: 'absolute',
-              bottom: 0,
-              right: 0,
-            }}
-            onClick={() => this.setState({ showManualControls: !this.state.showManualControls })}
-          >
-            <small>{this.state.showManualControls ? 'Hide' : 'Show'} Debug Controls</small>
-          </span>
-        </div>
-        {this.state.showManualControls && (
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <label>set manually</label>
-            <input
-              type="text"
-              onChange={(event) => {
-                this.setState({
-                  upVector: new Vector3(
-                    ...event.target.value
-                      .split(',')
-                      .map((tok) => tok.trim())
-                      .map((el) => parseFloat(el))
-                      .slice(0, 3)
-                  ),
-                });
-                this.calcRotation();
-              }}
-            />
-            <label>set x</label>
-            <input
-              type="range"
-              min="-1"
-              max="1"
-              step="0.05"
-              value={this.state.upVector.x}
-              onChange={(event) => {
-                this.setState((prevState) => ({
-                  upVector: prevState.upVector.setX(parseFloat(event.target.value)),
-                }));
-                this.calcRotation();
-              }}
-            />
-            <label>set y</label>
-            <input
-              type="range"
-              min="-1"
-              max="1"
-              step="0.05"
-              value={this.state.upVector.y}
-              onChange={(event) => {
-                this.setState((prevState) => ({
-                  upVector: prevState.upVector.setY(parseFloat(event.target.value)),
-                }));
-                this.calcRotation();
-              }}
-            />
-            <label>set z</label>
-            <input
-              type="range"
-              min="-1"
-              max="1"
-              step="0.05"
-              value={this.state.upVector.z}
-              onChange={(event) => {
-                this.setState((prevState) => ({
-                  upVector: prevState.upVector.setZ(parseFloat(event.target.value)),
-                }));
-                this.calcRotation();
-              }}
-            />
-            <div>{`down: <${String(Object.values(this.state.upVector))}>`}</div>
-            <div>{`pitch: ${this.state.displayPitch}°, roll: ${this.state.displayRoll}°`}</div>
+                  <OrbitControls enablePan={false} minDistance={3} maxDistance={8} />
+                </Suspense>
+              </Canvas>
+              <span
+                style={{
+                  backgroundColor: '#f1f1f1',
+                  opacity: '50%',
+                  padding: '0.1em',
+                  color: '#c1c1c1',
+                  cursor: 'pointer',
+                  position: 'absolute',
+                  bottom: 0,
+                  right: 0,
+                }}
+                onClick={() => this.setState({ showManualControls: !this.state.showManualControls })}
+              >
+                <small>{this.state.showManualControls ? 'Hide' : 'Show'} Debug Controls</small>
+              </span>
+            </div>
           </div>
-        )}
-        {this.state.file.endsWith('.stl') && this.showUpdate && (
+          {this.state.showManualControls && (
+            <div style={debugContainer}>
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <label>set manually</label>
+                <input
+                  type="text"
+                  onChange={(event) => {
+                    this.setState({
+                      upVector: new Vector3(
+                        ...event.target.value
+                          .split(',')
+                          .map((tok) => tok.trim())
+                          .map((el) => parseFloat(el))
+                          .slice(0, 3)
+                      ),
+                    });
+                    this.calcRotation();
+                  }}
+                />
+                <label>set x</label>
+                <input
+                  type="range"
+                  min="-1"
+                  max="1"
+                  step="0.05"
+                  value={this.state.upVector.x}
+                  onChange={(event) => {
+                    this.setState((prevState) => ({
+                      upVector: prevState.upVector.setX(parseFloat(event.target.value)),
+                    }));
+                    this.calcRotation();
+                  }}
+                />
+                <label>set y</label>
+                <input
+                  type="range"
+                  min="-1"
+                  max="1"
+                  step="0.05"
+                  value={this.state.upVector.y}
+                  onChange={(event) => {
+                    this.setState((prevState) => ({
+                      upVector: prevState.upVector.setY(parseFloat(event.target.value)),
+                    }));
+                    this.calcRotation();
+                  }}
+                />
+                <label>set z</label>
+                <input
+                  type="range"
+                  min="-1"
+                  max="1"
+                  step="0.05"
+                  value={this.state.upVector.z}
+                  onChange={(event) => {
+                    this.setState((prevState) => ({
+                      upVector: prevState.upVector.setZ(parseFloat(event.target.value)),
+                    }));
+                    this.calcRotation();
+                  }}
+                />
+                <div>{`down: <${String(Object.values(this.state.upVector))}>`}</div>
+                <div>{`pitch: ${this.state.displayPitch}°, roll: ${this.state.displayRoll}°`}</div>
+              </div>
+            </div>
+          )}
+        </div>
+        {this.state.file.endsWith('.stl') && this.state.showUpdateBox && (
           <div
             style={{
               backgroundColor: 'lightgreen',
@@ -279,8 +351,8 @@ class Accelerometer extends Component<IProps, IState> {
               style={{ cursor: 'pointer', float: 'right', fontWeight: 'bolder', color: 'green' }}
               onClick={(event) => {
                 event.stopPropagation();
-                this.showUpdate = false;
-                this.forceUpdate();
+                this.setState({ showUpdateBox: false });
+                setTimeout(() => this.findWidth(), 5000);
               }}
             >
               X
