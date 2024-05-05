@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
 import JSMpeg from '@cycjimmy/jsmpeg-player';
+import { windows } from '../../Core/Window';
 
 const cameraSelectionContainer: CSS.Properties = {
   display: 'grid',
@@ -56,6 +57,7 @@ interface IState {
   rotationAngle: number;
   currentSource: number;
   width: number;
+  id: string;
 }
 
 // CameraControls: represents a single camera view w/ controls. should be contained under a CamerasContainer
@@ -75,31 +77,58 @@ class CameraControls extends Component<IProps, IState> {
     'ws://127.0.0.1:8096/cam',
   ];
 
+  static id = 0;
+
   player: any;
 
   canvas!: HTMLCanvasElement | null;
 
   videoContainerRef!: HTMLDivElement | null;
 
+  // in seconds
+  refreshInterval = 60;
+
+  timeoutInterval: NodeJS.Timeout;
+
   constructor(props: IProps) {
     super(props);
-    this.state = { rotationAngle: 0, currentSource: props.startSource, width: 0 };
+    this.state = {
+      rotationAngle: 0,
+      currentSource: props.startSource,
+      width: 0,
+      id: `CameraControls_${CameraControls.id}`,
+    };
 
     this.src = this.sources[0];
     this.canvas = document.createElement('canvas');
+
+    this.refreshSource = this.refreshSource.bind(this);
+    this.timeoutInterval = setInterval(this.refreshSource, this.refreshInterval * 1000);
   }
 
   componentDidMount() {
     this.setSource(this.state.currentSource);
     this.updateWidth();
-    window.addEventListener('resize', this.updateWidth);
+    for (const win of Object.keys(windows)) {
+      if (windows[win].document.getElementById(this.state.id)) {
+        windows[win].addEventListener('resize', this.updateWidth);
+        windows[win].addEventListener('focus', this.refreshSource);
+      }
+    }
   }
 
   componentWillUnmount() {
     // if (this.player) {
     //   this.player.dispose();
     // }
-    window.removeEventListener('resize', this.updateWidth);
+    clearInterval(this.timeoutInterval);
+    for (const win of Object.keys(windows)) {
+      if (windows[win].document.getElementById(this.state.id)) {
+        windows[win].removeEventListener('resize', this.updateWidth);
+        windows[win].removeEventListener('focus', this.refreshSource);
+      }
+    }
+    // if (this.player !== undefined) this.player.destroy();
   }
 
   updateWidth = () => {
@@ -124,12 +153,18 @@ class CameraControls extends Component<IProps, IState> {
     this.setState({ currentSource: newSource });
     this.player?.destroy();
     this.src = this.sources[newSource];
+    // if (this.player !== undefined) this.player.destroy();
     this.player = new JSMpeg.VideoElement(this.canvas, this.src, {
       canvas: this.canvas,
       audio: false,
     });
     this.player.player.pauseWhenHidden = false;
-    this.player.player.videoBufferSize = 4 * 1024;
+    this.player.player.videoBufferSize = 4 * 1028;
+  }
+
+  refreshSource() {
+    console.log(this.state);
+    this.setSource(this.state.currentSource);
   }
 
   render(): JSX.Element {
