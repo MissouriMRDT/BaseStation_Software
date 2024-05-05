@@ -52,7 +52,6 @@ const inputField: CSS.Properties = {
   marginLeft: '5px',
 };
 
-const LEDNames = ['Laser', 'White LED'];
 interface IProps {
   style?: CSS.Properties;
 }
@@ -60,17 +59,14 @@ interface IProps {
 interface IState {
   packetsRecieved: boolean[];
   data: number[];
-  LedStatus: boolean[];
   graphData: {
     x: number;
     y: number;
   }[];
   crosshairPos: number | null;
-  enableLED: boolean;
   integrationTime: number;
   minX: number;
   maxX: number;
-  enableLEDToggle: boolean;
 }
 
 function downloadURL(imgData: string): void {
@@ -118,30 +114,16 @@ class Raman extends Component<IProps, IState> {
     style: {},
   };
 
-  static buildLedCommand(LED: boolean[]): number {
-    let bitmask = '';
-
-    bitmask += LED[1] ? '1' : '0';
-    bitmask += LED[0] ? '1' : '0';
-    console.log(bitmask);
-    const num = parseInt(bitmask, 2);
-    console.log(num);
-    return num;
-  }
-
   constructor(props: IProps) {
     super(props);
     this.state = {
-      LedStatus: [false, false],
       packetsRecieved: [false, false, false, false, false],
       data: new Array(2048).fill(0).flat(),
       graphData: [{ x: 0, y: 0 }],
       crosshairPos: null,
-      enableLED: false,
       integrationTime: 0,
       minX: this.wavelengthToWavenumber(minWavelength),
       maxX: Math.round(this.wavelengthToWavenumber(maxWavelength)),
-      enableLEDToggle: false,
     };
 
     rovecomm.on('RamanReading_Part1', (data: number[]) => this.processReading(1, 0, 500, data));
@@ -172,17 +154,6 @@ class Raman extends Component<IProps, IState> {
         if (a) this.updateGraphValues();
       }
     );
-  }
-
-  toggleLed(index: number): void {
-    if (this.state.enableLEDToggle) {
-      const { LedStatus } = this.state;
-      LedStatus[index] = !LedStatus[index];
-      this.setState({
-        LedStatus,
-      });
-      rovecomm.sendCommand('EnableLEDs', 'Instruments', Raman.buildLedCommand(LedStatus));
-    }
   }
 
   exportDataCSV(): void {
@@ -297,26 +268,6 @@ class Raman extends Component<IProps, IState> {
               {this.crosshair()}
             </XYPlot>
             <div style={buttonRow}>
-              <div>
-                {this.state.LedStatus.map((value, index) => {
-                  const uniqueKey = `ledToggle_${index}`;
-                  return (
-                    <label key={uniqueKey} htmlFor={uniqueKey}>
-                      <input
-                        type="checkbox"
-                        id={uniqueKey}
-                        name={uniqueKey}
-                        checked={value}
-                        onChange={() => this.toggleLed(index)}
-                      />
-                      {LEDNames[index]}
-                    </label>
-                  );
-                })}
-                <button onClick={() => this.setState((prevState) => ({ enableLEDToggle: !prevState.enableLEDToggle }))}>
-                  LED Toggle: {this.state.enableLEDToggle ? 'on' : 'off'}
-                </button>
-              </div>
               <div>
                 Integration Time (ms):
                 <input

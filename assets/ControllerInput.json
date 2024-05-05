@@ -58,8 +58,6 @@
       "SensorAxis_OpenLoop": { "buttonType": "joystick", "button": "right stick y" },
       "AugerUp": { "buttonType": "button", "button": "dpad up" },
       "AugerDown": { "buttonType": "button", "button": "dpad down" },
-      "ProboscisPlus": { "buttonType": "button", "button": "RB" },
-      "ProboscisMinus": { "buttonType": "button", "button": "LB" },
       "MicroscopePlus": { "buttonType": "button", "button": "dpad right" },
       "MicroscopeMinus": { "buttonType": "button", "button": "dpad left" }
     }

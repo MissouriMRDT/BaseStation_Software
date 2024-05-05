@@ -65,7 +65,7 @@ class EnvironmentalData extends Component<IProps, IState> {
     return (
       <div id="EnvironmentalData" style={this.props.style}>
         <div style={label}>Environmental Data</div>
-        <div style={{ ...container, width: '50%' }}>
+        <div style={{ ...container, width: '80%' }}>
           <div style={{ ...row, margin: '10px' }}>
             <div>Temperature: {this.state.temperature}</div>
             <div>Humidity: {this.state.humidity}</div>

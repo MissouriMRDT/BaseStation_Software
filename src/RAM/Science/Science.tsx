@@ -14,6 +14,7 @@ import ScienceGraphs from './components/ScienceGraphs';
 // import FTIR from './components/FTIR';
 import CamerasContainer from '../../RED/components/CamerasContainer';
 import CameraControls from '../../RED/components/CameraControls';
+import LEDs from './components/LEDs';
 // import SensorGraphs from './components/SensorGraphs';
 
 const row: CSS.Properties = {
@@ -30,7 +31,6 @@ const button: CSS.Properties = {
 const sensorMotorMultiplier = 1000;
 const scoopMotorMultiplier = 1000;
 const augerMotorMultiplier = 1000;
-const proboscisMotorMultiplier = 1000;
 let microscopePosition = 0;
 
 function science(): void {
@@ -57,16 +57,6 @@ function science(): void {
       rovecomm.sendCommand('Auger', 'ScienceActuation', -augerMotorMultiplier);
     } else {
       rovecomm.sendCommand('Auger', 'ScienceActuation', 0);
-    }
-  }
-
-  if ('ProboscisPlus' in controllerInputs && 'ProboscisMinus' in controllerInputs) {
-    if (controllerInputs.ProboscisPlus === 1) {
-      rovecomm.sendCommand('Proboscis', 'ScienceActuation', proboscisMotorMultiplier);
-    } else if (controllerInputs.ProboscisMinus === 1) {
-      rovecomm.sendCommand('Proboscis', 'ScienceActuation', -proboscisMotorMultiplier);
-    } else {
-      rovecomm.sendCommand('Proboscis', 'ScienceActuation', 0);
     }
   }
 
@@ -122,6 +112,9 @@ class Science extends Component<IProps, IState> {
         <div style={{ ...row }}>
           <div style={{ ...column, marginRight: '2.5px', width: '100%' }}>
             <EnvironmentalData />
+          </div>
+          <div style={{ ...column, marginRight: '2.5px', width: '100%' }}>
+            <LEDs />
           </div>
         </div>
         <div style={{ ...row }}>
