@@ -13,7 +13,7 @@ import Power from './components/PMS';
 import ControlScheme from '../Core/components/ControlScheme';
 import Drive from './components/Drive';
 import Gimbal from './components/Gimbal';
-import ThreeDRover from '../Core/components/ThreeDRover';
+// import ThreeDRover from '../Core/components/ThreeDRover';
 import CamerasContainer from './components/CamerasContainer';
 import CameraSocketManager from './components/CameraSocketManager';
 // import SignalStack from './components/SignalStack';
