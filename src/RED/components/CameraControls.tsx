@@ -24,7 +24,7 @@ const videoContainerStyle: CSS.Properties = {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  // overflow: 'hidden',
+  overflow: 'hidden',
 };
 
 const label: CSS.Properties = {
