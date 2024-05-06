@@ -3,6 +3,7 @@ import CSS from 'csstype';
 import JSMpeg from '@cycjimmy/jsmpeg-player';
 import { windows } from '../../Core/Window';
 import fs from 'fs';
+import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
 
 const cameraSelectionContainer: CSS.Properties = {
   display: 'grid',
@@ -104,7 +105,44 @@ class CameraControls extends Component<IProps, IState> {
     this.canvas = document.createElement('canvas');
 
     this.refreshSource = this.refreshSource.bind(this);
+    this.takePano = this.takePano.bind(this);
+    this.rotateGimbal90 = this.rotateGimbal90.bind(this);
     this.timeoutInterval = setInterval(this.refreshSource, this.refreshInterval * 1000);
+  }
+
+  rotateGimbal90(direction: boolean) {
+    if (direction) {
+      rovecomm.sendCommand('LeftMainGimbalIncrement', 'Core', [90, 0]);
+    } else {
+      rovecomm.sendCommand('LeftMainGimbalIncrement', 'Core', [-90, 0]);
+    }
+  }
+
+  takePano() {
+    // zero angle (for now spam left)
+    setTimeout(() => {
+      this.rotateGimbal90(false);
+    }, 1000);
+    setTimeout(() => {
+      this.rotateGimbal90(false);
+    }, 2000);
+    setTimeout(() => {
+      this.rotateGimbal90(false);
+    }, 3000);
+    setTimeout(() => {
+      this.saveImage('pano1');
+      this.rotateGimbal90(true);
+    }, 4000);
+    setTimeout(() => {
+      this.saveImage('pano2');
+      this.rotateGimbal90(true);
+    }, 5000);
+    setTimeout(() => {
+      this.saveImage('pano3');
+      this.rotateGimbal90(true);
+    }, 6000);
+    // stitch image
+    // print image
   }
 
   componentDidMount() {
@@ -167,10 +205,16 @@ class CameraControls extends Component<IProps, IState> {
     this.setSource(this.state.currentSource);
   }
 
-  saveImage(): void {
+  saveImage(pano = ''): void {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const image = this.canvas!.toDataURL('image/png').replace('image/png', 'image/octet-stream');
-    const filename = `./Screenshots/${new Date().toISOString().replaceAll(/[:\-TZ]/g, '.')}Camera.png`;
+    let filename = '';
+    if (pano !== '') {
+      filename = `./Screenshots/${new Date().toISOString().replaceAll(/[:\-TZ]/g, '.')}Camera${pano}.png`;
+    } else {
+      filename = `./Screenshots/${new Date().toISOString().replaceAll(/[:\-TZ]/g, '.')}Camera.png`;
+    }
+    console.log(filename);
 
     if (!fs.existsSync('./Screenshots')) {
       fs.mkdirSync('./Screenshots');
@@ -218,6 +262,7 @@ class CameraControls extends Component<IProps, IState> {
             <button onClick={() => this.rotateVideo(90)}>Rotate 90</button>
             <button onClick={() => this.rotateVideo(180)}>Rotate 180</button>
             <button onClick={() => this.saveImage()}>Export</button>
+            <button onClick={() => this.takePano()}>Take Pano</button>
           </div>
         </div>
       </div>
