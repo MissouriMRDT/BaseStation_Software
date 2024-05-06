@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import CSS from 'csstype';
 import JSMpeg from '@cycjimmy/jsmpeg-player';
 import { windows } from '../../Core/Window';
+import fs from 'fs';
 
 const cameraSelectionContainer: CSS.Properties = {
   display: 'grid',
@@ -13,7 +14,7 @@ const cameraSelectionContainer: CSS.Properties = {
 const rotationContainer: CSS.Properties = {
   display: 'grid',
   width: '100%',
-  gridTemplateColumns: '33.33% 33.33% 33.33%',
+  gridTemplateColumns: '25% 25% 25% 25%',
   cursor: 'pointer',
 };
 
@@ -22,7 +23,7 @@ const videoContainerStyle: CSS.Properties = {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  overflow: 'hidden',
+  // overflow: 'hidden',
 };
 
 const label: CSS.Properties = {
@@ -139,7 +140,6 @@ class CameraControls extends Component<IProps, IState> {
   };
 
   rotateVideo = (angle: number) => {
-    console.log(this.state.width);
     if (angle === 0) {
       this.setState({ rotationAngle: 0 });
     } else {
@@ -153,18 +153,31 @@ class CameraControls extends Component<IProps, IState> {
     this.setState({ currentSource: newSource });
     this.player?.destroy();
     this.src = this.sources[newSource];
-    // if (this.player !== undefined) this.player.destroy();
-    this.player = new JSMpeg.VideoElement(this.canvas, this.src, {
+    this.player = new JSMpeg.Player(this.src, {
       canvas: this.canvas,
       audio: false,
+      preserveDrawingBuffer: true,
+      pauseWhenHidden: false,
+      videoBufferSize: 1024 * 1024 * 4,
     });
-    this.player.player.pauseWhenHidden = false;
-    this.player.player.videoBufferSize = 4 * 1028;
   }
 
   refreshSource() {
     console.log(this.state);
     this.setSource(this.state.currentSource);
+  }
+
+  saveImage(): void {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const image = this.canvas!.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+    const filename = `./Screenshots/${new Date().toISOString().replaceAll(/[:\-TZ]/g, '.')}Camera.png`;
+
+    if (!fs.existsSync('./Screenshots')) {
+      fs.mkdirSync('./Screenshots');
+    }
+
+    const base64Image = image.replace('image/png', 'image/octet-stream').split(';base64,').pop();
+    if (base64Image) fs.writeFileSync(filename, base64Image, { encoding: 'base64' });
   }
 
   render(): JSX.Element {
@@ -182,7 +195,7 @@ class CameraControls extends Component<IProps, IState> {
         <div style={this.props.labelName !== '' ? container : {}}>
           <div style={videoContainerStyle} ref={(videoContainerRef) => (this.videoContainerRef = videoContainerRef)}>
             <div data-vjs-player>
-              <canvas ref={(canvas) => (this.canvas = canvas)} style={videoStyle} width="640px" height="480px"></canvas>
+              <canvas ref={(canvas) => (this.canvas = canvas)} style={videoStyle}></canvas>
             </div>
           </div>
           <div style={cameraSelectionContainer}>
@@ -204,6 +217,7 @@ class CameraControls extends Component<IProps, IState> {
             <button onClick={() => this.rotateVideo(0)}>Reset Rotation</button>
             <button onClick={() => this.rotateVideo(90)}>Rotate 90</button>
             <button onClick={() => this.rotateVideo(180)}>Rotate 180</button>
+            <button onClick={() => this.saveImage()}>Export</button>
           </div>
         </div>
       </div>
