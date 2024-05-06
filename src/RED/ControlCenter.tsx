@@ -151,18 +151,6 @@ class ControlCenter extends Component<IProps, IState> {
               startSource={1}
               labelName={'Camera 2'}
             ></CameraControls>
-            <CameraControls
-              canvasWidth={640}
-              canvasHeight={480}
-              startSource={2}
-              labelName={'Camera 3'}
-            ></CameraControls>
-            <CameraControls
-              canvasWidth={640}
-              canvasHeight={480}
-              startSource={3}
-              labelName={'Camera 4'}
-            ></CameraControls>
           </div>
         </div>
         <div style={{ ...column, width: '60%' }}>
