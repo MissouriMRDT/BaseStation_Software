@@ -131,16 +131,37 @@ class CameraControls extends Component<IProps, IState> {
     }, 3000);
     setTimeout(() => {
       this.saveImage('pano1');
-      this.rotateGimbal90(true);
     }, 4000);
     setTimeout(() => {
-      this.saveImage('pano2');
-      this.rotateGimbal90(true);
-    }, 5000);
-    setTimeout(() => {
-      this.saveImage('pano3');
       this.rotateGimbal90(true);
     }, 6000);
+    setTimeout(() => {
+      this.saveImage('pano2');
+    }, 8000);
+    setTimeout(() => {
+      this.rotateGimbal90(true);
+    }, 10000);
+    setTimeout(() => {
+      this.saveImage('pano3');
+    }, 12000);
+    setTimeout(() => {
+      this.rotateGimbal90(true);
+    }, 14000);
+    setTimeout(() => {
+      this.saveImage('pano4');
+    }, 16000);
+    setTimeout(() => {
+      this.rotateGimbal90(true);
+    }, 18000);
+    setTimeout(() => {
+      this.saveImage('pano5');
+    }, 20000);
+    setTimeout(() => {
+      this.rotateGimbal90(true);
+    }, 22000);
+    setTimeout(() => {
+      this.saveImage('pano6');
+    }, 24000);
     // stitch image
     // print image
   }
