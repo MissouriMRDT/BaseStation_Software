@@ -119,7 +119,7 @@ class Lighting extends Component<IProps, IState> {
                 type="button"
                 onClick={() => {
                   if (Number(this.state.brightInput) >= 0 && Number(this.state.brightInput) <= 124)
-                    rovecomm.sendCommand('Brightness', 'Autonomy', this.state.brightInput);
+                    rovecomm.sendCommand('Brightness', 'Core', this.state.brightInput);
                 }}
               >
                 Set Brightness
