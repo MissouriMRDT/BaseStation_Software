@@ -57,7 +57,7 @@ class Arm extends Component<IProps, IState> {
 
     this.setState((prevState) => ({ gripperToggle: !prevState.gripperToggle }));
     rovecomm.sendCommand('SelectGripper', 'Arm', this.state.gripperToggle ? [1] : [0]);
-    if (this.state.gripperToggle) {
+    if (!this.state.gripperToggle) {
       this.setState({ gripperCam: 7 });
       console.log(this.state.gripperCam);
       MultiplierR = 500;
@@ -187,13 +187,21 @@ class Arm extends Component<IProps, IState> {
           </div>
         </div>
         <div style={row}>
-          <CameraControls startSource={5} canvasWidth={640} canvasHeight={480} labelName={'Arm Cam 1'}></CameraControls>
-          <CameraControls startSource={6} canvasWidth={640} canvasHeight={480} labelName={'Arm Cam 2'}></CameraControls>
+          {/* Note: sources start at 0, but begin with 1 visually on the buttons*/}
+          <CameraControls startSource={4} canvasWidth={640} canvasHeight={480} labelName={'Arm Cam 1'}></CameraControls>
+          <CameraControls startSource={5} canvasWidth={640} canvasHeight={480} labelName={'Arm Cam 2'}></CameraControls>
         </div>
         <div style={row}>
           <ControlScheme configs={['Arm']} style={{ width: '100%', marginRight: '2.5px' }} />
         </div>
-        <CameraControls startSource={7} canvasWidth={640} canvasHeight={480} labelName={'Arm Cam 3'}></CameraControls>
+        <CameraControls
+          startSource={6}
+          canvasWidth={640}
+          canvasHeight={480}
+          labelName={'Arm Cam 3'}
+          gripperCam={this.state.gripperCam}
+          cameraToggle={true}
+        />
       </div>
     );
   }

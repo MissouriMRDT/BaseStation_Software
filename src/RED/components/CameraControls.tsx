@@ -53,6 +53,8 @@ interface IProps {
   canvasWidth: number;
   canvasHeight: number;
   labelName: string;
+  gripperCam: number;
+  cameraToggle: boolean;
 }
 
 interface IState {
@@ -64,7 +66,10 @@ interface IState {
 
 // CameraControls: represents a single camera view w/ controls. should be contained under a CamerasContainer
 class CameraControls extends Component<IProps, IState> {
-  static defaultProps = {};
+  static defaultProps = {
+    cameraToggle: false,
+    gripperCam: 7,
+  };
 
   src: string;
 
@@ -164,6 +169,19 @@ class CameraControls extends Component<IProps, IState> {
     }, 24000);
     // stitch image
     // print image
+  }
+
+  componentDidUpdate(prevProps: IProps) {
+    if (prevProps.gripperCam !== this.props.gripperCam) {
+      this.camToggle();
+    }
+  }
+
+  camToggle() {
+    if (this.props.cameraToggle) {
+      console.log(this.props.gripperCam);
+      this.setSource(this.props.gripperCam - 1);
+    }
   }
 
   componentDidMount() {
