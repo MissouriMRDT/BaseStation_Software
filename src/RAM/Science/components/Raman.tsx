@@ -9,7 +9,6 @@ import { windows } from '../../../Core/Window';
 const minWavelength = 532;
 const maxWavelength = 650;
 const maxintegrationTime = 60000;
-let prevData = new Array(2048).fill(0).flat();
 
 const label: CSS.Properties = {
   marginTop: '-10px',
@@ -68,6 +67,8 @@ interface IState {
   integrationTime: number;
   minX: number;
   maxX: number;
+  baseline: boolean;
+  baselineData: number[];
 }
 
 function downloadURL(imgData: string): void {
@@ -125,6 +126,8 @@ class Raman extends Component<IProps, IState> {
       integrationTime: 0,
       minX: this.wavelengthToWavenumber(minWavelength),
       maxX: Math.round(this.wavelengthToWavenumber(maxWavelength)),
+      baseline: false,
+      baselineData: new Array(2048).fill(1023).flat(),
     };
 
     rovecomm.on('RamanReading_Part1', (data: number[]) => this.processReading(1, 0, 500, data));
@@ -139,12 +142,20 @@ class Raman extends Component<IProps, IState> {
       (prevState) => {
         const updatedPacketsRecieved = prevState.packetsRecieved;
         updatedPacketsRecieved[packetID - 1] = true;
-        const updatedData = prevState.data;
+        const updatedData = this.state.baseline ? prevState.baselineData : prevState.data;
         for (let i = 0; i < endIndex - startIndex; i++) {
           updatedData[startIndex + i] = data[i];
         }
-
-        return { packetsRecieved: updatedPacketsRecieved, data: updatedData };
+        if (this.state.baseline) {
+          console.log('Taking baseline');
+          return {
+            packetsRecieved: updatedPacketsRecieved,
+            baselineData: updatedData,
+            data: new Array(2048).fill(0).flat(),
+          };
+        }
+        console.log('Not taking baseline');
+        return { packetsRecieved: updatedPacketsRecieved, baselineData: this.state.baselineData, data: updatedData };
       },
       () => {
         let a = true;
@@ -192,21 +203,37 @@ class Raman extends Component<IProps, IState> {
     return 10 ** 7 * (1 / minWavelength - 1 / wavelength);
   }
 
+  takeBaseline(): void {
+    this.setState(() => {
+      return {
+        packetsRecieved: new Array(5).fill(false),
+        baseline: true,
+      };
+    });
+
+    rovecomm.sendCommand('RequestRamanReading', 'Instruments', this.state.integrationTime);
+  }
+
   updateGraphValues(): void {
     const data = this.state.data;
     const xScale = (maxWavelength - minWavelength) / 2048;
+
+    console.log('data: ', data);
+    console.log('baselinedata: ', this.state.baselineData);
+    for (let i = 0; i < data.length; i++) {
+      data[i] = this.state.baselineData[i] - data[i];
+      if (data[i] < 0) {
+        data[i] = 0;
+      }
+    }
     const maxY = Math.max(...data);
     const minY = Math.min(...data);
-    for (let i = 0; i < data.length; i++) {
-      data[i] = prevData[i] - data[i];
-    }
     const dataToDisplay = data.map((value: number, index: number) => {
-      return { x: this.wavelengthToWavenumber(index * xScale + minWavelength), y: (maxY - value) / (maxY - minY) };
+      return { x: this.wavelengthToWavenumber(index * xScale + minWavelength), y: (value - minY) / (maxY - minY) };
     });
     this.setState({
       graphData: dataToDisplay,
     });
-    prevData = data;
   }
 
   crosshair(): JSX.Element | null {
@@ -228,6 +255,7 @@ class Raman extends Component<IProps, IState> {
     this.setState(() => {
       return {
         packetsRecieved: new Array(5).fill(false),
+        baseline: false,
       };
     });
 
@@ -283,6 +311,9 @@ class Raman extends Component<IProps, IState> {
               </div>
               <div>
                 <button onClick={() => this.requestData()}>Request Reading</button>
+              </div>
+              <div>
+                <button onClick={() => this.takeBaseline()}>Request Baseline</button>
               </div>
             </div>
             <div style={buttonRow}>
