@@ -13,9 +13,14 @@ import Power from './components/PMS';
 import ControlScheme from '../Core/components/ControlScheme';
 import Drive from './components/Drive';
 import Gimbal from './components/Gimbal';
+<<<<<<< HEAD
 import Accelerometer from '../Core/components/Accelerometer';
 import CamerasContainer from './components/CamerasContainer';
+=======
+// import ThreeDRover from '../Core/components/ThreeDRover';
+>>>>>>> topic/implement-systems
 import CameraSocketManager from './components/CameraSocketManager';
+import CameraControls from './components/CameraControls';
 // import SignalStack from './components/SignalStack';
 
 const row: CSS.Properties = {
@@ -115,8 +120,13 @@ class ControlCenter extends Component<IProps, IState> {
           }
           <div style={{ ...column, width: '60%' }}>
             <div style={row}>
+<<<<<<< HEAD
               <GPS onCoordsChange={this.updateCoords} style={{ marginRight: '5px', width: '60%' }} />
               <Accelerometer style={{ width: '40%' }} />
+=======
+              <GPS onCoordsChange={this.updateCoords} style={{ marginRight: '5px', width: '100%' }} />
+              {/* <ThreeDRover style={{ width: '40%' }} /> */}
+>>>>>>> topic/implement-systems
             </div>
             <div style={{ ...row, height: '250px' }}>
               <Waypoints
@@ -139,7 +149,18 @@ class ControlCenter extends Component<IProps, IState> {
               name="controlCenterMap"
             />
             <CameraSocketManager />
-            <CamerasContainer camAmount={4} canvasWidth={640} canvasHeight={480} />
+            <CameraControls
+              canvasWidth={640}
+              canvasHeight={480}
+              startSource={0}
+              labelName={'Camera 1'}
+            ></CameraControls>
+            <CameraControls
+              canvasWidth={640}
+              canvasHeight={480}
+              startSource={1}
+              labelName={'Camera 2'}
+            ></CameraControls>
           </div>
         </div>
         <div style={{ ...column, width: '60%' }}>

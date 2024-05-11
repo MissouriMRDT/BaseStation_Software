@@ -5,7 +5,7 @@ import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
 const container: CSS.Properties = {
   display: 'grid',
   fontFamily: 'arial',
-  height: '250px',
+  height: '400px',
   borderTopWidth: '28px',
   borderColor: '#990000',
   borderBottomWidth: '2px',

@@ -16,7 +16,7 @@ async function startFFMPEG(input: string, output: string) {
     f: 'mpegts',
     s: '320x240',
     'codec:v': 'mpeg1video',
-    'b:v': '64k',
+    'b:v': '128k',
     maxrate: '128k',
     bf: '0',
   });

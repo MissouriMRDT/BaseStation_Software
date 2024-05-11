@@ -46,11 +46,11 @@ class Activity extends Component<IProps, IState> {
       backgroundColor: 'white',
     };
 
-    this.ReachedMarker = this.ReachedMarker.bind(this);
+    this.ReachedGoal = this.ReachedGoal.bind(this);
     this.Log = this.Log.bind(this);
 
     rovecomm.on('CurrentLog', (data: any[]) => this.Log(data));
-    rovecomm.on('ReachedMarker', this.ReachedMarker);
+    rovecomm.on('ReachedGoal', this.ReachedGoal);
   }
 
   Log(data: string[]): void {
@@ -59,7 +59,7 @@ class Activity extends Component<IProps, IState> {
     }));
   }
 
-  ReachedMarker(): void {
+  ReachedGoal(): void {
     this.setState({ backgroundColor: 'green' });
     this.Log(['Reached waypoint!']);
     const reachInterval = setInterval(() => {

@@ -11,9 +11,9 @@ import Reflectance from './components/Reflectance';
 import EnvironmentalData from './components/EnvironmentalData';
 import Raman from './components/Raman';
 import ScienceGraphs from './components/ScienceGraphs';
-import FTIR from './components/FTIR';
-import CamerasContainer from '../../RED/components/CamerasContainer';
+// import FTIR from './components/FTIR';
 import CameraControls from '../../RED/components/CameraControls';
+import LEDs from './components/LEDs';
 // import SensorGraphs from './components/SensorGraphs';
 
 const row: CSS.Properties = {
@@ -30,7 +30,6 @@ const button: CSS.Properties = {
 const sensorMotorMultiplier = 1000;
 const scoopMotorMultiplier = 1000;
 const augerMotorMultiplier = 1000;
-const proboscisMotorMultiplier = 1000;
 let microscopePosition = 0;
 
 function science(): void {
@@ -60,16 +59,6 @@ function science(): void {
     }
   }
 
-  if ('ProboscisPlus' in controllerInputs && 'ProboscisMinus' in controllerInputs) {
-    if (controllerInputs.ProboscisPlus === 1) {
-      rovecomm.sendCommand('Proboscis', 'ScienceActuation', proboscisMotorMultiplier);
-    } else if (controllerInputs.ProboscisMinus === 1) {
-      rovecomm.sendCommand('Proboscis', 'ScienceActuation', -proboscisMotorMultiplier);
-    } else {
-      rovecomm.sendCommand('Proboscis', 'ScienceActuation', 0);
-    }
-  }
-
   if ('MicroscopePlus' in controllerInputs && 'MicroscopeMinus' in controllerInputs) {
     if (controllerInputs.MicroscopePlus === 1 && microscopePosition < 180) {
       microscopePosition += 5;
@@ -91,7 +80,7 @@ class Science extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      selectedTab: 'environmental', // Default tab is 'environmental'
+      selectedTab: 'raman', // Default tab is 'raman'
     };
 
     setInterval(() => science(), 100);
@@ -105,30 +94,31 @@ class Science extends Component<IProps, IState> {
     const { selectedTab } = this.state;
     return (
       <div style={column}>
-        {selectedTab === 'environmental' && <EnvironmentalData />}
         {selectedTab === 'raman' && <Raman />}
         {selectedTab === 'reflectance' && <Reflectance />}
-        {selectedTab === 'FTIR' && <FTIR />}
+        {/* {selectedTab === 'FTIR' && <FTIR />} */}
         <div style={{ ...row, justifyContent: 'center', marginTop: '10px' }}>
-          <button style={button} onClick={() => this.handleTabChange('environmental')}>
-            Environmental Data
-          </button>
           <button style={button} onClick={() => this.handleTabChange('raman')}>
             Raman
           </button>
           <button style={button} onClick={() => this.handleTabChange('reflectance')}>
             Reflectance
           </button>
-          <button style={button} onClick={() => this.handleTabChange('FTIR')}>
+          {/* <button style={button} onClick={() => this.handleTabChange('FTIR')}>
             FTIR
-          </button>
+          </button> */}
         </div>
         <div style={{ ...row }}>
-          <div style={{ ...column, marginRight: '2.5px', width: '100%' }}></div>
+          <div style={{ ...column, marginRight: '2.5px', width: '100%' }}>
+            <EnvironmentalData />
+          </div>
+          <div style={{ ...column, marginRight: '2.5px', width: '100%' }}>
+            <LEDs />
+          </div>
         </div>
         <div style={{ ...row }}>
           <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>
-            <CamerasContainer camAmount={7} canvasWidth={640} canvasHeight={480} />
+            <CameraControls canvasWidth={640} canvasHeight={480} startSource={7} labelName={'Camera'}></CameraControls>
           </div>
           <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>
             <CameraControls canvasWidth={640} canvasHeight={480} startSource={7} labelName={'Camera'}></CameraControls>

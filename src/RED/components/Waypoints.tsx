@@ -19,6 +19,7 @@ const container: CSS.Properties = {
   borderBottomWidth: '2px',
   borderStyle: 'solid',
   marginBottom: '5px',
+  height: 'calc(100% - 40px)',
 };
 const label: CSS.Properties = {
   marginTop: '-10px',
@@ -76,7 +77,7 @@ const scrollviewer: CSS.Properties = {
   display: 'flex',
   flexDirection: 'column',
   overflowY: 'scroll',
-  height: '77px',
+  height: 'calc(100% - 100px)',
 };
 const listEntry: CSS.Properties = {
   appearance: 'none',
@@ -407,7 +408,7 @@ class Waypoints extends Component<IProps, IState> {
               </button>
             </div>
             <div style={radiusRow}>
-              <div style={{ ...value, width: '20%' }}>Point Radius:</div>
+              <div style={{ ...value, width: '20%' }}>Point Radius (m):</div>
               <input
                 type="text"
                 value={this.state.displayRadius || '0'}

@@ -101,6 +101,7 @@ class ControlFeatures extends Component<IProps, IState> {
   toggleGripper(): void {
     this.props.gripperCallBack();
     console.log(this.props.gripperToggle);
+    rovecomm.sendCommand('SelectGripper', 'Arm', this.props.gripperToggle ? [1] : [0]);
     console.log('changing gripper state');
   }
 

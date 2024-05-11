@@ -243,7 +243,7 @@ class FTIR extends Component<IProps, IState> {
     return (
       <div id="FTIR" style={this.props.style}>
         <div style={label}>FTIR</div>
-        <div style={container}>
+        <div style={{ ...container, width: '80%' }}>
           <div style={componentBox}>
             <XYPlot
               id="plot"

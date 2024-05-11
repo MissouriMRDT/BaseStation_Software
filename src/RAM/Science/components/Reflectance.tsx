@@ -117,7 +117,7 @@ interface IProps {
 
 const minWavelength = 340;
 const maxWavelength = 850;
-const maxintegrationTime = 6000;
+const maxintegrationTime = 60000;
 
 interface IState {
   /** Holds which lasers are enabled */
@@ -149,7 +149,30 @@ class Reflectance extends Component<IProps, IState> {
     this.requestData = this.requestData.bind(this);
     this.integrationTimeChange = this.integrationTimeChange.bind(this);
 
-    rovecomm.on('Reading', (data: number[]) => this.updateGraphValues(data));
+    rovecomm.on('ReflectanceReading', (data: number[]) => this.updateGraphValues(data));
+  }
+
+  exportDataCSV(): void {
+    const csvData = this.state.graphData
+      .map((data) => {
+        return `${data.x},${data.y}`;
+      })
+      .join('\n');
+
+    // ISO string will be formatted YYYY-MM-DDTHH:MM:SS:sssZ
+    // this regex will convert all -,T:,Z to . (which covers to . for .csv)
+    // Date format is consistent with the SensorData csv
+    const timestamp = new Date().toISOString().replaceAll(/[:\-TZ]/g, '.');
+    const EXPORT_FILE = `./ReflectanceCSV/${timestamp}.csv`;
+
+    if (!fs.existsSync('./ReflectanceCSV')) {
+      fs.mkdirSync('./ReflectanceCSV');
+    }
+
+    // Write the CSV data to a file
+    fs.writeFile(EXPORT_FILE, csvData, (err) => {
+      if (err) throw err;
+    });
   }
 
   onMouseLeave(): void {
@@ -190,7 +213,7 @@ class Reflectance extends Component<IProps, IState> {
   }
 
   requestData(): void {
-    rovecomm.sendCommand('RequestReading', 'ReflectanceSpectrometer', this.state.integrationTime);
+    rovecomm.sendCommand('RequestReflectanceReading', 'Instruments', this.state.integrationTime);
     console.log('requesting Reflectance');
   }
 
@@ -231,7 +254,7 @@ class Reflectance extends Component<IProps, IState> {
               <YAxis />
               {this.crosshair()}
             </XYPlot>
-            <div style={row}>
+            <div style={{ ...row }}>
               <div style={{ ...row, justifyContent: 'center' }}>
                 <div style={{ ...column, margin: '0 100px 0 100px' }}>
                   <button
@@ -252,7 +275,8 @@ class Reflectance extends Component<IProps, IState> {
                   />
                 </div>
                 <div style={{ ...column, margin: '0 100px 0 100px' }}>
-                  <button onClick={saveImage}>Export Graph</button>
+                  <button onClick={saveImage}>Export Graph to PNG</button>
+                  <button onClick={() => this.exportDataCSV()}>Export Data to CSV</button>
                 </div>
               </div>
             </div>

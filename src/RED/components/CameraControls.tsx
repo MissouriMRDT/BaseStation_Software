@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
 import JSMpeg from '@cycjimmy/jsmpeg-player';
+import { windows } from '../../Core/Window';
+import fs from 'fs';
+import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
 
 const cameraSelectionContainer: CSS.Properties = {
   display: 'grid',
@@ -12,7 +15,7 @@ const cameraSelectionContainer: CSS.Properties = {
 const rotationContainer: CSS.Properties = {
   display: 'grid',
   width: '100%',
-  gridTemplateColumns: '33.33% 33.33% 33.33%',
+  gridTemplateColumns: '25% 25% 25% 25%',
   cursor: 'pointer',
 };
 
@@ -50,17 +53,23 @@ interface IProps {
   canvasWidth: number;
   canvasHeight: number;
   labelName: string;
+  gripperCam: number;
+  cameraToggle: boolean;
 }
 
 interface IState {
   rotationAngle: number;
   currentSource: number;
   width: number;
+  id: string;
 }
 
 // CameraControls: represents a single camera view w/ controls. should be contained under a CamerasContainer
 class CameraControls extends Component<IProps, IState> {
-  static defaultProps = {};
+  static defaultProps = {
+    cameraToggle: false,
+    gripperCam: 7,
+  };
 
   src: string;
 
@@ -75,31 +84,129 @@ class CameraControls extends Component<IProps, IState> {
     'ws://127.0.0.1:8096/cam',
   ];
 
+  static id = 0;
+
   player: any;
 
   canvas!: HTMLCanvasElement | null;
 
   videoContainerRef!: HTMLDivElement | null;
 
+  // in seconds
+  refreshInterval = 60;
+
+  timeoutInterval: NodeJS.Timeout;
+
   constructor(props: IProps) {
     super(props);
-    this.state = { rotationAngle: 0, currentSource: props.startSource, width: 0 };
+    this.state = {
+      rotationAngle: 0,
+      currentSource: props.startSource,
+      width: 0,
+      id: `CameraControls_${CameraControls.id}`,
+    };
 
     this.src = this.sources[0];
     this.canvas = document.createElement('canvas');
+
+    this.refreshSource = this.refreshSource.bind(this);
+    this.takePano = this.takePano.bind(this);
+    this.rotateGimbal90 = this.rotateGimbal90.bind(this);
+    this.timeoutInterval = setInterval(this.refreshSource, this.refreshInterval * 1000);
+  }
+
+  rotateGimbal90(direction: boolean) {
+    if (direction) {
+      rovecomm.sendCommand('LeftMainGimbalIncrement', 'Core', [35, 0]);
+    } else {
+      rovecomm.sendCommand('LeftMainGimbalIncrement', 'Core', [-90, 0]);
+    }
+  }
+
+  takePano() {
+    // zero angle (for now spam left)
+    setTimeout(() => {
+      this.rotateGimbal90(false);
+    }, 1000);
+    setTimeout(() => {
+      this.rotateGimbal90(false);
+    }, 2000);
+    setTimeout(() => {
+      this.rotateGimbal90(false);
+    }, 3000);
+    setTimeout(() => {
+      this.saveImage('pano1');
+    }, 4000);
+    setTimeout(() => {
+      this.rotateGimbal90(true);
+    }, 6000);
+    setTimeout(() => {
+      this.saveImage('pano2');
+    }, 8000);
+    setTimeout(() => {
+      this.rotateGimbal90(true);
+    }, 10000);
+    setTimeout(() => {
+      this.saveImage('pano3');
+    }, 12000);
+    setTimeout(() => {
+      this.rotateGimbal90(true);
+    }, 14000);
+    setTimeout(() => {
+      this.saveImage('pano4');
+    }, 16000);
+    setTimeout(() => {
+      this.rotateGimbal90(true);
+    }, 18000);
+    setTimeout(() => {
+      this.saveImage('pano5');
+    }, 20000);
+    setTimeout(() => {
+      this.rotateGimbal90(true);
+    }, 22000);
+    setTimeout(() => {
+      this.saveImage('pano6');
+    }, 24000);
+    // stitch image
+    // print image
+  }
+
+  componentDidUpdate(prevProps: IProps) {
+    if (prevProps.gripperCam !== this.props.gripperCam) {
+      this.camToggle();
+    }
+  }
+
+  camToggle() {
+    if (this.props.cameraToggle) {
+      console.log(this.props.gripperCam);
+      this.setSource(this.props.gripperCam - 1);
+    }
   }
 
   componentDidMount() {
     this.setSource(this.state.currentSource);
     this.updateWidth();
-    window.addEventListener('resize', this.updateWidth);
+    for (const win of Object.keys(windows)) {
+      if (windows[win].document.getElementById(this.state.id)) {
+        windows[win].addEventListener('resize', this.updateWidth);
+        windows[win].addEventListener('focus', this.refreshSource);
+      }
+    }
   }
 
   componentWillUnmount() {
     // if (this.player) {
     //   this.player.dispose();
     // }
-    window.removeEventListener('resize', this.updateWidth);
+    clearInterval(this.timeoutInterval);
+    for (const win of Object.keys(windows)) {
+      if (windows[win].document.getElementById(this.state.id)) {
+        windows[win].removeEventListener('resize', this.updateWidth);
+        windows[win].removeEventListener('focus', this.refreshSource);
+      }
+    }
+    // if (this.player !== undefined) this.player.destroy();
   }
 
   updateWidth = () => {
@@ -110,7 +217,6 @@ class CameraControls extends Component<IProps, IState> {
   };
 
   rotateVideo = (angle: number) => {
-    console.log(this.state.width);
     if (angle === 0) {
       this.setState({ rotationAngle: 0 });
     } else {
@@ -124,12 +230,37 @@ class CameraControls extends Component<IProps, IState> {
     this.setState({ currentSource: newSource });
     this.player?.destroy();
     this.src = this.sources[newSource];
-    this.player = new JSMpeg.VideoElement(this.canvas, this.src, {
+    this.player = new JSMpeg.Player(this.src, {
       canvas: this.canvas,
       audio: false,
+      preserveDrawingBuffer: true,
+      pauseWhenHidden: false,
+      videoBufferSize: 1024 * 1024 * 4,
     });
-    this.player.player.pauseWhenHidden = false;
-    this.player.player.videoBufferSize = 4 * 1024;
+  }
+
+  refreshSource() {
+    console.log(this.state);
+    this.setSource(this.state.currentSource);
+  }
+
+  saveImage(pano = ''): void {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const image = this.canvas!.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+    let filename = '';
+    if (pano !== '') {
+      filename = `./Screenshots/${new Date().toISOString().replaceAll(/[:\-TZ]/g, '.')}Camera${pano}.png`;
+    } else {
+      filename = `./Screenshots/${new Date().toISOString().replaceAll(/[:\-TZ]/g, '.')}Camera.png`;
+    }
+    console.log(filename);
+
+    if (!fs.existsSync('./Screenshots')) {
+      fs.mkdirSync('./Screenshots');
+    }
+
+    const base64Image = image.replace('image/png', 'image/octet-stream').split(';base64,').pop();
+    if (base64Image) fs.writeFileSync(filename, base64Image, { encoding: 'base64' });
   }
 
   render(): JSX.Element {
@@ -147,7 +278,7 @@ class CameraControls extends Component<IProps, IState> {
         <div style={this.props.labelName !== '' ? container : {}}>
           <div style={videoContainerStyle} ref={(videoContainerRef) => (this.videoContainerRef = videoContainerRef)}>
             <div data-vjs-player>
-              <canvas ref={(canvas) => (this.canvas = canvas)} style={videoStyle} width="640px" height="480px"></canvas>
+              <canvas ref={(canvas) => (this.canvas = canvas)} style={videoStyle}></canvas>
             </div>
           </div>
           <div style={cameraSelectionContainer}>
@@ -169,6 +300,8 @@ class CameraControls extends Component<IProps, IState> {
             <button onClick={() => this.rotateVideo(0)}>Reset Rotation</button>
             <button onClick={() => this.rotateVideo(90)}>Rotate 90</button>
             <button onClick={() => this.rotateVideo(180)}>Rotate 180</button>
+            <button onClick={() => this.saveImage()}>Export</button>
+            <button onClick={() => this.takePano()}>Take Pano</button>
           </div>
         </div>
       </div>

@@ -87,7 +87,7 @@ class Lighting extends Component<IProps, IState> {
   colorChanged(newColor: any): void {
     const color = newColor.rgb;
     this.setState({ color });
-    rovecomm.sendCommand('LEDRGB', 'Autonomy', [color.r, color.g, color.b]);
+    rovecomm.sendCommand('LEDRGB', 'Core', [color.r, color.g, color.b]);
   }
 
   render(): JSX.Element {
@@ -119,7 +119,7 @@ class Lighting extends Component<IProps, IState> {
                 type="button"
                 onClick={() => {
                   if (Number(this.state.brightInput) >= 0 && Number(this.state.brightInput) <= 124)
-                    rovecomm.sendCommand('Brightness', 'Autonomy', this.state.brightInput);
+                    rovecomm.sendCommand('Brightness', 'Core', this.state.brightInput);
                 }}
               >
                 Set Brightness
