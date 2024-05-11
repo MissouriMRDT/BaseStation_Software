@@ -244,7 +244,7 @@ class Accelerometer extends Component<IProps, IState> {
                   </group>
                   <mesh position-y={-3} rotation-x={-Math.PI * 0.5} scale={50} receiveShadow>
                     <planeGeometry />
-                    <meshStandardMaterial color={'#c1c1c1'} />
+                    <meshLambertMaterial color={'#c1c1c1'} />
                   </mesh>
                   <OrbitControls enablePan={false} minDistance={3} maxDistance={8} />
                 </Suspense>
