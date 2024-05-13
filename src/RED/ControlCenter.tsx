@@ -17,6 +17,7 @@ import Gimbal from './components/Gimbal';
 import CameraSocketManager from './components/CameraSocketManager';
 import CameraControls from './components/CameraControls';
 // import SignalStack from './components/SignalStack';
+import { Client } from 'basic-ftp';
 
 const row: CSS.Properties = {
   display: 'flex',
@@ -73,6 +74,29 @@ class ControlCenter extends Component<IProps, IState> {
     this.setState({
       currentCoords: { lat, lon },
     });
+  }
+
+  async exportScreenshots(): Promise<void> {
+    for (let i = 0; i < 2; i++) {
+      console.log('Connecting to client...');
+      const client: Client = new Client();
+      client.ftp.verbose = true;
+      try {
+        await client.access({
+          host: `192.168.4.10${i}`,
+          user: 'pi',
+          password: 'raspberry',
+          secure: true,
+        });
+        console.log(await client.list());
+        await client.ensureDir('./Screenshots');
+        await client.downloadToDir('./PiScreenshots', './Screenshots');
+        console.log('Downloading...');
+      } catch (err) {
+        console.log(err);
+      }
+      client.close();
+    }
   }
 
   render(): JSX.Element {
@@ -151,6 +175,9 @@ class ControlCenter extends Component<IProps, IState> {
               startSource={1}
               labelName={'Camera 2'}
             ></CameraControls>
+            <button onClick={this.exportScreenshots} style={{ marginTop: '10px' }}>
+              Export Screenshots
+            </button>
           </div>
         </div>
         <div style={{ ...column, width: '60%' }}>
