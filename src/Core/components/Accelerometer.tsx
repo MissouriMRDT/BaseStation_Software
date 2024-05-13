@@ -5,11 +5,11 @@ import { rovecomm } from '../RoveProtocol/Rovecomm';
 import { ArrowHelperProps, Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader';
-import { BufferGeometry, Euler, Group, Vector3 } from 'three';
-import { RoverScene } from './RoverScene';
+import * as THREE from 'three';
+import RoverScene from './RoverScene';
 import { windows } from '../Window';
 
-const containerContainers: CSS.Properties = {
+const containersContainer: CSS.Properties = {
   display: 'flex',
   flexDirection: 'column',
 };
@@ -47,12 +47,40 @@ const debugContainer: CSS.Properties = {
   flexGrow: 'auto',
   width: '100%',
 };
+const pitchYawOverlay: CSS.Properties = {
+  backgroundColor: 'rgba(241, 241, 241, 0.5)',
+  padding: '0.1em',
+  fontWeight: 'bold',
+  position: 'absolute',
+  top: 0,
+  left: 0,
+};
+const debugDialogOverlay: CSS.Properties = {
+  backgroundColor: '#f1f1f1',
+  opacity: '50%',
+  padding: '0.1em',
+  color: '#c1c1c1',
+  cursor: 'pointer',
+  position: 'absolute',
+  bottom: 0,
+  right: 0,
+};
+const updateDialogContainer: CSS.Properties = {
+  backgroundColor: 'lightgreen',
+  padding: '10px',
+  marginTop: '10px',
+  border: '2px solid green',
+  borderRadius: '5px',
+  cursor: 'pointer',
+  fontFamily: 'Comic Sans MS',
+  fontSize: '.8em',
+};
 
 const MODELS_PATH = path.join(__dirname, '../assets/models');
 
 const DANGER_ANGLE = (50 * Math.PI) / 180;
-const negativeY = new Vector3(0, -1, 0);
-const positiveY = new Vector3(0, 1, 0);
+const negativeY = new THREE.Vector3(0, -1, 0);
+const positiveY = new THREE.Vector3(0, 1, 0);
 
 interface IProps {
   style?: CSS.Properties;
@@ -62,12 +90,12 @@ interface IState {
   id: string;
   width: number;
   height: number;
-  upVector: Vector3;
+  upVector: THREE.Vector3;
   displayPitch: number;
   displayRoll: number;
   color: '#B92C2C' | '#363636';
   file: string;
-  geometry?: BufferGeometry;
+  geometry?: THREE.BufferGeometry;
   showManualControls: boolean;
   showUpdateBox: boolean;
 }
@@ -79,17 +107,18 @@ class Accelerometer extends Component<IProps, IState> {
 
   private arrowRef: React.RefObject<ArrowHelperProps>;
 
-  private roverRef: React.RefObject<Group>;
+  private roverRef: React.RefObject<THREE.Group>;
 
   static id = 0;
 
   constructor(props: IProps) {
     super(props);
     this.state = {
+      // eslint-disable-next-line no-plusplus
       id: `3D_Rover${Accelerometer.id++}`,
       width: 300,
       height: 300,
-      upVector: new Vector3(0, 1, 0),
+      upVector: new THREE.Vector3(0, 1, 0),
       displayPitch: 0,
       displayRoll: 0,
       color: '#363636',
@@ -101,7 +130,7 @@ class Accelerometer extends Component<IProps, IState> {
     rovecomm.on('AccelerometerData', (data: number[]) => {
       // CoreBoard: y-forward, z-up, x-right
       // ThreeJS (WebGL): -z-forward, y-up, x-right
-      this.setState({ upVector: new Vector3(data[0], data[2], -data[1]) });
+      this.setState({ upVector: new THREE.Vector3(data[0], data[2], -data[1]) });
       this.calcRotation();
     });
 
@@ -164,12 +193,12 @@ class Accelerometer extends Component<IProps, IState> {
       pitch = 180 - pitch;
     }
     this.setState({
-      displayPitch: pitch,
-      displayRoll: roll,
+      displayPitch: -pitch,
+      displayRoll: -roll,
       color: angleAround > DANGER_ANGLE ? '#B92C2C' : '#363636',
     });
     this.arrowRef.current?.setDirection?.(normalizedUp);
-    if (normalizedUp.equals(negativeY)) this.roverRef.current?.setRotationFromEuler(new Euler(0, 0, Math.PI));
+    if (normalizedUp.equals(negativeY)) this.roverRef.current?.setRotationFromEuler(new THREE.Euler(0, 0, Math.PI));
     else this.roverRef.current?.setRotationFromAxisAngle(axisAround, angleAround);
   }
 
@@ -206,7 +235,7 @@ class Accelerometer extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div style={{ ...this.props.style, ...containerContainers }}>
+      <div style={{ ...this.props.style, ...containersContainer }}>
         <div style={label}>3D Rover</div>
         <div style={container}>
           <div style={canvasContainer} id={this.state.id}>
@@ -228,14 +257,14 @@ class Accelerometer extends Component<IProps, IState> {
                         <meshBasicMaterial color={'black'} />
                       </mesh>
                       <arrowHelper
-                        args={[this.state.upVector, new Vector3(0, 3, 0), 2, 'green', 0.3, 0.3]}
+                        args={[this.state.upVector, new THREE.Vector3(0, 3, 0), 2, 'green', 0.3, 0.3]}
                         ref={this.arrowRef}
                       />
                     </group>
                   )}
                   <group ref={this.roverRef}>
                     {this.state.file.endsWith('.glb') ? (
-                      <RoverScene position-y={-2} rotation-y={Math.PI} scale={2} />
+                      <RoverScene position-y={-2} rotation-y={Math.PI} scale={1.7} color={this.state.color} />
                     ) : (
                       <mesh geometry={this.state.geometry} dispose={null} scale={0.08} castShadow>
                         <meshLambertMaterial color={this.state.color} />
@@ -249,17 +278,13 @@ class Accelerometer extends Component<IProps, IState> {
                   <OrbitControls enablePan={false} minDistance={3} maxDistance={8} />
                 </Suspense>
               </Canvas>
+              <span style={pitchYawOverlay}>
+                {`pitch: ${this.state.displayPitch}°`}
+                <br />
+                {`roll: ${this.state.displayRoll}°`}
+              </span>
               <span
-                style={{
-                  backgroundColor: '#f1f1f1',
-                  opacity: '50%',
-                  padding: '0.1em',
-                  color: '#c1c1c1',
-                  cursor: 'pointer',
-                  position: 'absolute',
-                  bottom: 0,
-                  right: 0,
-                }}
+                style={debugDialogOverlay}
                 onClick={() => this.setState({ showManualControls: !this.state.showManualControls })}
               >
                 <small>{this.state.showManualControls ? 'Hide' : 'Show'} Debug Controls</small>
@@ -269,22 +294,6 @@ class Accelerometer extends Component<IProps, IState> {
           {this.state.showManualControls && (
             <div style={debugContainer}>
               <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <label>set manually</label>
-                <input
-                  type="text"
-                  onChange={(event) => {
-                    this.setState({
-                      upVector: new Vector3(
-                        ...event.target.value
-                          .split(',')
-                          .map((tok) => tok.trim())
-                          .map((el) => parseFloat(el))
-                          .slice(0, 3)
-                      ),
-                    });
-                    this.calcRotation();
-                  }}
-                />
                 <label>set x</label>
                 <input
                   type="range"
@@ -327,32 +336,27 @@ class Accelerometer extends Component<IProps, IState> {
                     this.calcRotation();
                   }}
                 />
-                <div>{`down: <${String(Object.values(this.state.upVector))}>`}</div>
-                <div>{`pitch: ${this.state.displayPitch}°, roll: ${this.state.displayRoll}°`}</div>
+                <div>{`up: <${String(
+                  Object.values(this.state.upVector).map((value) => Number(value).toFixed(2))
+                )}>`}</div>
               </div>
             </div>
           )}
         </div>
         {this.state.file.endsWith('.stl') && this.state.showUpdateBox && (
           <div
-            style={{
-              backgroundColor: 'lightgreen',
-              padding: '10px',
-              marginTop: 10,
-              border: '2px solid green',
-              borderRadius: '5px',
-              cursor: 'pointer',
-              fontFamily: 'Comic Sans MS',
-              fontSize: '.8em',
+            style={updateDialogContainer}
+            onClick={() => {
+              this.setState({ showUpdateBox: false, file: path.join(MODELS_PATH, 'rover_preview.glb') });
+              this.findWidth();
             }}
-            onClick={() => this.setState({ file: path.join(MODELS_PATH, 'rover_preview.glb') })}
           >
             <div
               style={{ cursor: 'pointer', float: 'right', fontWeight: 'bolder', color: 'green' }}
               onClick={(event) => {
                 event.stopPropagation();
                 this.setState({ showUpdateBox: false });
-                setTimeout(() => this.findWidth(), 5000);
+                this.findWidth();
               }}
             >
               X
