@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import CSS from 'csstype';
 import JSMpeg from '@cycjimmy/jsmpeg-player';
 import { windows } from '../../Core/Window';
-import fs from 'fs';
+// import fs from 'fs';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
 
 const cameraSelectionContainer: CSS.Properties = {
@@ -135,37 +135,37 @@ class CameraControls extends Component<IProps, IState> {
       this.rotateGimbal90(false);
     }, 3000);
     setTimeout(() => {
-      this.saveImage('pano1');
+      this.saveImage();
     }, 4000);
     setTimeout(() => {
       this.rotateGimbal90(true);
     }, 6000);
     setTimeout(() => {
-      this.saveImage('pano2');
+      this.saveImage();
     }, 8000);
     setTimeout(() => {
       this.rotateGimbal90(true);
     }, 10000);
     setTimeout(() => {
-      this.saveImage('pano3');
+      this.saveImage();
     }, 12000);
     setTimeout(() => {
       this.rotateGimbal90(true);
     }, 14000);
     setTimeout(() => {
-      this.saveImage('pano4');
+      this.saveImage();
     }, 16000);
     setTimeout(() => {
       this.rotateGimbal90(true);
     }, 18000);
     setTimeout(() => {
-      this.saveImage('pano5');
+      this.saveImage();
     }, 20000);
     setTimeout(() => {
       this.rotateGimbal90(true);
     }, 22000);
     setTimeout(() => {
-      this.saveImage('pano6');
+      this.saveImage();
     }, 24000);
     // stitch image
     // print image
@@ -244,7 +244,7 @@ class CameraControls extends Component<IProps, IState> {
     this.setSource(this.state.currentSource);
   }
 
-  saveImage(pano = ''): void {
+  saveImage(): void {
     if (this.state.currentSource < 5) {
       rovecomm.sendCommand('TakePicture', 'Camera1', this.state.currentSource);
     } else {
