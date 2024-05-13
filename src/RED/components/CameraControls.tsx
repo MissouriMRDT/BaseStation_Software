@@ -245,22 +245,27 @@ class CameraControls extends Component<IProps, IState> {
   }
 
   saveImage(pano = ''): void {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const image = this.canvas!.toDataURL('image/png').replace('image/png', 'image/octet-stream');
-    let filename = '';
-    if (pano !== '') {
-      filename = `./Screenshots/${new Date().toISOString().replaceAll(/[:\-TZ]/g, '.')}Camera${pano}.png`;
+    if (this.state.currentSource < 5) {
+      rovecomm.sendCommand('TakePicture', 'Camera1', this.state.currentSource);
     } else {
-      filename = `./Screenshots/${new Date().toISOString().replaceAll(/[:\-TZ]/g, '.')}Camera.png`;
+      rovecomm.sendCommand('TakePicture', 'Camera2', this.state.currentSource);
     }
-    console.log(filename);
+    // // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    // const image = this.canvas!.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+    // let filename = '';
+    // if (pano !== '') {
+    //   filename = `./Screenshots/${new Date().toISOString().replaceAll(/[:\-TZ]/g, '.')}Camera${pano}.png`;
+    // } else {
+    //   filename = `./Screenshots/${new Date().toISOString().replaceAll(/[:\-TZ]/g, '.')}Camera.png`;
+    // }
+    // console.log(filename);
 
-    if (!fs.existsSync('./Screenshots')) {
-      fs.mkdirSync('./Screenshots');
-    }
+    // if (!fs.existsSync('./Screenshots')) {
+    //   fs.mkdirSync('./Screenshots');
+    // }
 
-    const base64Image = image.replace('image/png', 'image/octet-stream').split(';base64,').pop();
-    if (base64Image) fs.writeFileSync(filename, base64Image, { encoding: 'base64' });
+    // const base64Image = image.replace('image/png', 'image/octet-stream').split(';base64,').pop();
+    // if (base64Image) fs.writeFileSync(filename, base64Image, { encoding: 'base64' });
   }
 
   render(): JSX.Element {
