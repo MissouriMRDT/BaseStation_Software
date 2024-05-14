@@ -86,7 +86,7 @@ class ControlCenter extends Component<IProps, IState> {
           host: `192.168.4.10${i}`,
           user: 'pi',
           password: 'raspberry',
-          secure: true,
+          secure: false,
         });
 
         console.log(await client.list());
