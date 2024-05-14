@@ -88,14 +88,21 @@ class ControlCenter extends Component<IProps, IState> {
           password: 'raspberry',
           secure: true,
         });
+
         console.log(await client.list());
-        await client.ensureDir('./Screenshots');
-        await client.downloadToDir('./PiScreenshots', './Screenshots');
+
+        // Ensure the remote directory exists or create it
+        await client.ensureDir('/home/pi/Screenshots');
+
+        // Download files to the local directory
+        await client.downloadToDir('./PiScreenshots', '/home/pi/Screenshots');
+
         console.log('Downloading...');
       } catch (err) {
         console.log(err);
+      } finally {
+        client.close(); // Close the client after the operation
       }
-      client.close();
     }
   }
 
