@@ -51,14 +51,19 @@ class EnvironmentalData extends Component<IProps, IState> {
       temperature: 0,
       humidity: 0,
     };
-    this.EnvironmentalData = this.EnvironmentalData.bind(this);
+    this.Temperature = this.Temperature.bind(this);
+    this.Humidity = this.Humidity.bind(this);
 
-    rovecomm.on('EnvironmentalData', (data: any) => this.EnvironmentalData(data));
+    rovecomm.on('Temperature', (data: any) => this.Temperature(data));
+    rovecomm.on('Humidity', (data: any) => this.Humidity(data));
   }
 
-  EnvironmentalData(data: any): void {
-    this.setState({ temperature: data[0] });
-    this.setState({ humidity: data[1] });
+  Temperature(data: any): void {
+    this.setState({ temperature: data });
+  }
+
+  Humidity(data: any): void {
+    this.setState({ humidity: data });
   }
 
   render(): JSX.Element {
