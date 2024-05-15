@@ -1,13 +1,14 @@
 import React, { Component, Suspense } from 'react';
 import CSS from 'csstype';
 import path from 'path';
+import fs from 'fs';
 import { rovecomm } from '../RoveProtocol/Rovecomm';
 import { ArrowHelperProps, Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
-import { STLLoader } from 'three/examples/jsm/loaders/STLLoader';
 import * as THREE from 'three';
 import RoverScene from './RoverScene';
 import { windows } from '../Window';
+import { EventEmitter } from 'events';
 
 const containersContainer: CSS.Properties = {
   display: 'flex',
@@ -76,11 +77,14 @@ const updateDialogContainer: CSS.Properties = {
   fontSize: '.8em',
 };
 
-const MODELS_PATH = path.join(__dirname, '../assets/models');
-
-const DANGER_ANGLE = (50 * Math.PI) / 180;
+const TIPOVER_PATH = path.join(__dirname, '../assets/TipoverVectors.json');
 const negativeY = new THREE.Vector3(0, -1, 0);
 const positiveY = new THREE.Vector3(0, 1, 0);
+
+interface TipoverEntry {
+  id: number;
+  upVector: THREE.Vector3;
+}
 
 interface IProps {
   style?: CSS.Properties;
@@ -93,13 +97,23 @@ interface IState {
   upVector: THREE.Vector3;
   displayPitch: number;
   displayRoll: number;
-  color: '#B92C2C' | '#363636';
-  file: string;
-  geometry?: THREE.BufferGeometry;
-  showManualControls: boolean;
+  dangerLevel: 'green' | 'yellow' | 'red';
+  showDebug: boolean;
   showUpdateBox: boolean;
+  showGltf: boolean;
+  storedTipoverVectors: TipoverEntry[];
+  selectedTipoverVector: TipoverEntry | null;
 }
 
+const globalTipoverVectors: TipoverEntry[] = [];
+const synchronizer = new EventEmitter();
+synchronizer.addListener('update', () =>
+  fs.writeFile(
+    TIPOVER_PATH,
+    JSON.stringify(globalTipoverVectors, null, 2),
+    (err) => err && console.error('Failed to save tipover vectors to file!', err)
+  )
+);
 class Accelerometer extends Component<IProps, IState> {
   static defaultProps: IProps = {
     style: {},
@@ -121,10 +135,12 @@ class Accelerometer extends Component<IProps, IState> {
       upVector: new THREE.Vector3(0, 1, 0),
       displayPitch: 0,
       displayRoll: 0,
-      color: '#363636',
-      file: path.join(MODELS_PATH, 'rover.stl'),
-      showManualControls: false,
+      dangerLevel: 'green',
+      showDebug: false,
       showUpdateBox: false,
+      showGltf: false,
+      storedTipoverVectors: globalTipoverVectors,
+      selectedTipoverVector: null,
     };
 
     rovecomm.on('AccelerometerData', (data: number[]) => {
@@ -140,43 +156,41 @@ class Accelerometer extends Component<IProps, IState> {
     this.resizeCallback.bind(this);
     this.setResizeCallbacks();
 
+    this.tipoverCallback.bind(this);
+    synchronizer.addListener('update', this.tipoverCallback);
+
     setTimeout(() => {
       this.setState({ showUpdateBox: true });
     }, 10000);
   }
 
-  loadGeometry(): void {
-    this.state.geometry?.dispose();
-    if (this.state.file.endsWith('.stl')) {
-      const loader = new STLLoader();
-      loader.load(this.state.file, (geo) => {
-        geo.center();
-        geo.computeVertexNormals();
-        this.setState({ geometry: geo });
-      });
-    }
-  }
-
   componentDidMount(): void {
-    this.loadGeometry();
+    // try to read tipover vectors from file
+    if (globalTipoverVectors.length === 0) {
+      if (fs.existsSync(TIPOVER_PATH)) {
+        const tipoverList = JSON.parse(fs.readFileSync(TIPOVER_PATH).toString()) as TipoverEntry[];
+        globalTipoverVectors.push(
+          ...tipoverList.map((entry) => ({
+            id: entry.id,
+            upVector: new THREE.Vector3().copy(entry.upVector), // the json doesn't parse right unless you make a new object
+          }))
+        );
+        console.log(globalTipoverVectors);
+        synchronizer.emit('update');
+      }
+    }
     this.findWidth();
   }
 
   componentDidUpdate(_prevProps: Readonly<IProps>, prevState: Readonly<IState>): void {
-    if (prevState.file !== this.state.file) {
-      this.loadGeometry();
-    }
-    if (
-      prevState.showManualControls !== this.state.showManualControls ||
-      prevState.showUpdateBox !== this.state.showUpdateBox
-    ) {
+    if (prevState.showDebug !== this.state.showDebug || prevState.showUpdateBox !== this.state.showUpdateBox) {
       this.findWidth();
     }
   }
 
   componentWillUnmount(): void {
-    this.state.geometry?.dispose();
     this.removeResizeCallbacks();
+    synchronizer.removeListener('update', this.tipoverCallback);
   }
 
   // We must rotate the rover such that upVector would point to <0, -1, 0> if it underwent the same rotation.
@@ -188,21 +202,45 @@ class Accelerometer extends Component<IProps, IState> {
     const angleAround = normalizedUp.angleTo(positiveY);
     let roll = Math.round((Math.asin(normalizedUp.x) / Math.PI) * 180);
     let pitch = Math.round((Math.asin(normalizedUp.z) / Math.PI) * 180);
+    // this still braks for y < 0, but if the rover gets itself into that orientation, we have bigger problems
     if (normalizedUp.y < 0) {
       roll = 180 - roll;
       pitch = 180 - pitch;
     }
-    this.setState({
-      displayPitch: -pitch,
-      displayRoll: -roll,
-      color: angleAround > DANGER_ANGLE ? '#B92C2C' : '#363636',
-    });
+    // set angles
     this.arrowRef.current?.setDirection?.(normalizedUp);
     if (normalizedUp.equals(negativeY)) this.roverRef.current?.setRotationFromEuler(new THREE.Euler(0, 0, Math.PI));
     else this.roverRef.current?.setRotationFromAxisAngle(axisAround, angleAround);
+    // set colors
+    let danger: IState['dangerLevel'] = 'green';
+    if (this.state.storedTipoverVectors.length > 0) {
+      const closestTipoverVector = this.state.storedTipoverVectors.reduce((prev, curr) =>
+        normalizedUp.dot(curr.upVector) > normalizedUp.dot(prev.upVector) ? curr : prev
+      ).upVector;
+      const tipoverAngle = positiveY.angleTo(closestTipoverVector);
+      const upAngle = positiveY.angleTo(normalizedUp);
+      if (upAngle - tipoverAngle < -Math.PI / 12) danger = 'green';
+      else if (upAngle - tipoverAngle >= 0) danger = 'red';
+      else danger = 'yellow';
+    }
+    this.arrowRef.current?.setColor?.(danger);
+    // set debug info
+    this.setState({
+      displayPitch: -pitch,
+      displayRoll: -roll,
+      dangerLevel: danger,
+    });
   }
 
   resizeCallback = () => this.findWidth();
+
+  tipoverCallback = () => {
+    if (this.state.selectedTipoverVector)
+      if (!globalTipoverVectors.find((entry) => entry.id === this.state.selectedTipoverVector?.id))
+        this.setState({ selectedTipoverVector: null });
+    this.setState({ storedTipoverVectors: globalTipoverVectors });
+    this.calcRotation(); // update colors
+  };
 
   setResizeCallbacks() {
     for (const win of Object.keys(windows)) {
@@ -250,7 +288,7 @@ class Accelerometer extends Component<IProps, IState> {
                 >
                   <directionalLight position-y={2} intensity={Math.PI * 0.5} castShadow />
                   <ambientLight intensity={0.1 * Math.PI} />
-                  {this.state.showManualControls && (
+                  {this.state.showDebug && (
                     <group>
                       <mesh position={[0, 3, 0]}>
                         <boxGeometry />
@@ -260,22 +298,50 @@ class Accelerometer extends Component<IProps, IState> {
                         args={[this.state.upVector, new THREE.Vector3(0, 3, 0), 2, 'green', 0.3, 0.3]}
                         ref={this.arrowRef}
                       />
+                      {this.state.storedTipoverVectors.map((vector) => {
+                        return (
+                          <arrowHelper
+                            key={vector.id}
+                            args={[
+                              vector.upVector,
+                              new THREE.Vector3(0, 3, 0),
+                              2,
+                              vector === this.state.selectedTipoverVector ? 'pink' : 'red',
+                              0.3,
+                              0.3,
+                            ]}
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              this.setState({ selectedTipoverVector: vector });
+                            }}
+                          />
+                        );
+                      })}
                     </group>
                   )}
                   <group ref={this.roverRef}>
-                    {this.state.file.endsWith('.glb') ? (
-                      <RoverScene position-y={-2} rotation-y={Math.PI} scale={1.7} color={this.state.color} />
-                    ) : (
-                      <mesh geometry={this.state.geometry} dispose={null} scale={0.08} castShadow>
-                        <meshLambertMaterial color={this.state.color} />
-                      </mesh>
-                    )}
+                    <RoverScene
+                      color={
+                        this.state.dangerLevel === 'red'
+                          ? '#B92C2C'
+                          : this.state.dangerLevel === 'yellow'
+                          ? '#FFF200'
+                          : '#363636'
+                      }
+                      showGltf={this.state.showGltf}
+                    />
                   </group>
-                  <mesh position-y={-3} rotation-x={-Math.PI * 0.5} scale={50} receiveShadow>
+                  <mesh
+                    position-y={-3}
+                    rotation-x={-Math.PI * 0.5}
+                    scale={50}
+                    onClick={() => this.setState({ selectedTipoverVector: null })}
+                    receiveShadow
+                  >
                     <planeGeometry />
                     <meshLambertMaterial color={'#c1c1c1'} />
                   </mesh>
-                  <OrbitControls enablePan={false} minDistance={3} maxDistance={8} />
+                  <OrbitControls enablePan={false} minDistance={4} maxDistance={8} />
                 </Suspense>
               </Canvas>
               <span style={pitchYawOverlay}>
@@ -283,17 +349,45 @@ class Accelerometer extends Component<IProps, IState> {
                 <br />
                 {`roll: ${this.state.displayRoll}°`}
               </span>
-              <span
-                style={debugDialogOverlay}
-                onClick={() => this.setState({ showManualControls: !this.state.showManualControls })}
-              >
-                <small>{this.state.showManualControls ? 'Hide' : 'Show'} Debug Controls</small>
+              <span style={debugDialogOverlay} onClick={() => this.setState({ showDebug: !this.state.showDebug })}>
+                <small>{this.state.showDebug ? 'Hide' : 'Show'} Debug Controls</small>
               </span>
             </div>
           </div>
-          {this.state.showManualControls && (
+          {this.state.showDebug && (
             <div style={debugContainer}>
               <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <div style={{ padding: '5px', display: 'inline-flex', gap: '5px' }}>
+                  <button
+                    onClick={() => {
+                      globalTipoverVectors.push({
+                        id:
+                          globalTipoverVectors.length > 0
+                            ? Math.max(...globalTipoverVectors.map((vector) => vector.id)) + 1
+                            : 0,
+                        upVector: this.state.upVector.clone().normalize(),
+                      });
+                      synchronizer.emit('update');
+                    }}
+                  >
+                    Add Tipover Vector
+                  </button>
+                  {this.state.selectedTipoverVector && (
+                    <button
+                      onClick={() => {
+                        if (this.state.selectedTipoverVector) {
+                          const removeIndex = globalTipoverVectors.findIndex(
+                            (entry) => entry.id === this.state.selectedTipoverVector?.id
+                          );
+                          globalTipoverVectors.splice(removeIndex, 1);
+                          synchronizer.emit('update');
+                        }
+                      }}
+                    >
+                      Remove Selected Vector
+                    </button>
+                  )}
+                </div>
                 <label>set x</label>
                 <input
                   type="range"
@@ -339,15 +433,18 @@ class Accelerometer extends Component<IProps, IState> {
                 <div>{`up: <${String(
                   Object.values(this.state.upVector).map((value) => Number(value).toFixed(2))
                 )}>`}</div>
+                <button onClick={() => this.setState({ showGltf: !this.state.showGltf })}>
+                  Mode: {this.state.showGltf ? 'Will' : 'Rover'}
+                </button>
               </div>
             </div>
           )}
         </div>
-        {this.state.file.endsWith('.stl') && this.state.showUpdateBox && (
+        {this.state.showUpdateBox && (
           <div
             style={updateDialogContainer}
             onClick={() => {
-              this.setState({ showUpdateBox: false, file: path.join(MODELS_PATH, 'rover_preview.glb') });
+              this.setState({ showUpdateBox: false, showGltf: true });
               this.findWidth();
             }}
           >

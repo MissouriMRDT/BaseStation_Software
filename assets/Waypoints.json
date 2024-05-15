@@ -16,5 +16,14 @@
     "colorPicker": false,
     "onMap": true,
     "displayRadius": false
+  },
+  "3": {
+    "name": "9:10:45 PM",
+    "latitude": 37.948292446447944,
+    "longitude": -91.77802562713623,
+    "color": "black",
+    "colorPicker": false,
+    "onMap": true,
+    "displayRadius": 0
   }
 }
