@@ -217,7 +217,7 @@ class Raman extends Component<IProps, IState> {
   }
 
   updateGraphValues(): void {
-    const data = this.state.data;
+    /*const data = this.state.data;
     const baseline = this.state.baselineData;
     const deviationConstant = this.state.deviationConstant;
     const xScale = (maxWavelength - minWavelength) / 2048;
@@ -330,6 +330,26 @@ class Raman extends Component<IProps, IState> {
     console.log('Data to Display:', dataToDisplay);
 
     // Update the graph data
+    this.setState({
+      graphData: dataToDisplay,
+    });*/
+
+    const data = this.state.data;
+    const xScale = (maxWavelength - minWavelength) / 2048;
+
+    console.log('data: ', data);
+    console.log('baselinedata: ', this.state.baselineData);
+    for (let i = 0; i < data.length; i++) {
+      data[i] = this.state.baselineData[i] - data[i];
+      if (data[i] < 0) {
+        data[i] = 0;
+      }
+    }
+    const maxY = Math.max(...data);
+    const minY = Math.min(...data);
+    const dataToDisplay = data.map((value: number, index: number) => {
+      return { x: this.wavelengthToWavenumber(index * xScale + minWavelength), y: (value - minY) / (maxY - minY) };
+    });
     this.setState({
       graphData: dataToDisplay,
     });
