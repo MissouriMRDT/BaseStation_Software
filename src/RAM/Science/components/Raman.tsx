@@ -70,6 +70,7 @@ interface IState {
   baseline: boolean;
   baselineData: number[];
   deviationConstant: number;
+  filterType: number;
 }
 
 function downloadURL(imgData: string): void {
@@ -130,6 +131,7 @@ class Raman extends Component<IProps, IState> {
       baseline: false,
       baselineData: new Array(2048).fill(1023).flat(),
       deviationConstant: 1,
+      filterType: 0
     };
 
     rovecomm.on('RamanReading_Part1', (data: number[]) => this.processReading(1, 0, 500, data));
@@ -217,7 +219,32 @@ class Raman extends Component<IProps, IState> {
   }
 
   updateGraphValues(): void {
-    /*const data = this.state.data;
+    const filter = this.state.filterType;
+
+    if (filter === 0) {
+      const data = this.state.data;
+      const xScale = (maxWavelength - minWavelength) / 2048;
+  
+      console.log('data: ', data);
+      console.log('baselinedata: ', this.state.baselineData);
+      for (let i = 0; i < data.length; i++) {
+        data[i] = this.state.baselineData[i] - data[i];
+        if (data[i] < 0) {
+          data[i] = 0;
+        }
+      }
+      const maxY = Math.max(...data);
+      const minY = Math.min(...data);
+      const dataToDisplay = data.map((value: number, index: number) => {
+        return { x: this.wavelengthToWavenumber(index * xScale + minWavelength), y: (value - minY) / (maxY - minY) };
+      });
+      this.setState({
+        graphData: dataToDisplay,
+      });
+    }
+
+    if (filter === 1) {
+      const data = this.state.data;
     const baseline = this.state.baselineData;
     const deviationConstant = this.state.deviationConstant;
     const xScale = (maxWavelength - minWavelength) / 2048;
@@ -301,9 +328,7 @@ class Raman extends Component<IProps, IState> {
     // ELSE: Plot 0
     // Normalization: (x - min(x)) / (max(x) - min(x))
     const normalizedData = correctedData.map((value: number) => {
-      if (value >= average + deviationConstant * standardDeviation) {
-        return (value - Math.min(...correctedData)) / (Math.max(...correctedData) - Math.min(...correctedData));
-      } else if (value >= median + deviationConstant * medianAverageDeviation) {
+      if ((value >= average + deviationConstant * standardDeviation) || (value >= median + deviationConstant * medianAverageDeviation)) {
         return (value - Math.min(...correctedData)) / (Math.max(...correctedData) - Math.min(...correctedData));
       }
 
@@ -332,27 +357,8 @@ class Raman extends Component<IProps, IState> {
     // Update the graph data
     this.setState({
       graphData: dataToDisplay,
-    });*/
-
-    const data = this.state.data;
-    const xScale = (maxWavelength - minWavelength) / 2048;
-
-    console.log('data: ', data);
-    console.log('baselinedata: ', this.state.baselineData);
-    for (let i = 0; i < data.length; i++) {
-      data[i] = this.state.baselineData[i] - data[i];
-      if (data[i] < 0) {
-        data[i] = 0;
-      }
+    });
     }
-    const maxY = Math.max(...data);
-    const minY = Math.min(...data);
-    const dataToDisplay = data.map((value: number, index: number) => {
-      return { x: this.wavelengthToWavenumber(index * xScale + minWavelength), y: (value - minY) / (maxY - minY) };
-    });
-    this.setState({
-      graphData: dataToDisplay,
-    });
   }
 
   crosshair(): JSX.Element | null {
@@ -434,7 +440,16 @@ class Raman extends Component<IProps, IState> {
                   type="text"
                   style={inputField}
                   value={this.state.deviationConstant || ''}
-                  onChange={(e) => this.setState({ deviationConstant: parseInt(e.target.value) })}
+                  onChange={(e) => this.setState({ deviationConstant: parseFloat(e.target.value) })}
+                />
+              </div>
+              <div>
+                Filter Type
+                <input
+                  type="text"
+                  style={inputField}
+                  value={this.state.filterType || ''}
+                  onChange={(e) => this.setState({ filterType: parseInt(e.target.value) })}
                 />
               </div>
               <div>
