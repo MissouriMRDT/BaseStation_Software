@@ -4,6 +4,7 @@ import JSMpeg from '@cycjimmy/jsmpeg-player';
 import { windows } from '../../Core/Window';
 // import fs from 'fs';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
+import { ContinuousColorLegend } from 'react-vis';
 
 const cameraSelectionContainer: CSS.Properties = {
   display: 'grid',
@@ -245,10 +246,10 @@ class CameraControls extends Component<IProps, IState> {
   }
 
   saveImage(): void {
-    if (this.state.currentSource < 5) {
+    if (this.state.currentSource < 4) {
       rovecomm.sendCommand('TakePicture', 'Camera1', this.state.currentSource);
     } else {
-      rovecomm.sendCommand('TakePicture', 'Camera2', this.state.currentSource);
+      rovecomm.sendCommand('TakePicture', 'Camera2', this.state.currentSource - 4);
     }
     // // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     // const image = this.canvas!.toDataURL('image/png').replace('image/png', 'image/octet-stream');
