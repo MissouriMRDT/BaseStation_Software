@@ -4,7 +4,7 @@ import JSMpeg from '@cycjimmy/jsmpeg-player';
 import { windows } from '../../Core/Window';
 // import fs from 'fs';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
-import { ContinuousColorLegend } from 'react-vis';
+// import { ContinuousColorLegend } from 'react-vis';
 
 const cameraSelectionContainer: CSS.Properties = {
   display: 'grid',
@@ -63,6 +63,7 @@ interface IState {
   currentSource: number;
   width: number;
   id: string;
+  screenshotClicked: string;
 }
 
 // CameraControls: represents a single camera view w/ controls. should be contained under a CamerasContainer
@@ -105,6 +106,7 @@ class CameraControls extends Component<IProps, IState> {
       currentSource: props.startSource,
       width: 0,
       id: `CameraControls_${CameraControls.id}`,
+      screenshotClicked: 'initial',
     };
 
     this.src = this.sources[0];
@@ -114,6 +116,17 @@ class CameraControls extends Component<IProps, IState> {
     this.takePano = this.takePano.bind(this);
     this.rotateGimbal90 = this.rotateGimbal90.bind(this);
     this.timeoutInterval = setInterval(this.refreshSource, this.refreshInterval * 1000);
+
+    rovecomm.on('PictureTaken1', (data: number[]) => {
+      if (data[0] === 1) {
+        this.setState({ screenshotClicked: 'green' });
+      }
+    });
+    rovecomm.on('PictureTaken2', (data: number[]) => {
+      if (data[0] === 1) {
+        this.setState({ screenshotClicked: 'green' });
+      }
+    });
   }
 
   rotateGimbal90(direction: boolean) {
@@ -246,11 +259,28 @@ class CameraControls extends Component<IProps, IState> {
   }
 
   saveImage(): void {
+    this.setState({ screenshotClicked: 'red' });
+
     if (this.state.currentSource < 4) {
       rovecomm.sendCommand('TakePicture', 'Camera1', this.state.currentSource);
     } else {
       rovecomm.sendCommand('TakePicture', 'Camera2', this.state.currentSource - 4);
     }
+
+    // Define a function to wait until screenshotClicked is changed to 'green' by rovecomm
+    const waitForGreen = () => {
+      if (this.state.screenshotClicked !== 'green') {
+        setTimeout(waitForGreen, 100); // Check every 100 milliseconds
+      } else {
+        // Reset screenshotClicked after 3 seconds once it's changed to 'green'
+        setTimeout(() => {
+          this.setState({ screenshotClicked: 'initial' });
+        }, 3000);
+      }
+    };
+
+    waitForGreen(); // Start waiting
+
     // // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     // const image = this.canvas!.toDataURL('image/png').replace('image/png', 'image/octet-stream');
     // let filename = '';
@@ -306,7 +336,14 @@ class CameraControls extends Component<IProps, IState> {
             <button onClick={() => this.rotateVideo(0)}>Reset Rotation</button>
             <button onClick={() => this.rotateVideo(90)}>Rotate 90</button>
             <button onClick={() => this.rotateVideo(180)}>Rotate 180</button>
-            <button onClick={() => this.saveImage()}>Export</button>
+            <button
+              onClick={() => this.saveImage()}
+              style={{
+                backgroundColor: this.state.screenshotClicked,
+              }}
+            >
+              Screenshot
+            </button>
             <button onClick={() => this.takePano()}>Take Pano</button>
           </div>
         </div>

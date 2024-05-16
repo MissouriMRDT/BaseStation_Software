@@ -98,6 +98,11 @@ class ControlCenter extends Component<IProps, IState> {
         await client.downloadToDir('./PiScreenshots', '/home/pi/Screenshots');
 
         console.log('Downloading...');
+
+        // Remove all files from the remote directory
+        await client.clearWorkingDir();
+
+        console.log('Remote directory cleared.');
       } catch (err) {
         console.log(err);
       } finally {
