@@ -23,6 +23,7 @@ interface IProps {}
 interface IState {
   gripperToggle: boolean;
   gripperCam: number;
+  laserToggle: boolean;
 }
 
 let MultiplierX = 1000;
@@ -40,6 +41,7 @@ class Arm extends Component<IProps, IState> {
     this.state = {
       gripperToggle: false,
       gripperCam: 7,
+      laserToggle: false,
     };
     this.setGripper = this.setGripper.bind(this);
     this.arm = this.arm.bind(this);
@@ -72,6 +74,23 @@ class Arm extends Component<IProps, IState> {
     }, 300); // 300ms delay
   }
 
+  isLaserToggling = false;
+
+  setLaser() {
+    if (this.isLaserToggling) {
+      return;
+    }
+
+    this.isLaserToggling = true;
+
+    this.setState((prevState) => ({ laserToggle: !prevState.laserToggle }));
+    rovecomm.sendCommand('Laser', 'Arm', this.state.laserToggle ? [1] : [0]);
+
+    setTimeout(() => {
+      this.isGripperToggling = false;
+    }, 300); // 300ms delay
+  }
+
   arm(): void {
     let X = 0;
     let Y1 = 0;
@@ -80,7 +99,6 @@ class Arm extends Component<IProps, IState> {
     let Pitch = 0;
     let R = 0;
     let moveArm = false;
-    let LaserToggle = 0;
 
     if (controllerInputs.MultiplierY) {
       MultiplierX = controllerInputs.Multiplier1;
@@ -161,14 +179,7 @@ class Arm extends Component<IProps, IState> {
     }
 
     if ('LaserToggle' in controllerInputs) {
-      if (controllerInputs.LaserToggle === 1) {
-        if (LaserToggle === 1) {
-          LaserToggle = 0;
-        } else {
-          LaserToggle = 1;
-        }
-      }
-      rovecomm.sendCommand('Laser', 'Arm', LaserToggle);
+      this.setLaser();
     }
   }
 
