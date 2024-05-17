@@ -33,6 +33,7 @@ let MultiplierZ = 1000;
 let MultiplierPitch = 500;
 let MultiplierR = 500;
 let MultiplierGripper = 1000;
+let MultiplerMaster = 1;
 // let MultiplierEndEffector: number;
 
 class Arm extends Component<IProps, IState> {
@@ -102,15 +103,26 @@ class Arm extends Component<IProps, IState> {
     let moveArm = false;
 
     if (controllerInputs.MultiplierY) {
-      MultiplierX = controllerInputs.Multiplier1;
-      MultiplierY1 = controllerInputs.Multiplier2;
-      MultiplierY2 = controllerInputs.Multiplier3;
-      MultiplierZ = controllerInputs.Multiplier4;
+      MultiplierX = (MultiplerMaster * (controllerInputs.Multiplier1 + 1)) / 0.002;
+      MultiplierY1 = (MultiplerMaster * (controllerInputs.Multiplier2 + 1)) / 0.002;
+      MultiplierY2 = (MultiplerMaster * (controllerInputs.Multiplier3 + 1)) / 0.002;
+      MultiplierZ = (MultiplerMaster * (controllerInputs.Multiplier4 + 1)) / 0.002;
     } else if (controllerInputs.MultiplierX) {
-      MultiplierPitch = controllerInputs.Multiplier1;
-      MultiplierR = controllerInputs.Multiplier2;
-      MultiplierGripper = controllerInputs.Multiplier3;
+      MultiplierPitch = (MultiplerMaster * (controllerInputs.Multiplier1 + 1)) / 0.002;
+      MultiplierR = (MultiplerMaster * (controllerInputs.Multiplier2 + 1)) / 0.002;
+      MultiplierGripper = (MultiplerMaster * (controllerInputs.Multiplier3 + 1)) / 0.002;
+      MultiplerMaster = (controllerInputs.Multiplier4 + 1) / 2;
     }
+    console.log(
+      MultiplierX,
+      MultiplierY1,
+      MultiplierY2,
+      MultiplierZ,
+      MultiplierPitch,
+      MultiplierR,
+      MultiplierGripper,
+      MultiplerMaster
+    );
 
     if ('WristPitchPlus' in controllerInputs && 'WristPitchMinus' in controllerInputs) {
       Pitch = (controllerInputs.WristPitchPlus - controllerInputs.WristPitchMinus) * MultiplierPitch;
