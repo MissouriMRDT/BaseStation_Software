@@ -40,7 +40,7 @@ class Arm extends Component<IProps, IState> {
     super(props);
     this.state = {
       gripperToggle: false,
-      gripperCam: 7,
+      gripperCam: 6,
       laserToggle: false,
     };
     this.setGripper = this.setGripper.bind(this);
@@ -60,11 +60,11 @@ class Arm extends Component<IProps, IState> {
     this.setState((prevState) => ({ gripperToggle: !prevState.gripperToggle }));
     rovecomm.sendCommand('SelectGripper', 'Arm', this.state.gripperToggle ? [1] : [0]);
     if (!this.state.gripperToggle) {
-      this.setState({ gripperCam: 7 });
+      this.setState({ gripperCam: 6 });
       console.log(this.state.gripperCam);
       MultiplierR = 500;
     } else {
-      this.setState({ gripperCam: 8 });
+      this.setState({ gripperCam: 7 });
       console.log(this.state.gripperCam);
       MultiplierR = 1000;
     }
@@ -84,10 +84,10 @@ class Arm extends Component<IProps, IState> {
     this.isLaserToggling = true;
 
     this.setState((prevState) => ({ laserToggle: !prevState.laserToggle }));
-    rovecomm.sendCommand('Laser', 'Arm', this.state.laserToggle ? [1] : [0]);
+    console.log(this.state.laserToggle);
 
     setTimeout(() => {
-      this.isGripperToggling = false;
+      this.isLaserToggling = false;
     }, 300); // 300ms delay
   }
 
@@ -98,6 +98,7 @@ class Arm extends Component<IProps, IState> {
     let Z = 0;
     let Pitch = 0;
     let R = 0;
+    let Gripper = 0;
     let moveArm = false;
 
     if (controllerInputs.MultiplierY) {
@@ -163,7 +164,6 @@ class Arm extends Component<IProps, IState> {
     }
 
     if ('GripperOpen' in controllerInputs && 'GripperClose' in controllerInputs) {
-      let Gripper = 0;
       if (controllerInputs.GripperOpen === 1) {
         Gripper = 1 * MultiplierGripper;
       } else if (controllerInputs.GripperClose === 1) {
@@ -179,7 +179,10 @@ class Arm extends Component<IProps, IState> {
     }
 
     if ('LaserToggle' in controllerInputs) {
-      this.setLaser();
+      rovecomm.sendCommand('Laser', 'Arm', this.state.laserToggle ? [1] : [0]);
+      if (controllerInputs.LaserToggle === 1) {
+        this.setLaser();
+      }
     }
   }
 
@@ -206,7 +209,7 @@ class Arm extends Component<IProps, IState> {
           <ControlScheme configs={['Arm']} style={{ width: '100%', marginRight: '2.5px' }} />
         </div>
         <CameraControls
-          startSource={6}
+          startSource={this.state.gripperCam - 1}
           canvasWidth={640}
           canvasHeight={480}
           labelName={'Arm Cam 3'}

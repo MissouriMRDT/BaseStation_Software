@@ -132,58 +132,33 @@ class CameraControls extends Component<IProps, IState> {
 
   rotateGimbal90(direction: boolean) {
     if (direction) {
-      rovecomm.sendCommand('LeftMainGimbalIncrement', 'Core', [35, 0]);
+      rovecomm.sendCommand('LeftMainGimbalIncrement', 'Core', [90, 0]);
     } else {
-      rovecomm.sendCommand('LeftMainGimbalIncrement', 'Core', [-90, 0]);
+      rovecomm.sendCommand('LeftMainGimbalIncrement', 'Core', [-35, 0]);
     }
   }
 
   takePano() {
-    // zero angle (for now spam left)
-    setTimeout(() => {
-      this.rotateGimbal90(false);
-    }, 1000);
-    setTimeout(() => {
-      this.rotateGimbal90(false);
-    }, 2000);
-    setTimeout(() => {
-      this.rotateGimbal90(false);
-    }, 3000);
-    setTimeout(() => {
-      this.saveImage(0);
-    }, 4000);
-    setTimeout(() => {
-      this.rotateGimbal90(true);
-    }, 6000);
-    setTimeout(() => {
-      this.saveImage(0);
-    }, 8000);
-    setTimeout(() => {
-      this.rotateGimbal90(true);
-    }, 10000);
-    setTimeout(() => {
-      this.saveImage(0);
-    }, 12000);
-    setTimeout(() => {
-      this.rotateGimbal90(true);
-    }, 14000);
-    setTimeout(() => {
-      this.saveImage(0);
-    }, 16000);
-    setTimeout(() => {
-      this.rotateGimbal90(true);
-    }, 18000);
-    setTimeout(() => {
-      this.saveImage(0);
-    }, 20000);
-    setTimeout(() => {
-      this.rotateGimbal90(true);
-    }, 22000);
-    setTimeout(() => {
-      this.saveImage(1);
-    }, 24000);
-    // stitch image
-    // print image
+    const moveGimbalAndWait = (direction: boolean, delay: number) => {
+      setTimeout(() => {
+        this.rotateGimbal90(direction);
+        const checkState = () => {
+          if (this.state.screenshotClicked !== 'green') {
+            setTimeout(checkState, 100); // Check every 100 milliseconds
+          } else {
+            // Move to the next step or complete the process
+            this.saveImage(0); // Save the image
+            if (direction) {
+              moveGimbalAndWait(false, 2000); // Move to the next direction after 2 seconds
+            }
+          }
+        };
+        checkState(); // Start checking the state
+      }, delay);
+    };
+
+    // Start the pano process by moving the gimbal to the initial position
+    moveGimbalAndWait(false, 1000);
   }
 
   componentDidUpdate(prevProps: IProps) {
