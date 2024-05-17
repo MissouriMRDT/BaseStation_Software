@@ -139,26 +139,39 @@ class CameraControls extends Component<IProps, IState> {
   }
 
   takePano() {
-    const moveGimbalAndWait = (direction: boolean, delay: number) => {
+    const directions = [true, false, false, false, false, false];
+    let delay = 1000; // Initial delay before first movement
+    const numMovements = directions.length;
+
+    for (let i = 0; i < numMovements; i++) {
       setTimeout(() => {
-        this.rotateGimbal90(direction);
-        const checkState = () => {
-          if (this.state.screenshotClicked !== 'green') {
-            setTimeout(checkState, 100); // Check every 100 milliseconds
-          } else {
-            // Move to the next step or complete the process
-            this.saveImage(0); // Save the image
-            if (direction) {
-              moveGimbalAndWait(false, 2000); // Move to the next direction after 2 seconds
-            }
-          }
-        };
-        checkState(); // Start checking the state
+        this.rotateGimbal90(directions[i]);
+        if (i === numMovements - 1) {
+          this.waitForGreen(() => {
+            this.saveImage(1); // Save the final image after the last movement
+          });
+        } else {
+          this.waitForGreen(() => {
+            this.saveImage(0); // Save images at intermediate stops
+          });
+        }
       }, delay);
+
+      delay += 2000; // Increment delay for next movement
+    }
+  }
+
+  waitForGreen(callback: () => void) {
+    const checkGreen = () => {
+      if (this.state.screenshotClicked !== 'green') {
+        setTimeout(checkGreen, 100); // Check every 100 milliseconds
+      } else {
+        // Once screenshotClicked is 'green', execute the callback
+        callback();
+      }
     };
 
-    // Start the pano process by moving the gimbal to the initial position
-    moveGimbalAndWait(false, 1000);
+    checkGreen(); // Start checking
   }
 
   componentDidUpdate(prevProps: IProps) {

@@ -27,8 +27,8 @@
       "VectorX": { "buttonType": "joystick", "button": "x joystick" },
       "VectorY": { "buttonType": "joystick", "button": "y joystick" },
       "Throttle": { "buttonType": "joystick", "button": "throttle" },
-      "ForwardBump": { "buttonType": "button", "button": "top right" },
-      "BackwardBump": { "buttonType": "button", "button": "middle left" }
+      "ForwardBump": { "buttonType": "button", "button": "middle left" },
+      "BackwardBump": { "buttonType": "button", "button": "bottom left" }
     }
   },
   "Gimbal": {
