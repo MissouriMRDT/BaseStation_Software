@@ -4,7 +4,7 @@ import JSMpeg from '@cycjimmy/jsmpeg-player';
 import { windows } from '../../Core/Window';
 // import fs from 'fs';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
-import { dataSizes } from '../../Core/RoveProtocol/Rovecomm3';
+// import { dataSizes } from '../../Core/RoveProtocol/Rovecomm3';
 // import { ContinuousColorLegend } from 'react-vis';
 
 const cameraSelectionContainer: CSS.Properties = {
