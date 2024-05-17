@@ -4,6 +4,7 @@ import JSMpeg from '@cycjimmy/jsmpeg-player';
 import { windows } from '../../Core/Window';
 // import fs from 'fs';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
+import { dataSizes } from '../../Core/RoveProtocol/Rovecomm3';
 // import { ContinuousColorLegend } from 'react-vis';
 
 const cameraSelectionContainer: CSS.Properties = {
@@ -149,37 +150,37 @@ class CameraControls extends Component<IProps, IState> {
       this.rotateGimbal90(false);
     }, 3000);
     setTimeout(() => {
-      this.saveImage();
+      this.saveImage(0);
     }, 4000);
     setTimeout(() => {
       this.rotateGimbal90(true);
     }, 6000);
     setTimeout(() => {
-      this.saveImage();
+      this.saveImage(0);
     }, 8000);
     setTimeout(() => {
       this.rotateGimbal90(true);
     }, 10000);
     setTimeout(() => {
-      this.saveImage();
+      this.saveImage(0);
     }, 12000);
     setTimeout(() => {
       this.rotateGimbal90(true);
     }, 14000);
     setTimeout(() => {
-      this.saveImage();
+      this.saveImage(0);
     }, 16000);
     setTimeout(() => {
       this.rotateGimbal90(true);
     }, 18000);
     setTimeout(() => {
-      this.saveImage();
+      this.saveImage(0);
     }, 20000);
     setTimeout(() => {
       this.rotateGimbal90(true);
     }, 22000);
     setTimeout(() => {
-      this.saveImage();
+      this.saveImage(1);
     }, 24000);
     // stitch image
     // print image
@@ -258,13 +259,14 @@ class CameraControls extends Component<IProps, IState> {
     this.setSource(this.state.currentSource);
   }
 
-  saveImage(): void {
+  saveImage(restartStream: number): void {
     this.setState({ screenshotClicked: 'red' });
-
     if (this.state.currentSource < 4) {
-      rovecomm.sendCommand('TakePicture', 'Camera1', this.state.currentSource);
+      const data = [this.state.currentSource, restartStream];
+      rovecomm.sendCommand('TakePicture', 'Camera1', data);
     } else {
-      rovecomm.sendCommand('TakePicture', 'Camera2', this.state.currentSource - 4);
+      const data = [this.state.currentSource - 4, restartStream];
+      rovecomm.sendCommand('TakePicture', 'Camera2', data);
     }
 
     // Define a function to wait until screenshotClicked is changed to 'green' by rovecomm
@@ -337,7 +339,7 @@ class CameraControls extends Component<IProps, IState> {
             <button onClick={() => this.rotateVideo(90)}>Rotate 90</button>
             <button onClick={() => this.rotateVideo(180)}>Rotate 180</button>
             <button
-              onClick={() => this.saveImage()}
+              onClick={() => this.saveImage(1)}
               style={{
                 backgroundColor: this.state.screenshotClicked,
               }}
