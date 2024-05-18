@@ -228,7 +228,7 @@ class Raman extends Component<IProps, IState> {
       console.log('data: ', data);
       console.log('baselinedata: ', this.state.baselineData);
       for (let i = 0; i < data.length; i++) {
-        data[i] = this.state.baselineData[i] - data[i];
+        data[i] = data[i] - this.state.baselineData[i];
         if (data[i] < 0) {
           data[i] = 0;
         }
