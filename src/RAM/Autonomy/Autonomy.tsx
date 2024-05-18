@@ -37,8 +37,8 @@ class Autonomy extends Component<IProps, IState> {
             <DrivePower style={{ flex: 1, marginRight: '5px' }} />
             <AutonomyLog style={{ flex: 1, marginRight: '5px' }} />
             <div style={{ ...row, marginRight: '5px', flexGrow: 1 }}>
-              <Activity style={{ flex: 1, marginRight: '5px' }} />
-              <Lighting />
+              <Activity style={{ flex: 2, marginRight: '5px' }} />
+              <Lighting style={{ flex: 1 }} />
             </div>
           </div>
           <StateDiagram />
