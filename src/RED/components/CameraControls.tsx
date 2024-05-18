@@ -4,6 +4,7 @@ import JSMpeg from '@cycjimmy/jsmpeg-player';
 import { windows } from '../../Core/Window';
 // import fs from 'fs';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
+// import { dataSizes } from '../../Core/RoveProtocol/Rovecomm3';
 // import { ContinuousColorLegend } from 'react-vis';
 
 const cameraSelectionContainer: CSS.Properties = {
@@ -131,58 +132,46 @@ class CameraControls extends Component<IProps, IState> {
 
   rotateGimbal90(direction: boolean) {
     if (direction) {
-      rovecomm.sendCommand('LeftMainGimbalIncrement', 'Core', [35, 0]);
+      rovecomm.sendCommand('LeftMainGimbalIncrement', 'Core', [90, 0]);
     } else {
-      rovecomm.sendCommand('LeftMainGimbalIncrement', 'Core', [-90, 0]);
+      rovecomm.sendCommand('LeftMainGimbalIncrement', 'Core', [-35, 0]);
     }
   }
 
   takePano() {
-    // zero angle (for now spam left)
-    setTimeout(() => {
-      this.rotateGimbal90(false);
-    }, 1000);
-    setTimeout(() => {
-      this.rotateGimbal90(false);
-    }, 2000);
-    setTimeout(() => {
-      this.rotateGimbal90(false);
-    }, 3000);
-    setTimeout(() => {
-      this.saveImage();
-    }, 4000);
-    setTimeout(() => {
-      this.rotateGimbal90(true);
-    }, 6000);
-    setTimeout(() => {
-      this.saveImage();
-    }, 8000);
-    setTimeout(() => {
-      this.rotateGimbal90(true);
-    }, 10000);
-    setTimeout(() => {
-      this.saveImage();
-    }, 12000);
-    setTimeout(() => {
-      this.rotateGimbal90(true);
-    }, 14000);
-    setTimeout(() => {
-      this.saveImage();
-    }, 16000);
-    setTimeout(() => {
-      this.rotateGimbal90(true);
-    }, 18000);
-    setTimeout(() => {
-      this.saveImage();
-    }, 20000);
-    setTimeout(() => {
-      this.rotateGimbal90(true);
-    }, 22000);
-    setTimeout(() => {
-      this.saveImage();
-    }, 24000);
-    // stitch image
-    // print image
+    const directions = [true, false, false, false, false, false];
+    let delay = 1000; // Initial delay before first movement
+    const numMovements = directions.length;
+
+    for (let i = 0; i < numMovements; i++) {
+      setTimeout(() => {
+        this.rotateGimbal90(directions[i]);
+        if (i === numMovements - 1) {
+          this.waitForGreen(() => {
+            this.saveImage(1); // Save the final image after the last movement
+          });
+        } else {
+          this.waitForGreen(() => {
+            this.saveImage(0); // Save images at intermediate stops
+          });
+        }
+      }, delay);
+
+      delay += 2000; // Increment delay for next movement
+    }
+  }
+
+  waitForGreen(callback: () => void) {
+    const checkGreen = () => {
+      if (this.state.screenshotClicked !== 'green') {
+        setTimeout(checkGreen, 100); // Check every 100 milliseconds
+      } else {
+        // Once screenshotClicked is 'green', execute the callback
+        callback();
+      }
+    };
+
+    checkGreen(); // Start checking
   }
 
   componentDidUpdate(prevProps: IProps) {
@@ -258,13 +247,14 @@ class CameraControls extends Component<IProps, IState> {
     this.setSource(this.state.currentSource);
   }
 
-  saveImage(): void {
+  saveImage(restartStream: number): void {
     this.setState({ screenshotClicked: 'red' });
-
     if (this.state.currentSource < 4) {
-      rovecomm.sendCommand('TakePicture', 'Camera1', this.state.currentSource);
+      const data = [this.state.currentSource, restartStream];
+      rovecomm.sendCommand('TakePicture', 'Camera1', data);
     } else {
-      rovecomm.sendCommand('TakePicture', 'Camera2', this.state.currentSource - 4);
+      const data = [this.state.currentSource - 4, restartStream];
+      rovecomm.sendCommand('TakePicture', 'Camera2', data);
     }
 
     // Define a function to wait until screenshotClicked is changed to 'green' by rovecomm
@@ -337,7 +327,7 @@ class CameraControls extends Component<IProps, IState> {
             <button onClick={() => this.rotateVideo(90)}>Rotate 90</button>
             <button onClick={() => this.rotateVideo(180)}>Rotate 180</button>
             <button
-              onClick={() => this.saveImage()}
+              onClick={() => this.saveImage(1)}
               style={{
                 backgroundColor: this.state.screenshotClicked,
               }}

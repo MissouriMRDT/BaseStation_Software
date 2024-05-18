@@ -261,7 +261,6 @@ class Lighting extends Component<IProps, IState> {
               </div>
               <button onClick={() => sendPattern(this.state.pattern)}>Set Pattern</button>
             </div>
-            <hr />
             <div>
               <div>
                 <button onClick={this.insertCurry('\\b')}>
