@@ -93,10 +93,12 @@ function toggleTelem(): void {
 interface Joint {
   [key: string]: string;
   X: string;
-  Y: string;
+  Y1: string;
+  Y2: string;
   Z: string;
   Pitch: string;
-  Roll: string;
+  R1: string;
+  R2: string;
 }
 
 interface IProps {
@@ -121,10 +123,12 @@ class Angular extends Component<IProps, IState> {
     this.state = {
       jointValues: {
         X: '',
-        Y: '',
+        Y1: '',
+        Y2: '',
         Z: '',
         Pitch: '',
-        Roll: '',
+        R1: '',
+        R2: '',
       },
       storedPositions: {},
       selectedPosition: '',
@@ -161,43 +165,28 @@ class Angular extends Component<IProps, IState> {
      * convert them from strings to floats (or empty string to 0)
      * and send the proper rovecomm packet
      */
-    if (!gripperState) {
-      const data = {
-        X: this.state.jointValues.X,
-        Y: this.state.jointValues.Y,
-        Z: this.state.jointValues.Z,
-        Pitch: this.state.jointValues.Pitch,
-        Roll: this.state.jointValues.Roll,
-      };
-      rovecomm.sendCommand(
-        'SetPosition',
-        'Arm',
-        Object.values(data).map((x: string) => {
-          return x ? parseFloat(x) : 0;
-        })
-      );
-    } else {
-      const data = {
-        X: this.state.jointValues.X,
-        Y: this.state.jointValues.Y,
-        Z: this.state.jointValues.Z,
-        Pitch: this.state.jointValues.Pitch,
-        Roll: this.state.jointValues.Roll,
-      };
-      rovecomm.sendCommand(
-        'SetPosition',
-        'Arm',
-        Object.values(data).map((x: string) => {
-          return x ? parseFloat(x) : 0;
-        })
-      );
-    }
+    const data = {
+      X: this.state.jointValues.X,
+      Y1: this.state.jointValues.Y1,
+      Y2: this.state.jointValues.Y2,
+      Z: this.state.jointValues.Z,
+      Pitch: this.state.jointValues.Pitch,
+      R1: this.state.jointValues.R1,
+      R2: this.state.jointValues.R2,
+    };
+    rovecomm.sendCommand(
+      'SetPosition',
+      'Arm',
+      Object.values(data).map((x: string) => {
+        return x ? parseFloat(x) : 0;
+      })
+    );
   }
 
   updatePosition(data: any): void {
     /* Function to update displayed jointValues when a new position is recieved */
-    const [X, Y, Z, Pitch, Roll] = data;
-    const jointValues = { X, Y, Z, Pitch, Roll };
+    const [X, Y1, Y2, Z, Pitch, R1, R2] = data;
+    const jointValues = { X, Y1, Y2, Z, Pitch, R1, R2 };
     this.setState({ jointValues });
   }
 
