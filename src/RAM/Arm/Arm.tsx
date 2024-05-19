@@ -184,16 +184,6 @@ class Arm extends Component<IProps, IState> {
         }));
       }
     }
-    console.log(
-      this.state.multiplierValues.X,
-      this.state.multiplierValues.Y1,
-      this.state.multiplierValues.Y2,
-      this.state.multiplierValues.Z,
-      this.state.multiplierValues.Pitch,
-      this.state.multiplierValues.R,
-      this.state.multiplierValues.Gripper,
-      this.state.multiplierValues.Master
-    );
 
     if ('WristPitchPlus' in controllerInputs && 'WristPitchMinus' in controllerInputs) {
       Pitch = (controllerInputs.WristPitchPlus - controllerInputs.WristPitchMinus) * this.state.multiplierValues.Pitch;
