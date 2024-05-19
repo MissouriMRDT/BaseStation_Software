@@ -47,13 +47,12 @@ const container: CSS.Properties = {
   borderBottomWidth: '2px',
   borderStyle: 'solid',
   display: 'block',
+  width: 'fit-content',
 };
 
 interface IProps {
   style?: CSS.Properties;
   startSource: number;
-  canvasWidth: number;
-  canvasHeight: number;
   labelName: string;
   gripperCam: number;
   cameraToggle: boolean;
@@ -62,7 +61,7 @@ interface IProps {
 interface IState {
   rotationAngle: number;
   currentSource: number;
-  width: number;
+  elementWidth: number;
   id: string;
   screenshotClicked: string;
 }
@@ -105,9 +104,10 @@ class CameraControls extends Component<IProps, IState> {
     this.state = {
       rotationAngle: 0,
       currentSource: props.startSource,
-      width: 0,
       id: `CameraControls_${CameraControls.id}`,
       screenshotClicked: 'initial',
+      // in pixels
+      elementWidth: 640,
     };
 
     this.src = this.sources[0];
@@ -289,6 +289,10 @@ class CameraControls extends Component<IProps, IState> {
     // if (base64Image) fs.writeFileSync(filename, base64Image, { encoding: 'base64' });
   }
 
+  setElementWidth(newWidth: number) {
+    this.setState({ elementWidth: Math.max(320, Math.min(newWidth, 1600)) });
+  }
+
   render(): JSX.Element {
     const { rotationAngle } = this.state;
     const videoStyle: CSS.Properties = {
@@ -300,10 +304,21 @@ class CameraControls extends Component<IProps, IState> {
 
     return (
       <div style={this.props.style}>
-        <div style={this.props.labelName !== '' ? label : {}}> {this.props.labelName} </div>
-        <div style={this.props.labelName !== '' ? container : {}}>
+        <div style={this.props.labelName !== '' ? label : {}}>
+          {' '}
+          <button
+            // eslint-disable-next-line prettier/prettier
+            onClick={() => this.setElementWidth(this.state.elementWidth + 160)} > + 
+          </button>
+          <button
+            // eslint-disable-next-line prettier/prettier
+            onClick={() => this.setElementWidth(this.state.elementWidth - 160)} > - 
+          </button>{' '}
+          {this.props.labelName}{' '}
+        </div>
+        <div style={container}>
           <div style={videoContainerStyle} ref={(videoContainerRef) => (this.videoContainerRef = videoContainerRef)}>
-            <div data-vjs-player style={{ width: '100%' }}>
+            <div data-vjs-player style={{ width: this.state.elementWidth }}>
               <canvas ref={(canvas) => (this.canvas = canvas)} style={videoStyle}></canvas>
             </div>
           </div>
