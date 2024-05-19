@@ -410,7 +410,7 @@ class Raman extends Component<IProps, IState> {
               margin={{ top: 10, bottom: 50 }}
               width={window.document.documentElement.clientWidth - 50}
               height={300}
-              yDomain={[0, 1023]}
+              yDomain={[0, 1]}
               xDomain={[this.state.minX, this.state.maxX]}
             >
               <VerticalGridLines style={{ fill: 'none' }} />
