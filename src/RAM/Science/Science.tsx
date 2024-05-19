@@ -118,10 +118,10 @@ class Science extends Component<IProps, IState> {
         </div>
         <div style={{ ...row }}>
           <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>
-            <CameraControls canvasWidth={640} canvasHeight={480} startSource={7} labelName={'Camera'}></CameraControls>
+            <CameraControls defaultWidth={640} startSource={7} labelName={'Camera'}></CameraControls>
           </div>
           <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>
-            <CameraControls canvasWidth={640} canvasHeight={480} startSource={7} labelName={'Camera'}></CameraControls>
+            <CameraControls defaultWidth={640} startSource={7} labelName={'Camera'}></CameraControls>
           </div>
         </div>
         <div style={{ ...column }}>

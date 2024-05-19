@@ -275,8 +275,8 @@ class Arm extends Component<IProps, IState> {
         </div>
         <div style={row}>
           {/* Note: sources start at 0, but begin with 1 visually on the buttons*/}
-          <CameraControls startSource={4} canvasWidth={640} canvasHeight={480} labelName={'Arm Cam 1'}></CameraControls>
-          <CameraControls startSource={5} canvasWidth={640} canvasHeight={480} labelName={'Arm Cam 2'}></CameraControls>
+          <CameraControls startSource={4} defaultWidth={640} labelName={'Arm Cam 1'}></CameraControls>
+          <CameraControls startSource={5} defaultWidth={640} labelName={'Arm Cam 2'}></CameraControls>
         </div>
         <div style={row}>
           <ControlScheme configs={['Arm']} style={{ width: '100%', marginRight: '2.5px' }} />
@@ -303,8 +303,7 @@ class Arm extends Component<IProps, IState> {
         </div>
         <CameraControls
           startSource={this.state.gripperCam - 1}
-          canvasWidth={640}
-          canvasHeight={480}
+          defaultWidth={640}
           labelName={'Arm Cam 3'}
           gripperCam={this.state.gripperCam}
           cameraToggle={true}

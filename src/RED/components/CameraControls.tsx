@@ -56,6 +56,7 @@ interface IProps {
   labelName: string;
   gripperCam: number;
   cameraToggle: boolean;
+  defaultWidth: number;
 }
 
 interface IState {
@@ -107,7 +108,7 @@ class CameraControls extends Component<IProps, IState> {
       id: `CameraControls_${CameraControls.id}`,
       screenshotClicked: 'initial',
       // in pixels
-      elementWidth: 640,
+      elementWidth: this.props.defaultWidth,
     };
 
     this.src = this.sources[0];
