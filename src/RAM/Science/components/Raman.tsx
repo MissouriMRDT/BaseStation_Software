@@ -244,125 +244,124 @@ class Raman extends Component<IProps, IState> {
       });
     }
 
-    if (filter === 1) {
-      const data = this.state.data;
-      const baseline = this.state.baselineData;
-      const deviationConstant = this.state.deviationConstant;
-      const xScale = (maxWavelength - minWavelength) / 2048;
+    //   if (filter === 1) {
+    //     const data = this.state.data;
+    //     const baseline = this.state.baselineData;
+    //     const deviationConstant = this.state.deviationConstant;
+    //     const xScale = (maxWavelength - minWavelength) / 2048;
 
-      // Inverse Data and Baseline
-      const inverseData = data.map((value: number) => {
-        return 1023 - value;
-      });
+    //     // Inverse Data and Baseline
+    //     const inverseData = data.map((value: number) => {
+    //       return 1023 - value;
+    //     });
 
-      const inverseBaseline = baseline.map((value: number) => {
-        return 1023 - value;
-      });
+    //     const inverseBaseline = baseline.map((value: number) => {
+    //       return 1023 - value;
+    //     });
 
-      // Correct Data : (Data - Baseline)
-      const correctedData = inverseData.map((value: number, index: number) => {
-        return value - inverseBaseline[index];
-      });
+    //     // Correct Data : (Data - Baseline)
+    //     const correctedData = inverseData.map((value: number, index: number) => {
+    //       return value - inverseBaseline[index];
+    //     });
 
-      // Find Corrected Data => Median
-      const median = (() => {
-        // Sort the array
-        correctedData.sort((a, b) => a - b);
+    //     // Find Corrected Data => Median
+    //     const median = (() => {
+    //       // Sort the array
+    //       correctedData.sort((a, b) => a - b);
 
-        // Calculate the median
-        const middle = Math.floor(correctedData.length / 2);
-        if (correctedData.length % 2 === 0) {
-          // If the array length is even, return the average of the two middle numbers
-          return (correctedData[middle - 1] + correctedData[middle]) / 2;
-        }
+    //       // Calculate the median
+    //       const middle = Math.floor(correctedData.length / 2);
+    //       if (correctedData.length % 2 === 0) {
+    //         // If the array length is even, return the average of the two middle numbers
+    //         return (correctedData[middle - 1] + correctedData[middle]) / 2;
+    //       }
 
-        // If the array length is odd, return the middle number
-        return correctedData[middle];
-      })();
+    //       // If the array length is odd, return the middle number
+    //       return correctedData[middle];
+    //     })();
 
-      // Find Corrected Data => Median Average Deviation (Median( |Data{} - Median| ))
-      const medianAverageDeviation = (() => {
-        // Calculate the corrected data minus the median
-        const correctedDataMinusMedian = correctedData.map((value: number) => {
-          return value - median;
-        });
+    //     // Find Corrected Data => Median Average Deviation (Median( |Data{} - Median| ))
+    //     const medianAverageDeviation = (() => {
+    //       // Calculate the corrected data minus the median
+    //       const correctedDataMinusMedian = correctedData.map((value: number) => {
+    //         return value - median;
+    //       });
 
-        // Calculate the absolute value of the corrected data minus the median
-        const absoluteCorrectedDataMinusMedian = correctedDataMinusMedian.map((value: number) => {
-          return Math.abs(value);
-        });
+    //       // Calculate the absolute value of the corrected data minus the median
+    //       const absoluteCorrectedDataMinusMedian = correctedDataMinusMedian.map((value: number) => {
+    //         return Math.abs(value);
+    //       });
 
-        // Sort the array
-        absoluteCorrectedDataMinusMedian.sort((a, b) => a - b);
+    //       // Sort the array
+    //       absoluteCorrectedDataMinusMedian.sort((a, b) => a - b);
 
-        // Calculate the median
-        const middle = Math.floor(absoluteCorrectedDataMinusMedian.length / 2);
-        if (absoluteCorrectedDataMinusMedian.length % 2 === 0) {
-          // If the array length is even, return the average of the two middle numbers
-          return (absoluteCorrectedDataMinusMedian[middle - 1] + absoluteCorrectedDataMinusMedian[middle]) / 2;
-        }
+    //       // Calculate the median
+    //       const middle = Math.floor(absoluteCorrectedDataMinusMedian.length / 2);
+    //       if (absoluteCorrectedDataMinusMedian.length % 2 === 0) {
+    //         // If the array length is even, return the average of the two middle numbers
+    //         return (absoluteCorrectedDataMinusMedian[middle - 1] + absoluteCorrectedDataMinusMedian[middle]) / 2;
+    //       }
 
-        // If the array length is odd, return the middle number
-        return absoluteCorrectedDataMinusMedian[middle];
-      })();
+    //       // If the array length is odd, return the middle number
+    //       return absoluteCorrectedDataMinusMedian[middle];
+    //     })();
 
-      // Find Corrected Data => Average
-      const average = (() => {
-        let sum = 0;
-        correctedData.forEach((value: number) => {
-          sum += value;
-        });
-        return sum / correctedData.length;
-      })();
+    //     // Find Corrected Data => Average
+    //     const average = (() => {
+    //       let sum = 0;
+    //       correctedData.forEach((value: number) => {
+    //         sum += value;
+    //       });
+    //       return sum / correctedData.length;
+    //     })();
 
-      // Find Corrected Data => Standard Deviation
-      const standardDeviation = (() => {
-        let sum = 0;
-        correctedData.forEach((value: number) => {
-          sum += Math.pow(value - average, 2);
-        });
-        return Math.sqrt(sum / correctedData.length);
-      })();
+    //     // Find Corrected Data => Standard Deviation
+    //     const standardDeviation = (() => {
+    //       let sum = 0;
+    //       correctedData.forEach((value: number) => {
+    //         sum += Math.pow(value - average, 2);
+    //       });
+    //       return Math.sqrt(sum / correctedData.length);
+    //     })();
 
-      // IF: Corrected Data >= Average + Integer Multiple of Standard Deviation => Normalize and Plot
-      // ELSE IF: Corrected Data >= Median + Integer Multiple of Median Average Deviation => Normalize and Plot
-      // ELSE: Plot 0
-      // Normalization: (x - min(x)) / (max(x) - min(x))
-      const normalizedData = correctedData.map((value: number) => {
-        if (
-          value >= average + deviationConstant * standardDeviation ||
-          value >= median + deviationConstant * medianAverageDeviation
-        ) {
-          return (value - Math.min(...correctedData)) / (Math.max(...correctedData) - Math.min(...correctedData));
-        }
+    //     // IF: Corrected Data >= Average + Integer Multiple of Standard Deviation => Normalize and Plot
+    //     // ELSE IF: Corrected Data >= Median + Integer Multiple of Median Average Deviation => Normalize and Plot
+    //     // ELSE: Plot 0
+    //     // Normalization: (x - min(x)) / (max(x) - min(x))
+    //     const normalizedData = correctedData.map((value: number) => {
+    //       if (
+    //         value >= average + deviationConstant * standardDeviation ||
+    //         value >= median + deviationConstant * medianAverageDeviation
+    //       ) {
+    //         return (value - Math.min(...correctedData)) / (Math.max(...correctedData) - Math.min(...correctedData));
+    //       }
 
-        return 0;
-      });
+    //       return 0;
+    //     });
 
-      // Update the X Axis to Wave Number Scaling
-      const dataToDisplay = normalizedData.map((value: number, index: number) => {
-        return { x: index * xScale + minWavelength, y: value };
-      });
+    //     // Update the X Axis to Wave Number Scaling
+    //     const dataToDisplay = normalizedData.map((value: number, index: number) => {
+    //       return { x: index * xScale + minWavelength, y: value };
+    //     });
 
-      // Logging
-      console.log('Data:', data);
-      console.log('Baseline:', baseline);
-      console.log('Deviation Constant:', deviationConstant);
-      console.log('Inverse Data:', inverseData);
-      console.log('Inverse Baseline:', inverseBaseline);
-      console.log('Corrected Data:', correctedData);
-      console.log('Median:', median);
-      console.log('Median Average Deviation:', medianAverageDeviation);
-      console.log('Average:', average);
-      console.log('Standard Deviation:', standardDeviation);
-      console.log('Normalized Data:', normalizedData);
-      console.log('Data to Display:', dataToDisplay);
+    //     // Logging
+    //     console.log('Data:', data);
+    //     console.log('Baseline:', baseline);
+    //     console.log('Deviation Constant:', deviationConstant);
+    //     console.log('Inverse Data:', inverseData);
+    //     console.log('Inverse Baseline:', inverseBaseline);
+    //     console.log('Corrected Data:', correctedData);
+    //     console.log('Median:', median);
+    //     console.log('Median Average Deviation:', medianAverageDeviation);
+    //     console.log('Average:', average);
+    //     console.log('Standard Deviation:', standardDeviation);
+    //     console.log('Normalized Data:', normalizedData);
+    //     console.log('Data to Display:', dataToDisplay);
 
-      // Update the graph data
-      this.setState({
-        graphData: dataToDisplay,
-      });
-    }
+    //     // Update the graph data
+    //     this.setState({
+    //       graphData: dataToDisplay,
+    //     });
   }
 
   crosshair(): JSX.Element | null {
