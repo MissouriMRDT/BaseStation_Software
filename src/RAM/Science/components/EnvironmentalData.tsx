@@ -51,14 +51,19 @@ class EnvironmentalData extends Component<IProps, IState> {
       temperature: 0,
       humidity: 0,
     };
-    this.EnvironmentalData = this.EnvironmentalData.bind(this);
+    this.Temperature = this.Temperature.bind(this);
+    this.Humidity = this.Humidity.bind(this);
 
-    rovecomm.on('EnvironmentalData', (data: any) => this.EnvironmentalData(data));
+    rovecomm.on('Temperature', (data: any) => this.Temperature(data));
+    rovecomm.on('Humidity', (data: any) => this.Humidity(data));
   }
 
-  EnvironmentalData(data: any): void {
-    this.setState({ temperature: data[0] });
-    this.setState({ humidity: data[1] });
+  Temperature(data: any): void {
+    this.setState({ temperature: data });
+  }
+
+  Humidity(data: any): void {
+    this.setState({ humidity: data });
   }
 
   render(): JSX.Element {
@@ -68,7 +73,11 @@ class EnvironmentalData extends Component<IProps, IState> {
         <div style={{ ...container, width: '80%' }}>
           <div style={{ ...row, margin: '10px' }}>
             <div>Temperature: {this.state.temperature}</div>
+            <button onClick={() => rovecomm.sendCommand('RequestTemperature', 'Instruments', 1)}>
+              Request Temperature
+            </button>
             <div>Humidity: {this.state.humidity}</div>
+            <button onClick={() => rovecomm.sendCommand('RequestHumidity', 'Instruments', 1)}>Request Humidity</button>
           </div>
         </div>
       </div>

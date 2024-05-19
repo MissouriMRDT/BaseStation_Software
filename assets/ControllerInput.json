@@ -27,8 +27,8 @@
       "VectorX": { "buttonType": "joystick", "button": "x joystick" },
       "VectorY": { "buttonType": "joystick", "button": "y joystick" },
       "Throttle": { "buttonType": "joystick", "button": "throttle" },
-      "ForwardBump": { "buttonType": "button", "button": "top right" },
-      "BackwardBump": { "buttonType": "button", "button": "middle left" }
+      "ForwardBump": { "buttonType": "button", "button": "middle left" },
+      "BackwardBump": { "buttonType": "button", "button": "bottom left" }
     }
   },
   "Gimbal": {
@@ -74,8 +74,8 @@
       "WristPitchMinus": { "buttonType": "button", "button": "RB" },
       "RollPlus": { "buttonType": "button", "button": "dpad right" },
       "RollMinus": { "buttonType": "button", "button": "dpad left" },
-      "GripperOpen": { "buttonType": "button", "button": "dpad up" },
-      "GripperClose": { "buttonType": "button", "button": "dpad down" },
+      "GripperOpen": { "buttonType": "button", "button": "LT" },
+      "GripperClose": { "buttonType": "button", "button": "RT" },
       "LaserToggle": { "buttonType": "button", "button": "start" },
       "GripperToggle": { "buttonType": "button", "button": "back" },
       "SolenoidOn": { "buttonType": "button", "button": "A" }

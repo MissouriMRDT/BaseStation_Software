@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import CSS from 'csstype';
 import JSMpeg from '@cycjimmy/jsmpeg-player';
 import { windows } from '../../Core/Window';
-import fs from 'fs';
+// import fs from 'fs';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
+// import { dataSizes } from '../../Core/RoveProtocol/Rovecomm3';
+// import { ContinuousColorLegend } from 'react-vis';
 
 const cameraSelectionContainer: CSS.Properties = {
   display: 'grid',
@@ -62,6 +64,7 @@ interface IState {
   currentSource: number;
   width: number;
   id: string;
+  screenshotClicked: string;
 }
 
 // CameraControls: represents a single camera view w/ controls. should be contained under a CamerasContainer
@@ -104,6 +107,7 @@ class CameraControls extends Component<IProps, IState> {
       currentSource: props.startSource,
       width: 0,
       id: `CameraControls_${CameraControls.id}`,
+      screenshotClicked: 'initial',
     };
 
     this.src = this.sources[0];
@@ -113,62 +117,61 @@ class CameraControls extends Component<IProps, IState> {
     this.takePano = this.takePano.bind(this);
     this.rotateGimbal90 = this.rotateGimbal90.bind(this);
     this.timeoutInterval = setInterval(this.refreshSource, this.refreshInterval * 1000);
+
+    rovecomm.on('PictureTaken1', (data: number[]) => {
+      if (data[0] === 1) {
+        this.setState({ screenshotClicked: 'green' });
+      }
+    });
+    rovecomm.on('PictureTaken2', (data: number[]) => {
+      if (data[0] === 1) {
+        this.setState({ screenshotClicked: 'green' });
+      }
+    });
   }
 
   rotateGimbal90(direction: boolean) {
     if (direction) {
-      rovecomm.sendCommand('LeftMainGimbalIncrement', 'Core', [35, 0]);
+      rovecomm.sendCommand('LeftMainGimbalIncrement', 'Core', [90, 0]);
     } else {
-      rovecomm.sendCommand('LeftMainGimbalIncrement', 'Core', [-90, 0]);
+      rovecomm.sendCommand('LeftMainGimbalIncrement', 'Core', [-35, 0]);
     }
   }
 
   takePano() {
-    // zero angle (for now spam left)
-    setTimeout(() => {
-      this.rotateGimbal90(false);
-    }, 1000);
-    setTimeout(() => {
-      this.rotateGimbal90(false);
-    }, 2000);
-    setTimeout(() => {
-      this.rotateGimbal90(false);
-    }, 3000);
-    setTimeout(() => {
-      this.saveImage('pano1');
-    }, 4000);
-    setTimeout(() => {
-      this.rotateGimbal90(true);
-    }, 6000);
-    setTimeout(() => {
-      this.saveImage('pano2');
-    }, 8000);
-    setTimeout(() => {
-      this.rotateGimbal90(true);
-    }, 10000);
-    setTimeout(() => {
-      this.saveImage('pano3');
-    }, 12000);
-    setTimeout(() => {
-      this.rotateGimbal90(true);
-    }, 14000);
-    setTimeout(() => {
-      this.saveImage('pano4');
-    }, 16000);
-    setTimeout(() => {
-      this.rotateGimbal90(true);
-    }, 18000);
-    setTimeout(() => {
-      this.saveImage('pano5');
-    }, 20000);
-    setTimeout(() => {
-      this.rotateGimbal90(true);
-    }, 22000);
-    setTimeout(() => {
-      this.saveImage('pano6');
-    }, 24000);
-    // stitch image
-    // print image
+    const directions = [true, false, false, false, false, false];
+    let delay = 1000; // Initial delay before first movement
+    const numMovements = directions.length;
+
+    for (let i = 0; i < numMovements; i++) {
+      setTimeout(() => {
+        this.rotateGimbal90(directions[i]);
+        if (i === numMovements - 1) {
+          this.waitForGreen(() => {
+            this.saveImage(1); // Save the final image after the last movement
+          });
+        } else {
+          this.waitForGreen(() => {
+            this.saveImage(0); // Save images at intermediate stops
+          });
+        }
+      }, delay);
+
+      delay += 2000; // Increment delay for next movement
+    }
+  }
+
+  waitForGreen(callback: () => void) {
+    const checkGreen = () => {
+      if (this.state.screenshotClicked !== 'green') {
+        setTimeout(checkGreen, 100); // Check every 100 milliseconds
+      } else {
+        // Once screenshotClicked is 'green', execute the callback
+        callback();
+      }
+    };
+
+    checkGreen(); // Start checking
   }
 
   componentDidUpdate(prevProps: IProps) {
@@ -244,23 +247,46 @@ class CameraControls extends Component<IProps, IState> {
     this.setSource(this.state.currentSource);
   }
 
-  saveImage(pano = ''): void {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const image = this.canvas!.toDataURL('image/png').replace('image/png', 'image/octet-stream');
-    let filename = '';
-    if (pano !== '') {
-      filename = `./Screenshots/${new Date().toISOString().replaceAll(/[:\-TZ]/g, '.')}Camera${pano}.png`;
+  saveImage(restartStream: number): void {
+    this.setState({ screenshotClicked: 'red' });
+    if (this.state.currentSource < 4) {
+      const data = [this.state.currentSource, restartStream];
+      rovecomm.sendCommand('TakePicture', 'Camera1', data);
     } else {
-      filename = `./Screenshots/${new Date().toISOString().replaceAll(/[:\-TZ]/g, '.')}Camera.png`;
-    }
-    console.log(filename);
-
-    if (!fs.existsSync('./Screenshots')) {
-      fs.mkdirSync('./Screenshots');
+      const data = [this.state.currentSource - 4, restartStream];
+      rovecomm.sendCommand('TakePicture', 'Camera2', data);
     }
 
-    const base64Image = image.replace('image/png', 'image/octet-stream').split(';base64,').pop();
-    if (base64Image) fs.writeFileSync(filename, base64Image, { encoding: 'base64' });
+    // Define a function to wait until screenshotClicked is changed to 'green' by rovecomm
+    const waitForGreen = () => {
+      if (this.state.screenshotClicked !== 'green') {
+        setTimeout(waitForGreen, 100); // Check every 100 milliseconds
+      } else {
+        // Reset screenshotClicked after 3 seconds once it's changed to 'green'
+        setTimeout(() => {
+          this.setState({ screenshotClicked: 'initial' });
+        }, 3000);
+      }
+    };
+
+    waitForGreen(); // Start waiting
+
+    // // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    // const image = this.canvas!.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+    // let filename = '';
+    // if (pano !== '') {
+    //   filename = `./Screenshots/${new Date().toISOString().replaceAll(/[:\-TZ]/g, '.')}Camera${pano}.png`;
+    // } else {
+    //   filename = `./Screenshots/${new Date().toISOString().replaceAll(/[:\-TZ]/g, '.')}Camera.png`;
+    // }
+    // console.log(filename);
+
+    // if (!fs.existsSync('./Screenshots')) {
+    //   fs.mkdirSync('./Screenshots');
+    // }
+
+    // const base64Image = image.replace('image/png', 'image/octet-stream').split(';base64,').pop();
+    // if (base64Image) fs.writeFileSync(filename, base64Image, { encoding: 'base64' });
   }
 
   render(): JSX.Element {
@@ -300,7 +326,14 @@ class CameraControls extends Component<IProps, IState> {
             <button onClick={() => this.rotateVideo(0)}>Reset Rotation</button>
             <button onClick={() => this.rotateVideo(90)}>Rotate 90</button>
             <button onClick={() => this.rotateVideo(180)}>Rotate 180</button>
-            <button onClick={() => this.saveImage()}>Export</button>
+            <button
+              onClick={() => this.saveImage(1)}
+              style={{
+                backgroundColor: this.state.screenshotClicked,
+              }}
+            >
+              Screenshot
+            </button>
             <button onClick={() => this.takePano()}>Take Pano</button>
           </div>
         </div>

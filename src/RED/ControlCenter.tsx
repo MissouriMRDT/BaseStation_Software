@@ -17,6 +17,7 @@ import Accelerometer from '../Core/components/Accelerometer';
 import CameraSocketManager from './components/CameraSocketManager';
 import CameraControls from './components/CameraControls';
 // import SignalStack from './components/SignalStack';
+import { Client } from 'basic-ftp';
 
 const row: CSS.Properties = {
   display: 'flex',
@@ -75,6 +76,41 @@ class ControlCenter extends Component<IProps, IState> {
     });
   }
 
+  async exportScreenshots(): Promise<void> {
+    for (let i = 0; i < 2; i++) {
+      console.log('Connecting to client...');
+      const client: Client = new Client();
+      client.ftp.verbose = true;
+      try {
+        await client.access({
+          host: `192.168.4.10${i}`,
+          user: 'pi',
+          password: 'raspberry',
+          secure: false,
+        });
+
+        console.log(await client.list());
+
+        // Ensure the remote directory exists or create it
+        await client.ensureDir('/home/pi/Screenshots');
+
+        // Download files to the local directory
+        await client.downloadToDir('./PiScreenshots', '/home/pi/Screenshots');
+
+        console.log('Downloading...');
+
+        // Remove all files from the remote directory
+        await client.clearWorkingDir();
+
+        console.log('Remote directory cleared.');
+      } catch (err) {
+        console.log(err);
+      } finally {
+        client.close(); // Close the client after the operation
+      }
+    }
+  }
+
   render(): JSX.Element {
     return (
       <div>
@@ -118,7 +154,7 @@ class ControlCenter extends Component<IProps, IState> {
               <GPS onCoordsChange={this.updateCoords} style={{ marginRight: '5px', width: '60%' }} />
               <Accelerometer style={{ width: '40%' }} />
             </div>
-            <div style={{ ...row, height: '250px' }}>
+            <div style={{ ...row, height: '500px' }}>
               <Waypoints
                 onWaypointChange={this.updateWaypoints}
                 currentCoords={this.state.currentCoords}
@@ -151,6 +187,9 @@ class ControlCenter extends Component<IProps, IState> {
               startSource={1}
               labelName={'Camera 2'}
             ></CameraControls>
+            <button onClick={this.exportScreenshots} style={{ marginTop: '10px' }}>
+              Export Screenshots
+            </button>
           </div>
         </div>
         <div style={{ ...column, width: '60%' }}>

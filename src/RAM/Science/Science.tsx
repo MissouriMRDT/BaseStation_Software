@@ -128,10 +128,12 @@ class Science extends Component<IProps, IState> {
           <ControlScheme configs={['Science']} />
         </div>
         <div style={{ ...row }}>
-          <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>
+          <div style={{ ...column, marginRight: '2.5px', width: '100%' }}>
             <ScienceGraphs />
           </div>
-          <div style={{ ...column, marginRight: '2.5px', width: '50%' }}>
+        </div>
+        <div style={{ ...row }}>
+          <div style={{ ...column, marginRight: '2.5px', width: '100%' }}>
             <ScienceGraphs />
           </div>
         </div>
