@@ -132,7 +132,7 @@ class Lighting extends Component<IProps, IState> {
   insertAtCursor(tag: string, after?: () => void) {
     let caretPos = this.textInput.current?.selectionStart;
     if (caretPos === null) caretPos = undefined;
-    if (caretPos !== undefined)
+    if (typeof caretPos !== 'undefined')
       this.setState(
         {
           message: this.state.message.slice(0, caretPos) + tag + this.state.message.slice(caretPos),
@@ -151,7 +151,8 @@ class Lighting extends Component<IProps, IState> {
         (this.state.message.lastIndexOf(tag + '1', caretPos) ?? 0)
           ? '1'
           : '0';
-      if (caretPos !== undefined) this.insertAtCursor(tag + suffix, () => this.refocus(caretPos + tag.length + 1));
+      if (typeof caretPos !== 'undefined')
+        this.insertAtCursor(tag + suffix, () => this.refocus(caretPos + tag.length + 1));
     };
     func.bind(this);
     return func; // a delicious batch of function curry
