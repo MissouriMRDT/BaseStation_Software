@@ -303,7 +303,7 @@ class CameraControls extends Component<IProps, IState> {
         <div style={this.props.labelName !== '' ? label : {}}> {this.props.labelName} </div>
         <div style={this.props.labelName !== '' ? container : {}}>
           <div style={videoContainerStyle} ref={(videoContainerRef) => (this.videoContainerRef = videoContainerRef)}>
-            <div data-vjs-player>
+            <div data-vjs-player style={{ width: '100%' }}>
               <canvas ref={(canvas) => (this.canvas = canvas)} style={videoStyle}></canvas>
             </div>
           </div>
