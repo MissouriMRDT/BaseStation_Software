@@ -3,7 +3,7 @@ import CSS from 'csstype';
 import fs from 'fs';
 import path from 'path';
 import { rovecomm } from '../../../Core/RoveProtocol/Rovecomm';
-import gripperState from './ControlFeatures';
+// import gripperState from './ControlFeatures';
 
 const h1Style: CSS.Properties = {
   fontFamily: 'arial',

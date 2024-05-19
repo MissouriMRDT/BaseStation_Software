@@ -67,10 +67,10 @@ interface IState {
   integrationTime: number;
   minX: number;
   maxX: number;
-  baseline: boolean;
-  baselineData: number[];
-  deviationConstant: number;
-  filterType: number;
+  // baseline: boolean;
+  // baselineData: number[];
+  // deviationConstant: number;
+  // filterType: number;
 }
 
 function downloadURL(imgData: string): void {
@@ -128,10 +128,10 @@ class Raman extends Component<IProps, IState> {
       integrationTime: 0,
       minX: this.wavelengthToWavenumber(minWavelength),
       maxX: Math.round(this.wavelengthToWavenumber(maxWavelength)),
-      baseline: false,
-      baselineData: new Array(2048).fill(1023).flat(),
-      deviationConstant: 1,
-      filterType: 0,
+      // baseline: false,
+      // baselineData: new Array(2048).fill(1023).flat(),
+      // deviationConstant: 0,
+      // filterType: 0,
     };
 
     rovecomm.on('RamanReading_Part1', (data: number[]) => this.processReading(1, 0, 500, data));
@@ -146,20 +146,22 @@ class Raman extends Component<IProps, IState> {
       (prevState) => {
         const updatedPacketsRecieved = prevState.packetsRecieved;
         updatedPacketsRecieved[packetID - 1] = true;
-        const updatedData = this.state.baseline ? prevState.baselineData : prevState.data;
+        const updatedData = prevState.data;
+        // const updatedData = this.state.baseline ? prevState.baselineData : prevState.data;
         for (let i = 0; i < endIndex - startIndex; i++) {
           updatedData[startIndex + i] = data[i];
         }
-        if (this.state.baseline) {
-          console.log('Taking baseline');
-          return {
-            packetsRecieved: updatedPacketsRecieved,
-            baselineData: updatedData,
-            data: new Array(2048).fill(0).flat(),
-          };
-        }
+        // if (this.state.baseline) {
+        //   console.log('Taking baseline');
+        //   return {
+        //     packetsRecieved: updatedPacketsRecieved,
+        //     baselineData: updatedData,
+        //     data: new Array(2048).fill(0).flat(),
+        //   };
+        // }
         console.log('Not taking baseline');
-        return { packetsRecieved: updatedPacketsRecieved, baselineData: this.state.baselineData, data: updatedData };
+        // return { packetsRecieved: updatedPacketsRecieved, baselineData: this.state.baselineData, data: updatedData };
+        return { packetsRecieved: updatedPacketsRecieved, data: updatedData };
       },
       () => {
         let a = true;
@@ -211,7 +213,7 @@ class Raman extends Component<IProps, IState> {
     this.setState(() => {
       return {
         packetsRecieved: new Array(5).fill(false),
-        baseline: true,
+        // baseline: true,
       };
     });
 
@@ -219,30 +221,27 @@ class Raman extends Component<IProps, IState> {
   }
 
   updateGraphValues(): void {
-    const filter = this.state.filterType;
+    // const filter = this.state.filterType;
 
-    if (filter === 0) {
-      const data = this.state.data;
-      const xScale = (maxWavelength - minWavelength) / 2048;
-
-      console.log('data: ', data);
-      console.log('baselinedata: ', this.state.baselineData);
-      // for (let i = 0; i < data.length; i++) {
-      //   data[i] = data[i] - this.state.baselineData[i];
-      //   if (data[i] < 0) {
-      //     data[i] = 0;
-      //   }
-      // }
-      // const maxY = Math.max(...data);
-      // const minY = Math.min(...data);
-      const dataToDisplay = data.map((value: number, index: number) => {
-        // return { x: this.wavelengthToWavenumber(index * xScale + minWavelength), y: (value - minY) / (maxY - minY) };
-        return { x: this.wavelengthToWavenumber(index * xScale + minWavelength), y: value };
-      });
-      this.setState({
-        graphData: dataToDisplay,
-      });
+    // if (filter === 0) {
+    const data = this.state.data;
+    const xScale = (maxWavelength - minWavelength) / 2048;
+    const maxY = Math.max(...data);
+    for (let i = 0; i < data.length; i++) {
+      data[i] = data[i] - maxY;
     }
+    const newMaxY = Math.max(...data);
+    const newMinY = Math.min(...data);
+    for (let i = 0; i < data.length; i++) {
+      data[i] = (data[i] - newMinY) / (newMaxY - newMinY);
+    }
+    const dataToDisplay = data.map((value: number, index: number) => {
+      return { x: this.wavelengthToWavenumber(index * xScale + minWavelength), y: value };
+    });
+    this.setState({
+      graphData: dataToDisplay,
+    });
+    // }
 
     //   if (filter === 1) {
     //     const data = this.state.data;
@@ -383,7 +382,7 @@ class Raman extends Component<IProps, IState> {
     this.setState(() => {
       return {
         packetsRecieved: new Array(5).fill(false),
-        baseline: false,
+        // baseline: false,
       };
     });
 
@@ -437,7 +436,7 @@ class Raman extends Component<IProps, IState> {
                   onChange={(e) => this.integrationTimeChange(e)}
                 />
               </div>
-              <div>
+              {/* <div>
                 Deviation Constant
                 <input
                   type="text"
@@ -445,8 +444,8 @@ class Raman extends Component<IProps, IState> {
                   value={this.state.deviationConstant || ''}
                   onChange={(e) => this.setState({ deviationConstant: parseFloat(e.target.value) })}
                 />
-              </div>
-              <div>
+              </div> */}
+              {/* <div>
                 Filter Type
                 <input
                   type="text"
@@ -454,13 +453,13 @@ class Raman extends Component<IProps, IState> {
                   value={this.state.filterType || ''}
                   onChange={(e) => this.setState({ filterType: parseInt(e.target.value) })}
                 />
-              </div>
+              </div> */}
               <div>
                 <button onClick={() => this.requestData()}>Request Reading</button>
               </div>
-              <div>
+              {/* <div>
                 <button onClick={() => this.takeBaseline()}>Request Baseline</button>
-              </div>
+              </div> */}
             </div>
             <div style={buttonRow}>
               <div>
