@@ -150,42 +150,21 @@ class ControlCenter extends Component<IProps, IState> {
             )
           }
           <div style={{ ...column, width: '60%' }}>
-            <GPS onCoordsChange={this.updateCoords} style={{ marginRight: '5px', width: '100%', height: '300px' }} />
-            {/* <ThreeDRover style={{ width: '40%' }} /> */}
-            <div style={{ ...row }}>
+            <div style={row}>
+              <GPS onCoordsChange={this.updateCoords} style={{ marginRight: '5px', width: '100%' }} />
+              {/* <ThreeDRover style={{ width: '40%' }} /> */}
+            </div>
+            <div style={{ ...row, height: '500px' }}>
               <Waypoints
                 onWaypointChange={this.updateWaypoints}
                 currentCoords={this.state.currentCoords}
                 ref={(instance) => {
                   this.waypointsInstance = instance;
                 }}
-                style={{ flexGrow: 1, height: '400px'}}
+                style={{ flexGrow: 1 }}
               />
             </div>
             <Log />
-		  <Power />
-          <Drive />
-          <div style={row}>
-            <ControlScheme
-              style={{ flexGrow: 1, marginRight: '5px', marginBottom: '5px' }}
-              configs={['Drive', 'MainGimbal', 'ControlMultipliers', 'SignalStack']}
-            />
-            <Gimbal style={{ height: '100%' }} />
-          </div>
-          <div style={row}>
-            <button type="button" onClick={rovecomm.resubscribe} style={{ width: '100px' }}>
-              Resubscribe All
-            </button>
-            <button type="button" onClick={() => this.setState({ ronOpen: true })}>
-              Open Rover Overview of Network
-            </button>
-            <button type="button" onClick={() => this.setState({ ramOpen: true })}>
-              Open Rover Attachment Manager
-            </button>
-            <button type="button" onClick={() => this.setState({ ridOpen: true })}>
-              Open Rover Imagery Display
-            </button>
-          </div>
           </div>
           <div style={{ ...column, width: '40%' }}>
             <Map
@@ -210,6 +189,31 @@ class ControlCenter extends Component<IProps, IState> {
             ></CameraControls>
             <button onClick={this.exportScreenshots} style={{ marginTop: '10px' }}>
               Export Screenshots
+            </button>
+          </div>
+        </div>
+        <div style={{ ...column, width: '60%' }}>
+          <Power />
+          <Drive />
+          <div style={row}>
+            <ControlScheme
+              style={{ flexGrow: 1, marginRight: '5px', marginBottom: '5px' }}
+              configs={['Drive', 'MainGimbal', 'ControlMultipliers', 'SignalStack']}
+            />
+            <Gimbal style={{ height: '100%' }} />
+          </div>
+          <div style={row}>
+            <button type="button" onClick={rovecomm.resubscribe} style={{ width: '100px' }}>
+              Resubscribe All
+            </button>
+            <button type="button" onClick={() => this.setState({ ronOpen: true })}>
+              Open Rover Overview of Network
+            </button>
+            <button type="button" onClick={() => this.setState({ ramOpen: true })}>
+              Open Rover Attachment Manager
+            </button>
+            <button type="button" onClick={() => this.setState({ ridOpen: true })}>
+              Open Rover Imagery Display
             </button>
           </div>
         </div>
