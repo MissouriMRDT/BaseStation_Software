@@ -152,7 +152,7 @@ class Lighting extends Component<IProps, IState> {
           ? '1'
           : '0';
       if (typeof caretPos !== 'undefined')
-        this.insertAtCursor(tag + suffix, () => this.refocus(caretPos + tag.length + 1));
+        this.insertAtCursor(tag + suffix, () => this.refocus((caretPos ?? 0) + tag.length + 1)); // ?? 0 to make yarn tsc happy
     };
     func.bind(this);
     return func; // a delicious batch of function curry
