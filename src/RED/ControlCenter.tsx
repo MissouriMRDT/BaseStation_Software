@@ -159,7 +159,7 @@ class ControlCenter extends Component<IProps, IState> {
                 ref={(instance) => {
                   this.waypointsInstance = instance;
                 }}
-                style={{ flexGrow: 1, height: '400px' }}
+                style={{ flexGrow: 1 }}
               />
             </div>
             <Log />
