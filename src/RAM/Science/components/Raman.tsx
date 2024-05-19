@@ -227,16 +227,17 @@ class Raman extends Component<IProps, IState> {
 
       console.log('data: ', data);
       console.log('baselinedata: ', this.state.baselineData);
-      for (let i = 0; i < data.length; i++) {
-        data[i] = data[i] - this.state.baselineData[i];
-        if (data[i] < 0) {
-          data[i] = 0;
-        }
-      }
-      const maxY = Math.max(...data);
-      const minY = Math.min(...data);
+      // for (let i = 0; i < data.length; i++) {
+      //   data[i] = data[i] - this.state.baselineData[i];
+      //   if (data[i] < 0) {
+      //     data[i] = 0;
+      //   }
+      // }
+      // const maxY = Math.max(...data);
+      // const minY = Math.min(...data);
       const dataToDisplay = data.map((value: number, index: number) => {
-        return { x: this.wavelengthToWavenumber(index * xScale + minWavelength), y: (value - minY) / (maxY - minY) };
+        // return { x: this.wavelengthToWavenumber(index * xScale + minWavelength), y: (value - minY) / (maxY - minY) };
+        return { x: this.wavelengthToWavenumber(index * xScale + minWavelength), y: value };
       });
       this.setState({
         graphData: dataToDisplay,
@@ -411,7 +412,7 @@ class Raman extends Component<IProps, IState> {
               margin={{ top: 10, bottom: 50 }}
               width={window.document.documentElement.clientWidth - 50}
               height={300}
-              yDomain={[0, 1]}
+              yDomain={[0, 1023]}
               xDomain={[this.state.minX, this.state.maxX]}
             >
               <VerticalGridLines style={{ fill: 'none' }} />
