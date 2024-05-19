@@ -73,7 +73,11 @@ class EnvironmentalData extends Component<IProps, IState> {
         <div style={{ ...container, width: '80%' }}>
           <div style={{ ...row, margin: '10px' }}>
             <div>Temperature: {this.state.temperature}</div>
+            <button onClick={() => rovecomm.sendCommand('RequestTemperature', 'Instruments', 1)}>
+              Request Temperature
+            </button>
             <div>Humidity: {this.state.humidity}</div>
+            <button onClick={() => rovecomm.sendCommand('RequestHumidity', 'Instruments', 1)}>Request Humidity</button>
           </div>
         </div>
       </div>
