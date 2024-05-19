@@ -150,40 +150,20 @@ class ControlCenter extends Component<IProps, IState> {
             )
           }
           <div style={{ ...column, width: '60%' }}>
-            <div style={row}>
-              <GPS onCoordsChange={this.updateCoords} style={{ marginRight: '5px', width: '100%' }} />
-              {/* <ThreeDRover style={{ width: '40%' }} /> */}
-            </div>
-            <div style={{ ...row, height: '500px' }}>
+            <GPS onCoordsChange={this.updateCoords} style={{ marginRight: '5px', width: '100%', height: '300px' }} />
+            {/* <ThreeDRover style={{ width: '40%' }} /> */}
+            <div style={{ ...row }}>
               <Waypoints
                 onWaypointChange={this.updateWaypoints}
                 currentCoords={this.state.currentCoords}
                 ref={(instance) => {
                   this.waypointsInstance = instance;
                 }}
-                style={{ flexGrow: 1 }}
+                style={{ flexGrow: 1, height: '400px'}}
               />
             </div>
             <Log />
-          </div>
-          <div style={{ ...column, width: '40%' }}>
-            <Map
-              style={{ minHeight: `${this.state.fourthHeight / 1.25}px` }}
-              storedWaypoints={this.state.storedWaypoints}
-              currentCoords={this.state.currentCoords}
-              store={(name: string, coords: any) => this.waypointsInstance.store(name, coords)}
-              name="controlCenterMap"
-            />
-            <CameraSocketManager />
-            <CameraControls defaultWidth={640} startSource={0} labelName={'Camera 1'}></CameraControls>
-            <CameraControls defaultWidth={640} startSource={1} labelName={'Camera 2'}></CameraControls>
-            <button onClick={this.exportScreenshots} style={{ marginTop: '10px' }}>
-              Export Screenshots
-            </button>
-          </div>
-        </div>
-        <div style={{ ...column, width: '60%' }}>
-          <Power />
+		  <Power />
           <Drive />
           <div style={row}>
             <ControlScheme
@@ -204,6 +184,22 @@ class ControlCenter extends Component<IProps, IState> {
             </button>
             <button type="button" onClick={() => this.setState({ ridOpen: true })}>
               Open Rover Imagery Display
+            </button>
+          </div>
+          </div>
+          <div style={{ ...column, width: '40%' }}>
+            <Map
+              style={{ minHeight: `${this.state.fourthHeight / 1.25}px` }}
+              storedWaypoints={this.state.storedWaypoints}
+              currentCoords={this.state.currentCoords}
+              store={(name: string, coords: any) => this.waypointsInstance.store(name, coords)}
+              name="controlCenterMap"
+            />
+            <CameraSocketManager />
+            <CameraControls defaultWidth={640} startSource={0} labelName={'Camera 1'}></CameraControls>
+            <CameraControls defaultWidth={640} startSource={1} labelName={'Camera 2'}></CameraControls>
+            <button onClick={this.exportScreenshots} style={{ marginTop: '10px' }}>
+              Export Screenshots
             </button>
           </div>
         </div>
