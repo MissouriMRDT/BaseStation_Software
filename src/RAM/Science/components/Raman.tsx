@@ -228,7 +228,7 @@ class Raman extends Component<IProps, IState> {
     const xScale = (maxWavelength - minWavelength) / 2048;
     const maxY = Math.max(...data);
     for (let i = 0; i < data.length; i++) {
-      data[i] = data[i] - maxY;
+      data[i] = maxY - data[i];
     }
     const newMaxY = Math.max(...data);
     const newMinY = Math.min(...data);
