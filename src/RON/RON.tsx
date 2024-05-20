@@ -41,7 +41,7 @@ class RoverOverviewOfNetwork extends Component<IProps, IState> {
       <div>
         <PingGraph devices={this.state.devices} style={{ marginRight: '5px' }} />
         <div style={row}>
-          <div style={column}>
+          <div style={{ ...column, maxWidth: '70%' }}>
             <PingMap devices={this.state.devices} />
             <PacketLogger />
           </div>

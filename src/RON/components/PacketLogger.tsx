@@ -82,7 +82,7 @@ class PacketLogger extends Component<IProps, IState> {
           Cell: (data: any) => (
             <div
               style={{
-                overflow: 'none',
+                overflowX: 'clip',
                 textOverflow: 'ellipsis',
               }}
             >
@@ -108,7 +108,7 @@ class PacketLogger extends Component<IProps, IState> {
   }
 
   addData(newData: any): void {
-    this.setState((prevState) => ({ data: [newData].concat(prevState.data) }));
+    this.setState((prevState) => ({ data: [newData, ...prevState.data] }));
   }
 
   exportData(board: string): void {
@@ -156,7 +156,7 @@ class PacketLogger extends Component<IProps, IState> {
             defaultPageSize={10}
             resizable={false}
             showPageSizeOptions={false}
-            style={{ textAlign: 'center', margin: 'auto' }}
+            style={{ textAlign: 'center', width: '100%' }}
           />
           <button style={button} onClick={() => this.exportData(this.state.board)}>
             Export Data
