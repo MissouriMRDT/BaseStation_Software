@@ -100,6 +100,8 @@ class CameraControls extends Component<IProps, IState> {
 
   timeoutInterval: NodeJS.Timeout;
 
+  canvasParent!: HTMLDivElement | null;
+
   constructor(props: IProps) {
     super(props);
     this.state = {
@@ -112,12 +114,13 @@ class CameraControls extends Component<IProps, IState> {
     };
 
     this.src = this.sources[0];
-    this.canvas = document.createElement('canvas');
+    // this.canvas = document.createElement('canvas');
 
     this.refreshSource = this.refreshSource.bind(this);
     this.takePano = this.takePano.bind(this);
     this.rotateGimbal90 = this.rotateGimbal90.bind(this);
     this.timeoutInterval = setInterval(this.refreshSource, this.refreshInterval * 1000);
+    this.rotateVideo = this.rotateVideo.bind(this);
 
     rovecomm.on('PictureTaken1', (data: number[]) => {
       if (data[0] === 1) {
@@ -224,18 +227,32 @@ class CameraControls extends Component<IProps, IState> {
     if (angle === 0) {
       this.setState({ rotationAngle: 0 });
     } else {
-      this.setState((prevState) => ({
-        rotationAngle: prevState.rotationAngle + angle,
-      }));
+      this.setState({
+        rotationAngle: this.state.rotationAngle + angle,
+      });
     }
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    console.log(this.state.rotationAngle);
+    this.canvas!.style.transform = 'rotate(' + (this.state.rotationAngle + angle) + 'deg)';
   };
 
   setSource(newSource: number) {
     this.setState({ currentSource: newSource });
     this.player?.destroy();
+    this.player = null;
     this.src = this.sources[newSource];
+    this.canvasParent?.children[0]?.remove();
+
+    const newCanvas = document.createElement('canvas');
+    newCanvas.style.width = '100%';
+    newCanvas.style.transformOrigin = 'center';
+    // newCanvas.style.transform = 'rotate(' + this.state.rotationAngle + 'deg)';
+
+    this.canvas = newCanvas;
+
+    this.canvasParent?.appendChild(newCanvas);
     this.player = new JSMpeg.Player(this.src, {
-      canvas: this.canvas,
+      canvas: newCanvas,
       audio: false,
       preserveDrawingBuffer: true,
       pauseWhenHidden: false,
@@ -295,14 +312,6 @@ class CameraControls extends Component<IProps, IState> {
   }
 
   render(): JSX.Element {
-    const { rotationAngle } = this.state;
-    const videoStyle: CSS.Properties = {
-      width: '100%',
-      height: '100%',
-      transform: `rotate(${rotationAngle}deg)`,
-      transformOrigin: 'center',
-    };
-
     return (
       <div style={this.props.style}>
         <div style={this.props.labelName !== '' ? label : {}}>
@@ -319,8 +328,12 @@ class CameraControls extends Component<IProps, IState> {
         </div>
         <div style={container}>
           <div style={videoContainerStyle} ref={(videoContainerRef) => (this.videoContainerRef = videoContainerRef)}>
-            <div data-vjs-player style={{ width: this.state.elementWidth }}>
-              <canvas ref={(canvas) => (this.canvas = canvas)} style={videoStyle}></canvas>
+            <div
+              data-vjs-player
+              ref={(canvasParent) => (this.canvasParent = canvasParent)}
+              style={{ width: this.state.elementWidth }}
+            >
+              {/* <canvas ref={(canvas) => (this.canvas = canvas)} style={videoStyle}></canvas> */}
             </div>
           </div>
           <div style={cameraSelectionContainer}>
