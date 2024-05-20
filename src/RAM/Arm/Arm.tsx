@@ -99,7 +99,8 @@ class Arm extends Component<IProps, IState> {
   isGripperToggling = false;
 
   handleMultiplierChange(joint: string, e: React.ChangeEvent<HTMLInputElement>) {
-    const value = Number(e.target.value);
+    let value = Number(e.target.value);
+    value = Math.max(0, Math.min(value, 1000)); // Ensures the value is between 0 and 1000
     this.setState((prevState) => ({
       multiplierValues: {
         ...prevState.multiplierValues,
@@ -112,7 +113,7 @@ class Arm extends Component<IProps, IState> {
     if (this.isGripperToggling) {
       return;
     }
-
+    this.setState((prevState) => ({ gripperToggle: !prevState.gripperToggle }));
     this.isGripperToggling = true;
     rovecomm.sendCommand('SelectGripper', 'Arm', this.state.gripperToggle ? [1] : [0]);
     if (!this.state.gripperToggle) {
