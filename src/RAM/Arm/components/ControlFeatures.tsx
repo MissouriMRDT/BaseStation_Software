@@ -135,6 +135,17 @@ class ControlFeatures extends Component<IProps, IState> {
               Gripper Toggle: {this.props.gripperToggle ? 'Gripper 2' : 'Gripper 1'}
             </button>
           </div>
+          <div style={row}>
+            <button type="button" style={button} onClick={() => rovecomm.sendCommand('CalibrateEncoder', 'Arm', 1)}>
+              Calibrate X
+            </button>
+            <button type="button" style={button} onClick={() => rovecomm.sendCommand('CalibrateEncoder', 'Arm', 2)}>
+              Calibrate Y1
+            </button>
+            <button type="button" style={button} onClick={() => rovecomm.sendCommand('CalibrateEncoder', 'Arm', 4)}>
+              Calibrate Y2
+            </button>
+          </div>
         </div>
       </div>
     );
