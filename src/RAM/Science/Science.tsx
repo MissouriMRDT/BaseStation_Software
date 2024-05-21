@@ -58,15 +58,21 @@ function science(): void {
       rovecomm.sendCommand('Auger', 'ScienceActuation', 0);
     }
   }
-
-  if ('MicroscopePlus' in controllerInputs && 'MicroscopeMinus' in controllerInputs) {
-    if (controllerInputs.MicroscopePlus === 1 && microscopePosition < 180) {
-      microscopePosition += 5;
-      rovecomm.sendCommand('Microscope', 'ScienceActuation', microscopePosition);
-    } else if (controllerInputs.MicroscopeMinus === 1 && microscopePosition > 0) {
-      microscopePosition -= 5;
-      rovecomm.sendCommand('Microscope', 'ScienceActuation', microscopePosition);
-    }
+  if ('CameraDriveUp' in controllerInputs && 'CameraDriveDown' in controllerInputs) {
+    console.log(
+      controllerInputs.CameraDriveUp * 5,
+      controllerInputs.CameraDriveDown * 5,
+      controllerInputs.CameraDriveRight * 5,
+      controllerInputs.CameraDriveLeft * 5
+    );
+    rovecomm.sendCommand('AugerGimbalIncrement', 'Core', [
+      0,
+      (controllerInputs.CameraDriveUp ? 1 : -controllerInputs.CameraDriveDown) * 5,
+    ]);
+    rovecomm.sendCommand('AugerGimbalIncrement', 'Core', [
+      (controllerInputs.CameraDriveRight ? 1 : -controllerInputs.CameraDriveLeft) * 5,
+      0,
+    ]);
   }
 }
 
