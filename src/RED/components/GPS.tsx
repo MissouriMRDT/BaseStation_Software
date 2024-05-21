@@ -62,9 +62,9 @@ class GPS extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      currentLat: 0,
-      currentLon: 0,
-      currentAlt: 0,
+      currentLat: -1,
+      currentLon: -1,
+      currentAlt: -1,
       satelliteCount: 0,
       // pitch: 0,
       yaw: 0,
