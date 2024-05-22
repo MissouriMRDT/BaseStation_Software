@@ -58,43 +58,38 @@ class SignalStack extends Component<IProps, IState> {
       controlling: 'Main',
       image: UpArrow,
       interval: setInterval(() => this.signalstack(), 100),
-      basestationLat: -1,
-      basestationLon: -1,
+      basestationLat: 1,
+      basestationLon: 1,
       toggle: false,
     };
-    this.latitudeChange = this.latitudeChange.bind(this);
+    this.updateCoords = this.updateCoords.bind(this);
   }
 
   componentWillUnmount() {
     clearInterval(this.state.interval);
   }
 
-  latitudeChange(event: { target: { value: string } }) {
-    let basestationLat = parseInt(event.target.value, 10);
-    if (basestationLat < 0) {
-      basestationLat = 0;
-    }
-    this.setState({ basestationLat });
-  }
+  updateCoords() {
+    const basestationLatHTML = document.getElementById('baselat') as HTMLTextAreaElement;
+    const basestationLat = parseFloat(basestationLatHTML.value);
+    const basestationLonHTML = document.getElementById('baselon') as HTMLTextAreaElement;
+    const basestationLon = parseFloat(basestationLonHTML.value);
 
-  longitudeChange(event: { target: { value: string } }) {
-    let basestationLon = parseInt(event.target.value, 10);
-    if (basestationLon < 0) {
-      basestationLon = 0;
+    if (!Number.isNaN(basestationLat) && !Number.isNaN(basestationLon)) {
+      this.setState({ basestationLat });
+      this.setState({ basestationLon });
     }
-    this.setState({ basestationLon });
   }
 
   calculateAngle() {
-    let targetAngle: number = Math.atan(
-      ((this.props.roverLat - this.state.basestationLat) / (this.props.roverLon - this.state.basestationLon)) *
-        (180 / Math.PI)
-    );
-    if (this.props.roverLon - this.state.basestationLon > 0) {
-      targetAngle = 90 - targetAngle;
-    } else {
-      targetAngle = 270 - targetAngle;
-    }
+    const targetAngle: number =
+      Math.atan2(this.props.roverLon - this.state.basestationLon, this.props.roverLat - this.state.basestationLat) *
+      (180 / Math.PI);
+    // if (this.props.roverLon - this.state.basestationLon > 0) {
+    //   targetAngle = 90 - targetAngle;
+    // } else {
+    //   targetAngle = 270 - targetAngle;
+    // }
     return targetAngle;
   }
 
@@ -107,8 +102,10 @@ class SignalStack extends Component<IProps, IState> {
 
   signalstack(): void {
     const angle: number = this.calculateAngle();
-    this.rotateArrow(angle);
-    rovecomm.sendCommand('SetAngleTarget', 'SignalStack', angle);
+    if (!Number.isNaN(angle) && this.state.toggle) {
+      this.rotateArrow(angle);
+      rovecomm.sendCommand('SetAngleTarget', 'SignalStack', angle);
+    }
 
     if ('Pan' in controllerInputs) {
       rovecomm.sendCommand('OpenLoop', 'SignalStack', controllerInputs.Pan * signalMotorMultiplier);
@@ -121,9 +118,16 @@ class SignalStack extends Component<IProps, IState> {
         <div style={label}>Signal Stack</div>
         <div style={container}>
           <img id="needle" src={this.state.image} alt={this.state.controlling} />
+          <span>
+            <h6>{this.state.basestationLat}</h6>
+            <h6>{this.state.basestationLon}</h6>
+          </span>
           <div>
-            <input type="text" id="baselat" value={this.state.basestationLat || ''} onChange={this.latitudeChange} />
-            <input type="text" id="baselon" value={this.state.basestationLon || ''} onChange={this.latitudeChange} />
+            <input type="text" id="baselat" />
+            <input type="text" id="baselon" />
+            <button type="button" onClick={this.updateCoords}>
+              submit
+            </button>
             <button type="button" onClick={() => this.setState({ toggle: !this.state.toggle })}>
               {this.state.toggle ? 'On' : 'Off'}
             </button>
