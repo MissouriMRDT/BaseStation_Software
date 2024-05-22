@@ -67,8 +67,8 @@ interface IState {
   integrationTime: number;
   minX: number;
   maxX: number;
-  // baseline: boolean;
-  // baselineData: number[];
+  baseline: boolean;
+  baselineData: number[];
   // deviationConstant: number;
   // filterType: number;
 }
@@ -128,8 +128,8 @@ class Raman extends Component<IProps, IState> {
       integrationTime: 0,
       minX: this.wavelengthToWavenumber(minWavelength),
       maxX: Math.round(this.wavelengthToWavenumber(maxWavelength)),
-      // baseline: false,
-      // baselineData: new Array(2048).fill(1023).flat(),
+      baseline: false,
+      baselineData: new Array(2048).fill(1023).flat(),
       // deviationConstant: 0,
       // filterType: 0,
     };
@@ -146,22 +146,20 @@ class Raman extends Component<IProps, IState> {
       (prevState) => {
         const updatedPacketsRecieved = prevState.packetsRecieved;
         updatedPacketsRecieved[packetID - 1] = true;
-        const updatedData = prevState.data;
-        // const updatedData = this.state.baseline ? prevState.baselineData : prevState.data;
+        const updatedData = this.state.baseline ? prevState.baselineData : prevState.data;
         for (let i = 0; i < endIndex - startIndex; i++) {
           updatedData[startIndex + i] = data[i];
         }
-        // if (this.state.baseline) {
-        //   console.log('Taking baseline');
-        //   return {
-        //     packetsRecieved: updatedPacketsRecieved,
-        //     baselineData: updatedData,
-        //     data: new Array(2048).fill(0).flat(),
-        //   };
-        // }
+        if (this.state.baseline) {
+          console.log('Taking baseline');
+          return {
+            packetsRecieved: updatedPacketsRecieved,
+            baselineData: updatedData,
+            data: new Array(2048).fill(0).flat(),
+          };
+        }
         console.log('Not taking baseline');
-        // return { packetsRecieved: updatedPacketsRecieved, baselineData: this.state.baselineData, data: updatedData };
-        return { packetsRecieved: updatedPacketsRecieved, data: updatedData };
+        return { packetsRecieved: updatedPacketsRecieved, baselineData: this.state.baselineData, data: updatedData };
       },
       () => {
         let a = true;
@@ -213,7 +211,7 @@ class Raman extends Component<IProps, IState> {
     this.setState(() => {
       return {
         packetsRecieved: new Array(5).fill(false),
-        // baseline: true,
+        baseline: true,
       };
     });
 
@@ -382,7 +380,7 @@ class Raman extends Component<IProps, IState> {
     this.setState(() => {
       return {
         packetsRecieved: new Array(5).fill(false),
-        // baseline: false,
+        baseline: false,
       };
     });
 
@@ -457,9 +455,9 @@ class Raman extends Component<IProps, IState> {
               <div>
                 <button onClick={() => this.requestData()}>Request Reading</button>
               </div>
-              {/* <div>
+              <div>
                 <button onClick={() => this.takeBaseline()}>Request Baseline</button>
-              </div> */}
+              </div>
             </div>
             <div style={buttonRow}>
               <div>

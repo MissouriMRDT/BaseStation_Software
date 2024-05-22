@@ -30,8 +30,6 @@ const button: CSS.Properties = {
 const sensorMotorMultiplier = 1000;
 const scoopMotorMultiplier = 1000;
 const augerMotorMultiplier = 1000;
-let microscopePosition = 0;
-
 function science(): void {
   if ('ScoopAxis_OpenLoop' in controllerInputs) {
     rovecomm.sendCommand(
