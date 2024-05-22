@@ -152,9 +152,6 @@ class ControlCenter extends Component<IProps, IState> {
           <div style={{ ...column, width: '60%' }}>
             <div style={row}>
               <div style={column}>
-                <SignalStack roverLat={this.state.currentCoords.lat} roverLon={this.state.currentCoords.lon} />
-              </div>
-              <div style={column}>
                 <GPS onCoordsChange={this.updateCoords} style={{ marginRight: '5px', width: '100%' }} />
               </div>
             </div>
@@ -208,6 +205,7 @@ class ControlCenter extends Component<IProps, IState> {
             <button onClick={this.exportScreenshots} style={{ marginTop: '10px' }}>
               Export Screenshots
             </button>
+            <SignalStack roverLat={this.state.currentCoords.lat} roverLon={this.state.currentCoords.lon} />
           </div>
         </div>
       </div>
