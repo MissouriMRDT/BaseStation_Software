@@ -246,7 +246,7 @@ class CameraControls extends Component<IProps, IState> {
     const newCanvas = document.createElement('canvas');
     newCanvas.style.width = '100%';
     newCanvas.style.transformOrigin = 'center';
-    // newCanvas.style.transform = 'rotate(' + this.state.rotationAngle + 'deg)';
+    newCanvas.style.transform = 'rotate(' + this.state.rotationAngle + 'deg)';
 
     this.canvas = newCanvas;
 
