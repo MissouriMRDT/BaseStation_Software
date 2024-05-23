@@ -126,8 +126,10 @@ class Raman extends Component<IProps, IState> {
       graphData: [{ x: 0, y: 0 }],
       crosshairPos: null,
       integrationTime: 0,
-      minX: this.wavelengthToWavenumber(minWavelength),
-      maxX: Math.round(this.wavelengthToWavenumber(maxWavelength)),
+      minX: 0,
+      maxX: 2048,
+      // minX: this.wavelengthToWavenumber(minWavelength),
+      // maxX: Math.round(this.wavelengthToWavenumber(maxWavelength)),
       // baseline: false,
       // baselineData: new Array(2048).fill(1023).flat(),
       // deviationConstant: 0,
@@ -225,8 +227,8 @@ class Raman extends Component<IProps, IState> {
 
     // if (filter === 0) {
     const data = this.state.data;
-    const xScale = (maxWavelength - minWavelength) / 2048;
-    const maxY = Math.max(...data);
+    // const xScale = (maxWavelength - minWavelength) / 2048;
+    // const maxY = Math.max(...data);
     // for (let i = 0; i < data.length; i++) {
     //   data[i] = maxY - data[i];
     // }
@@ -237,7 +239,7 @@ class Raman extends Component<IProps, IState> {
     // }
     const dataToDisplay = data.map((value: number, index: number) => {
       // return { x: this.wavelengthToWavenumber(index * xScale + minWavelength), y: value };
-      return { x: index * xScale + minWavelength, y: value };
+      return { x: index, y: value };
     });
     this.setState({
       graphData: dataToDisplay,
@@ -411,7 +413,7 @@ class Raman extends Component<IProps, IState> {
               margin={{ top: 10, bottom: 50 }}
               width={window.document.documentElement.clientWidth - 50}
               height={300}
-              yDomain={[0, 1]}
+              yDomain={[0, 1023]}
               xDomain={[this.state.minX, this.state.maxX]}
             >
               <VerticalGridLines style={{ fill: 'none' }} />
