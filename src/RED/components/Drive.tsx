@@ -120,6 +120,14 @@ class Drive extends Component<IProps, IState> {
       // a reflection over the y axis, which is easiest obtained by adjusting the angle 90deg and inverting the result
       leftSpeed = r * scaleVector(theta);
       rightSpeed = -1 * r * scaleVector(theta - Math.PI / 2);
+      if (Math.abs(leftSpeed) < 0.15) {
+        // Deadzone
+        leftSpeed = 0;
+      }
+      if (Math.abs(rightSpeed) < 0.15) {
+        // Deadzone
+        rightSpeed = 0;
+      }
       // We want the throttle to be seen as 0% when all the way down, and 100% when all the way up, but throttle
       // has values [-1, 1], so if we (throttle + 1) /2, we get [0,1]
       speedMultiplier *= (controllerInputs.Throttle + 1) / 2;

@@ -173,7 +173,7 @@ class Arm extends Component<IProps, IState> {
             Z: (prevState.multiplierValues.Master * (controllerInputs.Multiplier4 + 1)) / 0.002,
           },
         }));
-      } else if (this.state.multiplierValues.X) {
+      } else if (controllerInputs.MultiplierX) {
         this.setState((prevState) => ({
           multiplierValues: {
             ...prevState.multiplierValues,
