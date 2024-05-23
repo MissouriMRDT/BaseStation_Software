@@ -57,7 +57,7 @@ class SignalStack extends Component<IProps, IState> {
       // Controlling will be "none" by default, then set to "main" or "drive", and image will update to match
       controlling: 'Main',
       image: UpArrow,
-      interval: setInterval(() => this.signalstack(), 100),
+      interval: setInterval(() => this.signalstack(), 1000),
       basestationLat: 1,
       basestationLon: 1,
       toggle: false,
@@ -85,9 +85,9 @@ class SignalStack extends Component<IProps, IState> {
     const targetAngle: number =
       Math.atan2(this.props.roverLon - this.state.basestationLon, this.props.roverLat - this.state.basestationLat) *
       (180 / Math.PI);
-    // if (this.props.roverLon - this.state.basestationLon > 0) {
+    // if (targetAngle === 0) {
     //   targetAngle = 90 - targetAngle;
-    // } else {
+    // } else if (targetAngle === 180) {
     //   targetAngle = 270 - targetAngle;
     // }
     return targetAngle;
@@ -104,6 +104,7 @@ class SignalStack extends Component<IProps, IState> {
     const angle: number = this.calculateAngle();
     if (!Number.isNaN(angle) && this.state.toggle) {
       this.rotateArrow(angle);
+      console.log(angle, this.props.roverLat, this.props.roverLon);
       rovecomm.sendCommand('SetAngleTarget', 'SignalStack', angle);
     }
 
