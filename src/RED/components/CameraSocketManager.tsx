@@ -14,10 +14,10 @@ async function startFFMPEG(input: string, output: string) {
 
   converter.createOutputToFile(output, {
     f: 'mpegts',
-    s: '320x240',
+    s: '480x320',
     'codec:v': 'mpeg1video',
-    'b:v': '128k',
-    maxrate: '128k',
+    'b:v': '512k',
+    maxrate: '512k',
     bf: '0',
   });
 

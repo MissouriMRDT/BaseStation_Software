@@ -117,10 +117,18 @@ class CameraControls extends Component<IProps, IState> {
     // this.canvas = document.createElement('canvas');
 
     this.refreshSource = this.refreshSource.bind(this);
-    this.takePano = this.takePano.bind(this);
-    this.rotateGimbal90 = this.rotateGimbal90.bind(this);
+    // this.takePano = this.takePano.bind(this);
+    // this.rotateGimbal90 = this.rotateGimbal90.bind(this);
     this.timeoutInterval = setInterval(this.refreshSource, this.refreshInterval * 1000);
     this.rotateVideo = this.rotateVideo.bind(this);
+    this.camToggle = this.camToggle.bind(this);
+    this.setSource = this.setSource.bind(this);
+    this.saveImage = this.saveImage.bind(this);
+    this.stopStream = this.stopStream.bind(this);
+    this.restartStream = this.restartStream.bind(this);
+    this.setElementWidth = this.setElementWidth.bind(this);
+    this.updateWidth = this.updateWidth.bind(this);
+    this.waitForGreen = this.waitForGreen.bind(this);
 
     rovecomm.on('PictureTaken1', (data: number[]) => {
       if (data[0] === 1) {
@@ -134,36 +142,36 @@ class CameraControls extends Component<IProps, IState> {
     });
   }
 
-  rotateGimbal90(direction: boolean) {
-    if (direction) {
-      rovecomm.sendCommand('LeftMainGimbalIncrement', 'Core', [90, 0]);
-    } else {
-      rovecomm.sendCommand('LeftMainGimbalIncrement', 'Core', [-35, 0]);
-    }
-  }
+  // rotateGimbal90(direction: boolean) {
+  //   if (direction) {
+  //     rovecomm.sendCommand('LeftMainGimbalIncrement', 'Core', [90, 0]);
+  //   } else {
+  //     rovecomm.sendCommand('LeftMainGimbalIncrement', 'Core', [-35, 0]);
+  //   }
+  // }
 
-  takePano() {
-    const directions = [true, false, false, false, false, false];
-    let delay = 1000; // Initial delay before first movement
-    const numMovements = directions.length;
+  // takePano() {
+  //   const directions = [true, false, false, false, false, false];
+  //   let delay = 1000; // Initial delay before first movement
+  //   const numMovements = directions.length;
 
-    for (let i = 0; i < numMovements; i++) {
-      setTimeout(() => {
-        this.rotateGimbal90(directions[i]);
-        if (i === numMovements - 1) {
-          this.waitForGreen(() => {
-            this.saveImage(1); // Save the final image after the last movement
-          });
-        } else {
-          this.waitForGreen(() => {
-            this.saveImage(0); // Save images at intermediate stops
-          });
-        }
-      }, delay);
+  //   for (let i = 0; i < numMovements; i++) {
+  //     setTimeout(() => {
+  //       this.rotateGimbal90(directions[i]);
+  //       if (i === numMovements - 1) {
+  //         this.waitForGreen(() => {
+  //           this.saveImage(1); // Save the final image after the last movement
+  //         });
+  //       } else {
+  //         this.waitForGreen(() => {
+  //           this.saveImage(0); // Save images at intermediate stops
+  //         });
+  //       }
+  //     }, delay);
 
-      delay += 2000; // Increment delay for next movement
-    }
-  }
+  //     delay += 2000; // Increment delay for next movement
+  //   }
+  // }
 
   waitForGreen(callback: () => void) {
     const checkGreen = () => {
@@ -307,6 +315,22 @@ class CameraControls extends Component<IProps, IState> {
     // if (base64Image) fs.writeFileSync(filename, base64Image, { encoding: 'base64' });
   }
 
+  stopStream() {
+    if (this.state.currentSource < 4) {
+      rovecomm.sendCommand('StopStream', 'Camera1', [this.state.currentSource]);
+    } else {
+      rovecomm.sendCommand('StopStream', 'Camera2', [this.state.currentSource - 4]);
+    }
+  }
+
+  restartStream() {
+    if (this.state.currentSource < 4) {
+      rovecomm.sendCommand('StartStream', 'Camera1', [this.state.currentSource]);
+    } else {
+      rovecomm.sendCommand('StartStream', 'Camera2', [this.state.currentSource - 4]);
+    }
+  }
+
   setElementWidth(newWidth: number) {
     this.setState({ elementWidth: Math.max(320, Math.min(newWidth, 1600)) });
   }
@@ -318,11 +342,17 @@ class CameraControls extends Component<IProps, IState> {
           {' '}
           <button
             // eslint-disable-next-line prettier/prettier
-            onClick={() => this.setElementWidth(this.state.elementWidth + 160)} > + 
+            onClick={() => this.setElementWidth(this.state.elementWidth + 160)}
+          >
+            {' '}
+            +
           </button>
           <button
             // eslint-disable-next-line prettier/prettier
-            onClick={() => this.setElementWidth(this.state.elementWidth - 160)} > - 
+            onClick={() => this.setElementWidth(this.state.elementWidth - 160)}
+          >
+            {' '}
+            -
           </button>{' '}
           {this.props.labelName}{' '}
         </div>
@@ -363,7 +393,9 @@ class CameraControls extends Component<IProps, IState> {
             >
               Screenshot
             </button>
-            <button onClick={() => this.takePano()}>Take Pano</button>
+            <button>Stop Stream</button>
+            <button>Restart Stream</button>
+            {/* <button onClick={() => this.takePano()}>Take Pano</button> */}
           </div>
         </div>
       </div>
