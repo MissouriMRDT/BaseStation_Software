@@ -7,8 +7,8 @@ const WEBSOCKET_PORT = 6969;
 
 const fs = require('fs'),
   //http = require('http'),
-  WebSocket = require('./ws/index.js'),
-  ExcelJS = require('./exceljs/excel.js');
+  WebSocket = require('ws'),
+  ExcelJS = require('exceljs');
 
 let writer = undefined;
 let rowCount = 0;

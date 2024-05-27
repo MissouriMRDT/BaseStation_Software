@@ -3,7 +3,7 @@
 
 var fs = require('fs'),
   http = require('http'),
-  WebSocket = require('./ws/index.js');
+  WebSocket = require('ws');
 
 if (process.argv.length < 3) {
   console.log('Usage: \n' + 'node websocket-relay.js <secret> [<stream-port> <websocket-port>]');
