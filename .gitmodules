@@ -2,3 +2,12 @@
 	path = assets/manifest
 	url = https://github.com/missourimrdt/rovecomm_base
 	branch = embedded-2024
+[submodule "assets/node_modules/ws"]
+	path = assets/node_modules/ws
+	url = https://github.com/websockets/ws.git
+[submodule "assets/node_modules/exceljs"]
+	path = assets/node_modules/exceljs
+	url = https://github.com/exceljs/exceljs.git
+[submodule "assets/node_modules/fast-csv"]
+	path = assets/node_modules/fast-csv
+	url = https://github.com/C2FO/fast-csv.git

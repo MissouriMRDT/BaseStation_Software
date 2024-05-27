@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
 import ReactTable from 'react-table-v6';
-// import "../../node_modules/react-table-v6/react-table.css"
 import { rovecomm, RovecommManifest } from '../../Core/RoveProtocol/Rovecomm';
-import fs from 'fs';
+// import WebSocket from 'ws'; // does not work in the browser client
+import path from 'path';
 
 const h1Style: CSS.Properties = {
   fontFamily: 'arial',
@@ -53,10 +53,45 @@ interface IProps {
   style?: CSS.Properties;
 }
 
+interface TableEntry {
+  name: string;
+  dataId: number;
+  time: string;
+  dataType: string; // 'any' type in rovecomm
+  dataCount: number; // 'any' type in rovecomm
+  data: string | number[];
+}
+
+const PAGE_SIZE = 10;
+const TABLE_MAX_PAGES = 3;
+
+const tableSettings = [
+  { Header: 'Name', accessor: 'name', width: '100' },
+  { Header: 'Data Id', accessor: 'dataId', width: '75' },
+  { Header: 'Time', accessor: 'time', width: '100' },
+  { Header: 'Type', accessor: 'dataType', width: '50' },
+  { Header: 'Count', accessor: 'dataCount', width: '50' },
+  {
+    Header: 'Data',
+    accessor: 'data',
+    width: 'fill',
+    Cell: (data: any) => (
+      <div
+        style={{
+          overflowX: 'scroll', // 'clip', for no scroll
+          //textOverflow: 'ellipsis',
+        }}
+      >
+        {Array.isArray(data.value) ? data.value.join(', ') : data.value}
+      </div>
+    ),
+  },
+];
+
 interface IState {
   board: string;
-  data: any;
-  columns: any;
+  data: TableEntry[];
+  columns: typeof tableSettings;
 }
 
 class PacketLogger extends Component<IProps, IState> {
@@ -64,71 +99,104 @@ class PacketLogger extends Component<IProps, IState> {
     style: {},
   };
 
-  constructor(props: any) {
+  private excelStream?: WebSocket;
+
+  //testing
+  private interval1?: NodeJS.Timeout;
+
+  private interval2?: NodeJS.Timeout;
+
+  constructor(props: IProps) {
     super(props);
     this.state = {
       board: 'Core',
       data: [],
-      columns: [
-        { Header: 'Name', accessor: 'name', width: '100' },
-        { Header: 'Data Id', accessor: 'dataId', width: '75' },
-        { Header: 'Time', accessor: 'time', width: '100' },
-        { Header: 'Type', accessor: 'dataType', width: '50' },
-        { Header: 'Count', accessor: 'dataCount', width: '50' },
-        {
-          Header: 'Data',
-          accessor: 'data',
-          width: 'fill',
-          Cell: (data: any) => (
-            <div
-              style={{
-                overflowX: 'clip',
-                textOverflow: 'ellipsis',
-              }}
-            >
-              {data.value.join(', ')}
-            </div>
-          ),
-        },
-      ],
+      columns: tableSettings,
     };
     this.boardChange = this.boardChange.bind(this);
     this.addData = this.addData.bind(this);
-    rovecomm.on(this.state.board, (data: any) => this.addData(data));
+    rovecomm.on(this.state.board, (data: unknown) => this.addData(data as TableEntry));
   }
 
   boardChange(event: { target: { value: string } }): void {
     const board = event.target.value;
-    rovecomm.removeAllListeners(this.state.board);
-    rovecomm.on(board, (data: any) => this.addData(data));
+    if (this.state.board === 'All') {
+      Object.keys(RovecommManifest).map((boardName) => rovecomm.removeAllListeners(boardName));
+    } else {
+      rovecomm.removeAllListeners(this.state.board);
+    }
+    if (board === 'All') {
+      Object.keys(RovecommManifest).map((boardName) =>
+        rovecomm.on(boardName, (data: unknown) => this.addData(data as TableEntry))
+      );
+    } else {
+      rovecomm.on(board, (data: unknown) => this.addData(data as TableEntry));
+    }
     this.setState({
       board,
       data: [],
     });
   }
 
-  addData(newData: any): void {
-    this.setState((prevState) => ({ data: [newData, ...prevState.data] }));
+  addData(row: TableEntry): void {
+    this.addTableRow(row);
+    this.addExcelRow(row);
   }
 
-  exportData(board: string): void {
-    // Convert the data to CSV format
-    const csvData = this.state.data.map((row: number) => Object.values(row).join(',')).join('\n');
+  addTableRow(row: TableEntry): void {
+    if (this.state.data.length >= PAGE_SIZE * TABLE_MAX_PAGES)
+      this.setState((prevState) => ({ data: [row, ...prevState.data.slice(0, -1)] }));
+    else this.setState((prevState) => ({ data: [row, ...prevState.data] }));
+  }
 
-    // ISO string will be formatted YYYY-MM-DDTHH:MM:SS:sssZ
-    // this regex will convert all -,T:,Z to . (which covers to . for .csv)
-    // Date format is consistent with the SensorData csv
-    const timestamp = new Date().toISOString().replaceAll(/[:\-TZ]/g, '.');
-    const EXPORT_FILE = `./PacketLogger/${board}-${timestamp}.csv`;
+  componentDidMount(): void {
+    this.beginExcelStream();
+    this.interval1 = setInterval(
+      () =>
+        this.addData({
+          name: 'example1',
+          dataId: 69,
+          time: new Date().toLocaleTimeString(),
+          dataType: 'FLOAT',
+          dataCount: 6,
+          data: [1, 2, 3, 4, 5, 6],
+        }),
+      200
+    );
+    this.interval2 = setInterval(
+      () =>
+        this.addData({
+          name: 'example2',
+          dataId: 420,
+          time: new Date().toLocaleTimeString(),
+          dataType: 'CHAR',
+          dataCount: 16,
+          data: 'Fuck California!',
+        }),
+      500
+    );
+  }
 
-    if (!fs.existsSync('./PacketLogger')) {
-      fs.mkdirSync('./PacketLogger');
-    }
+  componentWillUnmount(): void {
+    this.closeExcelStream();
+    if (this.interval1) clearInterval(this.interval1);
+    if (this.interval2) clearInterval(this.interval2);
+  }
 
-    // Write the CSV data to a file
-    fs.writeFile(EXPORT_FILE, csvData, (err) => {
-      if (err) throw err;
-    });
+  beginExcelStream(): void {
+    if (this.excelStream) return;
+    require('child_process').fork(path.join(__dirname, '../assets/ExcelStream.js'));
+    // the process takes time to set up so we wait for a bit
+    setTimeout(() => (this.excelStream = new WebSocket('ws://127.0.0.1:6969')), 5000);
+  }
+
+  closeExcelStream(): void {
+    this.excelStream?.close();
+  }
+
+  addExcelRow(row: TableEntry): void {
+    if (!this.excelStream) return;
+    if (this.excelStream.readyState === WebSocket.OPEN) this.excelStream.send(JSON.stringify(row));
   }
 
   render(): JSX.Element {
@@ -146,6 +214,7 @@ class PacketLogger extends Component<IProps, IState> {
                   </option>
                 );
               })}
+              <option value="All">All</option>
             </select>
           </div>
           <ReactTable
@@ -153,14 +222,15 @@ class PacketLogger extends Component<IProps, IState> {
             data={this.state.data}
             columns={this.state.columns}
             filterable
-            defaultPageSize={10}
+            defaultPageSize={PAGE_SIZE}
             resizable={false}
             showPageSizeOptions={false}
             style={{ textAlign: 'center', width: '100%' }}
           />
-          <button style={button} onClick={() => this.exportData(this.state.board)}>
-            Export Data
-          </button>
+          {/* <div>
+            <label htmlFor="logXlsx">Log to .xlsx file?</label>
+            <input type="checkbox" name="logXlsx" />
+          </div> */}
         </div>
       </div>
     );

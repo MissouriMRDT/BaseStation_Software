@@ -274,8 +274,7 @@
     "react-vis": "^1.11.7",
     "regenerator-runtime": "^0.13.9",
     "source-map-support": "^0.5.20",
-    "styled-components": "^5.3.3",
-    "ws": "^8.16.0"
+    "styled-components": "^5.3.3"
   },
   "devEngines": {
     "node": ">=10.x",
