@@ -201,7 +201,7 @@ class ControlCenter extends Component<IProps, IState> {
             />
             <CameraSocketManager />
             <CameraControls defaultWidth={640} startSource={0} labelName={'Camera 1'}></CameraControls>
-            <CameraControls defaultWidth={640} startSource={1} labelName={'Camera 2'}></CameraControls>
+            {/* <CameraControls defaultWidth={640} startSource={1} labelName={'Camera 2'}></CameraControls> */}
             <button onClick={this.exportScreenshots} style={{ marginTop: '10px' }}>
               Export Screenshots
             </button>
