@@ -30,6 +30,10 @@ const row: CSS.Properties = {
   justifyContent: 'space-between',
 };
 
+const button: CSS.Properties = {
+  margin: '1px',
+};
+
 /** This function returns a value [-1, 1] based off of the value of theta
  * This function really only makes sense with drive in mind - consider the case of the left wheel
  * When theta = pi/2, we want to full send forward, so we return 1
@@ -243,6 +247,26 @@ class Drive extends Component<IProps, IState> {
                 onChange={this.speedLimitChange}
               />
             </div>
+          </div>
+          <div style={{ ...row, justifyContent: 'center' }}>
+            <button style={button} onClick={() => this.setState({ speedLimit: 50 })}>
+              50
+            </button>
+            <button style={button} onClick={() => this.setState({ speedLimit: 80 })}>
+              80
+            </button>
+            <button style={button} onClick={() => this.setState({ speedLimit: 100 })}>
+              100
+            </button>
+            <button style={button} onClick={() => this.setState({ speedLimit: 200 })}>
+              200
+            </button>
+            <button style={button} onClick={() => this.setState({ speedLimit: 300 })}>
+              300
+            </button>
+            <button style={button} onClick={() => this.setState({ speedLimit: 500 })}>
+              500
+            </button>
           </div>
         </div>
       </div>
