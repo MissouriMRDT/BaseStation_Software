@@ -8,6 +8,3 @@
 [submodule "assets/node_modules/exceljs"]
 	path = assets/node_modules/exceljs
 	url = https://github.com/exceljs/exceljs.git
-[submodule "assets/node_modules/fast-csv"]
-	path = assets/node_modules/fast-csv
-	url = https://github.com/C2FO/fast-csv.git
