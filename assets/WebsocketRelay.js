@@ -3,7 +3,7 @@
 
 var fs = require('fs'),
   http = require('http'),
-  WebSocket = require('./ws/index.js');
+  WebSocket = require('ws');
 
 if (process.argv.length < 3) {
   console.log('Usage: \n' + 'node websocket-relay.js <secret> [<stream-port> <websocket-port>]');
@@ -80,3 +80,13 @@ streamServer.listen(STREAM_PORT);
 
 console.log('Listening for incomming MPEG-TS Stream on http://127.0.0.1:' + STREAM_PORT + '/<secret>');
 console.log('Awaiting WebSocket connections on ws://127.0.0.1:' + WEBSOCKET_PORT + '/');
+
+function close() {
+  streamServer.close();
+  socketServer.close();
+}
+
+// idk
+process.on('exit', close);
+process.on('SIGTERM', close);
+process.on('SIGKILL', close);

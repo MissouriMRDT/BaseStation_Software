@@ -2,7 +2,9 @@ import path from 'path';
 import React from 'react';
 import { Component } from 'react';
 
-const { Converter } = require('ffmpeg-stream');
+import { Converter } from 'ffmpeg-stream';
+
+const MAX_RETRIES = 10;
 
 async function startFFMPEG(input: string, output: string) {
   const converter = new Converter();
@@ -22,11 +24,13 @@ async function startFFMPEG(input: string, output: string) {
   });
 
   // start processing
-  try {
-    await converter.run();
-  } catch (e: any) {
-    console.log('UDP Bind Failed on port ' + input + ' with error ' + e);
-  }
+  const recursiveRetry = (numRetries: number) => {
+    converter.run().catch((err: any) => {
+      if (numRetries < MAX_RETRIES) setTimeout(() => recursiveRetry(numRetries + 1), 1000);
+      else console.log('UDP Bind Repeatedly Failed on port ' + input + ' with error ' + err);
+    });
+  };
+  recursiveRetry(0);
 }
 
 interface IProps {}
@@ -37,6 +41,8 @@ class CameraSocketManager extends Component<IProps, IState> {
   inSources: string[];
 
   cameraIPs: string[];
+
+  processStopper: AbortController = new AbortController();
 
   static defaultProps = {
     style: {},
@@ -72,13 +78,23 @@ class CameraSocketManager extends Component<IProps, IState> {
     // 192.168.100.10
 
     for (let i = 0; i < this.cameraIPs.length; i++) {
-      require('child_process').fork(path.join(__dirname, '../assets/WebsocketRelay.js'), [
-        'cam',
-        8081 + i * 2,
-        8082 + i * 2,
-      ]);
+      const child = require('child_process').fork(
+        path.join(__dirname, '../assets/WebsocketRelay.js'),
+        ['cam', 8081 + i * 2, 8082 + i * 2],
+        { signal: this.processStopper.signal }
+      );
+      child.on('error', (m: any) => {
+        //try to pass pid along with the signal from child to parent
+        console.log('completed: ' + m);
+        //killing child process when work signals it's done
+        process.kill(m.pid);
+      });
       startFFMPEG('udp://' + this.cameraIPs[i] + '?buffer_size=2000"&"fifo_size=1024', this.inSources[i]);
     }
+  }
+
+  componentWillUnmount(): void {
+    this.processStopper.abort(); // doesn't work still idk
   }
 
   render(): JSX.Element {
