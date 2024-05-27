@@ -124,8 +124,8 @@ class CameraControls extends Component<IProps, IState> {
     this.camToggle = this.camToggle.bind(this);
     this.setSource = this.setSource.bind(this);
     this.saveImage = this.saveImage.bind(this);
-    this.stopStream = this.stopStream.bind(this);
-    this.restartStream = this.restartStream.bind(this);
+    this.refreshSource = this.refreshSource.bind(this);
+    this.toggleStream = this.toggleStream.bind(this);
     this.setElementWidth = this.setElementWidth.bind(this);
     this.updateWidth = this.updateWidth.bind(this);
     this.waitForGreen = this.waitForGreen.bind(this);
@@ -196,6 +196,14 @@ class CameraControls extends Component<IProps, IState> {
     if (this.props.cameraToggle) {
       console.log(this.props.gripperCam);
       this.setSource(this.props.gripperCam - 1);
+    }
+  }
+
+  toggleStream(source: number, restartStream: number) {
+    if (this.state.currentSource < 4) {
+      rovecomm.sendCommand('ToggleStream1', 'Camera1', [source, restartStream]);
+    } else {
+      rovecomm.sendCommand('ToggleStream2', 'Camera2', [source, restartStream]);
     }
   }
 
@@ -315,22 +323,6 @@ class CameraControls extends Component<IProps, IState> {
     // if (base64Image) fs.writeFileSync(filename, base64Image, { encoding: 'base64' });
   }
 
-  stopStream() {
-    if (this.state.currentSource < 4) {
-      rovecomm.sendCommand('StopStream', 'Camera1', [this.state.currentSource]);
-    } else {
-      rovecomm.sendCommand('StopStream', 'Camera2', [this.state.currentSource - 4]);
-    }
-  }
-
-  restartStream() {
-    if (this.state.currentSource < 4) {
-      rovecomm.sendCommand('StartStream', 'Camera1', [this.state.currentSource]);
-    } else {
-      rovecomm.sendCommand('StartStream', 'Camera2', [this.state.currentSource - 4]);
-    }
-  }
-
   setElementWidth(newWidth: number) {
     this.setState({ elementWidth: Math.max(320, Math.min(newWidth, 1600)) });
   }
@@ -393,8 +385,8 @@ class CameraControls extends Component<IProps, IState> {
             >
               Screenshot
             </button>
-            <button>Stop Stream</button>
-            <button>Restart Stream</button>
+            <button onClick={() => this.toggleStream(this.state.currentSource, 0)}>Stop Stream</button>
+            <button onClick={() => this.toggleStream(this.state.currentSource, 1)}>Restart Stream</button>
             {/* <button onClick={() => this.takePano()}>Take Pano</button> */}
           </div>
         </div>
