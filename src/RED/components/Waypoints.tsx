@@ -273,6 +273,14 @@ class Waypoints extends Component<IProps, IState> {
     ThreeDRover.id += 1;
   }
 
+  updateRadius() {
+    const currentWaypoints = this.state.storedWaypoints;
+    const selectedWaypoint = this.state.selectedWaypoint;
+
+    currentWaypoints[selectedWaypoint].radius = this.state.displayRadius;
+
+  }
+
   /** Deletes a selected stored position (if a position has been selected)
    * and properly updates the json file (see store() for more detailed comments)
    */
@@ -429,6 +437,7 @@ class Waypoints extends Component<IProps, IState> {
                 onChange={(e) => this.sliderChange(e)}
               />
               <button onClick={() => this.setState({ displayRadius: 0 })}>Off</button>
+              <button>Set Selected</button>
             </div>
           </div>
           <div

@@ -31,8 +31,7 @@ const label: CSS.Properties = {
 const row: CSS.Properties = {
   display: 'flex',
   flexDirection: 'row',
-  justifyContent: 'space-around',
-  alignItems: 'center',
+  alignItems: 'top',
   margin: '5px',
 };
 

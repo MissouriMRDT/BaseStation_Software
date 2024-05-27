@@ -30,17 +30,25 @@ class Autonomy extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div style={{ ...column }}>
-        <div style={{ ...row, justifyContent: 'space-between', flex: 1 }}>
+      <div>
+        <div style={{ ...row, justifyContent: 'start' }}>
           <div style={{ ...column, flex: 1 }}>
             <Controls style={{ marginRight: '5px', flexWrap: 'wrap' }} selectedWaypoint={this.props.selectedWaypoint} />
-            <DrivePower style={{ flex: 1, marginRight: '5px' }} />
-            <AutonomyLog style={{ flex: 1, marginRight: '5px' }} />
-            <div style={{ ...row, marginRight: '5px', flexGrow: 1 }}>
-              <Activity style={{ flex: 2, marginRight: '5px' }} />
-              <Lighting style={{ flex: 1 }} />
+            <div>
+              <DrivePower style={{ flex: 1, marginRight: '5px' }} />
             </div>
+            <div>
+              <Activity style={{ flex: 1, marginRight: '5px' }} />
+            </div>
+            <AutonomyLog style={{ flex: 1, marginRight: '5px' }} />
+            {/* <div style={{ ...row, marginRight: '5px', flexGrow: 1 }}>
+            </div> */}
           </div>
+          <div style={{ ...column }}>
+            <Lighting />
+          </div>
+        </div>
+        <div style={row}>
           <StateDiagram />
         </div>
       </div>
