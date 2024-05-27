@@ -4,8 +4,6 @@ import { Component } from 'react';
 
 import { Converter } from 'ffmpeg-stream';
 
-const MAX_RETRIES = 10;
-
 async function startFFMPEG(input: string, output: string) {
   const converter = new Converter();
 
@@ -26,8 +24,11 @@ async function startFFMPEG(input: string, output: string) {
   // start processing
   const recursiveRetry = (numRetries: number) => {
     converter.run().catch((err: any) => {
-      if (numRetries < MAX_RETRIES) setTimeout(() => recursiveRetry(numRetries + 1), 1000);
-      else console.log('UDP Bind Repeatedly Failed on port ' + input + ' with error ' + err);
+      if (numRetries < 30) {
+        if (numRetries < 15) setTimeout(recursiveRetry, 1000, numRetries + 1); // retry every 1s 15 times
+        else if (numRetries < 10) setTimeout(recursiveRetry, 5000, numRetries + 1); // then retry every 5s 10 times
+        else setTimeout(recursiveRetry, 10000, numRetries + 1); // then retry every 10s 5 times
+      } else console.log('UDP Bind Repeatedly Failed on port ' + input + ' with error ' + err);
     });
   };
   recursiveRetry(0);
