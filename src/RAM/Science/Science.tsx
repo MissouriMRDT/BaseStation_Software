@@ -63,11 +63,11 @@ function science(): void {
       controllerInputs.CameraDriveRight * 5,
       controllerInputs.CameraDriveLeft * 5
     );
-    rovecomm.sendCommand('AugerGimbalIncrement', 'Core', [
+    rovecomm.sendCommand('AugerGimbalIncrement', 'ScienceActuation', [
       0,
       (controllerInputs.CameraDriveUp ? 1 : -controllerInputs.CameraDriveDown) * 5,
     ]);
-    rovecomm.sendCommand('AugerGimbalIncrement', 'Core', [
+    rovecomm.sendCommand('AugerGimbalIncrement', 'ScienceActuation', [
       (controllerInputs.CameraDriveRight ? 1 : -controllerInputs.CameraDriveLeft) * 5,
       0,
     ]);
