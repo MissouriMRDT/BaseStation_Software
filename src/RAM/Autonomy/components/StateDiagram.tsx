@@ -41,9 +41,12 @@ const stateEnum: Record<string, number> = {
   SearchPattern: 2,
   ApproachingMarker: 3,
   ApproachingObject: 4,
-  Stuck: 5,
-  Verify: 6,
-  Reverse: 7,
+  VerifyingGPS: 5,
+  VerifyingMarker: 6,
+  VerifyingObject: 7,
+  Avoidance: 8,
+  Reversing: 9,
+  Stuck: 10,
 };
 
 class StateDiagram extends Component<IProps, IState> {
