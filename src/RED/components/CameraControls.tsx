@@ -203,7 +203,7 @@ class CameraControls extends Component<IProps, IState> {
     if (this.state.currentSource < 4) {
       rovecomm.sendCommand('ToggleStream1', 'Camera1', [source, restartStream]);
     } else {
-      rovecomm.sendCommand('ToggleStream2', 'Camera2', [source, restartStream]);
+      rovecomm.sendCommand('ToggleStream2', 'Camera2', [source-4, restartStream]);
     }
   }
 
