@@ -397,7 +397,7 @@ class Rovecomm extends EventEmitter {
 
     let data = dataIn;
     // If data is a single element rather than an array, put it in an array
-    if (!Array.isArray(data)) {
+    if (!Array.isArray(data) && typeof data !== 'string') {
       data = [data];
     }
 
@@ -492,7 +492,7 @@ class Rovecomm extends EventEmitter {
         break;
       case DataTypes.CHAR:
         for (let i = 0; i < data.length; i++) {
-          dataBuffer.writeUInt8(data[0].charCodeAt(i), i * dataSizes[DataTypes.CHAR]);
+          dataBuffer.writeUInt8(data.charCodeAt(i), i * dataSizes[DataTypes.CHAR]);
         }
         break;
       default:
