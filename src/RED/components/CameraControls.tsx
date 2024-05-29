@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import CSS from 'csstype';
 import JSMpeg from '@cycjimmy/jsmpeg-player';
 import { windows } from '../../Core/Window';
-// import fs from 'fs';
+import html2canvas from 'html2canvas';
+import fs from 'fs';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
 // import { dataSizes } from '../../Core/RoveProtocol/Rovecomm3';
 // import { ContinuousColorLegend } from 'react-vis';
@@ -327,6 +328,64 @@ class CameraControls extends Component<IProps, IState> {
     this.setState({ elementWidth: Math.max(320, Math.min(newWidth, 1600)) });
   }
 
+  downloadURL(imgData: string): void {
+    // Takes in the octet-string of a camera feed and saves it as an image
+
+    // The camera feed will be saved in the applications Screenshots folder with the filename
+    // YYYY.MM.DD.HH.SS.sss.Cam{camNum}.png
+    const filename = `./Screenshots/${new Date()
+      .toISOString()
+      // ISO string will be fromatted YYYY-MM-DDTHH:MM:SS:sssZ
+      // this regex will convert all -,T,:,Z to . (which covers to . for .csv)
+      .replaceAll(/[:\-TZ]/g, '.')}Cam${this.state.id}.png`;
+
+    // Create the screenshots directory if it doesn't exist
+    if (!fs.existsSync('./Screenshots')) {
+      fs.mkdirSync('./Screenshots');
+    }
+
+    // Encode the camera feed and write it to a file
+    const base64Image = imgData.replace('image/png', 'image/octet-stream').split(';base64,').pop();
+    if (base64Image) fs.writeFileSync(filename, base64Image, { encoding: 'base64' });
+  }
+
+  captureCanvas(): void {
+// Initial handler to start saving an image of the camera feed
+
+    // Look through all of the window documents for the current camera feed
+    let camera;
+    let thisWindow;
+    for (const win of Object.keys(windows)) {
+      if (windows[win].document.getElementById('camera-view')) {
+        thisWindow = windows[win];
+        camera = thisWindow.document.getElementById('camera-view');
+        break;
+      }
+    }
+
+    if (!camera) {
+      throw new Error(`The element '${camera}' wasn't found`);
+    }
+
+    // Then use package to turn the html into a canvas, which when complete calls downloadURL
+    // to save it as an image
+    // NOTE: This package seems to have issues with the dynamic nature of the camera feeds, and
+    // is only able to return the html for the first few seconds of operation
+    html2canvas(camera, {
+      scrollX: 0,
+      scrollY: -thisWindow.scrollY,
+      useCORS: true,
+      allowTaint: true,
+    }).then((canvas) => {
+        const imgData = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+        this.downloadURL(imgData);
+        return null;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
   render(): JSX.Element {
     return (
       <div style={this.props.style}>
@@ -354,6 +413,7 @@ class CameraControls extends Component<IProps, IState> {
               data-vjs-player
               ref={(canvasParent) => (this.canvasParent = canvasParent)}
               style={{ width: this.state.elementWidth }}
+              id='camera-view'
             >
               {/* <canvas ref={(canvas) => (this.canvas = canvas)} style={videoStyle}></canvas> */}
             </div>
@@ -385,6 +445,7 @@ class CameraControls extends Component<IProps, IState> {
             >
               Screenshot
             </button>
+            <button onClick={() => this.captureCanvas()}>Capture Canvas</button>
             <button onClick={() => this.toggleStream(this.state.currentSource, 0)}>Stop Stream</button>
             <button onClick={() => this.toggleStream(this.state.currentSource, 1)}>Restart Stream</button>
             {/* <button onClick={() => this.takePano()}>Take Pano</button> */}
