@@ -141,7 +141,8 @@ class Drive extends Component<IProps, IState> {
 
       rovecomm.sendCommand('StateDisplay', 'Core', RovecommManifest.Core.Enums.DISPLAYSTATE.Teleop);
       rovecomm.sendCommand('DriveLeftRight', 'Core', [leftSpeed / 1000.0, rightSpeed / 1000.0]);
-    } else if ('FlightPointTurnLeft' in controllerInputs && 'FlightPointTurnRight' in controllerInputs) {
+    }
+    if ('FlightPointTurnLeft' in controllerInputs && 'FlightPointTurnRight' in controllerInputs) {
       if (controllerInputs.FlightPointTurnLeft === 1) {
         leftSpeed = -speedMultiplier;
         rightSpeed = speedMultiplier;
@@ -151,7 +152,8 @@ class Drive extends Component<IProps, IState> {
       }
       rovecomm.sendCommand('StateDisplay', 'Core', RovecommManifest.Core.Enums.DISPLAYSTATE.Teleop);
       rovecomm.sendCommand('DriveLeftRight', 'Core', [leftSpeed / 1000.0, rightSpeed / 1000.0]);
-    } else if ('Drive' in controllerInputs && 'Reverse' in controllerInputs) {
+    }
+    if ('Drive' in controllerInputs && 'Reverse' in controllerInputs) {
       const x = Math.round(controllerInputs.Drive * speedMultiplier);
       const y = Math.round(controllerInputs.Reverse * speedMultiplier);
       const steer = Math.round(controllerInputs.Steer * speedMultiplier);
