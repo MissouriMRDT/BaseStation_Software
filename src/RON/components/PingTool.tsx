@@ -77,13 +77,19 @@ const hid: CSS.Properties = {
   visibility: 'hidden',
 };
 
+export interface DevicePing {
+  autoPing: boolean;
+  ping: number;
+}
+export type DevicePingList = Record<string, DevicePing>;
+
 interface IProps {
   style?: CSS.Properties;
-  onDevicesChange: (devices: any) => void;
+  onDevicesChange: (devices: DevicePingList) => void;
 }
 
 interface IState {
-  devices: any;
+  devices: DevicePingList;
   pingInterval: NodeJS.Timeout;
 }
 

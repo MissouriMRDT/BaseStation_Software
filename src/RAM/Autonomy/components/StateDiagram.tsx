@@ -100,7 +100,7 @@ class StateDiagram extends Component<IProps, IState> {
       const parent = rect.parentElement;
       const sibling = parent?.nextElementSibling;
 
-      let text: string | undefined = '';
+      let text = 'Idle';
       if (sibling) {
         const foreignObject = sibling.querySelector('foreignObject');
         if (foreignObject) {
@@ -108,7 +108,7 @@ class StateDiagram extends Component<IProps, IState> {
           if (outerDiv) {
             const innerDiv = outerDiv.querySelector('div');
             if (innerDiv) {
-              text = innerDiv?.textContent?.trim().replace(/\s+/g, '');
+              text = innerDiv?.textContent?.trim().replace(/\s+/g, '') ?? 'Idle';
             }
           }
         }
