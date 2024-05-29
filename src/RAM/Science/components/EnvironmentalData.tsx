@@ -77,7 +77,9 @@ class EnvironmentalData extends Component<IProps, IState> {
               Request Temperature
             </button>
             <div>Humidity: {this.state.humidity}</div>
-            <button onClick={() => rovecomm.sendCommand('RequestHumidity', 'ScienceActuation', 1)}>Request Humidity</button>
+            <button onClick={() => rovecomm.sendCommand('RequestHumidity', 'ScienceActuation', 1)}>
+              Request Humidity
+            </button>
           </div>
         </div>
       </div>

@@ -113,8 +113,15 @@ class StateDiagram extends Component<IProps, IState> {
           }
         }
       }
-      rect.setAttribute('fill', data[0] === stateEnum[text] ? '#00FF00' : 'white');
-      console.log(text, ':', data[0] === stateEnum[text], ':', stateEnum[text], data[0]);
+      rect.setAttribute('fill', data[0] === stateEnum[text as keyof typeof stateEnum] ? '#00FF00' : 'white');
+      console.log(
+        text,
+        ':',
+        data[0] === stateEnum[text as keyof typeof stateEnum],
+        ':',
+        stateEnum[text as keyof typeof stateEnum],
+        data[0]
+      );
     });
     const serializer = new XMLSerializer();
     const updatedSvg = serializer.serializeToString(svgDoc);

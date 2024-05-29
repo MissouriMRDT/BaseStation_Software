@@ -278,7 +278,6 @@ class Waypoints extends Component<IProps, IState> {
     const selectedWaypoint = this.state.selectedWaypoint;
 
     currentWaypoints[selectedWaypoint].radius = this.state.displayRadius;
-
   }
 
   /** Deletes a selected stored position (if a position has been selected)

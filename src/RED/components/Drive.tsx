@@ -102,8 +102,8 @@ class Drive extends Component<IProps, IState> {
       ('BackwardBump' in controllerInputs && controllerInputs.BackwardBump === 1)
     ) {
       const direction = controllerInputs.ForwardBump === 1 ? 1 : -1;
-      leftSpeed = 50 * direction;
-      rightSpeed = 50 * direction;
+      leftSpeed = 80 * direction;
+      rightSpeed = 80 * direction;
 
       rovecomm.sendCommand('StateDisplay', 'Core', RovecommManifest.Core.Enums.DISPLAYSTATE.Teleop);
       rovecomm.sendCommand('DriveLeftRight', 'Core', [leftSpeed / 1000.0, rightSpeed / 1000.0]);
@@ -139,6 +139,16 @@ class Drive extends Component<IProps, IState> {
       leftSpeed = Math.round(leftSpeed * speedMultiplier);
       rightSpeed = Math.round(rightSpeed * speedMultiplier);
 
+      rovecomm.sendCommand('StateDisplay', 'Core', RovecommManifest.Core.Enums.DISPLAYSTATE.Teleop);
+      rovecomm.sendCommand('DriveLeftRight', 'Core', [leftSpeed / 1000.0, rightSpeed / 1000.0]);
+    } else if ('FlightPointTurnLeft' in controllerInputs && 'FlightPointTurnRight' in controllerInputs) {
+      if (controllerInputs.FlightPointTurnLeft === 1) {
+        leftSpeed = -speedMultiplier;
+        rightSpeed = speedMultiplier;
+      } else if (controllerInputs.FlightPointTurnRight === 1) {
+        leftSpeed = speedMultiplier;
+        rightSpeed = -speedMultiplier;
+      }
       rovecomm.sendCommand('StateDisplay', 'Core', RovecommManifest.Core.Enums.DISPLAYSTATE.Teleop);
       rovecomm.sendCommand('DriveLeftRight', 'Core', [leftSpeed / 1000.0, rightSpeed / 1000.0]);
     } else if ('Drive' in controllerInputs && 'Reverse' in controllerInputs) {
