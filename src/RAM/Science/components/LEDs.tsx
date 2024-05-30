@@ -81,7 +81,7 @@ class LEDs extends Component<IProps, IState> {
       (prevState) => ({ coolerToggle: prevState.coolerToggle + 1 }),
       () => {
         console.log(this.state.coolerToggle % 2);
-        rovecomm.sendCommand('ToggleCooler', 'ScienceActuation', this.state.coolerToggle % 2);
+        rovecomm.sendCommand('EnableCooler', 'ScienceActuation', this.state.coolerToggle % 2);
       }
     );
   }
