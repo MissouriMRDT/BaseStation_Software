@@ -350,7 +350,7 @@ class CameraControls extends Component<IProps, IState> {
   }
 
   captureCanvas(): void {
-// Initial handler to start saving an image of the camera feed
+    // Initial handler to start saving an image of the camera feed
 
     // Look through all of the window documents for the current camera feed
     let camera;
@@ -376,7 +376,8 @@ class CameraControls extends Component<IProps, IState> {
       scrollY: -thisWindow.scrollY,
       useCORS: true,
       allowTaint: true,
-    }).then((canvas) => {
+    })
+      .then((canvas) => {
         const imgData = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
         this.downloadURL(imgData);
         return null;
@@ -413,7 +414,7 @@ class CameraControls extends Component<IProps, IState> {
               data-vjs-player
               ref={(canvasParent) => (this.canvasParent = canvasParent)}
               style={{ width: this.state.elementWidth }}
-              id='camera-view'
+              id="camera-view"
             >
               {/* <canvas ref={(canvas) => (this.canvas = canvas)} style={videoStyle}></canvas> */}
             </div>

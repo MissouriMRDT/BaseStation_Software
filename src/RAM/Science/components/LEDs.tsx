@@ -34,6 +34,7 @@ interface IState {
   LedStatus: boolean[];
   enableLED: boolean;
   enableLEDToggle: boolean;
+  coolerToggle: number;
 }
 
 class LEDs extends Component<IProps, IState> {
@@ -47,7 +48,10 @@ class LEDs extends Component<IProps, IState> {
       LedStatus: [false, false],
       enableLED: false,
       enableLEDToggle: false,
+      coolerToggle: 0,
     };
+    this.toggleCooler = this.toggleCooler.bind(this);
+    this.toggleLed = this.toggleLed.bind(this);
   }
 
   static buildLedCommand(LED: boolean[]): number {
@@ -70,6 +74,16 @@ class LEDs extends Component<IProps, IState> {
       });
       rovecomm.sendCommand('EnableLEDs', 'Instruments', LEDs.buildLedCommand(LedStatus));
     }
+  }
+
+  toggleCooler(): void {
+    this.setState(
+      (prevState) => ({ coolerToggle: prevState.coolerToggle + 1 }),
+      () => {
+        console.log(this.state.coolerToggle % 2);
+        rovecomm.sendCommand('ToggleCooler', 'ScienceActuation', this.state.coolerToggle % 2);
+      }
+    );
   }
 
   render(): JSX.Element {
@@ -96,6 +110,7 @@ class LEDs extends Component<IProps, IState> {
             <button onClick={() => this.setState((prevState) => ({ enableLEDToggle: !prevState.enableLEDToggle }))}>
               LED Toggle: {this.state.enableLEDToggle ? 'on' : 'off'}
             </button>
+            <button onClick={this.toggleCooler}>Toggle Cooler: {this.state.coolerToggle % 2 ? 'on' : 'off'}</button>
           </div>
         </div>
       </div>
