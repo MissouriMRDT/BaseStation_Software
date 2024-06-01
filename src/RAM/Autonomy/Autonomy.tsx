@@ -33,7 +33,12 @@ class Autonomy extends Component<IProps, IState> {
       <div>
         <div style={{ ...row, justifyContent: 'start' }}>
           <div style={{ ...column }}>
-            <Controls style={{ marginRight: '5px', flexWrap: 'wrap' }} selectedWaypoint={this.props.selectedWaypoint} />
+            <div style={row}>
+              <Controls
+                style={{ marginRight: '5px', flexWrap: 'wrap' }}
+                selectedWaypoint={this.props.selectedWaypoint}
+              />
+            </div>
             <div style={row}>
               <DrivePower style={{ flex: 1, marginRight: '5px' }} />
             </div>
