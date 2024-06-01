@@ -3,16 +3,12 @@ import CSS from 'csstype';
 import { rovecomm } from '../../../Core/RoveProtocol/Rovecomm';
 
 const container: CSS.Properties = {
-  display: 'flex',
-  flexDirection: 'column',
   fontFamily: 'arial',
   borderTopWidth: '28px',
   borderColor: '#990000',
   borderBottomWidth: '2px',
   borderStyle: 'solid',
   whiteSpace: 'pre-wrap',
-  height: '200px',
-  overflow: 'scroll',
 };
 const label: CSS.Properties = {
   marginTop: '-10px',
@@ -76,7 +72,9 @@ class Activity extends Component<IProps, IState> {
     return (
       <div style={this.props.style}>
         <div style={label}>Autonomy Activity</div>
-        <div style={{ ...container, backgroundColor: this.state.backgroundColor }}>{this.state.ActivityText}</div>
+        <div style={{ ...container, backgroundColor: this.state.backgroundColor }}>
+          <div style={{ width: '100%', height: '100%', overflow: 'scroll' }}>{this.state.ActivityText}</div>
+        </div>
       </div>
     );
   }
