@@ -5,7 +5,7 @@ import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
 import { controllerInputs } from '../../Core/components/ControlScheme';
 
 const container: CSS.Properties = {
-  display: 'flex',
+  // display: 'flex',
   fontFamily: 'arial',
   borderTopWidth: '30px',
   borderColor: '#990000',
@@ -27,11 +27,16 @@ const label: CSS.Properties = {
 
 interface IProps {
   style?: CSS.Properties;
+  roverLat: number;
+  roverLon: number;
 }
 interface IState {
   controlling: string;
   image: string;
   interval: NodeJS.Timeout;
+  basestationLat: number;
+  basestationLon: number;
+  toggle: boolean;
 }
 
 // Dynamic paths to import images used to indicate which gimbal is being controlled
@@ -39,7 +44,7 @@ interface IState {
 const UpArrow = path.join(__dirname, '../assets/UpArrow.png');
 // const DownArrow = path.join(__dirname, '../assets/DownArrow.png');
 
-const signalMotorMultiplier = 1000;
+const signalMotorMultiplier = 300;
 
 class SignalStack extends Component<IProps, IState> {
   static defaultProps = {
@@ -53,11 +58,39 @@ class SignalStack extends Component<IProps, IState> {
       controlling: 'Main',
       image: UpArrow,
       interval: setInterval(() => this.signalstack(), 100),
+      basestationLat: 1,
+      basestationLon: 1,
+      toggle: false,
     };
+    this.updateCoords = this.updateCoords.bind(this);
   }
 
   componentWillUnmount() {
     clearInterval(this.state.interval);
+  }
+
+  updateCoords() {
+    const basestationLatHTML = document.getElementById('baselat') as HTMLTextAreaElement;
+    const basestationLat = parseFloat(basestationLatHTML.value);
+    const basestationLonHTML = document.getElementById('baselon') as HTMLTextAreaElement;
+    const basestationLon = parseFloat(basestationLonHTML.value);
+
+    if (!Number.isNaN(basestationLat) && !Number.isNaN(basestationLon)) {
+      this.setState({ basestationLat });
+      this.setState({ basestationLon });
+    }
+  }
+
+  calculateAngle() {
+    const targetAngle: number =
+      Math.atan2(this.props.roverLon - this.state.basestationLon, this.props.roverLat - this.state.basestationLat) *
+      (180 / Math.PI);
+    // if (targetAngle === 0) {
+    //   targetAngle = 90 - targetAngle;
+    // } else if (targetAngle === 180) {
+    //   targetAngle = 270 - targetAngle;
+    // }
+    return targetAngle;
   }
 
   rotateArrow(angle: number) {
@@ -68,8 +101,6 @@ class SignalStack extends Component<IProps, IState> {
   }
 
   signalstack(): void {
-    rovecomm.on('CompassAngle', (data: number) => this.rotateArrow(data));
-
     if ('Pan' in controllerInputs) {
       rovecomm.sendCommand('OpenLoop', 'SignalStack', controllerInputs.Pan * signalMotorMultiplier);
     }
@@ -81,6 +112,20 @@ class SignalStack extends Component<IProps, IState> {
         <div style={label}>Signal Stack</div>
         <div style={container}>
           <img id="needle" src={this.state.image} alt={this.state.controlling} />
+          <span>
+            <h6>{this.state.basestationLat}</h6>
+            <h6>{this.state.basestationLon}</h6>
+          </span>
+          <div>
+            <input type="text" id="baselat" />
+            <input type="text" id="baselon" />
+            <button type="button" onClick={this.updateCoords}>
+              submit
+            </button>
+            <button type="button" onClick={() => this.setState({ toggle: !this.state.toggle })}>
+              {this.state.toggle ? 'On' : 'Off'}
+            </button>
+          </div>
         </div>
       </div>
     );

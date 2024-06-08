@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import CSS from 'csstype';
 import { XYPlot, XAxis, YAxis, HorizontalGridLines, LineSeries } from 'react-vis';
 import { RovecommManifest } from '../../Core/RoveProtocol/Rovecomm';
+import { DevicePingList } from './PingTool';
 
 const h1Style: CSS.Properties = {
   fontFamily: 'arial',
@@ -39,8 +40,10 @@ const selector: CSS.Properties = {
   width: '200px',
 };
 
+const MAX_PING_DATA = 20;
+
 interface IProps {
-  devices: any;
+  devices: DevicePingList;
   style?: CSS.Properties;
 }
 
@@ -50,7 +53,7 @@ interface IState {
     y: number;
   }[];
   board: string;
-  interval: any;
+  interval: NodeJS.Timeout;
 }
 
 class PingGraph extends Component<IProps, IState> {
@@ -58,12 +61,12 @@ class PingGraph extends Component<IProps, IState> {
     style: {},
   };
 
-  constructor(props: any) {
+  constructor(props: IProps) {
     super(props);
     this.state = {
       ping: [],
-      board: 'Drive',
-      interval: setInterval(() => this.update('Drive'), 1000),
+      board: 'Core',
+      interval: setInterval(() => this.update('Core'), 1000),
     };
     this.update = this.update.bind(this);
     this.boardChange = this.boardChange.bind(this);
@@ -74,27 +77,17 @@ class PingGraph extends Component<IProps, IState> {
   }
 
   update(device: string): void {
-    const { ping } = this.state;
-    if (ping.length < 10) {
-      if (device in this.props.devices && 'ping' in this.props.devices[device] && this.props.devices[device].ping) {
-        ping.push({ x: ping.length + 1, y: this.props.devices[device].ping });
-      } else {
-        ping.push({ x: ping.length + 1, y: -1 });
-      }
+    let { ping } = this.state;
+    // Delete old data if over limit, shifting x values left. The +1 is to account for the 0th index
+    if (ping.length >= MAX_PING_DATA + 1)
+      ping = ping.slice(1, MAX_PING_DATA + 1).map((item) => ({ ...item, x: item.x - 1 }));
+    // Push new point to graph, default y to -1 if device isn't found or device has no ping
+    if (device in this.props.devices) {
+      ping.push({ x: ping.length, y: this.props.devices[device].ping });
     } else {
-      for (let i = 0; i < ping.length - 1; i++) {
-        ping[i].y = ping[i + 1].y;
-      }
-
-      if (device in this.props.devices && 'ping' in this.props.devices[device] && this.props.devices[device].ping) {
-        ping[ping.length - 1].y = this.props.devices[device].ping;
-      } else {
-        ping[ping.length - 1].y = -1;
-      }
+      ping.push({ x: ping.length, y: -1 });
     }
-    this.setState({
-      ping,
-    });
+    this.setState({ ping });
   }
 
   boardChange(event: { target: { value: string } }): void {
@@ -126,7 +119,13 @@ class PingGraph extends Component<IProps, IState> {
               })}
             </select>
           </div>
-          <XYPlot style={{ margin: 10 }} height={300} width={window.document.documentElement.clientWidth - 50}>
+          <XYPlot
+            style={{ margin: 10 }}
+            height={300}
+            width={window.document.documentElement.clientWidth - 50}
+            xDomain={[0, MAX_PING_DATA]}
+            yDomain={[-2, 10]}
+          >
             <HorizontalGridLines style={{ fill: 'none' }} />
             <LineSeries data={this.state.ping} style={{ fill: 'none' }} />
             <XAxis />

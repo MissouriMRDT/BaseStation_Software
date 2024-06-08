@@ -30,6 +30,10 @@ const row: CSS.Properties = {
   justifyContent: 'space-between',
 };
 
+const button: CSS.Properties = {
+  margin: '1px',
+};
+
 /** This function returns a value [-1, 1] based off of the value of theta
  * This function really only makes sense with drive in mind - consider the case of the left wheel
  * When theta = pi/2, we want to full send forward, so we return 1
@@ -98,8 +102,8 @@ class Drive extends Component<IProps, IState> {
       ('BackwardBump' in controllerInputs && controllerInputs.BackwardBump === 1)
     ) {
       const direction = controllerInputs.ForwardBump === 1 ? 1 : -1;
-      leftSpeed = 50 * direction;
-      rightSpeed = 50 * direction;
+      leftSpeed = 80 * direction;
+      rightSpeed = 80 * direction;
 
       rovecomm.sendCommand('StateDisplay', 'Core', RovecommManifest.Core.Enums.DISPLAYSTATE.Teleop);
       rovecomm.sendCommand('DriveLeftRight', 'Core', [leftSpeed / 1000.0, rightSpeed / 1000.0]);
@@ -120,6 +124,14 @@ class Drive extends Component<IProps, IState> {
       // a reflection over the y axis, which is easiest obtained by adjusting the angle 90deg and inverting the result
       leftSpeed = r * scaleVector(theta);
       rightSpeed = -1 * r * scaleVector(theta - Math.PI / 2);
+      if (Math.abs(leftSpeed) < 0.15) {
+        // Deadzone
+        leftSpeed = 0;
+      }
+      if (Math.abs(rightSpeed) < 0.15) {
+        // Deadzone
+        rightSpeed = 0;
+      }
       // We want the throttle to be seen as 0% when all the way down, and 100% when all the way up, but throttle
       // has values [-1, 1], so if we (throttle + 1) /2, we get [0,1]
       speedMultiplier *= (controllerInputs.Throttle + 1) / 2;
@@ -127,6 +139,68 @@ class Drive extends Component<IProps, IState> {
       leftSpeed = Math.round(leftSpeed * speedMultiplier);
       rightSpeed = Math.round(rightSpeed * speedMultiplier);
 
+      rovecomm.sendCommand('StateDisplay', 'Core', RovecommManifest.Core.Enums.DISPLAYSTATE.Teleop);
+      rovecomm.sendCommand('DriveLeftRight', 'Core', [leftSpeed / 1000.0, rightSpeed / 1000.0]);
+    }
+    if ('FlightPointTurnLeft' in controllerInputs && 'FlightPointTurnRight' in controllerInputs) {
+      if (controllerInputs.FlightPointTurnLeft === 1) {
+        leftSpeed = -speedMultiplier;
+        rightSpeed = speedMultiplier;
+      } else if (controllerInputs.FlightPointTurnRight === 1) {
+        leftSpeed = speedMultiplier;
+        rightSpeed = -speedMultiplier;
+      }
+      rovecomm.sendCommand('StateDisplay', 'Core', RovecommManifest.Core.Enums.DISPLAYSTATE.Teleop);
+      rovecomm.sendCommand('DriveLeftRight', 'Core', [leftSpeed / 1000.0, rightSpeed / 1000.0]);
+    }
+    if ('Drive' in controllerInputs && 'Reverse' in controllerInputs) {
+      const x = Math.round(controllerInputs.Drive * speedMultiplier);
+      const y = Math.round(controllerInputs.Reverse * speedMultiplier);
+      const steer = Math.round(controllerInputs.Steer * speedMultiplier);
+      if (x !== 0 || y !== 0) {
+        if (x > 0) {
+          leftSpeed = x;
+          rightSpeed = x;
+          if (steer !== 0) {
+            const angle = Math.round(steer / 1.5);
+            if (steer > 0) {
+              if (leftSpeed - angle < 0) {
+                leftSpeed = 0;
+              } else {
+                leftSpeed = Math.round(leftSpeed - angle);
+              }
+            } else if (steer < 0) {
+              if (rightSpeed + angle < 0) {
+                rightSpeed = 0;
+              } else {
+                rightSpeed = Math.round(rightSpeed + angle);
+              }
+            }
+          }
+        } else if (y > 0) {
+          leftSpeed = -y;
+          rightSpeed = -y;
+          if (steer !== 0) {
+            const angle = Math.round(steer / 1.5);
+            if (steer > 0) {
+              leftSpeed = Math.round(leftSpeed + angle);
+            } else if (steer < 0) {
+              rightSpeed = Math.round(rightSpeed - angle);
+            }
+          }
+        }
+      }
+
+      if ('PointTurnLeft' in controllerInputs && 'PointTurnRight' in controllerInputs) {
+        if (controllerInputs.PointTurnLeft === 1) {
+          leftSpeed = -speedMultiplier;
+          rightSpeed = speedMultiplier;
+        } else if (controllerInputs.PointTurnRight === 1) {
+          leftSpeed = speedMultiplier;
+          rightSpeed = -speedMultiplier;
+        }
+      }
+      console.log('Drive:', leftSpeed, rightSpeed);
       rovecomm.sendCommand('StateDisplay', 'Core', RovecommManifest.Core.Enums.DISPLAYSTATE.Teleop);
       rovecomm.sendCommand('DriveLeftRight', 'Core', [leftSpeed / 1000.0, rightSpeed / 1000.0]);
     }
@@ -185,6 +259,26 @@ class Drive extends Component<IProps, IState> {
                 onChange={this.speedLimitChange}
               />
             </div>
+          </div>
+          <div style={{ ...row, justifyContent: 'center' }}>
+            <button style={button} onClick={() => this.setState({ speedLimit: 50 })}>
+              50
+            </button>
+            <button style={button} onClick={() => this.setState({ speedLimit: 80 })}>
+              80
+            </button>
+            <button style={button} onClick={() => this.setState({ speedLimit: 100 })}>
+              100
+            </button>
+            <button style={button} onClick={() => this.setState({ speedLimit: 200 })}>
+              200
+            </button>
+            <button style={button} onClick={() => this.setState({ speedLimit: 300 })}>
+              300
+            </button>
+            <button style={button} onClick={() => this.setState({ speedLimit: 500 })}>
+              500
+            </button>
           </div>
         </div>
       </div>

@@ -16,5 +16,14 @@
     "colorPicker": false,
     "onMap": true,
     "displayRadius": false
+  },
+  "3": {
+    "name": "Fugitive Beach",
+    "latitude": 37.85101,
+    "longitude": -91.70357,
+    "color": "#fcb900",
+    "colorPicker": false,
+    "onMap": true,
+    "displayRadius": 0
   }
 }

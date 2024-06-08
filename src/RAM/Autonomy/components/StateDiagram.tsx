@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import CSS from 'csstype';
 import { rovecomm } from '../../../Core/RoveProtocol/Rovecomm';
 
@@ -13,8 +13,8 @@ const container: CSS.Properties = {
   padding: '5px',
   alignItems: 'flex-start',
   justifyContent: 'center',
-  width: `${window.document.documentElement.clientWidth / 4}`,
-  minWidth: `${window.document.documentElement.clientWidth / 4}`,
+  // width: `${window.document.documentElement.clientWidth / 4}`,
+  // minWidth: `${window.document.documentElement.clientWidth / 4}`,
 };
 const label: CSS.Properties = {
   marginTop: '-10px',
@@ -31,15 +31,22 @@ interface IProps {
   style?: CSS.Properties;
 }
 
-interface IState {}
+interface IState {
+  svgContent: string;
+}
 
 const stateEnum: Record<string, number> = {
   Idle: 0,
   Navigating: 1,
   SearchPattern: 2,
   ApproachingMarker: 3,
-  ApproachingGate: 4,
-  Avoidance: 5,
+  ApproachingObject: 4,
+  VerifyingGPS: 5,
+  VerifyingMarker: 6,
+  VerifyingObject: 7,
+  Avoidance: 8,
+  Reversing: 9,
+  Stuck: 10,
 };
 
 class StateDiagram extends Component<IProps, IState> {
@@ -47,20 +54,82 @@ class StateDiagram extends Component<IProps, IState> {
     style: {},
   };
 
+  private containerRef = createRef<HTMLDivElement>();
+
   canvasRef: any;
 
   constructor(props: IProps) {
     super(props);
-    this.state = {};
+    this.state = {
+      svgContent: '',
+    };
 
-    this.canvasRef = React.createRef();
-    rovecomm.on('CurrentState', (data: any) => this.updateStateDiagram(data));
+    // this.canvasRef = React.createRef();
+    this.updateSvgFill = this.updateSvgFill.bind(this);
+    this.getDiagramFromSVG = this.getDiagramFromSVG.bind(this);
+    rovecomm.on('CurrentState', (data: any) => this.updateSvgFill(data));
   }
 
   componentDidMount() {
-    this.updateStateDiagram([-1]);
+    // this.updateStateDiagram([-1]);
+    this.getDiagramFromSVG();
+    this.updateSvgFill([0]);
   }
 
+  getDiagramFromSVG() {
+    fetch('../assets/AutonomySimpleStateMachine.svg')
+      .then((response) => response.text())
+      .then((data) => {
+        this.setState({ svgContent: data });
+        return;
+      })
+      .catch((error) => console.error('Error fetching SVG:', error));
+  }
+
+  updateSvgFill(data: any): void {
+    console.log('Starting SVG update');
+    const svgContent = this.state.svgContent;
+
+    // Parse the SVG content
+    const parser = new DOMParser();
+    const svgDoc = parser.parseFromString(svgContent, 'image/svg+xml');
+
+    // Update the fill attribute of <rect> elements
+    const rects = svgDoc.querySelectorAll('rect');
+    rects.forEach((rect) => {
+      const parent = rect.parentElement;
+      const sibling = parent?.nextElementSibling;
+
+      let text = 'Idle';
+      if (sibling) {
+        const foreignObject = sibling.querySelector('foreignObject');
+        if (foreignObject) {
+          const outerDiv = foreignObject.querySelector('div');
+          if (outerDiv) {
+            const innerDiv = outerDiv.querySelector('div');
+            if (innerDiv) {
+              text = innerDiv?.textContent?.trim().replace(/\s+/g, '') ?? 'Idle';
+            }
+          }
+        }
+      }
+      rect.setAttribute('fill', data[0] === stateEnum[text as keyof typeof stateEnum] ? '#00FF00' : 'white');
+      console.log(
+        text,
+        ':',
+        data[0] === stateEnum[text as keyof typeof stateEnum],
+        ':',
+        stateEnum[text as keyof typeof stateEnum],
+        data[0]
+      );
+    });
+    const serializer = new XMLSerializer();
+    const updatedSvg = serializer.serializeToString(svgDoc);
+
+    this.setState({ svgContent: updatedSvg });
+  }
+
+  // DEPRECIATED
   updateStateDiagram(data: any): void {
     let text;
 
@@ -72,6 +141,7 @@ class StateDiagram extends Component<IProps, IState> {
 
     context.font = '12px Arial';
 
+    //State: Idle
     text = 'Idle';
     context.textBaseline = 'middle';
     context.textAlign = 'right';
@@ -88,6 +158,7 @@ class StateDiagram extends Component<IProps, IState> {
     context.lineTo(centerW, 110);
     context.stroke();
 
+    // State: Navigating
     text = 'Navigating';
     context.textBaseline = 'middle';
     context.textAlign = 'right';
@@ -117,6 +188,7 @@ class StateDiagram extends Component<IProps, IState> {
     context.lineTo(centerW - 15, 156);
     context.stroke();
 
+    // State: Avoidance
     text = 'Avoidance';
     context.textBaseline = 'middle';
     context.textAlign = 'right';
@@ -132,6 +204,7 @@ class StateDiagram extends Component<IProps, IState> {
     context.lineTo(centerW, 270);
     context.stroke();
 
+    // State: Search Pattern
     text = 'SearchPattern';
     context.textBaseline = 'middle';
     context.textAlign = 'right';
@@ -147,6 +220,7 @@ class StateDiagram extends Component<IProps, IState> {
     context.lineTo(centerW + 20, 270);
     context.stroke();
 
+    // State: Approaching Marker
     text = 'ApproachingMarker';
     context.textBaseline = 'middle';
     context.textAlign = 'right';
@@ -158,7 +232,7 @@ class StateDiagram extends Component<IProps, IState> {
     context.fill();
 
     context.beginPath();
-    context.moveTo(centerW + 30, 290);
+    context.moveTo(centerW + 20, 290);
     context.lineTo(centerW + 50, 290);
     context.lineTo(centerW + 50, 280);
     context.lineTo(centerW + 30, 280);
@@ -168,7 +242,7 @@ class StateDiagram extends Component<IProps, IState> {
     context.stroke();
 
     context.beginPath();
-    context.moveTo(centerW + 30, 290);
+    context.moveTo(centerW + 20, 290);
     context.lineTo(centerW + 70, 290);
     context.lineTo(centerW + 70, 220);
     context.lineTo(centerW + 30, 220);
@@ -213,7 +287,13 @@ class StateDiagram extends Component<IProps, IState> {
       <div style={this.props.style}>
         <div style={label}>State Diagram</div>
         <div style={container}>
-          <canvas ref={this.canvasRef} width={window.document.documentElement.clientWidth / 4 + 15} height={400} />
+          {/* <canvas ref={this.canvasRef} width={window.document.documentElement.clientWidth / 4 + 15} height={400} /> */}
+          <div
+            ref={this.containerRef}
+            /*eslint-disable-next-line @typescript-eslint/naming-convention*/
+            dangerouslySetInnerHTML={{ __html: this.state.svgContent }}
+            // style={{ width: divWidth, height: divHeight, overflow: 'auto' }}
+          ></div>
         </div>
       </div>
     );

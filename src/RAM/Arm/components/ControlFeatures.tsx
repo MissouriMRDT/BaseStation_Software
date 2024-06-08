@@ -52,6 +52,7 @@ const button: CSS.Properties = {
 interface IProps {
   style?: CSS.Properties;
   gripperCallBack: any;
+  gripperToggle: boolean;
 }
 
 interface IState {
@@ -64,6 +65,7 @@ interface IState {
 
 class ControlFeatures extends Component<IProps, IState> {
   static defaultProps = {
+    gripperToggle: false,
     style: {},
   };
 
@@ -98,8 +100,9 @@ class ControlFeatures extends Component<IProps, IState> {
 
   toggleGripper(): void {
     this.props.gripperCallBack();
+    console.log(this.props.gripperToggle);
+    rovecomm.sendCommand('SelectGripper', 'Arm', this.props.gripperToggle ? [1] : [0]);
     console.log('changing gripper state');
-    this.setState((prevState) => ({ gripperState: !prevState.gripperState }));
   }
 
   render(): JSX.Element {
@@ -129,7 +132,18 @@ class ControlFeatures extends Component<IProps, IState> {
               Laser Power
             </label>
             <button onClick={() => this.toggleGripper()}>
-              Gripper Toggle: {this.state.gripperState ? 'Gripper 2' : 'Gripper 1'}
+              Gripper Toggle: {this.props.gripperToggle ? 'Gripper 2' : 'Gripper 1'}
+            </button>
+          </div>
+          <div style={row}>
+            <button type="button" style={button} onClick={() => rovecomm.sendCommand('CalibrateEncoder', 'Arm', 1)}>
+              Calibrate X
+            </button>
+            <button type="button" style={button} onClick={() => rovecomm.sendCommand('CalibrateEncoder', 'Arm', 2)}>
+              Calibrate Y1
+            </button>
+            <button type="button" style={button} onClick={() => rovecomm.sendCommand('CalibrateEncoder', 'Arm', 4)}>
+              Calibrate Y2
             </button>
           </div>
         </div>
@@ -138,4 +152,4 @@ class ControlFeatures extends Component<IProps, IState> {
   }
 }
 
-export default ControlFeatures;
+export { ControlFeatures as default, ControlFeatures };

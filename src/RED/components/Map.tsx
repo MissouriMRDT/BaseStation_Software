@@ -6,7 +6,7 @@ import { LatLngTuple } from 'leaflet';
 import icon from './Icon';
 import compassNeedle from './CompassNeedle';
 import { rovecomm } from '../../Core/RoveProtocol/Rovecomm';
-import signalsMapOverlay from './SignalsMapOverlay';
+// import signalsMapOverlay from './SignalsMapOverlay';
 
 const container: CSS.Properties = {
   display: 'flex',
@@ -62,7 +62,7 @@ class Map extends Component<IProps, IState> {
     this.state = {
       // Default map to near the SDELC
       centerLat: 37.951631,
-      centerLon: -91.770001,
+      centerLon: -91.777713,
       zoom: 15,
       maxZoom: 19,
       heading: 0,
@@ -71,7 +71,7 @@ class Map extends Component<IProps, IState> {
       signalsDir: 0,
     };
 
-    rovecomm.on('IMUData', (data: number) => this.IMUData(data));
+    rovecomm.on('CompassData', (data: number) => this.CompassData(data));
     // rovecomm.on('SetGPSTarget', (data: number[]) => this.SignalsPosUpdate(data));
     // rovecomm.on('SetAngleTarget', (data: number) => this.SignalsDirection(data));
   }
@@ -84,11 +84,17 @@ class Map extends Component<IProps, IState> {
     this.setState({ basestationPos: { lat: data[0], long: data[1] }, signalsPos: { lat: data[2], long: data[3] } });
   }
 
-  IMUData(data: number): void {
+  CompassData(data: number): void {
     this.setState({
       heading: data,
     });
   }
+
+  // droneIMUData(data: any): void {
+  //   this.setState({
+  //     heading: data[1],
+  //   });
+  // }
 
   render(): JSX.Element {
     const position: LatLngTuple = [this.state.centerLat, this.state.centerLon];
@@ -121,9 +127,9 @@ class Map extends Component<IProps, IState> {
                 />
               )}
               {
-                /*this.state.signalsPos.lat && this.state.signalsPos.long*/ true && (
-                  <Marker position={[37.951631, -91.770001]} icon={signalsMapOverlay(this.state.signalsDir)} />
-                )
+                // /*this.state.signalsPos.lat && this.state.signalsPos.long*/ true && (
+                //   <Marker position={[37.951631, -91.770001]} icon={signalsMapOverlay(this.state.signalsDir)} />
+                // )
               }
               {Object.keys(this.props.storedWaypoints).map((waypointName: string) => {
                 const waypoint = this.props.storedWaypoints[waypointName];

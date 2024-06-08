@@ -3,16 +3,12 @@ import CSS from 'csstype';
 import { rovecomm } from '../../../Core/RoveProtocol/Rovecomm';
 
 const container: CSS.Properties = {
-  display: 'flex',
-  flexDirection: 'column',
   fontFamily: 'arial',
   borderTopWidth: '28px',
   borderColor: '#990000',
   borderBottomWidth: '2px',
   borderStyle: 'solid',
   whiteSpace: 'pre-wrap',
-  overflow: 'scroll',
-  height: 'calc(100% - 40px)',
 };
 const label: CSS.Properties = {
   marginTop: '-10px',
@@ -46,22 +42,22 @@ class Activity extends Component<IProps, IState> {
       backgroundColor: 'white',
     };
 
-    this.ReachedMarker = this.ReachedMarker.bind(this);
+    this.ReachedGoal = this.ReachedGoal.bind(this);
     this.Log = this.Log.bind(this);
 
-    rovecomm.on('CurrentLog', (data: any) => this.Log(data));
-    rovecomm.on('ReachedMarker', this.ReachedMarker);
+    rovecomm.on('CurrentLog', (data: any[]) => this.Log(data));
+    rovecomm.on('ReachedGoal', this.ReachedGoal);
   }
 
-  Log(data: string): void {
-    this.setState((prevState) => ({
-      ActivityText: `${prevState.ActivityText}${new Date().toLocaleTimeString()}: ${data} \n`,
+  Log(data: string[]): void {
+    this.setState(() => ({
+      ActivityText: data + '\n',
     }));
   }
 
-  ReachedMarker(): void {
+  ReachedGoal(): void {
     this.setState({ backgroundColor: 'green' });
-    this.Log('Reached waypoint!');
+    this.Log(['Reached waypoint!']);
     const reachInterval = setInterval(() => {
       this.setState((prevState) => ({ backgroundColor: prevState.backgroundColor === 'green' ? 'white' : 'green' }));
     }, 250);
@@ -76,7 +72,9 @@ class Activity extends Component<IProps, IState> {
     return (
       <div style={this.props.style}>
         <div style={label}>Autonomy Activity</div>
-        <div style={{ ...container, backgroundColor: this.state.backgroundColor }}>{this.state.ActivityText}</div>
+        <div style={{ ...container, backgroundColor: this.state.backgroundColor }}>
+          <div style={{ width: '100%', height: '100%', overflow: 'scroll' }}>{this.state.ActivityText}</div>
+        </div>
       </div>
     );
   }

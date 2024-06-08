@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
-import Cameras from '../../Core/components/Cameras';
 import Controls from './components/Controls';
 import StateDiagram from './components/StateDiagram';
 import Activity from './components/Activity';
 import Lighting from './components/Lighting';
 import DrivePower from './components/DrivePower';
+import AutonomyLog from './components/AutonomyLog';
 
 const row: CSS.Properties = {
   display: 'flex',
@@ -30,21 +30,33 @@ class Autonomy extends Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <div style={{ ...column }}>
-        <div style={{ ...row, justifyContent: 'space-between', flex: 1 }}>
-          <div style={{ ...column, flex: 1 }}>
-            <Controls style={{ marginRight: '5px', flexWrap: 'wrap' }} selectedWaypoint={this.props.selectedWaypoint} />
-            <DrivePower style={{ flex: 1, marginRight: '5px' }} />
-            <div style={{ ...row, marginRight: '5px', flexGrow: 1 }}>
-              <Activity style={{ flex: 1, marginRight: '5px' }} />
-              <Lighting />
+      <div>
+        <div style={{ ...row, justifyContent: 'start' }}>
+          <div style={{ ...column }}>
+            <div style={row}>
+              <Controls
+                style={{ marginRight: '5px', flexWrap: 'wrap' }}
+                selectedWaypoint={this.props.selectedWaypoint}
+              />
             </div>
+            <div style={row}>
+              <DrivePower style={{ flex: 1, marginRight: '5px' }} />
+            </div>
+            <div style={row}>
+              <AutonomyLog style={{ flex: 1, marginRight: '5px' }} />
+            </div>
+            <div style={row}>
+              <Activity style={{ flex: 1, marginRight: '5px' }} />
+            </div>
+            {/* <div style={{ ...row, marginRight: '5px', flexGrow: 1 }}>
+            </div> */}
           </div>
-          <StateDiagram />
+          <div style={{ ...column }}>
+            <Lighting />
+          </div>
         </div>
         <div style={row}>
-          <Cameras defaultCamera={9} style={{ flex: 1, marginRight: '2.5px' }} />
-          <Cameras defaultCamera={10} style={{ flex: 1, marginLeft: '2.5px' }} />
+          <StateDiagram />
         </div>
       </div>
     );

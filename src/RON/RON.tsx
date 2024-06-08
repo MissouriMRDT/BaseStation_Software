@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import CSS from 'csstype';
 import CustomPackets from './components/CustomPackets';
 import PingGraph from './components/PingGraph';
-import PingTool from './components/PingTool';
+import PingTool, { DevicePingList } from './components/PingTool';
 import PacketLogger from './components/PacketLogger';
 import PingMap from './components/PingMap';
 
@@ -20,11 +20,11 @@ const column: CSS.Properties = {
 interface IProps {}
 
 interface IState {
-  devices: any;
+  devices: DevicePingList;
 }
 
 class RoverOverviewOfNetwork extends Component<IProps, IState> {
-  constructor(props: any) {
+  constructor(props: IProps) {
     super(props);
     this.state = {
       devices: {},
@@ -32,7 +32,7 @@ class RoverOverviewOfNetwork extends Component<IProps, IState> {
     this.updateDevices = this.updateDevices.bind(this);
   }
 
-  updateDevices(devices: any) {
+  updateDevices(devices: DevicePingList) {
     this.setState({ devices });
   }
 
@@ -41,7 +41,7 @@ class RoverOverviewOfNetwork extends Component<IProps, IState> {
       <div>
         <PingGraph devices={this.state.devices} style={{ marginRight: '5px' }} />
         <div style={row}>
-          <div style={column}>
+          <div style={{ ...column, maxWidth: '70%' }}>
             <PingMap devices={this.state.devices} />
             <PacketLogger />
           </div>

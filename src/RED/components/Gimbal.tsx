@@ -87,7 +87,7 @@ class Gimbal extends Component<IProps, IState> {
       // to controller input
       rovecomm.sendCommand('LeftMainGimbalIncrement', 'Core', [
         controllerInputs.LeftMainPan * 5,
-        controllerInputs.LeftMainTilt * 5,
+        controllerInputs.LeftMainTilt * -5,
       ]);
       rovecomm.sendCommand('RightMainGimbalIncrement', 'Core', [
         controllerInputs.RightMainPan * 5,
@@ -102,7 +102,7 @@ class Gimbal extends Component<IProps, IState> {
         0,
       ]);
       rovecomm.sendCommand('BackDriveGimbalIncrement', 'Core', [
-        (controllerInputs.BackDriveUp ? 1 : -controllerInputs.BackDriveDown) * 5,
+        (controllerInputs.BackDriveUp ? 1 : -controllerInputs.BackDriveDown) * -5,
       ]);
     }
     this.setState({

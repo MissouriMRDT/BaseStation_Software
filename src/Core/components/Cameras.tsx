@@ -60,6 +60,8 @@ const cam: CSS.Properties = {
 
 interface IProps {
   defaultCamera: number;
+  gripperCam: number;
+  cameraToggle: boolean;
   style?: CSS.Properties;
 }
 
@@ -75,6 +77,8 @@ class Cameras extends Component<IProps, IState> {
   static id = 0;
 
   static defaultProps = {
+    cameraToggle: false,
+    gripperCam: 7,
     style: {},
   };
 
@@ -88,6 +92,7 @@ class Cameras extends Component<IProps, IState> {
     };
     Cameras.id += 1;
     this.takePano = this.takePano.bind(this);
+    this.camToggle = this.camToggle.bind(this);
   }
 
   rotateGimbal90(direction: boolean) {
@@ -110,6 +115,18 @@ class Cameras extends Component<IProps, IState> {
     //const img3 = this.saveImageToVariable();
     // stitch image
     // print image
+  }
+
+  componentDidUpdate(prevProps: IProps) {
+    if (prevProps.gripperCam !== this.props.gripperCam) {
+      this.camToggle();
+    }
+  }
+
+  camToggle() {
+    if (this.props.cameraToggle) {
+      this.setState({ currentCamera: this.props.gripperCam });
+    }
   }
 
   rotate(): void {
