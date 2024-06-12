@@ -13,7 +13,7 @@ import Power from './components/PMS';
 import ControlScheme from '../Core/components/ControlScheme';
 import Drive from './components/Drive';
 import Gimbal from './components/Gimbal';
-// import ThreeDRover from '../Core/components/ThreeDRover';
+import Accelerometer from '../Core/components/Accelerometer';
 import CameraSocketManager from './components/CameraSocketManager';
 import CameraControls from './components/CameraControls';
 // import SignalStack from './components/SignalStack';
@@ -152,9 +152,8 @@ class ControlCenter extends Component<IProps, IState> {
           }
           <div style={{ ...column, width: '60%' }}>
             <div style={row}>
-              <div style={column}>
-                <GPS onCoordsChange={this.updateCoords} style={{ marginRight: '5px', width: '100%' }} />
-              </div>
+              <GPS onCoordsChange={this.updateCoords} style={{ marginRight: '5px', width: '60%' }} />
+              <Accelerometer style={{ width: '40%' }} />
             </div>
             {/* <ThreeDRover style={{ width: '40%' }} /> */}
             <div style={{ ...row, height: '500px' }}>

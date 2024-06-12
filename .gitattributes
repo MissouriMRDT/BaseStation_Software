@@ -5,6 +5,7 @@
 *.ico binary
 *.obj binary
 *.stl binary
+*.glb binary
 *.exe   binary
 *.jpg   binary
 *.jpeg  binary
