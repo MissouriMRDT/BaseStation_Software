@@ -14,6 +14,36 @@ const container: CSS.Properties = {
   flexWrap: 'wrap',
   flexDirection: 'column',
 };
+const column: CSS.Properties = {
+  display: 'flex',
+  flexDirection: 'column',
+  flexGrow: 1,
+  flexShrink: 1,
+  marginRight: '5px',
+  marginBottom: '5px', // Add vertical spacing
+};
+const textStyle: CSS.Properties = {
+  marginBottom: '5px',
+  marginTop: '5px',
+  marginLeft: '5px',
+  justifyContent: 'center',
+};
+const buttonContainerStyle: CSS.Properties = {
+  display: 'flex',
+  justifyContent: 'center',
+  gap: '5px',
+  marginBottom: '5px',
+};
+const imageStyle: CSS.Properties = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+};
+const row: CSS.Properties = {
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+};
 const label: CSS.Properties = {
   marginTop: '-10px',
   position: 'relative',
@@ -63,6 +93,7 @@ class SignalStack extends Component<IProps, IState> {
       toggle: false,
     };
     this.updateCoords = this.updateCoords.bind(this);
+    setInterval(() => this.signalstack(), 100);
   }
 
   componentWillUnmount() {
@@ -111,16 +142,24 @@ class SignalStack extends Component<IProps, IState> {
       <div style={this.props.style}>
         <div style={label}>Signal Stack</div>
         <div style={container}>
-          <img id="needle" src={this.state.image} alt={this.state.controlling} />
-          <span>
-            <h6>{this.state.basestationLat}</h6>
-            <h6>{this.state.basestationLon}</h6>
-          </span>
-          <div>
-            <input type="text" id="baselat" />
-            <input type="text" id="baselon" />
+          <div style={imageStyle}>
+            <img id="needle" src={this.state.image} alt={this.state.controlling} />
+          </div>{' '}
+          <div style={row}>
+            <div style={{ ...column, width: '40%' }}>
+              <p style={textStyle}>Rover Lat: {this.props.roverLat}</p>
+              <p style={textStyle}>BaseStation Lat: {this.state.basestationLat}</p>
+              <input style={textStyle} type="text" id="baselat" placeholder="Enter Basestation's Lat:" />
+            </div>
+            <div style={{ ...column, width: '40%' }}>
+              <p style={textStyle}>Rover Lon: {this.props.roverLon}</p>
+              <p style={textStyle}>BaseStation Lon: {this.state.basestationLon}</p>
+              <input style={textStyle} type="text" id="baselon" placeholder="Enter Basestation's lon:" />
+            </div>
+          </div>
+          <div style={buttonContainerStyle}>
             <button type="button" onClick={this.updateCoords}>
-              submit
+              Submit
             </button>
             <button type="button" onClick={() => this.setState({ toggle: !this.state.toggle })}>
               {this.state.toggle ? 'On' : 'Off'}

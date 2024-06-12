@@ -18,6 +18,7 @@ import CameraSocketManager from './components/CameraSocketManager';
 import CameraControls from './components/CameraControls';
 // import SignalStack from './components/SignalStack';
 import { Client } from 'basic-ftp';
+import SignalStack from './components/SignalStack';
 
 const row: CSS.Properties = {
   display: 'flex',
@@ -205,7 +206,7 @@ class ControlCenter extends Component<IProps, IState> {
             <button onClick={this.exportScreenshots} style={{ marginTop: '10px' }}>
               Export Screenshots
             </button>
-            {/* <SignalStack roverLat={this.state.currentCoords.lat} roverLon={this.state.currentCoords.lon} /> */}
+            <SignalStack roverLat={this.state.currentCoords.lat} roverLon={this.state.currentCoords.lon} />
           </div>
         </div>
       </div>
