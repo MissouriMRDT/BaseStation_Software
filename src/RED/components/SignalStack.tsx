@@ -67,6 +67,7 @@ interface IState {
   basestationLat: number;
   basestationLon: number;
   toggle: boolean;
+  signalStackAngle: number;
 }
 
 // Dynamic paths to import images used to indicate which gimbal is being controlled
@@ -91,9 +92,10 @@ class SignalStack extends Component<IProps, IState> {
       basestationLat: 1,
       basestationLon: 1,
       toggle: false,
+      signalStackAngle: 180,
     };
     this.updateCoords = this.updateCoords.bind(this);
-    setInterval(() => this.signalstack(), 100);
+    rovecomm.on('SignalStackAngle', (data: number) => this.rotateArrow(data));
   }
 
   componentWillUnmount() {
@@ -125,6 +127,7 @@ class SignalStack extends Component<IProps, IState> {
   }
 
   rotateArrow(angle: number) {
+    this.setState({ signalStackAngle: angle });
     const arrow = document.getElementById('needle');
     if (arrow) {
       arrow.style.transform = 'rotate(' + angle + 'deg)';
