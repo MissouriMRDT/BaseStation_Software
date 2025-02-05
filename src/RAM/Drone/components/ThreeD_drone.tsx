@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
 import path from 'path';
-import STLViewer from '../../../Core/components/STLViewer';
 import { windows } from '../../../Core/Window';
 import { rovecomm } from '../../../Core/RoveProtocol/Rovecomm';
+import { Canvas } from '@react-three/fiber';
+import { BufferGeometry, Euler } from 'three';
+import { OrbitControls } from '@react-three/drei';
+import { STLLoader } from 'three/examples/jsm/loaders/STLLoader';
 
 const container: CSS.Properties = {
   display: 'flex',
@@ -13,9 +16,10 @@ const container: CSS.Properties = {
   borderColor: '#990000',
   borderBottomWidth: '2px',
   borderStyle: 'solid',
-  padding: '5px',
+  padding: '0px',
+  //height: 'calc(100% - 47px)',
   alignItems: 'center',
-  height: 'calc(100% - 47px)',
+  overflow: 'hidden',
 };
 const label: CSS.Properties = {
   marginTop: '-10px',
@@ -27,7 +31,12 @@ const label: CSS.Properties = {
   zIndex: 1,
   color: 'white',
 };
-
+const canvasContainer: CSS.Properties = {
+  position: 'relative',
+  width: '100%',
+  height: '100%',
+  minHeight: '400px',
+};
 interface IProps {
   style?: CSS.Properties;
   //droneOrientation: { pitch: number; yaw: number; roll: number };
@@ -40,7 +49,7 @@ interface IState {
   id: string;
   width: number;
   height: number;
-  zoom: number;
+  geometry?: BufferGeometry;
 }
 
 const MODEL = path.join(__dirname, '../assets/drone.stl');
@@ -59,20 +68,23 @@ class ThreeDdrone extends Component<IProps, IState> {
       pitch: 0,
       yaw: 0,
       roll: 0,
-      zoom: 20,
       id: `3Ddrone_${ThreeDdrone.id}`,
       width: 300,
       height: 300,
     };
 
     rovecomm.on('droneOrientation', (data: number[]) => this.droneData(data));
+
+    this.resizeCallback.bind(this);
+    this.setResizeCallbacks();
   }
 
   componentDidMount(): void {
+    this.loadGeometry();
     this.findWidth();
   }
 
-  droneData(data: any) {
+  droneData(data: number[]) {
     let a: number;
     let b: number;
     let c: number;
@@ -83,39 +95,70 @@ class ThreeDdrone extends Component<IProps, IState> {
     this.setState({ pitch: a, yaw: b, roll: c });
   }
 
+  resizeCallback = () => this.findWidth();
+
+  setResizeCallbacks() {
+    for (const win of Object.keys(windows)) {
+      windows[win].addEventListener('resize', this.resizeCallback);
+    }
+    this.findWidth();
+  }
+
+  removeResizeCallbacks() {
+    for (const win of Object.keys(windows)) {
+      windows[win].removeEventListener('resize', this.resizeCallback);
+    }
+    this.findWidth();
+  }
+
   findWidth() {
     for (const win of Object.keys(windows)) {
-      if (windows[win].document.getElementById(this.state.id)) {
-        if (
-          this.state.width !== windows[win].document.getElementById(this.state.id).clientWidth - 10 ||
-          this.state.height !== windows[win].document.getElementById(this.state.id).clientHeight - 12
-        ) {
-          windows[win].addEventListener('resize', () => this.findWidth());
-          this.setState((prevState) => ({
-            width: windows[win].document.getElementById(prevState.id).clientWidth - 10,
-            height: windows[win].document.getElementById(prevState.id).clientHeight - 12,
-          }));
-        }
+      if (
+        windows[win].document.getElementById(this.state.id) &&
+        (windows[win].document.getElementById(this.state.id).clientWidth !== this.state.width ||
+          windows[win].document.getElementById(this.state.id).clientHeight !== this.state.height)
+      ) {
+        this.setState((prevState) => ({
+          width: windows[win].document.getElementById(prevState.id).clientWidth,
+          height: windows[win].document.getElementById(prevState.id).clientHeight,
+        }));
       }
     }
+  }
+
+  loadGeometry(): void {
+    if (this.state.geometry === undefined) {
+      const loader = new STLLoader();
+      loader.load(MODEL, (geo) => {
+        geo.center();
+        geo.computeVertexNormals();
+        this.setState({ geometry: geo });
+      });
+    }
+  }
+
+  componentWillUnmount(): void {
+    this.state.geometry?.dispose();
+    this.removeResizeCallbacks();
   }
 
   render(): JSX.Element {
     return (
       <div style={this.props.style}>
         <div style={label}>3D Drone</div>
-        <div style={container} id={this.state.id}>
-          <STLViewer
-            model={MODEL}
-            modelColor="#B92C2C"
-            backgroundColor="#FFFFFF"
-            rotate={false}
-            rotation={[this.state.pitch, this.state.yaw, this.state.roll]}
-            orbitControls
-            width={this.state.width}
-            height={this.state.height}
-            zoom={this.state.zoom}
-          />
+        <div style={container}>
+          <div style={canvasContainer} id={this.state.id}>
+            <div style={{ width: this.state.width, height: this.state.height, position: 'absolute', top: '0px' }}>
+              <Canvas>
+                <group rotation={new Euler(this.state.pitch, this.state.yaw, this.state.roll)}>
+                  <mesh geometry={this.state.geometry}>
+                    <meshLambertMaterial color="#B92C2C" />
+                  </mesh>
+                </group>
+                <OrbitControls enablePan={false} minDistance={3} maxDistance={8} />
+              </Canvas>
+            </div>
+          </div>
         </div>
       </div>
     );

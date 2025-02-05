@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import CSS from 'csstype';
 import Map from '../RED/components/Map';
-import ThreeDRover from '../Core/components/ThreeDRover';
+import Accelerometer from '../Core/components/Accelerometer';
 import Angular from '../RAM/Arm/components/Angular';
 import ControlFeatures from '../RAM/Arm/components/ControlFeatures';
 import IK from '../RAM/Arm/components/IK';
@@ -174,7 +174,7 @@ class RoverImageryDisplay extends Component<IProps, IState> {
       display: (
         <div style={{ flexGrow: 1, height: '100%' }}>
           {this.buttons}
-          <ThreeDRover style={submod} zoom={30} />
+          <Accelerometer style={submod} />
         </div>
       ),
       displayed: '3D Rover',
