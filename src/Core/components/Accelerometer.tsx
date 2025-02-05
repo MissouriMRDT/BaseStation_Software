@@ -165,18 +165,22 @@ class Accelerometer extends Component<IProps, IState> {
   }
 
   componentDidMount(): void {
-    // try to read tipover vectors from file
+    // try to read tipover vectors from file if they haven't been read yet
     if (globalTipoverVectors.length === 0) {
       if (fs.existsSync(TIPOVER_PATH)) {
-        const tipoverList = JSON.parse(fs.readFileSync(TIPOVER_PATH).toString()) as TipoverEntry[];
-        globalTipoverVectors.push(
-          ...tipoverList.map((entry) => ({
-            id: entry.id,
-            upVector: new THREE.Vector3().copy(entry.upVector), // the json doesn't parse right unless you make a new object
-          }))
-        );
-        console.log(globalTipoverVectors);
-        synchronizer.emit('update');
+        try {
+          const tipoverList = JSON.parse(fs.readFileSync(TIPOVER_PATH).toString()) as TipoverEntry[];
+          globalTipoverVectors.push(
+            ...tipoverList.map((entry) => ({
+              id: entry.id,
+              upVector: new THREE.Vector3().copy(entry.upVector), // the json doesn't parse right unless you make a new object
+            }))
+          );
+          console.log(globalTipoverVectors);
+          synchronizer.emit('update');
+        } catch (err) {
+          console.error('Something went wrong reading TipoverVectors.json', err);
+        }
       }
     }
     this.findWidth();
