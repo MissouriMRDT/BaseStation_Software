@@ -1,3 +1,11 @@
+# ⚠️ Repository Archived
+
+This project is no longer actively maintained.  
+Please visit the new repository for continued development:  
+👉 [**Basestation_Software_Blazor**](https://github.com/MissouriMRDT/Basestation_Software_Blazor)
+
+---
+
 # Rover Engagement Display (RED)
 *A telemetry and command interface for operating a remote, embedded system.*
 
@@ -28,5 +36,6 @@ Three additional windows launch from one initial window, with each window servin
 ## RED - Rover Engagement Display
 
 The main window of the application, wherein many of the primary components for controlling the rover are organized.
-- IMU (inertial measurement unit) and raw GPS readout; displays the numerical orientation, heading, and gps position of the rover
+
+- IMU (inertial measurement unit) and raw GPS readout; displays the numerical orientation, heading, and GPS position of the rover
 - Waypoints
